@@ -12,7 +12,7 @@ class Publisher < ApplicationRecord
   # validates :bitcoin_address,
   #   presence: true
 
-  after_validation :generate_verification_token
+  after_create :generate_verification_token
 
   def to_s
     etld
@@ -23,5 +23,6 @@ class Publisher < ApplicationRecord
   def generate_verification_token
     # 32 bytes == 256 bits
     self.verification_token = SecureRandom.hex(32)
+    save!
   end
 end
