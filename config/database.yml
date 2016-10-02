@@ -1,0 +1,28 @@
+# The super helpful default documentation has been omitted from this file.
+# To check it out, see:
+# https://github.com/rails/rails/blob/3df3d80ade705dd096ec481845ff0fc2d70427b0/railties/lib/rails/generators/rails/app/templates/config/databases/postgresql.yml
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: brave_publishers_dev
+
+test:
+  <<: *default
+  database: brave_publishers_test
+
+# As with config/secrets.yml, you never want to store sensitive information,
+# like your database password, in your source code. If your source code is
+# ever seen by anyone, they now have access to your database.
+#
+# Instead, provide the password as a unix environment variable when you boot
+# the app. Read http://guides.rubyonrails.org/configuring.html#configuring-a-database
+# for a full rundown on how to provide these environment variables in a
+# production deployment.
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
