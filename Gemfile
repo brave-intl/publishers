@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# Encrypt DB data at rest
+gem "attr_encrypted", "~> 3.0.0"
+
 gem 'bitcoin-ruby', '~> 0.0.8'
 
 # Authentication

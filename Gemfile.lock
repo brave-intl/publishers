@@ -39,6 +39,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.2)
+    attr_encrypted (3.0.3)
+      encryptor (~> 3.0.0)
     bcrypt (3.1.11)
     bitcoin-ruby (0.0.9)
     builder (3.2.2)
@@ -51,6 +53,7 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    encryptor (3.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.9.14)
@@ -163,6 +166,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  attr_encrypted (~> 3.0.0)
   bitcoin-ruby (~> 0.0.8)
   byebug
   devise (~> 4.2.0)
