@@ -1,2 +1,19 @@
 h1 new publisher
-= form_for
+
+- if @publisher.errors.any?
+  ul.errors
+  - @publisher.errors.each do |attribute, message|
+    li.error #{attribute} #{message}
+
+= form_for @publisher do |f|
+  div
+    = f.label :etld
+    = f.text_field :etld, autofocus: true, placeholder: "futureblog.com"
+  div
+    = f.label :name
+    = f.text_field :name, placeholder: "Alice Bloglette"
+  div
+    = f.label :email
+    = f.email_field :email, placeholder: "alice@futureblog.com"
+  div
+    = f.submit

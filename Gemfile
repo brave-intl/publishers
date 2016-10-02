@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
+# user authentication
+gem 'devise', '~> 4.2.0'
 # postgresql as database for Active Record
 gem 'pg', '~> 0.18'
 # Domain name parser
@@ -8,6 +9,7 @@ gem 'public_suffix'
 # Puma as app server
 gem 'puma', '~> 3.0'
 # SCSS for stylesheets
+gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'sass-rails', '~> 5.0'
 # slim for view templates
 gem 'slim-rails', '~> 3.1'

@@ -6,7 +6,8 @@ class PublishersController < ApplicationController
   def create
     @publisher = Publisher.new(publisher_params)
     if @publisher.save
-      render text: 201
+      sign_in(:publisher, @publisher)
+      redirect_to current_publishers_path
     else
       render :new
     end
@@ -16,6 +17,10 @@ class PublishersController < ApplicationController
     # person = current_account.people.find(params[:id])
     # person.update!(person_params)
     # redirect_to person
+  end
+
+  def current
+
   end
 
   private
