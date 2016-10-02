@@ -7,7 +7,7 @@ class Publisher < ApplicationRecord
   phony_normalize :phone, as: :phone_normalized, default_country_code: 'US'
 
   validates :bitcoin_address, bitcoin_address: true, presence: true, if: :should_validate_bitcoin_address?
-  validates :email, presence: true
+  validates :email, email: { strict_mode: true }, presence: true
   validates :etld, etld: true, presence: true
   validates :name, presence: true
   validates :phone, phony_plausible: true

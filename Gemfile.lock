@@ -53,6 +53,8 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    email_validator (1.6.0)
+      activemodel
     encryptor (3.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -170,6 +172,7 @@ DEPENDENCIES
   bitcoin-ruby (~> 0.0.8)
   byebug
   devise (~> 4.2.0)
+  email_validator (~> 1.6)
   listen (~> 3.0.5)
   pg (~> 0.18)
   phony_rails

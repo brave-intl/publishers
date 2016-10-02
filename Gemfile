@@ -8,6 +8,8 @@ gem 'bitcoin-ruby', '~> 0.0.8'
 # Authentication
 gem 'devise', '~> 4.2.0'
 
+gem 'email_validator', '~> 1.6'
+
 # postgresql as database for Active Record
 gem 'pg', '~> 0.18'
 
