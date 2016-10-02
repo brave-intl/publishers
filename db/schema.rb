@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161002071520) do
+ActiveRecord::Schema.define(version: 20161002080809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20161002071520) do
     t.string   "encrypted_bitcoin_address"
     t.string   "encrypted_bitcoin_address_iv"
     t.index ["etld"], name: "index_publishers_on_etld", using: :btree
+    t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
     t.index ["verified"], name: "index_publishers_on_verified", using: :btree
   end
 
