@@ -40,6 +40,7 @@ GEM
       tzinfo (~> 1.1)
     arel (7.1.2)
     bcrypt (3.1.11)
+    bitcoin-ruby (0.0.9)
     builder (3.2.2)
     byebug (9.0.6)
     concurrent-ruby (1.0.2)
@@ -162,6 +163,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bitcoin-ruby (~> 0.0.8)
   byebug
   devise (~> 4.2.0)
   listen (~> 3.0.5)

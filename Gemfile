@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'bitcoin-ruby', '~> 0.0.8'
+
 # Authentication
 gem 'devise', '~> 4.2.0'
 

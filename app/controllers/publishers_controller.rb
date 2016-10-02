@@ -1,32 +1,48 @@
 class PublishersController < ApplicationController
+  before_action :authenticate_publisher!,
+                only: %i(current payment_info update_payment_info)
+
   def new
     @publisher = Publisher.new
   end
 
   def create
-    @publisher = Publisher.new(publisher_params)
+    @publisher = Publisher.new(publisher_create_params)
     if @publisher.save
       sign_in(:publisher, @publisher)
-      redirect_to current_publishers_path
+      redirect_to payment_info_publishers_path
     else
-      render :new
+      render :new, alert: "some errors with the submission"
     end
   end
 
-  def update
-    # person = current_account.people.find(params[:id])
-    # person.update!(person_params)
-    # redirect_to person
+  # Payment info == BTC address and tax info
+  def payment_info
+    @publisher = current_publisher
   end
 
+  def update_payment_info
+    @publisher = current_publisher
+    @publisher.assign_attributes(publisher_payment_update_params)
+    if @publisher.save
+      redirect_to current_publishers_path
+    else
+      render :payment_info, alert: "some errors with the submission"
+    end
+  end
+
+  # Testing only
   def current
 
   end
 
   private
 
-  def publisher_params
-    params.require(:publisher)
-          .permit(:bitcoin_address, :email, :etld, :name, :phone)
+  def publisher_create_params
+    params.require(:publisher).permit(:email, :etld, :name, :phone)
+  end
+
+  def publisher_payment_update_params
+    params.require(:publisher).permit(:bitcoin_address)
   end
 end

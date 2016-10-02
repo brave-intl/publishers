@@ -4,13 +4,11 @@ class Publisher < ApplicationRecord
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: 'US'
 
-  validates :etld, etld: true, presence: true
+  validates :bitcoin_address, bitcoin_address: true, presence: true
   validates :email, presence: true
+  validates :etld, etld: true, presence: true
   validates :name, presence: true
   validates :phone, phony_plausible: true
-
-  # validates :bitcoin_address,
-  #   presence: true
 
   before_create :generate_verification_token
   before_create :normalize_etld
