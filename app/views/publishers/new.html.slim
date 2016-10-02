@@ -16,4 +16,7 @@ h1 new publisher
     = f.label :email
     = f.email_field :email, placeholder: "alice@futureblog.com"
   div
+    = f.label :phone, 'Phone (Optional)'
+    = f.phone_field :phone, placeholder: "+1 888 9001"
+  div
     = f.submit

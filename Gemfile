@@ -1,18 +1,28 @@
 source 'https://rubygems.org'
 
-# user authentication
+# Authentication
 gem 'devise', '~> 4.2.0'
+
 # postgresql as database for Active Record
 gem 'pg', '~> 0.18'
+
+# Phone number validation
+gem 'phony_rails'
+
 # Domain name parser
 gem 'public_suffix'
+
 # Puma as app server
 gem 'puma', '~> 3.0'
-# SCSS for stylesheets
+
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
+
+# SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+
 # slim for view templates
 gem 'slim-rails', '~> 3.1'
+
 # Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 

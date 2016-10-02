@@ -26,6 +26,7 @@ class PublishersController < ApplicationController
   private
 
   def publisher_params
-    params.require(:publisher).permit(:etld, :name, :email, :bitcoin_address)
+    params.require(:publisher)
+          .permit(:bitcoin_address, :email, :etld, :name, :phone)
   end
 end

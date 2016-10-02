@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161002042915) do
+ActiveRecord::Schema.define(version: 20161002052534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20161002042915) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.string   "phone"
+    t.string   "phone_normalized"
     t.index ["etld"], name: "index_publishers_on_etld", using: :btree
     t.index ["verified"], name: "index_publishers_on_verified", using: :btree
   end
