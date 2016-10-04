@@ -115,7 +115,7 @@ module DirtyCop
     ranges =
       `git diff -p -U0 #{ref} #{file}`
       .lines
-      .grep(/^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@/) { Regexp.last_match(1).to_i..(Regexp.last_match(1).to_i + Regexp.last_match(2).to_i) }
+      .grep(/^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@/) { Regexp.last_match(1).to_i...(Regexp.last_match(1).to_i + Regexp.last_match(2).to_i) }
       .reverse
 
     mask = Array.new(ranges.first.end)

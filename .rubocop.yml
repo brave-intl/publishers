@@ -4,8 +4,9 @@ Documentation:
   Enabled: false
 AllCops:
   Include:
-    - Rakefile
     - config.ru
+    - Gemfile
+    - Rakefile
   Exclude:
     - bin/**/*
     - db/**/*

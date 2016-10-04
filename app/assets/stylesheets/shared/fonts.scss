@@ -1,0 +1,23 @@
+// .scss for multiline attributes
+
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: normal;
+  src: font-url("lato-regular/lato-regular.eot");
+  src: font-url("lato-regular/lato-regular.eot?iefix") format("embedded-opentype"),
+    font-url("lato-regular/lato-regular.ttf") format("truetype")
+    font-url("lato-regular/lato-regular.woff") format("woff")
+    font-url("lato-regular/lato-regular.svg#lato-regular") format("svg");
+}
+
+@font-face {
+  font-family: "Lato Bold";
+  font-style: normal;
+  font-weight: bold;
+  src: font-url("lato-bold/lato-bold.eot");
+  src: font-url("lato-bold/lato-bold.eot?iefix") format("embedded-opentype"),
+    font-url("lato-bold/lato-bold.ttf") format("truetype")
+    font-url("lato-bold/lato-bold.woff") format("woff")
+    font-url("lato-bold/lato-bold.svg#lato-bold") format("svg");
+}

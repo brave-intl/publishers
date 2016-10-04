@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title Brave Publishers
+    = csrf_meta_tags
+    = stylesheet_link_tag('application', media: 'all')
+    = javascript_include_tag('application')
+    link rel="icon" type="image/png" href=image_path("favicon.ico")
+
+  body data-action=params[:action] data-controller=params[:controller]
+    = render("nav")
+    div.flash
+      p.notice= notice
+      p.alert= alert
+    div#content.container
+      = content_for?(:content) ? yield(:content) : yield

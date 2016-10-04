@@ -1,4 +1,4 @@
-h1 new publisher
+h1 Publisher verification
 
 - if @publisher.errors.any?
   ul.errors
@@ -6,17 +6,18 @@ h1 new publisher
     li.error #{attribute} #{message}
 
 = form_for @publisher do |f|
-  div
-    = f.label :base_domain, 'Domain'
-    = f.text_field :base_domain, autofocus: true, placeholder: "futureblog.com"
-  div
-    = f.label :name
-    = f.text_field :name, placeholder: "Alice Bloglette"
-  div
-    = f.label :email
-    = f.email_field :email, placeholder: "alice@futureblog.com"
-  div
-    = f.label :phone, 'Phone (Optional)'
-    = f.phone_field :phone, placeholder: "+1 888 9001"
-  div
-    = f.submit "Save and continue"
+  fieldset
+    legend Step 1: Submit contact info
+    div.form-group
+      = f.label(:base_domain, 'Domain')
+      = f.text_field(:base_domain, autofocus: true, class: "form-control", placeholder: "futureblog.com")
+    div.form-group
+      = f.label(:name)
+      = f.text_field(:name, class: "form-control", placeholder: "Alice Bloglette")
+    div.form-group
+      = f.label(:email)
+      = f.email_field(:email, class: "form-control", placeholder: "alice@futureblog.com")
+    div.form-group
+      = f.label(:phone, 'Phone (Optional)')
+      = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 9001")
+    = f.submit("Continue", class: "btn btn-lg btn-primary")
