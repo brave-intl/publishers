@@ -39,7 +39,7 @@ class PublishersController < ApplicationController
   private
 
   def publisher_create_params
-    params.require(:publisher).permit(:email, :etld, :name, :phone)
+    params.require(:publisher).permit(:email, :base_domain, :name, :phone)
   end
 
   def publisher_payment_update_params

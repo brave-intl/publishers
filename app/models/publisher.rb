@@ -8,15 +8,15 @@ class Publisher < ApplicationRecord
 
   validates :bitcoin_address, bitcoin_address: true, presence: true, if: :should_validate_bitcoin_address?
   validates :email, email: { strict_mode: true }, presence: true
-  validates :etld, etld: true, presence: true
+  validates :base_domain, base_domain: true, presence: true
   validates :name, presence: true
   validates :phone, phony_plausible: true
 
   before_create :generate_verification_token
-  before_create :normalize_etld
+  before_create :normalize_base_domain
 
   def to_s
-    etld
+    base_domain
   end
 
   def encryption_key
@@ -30,8 +30,8 @@ class Publisher < ApplicationRecord
     self.verification_token = SecureRandom.hex(32)
   end
 
-  def normalize_etld
-    self.etld = PublicSuffix.domain(etld)
+  def normalize_base_domain
+    self.base_domain = PublicSuffix.domain(base_domain)
   end
 
   # This allows for blank bitcoin_address on first create, but

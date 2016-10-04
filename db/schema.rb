@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20161002080809) do
   enable_extension "uuid-ossp"
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string   "etld"
+    t.string   "base_domain"
     t.string   "name"
     t.string   "email"
     t.string   "verification_token"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20161002080809) do
     t.string   "phone_normalized"
     t.string   "encrypted_bitcoin_address"
     t.string   "encrypted_bitcoin_address_iv"
-    t.index ["etld"], name: "index_publishers_on_etld", using: :btree
+    t.index ["base_domain"], name: "index_publishers_on_base_domain", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
     t.index ["verified"], name: "index_publishers_on_verified", using: :btree
   end
