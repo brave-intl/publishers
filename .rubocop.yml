@@ -3,10 +3,10 @@ AlignParameters:
 Documentation:
   Enabled: false
 AllCops:
-  Includes:
+  Include:
     - Rakefile
     - config.ru
-  Excludes:
+  Exclude:
     - bin/**/*
     - db/**/*
 LineLength:
