@@ -4,7 +4,7 @@ class Publisher < ApplicationRecord
   devise :timeoutable, :trackable
 
   # Normalizes attribute before validation and saves into other attribute
-  phony_normalize :phone, as: :phone_normalized, default_country_code: 'US'
+  phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
   validates :bitcoin_address, bitcoin_address: true, presence: true, if: :should_validate_bitcoin_address?
   validates :email, email: { strict_mode: true }, presence: true

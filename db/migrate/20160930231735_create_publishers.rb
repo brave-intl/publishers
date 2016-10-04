@@ -1,7 +1,7 @@
 class CreatePublishers < ActiveRecord::Migration[5.0]
   def change
     # http://theworkaround.com/2015/06/12/using-uuids-in-rails.html#postgresql
-    enable_extension 'uuid-ossp'
+    enable_extension "uuid-ossp"
     create_table :publishers, id: :uuid do |t|
       t.string :base_domain, null: :false
       t.string :name, null: :false
