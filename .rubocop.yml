@@ -1,2 +1,17 @@
+AlignParameters:
+  Enabled: false
+Documentation:
+  Enabled: false
+AllCops:
+  Includes:
+    - Rakefile
+    - config.ru
+  Excludes:
+    - bin/**/*
+    - db/**/*
+LineLength:
+  Max: 120
 StringLiterals:
   EnforcedStyle: double_quotes
+Style/NegatedIf:
+  Enabled: false

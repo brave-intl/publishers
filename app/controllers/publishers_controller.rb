@@ -33,7 +33,6 @@ class PublishersController < ApplicationController
 
   # Testing only
   def current
-
   end
 
   private
