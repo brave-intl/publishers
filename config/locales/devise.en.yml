@@ -8,14 +8,14 @@ en:
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
     failure:
       already_authenticated: "You are already signed in."
-      inactive: "Your account is not activated yet."
+      inactive: "Your account is pending activation."
       invalid: "Invalid %{authentication_keys} or password."
       locked: "Your account is locked."
       last_attempt: "You have one more attempt before your account is locked."
       not_found_in_database: "Invalid %{authentication_keys} or password."
-      timeout: "Your session expired. Please sign in again to continue."
-      unauthenticated: "You need to sign in or sign up before continuing."
-      unconfirmed: "You have to confirm your email address before continuing."
+      timeout: "Your session has expired. To continue please initiate a new verification or resume an existing one (check the confirmation email)."
+      unauthenticated: "To view this please initiate a new verification or resume an existing one (check the confirmation email)."
+      unconfirmed: "To continue please confirm your email address."
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
