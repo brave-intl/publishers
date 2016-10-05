@@ -12,14 +12,14 @@ gem "devise", "~> 4.2.0"
 
 gem "email_validator", "~> 1.6"
 
+# HTTP library wrapper
+gem "faraday", "~> 0.9.2"
+
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
 
 # Phone number validation
-gem "phony_rails"
-
-# Domain name parser
-gem "public_suffix"
+gem "phony_rails", "~> 0.14"
 
 # Puma as app server
 gem "puma", "~> 3.0"
@@ -55,6 +55,7 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
+  gem "pry"
   gem "rubocop"
   gem "spring"
   gem "spring-watcher-listen", "~> 2.0.0"

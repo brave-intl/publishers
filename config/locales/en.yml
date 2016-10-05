@@ -21,3 +21,10 @@
 
 en:
   hello: "Hello world"
+  publishers:
+    already_logged_in: "You can't do that because you have an active session. Please first log out or clear your cookies."
+    log_out: "Log out"
+    logged_out: "Successfully logged out."
+    not_verified: "Unverified"
+    verified: "Verified"
+    verification_required: "To continue please verify ownership of your domain."

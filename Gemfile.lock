@@ -51,6 +51,7 @@ GEM
       sass (>= 3.3.4)
     builder (3.2.2)
     byebug (9.0.6)
+    coderay (1.1.1)
     concurrent-ruby (1.0.2)
     debug_inspector (0.0.2)
     devise (4.2.0)
@@ -64,6 +65,8 @@ GEM
     encryptor (3.0.0)
     erubis (2.7.0)
     execjs (2.7.0)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
     ffi (1.9.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
@@ -81,6 +84,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.9.1)
+    multipart-post (2.0.0)
     nio4r (1.2.1)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
@@ -95,7 +99,10 @@ GEM
       phony (~> 2.12)
     pkg-config (1.1.7)
     powerpack (0.1.1)
-    public_suffix (2.0.3)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     puma (3.6.0)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -151,6 +158,7 @@ GEM
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (~> 3.0)
+    slop (3.6.0)
     spring (2.0.0)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -193,10 +201,11 @@ DEPENDENCIES
   byebug
   devise (~> 4.2.0)
   email_validator (~> 1.6)
+  faraday (~> 0.9.2)
   listen (~> 3.0.5)
   pg (~> 0.18)
-  phony_rails
-  public_suffix
+  phony_rails (~> 0.14)
+  pry
   puma (~> 3.0)
   rails (~> 5.0.0, >= 5.0.0.1)
   rubocop

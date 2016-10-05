@@ -9,8 +9,13 @@ html
 
   body data-action=params[:action] data-controller=params[:controller]
     = render("nav")
-    div.flash
-      p.notice= notice
-      p.alert= alert
+    
+    - if flash.present?
+      div.flash.navbar-static-top
+        - if flash[:alert]
+          div.alert.alert-warning= flash[:alert]
+        - if flash[:notice]
+          div.alert.alert-info= flash[:notice]
+            
     div#content.container
       = content_for?(:content) ? yield(:content) : yield

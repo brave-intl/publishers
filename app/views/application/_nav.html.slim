@@ -1,5 +1,5 @@
-nav.one-page-header.navbar.navbar-default.navbar-fixed-top.top-nav-collapse
-  div.container
+nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
+  div.container-fluid
     div.menu-container
       / <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
       /     <span class="sr-only">Toggle navigation</span>
@@ -8,9 +8,27 @@ nav.one-page-header.navbar.navbar-default.navbar-fixed-top.top-nav-collapse
       /     <span class="icon-bar"></span>
       / </button>
 
-      = link_to root_path do
+      = link_to(root_path) do
         div.brave-logo.pull-left
-
+        div.navbar-brand.pull-left Publishers
+        
+    div.collapse.navbar-collapse.pull-right
+      ul.nav.navbar-nav
+        - if current_publisher
+          li
+            = link_to(publisher_next_step_path(current_publisher)) do
+              span #{current_publisher} (#{publisher_humanize_verified(current_publisher)})
+          li
+            = link_to(I18n.t("publishers.log_out"), log_out_publishers_path)
+            
+                  
+      / div.collapse.navbar-collapse.navbar-ex1-collapse.pull-right
+      /   div.menu-container
+      /     ul
+      /       li
+      /         span Desu
+      /       li
+      /         a Cool
 
 / <!-- Collect the nav links, forms, and other content for toggling -->
 / <div id="fullsize-menu" class="collapse navbar-collapse navbar-ex1-collapse pull-right">

@@ -1,0 +1,7 @@
+h1 Publisher verification
+
+= form_for(current_publisher, method: :patch, url: payment_info_publishers_path) do |f|
+  fieldset
+    legend Step 2: Verify domain ownership
+    p 123 lol
+    = f.submit("Check now", class: "btn btn-lg btn-primary")
