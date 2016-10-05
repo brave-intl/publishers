@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :publishers, only: %i(new create) do
     collection do
+      get :download_verification_file
       get :home
       get :log_out
       get :payment_info

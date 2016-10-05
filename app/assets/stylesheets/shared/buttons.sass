@@ -1,0 +1,40 @@
+// $btn-primary-bg: linear-gradient($braveLightOrange, $braveOrange);
+// $btn-primary-border: $braveLightOrange transparent $braveOrange;
+// $btn-primary-border:             darken($btn-primary-bg, 5%) !default;
+// $btn-primary-color: #fff
+
+.btn
+  &.btn-primary
+    background: linear-gradient($braveLightOrange, $braveOrange)
+    border: 2px solid transparent
+    border-bottom: 2px solid $braveOrange
+    border-top: 2px solid $braveLightOrange
+    box-shadow: $buttonShadow
+    color: #fff
+
+    &:hover
+      background: linear-gradient(darken($braveLightOrange, 10%), darken($braveOrange, 10%))
+      border: 2px solid #fff
+      border-bottom: 2px solid #fff
+      border-top: 2px solid #fff
+
+    // &:hover {
+    //   color: $color;
+    //   background-color: darken($background, 10%);
+    //       border-color: darken($border, 12%);
+    // }
+    // &:active,
+    // &.active,
+    // .open > &.dropdown-toggle {
+    //   color: $color;
+    //   background-color: darken($background, 10%);
+    //       border-color: darken($border, 12%);
+    //
+    //   &:hover,
+    //   &:focus,
+    //   &.focus {
+    //     color: $color;
+    //     background-color: darken($background, 17%);
+    //         border-color: darken($border, 25%);
+    //   }
+    // }

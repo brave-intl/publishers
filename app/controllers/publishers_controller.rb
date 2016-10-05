@@ -2,7 +2,7 @@ class PublishersController < ApplicationController
   include PublishersHelper
 
   before_action :authenticate_publisher!,
-    only: %i(home log_out payment_info update_payment_info verification)
+    only: %i(download_verification_file home log_out payment_info update_payment_info verification)
   before_action :require_unauthenticated_publisher,
     only: %i(new create)
   before_action :require_verified_publisher,
@@ -24,6 +24,11 @@ class PublishersController < ApplicationController
 
   # Domain verification. Show verification options.
   def verification
+  end
+
+  def download_verification_file
+    response.content_type = "text/plain"
+    render(plain: PublisherVerificationFileGenerator.new(current_publisher).generate_file_content)
   end
 
   # Domain verified. See balance and submit payment info.

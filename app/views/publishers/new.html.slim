@@ -1,5 +1,3 @@
-h1 Publisher verification
-
 - if @publisher.errors.any?
   ul.errors
   - @publisher.errors.each do |attribute, message|
@@ -7,7 +5,7 @@ h1 Publisher verification
 
 = form_for @publisher do |f|
   fieldset
-    legend Step 1: Submit contact info
+    legend Submit contact information
     div.form-group
       = f.label(:base_domain, 'Domain')
       = f.text_field(:base_domain, autofocus: true, class: "form-control", placeholder: "futureblog.com")
@@ -20,4 +18,5 @@ h1 Publisher verification
     div.form-group
       = f.label(:phone, 'Phone (Optional)')
       = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 9001")
-    = f.submit("Continue", class: "btn btn-lg btn-success")
+    div.form-group.submit
+      = f.submit("Save and continue", class: "btn btn-block btn-lg btn-primary")

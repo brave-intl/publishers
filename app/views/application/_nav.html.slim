@@ -1,63 +1,18 @@
 nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
   div.container-fluid
     div.menu-container
-      / <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-      /     <span class="sr-only">Toggle navigation</span>
-      /     <span class="icon-bar"></span>
-      /     <span class="icon-bar"></span>
-      /     <span class="icon-bar"></span>
-      / </button>
-
       = link_to(root_path) do
         div.brave-logo.pull-left
         div.navbar-brand.pull-left Publishers
         
+    / TODO: Fix responsive top right menu
     div.collapse.navbar-collapse.pull-right
       ul.nav.navbar-nav
         - if current_publisher
           li
             = link_to(publisher_next_step_path(current_publisher)) do
-              span #{current_publisher} (#{publisher_humanize_verified(current_publisher)})
+              span.link-primary= current_publisher
+              / TODO: Show verified icon when verified
+              span.link-hint= " (#{publisher_humanize_verified(current_publisher)})"
           li
             = link_to(I18n.t("publishers.log_out"), log_out_publishers_path)
-            
-                  
-      / div.collapse.navbar-collapse.navbar-ex1-collapse.pull-right
-      /   div.menu-container
-      /     ul
-      /       li
-      /         span Desu
-      /       li
-      /         a Cool
-
-/ <!-- Collect the nav links, forms, and other content for toggling -->
-/ <div id="fullsize-menu" class="collapse navbar-collapse navbar-ex1-collapse pull-right">
-/     <div class="menu-container">
-/             <ul class="nav navbar-nav brave-nav" style="">
-/ 
-/ 
-/                 <li class="home active">
-/                     <a href="#faster">Faster</a>
-/                 </li>
-/                 <li>
-/                     <a href="#safer">Safer</a>
-/                 </li>
-/                 <li>
-/                     <a href="#devs">Devs</a>
-/                 </li>
-/                 <li>
-/                     <a href="about.html">About</a>
-/                 </li>
-/                 <li>
-/                     <a href="https://blog.brave.com/">Blog</a>
-/                 </li>
-/                 <li class="download">
-/                     <a href="downloads.html">Download</a>
-/                 </li>
-/ 
-/ 
-/         </ul>
-/     </div>
-/ </div>
-/ <!-- /.navbar-collapse -->
-/ </div>

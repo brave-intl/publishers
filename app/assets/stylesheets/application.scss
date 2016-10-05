@@ -1,9 +1,9 @@
-// Includes fonts which are used in bootstrap-custom-variables
-@import "shared/**/*";
+@import "variables/**/*";
 
 // Vendor
 @import "bootstrap-sprockets";
 @import "bootstrap-custom";
 
+@import "shared/**/*";
 @import "partials/**/*";
 @import "application/**/*";
