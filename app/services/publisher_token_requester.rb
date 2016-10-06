@@ -11,7 +11,7 @@ class PublisherTokenRequester
   def perform
     return perform_offline if ENV["API_EYESHADE_OFFLINE"]
     response = connection.get do |request|
-      request.url("/v1/publishers/#{publisher.publisher_id}/verifications/#{publisher.id}")
+      request.url("/v1/publishers/#{publisher.brave_publisher_id}/verifications/#{publisher.id}")
     end
     JSON.parse(response.body)["token"]
   end

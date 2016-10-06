@@ -12,19 +12,19 @@ class Publisher < ApplicationRecord
   validates :name, presence: true
   validates :phone, phony_plausible: true
 
-  # publisher_id is a normalized identifier provided by ledger API
+  # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :publisher_id, presence: true
+  validates :brave_publisher_id, presence: true
 
   # TODO: Show user normalized domain before they commit
-  before_validation :normalize_publisher_id
+  before_validation :normalize_brave_publisher_id
 
   before_create :generate_authentication_token
   after_create :generate_verification_token
 
   def to_s
-    publisher_id
+    brave_publisher_id
   end
 
   def encryption_key
@@ -41,11 +41,11 @@ class Publisher < ApplicationRecord
     update_attribute(:verification_token, PublisherTokenRequester.new(self).perform)
   end
 
-  def normalize_publisher_id
+  def normalize_brave_publisher_id
     require "faraday"
-    self.publisher_id = PublisherDomainNormalizer.new(publisher_id).perform
+    self.brave_publisher_id = PublisherDomainNormalizer.new(brave_publisher_id).perform
   rescue Faraday::Error
-    errors.add(:publisher_id, "can't be normalized because of an API error")
+    errors.add(:brave_publisher_id, "can't be normalized because of an API error")
   end
 
   # This allows for blank bitcoin_address on first create, but

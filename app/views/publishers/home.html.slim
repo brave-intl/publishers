@@ -4,7 +4,7 @@ fieldset
   /   label.control-label= I18n.t("publishers.domain")
   /   span.form-control= current_publisher
   div.publisher-domain-link
-    = link_to(current_publisher.publisher_id, current_publisher.publisher_id, target: "_blank")
+    = link_to(current_publisher.brave_publisher_id, current_publisher.brave_publisher_id, target: "_blank")
   / TODO: Show verified icon when verified
   
   div.link-hint.publisher-verified-status
@@ -24,11 +24,11 @@ fieldset
   - if true
     div.help-block= I18n.t("publishers.irs_form_required")
     div.button.form-group
-      label.control-label= I18n.t("publishers.complete_irs_w9_hint")
-      = button_to(I18n.t("publishers.complete_irs_w9"), tax_info_publishers_path, class: "btn btn-block btn-primary")
+      label.control-label= I18n.t("publishers.complete_irs_w_9_hint")
+      = button_to(I18n.t("publishers.complete_irs_w_9"), tax_info_publishers_path, class: "btn btn-block btn-primary")
     div.button.form-group
-      label.control-label= I18n.t("publishers.complete_irs_w8_ben_hint")
-      = button_to(I18n.t("publishers.complete_irs_w8_ben"), tax_info_publishers_path, class: "btn btn-block btn-primary")
+      label.control-label= I18n.t("publishers.complete_irs_w_8ben_hint")
+      = button_to(I18n.t("publishers.complete_irs_w_8ben"), tax_info_publishers_path, class: "btn btn-block btn-primary")
 
   - elsif current_publisher.bitcoin_address.present?
     div.button.form-group

@@ -84,7 +84,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_create_params
-    params.require(:publisher).permit(:email, :publisher_id, :name, :phone)
+    params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone)
   end
 
   def publisher_payment_update_params
