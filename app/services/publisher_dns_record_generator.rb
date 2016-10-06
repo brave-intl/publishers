@@ -5,8 +5,8 @@ class PublisherDnsRecordGenerator
 
   def initialize(publisher)
     @publisher = publisher
-    if !publisher.base_domain || !publisher.verification_token
-      raise "Publisher doesn't have valid #base_domain and #verification_token"
+    if !publisher.publisher_id || !publisher.verification_token
+      raise "Publisher doesn't have valid #publisher_id and #verification_token"
     end
   end
 
@@ -24,6 +24,6 @@ class PublisherDnsRecordGenerator
   private
 
   def dns_record_value
-    "Brave Payments publisher verification; Domain: #{publisher.base_domain}; Token: #{publisher.verification_token}"
+    "Brave Payments publisher verification; Domain: #{publisher.publisher_id}; Token: #{publisher.verification_token}"
   end
 end

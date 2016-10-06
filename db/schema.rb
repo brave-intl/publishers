@@ -6,9 +6,9 @@
 # database schema. If you need to create the application database on another
 # system, you should be using db:schema:load, not running all the migrations
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you"ll amass, the slower it"ll run and the greater likelihood for issues).
+# you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It"s strongly recommended that you check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20161002080809) do
 
@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20161002080809) do
   enable_extension "uuid-ossp"
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string   "base_domain"
+    t.string   "publisher_id"
     t.string   "name"
     t.string   "email"
     t.string   "verification_token"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20161002080809) do
     t.string   "phone_normalized"
     t.string   "encrypted_bitcoin_address"
     t.string   "encrypted_bitcoin_address_iv"
-    t.index ["base_domain"], name: "index_publishers_on_base_domain", using: :btree
+    t.index ["publisher_id"], name: "index_publishers_on_publisher_id", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
     t.index ["verified"], name: "index_publishers_on_verified", using: :btree
   end

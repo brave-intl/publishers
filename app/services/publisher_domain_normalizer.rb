@@ -21,10 +21,13 @@ class PublisherDomainNormalizer
   end
 
   def connection
-    @connection ||= Faraday.new(url: api_base_uri) do |faraday|
-      faraday.adapter Faraday.default_adapter
-      faraday.response(:logger, Rails.logger)
-      faraday.use(Faraday::Response::RaiseError)
+    @connection ||= begin
+      require "faraday"
+      Faraday.new(url: api_base_uri) do |faraday|
+        faraday.adapter Faraday.default_adapter
+        faraday.response(:logger, Rails.logger)
+        faraday.use(Faraday::Response::RaiseError)
+      end
     end
   end
 end

@@ -1,4 +1,5 @@
 class Publisher < ApplicationRecord
+
   attr_encrypted :bitcoin_address, key: :encryption_key
 
   devise :timeoutable, :trackable
@@ -6,20 +7,23 @@ class Publisher < ApplicationRecord
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
-  # base_domain value provided by ledger API
-  validates :base_domain, presence: true
   validates :bitcoin_address, bitcoin_address: true, presence: true, if: :should_validate_bitcoin_address?
   validates :email, email: { strict_mode: true }, presence: true
   validates :name, presence: true
   validates :phone, phony_plausible: true
 
-  before_create :generate_verification_token
+  # publisher_id is a normalized identifier provided by ledger API
+  # It is like base domain (eTLD + left part) but may include additional
+  # formats to support more publishers.
+  validates :publisher_id, presence: true
 
   # TODO: Show user normalized domain before they commit
-  before_validation :normalize_base_domain
+  before_validation :normalize_publisher_id
+
+  after_create :generate_verification_token
 
   def to_s
-    base_domain
+    publisher_id
   end
 
   def encryption_key
@@ -29,14 +33,14 @@ class Publisher < ApplicationRecord
   private
 
   def generate_verification_token
-    # 32 bytes == 256 bits
-    self.verification_token = SecureRandom.hex(32)
+    update_attribute(:verification_token, PublisherTokenRequester.new(self).perform)
   end
 
-  def normalize_base_domain
-    self.base_domain = PublisherDomainNormalizer.new(base_domain).perform
+  def normalize_publisher_id
+    require "faraday"
+    self.publisher_id = PublisherDomainNormalizer.new(publisher_id).perform
   rescue Faraday::Error
-    errors.add(:base_domain, "can't be normalized because of an API error")
+    errors.add(:publisher_id, "can't be normalized because of an API error")
   end
 
   # This allows for blank bitcoin_address on first create, but
