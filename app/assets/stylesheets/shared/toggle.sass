@@ -1,4 +1,4 @@
-.toggleable-label
+.toggle-label
   cursor: pointer
   display: inline-block
   &::after
@@ -8,18 +8,15 @@
   &:hover::after
     text-decoration: underline
 
-.toggleable-input
+.toggle-input
   display: none
   &:not(checked)
-    & ~ .toggleable-content
+    & ~ .toggle-content
       display: none
-    & ~ .toggleable-label::after
+    & ~ .toggle-label::after
       content: "Show"
   &:checked
-    & ~ .toggleable-content
+    & ~ .toggle-content
       display: block
-    & ~ .toggleable-label::after
+    & ~ .toggle-label::after
       content: "Hide"
-
-// .tooltip-content
-//     margin-bottom: 1.5em

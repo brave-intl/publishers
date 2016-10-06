@@ -8,7 +8,7 @@
       h3= I18n.t("publishers.verification_option_public_file")
       div.help-block= I18n.t("publishers.verification_option_public_file_help")
     div.form-group
-      h4= link_to(publisher_verification_file_url(current_publisher), target: "_blank")
+      = link_to(publisher_verification_file_url(current_publisher), target: "_blank")
     div.form-group.verification-file
       label.control-label brave-payments-verification.txt
       span= " "
@@ -18,12 +18,12 @@
 
     - if publisher_can_generate_dns_record?(current_publisher)
       div.dns-record.form-group.form-group-lg
-        input type="checkbox" value="selected" id="toggleable-input-dns-record" class="toggleable-input"
-        label.toggleable-label for="toggleable-input-dns-record"
-          a.toggleable-label
+        input type="checkbox" value="selected" id="toggle-input-dns-record" class="toggle-input"
+        label.toggle-label for="toggle-input-dns-record"
+          a.toggle-label
             h3
               = I18n.t("publishers.verification_option_dns_record")
-        div.toggleable-content
+        div.toggle-content
           div.form-group
             label.control-label= I18n.t("publishers.verification_option_dns_record_name")
             span.form-control
