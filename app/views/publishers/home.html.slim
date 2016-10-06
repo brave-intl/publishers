@@ -1,4 +1,3 @@
-h1 Publisher tools
-
-p Domain: #{current_publisher}
-p Status: #{publisher_humanize_verified(current_publisher)}
+fieldset
+  legend= current_publisher
+  p Status: #{publisher_humanize_verified(current_publisher)}

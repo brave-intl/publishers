@@ -1,6 +1,6 @@
 class Publisher < ApplicationRecord
-
   attr_encrypted :bitcoin_address, key: :encryption_key
+  attr_encrypted :authentication_token, key: :encryption_key
 
   devise :timeoutable, :trackable
 
@@ -20,6 +20,7 @@ class Publisher < ApplicationRecord
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_publisher_id
 
+  before_create :generate_authentication_token
   after_create :generate_verification_token
 
   def to_s
@@ -31,6 +32,10 @@ class Publisher < ApplicationRecord
   end
 
   private
+
+  def generate_authentication_token
+    self.authentication_token = SecureRandom.hex(32)
+  end
 
   def generate_verification_token
     update_attribute(:verification_token, PublisherTokenRequester.new(self).perform)
@@ -46,6 +51,8 @@ class Publisher < ApplicationRecord
   # This allows for blank bitcoin_address on first create, but
   # requires it on subsequent steps
   def should_validate_bitcoin_address?
+    return false
+    # TODO: After tax info setup
     persisted?
   end
 end

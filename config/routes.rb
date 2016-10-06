@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :publishers, only: %i(new create) do
+  resources :publishers, only: %i(new create show) do
     collection do
       get :download_verification_file
       get :home

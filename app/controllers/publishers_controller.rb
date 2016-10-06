@@ -1,6 +1,7 @@
 class PublishersController < ApplicationController
   include PublishersHelper
 
+  before_action :authenticate_via_token, only: :show
   before_action :authenticate_publisher!,
     only: %i(download_verification_file home log_out payment_info update_payment_info verification)
   before_action :require_unauthenticated_publisher,
@@ -15,6 +16,9 @@ class PublishersController < ApplicationController
   def create
     @publisher = Publisher.new(publisher_create_params)
     if @publisher.save
+      # TODO: Change to #deliver_later ?
+      PublisherMailer.welcome(@publisher).deliver_now!
+      PublisherMailer.verification_instructions(@publisher).deliver_now
       sign_in(:publisher, @publisher)
       redirect_to(publisher_next_step_path(current_publisher))
     else
@@ -30,6 +34,11 @@ class PublishersController < ApplicationController
     generator = PublisherVerificationFileGenerator.new(current_publisher)
     content = generator.generate_file_content
     send_data(content, filename: generator.filename)
+  end
+
+  # Entrypoint for the authenticated re-login link.
+  def show
+    redirect_to home_publishers_path
   end
 
   # Domain verified. See balance and submit payment info.
@@ -58,6 +67,14 @@ class PublishersController < ApplicationController
   end
 
   private
+
+  def authenticate_via_token
+    return if current_publisher || params[:id].blank? || params[:token].blank?
+    publisher = Publisher.find(params[:id])
+    if publisher.authentication_token.present? && publisher.authentication_token == params[:token]
+      sign_in(:publisher, publisher)
+    end
+  end
 
   def publisher_create_params
     params.require(:publisher).permit(:email, :publisher_id, :name, :phone)

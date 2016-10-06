@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161002080809) do
+ActiveRecord::Schema.define(version: 20161006052504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,10 +21,10 @@ ActiveRecord::Schema.define(version: 20161002080809) do
     t.string   "name"
     t.string   "email"
     t.string   "verification_token"
-    t.boolean  "verified",                     default: false
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.integer  "sign_in_count",                default: 0,     null: false
+    t.boolean  "verified",                          default: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.integer  "sign_in_count",                     default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(version: 20161002080809) do
     t.string   "phone_normalized"
     t.string   "encrypted_bitcoin_address"
     t.string   "encrypted_bitcoin_address_iv"
+    t.string   "encrypted_authentication_token"
+    t.string   "encrypted_authentication_token_iv"
     t.index ["publisher_id"], name: "index_publishers_on_publisher_id", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
     t.index ["verified"], name: "index_publishers_on_verified", using: :btree

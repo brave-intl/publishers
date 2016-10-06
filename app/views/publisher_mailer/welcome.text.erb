@@ -1,0 +1,15 @@
+<%# Sent as soon as a publisher fills out the first step. %>
+
+** NOTE: Do NOT forward this email! **
+It contains a private URL to access your account. Anyone with it can manage private publisher info, including payment details.
+
+Domain:
+<%= @publisher.to_s %>
+
+<% if @publisher.phone.present? %>
+  Phone:
+  <%= @publisher.phone %>
+<% end %>
+
+Private publisher admin URL:
+<%= @private_reauth_url %>
