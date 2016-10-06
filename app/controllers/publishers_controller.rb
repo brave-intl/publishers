@@ -27,8 +27,9 @@ class PublishersController < ApplicationController
   end
 
   def download_verification_file
-    response.content_type = "text/plain"
-    render(plain: PublisherVerificationFileGenerator.new(current_publisher).generate_file_content)
+    generator = PublisherVerificationFileGenerator.new(current_publisher)
+    content = generator.generate_file_content
+    send_data(content, filename: generator.filename)
   end
 
   # Domain verified. See balance and submit payment info.

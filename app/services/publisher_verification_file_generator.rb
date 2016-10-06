@@ -10,14 +10,18 @@ class PublisherVerificationFileGenerator
     end
   end
 
+  def filename
+    "brave-payments-verification.txt"
+  end
+
   # NOTE: Tell user http:// is acceptable but https:// is preferred
   def generate_url
-    "https://#{publisher.base_domain}/.well-known/brave-payments-verification.txt"
+    "https://#{publisher.base_domain}/.well-known/#{filename}"
   end
 
   def generate_file_content
     <<~HEREDOC
-      This is a Brave Payments publisher verification.
+      This is a Brave Payments publisher verification file.
 
       Domain: #{publisher.base_domain}
       Token: #{publisher.verification_token}

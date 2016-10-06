@@ -7,3 +7,23 @@ body[data-controller="publishers"]
           text-align: center
         .form-group.submit
           margin: 20px 0 5px
+
+  &[data-action="verification"]
+    @media (min-width: 768px)
+      #content.container
+        max-width: 768px
+    textarea[readonly="true"]
+      background: #fff
+    .dns-record
+      .form-control
+        font-size: $font-size-base
+        height: $font-size-base * 2.7
+        &.dns-record-value
+          height: $font-size-base * 4
+      .toggleable-label::after
+        font-size: $font-size-base * 1.25
+    .verification-file
+      .download-file
+        margin-left: 10px
+      .file-content
+        height: $font-size-base * $line-height-base * 5

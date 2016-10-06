@@ -16,7 +16,7 @@ class PublisherDnsRecordGenerator
 
   def perform
     if !can_perform?
-      raise "Can't generate a valid DNS record; it would be #{dns_record_value.size} which is TXT limit of >255."
+      raise "Can't generate a valid DNS record; it would be #{dns_record_value.size} character long which is over the TXT limit of 255."
     end
     dns_record_value
   end
@@ -24,6 +24,6 @@ class PublisherDnsRecordGenerator
   private
 
   def dns_record_value
-    "This is a Brave Payments publisher verification; Domain: #{publisher.base_domain}; Token: #{publisher.verification_token}"
+    "Brave Payments publisher verification; Domain: #{publisher.base_domain}; Token: #{publisher.verification_token}"
   end
 end

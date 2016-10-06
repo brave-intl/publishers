@@ -1,0 +1,25 @@
+.toggleable-label
+  cursor: pointer
+  display: inline-block
+  &::after
+    color: $link-color
+    font-weight: normal
+    margin-left: 10px
+  &:hover::after
+    text-decoration: underline
+
+.toggleable-input
+  display: none
+  &:not(checked)
+    & ~ .toggleable-content
+      display: none
+    & ~ .toggleable-label::after
+      content: "Show"
+  &:checked
+    & ~ .toggleable-content
+      display: block
+    & ~ .toggleable-label::after
+      content: "Hide"
+
+// .tooltip-content
+//     margin-bottom: 1.5em

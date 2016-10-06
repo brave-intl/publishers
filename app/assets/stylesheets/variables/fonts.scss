@@ -24,4 +24,5 @@
 
 $font-family-sans-serif: "Lato", Arial, sans-serif;
 $font-size-base: 16px;
+$font-size-smaller: ceil(($font-size-base * 0.70));
 $line-height-base: 1.25;
