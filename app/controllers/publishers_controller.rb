@@ -3,7 +3,7 @@ class PublishersController < ApplicationController
 
   before_action :authenticate_via_token, only: :show
   before_action :authenticate_publisher!,
-    only: %i(download_verification_file home log_out payment_info update_payment_info verification)
+    only: %i(download_verification_file edit_bitcoin_address_publishers_path home log_out payment_info update_payment_info tax_info verification)
   before_action :require_unauthenticated_publisher,
     only: %i(new create)
   before_action :require_verified_publisher,
@@ -60,10 +60,17 @@ class PublishersController < ApplicationController
     end
   end
 
+  def edit_bitcoin_address_publishers_path
+    # Stub
+  end
+
   def log_out
     path = after_sign_out_path_for(current_publisher)
     sign_out(current_publisher)
     redirect_to(path, notice: I18n.t("publishers.logged_out"))
+  end
+
+  def tax_info
   end
 
   private

@@ -21,11 +21,23 @@
 
 en:
   hello: "Hello world"
+  status: "Status"
   publishers:
     already_logged_in: "You can't do that because you have an active session. Please first log out or clear your cookies."
+    balance_pending: "Balance pending"
+    claim_funds: "Claim funds"
+    complete_irs_w9: "Complete IRS W9"
+    complete_irs_w9_hint: "United States taxpayers"
+    complete_irs_w8_ben: "Complete IRS W8-BEN"
+    complete_irs_w8_ben_hint: "Individuals outside the States"
+    domain: "Domain"
+    dashboard: "Publisher dashboard"
+    irs_form_required: "To receive your funds please complete a United States IRS form W9 or W8-BEN."
     log_out: "Log out"
     logged_out: "Successfully logged out."
     not_verified: "Unverified"
+    payment_bitcoin_address: "Payment bitcoin address"
+    set_bitcoin_address: "Set bitcoin address"
     verified: "Verified"
     verification_form_legend: "Verify domain ownership"
     verification_help_definition: "Verification is the process of proving that you own the publisher domain that you claim to own."

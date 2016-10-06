@@ -1,3 +1,37 @@
 fieldset
-  legend= current_publisher
-  p Status: #{publisher_humanize_verified(current_publisher)}
+  legend= I18n.t("publishers.dashboard")
+  / div.form-group
+  /   label.control-label= I18n.t("publishers.domain")
+  /   span.form-control= current_publisher
+  div.publisher-domain-link
+    = link_to(current_publisher.publisher_id, current_publisher.publisher_id, target: "_blank")
+    / TODO: Show verified icon when verified
+    span.link-hint.publisher-verified-status
+      = " (#{publisher_humanize_verified(current_publisher)})"
+  
+  div.form-group
+  label.control-label= I18n.t("publishers.balance_pending")
+  / Stub
+  span.form-control 42 USD
+  
+  h3= I18n.t("publishers.claim_funds")
+  
+  / - if publisher_can_claim_funds?(current_publisher)
+      / = link_to("Request payment", class: "btn btn-block btn-primary")
+        
+  / TODO: Some irs shit
+  - if true
+    div.help-block= I18n.t("publishers.irs_form_required")
+    div.form-group
+      label.control-label= I18n.t("publishers.complete_irs_w9_hint")
+      = button_to(I18n.t("publishers.complete_irs_w9"), tax_info_publishers_path, class: "btn btn-block btn-primary")
+    div.form-group
+      label.control-label= I18n.t("publishers.complete_irs_w8_ben_hint")
+      = button_to(I18n.t("publishers.complete_irs_w8_ben"), tax_info_publishers_path, class: "btn btn-block btn-primary")
+
+  - elsif current_publisher.bitcoin_address.present?
+    div.form-group
+      label.control-label= I18n.t("publishers.payment_bitcoin_address")
+      span.form-control= current_publisher.bitcoin_address
+  - else
+    = link_to(I18n.t("publishers.set_bitcoin_address"), edit_bitcoin_address_publishers_path, class: "btn btn-block btn-primary")

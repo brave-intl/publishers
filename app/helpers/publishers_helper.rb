@@ -1,4 +1,9 @@
 module PublishersHelper
+  def publisher_can_claim_funds?(publisher)
+    # TODO: Also docusign ok
+    publisher.bitcoin_address.present?
+  end
+
   def publisher_can_generate_dns_record?(publisher)
     PublisherDnsRecordGenerator.new(publisher).can_perform?
   end

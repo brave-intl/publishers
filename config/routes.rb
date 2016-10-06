@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   resources :publishers, only: %i(new create show) do
     collection do
       get :download_verification_file
+      get :edit_bitcoin_address
       get :home
       get :log_out
       get :payment_info
       patch :payment_info, action: :update_payment_info, as: :update_payment_info
+      get :tax_info
       get :verification
     end
   end
