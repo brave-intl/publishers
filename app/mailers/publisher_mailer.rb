@@ -1,0 +1,2 @@
+class PublisherMailer < ApplicationMailer
+end
