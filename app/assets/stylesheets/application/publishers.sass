@@ -2,11 +2,8 @@ body[data-controller="publishers"]
   @media (min-width: 768px)
     #content.container
       max-width: 420px
-      form
-        legend
-          text-align: center
-        .form-group.submit
-          margin: 20px 0 5px
+      .form-group.button:last-child
+        margin: 20px 0 5px
 
   &[data-action="verification"]
     @media (min-width: 768px)
@@ -30,7 +27,9 @@ body[data-controller="publishers"]
     legend
       margin-bottom: $font-size-base
     .publisher-domain-link
-      font-size: $font-size-jumbotron
-      margin: 0 0 15px
+      font-size: $font-size-h3
+      margin: 0 0 12px
+      text-align: center
     .publisher-verified-status
       font-size: $font-size-base
+      text-align: center

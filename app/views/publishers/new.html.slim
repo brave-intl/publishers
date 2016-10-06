@@ -18,5 +18,5 @@
     div.form-group
       = f.label(:phone, 'Phone (Optional)')
       = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 9001")
-    div.form-group.submit
+    div.button.form-group
       = f.submit("Save and continue", class: "btn btn-block btn-primary")

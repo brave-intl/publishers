@@ -3,7 +3,12 @@ class PublisherMailer < ApplicationMailer
 
   # Contains instructions on how to verify domain.
   # Should be safe to forward to webmaster / IT peeps.
-  def verification_instructions
+  def verification_instructions(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: "Brave publisher verification instructions: #{@publisher.publisher_id}"
+    )
   end
 
   # Contains registration details and a private reauthentication link
