@@ -9,7 +9,7 @@ class Publisher < ApplicationRecord
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
-  validates :bitcoin_address, bitcoin_address: true, presence: true, if: :should_validate_bitcoin_address?
+  validates :bitcoin_address, bitcoin_address: true, if: :bitcoin_address_present_and_changed?
   validates :email, email: { strict_mode: true }, presence: true
   validates :name, presence: true
   validates :phone, phony_plausible: true
@@ -21,10 +21,10 @@ class Publisher < ApplicationRecord
 
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_brave_publisher_id, if: -> { !persisted? }
-
   before_create :generate_authentication_token
   after_create :generate_verification_token
-
+  before_save :api_update_bitcoin_address,
+    if: -> { bitcoin_address_present_and_changed? }
 
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
@@ -55,11 +55,20 @@ class Publisher < ApplicationRecord
     errors.add(:brave_publisher_id, "can't be normalized because of an API error")
   end
 
-  # This allows for blank bitcoin_address on first create, but
-  # requires it on subsequent steps
-  def should_validate_bitcoin_address?
-    return false
-    # TODO: After tax info setup
-    persisted?
+  def bitcoin_address_present_and_changed?
+    bitcoin_address.present? && bitcoin_address_changed?
+  end
+
+  def api_update_bitcoin_address
+    wallet_setter = PublisherWalletSetter.new(
+      bitcoin_address: bitcoin_address,
+      publisher: self,
+    )
+    begin
+      wallet_setter.perform
+    rescue Faraday::Error
+      errors.add(:bitcoin_address, "can't be updated because of an API error")
+      throw(:abort)
+    end
   end
 end

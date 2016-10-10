@@ -58,7 +58,7 @@ en:
     already_exists: "You've already submitted a legal form. If you need to submit another form please contact us at"
     create_failed: "Couldn't initiate form for signing."
     existing_required: "To continue please initiate a legal form."
-    complete: "Form completed"
+    completed: "Form completed"
     signing_request_body: "Please complete this form to receive payments as a Brave Publisher."
     signing_request_subject_irs_w_8ben: "Complete IRS W-8BEN to receive payments"
     signing_request_subject_irs_w_8ben_e: "Complete IRS W-8BEN-E to receive payments"

@@ -80,7 +80,7 @@ class PublishersController < ApplicationController
     @publisher = current_publisher
     @publisher.assign_attributes(publisher_payment_info_params)
     if @publisher.save
-      # TODO: Redirect to next step
+      # TODO: Redirect to next step (tax info?)
       redirect_to(home_publishers_path)
     else
       # TODO: Oops message

@@ -17,16 +17,14 @@ fieldset
   
   h3= I18n.t("publishers.claim_funds")
   
-  / TODO
-  - if publisher_can_receive_funds?(current_publisher)
-      = link_to("Request payment", class: "btn btn-block btn-primary")
+  / TODO: Request payment
         
   / IRS
   - if current_publisher.legal_form_completed?
     div.help-block= I18n.t("publisher_legal_forms.completed")
-    p= publisher_legal_form_humanize_form_type(legal_form)
-    = link_to(publisher_legal_forms_path(current_publisher.legal_form), class: "btn btn-block") do
-      = I18n.t("publishers.view_document")
+    p= publisher_legal_form_humanize_form_type(current_publisher.legal_form)
+    = link_to(current_publisher.legal_form, class: "btn btn-block") do
+      = I18n.t("publisher_legal_forms.view_document")
   - else
     div.help-block= I18n.t("publishers.irs_form_required")
     div.button.form-group
@@ -39,4 +37,4 @@ fieldset
       label.control-label= I18n.t("publishers.payment_bitcoin_address")
       span.form-control= current_publisher.bitcoin_address
   
-  = link_to(I18n.t("publishers.set_bitcoin_address"), edit_bitcoin_address_publishers_path, class: "btn btn-block btn-primary")
+  = link_to(I18n.t("publishers.set_bitcoin_address"), edit_payment_info_publishers_path, class: "btn btn-block btn-primary")
