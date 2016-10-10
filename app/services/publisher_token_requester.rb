@@ -4,13 +4,14 @@
 class PublisherTokenRequester
   attr_reader :publisher
 
-  def initialize(publisher)
+  def initialize(publisher:)
     @publisher = publisher
   end
 
   def perform
     return perform_offline if ENV["API_EYESHADE_OFFLINE"]
     response = connection.get do |request|
+      request.headers["Authorization"] = api_authorization_header
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/verifications/#{publisher.id}")
     end
     JSON.parse(response.body)["token"]
@@ -25,6 +26,10 @@ class PublisherTokenRequester
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]
+  end
+
+  def api_authorization_header
+    "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
   end
 
   def connection

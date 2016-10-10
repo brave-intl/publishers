@@ -1,4 +1,6 @@
 class Publisher < ApplicationRecord
+  has_one :legal_form, class_name: "PublisherLegalForm"
+
   attr_encrypted :bitcoin_address, key: :encryption_key
   attr_encrypted :authentication_token, key: :encryption_key
 
@@ -18,17 +20,22 @@ class Publisher < ApplicationRecord
   validates :brave_publisher_id, presence: true
 
   # TODO: Show user normalized domain before they commit
-  before_validation :normalize_brave_publisher_id
+  before_validation :normalize_brave_publisher_id, if: -> { !persisted? }
 
   before_create :generate_authentication_token
   after_create :generate_verification_token
 
-  def to_s
-    brave_publisher_id
-  end
 
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
+  end
+
+  def legal_form_completed?
+    legal_form && legal_form.completed?
+  end
+
+  def to_s
+    brave_publisher_id
   end
 
   private
@@ -38,12 +45,12 @@ class Publisher < ApplicationRecord
   end
 
   def generate_verification_token
-    update_attribute(:verification_token, PublisherTokenRequester.new(self).perform)
+    update_attribute(:verification_token, PublisherTokenRequester.new(publisher: self).perform)
   end
 
   def normalize_brave_publisher_id
     require "faraday"
-    self.brave_publisher_id = PublisherDomainNormalizer.new(brave_publisher_id).perform
+    self.brave_publisher_id = PublisherDomainNormalizer.new(domain: brave_publisher_id).perform
   rescue Faraday::Error
     errors.add(:brave_publisher_id, "can't be normalized because of an API error")
   end

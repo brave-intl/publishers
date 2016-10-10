@@ -4,6 +4,10 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
       = link_to(root_path) do
         div.brave-logo.pull-left
         div.navbar-brand.pull-left Publishers
+    div.collapse.navbar-collapse.pull-left
+      ul.nav.navbar-nav
+        li
+          a= yield(:navbar_content)
         
     / TODO: Fix responsive top right menu
     div.collapse.navbar-collapse.pull-right

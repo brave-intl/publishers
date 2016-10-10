@@ -1,14 +1,12 @@
-h1 Payment info
-
 - if @publisher.errors.any?
   ul.errors
   - @publisher.errors.each do |attribute, message|
     li.error #{attribute} #{message}
     
-= form_for @publisher, method: :patch, url: update_payment_info_publishers_path do |f|
+= form_for(@publisher, method: :patch, url: update_payment_info_publishers_path) do |f|
   fieldset
     legend Submit wallet address
     div.form-group
       = f.label(:bitcoin_address)
       = f.text_field(:bitcoin_address, autofocus: true, class: "form-control", placeholder: "1Q2TWHE3GMdB6BZKafqwxXtWAWgFt5Jvm3")
-    = f.submit("Continue", class: "btn btn-lg btn-primary")
+    = f.submit("Submit", class: "btn btn-lg btn-primary")

@@ -7,9 +7,7 @@ html
     = javascript_include_tag('application')
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
-  body data-action=params[:action] data-controller=params[:controller]
-    = render("nav")
-    
+  body.headless data-action=params[:action] data-controller=params[:controller]
     - if flash.present?
       div.flash.navbar-static-top
         - if flash[:alert]

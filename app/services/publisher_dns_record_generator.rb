@@ -3,7 +3,7 @@
 class PublisherDnsRecordGenerator
   attr_reader :publisher
 
-  def initialize(publisher)
+  def initialize(publisher:)
     @publisher = publisher
     if !publisher.brave_publisher_id || !publisher.verification_token
       raise "Publisher doesn't have valid #brave_publisher_id and #verification_token"
@@ -24,6 +24,6 @@ class PublisherDnsRecordGenerator
   private
 
   def dns_record_value
-    "Brave Payments publisher verification; Domain: #{publisher.brave_publisher_id}; Token: #{publisher.verification_token}"
+    "brave-ledger-verification=#{publisher.verification_token}"
   end
 end

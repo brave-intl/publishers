@@ -1,48 +1,45 @@
-= form_for(current_publisher, method: :patch, url: payment_info_publishers_path) do |f|
-  fieldset
-    legend= I18n.t("publishers.verification_form_legend")
-    div.help-block= I18n.t("publishers.verification_help_definition")
-    div.help-block= I18n.t("publishers.verification_help_purpose")
-    
-    div.form-group.form-group
-      h3= I18n.t("publishers.verification_option_public_file")
-      div.help-block= I18n.t("publishers.verification_option_public_file_help")
-    div.form-group
-      = link_to(publisher_verification_file_url(current_publisher), publisher_verification_file_url(current_publisher), target: "_blank")
-    div.form-group.verification-file
-      label.control-label brave-payments-verification.txt
-      span= " "
-      = link_to("Download file", download_verification_file_publishers_path, class: "download-file")
-      textarea.file-content.form-control readonly="true"
-        = publisher_verification_file_content(current_publisher)
+/ = form_for(current_publisher, method: :patch, url: payment_info_publishers_path) do |f|
+fieldset
+  legend= I18n.t("publishers.verification_form_legend")
+  div.help-block= I18n.t("publishers.verification_help_definition")
+  div.help-block= I18n.t("publishers.verification_help_purpose")
+  
+  div.form-group.form-group
+    h3= I18n.t("publishers.verification_option_public_file")
+    div.help-block= I18n.t("publishers.verification_option_public_file_help")
+  div.form-group
+    = link_to(publisher_verification_file_url(current_publisher), publisher_verification_file_url(current_publisher), target: "_blank")
+  div.form-group.verification-file
+    label.control-label brave-payments-verification.txt
+    span= " "
+    = link_to("Download file", download_verification_file_publishers_path, class: "download-file")
+    textarea.file-content.form-control readonly="true"
+      = publisher_verification_file_content(current_publisher)
 
-    - if publisher_can_generate_dns_record?(current_publisher)
-      div.dns-record.form-group.form-group-lg
-        input type="checkbox" value="selected" id="toggle-input-dns-record" class="toggle-input"
-        label.toggle-label for="toggle-input-dns-record"
-          a.toggle-label
-            h3
-              = I18n.t("publishers.verification_option_dns_record")
-        div.toggle-content
-          div.form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_name")
-            span.form-control
-              span= current_publisher.brave_publisher_id
-              span.hint= " #{I18n.t("publishers.verification_option_dns_record_name_help")}"
-          div.form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_type")
-            span.form-control TXT
-          div.form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_value")
-            textarea.dns-record-value.form-control readonly="true"
-              = publisher_verification_dns_record(current_publisher)
-    - else
-      div.form-group.form-group-lg
-        label= I18n.t("publishers.verification_option_dns_record")
-        div.help-block= I18n.t("publishers.verification_option_dns_record_unavailable")
-      
-    /   <label class="col-sm-2 control-label" for="formGroupInputLarge">Large label</label>
-    / <div class="col-sm-10">
-    /   <input class="form-control" type="text" id="formGroupInputLarge" placeholder="Large input">
-    / </div>
-    = f.submit("Check now", class: "btn btn-block btn-lg btn-primary")
+  - if publisher_can_generate_dns_record?(current_publisher)
+    div.dns-record.form-group.form-group-lg
+      input type="checkbox" value="selected" id="toggle-input-dns-record" class="toggle-input"
+      label.toggle-label for="toggle-input-dns-record"
+        a.toggle-label
+          h3
+            = I18n.t("publishers.verification_option_dns_record")
+      div.toggle-content
+        div.form-group
+          label.control-label= I18n.t("publishers.verification_option_dns_record_name")
+          span.form-control
+            span= current_publisher.brave_publisher_id
+            span.hint= " #{I18n.t("publishers.verification_option_dns_record_name_help")}"
+        div.form-group
+          label.control-label= I18n.t("publishers.verification_option_dns_record_type")
+          span.form-control TXT
+        div.form-group
+          label.control-label= I18n.t("publishers.verification_option_dns_record_value")
+          textarea.dns-record-value.form-control readonly="true"
+            = publisher_verification_dns_record(current_publisher)
+  - else
+    div.form-group.form-group-lg
+      label= I18n.t("publishers.verification_option_dns_record")
+      div.help-block= I18n.t("publishers.verification_option_dns_record_unavailable")
+
+= form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
+  = f.submit("Check now", class: "btn btn-block btn-lg btn-primary")

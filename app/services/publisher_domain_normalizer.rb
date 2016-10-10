@@ -2,7 +2,7 @@
 class PublisherDomainNormalizer
   attr_reader :domain
 
-  def initialize(domain)
+  def initialize(domain:)
     @domain = domain
   end
 

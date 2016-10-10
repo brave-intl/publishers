@@ -1,13 +1,26 @@
 class PublishersController < ApplicationController
   include PublishersHelper
 
-  before_action :authenticate_via_token, only: :show
+  before_action :authenticate_via_token,
+    only: %i(show)
   before_action :authenticate_publisher!,
-    only: %i(download_verification_file edit_bitcoin_address_publishers_path home log_out payment_info update_payment_info tax_info verification)
+    only: %i(download_verification_file
+             edit_payment_info
+             home
+             log_out
+             update_payment_info
+             verification
+             verify)
   before_action :require_unauthenticated_publisher,
-    only: %i(new create)
+    only: %i(create
+             new)
+  before_action :require_unverified_publisher,
+    only: %i(verification
+             verify)
   before_action :require_verified_publisher,
-    only: %i(home payment_info update_payment_info)
+    only: %i(edit_payment_info
+             home
+             update_payment_info)
 
   def new
     @publisher = Publisher.new
@@ -30,47 +43,55 @@ class PublishersController < ApplicationController
   def verification
   end
 
+  # Call to Eyeshade to perform verification
+  # TODO: Rate limit
+  # TODO: Support XHR
+  def verify
+    PublisherVerifier.new(publisher: current_publisher).perform
+    if current_publisher.verified?
+      flash.notice = I18n.t("publishers.verify_success")
+      redirect_to(publisher_next_step_path(current_publisher))
+    else
+      flash.now[:notice] = I18n.t("publishers.verify_failure")
+      render(:verification)
+    end
+  end
+
   def download_verification_file
-    generator = PublisherVerificationFileGenerator.new(current_publisher)
+    generator = PublisherVerificationFileGenerator.new(publisher: current_publisher)
     content = generator.generate_file_content
     send_data(content, filename: generator.filename)
   end
 
   # Entrypoint for the authenticated re-login link.
   def show
-    redirect_to home_publishers_path
+    redirect_to(home_publishers_path)
   end
 
   # Domain verified. See balance and submit payment info.
   def home
   end
 
-  # Submit payment info (wallet address and tax info)
-  def payment_info
+  def edit_payment_info
     @publisher = current_publisher
   end
 
   def update_payment_info
     @publisher = current_publisher
-    @publisher.assign_attributes(publisher_payment_update_params)
+    @publisher.assign_attributes(publisher_payment_info_params)
     if @publisher.save
-      redirect_to current_publishers_path
+      # TODO: Redirect to next step
+      redirect_to(home_publishers_path)
     else
-      render(:payment_info, alert: "some errors with the submission")
+      # TODO: Oops message
+      render(:edit_payment_info)
     end
-  end
-
-  def edit_bitcoin_address_publishers_path
-    # Stub
   end
 
   def log_out
     path = after_sign_out_path_for(current_publisher)
     sign_out(current_publisher)
     redirect_to(path, notice: I18n.t("publishers.logged_out"))
-  end
-
-  def tax_info
   end
 
   private
@@ -87,7 +108,7 @@ class PublishersController < ApplicationController
     params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone)
   end
 
-  def publisher_payment_update_params
+  def publisher_payment_info_params
     params.require(:publisher).permit(:bitcoin_address)
   end
 
@@ -95,6 +116,11 @@ class PublishersController < ApplicationController
   def require_unauthenticated_publisher
     return if !current_publisher
     redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.already_logged_in"))
+  end
+
+  def require_unverified_publisher
+    return if !current_publisher.verified?
+    redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.verification_already_done"))
   end
 
   def require_verified_publisher

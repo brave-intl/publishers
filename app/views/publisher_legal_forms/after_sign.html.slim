@@ -1,0 +1,6 @@
+div#content.container
+  div.jumbotron
+    h2 Form: #{publisher_legal_form_humanize_form_type(@legal_form)}
+    div.form-group
+      h4 Status:
+      p= publisher_legal_form_humanize_status(@legal_form)

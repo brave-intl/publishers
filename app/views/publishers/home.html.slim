@@ -17,22 +17,26 @@ fieldset
   
   h3= I18n.t("publishers.claim_funds")
   
-  / - if publisher_can_claim_funds?(current_publisher)
-      / = link_to("Request payment", class: "btn btn-block btn-primary")
+  / TODO
+  - if publisher_can_receive_funds?(current_publisher)
+      = link_to("Request payment", class: "btn btn-block btn-primary")
         
-  / TODO: Some irs shit
-  - if true
+  / IRS
+  - if current_publisher.legal_form_completed?
+    div.help-block= I18n.t("publisher_legal_forms.completed")
+    p= publisher_legal_form_humanize_form_type(legal_form)
+    = link_to(publisher_legal_forms_path(current_publisher.legal_form), class: "btn btn-block") do
+      = I18n.t("publishers.view_document")
+  - else
     div.help-block= I18n.t("publishers.irs_form_required")
     div.button.form-group
       label.control-label= I18n.t("publishers.complete_irs_w_9_hint")
-      = button_to(I18n.t("publishers.complete_irs_w_9"), tax_info_publishers_path, class: "btn btn-block btn-primary")
-    div.button.form-group
-      label.control-label= I18n.t("publishers.complete_irs_w_8ben_hint")
-      = button_to(I18n.t("publishers.complete_irs_w_8ben"), tax_info_publishers_path, class: "btn btn-block btn-primary")
+      = button_to(publisher_legal_forms_path(publisher_legal_form: {form_type: "irs_w_9"}), {class: "btn btn-block btn-primary"}, {method: :post}) do
+        = I18n.t("publishers.complete_irs_w_9")
 
-  - elsif current_publisher.bitcoin_address.present?
+  - if current_publisher.bitcoin_address.present?
     div.button.form-group
       label.control-label= I18n.t("publishers.payment_bitcoin_address")
       span.form-control= current_publisher.bitcoin_address
-  - else
-    = link_to(I18n.t("publishers.set_bitcoin_address"), edit_bitcoin_address_publishers_path, class: "btn btn-block btn-primary")
+  
+  = link_to(I18n.t("publishers.set_bitcoin_address"), edit_bitcoin_address_publishers_path, class: "btn btn-block btn-primary")

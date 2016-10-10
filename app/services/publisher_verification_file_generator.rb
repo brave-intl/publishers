@@ -3,7 +3,7 @@
 class PublisherVerificationFileGenerator
   attr_reader :publisher
 
-  def initialize(publisher)
+  def initialize(publisher:)
     @publisher = publisher
     if !publisher.brave_publisher_id || !publisher.verification_token
       raise "Publisher doesn't have valid #brave_publisher_id and #verification_token"

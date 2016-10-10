@@ -1,4 +1,5 @@
 - content_for(:content) do
-  div.jumbotron
-    = yield
+  div#content.container
+    div.jumbotron
+      = yield
 = render(template: "layouts/application")

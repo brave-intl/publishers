@@ -1,0 +1,8 @@
+- content_for(:navbar_content) do
+  span Form: #{publisher_legal_form_humanize_form_type(@legal_form)}
+
+div#content.embed-frame
+  - if @signing_url
+    iframe src=@signing_url
+  - else
+    p Form is signed.

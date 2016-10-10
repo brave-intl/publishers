@@ -1,4 +1,3 @@
-
 DocusignRest.configure do |config|
   config.account_id = Rails.application.secrets[:docusign_api_account_id]
   config.api_version = "v2"

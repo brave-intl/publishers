@@ -1,11 +1,10 @@
 module PublishersHelper
-  def publisher_can_claim_funds?(publisher)
-    # TODO: Also docusign ok
-    publisher.bitcoin_address.present?
+  def publisher_can_receive_funds?(publisher)
+    publisher.legal_form_completed? && publisher.bitcoin_address.present?
   end
 
   def publisher_can_generate_dns_record?(publisher)
-    PublisherDnsRecordGenerator.new(publisher).can_perform?
+    PublisherDnsRecordGenerator.new(publisher: publisher).can_perform?
   end
 
   def publisher_humanize_verified(publisher)
@@ -17,11 +16,11 @@ module PublishersHelper
   end
 
   def publisher_verification_file_content(publisher)
-    PublisherVerificationFileGenerator.new(publisher).generate_file_content
+    PublisherVerificationFileGenerator.new(publisher: publisher).generate_file_content
   end
 
   def publisher_verification_file_url(publisher)
-    PublisherVerificationFileGenerator.new(publisher).generate_url
+    PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
   end
 
   def publisher_next_step_path(publisher)
@@ -38,6 +37,6 @@ module PublishersHelper
   end
 
   def publisher_verification_dns_record(publisher)
-    PublisherDnsRecordGenerator.new(publisher).perform
+    PublisherDnsRecordGenerator.new(publisher: publisher).perform
   end
 end
