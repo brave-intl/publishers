@@ -64,3 +64,7 @@ en:
     signing_request_subject_irs_w_8ben_e: "Complete IRS W-8BEN-E to receive payments"
     signing_request_subject_irs_w_9: "Complete IRS W-9 to receive payments"
     view_document: "View document"
+  static:
+    landing_header: "Welcome to Brave Payments"
+    landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified."
+    landing_button: "Start verification"
