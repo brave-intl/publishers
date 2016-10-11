@@ -10,11 +10,13 @@ html
   body data-action=params[:action] data-controller=params[:controller]
     = render("nav")
     
-    - if flash.present?
-      div.flash.navbar-static-top
-        - if flash[:alert]
-          div.alert.alert-warning= flash[:alert]
-        - if flash[:notice]
-          div.alert.alert-info= flash[:notice]
+    .flash.navbar-static-top
+      - if flash[:alert]
+        .alert.alert-warning= flash[:alert]
+      - if flash[:notice]
+        .alert.alert-info= flash[:notice]
+      - if content_for(:content_form_errors)
+        .alert.alert-warning= I18n.t("activerecord.errors_general")
+        = yield(:content_form_errors)
             
     = content_for?(:content) ? yield(:content) : yield

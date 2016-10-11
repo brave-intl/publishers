@@ -17,7 +17,9 @@ class Publisher < ApplicationRecord
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :brave_publisher_id, presence: true
+  validates :brave_publisher_id,
+    presence: true,
+    uniqueness: { if: :verified_publisher_exists? }
 
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_brave_publisher_id, if: -> { !persisted? }
@@ -45,6 +47,23 @@ class Publisher < ApplicationRecord
 
   private
 
+  def api_update_bitcoin_address
+    wallet_setter = PublisherWalletSetter.new(
+      bitcoin_address: bitcoin_address,
+      publisher: self,
+    )
+    begin
+      wallet_setter.perform
+    rescue Faraday::Error
+      errors.add(:bitcoin_address, "can't be updated because of an API error")
+      throw(:abort)
+    end
+  end
+
+  def bitcoin_address_present_and_changed?
+    bitcoin_address.present? && bitcoin_address_changed?
+  end
+
   def generate_authentication_token
     self.authentication_token = SecureRandom.hex(32)
   end
@@ -60,20 +79,7 @@ class Publisher < ApplicationRecord
     errors.add(:brave_publisher_id, "can't be normalized because of an API error")
   end
 
-  def bitcoin_address_present_and_changed?
-    bitcoin_address.present? && bitcoin_address_changed?
-  end
-
-  def api_update_bitcoin_address
-    wallet_setter = PublisherWalletSetter.new(
-      bitcoin_address: bitcoin_address,
-      publisher: self,
-    )
-    begin
-      wallet_setter.perform
-    rescue Faraday::Error
-      errors.add(:bitcoin_address, "can't be updated because of an API error")
-      throw(:abort)
-    end
+  def verified_publisher_exists?
+    self.class.where(brave_publisher_id: brave_publisher_id, verified: true).any?
   end
 end

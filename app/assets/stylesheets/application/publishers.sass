@@ -3,6 +3,9 @@ body[data-controller="publishers"]
     margin: 20px 0 5px
 
   &[data-action="verification"], &[data-action="verify"]
+    .option-dns-record:not(:hover)
+      color: $text-color
+      text-decoration: underline
     textarea[readonly="true"]
       background: #fff
     .dns-record

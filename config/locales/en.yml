@@ -20,7 +20,18 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      publisher:
+        brave_publisher_id: "Website domain"
+    errors:
+      models:
+        publisher:
+          attributes:
+            brave_publisher_id:
+              # TODO: Configurable email here
+              taken: "That website has already been verified. If you have questions please contact publishers@brave.com."
+    errors_general: "There were errors saving your request:"
   status: "Status"
   publishers:
     already_logged_in: "You can't do that because you have an active session. Please first log out or clear your cookies."
@@ -39,7 +50,7 @@ en:
     payment_bitcoin_address: "Payment bitcoin address"
     set_bitcoin_address: "Set bitcoin address"
     verified: "Verified"
-    verification_form_legend: "Verify domain ownership"
+    verification_form_legend: "Verify website ownership"
     verification_help_definition: "Verification is the process of proving that you own the publisher domain that you claim to own."
     verification_help_purpose: "We need to confirm ownership because once you're verified for a publisher you have access to their private data, such as payee information."
     verification_already_done: "Your site is verified."
@@ -49,9 +60,13 @@ en:
     verification_option_dns_record_name_help: "(Root record)"
     verification_option_dns_record_type: "Type:"
     verification_option_dns_record_value: "Value:"
-    verification_option_public_file: "Option A: Upload a file"
-    verification_option_public_file_help: "Upload the text file below to:"
+    verification_option_public_file: "Option A: Upload a text file"
+    verification_option_public_file_help_download: "Download the verification text file:"
+    verification_option_public_file_help_upload: "Upload the file to"
+    verification_option_public_file_help_confirm: "Confirm successful upload by visiting"
+    verification_option_public_file_help_verify: "Click Verify below."
     verification_required: "To continue please verify ownership of your domain."
+    verify_button: "Verify"
     verify_failed: "Couldn't verify. Please wait a bit then try again."
     verify_success: "Verification successful."
   publisher_legal_forms:
@@ -59,10 +74,13 @@ en:
     create_failed: "Couldn't initiate form for signing."
     existing_required: "To continue please initiate a legal form."
     completed: "Form completed"
+    signing_completed: "Form successfully submitted."
     signing_request_body: "Please complete this form to receive payments as a Brave Publisher."
     signing_request_subject_irs_w_8ben: "Complete IRS W-8BEN to receive payments"
     signing_request_subject_irs_w_8ben_e: "Complete IRS W-8BEN-E to receive payments"
     signing_request_subject_irs_w_9: "Complete IRS W-9 to receive payments"
+  shared:
+    save_and_continue: "Save and continue"
   static:
     landing_header: "Welcome to Brave Payments"
     landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified."

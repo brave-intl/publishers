@@ -12,6 +12,10 @@ module PublishersHelper
     number_to_currency(publisher.balance.amount)
   end
 
+  def publisher_uri(publisher)
+    "https://#{publisher.brave_publisher_id}"
+  end
+
   def publisher_humanize_verified(publisher)
     if publisher.verified?
       I18n.t("publishers.verified")

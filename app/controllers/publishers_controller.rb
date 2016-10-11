@@ -55,6 +55,9 @@ class PublishersController < ApplicationController
       flash.now[:notice] = I18n.t("publishers.verify_failure")
       render(:verification)
     end
+  rescue VerificationIdMismatch
+    flash.now[:alert] = I18n.t("activerecord.models.publisher.attributes.brave_publisher_id.taken")
+    render(:verification)
   end
 
   def download_verification_file

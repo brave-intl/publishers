@@ -15,7 +15,7 @@ class PublisherVerifier
     response_hash = JSON.parse(response.body)
     return false if response_hash["status"] != "success"
     if publisher.id != response_hash["verificationId"]
-      raise "Publisher UUID / verificationId mismatch"
+      raiseVerificationIdMismatch.new("Publisher UUID / verificationId mismatch")
     end
     publisher.verified = true
     publisher.save!
@@ -36,5 +36,9 @@ class PublisherVerifier
         faraday.use(Faraday::Response::RaiseError)
       end
     end
+  end
+
+  # If the publisher previously has been verified, you can't reverify (for now)
+  class VerificationIdMismatch < RuntimeError
   end
 end

@@ -31,6 +31,15 @@ class PublisherLegalFormsController < ApplicationController
   # delegated the signing request (e.g. to accountant).
   def after_sign
     PublisherLegalFormSyncer.new(publisher_legal_form: @legal_form).perform
+    # If the publisher is signed in, redirect to their dashboard.
+    # Otherwise show a thank you message.
+    # TODO: Websockets refresh the main page
+    if @legal_form.completed? && current_publisher
+      redirect_to(
+        home_publishers_path,
+        notice: I18n.t("publisher_legal_forms.signing_completed")
+      )
+    end
   end
 
   private
@@ -40,7 +49,7 @@ class PublisherLegalFormsController < ApplicationController
   end
 
   def require_legal_form
-    if params[:id] == current_publisher.legal_form.id
+    if current_publisher && params[:id] && params[:id] == current_publisher.legal_form&.id
       @legal_form = current_publisher.legal_form
     elsif params[:token]
       @legal_form = PublisherLegalForm.find_using_after_sign_token(params[:token])
