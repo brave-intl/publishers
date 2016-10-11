@@ -7,6 +7,11 @@ module PublishersHelper
     PublisherDnsRecordGenerator.new(publisher: publisher).can_perform?
   end
 
+  # balance: Instance of PublisherBalanceGetter::Balance
+  def publisher_humanize_balance(publisher)
+    number_to_currency(publisher.balance.amount)
+  end
+
   def publisher_humanize_verified(publisher)
     if publisher.verified?
       I18n.t("publishers.verified")

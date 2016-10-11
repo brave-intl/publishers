@@ -1,5 +1,5 @@
 # Query pending balance from Eyeshade
-class PublisherWalletBalanceGetter
+class PublisherBalanceGetter
   attr_reader :publisher
 
   def initialize(publisher:)
@@ -15,7 +15,10 @@ class PublisherWalletBalanceGetter
       request.headers["Authorization"] = api_authorization_header
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/balance")
     end
-    JSON.parse(response)
+    response_hash = JSON.parse(response.body)
+    # Amount is rounded to the nearest whole dollar.
+    # {"amount"=>42, "currency"=>"USD", "satoshis"=>0}
+    Balance.new(response_hash["amount"], response_hash["currency"], response_hash["satoshis"])
   end
 
   private
@@ -36,6 +39,12 @@ class PublisherWalletBalanceGetter
         faraday.response(:logger, Rails.logger)
         faraday.use(Faraday::Response::RaiseError)
       end
+    end
+  end
+
+  Balance = Struct.new(:amount, :currency, :satoshis) do
+    def to_s
+      "#{amount} #{currency}"
     end
   end
 end

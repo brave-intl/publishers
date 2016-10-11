@@ -26,6 +26,11 @@ class Publisher < ApplicationRecord
   before_save :api_update_bitcoin_address,
     if: -> { bitcoin_address_present_and_changed? }
 
+  # API call to eyeshade
+  def balance
+    @_balance ||= PublisherBalanceGetter.new(publisher: self).perform
+  end
+
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
   end

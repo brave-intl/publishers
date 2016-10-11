@@ -12,8 +12,7 @@ fieldset
   
   div.form-group
   label.control-label= I18n.t("publishers.balance_pending")
-  / Stub
-  span.form-control 42 USD
+  span.form-control= publisher_humanize_balance(current_publisher)
   
   h3= I18n.t("publishers.claim_funds")
   
@@ -22,9 +21,8 @@ fieldset
   / IRS
   - if current_publisher.legal_form_completed?
     div.help-block= I18n.t("publisher_legal_forms.completed")
-    p= publisher_legal_form_humanize_form_type(current_publisher.legal_form)
-    = link_to(current_publisher.legal_form, class: "btn btn-block") do
-      = I18n.t("publisher_legal_forms.view_document")
+    = link_to(current_publisher.legal_form) do
+      = publisher_legal_form_humanize_form_type(current_publisher.legal_form)
   - else
     div.help-block= I18n.t("publishers.irs_form_required")
     div.button.form-group
