@@ -44,7 +44,7 @@ en:
     domain: "Domain"
     dashboard: "Publisher dashboard"
     irs_form_required: "To receive your funds please complete a United States IRS form W-9 or W-8BEN."
-    log_out: "Log out"
+    log_out: "Exit"
     logged_out: "Successfully logged out."
     not_verified: "Unverified"
     payment_bitcoin_address: "Payment bitcoin address"

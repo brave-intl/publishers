@@ -4,19 +4,18 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
       = link_to(root_path) do
         div.brave-logo.pull-left
         div.navbar-brand.pull-left Publishers
-    div.collapse.navbar-collapse.pull-left
-      ul.nav.navbar-nav
+    div.pull-left
+      ul.nav.navbar-nav.navbar-left
         li
           a= yield(:navbar_content)
-        
-    / TODO: Fix responsive top right menu
-    div.collapse.navbar-collapse.pull-right
-      ul.nav.navbar-nav
+
+    div.pull-right
+      ul.nav.navbar-nav.navbar-right
         - if current_publisher
           li
-            = link_to(publisher_next_step_path(current_publisher)) do
-              span.link-primary= current_publisher
-              / TODO: Show verified icon when verified
-              span.link-hint= " (#{publisher_humanize_verified(current_publisher)})"
+            = link_to(I18n.t("publishers.log_out"), log_out_publishers_path, class: "log-out")
           li
-            = link_to(I18n.t("publishers.log_out"), log_out_publishers_path)
+            = link_to(publisher_next_step_path(current_publisher)) do
+              - if current_publisher.verified?
+                = image_tag("verified-icon", alt: I18n.t("publishers.verified"), class: "verified-icon", width: 19)
+              span.link-primary= current_publisher
