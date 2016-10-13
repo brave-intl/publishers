@@ -37,7 +37,7 @@ en:
     errors_general: "There were errors saving your request:"
   publishers:
     add_bitcoin_address: "Add bitcoin address"
-    already_logged_in: "You can't do that because you have an active session. Please first log out or clear your cookies."
+    already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
     balance_pending: "Balance pending"
     balance_pending_approximate: "(approximate)"
     bitcoin_address_none: "(none)"
@@ -85,6 +85,15 @@ en:
     verify_button: "Verify"
     verify_failed: "Couldn't verify. Please wait a bit then try again."
     verify_success: "Verification successful."
+  publisher_mailer:
+    welcome:
+      body_1: "We've received a request to register a website with Brave Publishers:"
+      contact_help: "If you have any questions, please contact us"
+      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
+      private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
+      title: "Publisher registration"
+      private_access_link: "Private access link"
+      private_access_link_help: "Use this link to continue and manage publisher registration"
   publisher_legal_forms:
     already_exists: "You've already submitted a legal form. If you need to submit another form please contact us at"
     create_failed: "Couldn't initiate form for signing."

@@ -1,0 +1,56 @@
+$width: 500px;
+
+body, .header, .content, .footer {
+  color: hsla(0, 0%, 30%, 1);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+  border-bottom: 1px solid hsla(0, 0%, 80%, 1);
+  display: table;
+  padding-bottom: 5px;
+  width: $width;
+  .logo, .title {
+    vertical-align: middle;
+  }
+  .logo {
+    margin-right: 10px;
+  }
+  .title {
+    & > h1, h2, h3, h4, h5 {
+      display: inline;
+      font-weight: normal;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+  }
+}
+
+.content {
+  width: $width;
+  .attribute {
+    display: inline-block;
+    margin-right: 5px;
+  }
+  .email, .name {
+    margin-right: 10px
+  }
+  .email, .phone {
+    color: hsla(0, 0%, 60%, 1);
+  }
+  .notice {
+    border-bottom: 1px solid hsla(0, 0%, 80%, 1);
+    margin: 10px 0;
+    padding-bottom: 10px;
+  }
+  .header-help {
+    margin-top: -20px;
+  }
+  .hint {
+    color: hsla(0, 0%, 60%, 1);
+  }
+}
+
+.footer {
+
+}

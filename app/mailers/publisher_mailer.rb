@@ -17,7 +17,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
-      subject: "Brave publisher registration: #{@publisher.brave_publisher_id}"
+      subject: "[#{@publisher.brave_publisher_id}] Brave Publisher registration"
     )
   end
 end

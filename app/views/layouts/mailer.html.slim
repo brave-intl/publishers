@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    = stylesheet_link_tag('mailer', media: 'all')
+  body
+    .header
+      = image_tag(attachments["brave_logo_horz_h30.png"].url, alt: "Brave Software", class: "logo", height: 30)
+      span.title= content_for(:title)
+    .content
+      = yield
+    .footer

@@ -1,0 +1,44 @@
+/ Sent as soon as a publisher fills out the first step.
+- content_for(:title) do
+  h3= I18n.t("publisher_mailer.welcome.title")
+
+.notice= I18n.t("publisher_mailer.welcome.private_email_notice")
+
+p= I18n.t("publisher_mailer.welcome.body_1")
+
+p
+  strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
+  = @publisher.brave_publisher_id
+
+p
+  strong.attribute= "#{I18n.t("publishers.contact_person")}:"
+  span.name= @publisher.name
+  span.email= @publisher.email
+  span.phone= @publisher.phone
+
+h4= "#{I18n.t("publisher_mailer.welcome.private_access_link")}:"
+p.header-help
+  = "#{I18n.t("publisher_mailer.welcome.private_access_link_help")}:"
+p= link_to(@private_reauth_url, @private_reauth_url)
+
+p.hint= I18n.t("publisher_mailer.welcome.erroneous_email_help")
+p.hint
+  span.attribute= "#{I18n.t("publisher_mailer.welcome.contact_help")}:"
+  = link_to(Rails.application.secrets[:support_email], Rails.application.secrets[:support_email])
+/ 
+/ p
+/   strong Note:
+/   span This email contains a private access link
+/ 
+/ p NOTE: Do NOT forward this email!
+/ p It contains a private URL to access your account. Anyone with it can manage private publisher info, including payment details.
+/ 
+/ p Domain:
+/ p= @publisher.to_s
+/ 
+/ - if @publisher.phone.present?
+/   p Phone:
+/   p= @publisher.phone
+/ 
+/ p Private publisher admin URL:
+/ p= @private_reauth_url

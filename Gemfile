@@ -23,6 +23,9 @@ gem "pg", "~> 0.18"
 # Phone number validation
 gem "phony_rails", "~> 0.14"
 
+# Easy CSS-sthled emails
+gem "premailer-rails", "~> 1.9.4", require: false
+
 # Puma as app server
 gem "puma", "~> 3.0"
 
