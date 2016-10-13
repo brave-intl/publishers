@@ -33,7 +33,12 @@ class PublisherLegalFormsController < ApplicationController
   # delegated the signing request (e.g. to accountant).
   def after_sign
     PublisherLegalFormSyncer.new(publisher_legal_form: @legal_form).perform
+    # If the publisher is signed in, redirect to their dashboard.
+    # Otherwise show a thank you message.
     # TODO: Websockets refresh the main page
+    if @legal_form.completed? && current_publisher && current_publisher.bitcoin_address.present?
+      render('publishers/finished')
+    end
   end
 
   private
