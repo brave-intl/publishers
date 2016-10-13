@@ -21,12 +21,36 @@ body[data-controller="publishers"]
         height: $font-size-base * $line-height-base * 5
 
   &[data-action="home"]
-    legend
-      margin-bottom: $font-size-base
-    .publisher-domain-link
-      font-size: $font-size-h3
-      margin: 0 0 12px
-      text-align: center
-    .publisher-verified-status
-      font-size: $font-size-base
-      text-align: center
+    .container
+      h4
+        font-size: $font-size-base
+        font-weight: bold
+      legend
+        margin-bottom: 12px
+      .attribute-value
+        margin-bottom: 24px
+      .publisher-domain-summary
+        font-size: $font-size-h3
+        img.verified-icon
+          margin-right: 12px
+        .publisher-verified-status
+          font-size: $font-size-base
+          margin-left: 10px
+          vertical-align: middle
+      .balance
+        font-size: $font-size-base
+        .approximate-hint
+          font-size: $font-size-small
+      .payment-info
+        font-size: $font-size-base
+        .bitcoin-address
+          margin-right: 10px
+      .legal-form
+        font-size: $font-size-base
+        .form-type
+          margin-right: 10px
+      .contact-person
+        .name
+          margin-right: 10px
+        .email
+          color: $gray

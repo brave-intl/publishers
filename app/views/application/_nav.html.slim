@@ -17,5 +17,5 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
           li
             = link_to(publisher_next_step_path(current_publisher)) do
               - if current_publisher.verified?
-                = image_tag("verified-icon", alt: I18n.t("publishers.verified"), class: "verified-icon", width: 19)
+                = image_tag("verified-icon", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 22)
               span.link-primary= current_publisher

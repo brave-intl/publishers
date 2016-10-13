@@ -1,12 +1,13 @@
-- if @publisher.errors.any?
-  ul.errors
-  - @publisher.errors.each do |attribute, message|
-    li.error #{attribute} #{message}
+= render(partial: "model_errors", locals: { record: @publisher })
     
-= form_for(@publisher, method: :patch, url: update_payment_info_publishers_path) do |f|
-  fieldset
-    legend Submit wallet address
-    div.form-group
-      = f.label(:bitcoin_address)
-      = f.text_field(:bitcoin_address, autofocus: true, class: "form-control", placeholder: "1Q2TWHE3GMdB6BZKafqwxXtWAWgFt5Jvm3")
-    = f.submit("Submit", class: "btn btn-block btn-primary")
+.row
+  .col-center.col-xs-12.col-md-6
+    = form_for(@publisher, method: :patch, url: update_payment_info_publishers_path) do |f|
+      fieldset
+        legend= I18n.t("publishers.bitcoin_address_submit_header")
+        .help-block== I18n.t("publishers.bitcoin_address_help")
+        .form-group
+          = f.label(:bitcoin_address)
+          = f.text_field(:bitcoin_address, autofocus: true, class: "form-control", placeholder: "1Q2TWHE3GMdB6BZKafqwxXtWAWgFt5Jvm3", required: true)
+        = f.submit(I18n.t("publishers.bitcoin_address_submit_button"), class: "btn btn-block btn-primary")
+  

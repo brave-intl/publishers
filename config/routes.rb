@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
   devise_for :publishers
 
-  resources :publisher_legal_forms, only: %i(create show), path: "legal_forms" do
+  resources :publisher_legal_forms, only: %i(create new show), path: "legal_forms" do
     collection do
       get :after_sign
     end

@@ -1,11 +1,15 @@
 class PublisherLegalFormsController < ApplicationController
   before_action :authenticate_publisher!, except: %i(after_sign)
   before_action :require_no_legal_form,
-    only: %i(create)
+    only: %i(create new)
   before_action :require_legal_form,
     only: %i(after_sign show)
 
   layout "headless", only: %i(after_sign)
+
+  def new
+    @legal_form = current_publisher.build_legal_form
+  end
 
   def create
     @legal_form = current_publisher.build_legal_form(legal_form_params)

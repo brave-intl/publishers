@@ -1,38 +1,53 @@
-fieldset
-  legend= I18n.t("publishers.dashboard")
-  / div.form-group
-  /   label.control-label= I18n.t("publishers.domain")
-  /   span.form-control= current_publisher
-  div.publisher-domain-link
-    = link_to(current_publisher.brave_publisher_id, current_publisher.brave_publisher_id, target: "_blank")
-  / TODO: Show verified icon when verified
-  
-  div.link-hint.publisher-verified-status
-    = " #{publisher_humanize_verified(current_publisher)}"
-  
-  div.form-group
-  label.control-label= I18n.t("publishers.balance_pending")
-  span.form-control= publisher_humanize_balance(current_publisher)
-  
-  h3= I18n.t("publishers.claim_funds")
-  
-  / TODO: Request payment
-        
-  / IRS
-  - if current_publisher.legal_form_completed?
-    div.help-block= I18n.t("publisher_legal_forms.completed")
-    = link_to(current_publisher.legal_form) do
-      = publisher_legal_form_humanize_form_type(current_publisher.legal_form)
-  - else
-    div.help-block= I18n.t("publishers.irs_form_required")
-    div.button.form-group
-      label.control-label= I18n.t("publishers.complete_irs_w_9_hint")
-      = button_to(publisher_legal_forms_path(publisher_legal_form: {form_type: "irs_w_9"}), {class: "btn btn-block btn-primary"}, {method: :post}) do
-        = I18n.t("publishers.complete_irs_w_9")
+.row
+  .col-center.col-xs-12.col-md-5
+    fieldset
+      / legend= I18n.t("publishers.dashboard")
+      / h4= Publisher.human_attribute_name(:brave_publisher_id)
+      / .attribute-value.publisher-domain-summary
+      legend.publisher-domain-summary
+        - if current_publisher.verified?
+          = image_tag("verified-icon", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 30)
+        span.publisher-domain-name= current_publisher.brave_publisher_id
+        - if !current_publisher.verified?
+          span.link-hint.publisher-verified-status= I18n.t("publishers.not_verified")
+      
+      h4= I18n.t("publishers.status")
+      .attribute-value.status
+        - if publisher_can_receive_funds?(current_publisher)
+          div= I18n.t("publishers.status_can_receive_funds")
+        - else
+          div= I18n.t("publishers.status_to_receive_payments")
+          ul
+          - if current_publisher.bitcoin_address.blank?
+            li= I18n.t("publishers.status_bitcoin_address_required")
+          - if !current_publisher.legal_form_completed?
+            li= I18n.t("publishers.status_legal_form_required")
 
-  - if current_publisher.bitcoin_address.present?
-    div.button.form-group
-      label.control-label= I18n.t("publishers.payment_bitcoin_address")
-      span.form-control= current_publisher.bitcoin_address
-  
-  = link_to(I18n.t("publishers.set_bitcoin_address"), edit_payment_info_publishers_path, class: "btn btn-block btn-primary")
+      h4= I18n.t("publishers.balance_pending")
+      .attribute-value.balance
+        span.balance-amount= publisher_humanize_balance(current_publisher)
+        = " "
+        span.approximate-hint.link-hint= I18n.t("publishers.balance_pending_approximate")
+
+      h4= I18n.t("publishers.payment_bitcoin_address")
+      .attribute-value.payment-info.row.no-gutter
+        - if current_publisher.bitcoin_address.present?
+          span.bitcoin-address= current_publisher.bitcoin_address
+        - if current_publisher.bitcoin_address.present?
+          = link_to(I18n.t("publishers.edit_bitcoin_address"), edit_payment_info_publishers_path)
+        - else
+          = link_to(I18n.t("publishers.add_bitcoin_address"), edit_payment_info_publishers_path, class: "btn btn-primary btn-sm col-md-7 col-xs-12")
+
+      h4= PublisherLegalForm.model_name.human 
+      .attribute-value.legal-form.row.no-gutter
+        - if current_publisher.legal_form_completed?
+          span.form-type
+            = publisher_legal_form_humanize_form_type(current_publisher.legal_form)
+          = link_to(I18n.t("publisher_legal_forms.view"), current_publisher.legal_form, class: "view-form")
+        - else
+          = link_to(I18n.t("publisher_legal_forms.submit_tax_form_button"), new_publisher_legal_form_path, class: "btn btn-primary btn-sm col-md-7 col-xs-12")
+
+      h4= I18n.t("publishers.contact_person")
+      .attribute-value.contact-person
+        span.name= current_publisher.name
+        span.email= current_publisher.email

@@ -1,4 +1,4 @@
-# Ask Eyeshade to assign a Publisher a particular Bitcoin wallet address.
+# Ask Eyeshade to assign a Publisher a particular bitcoin wallet address.
 class PublisherWalletSetter
   attr_reader :publisher, :bitcoin_address
 
