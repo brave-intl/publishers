@@ -34,7 +34,7 @@ en:
               api_error_cant_normalize: "can't be normalized because of an API error"
               exclusion_list_error: "is on the Brave Publisher website exclusion list. For questions please contact "
               # TODO: Configurable email here
-              taken: "That website has already been verified. If you have questions please contact publishers@brave.com."
+              taken: "Another person has already verified that website. If you have questions please contact publishers@brave.com."
     models:
       publisher: "Publisher"
       publisher_legal_form: "Tax form"
