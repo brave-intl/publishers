@@ -16,7 +16,7 @@ html
       - if flash[:notice]
         .alert.alert-success.flash= flash[:notice]
       - if content_for(:content_form_errors)
-        .alert.alert-warning= I18n.t("activerecord.errors_general")
+        .alert.alert-warning= I18n.t("activerecord.shared.errors")
         = yield(:content_form_errors)
             
     = content_for?(:content) ? yield(:content) : yield

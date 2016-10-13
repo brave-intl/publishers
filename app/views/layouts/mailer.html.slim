@@ -5,7 +5,7 @@ html
     = stylesheet_link_tag('mailer', media: 'all')
   body
     .header
-      = image_tag(attachments["brave_logo_horz_h30.png"].url, alt: "Brave Software", class: "logo", height: 30)
+      = image_tag(attachments["brave_logo_horz_h30.png"]&.url, alt: "Brave Software", class: "logo", height: 30)
       span.title= content_for(:title)
     .content
       = yield

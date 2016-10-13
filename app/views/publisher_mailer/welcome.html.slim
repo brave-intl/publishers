@@ -4,21 +4,22 @@
 
 .notice= I18n.t("publisher_mailer.welcome.private_email_notice")
 
-p= I18n.t("publisher_mailer.welcome.body_1")
+p= I18n.t("publisher_mailer.welcome.intro")
 
 p
   strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
   = @publisher.brave_publisher_id
 
-p
+h4
   strong.attribute= "#{I18n.t("publishers.contact_person")}:"
-  span.name= @publisher.name
-  span.email= @publisher.email
-  span.phone= @publisher.phone
-
-h4= "#{I18n.t("publisher_mailer.welcome.private_access_link")}:"
 p.header-help
-  = "#{I18n.t("publisher_mailer.welcome.private_access_link_help")}:"
+  .name= @publisher.name
+  .email= @publisher.email
+  .phone= @publisher.phone
+
+h4= "#{I18n.t("publisher_mailer.shared.private_access_link")}:"
+p.header-help
+  = "#{I18n.t("publisher_mailer.shared.private_access_link_help")}:"
 p= link_to(@private_reauth_url, @private_reauth_url)
 
 p.hint= I18n.t("publisher_mailer.welcome.erroneous_email_help")

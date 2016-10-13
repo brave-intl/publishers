@@ -55,7 +55,10 @@ class Publisher < ApplicationRecord
     begin
       wallet_setter.perform
     rescue Faraday::Error
-      errors.add(:bitcoin_address, "can't be updated because of an API error")
+      errors.add(
+        :bitcoin_address,
+        I18n.t("activerecord.errors.models.publisher.attributes.bitcoin_address.api_error")
+      )
       throw(:abort)
     end
   end
@@ -75,8 +78,16 @@ class Publisher < ApplicationRecord
   def normalize_brave_publisher_id
     require "faraday"
     self.brave_publisher_id = PublisherDomainNormalizer.new(domain: brave_publisher_id).perform
+  rescue PublisherDomainNormalizer::DomainExclusionError
+    errors.add(
+      :brave_publisher_id,
+      "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
+    )
   rescue Faraday::Error
-    errors.add(:brave_publisher_id, "can't be normalized because of an API error")
+    errors.add(
+      :brave_publisher_id,
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
+    )
   end
 
   def verified_publisher_exists?

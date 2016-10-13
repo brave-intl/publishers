@@ -4,13 +4,8 @@ class PublishersController < ApplicationController
   before_action :authenticate_via_token,
     only: %i(show)
   before_action :authenticate_publisher!,
-    only: %i(download_verification_file
-             edit_payment_info
-             home
-             log_out
-             update_payment_info
-             verification
-             verify)
+    except: %i(create
+               new)
   before_action :require_unauthenticated_publisher,
     only: %i(create
              new)
@@ -20,7 +15,8 @@ class PublishersController < ApplicationController
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
              home
-             update_payment_info)
+             update_payment_info
+             verification_done)
 
   def new
     @publisher = Publisher.new
@@ -43,20 +39,30 @@ class PublishersController < ApplicationController
   def verification
   end
 
+  # Shown after verification is completed to encourage users to submit
+  # payment information.
+  def verification_done
+  end
+
   # Call to Eyeshade to perform verification
   # TODO: Rate limit
   # TODO: Support XHR
   def verify
     PublisherVerifier.new(publisher: current_publisher).perform
     if current_publisher.verified?
+      # TODO: Change to #deliver_later ?
+      PublisherMailer.verification_done(current_publisher).deliver_now
       flash.notice = I18n.t("publishers.verify_success")
       redirect_to(publisher_next_step_path(current_publisher))
     else
-      flash.now[:notice] = I18n.t("publishers.verify_failure")
+      flash.now[:notice] = I18n.t("publishers.verify_failed")
       render(:verification)
     end
-  rescue VerificationIdMismatch
-    flash.now[:alert] = I18n.t("activerecord.models.publisher.attributes.brave_publisher_id.taken")
+  rescue PublisherVerifier::VerificationIdMismatch
+    flash.now[:alert] = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
+    render(:verification)
+  rescue Faraday::Error
+    flash.now[:alert] = I18n.t("shared.api_error")
     render(:verification)
   end
 

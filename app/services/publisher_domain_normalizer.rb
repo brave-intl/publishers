@@ -7,11 +7,18 @@ class PublisherDomainNormalizer
   end
 
   def perform
+    url = "http://#{domain}"
     response = connection.get do |request|
-      request.params["url"] = "http://#{domain}"
+      request.params["url"] = url
       request.url("/v1/publisher/identity")
     end
-    JSON.parse(response.body)["publisher"]
+    response_h = JSON.parse(response.body)
+    # If the normalized publisher ID is missing, it's on the exclusion list.
+    if response_h.include?("publisher")
+      response_h["publisher"]
+    else
+      raise DomainExclusionError.new("Normalized publisher ID unavailable for #{url}")
+    end
   end
 
   private
@@ -29,5 +36,8 @@ class PublisherDomainNormalizer
         faraday.use(Faraday::Response::RaiseError)
       end
     end
+  end
+
+  class DomainExclusionError < RuntimeError
   end
 end
