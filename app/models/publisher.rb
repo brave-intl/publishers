@@ -19,7 +19,7 @@ class Publisher < ApplicationRecord
   # formats to support more publishers.
   validates :brave_publisher_id,
     presence: true,
-    uniqueness: { if: :verified_publisher_exists? }
+    uniqueness: { if: -> { !persisted? && verified_publisher_exists? } }
 
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_brave_publisher_id, if: -> { !persisted? }

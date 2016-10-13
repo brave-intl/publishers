@@ -1,3 +1,6 @@
+- content_for(:navbar_content) do
+  span Step 3: #{I18n.t("publishers.bitcoin_address_submit_header")}
+  
 = render(partial: "model_errors", locals: { record: @publisher })
     
 .row

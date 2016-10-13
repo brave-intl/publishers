@@ -16,9 +16,7 @@ class PublisherLegalFormsController < ApplicationController
     if @legal_form.save
       redirect_to(@legal_form)
     else
-      # Suggests a Docusign API error. Redirect to where they came from.
-      # TODO: Log this
-      redirect_to(home_publishers_path, I18n.t("publisher_legal_forms.create_failed"))
+      render(:new)
     end
   end
 
@@ -35,15 +33,7 @@ class PublisherLegalFormsController < ApplicationController
   # delegated the signing request (e.g. to accountant).
   def after_sign
     PublisherLegalFormSyncer.new(publisher_legal_form: @legal_form).perform
-    # If the publisher is signed in, redirect to their dashboard.
-    # Otherwise show a thank you message.
     # TODO: Websockets refresh the main page
-    if @legal_form.completed? && current_publisher
-      redirect_to(
-        home_publishers_path,
-        notice: I18n.t("publisher_legal_forms.signing_completed")
-      )
-    end
   end
 
   private
