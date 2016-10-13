@@ -106,7 +106,8 @@ class PublishersController < ApplicationController
   private
 
   def authenticate_via_token
-    return if current_publisher || params[:id].blank? || params[:token].blank?
+    sign_out(current_publisher) if current_publisher
+    return if params[:id].blank? || params[:token].blank?
     publisher = Publisher.find(params[:id])
     if publisher.authentication_token.present? && publisher.authentication_token == params[:token]
       sign_in(:publisher, publisher)
