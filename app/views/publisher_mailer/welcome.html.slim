@@ -23,22 +23,5 @@ p= link_to(@private_reauth_url, @private_reauth_url)
 
 p.hint= I18n.t("publisher_mailer.welcome.erroneous_email_help")
 p.hint
-  span.attribute= "#{I18n.t("publisher_mailer.welcome.contact_help")}:"
+  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
   = link_to(Rails.application.secrets[:support_email], Rails.application.secrets[:support_email])
-/ 
-/ p
-/   strong Note:
-/   span This email contains a private access link
-/ 
-/ p NOTE: Do NOT forward this email!
-/ p It contains a private URL to access your account. Anyone with it can manage private publisher info, including payment details.
-/ 
-/ p Domain:
-/ p= @publisher.to_s
-/ 
-/ - if @publisher.phone.present?
-/   p Phone:
-/   p= @publisher.phone
-/ 
-/ p Private publisher admin URL:
-/ p= @private_reauth_url

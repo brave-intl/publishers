@@ -31,7 +31,7 @@ class PublishersController < ApplicationController
     if @publisher.save
       # TODO: Change to #deliver_later ?
       PublisherMailer.welcome(@publisher).deliver_now!
-      PublisherMailer.verification_instructions(@publisher).deliver_now
+      PublisherMailer.verification(@publisher).deliver_now
       sign_in(:publisher, @publisher)
       redirect_to(publisher_next_step_path(current_publisher))
     else

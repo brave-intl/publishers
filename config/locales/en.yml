@@ -86,11 +86,20 @@ en:
     verify_failed: "Couldn't verify. Please wait a bit then try again."
     verify_success: "Verification successful."
   publisher_mailer:
-    welcome:
-      body_1: "We've received a request to register a website with Brave Publishers:"
+    shared:
       contact_help: "If you have any questions, please contact us"
+    verification:
+      click_verify: "Click Verify from the Brave Publisher management website."
+      download_attached_file: "Download the attached verification file"
+      subject: "[%{brave_publisher_id}] Verify your Brave Publisher website"
+      title: "Verify website ownership"
+      access_link_help_header: "Publisher management website"
+      access_link_help_body: "You can find your publisher access link in the previous email we sent to you."
+    welcome:
       erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
+      intro: "We've received a request to register a website with Brave Publishers:"
       private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
+      subject: "[%{brave_publisher_id}] Brave Publisher registration"
       title: "Publisher registration"
       private_access_link: "Private access link"
       private_access_link_help: "Use this link to continue and manage publisher registration"
