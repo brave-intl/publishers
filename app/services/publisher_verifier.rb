@@ -14,7 +14,6 @@ class PublisherVerifier
     end
     response_hash = JSON.parse(response.body)
     return false if response_hash["status"] != "success"
-    require "pry"; binding.pry
     if publisher.id != response_hash["verificationId"]
       raise VerificationIdMismatch.new("Publisher UUID / verificationId mismatch: #{publisher.id} / #{response_hash['verificationId']}")
     end
