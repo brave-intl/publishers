@@ -1,6 +1,6 @@
 # Request verification from Eyeshade
 # TODO: Rate limit
-class PublisherVerifier
+class PublisherVerifier < BaseApiClient
   attr_reader :publisher
 
   def initialize(publisher:)
@@ -25,17 +25,6 @@ class PublisherVerifier
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]
-  end
-
-  def connection
-    @connection ||= begin
-      require "faraday"
-      Faraday.new(url: api_base_uri) do |faraday|
-        faraday.adapter Faraday.default_adapter
-        faraday.response(:logger, Rails.logger)
-        faraday.use(Faraday::Response::RaiseError)
-      end
-    end
   end
 
   # If the publisher previously has been verified, you can't reverify (for now)

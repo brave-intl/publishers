@@ -1,5 +1,5 @@
 # Ask Eyeshade to assign a Publisher a particular bitcoin wallet address.
-class PublisherWalletSetter
+class PublisherWalletSetter < BaseApiClient
   attr_reader :publisher, :bitcoin_address
 
   def initialize(bitcoin_address:, publisher:)
@@ -33,16 +33,5 @@ class PublisherWalletSetter
 
   def api_authorization_header
     "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
-  end
-
-  def connection
-    @connection ||= begin
-      require "faraday"
-      Faraday.new(url: api_base_uri) do |faraday|
-        faraday.adapter Faraday.default_adapter
-        faraday.response(:logger, Rails.logger)
-        faraday.use(Faraday::Response::RaiseError)
-      end
-    end
   end
 end

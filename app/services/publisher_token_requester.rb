@@ -1,7 +1,7 @@
 # Given a Publisher, request from eyeshade the domain verification token
 # This depends on the eyeshade API.
 # To develop without this dependency, set env var API_EYESHADE_OFFLINE=1
-class PublisherTokenRequester
+class PublisherTokenRequester < BaseApiClient
   attr_reader :publisher
 
   def initialize(publisher:)
@@ -30,16 +30,5 @@ class PublisherTokenRequester
 
   def api_authorization_header
     "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
-  end
-
-  def connection
-    @connection ||= begin
-      require "faraday"
-      Faraday.new(url: api_base_uri) do |faraday|
-        faraday.adapter Faraday.default_adapter
-        faraday.response(:logger, Rails.logger)
-        faraday.use(Faraday::Response::RaiseError)
-      end
-    end
   end
 end

@@ -1,5 +1,5 @@
 # Query pending balance from Eyeshade
-class PublisherBalanceGetter
+class PublisherBalanceGetter < BaseApiClient
   attr_reader :publisher
 
   def initialize(publisher:)
@@ -29,17 +29,6 @@ class PublisherBalanceGetter
 
   def api_authorization_header
     "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
-  end
-
-  def connection
-    @connection ||= begin
-      require "faraday"
-      Faraday.new(url: api_base_uri) do |faraday|
-        faraday.adapter Faraday.default_adapter
-        faraday.response(:logger, Rails.logger)
-        faraday.use(Faraday::Response::RaiseError)
-      end
-    end
   end
 
   Balance = Struct.new(:amount, :currency, :satoshis) do
