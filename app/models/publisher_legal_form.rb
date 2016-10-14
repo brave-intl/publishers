@@ -2,6 +2,8 @@
 class PublisherLegalForm < ApplicationRecord
   AFTER_SIGN_TOKEN_VALID_DURATION = 1.week
 
+  has_paper_trail
+
   belongs_to :publisher
 
   delegate :brave_publisher_id, :email, :name, to: :publisher

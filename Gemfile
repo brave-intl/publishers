@@ -17,6 +17,8 @@ gem "email_validator", "~> 1.6"
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
+gem "paper_trail", "~> 5.2.2"
+
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
 
