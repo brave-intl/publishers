@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :payment_info, action: :edit_payment_info, as: :edit_payment_info
       patch :payment_info, action: :update_payment_info, as: :update_payment_info
       get :verification
+      get :verification_done
       patch :verify
     end
   end

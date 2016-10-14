@@ -53,7 +53,7 @@ class PublishersController < ApplicationController
       # TODO: Change to #deliver_later ?
       PublisherMailer.verification_done(current_publisher).deliver_now
       flash.notice = I18n.t("publishers.verify_success")
-      redirect_to(publisher_next_step_path(current_publisher))
+      render(:verification_done)
     else
       flash.now[:notice] = I18n.t("publishers.verify_failed")
       render(:verification)
@@ -74,7 +74,7 @@ class PublishersController < ApplicationController
 
   # Entrypoint for the authenticated re-login link.
   def show
-    redirect_to(home_publishers_path)
+    redirect_to(publisher_next_step_path(current_publisher))
   end
 
   # Domain verified. See balance and submit payment info.
@@ -89,8 +89,7 @@ class PublishersController < ApplicationController
     @publisher = current_publisher
     @publisher.assign_attributes(publisher_payment_info_params)
     if @publisher.save
-      # TODO: Redirect to next step (tax info?)
-      redirect_to(home_publishers_path)
+      redirect_to(publisher_next_step_path(current_publisher), notice: I18n.t("publishers.bitcoin_address_updated"))
     else
       # TODO: Oops message
       render(:edit_payment_info)

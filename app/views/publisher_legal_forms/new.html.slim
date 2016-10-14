@@ -1,3 +1,5 @@
+- content_for(:navbar_content) do
+  span Step 4 of 4: #{I18n.t("publisher_legal_forms.new_header")}
 = render(partial: "model_errors", locals: { record: @legal_form })
 
 .row

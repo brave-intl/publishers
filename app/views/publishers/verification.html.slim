@@ -1,4 +1,6 @@
-/ = form_for(current_publisher, method: :patch, url: payment_info_publishers_path) do |f|
+- content_for(:navbar_content) do
+  span Step 2 of 4: #{I18n.t("publishers.verification_header")}
+
 .row
   .col-xs-12.col-md-12
     fieldset

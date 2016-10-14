@@ -2,7 +2,7 @@ body[data-controller="publishers"]
   .form-group.button:last-child
     margin: 20px 0 5px
 
-  &[data-action="verification"], &[data-action="verify"]
+  &[data-action="verification"], &[data-action="verify"], &[data-action="verification_done"]
     .option-dns-record:not(:hover)
       color: $text-color
       text-decoration: underline
@@ -19,6 +19,14 @@ body[data-controller="publishers"]
         margin-left: 10px
       .file-content
         height: $font-size-base * $line-height-base * 5
+    .publisher-domain-summary
+      margin-bottom: 18px
+      .publisher-domain-name
+        font-size: $font-size-h3
+      img.verified-icon
+        margin-right: 12px
+    .submit-payment-info
+      margin: 24px 0
 
   &[data-action="home"]
     .container

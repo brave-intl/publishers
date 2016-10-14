@@ -33,11 +33,11 @@ module PublishersHelper
   end
 
   def publisher_next_step_path(publisher)
-    if publisher.verified?
-      home_publishers_path
-    else
-      verification_publishers_path
-    end
+    return verification_publishers_path if !publisher.verified?
+    return verification_done_publishers_path if publisher.bitcoin_address.blank?
+    return new_publisher_legal_form_path if !publisher.legal_form_completed?
+
+    home_publishers_path
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.

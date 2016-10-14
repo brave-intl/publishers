@@ -1,9 +1,9 @@
+- content_for(:navbar_content) do
+  span= I18n.t("publishers.dashboard")
+
 .row
   .col-center.col-xs-12.col-md-5
     fieldset
-      / legend= I18n.t("publishers.dashboard")
-      / h4= Publisher.human_attribute_name(:brave_publisher_id)
-      / .attribute-value.publisher-domain-summary
       legend.publisher-domain-summary
         - if current_publisher.verified?
           = image_tag("verified-icon", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 30)
