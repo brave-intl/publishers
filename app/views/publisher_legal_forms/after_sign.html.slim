@@ -1,5 +1,7 @@
 .row
   .col-center.col-xs-12.col-md-5  
     fieldset
-      legend= I18n.t("publisher_legal_forms.after_sign_header_#{@legal_form.status}")
-      .help-block= I18n.t("publisher_legal_forms.after_sign_body_#{@legal_form.status}", support_email: Rails.application.secrets[:support_email])
+      / TODO: Remove once webhooks are setup
+      - status = @docusign_rate_limited ? "rate_limit" : @legal_form.status
+      legend= I18n.t("publisher_legal_forms.after_sign_header_#{status}")
+      .help-block= I18n.t("publisher_legal_forms.after_sign_body_#{status}", support_email: Rails.application.secrets[:support_email])

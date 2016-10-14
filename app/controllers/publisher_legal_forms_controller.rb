@@ -39,6 +39,9 @@ class PublisherLegalFormsController < ApplicationController
     if @legal_form.completed? && current_publisher && current_publisher.bitcoin_address.present?
       render('publishers/finished')
     end
+  rescue DocusignEnvelopeGetter::TooManyRequestsError
+    # TODO: Remove once webhooks are setup
+    @docusign_rate_limited = true
   end
 
   private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161014002412) do
+ActiveRecord::Schema.define(version: 20161014221959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20161014002412) do
     t.datetime "after_sign_token_expires_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.datetime "docusign_envelope_gotten_at"
     t.index ["after_sign_token"], name: "index_publisher_legal_forms_on_after_sign_token", using: :btree
     t.index ["publisher_id"], name: "index_publisher_legal_forms_on_publisher_id", using: :btree
   end
