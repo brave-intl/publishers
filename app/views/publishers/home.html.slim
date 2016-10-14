@@ -6,7 +6,7 @@
     fieldset
       legend.publisher-domain-summary
         - if current_publisher.verified?
-          = image_tag("verified-icon", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 30)
+          = image_tag("verified-icon.png", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 30)
         span.publisher-domain-name= current_publisher.brave_publisher_id
         - if !current_publisher.verified?
           span.link-hint.publisher-verified-status= I18n.t("publishers.not_verified")
