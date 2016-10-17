@@ -14,7 +14,7 @@ class Publisher < ApplicationRecord
   validates :bitcoin_address, bitcoin_address: true, if: :bitcoin_address_present_and_changed?
   validates :email, email: { strict_mode: true }, presence: true
   validates :name, presence: true
-  validates :phone, phony_plausible: true
+  validates :phone_normalized, phony_plausible: true
 
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
