@@ -3,6 +3,7 @@ class PublisherLegalForm < ApplicationRecord
   AFTER_SIGN_TOKEN_VALID_DURATION = 1.week
 
   has_paper_trail
+  attr_encrypted :s3_key, key: :encryption_key
 
   belongs_to :publisher
 
@@ -49,6 +50,10 @@ class PublisherLegalForm < ApplicationRecord
 
   def completed?
     status == "completed"
+  end
+
+  def encryption_key
+    Rails.application.secrets[:attr_encrypted_key]
   end
 
   private
