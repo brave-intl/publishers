@@ -26,4 +26,15 @@ Rails.application.routes.draw do
   end
 
   root "static#index"
+
+  resources :errors, only: [], path: "/" do
+    collection do
+      get "400", action: :error_400
+      get "401", action: :error_401
+      get "403", action: :error_403
+      get "404", action: :error_404
+      get "422", action: :error_422
+      get "500", action: :error_500
+    end
+  end
 end

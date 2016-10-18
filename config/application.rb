@@ -13,5 +13,7 @@ module Publishers
     # -- all .rb files in that directory are automatically loaded.
 
     config.autoload_paths += %W("#{config.root}/app/services/" "#{config.root}/app/validators/")
+
+    config.exceptions_app = self.routes
   end
 end

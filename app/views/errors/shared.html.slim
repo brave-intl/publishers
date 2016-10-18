@@ -1,0 +1,6 @@
+h2 #{I18n.t("shared.error")} #{@status}: #{Rack::Utils::HTTP_STATUS_CODES[@status]} 🎁
+p
+  = I18n.t("shared.error_body")
+  = " "
+  = link_to(root_url, root_path)
+p= I18n.t("shared.error_contact", support_email: Rails.application.secrets[:support_email])

@@ -169,6 +169,9 @@ en:
     view: "View"
   shared:
     api_error: "Your request couldn't be processed due to an API error."
+    error: "Error"
+    error_body: "Oops, sorry about that. You can try to refresh the page or return to"
+    error_contact: "For assistance please contact us at: %{support_email}"
     save_and_continue: "Save and continue"
   static:
     landing_header: "Welcome to Brave Payments"
