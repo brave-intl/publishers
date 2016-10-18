@@ -23,11 +23,13 @@ gem "email_validator", "~> 1.6"
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
+# GNU Privacy Guard Made Easy
 gem "gpgme", "~> 2.0", require: false
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
+# Model record auditing
 gem "paper_trail", "~> 5.2.2"
 
 # postgresql as database for Active Record
@@ -91,6 +93,11 @@ group :development do
   gem "rubocop", require: false
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
+end
+
+group :production do
+  # App monitoring
+  gem "newrelic_rpm", "~> 3.16"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
