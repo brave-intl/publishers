@@ -10,4 +10,7 @@ class DocusignBaseService
     raise response["message"] if response["message"] && response["errorCode"]
     response
   end
+
+  class TooManyRequestsError < RuntimeError
+  end
 end
