@@ -1,7 +1,6 @@
 class EncryptedS3Store < BaseS3Client
   def initialize
     require "gpgme_init"
-    require "lib/gpgme"
   end
 
   # Returns object of type GPGME::Data
@@ -23,6 +22,6 @@ class EncryptedS3Store < BaseS3Client
   private
 
   def crypto
-    @crypto ||= GPGME::Crypto.new(armor: true)
+    @crypto ||= GPGME::Crypto.new(always_trust: true, armor: true)
   end
 end
