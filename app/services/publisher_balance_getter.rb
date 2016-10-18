@@ -19,6 +19,9 @@ class PublisherBalanceGetter < BaseApiClient
     # Amount is rounded to the nearest whole dollar.
     # {"amount"=>42, "currency"=>"USD", "satoshis"=>0}
     Balance.new(response_hash["amount"], response_hash["currency"], response_hash["satoshis"])
+  rescue Faraday::Error => e
+    Rails.logger.warn("PublisherBalanceGetter #perform error: #{e}")
+    nil
   end
 
   private

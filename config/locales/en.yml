@@ -43,6 +43,7 @@ en:
   publishers:
     add_bitcoin_address: "Add bitcoin address"
     already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
+    balance_error: "Temporarily unavailable"
     balance_pending: "Balance pending"
     balance_pending_approximate: "(approximate)"
     bitcoin_address_none: "(none)"

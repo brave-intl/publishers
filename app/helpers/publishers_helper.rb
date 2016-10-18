@@ -9,7 +9,11 @@ module PublishersHelper
 
   # balance: Instance of PublisherBalanceGetter::Balance
   def publisher_humanize_balance(publisher)
-    number_to_currency(publisher.balance.amount)
+    if balance = publisher.balance
+      number_to_currency(balance.amount)
+    else
+      I18n.t("publishers.balance_error")
+    end
   end
 
   def publisher_uri(publisher)

@@ -13,7 +13,7 @@
     .submit-payment-info
       h4= I18n.t("publishers.verification_done_submit_payment_info")
       p
-        = I18n.t("publishers.verification_done_balance", publisher: current_publisher.to_s, balance: current_publisher.balance)
+        = I18n.t("publishers.verification_done_balance", publisher: current_publisher.to_s, balance: publisher_humanize_balance(current_publisher))
       p
         = I18n.t("publishers.verification_done_submit_payment_info_body")
       
