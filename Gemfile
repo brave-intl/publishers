@@ -3,6 +3,8 @@ source "https://rubygems.org"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.0.0"
 
+gem "aws-sdk", "~> 2", require: false
+
 gem "bitcoin-ruby", "~> 0.0.8", require: false
 
 gem "bootstrap-sass", "~> 3.3.6"
@@ -16,6 +18,8 @@ gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
+
+gem "gpgme", "~> 2.0", require: false
 
 gem "paper_trail", "~> 5.2.2"
 
