@@ -28,6 +28,10 @@ module PublishersHelper
     PublisherVerificationFileGenerator.new(publisher: publisher).generate_file_content
   end
 
+  def publisher_verification_file_directory(publisher)
+    "https://#{publisher.brave_publisher_id}/.well-known/"
+  end
+
   def publisher_verification_file_url(publisher)
     PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
   end

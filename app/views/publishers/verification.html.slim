@@ -16,9 +16,9 @@
           = " "
           = link_to("brave-payments-verification.txt", download_verification_file_publishers_path, class: "download-file")
         li
+          = I18n.t("publishers.verification_option_public_file_help_directory", directory: publisher_verification_file_directory(current_publisher))
+        li
           = I18n.t("publishers.verification_option_public_file_help_upload")
-          = " "
-          = publisher_uri(current_publisher)
         li
           = I18n.t("publishers.verification_option_public_file_help_confirm")
           = " "
