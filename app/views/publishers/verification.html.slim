@@ -10,13 +10,14 @@
 
     div.form-group.form-group
       h4= I18n.t("publishers.verification_option_public_file")
+      .help-block== I18n.t("publishers.verification_option_public_https_hint")
       ol
         li
           = I18n.t("publishers.verification_option_public_file_help_download")
           = " "
           = link_to("brave-payments-verification.txt", download_verification_file_publishers_path, class: "download-file")
         li
-          = I18n.t("publishers.verification_option_public_file_help_directory", directory: publisher_verification_file_directory(current_publisher))
+          == I18n.t("publishers.verification_option_public_file_help_directory", directory: publisher_verification_file_directory(current_publisher))
         li
           = I18n.t("publishers.verification_option_public_file_help_upload")
         li

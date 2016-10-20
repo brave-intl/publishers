@@ -98,6 +98,7 @@ en:
     verification_option_dns_record_type: "Type:"
     verification_option_dns_record_value: "Value:"
     verification_option_public_file: "Option A: Upload a text file"
+    verification_option_public_https_hint: "Your website needs to serve this file securely over HTTPS. Learn more at <a href=\"https://letsencrypt.org/getting-started/\" target=\"_blank\">Let's Encrypt</a> or instead choose <strong>Option B</strong>."
     verification_option_public_file_help_download: "Download the verification text file:"
     verification_option_public_file_help_directory: "Find or create the directory: %{directory}"
     verification_option_public_file_help_upload: "Upload the file to this /.well-known/ directory."

@@ -33,7 +33,7 @@ module PublishersHelper
   end
 
   def publisher_verification_file_directory(publisher)
-    "https://#{publisher.brave_publisher_id}/.well-known/"
+    "<span class=\"strong-line\">https:</span>//#{publisher.brave_publisher_id}/.well-known/"
   end
 
   def publisher_verification_file_url(publisher)
