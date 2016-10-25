@@ -27,6 +27,14 @@ Rails.application.routes.draw do
 
   root "static#index"
 
+  namespace :api do
+    resources :publishers, format: false, only: [] do
+      collection do
+        get "/:brave_publisher_id", action: :index_by_brave_publisher_id, constraints: { brave_publisher_id: %r{[^\/]+} }
+      end
+    end
+  end
+
   resources :errors, only: [], path: "/" do
     collection do
       get "400", action: :error_400

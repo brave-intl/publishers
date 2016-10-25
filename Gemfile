@@ -1,4 +1,8 @@
+# frozen_string_literal: true
 source "https://rubygems.org"
+
+# Serialize models for JSON APIs
+gem "active_model_serializers", "~> 0.10.0"
 
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.0.0"
