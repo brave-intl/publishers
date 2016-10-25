@@ -22,6 +22,6 @@ class Api::BaseController < ActionController::API
   end
 
   def render_unauthorized
-    render(json: { message: "authentication failed :(" }, status: 403)
+    render(json: { message: "authentication failed 🎷" }, status: 403)
   end
 end
