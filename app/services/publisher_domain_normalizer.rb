@@ -7,6 +7,7 @@ class PublisherDomainNormalizer < BaseApiClient
   end
 
   def perform
+    return perform_offline if ENV["API_LEDGER_OFFLINE"]
     url = "http://#{domain}"
     response = connection.get do |request|
       request.params["url"] = url
@@ -19,6 +20,13 @@ class PublisherDomainNormalizer < BaseApiClient
     else
       raise DomainExclusionError.new("Normalized publisher ID unavailable for #{url}")
     end
+  end
+
+  def perform_offline
+    # Development Gemfile group. If you run in prod move the gem to the top level.
+    require "domain_name"
+    Rails.logger.info("PublisherDomainNormalizer normalizing offline.")
+    DomainName(domain).domain
   end
 
   private

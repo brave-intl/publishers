@@ -70,6 +70,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "domain_name", require: false
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
