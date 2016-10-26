@@ -26,8 +26,8 @@ class PublishersController < ApplicationController
     @publisher = Publisher.new(publisher_create_params)
     if @publisher.save
       # TODO: Change to #deliver_later ?
-      PublisherMailer.welcome(@publisher).deliver_now!
-      PublisherMailer.verification(@publisher).deliver_now
+      PublisherMailer.welcome(@publisher).deliver_later!
+      PublisherMailer.verification(@publisher).deliver_later
       sign_in(:publisher, @publisher)
       redirect_to(publisher_next_step_path(current_publisher))
     else
@@ -52,7 +52,7 @@ class PublishersController < ApplicationController
     PublisherVerifier.new(publisher: current_publisher).perform
     if current_publisher.verified?
       # TODO: Change to #deliver_later ?
-      PublisherMailer.verification_done(current_publisher).deliver_now
+      PublisherMailer.verification_done(current_publisher).deliver_later
       flash.notice = I18n.t("publishers.verify_success")
       render(:verification_done)
     else
