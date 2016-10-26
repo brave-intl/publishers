@@ -7,6 +7,7 @@ class PublisherBalanceGetter < BaseApiClient
   end
 
   def perform
+    return perform_offline if ENV["API_EYESHADE_OFFLINE"]
     # params = {
     #   "currency" => "USD"
     # }
@@ -22,6 +23,11 @@ class PublisherBalanceGetter < BaseApiClient
   rescue Faraday::Error => e
     Rails.logger.warn("PublisherBalanceGetter #perform error: #{e}")
     nil
+  end
+
+  def perform_offline
+    Rails.logger.info("PublisherVerifier returning offline stub balance.")
+    Balance.new("9001.00", "USD", 150000000)
   end
 
   private

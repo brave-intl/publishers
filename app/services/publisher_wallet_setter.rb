@@ -12,6 +12,7 @@ class PublisherWalletSetter < BaseApiClient
   end
 
   def perform
+    return perform_offline if ENV["API_EYESHADE_OFFLINE"]
     params = {
       "bitcoinAddress" => bitcoin_address,
       "verificationId" => publisher.id,
@@ -23,6 +24,11 @@ class PublisherWalletSetter < BaseApiClient
       request.headers["Content-Type"] = "application/json"
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/wallet")
     end
+  end
+
+  def perform_offline
+    Rails.logger.info("PublisherVerifier eyeshade offline; only locally updating Bitcoin address.")
+    true
   end
 
   private

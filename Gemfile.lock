@@ -74,6 +74,7 @@ GEM
       railties (>= 4.1.0, < 5.1)
       responders
       warden (~> 1.2.3)
+    dnsruby (1.59.3)
     docusign_rest (0.1.1)
       json
       multipart-post (>= 1.2)
@@ -257,6 +258,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.3.6)
   byebug
   devise (~> 4.2.0)
+  dnsruby
   docusign_rest (~> 0.1.1)
   domain_name
   email_validator (~> 1.6)

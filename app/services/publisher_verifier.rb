@@ -8,6 +8,7 @@ class PublisherVerifier < BaseApiClient
   end
 
   def perform
+    return perform_offline if ENV["API_EYESHADE_OFFLINE"]
     # Will raise in case of error.
     response = connection.get do |request|
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/verify")
@@ -19,6 +20,25 @@ class PublisherVerifier < BaseApiClient
     end
     publisher.verified = true
     publisher.save!
+  end
+
+  def perform_offline
+    Rails.logger.info("PublisherVerifier bypassing eyeshade and performing locally.")
+    require "dnsruby"
+    resolver = Dnsruby::Resolver.new
+    domain = publisher.brave_publisher_id
+    Rails.logger.info("DNS query: #{domain}, TXT")
+    message = resolver.query(publisher.brave_publisher_id, "TXT")
+    answer = message.answer
+    return false if answer.blank?
+    desired_string = PublisherDnsRecordGenerator.new(publisher: publisher).perform
+    answer.each do |answer_part|
+      next if answer_part.strings.blank?
+      if answer_part.strings.any? { |string| string == desired_string }
+        publisher.verified = true
+        publisher.save!
+      end
+    end
   end
 
   private

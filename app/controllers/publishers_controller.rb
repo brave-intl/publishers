@@ -48,6 +48,7 @@ class PublishersController < ApplicationController
   # TODO: Rate limit
   # TODO: Support XHR
   def verify
+    require "faraday"
     PublisherVerifier.new(publisher: current_publisher).perform
     if current_publisher.verified?
       # TODO: Change to #deliver_later ?
