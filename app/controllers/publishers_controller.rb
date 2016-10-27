@@ -27,7 +27,9 @@ class PublishersController < ApplicationController
     if @publisher.save
       # TODO: Change to #deliver_later ?
       PublisherMailer.welcome(@publisher).deliver_later!
+      PublisherMailer.welcome_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
       PublisherMailer.verification(@publisher).deliver_later
+      PublisherMailer.verification_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
       sign_in(:publisher, @publisher)
       redirect_to(publisher_next_step_path(current_publisher))
     else
@@ -53,6 +55,7 @@ class PublishersController < ApplicationController
     if current_publisher.verified?
       # TODO: Change to #deliver_later ?
       PublisherMailer.verification_done(current_publisher).deliver_later
+      PublisherMailer.verification_done_internal(current_publisher).deliver_later if PublisherMailer.should_send_internal_emails?
       flash.notice = I18n.t("publishers.verify_success")
       render(:verification_done)
     else
