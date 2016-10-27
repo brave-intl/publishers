@@ -47,6 +47,9 @@ gem "redis-rails", "~> 5"
 # SCSS for stylesheets
 gem "sass-rails", "~> 5.0"
 
+# Async job processing
+gem "sidekiq", "~> 4.2"
+
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
