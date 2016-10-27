@@ -9,7 +9,7 @@ class PublisherTokenRequester < BaseApiClient
   end
 
   def perform
-    return perform_offline if ENV["API_EYESHADE_OFFLINE"]
+    return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/verifications/#{publisher.id}")

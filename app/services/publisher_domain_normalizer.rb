@@ -7,7 +7,7 @@ class PublisherDomainNormalizer < BaseApiClient
   end
 
   def perform
-    return perform_offline if ENV["API_LEDGER_OFFLINE"]
+    return perform_offline if Rails.application.secrets[:api_ledger_offline]
     url = "http://#{domain}"
     response = connection.get do |request|
       request.params["url"] = url

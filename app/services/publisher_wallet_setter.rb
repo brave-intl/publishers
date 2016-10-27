@@ -12,7 +12,7 @@ class PublisherWalletSetter < BaseApiClient
   end
 
   def perform
-    return perform_offline if ENV["API_EYESHADE_OFFLINE"]
+    return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     params = {
       "bitcoinAddress" => bitcoin_address,
       "verificationId" => publisher.id,
