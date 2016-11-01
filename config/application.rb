@@ -16,6 +16,9 @@ module Publishers
 
     config.autoload_paths += %W("#{config.root}/app/services/" "#{config.root}/app/validators/")
 
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
+
+    config.time_zone = "Pacific Time (US & Canada)"
+    config.active_record.default_timezone = :local
   end
 end
