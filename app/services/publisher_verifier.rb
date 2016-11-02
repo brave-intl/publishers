@@ -2,11 +2,13 @@
 # If the publisher previously has been verified, you can't reverify (for now)
 # TODO: Rate limit
 class PublisherVerifier < BaseApiClient
-  attr_reader :brave_publisher_id, :publisher, :verified_publisher, :verified_publisher_id
+  attr_reader :attended, :brave_publisher_id, :publisher, :verified_publisher, :verified_publisher_id
 
   # publisher is optional. If given, service will raise errors if the provided publisher's verification token
   # doesn't match the one found on the domain.
-  def initialize(brave_publisher_id:, publisher: nil)
+  # attended: Passed through to Eyeshade; affects verbosity
+  def initialize(attended: true, brave_publisher_id:, publisher: nil)
+    @attended = attended
     @brave_publisher_id = brave_publisher_id
     @publisher = publisher
   end
@@ -15,6 +17,7 @@ class PublisherVerifier < BaseApiClient
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     # Will raise in case of error.
     response = connection.get do |request|
+      request.params["backgroundP"] = 1 if !attended
       request.url("/v1/publishers/#{brave_publisher_id}/verify")
     end
     response_hash = JSON.parse(response.body)
@@ -50,7 +53,7 @@ class PublisherVerifier < BaseApiClient
       .where(brave_publisher_id: brave_publisher_id, verified: true)
       .where.not(id: verified_publisher_id)
     @verified_publisher = Publisher.find_by(brave_publisher_id: brave_publisher_id, id: verified_publisher_id)
-    verified_publisher_changed = (verified_publisher.verified == false)
+    verified_publisher_changed = (verified_publisher && verified_publisher.verified == false)
     return if publishers_to_unverify.none? && !verified_publisher_changed
 
     Publisher.transaction do
