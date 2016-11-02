@@ -11,7 +11,7 @@ class PublisherBalanceGetter < BaseApiClient
     # params = {
     #   "currency" => "USD"
     # }
-    response = connection.post do |request|
+    response = connection.get do |request|
       # request.body = JSON.dump(params)
       request.headers["Authorization"] = api_authorization_header
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/balance")
