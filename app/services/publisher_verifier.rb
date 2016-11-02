@@ -1,9 +1,13 @@
-# Request verification from Eyeshade
+# Request verification from Eyeshade. Sets the matching
+# If the publisher previously has been verified, you can't reverify (for now)
 # TODO: Rate limit
 class PublisherVerifier < BaseApiClient
-  attr_reader :publisher
+  attr_reader :brave_publisher_id, :publisher, :verified_publisher, :verified_publisher_id
 
-  def initialize(publisher:)
+  # publisher is optional. If given, service will raise errors if the provided publisher's verification token
+  # doesn't match the one found on the domain.
+  def initialize(brave_publisher_id:, publisher: nil)
+    @brave_publisher_id = brave_publisher_id
     @publisher = publisher
   end
 
@@ -11,40 +15,83 @@ class PublisherVerifier < BaseApiClient
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     # Will raise in case of error.
     response = connection.get do |request|
-      request.url("/v1/publishers/#{publisher.brave_publisher_id}/verify")
+      request.url("/v1/publishers/#{brave_publisher_id}/verify")
     end
     response_hash = JSON.parse(response.body)
-    return false if response_hash["status"] != "success"
-    if publisher.id != response_hash["verificationId"]
-      raise VerificationIdMismatch.new("Publisher UUID / verificationId mismatch: #{publisher.id} / #{response_hash['verificationId']}")
-    end
-    publisher.verified = true
-    publisher.save!
+    @verified_publisher_id = response_hash["verificationId"]
+    return false if response_hash["status"] != "success" || verified_publisher_id.blank?
+    update_verified_on_publishers
+    assert_publisher_matches_verified_id! if publisher
   end
 
   def perform_offline
     Rails.logger.info("PublisherVerifier bypassing eyeshade and performing locally.")
-    require "dnsruby"
-    resolver = Dnsruby::Resolver.new
-    domain = publisher.brave_publisher_id
-    Rails.logger.info("DNS query: #{domain}, TXT")
-    message = resolver.query(publisher.brave_publisher_id, "TXT")
-    answer = message.answer
-    return false if answer.blank?
-    desired_string = PublisherDnsRecordGenerator.new(publisher: publisher).perform
-    answer.each do |answer_part|
-      next if answer_part.strings.blank?
-      if answer_part.strings.any? { |string| string == desired_string }
-        publisher.verified = true
-        publisher.save!
-      end
-    end
+    @verified_publisher_id = verify_offline_publisher_id
+    return false if verified_publisher_id.blank?
+    update_verified_on_publishers
+    assert_publisher_matches_verified_id! if publisher
   end
 
   private
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]
+  end
+
+  def assert_publisher_matches_verified_id!
+    return true if publisher.id == verified_publisher_id
+    raise VerificationIdMismatch.new("Publisher UUID / verificationId mismatch: #{publisher.id} / #{verified_publisher_id}")
+  end
+
+  def update_verified_on_publishers
+    raise "#{verified_publisher_id} missing" if verified_publisher_id.blank?
+
+    publishers_to_unverify = Publisher
+      .where(brave_publisher_id: brave_publisher_id, verified: true)
+      .where.not(id: verified_publisher_id)
+    @verified_publisher = Publisher.find_by(brave_publisher_id: brave_publisher_id, id: verified_publisher_id)
+    verified_publisher_changed = (verified_publisher.verified == false)
+    return if publishers_to_unverify.none? && !verified_publisher_changed
+
+    Publisher.transaction do
+      publishers_to_unverify.update_all(verified: false) if publishers_to_unverify.any?
+      verified_publisher.update_attribute(:verified, true) if verified_publisher_changed
+    end
+    verified_publisher_post_verify if verified_publisher_changed
+  end
+
+  def verified_publisher_post_verify
+    PublisherMailer.verification_done(verified_publisher).deliver_later
+    if PublisherMailer.should_send_internal_emails?
+      PublisherMailer.verification_done_internal(verified_publisher).deliver_later
+    end
+  end
+
+  def verify_offline_publisher_id
+    require "dnsruby"
+    resolver = Dnsruby::Resolver.new
+    message = resolver.query(brave_publisher_id, "TXT")
+    answer = message.answer
+    return nil if answer.blank?
+
+    answer.each do |answer_part|
+      next if !answer_part.respond_to?(:strings) || answer_part.strings.blank?
+      answer_part.strings.each do |string|
+        token_match = /^brave\-ledger\-verification\=([a-zA-Z0-9]+)$/.match(string)
+        next if !token_match || !token_match[1]
+        Rails.logger.debug("Found token on #{brave_publisher_id}: #{token_match[1]}")
+        dns_publisher = Publisher.find_by(brave_publisher_id: brave_publisher_id, verification_token: token_match[1])
+        if dns_publisher
+          return dns_publisher.id
+        else
+          Rails.logger.warn("Verification token didn't match any Publishers.")
+        end
+      end
+    end
+    nil
+  rescue Dnsruby::NXDomain
+    Rails.logger.warn("Dnsruby::NXDomain")
+    nil
   end
 
   # If the publisher previously has been verified, you can't reverify (for now)

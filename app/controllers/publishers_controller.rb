@@ -51,15 +51,16 @@ class PublishersController < ApplicationController
   # TODO: Support XHR
   def verify
     require "faraday"
-    PublisherVerifier.new(publisher: current_publisher).perform
+    PublisherVerifier.new(
+      brave_publisher_id: current_publisher.brave_publisher_id,
+      publisher: current_publisher
+    ).perform
+    current_publisher.reload
     if current_publisher.verified?
-      # TODO: Change to #deliver_later ?
-      PublisherMailer.verification_done(current_publisher).deliver_later
-      PublisherMailer.verification_done_internal(current_publisher).deliver_later if PublisherMailer.should_send_internal_emails?
       flash.notice = I18n.t("publishers.verify_success")
       render(:verification_done)
     else
-      flash.now[:notice] = I18n.t("publishers.verify_failed")
+      flash.now[:alert] = I18n.t("publishers.verify_failed")
       render(:verification)
     end
   rescue PublisherVerifier::VerificationIdMismatch

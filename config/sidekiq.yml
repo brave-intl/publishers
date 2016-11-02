@@ -1,0 +1,18 @@
+---
+:concurrency: 4
+:timeout: 8
+:queues:
+  - mailers
+  - scheduler
+  - default
+:schedule:
+  EnqueuePublisherVerifications:
+    cron: "42 * * * *"
+    decription: "For Publishers created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
+    queue: scheduler
+:verbose: true
+
+production:
+  :concurrency: 8
+staging:
+  :concurrency: 8

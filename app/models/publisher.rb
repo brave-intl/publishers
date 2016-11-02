@@ -30,6 +30,8 @@ class Publisher < ApplicationRecord
   before_save :api_update_bitcoin_address,
     if: -> { bitcoin_address_present_and_changed? }
 
+  scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
+
   # API call to eyeshade
   def balance
     @_balance ||= PublisherBalanceGetter.new(publisher: self).perform

@@ -45,4 +45,16 @@ Rails.application.routes.draw do
       get "500", action: :error_500
     end
   end
+
+  require "sidekiq/web"
+  if Rails.env.production?
+    Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+      # Protect against timing attacks: (https://codahale.com/a-lesson-in-timing-attacks/)
+      # - Use & (do not use &&) so that it doesn't short circuit.
+      # - Use `secure_compare` to stop length information leaking
+      ActiveSupport::SecurityUtils.secure_compare(username, ENV["SIDEKIQ_USERNAME"]) &
+        ActiveSupport::SecurityUtils.secure_compare(password, ENV["SIDEKIQ_PASSWORD"])
+    end
+  end
+  mount Sidekiq::Web, at: "/magic"
 end
