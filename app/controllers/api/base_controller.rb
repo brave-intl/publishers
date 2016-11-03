@@ -1,6 +1,8 @@
 # To set authorization for the API, configure ENV["API_AUTH_TOKEN"] and
 # api_auth_token ENV["API_IP_WHITELIST"] (see secrets.yml)
 class Api::BaseController < ActionController::API
+  before_action :log_full_request, if: -> { !Rails.env.production? }
+
   API_AUTH_TOKEN = Rails.application.secrets[:api_auth_token].freeze
 
   if Rails.application.secrets[:api_ip_whitelist]
@@ -24,7 +26,9 @@ class Api::BaseController < ActionController::API
     return true if API_IP_WHITELIST.blank?
     # Set this in Fastly.
     remote_ip = request.headers["Fastly-Client-IP"].presence || request.remote_ip
-    API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(remote_ip) }
+    ip_auth_result = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(remote_ip) }
+    Rails.logger.debug("IP auth result for #{remote_ip}: #{ip_auth_result}")
+    ip_auth_result
   end
 
   def authenticate_token
@@ -36,6 +40,16 @@ class Api::BaseController < ActionController::API
         ::Digest::SHA256.hexdigest(API_AUTH_TOKEN)
       )
     end
+  end
+
+  def log_full_request
+    http_envs = {}.tap do |envs|
+      request.headers.each do |key, value|
+        envs[key] = value if key == key.upcase
+      end
+    end
+    Rails.logger.debug("Headers: #{http_envs}")
+    Rails.logger.debug("Body: #{request&.raw_post}")
   end
 
   def render_unauthorized
