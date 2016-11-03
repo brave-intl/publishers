@@ -1,6 +1,4 @@
 class PublisherMailer < ApplicationMailer
-  INTERNAL_EMAIL = Rails.application.secrets[:internal_email].freeze
-
   include PublishersHelper
   add_template_helper(PublishersHelper)
 
@@ -79,9 +77,5 @@ class PublisherMailer < ApplicationMailer
       subject: "<Internal> #{I18n.t(:subject, brave_publisher_id: @publisher.brave_publisher_id, scope: %w(publisher_mailer welcome))}",
       template_name: "welcome"
     )
-  end
-
-  def self.should_send_internal_emails?
-    INTERNAL_EMAIL.present?
   end
 end

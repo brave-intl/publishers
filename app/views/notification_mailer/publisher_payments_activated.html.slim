@@ -1,0 +1,25 @@
+/ Sent via eyeshade POST publishers/{id}/notifications endpoint
+/ after admins verifiy legal forms.
+- content_for(:title) do
+  h3= I18n.t("notification_mailer.publisher_payments_activated.title")
+  
+.notice= I18n.t("publisher_mailer.welcome.private_email_notice")
+
+h4= I18n.t("notification_mailer.publisher_payments_activated.save_help")
+
+p= I18n.t("notification_mailer.publisher_payments_activated.intro", { brave_publisher_id: @publisher.brave_publisher_id })
+
+p= I18n.t("notification_mailer.publisher_payments_activated.payment_schedule", { brave_publisher_id: @publisher.brave_publisher_id })
+
+h4= I18n.t("notification_mailer.publisher_payments_activated.bitcoin_address_help_header")
+p= @bitcoin_address
+
+h4= I18n.t("notification_mailer.publisher_payments_activated.payment_settings_help_header")
+p= I18n.t("notification_mailer.publisher_payments_activated.payment_settings_help")
+
+h4= "#{I18n.t("publisher_mailer.shared.private_access_link")}:"
+p= link_to(@private_reauth_url, @private_reauth_url)
+
+p.hint
+  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  = link_to(Rails.application.secrets[:support_email], Rails.application.secrets[:support_email])

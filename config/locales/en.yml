@@ -62,7 +62,7 @@ en:
     dashboard: "Dashboard"
     edit_bitcoin_address: "Edit"
     finished_header: "Thank you for registering with Brave Payments!"
-    finished_intro: "You will see an initial transfer to your bitcoin wallet as soon as we process payments, which may take up to 24 hours, and every day thereafter."
+    finished_intro: "You will see an initial transfer to your bitcoin wallet as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
     finished_try_browser: "Have you tried our web browser? It's free, open source software designed to protect privacy and give publishers a better deal."
     finished_visit_brave_website: "Visit <a href=\"https://brave.com\">brave.com</a> to learn more and <a href=\"https://brave.com/downloads\">download</a>."
     finished_peace_out: "Thanks for all your support, and if you have any questions or feedback let us know at %{support_email}."
@@ -108,6 +108,16 @@ en:
     verify_button: "Verify"
     verify_failed: "Couldn't verify. Please confirm your verification file or DNS record and try again."
     verify_success: "Verification successful."
+  notification_mailer:
+    publisher_payments_activated:
+      bitcoin_address_help_header: "Your bitcoin address:"
+      save_help: "Please save this email. You will need it to manage your publisher account."
+      intro: "Congratulations! Your publisher website %{brave_publisher_id} is now authorized for future payments."
+      payment_schedule: "You will see an initial transfer to your bitcoin wallet as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
+      payment_settings_help_header: "Balance and payment settings"
+      payment_settings_help: "To view your balance and manage payment details please visit the publisher management site:"
+      subject: "[%{brave_publisher_id}] Publisher payments activated"
+      title: "Publisher payments activated"
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"

@@ -1,9 +1,15 @@
 class ApplicationMailer < ActionMailer::Base
+  INTERNAL_EMAIL = Rails.application.secrets[:internal_email].freeze
+
   default from: Rails.application.secrets[:support_email]
   layout "mailer"
 
   before_action :require_premailer
   before_action :add_logo
+
+  def self.should_send_internal_emails?
+    INTERNAL_EMAIL.present?
+  end
 
   private
 
