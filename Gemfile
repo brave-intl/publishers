@@ -25,6 +25,9 @@ gem "faraday", "~> 0.9.2", require: false
 
 gem "gpgme", "~> 2.0", require: false
 
+# Make logs less mad verbose
+gem "lograge", "~> 0.4"
+
 gem "paper_trail", "~> 5.2.2"
 
 # postgresql as database for Active Record

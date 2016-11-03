@@ -18,6 +18,8 @@ module Publishers
 
     config.exceptions_app = routes
 
+    config.lograge.enabled = true
+
     config.time_zone = "Pacific Time (US & Canada)"
     config.active_record.default_timezone = :local
   end
