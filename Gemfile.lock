@@ -228,6 +228,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sentry-raven (2.1.2)
+      faraday (>= 0.7.6, < 0.10.x)
     sidekiq (4.2.3)
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
@@ -310,6 +312,7 @@ DEPENDENCIES
   redis-rails (~> 5)
   rubocop
   sass-rails (~> 5.0)
+  sentry-raven (~> 2.1)
   sidekiq (~> 4.2)
   sidekiq-scheduler (~> 2.0)
   slim-rails (~> 3.1)

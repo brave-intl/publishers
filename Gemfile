@@ -52,6 +52,9 @@ gem "redis-rails", "~> 5"
 # SCSS for stylesheets
 gem "sass-rails", "~> 5.0"
 
+# Exception logging
+gem "sentry-raven", "~> 2.1", require: false
+
 # Async job processing
 gem "sidekiq", "~> 4.2"
 
