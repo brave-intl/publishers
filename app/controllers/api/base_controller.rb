@@ -17,7 +17,6 @@ class Api::BaseController < ActionController::API
 
   # before_action filter to protect API controller actions.
   def authenticate
-    puts "request ip: #{request.remote_ip}"
     (authenticate_ip && authenticate_token) || render_unauthorized
   end
 
