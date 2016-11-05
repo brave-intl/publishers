@@ -2,6 +2,11 @@
 class VerifyPublisher < ActiveJob::Base
   queue_as :default
 
+  require "faraday"
+  rescue_from(Faraday::ResourceNotFound) do
+    Rails.logger.warn("PublisherVerifier 404; publisher might not exist in eyeshade.")
+  end
+
   def perform(brave_publisher_id:)
     PublisherVerifier.new(
       attended: false,
