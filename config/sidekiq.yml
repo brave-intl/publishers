@@ -1,5 +1,5 @@
 ---
-:concurrency: 4
+:concurrency: 5
 :timeout: 8
 :queues:
   - mailers
@@ -11,8 +11,3 @@
     decription: "For Publishers created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
     queue: scheduler
 :verbose: true
-
-production:
-  :concurrency: 8
-staging:
-  :concurrency: 8
