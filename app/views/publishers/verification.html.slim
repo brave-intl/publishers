@@ -27,7 +27,6 @@
         li
           = I18n.t("publishers.verification_option_public_file_help_verify")
 
-    - if publisher_can_generate_dns_record?(current_publisher)
       div.dns-record.form-group.form-group-lg
         input type="checkbox" value="selected" id="toggle-input-dns-record" class="toggle-input"
         label.toggle-label for="toggle-input-dns-record"
@@ -47,10 +46,6 @@
             label.control-label= I18n.t("publishers.verification_option_dns_record_value")
             textarea.dns-record-value.form-control readonly="true"
               = publisher_verification_dns_record(current_publisher)
-    - else
-      div.form-group.form-group-lg
-        label= I18n.t("publishers.verification_option_dns_record")
-        div.help-block= I18n.t("publishers.verification_option_dns_record_unavailable")
 
         
   .col-xs-12.col-md-3

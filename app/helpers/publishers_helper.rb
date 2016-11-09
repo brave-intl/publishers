@@ -3,10 +3,6 @@ module PublishersHelper
     publisher.legal_form_completed? && publisher.bitcoin_address.present?
   end
 
-  def publisher_can_generate_dns_record?(publisher)
-    PublisherDnsRecordGenerator.new(publisher: publisher).can_perform?
-  end
-
   # balance: Instance of PublisherBalanceGetter::Balance
   def publisher_humanize_balance(publisher)
     if balance = publisher.balance
