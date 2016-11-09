@@ -58,6 +58,8 @@ en:
     complete_irs_w_8ben: "Complete IRS W-8BEN"
     complete_irs_w_8ben_hint: "Individuals outside the States"
     contact_person: "Contact person"
+    create_done_header: "Thank you for submitting your information."
+    create_done_body: "An email has been sent to %{email}. Please confirm your email address by clicking on access link provided in the email. The link will return you to this site to proceed with step 2."
     domain: "Domain"
     dashboard: "Dashboard"
     edit_bitcoin_address: "Edit"

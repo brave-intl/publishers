@@ -2,6 +2,7 @@ class PublisherMailer < ApplicationMailer
   include PublishersHelper
   add_template_helper(PublishersHelper)
 
+  # TODO: Remove me. Deprecated.
   # Contains instructions on how to verify domain.
   # Should be safe to forward to webmaster / IT peeps.
   def verification(publisher)
@@ -14,6 +15,7 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  # TODO: Remove me. Deprecated.
   # TODO: Refactor
   def verification_internal(publisher)
     raise if !self.class.should_send_internal_emails?

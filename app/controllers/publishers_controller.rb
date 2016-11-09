@@ -5,6 +5,7 @@ class PublishersController < ApplicationController
     only: %i(show)
   before_action :authenticate_publisher!,
     except: %i(create
+               create_done
                new)
   before_action :require_unauthenticated_publisher,
     only: %i(create
@@ -28,13 +29,15 @@ class PublishersController < ApplicationController
       # TODO: Change to #deliver_later ?
       PublisherMailer.welcome(@publisher).deliver_later!
       PublisherMailer.welcome_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-      PublisherMailer.verification(@publisher).deliver_later
-      PublisherMailer.verification_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-      sign_in(:publisher, @publisher)
-      redirect_to(publisher_next_step_path(current_publisher))
+      session[:created_publisher_email] = @publisher.email
+      redirect_to create_done_publishers_path
     else
-      render(:new, alert: "some errors with the submission")
+      render(:new)
     end
+  end
+
+  def create_done
+    @publisher_email = session[:created_publisher_email]
   end
 
   # Domain verification. Show verification options.

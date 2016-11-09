@@ -26,7 +26,11 @@ class PublisherDomainNormalizer < BaseApiClient
     # Development Gemfile group. If you run in prod move the gem to the top level.
     require "domain_name"
     Rails.logger.info("PublisherDomainNormalizer normalizing offline.")
-    DomainName(domain).domain
+    begin
+      DomainName(domain).domain
+    rescue => e
+      raise OfflineNormalizationError.new(e)
+    end
   end
 
   private
@@ -36,5 +40,8 @@ class PublisherDomainNormalizer < BaseApiClient
   end
 
   class DomainExclusionError < RuntimeError
+  end
+
+  class OfflineNormalizationError < RuntimeError
   end
 end

@@ -1,0 +1,8 @@
+- content_for(:navbar_content) do
+  span Step 1 of 4: #{I18n.t("publishers.new_header")}
+
+.row
+  .col-center.col-xs-12.col-md-7
+    fieldset
+      legend= I18n.t("publishers.create_done_header")
+      .help-block= I18n.t("publishers.create_done_body", email: @publisher_email)

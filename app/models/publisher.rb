@@ -87,6 +87,8 @@ class Publisher < ApplicationRecord
       :brave_publisher_id,
       "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
     )
+  rescue PublisherDomainNormalizer::OfflineNormalizationError => e
+    errors.add(:brave_publisher_id, e.message)
   rescue Faraday::Error
     errors.add(
       :brave_publisher_id,
