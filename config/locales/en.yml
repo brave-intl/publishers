@@ -121,6 +121,11 @@ en:
     verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
     verify_success: "Verification successful."
   notification_mailer:
+    publisher_form_retry:
+      intro: "After reviewing the tax form you submitted for %{brave_publisher_id}, we found one or more errors."
+      prompt: "To claim your funds, please correct these errors and resubmit your tax form through the publisher management site:"
+      subject: "[%{brave_publisher_id}] Action required: Resubmit publisher tax form"
+      title: "Resubmit publisher tax form"
     publisher_payments_activated:
       bitcoin_address_help_header: "Your bitcoin address:"
       save_help: "Please save this email. You will need it to manage your publisher account."
