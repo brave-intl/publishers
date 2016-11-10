@@ -2,52 +2,23 @@
   span Step 2 of 4: #{I18n.t("publishers.verification_header")}
 
 .row
-  .col-xs-12.col-md-12
+  .col-center.col-xs-7.col-md-7
     fieldset
-      legend= I18n.t("publishers.verification_form_legend")
-      div.help-block= I18n.t("publishers.verification_help_definition")
-      div.help-block= I18n.t("publishers.verification_help_purpose")
+      legend= I18n.t("publishers.verification_header")
+      .help-block= I18n.t("publishers.verification_help")
 
-    div.form-group.form-group
+    .form-group
       h4= I18n.t("publishers.verification_option_public_file")
-      .help-block== I18n.t("publishers.verification_option_public_https_hint")
-      ol
-        li
-          = I18n.t("publishers.verification_option_public_file_help_download")
-          = " "
-          = link_to("brave-payments-verification.txt", download_verification_file_publishers_path, class: "download-file")
-        li
-          == I18n.t("publishers.verification_option_public_file_help_directory", directory: publisher_verification_file_directory(current_publisher))
-        li
-          = I18n.t("publishers.verification_option_public_file_help_upload")
-        li
-          = I18n.t("publishers.verification_option_public_file_help_confirm")
-          = " "
-          = link_to(publisher_verification_file_url(current_publisher), publisher_verification_file_url(current_publisher), target: "_blank")
-        li
-          = I18n.t("publishers.verification_option_public_file_help_verify")
+      .help-block= I18n.t("publishers.verification_option_public_file_help")
+      .form-horizontal
+        .form-group
+          .col-sm-6
+            = link_to(I18n.t("publishers.verification_option_public_file_use"), verification_public_file_publishers_path, class: "btn btn-block btn-primary btn-sm")
 
-      div.dns-record.form-group.form-group-lg
-        input type="checkbox" value="selected" id="toggle-input-dns-record" class="toggle-input"
-        label.toggle-label for="toggle-input-dns-record"
-          a.toggle-label
-            h4.option-dns-record
-              = I18n.t("publishers.verification_option_dns_record")
-        div.toggle-content
-          div.form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_name")
-            span.form-control
-              span= current_publisher.brave_publisher_id
-              span.hint= " #{I18n.t("publishers.verification_option_dns_record_name_help")}"
-          div.form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_type")
-            span.form-control TXT
-          div.form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_value")
-            textarea.dns-record-value.form-control readonly="true"
-              = publisher_verification_dns_record(current_publisher)
-
-        
-  .col-xs-12.col-md-3
-    = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-      = f.submit(I18n.t("publishers.verify_button"), class: "btn btn-block btn-primary")
+    .dns-record.form-group
+      h4= I18n.t("publishers.verification_option_dns_record")
+      .help-block= I18n.t("publishers.verification_option_dns_record_help")
+      .form-horizontal
+        .form-group
+          .col-sm-6
+            = link_to(I18n.t("publishers.verification_option_dns_record_use"), verification_dns_record_publishers_path, class: "btn btn-block btn-primary btn-sm")

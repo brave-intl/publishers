@@ -12,12 +12,17 @@ class PublishersController < ApplicationController
              new)
   before_action :require_unverified_publisher,
     only: %i(verification
+             verification_dns_record
+             verification_public_file
              verify)
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
              home
              update_payment_info
              verification_done)
+  before_action :update_publisher_verification_method,
+    only: %i(verification_dns_record
+             verification_public_file)
 
   def new
     @publisher = Publisher.new
@@ -40,8 +45,16 @@ class PublishersController < ApplicationController
     @publisher_email = session[:created_publisher_email]
   end
 
-  # Domain verification. Show verification options.
+  # Domain verification methods -- user chooses one.
   def verification
+  end
+
+  # Verification method
+  def verification_dns_record
+  end
+
+  # Verification method
+  def verification_public_file
   end
 
   # Shown after verification is completed to encourage users to submit
@@ -63,15 +76,16 @@ class PublishersController < ApplicationController
       flash.notice = I18n.t("publishers.verify_success")
       render(:verification_done)
     else
-      flash.now[:alert] = I18n.t("publishers.verify_failed")
-      render(:verification)
+      i18n_name = "publishers.verify_failed_#{current_publisher.verification_method}"
+      flash.now[:alert] = I18n.t(i18n_name)
+      render(publisher_verification_action)
     end
   rescue PublisherVerifier::VerificationIdMismatch
     flash.now[:alert] = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
-    render(:verification)
+    render(publisher_verification_action)
   rescue Faraday::Error
     flash.now[:alert] = I18n.t("shared.api_error")
-    render(:verification)
+    render(publisher_verification_action)
   end
 
   def download_verification_file
@@ -143,5 +157,24 @@ class PublishersController < ApplicationController
   def require_verified_publisher
     return if current_publisher.verified?
     redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.verification_required"))
+  end
+
+  # #verify renders this when verification failed
+  def publisher_verification_action
+    if current_publisher.verification_method
+      "verification_#{current_publisher.verification_method}"
+    else
+      "verification"
+    end
+  end
+
+  def update_publisher_verification_method
+    case params[:action]
+    when "verification_dns_record"
+      current_publisher.verification_method = "dns_record"
+    when "verification_public_file"
+      current_publisher.verification_method = "public_file"
+    end
+    current_publisher.save! if current_publisher.verification_method_changed?
   end
 end

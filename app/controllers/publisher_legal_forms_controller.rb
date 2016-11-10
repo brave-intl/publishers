@@ -1,5 +1,6 @@
 class PublisherLegalFormsController < ApplicationController
   before_action :authenticate_publisher!, except: %i(after_sign)
+  before_action :require_verified_publisher, except: %i(after_sign)
   before_action :require_no_legal_form,
     only: %i(create new)
   before_action :require_legal_form,
@@ -63,5 +64,10 @@ class PublisherLegalFormsController < ApplicationController
   def require_no_legal_form
     return if !current_publisher.legal_form
     redirect_to(current_publisher.legal_form)
+  end
+
+  def require_verified_publisher
+    return if current_publisher.verified?
+    redirect_to(root_path, alert: I18n.t("publishers.verification_required"))
   end
 end

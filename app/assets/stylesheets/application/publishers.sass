@@ -2,18 +2,28 @@ body[data-controller="publishers"]
   .form-group.button:last-child
     margin: 20px 0 5px
 
-  &[data-action="verification"], &[data-action="verify"], &[data-action="verification_done"]
-    .option-dns-record:not(:hover)
-      color: $text-color
-      text-decoration: underline
+  &[data-action="verification"],
+  &[data-action="verification_dns_record"],
+  &[data-action="verification_public_file"],
+  &[data-action="verify"],
+  &[data-action="verification_done"]
+    .form-group:not(:last-child)
+      margin-bottom: 20px
     textarea[readonly="true"]
       background: #fff
     .dns-record
       .form-control
         font-size: $font-size-base
-        height: $font-size-base * 2.7
         &.dns-record-value
-          height: $font-size-base * 4
+          height: $font-size-base * 5
+    .https-hint, .method-alt
+      a
+        color: $gray
+        text-decoration: underline
+    .method-alt
+      font-size: $font-size-small
+      color: $gray
+      line-height: $line-height-computed * 1.5
     .verification-file
       .download-file
         margin-left: 10px
