@@ -11,7 +11,7 @@ class PublisherNotifier
     if !NOTIFICATION_TYPES.include?(@notification_type)
       raise InvalidNotificationTypeError.new("#{notification_type} is an invalid notification_type")
     end
-    @notification_params = notification_params.to_hash.symbolize_keys
+    @notification_params = (notification_params && notification_params.to_hash.symbolize_keys) || {}
     @publisher = publisher
   end
 

@@ -16,6 +16,9 @@ class PublisherLegalForm < ApplicationRecord
 
   after_create :generate_docusign_envelope
 
+  INVALID_BRAVE_STATUS = "void"
+  scope :valid, -> { where(brave_status: nil).or(where.not(brave_status: INVALID_BRAVE_STATUS)) }
+
   def self.find_using_after_sign_token(token)
     raise nil if token.blank?
     legal_form = find_by(after_sign_token: token)
@@ -54,6 +57,12 @@ class PublisherLegalForm < ApplicationRecord
 
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
+  end
+
+  def void
+    return nil if self.brave_status == INVALID_BRAVE_STATUS
+    self.brave_status = INVALID_BRAVE_STATUS
+    save!
   end
 
   private

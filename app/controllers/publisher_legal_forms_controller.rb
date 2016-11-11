@@ -9,11 +9,11 @@ class PublisherLegalFormsController < ApplicationController
   layout "headless", only: %i(after_sign)
 
   def new
-    @legal_form = current_publisher.build_legal_form
+    @legal_form = current_publisher.legal_forms.build
   end
 
   def create
-    @legal_form = current_publisher.build_legal_form(legal_form_params)
+    @legal_form = current_publisher.legal_forms.build(legal_form_params)
     if @legal_form.save
       redirect_to(@legal_form)
     else
