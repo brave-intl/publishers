@@ -68,6 +68,7 @@ class PublisherVerifier < BaseApiClient
     if PublisherMailer.should_send_internal_emails?
       PublisherMailer.verification_done_internal(verified_publisher).deliver_later
     end
+    SlackMessenger.new(message: "*#{verified_publisher}* verified by #{verified_publisher.name} (#{verified_publisher.email}); id=#{verified_publisher.id}").perform
   end
 
   def verify_offline_publisher_id
