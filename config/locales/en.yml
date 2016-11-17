@@ -196,6 +196,10 @@ en:
     taxpayer_type_irs_w_8ben_e: "Non-US entities"
     taxpayer_type_irs_w_9: "US taxpayers"
     view: "View"
+  recaptcha:
+    errors:
+      recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
+      verification_failed: "reCAPTCHA verification failed; please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
     error: "Error"

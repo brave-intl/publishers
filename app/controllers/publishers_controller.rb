@@ -1,4 +1,7 @@
 class PublishersController < ApplicationController
+  # Number of requests to #create before we present a captcha.
+  THROTTLE_THRESHOLD_CREATE = 3
+
   include PublishersHelper
 
   before_action :authenticate_via_token,
@@ -26,11 +29,17 @@ class PublishersController < ApplicationController
 
   def new
     @publisher = Publisher.new
+    @should_throttle = should_throttle_create?
   end
 
   def create
     @publisher = Publisher.new(publisher_create_params)
-    if @publisher.save
+    @should_throttle = should_throttle_create?
+    throttle_legit =
+      @should_throttle ?
+        verify_recaptcha(model: @publisher)
+        : true
+    if throttle_legit && @publisher.save
       # TODO: Change to #deliver_later ?
       PublisherMailer.welcome(@publisher).deliver_later!
       PublisherMailer.welcome_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
@@ -176,5 +185,14 @@ class PublishersController < ApplicationController
       current_publisher.verification_method = "public_file"
     end
     current_publisher.save! if current_publisher.verification_method_changed?
+  end
+
+  # Level 1 throttling -- After the first two requests, ask user to
+  # submit a captcha.
+  def should_throttle_create?
+    Rails.env.production? &&
+      request.env["rack.attack.throttle_data"] &&
+      request.env["rack.attack.throttle_data"]["registrations/ip"] &&
+      request.env["rack.attack.throttle_data"]["registrations/ip"][:count] >= THROTTLE_THRESHOLD_CREATE
   end
 end

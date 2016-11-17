@@ -103,6 +103,9 @@ end
 group :production, :staging do
   # Make cracking a little bit harder
   gem "rack-attack", "~> 5.0"
+
+  # I love captchas
+  gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

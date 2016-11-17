@@ -19,5 +19,8 @@
         .form-group
           = f.label(:phone, "Phone (Optional)", class: "control-label")
           = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001")
+        - if @should_throttle
+          .form-group
+            = recaptcha_tags
         .button.form-group
           = f.submit(I18n.translate("shared.save_and_continue"), class: "btn btn-block btn-primary")
