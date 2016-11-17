@@ -100,6 +100,11 @@ group :production do
   gem "newrelic_rpm", "~> 3.16"
 end
 
+group :production, :staging do
+  # Make cracking a little bit harder
+  gem "rack-attack", "~> 5.0"
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
