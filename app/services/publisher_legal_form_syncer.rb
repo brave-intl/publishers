@@ -22,7 +22,6 @@ class PublisherLegalFormSyncer
   end
 
   def save_form_to_s3
-    encrypted_s3 =
     s3_key = generate_s3_key
     s3_object = EncryptedS3Store.new.put_object(data: envelope_document_pdf, key: s3_key)
     publisher_legal_form.s3_key = s3_key
