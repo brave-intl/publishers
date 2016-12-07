@@ -4,7 +4,7 @@ App for [publishers.brave.com](https://publishers.brave.com).
 
 ### Dependencies
 
-1. Ruby 2.3.2. For a Ruby version manager try [rbenv](https://github.com/rbenv/rbenv).
+1. Ruby 2.3.3. For a Ruby version manager try [rbenv](https://github.com/rbenv/rbenv).
 2. Postgresql 9.5+: `brew install postgresql`
 3. Redis: `brew install redis`
 4. (ruby) bundler: `gem install bundler`
