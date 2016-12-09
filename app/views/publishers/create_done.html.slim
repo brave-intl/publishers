@@ -3,7 +3,7 @@
 
 .row
   .col-center.col-xs-12.col-md-7
-    fieldset
-      legend= I18n.t("publishers.create_done_header")
-      .help-block= I18n.t("publishers.create_done_body_thanks")
-      .help-block= I18n.t("publishers.create_done_body_confirm_email", email: @publisher_email)
+    h4 class="thankyou-title"
+      span class="thankyou-title-orange"= I18n.t("publishers.create_done_body_thank_you")
+      span= I18n.t("publishers.create_done_body_for_submitting")
+    .help-block= I18n.t("publishers.create_done_body_confirm_email", email: @publisher_email)
