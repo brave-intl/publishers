@@ -1,5 +1,5 @@
 - content_for(:navbar_content) do
-  span Step 2 of 4: #{I18n.t("publishers.verification_header")}
+  span Step 2 of 4: #{I18n.t("publishers.new_header")}
 
 .row
   .col-center.col-xs-7.col-md-7.dns-record
@@ -28,8 +28,3 @@
           .col-sm-6
             = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
               = f.submit(I18n.t("publishers.verify_button"), class: "btn btn-block btn-primary btn-sm")
-          .col-sm-6.method-alt
-            = I18n.t("publishers.verification_option_alt_help")
-            = " "
-            = link_to(I18n.t("publishers.verification_option_alt_public_file"), verification_public_file_publishers_path)
-            = "."

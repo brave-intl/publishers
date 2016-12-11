@@ -5,23 +5,6 @@
 
 p.hint= I18n.t("publishers.verification_help_definition")
 p.hint= I18n.t("publishers.verification_help_purpose")
-
-h4= I18n.t("publishers.verification_option_public_file")
-p.hint
-  == I18n.t("publishers.verification_option_public_https_hint")
-ol
-  li
-    = "#{I18n.t("publisher_mailer.verification.download_attached_file")}: brave-payments-verification.txt"
-  li
-    == I18n.t("publishers.verification_option_public_file_help_directory", directory: publisher_verification_file_directory(@publisher))
-  li
-    = I18n.t("publishers.verification_option_public_file_help_upload")
-  li
-    = I18n.t("publishers.verification_option_public_file_help_confirm")
-    = " "
-    = link_to(publisher_verification_file_url(@publisher), publisher_verification_file_url(@publisher), target: "_blank")
-  li
-    = I18n.t("publisher_mailer.verification.click_verify")
     
   h4.option-dns-record
     = I18n.t("publishers.verification_option_dns_record")
