@@ -4,23 +4,30 @@
 .row
   .col-center.col-xs-7.col-md-7.dns-record
     fieldset
-      legend= I18n.t("publishers.verification_option_dns_record_use")
-      .help-block= I18n.t("publishers.verification_dns_record_help")
+      legend=I18n.t("publishers.verification_option_dns_record_add_new") + current_publisher.brave_publisher_id
+      .help-block
+        span= I18n.t("publishers.verification_dns_record_help")
+        span= current_publisher.brave_publisher_id
+        strong= I18n.t("publishers.verification_dns_record_help_2")
+
+      .help-block
+        span= I18n.t("publishers.verification_dns_record_instruction1")
+        strong= current_publisher.brave_publisher_id
+        span= I18n.t("publishers.verification_dns_record_instruction2")
 
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_name")
       span.form-control
-        span= current_publisher.brave_publisher_id
-        span.hint= " #{I18n.t("publishers.verification_option_dns_record_name_help")}"
+        span.color-orange= "@"
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_type")
-      span.form-control TXT
+      span.color-orange.form-control TXT
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_value")
-      textarea.dns-record-value.form-control readonly="true"
+      textarea.color-orange.dns-record-value.form-control readonly="true"
         = publisher_verification_dns_record(current_publisher)
     .form-group
-      p= I18n.t("publishers.verification_dns_record_verify")
+      .help-block= I18n.t("publishers.verification_dns_record_verify")
 
     .form-group
       .form-horizontal
@@ -28,3 +35,5 @@
           .col-sm-6
             = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
               = f.submit(I18n.t("publishers.verify_button"), class: "btn btn-block btn-primary btn-sm")
+        .form-group
+          .help-block=I18n.t("publishers.verification_option_dns_record_note")
