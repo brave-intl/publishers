@@ -9,8 +9,8 @@ Rails.application.routes.draw do
       patch :payment_info, action: :update_payment_info, as: :update_payment_info
       get :verification
       get :verification_dns_record
+      get :verification_pending
       get :verification_done
-      get :verification_public_file
       patch :verify
     end
   end

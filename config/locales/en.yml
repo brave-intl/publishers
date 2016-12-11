@@ -112,13 +112,15 @@ en:
     verification_option_dns_record_value: "Value (or TXT Value / Data):"
     verification_option_dns_record_add_new: "Add a new TXT record for "
     verification_option_dns_record_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your DNS is hosted."
+    verification_pending_header: "Now verifying your new DNS record…"
+    verification_pending_help1: "Verification can take several minutes or several hours, depending on your DNS host location. The Brave server will keep trying for 24 hours until there is a response."
+    verification_pending_help2: "You will receive an email confirmation upon verification."
     verification_required: "To continue please verify ownership of your domain."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
     verification_helper_dns_contact: "Contact Brave Support"
     verify_button: "Verify DNS Record"
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
-    verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
     verify_success: "Verification successful."
   notification_mailer:
     publisher_form_retry:

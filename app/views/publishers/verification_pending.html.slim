@@ -1,0 +1,11 @@
+- content_for(:navbar_content) do
+  span Step 2 of 4: #{I18n.t("publishers.new_header")}
+
+.row
+  .col-center.col-xs-7.col-md-7
+    h4 class="section-title"
+      span=I18n.t("publishers.verification_pending_header")
+
+    div class="help-block"=I18n.t("publishers.verification_pending_help1")
+
+    div class="help-block"=I18n.t("publishers.verification_pending_help2")
