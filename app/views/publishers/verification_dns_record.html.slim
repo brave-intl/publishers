@@ -4,19 +4,21 @@
 .row
   .col-center.col-xs-7.col-md-7.dns-record
     fieldset
-      legend= I18n.t("publishers.verification_option_dns_record_add_new")
+      legend=I18n.t("publishers.verification_option_dns_record_add_new") + current_publisher.brave_publisher_id
       .help-block
         span= I18n.t("publishers.verification_dns_record_help")
+        span= current_publisher.brave_publisher_id
         strong= I18n.t("publishers.verification_dns_record_help_2")
-        span= I18n.t("publishers.verification_dns_record_help_3")
 
-      .help-block= I18n.t("publishers.verification_dns_record_instruction")
+      .help-block
+        span= I18n.t("publishers.verification_dns_record_instruction1")
+        strong= current_publisher.brave_publisher_id
+        span= I18n.t("publishers.verification_dns_record_instruction2")
 
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_name")
       span.form-control
-        span.color-orange= current_publisher.brave_publisher_id
-        span.color-orange.hint= " #{I18n.t("publishers.verification_option_dns_record_name_help")}"
+        span.color-orange= "@"
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_type")
       span.color-orange.form-control TXT
