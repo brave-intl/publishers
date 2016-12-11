@@ -4,7 +4,6 @@ body[data-controller="publishers"]
 
   &[data-action="verification"],
   &[data-action="verification_dns_record"],
-  &[data-action="verification_public_file"],
   &[data-action="verify"],
   &[data-action="verification_done"]
     .form-group:not(:last-child)
@@ -24,11 +23,6 @@ body[data-controller="publishers"]
       font-size: $font-size-small
       color: $gray
       line-height: $line-height-computed * 1.5
-    .verification-file
-      .download-file
-        margin-left: 10px
-      .file-content
-        height: $font-size-base * $line-height-base * 5
     .publisher-domain-summary
       margin-bottom: 18px
       .publisher-domain-name

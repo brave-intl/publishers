@@ -24,18 +24,6 @@ module PublishersHelper
     end
   end
 
-  def publisher_verification_file_content(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_file_content
-  end
-
-  def publisher_verification_file_directory(publisher)
-    "<span class=\"strong-line\">https:</span>//#{publisher.brave_publisher_id}/.well-known/"
-  end
-
-  def publisher_verification_file_url(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
-  end
-
   def publisher_next_step_path(publisher)
     return verification_publishers_path if !publisher.verified?
     return verification_done_publishers_path if publisher.bitcoin_address.blank?

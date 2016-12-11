@@ -16,7 +16,6 @@ class PublishersController < ApplicationController
   before_action :require_unverified_publisher,
     only: %i(verification
              verification_dns_record
-             verification_public_file
              verify)
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
@@ -24,8 +23,7 @@ class PublishersController < ApplicationController
              update_payment_info
              verification_done)
   before_action :update_publisher_verification_method,
-    only: %i(verification_dns_record
-             verification_public_file)
+    only: %i(verification_dns_record)
 
   def new
     @publisher = Publisher.new
@@ -62,10 +60,6 @@ class PublishersController < ApplicationController
   def verification_dns_record
   end
 
-  # Verification method
-  def verification_public_file
-  end
-
   # Shown after verification is completed to encourage users to submit
   # payment information.
   def verification_done
@@ -95,12 +89,6 @@ class PublishersController < ApplicationController
   rescue Faraday::Error
     flash.now[:alert] = I18n.t("shared.api_error")
     render(publisher_verification_action)
-  end
-
-  def download_verification_file
-    generator = PublisherVerificationFileGenerator.new(publisher: current_publisher)
-    content = generator.generate_file_content
-    send_data(content, filename: generator.filename)
   end
 
   # Entrypoint for the authenticated re-login link.
@@ -181,8 +169,6 @@ class PublishersController < ApplicationController
     case params[:action]
     when "verification_dns_record"
       current_publisher.verification_method = "dns_record"
-    when "verification_public_file"
-      current_publisher.verification_method = "public_file"
     end
     current_publisher.save! if current_publisher.verification_method_changed?
   end
