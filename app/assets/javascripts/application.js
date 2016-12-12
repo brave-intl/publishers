@@ -10,4 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require clipboard
 //= require_tree .
+
+window.onload = function () {
+  var copyButtons = document.querySelectorAll('.copy-button')
+  var clipboard = new Clipboard(copyButtons)
+}

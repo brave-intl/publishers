@@ -18,14 +18,17 @@
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_name")
       span.form-control
-        span.color-orange= "@"
+        span.color-orange#name= "@"
+      button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#name" Copy to Clipboard
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_type")
-      span.color-orange.form-control TXT
+      span.color-orange.form-control#type TXT
+      button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#type" Copy to Clipboard
     .form-group
       label.control-label= I18n.t("publishers.verification_option_dns_record_value")
-      textarea.color-orange.dns-record-value.form-control readonly="true"
+      textarea.color-orange.dns-record-value.form-control#value readonly="true"
         = publisher_verification_dns_record(current_publisher)
+      button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value" Copy to Clipboard
     .form-group
       .help-block= I18n.t("publishers.verification_dns_record_verify")
 

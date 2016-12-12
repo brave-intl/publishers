@@ -71,6 +71,7 @@ GEM
       sass (>= 3.3.4)
     builder (3.2.2)
     byebug (9.0.6)
+    clipboard-rails (1.5.15)
     coderay (1.1.1)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
@@ -289,6 +290,7 @@ DEPENDENCIES
   bitcoin-ruby (~> 0.0.8)
   bootstrap-sass (~> 3.3.6)
   byebug
+  clipboard-rails
   devise (~> 4.2.0)
   dnsruby
   docusign_rest (~> 0.1.1)!
