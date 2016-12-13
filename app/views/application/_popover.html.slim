@@ -1,0 +1,7 @@
+a.btn.popover-container.dns-list-button href="#popover"
+  span.glyphicon.glyphicon-question-sign
+
+section.modal--show#popover tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true"
+  .modal-inner
+    .modal-content= yield
+  a.modal-close href="#!" title="Close this modal" data-close="Close" data-dismiss="modal" ?
