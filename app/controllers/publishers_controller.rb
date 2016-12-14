@@ -16,7 +16,7 @@ class PublishersController < ApplicationController
   before_action :require_unverified_publisher,
     only: %i(verification
              verification_dns_record
-             verification_pending
+             verification_failed
              verify)
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
@@ -78,18 +78,18 @@ class PublishersController < ApplicationController
     else
       i18n_name = "publishers.verify_failed_#{current_publisher.verification_method}"
       flash.now[:alert] = I18n.t(i18n_name)
-      render(:verification_pending)
+      render(:verification_failed)
     end
   rescue PublisherVerifier::VerificationIdMismatch
     flash.now[:alert] = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
-    render(:verification_pending)
+    render(:verification_failed)
   rescue Faraday::Error
     flash.now[:alert] = I18n.t("shared.api_error")
-    render(:verification_pending)
+    render(:verification_failed)
   end
 
   # Verification is still in progress
-  def verification_pending
+  def verification_failed
   end
 
   # Shown after verification is completed to encourage users to submit

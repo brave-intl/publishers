@@ -1,8 +1,22 @@
 - content_for(:navbar_content) do
   span Step 2 of 4: #{I18n.t("publishers.new_header")}
 
+javascript:
+  function submit_for_verification () {
+    var dns_records = document.getElementById('dns_records');
+    var verification_in_progress = document.getElementById('verification_in_progress');
+    var submit = document.getElementById('begin_verification');
+
+    dns_records.style.display = 'none';
+    verification_in_progress.style.display = 'block';
+
+    setTimeout(function () {
+      begin_verification.click();
+    }, 2000);
+  }
+
 .row
-  .col-center.col-xs-7.col-md-7.dns-record
+  .col-center.col-xs-7.col-md-7.dns-record id="dns_records"
     fieldset
       legend=I18n.t("publishers.verification_option_dns_record_add_new") + current_publisher.brave_publisher_id
       .help-block
@@ -36,8 +50,7 @@
       .form-horizontal
         .form-group
           .col-sm-6
-            = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-              = f.submit(I18n.t("publishers.verify_button"), class: "btn btn-block btn-primary btn-sm")
+            button class="btn btn-block btn-primary btn-sm" onclick="submit_for_verification();" =I18n.t("publishers.verify_button")
           = popover_menu do
             h5= I18n.t("publishers.verification_helper_dns_title")
             .help-block= I18n.t("publishers.verification_helper_dns_content")
@@ -92,3 +105,15 @@
               a#contact-link.pull-right href="mailto:support+publishers@brave.com"=I18n.t("publishers.verification_helper_dns_contact")
         .form-group
           .help-block=I18n.t("publishers.verification_option_dns_record_note")
+
+  .hidden_form
+    = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
+      = f.submit(id: "begin_verification")
+
+  .col-center.col-xs-7.col-md-7 id="verification_in_progress"
+    h4 class="section-title"
+    span=I18n.t("publishers.verification_pending_header")
+
+    div class="help-block"=I18n.t("publishers.verification_pending_help1")
+
+    div class="help-block"=I18n.t("publishers.verification_pending_help2")

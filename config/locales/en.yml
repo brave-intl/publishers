@@ -115,6 +115,13 @@ en:
     verification_pending_header: "Now verifying your new DNS record…"
     verification_pending_help1: "Verification can take several minutes or several hours, depending on your DNS host location. The Brave server will keep trying for 24 hours until there is a response."
     verification_pending_help2: "You will receive an email confirmation upon verification."
+
+    verification_failed_header: "Verification could not be completed at this time."
+    verification_failed_help1: "The Brave server will keep checking for up to 24 hours. You will receive an email notification after verification is complete, or has timed out."
+    verification_failed_help2: "If you feel that you have reached this message in error, please edit your DNS record and "
+    verification_failed_help3: "try verification again"
+    verification_failed_help4: "."
+
     verification_required: "To continue please verify ownership of your domain."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
