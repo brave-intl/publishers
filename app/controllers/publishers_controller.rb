@@ -16,6 +16,7 @@ class PublishersController < ApplicationController
   before_action :require_unverified_publisher,
     only: %i(verification
              verification_dns_record
+             verification_failed
              verify)
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
@@ -52,19 +53,15 @@ class PublishersController < ApplicationController
     @publisher_email = session[:created_publisher_email]
   end
 
-  # Domain verification methods -- user chooses one.
+  # User can move forward or will be contacted
   def verification
   end
 
-  # Verification method
+  # Explains how to verify and has button to check
   def verification_dns_record
   end
 
-  # Shown after verification is completed to encourage users to submit
-  # payment information.
-  def verification_done
-  end
-
+  # Tied to button on verification_dns_record
   # Call to Eyeshade to perform verification
   # TODO: Rate limit
   # TODO: Support XHR
@@ -76,19 +73,26 @@ class PublishersController < ApplicationController
     ).perform
     current_publisher.reload
     if current_publisher.verified?
-      flash.notice = I18n.t("publishers.verify_success")
       render(:verification_done)
     else
-      i18n_name = "publishers.verify_failed_#{current_publisher.verification_method}"
-      flash.now[:alert] = I18n.t(i18n_name)
-      render(publisher_verification_action)
+      render(:verification_failed)
     end
   rescue PublisherVerifier::VerificationIdMismatch
-    flash.now[:alert] = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
-    render(publisher_verification_action)
+    @failure_reason = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
+    render(:verification_failed)
   rescue Faraday::Error
-    flash.now[:alert] = I18n.t("shared.api_error")
-    render(publisher_verification_action)
+    @try_again = true
+    @failure_reason = I18n.t("shared.api_error")
+    render(:verification_failed)
+  end
+
+  # Verification is still in progress
+  def verification_failed
+  end
+
+  # Shown after verification is completed to encourage users to submit
+  # payment information.
+  def verification_done
   end
 
   # Entrypoint for the authenticated re-login link.
@@ -154,15 +158,6 @@ class PublishersController < ApplicationController
   def require_verified_publisher
     return if current_publisher.verified?
     redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.verification_required"))
-  end
-
-  # #verify renders this when verification failed
-  def publisher_verification_action
-    if current_publisher.verification_method
-      "verification_#{current_publisher.verification_method}"
-    else
-      "verification"
-    end
   end
 
   def update_publisher_verification_method

@@ -4,6 +4,7 @@ body[data-controller="publishers"]
 
   &[data-action="verification"],
   &[data-action="verification_dns_record"],
+  &[data-action="verification_failed"],
   &[data-action="verify"],
   &[data-action="verification_done"]
     .form-group:not(:last-child)
@@ -28,6 +29,9 @@ body[data-controller="publishers"]
         clear: both
         color: $braveOrange
         font-size: 16px
+    .hidden_form > *,
+    #verification_in_progress
+      display: none
     .https-hint, .method-alt
       a
         color: $gray

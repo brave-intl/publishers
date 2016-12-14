@@ -1,0 +1,24 @@
+- content_for(:navbar_content) do
+  span Step 2 of 4: #{I18n.t("publishers.new_header")}
+
+.row
+  .col-center.col-xs-7.col-md-7
+    h4 class="section-title"
+      span =I18n.t("publishers.verification_failed_header")
+
+    - if @failure_reason
+      div class="help-block"
+        =@failure_reason
+
+      - if @try_again
+        =link_to :controller => "publishers", :action => "verification_dns_record" do
+          =I18n.t("publishers.verification_failed_retry")
+
+    - else
+      div class="help-block"=I18n.t("publishers.verification_failed_help1")
+
+      .help-block
+        span =I18n.t("publishers.verification_failed_help2")
+        =link_to :controller => "publishers", :action => "verification_dns_record" do
+          =I18n.t("publishers.verification_failed_help3")
+        span =I18n.t("publishers.verification_failed_help4")
