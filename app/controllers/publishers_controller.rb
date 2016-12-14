@@ -73,18 +73,16 @@ class PublishersController < ApplicationController
     ).perform
     current_publisher.reload
     if current_publisher.verified?
-      flash.notice = I18n.t("publishers.verify_success")
       render(:verification_done)
     else
-      i18n_name = "publishers.verify_failed_#{current_publisher.verification_method}"
-      flash.now[:alert] = I18n.t(i18n_name)
       render(:verification_failed)
     end
   rescue PublisherVerifier::VerificationIdMismatch
-    flash.now[:alert] = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
+    @failure_reason = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
     render(:verification_failed)
   rescue Faraday::Error
-    flash.now[:alert] = I18n.t("shared.api_error")
+    @try_again = true
+    @failure_reason = I18n.t("shared.api_error")
     render(:verification_failed)
   end
 

@@ -12,6 +12,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+clifton.sh
+dump.rdb
 
 # Ignore Byebug command history file.
 .byebug_history
