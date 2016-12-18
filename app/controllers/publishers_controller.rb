@@ -86,10 +86,6 @@ class PublishersController < ApplicationController
     render(:verification_failed)
   end
 
-  # Verification is still in progress
-  def verification_failed
-  end
-
   # Shown after verification is completed to encourage users to submit
   # payment information.
   def verification_done

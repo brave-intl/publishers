@@ -2,7 +2,7 @@
   span Step 2 of 4: #{I18n.t("publishers.new_header")}
 
 javascript:
-  function submit_for_verification () {
+  function submitForVerification () {
     var dns_records = document.getElementById('dns_records');
     var verification_in_progress = document.getElementById('verification_in_progress');
     var submit = document.getElementById('begin_verification');
@@ -50,7 +50,7 @@ javascript:
       .form-horizontal
         .form-group
           .col-sm-6
-            button class="btn btn-block btn-primary btn-sm" onclick="submit_for_verification();" =I18n.t("publishers.verify_button")
+            button class="btn btn-block btn-primary btn-sm" onclick="submitForVerification();" =I18n.t("publishers.verify_button")
           = popover_menu do
             h5= I18n.t("publishers.verification_helper_dns_title")
             .help-block= I18n.t("publishers.verification_helper_dns_content")
