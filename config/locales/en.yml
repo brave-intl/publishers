@@ -216,5 +216,5 @@ en:
     save_and_continue: "Save and continue"
   static:
     landing_header: "Welcome to Brave Payments"
-    landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified."
+    landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified. Once fully verified, you will begin to receive daily micropayments in your Bitcoin wallet."
     landing_button: "Start verification"
