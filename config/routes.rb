@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get :verification
       get :verification_dns_record
       get :verification_done
+      get :verification_public_file
       patch :verify
     end
   end
