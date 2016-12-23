@@ -16,6 +16,7 @@ class PublishersController < ApplicationController
   before_action :require_unverified_publisher,
     only: %i(verification
              verification_dns_record
+             verification_public_file
              verification_failed
              verify)
   before_action :require_verified_publisher,
@@ -24,7 +25,8 @@ class PublishersController < ApplicationController
              update_payment_info
              verification_done)
   before_action :update_publisher_verification_method,
-    only: %i(verification_dns_record)
+    only: %i(verification_dns_record
+             verification_public_file)
 
   def new
     @publisher = Publisher.new
@@ -61,6 +63,10 @@ class PublishersController < ApplicationController
   def verification_dns_record
   end
 
+  # Verification method
+  def verification_public_file
+  end
+
   # Tied to button on verification_dns_record
   # Call to Eyeshade to perform verification
   # TODO: Rate limit
@@ -89,6 +95,12 @@ class PublishersController < ApplicationController
   # Shown after verification is completed to encourage users to submit
   # payment information.
   def verification_done
+  end
+
+  def download_verification_file
+    generator = PublisherVerificationFileGenerator.new(publisher: current_publisher)
+    content = generator.generate_file_content
+    send_data(content, filename: generator.filename)
   end
 
   # Entrypoint for the authenticated re-login link.
@@ -160,6 +172,8 @@ class PublishersController < ApplicationController
     case params[:action]
     when "verification_dns_record"
       current_publisher.verification_method = "dns_record"
+    when "verification_public_file"
+      current_publisher.verification_method = "public_file"
     end
     current_publisher.save! if current_publisher.verification_method_changed?
   end
