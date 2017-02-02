@@ -28,4 +28,4 @@ p.header-help
 
 p.hint
   span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
-  = link_to(Rails.application.secrets[:support_email], Rails.application.secrets[:support_email])
+  = mail_to(Rails.application.secrets[:support_email])
