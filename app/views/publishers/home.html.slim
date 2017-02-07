@@ -18,10 +18,10 @@
         - else
           div= I18n.t("publishers.status_to_receive_payments")
           ul
-          - if current_publisher.bitcoin_address.blank?
-            li= I18n.t("publishers.status_bitcoin_address_required")
-          - if !current_publisher.legal_form_completed?
-            li= I18n.t("publishers.status_legal_form_required")
+            - if current_publisher.bitcoin_address.blank?
+              li= I18n.t("publishers.status_bitcoin_address_required")
+            - if !current_publisher.legal_form_completed?
+              li= I18n.t("publishers.status_legal_form_required")
 
       h4= I18n.t("publishers.balance_pending")
       .attribute-value.balance
