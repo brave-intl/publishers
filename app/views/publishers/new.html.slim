@@ -17,8 +17,8 @@
           = f.label(:email, class: "control-label")
           = f.email_field(:email, class: "form-control", placeholder: "alice@example.com", required: true)
         .form-group
-          = f.label(:phone, "Phone (Optional)", class: "control-label")
-          = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001")
+          = f.label(:phone, class: "control-label")
+          = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001", required: true)
         - if @should_throttle
           .form-group
             = recaptcha_tags
