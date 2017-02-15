@@ -11,7 +11,7 @@ class PublisherDomainNormalizer < BaseApiClient
     url = "http://#{domain}"
     response = connection.get do |request|
       request.params["url"] = url
-      request.url("/v1/publisher/identity")
+      request.url("/v2/publisher/identity")
     end
     response_h = JSON.parse(response.body)
     # If the normalized publisher ID is missing, it's on the exclusion list.
