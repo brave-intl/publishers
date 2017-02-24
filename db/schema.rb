@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161111014309) do
+ActiveRecord::Schema.define(version: 20170224024142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20161111014309) do
     t.string   "encrypted_s3_key_iv"
     t.datetime "docusign_envelope_document_gotten_at"
     t.string   "brave_status"
+    t.string   "encrypted_form_fields_s3_key"
+    t.string   "encrypted_form_fields_s3_key_iv"
     t.index ["after_sign_token"], name: "index_publisher_legal_forms_on_after_sign_token", using: :btree
     t.index ["publisher_id"], name: "index_publisher_legal_forms_on_publisher_id", using: :btree
   end
