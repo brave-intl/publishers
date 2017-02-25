@@ -4,6 +4,7 @@ class PublisherLegalForm < ApplicationRecord
 
   has_paper_trail
   attr_encrypted :s3_key, key: :encryption_key
+  attr_encrypted :form_fields_s3_key, key: :encryption_key
 
   belongs_to :publisher
 
