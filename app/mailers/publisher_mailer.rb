@@ -2,6 +2,15 @@ class PublisherMailer < ApplicationMailer
   include PublishersHelper
   add_template_helper(PublishersHelper)
 
+  def login_email(publisher)
+    @publisher = publisher
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
+
   # TODO: Remove me. Deprecated.
   # Contains instructions on how to verify domain.
   # Should be safe to forward to webmaster / IT peeps.
@@ -32,7 +41,7 @@ class PublisherMailer < ApplicationMailer
 
   def verification_done(publisher)
     @publisher = publisher
-    @private_reauth_url = publisher_private_reauth_url(@publisher)
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
@@ -60,7 +69,7 @@ class PublisherMailer < ApplicationMailer
   # Contains registration details and a private reauthentication link
   def welcome(publisher)
     @publisher = publisher
-    @private_reauth_url = publisher_private_reauth_url(@publisher)
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
       subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)

@@ -93,6 +93,15 @@ group :development do
   # gem "spring-watcher-listen", "~> 2.0.0"
 end
 
+group :test do
+  # Clean state in-between tests which modify the DB
+  gem "database_cleaner"
+  # Sweet REPL
+  gem "pry", require: true
+  # Manipulate time for tests
+  gem "timecop"
+end
+
 group :production do
   # App monitoring
   gem "newrelic_rpm", "~> 3.16"

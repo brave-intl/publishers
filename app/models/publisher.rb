@@ -25,7 +25,6 @@ class Publisher < ApplicationRecord
 
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_brave_publisher_id, if: -> { !persisted? }
-  before_create :generate_authentication_token
   after_create :generate_verification_token
   before_save :api_update_bitcoin_address,
     if: -> { bitcoin_address_present_and_changed? }
@@ -73,10 +72,6 @@ class Publisher < ApplicationRecord
 
   def bitcoin_address_present_and_changed?
     bitcoin_address.present? && bitcoin_address_changed?
-  end
-
-  def generate_authentication_token
-    self.authentication_token = SecureRandom.hex(32)
   end
 
   def generate_verification_token

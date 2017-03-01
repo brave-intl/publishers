@@ -10,3 +10,19 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+module ActionDispatch
+  class IntegrationTest
+    setup do
+      DatabaseCleaner.start
+    end
+
+    teardown do
+      DatabaseCleaner.clean
+    end
+  end
+end
+
+# One time test suite setup.
+DatabaseCleaner.strategy = :transaction
+DatabaseCleaner.clean_with(:truncation)

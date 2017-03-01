@@ -13,8 +13,8 @@ en:
       locked: "Your account is locked."
       last_attempt: "You have one more attempt before your account is locked."
       not_found_in_database: "Invalid %{authentication_keys} or password."
-      timeout: "Your session has expired. To continue please initiate a new verification or resume an existing one (check the confirmation email)."
-      unauthenticated: "To view this please initiate a new verification or resume an existing one (check the confirmation email)."
+      timeout: "Your session has expired. To continue please initiate a new verification or resume an existing one."
+      unauthenticated: "To view this please initiate a new verification or resume an existing one."
       unconfirmed: "To continue please confirm your email address."
     mailer:
       confirmation_instructions:

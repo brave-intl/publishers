@@ -1,0 +1,14 @@
+/ Sent when user requests a login link via Publishers #create_auth_token
+- content_for(:title) do
+  h3= I18n.t("publisher_mailer.login_email.title")
+
+p= I18n.t("publisher_mailer.login_email.body_1")
+p= I18n.t("publisher_mailer.login_email.body_2")
+p= I18n.t("publisher_mailer.login_email.body_3")
+
+h4= "#{I18n.t("publisher_mailer.shared.private_access_link")}:"
+p= link_to(@private_reauth_url, @private_reauth_url)
+
+p.hint
+  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  = mail_to(Rails.application.secrets[:support_email])

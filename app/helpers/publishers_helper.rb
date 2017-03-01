@@ -45,8 +45,9 @@ module PublishersHelper
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
-  def publisher_private_reauth_url(publisher)
-    publisher_url(publisher, token: publisher.authentication_token)
+  def generate_publisher_private_reauth_url(publisher)
+    token = PublisherTokenGenerator.new(publisher: publisher).perform
+    publisher_url(publisher, token: token)
   end
 
   def publisher_verification_dns_record(publisher)

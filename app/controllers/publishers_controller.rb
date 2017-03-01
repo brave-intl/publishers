@@ -1,6 +1,7 @@
 class PublishersController < ApplicationController
   # Number of requests to #create before we present a captcha.
   THROTTLE_THRESHOLD_CREATE = 3
+  THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN = 3
 
   include PublishersHelper
 
@@ -8,11 +9,15 @@ class PublishersController < ApplicationController
     only: %i(show)
   before_action :authenticate_publisher!,
     except: %i(create
+               create_auth_token
                create_done
-               new)
+               new
+               new_auth_token)
   before_action :require_unauthenticated_publisher,
     only: %i(create
-             new)
+             create_auth_token
+             new
+             new_auth_token)
   before_action :require_unverified_publisher,
     only: %i(verification
              verification_dns_record
@@ -53,6 +58,35 @@ class PublishersController < ApplicationController
 
   def create_done
     @publisher_email = session[:created_publisher_email]
+  end
+
+  # "Magic sign in link" / One time sign-in token via email
+  def new_auth_token
+    @publisher = Publisher.new
+  end
+
+  def create_auth_token
+    @publisher = Publisher.new(publisher_create_auth_token_params)
+    @should_throttle = should_throttle_create_auth_token?
+    throttle_legit =
+      @should_throttle ?
+        verify_recaptcha(model: @publisher)
+        : true
+    if !throttle_legit
+      render(:new_auth_token)
+      return
+    end
+
+    emailer = PublisherLoginLinkEmailer.new(
+      brave_publisher_id: publisher_create_auth_token_params[:brave_publisher_id],
+      email: publisher_create_auth_token_params[:email]
+    )
+    if emailer.perform
+      # Success shown in view #create_auth_token
+    else
+      flash.now[:alert] = emailer.error
+      render(:new_auth_token)
+    end
   end
 
   # User can move forward or will be contacted
@@ -139,13 +173,32 @@ class PublishersController < ApplicationController
     sign_out(current_publisher) if current_publisher
     return if params[:id].blank? || params[:token].blank?
     publisher = Publisher.find(params[:id])
-    if publisher.authentication_token.present? && publisher.authentication_token == params[:token]
+    if PublisherTokenAuthenticator.new(publisher: publisher, token: params[:token]).perform
       sign_in(:publisher, publisher)
+    else
+      flash[:alert] = I18n.t("publishers.authentication_token_invalid")
     end
+  end
+
+  # Used by #create_auth_token
+  # Kinda copied from Publisher #normalize_brave_publisher_id
+  def normalize_brave_publisher_id(brave_publisher_id)
+    require "faraday"
+    PublisherDomainNormalizer.new(domain: brave_publisher_id).perform
+  rescue PublisherDomainNormalizer::DomainExclusionError
+    "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
+  rescue PublisherDomainNormalizer::OfflineNormalizationError => e
+    e.message
+  rescue Faraday::Error
+    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
   end
 
   def publisher_create_params
     params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone)
+  end
+
+  def publisher_create_auth_token_params
+    params.require(:publisher).permit(:email, :brave_publisher_id)
   end
 
   def publisher_payment_info_params
@@ -179,11 +232,18 @@ class PublishersController < ApplicationController
   end
 
   # Level 1 throttling -- After the first two requests, ask user to
-  # submit a captcha.
+  # submit a captcha. See rack-attack.rb for throttle keys.
   def should_throttle_create?
     Rails.env.production? &&
       request.env["rack.attack.throttle_data"] &&
       request.env["rack.attack.throttle_data"]["registrations/ip"] &&
       request.env["rack.attack.throttle_data"]["registrations/ip"][:count] >= THROTTLE_THRESHOLD_CREATE
+  end
+
+  def should_throttle_create_auth_token?
+    Rails.env.production? &&
+      request.env["rack.attack.throttle_data"] &&
+      request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"] &&
+      request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"][:count] >= THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN
   end
 end

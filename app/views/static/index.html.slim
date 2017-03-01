@@ -8,4 +8,10 @@
   .row.no-gutter
     .col-center.col-xs-12.col-md-8
       .col-no-pad.col-xs-12.col-md-5
-        = link_to(I18n.t("static.landing_button"), new_publisher_path, class: "btn btn-block btn-primary btn-success")
+        p= link_to(I18n.t("static.landing_button"), new_publisher_path, class: "btn btn-block btn-primary btn-success")
+  .row.no-gutter
+    .col-center.col-xs-12.col-md-8
+      h4= I18n.t("static.landing_login_header")
+      p= I18n.t("static.landing_login_body")
+      .col-no-pad.col-xs-12.col-md-5
+        p= link_to(I18n.t("static.landing_login_button"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary")
