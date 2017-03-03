@@ -67,18 +67,7 @@ gem "slim-rails", "~> 3.1"
 gem "uglifier", ">= 1.3.0"
 
 # clipboard.js for rails
-gem 'clipboard-rails'
-
-# gem "therubyracer", platforms: :ruby
-
-# Use jquery as the JavaScript library
-# gem "jquery-rails"
-# JSON APIs
-# gem "jbuilder", "~> 2.5"
-# Redis adapter to run Action Cable in production
-# gem "redis", "~> 3.0"
-# ActiveModel has_secure_password
-# gem "bcrypt", "~> 3.1.7"
+gem "clipboard-rails"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
@@ -86,7 +75,10 @@ group :development, :test do
 end
 
 group :development, :staging do
+  # Offline domain normalization
   gem "domain_name", require: false
+
+  # Offline DNS verification
   gem "dnsruby", require: false
 end
 

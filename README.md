@@ -1,5 +1,7 @@
 App for [publishers.brave.com](https://publishers.brave.com).
 
+[![Build Status](https://travis-ci.org/brave/publishers.svg?branch=master)](https://travis-ci.org/brave/publishers)
+
 ## Development
 
 ### Initial setup
