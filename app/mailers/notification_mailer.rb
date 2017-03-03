@@ -6,7 +6,7 @@ class NotificationMailer < ApplicationMailer
   def publisher_form_retry(publisher, params = {})
     @message = params[:message] if params.present?
     @publisher = publisher
-    @private_reauth_url = publisher_private_reauth_url(@publisher)
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
       subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
@@ -30,7 +30,7 @@ class NotificationMailer < ApplicationMailer
   def publisher_payments_activated(publisher, _params = {})
     @publisher = publisher
     @bitcoin_address = @publisher.bitcoin_address
-    @private_reauth_url = publisher_private_reauth_url(@publisher)
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
       subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)

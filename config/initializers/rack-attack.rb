@@ -47,6 +47,12 @@ if Rails.env.production? || Rails.env.staging?
       end
     end
 
+    throttle("created-auth-tokens/ip", limit: 5, period: 20.seconds) do |req|
+      if req.path == "/publishers/log_in" && req.post?
+        req.ip
+      end
+    end
+
     # Throttle POST requests to /login by email param
     #
     # Key: "rack::attack:#{Time.now.to_i/:period}:logins/email:#{req.email}"

@@ -1,0 +1,8 @@
+- content_for(:navbar_content) do
+  span #{I18n.t("publishers.new_auth_token_header")}
+
+.row
+  .col-center.col-xs-12.col-md-6
+    h4 class="section-title"
+      = I18n.t("publishers.create_auth_token")
+    .help-block= I18n.t("publishers.create_auth_token_body")
