@@ -21,7 +21,7 @@ task :get_publisher_legal_form_fields_s3_urls => [:environment] do
   PublisherLegalForm.find_each do |form|
     next if form.form_fields_s3_key.blank?
     s3_getter = PublisherLegalFormS3Getter.new(publisher_legal_form: form)
-    result[form.id] = s3_getter.get_form_fields_s3_url
+    result[form.publisher_id] = s3_getter.get_form_fields_s3_url
   end
   puts JSON.generate(result)
 end
