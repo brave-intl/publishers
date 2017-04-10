@@ -43,7 +43,6 @@
         - if current_publisher.legal_form_completed?
           span.form-type
             = publisher_legal_form_humanize_form_type(current_publisher.legal_form)
-          = link_to(I18n.t("publisher_legal_forms.view"), current_publisher.legal_form, class: "view-form")
         - else
           = link_to(I18n.t("publisher_legal_forms.submit_tax_form_button"), new_publisher_legal_form_path, class: "btn btn-primary btn-sm col-md-7 col-xs-12")
 
