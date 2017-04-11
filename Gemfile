@@ -29,6 +29,9 @@ gem "gpgme", "~> 2.0", require: false
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
+# Dependency for rails
+gem "nokogiri", "~> 1.7.0"
+
 # Model record auditing
 gem "paper_trail", "~> 5.2.2"
 
@@ -83,10 +86,11 @@ group :development, :staging do
 end
 
 group :development do
+  # Vulnerabilities
+  gem "bundler-audit"
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
-  gem "pry", require: false
   gem "pry-byebug", require: false
   gem "rubocop", require: false
   # gem "spring"
@@ -96,8 +100,6 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-  # Sweet REPL
-  gem "pry", require: true
   # Manipulate time for tests
   gem "timecop"
 end
@@ -105,6 +107,11 @@ end
 group :production do
   # App monitoring
   gem "newrelic_rpm", "~> 3.16"
+end
+
+group :development, :test do
+  # Sweet REPL. To use, drop in "binding.pry" anywhere in code.
+  gem "pry"
 end
 
 group :production, :staging do
