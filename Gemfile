@@ -29,6 +29,9 @@ gem "gpgme", "~> 2.0", require: false
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
+# Dependency for rails
+gem "nokogiri", "~> 1.7.0"
+
 # Model record auditing
 gem "paper_trail", "~> 5.2.2"
 
