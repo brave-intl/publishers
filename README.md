@@ -51,3 +51,7 @@ Visit http://localhost:5000 to check it out!
 ### Testing emails locally
 
 - [mailcatcher](https://github.com/sj26/mailcatcher) runs a local SMTP server and web UI. `gem install mailcatcher` then run `mailcatcher`.
+
+### Security
+
+- Check for gem vulnerabilities: `bundle exec bundle-audit check --update`
