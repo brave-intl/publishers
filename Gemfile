@@ -91,7 +91,6 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
-  gem "pry", require: false
   gem "pry-byebug", require: false
   gem "rubocop", require: false
   # gem "spring"
@@ -101,8 +100,6 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-  # Sweet REPL
-  gem "pry", require: true
   # Manipulate time for tests
   gem "timecop"
 end
@@ -110,6 +107,11 @@ end
 group :production do
   # App monitoring
   gem "newrelic_rpm", "~> 3.16"
+end
+
+group :development, :test do
+  # Sweet REPL. To use, drop in "binding.pry" anywhere in code.
+  gem "pry"
 end
 
 group :production, :staging do
