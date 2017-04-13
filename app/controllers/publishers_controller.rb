@@ -194,7 +194,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_create_params
-    params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone)
+    params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone, :show_verification_status)
   end
 
   def publisher_create_auth_token_params
