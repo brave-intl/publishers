@@ -19,6 +19,11 @@
         .form-group
           = f.label(:phone, class: "control-label")
           = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001", required: true)
+        .form-group
+          = f.label(:show_verification_status) do
+            = f.check_box(:show_verification_status, class: "control-checkbox")
+            text &nbsp;
+            = I18n.t("activerecord.attributes.publisher.show_verification_status")
         - if @should_throttle
           .form-group
             = recaptcha_tags
