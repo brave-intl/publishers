@@ -15,3 +15,13 @@ verified:
   phone_normalized: "+14159001421"
   verification_token: "e3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
   verified: true
+
+stale:
+  created_at: 2017-01-01
+  updated_at: 2017-01-01
+  brave_publisher_id: "stale.org"
+  email: "alice@stale.org"
+  name: "Alice the Stale"
+  phone: "4159001422"
+  phone_normalized: "+14159001422"
+  verification_token: "x3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"

@@ -1,6 +1,8 @@
-# For Publishers created within the past 2 weeks, enqueue jobs to verify
-# each unique brave_publisher_id.
+# For Publishers created recently, enqueue jobs to verify each unique
+# brave_publisher_id.
 class EnqueuePublisherVerifications < ActiveJob::Base
+  MAX_AGE = 6.weeks.ago
+
   queue_as :scheduler
 
   def perform
@@ -19,6 +21,7 @@ class EnqueuePublisherVerifications < ActiveJob::Base
     Publisher
       .select(:brave_publisher_id).distinct
       .where.not(brave_publisher_id: Publisher.select(:brave_publisher_id).distinct.where(verified: true))
+      .where(created_at: MAX_AGE..Time.now)
       .pluck(:brave_publisher_id)
   end
 end

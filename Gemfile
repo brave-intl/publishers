@@ -100,8 +100,6 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-  # Manipulate time for tests
-  gem "timecop"
 end
 
 group :production do
