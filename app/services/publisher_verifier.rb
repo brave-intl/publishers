@@ -17,7 +17,7 @@ class PublisherVerifier < BaseApiClient
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     # Will raise in case of error.
     response = connection.get do |request|
-      request.params["backgroundP"] = 1 if !attended
+      request.params["backgroundP"] = "true" if !attended
       request.url("/v1/publishers/#{brave_publisher_id}/verify")
     end
     response_hash = JSON.parse(response.body)
