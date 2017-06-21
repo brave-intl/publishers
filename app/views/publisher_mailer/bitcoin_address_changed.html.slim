@@ -1,3 +1,21 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  p= @publisher.bitcoin_address
+  h3= I18n.t("publisher_mailer.bitcoin_address_changed.title")
+
+p= I18n.t("publisher_mailer.bitcoin_address_changed.body")
+
+p
+  strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
+  = @publisher.brave_publisher_id
+
+p
+  strong.attribute= "#{I18n.t("publisher_mailer.bitcoin_address_changed.new_address")}:"
+  = @publisher.bitcoin_address
+
+p.hint
+  strong.attribute= "#{I18n.t("publisher_mailer.bitcoin_address_changed.previous_address")}:"
+  = @previous_bitcoin_address
+
+p.hint
+  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  = mail_to(Rails.application.secrets[:support_email])

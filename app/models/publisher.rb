@@ -77,9 +77,14 @@ class Publisher < ApplicationRecord
   end
 
   def notify_of_address_change
-    if changes[:bitcoin_address].present? && changes[:bitcoin_address][0].present? && changes[:bitcoin_address][1].present?
-      PublisherMailer.bitcoin_address_changed(self).deliver_later!
-    end
+    return if changes[:bitcoin_address].blank?
+    previous_bitcoin_address = changes[:bitcoin_address][0]
+    new_bitcoin_address = changes[:bitcoin_address][1]
+    return if previous_bitcoin_address.blank? || new_bitcoin_address.blank?
+    PublisherMailer.bitcoin_address_changed(
+      self,
+      previous_bitcoin_address: previous_bitcoin_address
+    ).deliver_later!
   end
 
   def generate_verification_token
