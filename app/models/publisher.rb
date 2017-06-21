@@ -29,6 +29,8 @@ class Publisher < ApplicationRecord
   before_save :api_update_bitcoin_address,
     if: -> { bitcoin_address_present_and_changed? }
 
+  after_update :notify_of_address_change
+
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
   # API call to eyeshade
@@ -72,6 +74,17 @@ class Publisher < ApplicationRecord
 
   def bitcoin_address_present_and_changed?
     bitcoin_address.present? && bitcoin_address_changed?
+  end
+
+  def notify_of_address_change
+    return if changes[:bitcoin_address].blank?
+    previous_bitcoin_address = changes[:bitcoin_address][0]
+    new_bitcoin_address = changes[:bitcoin_address][1]
+    return if previous_bitcoin_address.blank? || new_bitcoin_address.blank?
+    PublisherMailer.bitcoin_address_changed(
+      self,
+      previous_bitcoin_address: previous_bitcoin_address
+    ).deliver_later!
   end
 
   def generate_verification_token
