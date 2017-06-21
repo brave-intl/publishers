@@ -89,4 +89,12 @@ class PublisherMailer < ApplicationMailer
       template_name: "welcome"
     )
   end
+
+  def bitcoin_address_changed(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
 end
