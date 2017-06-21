@@ -178,6 +178,8 @@ en:
       contact_help: "If you have any questions, please contact us"
       private_access_link: "Private access link"
       private_access_link_help: "Use this link to continue and manage publisher registration"
+    bitcoin_address_changed:
+      subject: "[%{brave_publisher_id}] Brave Publisher Bitcoin address has changed"
     login_email:
       body_1: "Someone requested a login link to access your Brave Publisher account."
       body_2: "If this was you, great! The link is below and it will expire on use or after 3 hours."
