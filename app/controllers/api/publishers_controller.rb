@@ -33,7 +33,27 @@ class Api::PublishersController < Api::BaseController
     end
   end
 
+  def create
+    @publisher = Publisher.new(publisher_create_params)
+    @publisher.created_via_api = true
+    if @publisher.save
+      if @publisher.verified
+        PublisherMailer.verification_done(@publisher).deliver_later
+        if PublisherMailer.should_send_internal_emails?
+          PublisherMailer.verification_done_internal(@publisher).deliver_later
+        end
+      end
+      render(json: { message: "success" })
+    else
+      render(json: { message: "error", errors: @publisher.errors }, status: 400)
+    end
+  end
+
   private
+
+  def publisher_create_params
+    params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone, :show_verification_status, :verified)
+  end
 
   def require_valid_legal_form
     @legal_form = @publisher.legal_form
