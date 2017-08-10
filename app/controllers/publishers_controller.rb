@@ -129,6 +129,9 @@ class PublishersController < ApplicationController
   # Shown after verification is completed to encourage users to submit
   # payment information.
   def verification_done
+    @publisher = current_publisher
+    @publisher.uphold_state_token = SecureRandom.hex(64)
+    @publisher.save!
   end
 
   def download_verification_file

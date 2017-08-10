@@ -126,4 +126,39 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
     assert_email_body_matches(matcher: url, email: email)
   end
+
+  test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: PUBLISHER_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+
+    # skip publisher verification
+    publisher.verified = true
+    publisher.save!
+
+    # verify that the state token has not yet been set
+    assert_nil(publisher.uphold_state_token)
+
+    # move right to `verification_done`
+    url = verification_done_publishers_url
+    get(url)
+
+    # verify that a state token has been set
+    publisher.reload
+    assert_not_nil(publisher.uphold_state_token)
+
+    # assert that the state token is included in the uphold authorization url
+    endpoint = Rails.application.secrets[:uphold_authorization_endpoint]
+                   .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
+                   .gsub('<STATE>', publisher.uphold_state_token)
+
+    assert_select("a.btn-primary[href='#{endpoint}']") do |elements|
+      assert_equal(1, elements.length, 'A link with the correct href to Uphold.com is present')
+      assert_equal(elements[0].inner_text, 'Connect with Uphold', 'Link text matches expectations')
+    end
+  end
 end

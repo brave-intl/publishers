@@ -42,7 +42,6 @@ en:
     shared:
       errors: "There were errors saving your request:"
   publishers:
-    add_bitcoin_address: "Add bitcoin address"
     already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
     authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
     balance_error: "Temporarily unavailable"
@@ -59,6 +58,7 @@ en:
     complete_irs_w_9_hint: "United States taxpayers"
     complete_irs_w_8ben: "Complete IRS W-8BEN"
     complete_irs_w_8ben_hint: "Individuals outside the States"
+    connect_with_uphold: "Connect with Uphold"
     contact_person: "Contact person"
     create_done_body_thank_you: "Thank you "
     create_done_body_for_submitting: "for submitting your contact information."
