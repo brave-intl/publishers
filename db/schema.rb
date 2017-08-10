@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170720004738) do
+ActiveRecord::Schema.define(version: 20170810132629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20170720004738) do
     t.datetime "authentication_token_expires_at"
     t.boolean  "show_verification_status",          default: true
     t.boolean  "created_via_api",                   default: false, null: false
+    t.string   "uphold_state_token"
     t.index ["brave_publisher_id"], name: "index_publishers_on_brave_publisher_id", using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
