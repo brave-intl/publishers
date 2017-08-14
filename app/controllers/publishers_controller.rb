@@ -28,7 +28,8 @@ class PublishersController < ApplicationController
     only: %i(edit_payment_info
              home
              update_payment_info
-             verification_done)
+             verification_done,
+             uphold_verified)
   before_action :update_publisher_verification_method,
     only: %i(verification_dns_record
              verification_public_file)
@@ -132,6 +133,37 @@ class PublishersController < ApplicationController
     @publisher = current_publisher
     @publisher.uphold_state_token = SecureRandom.hex(64)
     @publisher.save!
+  end
+
+  def uphold_verified
+    @publisher = current_publisher
+
+    # Ensure the uphold_state_token has been set. If not send back to try again
+    if @publisher.uphold_state_token.blank?
+      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_state_token_does_not_match"))
+      return
+    end
+
+    # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
+    state_token = params[:state]
+    if @publisher.uphold_state_token != state_token
+      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_state_token_does_not_match"))
+      return
+    end
+
+    @publisher.uphold_state_token = nil
+    @publisher.uphold_code = params[:code]
+    @publisher.save!
+
+    ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
+
+    @publisher.reload
+
+    if @publisher.uphold_access_parameters
+      render('publishers/finished')
+    else
+      redirect_to(publisher_next_step_path(@publisher))
+    end
   end
 
   def download_verification_file

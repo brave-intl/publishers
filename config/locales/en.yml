@@ -153,6 +153,7 @@ en:
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
     verification_helper_dns_contact: "Contact Brave Support"
+    verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
     verify_dns_button: "Verify DNS Record"
     verify_button: "Verify"
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."

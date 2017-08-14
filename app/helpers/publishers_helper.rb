@@ -44,8 +44,9 @@ module PublishersHelper
 
   def publisher_next_step_path(publisher)
     return verification_publishers_path if !publisher.verified?
-    return verification_done_publishers_path if publisher.bitcoin_address.blank?
-    return new_publisher_legal_form_path if !publisher.legal_form_completed?
+    # ToDo: Polling page for exchanging uphold_code for uphold_access_parameters
+    # return authorize_uphold_path if publisher.uphold_code && publisher.uphold_access_parameters.blank?
+    return verification_done_publishers_path if publisher.uphold_access_parameters.blank?
 
     home_publishers_path
   end

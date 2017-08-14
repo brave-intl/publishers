@@ -5,6 +5,8 @@ class Publisher < ApplicationRecord
 
   attr_encrypted :bitcoin_address, key: :encryption_key
   attr_encrypted :authentication_token, key: :encryption_key
+  attr_encrypted :uphold_code, key: :encryption_key
+  attr_encrypted :uphold_access_parameters, key: :encryption_key
 
   devise :timeoutable, :trackable
 
