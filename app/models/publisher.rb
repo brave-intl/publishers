@@ -18,6 +18,10 @@ class Publisher < ApplicationRecord
   validates :name, presence: true
   validates :phone_normalized, phony_plausible: true
 
+  # uphold_code is an intermediate step to acquiring uphold_access_parameters
+  # and should be cleared once it has been used to get uphold_access_parameters
+  validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? }
+
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
