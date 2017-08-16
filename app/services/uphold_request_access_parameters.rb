@@ -1,4 +1,8 @@
+require "faraday"
+
 class UpholdRequestAccessParameters
+  class InvalidGrantError < StandardError; end
+
   attr_reader :publisher
 
   def initialize(publisher:)
@@ -7,7 +11,6 @@ class UpholdRequestAccessParameters
 
   def connection
     @connection ||= begin
-      require "faraday"
       Faraday.new(url: api_base_uri) do |faraday|
         faraday.adapter Faraday.default_adapter
         faraday.proxy(proxy_url) if proxy_url.present?
@@ -31,8 +34,17 @@ class UpholdRequestAccessParameters
     end
 
     response.body
+  rescue Faraday::ClientError => e
+    Rails.logger.warn("UpholdRequestAccessParameters ClientError: #{e}")
+    if e.response && e.response[:status] == 400 && e.response[:body] == '{"error":"invalid_grant"}'
+      # The Code was invalid and could not be used to retrieve access parameters. Raise an exception so this
+      # can be handled externally
+      raise InvalidGrantError.new
+    else
+      nil
+    end
   rescue Faraday::Error => e
-    Rails.logger.warn("UpholdRequestAccessToken #perform error: #{e}")
+    Rails.logger.warn("UpholdRequestAccessParameters #perform error: #{e}")
     nil
   end
 

@@ -7,7 +7,6 @@ class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
         publisher: publisher
     ).perform
 
-    # ToDo: UpholdRequestAccessParameters could raise exceptions which could be used to clear the code
     if parameters
       publisher.uphold_access_parameters = parameters
       # The code acquired from https://uphold.com/authorize is only good for one request and times out in 5 minutes
@@ -15,5 +14,9 @@ class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
       publisher.uphold_code = nil
       publisher.save!
     end
+
+  rescue UpholdRequestAccessParameters::InvalidGrantError => e
+    publisher.uphold_code = nil
+    publisher.save!
   end
 end
