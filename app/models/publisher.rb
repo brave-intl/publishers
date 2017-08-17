@@ -3,7 +3,6 @@ class Publisher < ApplicationRecord
 
   has_many :legal_forms, class_name: "PublisherLegalForm"
 
-  attr_encrypted :bitcoin_address, key: :encryption_key
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
@@ -13,7 +12,6 @@ class Publisher < ApplicationRecord
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
-  validates :bitcoin_address, bitcoin_address: true, if: :bitcoin_address_present_and_changed?
   validates :email, email: { strict_mode: true }, presence: true
   validates :name, presence: true
   validates :phone_normalized, phony_plausible: true
@@ -32,10 +30,6 @@ class Publisher < ApplicationRecord
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_brave_publisher_id, if: -> { !persisted? }
   after_create :generate_verification_token
-  before_save :api_update_bitcoin_address,
-    if: -> { bitcoin_address_present_and_changed? }
-
-  after_update :notify_of_address_change
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -61,37 +55,6 @@ class Publisher < ApplicationRecord
   end
 
   private
-
-  def api_update_bitcoin_address
-    wallet_setter = PublisherWalletSetter.new(
-      bitcoin_address: bitcoin_address,
-      publisher: self,
-    )
-    begin
-      wallet_setter.perform
-    rescue Faraday::Error
-      errors.add(
-        :bitcoin_address,
-        I18n.t("activerecord.errors.models.publisher.attributes.bitcoin_address.api_error")
-      )
-      throw(:abort)
-    end
-  end
-
-  def bitcoin_address_present_and_changed?
-    bitcoin_address.present? && bitcoin_address_changed?
-  end
-
-  def notify_of_address_change
-    return if changes[:bitcoin_address].blank?
-    previous_bitcoin_address = changes[:bitcoin_address][0]
-    new_bitcoin_address = changes[:bitcoin_address][1]
-    return if previous_bitcoin_address.blank? || new_bitcoin_address.blank?
-    PublisherMailer.bitcoin_address_changed(
-      self,
-      previous_bitcoin_address: previous_bitcoin_address
-    ).deliver_later!
-  end
 
   def generate_verification_token
     update_attribute(:verification_token, PublisherTokenRequester.new(publisher: self).perform)
