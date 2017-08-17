@@ -90,9 +90,8 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def bitcoin_address_changed(publisher, previous_bitcoin_address:)
+  def uphold_account_changed(publisher)
     @publisher = publisher
-    @previous_bitcoin_address = previous_bitcoin_address
     mail(
       to: @publisher.email,
       subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
