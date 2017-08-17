@@ -18,7 +18,11 @@ class Publisher < ApplicationRecord
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
-  validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? }
+  validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
+
+  # uphold_access_parameters should be cleared once uphold_verified has been set
+  # (see `verify_uphold` method below)
+  validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
@@ -52,6 +56,13 @@ class Publisher < ApplicationRecord
 
   def to_s
     brave_publisher_id
+  end
+
+  def verify_uphold
+    self.uphold_code = nil
+    self.uphold_access_parameters = nil
+    self.uphold_verified = true
+    save!
   end
 
   private
