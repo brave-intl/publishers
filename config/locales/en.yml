@@ -69,7 +69,7 @@ en:
     dashboard: "Dashboard"
     edit_bitcoin_address: "Edit"
     finished_header: "Thank you for registering with Brave Payments!"
-    finished_intro: "You will see an initial transfer to your bitcoin wallet as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
+    finished_intro: "You will see an initial transfer to your Uphold account as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
     finished_try_browser: "Have you tried our web browser? It's free, open source software designed to protect privacy and give publishers a better deal."
     finished_visit_brave_website: "Visit <a href=\"https://brave.com\">brave.com</a> to learn more and <a href=\"https://brave.com/downloads\">download</a>."
     finished_peace_out: "Thanks for all your support, and if you have any questions or feedback let us know at %{support_email}."
