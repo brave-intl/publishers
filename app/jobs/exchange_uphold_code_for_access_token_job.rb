@@ -13,6 +13,8 @@ class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
       # it should now be cleared
       publisher.uphold_code = nil
       publisher.save!
+
+      UploadUpholdAccessParametersJob.perform_later(publisher_id: publisher.id)
     end
 
   rescue UpholdRequestAccessParameters::InvalidGrantError => e

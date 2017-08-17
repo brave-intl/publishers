@@ -2,7 +2,7 @@ require 'test_helper'
 require 'webmock/minitest'
 
 class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
-  test "sets uphold_access_parameters on success" do
+  test "sets uphold_access_parameters and schedules new UploadUpholdAccessParametersJob on success" do
     publisher = publishers(:verified)
     publisher.uphold_code = "foo"
     publisher.uphold_access_parameters = nil
@@ -12,9 +12,11 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
         .with(body: "code=#{publisher.uphold_code}&grant_type=authorization_code")
         .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
-    ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: publisher.id)
-    publisher.reload
+    assert_enqueued_jobs 1, only: UploadUpholdAccessParametersJob do
+      ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: publisher.id)
+    end
 
+    publisher.reload
     assert_nil publisher.uphold_code
     refute_nil publisher.uphold_access_parameters
   end
