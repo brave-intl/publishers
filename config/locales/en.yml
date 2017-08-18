@@ -95,7 +95,7 @@ en:
     status: "Status"
     status_to_receive_payments: "To receive payments you need to:"
     status_can_receive_funds: "You are fully setup to receive Brave Payments."
-    status_bitcoin_address_required: "Add a bitcoin address."
+    status_connect_to_uphold_required: "Connect to an Uphold account."
     status_legal_form_required: "Submit a tax form."
     tax_form: "Tax form"
     verified: "Verified publisher"

@@ -18,33 +18,14 @@
         - else
           div= I18n.t("publishers.status_to_receive_payments")
           ul
-            - if current_publisher.bitcoin_address.blank?
-              li= I18n.t("publishers.status_bitcoin_address_required")
-            - if !current_publisher.legal_form_completed?
-              li= I18n.t("publishers.status_legal_form_required")
+            - if current_publisher.uphold_status != :verified #ToDo: Further breakdown
+              li= I18n.t("publishers.status_connect_to_uphold_required")
 
       h4= I18n.t("publishers.balance_pending")
       .attribute-value.balance
         span.balance-amount= publisher_humanize_balance(current_publisher)
         = " "
         span.approximate-hint.link-hint= I18n.t("publishers.balance_pending_approximate")
-
-      h4= I18n.t("publishers.payment_bitcoin_address")
-      .attribute-value.payment-info.row.no-gutter
-        - if current_publisher.bitcoin_address.present?
-          span.bitcoin-address= current_publisher.bitcoin_address
-        - if current_publisher.bitcoin_address.present?
-          = link_to(I18n.t("publishers.edit_bitcoin_address"), edit_payment_info_publishers_path)
-        - else
-          = link_to(I18n.t("publishers.add_bitcoin_address"), edit_payment_info_publishers_path, class: "btn btn-primary btn-sm col-md-7 col-xs-12")
-
-      h4= PublisherLegalForm.model_name.human 
-      .attribute-value.legal-form.row.no-gutter
-        - if current_publisher.legal_form_completed?
-          span.form-type
-            = publisher_legal_form_humanize_form_type(current_publisher.legal_form)
-        - else
-          = link_to(I18n.t("publisher_legal_forms.submit_tax_form_button"), new_publisher_legal_form_path, class: "btn btn-primary btn-sm col-md-7 col-xs-12")
 
       h4= I18n.t("publishers.contact_person")
       .attribute-value.contact-person
