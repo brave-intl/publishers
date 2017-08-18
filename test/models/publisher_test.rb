@@ -43,4 +43,36 @@ class PublisherTest < ActiveSupport::TestCase
     assert publisher.uphold_verified?
     assert publisher.valid?
   end
+
+  test "verify_uphold_status correctly calculated" do
+    publisher = publishers(:verified)
+
+    # unconnected
+    publisher.uphold_code = nil
+    publisher.uphold_access_parameters = nil
+    publisher.uphold_verified = false
+    assert publisher.valid?
+    assert_equal :unconnected, publisher.uphold_status
+
+    # code_acquired
+    publisher.uphold_code = "foo"
+    publisher.uphold_access_parameters = nil
+    publisher.uphold_verified = false
+    assert publisher.valid?
+    assert_equal :code_acquired, publisher.uphold_status
+
+    # access_parameters_acquired
+    publisher.uphold_code = nil
+    publisher.uphold_access_parameters = "bar"
+    publisher.uphold_verified = false
+    assert publisher.valid?
+    assert_equal :access_parameters_acquired, publisher.uphold_status
+
+    # verified
+    publisher.uphold_code = nil
+    publisher.uphold_access_parameters = nil
+    publisher.uphold_verified = true
+    assert publisher.valid?
+    assert_equal :verified, publisher.uphold_status
+  end
 end

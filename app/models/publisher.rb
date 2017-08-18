@@ -65,6 +65,18 @@ class Publisher < ApplicationRecord
     save!
   end
 
+  def uphold_status
+    if self.uphold_verified
+      :verified
+    elsif !self.uphold_access_parameters.blank?
+      :access_parameters_acquired
+    elsif !self.uphold_code.blank?
+      :code_acquired
+    else
+      :unconnected
+    end
+  end
+
   private
 
   def generate_verification_token
