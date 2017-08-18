@@ -35,4 +35,7 @@ export RECAPTCHA_PRIVATE_KEY=""
 #export SIDEKIQ_PASSWORD=
 export SLACK_WEBHOOK_URL="" # Admin notifications to your Slack.
 export SUPPORT_EMAIL="" # e.g. support@example.com
+export UPHOLD_CLIENT_ID="" # Client ID for registered Uphold application
+export UPHOLD_CLIENT_SECRET="" # Client secret for registered Uphold application
 export UPHOLD_AUTHORIZATION_ENDPOINT="https://sandbox.uphold.com/authorize/<UPHOLD_CLIENT_ID>?scope=cards:write&intention=signup&state=<STATE>"
+export UPHOLD_API_URI="https://api-sandbox.uphold.com" # the API endpoint for Uphold.
