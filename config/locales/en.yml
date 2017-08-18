@@ -109,7 +109,7 @@ en:
     verification_done_intro: "Brave users will now see a verified symbol next to your website domain."
     verification_done_balance: "The current balance for %{publisher} is approximately %{balance}. We have sent you an email with a link to check your balance."
     verification_done_submit_payment_info: "Ready to claim your funds now?"
-    verification_done_submit_payment_info_body: "To claim your funds, you will need to specify your bitcoin wallet and publisher tax status."
+    verification_done_submit_payment_info_body: "To claim your funds you will need to create or connect to an Uphold account."
     verification_form_legend: "Verify website ownership"
     verification_header: "Hello! "
     verification_header_2: "You have been selected for live onboarding."
