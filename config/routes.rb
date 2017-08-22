@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         get "/:brave_publisher_id", action: :index_by_brave_publisher_id, constraints: { brave_publisher_id: %r{[^\/]+} }
         post "/:brave_publisher_id/notifications", action: :notify, constraints: { brave_publisher_id: %r{[^\/]+} }
         patch "/:brave_publisher_id/legal_form", action: :update_legal_form, constraints: { brave_publisher_id: %r{[^\/]+} }
+        delete "/:brave_publisher_id", action: :destroy, as: :destroy, constraints: { brave_publisher_id: %r{[^\/]+} }
       end
     end
   end

@@ -49,6 +49,11 @@ class Api::PublishersController < Api::BaseController
     end
   end
 
+  def destroy
+    Publisher.where(brave_publisher_id: params[:brave_publisher_id], verified: false).destroy_all
+    render(json: { message: "success" })
+  end
+
   private
 
   def publisher_create_params
