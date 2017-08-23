@@ -68,7 +68,16 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def receive_uphold_code(code)
+    self.uphold_state_token = nil
+    self.uphold_code = code
+    self.uphold_access_parameters = nil
+    self.uphold_verified = false
+    save!
+  end
+
   def verify_uphold
+    self.uphold_state_token = nil
     self.uphold_code = nil
     self.uphold_access_parameters = nil
     self.uphold_verified = true

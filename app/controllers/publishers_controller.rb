@@ -150,9 +150,7 @@ class PublishersController < ApplicationController
       return
     end
 
-    @publisher.uphold_state_token = nil
-    @publisher.uphold_code = params[:code]
-    @publisher.save!
+    @publisher.receive_uphold_code(params[:code])
 
     ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
 

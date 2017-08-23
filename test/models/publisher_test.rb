@@ -50,6 +50,21 @@ class PublisherTest < ActiveSupport::TestCase
     assert_equal uphold_state_token, publisher.uphold_state_token, 'uphold_state_token is not regenerated if it already exists'
   end
 
+  test "receive_uphold_code sets uphold_code and clears other uphold fields" do
+    publisher = publishers(:verified)
+    publisher.uphold_state_token = "abc123"
+    publisher.uphold_code = nil
+    publisher.uphold_access_parameters = "bar"
+    publisher.uphold_verified = false
+    publisher.receive_uphold_code('secret!')
+
+    assert_equal 'secret!', publisher.uphold_code
+    assert_nil publisher.uphold_state_token
+    assert_nil publisher.uphold_access_parameters
+    assert publisher.valid?
+    assert_equal :code_acquired, publisher.uphold_status
+  end
+
   test "verify_uphold sets uphold_verified to true and clears uphold_code and uphold_access_parameters" do
     publisher = publishers(:verified)
     publisher.uphold_code = "foo"
