@@ -131,8 +131,7 @@ class PublishersController < ApplicationController
   # payment information.
   def verification_done
     @publisher = current_publisher
-    @publisher.uphold_state_token = SecureRandom.hex(64)
-    @publisher.save!
+    @publisher.prepare_uphold_state_token
   end
 
   def uphold_verified

@@ -33,6 +33,23 @@ class PublisherTest < ActiveSupport::TestCase
     assert_equal [:uphold_access_parameters], publisher.errors.keys
   end
 
+  test "prepare_uphold_state_token generates a new uphold_state_token and clears other uphold fields" do
+    publisher = publishers(:verified)
+    publisher.uphold_code = "foo"
+    publisher.uphold_access_parameters = "bar"
+    publisher.uphold_verified = false
+    publisher.prepare_uphold_state_token
+
+    assert publisher.uphold_state_token
+    assert_nil publisher.uphold_code
+    assert_nil publisher.uphold_access_parameters
+    assert publisher.valid?
+
+    uphold_state_token = publisher.uphold_state_token
+    publisher.prepare_uphold_state_token
+    assert_equal uphold_state_token, publisher.uphold_state_token, 'uphold_state_token is not regenerated if it already exists'
+  end
+
   test "verify_uphold sets uphold_verified to true and clears uphold_code and uphold_access_parameters" do
     publisher = publishers(:verified)
     publisher.uphold_code = "foo"
