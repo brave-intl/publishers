@@ -155,6 +155,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # assert that the state token is included in the uphold authorization url
     endpoint = Rails.application.secrets[:uphold_authorization_endpoint]
                    .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
+                   .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
                    .gsub('<STATE>', publisher.uphold_state_token)
 
     assert_select("a.btn-primary[href='#{endpoint}']") do |elements|
