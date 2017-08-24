@@ -3,18 +3,26 @@ class Publisher < ApplicationRecord
 
   has_many :legal_forms, class_name: "PublisherLegalForm"
 
-  attr_encrypted :bitcoin_address, key: :encryption_key
   attr_encrypted :authentication_token, key: :encryption_key
+  attr_encrypted :uphold_code, key: :encryption_key
+  attr_encrypted :uphold_access_parameters, key: :encryption_key
 
   devise :timeoutable, :trackable
 
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
-  validates :bitcoin_address, bitcoin_address: true, if: :bitcoin_address_present_and_changed?
   validates :email, email: { strict_mode: true }, presence: true
   validates :name, presence: true
   validates :phone_normalized, phony_plausible: true
+
+  # uphold_code is an intermediate step to acquiring uphold_access_parameters
+  # and should be cleared once it has been used to get uphold_access_parameters
+  validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
+
+  # uphold_access_parameters should be cleared once uphold_verified has been set
+  # (see `verify_uphold` method below)
+  validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
@@ -26,10 +34,6 @@ class Publisher < ApplicationRecord
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_brave_publisher_id, if: -> { !persisted? }
   after_create :generate_verification_token
-  before_save :api_update_bitcoin_address,
-    if: -> { bitcoin_address_present_and_changed? }
-
-  after_update :notify_of_address_change
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -54,38 +58,45 @@ class Publisher < ApplicationRecord
     brave_publisher_id
   end
 
-  private
-
-  def api_update_bitcoin_address
-    wallet_setter = PublisherWalletSetter.new(
-      bitcoin_address: bitcoin_address,
-      publisher: self,
-    )
-    begin
-      wallet_setter.perform
-    rescue Faraday::Error
-      errors.add(
-        :bitcoin_address,
-        I18n.t("activerecord.errors.models.publisher.attributes.bitcoin_address.api_error")
-      )
-      throw(:abort)
+  def prepare_uphold_state_token
+    if self.uphold_state_token.nil?
+      self.uphold_state_token = SecureRandom.hex(64)
+      self.uphold_code = nil
+      self.uphold_access_parameters = nil
+      self.uphold_verified = false
+      save!
     end
   end
 
-  def bitcoin_address_present_and_changed?
-    bitcoin_address.present? && bitcoin_address_changed?
+  def receive_uphold_code(code)
+    self.uphold_state_token = nil
+    self.uphold_code = code
+    self.uphold_access_parameters = nil
+    self.uphold_verified = false
+    save!
   end
 
-  def notify_of_address_change
-    return if changes[:bitcoin_address].blank?
-    previous_bitcoin_address = changes[:bitcoin_address][0]
-    new_bitcoin_address = changes[:bitcoin_address][1]
-    return if previous_bitcoin_address.blank? || new_bitcoin_address.blank?
-    PublisherMailer.bitcoin_address_changed(
-      self,
-      previous_bitcoin_address: previous_bitcoin_address
-    ).deliver_later!
+  def verify_uphold
+    self.uphold_state_token = nil
+    self.uphold_code = nil
+    self.uphold_access_parameters = nil
+    self.uphold_verified = true
+    save!
   end
+
+  def uphold_status
+    if self.uphold_verified
+      :verified
+    elsif !self.uphold_access_parameters.blank?
+      :access_parameters_acquired
+    elsif !self.uphold_code.blank?
+      :code_acquired
+    else
+      :unconnected
+    end
+  end
+
+  private
 
   def generate_verification_token
     update_attribute(:verification_token, PublisherTokenRequester.new(publisher: self).perform)

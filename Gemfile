@@ -100,6 +100,8 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
+
+  gem "webmock", "~> 3.0"
 end
 
 group :production do

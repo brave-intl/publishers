@@ -1,6 +1,6 @@
 module PublishersHelper
   def publisher_can_receive_funds?(publisher)
-    publisher.legal_form_completed? && publisher.bitcoin_address.present?
+    publisher.uphold_status == :verified
   end
 
   # balance: Instance of PublisherBalanceGetter::Balance
@@ -14,6 +14,13 @@ module PublishersHelper
 
   def publisher_uri(publisher)
     "https://#{publisher.brave_publisher_id}"
+  end
+
+  def uphold_authorization_endpoint(publisher)
+    Rails.application.secrets[:uphold_authorization_endpoint]
+        .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
+        .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
+        .gsub('<STATE>', publisher.uphold_state_token)
   end
 
   def publisher_humanize_verified(publisher)
@@ -38,8 +45,9 @@ module PublishersHelper
 
   def publisher_next_step_path(publisher)
     return verification_publishers_path if !publisher.verified?
-    return verification_done_publishers_path if publisher.bitcoin_address.blank?
-    return new_publisher_legal_form_path if !publisher.legal_form_completed?
+    # ToDo: Polling page for exchanging uphold_code for uphold_access_parameters
+    # return authorize_uphold_path if publisher.uphold_code && publisher.uphold_access_parameters.blank?
+    return verification_done_publishers_path if publisher.uphold_access_parameters.blank?
 
     home_publishers_path
   end

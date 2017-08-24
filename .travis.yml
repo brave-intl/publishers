@@ -7,4 +7,4 @@ services:
   - postgresql
   - redis-server
 before_script:
-  - psql -c 'create database brave_publishers_test;' -U postgres
+  - RAILS_ENV=test bundle exec rake db:setup
