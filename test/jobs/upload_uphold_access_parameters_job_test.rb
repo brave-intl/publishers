@@ -11,7 +11,7 @@ class UploadUpholdAccessParametersJobTest < ActiveJob::TestCase
     publisher.save!
 
     stub_request(:put, /publishers\/#{publisher.brave_publisher_id}\/wallet/)
-        .with(body: "{\"provider\": \"uphold.com\", \"parameters\": {\"access_token\":\"abc123\",\"token_type\":\"bearer\"}, \"verificationId\": \"#{publisher.id}\"}")
+        .with(body: "{\"provider\": \"#{Rails.application.secrets[:uphold_provider]}\", \"parameters\": {\"access_token\":\"abc123\",\"token_type\":\"bearer\"}, \"verificationId\": \"#{publisher.id}\"}")
 
     UploadUpholdAccessParametersJob.perform_now(publisher_id: publisher.id)
 
