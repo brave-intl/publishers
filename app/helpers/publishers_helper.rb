@@ -16,6 +16,11 @@ module PublishersHelper
     "https://#{publisher.brave_publisher_id}"
   end
 
+  def link_to_brave_publisher_id(publisher)
+    uri = URI::HTTP.build(host: publisher.brave_publisher_id)
+    link_to(publisher.brave_publisher_id, uri.to_s)
+  end
+
   def uphold_authorization_endpoint(publisher)
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
