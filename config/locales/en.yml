@@ -24,6 +24,7 @@ en:
     attributes:
       publisher:
         brave_publisher_id: "Website domain"
+        phone_normalized: "Phone"
         show_verification_status: "Yes, please list my site in Brave's verified publisher list after verification"
     errors:
       models:
