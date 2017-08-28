@@ -223,6 +223,8 @@ class PublishersController < ApplicationController
     e.message
   rescue Faraday::Error
     I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
+  rescue URI::InvalidURIError
+    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
   end
 
   def publisher_create_params

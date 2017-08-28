@@ -36,6 +36,7 @@ en:
               exclusion_list_error: "is on the Brave Publisher website exclusion list. For questions please contact "
               # TODO: Configurable email here
               taken: "Another person has already verified that website. If you have questions please contact support+publishers@brave.com."
+              invalid_uri: "invalid domain URI"
     models:
       publisher: "Publisher"
       publisher_legal_form: "Tax form"

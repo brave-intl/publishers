@@ -24,6 +24,9 @@ class PublisherLoginLinkEmailer
   rescue PublisherDomainNormalizer::DomainExclusionError, Faraday::Error
     @error = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
     false
+  rescue URI::InvalidURIError
+    @error = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
+    false
   end
 
   def find_publisher

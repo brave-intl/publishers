@@ -117,6 +117,11 @@ class Publisher < ApplicationRecord
       :brave_publisher_id,
       I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
     )
+  rescue URI::InvalidURIError
+    errors.add(
+      :brave_publisher_id,
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
+    )
   end
 
   def verified_publisher_exists?
