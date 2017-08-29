@@ -3,7 +3,11 @@ class PublisherDomainNormalizer < BaseApiClient
   attr_reader :domain
 
   def initialize(domain:)
-    @domain = domain
+    # normalize domain by stripping off the protocol, it it exists,
+    # and checking if it parses as an http URL
+    host_and_path = domain.split(/:\/\//).last
+    URI.parse("http://#{host_and_path}")
+    @domain = host_and_path
   end
 
   def perform
