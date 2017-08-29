@@ -7,8 +7,6 @@ Rails.application.routes.draw do
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :log_out
-      get :payment_info, action: :edit_payment_info, as: :edit_payment_info
-      patch :payment_info, action: :update_payment_info, as: :update_payment_info
       get :verification
       get :verification_dns_record
       get :verification_done

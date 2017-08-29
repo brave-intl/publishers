@@ -9,8 +9,6 @@ gem "attr_encrypted", "~> 3.0.0"
 
 gem "aws-sdk", "~> 2", require: false
 
-gem "bitcoin-ruby", "~> 0.0.8", require: false
-
 gem "bootstrap-sass", "~> 3.3.6"
 
 # Authentication

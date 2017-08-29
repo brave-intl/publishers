@@ -30,8 +30,6 @@ en:
       models:
         publisher:
           attributes:
-            bitcoin_address:
-              api_error: "can't be updated because of an API error"
             brave_publisher_id:
               api_error_cant_normalize: "can't be normalized because of an API error"
               exclusion_list_error: "is on the Brave Publisher website exclusion list. For questions please contact "
@@ -48,12 +46,6 @@ en:
     balance_error: "Temporarily unavailable"
     balance_pending: "Balance pending"
     balance_pending_approximate: "(approximate)"
-    bitcoin_address_none: "(none)"
-    bitcoin_address_help: "A bitcoin wallet is required to receive funds from Brave Payments. You can create a bitcoin wallet at <a href=\"https://www.bitgo.com/\" target=\"_blank\">BitGo</a>, <a href=\"https://www.coinbase.com/\" target=\"_blank\">Coinbase</a> or any other bitcoin wallet provider."
-    bitcoin_address_submit_header: "Bitcoin address"
-    bitcoin_address_submit_legend: "Submit bitcoin wallet address"
-    bitcoin_address_submit_button: "Submit"
-    bitcoin_address_updated: "Bitcoin address updated."
     claim_funds: "Claim funds"
     complete_irs_w_9: "Complete IRS W-9"
     complete_irs_w_9_hint: "United States taxpayers"
@@ -68,7 +60,6 @@ en:
     create_auth_token_body: "Please check your email for the login link."
     domain: "Domain"
     dashboard: "Dashboard"
-    edit_bitcoin_address: "Edit"
     finished_header: "Thank you for registering with Brave Payments!"
     finished_intro: "You will see an initial transfer to your Uphold account as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
     finished_try_browser: "Have you tried our web browser? It's free, open source software designed to protect privacy and give publishers a better deal."
@@ -92,7 +83,6 @@ en:
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     new_header: "Publisher contact information"
     not_verified: "Unverified"
-    payment_bitcoin_address: "Bitcoin payment address"
     status: "Status"
     status_to_receive_payments: "To receive payments you need to:"
     status_can_receive_funds: "You are fully setup to receive Brave Payments."
@@ -206,7 +196,7 @@ en:
     save_and_continue: "Save and continue"
   static:
     landing_header: "Welcome to Brave Payments"
-    landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified. Once fully verified, you will begin to receive daily micropayments in your Bitcoin wallet."
+    landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified. Once fully verified, you will begin to receive daily micropayments in your Uphold account."
     landing_login_header: "Existing publishers"
     landing_login_body: "If you've already started or completed verification, we can email you a link to access your publisher account."
     landing_login_button: "Log in"

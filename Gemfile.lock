@@ -57,7 +57,6 @@ GEM
     aws-sdk-resources (2.6.10)
       aws-sdk-core (= 2.6.10)
     bcrypt (3.1.11)
-    bitcoin-ruby (0.0.9)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -294,7 +293,6 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   attr_encrypted (~> 3.0.0)
   aws-sdk (~> 2)
-  bitcoin-ruby (~> 0.0.8)
   bootstrap-sass (~> 3.3.6)
   bundler-audit
   byebug

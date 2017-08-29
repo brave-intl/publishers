@@ -1,6 +1,6 @@
 # Ask Eyeshade to assign an Uphold account to a Publisher.
 class PublisherWalletSetter < BaseApiClient
-  attr_reader :publisher, :bitcoin_address
+  attr_reader :publisher
 
   def initialize(publisher:)
     @publisher = publisher
