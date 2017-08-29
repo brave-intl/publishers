@@ -13,9 +13,19 @@ class PublisherWalletSetter < BaseApiClient
       raise "Publisher #{publisher.id} is missing uphold_access_parameters."
     end
 
+    uphold_access_parameters = JSON.parse(publisher.uphold_access_parameters)
+    uphold_access_parameters[:server] = Rails.application.secrets[:uphold_api_uri]
+
     # This raises when response is not 2xx.
     response = connection.put do |request|
-      request.body = "{\"provider\": \"#{Rails.application.secrets[:uphold_provider]}\", \"parameters\": #{publisher.uphold_access_parameters}, \"verificationId\": \"#{publisher.id}\"}"
+      request.body =
+          <<~BODY
+            {
+              "provider": "uphold", 
+              "parameters": #{JSON.dump(uphold_access_parameters)}, 
+              "verificationId": "#{publisher.id}"
+            }
+          BODY
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
       request.url("/v2/publishers/#{publisher.brave_publisher_id}/wallet")
