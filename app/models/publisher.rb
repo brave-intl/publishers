@@ -85,15 +85,15 @@ class Publisher < ApplicationRecord
   end
 
   def uphold_complete?
-    self.uphold_verified || !self.uphold_access_parameters.blank?
+    self.uphold_verified || self.uphold_access_parameters.present?
   end
 
   def uphold_status
     if self.uphold_verified
       :verified
-    elsif !self.uphold_access_parameters.blank?
+    elsif self.uphold_access_parameters.present?
       :access_parameters_acquired
-    elsif !self.uphold_code.blank?
+    elsif self.uphold_code.present?
       :code_acquired
     else
       :unconnected
