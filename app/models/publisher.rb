@@ -84,6 +84,10 @@ class Publisher < ApplicationRecord
     save!
   end
 
+  def uphold_complete?
+    self.uphold_verified || !self.uphold_access_parameters.blank?
+  end
+
   def uphold_status
     if self.uphold_verified
       :verified
