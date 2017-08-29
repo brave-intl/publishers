@@ -40,7 +40,6 @@ en:
               invalid_uri: "invalid domain URI"
     models:
       publisher: "Publisher"
-      publisher_legal_form: "Tax form"
     shared:
       errors: "There were errors saving your request:"
   publishers:
@@ -98,8 +97,6 @@ en:
     status_to_receive_payments: "To receive payments you need to:"
     status_can_receive_funds: "You are fully setup to receive Brave Payments."
     status_connect_to_uphold_required: "Connect to an Uphold account."
-    status_legal_form_required: "Submit a tax form."
-    tax_form: "Tax form"
     verified: "Verified publisher"
     verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
     verification_dns_record_help_2: " using the account for your DNS host."
@@ -161,21 +158,6 @@ en:
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
     verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
     verify_success: "Verification successful."
-  notification_mailer:
-    publisher_form_retry:
-      intro: "After reviewing the tax form you submitted for %{brave_publisher_id}, we found one or more errors."
-      prompt: "To claim your funds, please correct these errors and resubmit your tax form through the publisher management site:"
-      subject: "[%{brave_publisher_id}] Action required: Resubmit publisher tax form"
-      title: "Resubmit publisher tax form"
-    publisher_payments_activated:
-      bitcoin_address_help_header: "Your bitcoin address:"
-      save_help: "Please save this email. You will need it to manage your publisher account."
-      intro: "Congratulations! Your publisher website %{brave_publisher_id} is now authorized for future payments."
-      payment_schedule: "You will see an initial transfer to your bitcoin wallet as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
-      payment_settings_help_header: "Balance and payment settings"
-      payment_settings_help: "To view your balance and manage payment details please visit the publisher management site:"
-      subject: "[%{brave_publisher_id}] Publisher payments activated"
-      title: "Publisher payments activated"
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
@@ -212,41 +194,6 @@ en:
       private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
       subject: "[%{brave_publisher_id}] Brave Publisher registration"
       title: "Publisher registration"
-  publisher_legal_forms:
-    already_exists: "You've already submitted a legal form. If you need to submit another form please contact us at"
-    create_failed: "Couldn't initiate form for signing."
-    complete_irs_w_8ben: "Form W-8BEN"
-    complete_irs_w_8ben_e: "Form W-8BEN-E"
-    complete_irs_w_9: "Form W-9"
-    existing_required: "To continue please initiate a legal form."
-    completed: "Form completed"
-    new_header: "Tax form"
-    new_help_header: "Declare IRS tax status"
-    new_help_purpose: "Brave Software is required to report to the IRS publisher payments exceeding 600.00 USD per year. We also need to maintain your tax information in case the IRS requests it."
-    new_help_request: "To receive payments please submit one of the following:"
-    signing_completed: "Form successfully submitted."
-    signing_request_body: "Please complete this form to receive payments as a Brave Publisher."
-    after_sign_header_completed: "Signing completed"
-    after_sign_body_completed: "Thanks for your submission! To continue please click the publisher icon in the top right corner."
-    after_sign_header_declined: "Signing declined"
-    after_sign_body_declined: "You chose to decline signing this form. We aren't able to pay you any funds owed until you complete this form. If you'd like to try again, please contact us at %{support_email}."
-    # TODO: Remove rate limit once webhooks are implemented
-    after_sign_header_rate_limit: "Status temporarily unavailable"
-    after_sign_body_rate_limit: "We received your request but we're temporarily out of capacity to sync from our provider. Please try again in about 15 minutes."
-    after_sign_header_delivered: "Signing deferred"
-    after_sign_body_delivered: "You chose to sign later. We aren't able to pay you any funds owed until you complete this form. If you'd like to resume, please visit the tax form link in the Publisher dashboard."
-    after_sign_header_timed_out: "Signing timed out"
-    after_sign_body_timed_out: "This form has timed out. We aren't able to pay you any funds owed until you complete this form. If you'd like to resume, please visit the tax form link in the Publisher dashboard. For any questions contact us at %{support_email}."
-    after_sign_header_voided: "Signing voided"
-    after_sign_body_voided: "This form has been voided. We aren't able to pay you any funds owed until you complete this form. If you'd like to try again, please contact us at %{support_email}."
-    signing_request_subject_irs_w_8ben: "Complete IRS W-8BEN to receive payments"
-    signing_request_subject_irs_w_8ben_e: "Complete IRS W-8BEN-E to receive payments"
-    signing_request_subject_irs_w_9: "Complete IRS W-9 to receive payments"
-    submit_tax_form_button: "Submit tax form"
-    taxpayer_type_irs_w_8ben: "Non-US individuals"
-    taxpayer_type_irs_w_8ben_e: "Non-US entities"
-    taxpayer_type_irs_w_9: "US taxpayers"
-    view: "View"
   recaptcha:
     errors:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
