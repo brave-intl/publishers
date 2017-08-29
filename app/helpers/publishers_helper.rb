@@ -49,12 +49,14 @@ module PublishersHelper
   end
 
   def publisher_next_step_path(publisher)
+    return home_publishers_path if publisher.uphold_complete?
+
     return verification_publishers_path if !publisher.verified?
+
     # ToDo: Polling page for exchanging uphold_code for uphold_access_parameters
     # return authorize_uphold_path if publisher.uphold_code && publisher.uphold_access_parameters.blank?
-    return verification_done_publishers_path if publisher.uphold_access_parameters.blank?
 
-    home_publishers_path
+    verification_done_publishers_path
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
