@@ -2,18 +2,26 @@
   span Step 2 of 4: #{I18n.t("publishers.new_header")}
 
 javascript:
-  function submitForVerification () {
-    var dns_records = document.getElementById('dns_records');
-    var verification_in_progress = document.getElementById('verification_in_progress');
-    var submit = document.getElementById('begin_verification');
+  function submitForVerification() {
+    var dnsRecords = document.getElementById('dns_records');
+    var verificationInProgress = document.getElementById('verification_in_progress');
 
-    dns_records.style.display = 'none';
-    verification_in_progress.style.display = 'block';
+    dnsRecords.style.display = 'none';
+    verificationInProgress.style.display = 'block';
 
-    setTimeout(function () {
-      begin_verification.click();
+    setTimeout(function() {
+      var verifyForm = document.getElementById('verify_form');
+      verifyForm.submit();
     }, 2000);
   }
+
+  window.addEventListener('load', function() {
+    var verifyButton = document.getElementById('begin_verification');
+    verifyButton.addEventListener('click', function(event) {
+      submitForVerification();
+      event.preventDefault();
+    }, false);
+  }, false);
 
 .row
   .col-center.col-xs-7.col-md-7.dns-record id="dns_records"
@@ -50,7 +58,9 @@ javascript:
       .form-horizontal
         .form-group
           .col-sm-6
-            button class="btn btn-block btn-primary btn-sm" onclick="submitForVerification();" =I18n.t("publishers.verify_dns_button")
+            = form_for(current_publisher, method: :patch, url: verify_publishers_path, html: { id: 'verify_form' }) do |f|
+              = f.button(id: 'begin_verification', type: :submit, class: 'btn btn-block btn-primary btn-sm')
+                =I18n.t("publishers.verify_dns_button")
           = popover_menu do
             h5= I18n.t("publishers.verification_helper_dns_title")
             .help-block= I18n.t("publishers.verification_helper_dns_content")
@@ -105,10 +115,6 @@ javascript:
               a#contact-link.pull-right href="mailto:support+publishers@brave.com"=I18n.t("publishers.verification_helper_dns_contact")
         .form-group
           .help-block=I18n.t("publishers.verification_option_dns_record_note")
-
-  .hidden_form
-    = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-      = f.submit(id: "begin_verification")
 
   .col-center.col-xs-7.col-md-7 id="verification_in_progress"
     h4 class="section-title"
