@@ -10,32 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170817203835) do
+ActiveRecord::Schema.define(version: 20170829141632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
-
-  create_table "publisher_legal_forms", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "publisher_id",                         null: false
-    t.string   "form_type"
-    t.string   "docusign_envelope_id"
-    t.string   "docusign_template_id"
-    t.string   "status"
-    t.string   "after_sign_token"
-    t.datetime "after_sign_token_expires_at"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.datetime "docusign_envelope_gotten_at"
-    t.string   "encrypted_s3_key"
-    t.string   "encrypted_s3_key_iv"
-    t.datetime "docusign_envelope_document_gotten_at"
-    t.string   "brave_status"
-    t.string   "encrypted_form_fields_s3_key"
-    t.string   "encrypted_form_fields_s3_key_iv"
-    t.index ["after_sign_token"], name: "index_publisher_legal_forms_on_after_sign_token", using: :btree
-    t.index ["publisher_id"], name: "index_publisher_legal_forms_on_publisher_id", using: :btree
-  end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "brave_publisher_id"
@@ -52,8 +31,6 @@ ActiveRecord::Schema.define(version: 20170817203835) do
     t.inet     "last_sign_in_ip"
     t.string   "phone"
     t.string   "phone_normalized"
-    t.string   "encrypted_bitcoin_address"
-    t.string   "encrypted_bitcoin_address_iv"
     t.string   "encrypted_authentication_token"
     t.string   "encrypted_authentication_token_iv"
     t.string   "verification_method"

@@ -7,8 +7,6 @@ Rails.application.routes.draw do
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :log_out
-      get :payment_info, action: :edit_payment_info, as: :edit_payment_info
-      patch :payment_info, action: :update_payment_info, as: :update_payment_info
       get :verification
       get :verification_dns_record
       get :verification_done
@@ -18,12 +16,6 @@ Rails.application.routes.draw do
     end
   end
   devise_for :publishers
-
-  resources :publisher_legal_forms, only: %i(create new show), path: "legal_forms" do
-    collection do
-      get :after_sign
-    end
-  end
 
   resources :static, only: [] do
     collection do
@@ -39,7 +31,6 @@ Rails.application.routes.draw do
         post "/", action: :create, as: :create
         get "/:brave_publisher_id", action: :index_by_brave_publisher_id, constraints: { brave_publisher_id: %r{[^\/]+} }
         post "/:brave_publisher_id/notifications", action: :notify, constraints: { brave_publisher_id: %r{[^\/]+} }
-        patch "/:brave_publisher_id/legal_form", action: :update_legal_form, constraints: { brave_publisher_id: %r{[^\/]+} }
         delete "/:brave_publisher_id", action: :destroy, as: :destroy, constraints: { brave_publisher_id: %r{[^\/]+} }
       end
     end

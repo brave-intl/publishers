@@ -9,14 +9,10 @@ gem "attr_encrypted", "~> 3.0.0"
 
 gem "aws-sdk", "~> 2", require: false
 
-gem "bitcoin-ruby", "~> 0.0.8", require: false
-
 gem "bootstrap-sass", "~> 3.3.6"
 
 # Authentication
 gem "devise", "~> 4.2.0"
-
-gem "docusign_rest", "~> 0.1.1", git: "https://github.com/jondkinney/docusign_rest"
 
 gem "email_validator", "~> 1.6"
 

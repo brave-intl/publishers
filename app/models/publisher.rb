@@ -1,8 +1,6 @@
 class Publisher < ApplicationRecord
   has_paper_trail
 
-  has_many :legal_forms, class_name: "PublisherLegalForm"
-
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
@@ -44,14 +42,6 @@ class Publisher < ApplicationRecord
 
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
-  end
-
-  def legal_form
-    legal_forms.valid.order("created_at ASC").last
-  end
-
-  def legal_form_completed?
-    legal_form && legal_form.completed?
   end
 
   def to_s

@@ -178,21 +178,6 @@ class PublishersController < ApplicationController
   def home
   end
 
-  def edit_payment_info
-    @publisher = current_publisher
-  end
-
-  def update_payment_info
-    @publisher = current_publisher
-    @publisher.assign_attributes(publisher_payment_info_params)
-    if @publisher.save
-      redirect_to(publisher_next_step_path(current_publisher), notice: I18n.t("publishers.bitcoin_address_updated"))
-    else
-      # TODO: Oops message
-      render(:edit_payment_info)
-    end
-  end
-
   def log_out
     path = after_sign_out_path_for(current_publisher)
     sign_out(current_publisher)
@@ -233,10 +218,6 @@ class PublishersController < ApplicationController
 
   def publisher_create_auth_token_params
     params.require(:publisher).permit(:email, :brave_publisher_id)
-  end
-
-  def publisher_payment_info_params
-    params.require(:publisher).permit(:bitcoin_address)
   end
 
   # If an active session is present require users to explicitly sign out

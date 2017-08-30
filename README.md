@@ -48,9 +48,7 @@ Some variables are set automagically with Heroku addons:
 
 #### Other vars
 
-A few variables are not configured in secrets.yml:
-
-- GPG_PUBKEY - GPG pubkey for encrypting legal forms before uploading to S3.
+A few variables are not configured in secrets.yml: currently none
 
 ### Security check
 
