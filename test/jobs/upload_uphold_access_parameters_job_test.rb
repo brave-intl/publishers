@@ -10,7 +10,7 @@ class UploadUpholdAccessParametersJobTest < ActiveJob::TestCase
     publisher.uphold_access_parameters = '{"access_token":"abc123","token_type":"bearer"}'
     publisher.save!
 
-    stub_request(:put, /publishers\/#{publisher.brave_publisher_id}\/wallet/)
+    stub_request(:put, /v1\/publishers\/#{publisher.brave_publisher_id}/)
         .with(body:
           <<~BODY
             {
