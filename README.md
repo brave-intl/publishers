@@ -49,7 +49,3 @@ Some variables are set automagically with Heroku addons:
 #### Other vars
 
 A few variables are not configured in secrets.yml: currently none
-
-### Security check
-
-- Check for gem vulnerabilities: `bundle exec bundle-audit check --update`
