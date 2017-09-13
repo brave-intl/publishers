@@ -64,6 +64,16 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_empty(css_select("[data-test-id='current_publisher']"))
   end
 
+  test "an unauthenticated html request redirects to home" do
+    get home_publishers_path
+    assert_response 302
+  end
+
+  test "an unauthenticated json request returns a 401" do
+    get home_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    assert_response 401
+  end
+
   def request_login_email(publisher:)
     perform_enqueued_jobs do
       get(new_auth_token_publishers_path)
