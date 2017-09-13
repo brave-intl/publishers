@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get :verification_public_file
       get :uphold_verified
       patch :verify
+      patch :update
     end
   end
   devise_for :publishers

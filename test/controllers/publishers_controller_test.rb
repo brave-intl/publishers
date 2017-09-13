@@ -300,4 +300,30 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
   end
+
+  test "a publisher's show_verification_status, email, and name can be updated via an ajax patch" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: PUBLISHER_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    publisher.show_verification_status = false
+    publisher.verified = true
+    publisher.save!
+
+    assert_equal false, publisher.show_verification_status
+
+    url = publishers_path
+    patch(url,
+          params: { publisher: { show_verification_status: 1, email: 'joeblow@example.com', name: 'Joseph Blow' } },
+          headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 204
+
+    publisher.reload
+    assert_equal true, publisher.show_verification_status
+    assert_equal 'joeblow@example.com', publisher.email
+    assert_equal 'Joseph Blow', publisher.name
+  end
 end

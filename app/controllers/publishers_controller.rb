@@ -27,7 +27,8 @@ class PublishersController < ApplicationController
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
              home
-             verification_done,
+             verification_done
+             update
              uphold_verified)
   before_action :update_publisher_verification_method,
     only: %i(verification_dns_record
@@ -58,6 +59,19 @@ class PublishersController < ApplicationController
 
   def create_done
     @publisher_email = session[:created_publisher_email]
+  end
+
+  def update
+    publisher = current_publisher
+    respond_to do |format|
+      format.json {
+        if publisher.update(publisher_update_params)
+          head :no_content
+        else
+          render(json: { errors: publisher.errors }, status: 400)
+        end
+      }
+    end
   end
 
   # "Magic sign in link" / One time sign-in token via email
@@ -213,6 +227,10 @@ class PublishersController < ApplicationController
 
   def publisher_create_params
     params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone, :show_verification_status)
+  end
+
+  def publisher_update_params
+    params.require(:publisher).permit(:email, :name, :show_verification_status)
   end
 
   def publisher_create_auth_token_params
