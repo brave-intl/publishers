@@ -27,7 +27,6 @@ class PublishersController < ApplicationController
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
              home
-             update_payment_info
              verification_done,
              uphold_verified)
   before_action :update_publisher_verification_method,
