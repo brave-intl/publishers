@@ -13,4 +13,15 @@ class ApplicationController < ActionController::Base
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
+
+  def handle_unverified_request
+    respond_to do |format|
+      format.html {
+        super
+      }
+      format.json {
+        render json: { message: 'Unverified request' }, status: 401
+      }
+    end
+  end
 end

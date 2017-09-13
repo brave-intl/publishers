@@ -194,6 +194,7 @@ en:
     error_body: "Oops, sorry about that. You can try to refresh the page or return to"
     error_contact: "For assistance please contact us at: %{support_email}"
     save_and_continue: "Save and continue"
+    update: "Update"
   static:
     landing_header: "Welcome to Brave Payments"
     landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified. Once fully verified, you will begin to receive daily micropayments in your BAT wallet."
