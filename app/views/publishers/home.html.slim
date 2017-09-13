@@ -1,8 +1,114 @@
+javascript:
+  (function() {
+    var spinnerShown;
+
+    function showSpinner() {
+      var spinner = document.getElementById('cssload-pgloading');
+      spinner.style.display = 'block';
+      spinnerShown = Date.now();
+    }
+
+    function hideSpinner() {
+      if (spinnerShown) {
+        var minTime = 500;
+        var now = Date.now();
+
+        var spinner = document.getElementById('cssload-pgloading');
+        if (now - spinnerShown > minTime)
+          spinner.style.display = 'none';
+        else {
+          setTimeout(function() {
+            spinner.style.display = 'none';
+          }, minTime - (now - spinnerShown));
+        }
+      }
+    }
+
+    function submitForm(formId) {
+      var form = document.getElementById(formId);
+      var options = {
+        headers: {
+          'Accept': 'application/json'
+        },
+        credentials: 'same-origin',
+        method: 'PATCH',
+        body: new FormData(form)
+      };
+      showSpinner();
+      return window.fetch(form.action, options)
+        .then(function(response) {
+          hideSpinner();
+          if (response.status === 401) {
+            // Force a page reload if the user is no longer authenticated.
+            window.location.reload();
+          }
+          return response;
+        })
+        .catch(function(e) {
+          hideSpinner();
+          window.alert("An unexpected error occurred. Please try reloading this page.")
+        });
+    }
+
+    window.addEventListener('load', function() {
+      var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
+      showVerificationStatusInput.addEventListener('click', function(event) {
+        submitForm('update_show_verification_status');
+      }, false);
+
+      var showContact = document.getElementById('show_contact');
+      var showContactName = document.getElementById('show_contact_name');
+      var showContactEmail = document.getElementById('show_contact_email');
+
+      var updateContact = document.getElementById('update_contact');
+      var updateContactName = document.getElementById('update_contact_name');
+      var updateContactEmail = document.getElementById('update_contact_email');
+
+      var editContact = document.getElementById('edit_contact');
+      var cancelEditContact = document.getElementById('cancel_edit_contact');
+
+      editContact.addEventListener('click', function(event) {
+        updateContactName.value = showContactName.innerText;
+        updateContactEmail.value = showContactEmail.innerText;
+        showContact.style.display = 'none';
+        updateContact.style.display = 'block';
+        updateContactName.focus();
+        event.preventDefault();
+      }, false);
+
+      cancelEditContact.addEventListener('click', function(event) {
+        showContact.style.display = 'block';
+        updateContact.style.display = 'none';
+        event.preventDefault();
+      }, false);
+
+      updateContact.addEventListener('submit', function(event) {
+        event.preventDefault();
+        submitForm('update_contact')
+          .then(function() {
+            showContactName.innerText = updateContactName.value;
+            showContactEmail.innerText = updateContactEmail.value;
+            updateContact.style.display = 'none';
+            showContact.style.display = 'block';
+          });
+      }, false);
+
+    }, false);
+  })();
+
 - content_for(:navbar_content) do
   span= I18n.t("publishers.dashboard")
 
+div#cssload-pgloading style="display: none"
+  div.cssload-loadingwrap
+    ul.cssload-bokeh
+      li
+      li
+      li
+      li
+
 .row
-  .col-center.col-xs-12.col-md-5
+  .col-center.col-xs-12.col-md-8
     fieldset
       legend.publisher-domain-summary
         - if current_publisher.verified?
@@ -10,7 +116,7 @@
         span.publisher-domain-name= current_publisher.brave_publisher_id
         - if !current_publisher.verified?
           span.link-hint.publisher-verified-status= I18n.t("publishers.not_verified")
-      
+
       h4= I18n.t("publishers.status")
       .attribute-value.status
         - if publisher_can_receive_funds?(current_publisher)
@@ -29,5 +135,26 @@
 
       h4= I18n.t("publishers.contact_person")
       .attribute-value.contact-person
-        span.name= current_publisher.name
-        span.email= current_publisher.email
+        div#show_contact
+          span.name#show_contact_name= current_publisher.name
+          span.email#show_contact_email= current_publisher.email
+          a#edit_contact href="#"
+            = "Edit"
+        = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
+          .form-group
+            = f.label(:name, class: "control-label")
+            = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
+          .form-group
+            = f.label(:email, class: "control-label")
+            = f.email_field(:email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
+          .button.form-group
+            = f.submit(I18n.translate("shared.update"), class: "btn btn-primary")
+            a#cancel_edit_contact href="#"
+              = "Cancel"
+
+      = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
+        .form-group
+          = f.label(:show_verification_status) do
+            = f.check_box(:show_verification_status, class: "control-checkbox")
+            text &nbsp;
+            = t("activerecord.attributes.publisher.show_verification_status")
