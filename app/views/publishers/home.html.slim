@@ -24,20 +24,20 @@ javascript:
       }
     }
 
-    function submitForm(formId) {
+    function submitForm(formId, method, showSpinners) {
       var form = document.getElementById(formId);
       var options = {
         headers: {
           'Accept': 'application/json'
         },
         credentials: 'same-origin',
-        method: 'PATCH',
+        method: method,
         body: new FormData(form)
       };
-      showSpinner();
+      if (showSpinners) { showSpinner(); }
       return window.fetch(form.action, options)
         .then(function(response) {
-          hideSpinner();
+          if (showSpinners) { hideSpinner(); }
           if (response.status === 401) {
             // Force a page reload if the user is no longer authenticated.
             window.location.reload();
@@ -45,15 +45,41 @@ javascript:
           return response;
         })
         .catch(function(e) {
-          hideSpinner();
+          if (showSpinners) { hideSpinner(); }
           window.alert("An unexpected error occurred. Please try reloading this page.")
         });
+    }
+
+    function waitForReport(reportURL, delay, backoff, attempts) {
+      return new Promise(function(resolve, reject) {
+        if (attempts > 0) {
+          setTimeout(function() {
+            window.fetch(reportURL, { method: 'GET' })
+              .then(function(response) {
+                if (response.status === 200) {
+                  // report successfully fetched
+                  resolve(reportURL);
+                } else {
+                  // report could not be fetched, so try again
+                  return waitForReport(reportURL, delay + backoff, backoff, --attempts)
+                    .catch(reject);
+                }
+              }, function(e) {
+                // swallow exception and try again
+                return waitForReport(reportURL, delay + backoff, backoff, --attempts)
+                  .catch(reject);
+              });
+          }, delay);
+        } else {
+          throw new Error('Attempts exceeded!');
+        }
+      });
     }
 
     window.addEventListener('load', function() {
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
-        submitForm('update_show_verification_status');
+        submitForm('update_show_verification_status', 'PATCH', true);
       }, false);
 
       var showContact = document.getElementById('show_contact');
@@ -66,6 +92,10 @@ javascript:
 
       var editContact = document.getElementById('edit_contact');
       var cancelEditContact = document.getElementById('cancel_edit_contact');
+
+      var generateStatement = document.getElementById('generate_statement');
+      var generateStatementResult = document.getElementById('generate_statement_result');
+      var statementPeriod = document.getElementById('statement_period');
 
       editContact.addEventListener('click', function(event) {
         updateContactName.value = showContactName.innerText;
@@ -84,12 +114,42 @@ javascript:
 
       updateContact.addEventListener('submit', function(event) {
         event.preventDefault();
-        submitForm('update_contact')
+        submitForm('update_contact', 'PATCH', true)
           .then(function() {
             showContactName.innerText = updateContactName.value;
             showContactEmail.innerText = updateContactEmail.value;
             updateContact.style.display = 'none';
             showContact.style.display = 'block';
+          });
+      }, false);
+
+      statementPeriod.addEventListener('click', function(event) {
+        hideSpinner();
+        generateStatement.style.display = 'inline-block';
+        generateStatementResult.style.display = 'none';
+      }, false);
+
+      generateStatement.addEventListener('click', function(event) {
+        event.preventDefault();
+        showSpinner();
+        submitForm('statement_generator', 'PATCH', false)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            generateStatement.style.display = 'none';
+            generateStatementResult.style.display = 'inline-block';
+            generateStatementResult.innerText = 'Generating ...';
+
+            return waitForReport(json.reportURL, 3000, 2000, 4);
+          })
+          .then(function(reportURL) {
+            hideSpinner();
+            generateStatementResult.innerHTML = '<a href="' + reportURL + '">View report</a>';
+          })
+          .catch(function() {
+            hideSpinner();
+            generateStatementResult.innerText = 'We will email you a link when your report is ready.'
           });
       }, false);
 
@@ -133,13 +193,22 @@ div#cssload-pgloading style="display: none"
         = " "
         span.approximate-hint.link-hint= I18n.t("publishers.balance_pending_approximate")
 
-      h4= I18n.t("publishers.contact_person")
+      h4= t("publishers.publisher_statements")
+      .attribute-value.statements
+        = form_for(current_publisher, url: generate_statement_publishers_path, html: {id: "statement_generator"}) do |f|
+          .form-group
+            = select_tag(:statement_period, options_for_select(publisher_statement_periods))
+            a#generate_statement href="#"
+              = t("shared.generate")
+            span#generate_statement_result
+
+      h4= t("publishers.contact_person")
       .attribute-value.contact-person
         div#show_contact
           span.name#show_contact_name= current_publisher.name
           span.email#show_contact_email= current_publisher.email
           a#edit_contact href="#"
-            = "Edit"
+            = t("shared.edit")
         = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
           .form-group
             = f.label(:name, class: "control-label")
@@ -150,7 +219,7 @@ div#cssload-pgloading style="display: none"
           .button.form-group
             = f.submit(I18n.translate("shared.update"), class: "btn btn-primary")
             a#cancel_edit_contact href="#"
-              = "Cancel"
+              = t("shared.cancel")
 
       = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
         .form-group
