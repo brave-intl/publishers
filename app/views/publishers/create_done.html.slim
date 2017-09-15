@@ -4,6 +4,5 @@
 .row
   .col-center.col-xs-12.col-md-7
     h4 class="section-title"
-      span class="section-title-orange"= I18n.t("publishers.create_done_body_thank_you")
-      span= I18n.t("publishers.create_done_body_for_submitting")
-    .help-block= I18n.t("publishers.create_done_body_confirm_email", email: @publisher_email)
+      h3= t("publishers.create_done_header")
+      .help-block== t("publishers.create_done_body_html", email: @publisher_email)

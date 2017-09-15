@@ -10,8 +10,8 @@ class Publisher < ApplicationRecord
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
-  validates :email, email: { strict_mode: true }, presence: true
-  validates :name, presence: true
+  validates :email, email: { strict_mode: true }, presence: true, if: -> { brave_publisher_id.present? }
+  validates :name, presence: true, if: -> { brave_publisher_id.present? }
   validates :phone_normalized, phony_plausible: true
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
@@ -25,12 +25,10 @@ class Publisher < ApplicationRecord
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :brave_publisher_id,
-    presence: true,
-    uniqueness: { if: -> { !persisted? && verified_publisher_exists? } }
+  validates :brave_publisher_id, uniqueness: { if: -> { !persisted? && verified_publisher_exists? } }
 
   # TODO: Show user normalized domain before they commit
-  before_validation :normalize_brave_publisher_id, if: -> { !persisted? }
+  before_validation :normalize_brave_publisher_id, if: -> { brave_publisher_id.present? && !persisted?}
   after_create :generate_verification_token
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }

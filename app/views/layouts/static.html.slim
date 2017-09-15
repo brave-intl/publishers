@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title Brave Publishers
+    = csrf_meta_tags
+    = stylesheet_link_tag('application', media: 'all')
+    = javascript_include_tag('application')
+    link rel="icon" type="image/png" href=image_path("favicon.ico")
+
+  body data-action=params[:action] data-controller=params[:controller]
+
+    .notifications.navbar-static-top
+      - if flash[:alert]
+        .alert.alert-warning.flash= flash[:alert]
+      - if flash[:notice]
+        .alert.alert-success.flash= flash[:notice]
+      - if content_for(:content_form_errors)
+        .alert.alert-warning= I18n.t("activerecord.shared.errors")
+        = yield(:content_form_errors)
+
+    = content_for?(:content) ? yield(:content) : yield

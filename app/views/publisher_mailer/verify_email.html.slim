@@ -1,0 +1,21 @@
+/ Sent as soon as a publisher fills out the first step.
+- content_for(:title) do
+  h3= I18n.t("publisher_mailer.verify_email.title")
+
+.notice= I18n.t("publisher_mailer.verify_email.private_email_notice")
+
+p= I18n.t("publisher_mailer.verify_email.intro")
+
+p
+  strong.attribute= "#{Publisher.human_attribute_name("email")}:"
+  = @publisher.email
+
+h4= "#{I18n.t("publisher_mailer.shared.private_access_link")}:"
+p.header-help
+  = "#{I18n.t("publisher_mailer.shared.private_access_link_help")}:"
+p= link_to(@private_reauth_url, @private_reauth_url)
+
+p.hint= I18n.t("publisher_mailer.verify_email.erroneous_email_help")
+p.hint
+  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  = mail_to(Rails.application.secrets[:support_email])

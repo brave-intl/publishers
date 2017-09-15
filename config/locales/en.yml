@@ -53,8 +53,12 @@ en:
     complete_irs_w_8ben_hint: "Individuals outside the States"
     connect_with_uphold: "Connect with Uphold"
     contact_person: "Contact person"
-    create_done_body_thank_you: "Thank you "
-    create_done_body_for_submitting: "for submitting your contact information."
+    create_done_header: "We're excited that you want to be in on Brave Bounty!"
+    create_done_body_html: |
+      <p>We sent an email to %{email}, <strong>click on the access link</strong> provided in the email to jump into
+      the verification process.</p>
+      <p>Don't see the email? Be sure to check your spam folder. You may also request to 'Resend Email' below.</p>
+    create_done_resend_email: "Resend email"
     create_done_body_confirm_email: "An email has been sent to %{email}. Please confirm your email address by clicking on the access link provided in the email. The link will return you to this site to proceed with step 2."
     create_auth_token: "Login email sent!"
     create_auth_token_body: "Please check your email for the login link."
@@ -185,6 +189,14 @@ en:
       private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
       subject: "[%{brave_publisher_id}] Brave Publisher registration"
       title: "Publisher registration"
+    verify_email:
+      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
+      intro: "We've received a request to register an email address with Brave Publishers:"
+      private_email_notice: |
+        NOTE: This email contains a private access link. Anyone with it can manage private
+        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      subject: "Brave Publisher email confirmation"
+      title: "Brave Publisher email confirmation"
   publisher_statement_periods:
     past_7_days: "Past 7 days"
     past_30_days: "Past 30 days"
@@ -208,10 +220,15 @@ en:
     save_and_continue: "Save and continue"
     update: "Update"
   static:
-    landing_header: "Welcome to Brave Payments"
-    landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified. Once fully verified, you will begin to receive daily micropayments in your BAT wallet."
-    landing_login_header: "Existing publishers"
-    landing_login_body: "If you've already started or completed verification, we can email you a link to access your publisher account."
+    landing_header: "Brave Bounty"
+    landing_body_html: |
+      <p>Users do not want ads, but you still have bills to pay. Brave Bounty streams micropayments from the audience
+      to you.</p>
+      <p>Once full verified you will begin to receive daily micropayments from users in your BAT wallet.</p>
+    landing_new_header: "New to Brave Bounty?"
+    landing_new_body: "Start the process of registering your domain by verifying your email address."
+    landing_login_header: "Already verified?"
+    landing_login_body: "Login to see your publisher dashboard."
     landing_login_button: "Log in"
-    landing_button: "Start verification"
+    landing_begin_button: "Let's Begin!"
     footer_contact_leadin: "Questions? Contact "
