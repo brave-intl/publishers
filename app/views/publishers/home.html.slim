@@ -197,15 +197,13 @@ div#cssload-pgloading style="display: none"
         - if !current_publisher.verified?
           span.link-hint.publisher-verified-status= I18n.t("publishers.not_verified")
 
-      h4= I18n.t("publishers.status")
+      h4= I18n.t("publishers.uphold_status")
       .attribute-value.status
-        - if publisher_can_receive_funds?(current_publisher)
-          div= I18n.t("publishers.status_can_receive_funds")
-        - else
-          div= I18n.t("publishers.status_to_receive_payments")
-          ul
-            - if current_publisher.uphold_status != :verified #ToDo: Further breakdown
-              li= I18n.t("publishers.status_connect_to_uphold_required")
+        p#uphold_status= uphold_status_description(current_publisher)
+        - if show_uphold_connect(current_publisher)
+          div#uphold_connect
+            p.help-block= t("publishers.verification_done_submit_payment_info_body")
+            p= link_to(image_tag("uphold-connect-white@1x.png"), uphold_authorization_endpoint(current_publisher))
 
       h4= I18n.t("publishers.balance_pending")
       .attribute-value.balance
