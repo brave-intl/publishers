@@ -68,4 +68,16 @@ module PublishersHelper
   def publisher_verification_dns_record(publisher)
     PublisherDnsRecordGenerator.new(publisher: publisher).perform
   end
+
+  def publisher_statement_periods
+    [
+      [t('publisher_statement_periods.past_7_days'), :past_7_days],
+      [t('publisher_statement_periods.past_30_days'), :past_30_days],
+      [t('publisher_statement_periods.this_month'), :this_month],
+      [t('publisher_statement_periods.last_month'), :last_month],
+      [t('publisher_statement_periods.this_year'), :this_year],
+      [t('publisher_statement_periods.last_year'), :last_year],
+      [t('publisher_statement_periods.all'), :all]
+    ]
+  end
 end

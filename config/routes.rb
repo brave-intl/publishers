@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get :uphold_verified
       patch :verify
       patch :update
+      patch :generate_statement
     end
   end
   devise_for :publishers

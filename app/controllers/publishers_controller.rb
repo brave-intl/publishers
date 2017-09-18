@@ -26,6 +26,7 @@ class PublishersController < ApplicationController
              verify)
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
+             generate_statement
              home
              verification_done
              update
@@ -195,6 +196,17 @@ class PublishersController < ApplicationController
     path = after_sign_out_path_for(current_publisher)
     sign_out(current_publisher)
     redirect_to(path, notice: I18n.t("publishers.logged_out"))
+  end
+
+  def generate_statement
+    publisher = current_publisher
+    statement_period = params[:statement_period]
+    report_url = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
+    respond_to do |format|
+      format.json {
+        render(json: { reportURL: report_url }, status: 200)
+      }
+    end
   end
 
   private

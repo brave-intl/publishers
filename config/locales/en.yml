@@ -83,6 +83,7 @@ en:
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     new_header: "Publisher contact information"
     not_verified: "Unverified"
+    publisher_statements: "Publisher statements"
     status: "Status"
     status_to_receive_payments: "To receive payments you need to:"
     status_can_receive_funds: "You are fully setup to receive Brave Payments."
@@ -184,15 +185,26 @@ en:
       private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
       subject: "[%{brave_publisher_id}] Brave Publisher registration"
       title: "Publisher registration"
+  publisher_statement_periods:
+    past_7_days: "Past 7 days"
+    past_30_days: "Past 30 days"
+    this_month: "This month"
+    last_month: "Last month"
+    this_year: "This year"
+    last_year: "Last year"
+    all: "All"
   recaptcha:
     errors:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
       verification_failed: "reCAPTCHA verification failed; please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
+    cancel: "Cancel"
+    edit: "Edit"
     error: "Error"
     error_body: "Oops, sorry about that. You can try to refresh the page or return to"
     error_contact: "For assistance please contact us at: %{support_email}"
+    generate: "Generate"
     save_and_continue: "Save and continue"
     update: "Update"
   static:
