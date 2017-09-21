@@ -114,6 +114,23 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def confirm_email_change(publisher)
+    @publisher = publisher
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher, @publisher.pending_email)
+    mail(
+      to: @publisher.pending_email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
+
+  def notify_email_change(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
+
   def uphold_account_changed(publisher)
     @publisher = publisher
     mail(

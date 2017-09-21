@@ -62,7 +62,27 @@ class PublishersController < ApplicationController
 
   def update
     publisher = current_publisher
-    success = publisher.update(publisher_update_params)
+    update_params = publisher_update_params
+
+    current_email = publisher.email
+    pending_email = publisher.pending_email
+    updated_email = update_params[:pending_email]
+
+    if updated_email
+      if updated_email == current_email
+        update_params[:pending_email] = nil
+      elsif updated_email == pending_email
+        update_params.delete(:pending_email)
+      end
+    end
+
+    success = publisher.update(update_params)
+
+    if success && update_params[:pending_email]
+      PublisherMailer.notify_email_change(publisher).deliver_later!
+      PublisherMailer.confirm_email_change(publisher).deliver_later!
+    end
+
     respond_to do |format|
       format.json {
         if success
@@ -227,7 +247,10 @@ class PublishersController < ApplicationController
     sign_out(current_publisher) if current_publisher
     return if params[:id].blank? || params[:token].blank?
     publisher = Publisher.find(params[:id])
-    if PublisherTokenAuthenticator.new(publisher: publisher, token: params[:token]).perform
+    if PublisherTokenAuthenticator.new(publisher: publisher, token: params[:token], confirm_email: params[:confirm_email]).perform
+      if params[:confirm_email].present? && publisher.email == params[:confirm_email]
+        flash[:alert] = t("publishers.email_confirmed", email: publisher.email)
+      end
       sign_in(:publisher, publisher)
     else
       flash[:alert] = I18n.t("publishers.authentication_token_invalid")
@@ -250,7 +273,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:email, :name, :show_verification_status)
+    params.require(:publisher).permit(:pending_email, :name, :show_verification_status)
   end
 
   def publisher_update_unverified_params

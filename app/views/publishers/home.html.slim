@@ -76,6 +76,17 @@ javascript:
       });
     }
 
+    function showPendingContactEmail(pendingEmail) {
+      var pendingEmailNotice = document.getElementById('pending_email_notice');
+      var showContactEmail = document.getElementById('show_contact_email');
+      if (pendingEmail && pendingEmail != showContactEmail.innerText) {
+        pendingEmailNotice.innerHTML = 'Pending: Email address has been updated to: <strong>' + pendingEmail + '</strong>. An email has been sent to this address to confirm this change.';
+        pendingEmailNotice.style.display = 'block';
+      } else {
+        pendingEmailNotice.style.display = 'none';
+      }
+    }
+
     window.addEventListener('load', function() {
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
@@ -85,6 +96,9 @@ javascript:
       var showContact = document.getElementById('show_contact');
       var showContactName = document.getElementById('show_contact_name');
       var showContactEmail = document.getElementById('show_contact_email');
+
+      var pendingContactEmail = document.getElementById('pending_contact_email');
+      showPendingContactEmail(pendingContactEmail.innerText);
 
       var updateContact = document.getElementById('update_contact');
       var updateContactName = document.getElementById('update_contact_name');
@@ -99,7 +113,7 @@ javascript:
 
       editContact.addEventListener('click', function(event) {
         updateContactName.value = showContactName.innerText;
-        updateContactEmail.value = showContactEmail.innerText;
+        updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
         showContact.style.display = 'none';
         updateContact.style.display = 'block';
         updateContactName.focus();
@@ -116,8 +130,11 @@ javascript:
         event.preventDefault();
         submitForm('update_contact', 'PATCH', true)
           .then(function() {
+            var updatedEmail = updateContactEmail.value;
             showContactName.innerText = updateContactName.value;
-            showContactEmail.innerText = updateContactEmail.value;
+            pendingContactEmail.innerText = updatedEmail;
+            showPendingContactEmail(updatedEmail);
+
             updateContact.style.display = 'none';
             showContact.style.display = 'block';
           });
@@ -207,6 +224,7 @@ div#cssload-pgloading style="display: none"
         div#show_contact
           span.name#show_contact_name= current_publisher.name
           span.email#show_contact_email= current_publisher.email
+          span.hidden#pending_contact_email= current_publisher.pending_email
           a#edit_contact href="#"
             = t("shared.edit")
         = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
@@ -215,11 +233,12 @@ div#cssload-pgloading style="display: none"
             = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
           .form-group
             = f.label(:email, class: "control-label")
-            = f.email_field(:email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
+            = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
           .button.form-group
             = f.submit(I18n.translate("shared.update"), class: "btn btn-primary")
             a#cancel_edit_contact href="#"
               = t("shared.cancel")
+        p#pending_email_notice style="display: none" class="note"
 
       = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
         .form-group

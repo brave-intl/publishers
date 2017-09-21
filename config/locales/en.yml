@@ -64,6 +64,7 @@ en:
     create_auth_token_body: "Please check your email for the login link."
     domain: "Domain"
     dashboard: "Dashboard"
+    email_confirmed: "Your updated email address %{email} has been confirmed."
     finished_header: "Thank you for registering with Brave Payments!"
     finished_intro: "You will see an initial transfer to your Uphold account as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
     finished_try_browser: "Have you tried our web browser? It's free, open source software designed to protect privacy and give publishers a better deal."
@@ -197,6 +198,26 @@ en:
         publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
       subject: "Brave Publisher email confirmation"
       title: "Brave Publisher email confirmation"
+    confirm_email_change:
+      subject: "[%{brave_publisher_id}] Confirm your Brave Publisher email change"
+      title: "Confirm email change"
+      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
+      intro: "We've received a request to update your email address with Brave Publishers:"
+      private_email_notice: |
+        NOTE: This email contains a private access link. Anyone with it can manage private
+        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      previous_email: "Previous email"
+      updated_email: "New email"
+      confirmation_link: "Confirm your email change"
+      confirmation_link_help: "Use this link to confirm that you would like to proceed with this change"
+    notify_email_change:
+      subject: "[%{brave_publisher_id}] Notification of Brave Publisher email change"
+      title: "Notification of email change"
+      intro: "We're notifying you of an update made to your email address with Brave Publishers:"
+      previous_email: "Previous email"
+      updated_email: "New email"
+      change_ok: "If you made this change, check your new email account for a link to confirm it."
+      contact_support: "If you did not make this change yourself, please contact support ASAP"
   publisher_statement_periods:
     past_7_days: "Past 7 days"
     past_30_days: "Past 30 days"

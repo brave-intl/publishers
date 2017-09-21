@@ -84,9 +84,11 @@ module PublishersHelper
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
-  def generate_publisher_private_reauth_url(publisher)
+  def generate_publisher_private_reauth_url(publisher, confirm_email = nil)
     token = PublisherTokenGenerator.new(publisher: publisher).perform
-    publisher_url(publisher, token: token)
+    options = { token: token }
+    options[:confirm_email] = confirm_email if (confirm_email)
+    publisher_url(publisher, options)
   end
 
   def publisher_verification_dns_record(publisher)
