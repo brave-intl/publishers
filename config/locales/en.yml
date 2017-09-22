@@ -64,6 +64,7 @@ en:
     create_auth_token_body: "Please check your email for the login link."
     domain: "Domain"
     dashboard: "Dashboard"
+    dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     email_confirmed: "Your updated email address %{email} has been confirmed."
     finished_header: "Thank you for registering with Brave Payments!"
     finished_intro: "You will see an initial transfer to your Uphold account as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."

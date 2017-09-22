@@ -173,6 +173,9 @@ javascript:
     }, false);
   })();
 
+noscript
+  div.noscript-warning = t("publishers.dashboard_noscript")
+
 - content_for(:navbar_content) do
   span= I18n.t("publishers.dashboard")
 
