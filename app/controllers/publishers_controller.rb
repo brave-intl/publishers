@@ -49,7 +49,7 @@ class PublishersController < ApplicationController
       PublisherMailer.verify_email(@publisher).deliver_later!
       PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
       session[:created_publisher_id] = @publisher.id
-      session[:created_publisher_email] = @publisher.email
+      session[:created_publisher_email] = @publisher.pending_email
       redirect_to create_done_publishers_path
     else
       render(:new)
