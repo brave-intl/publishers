@@ -4,7 +4,7 @@
 
 .row
   .col-center.col-xs-12.col-md-5
-    = form_for @publisher do |f|
+    = form_for @publisher, { method: :patch, url: update_unverified_publishers_path } do |f|
       fieldset
         legend= I18n.t("publishers.new")
         .form-group
@@ -14,11 +14,8 @@
           = f.label(:name, class: "control-label")
           = f.text_field(:name, class: "form-control", placeholder: "Alice Bloglette", required: true)
         .form-group
-          = f.label(:email, class: "control-label")
-          = f.email_field(:email, class: "form-control", placeholder: "alice@example.com", required: true)
-        .form-group
           = f.label(:phone, class: "control-label")
-          = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001", required: true)
+          = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001", required: false)
         .form-group
           = f.label(:show_verification_status) do
             = f.check_box(:show_verification_status, class: "control-checkbox")

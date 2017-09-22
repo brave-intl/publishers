@@ -48,21 +48,47 @@ module PublishersHelper
     PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
   end
 
-  def publisher_next_step_path(publisher)
-    return home_publishers_path if publisher.uphold_complete?
+  def publisher_status(publisher)
+    if publisher.uphold_complete?
+      :complete
+    elsif publisher.brave_publisher_id.blank?
+      :brave_publisher_id_needed
+    elsif !publisher.verified?
+      :unverified
+    else
+      :verified
+    end
+  end
 
-    return verification_publishers_path if !publisher.verified?
+  def publisher_next_step_path(publisher)
+    case publisher_status(publisher)
+      when :complete
+        home_publishers_path
+      when :brave_publisher_id_needed
+        email_verified_publishers_path
+      when :unverified
+        case publisher.verification_method
+          when "public_file"
+            verification_public_file_publishers_path
+          when "dns_record"
+            verification_dns_record_publishers_path
+          else
+            verification_publishers_path
+        end
+      when :verified
+        verification_done_publishers_path
+    end
 
     # ToDo: Polling page for exchanging uphold_code for uphold_access_parameters
     # return authorize_uphold_path if publisher.uphold_code && publisher.uphold_access_parameters.blank?
-
-    verification_done_publishers_path
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
-  def generate_publisher_private_reauth_url(publisher)
+  def generate_publisher_private_reauth_url(publisher, confirm_email = nil)
     token = PublisherTokenGenerator.new(publisher: publisher).perform
-    publisher_url(publisher, token: token)
+    options = { token: token }
+    options[:confirm_email] = confirm_email if (confirm_email)
+    publisher_url(publisher, options)
   end
 
   def publisher_verification_dns_record(publisher)

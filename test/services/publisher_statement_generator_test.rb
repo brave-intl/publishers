@@ -53,6 +53,6 @@ class PublisherStatementGeneratorTest < ActiveJob::TestCase
     assert_equal "?starting=#{((Date.today - 1.year).beginning_of_year).iso8601}&ending=#{(Date.today - 1.year).end_of_year.iso8601}", generator.query_params
 
     generator = PublisherStatementGenerator.new(publisher: publisher, statement_period: :all)
-    assert_equal nil, generator.query_params
+    assert_nil generator.query_params
   end
 end

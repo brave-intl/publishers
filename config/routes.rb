@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :publishers, only: %i(create new show) do
+  resources :publishers, only: %i(create update new show) do
     collection do
       get :create_done
       get :download_verification_file
@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :log_out
+      get :email_verified
       get :verification
       get :verification_dns_record
       get :verification_done
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
       patch :verify
       patch :update
       patch :generate_statement
+      patch :update_unverified
     end
   end
   devise_for :publishers

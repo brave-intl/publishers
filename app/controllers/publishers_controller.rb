@@ -19,7 +19,9 @@ class PublishersController < ApplicationController
              new
              new_auth_token)
   before_action :require_unverified_publisher,
-    only: %i(verification
+    only: %i(email_verified
+             update_unverified
+             verification
              verification_dns_record
              verification_public_file
              verification_failed
@@ -35,22 +37,18 @@ class PublishersController < ApplicationController
     only: %i(verification_dns_record
              verification_public_file)
 
-  def new
-    @publisher = Publisher.new
-    @should_throttle = should_throttle_create?
-  end
-
   def create
-    @publisher = Publisher.new(publisher_create_params)
+    @publisher = Publisher.new(pending_email: params[:email])
+
     @should_throttle = should_throttle_create?
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
         : true
     if throttle_legit && @publisher.save
-      # TODO: Change to #deliver_later ?
-      PublisherMailer.welcome(@publisher).deliver_later!
-      PublisherMailer.welcome_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      PublisherMailer.verify_email(@publisher).deliver_later!
+      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      session[:created_publisher_id] = @publisher.id
       session[:created_publisher_email] = @publisher.email
       redirect_to create_done_publishers_path
     else
@@ -64,14 +62,45 @@ class PublishersController < ApplicationController
 
   def update
     publisher = current_publisher
+    update_params = publisher_update_params
+
+    current_email = publisher.email
+    pending_email = publisher.pending_email
+    updated_email = update_params[:pending_email]
+
+    if updated_email
+      if updated_email == current_email
+        update_params[:pending_email] = nil
+      elsif updated_email == pending_email
+        update_params.delete(:pending_email)
+      end
+    end
+
+    success = publisher.update(update_params)
+
+    if success && update_params[:pending_email]
+      PublisherMailer.notify_email_change(publisher).deliver_later!
+      PublisherMailer.confirm_email_change(publisher).deliver_later!
+    end
+
     respond_to do |format|
       format.json {
-        if publisher.update(publisher_update_params)
+        if success
           head :no_content
         else
           render(json: { errors: publisher.errors }, status: 400)
         end
       }
+    end
+  end
+
+  def update_unverified
+    @publisher = current_publisher
+    success = @publisher.update(publisher_update_unverified_params)
+    if success
+      redirect_to(publisher_next_step_path(@publisher))
+    else
+      render(:email_verified)
     end
   end
 
@@ -116,6 +145,9 @@ class PublishersController < ApplicationController
   def verification_public_file
   end
 
+  def email_verified
+    @publisher = current_publisher
+  end
   # Tied to button on verification_dns_record
   # Call to Eyeshade to perform verification
   # TODO: Rate limit
@@ -215,7 +247,10 @@ class PublishersController < ApplicationController
     sign_out(current_publisher) if current_publisher
     return if params[:id].blank? || params[:token].blank?
     publisher = Publisher.find(params[:id])
-    if PublisherTokenAuthenticator.new(publisher: publisher, token: params[:token]).perform
+    if PublisherTokenAuthenticator.new(publisher: publisher, token: params[:token], confirm_email: params[:confirm_email]).perform
+      if params[:confirm_email].present? && publisher.email == params[:confirm_email]
+        flash[:alert] = t("publishers.email_confirmed", email: publisher.email)
+      end
       sign_in(:publisher, publisher)
     else
       flash[:alert] = I18n.t("publishers.authentication_token_invalid")
@@ -237,12 +272,12 @@ class PublishersController < ApplicationController
     I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
   end
 
-  def publisher_create_params
-    params.require(:publisher).permit(:email, :brave_publisher_id, :name, :phone, :show_verification_status)
+  def publisher_update_params
+    params.require(:publisher).permit(:pending_email, :name, :show_verification_status)
   end
 
-  def publisher_update_params
-    params.require(:publisher).permit(:email, :name, :show_verification_status)
+  def publisher_update_unverified_params
+    params.require(:publisher).permit(:brave_publisher_id, :name, :phone, :show_verification_status)
   end
 
   def publisher_create_auth_token_params
