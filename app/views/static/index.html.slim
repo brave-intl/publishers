@@ -3,26 +3,34 @@
     .col-xs-12.col-md-12.centered
       .brave-logo
   .row
-    .col-xs-12.col-md-12
+    .col-no-pad.col-xs-12.col-md-12
       h1= t("static.landing_header")
   .row
-    .col-xs-12.col-md-5
+    .col-no-pad.col-xs-12.col-md-5
       = t("static.landing_body_html")
-    .col-xs-12.col-md-6.col-md-offset-1
-      h3= t("static.landing_new_header")
-      p= t("static.landing_new_body")
-      = form_tag publishers_path, method: :post do |f|
-        fieldset
-          .form-group
-            label.control-label for="email"
-            = email_field_tag(:email, nil, class: "form-control", placeholder: "alice@example.com", required: true)
-          - if @should_throttle
+    col-xs-12.col-md-1
+    / spacer
+    .col-no-pad.col-xs-12.col-md-6
+      .col-no-pad.col-xs-12.col-md-12
+        = form_tag publishers_path, method: :post do |f|
+          .col-no-pad.col-xs-12.col-md-12
+            h3= t("static.landing_new_header")
+            p= t("static.landing_new_body")
+          .col-no-pad.col-xs-7.col-md-7
+            fieldset
             .form-group
-              = recaptcha_tags
-          .button.form-group
-            = submit_tag(t("static.landing_begin_button"), class: "btn btn-block btn-primary")
-      hr
-      h4= t("static.landing_login_header")
-      p= t("static.landing_login_body")
-      .col-no-pad.col-xs-12.col-md-5
-        p= link_to(t("static.landing_login_button"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary")
+              label.control-label for="email"
+                = email_field_tag(:email, nil, class: "form-control", placeholder: "alice@example.com", required: true)
+            - if @should_throttle
+              .form-group
+                = recaptcha_tags
+          .col-xs-5.col-md-5
+            .button.form-group
+              = submit_tag(t("static.landing_begin_button"), class: "btn btn-block btn-primary")
+      .col-no-pad.col-xs-12.col-md-12
+        hr
+        h4= t("static.landing_login_header")
+        .col-no-pad.col-xs-7.col-md-7
+          p= t("static.landing_login_body")
+        .col-xs-5.col-md-5
+          = link_to(t("static.landing_login_button"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary")

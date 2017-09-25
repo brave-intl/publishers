@@ -1,6 +1,6 @@
 body[data-controller="static"]
   padding-top: $navbar-margin-bottom
-  background-color: rgba(145, 157, 190, 0.85)
+  background-color: rgba(darken($bravePurple, 6%), 0.85)
   color: white
   .centered
     text-align: center
@@ -19,3 +19,30 @@ body[data-controller="static"]
     margin-right: 8px
     height: 128px
     width: 128px
+  hr
+    border-color: $braveLightOrange
+  .form-control
+    background: $bravePurple
+    color: white
+  .control-label
+    width: 100%
+    color: white
+  .btn
+    &.btn-primary
+      background: linear-gradient(white, #ececec)
+      border: 2px solid transparent
+      border-bottom: 2px solid #ddd
+      border-top: 2px solid #eee
+      box-shadow: $buttonShadow
+      color: $braveLightOrange
+
+      &:hover
+        border: 2px solid #aaa
+
+    &.btn-secondary
+      background: $bravePurple
+      border: 1px solid white
+      color: white
+
+      &:hover
+        border: 1px solid #aaa
