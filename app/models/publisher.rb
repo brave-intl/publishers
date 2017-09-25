@@ -28,8 +28,8 @@ class Publisher < ApplicationRecord
   validates :brave_publisher_id, uniqueness: { if: -> { !persisted? && verified_publisher_exists? } }
 
   # TODO: Show user normalized domain before they commit
-  before_validation :normalize_brave_publisher_id, if: -> { brave_publisher_id.present? && !persisted?}
-  after_create :generate_verification_token
+  before_validation :normalize_brave_publisher_id, if: -> { brave_publisher_id.present? && !persisted? }
+  after_validation :generate_verification_token, if: -> { brave_publisher_id && brave_publisher_id_changed? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
