@@ -1,8 +1,0 @@
-.container
-  .row
-    .col-center.col-xs-12.col-md-8
-      .footer
-        .contact_support
-          span = I18n.t("static.footer_contact_leadin")
-          a href="mailto: #{Rails.application.secrets[:support_email]}"
-            = Rails.application.secrets[:support_email]
