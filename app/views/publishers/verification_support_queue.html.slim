@@ -1,0 +1,9 @@
+- content_for(:navbar_content) do
+  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
+
+.row
+  .col-center.col-xs-6.col-md-6
+    h4 class="section-title"
+      span class="section-title-orange"=t("publishers.verification_support_queue_header")
+
+    div class="help-block"=t("publishers.verification_support_queue_help_html")

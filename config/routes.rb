@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get :verification_dns_record
       get :verification_done
       get :verification_public_file
+      get :verification_support_queue
       get :uphold_verified
       patch :verify
       patch :update
