@@ -177,7 +177,7 @@ en:
     verification_option_wordpress: "Hello! It looks like you are using Wordpress."
     verification_option_wordpress_help_intro: "We have an extension which will make verification a snap."
     verification_option_wordpress_help_1_html: |
-      First, please install the plugin here: <a href="https://wordpress.org/plugins/well-known-uris/">
+      First, please install the plugin here: <a href="https://wordpress.org/plugins/well-known-uris/" class="link-secondary">
       https://wordpress.org/plugins/well-known-uris/</a>
     verification_option_wordpress_help_2_html: |
       Second, copy the verification code below into the plugin.
