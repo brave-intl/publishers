@@ -123,6 +123,7 @@ en:
       <p>We will be reaching out to each member in the order they are received.</p>
       <p>An email will arrive when our next available support member will be able to assist you. Please
       keep in mind that this may take a week due to our current backlog.</p>
+    verification_support_review_options: "I'd like to review my options"
     verification_header: "Hello! "
     verification_header_2: "You have been selected for live onboarding."
     verification_help: "You have been added to our publisher activation queue. A Brave Publisher Partner will contact you to complete the process."
