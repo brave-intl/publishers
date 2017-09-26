@@ -107,6 +107,22 @@ en:
     verification_done_submit_payment_info: "Ready to claim your funds now?"
     verification_done_submit_payment_info_body: "To claim your funds you will need to create or connect to an Uphold account."
     verification_form_legend: "Verify website ownership"
+    verification_choose_header: "Verify your Site: Choose a method"
+    verification_choose_help: "Here are the options for verifying the ownership of your domain."
+    verification_choose_trusted_file_html: "Via a trusted file<br>(recommended & easiest)"
+    verification_choose_trusted_file_button: "I'll upload a trusted file"
+    verification_choose_or: "OR"
+    verification_choose_dns_html: "By editing DNS records for the domain<br>(you need to have DNS access)"
+    verification_choose_dns_button: "I'll edit my DNS record"
+    verification_choose_support_queue_link: "join the support queue."
+    verification_choose_support_queue_html: |
+      <p>If both of those options sound daunting to you, %{support_queue_link}</p>
+
+    verification_support_queue_header: "Thanks for waiting!"
+    verification_support_queue_help_html: |
+      <p>We will be reaching out to each member in the order they are received.</p>
+      <p>An email will arrive when our next available support member will be able to assist you. Please
+      keep in mind that this may take a week due to our current backlog.</p>
     verification_header: "Hello! "
     verification_header_2: "You have been selected for live onboarding."
     verification_help: "You have been added to our publisher activation queue. A Brave Publisher Partner will contact you to complete the process."

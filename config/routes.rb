@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get :log_out
       get :email_verified
       get :verification
+      get :verification_choose_method
       get :verification_dns_record
       get :verification_done
       get :verification_public_file

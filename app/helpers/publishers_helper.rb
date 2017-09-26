@@ -25,7 +25,7 @@ module PublishersHelper
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
         .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-        .gsub('<STATE>', publisher.uphold_state_token)
+        .gsub('<STATE>', publisher.uphold_state_token.to_s)
   end
 
   def publisher_humanize_verified(publisher)
@@ -49,7 +49,7 @@ module PublishersHelper
   end
 
   def publisher_status(publisher)
-    if publisher.uphold_complete?
+    if publisher.verified? && publisher.uphold_complete?
       :complete
     elsif publisher.brave_publisher_id.blank?
       :brave_publisher_id_needed
@@ -60,6 +60,23 @@ module PublishersHelper
     end
   end
 
+  def publisher_last_verification_method_path(publisher)
+    case publisher.verification_method
+      when "dns_record"
+        verification_dns_record_publishers_path
+      when "public_file"
+        verification_public_file_publishers_path
+      when "github"
+        verification_github_publishers_path
+      when "wordpress"
+        verification_wordpress_publishers_path
+      when "support_queue"
+        verification_support_queue_publishers_path
+      else
+        verification_choose_method_publishers_path
+    end
+  end
+
   def publisher_next_step_path(publisher)
     case publisher_status(publisher)
       when :complete
@@ -67,13 +84,13 @@ module PublishersHelper
       when :brave_publisher_id_needed
         email_verified_publishers_path
       when :unverified
-        case publisher.verification_method
-          when "public_file"
-            verification_public_file_publishers_path
-          when "dns_record"
-            verification_dns_record_publishers_path
+        case publisher.detected_web_host
+          when "wordpress"
+            verification_wordpress_publishers_path
+          when "github"
+            verification_github_publishers_path
           else
-            verification_publishers_path
+            verification_choose_method_publishers_path
         end
       when :verified
         verification_done_publishers_path

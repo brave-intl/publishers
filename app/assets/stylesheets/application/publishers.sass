@@ -6,6 +6,7 @@ body[data-controller="publishers"]
   &[data-action="verification_dns_record"],
   &[data-action="verification_public_file"],
   &[data-action="verification_failed"],
+  &[data-action="verification_choose_method"],
   &[data-action="verify"],
   &[data-action="verification_done"]
     .form-group:not(:last-child)
@@ -54,6 +55,13 @@ body[data-controller="publishers"]
         margin-right: 12px
     .submit-payment-info
       margin: 24px 0
+  &[data-action="verification_choose_method"]
+    .or
+      text-align: center
+      line-height: 100px
+    .btn-center
+      margin: 0 auto
+      display: block
 
   &[data-action="home"]
     .container

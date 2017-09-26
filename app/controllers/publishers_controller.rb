@@ -22,6 +22,7 @@ class PublishersController < ApplicationController
     only: %i(email_verified
              update_unverified
              verification
+             verification_choose_method
              verification_dns_record
              verification_public_file
              verification_failed
