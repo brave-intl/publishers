@@ -51,14 +51,15 @@ en:
     complete_irs_w_9_hint: "United States taxpayers"
     complete_irs_w_8ben: "Complete IRS W-8BEN"
     complete_irs_w_8ben_hint: "Individuals outside the States"
-    connect_with_uphold: "Connect with Uphold"
+    connect_with_uphold: "Create BAT Wallet"
     contact_person: "Contact person"
     create_done_header: "We're excited that you want to be in on Brave Bounty!"
     create_done_body_html: |
       <p>We sent an email to %{email}, <strong>click on the access link</strong> provided in the email to jump into
       the verification process.</p>
-      <p>Don't see the email? Be sure to check your spam folder. You may also request to 'Resend Email' below.</p>
+      <p>Don't see the email? Be sure to check your spam folder. You may also request to 'Resend email' below.</p>
     create_done_resend_email: "Resend email"
+    resend_confirmation_email_done: "The confirmation email has been resent."
     create_done_body_confirm_email: "An email has been sent to %{email}. Please confirm your email address by clicking on the access link provided in the email. The link will return you to this site to proceed with step 2."
     create_auth_token: "Login email sent!"
     create_auth_token_body: "Please check your email for the login link."
@@ -94,6 +95,7 @@ en:
     status_to_receive_payments: "To receive payments you need to:"
     status_can_receive_funds: "You are fully setup to receive Brave Payments."
     status_connect_to_uphold_required: "Connect to an Uphold account."
+    email_verified_phone: "Phone (optional)"
     verified: "Verified publisher"
     verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
     verification_dns_record_help_2: " using the account for your DNS host."
@@ -101,12 +103,17 @@ en:
     verification_dns_record_instruction2: " using your DNS host's control panel."
     verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
     verification_done_header: "Website verification complete"
-    verification_done_legend: "Congratulations! You are now a verified publisher."
-    verification_done_intro: "Brave users will now see a verified symbol next to your website domain."
-    verification_done_balance: "The current balance for %{publisher} is approximately %{balance}. We have sent you an email with a link to check your balance."
+    verification_done_legend: "Congratulations!"
+    verification_done_legend_2: "Your website has been verified."
+    verification_done_intro_html: |
+      <p>Brave users will now see a verified symbol (%{verified_image_tag}) next to your website domain.</p>
+    verification_done_balance_heading: "Current Balance:"
+    verification_done_balance_html: |
+      <p>%{bat_balance}</p>
     verification_done_submit_payment_info: "Ready to claim your funds now?"
-    verification_done_submit_payment_info_body: "To claim your funds you will need to create or connect to an Uphold account."
+    verification_done_submit_payment_info_body: "To claim your funds, you will needs to create a wallet via Uphold. Please click on the Connect button."
     verification_form_legend: "Verify website ownership"
+
     verification_choose_header: "Verify your Site: Choose a method"
     verification_choose_help: "Here are the options for verifying the ownership of your domain."
     verification_choose_trusted_file_html: "Via a trusted file<br>(recommended & easiest)"
@@ -124,6 +131,9 @@ en:
       <p>An email will arrive when our next available support member will be able to assist you. Please
       keep in mind that this may take a week due to our current backlog.</p>
     verification_support_review_options: "I'd like to review my options"
+    progress_contact_info: "Contact Info"
+    progress_verify: "Verify Your Site"
+    progress_create_wallet: "Create Your Wallet"
     verification_header: "Hello! "
     verification_header_2: "You have been selected for live onboarding."
     verification_help: "You have been added to our publisher activation queue. A Brave Publisher Partner will contact you to complete the process."
@@ -146,22 +156,48 @@ en:
     verification_pending_header: "Now verifying your new DNS record…"
     verification_pending_help1: "Verification can take several minutes or several hours, depending on your DNS host location. The Brave server will keep trying for 24 hours until there is a response."
     verification_pending_help2: "You will receive an email confirmation upon verification."
-    verification_failed_header: "Verification could not be completed at this time."
-    verification_failed_help1: "The Brave server will keep checking for up to 24 hours. You will receive an email notification after verification is complete, or has timed out."
-    verification_failed_help2: "If you feel that you have reached this message in error, please edit your DNS record and "
-    verification_failed_help3: "try verification again"
-    verification_failed_help4: "."
-    verification_failed_retry: "Please try again"
-    verification_option_public_file: "To use your web server:"
-    verification_option_public_file_use: "Add a text file to my website"
+    verification_background_header: "Now verifying your domain..."
+    verification_background_help: "We will send you an email with further instructions within 24 hours."
+    verification_background_help_continue: "Follow the directions in the email to continue."
+    verification_https_check: "Your domain is using HTTPS."
+    verification_https_check_alt: "Good, your domain is using HTTPS."
+    verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
+    verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
+    verification_option_public_file: "Verify Your Site: Upload a trusted file"
     verification_option_public_file_help: "You will need to create a directory on your site and add a text file to this directory."
-    verification_option_public_https_hint: "Your website needs to serve this file securely over HTTPS. Learn more at <a href=\"https://letsencrypt.org/getting-started/\" target=\"_blank\">Let's Encrypt</a> or instead <a href=\"%{href}\">use a DNS record</a>."
-    verification_option_public_file_help_download: "Download the verification text file:"
+    verification_option_public_file_help_download: "Download the verification file below:"
     verification_option_public_file_help_directory: "Find or create the directory: %{directory}"
-    verification_option_public_file_help_upload: "Upload the text file to this directory."
-    verification_option_public_file_help_confirm: "Confirm successful upload by visiting"
-    verification_option_public_file_help_verify: "Click Verify below."
+    verification_option_public_file_help_upload_html: |
+      Upload the verification file to the '<strong>.well-known</strong>' folder on your domain. If one doesn't exist,
+      be sure to create it. Make sure the file is in the .well-known folder and click verify.
     verification_public_file_help: "To verify your site ownership, you will need to create a new directory on your site and add a text file to this directory."
+    verification_download_verification: "Download verification"
+    verification_option_public_file_file_contents: "File contents:"
+    verification_option_public_file_verify_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your site is hosted."
+    verification_option_wordpress: "Hello! It looks like you are using Wordpress."
+    verification_option_wordpress_help_intro: "We have an extension which will make verification a snap."
+    verification_option_wordpress_help_1_html: |
+      First, please install the plugin here: <a href="https://wordpress.org/plugins/well-known-uris/">
+      https://wordpress.org/plugins/well-known-uris/</a>
+    verification_option_wordpress_help_2_html: |
+      Second, copy the verification code below into the plugin.
+    verification_option_wordpress_token: "Verification code:"
+    verification_option_wordpress_help_verify: "Finally, let us know you are ready to check for the verification code."
+    verification_option_wordpress_verify_button: "Check for the verification code"
+    verification_option_github_use: "Verify Your Site: Upload a trusted file"
+    verification_option_github_help_download: "Download the verification file below:"
+    verification_option_github_help_directory: "Find or create the directory: %{directory}"
+    verification_option_github_help_upload_html: |
+      Upload the verification file to the '<strong>.well-known</strong>' folder on your repo. If one doesn't exist,
+      be sure to create it. Make sure the file is in the .well-known folder and click verify.
+    verification_option_github_file_contents: "File contents:"
+    verification_option_github: "Hello! It looks like you are using GitHub."
+    verification_option_github_help_intro: ""
+    verification_option_github_help_1_html: ""
+    verification_option_github_help_2_html: ""
+    verification_option_github_token: "Verication code:"
+    verification_option_github_help_verify: ""
+    verification_option_github_verify_button: "Check for the verification code."
     verification_required: "To continue please verify ownership of your domain."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
@@ -169,6 +205,9 @@ en:
     verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
     verify_dns_button: "Verify DNS Record"
     verify_button: "Verify"
+    check_for_https_button: "Check for HTTPS"
+    https_inspection_complete: "Check for HTTPS complete"
+    requires_https: "This action requires HTTPS support"
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
     verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
     verify_success: "Verification successful."

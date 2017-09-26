@@ -1,5 +1,5 @@
 - content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
+  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 25, wallet: 0 }, publisher: current_publisher }
 
 .row
   .col-xs-12.col-md-12
@@ -12,7 +12,7 @@
     .center-block= image_tag("choose_file.png", class: "img-center")
     .help-block.text-center
       strong= t("publishers.verification_choose_trusted_file_html")
-    = link_to(t("publishers.verification_choose_trusted_file_button"), verification_public_file_publishers_path, class: "btn btn-primary")
+    .text-center= link_to(t("publishers.verification_choose_trusted_file_button"), verification_public_file_publishers_path, class: "btn btn-primary")
 
   .col-xs-12.col-md-1
     .help-block.or
@@ -21,7 +21,7 @@
   .col-xs-12.col-md-5
     = image_tag("choose_dns.png", class: "img-center")
     .help-block.text-center= t("publishers.verification_choose_dns_html")
-    = link_to(t("publishers.verification_choose_dns_button"), verification_dns_record_publishers_path, class: "btn btn-secondary")
+    .text-center= link_to(t("publishers.verification_choose_dns_button"), verification_dns_record_publishers_path, class: "btn btn-secondary")
 .row
   .col-xs-12.col-md-12
     br

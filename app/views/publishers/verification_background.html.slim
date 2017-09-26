@@ -1,0 +1,11 @@
+- content_for(:navbar_content) do
+  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 80, wallet: 0 }, publisher: current_publisher }
+
+.row
+  .col-center.col-xs-7.col-md-7
+    fieldset
+      legend= t("publishers.verification_background_header")
+
+    .form-group
+      .help-block= t("publishers.verification_background_help")
+      strong.help-block= t("publishers.verification_background_help_continue")

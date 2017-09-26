@@ -1,5 +1,5 @@
 - content_for(:navbar_content) do
-  span Step 2 of 4: #{I18n.t("publishers.new_header")}
+  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
 
 javascript:
   function submitForVerification() {

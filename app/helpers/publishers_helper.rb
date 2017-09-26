@@ -123,4 +123,22 @@ module PublishersHelper
       [t('publisher_statement_periods.all'), :all]
     ]
   end
+
+  def publisher_filtered_verification_token(publisher)
+    if publisher.supports_https?
+      publisher.verification_token
+    else
+      # ToDo: Do we want to display a fake token? Will show up in disabled forms
+      ""
+    end
+  end
+
+  def publisher_filter_public_file_content(publisher, file_content)
+    if publisher.supports_https?
+      file_content
+    else
+      # ToDo: Do we want to display a fake token? Will show up in disabled forms
+      ""
+    end
+  end
 end

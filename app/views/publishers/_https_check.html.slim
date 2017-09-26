@@ -1,0 +1,12 @@
+- if current_publisher.supports_https?
+  .help-block
+    = image_tag("check.png", alt: t("publishers.verification_https_check_alt"), class: "https-check-icon", height: 30)
+    = t("publishers.verification_https_check")
+- else
+  .help-block
+    .col-no-pad.col-xs-12.col-md-12
+      = image_tag("x.png", alt: t("publishers.verification_https_check_no_https_alt"), class: "https-check-icon")
+      = t("publishers.verification_https_check_no_https")
+    .col-no-pad.col-xs-12.col-md-12
+      = form_for(current_publisher, method: :patch, url: check_for_https_publishers_path) do |f|
+        = f.submit(t("publishers.check_for_https_button"), class: "btn btn-primary btn-sm")
