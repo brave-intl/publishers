@@ -1,3 +1,5 @@
+$subnav-active: #0dccf8
+
 body[data-controller="publishers"]
   .form-group.button:last-child
     margin: 20px 0 5px
@@ -183,3 +185,31 @@ body[data-controller="publishers"]
     padding: 10px
     margin-bottom: 20px
     color: #333
+
+  .progress-items
+    .progress-item
+      display: inline-block
+      vertical-align: middle
+      padding: 0 10px
+      &.unstarted
+        color: $gray-light
+        svg.fill-circle
+          .outer-circle
+            fill: $gray-light
+          .inner-circle
+            stroke: $gray-light
+      &.started
+        color: $subnav-active
+        svg.fill-circle
+          .outer-circle
+            fill: $subnav-active
+          .inner-circle
+            stroke: $subnav-active
+      label
+        display: inline-block
+        margin: 0
+        font-size: 15px
+        line-height: 15px
+      svg
+        display: inline-block
+        vertical-align: middle
