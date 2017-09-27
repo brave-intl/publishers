@@ -90,6 +90,10 @@ en:
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     new_header: "Publisher contact information"
     not_verified: "Unverified"
+    progress:
+      contact_info: "Contact Info"
+      verify_site: "Verify Your Site"
+      create_wallet: "Create Your Wallet"
     publisher_statements: "Publisher statements"
     status: "Status"
     status_to_receive_payments: "To receive payments you need to:"
