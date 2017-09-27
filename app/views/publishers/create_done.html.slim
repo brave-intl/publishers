@@ -1,8 +1,14 @@
 - content_for(:navbar_content) do
-  span Step 1 of 4: #{I18n.t("publishers.new_header")}
+  = render :partial => 'progress', :locals => { progress: { info: 50, verify: 0, wallet: 0 }, publisher: current_publisher }
 
 .row
   .col-center.col-xs-12.col-md-7
-    h4 class="section-title"
+    h4.section-title
       h3= t("publishers.create_done_header")
-      .help-block== t("publishers.create_done_body_html", email: @publisher_email)
+      .help-block= t("publishers.create_done_body_html", email: @publisher_email)
+      = image_tag("email_envelope.png", class: "img-center")
+.row
+  .col-center.col-xs-6.col-md-3
+    = button_to t("publishers.create_done_resend_email"),
+        { controller: "publishers", action: "resend_email_verify_email" },
+        { method: "post", form_class: "btn btn-block btn-secondary" }

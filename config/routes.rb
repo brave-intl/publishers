@@ -2,18 +2,23 @@ Rails.application.routes.draw do
   resources :publishers, only: %i(create update new show) do
     collection do
       get :create_done
+      post :resend_email_verify_email, action: :resend_email_verify_email
       get :download_verification_file
       get :home
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :log_out
       get :email_verified
-      get :verification
+      get :verification_choose_method
       get :verification_dns_record
       get :verification_done
       get :verification_public_file
+      get :verification_github
+      get :verification_wordpress
+      get :verification_support_queue
       get :uphold_verified
       patch :verify
+      patch :check_for_https
       patch :update
       patch :generate_statement
       patch :update_unverified

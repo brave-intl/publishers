@@ -12,7 +12,8 @@ class PublishersController < ApplicationController
                create_auth_token
                create_done
                new
-               new_auth_token)
+               new_auth_token
+               resend_email_verify_email)
   before_action :require_unauthenticated_publisher,
     only: %i(create
              create_auth_token
@@ -22,10 +23,18 @@ class PublishersController < ApplicationController
     only: %i(email_verified
              update_unverified
              verification
+             verification_choose_method
              verification_dns_record
+             verification_wordpress
+             verification_github
              verification_public_file
-             verification_failed
-             verify)
+             verification_support_queue
+             verification_background
+             verify
+             download_verification_file)
+  before_action :require_https_enabled_publisher,
+    only: %i(download_verification_file
+            )
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
              generate_statement
@@ -35,7 +44,10 @@ class PublishersController < ApplicationController
              uphold_verified)
   before_action :update_publisher_verification_method,
     only: %i(verification_dns_record
-             verification_public_file)
+             verification_public_file
+             verification_support_queue
+             verification_github
+             verification_wordpress)
 
   def create
     @publisher = Publisher.new(pending_email: params[:email])
@@ -49,7 +61,6 @@ class PublishersController < ApplicationController
       PublisherMailer.verify_email(@publisher).deliver_later!
       PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
       session[:created_publisher_id] = @publisher.id
-      session[:created_publisher_email] = @publisher.pending_email
       redirect_to create_done_publishers_path
     else
       render(:new)
@@ -57,7 +68,18 @@ class PublishersController < ApplicationController
   end
 
   def create_done
-    @publisher_email = session[:created_publisher_email]
+    @publisher = Publisher.find(session[:created_publisher_id])
+    @publisher_email = @publisher.pending_email
+  end
+
+  def resend_email_verify_email
+    @publisher = Publisher.find(session[:created_publisher_id])
+
+    PublisherMailer.verify_email(@publisher).deliver_later!
+    PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+    session[:created_publisher_id] = @publisher.id
+    session[:created_publisher_email] = @publisher.pending_email
+    redirect_to create_done_publishers_path, alert: t("publishers.resend_confirmation_email_done")
   end
 
   def update
@@ -142,12 +164,32 @@ class PublishersController < ApplicationController
   end
 
   # Verification method
+  def verification_choose_method
+  end
+
+  def verification_support_queue
+  end
+
   def verification_public_file
+    generator = PublisherVerificationFileGenerator.new(publisher: current_publisher)
+    @public_file_content = generator.generate_file_content
+  end
+
+  def verification_github
+    generator = PublisherVerificationFileGenerator.new(publisher: current_publisher)
+    @public_file_content = generator.generate_file_content
+  end
+
+  def verification_wordpress
+    if !current_publisher.brave_publisher_id || !current_publisher.verification_token
+      raise "Publisher doesn't have valid #brave_publisher_id and #verification_token"
+    end
   end
 
   def email_verified
     @publisher = current_publisher
   end
+
   # Tied to button on verification_dns_record
   # Call to Eyeshade to perform verification
   # TODO: Rate limit
@@ -162,15 +204,20 @@ class PublishersController < ApplicationController
     if current_publisher.verified?
       render(:verification_done)
     else
-      render(:verification_failed)
+      render(:verification_background)
     end
   rescue PublisherVerifier::VerificationIdMismatch
-    @failure_reason = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
-    render(:verification_failed)
+    redirect_to(publisher_last_verification_method_path(@publisher), alert: t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken"))
   rescue Faraday::Error
-    @try_again = true
-    @failure_reason = I18n.t("shared.api_error")
-    render(:verification_failed)
+    redirect_to(publisher_last_verification_method_path(@publisher), alert: t("shared.api_error"))
+  end
+
+  # TODO: Rate limit
+  def check_for_https
+    @publisher = current_publisher
+    @publisher.inspect_brave_publisher_id
+    @publisher.save!
+    redirect_to(publisher_last_verification_method_path(@publisher), alert: t("publishers.https_inspection_complete"))
   end
 
   # Shown after verification is completed to encourage users to submit
@@ -295,6 +342,11 @@ class PublishersController < ApplicationController
     redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.verification_already_done"))
   end
 
+  def require_https_enabled_publisher
+    return if current_publisher.supports_https?
+    redirect_to(publisher_last_verification_method_path(current_publisher), alert: t("publishers.requires_https"))
+  end
+
   def require_verified_publisher
     return if current_publisher.verified?
     redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.verification_required"))
@@ -306,6 +358,12 @@ class PublishersController < ApplicationController
       current_publisher.verification_method = "dns_record"
     when "verification_public_file"
       current_publisher.verification_method = "public_file"
+    when "verification_github"
+      current_publisher.verification_method = "github"
+    when "verification_wordpress"
+      current_publisher.verification_method = "wordpress"
+    when "verification_support_queue"
+      current_publisher.verification_method = "support_queue"
     end
     current_publisher.save! if current_publisher.verification_method_changed?
   end

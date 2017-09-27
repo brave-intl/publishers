@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907123156) do
+ActiveRecord::Schema.define(version: 20170915124337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,9 @@ ActiveRecord::Schema.define(version: 20170907123156) do
     t.string   "encrypted_uphold_access_parameters_iv"
     t.boolean  "uphold_verified",                       default: false
     t.string   "pending_email"
+    t.boolean  "supports_https",                        default: false
+    t.boolean  "host_connection_verified"
+    t.string   "detected_web_host"
     t.index ["brave_publisher_id"], name: "index_publishers_on_brave_publisher_id", using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree

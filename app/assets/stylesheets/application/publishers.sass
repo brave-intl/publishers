@@ -1,11 +1,16 @@
+$subnav-active: #0dccf8
+
 body[data-controller="publishers"]
   .form-group.button:last-child
     margin: 20px 0 5px
 
+  &[data-action="create_done"],
   &[data-action="verification"],
   &[data-action="verification_dns_record"],
   &[data-action="verification_public_file"],
-  &[data-action="verification_failed"],
+  &[data-action="verification_github"],
+  &[data-action="verification_wordpress"],
+  &[data-action="verification_choose_method"],
   &[data-action="verify"],
   &[data-action="verification_done"]
     .form-group:not(:last-child)
@@ -16,7 +21,9 @@ body[data-controller="publishers"]
       .form-control
         font-size: $font-size-base
         &.dns-record-value
-          height: $font-size-base * 5
+          font-family: monospace
+          font-size: $font-size-base * 0.6
+          height: $font-size-base * 4
       .color-orange
         color: $braveLightOrange
       .dns-list-button
@@ -42,18 +49,71 @@ body[data-controller="publishers"]
       color: $gray
       line-height: $line-height-computed * 1.5
     .verification-file
-      .download-file
-        margin-left: 10px
       .file-content
-        height: $font-size-base * $line-height-base * 5
+        height: $font-size-base * $line-height-base * 4
+        font-family: monospace
+        font-size: $font-size-base * 0.6
+        color: $braveOrange
+        outline: #888 solid thin
+    .verification_code
+      font-family: monospace
+      font-size: $font-size-base * 0.6
+      color: $braveOrange
+      outline: #888 solid thin
+      height: $font-size-base * $line-height-base * 1
     .publisher-domain-summary
       margin-bottom: 18px
       .publisher-domain-name
         font-size: $font-size-h3
       img.verified-icon
-        margin-right: 12px
+        margin-right: 2px
+        margin-left: 2px
+      img.verified-icon-small
+        margin-right: 2px
+        margin-left: 2px
+        height: 20px
+      img.uphold-connect-icon
+        margin-left: 2px
     .submit-payment-info
       margin: 24px 0
+    .https-check-icon
+      height: 30px
+      float: left
+      margin-bottom: 30px
+    .img-center
+      margin: 0 auto
+      display: block
+    .ol-flush
+      padding-left: 20px
+      list-style-position: outside
+    .li-text
+      padding-left: 0px
+      padding-right: 0px
+      margin-top: 0px
+    .brave-logo-large
+      background: url(asset-path("brave_icon_512x.png")) 0 0 / 128px 128px no-repeat
+      margin: 0 auto
+      height: 128px
+      width: 128px
+
+  &[data-action="verification_done"]
+    h2
+      margin-top: 10px
+      color: $braveGreen
+      white-space: nowrap
+    .balance
+      color: #8c8c8c
+      font-size: $font-size-base * 1.6
+    .uphold-connect-icon
+      height: 50px
+
+  &[data-action="verification_choose_method"]
+    .or
+      text-align: center
+      line-height: 100px
+    .btn-center
+      margin: 0 auto
+      display: block
 
   &[data-action="home"]
     .container
@@ -104,6 +164,20 @@ body[data-controller="publishers"]
     padding: 10px
     color: #666
 
+  .dimmed
+    position: relative
+    opacity: 0.20
+
+  .dimmed:after
+    content: " "
+    z-index: 10
+    display: block
+    position: absolute
+    height: 100%
+    top: 0
+    left: 0
+    right: 0
+
   .noscript-warning
     text-align: center
     background: #f0f0f0
@@ -111,3 +185,31 @@ body[data-controller="publishers"]
     padding: 10px
     margin-bottom: 20px
     color: #333
+
+  .progress-items
+    .progress-item
+      display: inline-block
+      vertical-align: middle
+      padding: 0 10px
+      &.unstarted
+        color: $gray-light
+        svg.fill-circle
+          .outer-circle
+            fill: $gray-light
+          .inner-circle
+            stroke: $gray-light
+      &.started
+        color: $subnav-active
+        svg.fill-circle
+          .outer-circle
+            fill: $subnav-active
+          .inner-circle
+            stroke: $subnav-active
+      label
+        display: inline-block
+        margin: 0
+        font-size: 15px
+        line-height: 15px
+      svg
+        display: inline-block
+        vertical-align: middle

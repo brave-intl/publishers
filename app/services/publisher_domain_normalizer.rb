@@ -30,11 +30,11 @@ class PublisherDomainNormalizer < BaseApiClient
     # Development Gemfile group. If you run in prod move the gem to the top level.
     require "domain_name"
     Rails.logger.info("PublisherDomainNormalizer normalizing offline.")
-    begin
-      DomainName(domain).domain
-    rescue => e
-      raise OfflineNormalizationError.new(e)
+    domain_name = DomainName(domain)
+    unless domain_name.canonical_tld?
+      raise DomainExclusionError.new("Normalized publisher ID unavailable for #{domain}")
     end
+    domain_name.hostname
   end
 
   private

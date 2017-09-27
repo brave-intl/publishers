@@ -25,10 +25,10 @@ class Publisher < ApplicationRecord
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :brave_publisher_id, uniqueness: { if: -> { !persisted? && verified_publisher_exists? } }
+  validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id_changed? && verified_publisher_exists? } }
 
   # TODO: Show user normalized domain before they commit
-  before_validation :normalize_brave_publisher_id, if: -> { brave_publisher_id.present? && !persisted? }
+  before_validation :normalize_inspect_brave_publisher_id, if: -> { brave_publisher_id.present? && brave_publisher_id_changed?}
   after_validation :generate_verification_token, if: -> { brave_publisher_id && brave_publisher_id_changed? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
@@ -88,10 +88,29 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def inspect_brave_publisher_id
+    require "faraday"
+    result = PublisherHostInspector.new(brave_publisher_id: self.brave_publisher_id).perform
+    if result[:host_connection_verified]
+      self.supports_https = result[:https]
+      self.detected_web_host = result[:web_host]
+      self.host_connection_verified = true
+    else
+      self.supports_https = false
+      self.detected_web_host = nil
+      self.host_connection_verified = false
+    end
+  end
+
   private
 
   def generate_verification_token
     update_attribute(:verification_token, PublisherTokenRequester.new(publisher: self).perform)
+  end
+
+  def normalize_inspect_brave_publisher_id
+    normalize_brave_publisher_id
+    inspect_brave_publisher_id unless errors.any?
   end
 
   def normalize_brave_publisher_id

@@ -172,9 +172,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                    .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
                    .gsub('<STATE>', publisher.uphold_state_token)
 
-    assert_select("a.btn-primary[href='#{endpoint}']") do |elements|
+    assert_select("a[href='#{endpoint}']") do |elements|
       assert_equal(1, elements.length, 'A link with the correct href to Uphold.com is present')
-      assert_equal(elements[0].inner_text, 'Connect with Uphold', 'Link text matches expectations')
     end
   end
 

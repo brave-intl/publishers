@@ -3,8 +3,8 @@
 
 .row
   .col-no-pad.col-center.col-xs-10.col-md-10
-    fieldset
-      legend= t("publishers.verification_option_public_file")
+    legend= t("publishers.verification_option_github")
+
 .row
   .col-no-pad.col-center.col-xs-10.col-md-10
     = render :partial => 'https_check', :locals => { publisher: current_publisher }
@@ -14,26 +14,24 @@ div class=(current_publisher.supports_https? ? "row" : "row dimmed")
     .form-group
       ol.ol-flush
         li
-          .help-block.col-xs-10.col-md-8.li-text= t("publishers.verification_option_public_file_help_download")
+          .help-block.col-xs-10.col-md-8.li-text= t("publishers.verification_option_github_help_download")
           .col-xs-10.visible-sm.visible-xs
             = image_tag("download.png")
           .row
             .col-xs-10.col-md-8
-              strong= t("publishers.verification_option_public_file_file_contents")
+              strong= t("publishers.verification_option_github_file_contents")
               .verification-file
                 .file-content= simple_format h publisher_filter_public_file_content(current_publisher, @public_file_content)
                 = link_to(t("publishers.verification_download_verification"), download_verification_file_publishers_path, class: "button btn btn-xs btn-default btn-download")
             .col-xs-4.col-md-4.visible-md.visible-lg
               = image_tag("download.png")
         li
-          .help-block.col-xs-10.col-md-8.li-text= t("publishers.verification_option_public_file_help_upload_html")
+          .help-block.col-xs-10.col-md-8.li-text= t("publishers.verification_option_github_help_upload_html")
           .col-sm-12.col-xs-10.visible-sm.visible-xs
             = image_tag("upload-well-known.png")
           .row
             .col-xs-10.col-md-8
               = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
                 = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm")
-              br
-              .help-block= t("publishers.verification_option_public_file_verify_note")
             .col-xs-4.col-md-4.visible-md.visible-lg
               = image_tag("upload-well-known.png")
