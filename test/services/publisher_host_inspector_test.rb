@@ -75,7 +75,7 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(PublisherHostInspector::ConnectionFailedError)
+    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
   end
 
   test "connection to site fails when https fails and http is require_https is true" do
@@ -86,7 +86,7 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(PublisherHostInspector::ConnectionFailedError)
+    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
   end
 
   test "follows local redirects" do
@@ -126,7 +126,7 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(PublisherHostInspector::ConnectionFailedError)
+    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
     assert_equal "non local redirects prohibited", result[:response].to_s
   end
 

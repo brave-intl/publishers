@@ -195,6 +195,7 @@ class PublishersController < ApplicationController
   # TODO: Rate limit
   # TODO: Support XHR
   def verify
+    @publisher = current_publisher
     require "faraday"
     PublisherVerifier.new(
       brave_publisher_id: current_publisher.brave_publisher_id,
