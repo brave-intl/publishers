@@ -108,8 +108,8 @@ class PublisherHostInspector
   def perform_offline
     Rails.logger.info("PublisherHostInspector inspecting offline.")
     result = {}
-    result[:host_connection_verified] = true?(ENV["HOST_INSPECTOR_OFFLINE_VERIFIED"])
-    result[:https] = true?(ENV["HOST_INSPECTOR_OFFLINE_HTTPS"])
+    result[:host_connection_verified] = ENV["HOST_INSPECTOR_OFFLINE_VERIFIED"] ? true?(ENV["HOST_INSPECTOR_OFFLINE_VERIFIED"]) : true
+    result[:https] = ENV["HOST_INSPECTOR_OFFLINE_HTTPS"] ? true?(ENV["HOST_INSPECTOR_OFFLINE_HTTPS"]) : true
     result[:web_host] = ENV["HOST_INSPECTOR_OFFLINE_WEB_HOST"]
     return result
   end
