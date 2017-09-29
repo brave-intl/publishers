@@ -148,7 +148,7 @@ javascript:
 
       generateStatement.addEventListener('click', function(event) {
         event.preventDefault();
-        showSpinner();
+
         submitForm('statement_generator', 'PATCH', false)
           .then(function(response) {
             return response.json();
@@ -156,20 +156,21 @@ javascript:
           .then(function(json) {
             generateStatement.style.display = 'none';
             generateStatementResult.style.display = 'inline-block';
-            generateStatementResult.innerText = 'Generating ...';
+            generateStatementResult.innerText = 'Generating';
+
+            dynamicEllipsis.start('generate_statement_result');
 
             return waitForReport(json.reportURL, 3000, 2000, 4);
           })
           .then(function(reportURL) {
-            hideSpinner();
+            dynamicEllipsis.stop('generate_statement_result');
             generateStatementResult.innerHTML = '<a href="' + reportURL + '">View report</a>';
           })
           .catch(function() {
-            hideSpinner();
+            dynamicEllipsis.stop('generate_statement_result');
             generateStatementResult.innerText = 'We will email you a link when your report is ready.'
           });
       }, false);
-
     }, false);
   })();
 
