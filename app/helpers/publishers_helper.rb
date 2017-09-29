@@ -39,6 +39,8 @@ module PublishersHelper
   end
 
   def uphold_authorization_endpoint(publisher)
+    publisher.prepare_uphold_state_token
+
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
         .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])

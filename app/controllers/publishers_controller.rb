@@ -224,7 +224,6 @@ class PublishersController < ApplicationController
   # payment information.
   def verification_done
     @publisher = current_publisher
-    @publisher.prepare_uphold_state_token
   end
 
   def uphold_verified

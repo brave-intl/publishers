@@ -49,9 +49,6 @@ class Publisher < ApplicationRecord
   def prepare_uphold_state_token
     if self.uphold_state_token.nil?
       self.uphold_state_token = SecureRandom.hex(64)
-      self.uphold_code = nil
-      self.uphold_access_parameters = nil
-      self.uphold_verified = false
       save!
     end
   end
