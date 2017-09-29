@@ -16,8 +16,12 @@ module PublishersHelper
     end
   end
 
-  def show_uphold_connect(publisher)
+  def show_uphold_connect?(publisher)
     publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired
+  end
+
+  def poll_uphold_status?(publisher)
+    publisher.uphold_status == :access_parameters_acquired
   end
 
   # balance: Instance of PublisherBalanceGetter::Balance

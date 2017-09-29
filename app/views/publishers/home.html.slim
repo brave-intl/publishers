@@ -174,6 +174,41 @@ javascript:
     }, false);
   })();
 
+- if poll_uphold_status?(current_publisher)
+  javascript:
+    (function() {
+      var checkUpholdStatusInterval;
+
+      function checkUpholdStatus() {
+        var options = {
+          headers: {
+            'Accept': 'application/json'
+          },
+          credentials: 'same-origin',
+          method: 'GET'
+        };
+
+        return window.fetch('./uphold_status', options)
+          .then(function(response) {
+            if (response.status === 200) {
+              return response.json();
+            }
+          })
+          .then(function(body) {
+            if (body.status === 'verified') {
+              document.getElementById('uphold_status').innerText = body.description;
+              dynamicEllipsis.stop('uphold_status');
+              clearInterval(checkUpholdStatusInterval);
+            }
+          });
+      }
+
+      window.addEventListener('load', function() {
+        dynamicEllipsis.start('uphold_status');
+        checkUpholdStatusInterval = setInterval(checkUpholdStatus, 2000);
+      });
+    })();
+
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
@@ -201,7 +236,7 @@ div#cssload-pgloading style="display: none"
       h4= I18n.t("publishers.uphold_status")
       .attribute-value.status
         p#uphold_status= uphold_status_description(current_publisher)
-        - if show_uphold_connect(current_publisher)
+        - if show_uphold_connect?(current_publisher)
           div#uphold_connect
             p.help-block= t("publishers.verification_done_submit_payment_info_body")
             p= link_to(image_tag("uphold-connect-white@1x.png"), uphold_authorization_endpoint(current_publisher))
