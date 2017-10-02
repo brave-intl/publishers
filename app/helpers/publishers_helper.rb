@@ -3,6 +3,27 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
+  def uphold_status_description(publisher)
+    case publisher.uphold_status
+    when :verified
+      t("publishers.uphold_status_verified")
+    when :access_parameters_acquired
+      t("publishers.uphold_status_access_parameters_acquired")
+    when :code_acquired
+      t("publishers.uphold_status_code_acquired")
+    when :unconnected
+      t("publishers.uphold_status_unconnected")
+    end
+  end
+
+  def show_uphold_connect?(publisher)
+    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired
+  end
+
+  def poll_uphold_status?(publisher)
+    publisher.uphold_status == :access_parameters_acquired
+  end
+
   # balance: Instance of PublisherBalanceGetter::Balance
   def publisher_humanize_balance(publisher)
     if balance = publisher.balance
@@ -22,6 +43,8 @@ module PublishersHelper
   end
 
   def uphold_authorization_endpoint(publisher)
+    publisher.prepare_uphold_state_token
+
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
         .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])

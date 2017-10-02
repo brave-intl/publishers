@@ -148,7 +148,7 @@ javascript:
 
       generateStatement.addEventListener('click', function(event) {
         event.preventDefault();
-        showSpinner();
+
         submitForm('statement_generator', 'PATCH', false)
           .then(function(response) {
             return response.json();
@@ -156,22 +156,58 @@ javascript:
           .then(function(json) {
             generateStatement.style.display = 'none';
             generateStatementResult.style.display = 'inline-block';
-            generateStatementResult.innerText = 'Generating ...';
+            generateStatementResult.innerText = 'Generating';
+
+            dynamicEllipsis.start('generate_statement_result');
 
             return waitForReport(json.reportURL, 3000, 2000, 4);
           })
           .then(function(reportURL) {
-            hideSpinner();
+            dynamicEllipsis.stop('generate_statement_result');
             generateStatementResult.innerHTML = '<a href="' + reportURL + '">View report</a>';
           })
           .catch(function() {
-            hideSpinner();
+            dynamicEllipsis.stop('generate_statement_result');
             generateStatementResult.innerText = 'We will email you a link when your report is ready.'
           });
       }, false);
-
     }, false);
   })();
+
+- if poll_uphold_status?(current_publisher)
+  javascript:
+    (function() {
+      var checkUpholdStatusInterval;
+
+      function checkUpholdStatus() {
+        var options = {
+          headers: {
+            'Accept': 'application/json'
+          },
+          credentials: 'same-origin',
+          method: 'GET'
+        };
+
+        return window.fetch('./uphold_status', options)
+          .then(function(response) {
+            if (response.status === 200) {
+              return response.json();
+            }
+          })
+          .then(function(body) {
+            if (body.status === 'verified') {
+              document.getElementById('uphold_status').innerText = body.description;
+              dynamicEllipsis.stop('uphold_status');
+              clearInterval(checkUpholdStatusInterval);
+            }
+          });
+      }
+
+      window.addEventListener('load', function() {
+        dynamicEllipsis.start('uphold_status');
+        checkUpholdStatusInterval = setInterval(checkUpholdStatus, 2000);
+      });
+    })();
 
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
@@ -197,15 +233,13 @@ div#cssload-pgloading style="display: none"
         - if !current_publisher.verified?
           span.link-hint.publisher-verified-status= I18n.t("publishers.not_verified")
 
-      h4= I18n.t("publishers.status")
+      h4= I18n.t("publishers.uphold_status")
       .attribute-value.status
-        - if publisher_can_receive_funds?(current_publisher)
-          div= I18n.t("publishers.status_can_receive_funds")
-        - else
-          div= I18n.t("publishers.status_to_receive_payments")
-          ul
-            - if current_publisher.uphold_status != :verified #ToDo: Further breakdown
-              li= I18n.t("publishers.status_connect_to_uphold_required")
+        p#uphold_status= uphold_status_description(current_publisher)
+        - if show_uphold_connect?(current_publisher)
+          div#uphold_connect
+            p.help-block= t("publishers.verification_done_submit_payment_info_body")
+            p= link_to(image_tag("uphold-connect-white@1x.png"), uphold_authorization_endpoint(current_publisher))
 
       h4= I18n.t("publishers.balance_pending")
       .attribute-value.balance

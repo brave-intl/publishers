@@ -51,7 +51,6 @@ en:
     complete_irs_w_9_hint: "United States taxpayers"
     complete_irs_w_8ben: "Complete IRS W-8BEN"
     complete_irs_w_8ben_hint: "Individuals outside the States"
-    connect_with_uphold: "Create BAT Wallet"
     contact_person: "Contact person"
     create_done_header: "We're excited that you want to be in on Brave Bounty!"
     create_done_body_html: |
@@ -95,11 +94,12 @@ en:
       verify_site: "Verify Your Site"
       create_wallet: "Create Your Wallet"
     publisher_statements: "Publisher statements"
-    status: "Status"
-    status_to_receive_payments: "To receive payments you need to:"
-    status_can_receive_funds: "You are fully setup to receive Brave Payments."
-    status_connect_to_uphold_required: "Connect to an Uphold account."
     email_verified_phone: "Phone (optional)"
+    uphold_status: "Status"
+    uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
+    uphold_status_access_parameters_acquired: "Connecting your Uphold account."
+    uphold_status_code_acquired: "A problem was experienced connecting your Uphold account."
+    uphold_status_unconnected: "Not connected to Uphold."
     verified: "Verified publisher"
     verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
     verification_dns_record_help_2: " using the account for your DNS host."
@@ -115,7 +115,7 @@ en:
     verification_done_balance_html: |
       <p>%{bat_balance}</p>
     verification_done_submit_payment_info: "Ready to claim your funds now?"
-    verification_done_submit_payment_info_body: "To claim your funds, you will needs to create a wallet via Uphold. Please click on the Connect button."
+    verification_done_submit_payment_info_body: "To claim your funds, you'll need to create a wallet via Uphold. Please click the Connect button."
     verification_form_legend: "Verify website ownership"
 
     verification_choose_header: "Verify your Site: Choose a method"

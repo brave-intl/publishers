@@ -41,6 +41,7 @@ class PublishersController < ApplicationController
              home
              verification_done
              update
+             uphold_status
              uphold_verified)
   before_action :update_publisher_verification_method,
     only: %i(verification_dns_record
@@ -225,7 +226,6 @@ class PublishersController < ApplicationController
   # payment information.
   def verification_done
     @publisher = current_publisher
-    @publisher.prepare_uphold_state_token
   end
 
   def uphold_verified
@@ -285,6 +285,18 @@ class PublishersController < ApplicationController
     respond_to do |format|
       format.json {
         render(json: { reportURL: report_url }, status: 200)
+      }
+    end
+  end
+
+  def uphold_status
+    publisher = current_publisher
+    respond_to do |format|
+      format.json {
+        render(json: {
+          status: publisher.uphold_status.to_s,
+          description: uphold_status_description(publisher)
+        }, status: 200)
       }
     end
   end
