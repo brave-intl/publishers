@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  require "error_handler"
   include ErrorHandler
 
   if Rails.application.secrets[:basic_auth_user] && Rails.application.secrets[:basic_auth_password]
