@@ -21,7 +21,8 @@ class PublisherLoginLinkEmailer
     @normal_publisher_id = PublisherDomainNormalizer.new(
       domain: brave_publisher_id
     ).perform
-  rescue PublisherDomainNormalizer::DomainExclusionError, Faraday::Error
+  rescue PublisherDomainNormalizer::DomainExclusionError, Faraday::Error => e
+    Raven.capture_exception(e)
     @error = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
     false
   rescue URI::InvalidURIError

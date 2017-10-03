@@ -8,6 +8,7 @@ if Rails.env.production?
       message: message
     ).perform
   rescue Faraday::Error => e
+    Raven.capture_exception(e)
     Rails.logger.warn("Couldn't notify Slack in notify_boot.rb: #{e}\n#{message} -- falling back to logger")
   end
 end
