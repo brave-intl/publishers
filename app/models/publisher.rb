@@ -120,7 +120,8 @@ class Publisher < ApplicationRecord
     )
   rescue PublisherDomainNormalizer::OfflineNormalizationError => e
     errors.add(:brave_publisher_id, e.message)
-  rescue Faraday::Error
+  rescue Faraday::Error => e
+    Raven.capture_exception(e)
     errors.add(
       :brave_publisher_id,
       I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")

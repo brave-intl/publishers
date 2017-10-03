@@ -44,6 +44,7 @@ class UpholdRequestAccessParameters
       nil
     end
   rescue Faraday::Error => e
+    Raven.capture_exception(e)
     Rails.logger.warn("UpholdRequestAccessParameters #perform error: #{e}")
     nil
   end
