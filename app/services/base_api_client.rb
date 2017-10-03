@@ -1,6 +1,4 @@
 class BaseApiClient < BaseService
-  include ErrorHandler
-
   private
 
   def api_base_uri

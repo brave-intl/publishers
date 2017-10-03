@@ -1,7 +1,5 @@
-# A module with global error handling logic (to send to Sentry)
-# In your class:
-#   include ErrorHandler
-# Then proceed to rescue things normally.
+# Send handled exceptions to Sentry (which normally only sends unhandled exceptions).
+# See https://stackoverflow.com/questions/16567243/rescue-all-errors-of-a-specific-type-inside-a-module
 module ErrorHandler
   extend ActiveSupport::Concern
 
