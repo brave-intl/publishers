@@ -1,7 +1,7 @@
 require 'publishers/fetch'
 
 # Inspect a brave_publisher_id's host for web_host and HTTPS support
-class PublisherHostInspector
+class PublisherHostInspector < BaseService
   include Publishers::Fetch
 
   attr_reader :brave_publisher_id, :follow_local_redirects, :follow_all_redirects, :require_https, :check_web_host

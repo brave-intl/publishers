@@ -1,6 +1,6 @@
 # An option for domain verification.
 
-class PublisherVerificationFileGenerator
+class PublisherVerificationFileGenerator < BaseService
   attr_reader :publisher
 
   def initialize(publisher:)

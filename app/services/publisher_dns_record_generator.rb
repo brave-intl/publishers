@@ -1,6 +1,6 @@
 # An option for domain verification.
 
-class PublisherDnsRecordGenerator
+class PublisherDnsRecordGenerator < BaseService
   attr_reader :publisher
 
   def initialize(publisher:)

@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include ErrorHandler
+
   if Rails.application.secrets[:basic_auth_user] && Rails.application.secrets[:basic_auth_password]
     http_basic_authenticate_with(
       name: Rails.application.secrets[:basic_auth_user],

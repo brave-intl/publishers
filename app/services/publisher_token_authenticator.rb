@@ -1,6 +1,6 @@
 # Authenticate a Publisher by #authentication_token, which are consumed on use
 # and expires after 3 hours. New ones can be sent to your email.
-class PublisherTokenAuthenticator
+class PublisherTokenAuthenticator < BaseService
   attr_reader :publisher, :token, :confirm_email
 
   def initialize(publisher:, token:, confirm_email:)
