@@ -210,8 +210,7 @@ class PublishersController < ApplicationController
     end
   rescue PublisherVerifier::VerificationIdMismatch
     redirect_to(publisher_last_verification_method_path(@publisher), alert: t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken"))
-  rescue Faraday::Error => e
-    Raven.capture_exception(e)
+  rescue Faraday::Error
     redirect_to(publisher_last_verification_method_path(@publisher), alert: t("shared.api_error"))
   end
 
