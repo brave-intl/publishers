@@ -301,15 +301,17 @@ en:
     generate: "Generate"
     save_and_continue: "Save and continue"
     update: "Update"
+    email_address: "Email address"
   static:
-    landing_header: "Brave Bounty"
+    landing_header-welcome: "Welcome to"
+    landing_header: "Brave Payments"
     landing_body_html: |
-      <p>Users do not want ads, but you still have bills to pay. Brave Bounty streams micropayments from the audience
-      to you.</p>
-      <p>Once full verified you will begin to receive daily micropayments from users in your BAT wallet.</p>
-    landing_new_header: "New to Brave Bounty?"
-    landing_new_body: "Start the process of registering your domain by verifying your email address."
+      <p>Our users do not want ads, but you still have bills to pay. Brave Payments streams micropayments from
+       the audience to you.</p>
+      <p>Once fully verified, you will begin to receive daily micropayments from users in your BAT wallet.</p>
+    landing_new_header: "New to Brave Payments?"
+    landing_new_body: "Start verifying your domain with entering your email."
     landing_login_header: "Already verified?"
-    landing_login_body: "Login to see your publisher dashboard."
-    landing_login_button: "Login"
-    landing_begin_button: "Let's Begin!"
+    landing_login_body_html: "<strong>Already verified?</strong> Log in to see your publisher dashboard."
+    landing_login_button: "Log in"
+    landing_begin_button: "Get Started"
