@@ -75,15 +75,15 @@ en:
     log_out: "Exit"
     logged_out: "Your session has been cleared."
     new: "Submit contact information"
-    new_auth_token: "Log in with email"
+    new_auth_token: "Login to see your info"
     new_auth_token_header: "Existing publisher login"
-    new_auth_token_body: "If you've already started or completed verification, we can send a login link to the email address associated with your publisher registration."
-    new_auth_token_body_2: "If you've forgotten the email:"
-    new_auth_token_body_3: "If you've already completed the verification process, you can leave email blank and we'll use the most recent one on file."
-    new_auth_token_body_4: "If you were still working through verification, please include email or "
-    new_auth_token_body_4_start_over: "start a new verification."
+    new_auth_token_body_html: |
+      <p>If you've already started or completed verification, we can send a login link to the email address associated
+      with your publisher registration.</p>
+      <p>If you've forgotten the email address used and have completed verification, leave the email field blank and
+      we'll use the last one on file. Otherwise, start a new verification.</p>
     new_auth_token_button: "Send login email"
-    new_auth_token_email: "Email (optional for verifications completed)"
+    new_auth_token_email: "Email address (optional if verification is complete)"
     new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."

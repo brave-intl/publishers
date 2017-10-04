@@ -1,28 +1,22 @@
 - content_for(:navbar_content) do
-  span #{I18n.t("publishers.new_auth_token_header")}
 
 .row
-  .col-center.col-xs-12.col-md-8
+  .col-center.col-xs-8
+    h4.section-title= t("publishers.new_auth_token")
+
     = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
       fieldset
-        legend= I18n.t("publishers.new_auth_token")
-        .help-block= I18n.t("publishers.new_auth_token_body")
-        .help-block= I18n.t("publishers.new_auth_token_body_2")
-        .help-block
-          ul
-            li= I18n.t("publishers.new_auth_token_body_3")
-            li
-              span= I18n.t("publishers.new_auth_token_body_4")
-              span= link_to(I18n.t("publishers.new_auth_token_body_4_start_over"), new_publisher_path)
-        .form-group
-          = f.label(:brave_publisher_id, class: "control-label")
-          = f.text_field(:brave_publisher_id, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
-        .form-group
-          = f.label(:email, I18n.translate("publishers.new_auth_token_email"), class: "control-label")
-          = f.email_field(:email, class: "form-control", placeholder: "alice@example.com")
-        - if @should_throttle
-          .form-group
-              = recaptcha_tags
-        .col-no-pad.col-xs-12.col-md-6
-          .button
-            = f.submit(I18n.translate("publishers.new_auth_token_button"), class: "btn btn-block btn-primary")
+        .help-block= t("publishers.new_auth_token_body_html")
+        .row
+          .col-xs-12.col-md-9
+            .form-group
+              = f.label(:brave_publisher_id, class: "control-label")
+              = f.text_field(:brave_publisher_id, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
+            .form-group
+              = f.label(:email, t("publishers.new_auth_token_email"), class: "control-label")
+              = f.email_field(:email, class: "form-control", placeholder: "alice@example.com")
+            - if @should_throttle
+              .form-group
+                  = recaptcha_tags
+            .button
+              = f.submit(t("publishers.new_auth_token_button"), class: "btn btn-block btn-primary")
