@@ -34,7 +34,7 @@ en:
               api_error_cant_normalize: "can't be normalized because of an API error"
               exclusion_list_error: "is on the Brave Publisher website exclusion list. For questions please contact "
               # TODO: Configurable email here
-              taken: "Another person has already verified that website. If you have questions please contact support+publishers@brave.com."
+              taken: "Another person has already verified that website. If you have questions please contact support+publishers@basicattentiontoken.org."
               invalid_uri: "invalid domain URI"
     models:
       publisher: "Publisher"
@@ -53,7 +53,7 @@ en:
     complete_irs_w_8ben_hint: "Individuals outside the States"
     contact_person: "Contact person"
     contact: "Contact"
-    create_done_header: "We're excited that you want to be in on Brave Bounty!"
+    create_done_header: "We're excited that you want to be in on Brave Payments!"
     create_done_body_html: |
       <p>We sent an email to %{email}, <strong>click on the access link</strong> provided in the email to jump into
       the verification process.</p>
