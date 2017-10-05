@@ -1,9 +1,0 @@
-.row
-  .col-center.col-xs-12.col-md-7
-    fieldset
-      legend= I18n.t("publishers.finished_header")
-      .help-block= I18n.t("publishers.finished_intro")
-      .help-block= I18n.t("publishers.finished_try_browser")
-      .help-block== I18n.t("publishers.finished_visit_brave_website")
-      .help-block= I18n.t("publishers.finished_peace_out", support_email: Rails.application.secrets[:support_email])
-      .help-block= "- Brave Software"

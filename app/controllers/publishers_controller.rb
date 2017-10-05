@@ -237,6 +237,14 @@ class PublishersController < ApplicationController
       return
     end
 
+    # Catch uphold errors
+    uphold_error = params[:error]
+    if uphold_error.present?
+      Rails.logger.error("Uphold Error: #{uphold_error}-> #{params[:error_description]}")
+      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_error"))
+      return
+    end
+
     # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
     state_token = params[:state]
     if @publisher.uphold_state_token != state_token
@@ -250,11 +258,7 @@ class PublishersController < ApplicationController
 
     @publisher.reload
 
-    if @publisher.uphold_access_parameters
-      render('publishers/finished')
-    else
-      redirect_to(publisher_next_step_path(@publisher))
-    end
+    redirect_to(publisher_next_step_path(@publisher))
   end
 
   def download_verification_file

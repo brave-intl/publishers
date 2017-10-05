@@ -52,6 +52,7 @@ en:
     complete_irs_w_8ben: "Complete IRS W-8BEN"
     complete_irs_w_8ben_hint: "Individuals outside the States"
     contact_person: "Contact person"
+    contact: "Contact"
     create_done_header: "We're excited that you want to be in on Brave Bounty!"
     create_done_body_html: |
       <p>We sent an email to %{email}, <strong>click on the access link</strong> provided in the email to jump into
@@ -66,11 +67,6 @@ en:
     dashboard: "Dashboard"
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     email_confirmed: "Your updated email address %{email} has been confirmed."
-    finished_header: "Thank you for registering with Brave Payments!"
-    finished_intro: "You will see an initial transfer to your Uphold account as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
-    finished_try_browser: "Have you tried our web browser? It's free, open source software designed to protect privacy and give publishers a better deal."
-    finished_visit_brave_website: "Visit <a href=\"https://brave.com\">brave.com</a> to learn more and <a href=\"https://brave.com/downloads\">download</a>."
-    finished_peace_out: "Thanks for all your support, and if you have any questions or feedback let us know at %{support_email}."
     irs_form_required: "To receive your funds please complete a United States IRS form W-9 or W-8BEN."
     log_out: "Exit"
     logged_out: "Your session has been cleared."
@@ -93,7 +89,7 @@ en:
       contact_info: "Contact Info"
       verify_site: "Verify Your Site"
       create_wallet: "Create Your Wallet"
-    publisher_statements: "Publisher statements"
+    publisher_statements: "Statements"
     email_verified_phone: "Phone (optional)"
     uphold_status: "Status"
     uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
@@ -101,6 +97,11 @@ en:
     uphold_status_code_acquired: "A problem was experienced connecting your Uphold account."
     uphold_status_unconnected: "Not connected to Uphold."
     verified: "Verified publisher"
+    verified_publisher_uphold_connected: "Verified Publisher"
+    verified_publisher_uphold_not_connected: "Wallet not found, please Connect with Uphold to create one."
+    verified_publisher_connect_to_uphold_html: |
+      <p>Check your wallet with Uphold</p>
+      <p>Update your tax or BAT info</p>
     verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
     verification_dns_record_help_2: " using the account for your DNS host."
     verification_dns_record_instruction1: "Copy and Paste the info below into the zone file for "
@@ -206,6 +207,7 @@ en:
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
     verification_helper_dns_contact: "Contact Brave Support"
+    verification_uphold_error: "There was a problem connecting with Uphold. Please try again."
     verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
     verify_dns_button: "Verify DNS Record"
     verify_button: "Verify"

@@ -102,7 +102,7 @@ module PublishersHelper
 
   def publisher_next_step_path(publisher)
     case publisher_status(publisher)
-      when :complete
+      when :complete, :verified
         home_publishers_path
       when :brave_publisher_id_needed
         email_verified_publishers_path
@@ -115,8 +115,6 @@ module PublishersHelper
           else
             verification_choose_method_publishers_path
         end
-      when :verified
-        verification_done_publishers_path
     end
 
     # ToDo: Polling page for exchanging uphold_code for uphold_access_parameters

@@ -164,7 +164,7 @@ javascript:
           })
           .then(function(reportURL) {
             dynamicEllipsis.stop('generate_statement_result');
-            generateStatementResult.innerHTML = '<a href="' + reportURL + '">View report</a>';
+            generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
           })
           .catch(function() {
             dynamicEllipsis.stop('generate_statement_result');
@@ -213,7 +213,6 @@ noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
 - content_for(:navbar_content) do
-  span= I18n.t("publishers.dashboard")
 
 div#cssload-pgloading style="display: none"
   div.cssload-loadingwrap
@@ -224,46 +223,57 @@ div#cssload-pgloading style="display: none"
       li
 
 .row
-  .col-center.col-xs-12.col-md-8
-    fieldset
-      legend.publisher-domain-summary
-        - if current_publisher.verified?
-          = image_tag("verified-icon.png", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 30)
-        span.publisher-domain-name= current_publisher.brave_publisher_id
-        - if !current_publisher.verified?
-          span.link-hint.publisher-verified-status= I18n.t("publishers.not_verified")
+  .col.col-md-12.col-xs-8.col-xs-center.col-sm-center
+    .publisher-status
+      .publisher-domain-summary
+        .publisher-domain-name= current_publisher.brave_publisher_id
+        - if current_publisher.uphold_verified?
+          = image_tag("verified-icon.png", alt: t("publishers.verified"), class: "verified-icon")
+          span.publisher-verified-status= t("publishers.verified_publisher_uphold_connected")
+        - else
+          = image_tag("unverified-icon.png", alt: t("publishers.verified"), class: "verified-icon")
+          span.publisher-verified-status= t("publishers.verified_publisher_not_uphold_connected")
 
-      h4= I18n.t("publishers.uphold_status")
-      .attribute-value.status
-        p#uphold_status= uphold_status_description(current_publisher)
-        - if show_uphold_connect?(current_publisher)
-          div#uphold_connect
-            p.help-block= t("publishers.verification_done_submit_payment_info_body")
-            p= link_to(image_tag("uphold-connect-white@1x.png"), uphold_authorization_endpoint(current_publisher))
-
-      h4= I18n.t("publishers.balance_pending")
+.row
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      h4= t("publishers.balance_pending")
       .attribute-value.balance
         span.balance-amount= publisher_humanize_balance(current_publisher)
         = " "
-        span.approximate-hint.link-hint= I18n.t("publishers.balance_pending_approximate")
+        span.approximate-hint.link-hint= t("publishers.balance_pending_approximate")
 
-      h4= t("publishers.publisher_statements")
-      .attribute-value.statements
-        = form_for(current_publisher, url: generate_statement_publishers_path, html: {id: "statement_generator"}) do |f|
+      .statements
+        h4= t("publishers.publisher_statements")
+        = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
           .form-group
             = select_tag(:statement_period, options_for_select(publisher_statement_periods))
-            a#generate_statement href="#"
+            a#generate_statement href="#" class="btn btn-tertiary btn-generate"
               = t("shared.generate")
             span#generate_statement_result
 
-      h4= t("publishers.contact_person")
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      .attribute-value.status
+        = image_tag("uphold-powered-transparent@1x.png", class: "connect-uphold")
+        - if show_uphold_connect?(current_publisher)
+          div#uphold_connect
+            help-block= t("publishers.verified_publisher_connect_to_uphold_html")
+            = link_to(image_tag("uphold-connect-white@1x.png", class: "connect-uphold"), uphold_authorization_endpoint(current_publisher))
+        - else
+          p#uphold_status= uphold_status_description(current_publisher)
+
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      h4
+        = t("publishers.contact")
+        a.edit-link#edit_contact href="#"
+          = t("shared.edit")
       .attribute-value.contact-person
-        div#show_contact
-          span.name#show_contact_name= current_publisher.name
+        #show_contact
+          #show_contact_name= current_publisher.name
           span.email#show_contact_email= current_publisher.email
           span.hidden#pending_contact_email= current_publisher.pending_email
-          a#edit_contact href="#"
-            = t("shared.edit")
         = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
           .form-group
             = f.label(:name, class: "control-label")
@@ -272,14 +282,14 @@ div#cssload-pgloading style="display: none"
             = f.label(:email, class: "control-label")
             = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
           .button.form-group
-            = f.submit(I18n.translate("shared.update"), class: "btn btn-primary")
+            = f.submit(translate("shared.update"), class: "btn btn-primary")
             a#cancel_edit_contact href="#"
               = t("shared.cancel")
         p#pending_email_notice style="display: none" class="note"
 
       = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
         .form-group
-          = f.label(:show_verification_status) do
+          = f.label(:show_verification_status, class: "label-checkbox") do
             = f.check_box(:show_verification_status, class: "control-checkbox")
             text &nbsp;
             = t("activerecord.attributes.publisher.show_verification_status")
