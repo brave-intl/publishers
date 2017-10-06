@@ -227,12 +227,8 @@ div#cssload-pgloading style="display: none"
     .publisher-status
       .publisher-domain-summary
         .publisher-domain-name= current_publisher.brave_publisher_id
-        - if current_publisher.uphold_verified?
-          = image_tag("verified-icon.png", alt: t("publishers.verified"), class: "verified-icon")
-          span.publisher-verified-status= t("publishers.verified_publisher_uphold_connected")
-        - else
-          = image_tag("unverified-icon.png", alt: t("publishers.verified"), class: "verified-icon")
-          span.publisher-verified-status= t("publishers.verified_publisher_not_uphold_connected")
+        #publisher_status class=(publisher_status(current_publisher) == :complete ? 'complete' : 'incomplete')
+          = publisher_status_description(current_publisher)
 
 .row
   .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
