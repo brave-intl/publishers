@@ -117,9 +117,18 @@ body[data-controller="publishers"]
 
   &[data-action="home"]
     .container
+      .pub-panel
+        background-color: #eeeeee
+        border: 1px solid #aaaaaa
+        height: 350px
+        padding: 10px 25px
+        border-radius: 3px
+      .col-details
+        margin-top: 30px
       h4
         font-size: $font-size-base
         font-weight: bold
+        text-transform: uppercase
       legend
         margin-bottom: 12px
       .attribute-value
@@ -128,9 +137,9 @@ body[data-controller="publishers"]
         font-size: $font-size-h3
         img.verified-icon
           margin-right: 12px
+          height: 30px
         .publisher-verified-status
           font-size: $font-size-base
-          margin-left: 10px
           vertical-align: middle
       .balance
         font-size: $font-size-base
@@ -144,8 +153,26 @@ body[data-controller="publishers"]
         .email
           margin-right: 10px
           color: $gray
+      .statements
+        margin-top: 48px
       #statement_period
+        margin-top: 5px
         margin-right: 10px
+      .btn-generate
+        padding: 5px 10px
+        margin-left: 10px
+      .edit-link
+        text-transform: capitalize
+        color: blue
+        margin-left: 15px
+        font-size: $font-size-smaller
+      .connect-uphold
+        margin-top: 12.5px
+        margin-bottom: 12.5px
+      .label-checkbox
+        padding-left: 1em
+        text-indent: -1em
+        display: block
 
   .hidden
     display: none
