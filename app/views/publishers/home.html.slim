@@ -188,15 +188,18 @@ javascript:
           method: 'GET'
         };
 
-        return window.fetch('./uphold_status', options)
+        return window.fetch('./status', options)
           .then(function(response) {
             if (response.status === 200) {
               return response.json();
             }
           })
           .then(function(body) {
-            if (body.status === 'verified') {
-              document.getElementById('uphold_status').innerText = body.description;
+            if (body.uphold_status === 'verified') {
+              document.getElementById('uphold_status').innerText = body.uphold_status_description;
+              var publisherStatus = document.getElementById('publisher_status');
+              publisherStatus.innerText = body.status_description;
+              publisherStatus.className = body.status === 'complete' ? 'complete' : 'incomplete';
               dynamicEllipsis.stop('uphold_status');
               clearInterval(checkUpholdStatusInterval);
             }

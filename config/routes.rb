@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get :verification_github
       get :verification_wordpress
       get :verification_support_queue
-      get :uphold_status
+      get :status
       get :uphold_verified
       patch :verify
       patch :check_for_https
