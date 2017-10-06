@@ -192,6 +192,7 @@ en:
     verification_option_wordpress_help_verify: "Finally, let us know you are ready to check for the verification code."
     verification_option_wordpress_verify_button: "Check for the verification code"
     verification_option_github_use: "Verify Your Site: Upload a trusted file"
+    verification_option_github_nojekyll: "Please make sure to add an empty file named '.nojekyll' to the root of your repo."
     verification_option_github_help_download: "Download the verification file below:"
     verification_option_github_help_directory: "Find or create the directory: %{directory}"
     verification_option_github_help_upload_html: |
@@ -199,11 +200,6 @@ en:
       be sure to create it. Make sure the file is in the .well-known folder and click verify.
     verification_option_github_file_contents: "File contents:"
     verification_option_github: "Hello! It looks like you are using GitHub."
-    verification_option_github_help_intro: ""
-    verification_option_github_help_1_html: ""
-    verification_option_github_help_2_html: ""
-    verification_option_github_token: "Verication code:"
-    verification_option_github_help_verify: ""
     verification_option_github_verify_button: "Check for the verification code."
     verification_required: "To continue please verify ownership of your domain."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"

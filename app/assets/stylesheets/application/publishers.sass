@@ -48,13 +48,6 @@ body[data-controller="publishers"]
       font-size: $font-size-small
       color: $gray
       line-height: $line-height-computed * 1.5
-    .verification-file
-      .file-content
-        height: $font-size-base * $line-height-base * 4
-        font-family: monospace
-        font-size: $font-size-base * 0.6
-        color: $braveOrange
-        outline: #888 solid thin
     .verification_code
       font-family: monospace
       font-size: $font-size-base * 0.6
@@ -86,15 +79,51 @@ body[data-controller="publishers"]
     .ol-flush
       padding-left: 20px
       list-style-position: outside
-    .li-text
-      padding-left: 0px
-      padding-right: 0px
-      margin-top: 0px
     .brave-logo-large
       background: url(asset-path("brave_icon_512x.png")) 0 0 / 128px 128px no-repeat
       margin: 0 auto
       height: 128px
       width: 128px
+
+  &[data-action="verification_github"],
+  &[data-action="verification_public_file"]
+    .img-right
+      float: right
+      width: 30%
+
+    @media (max-width: 991px)
+      $li-max-width: 100%
+      .verification-file
+        .file-content
+          height: $font-size-base * $line-height-base * 4
+          font-family: monospace
+          font-size: $font-size-base * 0.6
+          color: $braveOrange
+          outline: #888 solid thin
+          max-width: $li-max-width
+
+      .li-text
+        padding-left: 0px
+        padding-right: 0px
+        margin-top: 0px
+        max-width: $li-max-width
+
+    @media (min-width: 992px)
+      $li-max-width: 65%
+      .verification-file
+        .file-content
+          height: $font-size-base * $line-height-base * 4
+          font-family: monospace
+          font-size: $font-size-base * 0.6
+          color: $braveOrange
+          outline: #888 solid thin
+          max-width: $li-max-width
+
+      .li-text
+        padding-left: 0px
+        padding-right: 0px
+        margin-top: 0px
+        max-width: $li-max-width
 
   &[data-action="verification_done"]
     h2
