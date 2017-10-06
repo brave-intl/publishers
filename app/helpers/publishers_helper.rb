@@ -24,13 +24,17 @@ module PublishersHelper
     publisher.uphold_status == :access_parameters_acquired
   end
 
-  # balance: Instance of PublisherBalanceGetter::Balance
+  # balance: Instance of Eyeshade::Balance
   def publisher_humanize_balance(publisher)
     if balance = publisher.balance
-      number_to_currency(balance.amount)
+      "#{'%.2f' % balance.BAT} BAT (#{'%.2f' % balance.convert_to('USD')} USD)"
     else
       I18n.t("publishers.balance_error")
     end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("publishers.balance_error")
   end
 
   def publisher_uri(publisher)
