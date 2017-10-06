@@ -260,8 +260,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       # verify that the uphold_access_parameters has been set
       assert_match('FAKEACCESSTOKEN', publisher.uphold_access_parameters)
 
-      # verify that the finished_header was displayed
-      assert_match(I18n.t('publishers.finished_header'), response.body)
+      assert_redirected_to '/publishers/home'
     end
   end
 
@@ -282,7 +281,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     url = uphold_verified_publishers_path
     get(url, params: { code: 'ebb18043eb2e106fccb9d13d82bec119d8cd016c' })
-    assert_redirected_to '/publishers/verification_done'
+    assert_redirected_to '/publishers/home'
 
     # Check that failure message is displayed
     follow_redirect!
@@ -310,7 +309,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     spoofed_uphold_state_token = SecureRandom.hex(64)
     url = uphold_verified_publishers_path
     get(url, params: { code: 'ebb18043eb2e106fccb9d13d82bec119d8cd016c', state: spoofed_uphold_state_token })
-    assert_redirected_to '/publishers/verification_done'
+    assert_redirected_to '/publishers/home'
 
     # Check that failure message is displayed
     follow_redirect!
