@@ -134,13 +134,21 @@ body[data-controller="publishers"]
       .attribute-value
         margin-bottom: 24px
       .publisher-domain-summary
+        margin-bottom: 12px
+      .publisher-domain-name
         font-size: $font-size-h3
-        img.verified-icon
-          margin-right: 12px
-          height: 30px
-        .publisher-verified-status
-          font-size: $font-size-base
-          vertical-align: middle
+        margin-bottom: 12px
+      #publisher_status
+        font-size: $font-size-base
+        vertical-align: middle
+        padding: 5px 0 5px 35px
+        background-position: center left
+        background-repeat: no-repeat
+        background-size: 25px
+        &.complete
+          background-image: url(asset-path("verified-icon.png"))
+        &.incomplete
+          background-image: url(asset-path("unverified-icon.png"))
       .balance
         font-size: $font-size-base
         .approximate-hint

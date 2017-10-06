@@ -293,13 +293,15 @@ class PublishersController < ApplicationController
     end
   end
 
-  def uphold_status
+  def status
     publisher = current_publisher
     respond_to do |format|
       format.json {
         render(json: {
-          status: publisher.uphold_status.to_s,
-          description: uphold_status_description(publisher)
+          status: publisher_status(publisher),
+          status_description: publisher_status_description(publisher),
+          uphold_status: publisher.uphold_status.to_s,
+          uphold_status_description: uphold_status_description(publisher)
         }, status: 200)
       }
     end

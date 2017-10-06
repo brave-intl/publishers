@@ -91,14 +91,16 @@ en:
       create_wallet: "Create Your Wallet"
     publisher_statements: "Statements"
     email_verified_phone: "Phone (optional)"
+    status_complete: "Verified Publisher"
+    status_uphold_processing: "Your Uphold wallet is being connected to your account"
+    status_uphold_unconnected: "Wallet not found, please Connect with Uphold to create one"
+    status_unverified: "Your account has not been verified"
     uphold_status: "Status"
     uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
     uphold_status_access_parameters_acquired: "Connecting your Uphold account."
     uphold_status_code_acquired: "A problem was experienced connecting your Uphold account."
     uphold_status_unconnected: "Not connected to Uphold."
     verified: "Verified publisher"
-    verified_publisher_uphold_connected: "Verified Publisher"
-    verified_publisher_uphold_not_connected: "Wallet not found, please Connect with Uphold to create one."
     verified_publisher_connect_to_uphold_html: |
       <p>Check your wallet with Uphold</p>
       <p>Update your tax or BAT info</p>

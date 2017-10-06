@@ -72,14 +72,29 @@ module PublishersHelper
   end
 
   def publisher_status(publisher)
-    if publisher.verified? && publisher.uphold_complete?
-      :complete
-    elsif publisher.brave_publisher_id.blank?
-      :brave_publisher_id_needed
-    elsif !publisher.verified?
-      :unverified
+    if publisher.verified?
+      if publisher.uphold_complete?
+        :complete
+      elsif publisher.uphold_status == :code_acquired
+        :uphold_processing
+      else
+        :uphold_unconnected
+      end
     else
-      :verified
+      :unverified
+    end
+  end
+
+  def publisher_status_description(publisher)
+    case publisher_status(publisher)
+    when :complete
+      t("publishers.status_complete")
+    when :uphold_processing
+      t("publishers.status_uphold_processing")
+    when :uphold_unconnected
+      t("publishers.status_uphold_unconnected")
+    when :unverified
+      t("publishers.status_unverified")
     end
   end
 
@@ -101,24 +116,20 @@ module PublishersHelper
   end
 
   def publisher_next_step_path(publisher)
-    case publisher_status(publisher)
-      when :complete, :verified
-        home_publishers_path
-      when :brave_publisher_id_needed
-        email_verified_publishers_path
-      when :unverified
-        case publisher.detected_web_host
-          when "wordpress"
-            verification_wordpress_publishers_path
-          when "github"
-            verification_github_publishers_path
-          else
-            verification_choose_method_publishers_path
-        end
+    if publisher.verified?
+      home_publishers_path
+    elsif publisher.brave_publisher_id.blank?
+      email_verified_publishers_path
+    else
+      case publisher.detected_web_host
+        when "wordpress"
+          verification_wordpress_publishers_path
+        when "github"
+          verification_github_publishers_path
+        else
+          verification_choose_method_publishers_path
+      end
     end
-
-    # ToDo: Polling page for exchanging uphold_code for uphold_access_parameters
-    # return authorize_uphold_path if publisher.uphold_code && publisher.uphold_access_parameters.blank?
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
