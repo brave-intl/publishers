@@ -19,14 +19,11 @@ gem "email_validator", "~> 1.6"
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
-# GNU Privacy Guard Made Easy
-gem "gpgme", "~> 2.0", require: false
-
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.7.2"
+gem "nokogiri", "~> 1.8.1"
 
 # Model record auditing
 gem "paper_trail", "~> 5.2.2"
