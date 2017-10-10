@@ -39,7 +39,6 @@ class PublishersController < ApplicationController
     only: %i(edit_payment_info
              generate_statement
              home
-             verification_done
              update
              uphold_status
              uphold_verified)
@@ -204,7 +203,7 @@ class PublishersController < ApplicationController
     ).perform
     current_publisher.reload
     if current_publisher.verified?
-      render(:verification_done)
+      render(:home)
     else
       render(:verification_background)
     end
@@ -220,12 +219,6 @@ class PublishersController < ApplicationController
     @publisher.inspect_brave_publisher_id
     @publisher.save!
     redirect_to(publisher_last_verification_method_path(@publisher), alert: t("publishers.https_inspection_complete"))
-  end
-
-  # Shown after verification is completed to encourage users to submit
-  # payment information.
-  def verification_done
-    @publisher = current_publisher
   end
 
   def uphold_verified
