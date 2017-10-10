@@ -1,38 +1,38 @@
 - content_for(:navbar_content) do
-  span Step 2 of 4: #{I18n.t("publishers.verification_header")}
+  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
 
 .row
-  .col-center.col-xs-7.col-md-7
+  .col-center.col-sm-10
     fieldset
-      legend= I18n.t("publishers.verification_option_public_file_use")
-      .help-block= I18n.t("publishers.verification_public_file_help")
+      legend= t("publishers.verification_option_public_file")
+.row
+  .col-center.col-sm-10
+    = render :partial => 'https_check', :locals => { publisher: current_publisher }
 
+div class=(current_publisher.supports_https? ? "row" : "row dimmed")
+  .col-center.col-sm-10
     .form-group
-      .help-block.https-hint== I18n.t("publishers.verification_option_public_https_hint", href: verification_dns_record_publishers_path)
-      ol
+      ol.ol-flush
         li
-          = I18n.t("publishers.verification_option_public_file_help_download")
-          = " "
-          = link_to("brave-payments-verification.txt", download_verification_file_publishers_path, class: "download-file")
-        li
-          == I18n.t("publishers.verification_option_public_file_help_directory", directory: publisher_verification_file_directory(current_publisher))
-        li
-          = I18n.t("publishers.verification_option_public_file_help_upload")
-        li
-          = I18n.t("publishers.verification_option_public_file_help_confirm")
-          = " "
-          = link_to(publisher_verification_file_url(current_publisher), publisher_verification_file_url(current_publisher), target: "_blank")
-        li
-          = I18n.t("publishers.verification_option_public_file_help_verify")
+          .help-block.li-text= t("publishers.verification_option_public_file_help_download")
+          .visible-sm.visible-xs
+            = image_tag("download.png")
+          strong= t("publishers.verification_option_public_file_file_contents")
 
-    .form-group
-      .form-horizontal
-        .form-group
-          .col-sm-6
-            = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-              = f.submit(I18n.t("publishers.verify_button"), class: "btn btn-block btn-primary btn-sm")
-          .col-sm-6.method-alt
-            = I18n.t("publishers.verification_option_alt_help")
-            = " "
-            = link_to(I18n.t("publishers.verification_option_alt_dns_record"), verification_dns_record_publishers_path)
-            = "."
+          .visible-md.visible-lg
+            .img-right
+              = image_tag("download.png")
+          .verification-file
+            .file-content= simple_format h publisher_filter_public_file_content(current_publisher, @public_file_content)
+            = link_to(t("publishers.verification_download_verification"), download_verification_file_publishers_path, class: "button btn btn-xs btn-default btn-download")
+        li
+          .visible-md.visible-lg
+            .img-right
+              = image_tag("upload-well-known.png")
+          .help-block.li-text= t("publishers.verification_option_public_file_help_upload_html")
+          .visible-sm.visible-xs
+            = image_tag("upload-well-known.png")
+          = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
+            = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm")
+          br
+          .help-block.li-text= t("publishers.verification_option_public_file_verify_note")

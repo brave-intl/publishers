@@ -9,28 +9,21 @@ gem "attr_encrypted", "~> 3.0.0"
 
 gem "aws-sdk", "~> 2", require: false
 
-gem "bitcoin-ruby", "~> 0.0.8", require: false
-
 gem "bootstrap-sass", "~> 3.3.6"
 
 # Authentication
 gem "devise", "~> 4.2.0"
-
-gem "docusign_rest", "~> 0.1.1", git: "https://github.com/jondkinney/docusign_rest"
 
 gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
-# GNU Privacy Guard Made Easy
-gem "gpgme", "~> 2.0", require: false
-
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.7.0"
+gem "nokogiri", "~> 1.8.1"
 
 # Model record auditing
 gem "paper_trail", "~> 5.2.2"
@@ -87,7 +80,7 @@ end
 
 group :development do
   # Vulnerabilities
-  gem "bundler-audit"
+  gem "bundler-audit", require: false
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
@@ -100,6 +93,8 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
+
+  gem "webmock", "~> 3.0"
 end
 
 group :production do

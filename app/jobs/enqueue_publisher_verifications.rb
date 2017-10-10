@@ -1,6 +1,6 @@
 # For Publishers created recently, enqueue jobs to verify each unique
 # brave_publisher_id.
-class EnqueuePublisherVerifications < ActiveJob::Base
+class EnqueuePublisherVerifications < ApplicationJob
   MAX_AGE = 6.weeks
 
   queue_as :scheduler

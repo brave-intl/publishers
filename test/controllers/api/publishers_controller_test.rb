@@ -65,4 +65,42 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_match("brave_publisher_id", response.body)
     assert_match("verified", response.body)
   end
+
+  test "can delete unverified Publishers" do
+    verified_publisher = publishers(:verified)
+    brave_publisher_id = verified_publisher.brave_publisher_id
+
+    fake1_publisher = publishers(:fake1)
+    fake2_publisher = publishers(:fake2)
+
+    assert_equal brave_publisher_id, fake1_publisher.brave_publisher_id
+    assert_equal brave_publisher_id, fake2_publisher.brave_publisher_id
+    refute fake1_publisher.verified?
+    refute fake2_publisher.verified?
+
+    assert_difference("Publisher.count", -2) do
+      delete(destroy_api_publishers_path({ brave_publisher_id: brave_publisher_id }))
+    end
+
+    verified_publisher.reload
+    assert_equal brave_publisher_id, verified_publisher.brave_publisher_id
+
+    assert_raises(ActiveRecord::RecordNotFound) do
+      fake1_publisher.reload
+    end
+
+    assert_raises(ActiveRecord::RecordNotFound) do
+      fake2_publisher.reload
+    end
+
+    assert_equal(200, response.status)
+  end
+
+  test "delete is successful even for publisher IDs with no matches" do
+    assert_difference("Publisher.count", 0) do
+      delete(destroy_api_publishers_path({ brave_publisher_id: 'totally_made_up.com' }))
+    end
+
+    assert_equal(200, response.status)
+  end
 end

@@ -1,0 +1,5 @@
+.div.visible-lg.visible-md.progress-items
+  = render :partial => 'progress_item', :locals => { fill: progress[:info], text: t('publishers.progress.contact_info') }
+  = render :partial => 'progress_item', :locals => { fill: progress[:verify], text: t('publishers.progress.verify_site') }
+  = render :partial => 'progress_item', :locals => { fill: progress[:wallet], text: t('publishers.progress.create_wallet') }
+

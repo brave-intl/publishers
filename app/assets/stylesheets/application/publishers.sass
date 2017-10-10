@@ -1,11 +1,16 @@
+$subnav-active: #0dccf8
+
 body[data-controller="publishers"]
   .form-group.button:last-child
     margin: 20px 0 5px
 
+  &[data-action="create_done"],
   &[data-action="verification"],
   &[data-action="verification_dns_record"],
   &[data-action="verification_public_file"],
-  &[data-action="verification_failed"],
+  &[data-action="verification_github"],
+  &[data-action="verification_wordpress"],
+  &[data-action="verification_choose_method"],
   &[data-action="verify"],
   &[data-action="verification_done"]
     .form-group:not(:last-child)
@@ -16,7 +21,9 @@ body[data-controller="publishers"]
       .form-control
         font-size: $font-size-base
         &.dns-record-value
-          height: $font-size-base * 5
+          font-family: monospace
+          font-size: $font-size-base * 0.6
+          height: $font-size-base * 4
       .color-orange
         color: $braveLightOrange
       .dns-list-button
@@ -41,51 +48,232 @@ body[data-controller="publishers"]
       font-size: $font-size-small
       color: $gray
       line-height: $line-height-computed * 1.5
-    .verification-file
-      .download-file
-        margin-left: 10px
-      .file-content
-        height: $font-size-base * $line-height-base * 5
+    .verification_code
+      font-family: monospace
+      font-size: $font-size-base * 0.6
+      color: $braveOrange
+      outline: #888 solid thin
+      height: $font-size-base * $line-height-base * 1
     .publisher-domain-summary
       margin-bottom: 18px
       .publisher-domain-name
         font-size: $font-size-h3
       img.verified-icon
-        margin-right: 12px
+        margin-right: 2px
+        margin-left: 2px
+      img.verified-icon-small
+        margin-right: 2px
+        margin-left: 2px
+        height: 20px
+      img.uphold-connect-icon
+        margin-left: 2px
     .submit-payment-info
       margin: 24px 0
+    .https-check-icon
+      height: 30px
+      float: left
+      margin-bottom: 30px
+    .img-center
+      margin: 0 auto
+      display: block
+    .ol-flush
+      padding-left: 20px
+      list-style-position: outside
+    .brave-logo-large
+      background: url(asset-path("brave_icon_512x.png")) 0 0 / 128px 128px no-repeat
+      margin: 0 auto
+      height: 128px
+      width: 128px
+
+  &[data-action="verification_github"],
+  &[data-action="verification_public_file"]
+    .img-right
+      float: right
+      width: 30%
+
+    @media (max-width: 991px)
+      $li-max-width: 100%
+      .verification-file
+        .file-content
+          height: $font-size-base * $line-height-base * 4
+          font-family: monospace
+          font-size: $font-size-base * 0.6
+          color: $braveOrange
+          outline: #888 solid thin
+          max-width: $li-max-width
+
+      .li-text
+        padding-left: 0px
+        padding-right: 0px
+        margin-top: 0px
+        max-width: $li-max-width
+
+    @media (min-width: 992px)
+      $li-max-width: 65%
+      .verification-file
+        .file-content
+          height: $font-size-base * $line-height-base * 4
+          font-family: monospace
+          font-size: $font-size-base * 0.6
+          color: $braveOrange
+          outline: #888 solid thin
+          max-width: $li-max-width
+
+      .li-text
+        padding-left: 0px
+        padding-right: 0px
+        margin-top: 0px
+        max-width: $li-max-width
+
+  &[data-action="verification_done"]
+    h2
+      margin-top: 10px
+      color: $braveGreen
+      white-space: nowrap
+    .balance
+      color: #8c8c8c
+      font-size: $font-size-base * 1.6
+    .uphold-connect-icon
+      height: 50px
+
+  &[data-action="verification_choose_method"]
+    .or
+      text-align: center
+      line-height: 100px
+    .btn-center
+      margin: 0 auto
+      display: block
 
   &[data-action="home"]
     .container
+      .pub-panel
+        background-color: #eeeeee
+        border: 1px solid #aaaaaa
+        height: 350px
+        padding: 10px 25px
+        border-radius: 3px
+      .col-details
+        margin-top: 30px
       h4
         font-size: $font-size-base
         font-weight: bold
+        text-transform: uppercase
       legend
         margin-bottom: 12px
       .attribute-value
         margin-bottom: 24px
       .publisher-domain-summary
+        margin-bottom: 12px
+      .publisher-domain-name
         font-size: $font-size-h3
-        img.verified-icon
-          margin-right: 12px
-        .publisher-verified-status
-          font-size: $font-size-base
-          margin-left: 10px
-          vertical-align: middle
+        margin-bottom: 12px
+      #publisher_status
+        font-size: $font-size-base
+        vertical-align: middle
+        padding: 5px 0 5px 35px
+        background-position: center left
+        background-repeat: no-repeat
+        background-size: 25px
+        &.complete
+          background-image: url(asset-path("verified-icon.png"))
+        &.incomplete
+          background-image: url(asset-path("unverified-icon.png"))
       .balance
         font-size: $font-size-base
         .approximate-hint
           font-size: $font-size-small
       .payment-info
         font-size: $font-size-base
-        .bitcoin-address
-          margin-right: 10px
-      .legal-form
-        font-size: $font-size-base
-        .form-type
-          margin-right: 10px
       .contact-person
         .name
           margin-right: 10px
         .email
+          margin-right: 10px
           color: $gray
+      .statements
+        margin-top: 48px
+      #statement_period
+        margin-top: 5px
+        margin-right: 10px
+      .btn-generate
+        padding: 5px 10px
+        margin-left: 10px
+      .edit-link
+        text-transform: capitalize
+        color: blue
+        margin-left: 15px
+        font-size: $font-size-smaller
+      .connect-uphold
+        margin-top: 12.5px
+        margin-bottom: 12.5px
+      .label-checkbox
+        padding-left: 1em
+        text-indent: -1em
+        display: block
+
+  .hidden
+    display: none
+
+  .in-place-edit
+    background: #ddd
+    padding: 18px
+    .button.form-group a
+      display: inline-block
+      margin-left: 18px
+
+  .note
+    margin-top: 8px
+    background: #f0f0f0
+    border: 1px solid #ccc
+    padding: 10px
+    color: #666
+
+  .dimmed
+    position: relative
+    opacity: 0.20
+
+  .dimmed:after
+    content: " "
+    z-index: 10
+    display: block
+    position: absolute
+    height: 100%
+    top: 0
+    left: 0
+    right: 0
+
+  .noscript-warning
+    text-align: center
+    background: #f0f0f0
+    border: 1px solid #ccc
+    padding: 10px
+    margin-bottom: 20px
+    color: #333
+
+  .progress-items
+    .progress-item
+      display: inline-block
+      vertical-align: middle
+      padding: 0 10px
+      &.unstarted
+        color: $gray-light
+        svg.fill-circle
+          .outer-circle
+            fill: $gray-light
+          .inner-circle
+            stroke: $gray-light
+      &.started
+        color: $subnav-active
+        svg.fill-circle
+          .outer-circle
+            fill: $subnav-active
+          .inner-circle
+            stroke: $subnav-active
+      label
+        display: inline-block
+        margin: 0
+        font-size: 15px
+        line-height: 15px
+      svg
+        display: inline-block
+        vertical-align: middle

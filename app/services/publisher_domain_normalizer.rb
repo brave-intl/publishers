@@ -3,7 +3,11 @@ class PublisherDomainNormalizer < BaseApiClient
   attr_reader :domain
 
   def initialize(domain:)
-    @domain = domain
+    # normalize domain by stripping off the protocol, it it exists,
+    # and checking if it parses as an http URL
+    host_and_path = domain.split(/:\/\//).last
+    URI.parse("http://#{host_and_path}")
+    @domain = host_and_path
   end
 
   def perform
@@ -26,11 +30,11 @@ class PublisherDomainNormalizer < BaseApiClient
     # Development Gemfile group. If you run in prod move the gem to the top level.
     require "domain_name"
     Rails.logger.info("PublisherDomainNormalizer normalizing offline.")
-    begin
-      DomainName(domain).domain
-    rescue => e
-      raise OfflineNormalizationError.new(e)
+    domain_name = DomainName(domain)
+    unless domain_name.canonical_tld?
+      raise DomainExclusionError.new("Normalized publisher ID unavailable for #{domain}")
     end
+    domain_name.hostname
   end
 
   private

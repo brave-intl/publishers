@@ -1,7 +1,7 @@
 # Generate a Publisher #authentication_token, which is a one time use token
 # for creating a login session. They expire after 3 hours.
 # @returns new authentication_token
-class PublisherTokenGenerator
+class PublisherTokenGenerator < BaseService
   TOKEN_TTL = 3.hours
 
   attr_reader :publisher

@@ -1,5 +1,5 @@
 # Verify all Publishers created in past 2 weeks with brave_publisher_id
-class VerifyPublisher < ActiveJob::Base
+class VerifyPublisher < ApplicationJob
   queue_as :default
 
   require "faraday"

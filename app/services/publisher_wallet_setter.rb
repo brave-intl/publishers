@@ -1,25 +1,31 @@
-# Ask Eyeshade to assign a Publisher a particular bitcoin wallet address.
+# Ask Eyeshade to assign an Uphold account to a Publisher.
 class PublisherWalletSetter < BaseApiClient
-  attr_reader :publisher, :bitcoin_address
+  attr_reader :publisher
 
-  def initialize(bitcoin_address:, publisher:)
-    @bitcoin_address = bitcoin_address
+  def initialize(publisher:)
     @publisher = publisher
-    require "bitcoin"
-    if !Bitcoin.valid_address?(@bitcoin_address)
-      raise "Address is invalid: #{@bitcoin_address}"
-    end
   end
 
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
-    params = {
-      "bitcoinAddress" => bitcoin_address,
-      "verificationId" => publisher.id,
-    }
+
+    if !publisher.uphold_access_parameters
+      raise "Publisher #{publisher.id} is missing uphold_access_parameters."
+    end
+
+    uphold_access_parameters = JSON.parse(publisher.uphold_access_parameters)
+    uphold_access_parameters[:server] = Rails.application.secrets[:uphold_api_uri]
+
     # This raises when response is not 2xx.
     response = connection.put do |request|
-      request.body = JSON.dump(params)
+      request.body =
+          <<~BODY
+            {
+              "provider": "uphold", 
+              "parameters": #{JSON.dump(uphold_access_parameters)}, 
+              "verificationId": "#{publisher.id}"
+            }
+          BODY
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/wallet")
@@ -27,7 +33,7 @@ class PublisherWalletSetter < BaseApiClient
   end
 
   def perform_offline
-    Rails.logger.info("PublisherVerifier eyeshade offline; only locally updating Bitcoin address.")
+    Rails.logger.info("PublisherWalletSetter eyeshade offline; only locally updating uphold_access_parameters.")
     true
   end
 

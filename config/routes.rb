@@ -1,28 +1,31 @@
 Rails.application.routes.draw do
-  resources :publishers, only: %i(create new show) do
+  resources :publishers, only: %i(create update new show) do
     collection do
       get :create_done
+      post :resend_email_verify_email, action: :resend_email_verify_email
       get :download_verification_file
       get :home
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :log_out
-      get :payment_info, action: :edit_payment_info, as: :edit_payment_info
-      patch :payment_info, action: :update_payment_info, as: :update_payment_info
-      get :verification
+      get :email_verified
+      get :verification_choose_method
       get :verification_dns_record
       get :verification_done
       get :verification_public_file
+      get :verification_github
+      get :verification_wordpress
+      get :verification_support_queue
+      get :status
+      get :uphold_verified
       patch :verify
+      patch :check_for_https
+      patch :update
+      patch :generate_statement
+      patch :update_unverified
     end
   end
   devise_for :publishers
-
-  resources :publisher_legal_forms, only: %i(create new show), path: "legal_forms" do
-    collection do
-      get :after_sign
-    end
-  end
 
   resources :static, only: [] do
     collection do
@@ -38,7 +41,7 @@ Rails.application.routes.draw do
         post "/", action: :create, as: :create
         get "/:brave_publisher_id", action: :index_by_brave_publisher_id, constraints: { brave_publisher_id: %r{[^\/]+} }
         post "/:brave_publisher_id/notifications", action: :notify, constraints: { brave_publisher_id: %r{[^\/]+} }
-        patch "/:brave_publisher_id/legal_form", action: :update_legal_form, constraints: { brave_publisher_id: %r{[^\/]+} }
+        delete "/:brave_publisher_id", action: :destroy, as: :destroy, constraints: { brave_publisher_id: %r{[^\/]+} }
       end
     end
   end

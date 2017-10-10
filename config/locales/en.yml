@@ -24,93 +24,123 @@ en:
     attributes:
       publisher:
         brave_publisher_id: "Website domain"
+        phone_normalized: "Phone"
         show_verification_status: "Yes, please list my site in Brave's verified publisher list after verification"
     errors:
       models:
         publisher:
           attributes:
-            bitcoin_address:
-              api_error: "can't be updated because of an API error"
             brave_publisher_id:
               api_error_cant_normalize: "can't be normalized because of an API error"
               exclusion_list_error: "is on the Brave Publisher website exclusion list. For questions please contact "
               # TODO: Configurable email here
-              taken: "Another person has already verified that website. If you have questions please contact support+publishers@brave.com."
+              taken: "Another person has already verified that website. If you have questions please contact support+publishers@basicattentiontoken.org."
+              invalid_uri: "invalid domain URI"
     models:
       publisher: "Publisher"
-      publisher_legal_form: "Tax form"
     shared:
       errors: "There were errors saving your request:"
   publishers:
-    add_bitcoin_address: "Add bitcoin address"
     already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
     authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
     balance_error: "Temporarily unavailable"
     balance_pending: "Balance pending"
     balance_pending_approximate: "(approximate)"
-    bitcoin_address_none: "(none)"
-    bitcoin_address_help: "A bitcoin wallet is required to receive funds from Brave Payments. You can create a bitcoin wallet at <a href=\"https://www.bitgo.com/\" target=\"_blank\">BitGo</a>, <a href=\"https://www.coinbase.com/\" target=\"_blank\">Coinbase</a> or any other bitcoin wallet provider."
-    bitcoin_address_submit_header: "Bitcoin address"
-    bitcoin_address_submit_legend: "Submit bitcoin wallet address"
-    bitcoin_address_submit_button: "Submit"
-    bitcoin_address_updated: "Bitcoin address updated."
     claim_funds: "Claim funds"
     complete_irs_w_9: "Complete IRS W-9"
     complete_irs_w_9_hint: "United States taxpayers"
     complete_irs_w_8ben: "Complete IRS W-8BEN"
     complete_irs_w_8ben_hint: "Individuals outside the States"
     contact_person: "Contact person"
-    create_done_body_thank_you: "Thank you "
-    create_done_body_for_submitting: "for submitting your contact information."
+    contact: "Contact"
+    create_done_header: "We're excited that you want to be in on Brave Payments!"
+    create_done_body_html: |
+      <p>We sent an email to %{email}, <strong>click on the access link</strong> provided in the email to jump into
+      the verification process.</p>
+      <p>Don't see the email? Be sure to check your spam folder. You may also request to 'Resend email' below.</p>
+    create_done_resend_email: "Resend email"
+    resend_confirmation_email_done: "The confirmation email has been resent."
     create_done_body_confirm_email: "An email has been sent to %{email}. Please confirm your email address by clicking on the access link provided in the email. The link will return you to this site to proceed with step 2."
     create_auth_token: "Login email sent!"
     create_auth_token_body: "Please check your email for the login link."
     domain: "Domain"
     dashboard: "Dashboard"
-    edit_bitcoin_address: "Edit"
-    finished_header: "Thank you for registering with Brave Payments!"
-    finished_intro: "You will see an initial transfer to your bitcoin wallet as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
-    finished_try_browser: "Have you tried our web browser? It's free, open source software designed to protect privacy and give publishers a better deal."
-    finished_visit_brave_website: "Visit <a href=\"https://brave.com\">brave.com</a> to learn more and <a href=\"https://brave.com/downloads\">download</a>."
-    finished_peace_out: "Thanks for all your support, and if you have any questions or feedback let us know at %{support_email}."
+    dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
+    email_confirmed: "Your updated email address %{email} has been confirmed."
     irs_form_required: "To receive your funds please complete a United States IRS form W-9 or W-8BEN."
     log_out: "Exit"
     logged_out: "Your session has been cleared."
     new: "Submit contact information"
-    new_auth_token: "Log in with email"
+    new_auth_token: "Login to see your info"
     new_auth_token_header: "Existing publisher login"
-    new_auth_token_body: "If you've already started or completed verification, we can send a login link to the email address associated with your publisher registration."
-    new_auth_token_body_2: "If you've forgotten the email:"
-    new_auth_token_body_3: "If you've already completed the verification process, you can leave email blank and we'll use the most recent one on file."
-    new_auth_token_body_4: "If you were still working through verification, please include email or "
-    new_auth_token_body_4_start_over: "start a new verification."
+    new_auth_token_body_html: |
+      <p>If you've already started or completed verification, we can send a login link to the email address associated
+      with your publisher registration.</p>
+      <p>If you've forgotten the email address used and have completed verification, leave the email field blank and
+      we'll use the last one on file. Otherwise, start a new verification.</p>
     new_auth_token_button: "Send login email"
-    new_auth_token_email: "Email (optional for verifications completed)"
+    new_auth_token_email: "Email address (optional if verification is complete)"
     new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     new_header: "Publisher contact information"
     not_verified: "Unverified"
-    payment_bitcoin_address: "Bitcoin payment address"
-    status: "Status"
-    status_to_receive_payments: "To receive payments you need to:"
-    status_can_receive_funds: "You are fully setup to receive Brave Payments."
-    status_bitcoin_address_required: "Add a bitcoin address."
-    status_legal_form_required: "Submit a tax form."
-    tax_form: "Tax form"
+    progress:
+      contact_info: "Contact Info"
+      verify_site: "Verify Your Site"
+      create_wallet: "Create Your Wallet"
+    publisher_statements: "Statements"
+    email_verified_phone: "Phone (optional)"
+    status_complete: "Verified Publisher"
+    status_uphold_processing: "Your Uphold wallet is being connected to your account"
+    status_uphold_unconnected: "Wallet not found, please Connect with Uphold to create one"
+    status_unverified: "Your account has not been verified"
+    uphold_status: "Status"
+    uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
+    uphold_status_access_parameters_acquired: "Connecting your Uphold account."
+    uphold_status_code_acquired: "A problem was experienced connecting your Uphold account."
+    uphold_status_unconnected: "Not connected to Uphold."
     verified: "Verified publisher"
+    verified_publisher_connect_to_uphold_html: |
+      <p>Check your wallet with Uphold</p>
+      <p>Update your tax or BAT info</p>
     verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
     verification_dns_record_help_2: " using the account for your DNS host."
     verification_dns_record_instruction1: "Copy and Paste the info below into the zone file for "
     verification_dns_record_instruction2: " using your DNS host's control panel."
     verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
     verification_done_header: "Website verification complete"
-    verification_done_legend: "Congratulations! You are now a verified publisher."
-    verification_done_intro: "Brave users will now see a verified symbol next to your website domain."
-    verification_done_balance: "The current balance for %{publisher} is approximately %{balance}. We have sent you an email with a link to check your balance."
+    verification_done_legend: "Congratulations!"
+    verification_done_legend_2: "Your website has been verified."
+    verification_done_intro_html: |
+      <p>Brave users will now see a verified symbol (%{verified_image_tag}) next to your website domain.</p>
+    verification_done_balance_heading: "Current Balance:"
+    verification_done_balance_html: |
+      <p>%{bat_balance}</p>
     verification_done_submit_payment_info: "Ready to claim your funds now?"
-    verification_done_submit_payment_info_body: "To claim your funds, you will need to specify your bitcoin wallet and publisher tax status."
+    verification_done_submit_payment_info_body: "To claim your funds, you'll need to create a wallet via Uphold. Please click the Connect button."
     verification_form_legend: "Verify website ownership"
+
+    verification_choose_header: "Verify your Site: Choose a method"
+    verification_choose_help: "Here are the options for verifying the ownership of your domain."
+    verification_choose_trusted_file_html: "Via a trusted file<br>(recommended & easiest)"
+    verification_choose_trusted_file_button: "I'll upload a trusted file"
+    verification_choose_or: "OR"
+    verification_choose_dns_html: "By editing DNS records for the domain<br>(you need to have DNS access)"
+    verification_choose_dns_button: "I'll edit my DNS record"
+    verification_choose_support_queue_link: "join the support queue."
+    verification_choose_support_queue_html: |
+      <p>If both of those options sound daunting to you, %{support_queue_link}</p>
+
+    verification_support_queue_header: "Thanks for waiting!"
+    verification_support_queue_help_html: |
+      <p>We will be reaching out to each member in the order they are received.</p>
+      <p>An email will arrive when our next available support member will be able to assist you. Please
+      keep in mind that this may take a week due to our current backlog.</p>
+    verification_support_review_options: "I'd like to review my options"
+    progress_contact_info: "Contact Info"
+    progress_verify: "Verify Your Site"
+    progress_create_wallet: "Create Your Wallet"
     verification_header: "Hello! "
     verification_header_2: "You have been selected for live onboarding."
     verification_help: "You have been added to our publisher activation queue. A Brave Publisher Partner will contact you to complete the process."
@@ -133,57 +163,67 @@ en:
     verification_pending_header: "Now verifying your new DNS record…"
     verification_pending_help1: "Verification can take several minutes or several hours, depending on your DNS host location. The Brave server will keep trying for 24 hours until there is a response."
     verification_pending_help2: "You will receive an email confirmation upon verification."
-    verification_failed_header: "Verification could not be completed at this time."
-    verification_failed_help1: "The Brave server will keep checking for up to 24 hours. You will receive an email notification after verification is complete, or has timed out."
-    verification_failed_help2: "If you feel that you have reached this message in error, please edit your DNS record and "
-    verification_failed_help3: "try verification again"
-    verification_failed_help4: "."
-    verification_failed_retry: "Please try again"
-    verification_option_public_file: "To use your web server:"
-    verification_option_public_file_use: "Add a text file to my website"
+    verification_background_header: "Now verifying your domain..."
+    verification_background_help: "We will send you an email with further instructions within 24 hours."
+    verification_background_help_continue: "Follow the directions in the email to continue."
+    verification_https_check: "Your domain is using HTTPS."
+    verification_https_check_alt: "Good, your domain is using HTTPS."
+    verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
+    verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
+    verification_option_public_file: "Verify Your Site: Upload a trusted file"
     verification_option_public_file_help: "You will need to create a directory on your site and add a text file to this directory."
-    verification_option_public_https_hint: "Your website needs to serve this file securely over HTTPS. Learn more at <a href=\"https://letsencrypt.org/getting-started/\" target=\"_blank\">Let's Encrypt</a> or instead <a href=\"%{href}\">use a DNS record</a>."
-    verification_option_public_file_help_download: "Download the verification text file:"
+    verification_option_public_file_help_download: "Download the verification file below:"
     verification_option_public_file_help_directory: "Find or create the directory: %{directory}"
-    verification_option_public_file_help_upload: "Upload the text file to this directory."
-    verification_option_public_file_help_confirm: "Confirm successful upload by visiting"
-    verification_option_public_file_help_verify: "Click Verify below."
+    verification_option_public_file_help_upload_html: |
+      Upload the verification file to the '<strong>.well-known</strong>' folder on your domain. If one doesn't exist,
+      be sure to create it. Make sure the file is in the .well-known folder and click verify.
     verification_public_file_help: "To verify your site ownership, you will need to create a new directory on your site and add a text file to this directory."
+    verification_download_verification: "Download verification"
+    verification_option_public_file_file_contents: "File contents:"
+    verification_option_public_file_verify_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your site is hosted."
+    verification_option_wordpress: "Hello! It looks like you are using Wordpress."
+    verification_option_wordpress_help_intro: "We have an extension which will make verification a snap."
+    verification_option_wordpress_help_1_html: |
+      First, please install the plugin here: <a href="https://wordpress.org/plugins/well-known-uris/" class="link-secondary">
+      https://wordpress.org/plugins/well-known-uris/</a>
+    verification_option_wordpress_help_2_html: |
+      Second, copy the verification code below into the plugin.
+    verification_option_wordpress_token: "Verification code:"
+    verification_option_wordpress_help_verify: "Finally, let us know you are ready to check for the verification code."
+    verification_option_wordpress_verify_button: "Check for the verification code"
+    verification_option_github_use: "Verify Your Site: Upload a trusted file"
+    verification_option_github_nojekyll: "Please make sure to add an empty file named '.nojekyll' to the root of your repo."
+    verification_option_github_help_download: "Download the verification file below:"
+    verification_option_github_help_directory: "Find or create the directory: %{directory}"
+    verification_option_github_help_upload_html: |
+      Upload the verification file to the '<strong>.well-known</strong>' folder on your repo. If one doesn't exist,
+      be sure to create it. Make sure the file is in the .well-known folder and click verify.
+    verification_option_github_file_contents: "File contents:"
+    verification_option_github: "Hello! It looks like you are using GitHub."
+    verification_option_github_verify_button: "Check for the verification code."
     verification_required: "To continue please verify ownership of your domain."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
     verification_helper_dns_contact: "Contact Brave Support"
+    verification_uphold_error: "There was a problem connecting with Uphold. Please try again."
+    verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
     verify_dns_button: "Verify DNS Record"
     verify_button: "Verify"
+    check_for_https_button: "Check for HTTPS"
+    https_inspection_complete: "Check for HTTPS complete"
+    requires_https: "This action requires HTTPS support"
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
     verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
     verify_success: "Verification successful."
-  notification_mailer:
-    publisher_form_retry:
-      intro: "After reviewing the tax form you submitted for %{brave_publisher_id}, we found one or more errors."
-      prompt: "To claim your funds, please correct these errors and resubmit your tax form through the publisher management site:"
-      subject: "[%{brave_publisher_id}] Action required: Resubmit publisher tax form"
-      title: "Resubmit publisher tax form"
-    publisher_payments_activated:
-      bitcoin_address_help_header: "Your bitcoin address:"
-      save_help: "Please save this email. You will need it to manage your publisher account."
-      intro: "Congratulations! Your publisher website %{brave_publisher_id} is now authorized for future payments."
-      payment_schedule: "You will see an initial transfer to your bitcoin wallet as soon as we process payments, which happens on the last day of every month. If you'd prefer a different payment schedule please contact us."
-      payment_settings_help_header: "Balance and payment settings"
-      payment_settings_help: "To view your balance and manage payment details please visit the publisher management site:"
-      subject: "[%{brave_publisher_id}] Publisher payments activated"
-      title: "Publisher payments activated"
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
       private_access_link: "Private access link"
       private_access_link_help: "Use this link to continue and manage publisher registration"
-    bitcoin_address_changed:
-      subject: "[%{brave_publisher_id}] Brave Publisher Bitcoin address changed"
-      title: "Publisher Bitcoin address changed"
-      body: "This message confirms that you've updated your Bitcoin address through the Publishers website."
-      previous_address: "Previous address"
-      new_address: "New address"
+    uphold_account_changed:
+      subject: "[%{brave_publisher_id}] Brave Publisher Uphold account changed"
+      title: "Publisher Uphold account changed"
+      body: "This message confirms that you've updated your Uphold account through the Publishers website."
     login_email:
       body_1: "Someone requested a login link to access your Brave Publisher account."
       body_2: "If this was you, great! The link is below and it will expire on use or after 3 hours."
@@ -211,55 +251,67 @@ en:
       private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
       subject: "[%{brave_publisher_id}] Brave Publisher registration"
       title: "Publisher registration"
-  publisher_legal_forms:
-    already_exists: "You've already submitted a legal form. If you need to submit another form please contact us at"
-    create_failed: "Couldn't initiate form for signing."
-    complete_irs_w_8ben: "Form W-8BEN"
-    complete_irs_w_8ben_e: "Form W-8BEN-E"
-    complete_irs_w_9: "Form W-9"
-    existing_required: "To continue please initiate a legal form."
-    completed: "Form completed"
-    new_header: "Tax form"
-    new_help_header: "Declare IRS tax status"
-    new_help_purpose: "Brave Software is required to report to the IRS publisher payments exceeding 600.00 USD per year. We also need to maintain your tax information in case the IRS requests it."
-    new_help_request: "To receive payments please submit one of the following:"
-    signing_completed: "Form successfully submitted."
-    signing_request_body: "Please complete this form to receive payments as a Brave Publisher."
-    after_sign_header_completed: "Signing completed"
-    after_sign_body_completed: "Thanks for your submission! To continue please click the publisher icon in the top right corner."
-    after_sign_header_declined: "Signing declined"
-    after_sign_body_declined: "You chose to decline signing this form. We aren't able to pay you any funds owed until you complete this form. If you'd like to try again, please contact us at %{support_email}."
-    # TODO: Remove rate limit once webhooks are implemented
-    after_sign_header_rate_limit: "Status temporarily unavailable"
-    after_sign_body_rate_limit: "We received your request but we're temporarily out of capacity to sync from our provider. Please try again in about 15 minutes."
-    after_sign_header_delivered: "Signing deferred"
-    after_sign_body_delivered: "You chose to sign later. We aren't able to pay you any funds owed until you complete this form. If you'd like to resume, please visit the tax form link in the Publisher dashboard."
-    after_sign_header_timed_out: "Signing timed out"
-    after_sign_body_timed_out: "This form has timed out. We aren't able to pay you any funds owed until you complete this form. If you'd like to resume, please visit the tax form link in the Publisher dashboard. For any questions contact us at %{support_email}."
-    after_sign_header_voided: "Signing voided"
-    after_sign_body_voided: "This form has been voided. We aren't able to pay you any funds owed until you complete this form. If you'd like to try again, please contact us at %{support_email}."
-    signing_request_subject_irs_w_8ben: "Complete IRS W-8BEN to receive payments"
-    signing_request_subject_irs_w_8ben_e: "Complete IRS W-8BEN-E to receive payments"
-    signing_request_subject_irs_w_9: "Complete IRS W-9 to receive payments"
-    submit_tax_form_button: "Submit tax form"
-    taxpayer_type_irs_w_8ben: "Non-US individuals"
-    taxpayer_type_irs_w_8ben_e: "Non-US entities"
-    taxpayer_type_irs_w_9: "US taxpayers"
-    view: "View"
+    verify_email:
+      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
+      intro: "We've received a request to register an email address with Brave Publishers:"
+      private_email_notice: |
+        NOTE: This email contains a private access link. Anyone with it can manage private
+        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      subject: "Brave Publisher email confirmation"
+      title: "Brave Publisher email confirmation"
+    confirm_email_change:
+      subject: "[%{brave_publisher_id}] Confirm your Brave Publisher email change"
+      title: "Confirm email change"
+      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
+      intro: "We've received a request to update your email address with Brave Publishers:"
+      private_email_notice: |
+        NOTE: This email contains a private access link. Anyone with it can manage private
+        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      previous_email: "Previous email"
+      updated_email: "New email"
+      confirmation_link: "Confirm your email change"
+      confirmation_link_help: "Use this link to confirm that you would like to proceed with this change"
+    notify_email_change:
+      subject: "[%{brave_publisher_id}] Notification of Brave Publisher email change"
+      title: "Notification of email change"
+      intro: "We're notifying you of an update made to your email address with Brave Publishers:"
+      previous_email: "Previous email"
+      updated_email: "New email"
+      change_ok: "If you made this change, check your new email account for a link to confirm it."
+      contact_support: "If you did not make this change yourself, please contact support ASAP"
+  publisher_statement_periods:
+    past_7_days: "Past 7 days"
+    past_30_days: "Past 30 days"
+    this_month: "This month"
+    last_month: "Last month"
+    this_year: "This year"
+    last_year: "Last year"
+    all: "All"
   recaptcha:
     errors:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
       verification_failed: "reCAPTCHA verification failed; please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
+    cancel: "Cancel"
+    edit: "Edit"
     error: "Error"
     error_body: "Oops, sorry about that. You can try to refresh the page or return to"
     error_contact: "For assistance please contact us at: %{support_email}"
+    generate: "Generate"
     save_and_continue: "Save and continue"
+    update: "Update"
+    email_address: "Email address"
   static:
-    landing_header: "Welcome to Brave Payments"
-    landing_body: "Brave users are already making contributions to thank you for your efforts. The first step toward collecting those contributions is to verify ownership of your web address so Brave users can see that your site is verified. Once fully verified, you will begin to receive daily micropayments in your Bitcoin wallet."
-    landing_login_header: "Existing publishers"
-    landing_login_body: "If you've already started or completed verification, we can email you a link to access your publisher account."
+    landing_header-welcome: "Welcome to"
+    landing_header: "Brave Payments"
+    landing_body_html: |
+      <p>Our users do not want ads, but you still have bills to pay. Brave Payments streams micropayments from
+       the audience to you.</p>
+      <p>Once fully verified, you will begin to receive daily micropayments from users in your BAT wallet.</p>
+    landing_new_header: "New to Brave Payments?"
+    landing_new_body: "Start verifying your domain with entering your email."
+    landing_login_header: "Already verified?"
+    landing_login_body_html: "<strong>Already verified?</strong> Log in to see your publisher dashboard."
     landing_login_button: "Log in"
-    landing_button: "Start verification"
+    landing_begin_button: "Get Started"

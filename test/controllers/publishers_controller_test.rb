@@ -1,5 +1,6 @@
 require "test_helper"
 require "shared/mailer_test_helper"
+require "webmock/minitest"
 
 class PublishersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -7,27 +8,24 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include MailerTestHelper
   include PublishersHelper
 
+  SIGNUP_PARAMS = {
+    email: "alice@example.com"
+  }
+
   PUBLISHER_PARAMS = {
     publisher: {
-      email: "alice@example.com",
+      # email: "alice@example.com",
       brave_publisher_id: "pyramid.net",
       name: "Alice the Pyramid",
       phone: "+14159001420"
     }
   }.freeze
 
-  test "new action has a create form" do
-    get(new_publisher_path)
-    assert_response(:success)
-    assert_select("form[action=\"#{publishers_path}\"]")
-  end
-
   test "can create a Publisher registration, pending email verification" do
-    get(new_publisher_path)
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
       assert_enqueued_emails(2) do
-        post(publishers_path, params: PUBLISHER_PARAMS)
+        post(publishers_path, params: SIGNUP_PARAMS)
       end
     end
     assert_redirected_to(create_done_publishers_path)
@@ -38,10 +36,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "sends an email with an access link" do
     perform_enqueued_jobs do
-      post(publishers_path, params: PUBLISHER_PARAMS)
+      post(publishers_path, params: SIGNUP_PARAMS)
       publisher = Publisher.order(created_at: :asc).last
       email = ActionMailer::Base.deliveries.find do |message|
-        message.to.first == PUBLISHER_PARAMS[:publisher][:email]
+        message.to.first == SIGNUP_PARAMS[:email]
       end
       assert_not_nil(email)
       url = publisher_url(publisher, token: publisher.authentication_token)
@@ -51,16 +49,30 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "access link logs the user in, and works only once" do
     perform_enqueued_jobs do
-      post(publishers_path, params: PUBLISHER_PARAMS)
+      post(publishers_path, params: SIGNUP_PARAMS)
     end
     publisher = Publisher.order(created_at: :asc).last
     url = publisher_url(publisher, token: publisher.authentication_token)
     get(url)
     follow_redirect!
-    assert_select("[data-test-id='current_publisher']", publisher.to_s)
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    # assert_select("[data-test-id='current_publisher']", publisher.to_s)
     sign_out(:publisher)
     get(url)
     assert_empty(css_select("[data-test-id='current_publisher']"))
+  end
+
+  test "an unauthenticated html request redirects to home" do
+    get home_publishers_path
+    assert_response 302
+  end
+
+  test "an unauthenticated json request returns a 401" do
+    get home_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    assert_response 401
   end
 
   def request_login_email(publisher:)
@@ -125,5 +137,270 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil(email)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
     assert_email_body_matches(matcher: url, email: email)
+  end
+
+  test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    # skip publisher verification
+    publisher.verified = true
+    publisher.save!
+
+    # verify that the state token has not yet been set
+    assert_nil(publisher.uphold_state_token)
+
+    # move right to `verification_done`
+    url = verification_done_publishers_url
+    get(url)
+
+    # verify that a state token has been set
+    publisher.reload
+    assert_not_nil(publisher.uphold_state_token)
+
+    # assert that the state token is included in the uphold authorization url
+    endpoint = Rails.application.secrets[:uphold_authorization_endpoint]
+                   .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
+                   .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
+                   .gsub('<STATE>', publisher.uphold_state_token)
+
+    assert_select("a[href='#{endpoint}']") do |elements|
+      assert_equal(1, elements.length, 'A link with the correct href to Uphold.com is present')
+    end
+  end
+
+  test "after redirection back from uphold and uphold_api is offline a publisher's code is still set" do
+    begin
+      perform_enqueued_jobs do
+        post(publishers_path, params: SIGNUP_PARAMS)
+      end
+      publisher = Publisher.order(created_at: :asc).last
+      url = publisher_url(publisher, token: publisher.authentication_token)
+      get(url)
+      follow_redirect!
+      perform_enqueued_jobs do
+        patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+      end
+
+      uphold_state_token = SecureRandom.hex(64)
+      publisher.uphold_state_token = uphold_state_token
+
+      publisher.verified = true
+      publisher.save!
+
+      uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+
+      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+          .with(body: "code=#{uphold_code}&grant_type=authorization_code")
+          .to_timeout
+
+      url = uphold_verified_publishers_path
+      get(url, params: { code: uphold_code, state: uphold_state_token })
+      assert(200, response.status)
+      publisher.reload
+
+      # verify that the uphold_state_token has been cleared
+      assert_nil(publisher.uphold_state_token)
+
+      # verify that the uphold_code has been set
+      assert_not_nil(publisher.uphold_code)
+      assert_equal('ebb18043eb2e106fccb9d13d82bec119d8cd016c', publisher.uphold_code)
+
+      # verify that the uphold_access_parameters has not been set
+      assert_nil(publisher.uphold_access_parameters)
+
+      # verify that the finished_header was not displayed
+      refute_match(I18n.t('publishers.finished_header'), response.body)
+    end
+  end
+
+  test "after redirection back from uphold and uphold_api is online a publisher's code is nil and uphold_access_parameters is set" do
+    begin
+      perform_enqueued_jobs do
+        post(publishers_path, params: SIGNUP_PARAMS)
+      end
+      publisher = Publisher.order(created_at: :asc).last
+      url = publisher_url(publisher, token: publisher.authentication_token)
+      get(url)
+      follow_redirect!
+      perform_enqueued_jobs do
+        patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+      end
+
+      uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+      uphold_state_token = SecureRandom.hex(64)
+      publisher.uphold_state_token = uphold_state_token
+
+      publisher.verified = true
+      publisher.save!
+
+      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+          .with(body: "code=#{uphold_code}&grant_type=authorization_code")
+          .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
+
+      url = uphold_verified_publishers_path
+      get(url, params: { code: uphold_code, state: uphold_state_token })
+      assert(200, response.status)
+
+      publisher.reload
+      # verify that the uphold_state_token has been cleared
+      assert_nil(publisher.uphold_state_token)
+
+      # verify that the uphold_code has been cleared
+      assert_nil(publisher.uphold_code)
+
+      # verify that the uphold_access_parameters has been set
+      assert_match('FAKEACCESSTOKEN', publisher.uphold_access_parameters)
+
+      assert_redirected_to '/publishers/home'
+    end
+  end
+
+  test "after redirection back from uphold, a missing publisher's `uphold_state_token` redirects back to verification_done" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    publisher.verified = true
+    publisher.save!
+
+    url = uphold_verified_publishers_path
+    get(url, params: { code: 'ebb18043eb2e106fccb9d13d82bec119d8cd016c' })
+    assert_redirected_to '/publishers/home'
+
+    # Check that failure message is displayed
+    follow_redirect!
+    assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
+  end
+
+  test "after redirection back from uphold, a mismatched publisher's `uphold_state_token` redirects back to verification_done" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    uphold_state_token = SecureRandom.hex(64)
+    publisher.uphold_state_token = uphold_state_token
+
+    publisher.verified = true
+    publisher.save!
+
+    spoofed_uphold_state_token = SecureRandom.hex(64)
+    url = uphold_verified_publishers_path
+    get(url, params: { code: 'ebb18043eb2e106fccb9d13d82bec119d8cd016c', state: spoofed_uphold_state_token })
+    assert_redirected_to '/publishers/home'
+
+    # Check that failure message is displayed
+    follow_redirect!
+    assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
+  end
+
+  test "a publisher's show_verification_status, pending_email, and name can be updated via an ajax patch" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    publisher.show_verification_status = false
+    publisher.verified = true
+    publisher.save!
+
+    assert_equal false, publisher.show_verification_status
+
+    url = publishers_path
+    patch(url,
+          params: { publisher: { show_verification_status: 1, pending_email: 'joeblow@example.com', name: 'Joseph Blow' } },
+          headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 204
+
+    publisher.reload
+    assert_equal true, publisher.show_verification_status
+    assert_equal 'joeblow@example.com', publisher.pending_email
+    assert_equal 'Joseph Blow', publisher.name
+  end
+
+  test "a publisher's statement can be generated via ajax" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    publisher.show_verification_status = false
+    publisher.verified = true
+    publisher.save!
+
+    assert_equal false, publisher.show_verification_status
+
+    url = generate_statement_publishers_path
+    patch(url,
+          params: { statement_period: 'all' },
+          headers: { 'HTTP_ACCEPT' => "application/json" })
+
+    assert_response 200
+    assert_match("{\"reportURL\":\"/publishers/home\"}", response.body)
+  end
+  
+  test "a publisher's status can be polled via ajax" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    publisher.show_verification_status = false
+    publisher.verified = true
+    publisher.save!
+
+    assert_equal false, publisher.show_verification_status
+
+    url = status_publishers_path
+    get(url,
+        headers: { 'HTTP_ACCEPT' => "application/json" })
+
+    assert_response 200
+    assert_match(
+      '{"status":"uphold_unconnected",' +
+       '"status_description":"Wallet not found, please Connect with Uphold to create one",' +
+       '"uphold_status":"unconnected",' +
+       '"uphold_status_description":"Not connected to Uphold."}',
+      response.body)
   end
 end

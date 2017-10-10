@@ -1,5 +1,5 @@
 # "Magic sign in link" / One time sign-in token via email
-class PublisherLoginLinkEmailer
+class PublisherLoginLinkEmailer < BaseService
   attr_accessor :error
   attr_reader :brave_publisher_id, :normal_publisher_id, :email, :publisher
 
@@ -23,6 +23,9 @@ class PublisherLoginLinkEmailer
     ).perform
   rescue PublisherDomainNormalizer::DomainExclusionError, Faraday::Error
     @error = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
+    false
+  rescue URI::InvalidURIError
+    @error = I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
     false
   end
 

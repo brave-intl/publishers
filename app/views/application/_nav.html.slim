@@ -18,4 +18,5 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
             = link_to(home_publishers_path) do
               - if current_publisher.verified?
                 = image_tag("verified-icon.png", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 22)
-              span.link-primary data-test-id="current_publisher" = current_publisher
+              - if current_publisher.brave_publisher_id.present?
+                span.link-primary data-test-id="current_publisher" = current_publisher

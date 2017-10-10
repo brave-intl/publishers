@@ -1,20 +1,21 @@
 - content_for(:navbar_content) do
-  span Step 2 of 4: #{I18n.t("publishers.verification_done_header")}
+  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 100, wallet: 0 }, publisher: current_publisher }
 
 .row
-  .col-center.col-xs-7.col-md-7
-    legend= I18n.t("publishers.verification_done_legend")
-    
+  .col-center.col-xs-8.col-md-8
+    h2
+      = image_tag("verified-icon.png", alt: t("publishers.verified"), style: "margin-left: -80px; width: 62px; margin-right: 18px")
+      span= t("publishers.verification_done_legend")
+
+    h4= t("publishers.verification_done_legend_2")
+
     .publisher-domain-summary
-      = image_tag("verified-icon.png", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 60)
-      span.publisher-domain-name= current_publisher.brave_publisher_id
-    p= I18n.t("publishers.verification_done_intro")
+      .help-block= t("publishers.verification_done_intro_html", verified_image_tag: image_tag("verified-icon.png", alt: t("publishers.verified"), class: "verified-icon-small"))
+
+    h4= t("publishers.verification_done_balance_heading")
+    .balance= t("publishers.verification_done_balance_html", bat_balance: publisher_humanize_balance(current_publisher), usd_balance: "Todo")
 
     .submit-payment-info
-      h4= I18n.t("publishers.verification_done_submit_payment_info")
-      p
-        = I18n.t("publishers.verification_done_balance", publisher: current_publisher.to_s, balance: publisher_humanize_balance(current_publisher))
-      p
-        = I18n.t("publishers.verification_done_submit_payment_info_body")
-      
-    p= link_to(I18n.t("publishers.add_bitcoin_address"), edit_payment_info_publishers_path, class: "btn btn-primary col-md-6 col-xs-12")
+      h4= t("publishers.verification_done_submit_payment_info")
+      .help-block= t("publishers.verification_done_submit_payment_info_body")
+    = link_to(image_tag("uphold-connect-white@1x.png"), uphold_authorization_endpoint(current_publisher))

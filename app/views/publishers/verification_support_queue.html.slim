@@ -1,0 +1,12 @@
+- content_for(:navbar_content) do
+  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 25, wallet: 0 }, publisher: current_publisher }
+
+.row
+  .col-center.col-xs-12.col-md-8
+    h4.section-title
+      span.section-title= t("publishers.verification_support_queue_header")
+
+    .help-block= t("publishers.verification_support_queue_help_html")
+.row
+  .col-center.col-xs-12.col-md-8
+    = link_to(t("publishers.verification_support_review_options"), verification_choose_method_publishers_path, class: "btn btn-primary")

@@ -1,10 +1,155 @@
 body[data-controller="static"]
-  h3
-    margin-top: 5px
-  @media (min-width: 768px)
-    img.publishers-synopsis
-      margin-left: -54px !important
-  img.publishers-synopsis
-    margin: 5px 0
-    max-width: 692px
+  padding-top: $navbar-margin-bottom
+  height: 100vh
+
+  background-color: #f33a46
+  background-image: url(asset-path("coins.png")) /* fallback */
+  background-image: url(asset-path("coins.png")), -webkit-linear-gradient(-72deg,#f7383a,#e72d5d,#C09 85%)
+  background-repeat: no-repeat
+  background-position: top right
+
+  color: white
+  font-size: 16px
+  font-weight: 300
+  letter-spacing: 0.02em
+
+  p
+    padding-bottom: 15px
+    color: white
+    font-size: 16px
+    font-weight: 300
+    letter-spacing: 0.02em
+
+  .logo
+    margin-top: 20px
+
+  .main-heading
+    h2
+      font-weight: 200
+      font-size: 32px
+      margin-bottom: 0px
+    h1
+      font-weight: 700
+      font-size: 52px
+      margin-top: 10px
+      margin-bottom: 40px
+      margin-right: -30px
+
+  .section-header
+    margin-top: 0px
+    font-size: 25px
+    font-weight: 400
+    color: white
+
+  .alt-path-copy
+    color: rgba(white, 0.85)
+    font-size: 15px
+    font-weight: 200
+    letter-spacing: 0.02em
+    strong
+      color: white
+      font-weight: 600
+
+  .dashboard
+    margin-top: 35px
+    margin-bottom: 35px
+
+  .divider
+    border-color: rgba(#ededee, 0.35)
+    margin-top: 40px
+    height: 1px
     width: 100%
+    margin-left: 0px
+
+  .welcome
+    margin-top: 25px
+
+  @media (max-width: 767px)
+    .col-centered
+      float: none
+      margin: 0 auto
+      padding-left: 30px
+      padding-right: 30px
+
+  @media (max-width: 991px)
+    .col-centered
+      float: none
+      margin: 0 auto
+      padding-left: 40px
+      padding-right: 40px
+
+  @media (min-width: 992px)
+    .col-left
+      padding-left: 70px
+      padding-right: 30px
+    .col-right
+      padding-left: 30px
+      padding-right: 70px
+
+  @media (min-width: 1200px)
+    .col-left
+      padding-left: 120px
+      padding-right: 30px
+    .col-right
+      padding-left: 30px
+      padding-right: 120px
+
+  .form-control
+    background-color: rgba(white, 0.22)
+    color: rgba(white, 0.88)
+    height: 48px
+    font-weight: 400
+    font-size: 16px
+    border: none
+    border-radius: 3px
+    opacity: 0.88
+    letter-spacing: 0.02em
+
+  input[type="email"]:focus
+    border: 1px solid #ff5396
+  input[type="email"]:hover
+    border: 1px solid #81063a
+
+  .form-control::-webkit-input-placeholder
+    font-weight: 300
+    font-size: 16px
+    color: white
+  .control-label
+    display: inline
+    color: white
+  .button-column
+    padding-left: 0px
+  .btn
+    &.btn-primary
+      background: #f93f32
+      height: 50px
+      border: none
+      border-radius: 6px
+      box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
+      color: white
+      font-size: 16px
+      font-weight: 600
+      letter-spacing: 0.02em
+
+      &:hover
+        background: #fc624e
+      &:active
+        background: #e22a1f
+
+    &.btn-secondary
+      background: transparent
+      height: 36px
+      border: 1px solid rgba(#fff, 0.30)
+      border-radius: 6px
+      color: white
+      font-size: 12px
+      font-weight: 400
+      letter-spacing: 0.02em
+      box-shadow: none
+
+      &:hover
+        border: none
+        background: rgba(#fff, 0.30)
+      &:active
+        border: none
+        background: rgba(#fff, 0.15)

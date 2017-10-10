@@ -1,52 +1,292 @@
+javascript:
+  (function() {
+    var spinnerShown;
+
+    function showSpinner() {
+      var spinner = document.getElementById('cssload-pgloading');
+      spinner.style.display = 'block';
+      spinnerShown = Date.now();
+    }
+
+    function hideSpinner() {
+      if (spinnerShown) {
+        var minTime = 500;
+        var now = Date.now();
+
+        var spinner = document.getElementById('cssload-pgloading');
+        if (now - spinnerShown > minTime)
+          spinner.style.display = 'none';
+        else {
+          setTimeout(function() {
+            spinner.style.display = 'none';
+          }, minTime - (now - spinnerShown));
+        }
+      }
+    }
+
+    function submitForm(formId, method, showSpinners) {
+      var form = document.getElementById(formId);
+      var options = {
+        headers: {
+          'Accept': 'application/json'
+        },
+        credentials: 'same-origin',
+        method: method,
+        body: new FormData(form)
+      };
+      if (showSpinners) { showSpinner(); }
+      return window.fetch(form.action, options)
+        .then(function(response) {
+          if (showSpinners) { hideSpinner(); }
+          if (response.status === 401) {
+            // Force a page reload if the user is no longer authenticated.
+            window.location.reload();
+          }
+          return response;
+        })
+        .catch(function(e) {
+          if (showSpinners) { hideSpinner(); }
+          window.alert("An unexpected error occurred. Please try reloading this page.")
+        });
+    }
+
+    function waitForReport(reportURL, delay, backoff, attempts) {
+      return new Promise(function(resolve, reject) {
+        if (attempts > 0) {
+          setTimeout(function() {
+            window.fetch(reportURL, { method: 'GET' })
+              .then(function(response) {
+                if (response.status === 200) {
+                  // report successfully fetched
+                  resolve(reportURL);
+                } else {
+                  // report could not be fetched, so try again
+                  return waitForReport(reportURL, delay + backoff, backoff, --attempts)
+                    .catch(reject);
+                }
+              }, function(e) {
+                // swallow exception and try again
+                return waitForReport(reportURL, delay + backoff, backoff, --attempts)
+                  .catch(reject);
+              });
+          }, delay);
+        } else {
+          throw new Error('Attempts exceeded!');
+        }
+      });
+    }
+
+    function showPendingContactEmail(pendingEmail) {
+      var pendingEmailNotice = document.getElementById('pending_email_notice');
+      var showContactEmail = document.getElementById('show_contact_email');
+      if (pendingEmail && pendingEmail != showContactEmail.innerText) {
+        pendingEmailNotice.innerHTML = 'Pending: Email address has been updated to: <strong>' + pendingEmail + '</strong>. An email has been sent to this address to confirm this change.';
+        pendingEmailNotice.style.display = 'block';
+      } else {
+        pendingEmailNotice.style.display = 'none';
+      }
+    }
+
+    window.addEventListener('load', function() {
+      var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
+      showVerificationStatusInput.addEventListener('click', function(event) {
+        submitForm('update_show_verification_status', 'PATCH', true);
+      }, false);
+
+      var showContact = document.getElementById('show_contact');
+      var showContactName = document.getElementById('show_contact_name');
+      var showContactEmail = document.getElementById('show_contact_email');
+
+      var pendingContactEmail = document.getElementById('pending_contact_email');
+      showPendingContactEmail(pendingContactEmail.innerText);
+
+      var updateContact = document.getElementById('update_contact');
+      var updateContactName = document.getElementById('update_contact_name');
+      var updateContactEmail = document.getElementById('update_contact_email');
+
+      var editContact = document.getElementById('edit_contact');
+      var cancelEditContact = document.getElementById('cancel_edit_contact');
+
+      var generateStatement = document.getElementById('generate_statement');
+      var generateStatementResult = document.getElementById('generate_statement_result');
+      var statementPeriod = document.getElementById('statement_period');
+
+      editContact.addEventListener('click', function(event) {
+        updateContactName.value = showContactName.innerText;
+        updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
+        showContact.style.display = 'none';
+        updateContact.style.display = 'block';
+        updateContactName.focus();
+        event.preventDefault();
+      }, false);
+
+      cancelEditContact.addEventListener('click', function(event) {
+        showContact.style.display = 'block';
+        updateContact.style.display = 'none';
+        event.preventDefault();
+      }, false);
+
+      updateContact.addEventListener('submit', function(event) {
+        event.preventDefault();
+        submitForm('update_contact', 'PATCH', true)
+          .then(function() {
+            var updatedEmail = updateContactEmail.value;
+            showContactName.innerText = updateContactName.value;
+            pendingContactEmail.innerText = updatedEmail;
+            showPendingContactEmail(updatedEmail);
+
+            updateContact.style.display = 'none';
+            showContact.style.display = 'block';
+          });
+      }, false);
+
+      statementPeriod.addEventListener('click', function(event) {
+        hideSpinner();
+        generateStatement.style.display = 'inline-block';
+        generateStatementResult.style.display = 'none';
+      }, false);
+
+      generateStatement.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        submitForm('statement_generator', 'PATCH', false)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            generateStatement.style.display = 'none';
+            generateStatementResult.style.display = 'inline-block';
+            generateStatementResult.innerText = 'Generating';
+
+            dynamicEllipsis.start('generate_statement_result');
+
+            return waitForReport(json.reportURL, 3000, 2000, 4);
+          })
+          .then(function(reportURL) {
+            dynamicEllipsis.stop('generate_statement_result');
+            generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
+          })
+          .catch(function() {
+            dynamicEllipsis.stop('generate_statement_result');
+            generateStatementResult.innerText = 'We will email you a link when your report is ready.'
+          });
+      }, false);
+    }, false);
+  })();
+
+- if poll_uphold_status?(current_publisher)
+  javascript:
+    (function() {
+      var checkUpholdStatusInterval;
+
+      function checkUpholdStatus() {
+        var options = {
+          headers: {
+            'Accept': 'application/json'
+          },
+          credentials: 'same-origin',
+          method: 'GET'
+        };
+
+        return window.fetch('./status', options)
+          .then(function(response) {
+            if (response.status === 200) {
+              return response.json();
+            }
+          })
+          .then(function(body) {
+            if (body.uphold_status === 'verified') {
+              document.getElementById('uphold_status').innerText = body.uphold_status_description;
+              var publisherStatus = document.getElementById('publisher_status');
+              publisherStatus.innerText = body.status_description;
+              publisherStatus.className = body.status === 'complete' ? 'complete' : 'incomplete';
+              dynamicEllipsis.stop('uphold_status');
+              clearInterval(checkUpholdStatusInterval);
+            }
+          });
+      }
+
+      window.addEventListener('load', function() {
+        dynamicEllipsis.start('uphold_status');
+        checkUpholdStatusInterval = setInterval(checkUpholdStatus, 2000);
+      });
+    })();
+
+noscript
+  div.noscript-warning = t("publishers.dashboard_noscript")
+
 - content_for(:navbar_content) do
-  span= I18n.t("publishers.dashboard")
+
+div#cssload-pgloading style="display: none"
+  div.cssload-loadingwrap
+    ul.cssload-bokeh
+      li
+      li
+      li
+      li
 
 .row
-  .col-center.col-xs-12.col-md-5
-    fieldset
-      legend.publisher-domain-summary
-        - if current_publisher.verified?
-          = image_tag("verified-icon.png", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 30)
-        span.publisher-domain-name= current_publisher.brave_publisher_id
-        - if !current_publisher.verified?
-          span.link-hint.publisher-verified-status= I18n.t("publishers.not_verified")
-      
-      h4= I18n.t("publishers.status")
-      .attribute-value.status
-        - if publisher_can_receive_funds?(current_publisher)
-          div= I18n.t("publishers.status_can_receive_funds")
-        - else
-          div= I18n.t("publishers.status_to_receive_payments")
-          ul
-            - if current_publisher.bitcoin_address.blank?
-              li= I18n.t("publishers.status_bitcoin_address_required")
-            - if !current_publisher.legal_form_completed?
-              li= I18n.t("publishers.status_legal_form_required")
+  .col.col-md-12.col-xs-8.col-xs-center.col-sm-center
+    .publisher-status
+      .publisher-domain-summary
+        .publisher-domain-name= current_publisher.brave_publisher_id
+        #publisher_status class=(publisher_status(current_publisher) == :complete ? 'complete' : 'incomplete')
+          = publisher_status_description(current_publisher)
 
-      h4= I18n.t("publishers.balance_pending")
+.row
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      h4= t("publishers.balance_pending")
       .attribute-value.balance
         span.balance-amount= publisher_humanize_balance(current_publisher)
-        = " "
-        span.approximate-hint.link-hint= I18n.t("publishers.balance_pending_approximate")
 
-      h4= I18n.t("publishers.payment_bitcoin_address")
-      .attribute-value.payment-info.row.no-gutter
-        - if current_publisher.bitcoin_address.present?
-          span.bitcoin-address= current_publisher.bitcoin_address
-        - if current_publisher.bitcoin_address.present?
-          = link_to(I18n.t("publishers.edit_bitcoin_address"), edit_payment_info_publishers_path)
+      .statements
+        h4= t("publishers.publisher_statements")
+        = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
+          .form-group
+            = select_tag(:statement_period, options_for_select(publisher_statement_periods))
+            a#generate_statement href="#" class="btn btn-tertiary btn-generate"
+              = t("shared.generate")
+            span#generate_statement_result
+
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      .attribute-value.status
+        = image_tag("uphold-powered-transparent@1x.png", class: "connect-uphold")
+        - if show_uphold_connect?(current_publisher)
+          div#uphold_connect
+            help-block= t("publishers.verified_publisher_connect_to_uphold_html")
+            = link_to(image_tag("uphold-connect-white@1x.png", class: "connect-uphold"), uphold_authorization_endpoint(current_publisher))
         - else
-          = link_to(I18n.t("publishers.add_bitcoin_address"), edit_payment_info_publishers_path, class: "btn btn-primary btn-sm col-md-7 col-xs-12")
+          p#uphold_status= uphold_status_description(current_publisher)
 
-      h4= PublisherLegalForm.model_name.human 
-      .attribute-value.legal-form.row.no-gutter
-        - if current_publisher.legal_form_completed?
-          span.form-type
-            = publisher_legal_form_humanize_form_type(current_publisher.legal_form)
-        - else
-          = link_to(I18n.t("publisher_legal_forms.submit_tax_form_button"), new_publisher_legal_form_path, class: "btn btn-primary btn-sm col-md-7 col-xs-12")
-
-      h4= I18n.t("publishers.contact_person")
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      h4
+        = t("publishers.contact")
+        a.edit-link#edit_contact href="#"
+          = t("shared.edit")
       .attribute-value.contact-person
-        span.name= current_publisher.name
-        span.email= current_publisher.email
+        #show_contact
+          #show_contact_name= current_publisher.name
+          span.email#show_contact_email= current_publisher.email
+          span.hidden#pending_contact_email= current_publisher.pending_email
+        = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
+          .form-group
+            = f.label(:name, class: "control-label")
+            = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
+          .form-group
+            = f.label(:email, class: "control-label")
+            = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
+          .button.form-group
+            = f.submit(translate("shared.update"), class: "btn btn-primary")
+            a#cancel_edit_contact href="#"
+              = t("shared.cancel")
+        p#pending_email_notice style="display: none" class="note"
+
+      = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
+        .form-group
+          = f.label(:show_verification_status, class: "label-checkbox") do
+            = f.check_box(:show_verification_status, class: "control-checkbox")
+            text &nbsp;
+            = t("activerecord.attributes.publisher.show_verification_status")

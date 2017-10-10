@@ -1,4 +1,4 @@
-class BaseApiClient
+class BaseApiClient < BaseService
   private
 
   def api_base_uri

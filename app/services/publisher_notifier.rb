@@ -1,5 +1,5 @@
 # TODO: Generalized Notifier service class
-class PublisherNotifier
+class PublisherNotifier < BaseService
   attr_reader :notification_params, :notification_type, :publisher
 
   # Should match methods in NotificationMailer starting with #publisher_*

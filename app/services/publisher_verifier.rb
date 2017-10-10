@@ -1,7 +1,11 @@
+require 'publishers/fetch'
+
 # Request verification from Eyeshade. Sets the matching
 # If the publisher previously has been verified, you can't reverify (for now)
 # TODO: Rate limit
 class PublisherVerifier < BaseApiClient
+  include Publishers::Fetch
+
   attr_reader :attended, :brave_publisher_id, :publisher, :verified_publisher, :verified_publisher_id
 
   # publisher is optional. If given, service will raise errors if the provided publisher's verification token
@@ -72,6 +76,30 @@ class PublisherVerifier < BaseApiClient
   end
 
   def verify_offline_publisher_id
+    Rails.logger.info("PublisherVerifier offline by #{publisher.verification_method}")
+
+    case publisher.verification_method
+      when "dns_record"
+        verify_offline_publisher_id_dns
+      when "public_file"
+        verify_offline_publisher_id_public_file
+      when "github"
+        verify_offline_publisher_id_public_file
+      when "wordpress"
+        verify_offline_publisher_id_public_file
+      when "support_queue"
+        verify_offline_publisher_id_support_queue
+      else
+        Rails.logger.info("PublisherVerifier unknown verification_method: #{publisher.verification_method}")
+        nil
+    end
+  end
+
+  def verify_offline_publisher_id_support_queue
+    nil
+  end
+
+  def verify_offline_publisher_id_dns
     require "dnsruby"
     resolver = Dnsruby::Resolver.new
     message = resolver.query(brave_publisher_id, "TXT")
@@ -95,6 +123,28 @@ class PublisherVerifier < BaseApiClient
     nil
   rescue Dnsruby::NXDomain
     Rails.logger.warn("Dnsruby::NXDomain")
+    nil
+  end
+
+  def verify_offline_publisher_id_public_file
+    generator = PublisherVerificationFileGenerator.new(publisher: publisher)
+    uri = URI("https://#{brave_publisher_id}/.well-known/#{generator.filename}")
+    response = fetch(uri: uri)
+    if response.code == "200"
+      token_match = /#{publisher.verification_token}/.match(response.body)
+      if token_match
+        Rails.logger.warn("verify_offline_publisher_id_public_file: Token Found")
+        publisher.id
+      else
+        Rails.logger.warn("verify_offline_publisher_id_public_file: Token Mismatch")
+        nil
+      end
+    else
+      Rails.logger.warn("verify_offline_publisher_id_public_file: Not Net::HTTPSuccess")
+      nil
+    end
+  rescue Publishers::Fetch::RedirectError, Publishers::Fetch::ConnectionFailedError => e
+    Rails.logger.warn("verify_offline_publisher_id_public_file: #{e.message}")
     nil
   end
 

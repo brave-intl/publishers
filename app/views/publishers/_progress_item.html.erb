@@ -1,0 +1,18 @@
+<%
+  diameter = 26
+  radius = diameter / 2
+  color = (fill == 0 ? '#777' : '#0dccf8')
+%>
+<div class="progress-item <%= fill == 0 ? 'unstarted' : 'started' %>">
+  <svg xmlns='http://www.w3.org/2000/svg' width='<%= diameter %>' height='<%= diameter %>' class="fill-circle">
+    <defs>
+      <clipPath id="fillClipPath<%=fill%>">
+        <rect x="0" y="<%= (diameter - (fill / 100.0 * diameter)).to_i %>" width="<%= diameter %>" height="<%= diameter %>" />
+      </clipPath>
+    </defs>
+
+    <circle cx="<%= radius %>" cy="<%= radius %>" r="<%= radius - 3 %>" style="clip-path: url(#fillClipPath<%=fill%>);" class="outer-circle"/>
+    <circle cx="<%= radius %>" cy="<%= radius %>" r="<%= radius - 1 %>" fill="none" stroke-width="2" class="inner-circle"/>
+  </svg>
+  <label><%= text %></label>
+</div>

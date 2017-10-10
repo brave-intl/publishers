@@ -90,9 +90,49 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def bitcoin_address_changed(publisher, previous_bitcoin_address:)
+  # Contains registration details and a private verify_email link
+  def verify_email(publisher)
     @publisher = publisher
-    @previous_bitcoin_address = previous_bitcoin_address
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    mail(
+        to: @publisher.pending_email,
+        subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
+
+  # TODO: Refactor
+  # Like the above but without the verify_email link
+  def verify_email_internal(publisher)
+    raise if !self.class.should_send_internal_emails?
+    @publisher = publisher
+    @private_reauth_url = "{redacted}"
+    mail(
+        to: INTERNAL_EMAIL,
+        reply_to: @publisher.email,
+        subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer verify_email))}",
+        template_name: "welcome"
+    )
+  end
+
+  def confirm_email_change(publisher)
+    @publisher = publisher
+    @private_reauth_url = generate_publisher_private_reauth_url(@publisher, @publisher.pending_email)
+    mail(
+      to: @publisher.pending_email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
+
+  def notify_email_change(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
+
+  def uphold_account_changed(publisher)
+    @publisher = publisher
     mail(
       to: @publisher.email,
       subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)

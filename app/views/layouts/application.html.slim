@@ -20,3 +20,5 @@ html
         = yield(:content_form_errors)
             
     = content_for?(:content) ? yield(:content) : yield
+
+    = render("footer")
