@@ -28,7 +28,7 @@ class PublisherWalletSetter < BaseApiClient
           BODY
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/v1/publishers/#{publisher.brave_publisher_id}/wallet")
+      request.url("/v2/publishers/#{publisher.brave_publisher_id}/wallet")
     end
   end
 
