@@ -109,7 +109,8 @@ javascript:
 
       var generateStatement = document.getElementById('generate_statement');
       var generateStatementResult = document.getElementById('generate_statement_result');
-      var statementPeriod = document.getElementById('statement_period');
+      // FIXME: Remove once #74 is fixed.
+      // var statementPeriod = document.getElementById('statement_period');
 
       editContact.addEventListener('click', function(event) {
         updateContactName.value = showContactName.innerText;
@@ -140,11 +141,12 @@ javascript:
           });
       }, false);
 
-      statementPeriod.addEventListener('click', function(event) {
-        hideSpinner();
-        generateStatement.style.display = 'inline-block';
-        generateStatementResult.style.display = 'none';
-      }, false);
+      // FIXME: Remove once #74 is fixed.
+      //statementPeriod.addEventListener('click', function(event) {
+      //  hideSpinner();
+      //  generateStatement.style.display = 'inline-block';
+      //  generateStatementResult.style.display = 'none';
+      //}, false);
 
       generateStatement.addEventListener('click', function(event) {
         event.preventDefault();
