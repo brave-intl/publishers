@@ -175,7 +175,7 @@ GEM
     rack (2.0.3)
     rack-attack (5.0.1)
       rack
-    rack-protection (1.5.3)
+    rack-protection (2.0.0)
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -209,7 +209,7 @@ GEM
       ffi (>= 0.5.0)
     recaptcha (3.3.0)
       json
-    redis (3.3.3)
+    redis (3.3.5)
     redis-actionpack (5.0.0)
       actionpack (>= 4.0.0, < 6)
       redis-rack (~> 2.0.0.pre)
