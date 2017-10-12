@@ -19,4 +19,4 @@ div class=(current_publisher.supports_https? ? "row" : "row dimmed")
       .verification_code= "brave-ledger-verification=#{publisher_filtered_verification_token(current_publisher)}"
       .help-block= t("publishers.verification_option_wordpress_help_verify")
       = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-        = f.submit(t("publishers.verification_option_wordpress_verify_button"), class: "btn btn-primary btn-sm")
+        = f.submit(t("publishers.verification_option_wordpress_verify_button"), class: "btn btn-primary btn-sm", :"data-track-wordpress" => "1")
