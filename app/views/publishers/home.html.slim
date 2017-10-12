@@ -240,14 +240,15 @@ div#cssload-pgloading style="display: none"
       .attribute-value.balance
         span.balance-amount= publisher_humanize_balance(current_publisher)
 
-      .statements
-        h4= t("publishers.publisher_statements")
-        = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
-          .form-group
-            = select_tag(:statement_period, options_for_select(publisher_statement_periods))
-            a#generate_statement href="#" class="btn btn-tertiary btn-generate"
-              = t("shared.generate")
-            span#generate_statement_result
+      / FIXME: Remove until #74 is fixed.
+      / .statements
+      /   h4= t("publishers.publisher_statements")
+      /   = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
+      /     .form-group
+      /       = select_tag(:statement_period, options_for_select(publisher_statement_periods))
+      /       a#generate_statement href="#" class="btn btn-tertiary btn-generate"
+      /         = t("shared.generate")
+      /       span#generate_statement_result
 
   .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
     .pub-panel
