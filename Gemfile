@@ -88,6 +88,9 @@ group :development do
   gem "rubocop", require: false
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
+
+  # i18n-tasks helps you find and manage missing and unused translations.
+  gem 'i18n-tasks', '~> 0.9.12'
 end
 
 group :test do
