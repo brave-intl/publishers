@@ -1,6 +1,6 @@
 doctype html
 html
-  head
+  head data-piwik-host=Rails.application.secrets[:piwik_host]
     title Brave Publishers
     = csrf_meta_tags
     = stylesheet_link_tag('application', media: 'all')
@@ -9,7 +9,7 @@ html
 
   body data-action=params[:action] data-controller=params[:controller]
     = render("nav")
-    
+
     .notifications.navbar-static-top
       - if flash[:alert]
         .alert.alert-warning.flash= flash[:alert]
@@ -18,7 +18,7 @@ html
       - if content_for(:content_form_errors)
         .alert.alert-warning= I18n.t("activerecord.shared.errors")
         = yield(:content_form_errors)
-            
+
     = content_for?(:content) ? yield(:content) : yield
 
     = render("footer")
