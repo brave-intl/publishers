@@ -46,6 +46,7 @@ en:
     balance_error: "Temporarily unavailable"
     balance_pending: "Balance pending"
     balance_pending_approximate: "(approximate)"
+    legacy_balance_pending: "Legacy balance pending (Bitcoin system)"
     claim_funds: "Claim funds"
     complete_irs_w_9: "Complete IRS W-9"
     complete_irs_w_9_hint: "United States taxpayers"
@@ -115,6 +116,7 @@ en:
     verification_done_intro_html: |
       <p>Brave users will now see a verified symbol (%{verified_image_tag}) next to your website domain.</p>
     verification_done_balance_heading: "Current Balance:"
+    verification_done_legacy_balance_heading: "Legacy Balance (Bitcoin system):"
     verification_done_balance_html: |
       <p>%{bat_balance}</p>
     verification_done_submit_payment_info: "Ready to claim your funds now?"
