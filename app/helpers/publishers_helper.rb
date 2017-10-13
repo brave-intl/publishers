@@ -44,6 +44,10 @@ module PublishersHelper
     else
       I18n.t("publishers.balance_error")
     end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("publishers.balance_error")
   end
 
   def publisher_legacy_balance?(publisher)
