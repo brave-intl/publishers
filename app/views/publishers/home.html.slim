@@ -241,6 +241,13 @@ div#cssload-pgloading style="display: none"
       h4= t("publishers.balance_pending")
       .attribute-value.balance
         span.balance-amount= publisher_humanize_balance(current_publisher)
+      -# FIXME: To be removed once BAT transition is complete.
+      - if publisher_legacy_balance?(current_publisher)
+        h4= t("publishers.legacy_balance_pending")
+        .attribute-value.legacy_balance
+          span.balance-amount= publisher_humanize_legacy_balance(current_publisher)
+          = " "
+          span.approximate-hint.link-hint= t("publishers.balance_pending_approximate")
 
       / FIXME: Remove until #74 is fixed.
       / .statements

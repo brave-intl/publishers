@@ -15,6 +15,11 @@
     h4= t("publishers.verification_done_balance_heading")
     .balance= t("publishers.verification_done_balance_html", bat_balance: publisher_humanize_balance(current_publisher), usd_balance: "Todo")
 
+    -# FIXME: To be removed once BAT transition is complete.
+    - if publisher_legacy_balance?(current_publisher)
+      h4= t("publishers.verification_done_legacy_balance_heading")
+      .balance= publisher_humanize_legacy_balance(current_publisher)
+
     .submit-payment-info
       h4= t("publishers.verification_done_submit_payment_info")
       .help-block= t("publishers.verification_done_submit_payment_info_body")

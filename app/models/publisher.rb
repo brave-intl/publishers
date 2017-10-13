@@ -38,6 +38,12 @@ class Publisher < ApplicationRecord
     @_balance ||= PublisherBalanceGetter.new(publisher: self).perform
   end
 
+  # FIXME: To be removed once BAT transition is complete.
+  # Legacy BTC balance from Publishers v1
+  def legacy_balance
+    @_legacy_balance ||= PublisherLegacyBalanceGetter.new(publisher: self).perform
+  end
+
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
   end
