@@ -23,4 +23,4 @@
     .submit-payment-info
       h4= t("publishers.verification_done_submit_payment_info")
       .help-block= t("publishers.verification_done_submit_payment_info_body")
-    = link_to(image_tag("uphold-connect-white@1x.png"), uphold_authorization_endpoint(current_publisher), , :"data-piwik-action" => "ConnectToUpholdClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "PostVerificationFlow")
+    = link_to(image_tag("uphold-connect-white@1x.png"), uphold_authorization_endpoint(current_publisher), :"data-piwik-action" => "ConnectToUpholdClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "PostVerificationFlow")
