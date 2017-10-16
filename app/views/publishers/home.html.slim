@@ -91,6 +91,8 @@ javascript:
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
         submitForm('update_show_verification_status', 'PATCH', true);
+        var form = document.getElementById('update_show_verification_status');
+        form.className = showVerificationStatusInput.checked ? 'checked' : 'unchecked';
       }, false);
 
       var showContact = document.getElementById('show_contact');
@@ -302,8 +304,16 @@ div#cssload-pgloading style="display: none"
             a#cancel_edit_contact href="#"
               = t("shared.cancel")
         p#pending_email_notice style="display: none" class="note"
-      = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
+      = form_for(current_publisher, url: publishers_path,
+              html: { id: "update_show_verification_status",
+                      class: current_publisher.show_verification_status? ? 'checked' : 'unchecked' }) do |f|
         .form-group
           .panel-header.panel-header-h4#publishers_list
             = t("publishers.dashboard_list_in_verified_publishers_html")
-            = f.check_box(:show_verification_status, class: "control-checkbox")
+            .inline-controls.pull-right
+              .onoffswitch
+                = f.check_box(:show_verification_status, class: "onoffswitch-checkbox", id: "publisher_show_verification_status")
+                = f.label(:show_verification_status, class: "onoffswitch-label", for: "publisher_show_verification_status") do
+                  span.onoffswitch-inner
+                  span.onoffswitch-switch
+              .value-label.pull-right#show_verification_status_value
