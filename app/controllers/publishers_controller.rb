@@ -332,7 +332,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :name, :show_verification_status)
+    params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status)
   end
 
   def publisher_update_unverified_params

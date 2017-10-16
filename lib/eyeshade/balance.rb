@@ -10,8 +10,8 @@ module Eyeshade
       @altcurrency = balance_json['altcurrency']
       @amount = balance_json['amount'].to_f
 
-      @rates = {}
-      rates = balance_json['rates'].each_pair do |k,v|
+      @rates = {"BAT" => 1.0}
+      balance_json['rates'].each_pair do |k,v|
         @rates[k] = v.to_f
       end
     end
