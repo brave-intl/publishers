@@ -1,3 +1,5 @@
+# FIXME: To be removed once BAT transition is complete.
+# Query pending legacy BTC balance from Eyeshade.
 class PublisherLegacyBalanceGetter < BaseApiClient
   attr_reader :publisher
 
@@ -7,6 +9,7 @@ class PublisherLegacyBalanceGetter < BaseApiClient
 
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
+    return nil if !can_perform?
     # params = {
     #   "currency" => "USD"
     # }
@@ -32,11 +35,15 @@ class PublisherLegacyBalanceGetter < BaseApiClient
   private
 
   def api_base_uri
-    Rails.application.secrets[:api_eyeshade_base_uri]
+    Rails.application.secrets[:api_legacy_eyeshade_base_uri]
   end
 
   def api_authorization_header
-    "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
+    "Bearer #{Rails.application.secrets[:api_legacy_eyeshade_key]}"
+  end
+
+  def can_perform?
+    api_base_uri.present?
   end
 
   Balance = Struct.new(:amount, :currency, :satoshis) do
