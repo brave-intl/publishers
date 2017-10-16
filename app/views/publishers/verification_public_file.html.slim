@@ -33,6 +33,6 @@ div class=(current_publisher.supports_https? ? "row" : "row dimmed")
           .visible-sm.visible-xs
             = image_tag("upload-well-known.png")
           = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-            = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm")
+            = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm", :"data-piwik-action" => "PublicFileVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "PublicFileFlow")
           br
           .help-block.li-text= t("publishers.verification_option_public_file_verify_note")
