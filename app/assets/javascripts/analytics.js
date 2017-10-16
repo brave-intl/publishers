@@ -15,27 +15,8 @@ if (document.head.dataset.piwikHost) {
     e = e || window.event;
     var target = e.target || e.srcElement;
 
-    // A switch would feel better, but would eval on target.dataset actually work?
-    if (target.dataset.trackWordpress) {
-      _paq.push(['trackEvent', 'WordpressVerificationClicked', 'Clicked', 'WordpressFlow']);
-    }else if (target.dataset.trackPublicFile) {
-      _paq.push(['trackEvent', 'PublicFileVerificationClicked', 'Clicked', 'PublicFileFlow']);
-    }else if (target.dataset.trackGithub) {
-      _paq.push(['trackEvent', 'GithubVerificationClicked', 'Clicked', 'GithubFlow']);
-    }else if (target.dataset.trackDns) {
-      _paq.push(['trackEvent', 'DNSVerificationClicked', 'Clicked', 'DNSFlow']);
-    }else if (target.dataset.trackAddedContactInfo) {
-      _paq.push(['trackEvent', 'ContactInfoClicked', 'Clicked', 'ContactInfoFlow']);
-    }else if (target.dataset.trackChoseTrustedFile) {
-      _paq.push(['trackEvent', 'ChosePublicFileClicked', 'Clicked', 'ChooserFlow']);
-    }else if (target.dataset.trackChoseDns) {
-      _paq.push(['trackEvent', 'ChoseDNSClicked', 'Clicked', 'ChooserFlow']);
-    }else if (target.dataset.trackChoseSupport) {
-      _paq.push(['trackEvent', 'ChoseSupportClicked', 'Clicked', 'ChooserFlow']);
-    }else if (target.dataset.trackReturnToOptions) {
-      _paq.push(['trackEvent', 'ReturnToOptionsClicked', 'Clicked', 'ChooserFlow']);
-    }else if (target.dataset.trackConnectToUphold) {
-      _paq.push(['trackEvent', 'ConnectToUpholdClicked', 'Clicked', 'PostVerificationFlow']);
+    if (target.dataset.piwikAction) {
+      _paq.push(['trackEvent', target.dataset.piwikAction, target.dataset.piwikName, target.dataset.piwikValue]);
     }
   }, false);
 }

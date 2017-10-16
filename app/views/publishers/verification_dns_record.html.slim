@@ -37,7 +37,7 @@
         .form-group
           .col-xs-10.col-md-6
             = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-              = f.submit(t("publishers.verify_dns_button"), class: "btn btn-block btn-primary btn-sm", :"data-track-dns" => "1")
+              = f.submit(t("publishers.verify_dns_button"), class: "btn btn-block btn-primary btn-sm", :"data-piwik-action" => "DNSVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
           .col-xs-2.col-md-2
             = popover_menu do
               h5= I18n.t("publishers.verification_helper_dns_title")
