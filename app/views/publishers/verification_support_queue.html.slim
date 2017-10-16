@@ -9,4 +9,4 @@
     .help-block= t("publishers.verification_support_queue_help_html")
 .row
   .col-center.col-xs-12.col-md-8
-    = link_to(t("publishers.verification_support_review_options"), verification_choose_method_publishers_path, class: "btn btn-primary")
+    = link_to(t("publishers.verification_support_review_options"), verification_choose_method_publishers_path, class: "btn btn-primary", :"data-track-return-to-options" => "1")

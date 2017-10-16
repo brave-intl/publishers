@@ -25,4 +25,4 @@
           .form-group
             = recaptcha_tags
         .button.form-group
-          = f.submit(t("shared.save_and_continue"), class: "btn btn-block btn-primary")
+          = f.submit(t("shared.save_and_continue"), class: "btn btn-block btn-primary", :"data-track-added-contact-info" => "1")

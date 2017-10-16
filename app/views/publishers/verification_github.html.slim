@@ -35,4 +35,4 @@ div class=(current_publisher.supports_https? ? "row" : "row dimmed")
           .visible-sm.visible-xs
             = image_tag("upload-well-known.png")
           = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-            = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm")
+            = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm", :"data-track-github" => "1")
