@@ -1,24 +1,32 @@
-nav
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1)
+.navbar-default .navbar-brand
+  color: $brandColor
+  font-weight: 600
+.navbar
+  margin-bottom: 0px
+  height: 80px
+  padding-top: 15px
+  .container-fluid
+    .navbar-brand
+      margin-left: -10px
+
+.navbar-static-top
+  z-index: 1000
+  border-width: 0 0 0px
+.nav
   padding: 10px 0
+  min-width: 230px
+  .menu-container
+    height: 50px
+    margin-top: 10px
   .brave-logo
-    background: url(asset-path("brave_logo_horz.svg")) 0 0 / 96px 32px no-repeat
+    background: url(asset-path("brave-logo@1x.png")) 0 0 no-repeat
     display: inline-block
     margin-right: 8px
+    margin-left: 25px
     height: 32px
-    width: 32px
-  .navbar-brand,
-  .navbar-nav > li > a
-    padding-bottom: 0
-    padding-top: 0
-    line-height: 32px
-  .navbar-left > li
-    float: left
-  .navbar-right
-    margin-right: -10px
-    & > li
-      float: right
+    width: 27px
   img.verified-icon
     margin-right: 8px
-  .log-out
-    color: $gray
+  .btn-logout
+    margin-top: -5px
+    margin-right: 25px

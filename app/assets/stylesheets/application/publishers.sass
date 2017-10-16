@@ -2,6 +2,7 @@ $subnav-active: #8F9397
 $progress-train-lines: #D3D5D7
 $progress-train-label: #8F9397
 $progress-train-fill: #FF4D3F
+$progress-train-active: #333
 
 body[data-controller="publishers"]
   .form-group.button:last-child
@@ -253,7 +254,10 @@ body[data-controller="publishers"]
     color: #333
 
   .progress-train
-    padding: 2px 10px 2px 30px
+    padding-top: 14px
+    white-space: nowrap
+    @media (max-width: 710px)
+      display: none
     .progress-item
       display: inline-block
       vertical-align: middle
@@ -281,12 +285,14 @@ body[data-controller="publishers"]
         color: $progress-train-label
         @media (max-width: 991px)
           display: none
-      &.unstarted
+      &.unstarted, &.finished
         label
           font-weight: 100
       &.started
         label
           font-weight: 300
+          color: $progress-train-active
+      &.started, &.finished
         svg.fill-circle
           .inner-circle
             fill: $progress-train-fill
