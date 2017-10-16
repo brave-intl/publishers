@@ -1,4 +1,7 @@
-$subnav-active: #0dccf8
+$subnav-active: #8F9397
+$progress-train-lines: #D3D5D7
+$progress-train-label: #8F9397
+$progress-train-fill: #FF4D3F
 
 body[data-controller="publishers"]
   .form-group.button:last-child
@@ -249,30 +252,41 @@ body[data-controller="publishers"]
     margin-bottom: 20px
     color: #333
 
-  .progress-items
+  .progress-train
+    padding: 2px 10px 2px 30px
     .progress-item
       display: inline-block
       vertical-align: middle
-      padding: 0 10px
-      &.unstarted
-        color: $gray-light
-        svg.fill-circle
-          .outer-circle
-            fill: $gray-light
-          .inner-circle
-            stroke: $gray-light
-      &.started
-        color: $subnav-active
-        svg.fill-circle
-          .outer-circle
-            fill: $subnav-active
-          .inner-circle
-            stroke: $subnav-active
-      label
-        display: inline-block
-        margin: 0
-        font-size: 15px
-        line-height: 15px
       svg
         display: inline-block
         vertical-align: middle
+        margin: 0 -3px
+        padding: 0
+      .progress-connector
+        stroke: $progress-train-lines
+      .fill-circle
+        .background-circle
+          fill: #fff
+        .outer-circle
+          fill: none
+          stroke: $progress-train-lines
+        .inner-circle
+          stroke: none
+      label
+        display: inline-block
+        margin: 0
+        font-size: 14px
+        line-height: 14px
+        padding: 0 5px
+        color: $progress-train-label
+        @media (max-width: 991px)
+          display: none
+      &.unstarted
+        label
+          font-weight: 100
+      &.started
+        label
+          font-weight: 300
+        svg.fill-circle
+          .inner-circle
+            fill: $progress-train-fill
