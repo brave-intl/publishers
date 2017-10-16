@@ -147,32 +147,32 @@ javascript:
       //  generateStatement.style.display = 'inline-block';
       //  generateStatementResult.style.display = 'none';
       //}, false);
-
-      generateStatement.addEventListener('click', function(event) {
-        event.preventDefault();
-
-        submitForm('statement_generator', 'PATCH', false)
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(json) {
-            generateStatement.style.display = 'none';
-            generateStatementResult.style.display = 'inline-block';
-            generateStatementResult.innerText = 'Generating';
-
-            dynamicEllipsis.start('generate_statement_result');
-
-            return waitForReport(json.reportURL, 3000, 2000, 4);
-          })
-          .then(function(reportURL) {
-            dynamicEllipsis.stop('generate_statement_result');
-            generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
-          })
-          .catch(function() {
-            dynamicEllipsis.stop('generate_statement_result');
-            generateStatementResult.innerText = 'We will email you a link when your report is ready.'
-          });
-      }, false);
+      //
+      //generateStatement.addEventListener('click', function(event) {
+      //  event.preventDefault();
+      //
+      //  submitForm('statement_generator', 'PATCH', false)
+      //    .then(function(response) {
+      //      return response.json();
+      //    })
+      //    .then(function(json) {
+      //      generateStatement.style.display = 'none';
+      //      generateStatementResult.style.display = 'inline-block';
+      //      generateStatementResult.innerText = 'Generating';
+      //
+      //      dynamicEllipsis.start('generate_statement_result');
+      //
+      //      return waitForReport(json.reportURL, 3000, 2000, 4);
+      //    })
+      //    .then(function(reportURL) {
+      //      dynamicEllipsis.stop('generate_statement_result');
+      //      generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
+      //    })
+      //    .catch(function() {
+      //      dynamicEllipsis.stop('generate_statement_result');
+      //      generateStatementResult.innerText = 'We will email you a link when your report is ready.'
+      //    });
+      //}, false);
     }, false);
   })();
 
