@@ -3,7 +3,7 @@ javascript:
     var spinnerShown;
 
     function showSpinner() {
-      var spinner = document.getElementById('cssload-pgloading');
+      var spinner = document.getElementById('cssload-container');
       spinner.style.display = 'block';
       spinnerShown = Date.now();
     }
@@ -13,7 +13,7 @@ javascript:
         var minTime = 500;
         var now = Date.now();
 
-        var spinner = document.getElementById('cssload-pgloading');
+        var spinner = document.getElementById('cssload-container');
         if (now - spinnerShown > minTime)
           spinner.style.display = 'none';
         else {
@@ -222,13 +222,11 @@ noscript
 - content_for(:navbar_content) do
   .pull-right.dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
 
-div#cssload-pgloading style="display: none"
-  div.cssload-loadingwrap
-    ul.cssload-bokeh
-      li
-      li
-      li
-      li
+#cssload-container
+  .cssload-container
+    .cssload-loading
+      i
+      i
 
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
