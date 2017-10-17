@@ -2,6 +2,7 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
   .container-fluid
     .menu-container
       .nav.pull-right
+        = yield(:navbar_content_right)
         - if current_publisher
           .btn.btn-secondary.btn-logout.pull-right
             = link_to(I18n.t("publishers.log_out"), log_out_publishers_path)
