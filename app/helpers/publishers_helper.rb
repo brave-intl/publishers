@@ -16,6 +16,10 @@ module PublishersHelper
     end
   end
 
+  def uphold_last_deposit_date(publisher)
+    "September 31st, 2022 (ToDo)"
+  end
+
   def show_uphold_connect?(publisher)
     publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired
   end
@@ -24,10 +28,23 @@ module PublishersHelper
     publisher.uphold_status == :access_parameters_acquired
   end
 
-  # balance: Instance of Eyeshade::Balance
-  def publisher_humanize_balance(publisher)
+  def publisher_humanize_balance(publisher, currency)
     if balance = publisher.balance
-      "#{'%.2f' % balance.BAT} BAT (#{'%.2f' % balance.convert_to('USD')} USD)"
+      '%.2f' % balance.convert_to(currency)
+    else
+      I18n.t("publishers.balance_error")
+    end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("publishers.balance_error")
+  end
+
+  def publisher_converted_balance(publisher)
+    currency = "USD" #ToDo default currency from publisher
+    if balance = publisher.balance
+      converted_amount = '%.2f' % balance.convert_to(currency)
+      I18n.t("publishers.balance_pending_approximate", amount: converted_amount, code: currency)
     else
       I18n.t("publishers.balance_error")
     end

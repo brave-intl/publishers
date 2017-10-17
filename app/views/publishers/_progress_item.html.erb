@@ -1,18 +1,46 @@
 <%
-  diameter = 26
+  diameter = 24
   radius = diameter / 2
-  color = (fill == 0 ? '#777' : '#0dccf8')
+  connector_length = 70
+
+  progress_class = case fill
+                     when 0
+                       'unstarted'
+                     when 100
+                       'finished'
+                     else
+                       'started'
+                   end
 %>
-<div class="progress-item <%= fill == 0 ? 'unstarted' : 'started' %>">
-  <svg xmlns='http://www.w3.org/2000/svg' width='<%= diameter %>' height='<%= diameter %>' class="fill-circle">
+<div class="progress-item <%= progress_class %>">
+  <% if include_connector %>
+    <svg xmlns="http://www.w3.org/2000/svg" width="<%= connector_length %>" height="<%= diameter %>" class="progress-connector">
+      <line x1="0" x2="<%= connector_length %>" y1="<%= radius %>" y2="<%= radius %>" />
+    </svg>
+  <% end %>
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="<%= diameter %>"
+       height="<%= diameter %>"
+       class="fill-circle">
     <defs>
       <clipPath id="fillClipPath<%=fill%>">
         <rect x="0" y="<%= (diameter - (fill / 100.0 * diameter)).to_i %>" width="<%= diameter %>" height="<%= diameter %>" />
       </clipPath>
     </defs>
 
-    <circle cx="<%= radius %>" cy="<%= radius %>" r="<%= radius - 3 %>" style="clip-path: url(#fillClipPath<%=fill%>);" class="outer-circle"/>
-    <circle cx="<%= radius %>" cy="<%= radius %>" r="<%= radius - 1 %>" fill="none" stroke-width="2" class="inner-circle"/>
+    <circle cx="<%= radius %>" cy="<%= radius %>" r="<%= radius - 1 %>"
+            class="background-circle">
+      <title><%= text %></title>
+    </circle>
+    <circle cx="<%= radius %>" cy="<%= radius %>" r="<%= radius - 1 %>"
+            style="clip-path: url(#fillClipPath<%=fill%>);"
+            class="inner-circle">
+      <title><%= text %></title>
+    </circle>
+    <circle cx="<%= radius %>" cy="<%= radius %>" r="<%= radius - 1 %>"
+            class="outer-circle">
+      <title><%= text %></title>
+    </circle>
   </svg>
   <label><%= text %></label>
 </div>
