@@ -219,8 +219,8 @@ javascript:
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
-- content_for(:navbar_content) do
-  .pull-right.dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
+- content_for(:navbar_content_right) do
+  .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
 
 #cssload-container
   .cssload-container
