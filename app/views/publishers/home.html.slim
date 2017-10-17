@@ -3,7 +3,7 @@ javascript:
     var spinnerShown;
 
     function showSpinner() {
-      var spinner = document.getElementById('cssload-pgloading');
+      var spinner = document.getElementById('cssload-container');
       spinner.style.display = 'block';
       spinnerShown = Date.now();
     }
@@ -13,7 +13,7 @@ javascript:
         var minTime = 500;
         var now = Date.now();
 
-        var spinner = document.getElementById('cssload-pgloading');
+        var spinner = document.getElementById('cssload-container');
         if (now - spinnerShown > minTime)
           spinner.style.display = 'none';
         else {
@@ -91,11 +91,14 @@ javascript:
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
         submitForm('update_show_verification_status', 'PATCH', true);
+        var form = document.getElementById('update_show_verification_status');
+        form.className = showVerificationStatusInput.checked ? 'checked' : 'unchecked';
       }, false);
 
       var showContact = document.getElementById('show_contact');
       var showContactName = document.getElementById('show_contact_name');
       var showContactEmail = document.getElementById('show_contact_email');
+      var showContactPhone = document.getElementById('show_contact_phone');
 
       var pendingContactEmail = document.getElementById('pending_contact_email');
       showPendingContactEmail(pendingContactEmail.innerText);
@@ -103,6 +106,7 @@ javascript:
       var updateContact = document.getElementById('update_contact');
       var updateContactName = document.getElementById('update_contact_name');
       var updateContactEmail = document.getElementById('update_contact_email');
+      var updateContactPhone = document.getElementById('update_contact_phone');
 
       var editContact = document.getElementById('edit_contact');
       var cancelEditContact = document.getElementById('cancel_edit_contact');
@@ -115,8 +119,10 @@ javascript:
       editContact.addEventListener('click', function(event) {
         updateContactName.value = showContactName.innerText;
         updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
+        updateContactPhone.value = showContactPhone.innerText;
         showContact.style.display = 'none';
         updateContact.style.display = 'block';
+        editContact.style.display = 'none';
         updateContactName.focus();
         event.preventDefault();
       }, false);
@@ -124,6 +130,7 @@ javascript:
       cancelEditContact.addEventListener('click', function(event) {
         showContact.style.display = 'block';
         updateContact.style.display = 'none';
+        editContact.style.display = 'block';
         event.preventDefault();
       }, false);
 
@@ -133,11 +140,13 @@ javascript:
           .then(function() {
             var updatedEmail = updateContactEmail.value;
             showContactName.innerText = updateContactName.value;
+            showContactPhone.innerText = updateContactPhone.value;
             pendingContactEmail.innerText = updatedEmail;
             showPendingContactEmail(updatedEmail);
 
             updateContact.style.display = 'none';
             showContact.style.display = 'block';
+            editContact.style.display = 'block';
           });
       }, false);
 
@@ -147,32 +156,32 @@ javascript:
       //  generateStatement.style.display = 'inline-block';
       //  generateStatementResult.style.display = 'none';
       //}, false);
-
-      generateStatement.addEventListener('click', function(event) {
-        event.preventDefault();
-
-        submitForm('statement_generator', 'PATCH', false)
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(json) {
-            generateStatement.style.display = 'none';
-            generateStatementResult.style.display = 'inline-block';
-            generateStatementResult.innerText = 'Generating';
-
-            dynamicEllipsis.start('generate_statement_result');
-
-            return waitForReport(json.reportURL, 3000, 2000, 4);
-          })
-          .then(function(reportURL) {
-            dynamicEllipsis.stop('generate_statement_result');
-            generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
-          })
-          .catch(function() {
-            dynamicEllipsis.stop('generate_statement_result');
-            generateStatementResult.innerText = 'We will email you a link when your report is ready.'
-          });
-      }, false);
+      //
+      //generateStatement.addEventListener('click', function(event) {
+      //  event.preventDefault();
+      //
+      //  submitForm('statement_generator', 'PATCH', false)
+      //    .then(function(response) {
+      //      return response.json();
+      //    })
+      //    .then(function(json) {
+      //      generateStatement.style.display = 'none';
+      //      generateStatementResult.style.display = 'inline-block';
+      //      generateStatementResult.innerText = 'Generating';
+      //
+      //      dynamicEllipsis.start('generate_statement_result');
+      //
+      //      return waitForReport(json.reportURL, 3000, 2000, 4);
+      //    })
+      //    .then(function(reportURL) {
+      //      dynamicEllipsis.stop('generate_statement_result');
+      //      generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
+      //    })
+      //    .catch(function() {
+      //      dynamicEllipsis.stop('generate_statement_result');
+      //      generateStatementResult.innerText = 'We will email you a link when your report is ready.'
+      //    });
+      //}, false);
     }, false);
   })();
 
@@ -217,16 +226,14 @@ javascript:
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
-- content_for(:navbar_content) do
-  .pull-right.dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
+- content_for(:navbar_content_right) do
+  .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
 
-div#cssload-pgloading style="display: none"
-  div.cssload-loadingwrap
-    ul.cssload-bokeh
-      li
-      li
-      li
-      li
+#cssload-container
+  .cssload-container
+    .cssload-loading
+      i
+      i
 
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
@@ -285,8 +292,10 @@ div#cssload-pgloading style="display: none"
           span.email#show_contact_email= current_publisher.email
           span.hidden#pending_contact_email= current_publisher.pending_email
           -if current_publisher.phone.present?
+            span
+              |&nbsp;&bull;&nbsp;
             span.phone#show_contact_phone
-              |&nbsp;&bull;&nbsp;#{current_publisher.phone}
+              = current_publisher.phone
         = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
           .form-group
             = f.label(:name, class: "control-label")
@@ -302,8 +311,16 @@ div#cssload-pgloading style="display: none"
             a#cancel_edit_contact href="#"
               = t("shared.cancel")
         p#pending_email_notice style="display: none" class="note"
-      = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
+      = form_for(current_publisher, url: publishers_path,
+              html: { id: "update_show_verification_status",
+                      class: current_publisher.show_verification_status? ? 'checked' : 'unchecked' }) do |f|
         .form-group
           .panel-header.panel-header-h4#publishers_list
             = t("publishers.dashboard_list_in_verified_publishers_html")
-            = f.check_box(:show_verification_status, class: "control-checkbox")
+            .inline-controls.pull-right
+              .onoffswitch
+                = f.check_box(:show_verification_status, class: "onoffswitch-checkbox", id: "publisher_show_verification_status")
+                = f.label(:show_verification_status, class: "onoffswitch-label", for: "publisher_show_verification_status") do
+                  span.onoffswitch-inner
+                  span.onoffswitch-switch
+              .value-label.pull-right#show_verification_status_value

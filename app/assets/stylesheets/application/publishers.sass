@@ -177,10 +177,11 @@ body[data-controller="publishers"]
 
   &[data-action="home"]
     .dashboard-id
+      display: inline-block
       text-transform: uppercase
       font-size: $font-size-base
-      padding-top: 14px
-      margin-right: 0px
+      padding: 4px
+      margin-right: 20px
       @media (max-width: 730px)
         display: none
 
@@ -277,11 +278,28 @@ body[data-controller="publishers"]
         text-transform: capitalize
         color: #00bcda
         display: inline-block
+      #publishers_list
+        .inline-controls
+          padding: 0
+        .onoffswitch
+          margin-top: 6px
+          display: inline-block
+        .value-label
+          display: inline-block
+          margin-left: 12px
+      #update_show_verification_status.checked .value-label:after
+        color: #4fbad6
+        content: "ON"
+      #update_show_verification_status.unchecked .value-label:after
+        color: $gray-dark
+        content: "OFF"
+
   .hidden
     display: none
 
   .in-place-edit
-    background: #ddd
+    background: #f3f3f3
+    border-radius: 12px
     padding: 18px
     .button.form-group a
       display: inline-block
