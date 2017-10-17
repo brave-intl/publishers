@@ -2,13 +2,16 @@
   = render :partial => 'progress', :locals => { progress: { info: 50, verify: 0, wallet: 0 }, publisher: current_publisher }
 
 .row
-  .col-center.col-xs-12.col-md-7
-    h4.section-title
-      h3= t("publishers.create_done_header")
-      .help-block= t("publishers.create_done_body_html", email: @publisher_email)
-      = image_tag("email_envelope.png", class: "img-center")
-.row
-  .col-center.col-xs-6.col-md-3
-    = button_to t("publishers.create_done_resend_email"),
-        { controller: "publishers", action: "resend_email_verify_email" },
-        { method: "post", class: "btn btn-block btn-secondary" }
+  .col-center.col-lg-9
+    .sub-panel
+      .row
+        .col-center.col-xs-9
+          h4.section-title
+            h3= t("publishers.create_done_header")
+            .help-block= t("publishers.create_done_body_html", email: @publisher_email)
+            = image_tag("email_envelope.png", class: "img-center img-responsive")
+      .row
+        .col-center.col-xs-9
+          = button_to t("publishers.create_done_resend_email"),
+              { controller: "publishers", action: "resend_email_verify_email" },
+              { method: "post", class: "btn btn-block btn-secondary" }

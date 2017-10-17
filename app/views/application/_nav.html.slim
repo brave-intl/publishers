@@ -1,22 +1,14 @@
 nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
-  div.container-fluid
-    div.menu-container
-      = link_to(root_path) do
-        div.brave-logo.pull-left
-        div.navbar-brand.pull-left Publishers
-    div.pull-left
-      ul.nav.navbar-nav.navbar-left
-        li
-          a= yield(:navbar_content)
-
-    div.pull-right
-      ul.nav.navbar-nav.navbar-right
+  .container-fluid
+    .menu-container
+      .nav.pull-right
+        = yield(:navbar_content_right)
         - if current_publisher
-          li
-            = link_to(I18n.t("publishers.log_out"), log_out_publishers_path, class: "log-out")
-          li
-            = link_to(home_publishers_path) do
-              - if current_publisher.verified?
-                = image_tag("verified-icon.png", alt: I18n.t("publishers.verified"), class: "verified-icon", height: 22)
-              - if current_publisher.brave_publisher_id.present?
-                span.link-primary data-test-id="current_publisher" = current_publisher
+          .btn.btn-secondary.btn-logout.pull-right
+            = link_to(I18n.t("publishers.log_out"), log_out_publishers_path)
+      .nav.pull-left
+        = link_to(root_path) do
+          .brave-logo.pull-left
+          .navbar-brand= t("publishers.app_title")
+      .text-center
+        = yield(:navbar_content)
