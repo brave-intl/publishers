@@ -86,12 +86,12 @@ body[data-controller="publishers"]
       font-size: $font-size-small
       color: $gray
       line-height: $line-height-computed * 1.5
-    .verification-code
+    .verification-code, .file-content
       font-family: monospace
       font-size: $font-size-base * 0.6
       color: $braveOrange
       outline: #888 solid thin
-      word-wrap: break-word
+      word-break: break-all
       height: fit-content
       padding: 10px
       margin-top: 5px
@@ -135,7 +135,7 @@ body[data-controller="publishers"]
 
     @media (max-width: 991px)
       $li-max-width: 100%
-      .verification-code
+      .file-content
         max-width: $li-max-width
 
       .li-text
@@ -146,7 +146,7 @@ body[data-controller="publishers"]
 
     @media (min-width: 992px)
       $li-max-width: 65%
-      .verification-code
+      .file-content
         max-width: $li-max-width
 
       .li-text

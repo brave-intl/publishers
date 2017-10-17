@@ -30,7 +30,7 @@
                 .visible-md.visible-lg
                   .img-right
                     = image_tag("download.png")
-                .verification-code
+                .file-content
                   = simple_format h publisher_filter_public_file_content(current_publisher, @public_file_content)
                 = link_to(t("publishers.verification_download_verification"), download_verification_file_publishers_path, class: "button btn btn-xs btn-default btn-download")
               li
