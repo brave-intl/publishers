@@ -1,248 +1,77 @@
-#cssload-pgloading {}
-
-#cssload-pgloading:after {
-  content: "";
-  z-index: -1;
-  position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
-}
-#cssload-pgloading .cssload-loadingwrap {position:absolute;top:45%;bottom:45%;left:25%;right:25%;}
-#cssload-pgloading .cssload-bokeh {
-  font-size: 97px;
-  width: 1em;
-  height: 1em;
-  position: relative;
-  margin: 0 auto;
-  list-style: none;
-  padding:0;
-  border-radius: 50%;
-  -o-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-}
-
-#cssload-pgloading .cssload-bokeh li {
-  position: absolute;
-  width: .2em;
-  height: .2em;
-  border-radius: 50%;
-  -o-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-}
-
-#cssload-pgloading .cssload-bokeh li:nth-child(1) {
-  left: 50%;
+#cssload-container {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  height: 150px;
+  width: 150px;
+  margin: auto;
   top: 0;
-  margin: 0 0 0 -.1em;
-  background: rgb(0,193,118);
-  transform-origin: 50% 250%;
-  -o-transform-origin: 50% 250%;
-  -ms-transform-origin: 50% 250%;
-  -webkit-transform-origin: 50% 250%;
-  -moz-transform-origin: 50% 250%;
-  animation:
-          cssload-rota 1.3s linear infinite,
-          cssload-opa 4.22s ease-in-out infinite alternate;
-  -o-animation:
-          cssload-rota 1.3s linear infinite,
-          cssload-opa 4.22s ease-in-out infinite alternate;
-  -ms-animation:
-          cssload-rota 1.3s linear infinite,
-          cssload-opa 4.22s ease-in-out infinite alternate;
-  -webkit-animation:
-          cssload-rota 1.3s linear infinite,
-          cssload-opa 4.22s ease-in-out infinite alternate;
-  -moz-animation:
-          cssload-rota 1.3s linear infinite,
-          cssload-opa 4.22s ease-in-out infinite alternate;
-}
-
-#cssload-pgloading .cssload-bokeh li:nth-child(2) {
-  top: 50%;
-  right: 0;
-  margin: -.1em 0 0 0;
-  background: rgb(255,0,60);
-  transform-origin: -150% 50%;
-  -o-transform-origin: -150% 50%;
-  -ms-transform-origin: -150% 50%;
-  -webkit-transform-origin: -150% 50%;
-  -moz-transform-origin: -150% 50%;
-  animation:
-          cssload-rota 2.14s linear infinite,
-          cssload-opa 4.93s ease-in-out infinite alternate;
-  -o-animation:
-          cssload-rota 2.14s linear infinite,
-          cssload-opa 4.93s ease-in-out infinite alternate;
-  -ms-animation:
-          cssload-rota 2.14s linear infinite,
-          cssload-opa 4.93s ease-in-out infinite alternate;
-  -webkit-animation:
-          cssload-rota 2.14s linear infinite,
-          cssload-opa 4.93s ease-in-out infinite alternate;
-  -moz-animation:
-          cssload-rota 2.14s linear infinite,
-          cssload-opa 4.93s ease-in-out infinite alternate;
-}
-
-#cssload-pgloading .cssload-bokeh li:nth-child(3) {
-  left: 50%;
-  bottom: 0;
-  margin: 0 0 0 -.1em;
-  background: rgb(250,190,40);
-  transform-origin: 50% -150%;
-  -o-transform-origin: 50% -150%;
-  -ms-transform-origin: 50% -150%;
-  -webkit-transform-origin: 50% -150%;
-  -moz-transform-origin: 50% -150%;
-  animation:
-          cssload-rota 1.67s linear infinite,
-          cssload-opa 5.89s ease-in-out infinite alternate;
-  -o-animation:
-          cssload-rota 1.67s linear infinite,
-          cssload-opa 5.89s ease-in-out infinite alternate;
-  -ms-animation:
-          cssload-rota 1.67s linear infinite,
-          cssload-opa 5.89s ease-in-out infinite alternate;
-  -webkit-animation:
-          cssload-rota 1.67s linear infinite,
-          cssload-opa 5.89s ease-in-out infinite alternate;
-  -moz-animation:
-          cssload-rota 1.67s linear infinite,
-          cssload-opa 5.89s ease-in-out infinite alternate;
-}
-
-#cssload-pgloading .cssload-bokeh li:nth-child(4) {
-  top: 50%;
   left: 0;
-  margin: -.1em 0 0 0;
-  background: rgb(136,193,0);
-  transform-origin: 250% 50%;
-  -o-transform-origin: 250% 50%;
-  -ms-transform-origin: 250% 50%;
-  -webkit-transform-origin: 250% 50%;
-  -moz-transform-origin: 250% 50%;
-  animation:
-          cssload-rota 1.98s linear infinite,
-          cssload-opa 6.04s ease-in-out infinite alternate;
-  -o-animation:
-          cssload-rota 1.98s linear infinite,
-          cssload-opa 6.04s ease-in-out infinite alternate;
-  -ms-animation:
-          cssload-rota 1.98s linear infinite,
-          cssload-opa 6.04s ease-in-out infinite alternate;
-  -webkit-animation:
-          cssload-rota 1.98s linear infinite,
-          cssload-opa 6.04s ease-in-out infinite alternate;
-  -moz-animation:
-          cssload-rota 1.98s linear infinite,
-          cssload-opa 6.04s ease-in-out infinite alternate;
+  bottom: 0;
+  right: 0;
+  background: #ddd;
+  opacity: 0.6;
+  border-radius: 10px;
+}
+
+.cssload-container{
+  display: block;
+  margin: 55px auto;
+  width: 59px;
+}
+
+.cssload-loading i{
+  width: 29px;
+  height: 29px;
+  display: inline-block;
+  background: rgb(255,89,84);
+  border-radius: 50%;
+}
+.cssload-loading i:nth-child(1){
+  animation:cssload-loading-ani1 0.6s ease-in-out infinite;
+  -o-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
+  -ms-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
+  -webkit-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
+  -moz-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
+
+}
+.cssload-loading i:nth-child(2){
+  background: rgb(0,168,206);
+  margin-left: -6px;
+  animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
+  -o-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
+  -ms-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
+  -webkit-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
+  -moz-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
 }
 
 
-
-
-
-
-
-@keyframes cssload-rota {
-  from { }
-  to { transform: rotate(360deg); }
+@keyframes cssload-loading-ani1{
+  70%{
+    transform:scale(0.5);
+  }
 }
 
-@-o-keyframes cssload-rota {
-  from { }
-  to { -o-transform: rotate(360deg); }
+@-o-keyframes cssload-loading-ani1{
+  70%{
+    -o-transform:scale(0.5);
+  }
 }
 
-@-ms-keyframes cssload-rota {
-  from { }
-  to { -ms-transform: rotate(360deg); }
+@-ms-keyframes cssload-loading-ani1{
+  70%{
+    -ms-transform:scale(0.5);
+  }
 }
 
-@-webkit-keyframes cssload-rota {
-  from { }
-  to { -webkit-transform: rotate(360deg); }
+@-webkit-keyframes cssload-loading-ani1{
+  70%{
+    -webkit-transform:scale(0.5);
+  }
 }
 
-@-moz-keyframes cssload-rota {
-  from { }
-  to { -moz-transform: rotate(360deg); }
-}
-
-@keyframes cssload-opa {
-  0% { }
-  12.0% { opacity: 0.80; }
-  19.5% { opacity: 0.88; }
-  37.2% { opacity: 0.64; }
-  40.5% { opacity: 0.52; }
-  52.7% { opacity: 0.69; }
-  60.2% { opacity: 0.60; }
-  66.6% { opacity: 0.52; }
-  70.0% { opacity: 0.63; }
-  79.9% { opacity: 0.60; }
-  84.2% { opacity: 0.75; }
-  91.0% { opacity: 0.87; }
-}
-
-@-o-keyframes cssload-opa {
-  0% { }
-  12.0% { opacity: 0.80; }
-  19.5% { opacity: 0.88; }
-  37.2% { opacity: 0.64; }
-  40.5% { opacity: 0.52; }
-  52.7% { opacity: 0.69; }
-  60.2% { opacity: 0.60; }
-  66.6% { opacity: 0.52; }
-  70.0% { opacity: 0.63; }
-  79.9% { opacity: 0.60; }
-  84.2% { opacity: 0.75; }
-  91.0% { opacity: 0.87; }
-}
-
-@-ms-keyframes cssload-opa {
-  0% { }
-  12.0% { opacity: 0.80; }
-  19.5% { opacity: 0.88; }
-  37.2% { opacity: 0.64; }
-  40.5% { opacity: 0.52; }
-  52.7% { opacity: 0.69; }
-  60.2% { opacity: 0.60; }
-  66.6% { opacity: 0.52; }
-  70.0% { opacity: 0.63; }
-  79.9% { opacity: 0.60; }
-  84.2% { opacity: 0.75; }
-  91.0% { opacity: 0.87; }
-}
-
-@-webkit-keyframes cssload-opa {
-  0% { }
-  12.0% { opacity: 0.80; }
-  19.5% { opacity: 0.88; }
-  37.2% { opacity: 0.64; }
-  40.5% { opacity: 0.52; }
-  52.7% { opacity: 0.69; }
-  60.2% { opacity: 0.60; }
-  66.6% { opacity: 0.52; }
-  70.0% { opacity: 0.63; }
-  79.9% { opacity: 0.60; }
-  84.2% { opacity: 0.75; }
-  91.0% { opacity: 0.87; }
-}
-
-@-moz-keyframes cssload-opa {
-  0% { }
-  12.0% { opacity: 0.80; }
-  19.5% { opacity: 0.88; }
-  37.2% { opacity: 0.64; }
-  40.5% { opacity: 0.52; }
-  52.7% { opacity: 0.69; }
-  60.2% { opacity: 0.60; }
-  66.6% { opacity: 0.52; }
-  70.0% { opacity: 0.63; }
-  79.9% { opacity: 0.60; }
-  84.2% { opacity: 0.75; }
-  91.0% { opacity: 0.87; }
+@-moz-keyframes cssload-loading-ani1{
+  70%{
+    -moz-transform:scale(0.5);
+  }
 }
