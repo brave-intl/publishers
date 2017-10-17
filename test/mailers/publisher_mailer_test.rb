@@ -14,7 +14,7 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_equal [publisher.email], email.to
 
     # check that the brave_publisher_id is rendered as a link
-    assert_match "Website Domain:default.org ( http://default.org )", email.text_part.body.to_s
+    assert_match "Website domain:default.org ( http://default.org )", email.text_part.body.to_s
     assert_match "href=\"http://#{publisher.brave_publisher_id}\"", email.html_part.body.to_s
   end
 
@@ -31,7 +31,7 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_equal [publisher.email], email.to
 
     # check that the brave_publisher_id is rendered as a link
-    assert_match "Website Domain:default.org ( http://default.org )", email.text_part.body.to_s
+    assert_match "Website domain:default.org ( http://default.org )", email.text_part.body.to_s
     assert_match "href=\"http://#{publisher.brave_publisher_id}\"", email.html_part.body.to_s
   end
 end

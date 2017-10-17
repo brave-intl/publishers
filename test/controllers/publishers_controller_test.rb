@@ -100,10 +100,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
     get(url)
     follow_redirect!
-    assert_select("div.publisher-domain-name", publisher.to_s)
+    assert_select("[data-test-id='current_publisher']", publisher.to_s)
     sign_out(:publisher)
     get(url)
-    assert_empty(css_select("div.publisher-domain-name"))
+    assert_empty(css_select("[data-test-id='current_publisher']"))
   end
 
   test "relogin for unverified publishers requires email" do
@@ -158,8 +158,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify that the state token has not yet been set
     assert_nil(publisher.uphold_state_token)
 
-    # move right to `dashboard`
-    url = home_publishers_url
+    # move right to `verification_done`
+    url = verification_done_publishers_url
     get(url)
 
     # verify that a state token has been set
@@ -264,7 +264,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "after redirection back from uphold, a missing publisher's `uphold_state_token` redirects back to home" do
+  test "after redirection back from uphold, a missing publisher's `uphold_state_token` redirects back to verification_done" do
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
     end
@@ -288,7 +288,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
   end
 
-  test "after redirection back from uphold, a mismatched publisher's `uphold_state_token` redirects back to home" do
+  test "after redirection back from uphold, a mismatched publisher's `uphold_state_token` redirects back to verification_done" do
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
     end

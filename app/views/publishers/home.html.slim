@@ -3,7 +3,7 @@ javascript:
     var spinnerShown;
 
     function showSpinner() {
-      var spinner = document.getElementById('cssload-container');
+      var spinner = document.getElementById('cssload-pgloading');
       spinner.style.display = 'block';
       spinnerShown = Date.now();
     }
@@ -13,7 +13,7 @@ javascript:
         var minTime = 500;
         var now = Date.now();
 
-        var spinner = document.getElementById('cssload-container');
+        var spinner = document.getElementById('cssload-pgloading');
         if (now - spinnerShown > minTime)
           spinner.style.display = 'none';
         else {
@@ -91,14 +91,11 @@ javascript:
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
         submitForm('update_show_verification_status', 'PATCH', true);
-        var form = document.getElementById('update_show_verification_status');
-        form.className = showVerificationStatusInput.checked ? 'checked' : 'unchecked';
       }, false);
 
       var showContact = document.getElementById('show_contact');
       var showContactName = document.getElementById('show_contact_name');
       var showContactEmail = document.getElementById('show_contact_email');
-      var showContactPhone = document.getElementById('show_contact_phone');
 
       var pendingContactEmail = document.getElementById('pending_contact_email');
       showPendingContactEmail(pendingContactEmail.innerText);
@@ -106,7 +103,6 @@ javascript:
       var updateContact = document.getElementById('update_contact');
       var updateContactName = document.getElementById('update_contact_name');
       var updateContactEmail = document.getElementById('update_contact_email');
-      var updateContactPhone = document.getElementById('update_contact_phone');
 
       var editContact = document.getElementById('edit_contact');
       var cancelEditContact = document.getElementById('cancel_edit_contact');
@@ -119,10 +115,8 @@ javascript:
       editContact.addEventListener('click', function(event) {
         updateContactName.value = showContactName.innerText;
         updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
-        updateContactPhone.value = showContactPhone.innerText;
         showContact.style.display = 'none';
         updateContact.style.display = 'block';
-        editContact.style.display = 'none';
         updateContactName.focus();
         event.preventDefault();
       }, false);
@@ -130,7 +124,6 @@ javascript:
       cancelEditContact.addEventListener('click', function(event) {
         showContact.style.display = 'block';
         updateContact.style.display = 'none';
-        editContact.style.display = 'block';
         event.preventDefault();
       }, false);
 
@@ -140,13 +133,11 @@ javascript:
           .then(function() {
             var updatedEmail = updateContactEmail.value;
             showContactName.innerText = updateContactName.value;
-            showContactPhone.innerText = updateContactPhone.value;
             pendingContactEmail.innerText = updatedEmail;
             showPendingContactEmail(updatedEmail);
 
             updateContact.style.display = 'none';
             showContact.style.display = 'block';
-            editContact.style.display = 'block';
           });
       }, false);
 
@@ -156,32 +147,32 @@ javascript:
       //  generateStatement.style.display = 'inline-block';
       //  generateStatementResult.style.display = 'none';
       //}, false);
-      //
-      //generateStatement.addEventListener('click', function(event) {
-      //  event.preventDefault();
-      //
-      //  submitForm('statement_generator', 'PATCH', false)
-      //    .then(function(response) {
-      //      return response.json();
-      //    })
-      //    .then(function(json) {
-      //      generateStatement.style.display = 'none';
-      //      generateStatementResult.style.display = 'inline-block';
-      //      generateStatementResult.innerText = 'Generating';
-      //
-      //      dynamicEllipsis.start('generate_statement_result');
-      //
-      //      return waitForReport(json.reportURL, 3000, 2000, 4);
-      //    })
-      //    .then(function(reportURL) {
-      //      dynamicEllipsis.stop('generate_statement_result');
-      //      generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
-      //    })
-      //    .catch(function() {
-      //      dynamicEllipsis.stop('generate_statement_result');
-      //      generateStatementResult.innerText = 'We will email you a link when your report is ready.'
-      //    });
-      //}, false);
+
+      generateStatement.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        submitForm('statement_generator', 'PATCH', false)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            generateStatement.style.display = 'none';
+            generateStatementResult.style.display = 'inline-block';
+            generateStatementResult.innerText = 'Generating';
+
+            dynamicEllipsis.start('generate_statement_result');
+
+            return waitForReport(json.reportURL, 3000, 2000, 4);
+          })
+          .then(function(reportURL) {
+            dynamicEllipsis.stop('generate_statement_result');
+            generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
+          })
+          .catch(function() {
+            dynamicEllipsis.stop('generate_statement_result');
+            generateStatementResult.innerText = 'We will email you a link when your report is ready.'
+          });
+      }, false);
     }, false);
   })();
 
@@ -226,76 +217,70 @@ javascript:
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
-- content_for(:navbar_content_right) do
-  .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
+- content_for(:navbar_content) do
 
-#cssload-container
-  .cssload-container
-    .cssload-loading
-      i
-      i
+div#cssload-pgloading style="display: none"
+  div.cssload-loadingwrap
+    ul.cssload-bokeh
+      li
+      li
+      li
+      li
 
 .row
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+  .col.col-md-12.col-xs-8.col-xs-center.col-sm-center
     .publisher-status
       .publisher-domain-summary
         .publisher-domain-name= current_publisher.brave_publisher_id
         #publisher_status class=(publisher_status(current_publisher) == :complete ? 'complete' : 'incomplete')
           = publisher_status_description(current_publisher)
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
-    h4= t("publishers.balance_pending")
-    .balance
-      .pull-left
-        = image_tag("bat-logo@1x.png", class: "")
-      .pull-left.amounts
-        .bat
-          span.bat-amount= publisher_humanize_balance(current_publisher, "BAT")
-          span.bat-code= " BAT"
-        .converted
-          = publisher_converted_balance(current_publisher)
+
 .row
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
-    .sub-panel.dashboard-panel.uphold-panel
-      .panel-header.panel-header-h3#dashboard_uphold_header
-        = t("publishers.dashboard_uphold_header")
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      h4= t("publishers.balance_pending")
+      .attribute-value.balance
+        span.balance-amount= publisher_humanize_balance(current_publisher)
+      -# FIXME: To be removed once BAT transition is complete.
+      - if publisher_legacy_balance?(current_publisher)
+        h4= t("publishers.legacy_balance_pending")
+        .attribute-value.legacy_balance
+          span.balance-amount= publisher_humanize_legacy_balance(current_publisher)
+          = " "
+          span.approximate-hint.link-hint= t("publishers.balance_pending_approximate")
+
+      / FIXME: Remove until #74 is fixed.
+      / .statements
+      /   h4= t("publishers.publisher_statements")
+      /   = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
+      /     .form-group
+      /       = select_tag(:statement_period, options_for_select(publisher_statement_periods))
+      /       a#generate_statement href="#" class="btn btn-tertiary btn-generate"
+      /         = t("shared.generate")
+      /       span#generate_statement_result
+
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
       .attribute-value.status
+        = image_tag("uphold-powered-transparent@1x.png", class: "connect-uphold")
         - if show_uphold_connect?(current_publisher)
           div#uphold_connect
             help-block= t("publishers.verified_publisher_connect_to_uphold_html")
             = link_to(image_tag("uphold-connect-white@1x.png", class: "connect-uphold"), uphold_authorization_endpoint(current_publisher))
         - else
-          .panel-section= t("publishers.dashboard_uphold_balance_sending")
-          .hidden.panel-section= t("publishers.last_deposit_html", last_deposit_date: uphold_last_deposit_date(current_publisher))
-          .panel-section= link_to(t("publishers.uphold_check_balance"), "https://uphold.com/dashboard", class: "btn btn-primary")
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
-    .sub-panel.dashboard-panel
-      .hidden.statements
-        .panel-header.panel-header-h4#publishers_statement
-          = t("publishers.statement")
-        = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
-          .form-group
-            = select_tag(:statement_period, options_for_select(publisher_statement_periods))
-            .pull-right
-              a#generate_statement href="#" class="edit-link"
-                = t("shared.generate")
-              span#generate_statement_result
-        .clearfix
-      .panel-header.panel-header-h4#publishers_contact
+          p#uphold_status= uphold_status_description(current_publisher)
+
+  .col.col-details.col-md-4.col-xs-8.col-xs-center.col-sm-center
+    .pub-panel
+      h4
         = t("publishers.contact")
-        .pull-right
-          a.edit-link#edit_contact href="#"
-            = t("publishers.edit_contact")
-        .clearfix
+        a.edit-link#edit_contact href="#"
+          = t("shared.edit")
       .attribute-value.contact-person
         #show_contact
           #show_contact_name= current_publisher.name
           span.email#show_contact_email= current_publisher.email
           span.hidden#pending_contact_email= current_publisher.pending_email
-          -if current_publisher.phone.present?
-            span
-              |&nbsp;&bull;&nbsp;
-            span.phone#show_contact_phone
-              = current_publisher.phone
         = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
           .form-group
             = f.label(:name, class: "control-label")
@@ -303,24 +288,15 @@ noscript
           .form-group
             = f.label(:email, class: "control-label")
             = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
-          .form-group
-            = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
-            = f.phone_field(:phone, class: "form-control", id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
           .button.form-group
             = f.submit(translate("shared.update"), class: "btn btn-primary")
             a#cancel_edit_contact href="#"
               = t("shared.cancel")
         p#pending_email_notice style="display: none" class="note"
-      = form_for(current_publisher, url: publishers_path,
-              html: { id: "update_show_verification_status",
-                      class: current_publisher.show_verification_status? ? 'checked' : 'unchecked' }) do |f|
+
+      = form_for(current_publisher, url: publishers_path, html: { id: "update_show_verification_status" }) do |f|
         .form-group
-          .panel-header.panel-header-h4#publishers_list
-            = t("publishers.dashboard_list_in_verified_publishers_html")
-            .inline-controls.pull-right
-              .onoffswitch
-                = f.check_box(:show_verification_status, class: "onoffswitch-checkbox", id: "publisher_show_verification_status")
-                = f.label(:show_verification_status, class: "onoffswitch-label", for: "publisher_show_verification_status") do
-                  span.onoffswitch-inner
-                  span.onoffswitch-switch
-              .value-label.pull-right#show_verification_status_value
+          = f.label(:show_verification_status, class: "label-checkbox") do
+            = f.check_box(:show_verification_status, class: "control-checkbox")
+            text &nbsp;
+            = t("activerecord.attributes.publisher.show_verification_status")

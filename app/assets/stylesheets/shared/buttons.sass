@@ -5,36 +5,27 @@
 
 .btn
   &.btn-primary
-    background: #ff4d3f
-    border: none
-    box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
+    background: linear-gradient($braveLightOrange, $braveOrange)
+    border: 2px solid transparent
+    border-bottom: 2px solid $braveOrange
+    border-top: 2px solid $braveLightOrange
+    box-shadow: $buttonShadow
     color: #fff
-    height: 40px
-    border-radius: 20px
-    font-size: 16px
-    font-weight: 600
-    letter-spacing: 0.02em
-    a
-      color: #ff4d3f
-      text-decoration-line: none
+
     &:hover
-      background: #fc624e
-    &:active
-      background: #e22a1f
+      background: linear-gradient(darken($braveLightOrange, 10%), darken($braveOrange, 10%))
+      border: 2px solid #fff
+      border-bottom: 2px solid #fff
+      border-top: 2px solid #fff
 
   &.btn-secondary
-    background: white
-    border: 1px solid
-    box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
-    color: #d3d5d7
-    height: 40px
-    border-radius: 20px
-    font-size: 14px
-    font-weight: 400
-    letter-spacing: 0.02em
-    a
-      color: #d3d5d7
-      text-decoration-line: none
+    background: linear-gradient(white, #ececec)
+    border: 2px solid transparent
+    border-bottom: 2px solid #ddd
+    border-top: 2px solid #eee
+    box-shadow: $buttonShadow
+    color: #555
+
     &:hover
       border: 2px solid #aaa
 
@@ -44,14 +35,10 @@
     color: #555
 
     &:hover
-      border: 1px solid #aaa
+      border: 2px solid #aaa
 
   &.btn-download
     margin-top: 10px
-
-  &.btn-center
-    margin  : 5px auto
-    display : block
 
     // &:hover {
     //   color: $color;

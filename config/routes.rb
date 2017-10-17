@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get :email_verified
       get :verification_choose_method
       get :verification_dns_record
+      get :verification_done
       get :verification_public_file
       get :verification_github
       get :verification_wordpress
