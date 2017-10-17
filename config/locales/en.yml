@@ -45,7 +45,7 @@ en:
     app_title: "Brave Payments"
     already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
     authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
-    balance_error: "Temporarily unavailable"
+    balance_error: "Unavailable"
     balance_pending: "Current Contribution Balance"
     balance_pending_approximate: "Approximately %{amount} %{code}"
     legacy_balance_pending: "Legacy balance pending (Bitcoin system)"
