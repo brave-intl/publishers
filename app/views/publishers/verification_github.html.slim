@@ -2,37 +2,43 @@
   = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
 
 .row
-  .col-center.col-sm-10
-    legend= t("publishers.verification_option_github")
-
+  .col-center.col-lg-9
+    .publisher-domain-name.pull-right
+      = current_publisher.brave_publisher_id
 .row
-  .col-center.col-sm-10
-    = render :partial => 'https_check', :locals => { publisher: current_publisher }
+  .col-center.col-lg-9
+    .sub-panel
+      .row
+        .col-center.col-xs-9
+          h4= t("publishers.verification_option_github")
+      .row
+        .col-center.col-xs-9
+          = render :partial => 'https_check', :locals => { publisher: current_publisher }
 
-div class=(current_publisher.supports_https? ? "row" : "row dimmed")
-  .col-center.col-sm-10
-    .form-group
-      ol.ol-flush
-        li
-          .help-block.li-text= t("publishers.verification_option_github_nojekyll")
-        li
-          .help-block.li-text= t("publishers.verification_option_github_help_download")
-          .visible-sm.visible-xs
-            = image_tag("download.png")
-          strong= t("publishers.verification_option_github_file_contents")
+      div class=(current_publisher.supports_https? ? "row" : "row dimmed")
+        .col-center.col-xs-9
+          .form-group
+            ol.ol-flush
+              li
+                .help-block.li-text= t("publishers.verification_option_github_nojekyll")
+              li
+                .help-block.li-text= t("publishers.verification_option_github_help_download")
+                .visible-sm.visible-xs
+                  = image_tag("download.png")
+                strong= t("publishers.verification_option_github_file_contents")
 
-          .visible-md.visible-lg
-            .img-right
-              = image_tag("download.png")
-          .verification-file
-            .file-content= simple_format h publisher_filter_public_file_content(current_publisher, @public_file_content)
-            = link_to(t("publishers.verification_download_verification"), download_verification_file_publishers_path, class: "button btn btn-xs btn-default btn-download")
-        li
-          .visible-md.visible-lg
-            .img-right
-              = image_tag("upload-well-known.png")
-          .help-block.li-text= t("publishers.verification_option_github_help_upload_html")
-          .visible-sm.visible-xs
-            = image_tag("upload-well-known.png")
-          = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-            = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm")
+                .visible-md.visible-lg
+                  .img-right
+                    = image_tag("download.png")
+                .file-content
+                  = simple_format h publisher_filter_public_file_content(current_publisher, @public_file_content)
+                = link_to(t("publishers.verification_download_verification"), download_verification_file_publishers_path, class: "button btn btn-xs btn-default btn-download")
+              li
+                .visible-md.visible-lg
+                  .img-right
+                    = image_tag("upload-well-known.png")
+                .help-block.li-text= t("publishers.verification_option_github_help_upload_html")
+                .visible-sm.visible-xs
+                  = image_tag("upload-well-known.png")
+                = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
+                  = f.submit(t("publishers.verify_button"), class: "btn btn-primary btn-sm")

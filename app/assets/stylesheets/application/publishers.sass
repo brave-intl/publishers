@@ -1,8 +1,45 @@
-$subnav-active: #0dccf8
+$subnav-active: #8F9397
+$progress-train-lines: #D3D5D7
+$progress-train-label: #8F9397
+$progress-train-fill: #FF4D3F
+$progress-train-active: #333
 
 body[data-controller="publishers"]
+  .main-content
+    padding-top: 25px
+    background: #eaedef
+    background: -webkit-linear-gradient(-75deg, #f1f3f6, #f1f3f6, #e4e7eb, #e6d8d9, #e8cacc, #f7ada7, #e48290, #ca3884, #c7297b)
+    min-height: calc(100vh - 80px)
+    padding-top: 25px
+
+  .sub-panel
+    background-color: white
+    border: none
+    padding: 64px 25px 55px 25px
+    border-radius: 8px
+    box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
+    margin-top: 32px
+    h4
+      color: #2f3032
+      font-size: 22px
+      font-weight: 600
+      margin-top: 0px
+      margin-bottom: 20px
+
+  .form-group
+    padding-top: 5px
   .form-group.button:last-child
     margin: 20px 0 5px
+  label
+    font-size: 16px
+    font-weight: 600
+    color: #48494b
+    .optional
+      color: #979797
+  .label-checkbox
+    padding-left: 1em
+    text-indent: -1em
+    display: block
 
   &[data-action="create_done"],
   &[data-action="verification"],
@@ -11,8 +48,9 @@ body[data-controller="publishers"]
   &[data-action="verification_github"],
   &[data-action="verification_wordpress"],
   &[data-action="verification_choose_method"],
-  &[data-action="verify"],
-  &[data-action="verification_done"]
+  &[data-action="verify"]
+    .publisher-domain-name
+      font-size: 14px
     .form-group:not(:last-child)
       margin-bottom: 20px
     textarea[readonly="true"]
@@ -48,12 +86,16 @@ body[data-controller="publishers"]
       font-size: $font-size-small
       color: $gray
       line-height: $line-height-computed * 1.5
-    .verification_code
+    .verification-code, .file-content
       font-family: monospace
       font-size: $font-size-base * 0.6
       color: $braveOrange
       outline: #888 solid thin
-      height: $font-size-base * $line-height-base * 1
+      word-break: break-all
+      height: fit-content
+      padding: 10px
+      margin-top: 5px
+      margin-bottom: 5px
     .publisher-domain-summary
       margin-bottom: 18px
       .publisher-domain-name
@@ -93,14 +135,8 @@ body[data-controller="publishers"]
 
     @media (max-width: 991px)
       $li-max-width: 100%
-      .verification-file
-        .file-content
-          height: $font-size-base * $line-height-base * 4
-          font-family: monospace
-          font-size: $font-size-base * 0.6
-          color: $braveOrange
-          outline: #888 solid thin
-          max-width: $li-max-width
+      .file-content
+        max-width: $li-max-width
 
       .li-text
         padding-left: 0px
@@ -110,14 +146,8 @@ body[data-controller="publishers"]
 
     @media (min-width: 992px)
       $li-max-width: 65%
-      .verification-file
-        .file-content
-          height: $font-size-base * $line-height-base * 4
-          font-family: monospace
-          font-size: $font-size-base * 0.6
-          color: $braveOrange
-          outline: #888 solid thin
-          max-width: $li-max-width
+      .file-content
+        max-width: $li-max-width
 
       .li-text
         padding-left: 0px
@@ -144,14 +174,18 @@ body[data-controller="publishers"]
       margin: 0 auto
       display: block
 
+
   &[data-action="home"]
+    .dashboard-id
+      display: inline-block
+      text-transform: uppercase
+      font-size: $font-size-base
+      padding: 4px
+      margin-right: 20px
+      @media (max-width: 730px)
+        display: none
+
     .container
-      .pub-panel
-        background-color: #eeeeee
-        border: 1px solid #aaaaaa
-        height: 350px
-        padding: 10px 25px
-        border-radius: 3px
       .col-details
         margin-top: 30px
       h4
@@ -160,6 +194,39 @@ body[data-controller="publishers"]
         text-transform: uppercase
       legend
         margin-bottom: 12px
+      .uphold-panel
+        background-image: url(asset-path("uphold@1x.png"))
+        background-repeat: no-repeat
+        background-position: top right
+      .dashboard-panel
+        padding-left: 75px
+        min-height: 475px
+        min-width: 400px
+        .panel-header
+          margin: 0 0 0 -50px
+          padding: 12px 0 12px 50px
+          vertical-align: middle
+          text-transform: capitalize
+          font-weight: 700
+          background-position: center left
+          background-repeat: no-repeat
+          background-size: 34px 42px
+          &#dashboard_uphold_header
+            padding-top: 14px
+            background-image: url(asset-path("wallet@1x.png"))
+          &#publishers_statement
+            background-image: url(asset-path("download@1x.png"))
+          &#publishers_contact
+            background-image: url(asset-path("contact@1x.png"))
+          &#publishers_list
+            background-image: url(asset-path("list@1x.png"))
+        .panel-header-h3
+          color: #00bcda
+          font-size: $font-size-h3
+        .panel-header-h4
+          font-size: $font-size-base
+        .panel-section
+          margin-bottom: 40px
       .attribute-value
         margin-bottom: 24px
       .publisher-domain-summary
@@ -175,23 +242,32 @@ body[data-controller="publishers"]
         background-repeat: no-repeat
         background-size: 25px
         &.complete
-          background-image: url(asset-path("verified-icon.png"))
+          background-image: url(asset-path("verified-icon@1x.png"))
         &.incomplete
           background-image: url(asset-path("unverified-icon.png"))
       .balance
         font-size: $font-size-base
-        .approximate-hint
-          font-size: $font-size-small
+        vertical-align: top
+        .amounts
+          margin-top: -16px
+          margin-left: 15px
+          .bat-amount
+            font-size: 48px
+          .bat-code
+            font-size: 16px
+          .converted
+            margin-top: -8px
+            font-size: 14px
+            color: $gray-light
       .payment-info
         font-size: $font-size-base
+      .last-deposit
+        font-weight: 700
       .contact-person
         .name
-          margin-right: 10px
         .email
-          margin-right: 10px
-          color: $gray
       .statements
-        margin-top: 48px
+        white-space: nowrap
       #statement_period
         margin-top: 5px
         margin-right: 10px
@@ -200,22 +276,30 @@ body[data-controller="publishers"]
         margin-left: 10px
       .edit-link
         text-transform: capitalize
-        color: blue
-        margin-left: 15px
-        font-size: $font-size-smaller
-      .connect-uphold
-        margin-top: 12.5px
-        margin-bottom: 12.5px
-      .label-checkbox
-        padding-left: 1em
-        text-indent: -1em
-        display: block
+        color: #00bcda
+        display: inline-block
+      #publishers_list
+        .inline-controls
+          padding: 0
+        .onoffswitch
+          margin-top: 6px
+          display: inline-block
+        .value-label
+          display: inline-block
+          margin-left: 12px
+      #update_show_verification_status.checked .value-label:after
+        color: #4fbad6
+        content: "ON"
+      #update_show_verification_status.unchecked .value-label:after
+        color: $gray-dark
+        content: "OFF"
 
   .hidden
     display: none
 
   .in-place-edit
-    background: #ddd
+    background: #f3f3f3
+    border-radius: 12px
     padding: 18px
     .button.form-group a
       display: inline-block
@@ -250,30 +334,46 @@ body[data-controller="publishers"]
     margin-bottom: 20px
     color: #333
 
-  .progress-items
+  .progress-train
+    padding-top: 14px
+    white-space: nowrap
+    @media (max-width: 710px)
+      display: none
     .progress-item
       display: inline-block
       vertical-align: middle
-      padding: 0 10px
-      &.unstarted
-        color: $gray-light
-        svg.fill-circle
-          .outer-circle
-            fill: $gray-light
-          .inner-circle
-            stroke: $gray-light
-      &.started
-        color: $subnav-active
-        svg.fill-circle
-          .outer-circle
-            fill: $subnav-active
-          .inner-circle
-            stroke: $subnav-active
-      label
-        display: inline-block
-        margin: 0
-        font-size: 15px
-        line-height: 15px
       svg
         display: inline-block
         vertical-align: middle
+        margin: 0 -3px
+        padding: 0
+      .progress-connector
+        stroke: $progress-train-lines
+      .fill-circle
+        .background-circle
+          fill: #fff
+        .outer-circle
+          fill: none
+          stroke: $progress-train-lines
+        .inner-circle
+          stroke: none
+      label
+        display: inline-block
+        margin: 0
+        font-size: 14px
+        line-height: 14px
+        padding: 0 5px
+        color: $progress-train-label
+        @media (max-width: 991px)
+          display: none
+      &.unstarted, &.finished
+        label
+          font-weight: 100
+      &.started
+        label
+          font-weight: 300
+          color: $progress-train-active
+      &.started, &.finished
+        svg.fill-circle
+          .inner-circle
+            fill: $progress-train-fill
