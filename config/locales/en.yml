@@ -56,7 +56,7 @@ en:
     complete_irs_w_8ben_hint: "Individuals outside the States"
     contact_person: "Contact person"
     contact: "Contact"
-    create_done_header: "An email is on it's way!"
+    create_done_header: "An email is on its way!"
     create_done_body_html: |
       <p>We're excited that you want to be in on Brave Payments. We just sent an email to
       <strong class="email-address">%{email}</strong>. Click on the access link provided in the email to jump into
