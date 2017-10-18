@@ -2,17 +2,17 @@
   = render :partial => 'progress', :locals => { progress: { info: 100, verify: 25, wallet: 0 }, publisher: current_publisher }
 
 .row
-  .col-center.col-lg-9
+  .col-center.col-lg-10
     .publisher-domain-name.pull-right
       = current_publisher.brave_publisher_id
 
 .row
-  .col-center.col-lg-9
+  .col-center.col-lg-10
     .sub-panel
       .row
         .col-xs-12
           fieldset
-            legend.text-center= t("publishers.verification_choose_header")
+            h3.section-title.text-center= t("publishers.verification_choose_header")
           .help-block.text-center=t("publishers.verification_choose_help")
 
       .row

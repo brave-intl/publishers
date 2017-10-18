@@ -89,10 +89,9 @@ en:
     new_auth_token_body_html: |
       <p>If you've already started or completed verification, we can send a login link to the email address associated
       with your publisher registration.</p>
-      <p>If you've forgotten the email address used and have completed verification, leave the email field blank and
-      we'll use the last one on file. Otherwise, start a new verification.</p>
     new_auth_token_button: "Send login email"
-    new_auth_token_email: "Email address (optional if verification is complete)"
+    new_auth_token_email_html: |
+      Email Address <span class="optional">(optional if verification is complete)</span>
     new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."

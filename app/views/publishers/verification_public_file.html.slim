@@ -2,16 +2,16 @@
   = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
 
 .row
-  .col-center.col-lg-9
+  .col-center.col-lg-10
     .publisher-domain-name.pull-right
       = current_publisher.brave_publisher_id
 
 .row
-  .col-center.col-lg-9
+  .col-center.col-lg-10
     .sub-panel
       .row
         .col-center.col-xs-9
-          h4= t("publishers.verification_option_public_file")
+          h3.section-title= t("publishers.verification_option_public_file")
       .row
         .col-center.col-xs-9
           = render :partial => 'https_check', :locals => { publisher: current_publisher }

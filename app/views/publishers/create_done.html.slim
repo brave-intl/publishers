@@ -2,14 +2,17 @@
   = render :partial => 'progress', :locals => { progress: { info: 50, verify: 0, wallet: 0 }, publisher: current_publisher }
 
 .row
-  .col-center.col-lg-9
+  .col-center.col-lg-10
+    .publisher-domain-name.pull-right
+      | &nbsp;
+.row
+  .col-center.col-lg-10
     .sub-panel
       .row
         .col-center.col-xs-9
-          h4.section-title
-            h3= t("publishers.create_done_header")
-            .help-block= t("publishers.create_done_body_html", email: @publisher_email)
-            = image_tag("email_envelope.png", class: "img-center img-responsive")
+          h3.section-title= t("publishers.create_done_header")
+          .help-block= t("publishers.create_done_body_html", email: @publisher_email)
+          = image_tag("email_envelope.png", class: "img-center img-responsive")
       .row
         .col-center.col-xs-9
           = button_to t("publishers.create_done_resend_email"),

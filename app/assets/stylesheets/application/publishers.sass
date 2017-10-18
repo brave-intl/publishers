@@ -5,41 +5,189 @@ $progress-train-fill: #FF4D3F
 $progress-train-active: #333
 
 body[data-controller="publishers"]
+  color: #606467
+  font-weight: 300
+  letter-spacing: 0.2px
+  line-height: 1.6
+
   .main-content
     padding-top: 25px
     background: #eaedef
-    background: -webkit-linear-gradient(-75deg, #f1f3f6, #f1f3f6, #e4e7eb, #e6d8d9, #e8cacc, #f7ada7, #e48290, #ca3884, #c7297b)
+    background: -webkit-linear-gradient(-75deg, #e9eaef , #e0e3e6 , #d6d6d6 , #e7ccc9 ,#f7ada7 , #d68588 , #ca3884 , #c7297b )
     min-height: calc(100vh - 80px)
     padding-top: 25px
 
   .sub-panel
     background-color: white
     border: none
-    padding: 64px 25px 55px 25px
+    padding: 64px 20px 55px 20px
     border-radius: 8px
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
-    margin-top: 32px
-    h4
+  .publisher-panel
+    max-width: 880px
+    min-width: 448px
+  .publisher-main-panel
+    margin-top: 0px
+    margin-bottom: 150px
+  .publisher-domain-panel
+    background-color: transparent
+    margin-top: 17px
+    margin-bottom: 13px
+    .publisher-domain-name
+      text-align: right
+      font-size: 16px
+      line-height: 16px
+  .content-panel
+    margin: 0 auto
+    width: 428px
+    background-color: transparent
+
+  .info-panel
+    padding-top: 140px
+    padding-bottom: 105px
+    h3
+      color: #2f3032
+      font-size: 38px
+      font-weight: 300
+      margin-top: 0px
+      margin-bottom: 40px
+    .panel-controls
+      margin-top: 58px
+  .process-panel
+    padding-top: 64px
+    padding-bottom: 105px
+    h3
       color: #2f3032
       font-size: 22px
-      font-weight: 600
+      font-weight: 500
       margin-top: 0px
-      margin-bottom: 20px
+      margin-bottom: 34px
+    .panel-controls
+      margin-top: 58px
+
+  p
+    margin-bottom: 26px
+
+  h3
+    color: #2f3032
+    font-size: 38px
+    font-weight: 300
+    margin-top: 0px
+    margin-bottom: 40px
+  h4
+    color: #2f3032
+    font-size: 22px
+    font-weight: 500
+    margin-top: 0px
+    margin-bottom: 20px
+
+  .btn-spaced
+    margin: 20px 0
 
   .form-group
     padding-top: 5px
   .form-group.button:last-child
-    margin: 20px 0 5px
+    margin: 40px 0 20px 0
+  .control-label
+    font-weight: 500
+    color: #484B4E
+  .optional
+    color: #818589
+    font-weight: 300
+
   label
     font-size: 16px
     font-weight: 600
     color: #48494b
-    .optional
-      color: #979797
   .label-checkbox
     padding-left: 1em
     text-indent: -1em
     display: block
+
+  .hidden
+    display: none
+
+  .in-place-edit
+    background: #f3f3f3
+    border-radius: 12px
+    padding: 18px
+    .button.form-group a
+      display: inline-block
+      margin-left: 18px
+
+  .note
+    margin-top: 8px
+    background: #f0f0f0
+    border: 1px solid #ccc
+    padding: 10px
+    color: #666
+
+  .dimmed
+    position: relative
+    opacity: 0.20
+
+  .dimmed:after
+    content: " "
+    z-index: 10
+    display: block
+    position: absolute
+    height: 100%
+    top: 0
+    left: 0
+    right: 0
+
+  .noscript-warning
+    text-align: center
+    background: #f0f0f0
+    border: 1px solid #ccc
+    padding: 10px
+    margin-bottom: 20px
+    color: #333
+
+  .progress-train
+    padding-top: 14px
+    white-space: nowrap
+    @media (max-width: 710px)
+      display: none
+    .progress-item
+      display: inline-block
+      vertical-align: middle
+      svg
+        display: inline-block
+        vertical-align: middle
+        margin: 0 -3px
+        padding: 0
+      .progress-connector
+        stroke: $progress-train-lines
+      .fill-circle
+        .background-circle
+          fill: #fff
+        .outer-circle
+          fill: none
+          stroke: $progress-train-lines
+        .inner-circle
+          stroke: none
+      label
+        display: inline-block
+        margin: 0
+        font-size: 14px
+        line-height: 14px
+        padding: 0 5px
+        color: $progress-train-label
+        @media (max-width: 991px)
+          display: none
+      &.unstarted, &.finished
+        label
+          font-weight: 100
+      &.started
+        label
+          font-weight: 300
+          color: $progress-train-active
+      &.started, &.finished
+        svg.fill-circle
+          .inner-circle
+            fill: $progress-train-fill
+
 
   &[data-action="create_done"],
   &[data-action="verification"],
@@ -49,8 +197,6 @@ body[data-controller="publishers"]
   &[data-action="verification_wordpress"],
   &[data-action="verification_choose_method"],
   &[data-action="verify"]
-    .publisher-domain-name
-      font-size: 14px
     .form-group:not(:last-child)
       margin-bottom: 20px
     textarea[readonly="true"]
@@ -155,25 +301,10 @@ body[data-controller="publishers"]
         margin-top: 0px
         max-width: $li-max-width
 
-  &[data-action="verification_done"]
-    h2
-      margin-top: 10px
-      color: $braveGreen
-      white-space: nowrap
-    .balance
-      color: #8c8c8c
-      font-size: $font-size-base * 1.6
-    .uphold-connect-icon
-      height: 50px
-
   &[data-action="verification_choose_method"]
     .or
       text-align: center
       line-height: 100px
-    .btn-center
-      margin: 0 auto
-      display: block
-
 
   &[data-action="home"]
     .dashboard-id
@@ -263,9 +394,9 @@ body[data-controller="publishers"]
         font-size: $font-size-base
       .last-deposit
         font-weight: 700
-      .contact-person
-        .name
-        .email
+      //.contact-person
+      //  .name
+      //  .email
       .statements
         white-space: nowrap
       #statement_period
@@ -294,86 +425,3 @@ body[data-controller="publishers"]
         color: $gray-dark
         content: "OFF"
 
-  .hidden
-    display: none
-
-  .in-place-edit
-    background: #f3f3f3
-    border-radius: 12px
-    padding: 18px
-    .button.form-group a
-      display: inline-block
-      margin-left: 18px
-
-  .note
-    margin-top: 8px
-    background: #f0f0f0
-    border: 1px solid #ccc
-    padding: 10px
-    color: #666
-
-  .dimmed
-    position: relative
-    opacity: 0.20
-
-  .dimmed:after
-    content: " "
-    z-index: 10
-    display: block
-    position: absolute
-    height: 100%
-    top: 0
-    left: 0
-    right: 0
-
-  .noscript-warning
-    text-align: center
-    background: #f0f0f0
-    border: 1px solid #ccc
-    padding: 10px
-    margin-bottom: 20px
-    color: #333
-
-  .progress-train
-    padding-top: 14px
-    white-space: nowrap
-    @media (max-width: 710px)
-      display: none
-    .progress-item
-      display: inline-block
-      vertical-align: middle
-      svg
-        display: inline-block
-        vertical-align: middle
-        margin: 0 -3px
-        padding: 0
-      .progress-connector
-        stroke: $progress-train-lines
-      .fill-circle
-        .background-circle
-          fill: #fff
-        .outer-circle
-          fill: none
-          stroke: $progress-train-lines
-        .inner-circle
-          stroke: none
-      label
-        display: inline-block
-        margin: 0
-        font-size: 14px
-        line-height: 14px
-        padding: 0 5px
-        color: $progress-train-label
-        @media (max-width: 991px)
-          display: none
-      &.unstarted, &.finished
-        label
-          font-weight: 100
-      &.started
-        label
-          font-weight: 300
-          color: $progress-train-active
-      &.started, &.finished
-        svg.fill-circle
-          .inner-circle
-            fill: $progress-train-fill
