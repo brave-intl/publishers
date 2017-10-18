@@ -25,7 +25,7 @@ en:
       publisher:
         brave_publisher_id: "Website Domain"
         phone_normalized: "Phone Number"
-        show_verification_status: "Yes, please list my site in Brave's verified publisher list after verification"
+        show_verification_status: "List my site in Brave's verified publisher site once verified."
         name: "Contact Name"
     errors:
       models:
@@ -137,9 +137,9 @@ en:
 
     verification_support_queue_header: "Thanks for waiting!"
     verification_support_queue_help_html: |
-      <p>We will be reaching out to each member in the order they are received.</p>
-      <p>An email will arrive when our next available support member will be able to assist you. Please
-      keep in mind that this may take a week due to our current backlog.</p>
+      <p>We will be reaching out to each member in the order the requests are received.</p>
+      <p>You will receive an email when our next available support member can assist you. Please keep in mind
+      that this may take a few days due to our current backlog.</p>
     verification_support_review_options: "I'd like to review my options"
     progress_contact_info: "Contact Info"
     progress_verify: "Verify Your Site"
