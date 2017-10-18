@@ -1,0 +1,90 @@
+version: '3'
+
+networks:
+  front:
+  back:
+
+services:
+#  app:
+#    build: .
+#    command: rails server -p 3000 -b '0.0.0.0'
+#    networks:
+#      back:
+#    depends_on:
+#      - "postgres"
+#      - "redis"
+#      - "mailcatcher"
+#    volumes:
+#      - .:/usr/src/app
+#      - ./bundle:/bundle
+#    env_file:
+#      - brave_publishers_dev.env
+#    environment:
+#      RAILS_ENV: development
+#    ports:
+#      - "3000:3000"
+#    links:
+#      - "postgres"
+#      - "redis"
+#      - "mailcatcher"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      front:
+        aliases:
+          - "redis"
+      back:
+        aliases:
+          - "redis"
+
+  postgres:
+    image: "postgres"
+    ports:
+      - "25432:5432"
+    environment:
+      LC_ALL: C.UTF-8
+    volumes:
+      - ../docker_data/publishers/db_data:/var/lib/postgresql/data
+    networks:
+      back:
+      front:
+        aliases:
+          - "postgres"
+
+#  mailcatcher:
+#    image: "schickling/mailcatcher"
+#    ports:
+#      - "1025:1025"
+#      - "1080:1080"
+#    networks:
+#      back:
+#      front:
+##
+#  proxy:
+#    image: "dockercloud/haproxy:latest"
+#    networks:
+#      back:
+#      front:
+#    depends_on:
+#      - "app"
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#      - "1936:1936"
+#    expose:
+#      - "80"
+#      - "443"
+#    links:
+#      - "app"
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    environment:
+#      SSL_CERT: "-----BEGIN CERTIFICATE-----\nMIIDAzCCAeugAwIBAgIJAJIaCTUJfqzkMA0GCSqGSIb3DQEBBQUAMBgxFjAUBgNV\nBAMMDSouc3luY2QubG9jYWwwHhcNMTcwNjAxMTM1NDA2WhcNMjcwNTMwMTM1NDA2\nWjAYMRYwFAYDVQQDDA0qLnN5bmNkLmxvY2FsMIIBIjANBgkqhkiG9w0BAQEFAAOC\nAQ8AMIIBCgKCAQEApW2TMsDAyoXSR7ORzx2fuJsHLPful5rFWMoVjfQWYBVM1rVs\nGAAdPkZ15a3iWq+nZ14KyE8jrIUMMrRa9pQBxu4mgF3EaMWukOLpmAuMqYVykJxO\nDHk7QOAPR0URrDin8qz0QMEz/J8Llx0RX+ESmBwyszhWMMt9LKCevJDvSqQQ02Br\nseiQ5rhpBMtW6GiMgCmQk/KjSL0syfKVKE0qmKWyH8UyscKcDw1us2tsTXihOLkl\nvvAHsIrJuFOiQTHIvFp0qGZEYU20FFzU7ggaJ3u195MD+tuJxOlxe0foe2ve5e1c\ndIfrwMteqbJvAvUu91ixe7hmOONav/794GJ0gQIDAQABo1AwTjAdBgNVHQ4EFgQU\nG31EU0GF5A7E/5myD0BXa7klB7YwHwYDVR0jBBgwFoAUG31EU0GF5A7E/5myD0BX\na7klB7YwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOCAQEAJVGanWnjPJbU\n4yIub42plC9zIxi7CxNEGK5cf8z8xz0lWMKhKFVgon+lOKo2wCtUa4zphEXrSqJq\nQ560bSErTACpxKm8CddeFCyr6VvcU3fnTm3LtZ9CABJVxGO9/AwJSkSmwtnup2oo\nrFT6ZHWbk1gdgGqrm7gSz4zge6QiHRYgNs8/72mliIhEehC9EOq1PQshRcH4wM52\nkeVez/tRKX6F+I01lp96bRp+I09lyH+PRHs/zeZl8Tg1EA3C/fmtnTyEPgdgZ2F3\nWxCl4oI1248GjMt4OujGMlD3I1ce7d9Q6qtJNawWuittrmkBAGNcg1YC8iGbhfpJ\n/Pcrm1cFMw==\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEApW2TMsDAyoXSR7ORzx2fuJsHLPful5rFWMoVjfQWYBVM1rVs\nGAAdPkZ15a3iWq+nZ14KyE8jrIUMMrRa9pQBxu4mgF3EaMWukOLpmAuMqYVykJxO\nDHk7QOAPR0URrDin8qz0QMEz/J8Llx0RX+ESmBwyszhWMMt9LKCevJDvSqQQ02Br\nseiQ5rhpBMtW6GiMgCmQk/KjSL0syfKVKE0qmKWyH8UyscKcDw1us2tsTXihOLkl\nvvAHsIrJuFOiQTHIvFp0qGZEYU20FFzU7ggaJ3u195MD+tuJxOlxe0foe2ve5e1c\ndIfrwMteqbJvAvUu91ixe7hmOONav/794GJ0gQIDAQABAoIBAQCJlg/mF1CBYDmb\nLutnckEEPdQC/5Yt+yiFh1XUAZ2WfkCxFqT3dSjdQacOxsdLG2rE2v9myANomiOi\nDETXbhPoSuw0uUgAx+E/Wapkrb5ow7ecNJPpZe71LyUl5nkjXt+4Q0bGkKnXQsRW\nA3QO5VgcsN8uFf4BiUzrkA9Vz8llrqYHDKpl5XRC8awC3bNP3pWPcgANzlWXCYf8\nlIf5cY++yJ7GpE+8wtc+BZAsmzAKxSFcZHGa35wD3a+ifVxhm51hztQzp4NeOF+m\nOf+7ehvOj5yjVMCVwCIwVLKdQui1XGNtTKFTj3tsYl96TM0s2Zdds0bo8xj/FZd5\n7R6j782RAoGBANll26WQmkHz17Qn6C48HN99JFgORwxsIRbKk/pN4PSM0coJ3578\n3gWMi6Tx8OFfVNCx0pcVwdjX+4dRjWQfnXR5CviRhIjlAYzcxeqD6IGS6QvDX+6r\nJDjypF6SXXGH0lcUuGFOHf2lLYPdVEfBbezQ+EDmC6XPwSm+H5SFTd5VAoGBAMLN\nWbVT20g52Vx0k4MpHTbwIe8I37he3apBiI/mmAjc5HlFjGxqBWAMU4QOiOqEPAU8\nJSFz92bf6nwSG6WnnfF3j0ZF4LLxj0+l0kgN02HaFzZukBr6Vkwi+jzf4bvWAqp5\nqBL3QXRaSiM8d0rQ3vxq3puKA1Rt5Kh2yvlJ9FF9AoGAGzvpYjpVOMHlWcpOCcy6\nCT1SGj3fpKy/EG3cT9UFw10IwvitrOscnTFYJReyB2m75FECgq7VE+cquW77+XkE\nbpzjRPRl2AhoQ0888/4GWIUg8LpPAEUsSn4LHVXUou5S6VnNJ1Nz6lyQ8R3++uY+\ncRZUozyuZN0745DPv/lbIekCgYBKCJceZcdB1NJ548goIdj7hxmuabX0sQEXcp5+\n6gk/3Qtr13W9wjFWxnh7CLcaQbU53BjUdOlCjLjl/E/Ljj9lhKXL9ESoXUu03nVj\ncvWyC5uk0TItPpTLjMODnSaCJ5yNw3yP8K5MlP/2EkXYBjeowMjnXfVUAgvTxonv\nYh7bVQKBgHwx+mQa90EYEuT6J5SseuDIxV7VDWO/A2SGSB0iq46xctuEpOcNy1ze\nhw8FcwUwfNk0vvSi4zsK9PI70RSS5kaWH/KRdFh2acwpe1s49X6TTaItc0+/8gdP\n23IbVcJMpYcjqFO3eO3LejYLrcmAoJPHsfQ3eFGq5sxc9A9tWo8K\n-----END RSA PRIVATE KEY-----\n"
+  #To get other self signed certs generate one at http://www.selfsignedcertificate.com
+  #Download the files and rename to cert and key (or use full names in scripts). Note first will merge them together so only run once.
+  #$cat key >> cert
+  #$awk 1 ORS='\\n' cert
+  #copy from terminal to SSL_CERT

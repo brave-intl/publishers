@@ -9,7 +9,7 @@
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.process-panel.col-center
     .content-panel
-      h3.section-title= t("publishers.new")
+      h3= t("publishers.new")
       = form_for @publisher, { method: :patch, url: update_unverified_publishers_path } do |f|
         fieldset
           .form-group
@@ -22,7 +22,7 @@
             = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
             = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001", required: false)
           .form-group
-            = f.label(:show_verification_status, class:"label-checkbox") do
+            = f.label(:show_verification_status, class:"label-checkbox note-text") do
               = f.check_box(:show_verification_status, class: "control-checkbox")
               text &nbsp;
               = t("activerecord.attributes.publisher.show_verification_status")

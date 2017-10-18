@@ -1,26 +1,24 @@
 - content_for(:navbar_content) do
 
-.row
-  .col-center.col-lg-10
-    .publisher-domain-name.pull-right
-      | &nbsp;
-.row
-  .col-center.col-lg-10
-    .sub-panel
-      .row
-        .col-center.col-xs-9
-          h3.section-title= t("publishers.new_auth_token")
-          = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
-            fieldset
-              .help-block= t("publishers.new_auth_token_body_html")
-              .form-group
-                = f.label(:brave_publisher_id, class: "control-label")
-                = f.text_field(:brave_publisher_id, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
-              .form-group
-                = f.label(:email, t("publishers.new_auth_token_email_html"), class: "control-label")
-                = f.email_field(:email, class: "form-control", placeholder: "alice@example.com")
-              - if @should_throttle
-                .form-group
-                  = recaptcha_tags
-              .button
-                = f.submit(t("publishers.new_auth_token_button"), class: "btn btn-block btn-primary")
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    | &nbsp;
+
+.publisher-main-panel.publisher-panel.col-center
+  .sub-panel.process-panel.col-center
+    .content-panel
+      h3= t("publishers.new_auth_token")
+      = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
+        fieldset
+          p= t("publishers.new_auth_token_body")
+          .form-group
+            = f.label(:brave_publisher_id, class: "control-label")
+            = f.text_field(:brave_publisher_id, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
+          .form-group
+            = f.label(:email, t("publishers.new_auth_token_email_html"), class: "control-label")
+            = f.email_field(:email, class: "form-control", placeholder: "alice@example.com")
+          - if @should_throttle
+            .form-group
+              = recaptcha_tags
+        .panel-controls
+          = f.submit(t("publishers.new_auth_token_button"), class: "btn btn-primary")
