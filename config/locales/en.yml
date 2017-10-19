@@ -124,13 +124,13 @@ en:
     verification_dns_record_instruction2: " using your DNS host's control panel."
     verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
     verification_form_legend: "Verify website ownership"
-
-    verification_choose_header: "Verify your Site: Choose a method"
-    verification_choose_help: "Here are the options for verifying the ownership of your domain."
-    verification_choose_trusted_file_html: "Via a trusted file<br>(recommended & easiest)"
+    verification_choose_header: "Choose a Verification Method"
+    verification_choose_trusted_file_header: "Download a trusted file"
+    verification_choose_trusted_file_subheader: "(recommended & easiest)"
     verification_choose_trusted_file_button: "I'll upload a trusted file"
     verification_choose_or: "OR"
-    verification_choose_dns_html: "By editing DNS records for the domain<br>(you need to have DNS access)"
+    verification_choose_dns_header: "Edit DNS records"
+    verification_choose_dns_subheader: "(You need DNS access)"
     verification_choose_dns_button: "I'll edit my DNS record"
     verification_choose_support_queue_link: "join the support queue."
     verification_choose_support_queue_html: |

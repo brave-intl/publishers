@@ -338,9 +338,72 @@ body[data-controller="publishers"]
       display: block
 
   &[data-action="verification_choose_method"]
-    .or
+    .content-panel
+      width: 740px
+    h3
       text-align: center
-      line-height: 100px
+      margin-bottom: 50px
+    h4
+      margin-left: -34px
+      margin-bottom: 10px
+      font-size: 28px
+      font-weight: 300
+      line-height: 28px
+      letter-spacing: -0.4px
+      color: #2f3032
+    h5
+      font-size: 16px
+      font-weight: 300
+      &.recommended
+        color: #02b999
+        font-weight: 500
+    .verification-method
+      display: inline-block
+      vertical-align: top
+      padding-left: 27px
+      &.optionA
+        width: 340px
+        h4:before
+          content: "A. "
+      &.optionB
+        width: 300px
+        h4:before
+          content: "B. "
+      .btn
+        width: 250px
+      .btn-secondary
+        border-color: #fd4246
+        color: #fd4246
+      .img-container
+        height: 215px
+        vertical-align: middle
+        img.choose-trusted-file
+          margin-top: 30px
+        img.choose-dns
+          margin-top: 52px
+    .or
+      display: inline-block
+      width: 70px
+      line-height: 330px
+    .fine-print
+      clear: both
+      margin-top: 68px
+      font-size: 14px
+      font-weight: 400
+      color: #999ea2
+      a
+        color: #00bcd6
+    @media (max-width: 991px)
+      .content-panel
+        width: 340px
+      .or
+        display: block
+        width: 340px
+        line-height: 30px
+        margin: 40px 0
+        text-align: center
+      .verification-method
+        display: block
 
   &[data-action="home"]
     .dashboard-id

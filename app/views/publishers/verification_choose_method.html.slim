@@ -1,34 +1,28 @@
 - content_for(:navbar_content) do
   = render :partial => 'progress', :locals => { progress: { info: 100, verify: 25, wallet: 0 }, publisher: current_publisher }
 
-.row
-  .col-center.col-lg-10
-    .publisher-domain-name.pull-right
-      = current_publisher.brave_publisher_id
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    = current_publisher.brave_publisher_id
 
-.row
-  .col-center.col-lg-10
-    .sub-panel
-      .row
-        .col-xs-12
-          fieldset
-            h3.section-title.text-center= t("publishers.verification_choose_header")
-          .help-block.text-center=t("publishers.verification_choose_help")
+.publisher-main-panel.publisher-panel.col-center
+  .sub-panel.process-panel.col-center
+    .content-panel
+      h3= t("publishers.verification_choose_header")
+      .verification-methods
+        .verification-method.optionA
+          h4= t("publishers.verification_choose_trusted_file_header")
+          h5.recommended= t("publishers.verification_choose_trusted_file_subheader")
+          .img-container= image_tag("choose-file@1x.png", class: "choose-trusted-file")
+          div= link_to(t("publishers.verification_choose_trusted_file_button"), verification_public_file_publishers_path, class: "btn btn-primary", :"data-piwik-action" => "ChosePublicFileClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
 
-      .row
-        .col-xs-12.col-md-5
-          .center-block= image_tag("choose_file.png", class: "img-center img-responsive")
-          .help-block.text-center
-            strong= t("publishers.verification_choose_trusted_file_html")
-          .text-center= link_to(t("publishers.verification_choose_trusted_file_button"), verification_public_file_publishers_path, class: "btn btn-primary", :"data-piwik-action" => "ChosePublicFileClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
-        .col-xs-12.col-md-2
-          .help-block.or
-            strong= t("publishers.verification_choose_or")
-        .col-xs-12.col-md-5
-          = image_tag("choose_dns.png", class: "img-center img-responsive")
-          .help-block.text-center= t("publishers.verification_choose_dns_html")
-          .text-center= link_to(t("publishers.verification_choose_dns_button"), verification_dns_record_publishers_path, class: "btn btn-secondary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
-      .row
-        .col-xs-12.col-md-12
-          br
-          .help-block.text-center= t("publishers.verification_choose_support_queue_html", support_queue_link: link_to(t("publishers.verification_choose_support_queue_link"), verification_support_queue_publishers_path, class: "link-secondary", :"data-piwik-action" => "ChoseSupportClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow"))
+        .or
+          strong= t("publishers.verification_choose_or")
+
+        .verification-method.optionB
+          h4= t("publishers.verification_choose_dns_header")
+          h5= t("publishers.verification_choose_dns_subheader")
+          .img-container= image_tag("choose-dns@1x.png", class: "choose-dns")
+          div= link_to(t("publishers.verification_choose_dns_button"), verification_dns_record_publishers_path, class: "btn btn-secondary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+
+      .fine-print.text-center= t("publishers.verification_choose_support_queue_html", support_queue_link: link_to(t("publishers.verification_choose_support_queue_link"), verification_support_queue_publishers_path, class: "link-secondary", :"data-piwik-action" => "ChoseSupportClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow"))
