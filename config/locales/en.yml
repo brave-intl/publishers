@@ -168,7 +168,8 @@ en:
     verification_pending_help1: "Verification can take several minutes or several hours, depending on your DNS host location. The Brave server will keep trying for 24 hours until there is a response."
     verification_pending_help2: "You will receive an email confirmation upon verification."
     verification_background_header: "Now verifying your domain..."
-    verification_background_help: "We will send you an email with further instructions within 24 hours."
+    verification_background_help_html: |
+      <p>You can leave this screen now. We will send you an <strong>email with instructions within 24 hours.</strong></p>
     verification_background_help_continue: "Follow the directions in the email to continue."
     verification_https_check: "Your domain is using HTTPS."
     verification_https_check_alt: "Good, your domain is using HTTPS."

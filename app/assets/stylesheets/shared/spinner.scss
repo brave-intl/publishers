@@ -28,21 +28,21 @@
   border-radius: 50%;
 }
 .cssload-loading i:nth-child(1){
-  animation:cssload-loading-ani1 0.6s ease-in-out infinite;
-  -o-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
-  -ms-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
-  -webkit-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
-  -moz-animation:cssload-loading-ani1 0.6s ease-in-out infinite;
+  animation:cssload-loading-ani1 1.0s ease-in-out infinite;
+  -o-animation:cssload-loading-ani1 1.0s ease-in-out infinite;
+  -ms-animation:cssload-loading-ani1 1.0s ease-in-out infinite;
+  -webkit-animation:cssload-loading-ani1 1.0s ease-in-out infinite;
+  -moz-animation:cssload-loading-ani1 1.0s ease-in-out infinite;
 
 }
 .cssload-loading i:nth-child(2){
   background: rgb(0,168,206);
   margin-left: -6px;
-  animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
-  -o-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
-  -ms-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
-  -webkit-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
-  -moz-animation:cssload-loading-ani1 0.6s ease-in-out 0.3s infinite;
+  animation:cssload-loading-ani1 1.0s ease-in-out 0.5s infinite;
+  -o-animation:cssload-loading-ani1 1.0s ease-in-out 0.5s infinite;
+  -ms-animation:cssload-loading-ani1 1.0s ease-in-out 0.5s infinite;
+  -webkit-animation:cssload-loading-ani1 1.0s ease-in-out 0.5s infinite;
+  -moz-animation:cssload-loading-ani1 1.0s ease-in-out 0.5s infinite;
 }
 
 
