@@ -7,7 +7,7 @@
     | &nbsp;
 
 .publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.col-center
+  .sub-panel.process-panel.process-panel-narrow.col-center
     .content-panel
       h3= t("publishers.new")
       = form_for @publisher, { method: :patch, url: update_unverified_publishers_path } do |f|
