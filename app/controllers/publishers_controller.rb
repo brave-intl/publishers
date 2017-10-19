@@ -203,7 +203,7 @@ class PublishersController < ApplicationController
     ).perform
     current_publisher.reload
     if current_publisher.verified?
-      render(:home)
+      redirect_to(home_publishers_path)
     else
       render(:verification_background)
     end
