@@ -316,7 +316,6 @@ noscript
                       class: current_publisher.show_verification_status? ? 'checked' : 'unchecked' }) do |f|
         .form-group
           .panel-header.panel-header-h4#publishers_list
-            = t("publishers.dashboard_list_in_verified_publishers_html")
             .inline-controls.pull-right
               .onoffswitch
                 = f.check_box(:show_verification_status, class: "onoffswitch-checkbox", id: "publisher_show_verification_status")
@@ -324,3 +323,4 @@ noscript
                   span.onoffswitch-inner
                   span.onoffswitch-switch
               .value-label.pull-right#show_verification_status_value
+            .list-label= t("publishers.dashboard_list_in_verified_publishers_html")
