@@ -259,6 +259,14 @@ en:
         publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
       subject: "Brave Publisher email confirmation"
       title: "Brave Publisher email confirmation"
+    verification_done:
+      intro: "Congratulations! You are now a verified Brave publisher Brave users will see a verified symbol next to your website domain."
+      payment_help_header: "Ready to claim your funds now?"
+      payment_help: "To receive funds contributed by Brave users please visit the publisher management site and submit payment information."
+      subject: "[%{brave_publisher_id}] Publisher website verified"
+      title: "Verification complete"
+      claim_funds_header: "Ready to claim your funds?"
+      claim_funds_body: "To claim your funds please visit the Publishers website to submit your payment information using the link below."
     confirm_email_change:
       subject: "[%{brave_publisher_id}] Confirm your Brave Publisher email change"
       title: "Confirm email change"
