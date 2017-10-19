@@ -5,294 +5,128 @@ $progress-train-fill: #FF4D3F
 $progress-train-active: #333
 
 body[data-controller="publishers"]
+  color: #606467
+  font-weight: 300
+  letter-spacing: 0.2px
+  line-height: 1.6
+
   .main-content
     padding-top: 25px
     background: #eaedef
-    background: -webkit-linear-gradient(-75deg, #f1f3f6, #f1f3f6, #e4e7eb, #e6d8d9, #e8cacc, #f7ada7, #e48290, #ca3884, #c7297b)
+    background: -webkit-linear-gradient(-75deg, #e9eaef , #e0e3e6 , #d6d6d6 , #e7ccc9 ,#f7ada7 , #d68588 , #ca3884 , #c7297b )
     min-height: calc(100vh - 80px)
     padding-top: 25px
 
   .sub-panel
     background-color: white
     border: none
-    padding: 64px 25px 55px 25px
+    padding: 64px 20px 55px 20px
     border-radius: 8px
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
-    margin-top: 32px
-    h4
+  .publisher-panel
+    max-width: 880px
+    min-width: 448px
+  .publisher-main-panel
+    margin-top: 0px
+    margin-bottom: 150px
+  .publisher-domain-panel
+    background-color: transparent
+    margin-top: 17px
+    margin-bottom: 13px
+    .publisher-domain-name
+      text-align: right
+      font-size: 16px
+      line-height: 16px
+  .content-panel
+    margin: 0 auto
+    width: 460px
+    background-color: transparent
+  .info-panel
+    padding-top: 140px
+    padding-bottom: 105px
+    h3
+      color: #2f3032
+      font-size: 38px
+      font-weight: 300
+      margin-top: 0px
+      margin-bottom: 40px
+    .panel-controls
+      margin-top: 58px
+    .content-panel
+      padding: 0 30px
+  .process-panel
+    padding-top: 64px
+    padding-bottom: 105px
+    h3
       color: #2f3032
       font-size: 22px
-      font-weight: 600
+      font-weight: 500
       margin-top: 0px
-      margin-bottom: 20px
+      margin-bottom: 34px
+    .panel-controls
+      margin-top: 48px
+      .btn
+        padding-left: 60px
+        padding-right: 60px
+    .content-panel
+      padding: 0 0
+  .process-panel-narrow
+    .content-panel
+      padding: 0 30px
+
+  p
+    margin-bottom: 26px
+
+  h3
+    color: #2f3032
+    font-size: 38px
+    font-weight: 300
+    margin-top: 0px
+    margin-bottom: 40px
+  h4
+    color: #2f3032
+    font-size: 22px
+    font-weight: 500
+    margin-top: 0px
+    margin-bottom: 20px
 
   .form-group
     padding-top: 5px
   .form-group.button:last-child
-    margin: 20px 0 5px
+    margin: 40px 0 20px 0
+  .control-label
+    font-weight: 500
+    color: #484B4E
+  .optional
+    color: #818589
+    font-weight: 300
+
   label
     font-size: 16px
     font-weight: 600
     color: #48494b
-    .optional
-      color: #979797
   .label-checkbox
     padding-left: 1em
     text-indent: -1em
     display: block
+  a
+    color: #00BCD6
+    text-decoration: none
+    &:hover, &:focus
+      color: #00BCD6
+      text-decoration: underline
 
-  &[data-action="create_done"],
-  &[data-action="verification"],
-  &[data-action="verification_dns_record"],
-  &[data-action="verification_public_file"],
-  &[data-action="verification_github"],
-  &[data-action="verification_wordpress"],
-  &[data-action="verification_choose_method"],
-  &[data-action="verify"]
-    .publisher-domain-name
-      font-size: 14px
-    .form-group:not(:last-child)
-      margin-bottom: 20px
-    textarea[readonly="true"]
-      background: #fff
-    .dns-record
-      .form-control
-        font-size: $font-size-base
-        &.dns-record-value
-          font-family: monospace
-          font-size: $font-size-base * 0.6
-          height: $font-size-base * 4
-      .color-orange
-        color: $braveLightOrange
-      .dns-list-button
-        border-radius: 25px
-        background: transparent
-      .glyphicon
-        color: #56A8F5
-      .copy-button
-        margin: 10px 0
-      #contact-link
-        clear: both
-        color: $braveOrange
-        font-size: 16px
-    .hidden_form > *,
-    #verification_in_progress
-      display: none
-    .https-hint, .method-alt
-      a
-        color: $gray
-        text-decoration: underline
-    .method-alt
-      font-size: $font-size-small
-      color: $gray
-      line-height: $line-height-computed * 1.5
-    .verification-code, .file-content
-      font-family: monospace
-      font-size: $font-size-base * 0.6
-      color: $braveOrange
-      outline: #888 solid thin
-      word-break: break-all
-      height: fit-content
-      padding: 10px
-      margin-top: 5px
-      margin-bottom: 5px
-    .publisher-domain-summary
-      margin-bottom: 18px
-      .publisher-domain-name
-        font-size: $font-size-h3
-      img.verified-icon
-        margin-right: 2px
-        margin-left: 2px
-      img.verified-icon-small
-        margin-right: 2px
-        margin-left: 2px
-        height: 20px
-      img.uphold-connect-icon
-        margin-left: 2px
-    .submit-payment-info
-      margin: 24px 0
-    .https-check-icon
-      height: 30px
-      float: left
-      margin-bottom: 30px
-    .img-center
-      margin: 0 auto
-      display: block
-    .ol-flush
-      padding-left: 20px
-      list-style-position: outside
-    .brave-logo-large
-      background: url(asset-path("brave_icon_512x.png")) 0 0 / 128px 128px no-repeat
-      margin: 0 auto
-      height: 128px
-      width: 128px
+  .note-text
+    font-size: 14px
+    font-weight: 300
+    color: #999EA2
+    a
+      color: #999EA2
+      &:hover, &:focus
+        color: #00BCD6
 
-  &[data-action="verification_github"],
-  &[data-action="verification_public_file"]
-    .img-right
-      float: right
-      width: 30%
-
-    @media (max-width: 991px)
-      $li-max-width: 100%
-      .file-content
-        max-width: $li-max-width
-
-      .li-text
-        padding-left: 0px
-        padding-right: 0px
-        margin-top: 0px
-        max-width: $li-max-width
-
-    @media (min-width: 992px)
-      $li-max-width: 65%
-      .file-content
-        max-width: $li-max-width
-
-      .li-text
-        padding-left: 0px
-        padding-right: 0px
-        margin-top: 0px
-        max-width: $li-max-width
-
-  &[data-action="verification_done"]
-    h2
-      margin-top: 10px
-      color: $braveGreen
-      white-space: nowrap
-    .balance
-      color: #8c8c8c
-      font-size: $font-size-base * 1.6
-    .uphold-connect-icon
-      height: 50px
-
-  &[data-action="verification_choose_method"]
-    .or
-      text-align: center
-      line-height: 100px
-    .btn-center
-      margin: 0 auto
-      display: block
-
-
-  &[data-action="home"]
-    .dashboard-id
-      display: inline-block
-      text-transform: uppercase
-      font-size: $font-size-base
-      padding: 4px
-      margin-right: 20px
-      @media (max-width: 730px)
-        display: none
-
-    .container
-      .col-details
-        margin-top: 30px
-      h4
-        font-size: $font-size-base
-        font-weight: bold
-        text-transform: uppercase
-      legend
-        margin-bottom: 12px
-      .uphold-panel
-        background-image: url(asset-path("uphold@1x.png"))
-        background-repeat: no-repeat
-        background-position: top right
-      .dashboard-panel
-        padding-left: 75px
-        min-height: 475px
-        min-width: 400px
-        .panel-header
-          margin: 0 0 0 -50px
-          padding: 12px 0 12px 50px
-          vertical-align: middle
-          text-transform: capitalize
-          font-weight: 700
-          background-position: center left
-          background-repeat: no-repeat
-          background-size: 34px 42px
-          &#dashboard_uphold_header
-            padding-top: 14px
-            background-image: url(asset-path("wallet@1x.png"))
-          &#publishers_statement
-            background-image: url(asset-path("download@1x.png"))
-          &#publishers_contact
-            background-image: url(asset-path("contact@1x.png"))
-          &#publishers_list
-            background-image: url(asset-path("list@1x.png"))
-        .panel-header-h3
-          color: #00bcda
-          font-size: $font-size-h3
-        .panel-header-h4
-          font-size: $font-size-base
-        .panel-section
-          margin-bottom: 40px
-      .attribute-value
-        margin-bottom: 24px
-      .publisher-domain-summary
-        margin-bottom: 12px
-      .publisher-domain-name
-        font-size: $font-size-h3
-        margin-bottom: 12px
-      #publisher_status
-        font-size: $font-size-base
-        vertical-align: middle
-        padding: 5px 0 5px 35px
-        background-position: center left
-        background-repeat: no-repeat
-        background-size: 25px
-        &.complete
-          background-image: url(asset-path("verified-icon@1x.png"))
-        &.incomplete
-          background-image: url(asset-path("unverified-icon.png"))
-      .balance
-        font-size: $font-size-base
-        vertical-align: top
-        .amounts
-          margin-top: -16px
-          margin-left: 15px
-          .bat-amount
-            font-size: 48px
-          .bat-code
-            font-size: 16px
-          .converted
-            margin-top: -8px
-            font-size: 14px
-            color: $gray-light
-      .payment-info
-        font-size: $font-size-base
-      .last-deposit
-        font-weight: 700
-      .contact-person
-        .name
-        .email
-      .statements
-        white-space: nowrap
-      #statement_period
-        margin-top: 5px
-        margin-right: 10px
-      .btn-generate
-        padding: 5px 10px
-        margin-left: 10px
-      .edit-link
-        text-transform: capitalize
-        color: #00bcda
-        display: inline-block
-      #publishers_list
-        .inline-controls
-          padding: 0
-        .onoffswitch
-          margin-top: 6px
-          display: inline-block
-        .value-label
-          display: inline-block
-          margin-left: 12px
-      #update_show_verification_status.checked .value-label:after
-        color: #4fbad6
-        content: "ON"
-      #update_show_verification_status.unchecked .value-label:after
-        color: $gray-dark
-        content: "OFF"
+  strong
+    font-weight: 600
 
   .hidden
     display: none
@@ -325,6 +159,9 @@ body[data-controller="publishers"]
     top: 0
     left: 0
     right: 0
+
+  .instruction-img
+    margin-bottom: 35px
 
   .noscript-warning
     text-align: center
@@ -377,3 +214,321 @@ body[data-controller="publishers"]
         svg.fill-circle
           .inner-circle
             fill: $progress-train-fill
+
+  &[data-action="verify"]
+    .info-panel
+      padding-top: 100px
+    .brave-logo-large
+      background: url(asset-path("brave_icon_512x.png")) 0 0 / 128px 128px no-repeat
+      margin: 0 auto 30px auto
+      height: 128px
+      width: 128px
+
+  &[data-action="create_done"]
+    .email
+      background-image: url(asset-path("email-2@1x.png"))
+      background-position: 500px, 150px
+      background-repeat: no-repeat
+
+  &[data-action="verification_github"],
+  &[data-action="verification_public_file"],
+  &[data-action="verification_wordpress"]
+    h3
+      margin-bottom: 18px
+
+  &[data-action="verification_github"],
+  &[data-action="verification_public_file"],
+  &[data-action="verification_wordpress"],
+  &[data-action="verification_dns_record"]
+    ol
+      list-style-position: outside
+    li
+      p
+        margin-bottom: 12px
+      .note-text
+        margin-bottom: 12px
+    .file-content
+      width: 360px
+    .file-content-header
+      color: #48494B
+      font-size: 12px
+      font-weight: 600
+
+    .instructions
+      margin-left: -22px
+      margin-top: 35px
+    .li-text
+      margin-bottom: 10px
+    .https-check-icon
+      margin-right: 8px
+      height: 15px
+    .verification-code, .file-content
+      font-family: monospace
+      font-size: $font-size-base * 0.6
+      color: #818589
+      border: #E7EBEE solid 1px
+      border-radius: 2px
+      word-break: break-all
+      height: fit-content
+      padding: 10px
+      margin-top: 5px
+      margin-bottom: 35px
+    .btn-check-https
+      margin-top: 25px
+
+
+  &[data-action="verification_dns_record"]
+    .dns-record
+      .form-control
+        font-size: $font-size-base
+        &.dns-record-value
+          font-family: monospace
+          font-size: $font-size-base * 0.6
+          height: $font-size-base * 4
+      .color-orange
+        color: $braveLightOrange
+      .dns-list-button
+        border-radius: 25px
+        background: transparent
+      .glyphicon
+        color: #56A8F5
+      .copy-button
+        margin: 10px 0
+      #contact-link
+        clear: both
+        color: $braveOrange
+        font-size: 16px
+    .form-group:not(:last-child)
+      margin-bottom: 20px
+    textarea[readonly="true"]
+      background: #fff
+
+  &[data-action="create_done"],
+  &[data-action="verification"],
+  &[data-action="verification_dns_record"],
+  &[data-action="verification_public_file"],
+  &[data-action="verification_github"],
+  &[data-action="verification_wordpress"],
+  &[data-action="verification_choose_method"],
+  &[data-action="verify"]
+    .hidden_form > *,
+    #verification_in_progress
+      display: none
+    .https-hint, .method-alt
+      a
+        color: $gray
+        text-decoration: underline
+    .method-alt
+      font-size: $font-size-small
+      color: $gray
+      line-height: $line-height-computed * 1.5
+    .publisher-domain-summary
+      margin-bottom: 18px
+      .publisher-domain-name
+        font-size: $font-size-h3
+      img.verified-icon
+        margin-right: 2px
+        margin-left: 2px
+      img.verified-icon-small
+        margin-right: 2px
+        margin-left: 2px
+        height: 20px
+      img.uphold-connect-icon
+        margin-left: 2px
+    .submit-payment-info
+      margin: 24px 0
+    .img-center
+      margin: 0 auto
+      display: block
+
+  &[data-action="verification_choose_method"]
+    .content-panel
+      width: 740px
+    h3
+      text-align: center
+      margin-bottom: 50px
+    h4
+      margin-left: -34px
+      margin-bottom: 10px
+      font-size: 28px
+      font-weight: 300
+      line-height: 28px
+      letter-spacing: -0.4px
+      color: #2f3032
+    h5
+      font-size: 16px
+      font-weight: 300
+      &.recommended
+        color: #02b999
+        font-weight: 500
+    .verification-method
+      display: inline-block
+      vertical-align: top
+      padding-left: 27px
+      &.optionA
+        width: 340px
+        h4:before
+          content: "A. "
+      &.optionB
+        width: 300px
+        h4:before
+          content: "B. "
+      .btn
+        width: 250px
+      .btn-secondary
+        border-color: #fd4246
+        color: #fd4246
+      .img-container
+        height: 215px
+        vertical-align: middle
+        img.choose-trusted-file
+          margin-top: 30px
+        img.choose-dns
+          margin-top: 52px
+    .or
+      display: inline-block
+      width: 70px
+      line-height: 330px
+    .fine-print
+      clear: both
+      margin-top: 68px
+      font-size: 14px
+      font-weight: 400
+      color: #999ea2
+      a
+        color: #00bcd6
+    @media (max-width: 991px)
+      .content-panel
+        width: 340px
+      .or
+        display: block
+        width: 340px
+        line-height: 30px
+        margin: 40px 0
+        text-align: center
+      .verification-method
+        display: block
+
+  &[data-action="home"]
+    .dashboard-id
+      display: inline-block
+      text-transform: uppercase
+      font-size: $font-size-base
+      padding: 4px
+      margin-right: 20px
+      @media (max-width: 730px)
+        display: none
+
+    .container
+      .col-details
+        margin-top: 30px
+      h4
+        font-size: 13px
+        font-weight: 300
+        text-transform: uppercase
+        letter-spacing: 0.5px
+      legend
+        margin-bottom: 12px
+      .uphold-panel
+        background-image: url(asset-path("uphold@1x.png"))
+        background-repeat: no-repeat
+        background-position: top right
+      .panel-row
+        margin-bottom: 150px
+      .dashboard-panel
+        padding-left: 95px
+        padding-right: 45px
+        min-height: 360px
+        min-width: 400px
+        .panel-header
+          margin: 0 0 0 -50px
+          padding: 12px 0 12px 50px
+          vertical-align: middle
+          text-transform: capitalize
+          font-weight: 700
+          background-position: center left
+          background-repeat: no-repeat
+          background-size: 34px 42px
+          &#dashboard_uphold_header
+            padding-top: 14px
+            background-image: url(asset-path("wallet@1x.png"))
+          &#publishers_statement
+            background-image: url(asset-path("download@1x.png"))
+          &#publishers_contact
+            background-image: url(asset-path("contact@1x.png"))
+          &#publishers_list
+            background-image: url(asset-path("list@1x.png"))
+        .panel-header-h3
+          font-size: $font-size-h3
+        .panel-header-h4
+          font-size: $font-size-base
+        .panel-section
+          margin-bottom: 40px
+      .attribute-value
+        margin-bottom: 24px
+      .publisher-domain-summary
+        margin-bottom: 12px
+      .publisher-domain-name
+        font-size: 28px
+        margin-bottom: 12px
+      #publisher_status
+        font-size: $font-size-base
+        vertical-align: middle
+        padding: 5px 0 5px 35px
+        background-position: center left
+        background-repeat: no-repeat
+        background-size: 25px
+        &.complete
+          background-image: url(asset-path("verified-icon@1x.png"))
+        &.incomplete
+          background-image: url(asset-path("unverified-icon.png"))
+      .balance
+        font-size: $font-size-base
+        vertical-align: top
+        .amounts
+          margin-top: -16px
+          margin-left: 15px
+          .bat-amount
+            font-size: 48px
+            color: #222326
+            weight: 500
+          .bat-code
+            font-size: 16px
+            color: #222326
+            weight: 500
+          .converted
+            margin-top: -8px
+            font-size: 14px
+            color: $gray-light
+      .payment-info
+        font-size: $font-size-base
+      .last-deposit
+        font-weight: 700
+      .statements
+        white-space: nowrap
+      #statement_period
+        margin-top: 5px
+        margin-right: 10px
+      .btn-generate
+        padding: 5px 10px
+        margin-left: 10px
+      .edit-link
+        text-transform: capitalize
+        color: #00bcda
+        display: inline-block
+      #publishers_list
+        .inline-controls
+          padding: 0
+        .onoffswitch
+          margin-top: 6px
+          display: inline-block
+        .value-label
+          display: inline-block
+          margin-left: 12px
+      #update_show_verification_status.checked .value-label:after
+        color: #4fbad6
+        content: "ON"
+      #update_show_verification_status.unchecked .value-label:after
+        color: $gray-dark
+        content: "OFF"
+

@@ -1,105 +1,99 @@
 - content_for(:navbar_content) do
   = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
 
-.row
-  .col-center.col-lg-9
-    .publisher-domain-name.pull-right
-      = current_publisher.brave_publisher_id
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    = current_publisher.brave_publisher_id
 
-.row
-  .col-center.col-lg-9
-    .sub-panel
-      .row
-        .col-center.col-xs-9.dns-record id="dns_records"
-          fieldset
-            legend=I18n.t("publishers.verification_option_dns_record_add_new") + current_publisher.brave_publisher_id
-            .help-block
-              span= I18n.t("publishers.verification_dns_record_help")
-              span= current_publisher.brave_publisher_id
-              strong= I18n.t("publishers.verification_dns_record_help_2")
+.publisher-main-panel.publisher-panel.col-center
+  .sub-panel.process-panel.col-center
+    .content-panel
+      .dns-record id="dns_records"
+        h3=I18n.t("publishers.verification_option_dns_record_add_new") + current_publisher.brave_publisher_id
+        p
+          span= I18n.t("publishers.verification_dns_record_help")
+          span= current_publisher.brave_publisher_id
+          strong= I18n.t("publishers.verification_dns_record_help_2")
 
-            .help-block
-              span= I18n.t("publishers.verification_dns_record_instruction1")
-              strong= current_publisher.brave_publisher_id
-              span= I18n.t("publishers.verification_dns_record_instruction2")
+        p
+          span= I18n.t("publishers.verification_dns_record_instruction1")
+          strong= current_publisher.brave_publisher_id
+          span= I18n.t("publishers.verification_dns_record_instruction2")
 
-          .form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_name")
-            span.form-control
-              span.color-orange#name= "@"
-            button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#name" Copy to Clipboard
-          .form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_type")
-            span.color-orange.form-control#type TXT
-            button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#type" Copy to Clipboard
-          .form-group
-            label.control-label= I18n.t("publishers.verification_option_dns_record_value")
-            textarea.color-orange.dns-record-value.form-control#value readonly="true"
-              = publisher_verification_dns_record(current_publisher)
-            button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value" Copy to Clipboard
-          .form-group
-            .help-block= I18n.t("publishers.verification_dns_record_verify")
+        .form-group
+          label.control-label= I18n.t("publishers.verification_option_dns_record_name")
+          span.form-control
+            span.color-orange#name= "@"
+          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#name" Copy to Clipboard
+        .form-group
+          label.control-label= I18n.t("publishers.verification_option_dns_record_type")
+          span.color-orange.form-control#type TXT
+          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#type" Copy to Clipboard
+        .form-group
+          label.control-label= I18n.t("publishers.verification_option_dns_record_value")
+          textarea.color-orange.dns-record-value.form-control#value readonly="true"
+            = publisher_verification_dns_record(current_publisher)
+          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value" Copy to Clipboard
+        .form-group
+          p= I18n.t("publishers.verification_dns_record_verify")
+          p.note-text= I18n.t("publishers.verification_option_dns_record_note")
 
-          .form-group
-            .form-horizontal
-              .form-group
-                .col-xs-10.col-md-6
-                  = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-                    = f.submit(t("publishers.verify_dns_button"), class: "btn btn-block btn-primary btn-sm", :"data-piwik-action" => "DNSVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
-                .col-xs-2.col-md-2
-                  = popover_menu do
-                    h5= I18n.t("publishers.verification_helper_dns_title")
-                    .help-block= I18n.t("publishers.verification_helper_dns_content")
-                    ul.pull-left
-                      li
-                        a target="_blank" href="https://help.1and1.com/domains-c36931/manage-domains-c79822/dns-c37586/add-or-remove-txt-records-a792509.html" 1&1
-                      li
-                        a target="_blank" href="https://www.101domain.com/help-faq.htm" 101domain
-                      li
-                        a target="_blank" href="https://my.bluehost.com/cgi/help/txt_record" Bluehost
-                      li
-                        a target="_blank" href="https://www.crazydomains.com.au/help/how-do-i-update-the-txt-records/" Crazy Domains
-                      li
-                        a target="_blank" href="https://www.dotster.com/dotster/support/" Dotster
-                      li
-                        a target="_blank" href="https://help.dreamhost.com/hc/en-us/articles/214694348-Basic-DNS-records" DreamHost
-                      li
-                        a target="_blank" href="https://help.dyn.com/standard-dns/managing-resource-records-in-dyn-standard-dns/#record_txt" Dyn or Nettica
-                      li
-                        a target="_blank" href="https://www.dynadot.com/community/help/question/create-TXT-record" Dynadot
-                    ul.pull-left
-                      li
-                        a target="_blank" href="https://fusion.easydns.com/index.php?/Knowledgebase/Article/View/140/7/dns-entries" EasyDNS
-                      li
-                        a target="_blank" href="http://www.enom.com/kb/kb/kb_0488-add-spf-txt-records.htm" eNom
-                      li
-                        a target="_blank" href="https://getflywheel.com/wordpress-support/how-do-i-set-up-my-dns/" flywheel
-                      li
-                        a target="_blank" href="https://www.godaddy.com/help/add-a-txt-record-19232" GoDaddy
-                      li
-                        a target="_blank" href="https://support.google.com/a/answer/183895?hl=en" Google
-                      li
-                        a target="_blank" href="https://support.hostgator.com/articles/how-to-change-dns-zones-mx-cname-and-a-records" HostGator
-                      li
-                        a target="_blank" href="https://help.hover.com/hc/en-us/articles/217282457-How-to-Edit-DNS-records-A-CNAME-MX-TXT-and-SRV-Updated-Aug-2015-" Hover
-                      li
-                        a target="_blank" href="https://help.iwantmyname.com/customer/en/portal/articles/1769981" IWantMyName
-                    ul.pull-left
-                      li
-                        a target="_blank" href="https://www.name.com/support/articles/206127137-Adding-DNS-records-and-templates" Name.com
-                      li
-                        a target="_blank" href="https://www.namecheap.com/support/knowledgebase/article.aspx/317" Namecheap
-                      li
-                        a target="_blank" href="http://www.networksolutions.com/support/how-to-manage-advanced-dns-records/" Network Solutions
-                      li
-                        a target="_blank" href="https://support.rackspace.com/how-to/create-an-spf-txt-record/" Rackspace
-                      li
-                        a target="_blank" href="https://forum.web.com/register/faq/?p_sid=&p_lva=&p_li=&p_accessibility=0&p_redirect=&p_page=1&p_cv=&p_pv=1.1&p_prods=1&p_cats=+&p_hidden_prods=&prod_lvl1=1&cat_lvl1=+&p_search_text=&p_new_search=1#AccountInformation/What_Is_a_DNS_Record.htm?Highlight=add a dns record" Register.com
-                      li
-                        a target="_blank" href="https://support.office.com/en-us/article/Create-DNS-records-at-Aabaco-Small-Business-for-Office-365-53d1daba-6a4f-4814-8a68-8ad3d031463e#bkmk_verify" Yahoo/Aabaco
-                    div
-                      a#contact-link.pull-right href="mailto:support+publishers@basicattentiontoken.org"=I18n.t("publishers.verification_helper_dns_contact")
-      .row
-        .col-center.col-xs-9
-          .form-group
-            .help-block=I18n.t("publishers.verification_option_dns_record_note")
+        .form-group
+          .form-horizontal
+            .form-group
+              .col-xs-10.col-md-6
+                = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
+                  = f.submit(t("publishers.verify_dns_button"), class: "btn btn-block btn-primary btn-sm", :"data-piwik-action" => "DNSVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
+              .col-xs-2.col-md-2
+                = popover_menu do
+                  h5= I18n.t("publishers.verification_helper_dns_title")
+                  .help-block= I18n.t("publishers.verification_helper_dns_content")
+                  ul.pull-left
+                    li
+                      a target="_blank" href="https://help.1and1.com/domains-c36931/manage-domains-c79822/dns-c37586/add-or-remove-txt-records-a792509.html" 1&1
+                    li
+                      a target="_blank" href="https://www.101domain.com/help-faq.htm" 101domain
+                    li
+                      a target="_blank" href="https://my.bluehost.com/cgi/help/txt_record" Bluehost
+                    li
+                      a target="_blank" href="https://www.crazydomains.com.au/help/how-do-i-update-the-txt-records/" Crazy Domains
+                    li
+                      a target="_blank" href="https://www.dotster.com/dotster/support/" Dotster
+                    li
+                      a target="_blank" href="https://help.dreamhost.com/hc/en-us/articles/214694348-Basic-DNS-records" DreamHost
+                    li
+                      a target="_blank" href="https://help.dyn.com/standard-dns/managing-resource-records-in-dyn-standard-dns/#record_txt" Dyn or Nettica
+                    li
+                      a target="_blank" href="https://www.dynadot.com/community/help/question/create-TXT-record" Dynadot
+                  ul.pull-left
+                    li
+                      a target="_blank" href="https://fusion.easydns.com/index.php?/Knowledgebase/Article/View/140/7/dns-entries" EasyDNS
+                    li
+                      a target="_blank" href="http://www.enom.com/kb/kb/kb_0488-add-spf-txt-records.htm" eNom
+                    li
+                      a target="_blank" href="https://getflywheel.com/wordpress-support/how-do-i-set-up-my-dns/" flywheel
+                    li
+                      a target="_blank" href="https://www.godaddy.com/help/add-a-txt-record-19232" GoDaddy
+                    li
+                      a target="_blank" href="https://support.google.com/a/answer/183895?hl=en" Google
+                    li
+                      a target="_blank" href="https://support.hostgator.com/articles/how-to-change-dns-zones-mx-cname-and-a-records" HostGator
+                    li
+                      a target="_blank" href="https://help.hover.com/hc/en-us/articles/217282457-How-to-Edit-DNS-records-A-CNAME-MX-TXT-and-SRV-Updated-Aug-2015-" Hover
+                    li
+                      a target="_blank" href="https://help.iwantmyname.com/customer/en/portal/articles/1769981" IWantMyName
+                  ul.pull-left
+                    li
+                      a target="_blank" href="https://www.name.com/support/articles/206127137-Adding-DNS-records-and-templates" Name.com
+                    li
+                      a target="_blank" href="https://www.namecheap.com/support/knowledgebase/article.aspx/317" Namecheap
+                    li
+                      a target="_blank" href="http://www.networksolutions.com/support/how-to-manage-advanced-dns-records/" Network Solutions
+                    li
+                      a target="_blank" href="https://support.rackspace.com/how-to/create-an-spf-txt-record/" Rackspace
+                    li
+                      a target="_blank" href="https://forum.web.com/register/faq/?p_sid=&p_lva=&p_li=&p_accessibility=0&p_redirect=&p_page=1&p_cv=&p_pv=1.1&p_prods=1&p_cats=+&p_hidden_prods=&prod_lvl1=1&cat_lvl1=+&p_search_text=&p_new_search=1#AccountInformation/What_Is_a_DNS_Record.htm?Highlight=add a dns record" Register.com
+                    li
+                      a target="_blank" href="https://support.office.com/en-us/article/Create-DNS-records-at-Aabaco-Small-Business-for-Office-365-53d1daba-6a4f-4814-8a68-8ad3d031463e#bkmk_verify" Yahoo/Aabaco
+                  div
+                    a#contact-link.pull-right href="mailto:support+publishers@basicattentiontoken.org"=I18n.t("publishers.verification_helper_dns_contact")

@@ -1,21 +1,15 @@
 - content_for(:navbar_content) do
   = render :partial => 'progress', :locals => { progress: { info: 100, verify: 80, wallet: 0 }, publisher: current_publisher }
 
-.row
-  .col-center.col-lg-9
-    .publisher-domain-name.pull-right
-      = current_publisher.brave_publisher_id
-.row
-  .col-center.col-lg-9
-    .sub-panel
-      .row
-        .col-center.col-xs-9
-          .brave-logo-large.img-responsive
-      .row
-        .col-center.col-xs-9
-          fieldset
-            legend= t("publishers.verification_background_header")
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    = current_publisher.brave_publisher_id
 
-          .form-group
-            .help-block= t("publishers.verification_background_help")
-            strong.help-block= t("publishers.verification_background_help_continue")
+.publisher-main-panel.publisher-panel.col-center
+  .sub-panel.info-panel.col-center
+    .content-panel
+      .brave-logo-large.img-responsive
+      h3.text-center= t("publishers.verification_background_header")
+      p= t("publishers.verification_background_help")
+      p
+        strong= t("publishers.verification_background_help_continue")

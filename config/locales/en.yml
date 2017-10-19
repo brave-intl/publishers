@@ -25,7 +25,7 @@ en:
       publisher:
         brave_publisher_id: "Website Domain"
         phone_normalized: "Phone Number"
-        show_verification_status: "Yes, please list my site in Brave's verified publisher list after verification"
+        show_verification_status: "List my site in Brave's verified publisher site once verified."
         name: "Contact Name"
     errors:
       models:
@@ -56,11 +56,14 @@ en:
     complete_irs_w_8ben_hint: "Individuals outside the States"
     contact_person: "Contact person"
     contact: "Contact"
-    create_done_header: "We're excited that you want to be in on Brave Payments!"
+    create_done_header: "An email is on its way!"
     create_done_body_html: |
-      <p>We sent an email to %{email}, <strong>click on the access link</strong> provided in the email to jump into
+      <p>We're excited that you want to be in on Brave Payments. We just sent an email to
+      <strong class="email-address">%{email}</strong>. Click on the access link provided in the email to jump into
       the verification process.</p>
-      <p>Don't see the email? Be sure to check your spam folder. You may also request to 'Resend email' below.</p>
+      <hr>
+      <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again}.</p>
+    try_again: "try again"
     create_done_resend_email: "Resend email"
     resend_confirmation_email_done: "The confirmation email has been resent."
     create_done_body_confirm_email: "An email has been sent to %{email}. Please confirm your email address by clicking on the access link provided in the email. The link will return you to this site to proceed with step 2."
@@ -84,15 +87,12 @@ en:
     log_out: "Log out"
     logged_out: "Your session has been cleared."
     new: "Contact Information"
-    new_auth_token: "Login to see your info"
+    new_auth_token: "Log In to Brave Payments"
     new_auth_token_header: "Existing publisher login"
-    new_auth_token_body_html: |
-      <p>If you've already started or completed verification, we can send a login link to the email address associated
-      with your publisher registration.</p>
-      <p>If you've forgotten the email address used and have completed verification, leave the email field blank and
-      we'll use the last one on file. Otherwise, start a new verification.</p>
-    new_auth_token_button: "Send login email"
-    new_auth_token_email: "Email address (optional if verification is complete)"
+    new_auth_token_body: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
+    new_auth_token_button: "Email me a link to log in"
+    new_auth_token_email_html: |
+      Email Address <span class="optional">(optional if verification is complete)</span>
     new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
@@ -124,13 +124,13 @@ en:
     verification_dns_record_instruction2: " using your DNS host's control panel."
     verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
     verification_form_legend: "Verify website ownership"
-
-    verification_choose_header: "Verify your Site: Choose a method"
-    verification_choose_help: "Here are the options for verifying the ownership of your domain."
-    verification_choose_trusted_file_html: "Via a trusted file<br>(recommended & easiest)"
-    verification_choose_trusted_file_button: "I'll upload a trusted file"
+    verification_choose_header: "Choose a Verification Method"
+    verification_choose_trusted_file_header: "Download a trusted file"
+    verification_choose_trusted_file_subheader: "(Recommended & easiest)"
+    verification_choose_trusted_file_button: "I'll use a trusted file"
     verification_choose_or: "OR"
-    verification_choose_dns_html: "By editing DNS records for the domain<br>(you need to have DNS access)"
+    verification_choose_dns_header: "Edit DNS records"
+    verification_choose_dns_subheader: "(You need DNS access)"
     verification_choose_dns_button: "I'll edit my DNS record"
     verification_choose_support_queue_link: "join the support queue."
     verification_choose_support_queue_html: |
@@ -138,9 +138,9 @@ en:
 
     verification_support_queue_header: "Thanks for waiting!"
     verification_support_queue_help_html: |
-      <p>We will be reaching out to each member in the order they are received.</p>
-      <p>An email will arrive when our next available support member will be able to assist you. Please
-      keep in mind that this may take a week due to our current backlog.</p>
+      <p>We will be reaching out to each member in the order the requests are received.</p>
+      <p>You will receive an email when our next available support member can assist you. Please keep in mind
+      that this may take a few days due to our current backlog.</p>
     verification_support_review_options: "I'd like to review my options"
     progress_contact_info: "Contact Info"
     progress_verify: "Verify Your Site"
@@ -182,28 +182,32 @@ en:
       Upload the verification file to the '<strong>.well-known</strong>' folder on your domain. If one doesn't exist,
       be sure to create it. Make sure the file is in the .well-known folder and click verify.
     verification_public_file_help: "To verify your site ownership, you will need to create a new directory on your site and add a text file to this directory."
-    verification_download_verification: "Download verification"
+    verification_download_verification: "Download"
     verification_option_public_file_file_contents: "File contents:"
     verification_option_public_file_verify_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your site is hosted."
-    verification_option_wordpress: "Hello! It looks like you are using Wordpress."
-    verification_option_wordpress_help_intro: "We have an extension which will make verification a snap."
-    verification_option_wordpress_help_1_html: |
-      First, please install the plugin here: <a href="https://wordpress.org/plugins/well-known-uris/" class="link-secondary">
-      https://wordpress.org/plugins/well-known-uris/</a>
-    verification_option_wordpress_help_2_html: |
-      Second, copy the verification code below into the plugin.
+    verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
+    verification_option_wordpress_install_plugin_html: |
+      <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/">Install the plugin</a> that makes the
+       entire process a snap.</p>
+      <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/well-known-uris/">
+      https://wordpress.org/plugins/well-known-uris/</a>)</p>
+    verification_option_wordpress_verification_token: "Copy the verification code below into the plugin."
     verification_option_wordpress_token: "Verification code:"
-    verification_option_wordpress_help_verify: "Finally, let us know you are ready to check for the verification code."
+    verification_option_wordpress_help_verify: "Once the code is pasted in, click verify."
     verification_option_wordpress_verify_button: "Check for the verification code"
     verification_option_github_use: "Verify Your Site: Upload a trusted file"
-    verification_option_github_nojekyll: "Please make sure to add an empty file named '.nojekyll' to the root of your repo."
-    verification_option_github_help_download: "Download the verification file below:"
+    verification_option_github_nojekyll_html: |
+      It looks like you are using <strong>GitHub</strong>. As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
+    verification_download_html: |
+      %{download_link} the verification file.
     verification_option_github_help_directory: "Find or create the directory: %{directory}"
-    verification_option_github_help_upload_html: |
-      Upload the verification file to the '<strong>.well-known</strong>' folder on your repo. If one doesn't exist,
-      be sure to create it. Make sure the file is in the .well-known folder and click verify.
-    verification_option_github_file_contents: "File contents:"
-    verification_option_github: "Hello! It looks like you are using GitHub."
+    verification_upload_html: |
+      Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you
+      don't have one).
+    verification_verify: "Make sure the verification file is placed in the folder and click verify."
+    verification_verify_note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
+    verification_file_contents: "File contents:"
+    verification_option_place_trusted_file: "Place a Trusted File into your Domain"
     verification_option_github_verify_button: "Check for the verification code."
     verification_required: "To continue please verify ownership of your domain."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
