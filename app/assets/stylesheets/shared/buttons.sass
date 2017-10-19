@@ -1,4 +1,11 @@
 .btn
+  a
+    text-decoration: none
+    &:hover
+      text-decoration: none
+    &:active
+      text-decoration: none
+
   &.btn-primary
     padding: 9px 24px
     border-radius: 20px
@@ -11,13 +18,14 @@
     box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
     color: #fff
     font-weight: 400
-    a
-      color: #ff4d3f
-      text-decoration-line: none
     &:hover
+      color: #fff
       background: #fc624e
+      text-decoration: none
     &:active
+      color: #fff
       background: #e22a1f
+      text-decoration: none
 
   &.btn-secondary
     padding: 9px 24px
@@ -31,11 +39,14 @@
     box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
     color: #8F9397
     font-weight: 400
-    a
-      color: #d3d5d7
-      text-decoration-line: none
+    text-decoration: none
     &:hover
+      color: #8F9397
       border: 1px solid #aaa
+      text-decoration: none
+    &:active
+      text-decoration: none
+      color: #8F9397
 
   &.btn-tertiary
     background: white

@@ -16,7 +16,7 @@
           li
             p= t("publishers.verification_option_github_nojekyll_html")
           li
-            p= t("publishers.verification_download_html", download_link: link_to(t("publishers.verification_download_verification"), download_verification_file_publishers_path))
+            p= t("publishers.verification_download_html", download_link: link_to(t("publishers.verification_download_verification"), download_verification_file_publishers_path, class: "download-link"))
             .pull-left
               = image_tag("file@1x.png", class: "instruction-img")
             .pull-right

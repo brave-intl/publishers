@@ -46,7 +46,7 @@ en:
     already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
     authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
     balance_error: "Unavailable"
-    balance_pending: "Current Contribution Balance"
+    balance_pending: "CURRENT CONTRIBUTION BALANCE"
     balance_pending_approximate: "Approximately %{amount} %{code}"
     legacy_balance_pending: "Legacy balance pending (Bitcoin system)"
     claim_funds: "Claim funds"
@@ -187,7 +187,7 @@ en:
     verification_option_public_file_verify_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your site is hosted."
     verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
     verification_option_wordpress_install_plugin_html: |
-      <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/">Install the plugin</a> that makes the
+      <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
        entire process a snap.</p>
       <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/well-known-uris/">
       https://wordpress.org/plugins/well-known-uris/</a>)</p>
