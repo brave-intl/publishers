@@ -11,8 +11,6 @@
       h3.text-center= t("publishers.create_done_header")
       = t("publishers.create_done_body_html",
               email: @publisher_email,
-              try_again: link_to(t("publishers.try_again"), "#", :onclick=>"document.forms[0].submit();"))
+              try_again: link_to(t("publishers.try_again"), "#", :onclick=>"document.getElementById('resend_email_form').submit();"))
 
-      = button_to t("publishers.create_done_resend_email"),
-              { controller: "publishers", action: "resend_email_verify_email" },
-              { method: "post", class: "hidden" }
+      = form_tag(resend_email_verify_email_publishers_path, method: "post", class: "hidden", id: "resend_email_form")
