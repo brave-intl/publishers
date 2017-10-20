@@ -1,33 +1,52 @@
-// $btn-primary-bg: linear-gradient($braveLightOrange, $braveOrange);
-// $btn-primary-border: $braveLightOrange transparent $braveOrange;
-// $btn-primary-border:             darken($btn-primary-bg, 5%) !default;
-// $btn-primary-color: #fff
-
 .btn
-  &.btn-primary
-    background: linear-gradient($braveLightOrange, $braveOrange)
-    border: 2px solid transparent
-    border-bottom: 2px solid $braveOrange
-    border-top: 2px solid $braveLightOrange
-    box-shadow: $buttonShadow
-    color: #fff
-
+  a
+    text-decoration: none
     &:hover
-      background: linear-gradient(darken($braveLightOrange, 10%), darken($braveOrange, 10%))
-      border: 2px solid #fff
-      border-bottom: 2px solid #fff
-      border-top: 2px solid #fff
+      text-decoration: none
+    &:active
+      text-decoration: none
+
+  &.btn-primary
+    padding: 9px 24px
+    border-radius: 20px
+    height: 40px
+    letter-spacing: 0.02em
+    font-size: 14px
+
+    background: #ff3f3f
+    border: none
+    box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
+    color: #fff
+    font-weight: 400
+    &:hover
+      color: #fff
+      background: #fc624e
+      text-decoration: none
+    &:active
+      color: #fff
+      background: #e22a1f
+      text-decoration: none
 
   &.btn-secondary
-    background: linear-gradient(white, #ececec)
-    border: 2px solid transparent
-    border-bottom: 2px solid #ddd
-    border-top: 2px solid #eee
-    box-shadow: $buttonShadow
-    color: #555
+    padding: 9px 24px
+    border-radius: 20px
+    height: 40px
+    letter-spacing: 0.02em
+    font-size: 14px
 
+    background: white
+    border: 1px solid
+    box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
+    color: #8F9397
+    font-weight: 400
+    text-decoration: none
     &:hover
-      border: 2px solid #aaa
+      color: #8F9397
+      border: 1px solid #aaa
+      text-decoration: none
+    &:active
+      text-decoration: none
+      color: #8F9397
 
   &.btn-tertiary
     background: white
@@ -35,28 +54,20 @@
     color: #555
 
     &:hover
-      border: 2px solid #aaa
+      border: 1px solid #aaa
 
   &.btn-download
     margin-top: 10px
 
-    // &:hover {
-    //   color: $color;
-    //   background-color: darken($background, 10%);
-    //       border-color: darken($border, 12%);
-    // }
-    // &:active,
-    // &.active,
-    // .open > &.dropdown-toggle {
-    //   color: $color;
-    //   background-color: darken($background, 10%);
-    //       border-color: darken($border, 12%);
-    //
-    //   &:hover,
-    //   &:focus,
-    //   &.focus {
-    //     color: $color;
-    //     background-color: darken($background, 17%);
-    //         border-color: darken($border, 25%);
-    //   }
-    // }
+  &.btn-center
+    margin: 0 auto
+    display: block
+
+  &.btn-logout
+    color: #606467
+    a
+      color: #606467
+      text-decoration-line: none
+      &:hover
+        color: #606467
+        text-decoration-line: none

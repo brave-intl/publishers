@@ -15,9 +15,8 @@ if (document.head.dataset.piwikHost) {
     e = e || window.event;
     var target = e.target || e.srcElement;
 
-    // Track if a user clicked on the verify button for a Wordpress flow
-    if (target.dataset.trackWordpress) {
-      _paq.push(['trackEvent', 'WordpressVerificationClicked', 'Clicked', 'WordpressFlow']);
+    if (target.dataset.piwikAction) {
+      _paq.push(['trackEvent', target.dataset.piwikAction, target.dataset.piwikName, target.dataset.piwikValue]);
     }
   }, false);
 }

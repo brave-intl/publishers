@@ -1,22 +1,27 @@
 - content_for(:navbar_content) do
   = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
 
-.row
-  .col-no-pad.col-center.col-xs-10.col-md-8
-    fieldset
-      legend= t("publishers.verification_option_wordpress")
-.row
-  .col-no-pad.col-center.col-xs-10.col-md-8
-    = render :partial => 'https_check', :locals => { publisher: current_publisher }
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    = current_publisher.brave_publisher_id
 
-div class=(current_publisher.supports_https? ? "row" : "row dimmed")
-  .col-no-pad.col-center.col-xs-10.col-md-8
-    .form-group
-      .help-block= t("publishers.verification_option_wordpress_help_intro")
-      .help-block= t("publishers.verification_option_wordpress_help_1_html")
-      .help-block= t("publishers.verification_option_wordpress_help_2_html")
-      .strong= t("publishers.verification_option_wordpress_token")
-      .verification_code= "brave-ledger-verification=#{publisher_filtered_verification_token(current_publisher)}"
-      .help-block= t("publishers.verification_option_wordpress_help_verify")
-      = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
-        = f.submit(t("publishers.verification_option_wordpress_verify_button"), class: "btn btn-primary btn-sm", :"data-track-wordpress" => "1")
+.publisher-main-panel.publisher-panel.col-center
+  .sub-panel.process-panel.col-center
+    .content-panel
+      h3= t("publishers.verification_option_wordpress")
+      = render :partial => 'https_check', :locals => { publisher: current_publisher }
+
+      div class=(current_publisher.supports_https? ? "instructions" : "instructions dimmed")
+        ol
+          li
+            = t("publishers.verification_option_wordpress_install_plugin_html")
+          li
+            p.li-text= t("publishers.verification_option_wordpress_verification_token")
+            .file-content-header= t("publishers.verification_option_wordpress_token")
+            .verification-code= "brave-ledger-verification=#{publisher_filtered_verification_token(current_publisher)}"
+          li
+            p.li-text= t("publishers.verification_option_wordpress_help_verify")
+            p.note-text= t("publishers.verification_verify_note")
+            .panel-controls
+              = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
+                = f.submit(t("publishers.verify_button"), class: "btn btn-primary", :"data-piwik-action" => "WordpressVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "WordpressFlow")

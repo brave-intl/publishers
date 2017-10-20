@@ -1,6 +1,6 @@
 body[data-controller="static"]
-  padding-top: $navbar-margin-bottom
-  height: 100vh
+  padding-top: 0
+  min-height: 100vh
 
   background-color: #f33a46
   background-image: url(asset-path("coins.png")) /* fallback */
@@ -21,19 +21,25 @@ body[data-controller="static"]
     letter-spacing: 0.02em
 
   .logo
-    margin-top: 20px
+    margin-top: 42px
 
   .main-heading
     h2
       font-weight: 200
       font-size: 32px
       margin-bottom: 0px
-    h1
-      font-weight: 700
-      font-size: 52px
-      margin-top: 10px
-      margin-bottom: 40px
-      margin-right: -30px
+    @media (max-width: 991px)
+      h1
+        font-weight: 700
+        font-size: 52px
+        margin-top: 5px
+        margin-bottom: 20px
+    @media (min-width: 992px)
+      h1
+        font-weight: 700
+        font-size: 52px
+        margin-top: 10px
+        margin-bottom: 40px
 
   .section-header
     margin-top: 0px
@@ -49,10 +55,6 @@ body[data-controller="static"]
     strong
       color: white
       font-weight: 600
-
-  .dashboard
-    margin-top: 35px
-    margin-bottom: 35px
 
   .divider
     border-color: rgba(#ededee, 0.35)
@@ -77,6 +79,9 @@ body[data-controller="static"]
       margin: 0 auto
       padding-left: 40px
       padding-right: 40px
+    .dashboard
+      margin-top: 0px
+      margin-bottom: 10px
 
   @media (min-width: 992px)
     .col-left
@@ -85,6 +90,9 @@ body[data-controller="static"]
     .col-right
       padding-left: 30px
       padding-right: 70px
+    .dashboard
+      margin-top: 10px
+      margin-bottom: 35px
 
   @media (min-width: 1200px)
     .col-left

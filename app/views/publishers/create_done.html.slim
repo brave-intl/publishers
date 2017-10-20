@@ -1,14 +1,16 @@
 - content_for(:navbar_content) do
   = render :partial => 'progress', :locals => { progress: { info: 50, verify: 0, wallet: 0 }, publisher: current_publisher }
 
-.row
-  .col-center.col-xs-12.col-md-7
-    h4.section-title
-      h3= t("publishers.create_done_header")
-      .help-block= t("publishers.create_done_body_html", email: @publisher_email)
-      = image_tag("email_envelope.png", class: "img-center")
-.row
-  .col-center.col-xs-6.col-md-3
-    = button_to t("publishers.create_done_resend_email"),
-        { controller: "publishers", action: "resend_email_verify_email" },
-        { method: "post", class: "btn btn-block btn-secondary" }
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    | &nbsp;
+
+.publisher-main-panel.publisher-panel.col-center
+  .sub-panel.info-panel.col-center.email-panel
+    .content-panel
+      h3.text-center= t("publishers.create_done_header")
+      = t("publishers.create_done_body_html",
+              email: @publisher_email,
+              try_again: link_to(t("publishers.try_again"), "#", :onclick=>"document.getElementById('resend_email_form').submit();"))
+
+      = form_tag(resend_email_verify_email_publishers_path, method: "post", class: "hidden", id: "resend_email_form")

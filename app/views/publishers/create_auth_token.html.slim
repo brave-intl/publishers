@@ -1,6 +1,11 @@
 - content_for(:navbar_content) do
 
-.row
-  .col-center.col-xs-10.col-sm-7.col-md-6.col-lg-5
-    h4.section-title= t("publishers.create_auth_token")
-    .help-block= t("publishers.create_auth_token_body")
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    | &nbsp;
+
+.publisher-main-panel.publisher-panel.col-center
+  .sub-panel.info-panel.col-center
+    .content-panel
+      h3.text-center= t("publishers.create_auth_token")
+      p.text-center= t("publishers.create_auth_token_body")
