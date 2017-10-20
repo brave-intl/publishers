@@ -32,3 +32,8 @@
             p.alt-path-copy= t("static.landing_login_body_html")
           .col.col-xs-5.button-column
             = link_to(t("static.landing_login_button"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary")
+  .row.tos-row
+    .col.col-md-6.col-xs-12.col-centered.col-left
+      .content-section-left
+        .terms-of-service
+          = link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")

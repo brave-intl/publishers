@@ -255,7 +255,7 @@ noscript
           span.bat-code= " BAT"
         .converted
           = publisher_converted_balance(current_publisher)
-.row.panel-row
+.row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel.uphold-panel
       .panel-header.panel-header-h3#dashboard_uphold_header
@@ -325,3 +325,7 @@ noscript
                   span.onoffswitch-switch
               .value-label.pull-right#show_verification_status_value
             .list-label= t("publishers.dashboard_list_in_verified_publishers_html")
+.row.tos-row
+  .col.col-details.col-md-6.col-md-push-6.col-xs-10.col-xs-center.col-sm-center
+    .terms-of-service
+      = link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")
