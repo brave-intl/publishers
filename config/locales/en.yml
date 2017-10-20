@@ -312,6 +312,7 @@ en:
     save_and_continue: "Save and continue"
     update: "Update"
     email_address: "Email address"
+    terms_of_service: "Terms of Service"
   static:
     landing_header-welcome: "Welcome to"
     landing_header: "Brave Payments"
