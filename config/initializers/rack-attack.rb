@@ -1,6 +1,18 @@
 if Rails.env.production? || Rails.env.staging?
   class Rack::Attack
 
+    # Safelists
+    if Rails.application.secrets[:api_ip_whitelist]
+      API_IP_WHITELIST = Rails.application.secrets[:api_ip_whitelist].split(",").freeze
+    else
+      API_IP_WHITELIST = [].freeze
+    end
+
+    safelist('allow/API_IP_WHITELIST') do |req|
+      # Requests are allowed if the return value is truthy
+      API_IP_WHITELIST.include?(req.ip)
+    end
+
     ### Configure Cache ###
 
     # If you don't want to use Rails.cache (Rack::Attack's default), then
