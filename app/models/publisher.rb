@@ -44,6 +44,21 @@ class Publisher < ApplicationRecord
     @_legacy_balance ||= PublisherLegacyBalanceGetter.new(publisher: self).perform
   end
 
+  # API call to eyeshade
+  def wallet
+    return @_wallet if @_wallet
+
+    @_wallet = PublisherWalletGetter.new(publisher: self).perform
+
+    # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
+    action = @_wallet.status['action']
+    if self.uphold_verified && (action == 're-authorize' || action == 'authorize')
+      self.uphold_verified = false
+      save!
+    end
+    @_wallet
+  end
+
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
   end
@@ -76,7 +91,12 @@ class Publisher < ApplicationRecord
   end
 
   def uphold_complete?
-    self.uphold_verified || self.uphold_access_parameters.present?
+    action = wallet.status['action']
+    if action == 're-authorize' || action == 'authorize'
+      false
+    else
+      self.uphold_verified || self.uphold_access_parameters.present?
+    end
   end
 
   def uphold_status

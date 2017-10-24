@@ -115,6 +115,10 @@ module PublishersHelper
         :complete
       elsif publisher.uphold_status == :code_acquired
         :uphold_processing
+      elsif publisher.wallet.status['action'] == 'authorize'
+        :uphold_authorize
+      elsif publisher.wallet.status['action'] == 're-authorize'
+        :uphold_reauthorize
       else
         :uphold_unconnected
       end
@@ -125,11 +129,11 @@ module PublishersHelper
 
   def publisher_status_description(publisher)
     case publisher_status(publisher)
-    when :complete
+    when :complete, :uphold_reauthorize
       t("publishers.status_complete")
     when :uphold_processing
       t("publishers.status_uphold_processing")
-    when :uphold_unconnected
+    when :uphold_unconnected, :uphold_authorize
       t("publishers.status_uphold_unconnected")
     when :unverified
       t("publishers.status_unverified")
