@@ -2,19 +2,19 @@ require "test_helper"
 require "webmock/minitest"
 
 class PublisherStatementGeneratorTest < ActiveJob::TestCase
-  test "when offline returns a dummy link with accurate query params" do
+  test "when offline returns a PublisherStatement with a bogus source_url" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     Rails.application.secrets[:api_eyeshade_offline] = true
 
     publisher = publishers(:verified)
     result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :past_7_days).perform
 
-    assert_equal "/publishers/home?starting=#{(Date.today - 7).iso8601}&ending=#{Date.today.iso8601}", result
+    assert_equal "/assets/fake_statement.pdf?starting=#{(Date.today - 7).iso8601}&ending=#{Date.today.iso8601}", result.source_url
 
     Rails.application.secrets[:api_eyeshade_offline] = prev_offline
   end
 
-  test "when online returns the reportURL returned by eyeshade" do
+  test "when online returns a PublisherStatement with a source_url that matches the reportURL returned by eyeshade" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     Rails.application.secrets[:api_eyeshade_offline] = false
 
@@ -24,7 +24,7 @@ class PublisherStatementGeneratorTest < ActiveJob::TestCase
 
     publisher = publishers(:verified)
     result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :all).perform
-    assert_equal "example.com/fake-report", result
+    assert_equal "example.com/fake-report", result.source_url
 
     Rails.application.secrets[:api_eyeshade_offline] = prev_offline
   end

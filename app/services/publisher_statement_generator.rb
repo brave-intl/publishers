@@ -17,13 +17,29 @@ class PublisherStatementGenerator < BaseApiClient
       request.url("/v1/publishers/#{publisher.brave_publisher_id}/statement#{query_params}")
     end
 
-    return JSON.parse(response.body)["reportURL"]
+    statement = PublisherStatement.new(
+      publisher: @publisher,
+      period: @statement_period,
+      source_url: JSON.parse(response.body)["reportURL"])
+
+    statement.save!
+
+    return statement
   end
 
   def perform_offline
-    fake_report = "/publishers/home#{query_params}"
+    fake_report = "/assets/fake_statement.pdf#{query_params}"
+
     Rails.logger.info("PublisherStatementGenerator eyeshade offline; generating fake report: #{fake_report}")
-    fake_report
+
+    statement = PublisherStatement.new(
+      publisher: @publisher,
+      period: @statement_period,
+      source_url: fake_report)
+
+    statement.save!
+
+    return statement
   end
 
   def query_params
