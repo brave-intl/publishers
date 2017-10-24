@@ -35,6 +35,12 @@ class BalanceTest < ActiveSupport::TestCase
     assert usd.is_a?(BigDecimal)
   end
 
+  test "accepts lowercase currencies" do
+    usd = test_balance.convert_to('usd')
+    assert usd == 0.2363863335301452 * 25.0
+    assert usd.is_a?(BigDecimal)
+  end
+
   test "converts BAT to currency raises exception if conversion rate is not found" do
     assert_raises do
       test_balance.convert_to('FOO')
