@@ -50,29 +50,52 @@ javascript:
         });
     }
 
-    function waitForReport(reportURL, delay, backoff, attempts) {
+    function pollUntilSuccess(url, delay, backoff, attempts) {
       return new Promise(function(resolve, reject) {
-        if (attempts > 0) {
-          setTimeout(function() {
-            window.fetch(reportURL, { method: 'GET' })
-              .then(function(response) {
-                if (response.status === 200) {
-                  // report successfully fetched
-                  resolve(reportURL);
-                } else {
-                  // report could not be fetched, so try again
-                  return waitForReport(reportURL, delay + backoff, backoff, --attempts)
-                    .catch(reject);
-                }
-              }, function(e) {
-                // swallow exception and try again
-                return waitForReport(reportURL, delay + backoff, backoff, --attempts)
-                  .catch(reject);
-              });
-          }, delay);
-        } else {
-          throw new Error('Attempts exceeded!');
+        var attempt = 0;
+        var currentDelay = delay;
+
+        function fetchAttempt() {
+          attempt++;
+
+          if (attempt > attempts) {
+            reject(new Error('Attempts exceeded!'));
+            return;
+          }
+
+          fetchAfterDelay(url, currentDelay)
+            .then(function(response) { resolve(response); })
+            .catch(function(e) {
+              currentDelay += backoff;
+              fetchAttempt();
+            });
         }
+
+        fetchAttempt();
+      });
+    }
+
+    function fetchAfterDelay(url, delay) {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          var options = {
+            headers: {
+              'Accept': 'application/json'
+            },
+            credentials: 'same-origin',
+            method: 'GET'
+          };
+          window.fetch(url, options)
+            .then(function(response) {
+              if (response.status >= 200 && response.status < 300) {
+                resolve(response);
+              } else {
+                reject(response);
+              }
+            }, function(e) {
+              reject(e);
+            });
+        }, delay);
       });
     }
 
@@ -114,8 +137,7 @@ javascript:
 
       var generateStatement = document.getElementById('generate_statement');
       var generateStatementResult = document.getElementById('generate_statement_result');
-      // FIXME: Remove once #74 is fixed.
-      // var statementPeriod = document.getElementById('statement_period');
+      var statementPeriod = document.getElementById('statement_period');
 
       editContact.addEventListener('click', function(event) {
         updateContactName.value = showContactName.innerText;
@@ -152,38 +174,40 @@ javascript:
           });
       }, false);
 
-      // FIXME: Remove once #74 is fixed.
-      //statementPeriod.addEventListener('click', function(event) {
-      //  hideSpinner();
-      //  generateStatement.style.display = 'inline-block';
-      //  generateStatementResult.style.display = 'none';
-      //}, false);
-      //
-      //generateStatement.addEventListener('click', function(event) {
-      //  event.preventDefault();
-      //
-      //  submitForm('statement_generator', 'PATCH', false)
-      //    .then(function(response) {
-      //      return response.json();
-      //    })
-      //    .then(function(json) {
-      //      generateStatement.style.display = 'none';
-      //      generateStatementResult.style.display = 'inline-block';
-      //      generateStatementResult.innerText = 'Generating';
-      //
-      //      dynamicEllipsis.start('generate_statement_result');
-      //
-      //      return waitForReport(json.reportURL, 3000, 2000, 4);
-      //    })
-      //    .then(function(reportURL) {
-      //      dynamicEllipsis.stop('generate_statement_result');
-      //      generateStatementResult.innerHTML = '<a href="' + reportURL + '" class="btn btn-tertiary btn-generate">View report</a>';
-      //    })
-      //    .catch(function() {
-      //      dynamicEllipsis.stop('generate_statement_result');
-      //      generateStatementResult.innerText = 'We will email you a link when your report is ready.'
-      //    });
-      //}, false);
+      statementPeriod.addEventListener('click', function(event) {
+        hideSpinner();
+        generateStatement.style.display = 'inline-block';
+        generateStatementResult.style.display = 'none';
+      }, false);
+
+      generateStatement.addEventListener('click', function(event) {
+        var statementId;
+
+        event.preventDefault();
+
+        submitForm('statement_generator', 'PATCH', false)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            generateStatement.style.display = 'none';
+            generateStatementResult.style.display = 'inline-block';
+            generateStatementResult.innerText = 'Generating';
+
+            dynamicEllipsis.start('generate_statement_result');
+
+            statementId = json.id;
+            return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 4);
+          })
+          .then(function() {
+            dynamicEllipsis.stop('generate_statement_result');
+            generateStatementResult.innerHTML = '<a href="/publishers/statement?id=' + statementId + '" class="btn btn-tertiary btn-generate">View statement</a>';
+          })
+          .catch(function(e) {
+            dynamicEllipsis.stop('generate_statement_result');
+            generateStatementResult.innerText = 'We will email you when your report is ready.'
+          });
+      }, false);
     }, false);
   })();
 
@@ -272,17 +296,17 @@ noscript
           .panel-section= link_to(t("publishers.uphold_check_balance"), "https://uphold.com/dashboard", class: "btn btn-primary")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
-      .hidden.statements
+      .statements#statement_section style=(current_publisher.uphold_verified ? '' : 'display: none')
         .panel-header.panel-header-h4#publishers_statement
           = t("publishers.statement")
         = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
           .form-group
-            = select_tag(:statement_period, options_for_select(publisher_statement_periods))
+            = select_tag(:statement_period, options_for_select(publisher_statement_periods, :past_30_days))
             .pull-right
-              a#generate_statement href="#" class="edit-link"
+              a.edit-link#generate_statement href="#"
                 = t("shared.generate")
-              span#generate_statement_result
         .clearfix
+        #generate_statement_result
       .panel-header.panel-header-h4#publishers_contact
         = t("publishers.contact")
         .pull-right

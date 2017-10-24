@@ -138,4 +138,13 @@ class PublisherMailer < ApplicationMailer
       subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
     )
   end
+
+  def statement_ready(publisher_statement)
+    @publisher_statement = publisher_statement
+    @publisher = publisher_statement.publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
 end

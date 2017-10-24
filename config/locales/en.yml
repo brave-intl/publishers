@@ -286,6 +286,11 @@ en:
       updated_email: "New email"
       change_ok: "If you made this change, check your new email account for a link to confirm it."
       contact_support: "If you did not make this change yourself, please contact support ASAP"
+    statement_ready:
+      subject: "[%{brave_publisher_id}] Brave Publisher statement is ready to view"
+      title: "Publisher statement is ready to view"
+      body: "The following statement has recently been generated:"
+      expiration_note: "This statement must be downloaded within the next 24 hours."
   publisher_statement_periods:
     past_7_days: "Past 7 days"
     past_30_days: "Past 30 days"
