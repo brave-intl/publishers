@@ -7,8 +7,6 @@ gem "active_model_serializers", "~> 0.10.0"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.0.0"
 
-gem "aws-sdk", "~> 2", require: false
-
 gem "bootstrap-sass", "~> 3.3.6"
 
 # Authentication
