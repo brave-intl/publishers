@@ -1,6 +1,8 @@
 class Publisher < ApplicationRecord
   has_paper_trail
 
+  has_many :statements, class_name: 'PublisherStatement'
+
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
