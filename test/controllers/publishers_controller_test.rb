@@ -398,7 +398,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_match(
       '{"status":"uphold_unconnected",' +
-       '"status_description":"Wallet not found, please Connect with Uphold to create one",' +
+       '"status_description":"Verified",' +
        '"uphold_status":"unconnected",' +
        '"uphold_status_description":"Not connected to Uphold."}',
       response.body)
