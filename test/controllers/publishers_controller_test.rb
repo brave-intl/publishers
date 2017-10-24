@@ -369,10 +369,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
           params: { statement_period: 'all' },
           headers: { 'HTTP_ACCEPT' => "application/json" })
 
+    publisher_statement = PublisherStatement.order(created_at: :asc).last
+
     assert_response 200
-    assert_match("{\"reportURL\":\"/publishers/home\"}", response.body)
+    assert_match("{\"id\":\"#{publisher_statement.id}\"}", response.body)
   end
-  
+
   test "a publisher's status can be polled via ajax" do
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
