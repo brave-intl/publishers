@@ -12,7 +12,7 @@ module Eyeshade
 
       @rates = {"BAT" => 1.0}
       balance_json['rates'].each_pair do |k,v|
-        @rates[k] = v.to_f
+        @rates[k.upcase] = v.to_f
       end
     end
 
@@ -21,8 +21,8 @@ module Eyeshade
     end
 
     def convert_to(currency_code = 'USD')
-      rate = rates[currency_code]
-      raise "Missing currency conversion rate #{currency_code} for #{@balance_json}" unless rate
+      rate = rates[currency_code.upcase]
+      raise "Missing currency conversion rate #{currency_code.upcase} for #{@balance_json}" unless rate
 
       self.BAT * rate
     end
