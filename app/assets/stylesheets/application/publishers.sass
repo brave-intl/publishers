@@ -443,7 +443,8 @@ body[data-controller="publishers"]
       .dashboard-panel
         padding-left: 95px
         padding-right: 45px
-        min-height: 360px
+        @media (min-width: 992px)
+          min-height: 460px
         min-width: 400px
         .panel-header
           margin: 0 0 0 -50px
@@ -487,6 +488,14 @@ body[data-controller="publishers"]
           background-image: url(asset-path("verified-icon@1x.png"))
         &.incomplete
           background-image: url(asset-path("unverified-icon.png"))
+      .connect_message
+        vertical-align: top
+        padding: 0 0 5px 52px
+        margin-top: 20px
+        background-position: top left
+        background-repeat: no-repeat
+        background-size: 42px
+        background-image: url(asset-path("icn-warning@1x.png"))
       .balance
         font-size: $font-size-base
         vertical-align: top

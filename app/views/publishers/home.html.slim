@@ -242,7 +242,7 @@ noscript
     .publisher-status
       .publisher-domain-summary
         .publisher-domain-name= current_publisher.brave_publisher_id
-        #publisher_status class=(publisher_status(current_publisher) == :complete || publisher_status(current_publisher) == :uphold_reauthorize ? 'complete' : 'incomplete')
+        #publisher_status class=(publisher_status(current_publisher) == :complete || publisher_status(current_publisher) == :uphold_reauthorize || publisher_status(current_publisher) == :uphold_authorize ? 'complete' : 'incomplete')
           = publisher_status_description(current_publisher)
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
@@ -263,9 +263,14 @@ noscript
       .attribute-value.status
         - if show_uphold_connect?(current_publisher)
           div#uphold_connect
-            .panel-section= t("publishers.verified_publisher_connect_to_uphold")
-            .panel-section= link_to(t("publishers.create_uphold_wallet"),
-                    uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
+            - if publisher_status(current_publisher) == :uphold_reauthorize
+              .panel-section.connect_message= t("publishers.verified_publisher_reconnect_to_uphold")
+              .panel-section= link_to(t("publishers.reconnect_to_uphold"),
+                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
+            -else
+              .panel-section.connect_message= t("publishers.verified_publisher_connect_to_uphold")
+              .panel-section= link_to(t("publishers.create_uphold_wallet"),
+                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
         - else
           .panel-section= t("publishers.dashboard_uphold_balance_sending")
           /.hidden.panel-section= t("publishers.last_deposit_html", last_deposit_date: uphold_last_deposit_date(current_publisher))

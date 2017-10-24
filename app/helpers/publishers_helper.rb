@@ -129,12 +129,10 @@ module PublishersHelper
 
   def publisher_status_description(publisher)
     case publisher_status(publisher)
-    when :complete, :uphold_reauthorize
+    when :complete, :uphold_reauthorize, :uphold_unconnected, :uphold_authorize
       t("publishers.status_complete")
     when :uphold_processing
       t("publishers.status_uphold_processing")
-    when :uphold_unconnected, :uphold_authorize
-      t("publishers.status_uphold_unconnected")
     when :unverified
       t("publishers.status_unverified")
     end
