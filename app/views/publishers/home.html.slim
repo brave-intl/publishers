@@ -298,7 +298,7 @@ noscript
         - else
           .panel-section= t("publishers.dashboard_uphold_balance_sending")
           /.hidden.panel-section= t("publishers.last_deposit_html", last_deposit_date: uphold_last_deposit_date(current_publisher))
-          .panel-section= link_to(t("publishers.uphold_check_balance"), "https://uphold.com/dashboard", class: "btn btn-primary")
+          .panel-section= link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
       .statements#statement_section style=(current_publisher.uphold_verified ? '' : 'display: none')
