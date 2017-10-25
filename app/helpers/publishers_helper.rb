@@ -89,6 +89,10 @@ module PublishersHelper
         .gsub('<STATE>', publisher.uphold_state_token.to_s)
   end
 
+  def uphold_dashboard_url
+    Rails.application.secrets[:uphold_dashboard_url]
+  end
+
   def publisher_humanize_verified(publisher)
     if publisher.verified?
       I18n.t("publishers.verified")
