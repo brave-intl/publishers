@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171004075024) do
+ActiveRecord::Schema.define(version: 20171025114507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20171004075024) do
     t.string   "encrypted_authentication_token_iv"
     t.string   "verification_method"
     t.datetime "authentication_token_expires_at"
-    t.boolean  "show_verification_status",              default: true
+    t.boolean  "show_verification_status",              default: true,  null: false
     t.boolean  "created_via_api",                       default: false, null: false
     t.string   "uphold_state_token"
     t.string   "encrypted_uphold_code"
