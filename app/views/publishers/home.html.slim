@@ -290,15 +290,15 @@ noscript
             - if publisher_status(current_publisher) == :uphold_reauthorize
               .panel-section.connect_message= t("publishers.verified_publisher_reconnect_to_uphold")
               .panel-section= link_to(t("publishers.reconnect_to_uphold"),
-                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
+                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-piwik-action" => "ReconnectToUpholdClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
             -else
               .panel-section.connect_message= t("publishers.verified_publisher_connect_to_uphold")
               .panel-section= link_to(t("publishers.create_uphold_wallet"),
-                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
+                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-piwik-action" => "ConnectToUpholdClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
         - else
           .panel-section= t("publishers.dashboard_uphold_balance_sending")
           /.hidden.panel-section= t("publishers.last_deposit_html", last_deposit_date: uphold_last_deposit_date(current_publisher))
-          .panel-section= link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary")
+          .panel-section= link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
       .statements#statement_section style=(current_publisher.uphold_verified ? '' : 'display: none')
@@ -338,7 +338,7 @@ noscript
             = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
             = f.phone_field(:phone, class: "form-control", id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
           .button.form-group
-            = f.submit(translate("shared.update"), class: "btn btn-primary")
+            = f.submit(translate("shared.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
             a#cancel_edit_contact href="#"
               = t("shared.cancel")
         p#pending_email_notice style="display: none" class="note"
@@ -349,7 +349,7 @@ noscript
           .panel-header.panel-header-h4#publishers_list
             .inline-controls.pull-right
               .onoffswitch
-                = f.check_box(:show_verification_status, class: "onoffswitch-checkbox", id: "publisher_show_verification_status")
+                = f.check_box(:show_verification_status, class: "onoffswitch-checkbox", :"data-piwik-action" => "ShowStatusToggleClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard", id: "publisher_show_verification_status")
                 = f.label(:show_verification_status, class: "onoffswitch-label", for: "publisher_show_verification_status") do
                   span.onoffswitch-inner
                   span.onoffswitch-switch
