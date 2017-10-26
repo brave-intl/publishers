@@ -25,6 +25,8 @@ class WalletTest < ActiveSupport::TestCase
       }
   )
 
+  empty_wallet = Eyeshade::Wallet.new(wallet_json: {})
+
   test "supports status" do
     assert(test_wallet.status)
     assert_equal('re-authorize', test_wallet.status['action'])
@@ -36,5 +38,10 @@ class WalletTest < ActiveSupport::TestCase
     usd = test_balance.convert_to('USD')
     assert usd == 0.2363863335301452 * 25.0
     assert usd.is_a?(BigDecimal)
+  end
+
+  test "handles initialization with empty wallet details" do
+    assert empty_wallet.status.is_a?(Hash)
+    assert empty_wallet.balance.is_a?(Eyeshade::Balance)
   end
 end

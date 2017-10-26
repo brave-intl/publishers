@@ -400,7 +400,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_match(
       '{"status":"uphold_unconnected",' +
-       '"status_description":"Verified",' +
+       '"status_description":"You need to create a wallet with Uphold to receive contributions from Brave Payments.",' +
        '"uphold_status":"unconnected",' +
        '"uphold_status_description":"Not connected to Uphold."}',
       response.body)

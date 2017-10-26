@@ -227,24 +227,26 @@ javascript:
 
         return window.fetch('./status', options)
           .then(function(response) {
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 304) {
               return response.json();
             }
           })
           .then(function(body) {
             if (body.uphold_status === 'verified') {
-              document.getElementById('uphold_status').innerText = body.uphold_status_description;
+              document.getElementById('publisher_status').innerText = body.uphold_status_description;
               var publisherStatus = document.getElementById('publisher_status');
               publisherStatus.innerText = body.status_description;
-              publisherStatus.className = body.status === 'complete' ? 'complete' : 'incomplete';
-              dynamicEllipsis.stop('uphold_status');
+              publisherStatus.className = body.status;
+              var upholdDashboard = document.getElementById('uphold_dashboard');
+              upholdDashboard.style.display = '';
+              dynamicEllipsis.stop('publisher_status');
               clearInterval(checkUpholdStatusInterval);
             }
           });
       }
 
       window.addEventListener('load', function() {
-        dynamicEllipsis.start('uphold_status');
+        dynamicEllipsis.start('publisher_status');
         checkUpholdStatusInterval = setInterval(checkUpholdStatus, 2000);
       });
     })();
@@ -266,8 +268,8 @@ noscript
     .publisher-status
       .publisher-domain-summary
         .publisher-domain-name= current_publisher.brave_publisher_id
-        #publisher_status class=(publisher_status(current_publisher) == :complete || publisher_status(current_publisher) == :uphold_reauthorize || publisher_status(current_publisher) == :uphold_authorize ? 'complete' : 'incomplete')
-          = publisher_status_description(current_publisher)
+        #publisher_verification_status class=publisher_verification_status(current_publisher)
+          = publisher_verification_status_description(current_publisher)
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
     .balance
@@ -285,20 +287,15 @@ noscript
       .panel-header.panel-header-h3#dashboard_uphold_header
         = t("publishers.dashboard_uphold_header")
       .attribute-value.status
+        #publisher_status class=publisher_status(current_publisher)
+          = publisher_status_description(current_publisher)
         - if show_uphold_connect?(current_publisher)
           div#uphold_connect
-            - if publisher_status(current_publisher) == :uphold_reauthorize
-              .panel-section.connect_message= t("publishers.verified_publisher_reconnect_to_uphold")
-              .panel-section= link_to(t("publishers.reconnect_to_uphold"),
-                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-piwik-action" => "ReconnectToUpholdClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
-            -else
-              .panel-section.connect_message= t("publishers.verified_publisher_connect_to_uphold")
-              .panel-section= link_to(t("publishers.create_uphold_wallet"),
-                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-piwik-action" => "ConnectToUpholdClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+            .panel-section= link_to(uphold_authorization_description(current_publisher),
+                    uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
         - else
-          .panel-section= t("publishers.dashboard_uphold_balance_sending")
-          /.hidden.panel-section= t("publishers.last_deposit_html", last_deposit_date: uphold_last_deposit_date(current_publisher))
-          .panel-section= link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+          .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none')
+            = link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
       .statements#statement_section style=(current_publisher.uphold_verified ? '' : 'display: none')
@@ -358,4 +355,4 @@ noscript
 .row.tos-row
   .col.col-details.col-md-6.col-md-push-6.col-xs-10.col-xs-center.col-sm-center
     .terms-of-service
-      = link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")
+      = link_to(t("shared.terms_of_service"), terms_of_service_url)

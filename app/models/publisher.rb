@@ -52,11 +52,13 @@ class Publisher < ApplicationRecord
 
     @_wallet = PublisherWalletGetter.new(publisher: self).perform
 
-    # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
-    action = @_wallet.status['action']
-    if self.uphold_verified && (action == 're-authorize' || action == 'authorize')
-      self.uphold_verified = false
-      save!
+    # if the wallet call fails the wallet will be nil
+    if @_wallet
+      # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
+      if self.uphold_verified && @_wallet.status['action'] == 're-authorize'
+        self.uphold_verified = false
+        save!
+      end
     end
     @_wallet
   end
@@ -93,7 +95,8 @@ class Publisher < ApplicationRecord
   end
 
   def uphold_complete?
-    action = wallet.status['action']
+    # check the wallet to see if the connection to uphold has been been denied
+    action = wallet.try(:status).try(:[], 'action')
     if action == 're-authorize' || action == 'authorize'
       false
     else
