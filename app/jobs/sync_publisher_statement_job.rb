@@ -8,7 +8,7 @@ class SyncPublisherStatementJob < ApplicationJob
 
     publisher_statement.reload
     unless publisher_statement.contents.present?
-      SyncPublisherStatementJob.set(wait: 5.seconds).perform_later(publisher_statement_id: publisher_statement.id)
+      SyncPublisherStatementJob.set(wait: 3.seconds).perform_later(publisher_statement_id: publisher_statement.id)
     end
   end
 end
