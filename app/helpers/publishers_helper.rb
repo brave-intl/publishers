@@ -98,6 +98,10 @@ module PublishersHelper
       I18n.t("publishers.verified")
     else
       I18n.t("publishers.not_verified")
+  def terms_of_service_url
+    Rails.application.secrets[:terms_of_service_url]
+  end
+
     end
   end
 
