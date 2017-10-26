@@ -24,6 +24,10 @@ module PublishersHelper
     publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired
   end
 
+  def show_uphold_dashboard?(publisher)
+    publisher.uphold_verified?
+  end
+
   def poll_uphold_status?(publisher)
     publisher.uphold_status == :access_parameters_acquired
   end
@@ -89,19 +93,32 @@ module PublishersHelper
         .gsub('<STATE>', publisher.uphold_state_token.to_s)
   end
 
+  def uphold_authorization_description(publisher)
+    if publisher_status(publisher) == :uphold_reauthorize
+      t("publishers.reconnect_to_uphold")
+    else
+      t("publishers.create_uphold_wallet")
+    end
+  end
+
   def uphold_dashboard_url
     Rails.application.secrets[:uphold_dashboard_url]
   end
 
-  def publisher_humanize_verified(publisher)
-    if publisher.verified?
-      I18n.t("publishers.verified")
-    else
-      I18n.t("publishers.not_verified")
   def terms_of_service_url
     Rails.application.secrets[:terms_of_service_url]
   end
 
+  def publisher_verification_status(publisher)
+    publisher.verified? ? :verified : :unverified
+  end
+
+  def publisher_verification_status_description(publisher)
+    case publisher_verification_status(publisher)
+      when :verified
+        t("publishers.verified")
+      when :unverified
+        t("publishers.not_verified")
     end
   end
 
@@ -117,18 +134,19 @@ module PublishersHelper
     PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
   end
 
+  # Overall publisher status combining verification and uphold wallet connection
   def publisher_status(publisher)
     if publisher.verified?
-      if publisher.uphold_complete?
+      if publisher.uphold_verified?
         :complete
-      elsif publisher.uphold_status == :code_acquired
+      elsif publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
         :uphold_processing
-      elsif publisher.wallet.status['action'] == 'authorize'
-        :uphold_authorize
-      elsif publisher.wallet.status['action'] == 're-authorize'
-        :uphold_reauthorize
       else
-        :uphold_unconnected
+        if publisher.wallet.try(:status).try(:[], 'action') == 're-authorize'
+          :uphold_reauthorize
+        else
+          :uphold_unconnected
+        end
       end
     else
       :unverified
@@ -137,10 +155,14 @@ module PublishersHelper
 
   def publisher_status_description(publisher)
     case publisher_status(publisher)
-    when :complete, :uphold_reauthorize, :uphold_unconnected, :uphold_authorize
-      t("publishers.status_complete")
+    when :complete
+      t("publishers.dashboard_uphold_balance_sending")
     when :uphold_processing
       t("publishers.status_uphold_processing")
+    when :uphold_reauthorize
+      t("publishers.verified_publisher_reconnect_to_uphold")
+    when :uphold_unconnected
+      t("publishers.verified_publisher_connect_to_uphold")
     when :unverified
       t("publishers.status_unverified")
     end

@@ -249,9 +249,14 @@ class PublishersController < ApplicationController
 
     @publisher.receive_uphold_code(params[:code])
 
-    ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
-
-    @publisher.reload
+    begin
+      ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
+      @publisher.reload
+    rescue Faraday::Error
+      Rails.logger.error("Unable to exchange Uphold access token with eyeshade")
+      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_error"))
+      return
+    end
 
     redirect_to(publisher_next_step_path(@publisher))
   end
@@ -309,7 +314,7 @@ class PublishersController < ApplicationController
     respond_to do |format|
       format.json {
         render(json: {
-          status: publisher_status(publisher),
+          status: publisher_status(publisher).to_s,
           status_description: publisher_status_description(publisher),
           uphold_status: publisher.uphold_status.to_s,
           uphold_status_description: uphold_status_description(publisher)

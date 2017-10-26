@@ -477,25 +477,31 @@ body[data-controller="publishers"]
         font-size: 28px
         margin-bottom: 12px
         font-weight: 500
-      #publisher_status
+      #publisher_verification_status
         font-size: $font-size-base
         vertical-align: middle
         padding: 5px 0 5px 35px
         background-position: center left
         background-repeat: no-repeat
         background-size: 25px
-        &.complete
+        &.verified
           background-image: url(asset-path("verified-icon@1x.png"))
-        &.incomplete
+        &.unverified
           background-image: url(asset-path("unverified-icon.png"))
-      .connect_message
+      #publisher_status
         vertical-align: top
-        padding: 0 0 5px 52px
         margin-top: 20px
-        background-position: top left
-        background-repeat: no-repeat
-        background-size: 42px
-        background-image: url(asset-path("icn-warning@1x.png"))
+        margin-bottom: 45px
+        &.complete
+          // no background
+        &.uphold_processing,
+        &.uphold_reauthorize,
+        &.uphold_unconnected
+          padding: 0 0 5px 52px
+          background-position: top left
+          background-repeat: no-repeat
+          background-size: 42px
+          background-image: url(asset-path("icn-warning@1x.png"))
       .balance
         font-size: $font-size-base
         vertical-align: top
