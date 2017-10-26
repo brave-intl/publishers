@@ -138,6 +138,7 @@ javascript:
       var generateStatement = document.getElementById('generate_statement');
       var generateStatementResult = document.getElementById('generate_statement_result');
       var statementPeriod = document.getElementById('statement_period');
+      var generatedStatements = document.getElementById('generated_statements');
 
       editContact.addEventListener('click', function(event) {
         updateContactName.value = showContactName.innerText;
@@ -174,38 +175,54 @@ javascript:
           });
       }, false);
 
-      statementPeriod.addEventListener('click', function(event) {
-        hideSpinner();
-        generateStatement.style.display = 'inline-block';
-        generateStatementResult.style.display = 'none';
-      }, false);
-
       generateStatement.addEventListener('click', function(event) {
         var statementId;
+        var statementDownloadDiv;
 
         event.preventDefault();
+        generateStatement.style.display = 'none';
 
         submitForm('statement_generator', 'PATCH', false)
           .then(function(response) {
             return response.json();
           })
           .then(function(json) {
-            generateStatement.style.display = 'none';
-            generateStatementResult.style.display = 'inline-block';
-            generateStatementResult.innerText = 'Generating';
+            var newStatementDiv = document.createElement('div');
+            newStatementDiv.className = 'statement';
 
-            dynamicEllipsis.start('generate_statement_result');
+            var statementDateDiv = document.createElement('div');
+            statementDateDiv.className = 'date';
+            statementDateDiv.appendChild(document.createTextNode(json.date));
+            newStatementDiv.appendChild(statementDateDiv);
+
+            var statementPeriodDiv = document.createElement('div');
+            statementPeriodDiv.className = 'period';
+            statementPeriodDiv.appendChild(document.createTextNode(json.period));
+            newStatementDiv.appendChild(statementPeriodDiv);
+
+            statementDownloadDiv = document.createElement('div');
+            statementDownloadDiv.className = 'download';
+            statementDownloadDiv.appendChild(document.createTextNode('Generating'));
+            newStatementDiv.appendChild(statementDownloadDiv);
+
+            generatedStatements.insertBefore(newStatementDiv, generatedStatements.firstChild);
+
+            dynamicEllipsis.start(statementDownloadDiv);
 
             statementId = json.id;
-            return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 4);
+            return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
           })
           .then(function() {
-            dynamicEllipsis.stop('generate_statement_result');
-            generateStatementResult.innerHTML = '<a href="/publishers/statement?id=' + statementId + '" class="btn btn-tertiary btn-generate">View statement</a>';
+            dynamicEllipsis.stop(statementDownloadDiv);
+            statementDownloadDiv.innerHTML = '<a href="/publishers/statement?id=' + statementId + '">Download</a>';
+            generateStatement.style.display = 'inline-block';
           })
           .catch(function(e) {
-            dynamicEllipsis.stop('generate_statement_result');
-            generateStatementResult.innerText = 'We will email you when your report is ready.'
+            if (statementDownloadDiv) {
+              dynamicEllipsis.stop(statementDownloadDiv);
+              statementDownloadDiv.innerText = 'Delayed'
+            }
+            generateStatement.style.display = 'inline-block';
           });
       }, false);
     }, false);
@@ -300,15 +317,21 @@ noscript
     .sub-panel.dashboard-panel
       .statements#statement_section style=(current_publisher.uphold_verified ? '' : 'display: none')
         .panel-header.panel-header-h4#publishers_statement
-          = t("publishers.statement")
+          = t("publishers.statements")
         = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
           .form-group
-            = select_tag(:statement_period, options_for_select(publisher_statement_periods, :past_30_days))
+            = select_tag(:statement_period, options_for_select(statement_periods, :past_30_days))
             .pull-right
               a.edit-link#generate_statement href="#"
                 = t("shared.generate")
         .clearfix
-        #generate_statement_result
+        #generated_statements
+          - current_publisher.statements.each do |s|
+            .statement
+              .date= statement_period_date(s.created_at)
+              .period= statement_period_description(s.period.to_sym)
+              .download= link_to('Download', statement_publishers_url(id: s.id))
+
       .panel-header.panel-header-h4#publishers_contact
         = t("publishers.contact")
         .pull-right
