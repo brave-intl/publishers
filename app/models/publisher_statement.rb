@@ -11,6 +11,8 @@ class PublisherStatement < ApplicationRecord
 
   after_create :set_expiration
 
+  scope :expired, -> { where("expires_at < :now", now: Time.zone.now) }
+
   def set_expiration
     self.expires_at = Time.zone.now + EXPIRE_AFTER
     save!
