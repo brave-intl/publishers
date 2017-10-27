@@ -274,6 +274,9 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
+    # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
+    # ToDo: rework this process?
+    current_publisher.wallet
   end
 
   def log_out
@@ -327,6 +330,18 @@ class PublishersController < ApplicationController
     end
   end
 
+  def balance
+    publisher = current_publisher
+    respond_to do |format|
+      format.json {
+        render(json: {
+            bat_amount: publisher_humanize_balance(current_publisher, "BAT"),
+            converted_balance: publisher_converted_balance(publisher)
+        }, status: 200)
+      }
+    end
+  end
+
   private
 
   def authenticate_via_token
@@ -359,7 +374,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status)
+    params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status, :default_currency)
   end
 
   def publisher_update_unverified_params

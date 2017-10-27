@@ -43,6 +43,12 @@ class PublisherWalletGetter < BaseApiClient
           "USD" => 0.2363863335301452,
           "EUR" => 0.20187818378874756,
           "GBP" => 0.1799810085548496
+        },
+        "wallet" => {
+            "provider" => "uphold",
+            "authorized" => true,
+            "preferredCurrency" => 'USD',
+            "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       }
     )

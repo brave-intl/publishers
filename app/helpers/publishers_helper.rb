@@ -45,7 +45,7 @@ module PublishersHelper
   end
 
   def publisher_converted_balance(publisher)
-    currency = "USD" #ToDo default currency from publisher
+    currency = publisher_default_currency(publisher)
     if balance = publisher.balance
       converted_amount = '%.2f' % balance.convert_to(currency)
       I18n.t("publishers.balance_pending_approximate", amount: converted_amount, code: currency)
@@ -107,6 +107,15 @@ module PublishersHelper
 
   def terms_of_service_url
     Rails.application.secrets[:terms_of_service_url]
+  end
+
+  def publisher_default_currency(publisher)
+    publisher.default_currency.present? ? publisher.default_currency : 'BAT'
+  end
+
+  def publisher_available_currencies(publisher)
+    available_currencies = publisher.wallet.try(:wallet_details).try(:[], 'availableCurrencies')
+    available_currencies.blank? ? ['BAT'] : available_currencies
   end
 
   def publisher_verification_status(publisher)

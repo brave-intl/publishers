@@ -410,4 +410,21 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
        '"uphold_status_description":"Not connected to Uphold."}',
       response.body)
   end
+
+  test "a publisher's balance can be polled via ajax" do
+    publisher = publishers(:uphold_connected)
+    request_login_email(publisher: publisher)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    get(url)
+    follow_redirect!
+
+    url = balance_publishers_path
+    get(url,
+        headers: { 'HTTP_ACCEPT' => "application/json" })
+
+    assert_response 200
+    assert_equal(
+        '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
+        response.body)
+  end
 end

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :verification_wordpress
       get :verification_support_queue
       get :status
+      get :balance
       get :uphold_verified
       get :statement
       get :statement_ready

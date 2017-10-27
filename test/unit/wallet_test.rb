@@ -21,6 +21,12 @@ class WalletTest < ActiveSupport::TestCase
         "status" => {
             "provider" => "uphold",
             "action" => "re-authorize"
+        },
+        "wallet" => {
+            "provider" => "uphold",
+            "authorized" => true,
+            "preferredCurrency" => 'USD',
+            "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       }
   )
@@ -33,7 +39,7 @@ class WalletTest < ActiveSupport::TestCase
   end
 
   test "translates contributions to a Balance" do
-    test_balance = test_wallet.balance
+    test_balance = test_wallet.contribution_balance
     assert(test_balance.is_a?(Eyeshade::Balance))
     usd = test_balance.convert_to('USD')
     assert usd == 0.2363863335301452 * 25.0
@@ -42,6 +48,20 @@ class WalletTest < ActiveSupport::TestCase
 
   test "handles initialization with empty wallet details" do
     assert empty_wallet.status.is_a?(Hash)
-    assert empty_wallet.balance.is_a?(Eyeshade::Balance)
+    assert empty_wallet.contribution_balance.is_a?(Eyeshade::Balance)
+  end
+
+  test "supports wallet details" do
+    assert(test_wallet.wallet_details.is_a?(Hash))
+  end
+
+  test "supports wallet details preferred currency" do
+    assert_equal('USD', test_wallet.wallet_details['preferredCurrency'])
+  end
+
+  test "supports wallet details available currencies" do
+    assert(test_wallet.wallet_details['availableCurrencies'].is_a?(Array))
+    assert_equal('USD', test_wallet.wallet_details['availableCurrencies'][0])
+    assert_equal('EUR', test_wallet.wallet_details['availableCurrencies'][1])
   end
 end
