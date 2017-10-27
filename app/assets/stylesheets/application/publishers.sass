@@ -526,6 +526,23 @@ body[data-controller="publishers"]
         font-weight: 700
       .statements
         white-space: nowrap
+      #generated_statements
+        margin: 12px 0 16px 0
+        .statement
+          font-size: 14px
+          font-weight: 300
+          margin-bottom: 6px
+          &:hover
+            font-weight: 400
+          .date
+            display: inline-block
+            width: 45%
+          .period
+            display: inline-block
+            width: 30%
+          .download
+            display: inline-block
+            width: 25%
       #statement_period
         margin-top: 5px
         margin-right: 10px
@@ -539,9 +556,6 @@ body[data-controller="publishers"]
         &#generate_statement
           line-height: 26px
           padding: 5px 0
-      #generate_statement_result
-        margin-bottom: 16px
-        font-weight: 500
       #publishers_list
         .list-label
           display: block

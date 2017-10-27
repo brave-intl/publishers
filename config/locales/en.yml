@@ -102,7 +102,7 @@ en:
       contact_info: "Contact Info"
       verify_site: "Verify Your Site"
       create_wallet: "Create Your Wallet"
-    statement: "Statement"
+    statements: "Statements"
     verified_phone_html: |
       Phone Number <span class="optional">(optional)</span>
     status_complete: "Verified"

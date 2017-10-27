@@ -214,16 +214,24 @@ module PublishersHelper
     PublisherDnsRecordGenerator.new(publisher: publisher).perform
   end
 
-  def publisher_statement_periods
-    [
-      [t('publisher_statement_periods.past_7_days'), :past_7_days],
-      [t('publisher_statement_periods.past_30_days'), :past_30_days],
-      [t('publisher_statement_periods.this_month'), :this_month],
-      [t('publisher_statement_periods.last_month'), :last_month],
-      [t('publisher_statement_periods.this_year'), :this_year],
-      [t('publisher_statement_periods.last_year'), :last_year],
-      [t('publisher_statement_periods.all'), :all]
-    ]
+  def statement_periods
+    [:past_7_days,
+     :past_30_days,
+     :this_month,
+     :last_month,
+     :this_year,
+     :last_year,
+     :all].collect do |period|
+      [statement_period_description(period), period]
+    end
+  end
+
+  def statement_period_description(period)
+    t("publisher_statement_periods.#{period}")
+  end
+
+  def statement_period_date(date)
+    date.strftime('%B %e, %Y')
   end
 
   def publisher_statement_filename(publisher_statement)

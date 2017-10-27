@@ -1,7 +1,7 @@
 class Publisher < ApplicationRecord
   has_paper_trail
 
-  has_many :statements, class_name: 'PublisherStatement'
+  has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
 
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key

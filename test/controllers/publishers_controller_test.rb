@@ -372,7 +372,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher_statement = PublisherStatement.order(created_at: :asc).last
 
     assert_response 200
-    assert_match("{\"id\":\"#{publisher_statement.id}\"}", response.body)
+    assert_match(
+      '{"id":"' + publisher_statement.id + '",' +
+        '"date":"' + publisher_statement.created_at.strftime('%B %e, %Y') + '",' +
+        '"period":"All"}',
+      response.body)
+    # assert_match("{\"id\":\"#{publisher_statement.id}\"}", response.body)
   end
 
   test "a publisher's status can be polled via ajax" do
