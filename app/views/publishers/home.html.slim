@@ -110,12 +110,41 @@ javascript:
       }
     }
 
+    function refreshBalance() {
+      var options = {
+        headers: {
+            'Accept': 'application/json'
+        },
+        credentials: 'same-origin',
+        method: 'GET'
+      };
+
+      return fetchAfterDelay('./balance', 500)
+        .then(function(response) {
+          if (response.status === 200 || response.status === 304) {
+            return response.json();
+          }
+        })
+        .then(function(body) {
+          var batAmount = document.getElementById('bat_amount');
+          batAmount.innerText = body.bat_amount;
+          var convertedAmount = document.getElementById('converted_amount');
+          convertedAmount.innerText = body.converted_balance;
+        });
+    }
+
     window.addEventListener('load', function() {
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
         submitForm('update_show_verification_status', 'PATCH', true);
         var form = document.getElementById('update_show_verification_status');
         form.className = showVerificationStatusInput.checked ? 'checked' : 'unchecked';
+      }, false);
+
+      var defaultCurrencySelect = document.getElementById('publisher_default_currency');
+      defaultCurrencySelect.addEventListener('change', function (event) {
+        submitForm('update_default_currency_form', 'PATCH', true);
+        refreshBalance();
       }, false);
 
       var showContact = document.getElementById('show_contact');
@@ -277,9 +306,9 @@ noscript
         = image_tag("bat-logo@1x.png", class: "")
       .pull-left.amounts
         .bat
-          span.bat-amount= publisher_humanize_balance(current_publisher, "BAT")
+          span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
           span.bat-code= " BAT"
-        .converted
+        .converted#converted_amount
           = publisher_converted_balance(current_publisher)
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
@@ -295,6 +324,10 @@ noscript
                     uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
         - else
           .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none')
+            .panel-section
+              = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
+                span= t("publishers.current_deposit_currency")
+                span#default_currency_code= f.select(:default_currency, options_for_select(publisher_available_currencies(current_publisher), publisher_default_currency(current_publisher)))
             = link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel

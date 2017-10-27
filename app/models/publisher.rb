@@ -55,10 +55,22 @@ class Publisher < ApplicationRecord
     # if the wallet call fails the wallet will be nil
     if @_wallet
       # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
+      save_needed = false
       if self.uphold_verified && @_wallet.status['action'] == 're-authorize'
         self.uphold_verified = false
-        save!
+        save_needed = true
       end
+
+      # Initialize the default_currency from the wallet, if it exists
+      if self.default_currency.nil?
+        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'preferredCurrency')
+        if default_currency_code
+          self.default_currency = default_currency_code
+          save_needed = true
+        end
+      end
+
+      save! if save_needed
     end
     @_wallet
   end

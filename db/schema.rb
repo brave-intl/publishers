@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20171025114507) do
     t.boolean  "supports_https",                        default: false
     t.boolean  "host_connection_verified"
     t.string   "detected_web_host"
+    t.string   "default_currency"
     t.index ["brave_publisher_id"], name: "index_publishers_on_brave_publisher_id", using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
