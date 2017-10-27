@@ -4,29 +4,34 @@ require "webmock/minitest"
 class PublisherStatementGeneratorTest < ActiveJob::TestCase
   test "when offline returns a PublisherStatement with a bogus source_url" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
-    Rails.application.secrets[:api_eyeshade_offline] = true
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = true
 
-    publisher = publishers(:verified)
-    result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :past_7_days).perform
+      publisher = publishers(:verified)
+      result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :past_7_days).perform
 
-    assert_equal "/assets/fake_statement.pdf?starting=#{(Date.today - 7).iso8601}&ending=#{Date.today.iso8601}", result.source_url
+      assert_equal "/assets/fake_statement.pdf?starting=#{(Date.today - 7).iso8601}&ending=#{Date.today.iso8601}", result.source_url
 
-    Rails.application.secrets[:api_eyeshade_offline] = prev_offline
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_offline
+    end
   end
 
   test "when online returns a PublisherStatement with a source_url that matches the reportURL returned by eyeshade" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
-    Rails.application.secrets[:api_eyeshade_offline] = false
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
 
-    stub_request(:get, /v1\/publishers\/verified\.org\/statement/).
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 200, body: "{\"reportURL\":\"example.com/fake-report\"}", headers: {})
+      stub_request(:get, /v1\/publishers\/verified\.org\/statement/).
+          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+          to_return(status: 200, body: "{\"reportURL\":\"example.com/fake-report\"}", headers: {})
 
-    publisher = publishers(:verified)
-    result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :all).perform
-    assert_equal "example.com/fake-report", result.source_url
-
-    Rails.application.secrets[:api_eyeshade_offline] = prev_offline
+      publisher = publishers(:verified)
+      result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :all).perform
+      assert_equal "example.com/fake-report", result.source_url
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_offline
+    end
   end
 
   test "generates starting / ending query params" do
