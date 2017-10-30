@@ -443,8 +443,9 @@ body[data-controller="publishers"]
       .dashboard-panel
         padding-left: 95px
         padding-right: 45px
-        min-height: 360px
-        min-width: 400px
+        @media (min-width: 992px)
+          min-height: 460px
+        min-width: 450px
         .panel-header
           margin: 0 0 0 -50px
           padding: 12px 0 12px 50px
@@ -476,17 +477,31 @@ body[data-controller="publishers"]
         font-size: 28px
         margin-bottom: 12px
         font-weight: 500
-      #publisher_status
+      #publisher_verification_status
         font-size: $font-size-base
         vertical-align: middle
         padding: 5px 0 5px 35px
         background-position: center left
         background-repeat: no-repeat
         background-size: 25px
-        &.complete
+        &.verified
           background-image: url(asset-path("verified-icon@1x.png"))
-        &.incomplete
+        &.unverified
           background-image: url(asset-path("unverified-icon.png"))
+      #publisher_status
+        vertical-align: top
+        margin-top: 20px
+        margin-bottom: 45px
+        &.complete
+          // no background
+        &.uphold_processing,
+        &.uphold_reauthorize,
+        &.uphold_unconnected
+          padding: 0 0 5px 52px
+          background-position: top left
+          background-repeat: no-repeat
+          background-size: 42px
+          background-image: url(asset-path("icn-warning@1x.png"))
       .balance
         font-size: $font-size-base
         vertical-align: top
@@ -505,22 +520,44 @@ body[data-controller="publishers"]
             margin-top: -8px
             font-size: 14px
             color: $gray-light
+      #default_currency_code
+        font-weight: 600
       .payment-info
         font-size: $font-size-base
       .last-deposit
         font-weight: 700
       .statements
         white-space: nowrap
+      #generated_statements
+        margin: 12px 0 16px 0
+        .statement
+          font-size: 14px
+          font-weight: 300
+          margin-bottom: 6px
+          &:hover
+            font-weight: 400
+          .date
+            display: inline-block
+            width: 45%
+          .period
+            display: inline-block
+            width: 30%
+          .download
+            display: inline-block
+            width: 25%
       #statement_period
         margin-top: 5px
         margin-right: 10px
       .btn-generate
         padding: 5px 10px
-        margin-left: 10px
       .edit-link
-        text-transform: capitalize
+        font-size: 16px
+        font-weight: 500
         color: #00bcda
         display: inline-block
+        &#generate_statement
+          line-height: 26px
+          padding: 5px 0
       #publishers_list
         .list-label
           display: block

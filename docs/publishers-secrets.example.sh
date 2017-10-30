@@ -28,3 +28,5 @@ export UPHOLD_CLIENT_SECRET="" # Client secret for registered Uphold application
 export UPHOLD_AUTHORIZATION_ENDPOINT="https://sandbox.uphold.com/authorize/<UPHOLD_CLIENT_ID>?scope=<UPHOLD_SCOPE>&intention=signup&state=<STATE>"
 export UPHOLD_API_URI="https://api-sandbox.uphold.com" # the API endpoint for Uphold.
 export UPHOLD_SCOPE="cards:read,cards:write,user:read"
+export UPHOLD_DASHBOARD_URL="https://sandbox.uphold.com/dashboard"
+export TERMS_OF_SERVICE_URL="https://basicattentiontoken.org/publisher-terms-of-service/"

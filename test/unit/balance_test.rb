@@ -19,6 +19,8 @@ class BalanceTest < ActiveSupport::TestCase
       }
   )
 
+  empty_balance = Eyeshade::Balance.new(balance_json: {})
+
   test "supports probi" do
     assert(test_balance.probi == 25000000000000000000 )
   end
@@ -35,10 +37,23 @@ class BalanceTest < ActiveSupport::TestCase
     assert usd.is_a?(BigDecimal)
   end
 
+  test "accepts lowercase currencies" do
+    usd = test_balance.convert_to('usd')
+    assert usd == 0.2363863335301452 * 25.0
+    assert usd.is_a?(BigDecimal)
+  end
+
   test "converts BAT to currency raises exception if conversion rate is not found" do
     assert_raises do
       test_balance.convert_to('FOO')
     end
   end
 
+  test "accepts initialization with empty hash" do
+    assert(empty_balance.probi == 0 )
+    assert(empty_balance.BAT == 0)
+    assert_raises do
+      empty_balance.convert_to('USD')
+    end
+  end
 end

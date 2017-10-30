@@ -5,14 +5,16 @@ module Eyeshade
     def initialize(balance_json:)
       @balance_json = balance_json
 
-      @probi = Integer(balance_json['probi'])
+      @probi = balance_json['probi'] ? Integer(balance_json['probi']) : 0
       @currency = balance_json['currency']
       @altcurrency = balance_json['altcurrency']
-      @amount = balance_json['amount'].to_f
+      @amount = balance_json['amount'] ? balance_json['amount'].to_f : 0.0
 
       @rates = {"BAT" => 1.0}
-      balance_json['rates'].each_pair do |k,v|
-        @rates[k] = v.to_f
+      if balance_json['rates'].is_a?(Hash)
+        balance_json['rates'].each_pair do |k,v|
+          @rates[k.upcase] = v.to_f
+        end
       end
     end
 
@@ -21,8 +23,8 @@ module Eyeshade
     end
 
     def convert_to(currency_code = 'USD')
-      rate = rates[currency_code]
-      raise "Missing currency conversion rate #{currency_code} for #{@balance_json}" unless rate
+      rate = rates[currency_code.upcase]
+      raise "Missing currency conversion rate #{currency_code.upcase} for #{@balance_json}" unless rate
 
       self.BAT * rate
     end

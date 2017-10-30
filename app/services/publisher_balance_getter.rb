@@ -23,7 +23,7 @@ class PublisherBalanceGetter < BaseApiClient
   end
 
   def perform_offline
-    Rails.logger.info("PublisherVerifier returning offline stub balance.")
+    Rails.logger.info("PublisherBalanceGetter returning offline stub balance.")
     Eyeshade::Balance.new(
       balance_json: {
         "amount" => "9001.00",

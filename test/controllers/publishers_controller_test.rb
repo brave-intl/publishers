@@ -369,10 +369,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
           params: { statement_period: 'all' },
           headers: { 'HTTP_ACCEPT' => "application/json" })
 
+    publisher_statement = PublisherStatement.order(created_at: :asc).last
+
     assert_response 200
-    assert_match("{\"reportURL\":\"/publishers/home\"}", response.body)
+    assert_match(
+      '{"id":"' + publisher_statement.id + '",' +
+        '"date":"' + publisher_statement.created_at.strftime('%B %e, %Y') + '",' +
+        '"period":"All"}',
+      response.body)
+    # assert_match("{\"id\":\"#{publisher_statement.id}\"}", response.body)
   end
-  
+
   test "a publisher's status can be polled via ajax" do
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
@@ -398,9 +405,26 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_match(
       '{"status":"uphold_unconnected",' +
-       '"status_description":"Wallet not found, please Connect with Uphold to create one",' +
+       '"status_description":"You need to create a wallet with Uphold to receive contributions from Brave Payments.",' +
        '"uphold_status":"unconnected",' +
        '"uphold_status_description":"Not connected to Uphold."}',
       response.body)
+  end
+
+  test "a publisher's balance can be polled via ajax" do
+    publisher = publishers(:uphold_connected)
+    request_login_email(publisher: publisher)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    get(url)
+    follow_redirect!
+
+    url = balance_publishers_path
+    get(url,
+        headers: { 'HTTP_ACCEPT' => "application/json" })
+
+    assert_response 200
+    assert_equal(
+        '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
+        response.body)
   end
 end

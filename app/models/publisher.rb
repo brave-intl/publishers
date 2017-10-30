@@ -1,6 +1,8 @@
 class Publisher < ApplicationRecord
   has_paper_trail
 
+  has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
+
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
@@ -44,6 +46,35 @@ class Publisher < ApplicationRecord
     @_legacy_balance ||= PublisherLegacyBalanceGetter.new(publisher: self).perform
   end
 
+  # API call to eyeshade
+  def wallet
+    return @_wallet if @_wallet
+
+    @_wallet = PublisherWalletGetter.new(publisher: self).perform
+
+    # if the wallet call fails the wallet will be nil
+    if @_wallet
+      # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
+      save_needed = false
+      if self.uphold_verified && @_wallet.status['action'] == 're-authorize'
+        self.uphold_verified = false
+        save_needed = true
+      end
+
+      # Initialize the default_currency from the wallet, if it exists
+      if self.default_currency.nil?
+        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'preferredCurrency')
+        if default_currency_code
+          self.default_currency = default_currency_code
+          save_needed = true
+        end
+      end
+
+      save! if save_needed
+    end
+    @_wallet
+  end
+
   def encryption_key
     Rails.application.secrets[:attr_encrypted_key]
   end
@@ -76,7 +107,13 @@ class Publisher < ApplicationRecord
   end
 
   def uphold_complete?
-    self.uphold_verified || self.uphold_access_parameters.present?
+    # check the wallet to see if the connection to uphold has been been denied
+    action = wallet.try(:status).try(:[], 'action')
+    if action == 're-authorize' || action == 'authorize'
+      false
+    else
+      self.uphold_verified || self.uphold_access_parameters.present?
+    end
   end
 
   def uphold_status

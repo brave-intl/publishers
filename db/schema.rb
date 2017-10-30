@@ -10,11 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170915124337) do
+ActiveRecord::Schema.define(version: 20171025114507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "publisher_id",          null: false
+    t.string   "period"
+    t.string   "source_url"
+    t.text     "encrypted_contents"
+    t.string   "encrypted_contents_iv"
+    t.datetime "expires_at"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.index ["publisher_id"], name: "index_publisher_statements_on_publisher_id", using: :btree
+  end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "brave_publisher_id"
@@ -35,7 +47,7 @@ ActiveRecord::Schema.define(version: 20170915124337) do
     t.string   "encrypted_authentication_token_iv"
     t.string   "verification_method"
     t.datetime "authentication_token_expires_at"
-    t.boolean  "show_verification_status",              default: true
+    t.boolean  "show_verification_status",              default: true,  null: false
     t.boolean  "created_via_api",                       default: false, null: false
     t.string   "uphold_state_token"
     t.string   "encrypted_uphold_code"
@@ -47,6 +59,7 @@ ActiveRecord::Schema.define(version: 20170915124337) do
     t.boolean  "supports_https",                        default: false
     t.boolean  "host_connection_verified"
     t.string   "detected_web_host"
+    t.string   "default_currency"
     t.index ["brave_publisher_id"], name: "index_publishers_on_brave_publisher_id", using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree

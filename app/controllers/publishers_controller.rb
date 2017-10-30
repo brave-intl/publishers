@@ -39,6 +39,8 @@ class PublishersController < ApplicationController
     only: %i(edit_payment_info
              generate_statement
              home
+             statement
+             statement_ready
              update
              uphold_status
              uphold_verified)
@@ -247,9 +249,14 @@ class PublishersController < ApplicationController
 
     @publisher.receive_uphold_code(params[:code])
 
-    ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
-
-    @publisher.reload
+    begin
+      ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
+      @publisher.reload
+    rescue Faraday::Error
+      Rails.logger.error("Unable to exchange Uphold access token with eyeshade")
+      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_error"))
+      return
+    end
 
     redirect_to(publisher_next_step_path(@publisher))
   end
@@ -267,6 +274,9 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
+    # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
+    # ToDo: rework this process?
+    current_publisher.wallet
   end
 
   def log_out
@@ -278,11 +288,31 @@ class PublishersController < ApplicationController
   def generate_statement
     publisher = current_publisher
     statement_period = params[:statement_period]
-    report_url = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
-    respond_to do |format|
-      format.json {
-        render(json: { reportURL: report_url }, status: 200)
-      }
+    statement = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
+    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id)
+    render(json: {
+      id: statement.id,
+      date: statement_period_date(statement.created_at),
+      period: statement_period_description(statement.period.to_sym)
+    }, status: 200)
+  end
+
+  def statement_ready
+    statement = PublisherStatement.find(params[:id])
+    if statement && statement.contents
+      render(nothing: true, status: 204)
+    else
+      render(nothing: true, status: 404)
+    end
+  end
+
+  def statement
+    statement = PublisherStatement.find(params[:id])
+
+    if statement
+      send_data statement.contents, filename: publisher_statement_filename(statement)
+    else
+      render(nothing: true, status: 404)
     end
   end
 
@@ -291,10 +321,22 @@ class PublishersController < ApplicationController
     respond_to do |format|
       format.json {
         render(json: {
-          status: publisher_status(publisher),
+          status: publisher_status(publisher).to_s,
           status_description: publisher_status_description(publisher),
           uphold_status: publisher.uphold_status.to_s,
           uphold_status_description: uphold_status_description(publisher)
+        }, status: 200)
+      }
+    end
+  end
+
+  def balance
+    publisher = current_publisher
+    respond_to do |format|
+      format.json {
+        render(json: {
+            bat_amount: publisher_humanize_balance(current_publisher, "BAT"),
+            converted_balance: publisher_converted_balance(publisher)
         }, status: 200)
       }
     end
@@ -332,7 +374,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status)
+    params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status, :default_currency)
   end
 
   def publisher_update_unverified_params
