@@ -142,10 +142,12 @@ javascript:
       }, false);
 
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
-      defaultCurrencySelect.addEventListener('change', function (event) {
-        submitForm('update_default_currency_form', 'PATCH', true);
-        refreshBalance();
-      }, false);
+      if (defaultCurrencySelect) {
+        defaultCurrencySelect.addEventListener('change', function (event) {
+          submitForm('update_default_currency_form', 'PATCH', true);
+          refreshBalance();
+        }, false);
+      }
 
       var showContact = document.getElementById('show_contact');
       var showContactName = document.getElementById('show_contact_name');
