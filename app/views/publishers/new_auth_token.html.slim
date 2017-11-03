@@ -4,21 +4,28 @@
   .publisher-domain-name
     | &nbsp;
 
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.col-center
-    .content-panel
-      h3= t("publishers.new_auth_token")
-      = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
-        fieldset
-          p= t("publishers.new_auth_token_body")
-          .form-group
-            = f.label(:brave_publisher_id, class: "control-label")
-            = f.text_field(:brave_publisher_id, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
-          .form-group
-            = f.label(:email, t("publishers.new_auth_token_email_html"), class: "control-label")
-            = f.email_field(:email, class: "form-control", placeholder: "alice@example.com")
-          - if @should_throttle
+.publisher-panel.login-panel.col-center
+  .sub-panel.process-panel
+    .row
+      .col.col-md-12
+        h3.text-center= t("publishers.new_auth_token")
+    .row
+      .col.col-md-5.site-login
+        = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
+          fieldset
+            p= t("publishers.log_in_for_site")
+            p= t("publishers.log_in_for_site_note")
             .form-group
-              = recaptcha_tags
-        .panel-controls
-          = f.submit(t("publishers.new_auth_token_button"), class: "btn btn-primary")
+              = f.label(:brave_publisher_id, class: "control-label")
+              = f.text_field(:brave_publisher_id, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
+            .form-group
+              = f.label(:email, t("publishers.new_auth_token_email_html"), class: "control-label")
+              = f.email_field(:email, class: "form-control", placeholder: "alice@example.com")
+            - if @should_throttle
+              .form-group
+                = recaptcha_tags
+          .panel-controls
+            = f.submit(t("publishers.new_auth_token_button"), class: "btn btn-primary")
+      .col.col-md-5.col-md-offset-2.youtube-login
+        p= t("publishers.log_in_for_youtube")
+        = link_to(t("publishers.log_in_with_google_button"), publisher_google_oauth2_omniauth_authorize_path, class: "btn btn-primary")

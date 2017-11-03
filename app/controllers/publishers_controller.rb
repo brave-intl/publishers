@@ -21,6 +21,7 @@ class PublishersController < ApplicationController
              new_auth_token)
   before_action :require_unverified_publisher,
     only: %i(email_verified
+             contact_info
              update_unverified
              verification
              verification_choose_method
@@ -189,6 +190,10 @@ class PublishersController < ApplicationController
   end
 
   def email_verified
+    @publisher = current_publisher
+  end
+
+  def contact_info
     @publisher = current_publisher
   end
 
