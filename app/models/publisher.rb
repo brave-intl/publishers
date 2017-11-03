@@ -7,7 +7,7 @@ class Publisher < ApplicationRecord
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
 
-  devise :timeoutable, :trackable
+  devise :timeoutable, :trackable, :omniauthable
 
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
