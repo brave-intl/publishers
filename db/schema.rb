@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171025114507) do
+ActiveRecord::Schema.define(version: 20171101165616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,10 +64,12 @@ ActiveRecord::Schema.define(version: 20171025114507) do
     t.string   "auth_user_id"
     t.string   "auth_name"
     t.string   "auth_email"
+    t.string   "youtube_channel_id"
     t.index ["brave_publisher_id"], name: "index_publishers_on_brave_publisher_id", using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
     t.index ["verified"], name: "index_publishers_on_verified", using: :btree
+    t.index ["youtube_channel_id"], name: "index_publishers_on_youtube_channel_id", using: :btree
   end
 
   create_table "versions", force: :cascade do |t|

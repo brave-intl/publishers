@@ -33,6 +33,8 @@ class Publisher < ApplicationRecord
   before_validation :normalize_inspect_brave_publisher_id, if: -> { brave_publisher_id.present? && brave_publisher_id_changed?}
   after_validation :generate_verification_token, if: -> { brave_publisher_id && brave_publisher_id_changed? }
 
+  belongs_to :youtube_channel
+
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
   # API call to eyeshade
