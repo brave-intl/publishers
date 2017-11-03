@@ -121,7 +121,7 @@ class PublisherTest < ActiveSupport::TestCase
       body = "{ \"status\":{ \"provider\":\"uphold\", \"action\":\"re-authorize\" }, \"contributions\":{ \"amount\":\"9001.00\", \"currency\":\"USD\", \"altcurrency\":\"BAT\", \"probi\":\"38077497398351695427000\" }, \"rates\":{ \"BTC\":0.00005418424016883016, \"ETH\":0.000795331082073117, \"USD\":0.2363863335301452, \"EUR\":0.20187818378874756, \"GBP\":0.1799810085548496 }, \"wallet\":{ \"provider\":\"uphold\", \"authorized\":true, \"preferredCurrency\":\"USD\", \"availableCurrencies\":[ \"USD\", \"EUR\", \"BTC\", \"ETH\", \"BAT\" ] } }"
 
       stub_request(:get, /v2\/publishers\/uphold_connected.org\/wallet/).
-          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'Bearer', 'User-Agent'=>'Faraday v0.9.2'}).
+          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: body, headers: {})
 
       publisher = publishers(:uphold_connected)
