@@ -80,4 +80,13 @@ ActiveRecord::Schema.define(version: 20171025114507) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
+  create_table "youtube_channels", id: :string, force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
+    t.string   "thumbnail_url"
+    t.integer  "subscriber_count"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
 end
