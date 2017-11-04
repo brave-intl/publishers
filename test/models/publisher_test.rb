@@ -134,4 +134,17 @@ class PublisherTest < ActiveSupport::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
     end
   end
+
+  test "a publisher cannot be associated with both a site and auth credentials" do
+    publisher = publishers(:verified)
+    publisher.auth_user_id = '123'
+    refute publisher.valid?
+
+    publisher.brave_publisher_id = nil
+    assert publisher.valid?
+
+    publisher.auth_user_id = nil
+    publisher.brave_publisher_id = 'example.com'
+    assert publisher.valid?
+  end
 end

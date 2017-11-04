@@ -29,6 +29,10 @@ class Publisher < ApplicationRecord
   # formats to support more publishers.
   validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id_changed? && verified_publisher_exists? } }
 
+  # ensure that site publishers do not have oauth credentials (and vice versa)
+  validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }
+  validates :auth_user_id, absence: true, if: -> { brave_publisher_id.present? }
+
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_inspect_brave_publisher_id, if: -> { brave_publisher_id.present? && brave_publisher_id_changed?}
   after_validation :generate_verification_token, if: -> { brave_publisher_id.present? && brave_publisher_id_changed? }

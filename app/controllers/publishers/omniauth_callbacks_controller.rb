@@ -7,9 +7,7 @@ module Publishers
       refresh_eyeshade = false
 
       if publisher
-        if publisher.brave_publisher_id.present?
-          raise 'Google OAuth2 Error: Publishers can not be associated with both a brave_publisher_id and a Google account.'
-        elsif publisher.auth_provider
+        if publisher.auth_provider
           raise 'Google OAuth2 Error: Provider has already been set for Publisher.'
         elsif publisher.auth_user_id
           raise 'Google OAuth2 Error: UID has already been set for Publisher.'
