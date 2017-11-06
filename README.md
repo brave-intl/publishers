@@ -1,6 +1,6 @@
 App for [publishers.brave.com](https://publishers.brave.com).
 
-[![Build Status](https://travis-ci.org/brave/publishers.svg?branch=master)](https://travis-ci.org/brave/publishers)
+[![Build Status](https://travis-ci.org/brave-intl/publishers.svg?branch=master)](https://travis-ci.org/brave-intl/publishers)
 
 ## Quick start
 
