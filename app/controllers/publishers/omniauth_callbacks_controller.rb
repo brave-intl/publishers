@@ -18,6 +18,7 @@ module Publishers
         publisher.auth_provider = oauth_response.provider
         publisher.auth_user_id = oauth_response.uid
         publisher.auth_name = oauth_response.dig('info', 'name')
+        publisher.name ||= publisher.auth_name
         publisher.auth_email = oauth_response.dig('info', 'email')
 
         publisher.verified = true

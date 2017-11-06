@@ -12,13 +12,13 @@ class PublisherChannelSetter < BaseApiClient
     payload = {
       "authorizer" => {
         "owner" => "oauth#google:#{publisher.auth_user_id}",
-        "ownerEmail" => publisher.auth_email,
-        "ownerName" => publisher.auth_name
+        "ownerEmail" => publisher.auth_email.to_s,
+        "ownerName" => publisher.auth_name.to_s
       },
       "contactInfo" => {
-        "name" => publisher.name,
-        "phone" => publisher.phone_normalized,
-        "email" => publisher.email
+        "name" => publisher.name.to_s,
+        "phone" => publisher.phone_normalized.to_s,
+        "email" => publisher.email.to_s
       },
       "providers" => [
         {
@@ -29,7 +29,7 @@ class PublisherChannelSetter < BaseApiClient
     }
 
     # This raises when response is not 2xx.
-    response = connection.put do |request|
+    response = connection.post do |request|
       request.body = payload.to_json
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
