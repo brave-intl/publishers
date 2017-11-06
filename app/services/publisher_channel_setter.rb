@@ -17,7 +17,7 @@ class PublisherChannelSetter < BaseApiClient
       },
       "contactInfo" => {
         "name" => publisher.name,
-        "phone" => publisher.phone,
+        "phone" => publisher.phone_normalized,
         "email" => publisher.email
       },
       "providers" => [
