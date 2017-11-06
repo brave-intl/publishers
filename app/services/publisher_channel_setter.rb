@@ -12,14 +12,14 @@ class PublisherChannelSetter < BaseApiClient
     payload = {
       "authorizer" => {
         "owner" => "oauth#google:#{publisher.auth_user_id}",
-        "ownerEmail" => publisher.auth_email.to_s,
-        "ownerName" => publisher.auth_name.to_s
-      },
+        "ownerEmail" => publisher.auth_email,
+        "ownerName" => publisher.auth_name
+      }.compact,
       "contactInfo" => {
-        "name" => publisher.name.to_s,
-        "phone" => publisher.phone_normalized.to_s,
-        "email" => publisher.email.to_s
-      },
+        "name" => publisher.name,
+        "phone" => publisher.phone_normalized,
+        "email" => publisher.email
+      }.compact,
       "providers" => [
         {
           "publisher" => "youtube#channel:#{publisher.youtube_channel.id}",
