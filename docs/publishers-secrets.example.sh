@@ -34,8 +34,5 @@ export TERMS_OF_SERVICE_URL="https://basicattentiontoken.org/publisher-terms-of-
 # Get these from the Google Web application setup. During setup:
 # - make sure the authorized redirect url goes to the endpoint /publishers/auth/google_oauth2/callback
 export GOOGLE_CLIENT_ID=""
-export GOOGLE_PROJECT_ID=""
-export GOOGLE_AUTH_URI=""
-export GOOGLE_TOKEN_URI=""
-export GOOGLE_AUTH_PROVIDER_X509_CERT_URL=""
 export GOOGLE_CLIENT_SECRET=""
+
