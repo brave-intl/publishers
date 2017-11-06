@@ -7,7 +7,7 @@ class Publisher < ApplicationRecord
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
 
-  devise :timeoutable, :trackable
+  devise :timeoutable, :trackable, :omniauthable
 
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
@@ -29,9 +29,15 @@ class Publisher < ApplicationRecord
   # formats to support more publishers.
   validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id_changed? && verified_publisher_exists? } }
 
+  # ensure that site publishers do not have oauth credentials (and vice versa)
+  validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }
+  validates :auth_user_id, absence: true, if: -> { brave_publisher_id.present? }
+
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_inspect_brave_publisher_id, if: -> { brave_publisher_id.present? && brave_publisher_id_changed?}
-  after_validation :generate_verification_token, if: -> { brave_publisher_id && brave_publisher_id_changed? }
+  after_validation :generate_verification_token, if: -> { brave_publisher_id.present? && brave_publisher_id_changed? }
+
+  belongs_to :youtube_channel
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 

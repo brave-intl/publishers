@@ -303,7 +303,10 @@ noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
 - content_for(:navbar_content_right) do
-  .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
+  - if current_publisher.brave_publisher_id
+    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
+  - elsif current_publisher.youtube_channel
+    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
 
 #cssload-container
   .cssload-container
@@ -314,10 +317,15 @@ noscript
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .publisher-status
-      .publisher-domain-summary
-        .publisher-domain-name= current_publisher.brave_publisher_id
-        #publisher_verification_status class=publisher_verification_status(current_publisher)
-          = publisher_verification_status_description(current_publisher)
+      - if current_publisher.brave_publisher_id
+        .publisher-domain-summary
+          .publisher-domain-name= current_publisher.brave_publisher_id
+          #publisher_verification_status class=publisher_verification_status(current_publisher)
+            = publisher_verification_status_description(current_publisher)
+      - elsif current_publisher.youtube_channel
+        .publisher-youtube-channel
+          .channel-thumbnail= image_tag(current_publisher.youtube_channel.thumbnail_url)
+          .channel-name= current_publisher.youtube_channel.title
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
     .balance

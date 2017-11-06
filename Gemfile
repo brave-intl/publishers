@@ -23,6 +23,9 @@ gem "lograge", "~> 0.4"
 # Dependency for rails
 gem "nokogiri", "~> 1.8.1"
 
+# Oauth client for google / youtube
+gem "omniauth-google-oauth2", "~> 0.5.2"
+
 # Model record auditing
 gem "paper_trail", "~> 5.2.2"
 

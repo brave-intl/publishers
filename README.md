@@ -16,6 +16,29 @@ App for [publishers.brave.com](https://publishers.brave.com).
   - `rails db:create RAILS_ENV=development`
   - `rails db:migrate RAILS_ENV=development`
 
+### Google API Setup
+
+Setup a google API project:
+
+* Login to your google account (dev), or the Brave google account (staging, production)
+* Go to [https://console.developers.google.com](https://console.developers.google.com)
+* Select "Create Project" then "Create" to setup a new API project
+* Give the project a name such as "publishers-dev"
+* Select "+ Enable APIs and Services"
+* Enable "Google+ API" and "YouTube Data API v3"
+* Back at the console select Credentials, then select the "OAuth consent screen" sub tab
+* Fill in the details. For development you need the Product name, try "Publishers Dev (localhost)"
+* Then Select "Create credentials", then "OAuth client ID"
+  * Application type is "Web application"
+  * Name is "Publishers"
+  * Authorized redirect URIs is "http://localhost:3000/publishers/auth/google_oauth2/callback"
+  * select "Create"
+* Record the Client ID and Client secret and enter them in your Env variables
+
+You may need to wait up to 10 minutes for the changes to propagate.
+
+These steps based on [directions at the omniauth-google-oauth2 gem](https://github.com/zquestz/omniauth-google-oauth2#google-api-setup).
+
 ### Run
 
 1. Start Postgres and redis.

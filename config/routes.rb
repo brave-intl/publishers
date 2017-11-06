@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get :uphold_verified
       get :statement
       get :statement_ready
+      get :contact_info
       patch :verify
       patch :check_for_https
       patch :update
@@ -27,7 +28,7 @@ Rails.application.routes.draw do
       patch :update_unverified
     end
   end
-  devise_for :publishers
+  devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
 
   resources :static, only: [] do
     collection do
