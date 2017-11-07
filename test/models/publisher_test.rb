@@ -137,6 +137,8 @@ class PublisherTest < ActiveSupport::TestCase
 
   test "a publisher cannot be associated with both a site and auth credentials" do
     publisher = publishers(:verified)
+    assert publisher.valid?
+
     publisher.auth_user_id = '123'
     refute publisher.valid?
 
