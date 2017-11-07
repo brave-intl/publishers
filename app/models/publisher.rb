@@ -29,6 +29,8 @@ class Publisher < ApplicationRecord
   # formats to support more publishers.
   validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_exists? } }
 
+  validate :youtube_channel_not_changed_once_initialized
+
   # ensure that site publishers do not have oauth credentials (and vice versa)
   validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }
   validates :auth_user_id, absence: true, if: -> { brave_publisher_id.present? }
@@ -187,5 +189,14 @@ class Publisher < ApplicationRecord
 
   def verified_publisher_exists?
     self.class.where(brave_publisher_id: brave_publisher_id, verified: true).any?
+  end
+
+  # verification to ensure youtube_channel is not changed
+  def youtube_channel_not_changed_once_initialized
+    return if youtube_channel_id_was.nil?
+
+    if youtube_channel_id_was != youtube_channel_id
+      errors.add(:youtube_channel_id, "can not change once initialized")
+    end
   end
 end

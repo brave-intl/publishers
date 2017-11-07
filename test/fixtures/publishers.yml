@@ -54,6 +54,21 @@ uphold_connected:
   verified: true
   uphold_verified: true
 
+youtube_initial:
+  brave_publisher_id: nil
+  email: "alice@spud.com"
+  name: "Alice the Youtuber"
+  phone: "4159001420"
+  phone_normalized: "+14159001420"
+
+youtube_new:
+  brave_publisher_id: nil
+  email: "alice@spud.com"
+  name: "Alice the Youtuber"
+  phone: "4159001420"
+  phone_normalized: "+14159001420"
+  youtube_channel_id: "323541525412313421"
+
 google_verified:
   auth_user_id: "abc123"
   auth_provider: "google_oauth2"
