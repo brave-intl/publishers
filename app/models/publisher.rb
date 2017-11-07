@@ -148,6 +148,7 @@ class Publisher < ApplicationRecord
   end
 
   def owner_identifier
+    return nil if auth_user_id.blank?
     "oauth#google:#{auth_user_id}"
   end
 
