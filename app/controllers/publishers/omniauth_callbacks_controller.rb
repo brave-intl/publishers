@@ -31,7 +31,7 @@ module Publishers
           return
         end
 
-        if publisher.auth_name != oauth_response.dig('info', 'name') || publisher.auth_email = oauth_response.dig('info', 'email')
+        if publisher.auth_name != oauth_response.dig('info', 'name') || publisher.auth_email != oauth_response.dig('info', 'email')
           refresh_eyeshade = true
         end
       end
