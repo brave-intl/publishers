@@ -18,7 +18,12 @@ class PublisherWalletGetter < BaseApiClient
         request.headers["Authorization"] = api_authorization_header
         request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
       else
-        Rails.logger.warn("PublisherWalletGetter can't get wallet for publication_type #{publisher.publication_type.to_s}")
+        begin
+          raise "PublisherWalletGetter can't get wallet for publication_type #{publisher.publication_type.to_s}"
+        rescue => e
+          require "sentry-raven"
+          Raven.capture_exception(e)
+        end
         return nil
       end
     end

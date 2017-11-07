@@ -41,7 +41,12 @@ class PublisherWalletSetter < BaseApiClient
         BODY
         request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
       else
-        Rails.logger.warn("PublisherWalletSetter can't set wallet for publication_type #{publisher.publication_type.to_s}")
+        begin
+          raise "PublisherWalletSetter can't set wallet for publication_type #{publisher.publication_type.to_s}"
+        rescue => e
+          require "sentry-raven"
+          Raven.capture_exception(e)
+        end
         return nil
       end
     end
