@@ -125,7 +125,7 @@ class PublishersController < ApplicationController
     if success
       redirect_to(publisher_next_step_path(@publisher))
     else
-      render(:email_verified)
+      render(:contact_info)
     end
   end
 
