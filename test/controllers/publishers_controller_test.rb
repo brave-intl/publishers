@@ -65,6 +65,29 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_empty(css_select("[data-test-id='current_publisher']"))
   end
 
+  test "can't create verified Publisher with an existing verified Publisher with the brave_publisher_id" do
+    duplicate_publisher_params = PUBLISHER_PARAMS.deep_merge(
+      publisher: {
+        brave_publisher_id: publishers(:verified).brave_publisher_id
+      }
+    )
+
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: duplicate_publisher_params )
+    end
+
+    assert_select('div.notifications') do |element|
+      assert_match("Another person has already verified that website", element.text)
+    end
+  end
+
   test "an unauthenticated html request redirects to home" do
     get home_publishers_path
     assert_response 302
