@@ -30,6 +30,7 @@ class Publisher < ApplicationRecord
   validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_exists? } }
 
   validate :youtube_channel_not_changed_once_initialized
+  validates_uniqueness_of :youtube_channel_id, if: -> { youtube_channel_id.present? }
 
   # ensure that site publishers do not have oauth credentials (and vice versa)
   validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }

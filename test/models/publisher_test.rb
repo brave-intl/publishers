@@ -164,4 +164,13 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.youtube_channel = some_other_channel
     refute publisher.valid?
   end
+
+  test "a publisher cannot have the same youtube channel as another publisher" do
+    publisher = publishers(:youtube_initial)
+    assert publisher.valid?
+
+    diy_channel = youtube_channels(:diy_channel)
+    publisher.youtube_channel = diy_channel
+    refute publisher.valid?
+  end
 end
