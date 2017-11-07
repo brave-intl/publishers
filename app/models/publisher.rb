@@ -27,7 +27,7 @@ class Publisher < ApplicationRecord
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id_changed? && verified_publisher_exists? } }
+  validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_exists? } }
 
   # ensure that site publishers do not have oauth credentials (and vice versa)
   validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }
