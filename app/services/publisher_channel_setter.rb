@@ -11,7 +11,7 @@ class PublisherChannelSetter < BaseApiClient
 
     payload = {
       "authorizer" => {
-        "owner" => "oauth#google:#{publisher.auth_user_id}",
+        "owner" => publisher.owner_identifier,
         "ownerEmail" => publisher.auth_email,
         "ownerName" => publisher.auth_name
       }.compact,
@@ -22,7 +22,7 @@ class PublisherChannelSetter < BaseApiClient
       }.compact,
       "providers" => [
         {
-          "publisher" => "youtube#channel:#{publisher.youtube_channel.id}",
+          "publisher" => publisher.youtube_channel.channel_identifier,
           "show_verification_status" => publisher.show_verification_status
         }
       ]

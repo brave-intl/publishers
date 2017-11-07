@@ -137,6 +137,20 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def publication_type
+    if self.brave_publisher_id.present?
+      :site
+    elsif self.youtube_channel_id.present?
+      :youtube_channel
+    else
+      :unselected
+    end
+  end
+
+  def owner_identifier
+    "oauth#google:#{auth_user_id}"
+  end
+
   private
 
   def generate_verification_token

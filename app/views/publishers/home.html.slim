@@ -303,9 +303,9 @@ noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
 - content_for(:navbar_content_right) do
-  - if current_publisher.brave_publisher_id
+  - if current_publisher.publication_type == :site
     .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
-  - elsif current_publisher.youtube_channel
+  - elsif current_publisher.publication_type == :youtube_channel
     .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
 
 #cssload-container
@@ -317,12 +317,12 @@ noscript
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .publisher-status
-      - if current_publisher.brave_publisher_id
+      - if current_publisher.publication_type == :site
         .publisher-domain-summary
           .publisher-domain-name= current_publisher.brave_publisher_id
           #publisher_verification_status class=publisher_verification_status(current_publisher)
             = publisher_verification_status_description(current_publisher)
-      - elsif current_publisher.youtube_channel
+      - elsif current_publisher.publication_type == :youtube_channel
         .publisher-youtube-channel
           .channel-thumbnail= image_tag(current_publisher.youtube_channel.thumbnail_url)
           .channel-name= current_publisher.youtube_channel.title

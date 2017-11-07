@@ -11,9 +11,16 @@ class PublisherWalletGetter < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     response = connection.get do |request|
-      # request.body = JSON.dump(params)
-      request.headers["Authorization"] = api_authorization_header
-      request.url("/v2/publishers/#{publisher.brave_publisher_id}/wallet")
+      if publisher.publication_type == :site
+        request.headers["Authorization"] = api_authorization_header
+        request.url("/v2/publishers/#{publisher.brave_publisher_id}/wallet")
+      elsif publisher.publication_type == :youtube_channel
+        request.headers["Authorization"] = api_authorization_header
+        request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
+      else
+        Rails.logger.warn("PublisherWalletGetter can't get wallet for publication_type #{publisher.publication_type.to_s}")
+        return nil
+      end
     end
     response_hash = JSON.parse(response.body)
     Eyeshade::Wallet.new(wallet_json: response_hash)
