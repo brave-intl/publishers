@@ -25,7 +25,8 @@ module Publishers
 
         publisher.save!
       else
-        publisher = Publisher.where(auth_provider: oauth_response.provider, auth_user_id: oauth_response.uid).first
+        publisher = Publisher.where(auth_provider: oauth_response.provider, auth_user_id: oauth_response.uid).
+            where.not(youtube_channel_id: nil).first
         unless publisher
           redirect_to('/', notice: I18n.t("youtube.account_not_found"))
           return
