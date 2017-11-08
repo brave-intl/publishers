@@ -17,16 +17,35 @@ class PublisherStatementGeneratorTest < ActiveJob::TestCase
     end
   end
 
-  test "when online returns a PublisherStatement with a source_url that matches the reportURL returned by eyeshade" do
+  test "when online, for site publishers, returns a PublisherStatement with a source_url that matches the reportURL returned by eyeshade" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
+
+      publisher = publishers(:verified)
 
       stub_request(:get, /v1\/publishers\/verified\.org\/statement/).
           with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: "{\"reportURL\":\"example.com/fake-report\"}", headers: {})
 
-      publisher = publishers(:verified)
+      result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :all).perform
+      assert_equal "example.com/fake-report", result.source_url
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_offline
+    end
+  end
+
+  test "when online, for YT publishers, returns a PublisherStatement with a source_url that matches the reportURL returned by eyeshade" do
+    prev_offline = Rails.application.secrets[:api_eyeshade_offline]
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
+
+      publisher = publishers(:google_verified)
+
+      stub_request(:get, /v1\/owners\/#{publisher.owner_identifier}\/statement/).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: "{\"reportURL\":\"example.com/fake-report\"}", headers: {})
+
       result = PublisherStatementGenerator.new(publisher: publisher, statement_period: :all).perform
       assert_equal "example.com/fake-report", result.source_url
     ensure

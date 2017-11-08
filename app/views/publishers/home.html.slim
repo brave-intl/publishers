@@ -373,7 +373,7 @@ noscript
             .statement
               .date= statement_period_date(s.created_at)
               .period= statement_period_description(s.period.to_sym)
-              .download= link_to('Download', statement_publishers_url(id: s.id))
+              .download= s.encrypted_contents? ? link_to(t("publishers.statement_download"), statement_publishers_url(id: s.id)) : t("publishers.statement_delayed")
 
       .panel-header.panel-header-h4#publishers_contact
         = t("publishers.contact")
