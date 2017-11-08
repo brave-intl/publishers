@@ -342,4 +342,5 @@ en:
     authenticate_with_youtube: "Authenticate with YouTube"
     account_not_found: "Couldn't find a matching publisher record"
     channel_not_found: "Channel not found"
+    channel_already_taken: "Channel already taken"
     oauth_error: "Error connecting to YouTube"

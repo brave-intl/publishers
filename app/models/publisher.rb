@@ -200,4 +200,8 @@ class Publisher < ApplicationRecord
       errors.add(:youtube_channel_id, "can not change once initialized")
     end
   end
+
+  def self.youtube_channel_in_use(id)
+    self.where(youtube_channel_id: id).count > 0
+  end
 end
