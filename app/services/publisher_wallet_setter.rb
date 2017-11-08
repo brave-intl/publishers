@@ -36,7 +36,7 @@ class PublisherWalletSetter < BaseApiClient
             <<~BODY
             {
               "provider": "uphold", 
-              "parameters": #{JSON.dump(uphold_access_parameters)} 
+              "parameters": #{JSON.dump(uphold_access_parameters)}
             }
         BODY
         request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
