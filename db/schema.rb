@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101165616) do
+ActiveRecord::Schema.define(version: 20171108212006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20171101165616) do
     t.integer  "subscriber_count"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.index ["id"], name: "index_youtube_channels_on_id", unique: true, using: :btree
   end
 
 end

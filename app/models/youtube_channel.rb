@@ -5,7 +5,6 @@ class YoutubeChannel < ApplicationRecord
 
   validates :title, presence: true
   validates :thumbnail_url, presence: true
-  validates :id, uniqueness: true, presence: true
 
   def channel_identifier
     "youtube#channel:#{id}"
