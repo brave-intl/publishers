@@ -11,10 +11,22 @@ class PublisherStatementGenerator < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    # This raises when response is not 2xx.
     response = connection.get do |request|
-      request.headers["Authorization"] = api_authorization_header
-      request.url("/v1/publishers/#{publisher.brave_publisher_id}/statement#{query_params}")
+      if publisher.publication_type == :site
+        request.headers["Authorization"] = api_authorization_header
+        request.url("/v1/publishers/#{publisher.brave_publisher_id}/statement#{query_params}")
+      elsif publisher.publication_type == :youtube_channel
+        request.headers["Authorization"] = api_authorization_header
+        request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/statement#{query_params}")
+      else
+        begin
+          raise "PublisherStatementGenerator can't generate statement for publication_type #{publisher.publication_type.to_s}"
+        rescue => e
+          require "sentry-raven"
+          Raven.capture_exception(e)
+        end
+        return nil
+      end
     end
 
     statement = PublisherStatement.new(
