@@ -155,6 +155,11 @@ module Publishers
 
         # should redirect to email_verified so user can try another youtube account
         assert_redirected_to email_verified_publishers_path
+        follow_redirect!
+
+        assert_select('div.notifications') do |element|
+          assert_match(I18n.translate('youtube.channel_already_taken'), element.text)
+        end
       end
     end
 
