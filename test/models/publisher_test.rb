@@ -149,4 +149,28 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.brave_publisher_id = 'example.com'
     assert publisher.valid?
   end
+
+  test "a publisher cannot change youtube channels" do
+    publisher = publishers(:youtube_initial)
+    assert publisher.valid?
+
+    some_channel = youtube_channels(:some_channel)
+    publisher.youtube_channel = some_channel
+    assert publisher.valid?
+
+    publisher.save
+
+    some_other_channel = youtube_channels(:some_other_channel)
+    publisher.youtube_channel = some_other_channel
+    refute publisher.valid?
+  end
+
+  test "a publisher cannot have the same youtube channel as another publisher" do
+    publisher = publishers(:youtube_initial)
+    assert publisher.valid?
+
+    diy_channel = youtube_channels(:diy_channel)
+    publisher.youtube_channel = diy_channel
+    refute publisher.valid?
+  end
 end

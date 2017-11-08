@@ -9,4 +9,10 @@ class YoutubeChannel < ApplicationRecord
   def channel_identifier
     "youtube#channel:#{id}"
   end
+
+  def self.assign_or_new(attributes)
+    obj = first || new
+    obj.assign_attributes(attributes)
+    obj
+  end
 end

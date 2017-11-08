@@ -1,0 +1,14 @@
+diy_channel:
+  id: "323541525412313421"
+  title: "The DIY Channel"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
+
+some_channel:
+  id: "123456"
+  title: "Some Guy's Channel"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
+
+some_other_channel:
+  id: "78032"
+  title: "Some Other Guy's Channel"
+  thumbnail_url: "https://some_image_host.com/some_image.png"

@@ -22,17 +22,12 @@ module Publishers
         publisher.auth_email = oauth_response.dig('info', 'email')
 
         publisher.verified = true
-
-        publisher.save!
       else
-        publisher = Publisher.where(auth_provider: oauth_response.provider, auth_user_id: oauth_response.uid).first
+        publisher = Publisher.where(auth_provider: oauth_response.provider, auth_user_id: oauth_response.uid).
+            where.not(youtube_channel_id: nil).first
         unless publisher
           redirect_to('/', notice: I18n.t("youtube.account_not_found"))
           return
-        end
-
-        if publisher.auth_name != oauth_response.dig('info', 'name') || publisher.auth_email != oauth_response.dig('info', 'email')
-          refresh_eyeshade = true
         end
       end
 
@@ -44,11 +39,32 @@ module Publishers
 
       # Sync the Youtube channel details
       # Doing this only after login since token refresh is not being used
-      sync_result = PublisherYoutubeChannelSyncer.new(publisher: current_publisher,
-                                                      token: session['google_oauth2_credentials_token']).perform
+      begin
+        channel_changed = PublisherYoutubeChannelSyncer.new(publisher: current_publisher,
+                                                            token: session['google_oauth2_credentials_token']).perform
 
-      if sync_result == :new_channel
-        refresh_eyeshade = true
+        if channel_changed
+          refresh_eyeshade = true
+        end
+
+        current_publisher.save!
+
+      rescue PublisherYoutubeChannelSyncer::ChannelAlreadyClaimedError => e
+        require "sentry-raven"
+        Raven.capture_exception(e)
+
+        current_publisher.auth_provider = nil
+        current_publisher.auth_user_id = nil
+        current_publisher.auth_name = nil
+        current_publisher.name = nil
+        current_publisher.auth_email = nil
+        current_publisher.verified = false
+        current_publisher.youtube_channel = nil
+
+        current_publisher.save!
+
+        redirect_to email_verified_publishers_path, notice: t('youtube.channel_already_taken')
+        return
       end
 
       if refresh_eyeshade

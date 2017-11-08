@@ -23,18 +23,28 @@ class PublisherYoutubeChannelSyncer
 
       # Create or update the youtube channel
       if publisher.publication_type == :youtube_channel
-        publisher.youtube_channel.update(channel_attrs)
-        :updated_channel
+        channel = publisher.youtube_channel
+        # Assign attributes instead of update so we can check if things changed
+        channel.assign_attributes(channel_attrs)
+
+        changed = channel.changed?
+        channel.save! if changed
       elsif publisher.publication_type == :unselected
         channel_attrs[:id] = channel_json['id']
 
-        channel = YoutubeChannel.new(channel_attrs)
-        publisher.youtube_channel = channel
-        publisher.save!
-        :new_channel
+        unless Publisher.youtube_channel_in_use(channel_attrs[:id])
+          # The channel may exist, but not be associated with a publisher. In this case we'll update it
+          channel = YoutubeChannel.where(id: channel_attrs[:id]).assign_or_new(channel_attrs)
+          publisher.youtube_channel = channel
+        else
+          raise ChannelAlreadyClaimedError.new(channel_attrs[:id])
+        end
+        changed = true
       else
         raise InvalidPublishedTypeError.new(publisher.publication_type)
       end
+
+      changed
     end
 
   rescue => e
@@ -48,4 +58,9 @@ class PublisherYoutubeChannelSyncer
     end
   end
 
+  class ChannelAlreadyClaimedError < RuntimeError
+    def initialize(channel_id)
+      super "Channel #{channel_id} has already been claimed"
+    end
+  end
 end
