@@ -108,6 +108,8 @@ en:
       verify_site: "Verify Your Site"
       create_wallet: "Create Your Wallet"
     statements: "Statements"
+    statement_download: "Download"
+    statement_delayed: "Delayed"
     verified_phone_html: |
       Phone Number <span class="optional">(optional)</span>
     status_complete: "Verified"
