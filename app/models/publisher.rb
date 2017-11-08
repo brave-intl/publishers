@@ -42,17 +42,6 @@ class Publisher < ApplicationRecord
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
   # API call to eyeshade
-  def balance
-    @_balance ||= PublisherBalanceGetter.new(publisher: self).perform
-  end
-
-  # FIXME: To be removed once BAT transition is complete.
-  # Legacy BTC balance from Publishers v1
-  def legacy_balance
-    @_legacy_balance ||= PublisherLegacyBalanceGetter.new(publisher: self).perform
-  end
-
-  # API call to eyeshade
   def wallet
     return @_wallet if @_wallet
 
@@ -146,6 +135,21 @@ class Publisher < ApplicationRecord
       self.detected_web_host = nil
       self.host_connection_verified = false
     end
+  end
+
+  def publication_type
+    if self.brave_publisher_id.present?
+      :site
+    elsif self.youtube_channel_id.present?
+      :youtube_channel
+    else
+      :unselected
+    end
+  end
+
+  def owner_identifier
+    return nil if auth_user_id.blank?
+    "oauth#google:#{auth_user_id}"
   end
 
   private

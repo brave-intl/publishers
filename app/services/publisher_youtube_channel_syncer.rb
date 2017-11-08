@@ -22,16 +22,18 @@ class PublisherYoutubeChannelSyncer
       }
 
       # Create or update the youtube channel
-      if publisher.youtube_channel
+      if publisher.publication_type == :youtube_channel
         publisher.youtube_channel.update(channel_attrs)
         :updated_channel
-      else
+      elsif publisher.publication_type == :unselected
         channel_attrs[:id] = channel_json['id']
 
         channel = YoutubeChannel.new(channel_attrs)
         publisher.youtube_channel = channel
         publisher.save!
         :new_channel
+      else
+        raise InvalidPublishedTypeError.new(publisher.publication_type)
       end
     end
 
@@ -39,4 +41,11 @@ class PublisherYoutubeChannelSyncer
     Rails.logger.warn("PublisherYoutubeChannelSyncer #perform error: #{e}\nChannel was not synced")
     raise e
   end
+
+  class InvalidPublishedTypeError < RuntimeError
+    def initialize(type)
+      super "#{type.to_s} publisher can not sync Youtube Channel"
+    end
+  end
+
 end

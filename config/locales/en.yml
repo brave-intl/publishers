@@ -48,7 +48,6 @@ en:
     balance_error: "Unavailable"
     balance_pending: "CURRENT CONTRIBUTION BALANCE"
     balance_pending_approximate: "Approximately %{amount} %{code}"
-    legacy_balance_pending: "Legacy balance pending (Bitcoin system)"
     claim_funds: "Claim funds"
     complete_irs_w_9: "Complete IRS W-9"
     complete_irs_w_9_hint: "United States taxpayers"
