@@ -163,6 +163,82 @@ module Publishers
       end
     end
 
+    test "a new publisher who hasn't verified through email will be created and sent to the dashboard" do
+      begin
+        OmniAuth.config.test_mode = true
+
+        token = "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
+
+        OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
+            {
+                "provider" => "google_oauth2",
+                "uid" => "123545",
+                "info" => {
+                    "name" => "Test Brand Account",
+                    "email" => "brand@nonfunctional.google.com",
+                    "first_name" => "Test Brand Account",
+                    "image" => "https://lh4.googleusercontent.com/-tP57axXeGuI/AAAAAAAAAAI/AAAAAAAAAA0/LSxNfj3nB8c/photo.jpg"
+                },
+                "credentials" => {
+                    "token" => token,
+                    "expires_at" => 2510156374,
+                    "expires" => true
+                }
+            }
+        )
+
+        # perform_enqueued_jobs do
+        #   post(publishers_path, params: SIGNUP_PARAMS)
+        # end
+        publisher = Publisher.order(created_at: :asc).last
+        # url = publisher_url(publisher, token: publisher.authentication_token)
+        # get(url)
+        # publisher.verified = true
+        # publisher.save!
+
+        channel_data = {
+            "id" => "234542342332134",
+            "snippet" => {
+                "title" => "DIY",
+                "description" => "DIY Description",
+                "thumbnails" => {
+                    "default" => {
+                        "url" => "http://some_host.com/thumb.png"
+                    }
+                }
+            },
+            "statistics" => {
+                "subscriberCount" => 12
+            }
+        }
+
+
+        stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
+            with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                            'Authorization' => "Bearer #{token}",
+                            'User-Agent' => 'Faraday v0.9.2' }).
+            to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
+            
+        assert_difference("Publisher.count", 1) do
+            get(publisher_google_oauth2_omniauth_authorize_url)
+            follow_redirect!
+
+            assert_redirected_to home_publishers_path
+            # check publisher correctly in database
+        end
+        publisher = Publisher.order(created_at: :asc).last
+
+        assert_equal publisher.auth_provider, "google_oauth2"
+        assert_equal publisher.auth_user_id, "123545"
+        assert_equal publisher.email, "brand@nonfunctional.google.com"
+        # publisher.reload
+
+        # assert_not_nil publisher.youtube_channel_id
+        # assert_equal "google_oauth2", publisher.auth_provider
+        # assert_equal "Test Brand Account", publisher.name
+      end
+    end
+
     test "an existing publisher will be logged in and sent to the dashboard" do
       begin
         OmniAuth.config.test_mode = true
