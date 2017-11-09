@@ -26,14 +26,17 @@ module Publishers
         publisher = Publisher.where(auth_provider: oauth_response.provider, auth_user_id: oauth_response.uid).
             where.not(youtube_channel_id: nil).first
         unless publisher
-          # create new publisher
+          # Create new publisher for good UX.
+          # We can do this because Google provides verified contact info.
           publisher = Publisher.new(
-              auth_provider: oauth_response.provider,
-              auth_user_id: oauth_response.uid,
-              name: oauth_response.dig('info', 'name'),
-              email: oauth_response.dig('info', 'email'),
-              auth_email: oauth_response.dig('info', 'email'),
-              verified: true)
+            auth_provider: oauth_response.provider,
+            auth_user_id: oauth_response.uid,
+            auth_name: oauth_response.dig('info', 'name'),
+            name: oauth_response.dig('info', 'name'),
+            email: oauth_response.dig('info', 'email'),
+            auth_email: oauth_response.dig('info', 'email'),
+            verified: true
+          )
           publisher.save!
         end
       end
