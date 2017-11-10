@@ -600,3 +600,82 @@ body[data-controller="publishers"]
           color: rgba(#ededee, 0.65)
           font-size: 14px
           font-weight: 300
+
+  &[data-action="email_verified"]
+    .publisher-panel
+      margin-top: 40px
+    h1
+      font-size: 36px
+      font-weight: 300
+      margin-bottom: 36px
+    h2
+      font-size: 20px
+      font-weight: 300
+      width: 410px
+    h3
+      padding-top: 260px
+      color: #ff3f3f
+      font-size: 19px
+      font-weight: 400
+      margin-bottom: 15px
+
+    a:hover
+      text-decoration: none
+
+    .choice-panel
+      background-color: white
+      border: none
+      border-radius: 8px
+      box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
+      margin: 0 auto 30px auto
+      width: 400px
+      height: 400px
+      color: #606467
+      font-weight: 300
+      &:hover
+        text-decoration: none
+
+    .choice-description
+      padding: 0 70px
+
+    .select-choice
+      &::before
+        transition: all 1s
+        color: #fff
+        font-size: 30px
+        padding-top: 190px
+        position: absolute
+        width: 400px
+        height: 400px
+        text-align: center
+        vertical-align: middle
+        opacity: 0
+        border-radius: 8px
+
+      &:hover:before
+        opacity: 1
+        background: rgba(0,0,0,0.6)
+        transition: all 1s
+
+    .site-operator
+      background: url(asset-path("img-site-operator@1x.png")) center 66px no-repeat
+      &::before
+        content: 'SITE OPERATOR'
+
+    .individual-creator
+      background: url(asset-path("img-indi-creator@1x.png")) center 66px no-repeat
+      &::before
+        content: 'YOUTUBE CREATOR'
+
+    @media (max-width: 991px)
+      .publisher-panel
+        width: 400px
+      .site-operator
+        margin-bottom: 32px
+    @media (min-width: 992px)
+      .publisher-panel
+        width: 840px
+      .choice-panel-left
+        float: left !important
+      .choice-panel-right
+        float: right !important

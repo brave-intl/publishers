@@ -233,6 +233,14 @@ en:
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
     verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
     verify_success: "Verification successful."
+    pub_type_welcome: "Welcome Back!"
+    pub_type_lets_start: "Let's start with choosing who you are based on where you're publishing your content."
+    pub_type_site_operator: "SITE OPERATOR"
+    pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
+    pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
+    pub_type_site_individual_creator_description_html: "I use other platforms to publish my content. (currently <strong>YouTube</strong> only)."
+    pub_type_site_youtube_creator: "YOUTUBE CREATOR"
+
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
