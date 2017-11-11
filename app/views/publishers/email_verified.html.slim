@@ -1,8 +1,17 @@
+.publisher-panel.col-center
+  h1.text-center=t("publishers.pub_type_welcome")
+  h2.col-center.text-center=t("publishers.pub_type_lets_start")
+
 .publisher-main-panel.publisher-panel.col-center
-  .sub-panel.col-center.signup-panel
-    .content-panel
-      .row
-        .col.col-md-6
-          = link_to(t("publishers.new_site_account"), contact_info_publishers_path, class: "btn btn-primary")
-        .col.col-md-6
-          = link_to(t("publishers.new_youtube_account"), publisher_google_oauth2_omniauth_authorize_path, class: "btn btn-primary")
+  = link_to(contact_info_publishers_path) do
+    .choice-panel.choice-panel-left
+      .site-operator.select-choice
+        .choice-description
+          h3.text-center= t("publishers.pub_type_site_operator")
+          p.text-center= t("publishers.pub_type_site_operator_description_html")
+  = link_to(publisher_google_oauth2_omniauth_authorize_path) do
+    .choice-panel.choice-panel-right
+      .individual-creator.select-choice
+        .choice-description
+          h3.text-center= t("publishers.pub_type_site_individual_creator")
+          p.text-center= t("publishers.pub_type_site_individual_creator_description_html")
