@@ -238,7 +238,7 @@ en:
     pub_type_site_operator: "SITE OPERATOR"
     pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
     pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
-    pub_type_site_individual_creator_description_html: "I use other platforms to publish my content. (currently <strong>YouTube</strong> only)."
+    pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
     pub_type_site_youtube_creator: "YOUTUBE CREATOR"
 
   publisher_mailer:

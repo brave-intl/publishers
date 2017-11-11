@@ -608,15 +608,18 @@ body[data-controller="publishers"]
       font-size: 36px
       font-weight: 300
       margin-bottom: 36px
+      color: #222326
     h2
       font-size: 20px
       font-weight: 300
       width: 410px
+      line-height: 32px
+      letter-spacing: -0.4px
     h3
       padding-top: 260px
       color: #ff3f3f
       font-size: 19px
-      font-weight: 400
+      font-weight: 600
       margin-bottom: 15px
 
     a:hover
@@ -637,12 +640,15 @@ body[data-controller="publishers"]
 
     .choice-description
       padding: 0 70px
+      font-weight: 600
+      letter-spacing: -0.4px
 
     .select-choice
       &::before
-        transition: all 1s
+        transition: all 200ms ease-in
         color: #fff
-        font-size: 30px
+        font-size: 28px
+        font-weight: 600
         padding-top: 190px
         position: absolute
         width: 400px
@@ -654,8 +660,8 @@ body[data-controller="publishers"]
 
       &:hover:before
         opacity: 1
-        background: rgba(0,0,0,0.6)
-        transition: all 1s
+        background: rgba(#222326,0.7)
+        transition: all 200ms ease-in
 
     .site-operator
       background: url(asset-path("img-site-operator@1x.png")) center 66px no-repeat
