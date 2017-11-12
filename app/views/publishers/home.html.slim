@@ -133,13 +133,57 @@ javascript:
         });
     }
 
+    function showVerificationModal() {
+      var body = document.getElementsByTagName('body')[0];
+      var main = document.getElementById('main');
+      var modal = document.getElementById('verification_modal');
+      var overlay = document.getElementById('modal_overlay');
+      body.appendChild(modal);
+      main.className = 'blurred';
+      overlay.style.opacity = 1;
+      modal.style.opacity = 1;
+    }
+
+    function hideVerificationModal() {
+      var body = document.getElementsByTagName('body')[0];
+      var main = document.getElementById('main');
+      var modal = document.getElementById('verification_modal');
+      var overlay = document.getElementById('modal_overlay');
+      main.appendChild(modal);
+      main.className = '';
+      overlay.style.display = 'none';
+      modal.style.display = 'none';
+      modal.style.opacity = 0;
+    }
+
+    function verificationStatusUpdated(checked) {
+      var form = document.getElementById('update_show_verification_status');
+      form.className = checked ? 'checked' : 'unchecked';
+    }
+
     window.addEventListener('load', function() {
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
         submitForm('update_show_verification_status', 'PATCH', true);
-        var form = document.getElementById('update_show_verification_status');
-        form.className = showVerificationStatusInput.checked ? 'checked' : 'unchecked';
+        verificationStatusUpdated(showVerificationStatusInput.checked);
       }, false);
+
+      if (document.getElementById('verification_modal')) {
+        document.getElementById('verify_now').addEventListener('click', function(event) {
+          showVerificationStatusInput.checked = true;
+          verificationStatusUpdated(true);
+          submitForm('update_show_verification_status', 'PATCH', false);
+          hideVerificationModal();
+        });
+        document.getElementById('verify_later').addEventListener('click', function(event) {
+          showVerificationStatusInput.checked = false;
+          verificationStatusUpdated(false);
+          submitForm('update_show_verification_status', 'PATCH', false);
+          hideVerificationModal();
+        });
+
+        showVerificationModal();
+      }
 
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
       if (defaultCurrencySelect) {
@@ -301,6 +345,16 @@ javascript:
 
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
+
+- if current_publisher.show_verification_status.nil?
+  #modal_overlay
+  .blocking-modal#verification_modal
+    h1= t("publishers.verify_modal_title")
+    h2= t("publishers.verify_modal_subtitle")
+    p= t("publishers.verify_modal_content_html")
+    .panel-section
+      a.btn.btn-cancel#verify_later= t("publishers.verify_modal_cancel")
+      a.btn.btn-primary#verify_now= t("publishers.verify_modal_confirm")
 
 - content_for(:navbar_content_right) do
   - if current_publisher.publication_type == :site

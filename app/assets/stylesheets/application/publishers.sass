@@ -600,6 +600,37 @@ body[data-controller="publishers"]
           color: rgba(#ededee, 0.65)
           font-size: 14px
           font-weight: 300
+    #verification_modal
+      padding: 80px 200px 80px 100px
+      width: 740px
+      background: #fff url(asset-path("img-brands.png")) top right no-repeat
+      border-radius: 10px
+      h1
+        font-size: 40px
+        font-weight: 300
+        color: #ff3f3f
+        margin-top: 0
+        padding-top: 0
+      h2
+        font-size: 18px
+        font-weight: 300
+        color: #ff3f3f
+        display: inline-block
+        margin-top: 0px
+        margin-bottom: 20px
+        padding: 10px 45px 10px 0
+        background: url(asset-path("icn-verified.png")) right no-repeat
+      .panel-section
+        margin-top: 55px
+      a.btn
+        margin: 10px 15px
+      a.btn-cancel
+        color: #ff3f3f
+    @media (max-width: 550px)
+      #verification_modal
+        padding: 60px
+        background: #fff
+        border-radius: 0
 
   &[data-action="email_verified"]
     .publisher-panel
