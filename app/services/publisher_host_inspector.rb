@@ -58,6 +58,7 @@ class PublisherHostInspector < BaseService
       result[:web_host] = https_result[:web_host] if check_web_host
       return result
     elsif require_https
+      Rails.logger.warn("PublisherHostInspector #perform error: #{https_result[:response]}")
       result = { response: https_result[:response], host_connection_verified: false, https: false }
       return result
     end
@@ -69,6 +70,7 @@ class PublisherHostInspector < BaseService
       result[:web_host] = https_result[:web_host] if check_web_host
       return result
     else
+      Rails.logger.warn("PublisherHostInspector #perform error: #{https_result[:response]}")
       result = { response: https_result[:response], host_connection_verified: false, https: false }
       return result
     end
