@@ -45,38 +45,44 @@ class PublisherHostInspector < BaseService
 
     # test HTTPS first
     https_result = inspect_uri(URI("https://#{brave_publisher_id}"))
-    if https_result[:response].is_a?(Net::HTTPSuccess)
-      result = { host_connection_verified: true, https: true }
-      result[:web_host] = https_result[:web_host] if check_web_host
-      return result
+    if success_response?(https_result)
+      return response_result(https_result, https: true)
     end
 
     # test HTTPS for www subdomain next
-    https_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
-    if https_result[:response].is_a?(Net::HTTPSuccess)
-      result = { host_connection_verified: true, https: true }
-      result[:web_host] = https_result[:web_host] if check_web_host
-      return result
+    https_www_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
+    if success_response?(https_www_result)
+      return response_result(https_www_result, https: true)
     elsif require_https
-      Rails.logger.warn("PublisherHostInspector #perform error: #{https_result[:response]}")
-      result = { response: https_result[:response], host_connection_verified: false, https: false }
-      return result
+      return failure_result(https_www_result)
     end
 
     # test HTTP last
-    https_result = inspect_uri(URI("http://#{brave_publisher_id}"))
-    if https_result[:response].is_a?(Net::HTTPSuccess)
-      result = { host_connection_verified: true, https: false }
-      result[:web_host] = https_result[:web_host] if check_web_host
-      return result
+    http_result = inspect_uri(URI("http://#{brave_publisher_id}"))
+    if success_response?(http_result)
+      return response_result(http_result, https: false)
     else
-      Rails.logger.warn("PublisherHostInspector #perform error: #{https_result[:response]}")
-      result = { response: https_result[:response], host_connection_verified: false, https: false }
-      return result
+      return failure_result(http_result)
     end
   end
 
   private
+
+  def success_response?(inspect_result)
+    inspect_result[:response].is_a?(Net::HTTPSuccess)
+  end
+
+  def response_result(inspect_result, https: false)
+    result = { host_connection_verified: true, https: https }
+    result[:web_host] = inspect_result[:web_host] if check_web_host
+    result
+  end
+
+  def failure_result(inspect_result)
+    Rails.logger.warn("PublisherHostInspector #perform error: #{inspect_result[:response]}")
+    { response: inspect_result[:response], host_connection_verified: false, https: false }
+  end
+
   def true?(obj)
     ["true", "1"].include? obj.to_s
   end
