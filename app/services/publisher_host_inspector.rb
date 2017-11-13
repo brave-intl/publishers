@@ -37,6 +37,7 @@ class PublisherHostInspector < BaseService
 
     { response: response, web_host: web_host }
   rescue Publishers::Fetch::RedirectError, Publishers::Fetch::ConnectionFailedError => e
+    Rails.logger.warn("PublisherHostInspector #inspect_uri error: #{e}")
     { response: e }
   end
 
@@ -79,7 +80,6 @@ class PublisherHostInspector < BaseService
   end
 
   def failure_result(inspect_result)
-    Rails.logger.warn("PublisherHostInspector #perform error: #{inspect_result[:response]}")
     { response: inspect_result[:response], host_connection_verified: false, https: false }
   end
 
