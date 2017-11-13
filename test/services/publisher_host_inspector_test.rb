@@ -54,6 +54,8 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
   test "https is false if site fails https and http succeeds" do
     stub_request(:get, "https://banhttps.com").
         to_raise(Errno::ECONNREFUSED.new)
+    stub_request(:get, "https://www.banhttps.com").
+        to_raise(Errno::ECONNREFUSED.new)
 
     stub_request(:get, "http://banhttps.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
@@ -66,6 +68,8 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
 
   test "connection to site fails when https and http fail" do
     stub_request(:get, "https://mywordpressisdown.com").
+        to_raise(Errno::ECONNREFUSED.new)
+    stub_request(:get, "https://www.mywordpressisdown.com").
         to_raise(Errno::ECONNREFUSED.new)
 
     stub_request(:get, "http://mywordpressisdown.com").
@@ -80,6 +84,8 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
 
   test "connection to site fails when https fails and http is require_https is true" do
     stub_request(:get, "https://mywordpressisdown.com").
+        to_raise(Errno::ECONNREFUSED.new)
+    stub_request(:get, "https://www.mywordpressisdown.com").
         to_raise(Errno::ECONNREFUSED.new)
 
     result = PublisherHostInspector.new(brave_publisher_id: "mywordpressisdown.com", require_https: true).perform
@@ -117,6 +123,8 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
 
   test "does not follow all redirects if follow_all_redirects is not enabled" do
     stub_request(:get, "https://mywordpress.com").
+        to_return(status: 301, headers: { location: "https://mywordpress2.com/index.html"})
+    stub_request(:get, "https://www.mywordpress.com").
         to_return(status: 301, headers: { location: "https://mywordpress2.com/index.html"})
 
     stub_request(:get, "https://mywordpress2.com/index.html").
