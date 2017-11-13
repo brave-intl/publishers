@@ -47,13 +47,13 @@ class PublisherHostInspector < BaseService
     # test HTTPS first
     https_result = inspect_uri(URI("https://#{brave_publisher_id}"))
     if success_response?(https_result)
-      return response_result(https_result, https: true)
+      return response_result(https_result, true)
     end
 
     # test HTTPS for www subdomain next
     https_www_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
     if success_response?(https_www_result)
-      return response_result(https_www_result, https: true)
+      return response_result(https_www_result, true)
     elsif require_https
       return failure_result(https_www_result)
     end
@@ -61,7 +61,7 @@ class PublisherHostInspector < BaseService
     # test HTTP last
     http_result = inspect_uri(URI("http://#{brave_publisher_id}"))
     if success_response?(http_result)
-      return response_result(http_result, https: false)
+      return response_result(http_result, false)
     else
       return failure_result(http_result)
     end
@@ -73,7 +73,7 @@ class PublisherHostInspector < BaseService
     inspect_result[:response].is_a?(Net::HTTPSuccess)
   end
 
-  def response_result(inspect_result, https: false)
+  def response_result(inspect_result, https)
     result = { host_connection_verified: true, https: https }
     result[:web_host] = inspect_result[:web_host] if check_web_host
     result
