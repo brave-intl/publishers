@@ -51,6 +51,17 @@ class PublisherHostInspectorTest < ActiveJob::TestCase
     assert_equal 'wordpress', result[:web_host]
   end
 
+  test "inspects www subdomain when root domain fails" do
+    stub_request(:get, "https://wwwonly.com").
+        to_raise(Errno::ECONNREFUSED.new)
+    stub_request(:get, "https://www.wwwonly.com").
+        to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
+
+    result = PublisherHostInspector.new(brave_publisher_id: "wwwonly.com").perform
+    assert result[:host_connection_verified]
+    assert result[:https]
+  end
+
   test "https is false if site fails https and http succeeds" do
     stub_request(:get, "https://banhttps.com").
         to_raise(Errno::ECONNREFUSED.new)
