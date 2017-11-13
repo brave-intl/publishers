@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="33px" viewBox="0 0 28 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icn-verified</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="trap-opt-in" transform="translate(-727.000000, -234.000000)">
+            <g id="interstitial" transform="translate(244.000000, 89.000000)">
+                <g id="icn-verified" transform="translate(483.000000, 145.000000)">
+                    <g id="Group-3" fill="#FF3F3F">
+                        <path d="M0.0308451613,8.17708182 L13.8547161,0.0896070707 L27.7779419,8.17708182 L27.7779419,24.0116946 L14.0534258,32.242469 L0.0443935484,24.2087316 C0.0443935484,24.2087316 -0.0459290323,15.5928394 0.0308451613,8.17708182" id="Fill-1"></path>
+                    </g>
+                    <polygon id="Fill-4" fill="#FFFFFF" points="7.98751278 14.1593585 5.93939394 16.2377488 13.3632596 23.7575758 23.7575758 13.2692753 21.3929706 11.030303 13.3361322 19.3668043"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
