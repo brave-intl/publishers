@@ -80,6 +80,7 @@ class PublisherHostInspector < BaseService
   end
 
   def failure_result(inspect_result)
+    Rails.logger.warn("PublisherHostInspector #perform failure: #{inspect_result[:response]}")
     { response: inspect_result[:response], host_connection_verified: false, https: false }
   end
 
