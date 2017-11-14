@@ -256,4 +256,10 @@ module PublishersHelper
       ""
     end
   end
+
+  def name_from_email(email)
+    return "Publisher" unless email.is_a?(String)
+
+    email.split("@")[0].capitalize
+  end
 end

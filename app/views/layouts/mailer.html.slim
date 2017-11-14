@@ -5,8 +5,17 @@ html
     = stylesheet_link_tag('mailer', media: 'all')
   body
     .header
-      = image_tag(attachments["brave_logo_horz_h30.png"]&.url, alt: "Brave Software", class: "logo", height: 30)
-      span.title= content_for(:title)
+      .brand
     .content
       = yield
     .footer
+      .bat
+        a href="https://basicattentiontoken.org/"
+          = "basicattentiontoken.org"
+        a href="https://basicattentiontoken.org/publisher-terms-of-service/"
+          = "Terms of Service"
+      .social
+        a.medium href= "#{Rails.application.secrets[:bat_medium_url]}"
+        a.twitter href= "#{Rails.application.secrets[:bat_twitter_url]}"
+        a.reddit href= "#{Rails.application.secrets[:bat_reddit_url]}"
+        a.rocketchat href= "#{Rails.application.secrets[:bat_rocketchat_url]}"

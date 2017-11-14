@@ -110,7 +110,7 @@ class PublisherMailer < ApplicationMailer
         to: INTERNAL_EMAIL,
         reply_to: @publisher.email,
         subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer verify_email))}",
-        template_name: "welcome"
+        template_name: "verify_email"
     )
   end
 

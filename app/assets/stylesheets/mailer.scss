@@ -1,4 +1,4 @@
-$width: 500px;
+// Images with -min have been compressed at http://compresspng.com
 
 body, .header, .content, .footer {
   color: hsla(0, 0%, 30%, 1);
@@ -11,30 +11,34 @@ body, .header, .content, .footer {
   }
 }
 
+body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  width: 600px;
+  margin: 0 auto;
+  background: #eff2f5;
+  color: #434447;
+}
+
 .header {
-  border-bottom: 1px solid hsla(0, 0%, 80%, 1);
-  display: table;
-  padding-bottom: 5px;
-  width: $width;
-  .logo, .title {
-    vertical-align: middle;
-  }
-  .logo {
-    margin-right: 10px;
-  }
-  .title {
-    color: hsla(0, 0%, 40%, 1);
-    & > h1, h2, h3, h4, h5 {
-      display: inline;
-      font-weight: normal;
-      margin-bottom: 0;
-      margin-top: 0;
-    }
+  margin-top: 50px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 72px 50px 58px 50px;
+  background: #ffffff asset-data-url("mailer/header-pattern@1x-min.png") top right no-repeat;
+
+  .brand {
+    background: asset-data-url("mailer/branding@1x.png") left no-repeat;
+    width: 268px;
+    height: 31px;
   }
 }
 
 .content {
-  width: $width;
+  background: #ffffff;
+  padding: 10px 50px 34px 50px;
+
   .attribute {
     display: inline-block;
     margin-right: 5px;
@@ -46,7 +50,7 @@ body, .header, .content, .footer {
     color: hsla(0, 0%, 60%, 1);
   }
   .notice {
-    border-bottom: 1px solid hsla(0, 0%, 80%, 1);
+    border-bottom: 1px solid #818589;
     margin: 10px 0;
     padding-bottom: 10px;
   }
@@ -54,7 +58,17 @@ body, .header, .content, .footer {
     margin-top: 0;
   }
   .hint {
-    color: hsla(0, 0%, 50%, 1);
+    color: #818589;
+    font-size: 12px;
+    font-weight: 300;
+
+    a {
+      text-decoration: none;
+      color: #818589;
+      &:hover, &:focus {
+        color: #48494b;
+      }
+    }
   }
   .strong-line {
     font-weight: bold;
@@ -63,8 +77,79 @@ body, .header, .content, .footer {
   .valign-mid {
     vertical-align: middle;
   }
+
+  .salutation {
+    font-weight: 600;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px 24px 8px;
+    border-radius: 30px;
+    height: 30px;
+    letter-spacing: 0.02em;
+    background: #ff3f3f;
+    color: #fff;
+  }
+
+  .btn-login {
+    margin: 30px 0;
+  }
 }
 
 .footer {
+  padding: 32px 60px;
+  background: #ff3f3f asset-data-url("mailer/footer-top-pattern@1x-min.png") top no-repeat;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  .bat {
+    float: right;
+    height: 52px;
+    width: 200px;
+    padding-top: 15px;
+    background: asset-data-url("mailer/logo-BAT@1x.png") right no-repeat;
+    a {
+      display: block;
+      font-size: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      margin-bottom: 6px;
+    }
+  }
+  .social {
+    clear: right;
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      margin-right: 32px;
 
+      &.medium {
+        width: 25px;
+        height: 20px;
+        background: asset-data-url("mailer/logo-medium@1x.png") no-repeat;
+      }
+      &.twitter {
+        width: 25px;
+        height: 21px;
+        background: asset-data-url("mailer/logo-twitter@1x.png") no-repeat;
+      }
+      &.reddit {
+        width: 28px;
+        height: 24px;
+        background: asset-data-url("mailer/logo-reddit@1x.png") no-repeat;
+      }
+      &.rocketchat {
+        width: 25px;
+        height: 22px;
+        background: asset-data-url("mailer/logo-rocketchat@1x.png") no-repeat;
+      }
+    }
+  }
 }

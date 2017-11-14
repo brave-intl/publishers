@@ -16,6 +16,10 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.verification_internal(Publisher.first)
   end
 
+  def verify_email
+    PublisherMailer.verify_email(Publisher.first)
+  end
+
   def verification_done
     PublisherMailer.verification_done(Publisher.first)
   end
