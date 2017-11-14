@@ -1,3 +1,5 @@
+// Images with -min have been compressed at http://compresspng.com
+
 body, .header, .content, .footer {
   color: hsla(0, 0%, 30%, 1);
   font-family: Arial, Helvetica, sans-serif;
@@ -20,10 +22,10 @@ body {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   padding: 72px 50px 58px 50px;
-  background: #ffffff asset-url("mailer/header-pattern@1x.png") top right no-repeat;
+  background: #ffffff asset-data-url("mailer/header-pattern@1x-min.png") top right no-repeat;
 
   .brand {
-    background: asset-url("mailer/branding@1x.png") left no-repeat;
+    background: asset-data-url("mailer/branding@1x.png") left no-repeat;
     width: 268px;
     height: 31px;
   }
@@ -65,7 +67,7 @@ body {
 
 .footer {
   padding: 32px 60px;
-  background: #ff3f3f asset-url("mailer/footer-top-pattern@1x.png") top no-repeat;
+  background: #ff3f3f asset-data-url("mailer/footer-top-pattern@1x-min.png") top no-repeat;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   .bat {
@@ -73,7 +75,7 @@ body {
     height: 52px;
     width: 200px;
     padding-top: 15px;
-    background: asset-url("mailer/logo-BAT@1x.png") right no-repeat;
+    background: asset-data-url("mailer/logo-BAT@1x.png") right no-repeat;
     a {
       display: block;
       font-size: 12px;
@@ -92,24 +94,23 @@ body {
       &.medium {
         width: 25px;
         height: 20px;
-        background: asset-url("mailer/logo-medium@1x.png") no-repeat;
+        background: asset-data-url("mailer/logo-medium@1x.png") no-repeat;
       }
       &.twitter {
         width: 25px;
         height: 21px;
-        background: asset-url("mailer/logo-twitter@1x.png") no-repeat;
+        background: asset-data-url("mailer/logo-twitter@1x.png") no-repeat;
       }
       &.reddit {
         width: 28px;
         height: 24px;
-        background: asset-url("mailer/logo-reddit@1x.png") no-repeat;
+        background: asset-data-url("mailer/logo-reddit@1x.png") no-repeat;
       }
       &.rocketchat {
         width: 25px;
         height: 22px;
-        background: asset-url("mailer/logo-rocketchat@1x.png") no-repeat;
+        background: asset-data-url("mailer/logo-rocketchat@1x.png") no-repeat;
       }
     }
   }
-
 }
