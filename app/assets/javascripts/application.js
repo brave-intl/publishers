@@ -12,6 +12,7 @@
 //
 //= require fetch
 //= require clipboard
+//= require classie
 //= require_tree .
 
 window.onload = function () {
