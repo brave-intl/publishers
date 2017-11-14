@@ -190,6 +190,10 @@ class PublishersController < ApplicationController
   end
 
   def email_verified
+    if session[:taken_youtube_channel_id]
+      @taken_youtube_channel = YoutubeChannel.find(session[:taken_youtube_channel_id])
+      session[:taken_youtube_channel_id] = nil
+    end
     @publisher = current_publisher
   end
 

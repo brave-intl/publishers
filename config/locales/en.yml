@@ -244,6 +244,17 @@ en:
     pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
     pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
     pub_type_site_youtube_creator: "YOUTUBE CREATOR"
+    youtube_channel_taken_dialog:
+      title: "Channel already registered!"
+      leadin: "The following YouTube channel has already been registered."
+      registration_date: "Date"
+      registered_by: "Registered by"
+      default_registerer: "A channel manager"
+      contact_support_html: "Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error."
+      ok: "OK"
+    youtube_channel_taken_noscript_html: |
+      The YouTube channel "%{youtube_channel_title}" was registered by %{youtube_channel_registered_by} on %{youtube_channel_registration_date}.
+      Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
 
   publisher_mailer:
     shared:

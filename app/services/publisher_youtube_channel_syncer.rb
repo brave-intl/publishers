@@ -59,7 +59,10 @@ class PublisherYoutubeChannelSyncer
   end
 
   class ChannelAlreadyClaimedError < RuntimeError
+    attr_reader :channel_id
+
     def initialize(channel_id)
+      @channel_id = channel_id
       super "Channel #{channel_id} has already been claimed"
     end
   end
