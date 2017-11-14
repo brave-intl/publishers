@@ -246,20 +246,21 @@ en:
       contact_help: "If you have any questions, please contact us"
       private_access_link: "Private access link"
       private_access_link_help: "Use this link to continue and manage publisher registration"
+      salutation: "Hi %{name},"
+      signature: "The Brave Payments Team"
+      button_not_working: "If the button above doesn't work, paste this link into your web browser: "
+      erroneous_email_help: "If you did not make this request, you can ignore this email or contact us at "
+
     uphold_account_changed:
       subject: "[%{brave_publisher_id}] Brave Publisher Uphold account changed"
       title: "Publisher Uphold account changed"
       body: "This message confirms that you've updated your Uphold account through the Brave Payments website."
     login_email:
-      salutation: "Hi %{name},"
       body_html: |
         Click the private access link below to log in to your account with <strong>Brave Payments</strong>. This link can only be used once.
-      body_signature: "The Brave Payments Team"
-      login_button: "Log in to Brave Payments"
-      button_not_working: "If the button above doesn't work, paste this link into your web browser: "
-      erroneous_email_help: "If you did not make this request, you can ignore this email or contact us at "
       subject: "[%{brave_publisher_id}] Brave Publisher login link"
       title: "Brave Publisher login link"
+      button: "Log in to Brave Payments"
     verification:
       click_verify: "Click Verify from the Brave Publisher management website."
       download_attached_file: "Download the attached verification file"
@@ -274,14 +275,11 @@ en:
       subject: "[%{brave_publisher_id}] Brave Publisher registration"
       title: "Publisher registration"
     verify_email:
-      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
-      intro: "We've received a request to register an email address with Brave Payments:"
-      private_email_notice: |
-        NOTE: This email contains a private access link. Anyone with it can manage private
-        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      body_html: |
+        Click the private access link below to create your account with <strong>Brave Payments</strong>. This link can only be used once.
       subject: "Brave Publisher email confirmation"
       title: "Brave Publisher email confirmation"
-      verify: "Verify this Email Address"
+      button: "Create Brave Payments Account"
     verification_done:
       intro: "Congratulations! You are now a verified Brave publisher Brave users will see a verified symbol next to your website domain."
       payment_help_header: "Ready to claim your funds now?"
