@@ -1,7 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
   INTERNAL_EMAIL = Rails.application.secrets[:internal_email].freeze
 
-  default from: Rails.application.secrets[:support_email]
+  default from: Rails.application.secrets[:from_email]
   layout "mailer"
 
   before_action :require_premailer
