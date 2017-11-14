@@ -1,4 +1,4 @@
-.modal-container
+.md-container
   position: fixed
   margin-left: auto
   margin-right: auto
@@ -11,7 +11,7 @@
   z-index: 9001
   visibility: hidden
   backface-visibility: hidden
-  .modal-content
+  .md-content
     position: relative
     margin: 0 auto
     transform: scale(0.7)
@@ -20,7 +20,7 @@
     background: #fff
     padding: 10px
 
-.modal-overlay
+.md-overlay
   background: rgba(64, 64, 64, 0.7)
   position: fixed
   top: 0
@@ -32,12 +32,12 @@
   opacity: 0
   visibility: hidden
 
-.modal-show
+.md-show
   visibility: visible
-  .modal-content
+  .md-content
     transform: scale(1)
     opacity: 1
 
-.modal-show ~ .modal-overlay
+.md-show ~ .md-overlay
   opacity: 1
   visibility: visible
