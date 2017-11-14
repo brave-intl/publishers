@@ -12,9 +12,13 @@ body, .header, .content, .footer {
 }
 
 body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
   width: 600px;
   margin: 0 auto;
   background: #eff2f5;
+  color: #434447;
 }
 
 .header {
@@ -46,7 +50,7 @@ body {
     color: hsla(0, 0%, 60%, 1);
   }
   .notice {
-    border-bottom: 1px solid hsla(0, 0%, 80%, 1);
+    border-bottom: 1px solid #818589;
     margin: 10px 0;
     padding-bottom: 10px;
   }
@@ -54,7 +58,17 @@ body {
     margin-top: 0;
   }
   .hint {
-    color: hsla(0, 0%, 50%, 1);
+    color: #818589;
+    font-size: 12px;
+    font-weight: 300;
+
+    a {
+      text-decoration: none;
+      color: #818589;
+      &:hover, &:focus {
+        color: #48494b;
+      }
+    }
   }
   .strong-line {
     font-weight: bold;
@@ -62,6 +76,31 @@ body {
   }
   .valign-mid {
     vertical-align: middle;
+  }
+
+  .salutation {
+    font-weight: 600;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    height: 30px;
+    letter-spacing: 0.02em;
+    background: #ff3f3f;
+    color: #fff;
+  }
+
+  .btn-login {
+    margin: 30px 0;
   }
 }
 
