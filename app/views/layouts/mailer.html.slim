@@ -15,7 +15,7 @@ html
         a href="https://basicattentiontoken.org/publisher-terms-of-service/"
           = "Terms of Service"
       .social
-        a.medium href="https://medium.com/@attentiontoken"
-        a.twitter href="https://twitter.com/@attentiontoken"
-        a.reddit href="https://www.reddit.com/r/BATProject/"
-        a.rocketchat href="https://basicattentiontoken.rocket.chat/"
+        a.medium href= "#{Rails.application.secrets[:bat_medium_url]}"
+        a.twitter href= "#{Rails.application.secrets[:bat_twitter_url]}"
+        a.reddit href= "#{Rails.application.secrets[:bat_reddit_url]}"
+        a.rocketchat href= "#{Rails.application.secrets[:bat_rocketchat_url]}"
