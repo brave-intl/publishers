@@ -1,5 +1,7 @@
 class YoutubeChannel < ApplicationRecord
 
+  has_one :publisher
+
   #ToDo: Do we want this?
   # has_paper_trail
 

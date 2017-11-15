@@ -157,8 +157,8 @@ module Publishers
         assert_redirected_to email_verified_publishers_path
         follow_redirect!
 
-        assert_select('div.notifications') do |element|
-          assert_match(I18n.translate('youtube.channel_already_taken'), element.text)
+        assert_select('div#taken_youtube_channel_modal h1') do |element|
+          assert_match(I18n.translate('publishers.youtube_channel_taken_dialog.title'), element.text)
         end
       end
     end

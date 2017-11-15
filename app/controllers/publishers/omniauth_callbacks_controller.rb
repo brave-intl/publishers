@@ -73,7 +73,8 @@ module Publishers
 
         current_publisher.save!
 
-        redirect_to email_verified_publishers_path, notice: t('youtube.channel_already_taken')
+        session[:taken_youtube_channel_id] = e.channel_id
+        redirect_to email_verified_publishers_path
         return
       end
 

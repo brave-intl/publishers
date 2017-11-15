@@ -711,6 +711,54 @@ body[data-controller="publishers"]
       &::before
         content: 'YOUTUBE CREATOR'
 
+    #taken_youtube_channel_modal
+      width: 650px
+      .md-content
+        padding: 70px 80px 70px 80px
+        background: #fff
+        border-radius: 10px
+        h1
+          font-size: 32px
+          font-weight: 300
+          color: #ff3f3f
+          margin-top: 0
+          padding-top: 0
+        .youtube-channel
+          margin: 50px 0 50px 40px
+          .summary
+            margin-bottom: 20px
+            img
+              display: inline-block
+              width: 40px
+              height: 40px
+              border-radius: 20px
+              margin-right: 10px
+            .title
+              display: inline-block
+          .registration-date
+            label
+              display: inline-block
+              margin-right: 8px
+            .value
+              display: inline-block
+          .registered-by
+            label
+              display: inline-block
+              margin-right: 8px
+            .value
+              display: inline-block
+        .panel-section
+          margin-top: 35px
+          text-align: center
+        a.btn
+          min-width: 150px
+          margin: 10px 0
+    @media (max-width: 550px)
+      #taken_youtube_channel_modal .md-content
+        padding: 60px
+        background: #fff
+        border-radius: 0
+
     @media (max-width: 991px)
       .publisher-panel
         width: 400px
