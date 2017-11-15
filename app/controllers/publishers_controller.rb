@@ -53,6 +53,10 @@ class PublishersController < ApplicationController
              verification_wordpress)
 
   def create
+    if params[:email].blank?
+      return redirect_to(root_path, notice: I18n.t("publishers.missing_info_provide_email") )
+    end
+
     @publisher = Publisher.new(pending_email: params[:email])
 
     @should_throttle = should_throttle_create?
@@ -60,13 +64,16 @@ class PublishersController < ApplicationController
       @should_throttle ?
         verify_recaptcha(model: @publisher)
         : true
+
     if throttle_legit && @publisher.save
       PublisherMailer.verify_email(@publisher).deliver_later!
       PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
       session[:created_publisher_id] = @publisher.id
       redirect_to create_done_publishers_path
     else
-      render(:new)
+      path = after_sign_out_path_for(@publisher)
+      sign_out(@publisher)
+      redirect_to(path, notice: I18n.t("publishers.missing_info_provide_email") )
     end
   end
 

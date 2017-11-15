@@ -260,6 +260,6 @@ module PublishersHelper
   def name_from_email(email)
     return "Publisher" unless email.is_a?(String)
 
-    email.split("@")[0].capitalize
+    email.split("@")[0].try(:capitalize)
   end
 end

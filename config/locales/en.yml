@@ -255,7 +255,7 @@ en:
     youtube_channel_taken_noscript_html: |
       The YouTube channel "%{youtube_channel_title}" was registered by %{youtube_channel_registered_by} on %{youtube_channel_registration_date}.
       Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
-
+    missing_info_provide_email: "We seem to be missing some info. Please make sure you provided an email address."
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"

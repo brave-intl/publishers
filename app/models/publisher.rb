@@ -13,6 +13,7 @@ class Publisher < ApplicationRecord
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
   validates :email, email: { strict_mode: true }, presence: true, if: -> { brave_publisher_id.present? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
   validates :name, presence: true, if: -> { brave_publisher_id.present? }
   validates :phone_normalized, phony_plausible: true
 
