@@ -23,7 +23,7 @@ class PublisherChannelSetter < BaseApiClient
       "providers" => [
         {
           "publisher" => publisher.youtube_channel.channel_identifier,
-          "show_verification_status" => publisher.show_verification_status
+          "show_verification_status" => publisher.show_verification_status?
         }
       ]
     }
