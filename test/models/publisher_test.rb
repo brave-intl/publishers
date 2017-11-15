@@ -173,4 +173,30 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.youtube_channel = diy_channel
     refute publisher.valid?
   end
+
+  test "a publisher must have a valid pending email address if it does not have an email address" do
+    publisher = Publisher.new
+
+    assert_nil publisher.email
+    assert_nil publisher.pending_email
+    refute publisher.valid?
+
+    publisher.pending_email = "foo@bar.com"
+    assert publisher.valid?
+
+    publisher.email = "foo@bar.com"
+    publisher.pending_email = nil
+    assert publisher.valid?
+
+    publisher.email = "foo@bar.com"
+    publisher.pending_email = "bar@bar.com"
+    assert publisher.valid?
+  end
+
+  test "a publisher pending_email address must be valid" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "bad_email_addresscom"
+    refute publisher.valid?
+  end
 end
