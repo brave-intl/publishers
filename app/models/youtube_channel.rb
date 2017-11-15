@@ -1,9 +1,8 @@
 class YoutubeChannel < ApplicationRecord
+  #ToDo: paper_trail does not support string ids out of the box - more investigation needed
+  # has_paper_trail
 
   has_one :publisher
-
-  #ToDo: Do we want this?
-  # has_paper_trail
 
   validates :title, presence: true
   validates :thumbnail_url, presence: true
