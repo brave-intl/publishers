@@ -3,37 +3,34 @@
     .col.col-xs-12.col-centered.col-left
       .content-section-left
         = image_tag("brave_logo_white.png", class: "logo")
-        .main-heading
-          h2.welcome= t("static.landing_header-welcome")
-          h1= t("static.landing_header")
   .row
     .col.col-md-6.col-xs-12.col-centered.col-left
       .content-section-left
+        .main-heading
+          h2.welcome= t("static.landing_header-welcome")
+          h1= t("static.landing_header")
         = t("static.landing_body_html")
-        = image_tag("dashboard@1x.png", class: "dashboard")
     .col.col-md-6.col-xs-12.col-centered.col-right
       .content-section-right
-        h3.section-header= t("static.landing_new_header")
-        p= t("static.landing_new_body")
-        = form_tag publishers_path, method: :post do |f|
-          .form-group
-            .row
-              .col.col-xs-7
-                label.control-label for="email"
-                  = email_field_tag(:email, nil, class: "form-control", placeholder: t("shared.email_address"), required: true)
-                - if @should_throttle
-                  .form-group
-                    = recaptcha_tags
-              .col.col-xs-5.button-column
-                = submit_tag(t("static.landing_begin_button"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
-        hr.divider
-        .row
-          .col.col-xs-7
-            p.alt-path-copy= t("static.landing_login_body_html")
-          .col.col-xs-5.button-column
-            = link_to(t("static.landing_login_button"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
-  .row.tos-row
-    .col.col-md-6.col-xs-12.col-centered.col-left
-      .content-section-left
-        .terms-of-service
+        .signup-panel
+          h3.section-header= t("static.landing_new_header")
+          p= t("static.landing_new_body")
+          = form_tag publishers_path, method: :post do |f|
+            .form-group
+              .row
+                .col.col-xs-7
+                  label.control-label for="email"
+                    = email_field_tag(:email, nil, class: "form-control", placeholder: t("shared.email_address"), required: true)
+                  - if @should_throttle
+                    .form-group
+                      = recaptcha_tags
+                .col.col-xs-5.button-column
+                  = submit_tag(t("static.landing_begin_button"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+          hr.divider
+          .row
+            .col.col-xs-7
+              p.alt-path-copy= t("static.landing_login_body_html")
+            .col.col-xs-5.button-column
+              = link_to(t("static.landing_login_button"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+        .terms-of-service.pull-right
           = link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")

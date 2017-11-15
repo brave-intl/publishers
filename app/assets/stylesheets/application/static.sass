@@ -3,8 +3,8 @@ body[data-controller="static"]
   min-height: 100vh
 
   background-color: #f33a46
-  background-image: url(asset-path("coins.png")) /* fallback */
-  background-image: url(asset-path("coins.png")), -webkit-linear-gradient(-72deg,#f7383a,#e72d5d,#C09 85%)
+  background-image: url(asset-path("landing-bgd.png")) /* fallback */
+  background-image: url(asset-path("landing-bgd.png")), -webkit-linear-gradient(-72deg,#f7383a,#e72d5d,#C09 85%)
   background-repeat: no-repeat
   background-position: top right
 
@@ -19,9 +19,12 @@ body[data-controller="static"]
     font-size: 16px
     font-weight: 300
     letter-spacing: 0.02em
+    &.leadin
+      font-size: 20px
 
   .logo
-    margin-top: 42px
+    margin-top: 70px
+    margin-bottom: 80px
 
   .main-heading
     h2
@@ -31,13 +34,13 @@ body[data-controller="static"]
     @media (max-width: 991px)
       h1
         font-weight: 700
-        font-size: 52px
+        font-size: 45px
         margin-top: 5px
         margin-bottom: 20px
     @media (min-width: 992px)
       h1
         font-weight: 700
-        font-size: 52px
+        font-size: 45px
         margin-top: 10px
         margin-bottom: 40px
 
@@ -66,7 +69,29 @@ body[data-controller="static"]
   .welcome
     margin-top: 25px
 
+  .signup-panel
+    margin-top: 25px
+    background: rgba(#222326, 0.2)
+    border-radius: 8px
+    padding: 60px 40px 40px 40px
+
+    .form-group
+      margin-top: 40px
+    hr
+      margin-top: 60px
+      margin-bottom: 40px
+
+  .terms-of-service
+    margin: 20px 0 150px 0
+    a
+      color: rgba(#ededee, 0.65)
+      font-size: 14px
+      font-weight: 300
+
   @media (max-width: 767px)
+    .logo
+      margin-top: 50px
+      margin-bottom: 50px
     .col-centered
       float: none
       margin: 0 auto
@@ -85,27 +110,27 @@ body[data-controller="static"]
 
   @media (min-width: 992px)
     .col-left
-      padding-left: 70px
-      padding-right: 30px
+      padding-left: 60px
+      padding-right: 20px
     .col-right
-      padding-left: 30px
-      padding-right: 70px
+      padding-left: 20px
+      padding-right: 60px
     .dashboard
       margin-top: 10px
       margin-bottom: 35px
 
   @media (min-width: 1200px)
     .col-left
-      padding-left: 120px
-      padding-right: 30px
+      padding-left: 80px
+      padding-right: 20px
     .col-right
-      padding-left: 30px
-      padding-right: 120px
+      padding-left: 20px
+      padding-right: 80px
 
   .form-control
-    background-color: rgba(white, 0.22)
-    color: rgba(white, 0.88)
-    height: 48px
+    background-color: rgba(#FF5874, 0.3)
+    color: rgba(white, 0.7)
+    height: 47px
     font-weight: 400
     font-size: 16px
     border: none
@@ -129,15 +154,16 @@ body[data-controller="static"]
     padding-left: 0px
   .btn
     &.btn-primary
-      background: #f93f32
-      height: 50px
+      background: #72008B
+      height: 48px
       border: none
-      border-radius: 6px
-      box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
+      border-radius: 24px
+      //box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
       color: white
-      font-size: 16px
+      font-size: 14px
       font-weight: 600
       letter-spacing: 0.02em
+      box-shadow: none
 
       &:hover
         background: #fc624e
@@ -148,12 +174,15 @@ body[data-controller="static"]
       background: transparent
       height: 36px
       border: 1px solid rgba(#fff, 0.30)
-      border-radius: 6px
+      border-radius: 18px
       color: white
-      font-size: 12px
-      font-weight: 400
+      font-size: 14px
+      font-weight: 600
       letter-spacing: 0.02em
       box-shadow: none
+      margin-top: 4px
+      padding-top: 7px
+      padding-bottom: 7px
 
       &:hover
         border: none
@@ -162,11 +191,3 @@ body[data-controller="static"]
         border: none
         background: rgba(#fff, 0.15)
 
-  .tos-row
-    margin-bottom: 150px
-  .terms-of-service
-    margin-top: 30px
-    a
-      color: rgba(#ededee, 0.65)
-      font-size: 14px
-      font-weight: 300
