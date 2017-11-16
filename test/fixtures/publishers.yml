@@ -56,14 +56,12 @@ uphold_connected:
   show_verification_status: true
 
 youtube_initial:
-  brave_publisher_id: nil
   email: "alice@spud.com"
   name: "Alice the Youtuber"
   phone: "4159001420"
   phone_normalized: "+14159001420"
 
 youtube_new:
-  brave_publisher_id: nil
   email: "alice@spud.com"
   name: "Alice the Youtuber"
   phone: "4159001420"
