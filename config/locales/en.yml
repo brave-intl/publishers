@@ -256,6 +256,7 @@ en:
       The YouTube channel "%{youtube_channel_title}" was registered by %{youtube_channel_registered_by} on %{youtube_channel_registration_date}.
       Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
     missing_info_provide_email: "We seem to be missing some info. Please make sure you provided an email address."
+    invalid_email_value: "We seem to be missing some info. Please make sure you have provided a full email address."
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
@@ -344,7 +345,7 @@ en:
   recaptcha:
     errors:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
-      verification_failed: "reCAPTCHA verification failed; please try again."
+      verification_failed: "In case you’re not a bot, we just wanted you to know that reCaptcha didn’t pass this time. Please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
     cancel: "Cancel"

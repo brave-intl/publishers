@@ -65,15 +65,19 @@ class PublishersController < ApplicationController
         verify_recaptcha(model: @publisher)
         : true
 
-    if throttle_legit && @publisher.save
-      PublisherMailer.verify_email(@publisher).deliver_later!
-      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-      session[:created_publisher_id] = @publisher.id
-      redirect_to create_done_publishers_path
+    if throttle_legit
+      if @publisher.save
+        PublisherMailer.verify_email(@publisher).deliver_later!
+        PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+        session[:created_publisher_id] = @publisher.id
+        redirect_to create_done_publishers_path
+      else
+        Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
+        redirect_to(root_path, notice: I18n.t("publishers.invalid_email_value") )
+      end
     else
-      path = after_sign_out_path_for(@publisher)
-      sign_out(@publisher)
-      redirect_to(path, notice: I18n.t("publishers.missing_info_provide_email") )
+      Rails.logger.error(I18n.t("recaptcha.errors.verification_failed"))
+      redirect_to(root_path, notice: I18n.t("publishers.verification_failed") )
     end
   end
 
