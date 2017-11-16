@@ -17,32 +17,39 @@ body[data-controller="static"]
     padding-bottom: 15px
     color: white
     font-size: 16px
-    font-weight: 300
-    letter-spacing: 0.02em
+    font-weight: 400
+    letter-spacing: -0.013em
+    line-height: 28px
+    margin-bottom: 21px
     &.leadin
-      font-size: 20px
+      font-size: 22px
+      font-weight: 100
+      line-height: 32px
+      letter-spacing: -0.02em
+      strong
+        font-weight: 600
 
   .logo
-    margin-top: 70px
-    margin-bottom: 80px
+    margin-top: 75px
+    margin-bottom: 75px
 
   .main-heading
     h2
-      font-weight: 200
+      font-weight: 100
       font-size: 32px
       margin-bottom: 0px
     @media (max-width: 991px)
       h1
-        font-weight: 700
-        font-size: 45px
+        font-weight: 600
+        font-size: 48px
         margin-top: 5px
-        margin-bottom: 20px
+        margin-bottom: 30px
     @media (min-width: 992px)
       h1
-        font-weight: 700
-        font-size: 45px
+        font-weight: 600
+        font-size: 48px
         margin-top: 10px
-        margin-bottom: 40px
+        margin-bottom: 50px
 
   .section-header
     margin-top: 0px
@@ -51,16 +58,16 @@ body[data-controller="static"]
     color: white
 
   .alt-path-copy
-    color: rgba(white, 0.85)
+    color: rgba(white, 0.50)
     font-size: 15px
     font-weight: 200
     letter-spacing: 0.02em
     strong
       color: white
-      font-weight: 600
+      font-weight: 500
 
   .divider
-    border-color: rgba(#ededee, 0.35)
+    border-color: rgba(#222326, 0.25)
     margin-top: 40px
     height: 1px
     width: 100%
@@ -73,13 +80,13 @@ body[data-controller="static"]
     margin-top: 25px
     background: rgba(#222326, 0.2)
     border-radius: 8px
-    padding: 60px 40px 40px 40px
+    padding: 60px 40px 20px 40px
 
     .form-group
       margin-top: 40px
     hr
-      margin-top: 60px
-      margin-bottom: 40px
+      margin-top: 70px
+      margin-bottom: 30px
 
   .terms-of-service
     margin: 20px 0 150px 0
@@ -137,6 +144,7 @@ body[data-controller="static"]
     border-radius: 3px
     opacity: 0.88
     letter-spacing: 0.02em
+    box-shadow: none
 
   input[type="email"]:focus
     border: 1px solid #ff5396
@@ -146,7 +154,7 @@ body[data-controller="static"]
   .form-control::-webkit-input-placeholder
     font-weight: 300
     font-size: 16px
-    color: white
+    color: #F196B3
   .control-label
     display: inline
     color: white
@@ -158,12 +166,12 @@ body[data-controller="static"]
       height: 48px
       border: none
       border-radius: 24px
-      //box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5)
       color: white
-      font-size: 14px
-      font-weight: 600
-      letter-spacing: 0.02em
+      font-size: 12px
+      font-weight: 500
+      letter-spacing: 0.08em
       box-shadow: none
+      text-transform: uppercase
 
       &:hover
         background: #fc624e
@@ -172,17 +180,18 @@ body[data-controller="static"]
 
     &.btn-secondary
       background: transparent
-      height: 36px
+      height: 40px
       border: 1px solid rgba(#fff, 0.30)
-      border-radius: 18px
+      border-radius: 20px
       color: white
-      font-size: 14px
-      font-weight: 600
-      letter-spacing: 0.02em
+      font-size: 11px
+      font-weight: 500
+      letter-spacing: 0.08em
       box-shadow: none
       margin-top: 4px
-      padding-top: 7px
+      padding-top: 11px
       padding-bottom: 7px
+      text-transform: uppercase
 
       &:hover
         border: none
