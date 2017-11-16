@@ -147,4 +147,12 @@ class PublisherMailer < ApplicationMailer
       subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
+
+  def verified_no_wallet(publisher, params)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+    )
+  end
 end

@@ -34,4 +34,6 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_match "Website Domain:default.org ( http://default.org )", email.text_part.body.to_s
     assert_match "href=\"http://#{publisher.brave_publisher_id}\"", email.html_part.body.to_s
   end
+
+  test ""
 end

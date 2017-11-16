@@ -3,7 +3,7 @@ class PublisherNotifier < BaseService
   attr_reader :notification_params, :notification_type, :publisher
 
   # Should match methods in NotificationMailer starting with #publisher_*
-  NOTIFICATION_TYPES = %w(form_retry payments_activated)
+  NOTIFICATION_TYPES = %w(verified_no_wallet)
 
   def initialize(notification_params: {}, notification_type:, publisher:)
     raise ":publisher invalid" if !publisher.is_a?(Publisher)
@@ -16,9 +16,9 @@ class PublisherNotifier < BaseService
   end
 
   def perform
-    NotificationMailer.public_send(mailer_method, @publisher, notification_params).deliver_later
-    if NotificationMailer.should_send_internal_emails? && NotificationMailer.respond_to?(mailer_method_internal)
-      NotificationMailer.public_send(mailer_method_internal, @publisher, notification_params).deliver_later
+    PublisherMailer.public_send(mailer_method, @publisher, notification_params).deliver_later
+    if PublisherMailer.should_send_internal_emails? && PublisherMailer.respond_to?(mailer_method_internal)
+      PublisherMailer.public_send(mailer_method_internal, @publisher, notification_params).deliver_later
     end
   end
 
@@ -28,7 +28,7 @@ class PublisherNotifier < BaseService
   private
 
   def mailer_method
-    "publisher_#{notification_type}".to_sym
+    "#{notification_type}".to_sym
   end
 
   def mailer_method_internal

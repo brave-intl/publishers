@@ -334,6 +334,8 @@ en:
       title: "Publisher statement is ready to view"
       body: "The following statement has recently been generated:"
       expiration_note: "This statement must be downloaded within the next 24 hours."
+    verified_no_wallet:
+      subject: "Please create your new wallet to continue receiving funds"
   publisher_statement_periods:
     past_7_days: "Past 7 days"
     past_30_days: "Past 30 days"
