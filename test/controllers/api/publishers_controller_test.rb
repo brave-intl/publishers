@@ -132,4 +132,13 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 400, response.status
     assert_match "parameter 'type' is required", response.body
   end
+
+  test "returns error for invalid notification type" do
+    verified_publisher = publishers(:verified)
+
+    post "/api/publishers/#{verified_publisher.brave_publisher_id}/notifications?type=invalid_type"
+
+    assert_equal 400, response.status
+    assert_match "invalid", response.body
+  end
 end
