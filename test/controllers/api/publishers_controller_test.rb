@@ -148,5 +148,7 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_emails 1 do
       post "/api/publishers/#{verified_publisher.brave_publisher_id}/notifications?type=verified_no_wallet"
     end
+
+    assert_equal 200, response.status
   end
 end
