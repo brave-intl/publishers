@@ -265,6 +265,11 @@ en:
       signature: "The Brave Payments Team"
       button_not_working: "If the button above doesn't work, paste this link into your web browser: "
       erroneous_email_help: "If you did not make this request, you can ignore this email or contact us at "
+      terms_of_service: "Terms of Service"
+      medium: "Medium"
+      twitter: "Twitter"
+      reddit: "Reddit"
+      rocketchat: "Rocket.Chat"
 
     uphold_account_changed:
       subject: "[%{brave_publisher_id}] Brave Publisher Uphold account changed"

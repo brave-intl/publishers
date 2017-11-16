@@ -29,7 +29,6 @@ body {
   background: #ffffff asset-data-url("mailer/header-pattern@1x-min.png") top right no-repeat;
 
   .brand {
-    background: asset-data-url("mailer/branding@1x.png") left no-repeat;
     width: 268px;
     height: 31px;
   }
@@ -129,27 +128,6 @@ body {
       display: inline-block;
       margin-top: 20px;
       margin-right: 32px;
-
-      &.medium {
-        width: 25px;
-        height: 20px;
-        background: asset-data-url("mailer/logo-medium@1x.png") no-repeat;
-      }
-      &.twitter {
-        width: 25px;
-        height: 21px;
-        background: asset-data-url("mailer/logo-twitter@1x.png") no-repeat;
-      }
-      &.reddit {
-        width: 28px;
-        height: 24px;
-        background: asset-data-url("mailer/logo-reddit@1x.png") no-repeat;
-      }
-      &.rocketchat {
-        width: 25px;
-        height: 22px;
-        background: asset-data-url("mailer/logo-rocketchat@1x.png") no-repeat;
-      }
     }
   }
 }
