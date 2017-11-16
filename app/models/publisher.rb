@@ -78,8 +78,17 @@ class Publisher < ApplicationRecord
     Rails.application.secrets[:attr_encrypted_key]
   end
 
+  def publication_title
+    case publication_type
+    when :site
+      brave_publisher_id
+    when :youtube_channel
+      youtube_channel.title
+    end
+  end
+
   def to_s
-    brave_publisher_id
+    publication_title
   end
 
   def prepare_uphold_state_token
