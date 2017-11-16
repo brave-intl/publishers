@@ -294,7 +294,7 @@ en:
         Click the private access link below to create your account with <strong>Brave Payments</strong>. This link can only be used once.
       subject: "Brave Publisher email confirmation"
       title: "Brave Publisher email confirmation"
-      button: "Create Brave Payments Account"
+      button: "Verify Email"
     verification_done:
       intro: "Congratulations! You are now a verified Brave publisher Brave users will see a verified symbol next to your website domain."
       payment_help_header: "Ready to claim your funds now?"
