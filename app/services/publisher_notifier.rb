@@ -9,7 +9,7 @@ class PublisherNotifier < BaseService
     raise ":publisher invalid" if !publisher.is_a?(Publisher)
     @notification_type = notification_type.to_s
     if !NOTIFICATION_TYPES.include?(@notification_type)
-      raise InvalidNotificationTypeError.new("#{notification_type} is an invalid notification_type")
+      raise InvalidNotificationTypeError.new("'#{notification_type}' is an invalid notification type")
     end
     @notification_params = (notification_params && notification_params.to_hash.symbolize_keys) || {}
     @publisher = publisher
