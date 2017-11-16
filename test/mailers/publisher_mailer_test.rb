@@ -35,5 +35,15 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_match "href=\"http://#{publisher.brave_publisher_id}\"", email.html_part.body.to_s
   end
 
-  test ""
+  test "verified_no_wallet" do
+    publisher = publishers(:verified)
+    email = PublisherMailer.verified_no_wallet(publisher, nil)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal [publisher.email], email.to
+  end
 end
