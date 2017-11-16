@@ -357,13 +357,14 @@ en:
     landing_header-welcome: "Welcome to"
     landing_header: "Brave Payments"
     landing_body_html: |
-      <p>Our users do not want ads, but you still have bills to pay. Brave Payments streams micropayments from
-       the audience to you.</p>
-      <p>Once fully verified, you will begin to receive daily micropayments from users in your BAT wallet.</p>
+      <p class="leadin">Do you run a web site or are you a <strong>YouTube</strong> creator interested in monetizing
+        your content? Verify your site and unlock your contributions!</p>
+      <p>Brave Payments lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
+        of fans may have already filled your wallet!</p>
     landing_new_header: "New to Brave Payments?"
-    landing_new_body: "Start verifying your domain with entering your email."
+    landing_new_body: "Start verification by entering your email."
     landing_login_header: "Already verified?"
-    landing_login_body_html: "<strong>Already verified?</strong> Log in to see your publisher dashboard."
+    landing_login_body_html: "<strong>Already verified?</strong> Log in to your publisher dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
   youtube:
