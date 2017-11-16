@@ -74,6 +74,18 @@ body[data-controller="publishers"]
     .content-panel
       padding: 0 30px
 
+  .login-panel
+    .row
+      padding: 0 40px
+    .site-login, .youtube-login
+      padding: 30px 0
+
+  .signup-panel
+    .col
+      text-align: center
+    .btn-primary
+      margin: 20px 0
+
   p
     margin-bottom: 26px
 
@@ -166,10 +178,11 @@ body[data-controller="publishers"]
   .noscript-warning
     text-align: center
     background: #f0f0f0
-    border: 1px solid #ccc
+    border: 1px solid #ff3f3f
+    border-radius: 10px
     padding: 10px
     margin-bottom: 20px
-    color: #333
+    color: #ff3f3f
 
   .progress-train
     padding-top: 14px
@@ -477,6 +490,15 @@ body[data-controller="publishers"]
         font-size: 28px
         margin-bottom: 12px
         font-weight: 500
+      .publisher-youtube-channel
+        margin-bottom: 18px
+        .channel-name
+          font-size: 16px
+        .channel-thumbnail
+          img
+            height: 88px
+            width: 88px
+            border-radius: 44px
       #publisher_verification_status
         font-size: $font-size-base
         vertical-align: middle
@@ -584,3 +606,168 @@ body[data-controller="publishers"]
           color: rgba(#ededee, 0.65)
           font-size: 14px
           font-weight: 300
+    #verification_modal
+      width: 740px
+      .md-content
+        padding: 80px 200px 80px 100px
+        background: #fff url(asset-path("img-brands.png")) top right no-repeat
+        border-radius: 10px
+        h1
+          font-size: 40px
+          font-weight: 300
+          color: #ff3f3f
+          margin-top: 0
+          padding-top: 0
+        h2
+          font-size: 18px
+          font-weight: 300
+          color: #ff3f3f
+          display: inline-block
+          margin-top: 0px
+          margin-bottom: 20px
+          padding: 10px 45px 10px 0
+          background: url(asset-path("icn-verified.png")) right no-repeat
+        .panel-section
+          margin-top: 55px
+        a.btn
+          margin: 10px 15px
+        a.btn-cancel
+          color: #ff3f3f
+    @media (max-width: 550px)
+      #verification_modal .md-content
+        padding: 60px
+        background: #fff
+        border-radius: 0
+
+  &[data-action="email_verified"]
+    .publisher-panel
+      margin-top: 40px
+    h1
+      font-size: 36px
+      font-weight: 300
+      margin-bottom: 36px
+      color: #222326
+    h2
+      font-size: 20px
+      font-weight: 300
+      width: 410px
+      line-height: 32px
+      letter-spacing: -0.4px
+    h3
+      padding-top: 260px
+      color: #ff3f3f
+      font-size: 19px
+      font-weight: 600
+      margin-bottom: 15px
+
+    a:hover
+      text-decoration: none
+
+    .choice-panel
+      background-color: white
+      border: none
+      border-radius: 8px
+      box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
+      margin: 0 auto 30px auto
+      width: 400px
+      height: 400px
+      color: #606467
+      font-weight: 300
+      &:hover
+        text-decoration: none
+
+    .choice-description
+      padding: 0 70px
+      font-weight: 600
+      letter-spacing: -0.4px
+
+    .select-choice
+      &::before
+        transition: all 200ms ease-in
+        color: #fff
+        font-size: 28px
+        font-weight: 600
+        padding-top: 190px
+        position: absolute
+        width: 400px
+        height: 400px
+        text-align: center
+        vertical-align: middle
+        opacity: 0
+        border-radius: 8px
+
+      &:hover:before
+        opacity: 1
+        background: rgba(#222326,0.7)
+        transition: all 200ms ease-in
+
+    .site-operator
+      background: url(asset-path("img-site-operator@1x.png")) center 66px no-repeat
+      &::before
+        content: 'SITE OPERATOR'
+
+    .individual-creator
+      background: url(asset-path("img-indi-creator@1x.png")) center 66px no-repeat
+      &::before
+        content: 'YOUTUBE CREATOR'
+
+    #taken_youtube_channel_modal
+      width: 650px
+      .md-content
+        padding: 70px 80px 70px 80px
+        background: #fff
+        border-radius: 10px
+        h1
+          font-size: 32px
+          font-weight: 300
+          color: #ff3f3f
+          margin-top: 0
+          padding-top: 0
+        .youtube-channel
+          margin: 50px 0 50px 40px
+          .summary
+            margin-bottom: 20px
+            img
+              display: inline-block
+              width: 40px
+              height: 40px
+              border-radius: 20px
+              margin-right: 10px
+            .title
+              display: inline-block
+          .registration-date
+            label
+              display: inline-block
+              margin-right: 8px
+            .value
+              display: inline-block
+          .registered-by
+            label
+              display: inline-block
+              margin-right: 8px
+            .value
+              display: inline-block
+        .panel-section
+          margin-top: 35px
+          text-align: center
+        a.btn
+          min-width: 150px
+          margin: 10px 0
+    @media (max-width: 550px)
+      #taken_youtube_channel_modal .md-content
+        padding: 60px
+        background: #fff
+        border-radius: 0
+
+    @media (max-width: 991px)
+      .publisher-panel
+        width: 400px
+      .site-operator
+        margin-bottom: 32px
+    @media (min-width: 992px)
+      .publisher-panel
+        width: 840px
+      .choice-panel-left
+        float: left !important
+      .choice-panel-right
+        float: right !important

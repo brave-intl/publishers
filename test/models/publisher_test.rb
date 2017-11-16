@@ -121,7 +121,7 @@ class PublisherTest < ActiveSupport::TestCase
       body = "{ \"status\":{ \"provider\":\"uphold\", \"action\":\"re-authorize\" }, \"contributions\":{ \"amount\":\"9001.00\", \"currency\":\"USD\", \"altcurrency\":\"BAT\", \"probi\":\"38077497398351695427000\" }, \"rates\":{ \"BTC\":0.00005418424016883016, \"ETH\":0.000795331082073117, \"USD\":0.2363863335301452, \"EUR\":0.20187818378874756, \"GBP\":0.1799810085548496 }, \"wallet\":{ \"provider\":\"uphold\", \"authorized\":true, \"preferredCurrency\":\"USD\", \"availableCurrencies\":[ \"USD\", \"EUR\", \"BTC\", \"ETH\", \"BAT\" ] } }"
 
       stub_request(:get, /v2\/publishers\/uphold_connected.org\/wallet/).
-          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'Bearer', 'User-Agent'=>'Faraday v0.9.2'}).
+          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: body, headers: {})
 
       publisher = publishers(:uphold_connected)
@@ -133,5 +133,70 @@ class PublisherTest < ActiveSupport::TestCase
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
     end
+  end
+
+  test "a publisher cannot be associated with both a site and auth credentials" do
+    publisher = publishers(:verified)
+    assert publisher.valid?
+
+    publisher.auth_user_id = '123'
+    refute publisher.valid?
+
+    publisher.brave_publisher_id = nil
+    assert publisher.valid?
+
+    publisher.auth_user_id = nil
+    publisher.brave_publisher_id = 'example.com'
+    assert publisher.valid?
+  end
+
+  test "a publisher cannot change youtube channels" do
+    publisher = publishers(:youtube_initial)
+    assert publisher.valid?
+
+    some_channel = youtube_channels(:some_channel)
+    publisher.youtube_channel = some_channel
+    assert publisher.valid?
+
+    publisher.save
+
+    some_other_channel = youtube_channels(:some_other_channel)
+    publisher.youtube_channel = some_other_channel
+    refute publisher.valid?
+  end
+
+  test "a publisher cannot have the same youtube channel as another publisher" do
+    publisher = publishers(:youtube_initial)
+    assert publisher.valid?
+
+    diy_channel = youtube_channels(:diy_channel)
+    publisher.youtube_channel = diy_channel
+    refute publisher.valid?
+  end
+
+  test "a publisher must have a valid pending email address if it does not have an email address" do
+    publisher = Publisher.new
+
+    assert_nil publisher.email
+    assert_nil publisher.pending_email
+    refute publisher.valid?
+
+    publisher.pending_email = "foo@bar.com"
+    assert publisher.valid?
+
+    publisher.email = "foo@bar.com"
+    publisher.pending_email = nil
+    assert publisher.valid?
+
+    publisher.email = "foo@bar.com"
+    publisher.pending_email = "bar@bar.com"
+    assert publisher.valid?
+  end
+
+  test "a publisher pending_email address must be valid" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "bad_email_addresscom"
+    refute publisher.valid?
   end
 end

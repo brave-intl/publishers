@@ -1,4 +1,6 @@
 class PublisherStatement < ApplicationRecord
+  has_paper_trail
+
   EXPIRE_AFTER = 1.day
 
   attr_encrypted :contents, key: :encryption_key

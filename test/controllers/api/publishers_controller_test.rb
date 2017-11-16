@@ -103,4 +103,24 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal(200, response.status)
   end
+
+  test "show_verification_status returns as false if nil" do
+    default_publisher = publishers(:default)
+    assert_nil default_publisher.show_verification_status
+
+    get "/api/publishers/#{default_publisher.brave_publisher_id}"
+
+    assert_equal(200, response.status)
+    refute_nil JSON.parse(response.body)[0]['show_verification_status']
+  end
+
+  test "show_verification_status returns as true if true" do
+    uphold_connected = publishers(:uphold_connected)
+    assert uphold_connected.show_verification_status
+
+    get "/api/publishers/#{uphold_connected.brave_publisher_id}"
+
+    assert_equal(200, response.status)
+    assert JSON.parse(response.body)[0]['show_verification_status']
+  end
 end

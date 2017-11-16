@@ -133,19 +133,52 @@ javascript:
         });
     }
 
+    function showVerificationModal() {
+      var modal = document.getElementById('verification_modal');
+      classie.add(modal, 'md-show');
+    }
+
+    function hideVerificationModal() {
+      var modal = document.getElementById('verification_modal');
+      classie.remove(modal, 'md-show');
+    }
+
+    function verificationStatusUpdated(checked) {
+      var form = document.getElementById('update_show_verification_status');
+      form.className = checked ? 'checked' : 'unchecked';
+    }
+
     window.addEventListener('load', function() {
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
         submitForm('update_show_verification_status', 'PATCH', true);
-        var form = document.getElementById('update_show_verification_status');
-        form.className = showVerificationStatusInput.checked ? 'checked' : 'unchecked';
+        verificationStatusUpdated(showVerificationStatusInput.checked);
       }, false);
 
+      if (document.getElementById('verification_modal')) {
+        document.getElementById('verify_now').addEventListener('click', function(event) {
+          showVerificationStatusInput.checked = true;
+          verificationStatusUpdated(true);
+          submitForm('update_show_verification_status', 'PATCH', false);
+          hideVerificationModal();
+        });
+        document.getElementById('verify_later').addEventListener('click', function(event) {
+          showVerificationStatusInput.checked = false;
+          verificationStatusUpdated(false);
+          submitForm('update_show_verification_status', 'PATCH', false);
+          hideVerificationModal();
+        });
+
+        showVerificationModal();
+      }
+
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
-      defaultCurrencySelect.addEventListener('change', function (event) {
-        submitForm('update_default_currency_form', 'PATCH', true);
-        refreshBalance();
-      }, false);
+      if (defaultCurrencySelect) {
+        defaultCurrencySelect.addEventListener('change', function (event) {
+          submitForm('update_default_currency_form', 'PATCH', true);
+          refreshBalance();
+        }, false);
+      }
 
       var showContact = document.getElementById('show_contact');
       var showContactName = document.getElementById('show_contact_name');
@@ -300,8 +333,22 @@ javascript:
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
+- if current_publisher.show_verification_status.nil?
+  .md-container#verification_modal
+    .md-content
+      h1= t("publishers.verify_modal_title")
+      h2= t("publishers.verify_modal_subtitle")
+      p= t("publishers.verify_modal_content_html")
+      .panel-section
+        a.btn.btn-cancel#verify_later= t("publishers.verify_modal_cancel")
+        a.btn.btn-primary#verify_now= t("publishers.verify_modal_confirm")
+  .md-overlay
+
 - content_for(:navbar_content_right) do
-  .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
+  - if current_publisher.publication_type == :site
+    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
+  - elsif current_publisher.publication_type == :youtube_channel
+    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
 
 #cssload-container
   .cssload-container
@@ -312,10 +359,15 @@ noscript
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .publisher-status
-      .publisher-domain-summary
-        .publisher-domain-name= current_publisher.brave_publisher_id
-        #publisher_verification_status class=publisher_verification_status(current_publisher)
-          = publisher_verification_status_description(current_publisher)
+      - if current_publisher.publication_type == :site
+        .publisher-domain-summary
+          .publisher-domain-name= current_publisher.brave_publisher_id
+          #publisher_verification_status class=publisher_verification_status(current_publisher)
+            = publisher_verification_status_description(current_publisher)
+      - elsif current_publisher.publication_type == :youtube_channel
+        .publisher-youtube-channel
+          .channel-thumbnail= image_tag(current_publisher.youtube_channel.thumbnail_url)
+          .channel-name= current_publisher.youtube_channel.title
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
     .balance
@@ -363,7 +415,7 @@ noscript
             .statement
               .date= statement_period_date(s.created_at)
               .period= statement_period_description(s.period.to_sym)
-              .download= link_to('Download', statement_publishers_url(id: s.id))
+              .download= s.encrypted_contents? ? link_to(t("publishers.statement_download"), statement_publishers_url(id: s.id)) : t("publishers.statement_delayed")
 
       .panel-header.panel-header-h4#publishers_contact
         = t("publishers.contact")

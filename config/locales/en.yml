@@ -48,7 +48,6 @@ en:
     balance_error: "Unavailable"
     balance_pending: "CURRENT CONTRIBUTION BALANCE"
     balance_pending_approximate: "Approximately %{amount} %{code}"
-    legacy_balance_pending: "Legacy balance pending (Bitcoin system)"
     claim_funds: "Claim funds"
     complete_irs_w_9: "Complete IRS W-9"
     complete_irs_w_9_hint: "United States taxpayers"
@@ -85,25 +84,31 @@ en:
     update_uphold_info: "Be sure to update your tax info in Uphold."
     email_confirmed: "Your updated email address %{email} has been confirmed."
     irs_form_required: "To receive your funds please complete a United States IRS form W-9 or W-8BEN."
+    log_in_for_youtube: "For YouTube creators, please log in with your Google account."
+    log_in_for_site: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
+    log_in_with_google_button: "Log in with Google"
     log_out: "Log out"
     logged_out: "Your session has been cleared."
     new: "Contact Information"
-    new_auth_token: "Log In to Brave Payments"
+    new_auth_token: "Log in to Brave Payments"
     new_auth_token_header: "Existing publisher login"
-    new_auth_token_body: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
     new_auth_token_button: "Email me a link to log in"
     new_auth_token_email_html: |
-      Email Address <span class="optional">(optional if verification is complete)</span>
+      Email Address <span class="optional">(for unverified domains)</span>
     new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     new_header: "Publisher contact information"
+    new_site_account: "I am a site operator"
+    new_youtube_account: "I am a YouTube creator"
     not_verified: "Unverified"
     progress:
       contact_info: "Contact Info"
       verify_site: "Verify Your Site"
       create_wallet: "Create Your Wallet"
     statements: "Statements"
+    statement_download: "Download"
+    statement_delayed: "Delayed"
     verified_phone_html: |
       Phone Number <span class="optional">(optional)</span>
     status_complete: "Verified"
@@ -227,21 +232,55 @@ en:
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
     verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
     verify_success: "Verification successful."
+    verify_modal_title: "Congrats!"
+    verify_modal_subtitle: "You are now a Brave Verified Publisher!"
+    verify_modal_content_html: "Thanks for helping to provide a better Web experience for the millions who've downloaded the Brave browser. We'd like to include you in the <strong>Verified Publishers list</strong> on our web site, which we may share in external communications and social media as well."
+    verify_modal_cancel: "I'll do this later"
+    verify_modal_confirm: "Yes, I'd like to be listed"
+    pub_type_welcome: "Welcome Back!"
+    pub_type_lets_start: "Let's start with choosing who you are based on where you're publishing your content."
+    pub_type_site_operator: "SITE OPERATOR"
+    pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
+    pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
+    pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
+    pub_type_site_youtube_creator: "YOUTUBE CREATOR"
+    youtube_channel_taken_dialog:
+      title: "Channel already registered!"
+      leadin: "The following YouTube channel has already been registered."
+      registration_date: "Date"
+      registered_by: "Registered by"
+      default_registerer: "A channel manager"
+      contact_support_html: "Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error."
+      ok: "OK"
+    youtube_channel_taken_noscript_html: |
+      The YouTube channel "%{youtube_channel_title}" was registered by %{youtube_channel_registered_by} on %{youtube_channel_registration_date}.
+      Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+    missing_info_provide_email: "We seem to be missing some info. Please make sure you provided an email address."
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
       private_access_link: "Private access link"
       private_access_link_help: "Use this link to continue and manage publisher registration"
+      salutation: "Hi %{name},"
+      signature: "The Brave Payments Team"
+      button_not_working: "If the button above doesn't work, paste this link into your web browser: "
+      erroneous_email_help: "If you did not make this request, you can ignore this email or contact us at "
+      terms_of_service: "Terms of Service"
+      medium: "Medium"
+      twitter: "Twitter"
+      reddit: "Reddit"
+      rocketchat: "Rocket.Chat"
+
     uphold_account_changed:
       subject: "[%{brave_publisher_id}] Brave Publisher Uphold account changed"
       title: "Publisher Uphold account changed"
       body: "This message confirms that you've updated your Uphold account through the Brave Payments website."
     login_email:
-      body_1: "Someone requested a login link to access your Brave Publisher account."
-      body_2: "If this was you, great! The link is below and it will expire on use or after 3 hours."
-      body_3: "If this was not you, you can safely ignore this message."
+      body_html: |
+        Click the private access link below to log in to your account with <strong>Brave Payments</strong>. This link can only be used once.
       subject: "[%{brave_publisher_id}] Brave Publisher login link"
       title: "Brave Publisher login link"
+      button: "Log in to Brave Payments"
     verification:
       click_verify: "Click Verify from the Brave Publisher management website."
       download_attached_file: "Download the attached verification file"
@@ -256,13 +295,11 @@ en:
       subject: "[%{brave_publisher_id}] Brave Publisher registration"
       title: "Publisher registration"
     verify_email:
-      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
-      intro: "We've received a request to register an email address with Brave Payments:"
-      private_email_notice: |
-        NOTE: This email contains a private access link. Anyone with it can manage private
-        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      body_html: |
+        Click the private access link below to create your account with <strong>Brave Payments</strong>. This link can only be used once.
       subject: "Brave Publisher email confirmation"
       title: "Brave Publisher email confirmation"
+      button: "Verify Email"
     verification_done:
       intro: "Congratulations! You are now a verified Brave publisher Brave users will see a verified symbol next to your website domain."
       payment_help_header: "Ready to claim your funds now?"
@@ -325,12 +362,19 @@ en:
     landing_header-welcome: "Welcome to"
     landing_header: "Brave Payments"
     landing_body_html: |
-      <p>Our users do not want ads, but you still have bills to pay. Brave Payments streams micropayments from
-       the audience to you.</p>
-      <p>Once fully verified, you will begin to receive daily micropayments from users in your BAT wallet.</p>
+      <p class="leadin">Do you run a web site or are you a <strong>YouTube</strong> creator interested in monetizing
+        your content? Verify your site and unlock your contributions!</p>
+      <p>Brave Payments lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
+        of fans may have already filled your wallet!</p>
     landing_new_header: "New to Brave Payments?"
-    landing_new_body: "Start verifying your domain with entering your email."
+    landing_new_body: "Start verification by entering your email."
     landing_login_header: "Already verified?"
-    landing_login_body_html: "<strong>Already verified?</strong> Log in to see your publisher dashboard."
+    landing_login_body_html: "<strong>Already verified?</strong> Log in to your publisher dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
+  youtube:
+    authenticate_with_youtube: "Authenticate with YouTube"
+    account_not_found: "Couldn't find a matching publisher record"
+    channel_not_found: "Channel not found"
+    channel_already_taken: "Channel already taken"
+    oauth_error: "Error connecting to YouTube"

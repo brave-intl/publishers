@@ -33,7 +33,7 @@ module PublishersHelper
   end
 
   def publisher_humanize_balance(publisher, currency)
-    if balance = publisher.balance
+    if balance = publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
     else
       I18n.t("publishers.balance_error")
@@ -46,7 +46,8 @@ module PublishersHelper
 
   def publisher_converted_balance(publisher)
     currency = publisher_default_currency(publisher)
-    if balance = publisher.balance
+    return if currency == "BAT"
+    if balance = publisher.wallet.contribution_balance
       converted_amount = '%.2f' % balance.convert_to(currency)
       I18n.t("publishers.balance_pending_approximate", amount: converted_amount, code: currency)
     else
@@ -56,23 +57,6 @@ module PublishersHelper
     require "sentry-raven"
     Raven.capture_exception(e)
     I18n.t("publishers.balance_error")
-  end
-
-  # FIXME: To be removed once BAT transition is complete.
-  def publisher_humanize_legacy_balance(publisher)
-    if balance = publisher.legacy_balance
-      number_to_currency(balance.amount)
-    else
-      I18n.t("publishers.balance_error")
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("publishers.balance_error")
-  end
-
-  def publisher_legacy_balance?(publisher)
-    publisher.legacy_balance && publisher.legacy_balance.amount.to_i && publisher.legacy_balance.amount.to_i > 0
   end
 
   def publisher_uri(publisher)
@@ -271,5 +255,11 @@ module PublishersHelper
       # ToDo: Do we want to display a fake token? Will show up in disabled forms
       ""
     end
+  end
+
+  def name_from_email(email)
+    return "Publisher" unless email.is_a?(String)
+
+    email.split("@")[0].try(:capitalize)
   end
 end

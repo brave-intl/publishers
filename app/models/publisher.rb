@@ -7,12 +7,13 @@ class Publisher < ApplicationRecord
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
 
-  devise :timeoutable, :trackable
+  devise :timeoutable, :trackable, :omniauthable
 
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
   validates :email, email: { strict_mode: true }, presence: true, if: -> { brave_publisher_id.present? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
   validates :name, presence: true, if: -> { brave_publisher_id.present? }
   validates :phone_normalized, phony_plausible: true
 
@@ -27,24 +28,22 @@ class Publisher < ApplicationRecord
   # brave_publisher_id is a normalized identifier provided by ledger API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id_changed? && verified_publisher_exists? } }
+  validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_exists? } }
+
+  validate :youtube_channel_not_changed_once_initialized
+  validates_uniqueness_of :youtube_channel_id, if: -> { youtube_channel_id.present? }
+
+  # ensure that site publishers do not have oauth credentials (and vice versa)
+  validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }
+  validates :auth_user_id, absence: true, if: -> { brave_publisher_id.present? }
 
   # TODO: Show user normalized domain before they commit
   before_validation :normalize_inspect_brave_publisher_id, if: -> { brave_publisher_id.present? && brave_publisher_id_changed?}
-  after_validation :generate_verification_token, if: -> { brave_publisher_id && brave_publisher_id_changed? }
+  after_validation :generate_verification_token, if: -> { brave_publisher_id.present? && brave_publisher_id_changed? }
+
+  belongs_to :youtube_channel
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
-
-  # API call to eyeshade
-  def balance
-    @_balance ||= PublisherBalanceGetter.new(publisher: self).perform
-  end
-
-  # FIXME: To be removed once BAT transition is complete.
-  # Legacy BTC balance from Publishers v1
-  def legacy_balance
-    @_legacy_balance ||= PublisherLegacyBalanceGetter.new(publisher: self).perform
-  end
 
   # API call to eyeshade
   def wallet
@@ -142,6 +141,21 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def publication_type
+    if self.brave_publisher_id.present?
+      :site
+    elsif self.youtube_channel_id.present?
+      :youtube_channel
+    else
+      :unselected
+    end
+  end
+
+  def owner_identifier
+    return nil if auth_user_id.blank?
+    "oauth#google:#{auth_user_id}"
+  end
+
   private
 
   def generate_verification_token
@@ -177,5 +191,18 @@ class Publisher < ApplicationRecord
 
   def verified_publisher_exists?
     self.class.where(brave_publisher_id: brave_publisher_id, verified: true).any?
+  end
+
+  # verification to ensure youtube_channel is not changed
+  def youtube_channel_not_changed_once_initialized
+    return if youtube_channel_id_was.nil?
+
+    if youtube_channel_id_was != youtube_channel_id
+      errors.add(:youtube_channel_id, "can not change once initialized")
+    end
+  end
+
+  def self.youtube_channel_in_use(id)
+    self.where(youtube_channel_id: id).count > 0
   end
 end

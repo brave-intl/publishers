@@ -1,11 +1,11 @@
 class ApplicationMailer < ActionMailer::Base
   INTERNAL_EMAIL = Rails.application.secrets[:internal_email].freeze
 
-  default from: Rails.application.secrets[:support_email]
+  default from: Rails.application.secrets[:from_email]
   layout "mailer"
 
   before_action :require_premailer
-  before_action :add_logo
+  before_action :add_images
 
   def self.should_send_internal_emails?
     INTERNAL_EMAIL.present?
@@ -13,9 +13,17 @@ class ApplicationMailer < ActionMailer::Base
 
   private
 
-  def add_logo
-    path = Rails.root.join("app/assets/images/brave_logo_horz_h30.png")
-    attachments.inline["brave_logo_horz_h30.png"] = File.read(path)
+  def add_image(image_file_name)
+    path = Rails.root.join("app/assets/images/mailer/#{image_file_name}")
+    attachments.inline[image_file_name] = File.read(path)
+  end
+
+  def add_images
+    add_image("brave-payments.png")
+    add_image("logo-medium.png")
+    add_image("logo-reddit.png")
+    add_image("logo-rocketchat.png")
+    add_image("logo-twitter.png")
   end
 
   def require_premailer

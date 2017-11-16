@@ -1,33 +1,75 @@
-- content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => { progress: { info: 75, verify: 0, wallet: 0 }, publisher: current_publisher }
-= render(partial: "model_errors", locals: { record: @publisher })
+- if @taken_youtube_channel
+  - support_email = Rails.application.secrets[:support_email]
+  - taken_youtube_channel_title = @taken_youtube_channel.title
+  - taken_youtube_channel_registered_by = @taken_youtube_channel.publisher.name.present? ? @taken_youtube_channel.publisher.name : t("publishers.youtube_channel_taken_dialog.default_registerer")
+  - taken_youtube_channel_registration_date = @taken_youtube_channel.created_at.to_date
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    | &nbsp;
+  noscript
+    div.noscript-warning= t("publishers.youtube_channel_taken_noscript_html",
+            { support_email: support_email,
+              youtube_channel_title: taken_youtube_channel_title,
+              youtube_channel_registered_by: taken_youtube_channel_registered_by,
+              youtube_channel_registration_date: taken_youtube_channel_registration_date })
+
+  javascript:
+    (function() {
+      function showYoutubeChannelTakenModal() {
+        var modal = document.getElementById('taken_youtube_channel_modal');
+        classie.add(modal, 'md-show');
+
+        var closeModal = document.getElementById('close_modal');
+        closeModal.addEventListener('click', function() {
+          hideYoutubeChannelTakenModal();
+        });
+        document.addEventListener('keyup', function(e) {
+          if (e.keyCode === 27) hideYoutubeChannelTakenModal();
+        });
+      }
+
+      function hideYoutubeChannelTakenModal() {
+        var modal = document.getElementById('taken_youtube_channel_modal');
+        classie.remove(modal, 'md-show');
+      }
+
+      window.addEventListener('load', function() {
+        showYoutubeChannelTakenModal();
+      });
+    })();
+
+  .md-container#taken_youtube_channel_modal
+    .md-content
+      h1= t("publishers.youtube_channel_taken_dialog.title")
+      p= t("publishers.youtube_channel_taken_dialog.leadin")
+      .youtube-channel
+        .summary
+          img src=@taken_youtube_channel.thumbnail_url
+          .title= taken_youtube_channel_title
+        .registration-date
+          label= t("publishers.youtube_channel_taken_dialog.registration_date") + ":"
+          .value= taken_youtube_channel_registration_date
+        .registered-by
+          label= t("publishers.youtube_channel_taken_dialog.registered_by") + ":"
+          .value= taken_youtube_channel_registered_by
+      p= t("publishers.youtube_channel_taken_dialog.contact_support_html", { support_email: support_email })
+
+      .panel-section
+        a.btn.btn-primary#close_modal= t("publishers.youtube_channel_taken_dialog.ok")
+  .md-overlay
+
+.publisher-panel.col-center
+  h1.text-center=t("publishers.pub_type_welcome")
+  h2.col-center.text-center=t("publishers.pub_type_lets_start")
 
 .publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.process-panel-narrow.col-center
-    .content-panel
-      h3= t("publishers.new")
-      = form_for @publisher, { method: :patch, url: update_unverified_publishers_path } do |f|
-        fieldset
-          .form-group
-            = f.label(:brave_publisher_id, class: "control-label")
-            = f.text_field(:brave_publisher_id, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
-          .form-group
-            = f.label(:name, class: "control-label")
-            = f.text_field(:name, class: "form-control", placeholder: "Alice Bloglette", required: true)
-          .form-group
-            = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
-            = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001", required: false)
-          .form-group
-            = f.label(:show_verification_status, class:"label-checkbox note-text") do
-              = f.check_box(:show_verification_status, class: "control-checkbox")
-              text &nbsp;
-              = t("activerecord.attributes.publisher.show_verification_status")
-          - if @should_throttle
-            .form-group
-              = recaptcha_tags
-        .panel-controls
-          = f.submit(t("shared.continue"), class: "btn btn-primary", :"data-piwik-action" => "ContactInfoClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ContactInfoFlow")
+  = link_to(contact_info_publishers_path) do
+    .choice-panel.choice-panel-left
+      .site-operator.select-choice
+        .choice-description
+          h3.text-center= t("publishers.pub_type_site_operator")
+          p.text-center= t("publishers.pub_type_site_operator_description_html")
+  = link_to(publisher_google_oauth2_omniauth_authorize_path) do
+    .choice-panel.choice-panel-right
+      .individual-creator.select-choice
+        .choice-description
+          h3.text-center= t("publishers.pub_type_site_individual_creator")
+          p.text-center= t("publishers.pub_type_site_individual_creator_description_html")
