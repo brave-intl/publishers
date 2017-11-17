@@ -19,12 +19,19 @@ body {
   color: #434447;
 }
 
-.header {
+.main {
   margin-top: 50px;
+  border-radius: 8px;
+  border: 1px solid #eff2f5;
+}
+
+.header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   padding: 72px 50px 58px 50px;
-  background: #ffffff asset-data-url("mailer/header-pattern.png") top right no-repeat;
+  background-color: #ffffff;
+  background-position: top right;
+  background-repeat: no-repeat;
 
   .brand {
     width: 268px;
@@ -103,7 +110,9 @@ body {
 
 .footer {
   padding: 32px 60px;
-  background: #ff3f3f asset-data-url("mailer/footer-top-pattern.png") top no-repeat;
+  background-color: #ff3f3f;
+  background-position: top;
+  background-repeat: no-repeat;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   .bat {
@@ -111,7 +120,8 @@ body {
     height: 52px;
     width: 200px;
     padding-top: 15px;
-    background: asset-data-url("mailer/logo-BAT.png") right no-repeat;
+    background-position: right;
+    background-repeat: no-repeat;
     a {
       display: block;
       font-size: 12px;
