@@ -88,7 +88,6 @@ en:
     log_in_for_site: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
     log_in_with_google_button: "Log in with Google"
     log_out: "Log out"
-    logged_out: "Your session has been cleared."
     new: "Contact Information"
     new_auth_token: "Log in to Brave Payments"
     new_auth_token_header: "Existing publisher login"

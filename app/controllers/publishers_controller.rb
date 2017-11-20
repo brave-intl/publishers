@@ -302,7 +302,7 @@ class PublishersController < ApplicationController
   def log_out
     path = after_sign_out_path_for(current_publisher)
     sign_out(current_publisher)
-    redirect_to(path, notice: I18n.t("publishers.logged_out"))
+    redirect_to(path)
   end
 
   def generate_statement
