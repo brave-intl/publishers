@@ -45,5 +45,9 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     assert_equal ['brave-publishers@localhost.local'], email.from
     assert_equal [publisher.email], email.to
+
+    # check that the brave publisher dashboard is rendered as a link
+    assert_match "Website Domain:publishers.basicattentiontoken.org ( https://publishers.basicattentiontoken.org )", email.text_part.body.to_s
+    assert_match "href=\"https://publishers.basicattentiontoken.org\"", email.html_part.body.to_s
   end
 end

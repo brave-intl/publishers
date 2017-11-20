@@ -150,6 +150,7 @@ class PublisherMailer < ApplicationMailer
 
   def verified_no_wallet(publisher, params)
     @publisher = publisher
+    @publisher_dashboard_url = root_url
     mail(
       to: @publisher.email,
       subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)

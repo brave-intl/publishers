@@ -1,15 +1,19 @@
-p Thanks for verifying your channel! We have a small task for you.
+p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
 
-p We need you to create a wallet with our partner, Uphold.
+== t("publisher_mailer.verified_no_wallet.body_html_1")
 
-p It only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.
+div.center= link_to(t("publisher_mailer.verified_no_wallet.button"), @publisher_dashboard_url, class: "btn-primary btn-login")
 
-p Please visit https://publishers.basicattentiontoken.org/ to create your wallet.
+== t("publisher_mailer.verified_no_wallet.body_html_2")
 
-p Got questions? Visit https://basicattentiontoken.org/ to learn more about how the micropayments work.
+p= t("publisher_mailer.shared.signature")
 
-p We look forward to having you join the thousands of domains already receiving funds from their audience.
+hr
 
-p
-  | Didn’t sign up for this or feel like this email was sent to you by mistake?
-    Feel free to cancel the verification process by Unsubscribing
+.hint
+  p
+    span= t("publisher_mailer.shared.button_not_working")
+    span= link_to(@publisher_dashboard_url, @publisher_dashboard_url, class: "fallback-link", onMouseOver: "this.style.color='#48494b'", onMouseOut: "this.style.color='#818589'")
+
+  span= "#{t("publisher_mailer.shared.erroneous_email_help")}"
+  span= mail_to(Rails.application.secrets[:support_email], nil, {onMouseOver: "this.style.color='#48494b'", onMouseOut: "this.style.color='#818589'"})
