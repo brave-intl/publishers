@@ -145,7 +145,7 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
   test "send email for valid notification type" do
     verified_publisher = publishers(:verified)
 
-    assert_enqueued_emails 1 do
+    assert_enqueued_emails 2 do
       post "/api/publishers/#{verified_publisher.brave_publisher_id}/notifications?type=verified_no_wallet"
     end
 
