@@ -6,16 +6,6 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.login_email(Publisher.first)
   end
 
-  # TODO: Remove me. Deprecated.
-  def verification_deprecated
-    PublisherMailer.verification(Publisher.first)
-  end
-
-  # TODO: Remove me. Deprecated.
-  def verification_internal_deprecated
-    PublisherMailer.verification_internal(Publisher.first)
-  end
-
   def verify_email
     PublisherMailer.verify_email(Publisher.first)
   end
