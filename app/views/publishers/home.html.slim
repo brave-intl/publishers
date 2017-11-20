@@ -367,7 +367,8 @@ noscript
       - elsif current_publisher.publication_type == :youtube_channel
         .publisher-youtube-channel
           .channel-thumbnail= image_tag(current_publisher.youtube_channel.thumbnail_url)
-          .channel-name= current_publisher.youtube_channel.title
+          .channel-name title=current_publisher.youtube_channel.title
+            = current_publisher.youtube_channel.title.truncate(30)
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
     .balance
