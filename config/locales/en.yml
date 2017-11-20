@@ -339,7 +339,7 @@ en:
       body_html_1: |
         <p>Thanks for verifying your channel! We have a small task for you.</p>
         <p>We need you to create a wallet with our partner, Uphold.</p>
-        <p>It only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
+        <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
         <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
       button: "Create My Wallet"
       body_html_2: |
