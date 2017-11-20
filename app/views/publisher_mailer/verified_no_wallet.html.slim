@@ -1,6 +1,6 @@
 p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
 
-== t("publisher_mailer.verified_no_wallet.body_html_1")
+== t("publisher_mailer.verified_no_wallet.body_html_1", formatted_url: @formatted_publisher_dashboard_url, url: @publisher_dashboard_url)
 
 div.center= link_to(t("publisher_mailer.verified_no_wallet.button"), @publisher_dashboard_url, class: "btn-primary btn-login")
 
