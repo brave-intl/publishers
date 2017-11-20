@@ -48,11 +48,6 @@ en:
     balance_error: "Unavailable"
     balance_pending: "CURRENT CONTRIBUTION BALANCE"
     balance_pending_approximate: "Approximately %{amount} %{code}"
-    claim_funds: "Claim funds"
-    complete_irs_w_9: "Complete IRS W-9"
-    complete_irs_w_9_hint: "United States taxpayers"
-    complete_irs_w_8ben: "Complete IRS W-8BEN"
-    complete_irs_w_8ben_hint: "Individuals outside the States"
     contact_person: "Contact person"
     contact: "Contact"
     create_done_header: "An email is on its way!"
@@ -63,13 +58,9 @@ en:
       <hr>
       <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again}.</p>
     try_again: "try again"
-    create_done_resend_email: "Resend email"
     resend_confirmation_email_done: "The confirmation email has been resent."
-    create_done_body_confirm_email: "An email has been sent to %{email}. Please confirm your email address by clicking on the access link provided in the email. The link will return you to this site to proceed with step 2."
     create_auth_token: "Login email sent!"
     create_auth_token_body: "Please check your email for the login link."
-    domain: "Domain"
-    dashboard: "Dashboard"
     dashboard-id-html: |
       Dashboard: <span class="publisher-id">%{publisher_id}</span>
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
@@ -79,27 +70,19 @@ en:
     current_deposit_currency: "Current deposit currency: BAT to "
     edit_contact: "Edit Contact"
     uphold_check_balance: "Check Balance"
-    last_deposit_html: |
-      Last deposit was made <span class="last-deposit">on %{last_deposit_date}</span>
-    update_uphold_info: "Be sure to update your tax info in Uphold."
     email_confirmed: "Your updated email address %{email} has been confirmed."
-    irs_form_required: "To receive your funds please complete a United States IRS form W-9 or W-8BEN."
     log_in_for_youtube: "For YouTube creators, please log in with your Google account."
     log_in_for_site: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
     log_in_with_google_button: "Log in with Google"
     log_out: "Log out"
     new: "Contact Information"
     new_auth_token: "Log in to Brave Payments"
-    new_auth_token_header: "Existing publisher login"
     new_auth_token_button: "Email me a link to log in"
     new_auth_token_email_html: |
       Email Address <span class="optional">(for unverified domains)</span>
     new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
-    new_header: "Publisher contact information"
-    new_site_account: "I am a site operator"
-    new_youtube_account: "I am a YouTube creator"
     not_verified: "Unverified"
     progress:
       contact_info: "Contact Info"
@@ -110,12 +93,8 @@ en:
     statement_delayed: "Delayed"
     verified_phone_html: |
       Phone Number <span class="optional">(optional)</span>
-    status_complete: "Verified"
     status_uphold_processing: "Your Uphold wallet is being connected to your account"
-    status_uphold_unconnected: "Wallet not found, please Connect with Uphold to create one"
-    status_uphold_unconnected_reauthenticate: "Connecting to Uphold wallet has been denied. Please reconnect with Uphold to create one"
     status_unverified: "Your account has not been verified"
-    uphold_status: "Status"
     uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
     uphold_status_access_parameters_acquired: "Connecting your Uphold account."
     uphold_status_code_acquired: "A problem was experienced connecting your Uphold account."
@@ -130,7 +109,6 @@ en:
     verification_dns_record_instruction1: "Copy and Paste the info below into the zone file for "
     verification_dns_record_instruction2: " using your DNS host's control panel."
     verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
-    verification_form_legend: "Verify website ownership"
     verification_choose_header: "Choose a Verification Method"
     verification_choose_trusted_file_header: "Download a trusted file"
     verification_choose_trusted_file_subheader: "(Recommended & easiest)"
@@ -149,50 +127,21 @@ en:
       <p>You will receive an email when our next available support member can assist you. Please keep in mind
       that this may take a few days due to our current backlog.</p>
     verification_support_review_options: "I'd like to review my options"
-    progress_contact_info: "Contact Info"
-    progress_verify: "Verify Your Site"
-    progress_create_wallet: "Create Your Wallet"
-    verification_header: "Hello! "
-    verification_header_2: "You have been selected for live onboarding."
-    verification_help: "You have been added to our publisher activation queue. A Brave Publisher Partner will contact you to complete the process."
-    verification_estimated_time: "The estimated wait time is: "
     verification_wait_time: "3 days."
     verification_already_done: "Your site is verified."
-    verification_option_alt_dns_record: "add a DNS record"
-    verification_option_alt_help: "Alternatively, you can"
-    verification_option_alt_public_file: "add a text file"
-    verification_option_dns_record: "Can't wait? "
-    verification_option_dns_record_2: "You can skip the line and edit your DNS record below:"
-    verification_option_dns_record_help: "Note: You will need admin level access to your DNS hosting account."
     verification_option_dns_record_name: "Name (or Host / Hostname):"
-    verification_option_dns_record_name_help: "(Root record)"
     verification_option_dns_record_type: "Type:"
-    verification_option_dns_record_use: "I'll edit my DNS record"
     verification_option_dns_record_value: "Value (or TXT Value / Data):"
     verification_option_dns_record_add_new: "Add a new TXT record for "
     verification_option_dns_record_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your DNS is hosted."
-    verification_pending_header: "Now verifying your new DNS record…"
-    verification_pending_help1: "Verification can take several minutes or several hours, depending on your DNS host location. The Brave server will keep trying for 24 hours until there is a response."
-    verification_pending_help2: "You will receive an email confirmation upon verification."
     verification_background_header: "Now verifying your domain..."
     verification_background_help_html: |
       <p>You can leave this screen now. We will send you an <strong>email with instructions within 24 hours.</strong></p>
-    verification_background_help_continue: "Follow the directions in the email to continue."
     verification_https_check: "Your domain is using HTTPS."
     verification_https_check_alt: "Good, your domain is using HTTPS."
     verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
     verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
-    verification_option_public_file: "Verify Your Site: Upload a trusted file"
-    verification_option_public_file_help: "You will need to create a directory on your site and add a text file to this directory."
-    verification_option_public_file_help_download: "Download the verification file below:"
-    verification_option_public_file_help_directory: "Find or create the directory: %{directory}"
-    verification_option_public_file_help_upload_html: |
-      Upload the verification file to the '<strong>.well-known</strong>' folder on your domain. If one doesn't exist,
-      be sure to create it. Make sure the file is in the .well-known folder and click verify.
-    verification_public_file_help: "To verify your site ownership, you will need to create a new directory on your site and add a text file to this directory."
     verification_download_verification: "Download"
-    verification_option_public_file_file_contents: "File contents:"
-    verification_option_public_file_verify_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your site is hosted."
     verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
     verification_option_wordpress_install_plugin_html: |
       <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
@@ -202,13 +151,10 @@ en:
     verification_option_wordpress_verification_token: "Copy the verification code below into the plugin."
     verification_option_wordpress_token: "Verification code:"
     verification_option_wordpress_help_verify: "Once the code is pasted in, click verify."
-    verification_option_wordpress_verify_button: "Check for the verification code"
-    verification_option_github_use: "Verify Your Site: Upload a trusted file"
     verification_option_github_nojekyll_html: |
       It looks like you are using <strong>GitHub</strong>. As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
     verification_download_html: |
       %{download_link} the verification file.
-    verification_option_github_help_directory: "Find or create the directory: %{directory}"
     verification_upload_html: |
       Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you
       don't have one).
@@ -216,7 +162,6 @@ en:
     verification_verify_note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
     verification_file_contents: "File contents:"
     verification_option_place_trusted_file: "Place a Trusted File into your Domain"
-    verification_option_github_verify_button: "Check for the verification code."
     verification_required: "To continue please verify ownership of your domain."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
@@ -229,8 +174,6 @@ en:
     https_inspection_complete: "Check for HTTPS complete"
     requires_https: "This action requires HTTPS support"
     verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
-    verify_failed_public_file: "Couldn't verify the file. Please confirm successful upload by visiting the link, and also check that it's served over HTTPS. Alternatively you can add a DNS record."
-    verify_success: "Verification successful."
     verify_modal_title: "Congrats!"
     verify_modal_subtitle: "You are now a Brave Verified Publisher!"
     verify_modal_content_html: "Thanks for helping to provide a better Web experience for the millions who've downloaded the Brave browser. We'd like to include you in the <strong>Verified Publishers list</strong> on our web site, which we may share in external communications and social media as well."
@@ -242,7 +185,6 @@ en:
     pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
     pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
     pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
-    pub_type_site_youtube_creator: "YOUTUBE CREATOR"
     youtube_channel_taken_dialog:
       title: "Channel already registered!"
       leadin: "The following YouTube channel has already been registered."
@@ -281,13 +223,6 @@ en:
       subject: "[%{publication_title}] Brave Publisher login link"
       title: "Brave Publisher login link"
       button: "Log in to Brave Payments"
-    verification:
-      click_verify: "Click Verify from the Brave Publisher management website."
-      download_attached_file: "Download the attached verification file"
-      subject: "[%{publication_title}] Verify your Brave Publisher website"
-      title: "Verify website ownership"
-      access_link_help_header: "Publisher management website"
-      access_link_help_body: "You can find your publisher access link in the previous email we sent to you."
     welcome:
       erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
       intro: "We've received a request to register a website with Brave Payments:"
@@ -302,8 +237,6 @@ en:
       button: "Verify Email"
     verification_done:
       intro: "Congratulations! You are now a verified Brave publisher Brave users will see a verified symbol next to your website domain."
-      payment_help_header: "Ready to claim your funds now?"
-      payment_help: "To receive funds contributed by Brave users please visit the publisher management site and submit payment information."
       subject: "[%{publication_title}] Publisher website verified"
       title: "Verification complete"
       claim_funds_header: "Ready to claim your funds?"
@@ -324,8 +257,6 @@ en:
       subject: "[%{publication_title}] Notification of Brave Publisher email change"
       title: "Notification of email change"
       intro: "We're notifying you of an update made to your email address with Brave Payments:"
-      previous_email: "Previous email"
-      updated_email: "New email"
       change_ok: "If you made this change, check your new email account for a link to confirm it."
       contact_support: "If you did not make this change yourself, please contact support ASAP"
     statement_ready:
@@ -348,13 +279,11 @@ en:
   shared:
     api_error: "Your request couldn't be processed due to an API error."
     cancel: "Cancel"
-    edit: "Edit"
     error: "Error"
     error_body: "Oops, sorry about that. You can try to refresh the page or return to"
     error_contact: "For assistance please contact us at: %{support_email}"
     generate: "Generate"
     continue: "Continue"
-    save_and_continue: "Save and continue"
     update: "Update"
     email_address: "Email address"
     terms_of_service: "Terms of Service"
@@ -368,7 +297,6 @@ en:
         of fans may have already filled your wallet!</p>
     landing_new_header: "New to Brave Payments?"
     landing_new_body: "Start verification by entering your email."
-    landing_login_header: "Already verified?"
     landing_login_body_html: "<strong>Already verified?</strong> Log in to your publisher dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
