@@ -41,6 +41,6 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def verified_no_wallet
-    PublisherMailer.verified_no_wallet(Publisher.first)
+    PublisherMailer.verified_no_wallet(Publisher.first, nil)
   end
 end
