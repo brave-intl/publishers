@@ -123,4 +123,32 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal(200, response.status)
     assert JSON.parse(response.body)[0]['show_verification_status']
   end
+
+  test "returns error for omitted notification type" do
+    verified_publisher = publishers(:verified)
+
+    post "/api/publishers/#{verified_publisher.brave_publisher_id}/notifications"
+
+    assert_equal 400, response.status
+    assert_match "parameter 'type' is required", response.body
+  end
+
+  test "returns error for invalid notification type" do
+    verified_publisher = publishers(:verified)
+
+    post "/api/publishers/#{verified_publisher.brave_publisher_id}/notifications?type=invalid_type"
+
+    assert_equal 400, response.status
+    assert_match "invalid", response.body
+  end
+
+  test "send email for valid notification type" do
+    verified_publisher = publishers(:verified)
+
+    assert_enqueued_emails 2 do
+      post "/api/publishers/#{verified_publisher.brave_publisher_id}/notifications?type=verified_no_wallet"
+    end
+
+    assert_equal 200, response.status
+  end
 end

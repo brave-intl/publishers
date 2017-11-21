@@ -7,35 +7,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
-    )
-  end
-
-  # TODO: Remove me. Deprecated.
-  # Contains instructions on how to verify domain.
-  # Should be safe to forward to webmaster / IT peeps.
-  def verification(publisher)
-    @publisher = publisher
-    generator = PublisherVerificationFileGenerator.new(publisher: @publisher)
-    attachments[generator.filename] = generator.generate_file_content
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
-    )
-  end
-
-  # TODO: Remove me. Deprecated.
-  # TODO: Refactor
-  def verification_internal(publisher)
-    raise if !self.class.should_send_internal_emails?
-    @publisher = publisher
-    generator = PublisherVerificationFileGenerator.new(publisher: @publisher)
-    attachments[generator.filename] = generator.generate_file_content
-    mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, brave_publisher_id: @publisher.brave_publisher_id, scope: %w(publisher_mailer verification))}",
-      template_name: "verification"
+      subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
 
@@ -46,7 +18,7 @@ class PublisherMailer < ApplicationMailer
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+      subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
 
@@ -61,7 +33,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, brave_publisher_id: @publisher.brave_publisher_id, scope: %w(publisher_mailer verification_done))}",
+      subject: "<Internal> #{I18n.t(:subject, publication_title: @publisher.publication_title, scope: %w(publisher_mailer verification_done))}",
       template_name: "verification_done"
     )
   end
@@ -72,7 +44,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+      subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
 
@@ -85,7 +57,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, brave_publisher_id: @publisher.brave_publisher_id, scope: %w(publisher_mailer welcome))}",
+      subject: "<Internal> #{I18n.t(:subject, publication_title: @publisher.publication_title, scope: %w(publisher_mailer welcome))}",
       template_name: "welcome"
     )
   end
@@ -96,7 +68,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
         to: @publisher.pending_email,
-        subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+        subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
 
@@ -119,7 +91,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher, @publisher.pending_email)
     mail(
       to: @publisher.pending_email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+      subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
 
@@ -127,7 +99,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+      subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
 
@@ -135,7 +107,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+      subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
 
@@ -144,7 +116,27 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher_statement.publisher
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(brave_publisher_id: @publisher.brave_publisher_id)
+      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+    )
+  end
+
+  def verified_no_wallet(publisher, params)
+    @publisher = publisher
+    @publisher_dashboard_url = root_url
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject
+    )
+  end
+
+  def verified_no_wallet_internal(publisher, params)
+    @publisher = publisher
+    @publisher_dashboard_url = root_url
+    mail(
+      to: INTERNAL_EMAIL,
+      reply_to: @publisher.email,
+      subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer verified_no_wallet))}",
+      template_name: "verified_no_wallet"
     )
   end
 end

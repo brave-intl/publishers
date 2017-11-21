@@ -6,6 +6,20 @@ class PublisherTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   include MailerTestHelper
 
+  test "publication_title is the site domain for site publishers" do
+    publisher = publishers(:verified)
+    assert_equal 'verified.org', publisher.brave_publisher_id
+    assert_equal 'verified.org', publisher.publication_title
+    assert_equal 'verified.org', publisher.to_s
+  end
+
+  test "publication_title is the youtube channel title for youtube creators" do
+    publisher = publishers(:youtube_new)
+    assert_equal 'The DIY Channel', publisher.youtube_channel.title
+    assert_equal 'The DIY Channel', publisher.publication_title
+    assert_equal 'The DIY Channel', publisher.to_s
+  end
+
   test "uphold_code is only valid without uphold_access_parameters and before uphold_verified" do
     publisher = publishers(:verified)
     publisher.uphold_code = "foo"
@@ -198,5 +212,23 @@ class PublisherTest < ActiveSupport::TestCase
 
     publisher.pending_email = "bad_email_addresscom"
     refute publisher.valid?
+  end
+
+  test "a publisher can be destroyed if it is not verified" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "foo@foo.com"
+    assert publisher.valid?
+    publisher.save
+    assert_difference("Publisher.count", -1) do
+      assert publisher.destroy
+    end
+  end
+
+  test "a publisher can not be destroyed if it is verified" do
+    publisher = publishers(:verified)
+    assert_difference("Publisher.count", 0) do
+      refute publisher.destroy
+    end
   end
 end

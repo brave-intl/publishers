@@ -3,6 +3,10 @@ class Api::PublishersController < Api::BaseController
                 only: %i(notify)
 
   def notify
+    if params[:type].blank?
+      return render(status: 400, json: { message: "parameter 'type' is required" })
+    end
+
     PublisherNotifier.new(
       notification_params: params[:params],
       notification_type: params[:type],

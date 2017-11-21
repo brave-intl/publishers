@@ -44,7 +44,7 @@ These steps based on [directions at the omniauth-google-oauth2 gem](https://gith
 1. Start Postgres and redis.
 
 2. Run Rails server and async worker
-`foreman start`
+`foreman start -f Procfile.dev`
 
 3. Visit http://localhost:3000
 

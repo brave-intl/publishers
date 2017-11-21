@@ -163,6 +163,83 @@ module Publishers
       end
     end
 
+    test "an email verified publisher logging into the same oauth account and having the same email as an existing publisher is logged in as that publisher" do
+      begin
+        OmniAuth.config.test_mode = true
+
+        token = "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
+
+        OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
+            {
+                "provider" => "google_oauth2",
+                "uid" => "abc123",
+                "info" => {
+                    "name" => "Some Other Guy's Channel",
+                    "email" => "brand@nonfunctional.google.com",
+                    "first_name" => "Test Brand Account",
+                    "image" => "https://some_image_host.com/some_image.png"
+                },
+                "credentials" => {
+                    "token" => token,
+                    "expires_at" => 2510156374,
+                    "expires" => true
+                }
+            }
+        )
+
+        # signup using an email that is already used for an existing youtube publisher
+        assert_difference("Publisher.count", 1) do
+          perform_enqueued_jobs do
+            post(publishers_path, params: { email: "alice@verified.org" })
+          end
+        end
+
+        publisher = Publisher.order(created_at: :asc).last
+        url = publisher_url(publisher, token: publisher.authentication_token)
+        get(url)
+
+        some_other_channel = youtube_channels(:some_other_channel)
+
+        channel_data = {
+            "id" => some_other_channel.id,
+            "snippet" => {
+                "title" => "Some Other Guy's Channel",
+                "description" => "Some Other Guy's Channel",
+                "thumbnails" => {
+                    "default" => {
+                        "url" => "http://some_host.com/thumb.png"
+                    }
+                }
+            },
+            "statistics" => {
+                "subscriberCount" => 1200
+            }
+        }
+
+        stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{some_other_channel.id}&part=statistics,snippet").
+            with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                            'Authorization' => "Bearer #{token}",
+                            'User-Agent' => 'Faraday v0.9.2' }).
+            to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
+
+        assert_difference("Publisher.count", -1) do
+          get(publisher_google_oauth2_omniauth_authorize_url)
+          follow_redirect!
+        end
+
+        assert_raises ActiveRecord::RecordNotFound do
+          publisher.reload
+        end
+
+        # should redirect to the existing publishers home page, as the existing publisher
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+        assert_select('div.dashboard-id span') do |element|
+          assert_match("Some Other Guy's Channel", element.text)
+        end
+      end
+    end
+
     test "a new publisher who hasn't verified through email will be created and sent to the dashboard" do
       begin
         OmniAuth.config.test_mode = true

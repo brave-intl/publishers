@@ -38,13 +38,13 @@ body[data-controller="static"]
       font-weight: 100
       font-size: 32px
       margin-bottom: 0px
-    @media (max-width: 991px)
+    @media (max-width: $screen-md-max)
       h1
         font-weight: 600
         font-size: 48px
         margin-top: 5px
         margin-bottom: 30px
-    @media (min-width: 992px)
+    @media (min-width: $screen-md-min)
       h1
         font-weight: 600
         font-size: 48px
@@ -62,6 +62,10 @@ body[data-controller="static"]
     font-size: 15px
     font-weight: 200
     letter-spacing: 0.02em
+    padding-bottom: 0
+    margin-bottom: 0
+    @media (max-width: $screen-xs-max)
+      padding-bottom: 15px
     strong
       color: white
       font-weight: 500
@@ -80,13 +84,19 @@ body[data-controller="static"]
     margin-top: 25px
     background: rgba(#222326, 0.2)
     border-radius: 8px
-    padding: 60px 40px 20px 40px
+    padding: 60px 40px 35px 40px
+    @media (max-width: $screen-xs-max)
+      padding: 40px 30px 35px 30px
 
     .form-group
       margin-top: 40px
+      @media (max-width: $screen-xs-max)
+        margin-top: 20px
     hr
       margin-top: 70px
       margin-bottom: 30px
+      @media (max-width: $screen-xs-max)
+        margin-top: 35px
 
   .terms-of-service
     margin: 20px 0 150px 0
@@ -95,17 +105,7 @@ body[data-controller="static"]
       font-size: 14px
       font-weight: 300
 
-  @media (max-width: 767px)
-    .logo
-      margin-top: 50px
-      margin-bottom: 50px
-    .col-centered
-      float: none
-      margin: 0 auto
-      padding-left: 30px
-      padding-right: 30px
-
-  @media (max-width: 991px)
+  @media (max-width: $screen-sm-max)
     .col-centered
       float: none
       margin: 0 auto
@@ -115,7 +115,18 @@ body[data-controller="static"]
       margin-top: 0px
       margin-bottom: 10px
 
-  @media (min-width: 992px)
+  @media (max-width: $screen-xxs-max)
+    .logo
+      margin-top: 50px
+      margin-bottom: 50px
+    .col-centered
+      float: none
+      margin: 0 auto
+      padding-left: 20px
+      padding-right: 20px
+
+
+  @media (min-width: $screen-md-min)
     .col-left
       padding-left: 60px
       padding-right: 20px
@@ -126,7 +137,7 @@ body[data-controller="static"]
       margin-top: 10px
       margin-bottom: 35px
 
-  @media (min-width: 1200px)
+  @media (min-width: $screen-lg-min)
     .col-left
       padding-left: 80px
       padding-right: 20px
@@ -160,6 +171,9 @@ body[data-controller="static"]
     color: white
   .button-column
     padding-left: 0px
+    @media (max-width: $screen-xs-max)
+      &.col-xs-12
+        padding-left: 15px
   .btn
     &.btn-primary
       background: #72008B
@@ -194,9 +208,8 @@ body[data-controller="static"]
       text-transform: uppercase
 
       &:hover
-        border: none
+        border-color: transparent
         background: rgba(#fff, 0.30)
       &:active
         border: none
         background: rgba(#fff, 0.15)
-
