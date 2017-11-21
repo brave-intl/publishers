@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129141044) do
+ActiveRecord::Schema.define(version: 20171204165127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,19 @@ ActiveRecord::Schema.define(version: 20171129141044) do
     t.index ["verification_token"], name: "index_publishers_on_verification_token", using: :btree
     t.index ["verified"], name: "index_publishers_on_verified", using: :btree
     t.index ["youtube_channel_id"], name: "index_publishers_on_youtube_channel_id", using: :btree
+  end
+
+  create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text     "certificate"
+    t.string   "key_handle"
+    t.string   "public_key"
+    t.integer  "counter",      null: false
+    t.string   "name"
+    t.uuid     "publisher_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle", using: :btree
+    t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id", using: :btree
   end
 
   create_table "versions", force: :cascade do |t|

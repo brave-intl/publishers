@@ -46,22 +46,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "access link logs the user in, and works only once" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
+  test "re-used access link is rejected" do
+    publisher = publishers(:completed)
     url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
-    end
+ 
+    get url
+    assert_redirected_to home_publishers_url, "precond - publisher is logged in"
 
-    # assert_select("[data-test-id='current_publisher']", publisher.to_s)
-    sign_out(:publisher)
-    get(url)
-    assert_empty(css_select("[data-test-id='current_publisher']"))
+    get url
+    assert_redirected_to root_url, "re-used URL is rejected, publisher not logged in"
   end
 
   test "can't create verified Publisher with an existing verified Publisher with the brave_publisher_id" do

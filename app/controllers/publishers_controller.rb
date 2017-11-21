@@ -417,13 +417,25 @@ class PublishersController < ApplicationController
 
   def authenticate_via_token
     sign_out(current_publisher) if current_publisher
-    return if params[:id].blank? || params[:token].blank?
-    publisher = Publisher.find(params[:id])
-    if PublisherTokenAuthenticator.new(publisher: publisher, token: params[:token], confirm_email: params[:confirm_email]).perform
-      if params[:confirm_email].present? && publisher.email == params[:confirm_email]
+
+    publisher_id = params[:id]
+    token = params[:token]
+    confirm_email = params[:confirm_email]
+
+    return if publisher_id.blank? || token.blank?
+
+    publisher = Publisher.find(publisher_id)
+
+    if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
+      if confirm_email.present? && publisher.email == confirm_email
         flash[:alert] = t("publishers.email_confirmed", email: publisher.email)
       end
-      sign_in(:publisher, publisher)
+      if publisher.u2f_registrations.any?
+        session[:pending_2fa_current_publisher_id] = publisher_id
+        redirect_to new_u2f_authentication_path
+      else
+        sign_in(:publisher, publisher)
+      end
     else
       flash[:alert] = I18n.t("publishers.authentication_token_invalid")
     end

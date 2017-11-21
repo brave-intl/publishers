@@ -20,9 +20,15 @@ module ActionDispatch
     teardown do
       DatabaseCleaner.clean
     end
+
+    def visit_authentication_url(publisher)
+      get publisher_url(publisher, token: publisher.authentication_token)
+    end
   end
 end
 
 # One time test suite setup.
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean_with(:truncation)
+
+require 'mocha/mini_test'

@@ -27,6 +27,8 @@ Rails.application.routes.draw do
       patch :update
       patch :generate_statement
       patch :update_unverified
+      resources :u2f_registrations, only: %i(index create destroy)
+      resources :u2f_authentications, only: %i(new create)
     end
   end
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }

@@ -4,7 +4,9 @@ $progress-train-label: #8F9397
 $progress-train-fill: #FF4D3F
 $progress-train-active: #333
 
-body[data-controller="publishers"]
+body[data-controller="publishers"],
+body[data-controller="u2f_authentications"],
+body[data-controller="u2f_registrations"]
   color: #606467
   font-weight: 300
   letter-spacing: 0.2px
@@ -428,7 +430,8 @@ body[data-controller="publishers"]
       .verification-method
         display: block
 
-  &[data-action="home"]
+  &[data-action="home"],
+  &[data-action="index"]
     .dashboard-id
       display: inline-block
       text-transform: uppercase

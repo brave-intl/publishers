@@ -11,6 +11,15 @@ html
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
   body data-action=params[:action] data-controller=params[:controller]
+    javascript:
+      // The script tag here runs after the body element has been created
+      // on the DOM but before layout/paint. This allows us to set the class
+      // before layout/paint and avoid a flash of content before the
+      // detection has run.
+      if (window.u2f) {
+        document.body.classList.add('js-feature-available-u2f');
+      }
+
     #main
       = render("nav")
 
