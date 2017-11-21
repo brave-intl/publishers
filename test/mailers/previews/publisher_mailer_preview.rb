@@ -39,4 +39,12 @@ class PublisherMailerPreview < ActionMailer::Preview
   def uphold_account_changed
     PublisherMailer.uphold_account_changed(Publisher.first)
   end
+
+  def verified_no_wallet
+    PublisherMailer.verified_no_wallet(Publisher.first, nil)
+  end
+
+  def verified_no_wallet_internal
+    PublisherMailer.verified_no_wallet(Publisher.first, nil)
+  end
 end

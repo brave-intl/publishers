@@ -147,4 +147,24 @@ class PublisherMailer < ApplicationMailer
       subject: default_i18n_subject(publication_title: @publisher.publication_title)
     )
   end
+
+  def verified_no_wallet(publisher, params)
+    @publisher = publisher
+    @publisher_dashboard_url = root_url
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject
+    )
+  end
+
+  def verified_no_wallet_internal(publisher, params)
+    @publisher = publisher
+    @publisher_dashboard_url = root_url
+    mail(
+      to: INTERNAL_EMAIL,
+      reply_to: @publisher.email,
+      subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer verified_no_wallet))}",
+      template_name: "verified_no_wallet"
+    )
+  end
 end

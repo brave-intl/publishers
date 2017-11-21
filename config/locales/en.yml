@@ -333,6 +333,17 @@ en:
       title: "Publisher statement is ready to view"
       body: "The following statement has recently been generated:"
       expiration_note: "This statement must be downloaded within the next 24 hours."
+    verified_no_wallet:
+      subject: "Please create your new wallet to continue receiving funds"
+      body_html_1: |
+        <p>Thanks for verifying your channel! We have a small task for you.</p>
+        <p>We need you to create a wallet with our partner, Uphold.</p>
+        <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
+        <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
+      button: "Create My Wallet"
+      body_html_2: |
+        <p>Got questions? Visit <a href="https://basicattentiontoken.org/">basicattentiontoken.org</a> to learn more about how the micropayments work.
+        <p>We look forward to having you join the thousands of domains already receiving funds from their audience.</p>
   publisher_statement_periods:
     past_7_days: "Past 7 days"
     past_30_days: "Past 30 days"
