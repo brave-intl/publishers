@@ -18,7 +18,7 @@ module Publishers
           existing_publisher.email == current_publisher.email &&
           existing_publisher.id != current_publisher.id
         require "sentry-raven"
-        Raven.capture_message("Logging user in instead as existing user with same email and oauth credentials.")
+        Raven.capture_message("Logging user (#{oauth_response.dig('info', 'name')}) in instead as existing user with same email (#{current_publisher.email}) and oauth credentials (#{oauth_response.provider}, #{oauth_response.uid}).")
         current_publisher.destroy
         sign_out(current_publisher)
       end
