@@ -213,4 +213,22 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.pending_email = "bad_email_addresscom"
     refute publisher.valid?
   end
+
+  test "a publisher can be destroyed if it is not verified" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "foo@foo.com"
+    assert publisher.valid?
+    publisher.save
+    assert_difference("Publisher.count", -1) do
+      assert publisher.destroy
+    end
+  end
+
+  test "a publisher can not be destroyed if it is verified" do
+    publisher = publishers(:verified)
+    assert_difference("Publisher.count", 0) do
+      refute publisher.destroy
+    end
+  end
 end
