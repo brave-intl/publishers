@@ -11,34 +11,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  # TODO: Remove me. Deprecated.
-  # Contains instructions on how to verify domain.
-  # Should be safe to forward to webmaster / IT peeps.
-  def verification(publisher)
-    @publisher = publisher
-    generator = PublisherVerificationFileGenerator.new(publisher: @publisher)
-    attachments[generator.filename] = generator.generate_file_content
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
-    )
-  end
-
-  # TODO: Remove me. Deprecated.
-  # TODO: Refactor
-  def verification_internal(publisher)
-    raise if !self.class.should_send_internal_emails?
-    @publisher = publisher
-    generator = PublisherVerificationFileGenerator.new(publisher: @publisher)
-    attachments[generator.filename] = generator.generate_file_content
-    mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, publication_title: @publisher.publication_title, scope: %w(publisher_mailer verification))}",
-      template_name: "verification"
-    )
-  end
-
   def verification_done(publisher)
     @publisher = publisher
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
