@@ -1,10 +1,27 @@
 module Publishers
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def google_oauth2
-      publisher = current_publisher
       oauth_response = request.env['omniauth.auth']
 
       refresh_eyeshade = false
+
+      existing_publisher = Publisher.where(auth_provider: oauth_response.provider, auth_user_id: oauth_response.uid).
+          where.not(youtube_channel_id: nil).first
+
+      # The presence of a current_publisher may indicate we're attempting to attach a channel to an email verified
+      # publisher OR it's an attempt to log in using oauth.
+      #
+      # If there's an existing publisher with the same oath credentials AND the same email this is an attempt to
+      # register the same channel to effectively the same email. Instead of showing the already registered message
+      # the current_publisher can be deleted and then log them in as the existing_publisher
+      if existing_publisher && current_publisher && current_publisher.youtube_channel_id.nil? &&
+          existing_publisher.email == current_publisher.email &&
+          existing_publisher.id != current_publisher.id
+        current_publisher.destroy
+        sign_out(current_publisher)
+      end
+
+      publisher = current_publisher
 
       if publisher
         if publisher.auth_provider
@@ -23,8 +40,8 @@ module Publishers
 
         publisher.verified = true
       else
-        publisher = Publisher.where(auth_provider: oauth_response.provider, auth_user_id: oauth_response.uid).
-            where.not(youtube_channel_id: nil).first
+        publisher = existing_publisher
+
         unless publisher
           # Create new publisher for good UX.
           # We can do this because Google provides verified contact info.
