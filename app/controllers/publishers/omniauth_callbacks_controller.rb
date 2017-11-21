@@ -17,6 +17,8 @@ module Publishers
       if existing_publisher && current_publisher && current_publisher.youtube_channel_id.nil? &&
           existing_publisher.email == current_publisher.email &&
           existing_publisher.id != current_publisher.id
+        require "sentry-raven"
+        Raven.capture_message("Logging user in instead as existing user with same email and oauth credentials.")
         current_publisher.destroy
         sign_out(current_publisher)
       end
