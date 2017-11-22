@@ -63,6 +63,6 @@ class PublisherLoginLinkEmailer < BaseService
 
   def send_email
     return false if !publisher
-    PublisherMailer.login_email(publisher).deliver_later!
+    PublisherMailer.login_email(publisher).deliver_later
   end
 end
