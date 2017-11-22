@@ -13,7 +13,7 @@ class SlackMessenger < BaseApiClient
 
   def perform
     if !can_perform?
-      Rails.logger.debug("SlackMessenger: Local notification: #{message}")
+      Rails.logger.info("SlackMessenger: Local notification: #{message}")
       return
     end
     params = {
