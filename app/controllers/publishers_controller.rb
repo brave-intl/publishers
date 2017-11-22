@@ -67,7 +67,7 @@ class PublishersController < ApplicationController
 
     if throttle_legit
       if @publisher.save
-        PublisherMailer.verify_email(@publisher).deliver_later!
+        PublisherMailer.verify_email(@publisher).deliver_later
         PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
         session[:created_publisher_id] = @publisher.id
         redirect_to create_done_publishers_path
@@ -89,7 +89,7 @@ class PublishersController < ApplicationController
   def resend_email_verify_email
     @publisher = Publisher.find(session[:created_publisher_id])
 
-    PublisherMailer.verify_email(@publisher).deliver_later!
+    PublisherMailer.verify_email(@publisher).deliver_later
     PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
     session[:created_publisher_id] = @publisher.id
     session[:created_publisher_email] = @publisher.pending_email
@@ -115,8 +115,8 @@ class PublishersController < ApplicationController
     success = publisher.update(update_params)
 
     if success && update_params[:pending_email]
-      PublisherMailer.notify_email_change(publisher).deliver_later!
-      PublisherMailer.confirm_email_change(publisher).deliver_later!
+      PublisherMailer.notify_email_change(publisher).deliver_later
+      PublisherMailer.confirm_email_change(publisher).deliver_later
     end
 
     respond_to do |format|
