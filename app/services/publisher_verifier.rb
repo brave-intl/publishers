@@ -111,7 +111,7 @@ class PublisherVerifier < BaseApiClient
       answer_part.strings.each do |string|
         token_match = /^brave\-ledger\-verification\=([a-zA-Z0-9]+)$/.match(string)
         next if !token_match || !token_match[1]
-        Rails.logger.debug("Found token on #{brave_publisher_id}: #{token_match[1]}")
+        Rails.logger.info("Found token on #{brave_publisher_id}: #{token_match[1]}")
         dns_publisher = Publisher.find_by(brave_publisher_id: brave_publisher_id, verification_token: token_match[1])
         if dns_publisher
           return dns_publisher.id

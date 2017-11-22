@@ -15,6 +15,7 @@ export API_LEDGER_OFFLINE=1
 #export BASIC_AUTH_USER="" # Enable HTTP basic auth for the whole app.
 #export BASIC_AUTH_PASSWORD="" # see above
 export INTERNAL_EMAIL="admin@publishers.local" # Admin notifications get sent here.
+#export LOG_API_REQUESTS=1 # Enable to log publishers' external API access.
 #export MAILER_SENDER="" # The From: header in emails sent to users.
 export RECAPTCHA_PUBLIC_KEY="" # For recaptcha for rate limiting.
 export RECAPTCHA_PRIVATE_KEY=""
@@ -35,4 +36,3 @@ export TERMS_OF_SERVICE_URL="https://basicattentiontoken.org/publisher-terms-of-
 # - make sure the authorized redirect url goes to the endpoint /publishers/auth/google_oauth2/callback
 export GOOGLE_CLIENT_ID=""
 export GOOGLE_CLIENT_SECRET=""
-
