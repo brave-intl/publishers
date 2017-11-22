@@ -75,6 +75,7 @@ en:
     log_in_for_site: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
     log_in_with_google_button: "Log in with Google"
     log_out: "Log out"
+    log_in_for_expired_token: "Enter your email address, and we'll send you a new access link to get started."
     new: "Contact Information"
     new_auth_token: "Log in to Brave Payments"
     new_auth_token_button: "Email me a link to log in"
@@ -83,6 +84,7 @@ en:
     new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
+    expired_auth_token: "Oops! Your access link has expired.  Please start over."
     not_verified: "Unverified"
     progress:
       contact_info: "Contact Info"
