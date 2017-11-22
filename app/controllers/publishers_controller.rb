@@ -369,15 +369,6 @@ class PublishersController < ApplicationController
   end
 
   private
-  def authenticate_publisher!
-    if publisher_signed_in?
-      super
-    else
-      redirect_to expired_auth_token_publishers_path
-    end
-  end
-
-  private
 
   def authenticate_via_token
     sign_out(current_publisher) if current_publisher
