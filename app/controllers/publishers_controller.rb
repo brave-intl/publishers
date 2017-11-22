@@ -164,7 +164,7 @@ class PublishersController < ApplicationController
     if emailer.perform
       # Success shown in view #create_auth_token
     else
-      flash.now[:alert] = emailer.error
+      flash.now[:alert] = %Q[#{emailer.error[0]}<a href="/">#{emailer.error[1]}</a>].html_safe
       render(:new_auth_token)
     end
   end

@@ -47,7 +47,7 @@ class PublisherLoginLinkEmailer < BaseService
       verified: false
     )
     if publishers_not_verified.none?
-      @error = I18n.t("publishers.new_auth_token_publisher_not_found")
+      @error = %W{#{I18n.t("publishers.new_auth_token_publisher_not_found_part_one")} #{I18n.t("publishers.new_auth_token_publisher_not_found_part_two")}}
       return false
     end
 
