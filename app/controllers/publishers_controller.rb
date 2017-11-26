@@ -164,7 +164,8 @@ class PublishersController < ApplicationController
     if emailer.perform
       # Success shown in view #create_auth_token
     else
-      flash.now[:alert] = %Q[#{emailer.error[0]}<a href="/">#{emailer.error[1]}</a>].html_safe
+      # Failed to find publisher
+      flash.now[:login_link] = "" # Uses login_link partial instead of explicit message
       render(:new_auth_token)
     end
   end
