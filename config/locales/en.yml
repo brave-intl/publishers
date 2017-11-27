@@ -80,7 +80,8 @@ en:
     new_auth_token_button: "Email me a link to log in"
     new_auth_token_email_html: |
       Email Address <span class="optional">(for unverified domains)</span>
-    new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
+    new_auth_token_publisher_not_found_part_one: "Couldn't find a publisher with that domain name. Please try again or "
+    new_auth_token_publisher_not_found_part_two: "start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     not_verified: "Unverified"
