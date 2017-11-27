@@ -77,7 +77,7 @@ class PublishersController < ApplicationController
       end
     else
       Rails.logger.error(I18n.t("recaptcha.errors.verification_failed"))
-      redirect_to(root_path, notice: I18n.t("publishers.verification_failed") )
+      redirect_to(root_path, notice: I18n.t("recaptcha.errors.verification_failed"))
     end
   end
 
