@@ -39,7 +39,7 @@ gem "phony_rails", "~> 0.14"
 gem "premailer-rails", "~> 1.9.4", require: false
 
 # Puma as app server
-gem "puma", "~> 3.0"
+gem "puma", "~> 3.11"
 
 gem "rails", "~> 5.0.0", ">= 5.0.0.1"
 

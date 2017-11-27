@@ -16,6 +16,44 @@ App for [publishers.brave.com](https://publishers.brave.com).
   - `rails db:create RAILS_ENV=development`
   - `rails db:migrate RAILS_ENV=development`
 
+### HTTPS Setup
+
+Local development of brave-intl uses HTTPS. This allow us to use web APIs such
+as U2F in development.
+
+We use the domain `localhost.ssl`. This avoids Chrome idiosyncrasies on
+`localhost` and HSTS issues for non-SSL projects you might run on `localhost`.
+
+If you already have a key and certificate for this domain places them in the
+`ssl/` directory:
+
+```
+ssl/server.key
+ssl/server.crt
+```
+
+If you don't, first add an entry to `/etc/hosts` for this domain:
+
+```
+echo "echo '127.0.0.1 localhost.ssl' >> /etc/hosts" | sudo -s
+```
+
+Then generate a key and certificate (tested on OSX):
+
+```
+bundle exec rake ssl:generate
+```
+
+Install that certificate into the OSX keychain:
+
+```
+bundle exec rake ssl:install
+```
+
+When you first visit the application in a browser you may need to add an
+exception to trust this self-signed certificate. Sometimes this is under an
+"advanced" or "proceed" link.
+
 ### Google API Setup
 
 Setup a google API project:
@@ -46,11 +84,10 @@ These steps based on [directions at the omniauth-google-oauth2 gem](https://gith
 2. Run Rails server and async worker
 `foreman start -f Procfile.dev`
 
-3. Visit http://localhost:3000
+3. Visit https://localhost:3001
 
 4. To test email, run a local mail server at localhost:25
 `mailcatcher`
-
 
 ## Development
 
@@ -64,10 +101,10 @@ It might be useful to maintain a local bash script with a list of env vars. For 
 
 Some variables are set automagically with Heroku addons:
 
-- FIXIE_URL - Proxy provider. For outbound API requests.
-- MAILGUN_* - For sending emails.
-- NEW_RELIC_APP_NAME, NEW_RELIC_LICENSE_KEY - New Relic app monitoring.
-- REDIS_URL - For Sidekiq and rack-attack
+- `FIXIE_URL` - Proxy provider. For outbound API requests.
+- `MAILGUN_*` - For sending emails.
+- `NEW_RELIC_APP_NAME`, `NEW_RELIC_LICENSE_KEY` - New Relic app monitoring.
+- `REDIS_URL` - For Sidekiq and rack-attack
 
 #### Other vars
 
