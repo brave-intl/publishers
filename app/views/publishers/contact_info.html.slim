@@ -20,7 +20,7 @@
             = f.text_field(:name, class: "form-control", placeholder: "Alice Bloglette", required: true)
           .form-group
             = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
-            = f.phone_field(:phone, class: "form-control", placeholder: "+1 888 555 9001", required: false)
+            = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.phone_number_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
           - if @should_throttle
             .form-group
               = recaptcha_tags
