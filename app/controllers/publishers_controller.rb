@@ -13,12 +13,14 @@ class PublishersController < ApplicationController
                create_done
                new
                new_auth_token
+               expired_auth_token
                resend_email_verify_email)
   before_action :require_unauthenticated_publisher,
     only: %i(create
              create_auth_token
              new
-             new_auth_token)
+             new_auth_token
+             expired_auth_token)
   before_action :require_unverified_publisher,
     only: %i(email_verified
              contact_info
@@ -142,6 +144,10 @@ class PublishersController < ApplicationController
 
   # "Magic sign in link" / One time sign-in token via email
   def new_auth_token
+    @publisher = Publisher.new
+  end
+
+  def expired_auth_token
     @publisher = Publisher.new
   end
 
@@ -374,8 +380,6 @@ class PublishersController < ApplicationController
         flash[:alert] = t("publishers.email_confirmed", email: publisher.email)
       end
       sign_in(:publisher, publisher)
-    else
-      flash[:alert] = I18n.t("publishers.authentication_token_invalid")
     end
   end
 

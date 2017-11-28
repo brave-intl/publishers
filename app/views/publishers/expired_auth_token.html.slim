@@ -1,0 +1,27 @@
+- content_for(:navbar_content) do
+
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    | &nbsp;
+
+.login-panel.expired-token-panel.col-center
+  .sub-panel.process-panel
+    .row
+      .col.col-md-12.expired-message
+        p.text-center= t("publishers.expired_auth_token")
+    .row
+      .col.col-md-12
+        h3.text-center= t("publishers.new_auth_token")
+    .row
+      .col.col-md-8.col-md-offset-2.text-center
+        = form_tag publishers_path, method: :post do |f|
+          fieldset
+            p= t("publishers.log_in_for_expired_token")
+            .form-group
+              label.control-label for="email"
+              = email_field_tag(:email, nil, class: "form-control", placeholder: t("shared.email_address"), required: true)
+            - if @should_throttle
+              .form-group
+                = recaptcha_tags
+          .panel-controls
+            = submit_tag(t("shared.continue"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")

@@ -21,6 +21,26 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     }
   }.freeze
 
+  test "publisher is sent to home path if has valid authentication" do
+    post(publishers_path, params: SIGNUP_PARAMS)
+    assert_redirected_to(create_done_publishers_path)
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    assert current_path = home_publishers_path
+  end
+
+  test "publisher is redirected to expired token auth path if token expired authentication" do
+    post(publishers_path, params: SIGNUP_PARAMS)
+    assert_redirected_to(create_done_publishers_path)
+    publisher = Publisher.order(created_at: :asc).last
+    publisher.authentication_token_expires_at = Time.now # expire the token to make invalid
+    publisher.save!
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    assert_redirected_to expired_auth_token_publishers_path
+  end
+
   test "can create a Publisher registration, pending email verification" do
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
@@ -31,7 +51,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to(create_done_publishers_path)
     publisher = Publisher.order(created_at: :asc).last
     get(publisher_path(publisher))
-    assert_redirected_to(root_path)
+    assert_redirected_to(expired_auth_token_publishers_path)
   end
 
   test "sends an email with an access link" do
@@ -63,6 +83,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_out(:publisher)
     get(url)
     assert_empty(css_select("[data-test-id='current_publisher']"))
+    assert_redirected_to expired_auth_token_publishers_path
   end
 
   test "can't create verified Publisher with an existing verified Publisher with the brave_publisher_id" do
@@ -91,6 +112,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "an unauthenticated html request redirects to home" do
     get home_publishers_path
     assert_response 302
+    assert_redirected_to expired_auth_token_publishers_path
   end
 
   test "an unauthenticated json request returns a 401" do
