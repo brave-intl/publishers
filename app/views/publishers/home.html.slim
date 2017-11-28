@@ -1,28 +1,5 @@
 javascript:
   (function() {
-    var spinnerShown;
-
-    function showSpinner() {
-      var spinner = document.getElementById('cssload-container');
-      spinner.style.display = 'block';
-      spinnerShown = Date.now();
-    }
-
-    function hideSpinner() {
-      if (spinnerShown) {
-        var minTime = 500;
-        var now = Date.now();
-
-        var spinner = document.getElementById('cssload-container');
-        if (now - spinnerShown > minTime)
-          spinner.style.display = 'none';
-        else {
-          setTimeout(function() {
-            spinner.style.display = 'none';
-          }, minTime - (now - spinnerShown));
-        }
-      }
-    }
 
     function submitForm(formId, method, showSpinners) {
       var form = document.getElementById(formId);
@@ -34,10 +11,10 @@ javascript:
         method: method,
         body: new FormData(form)
       };
-      if (showSpinners) { showSpinner(); }
+      if (showSpinners) { spinner.show(); }
       return window.fetch(form.action, options)
         .then(function(response) {
-          if (showSpinners) { hideSpinner(); }
+          if (showSpinners) { spinner.hide(); }
           if (response.status === 401) {
             // Force a page reload if the user is no longer authenticated.
             window.location.reload();
@@ -45,7 +22,7 @@ javascript:
           return response;
         })
         .catch(function(e) {
-          if (showSpinners) { hideSpinner(); }
+          if (showSpinners) { spinner.hide(); }
           window.alert("An unexpected error occurred. Please try reloading this page.")
         });
     }
@@ -349,12 +326,6 @@ noscript
     .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
   - elsif current_publisher.publication_type == :youtube_channel
     .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
-
-#cssload-container
-  .cssload-container
-    .cssload-loading
-      i
-      i
 
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
