@@ -15,7 +15,7 @@ environment rails_env
 # `bind` server to 'url' on which to listen for requests.
 #
 if rails_env == "development"
-  ssl_bind '127.0.0.1', '3001', {
+  ssl_bind '127.0.0.1', '3000', {
     key: ENV.fetch("SSL_KEY_PATH") { 'ssl/server.key' },
     cert: ENV.fetch("SSL_CERT_PATH") { 'ssl/server.crt' },
     verify_mode: 'none'

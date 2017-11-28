@@ -21,10 +21,7 @@ App for [publishers.brave.com](https://publishers.brave.com).
 Local development of brave-intl uses HTTPS. This allow us to use web APIs such
 as U2F in development.
 
-We use the domain `localhost.ssl`. This avoids Chrome idiosyncrasies on
-`localhost` and HSTS issues for non-SSL projects you might run on `localhost`.
-
-If you already have a key and certificate for this domain places them in the
+If you already have a key and certificate for the `localhost` domain place them in the
 `ssl/` directory:
 
 ```
@@ -32,22 +29,10 @@ ssl/server.key
 ssl/server.crt
 ```
 
-If you don't, first add an entry to `/etc/hosts` for this domain:
-
-```
-echo "echo '127.0.0.1 localhost.ssl' >> /etc/hosts" | sudo -s
-```
-
-Then generate a key and certificate (tested on OSX):
+If you don't, you will need to generate certificates for this domain:
 
 ```
 bundle exec rake ssl:generate
-```
-
-Install that certificate into the OSX keychain:
-
-```
-bundle exec rake ssl:install
 ```
 
 When you first visit the application in a browser you may need to add an
@@ -84,7 +69,7 @@ These steps based on [directions at the omniauth-google-oauth2 gem](https://gith
 2. Run Rails server and async worker
 `foreman start -f Procfile.dev`
 
-3. Visit https://localhost:3001
+3. Visit https://localhost:3000
 
 4. To test email, run a local mail server at localhost:25
 `mailcatcher`

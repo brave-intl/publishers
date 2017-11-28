@@ -4,18 +4,10 @@ namespace :ssl do
       if ! ok
         puts "The `openssl` executable is not available. Please manually generate a key `ssl/server.key` and certificate `ssl/server.crt`."
       else
-        sh 'openssl genrsa -out ssl/server.key 4096'
-        sh "echo \"openssl req -new -key ssl/server.key -x509 -nodes -new -out ssl/server.crt -subj /CN=localhost.ssl -reqexts SAN -extensions SAN -config <(cat /System/Library/OpenSSL/openssl.cnf <(printf '[SAN]\\nsubjectAltName=DNS:localhost.ssl')) -sha256 -days 3650\" | bash"
-      end
-    end
-  end
-
-  task :install => [ :environment ] do
-    sh 'which security' do |ok, res|
-      if ! ok
-        puts "The `securty` executable is not available. Please manually trust the certificates in `ssl/`."
-      else
-        sh 'security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain ssl/server.crt'
+        sh 'openssl genrsa -out ssl/rootCA.key 4096'
+        sh 'echo "openssl req -x509 -new -nodes -key ssl/rootCA.key -sha256 -days 3650 -out ssl/rootCA.pem -config <( cat lib/tasks/ssl/rootCA.cnf )" | bash'
+        sh 'echo "openssl req -new -sha256 -nodes -out ssl/server.csr -newkey rsa:4096 -keyout ssl/server.key -config <( cat lib/tasks/ssl/server.csr.cnf )" | bash'
+        sh 'openssl x509 -req -in ssl/server.csr -CA ssl/rootCA.pem -CAkey ssl/rootCA.key -CAcreateserial -out ssl/server.crt -days 3650 -sha256 -extfile lib/tasks/ssl/v3.ext'
       end
     end
   end
