@@ -379,21 +379,6 @@ class PublishersController < ApplicationController
     end
   end
 
-  # Used by #create_auth_token
-  # Kinda copied from Publisher #normalize_brave_publisher_id
-  def normalize_brave_publisher_id(brave_publisher_id)
-    require "faraday"
-    PublisherDomainNormalizer.new(domain: brave_publisher_id).perform
-  rescue PublisherDomainNormalizer::DomainExclusionError
-    "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
-  rescue PublisherDomainNormalizer::OfflineNormalizationError => e
-    e.message
-  rescue Faraday::Error
-    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
-  rescue URI::InvalidURIError
-    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
-  end
-
   def publisher_update_params
     params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status, :default_currency)
   end
