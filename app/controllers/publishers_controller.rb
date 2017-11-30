@@ -22,6 +22,7 @@ class PublishersController < ApplicationController
   before_action :require_unverified_publisher,
     only: %i(email_verified
              contact_info
+             domain_status
              update_unverified
              verification
              verification_choose_method
@@ -137,6 +138,26 @@ class PublishersController < ApplicationController
       redirect_to(publisher_next_step_path(@publisher))
     else
       render(:contact_info)
+    end
+  end
+
+  def domain_status
+    publisher = current_publisher
+    respond_to do |format|
+      format.json {
+        if publisher.brave_publisher_id.present?
+          render(json: {
+            brave_publisher_id: publisher.brave_publisher_id,
+            next_step: publisher_next_step_path(publisher)
+          }, status: 200)
+        elsif publisher.domain_normalization_error_status.present?
+          render(json: {
+            error: I18n.t('activerecord.attributes.publisher.brave_publisher_id') + ' ' + publisher.domain_normalization_error_status
+          }, status: 200)
+        else
+          head status: 404
+        end
+      }
     end
   end
 
