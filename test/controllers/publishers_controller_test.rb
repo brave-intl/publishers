@@ -14,7 +14,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   PUBLISHER_PARAMS = {
     publisher: {
-      # email: "alice@example.com",
       brave_publisher_id: "pyramid.net",
       name: "Alice the Pyramid",
       phone: "+14159001420"
@@ -66,12 +65,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can't create verified Publisher with an existing verified Publisher with the brave_publisher_id" do
-    duplicate_publisher_params = PUBLISHER_PARAMS.deep_merge(
-      publisher: {
-        brave_publisher_id: publishers(:verified).brave_publisher_id
-      }
-    )
-
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
     end
@@ -79,8 +72,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.authentication_token)
     get(url)
     follow_redirect!
+
+    update_params = {
+      publisher: {
+        brave_publisher_id_unnormalized: "verified.org",
+        name: "Alice the Pyramid",
+        phone: "+14159001420"
+      }
+    }
+
     perform_enqueued_jobs do
-      patch(update_unverified_publishers_path, params: duplicate_publisher_params )
+      patch(update_unverified_publishers_path, params: update_params)
     end
 
     assert_select('div.notifications') do |element|
