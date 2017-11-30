@@ -30,7 +30,7 @@ class PublisherLoginLinkEmailer < BaseService
   end
 
   def find_publisher
-    publisher_verified = Publisher.find_by(brave_publisher_id: brave_publisher_id, verified: true)
+    publisher_verified = Publisher.find_by(brave_publisher_id: normal_publisher_id, verified: true)
     if publisher_verified
       # For verified publishers, email can be blank.
       if !email || publisher_verified.email == email
@@ -43,7 +43,7 @@ class PublisherLoginLinkEmailer < BaseService
     end
 
     publishers_not_verified = Publisher.where(
-      brave_publisher_id: brave_publisher_id,
+      brave_publisher_id: normal_publisher_id,
       verified: false
     )
     if publishers_not_verified.none?

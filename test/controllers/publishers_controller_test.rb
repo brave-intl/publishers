@@ -117,6 +117,21 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_email_body_matches(matcher: url, email: email)
   end
 
+  test "relogin normalizes domain prior to matching" do
+    publisher = publishers(:default)
+    perform_enqueued_jobs do
+      get(new_auth_token_publishers_path)
+      params = { publisher: { brave_publisher_id: "https://default.org", email: "alice@default.org" } }
+      post(create_auth_token_publishers_path, params: params)
+    end
+    email = ActionMailer::Base.deliveries.find do |message|
+      message.to.first == publisher.email
+    end
+    assert_not_nil(email)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    assert_email_body_matches(matcher: url, email: email)
+  end
+
   test "relogin email works only once" do
     publisher = publishers(:default)
     request_login_email(publisher: publisher)
