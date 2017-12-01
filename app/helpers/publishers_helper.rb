@@ -207,14 +207,26 @@ module PublishersHelper
     PublisherDnsRecordGenerator.new(publisher: publisher).perform
   end
 
-  def statement_periods
+  def all_statement_periods
     [:past_7_days,
      :past_30_days,
      :this_month,
      :last_month,
      :this_year,
      :last_year,
-     :all].collect do |period|
+     :all]
+  end
+
+  def unused_statement_periods
+    periods = all_statement_periods
+    current_publisher.statements.each do |s|
+      periods.delete(s.period.to_sym)
+    end
+    periods
+  end
+
+  def statement_periods_as_options(periods)
+    periods.collect do |period|
       [statement_period_description(period), period]
     end
   end
