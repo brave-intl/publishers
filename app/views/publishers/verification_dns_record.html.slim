@@ -16,24 +16,24 @@
           strong= I18n.t("publishers.verification_dns_record_help_2")
 
         p
+          span= I18n.t("publishers.verification_dns_record_instruction3")
+
+        p
           span= I18n.t("publishers.verification_dns_record_instruction1")
           strong= current_publisher.brave_publisher_id
           span= I18n.t("publishers.verification_dns_record_instruction2")
 
         .form-group
-          label.control-label= I18n.t("publishers.verification_option_dns_record_name")
-          span.form-control
-            span.color-orange#name= "@"
-          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#name" Copy to Clipboard
-        .form-group
           label.control-label= I18n.t("publishers.verification_option_dns_record_type")
           span.color-orange.form-control#type TXT
-          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#type" Copy to Clipboard
+          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#type" 
+            = I18n.t("publishers.copy_to_clipboard")
         .form-group
           label.control-label= I18n.t("publishers.verification_option_dns_record_value")
           textarea.color-orange.dns-record-value.form-control#value readonly="true"
             = publisher_verification_dns_record(current_publisher)
-          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value" Copy to Clipboard
+          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value" 
+            = I18n.t("publishers.copy_to_clipboard")
         .form-group
           p= I18n.t("publishers.verification_dns_record_verify")
           p.note-text= I18n.t("publishers.verification_option_dns_record_note")
