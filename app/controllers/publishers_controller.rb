@@ -59,7 +59,7 @@ class PublishersController < ApplicationController
 
     @publisher = Publisher.new(pending_email: params[:email])
 
-    @should_throttle = should_throttle_create?
+    @should_throttle = should_throttle_create? || params[:captcha] == "true"
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
@@ -147,7 +147,7 @@ class PublishersController < ApplicationController
 
   def create_auth_token
     @publisher = Publisher.new(publisher_create_auth_token_params)
-    @should_throttle = should_throttle_create_auth_token?
+    @should_throttle = should_throttle_create_auth_token? || params[:captcha] == "true"
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
