@@ -50,6 +50,7 @@ en:
     balance_pending_approximate: "Approximately %{amount} %{code}"
     contact_person: "Contact person"
     contact: "Contact"
+    copy_to_clipboard: "Copy to clipboard"
     create_done_header: "An email is on its way!"
     create_done_body_html: |
       <p>We're excited that you want to be in on Brave Payments. We just sent an email to
@@ -108,8 +109,9 @@ en:
     reconnect_to_uphold: "Reconnect to Uphold"
     verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
     verification_dns_record_help_2: " using the account for your DNS host."
-    verification_dns_record_instruction1: "Copy and Paste the info below into the zone file for "
+    verification_dns_record_instruction1: "Copy and paste the info below into the zone file for "
     verification_dns_record_instruction2: " using your DNS host's control panel."
+    verification_dns_record_instruction3: "Please add the record on your root domain, not a subdomain. The @ symbol is often used to indicate the root domain name/host/host record."
     verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
     verification_choose_header: "Choose a Verification Method"
     verification_choose_trusted_file_header: "Download a trusted file"
