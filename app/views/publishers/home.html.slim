@@ -1,103 +1,5 @@
 javascript:
   (function() {
-    var spinnerShown;
-
-    function showSpinner() {
-      var spinner = document.getElementById('cssload-container');
-      spinner.style.display = 'block';
-      spinnerShown = Date.now();
-    }
-
-    function hideSpinner() {
-      if (spinnerShown) {
-        var minTime = 500;
-        var now = Date.now();
-
-        var spinner = document.getElementById('cssload-container');
-        if (now - spinnerShown > minTime)
-          spinner.style.display = 'none';
-        else {
-          setTimeout(function() {
-            spinner.style.display = 'none';
-          }, minTime - (now - spinnerShown));
-        }
-      }
-    }
-
-    function submitForm(formId, method, showSpinners) {
-      var form = document.getElementById(formId);
-      var options = {
-        headers: {
-          'Accept': 'application/json'
-        },
-        credentials: 'same-origin',
-        method: method,
-        body: new FormData(form)
-      };
-      if (showSpinners) { showSpinner(); }
-      return window.fetch(form.action, options)
-        .then(function(response) {
-          if (showSpinners) { hideSpinner(); }
-          if (response.status === 401) {
-            // Force a page reload if the user is no longer authenticated.
-            window.location.reload();
-          }
-          return response;
-        })
-        .catch(function(e) {
-          if (showSpinners) { hideSpinner(); }
-          window.alert("An unexpected error occurred. Please try reloading this page.")
-        });
-    }
-
-    function pollUntilSuccess(url, delay, backoff, attempts) {
-      return new Promise(function(resolve, reject) {
-        var attempt = 0;
-        var currentDelay = delay;
-
-        function fetchAttempt() {
-          attempt++;
-
-          if (attempt > attempts) {
-            reject(new Error('Attempts exceeded!'));
-            return;
-          }
-
-          fetchAfterDelay(url, currentDelay)
-            .then(function(response) { resolve(response); })
-            .catch(function(e) {
-              currentDelay += backoff;
-              fetchAttempt();
-            });
-        }
-
-        fetchAttempt();
-      });
-    }
-
-    function fetchAfterDelay(url, delay) {
-      return new Promise(function(resolve, reject) {
-        setTimeout(function() {
-          var options = {
-            headers: {
-              'Accept': 'application/json'
-            },
-            credentials: 'same-origin',
-            method: 'GET'
-          };
-          window.fetch(url, options)
-            .then(function(response) {
-              if (response.status >= 200 && response.status < 300) {
-                resolve(response);
-              } else {
-                reject(response);
-              }
-            }, function(e) {
-              reject(e);
-            });
-        }, delay);
-      });
-    }
 
     function showPendingContactEmail(pendingEmail) {
       var pendingEmailNotice = document.getElementById('pending_email_notice');
@@ -349,12 +251,6 @@ noscript
     .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
   - elsif current_publisher.publication_type == :youtube_channel
     .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
-
-#cssload-container
-  .cssload-container
-    .cssload-loading
-      i
-      i
 
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center

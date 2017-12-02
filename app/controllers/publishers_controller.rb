@@ -22,6 +22,7 @@ class PublishersController < ApplicationController
   before_action :require_unverified_publisher,
     only: %i(email_verified
              contact_info
+             domain_status
              update_unverified
              verification
              verification_choose_method
@@ -132,11 +133,60 @@ class PublishersController < ApplicationController
 
   def update_unverified
     @publisher = current_publisher
-    success = @publisher.update(publisher_update_unverified_params)
-    if success
-      redirect_to(publisher_next_step_path(@publisher))
-    else
-      render(:contact_info)
+
+    respond_to do |format|
+      format.json {
+        if @publisher.update(publisher_update_unverified_params)
+          # Set the publisher's domain asynchronously when the form is submitted with xhr.
+          # The results of the domain normalization and inspection will be polled afterward.
+          if @publisher.brave_publisher_id_unnormalized
+            SetPublisherDomainJob.perform_later(publisher_id: @publisher.id)
+          end
+
+          head :no_content
+        else
+          render(json: { errors: @publisher.errors }, status: 400)
+        end
+      }
+      format.html {
+        # Set the publisher's domain synchronously when the form is submitted without xhr.
+        # The results of the domain normalization and inspection must be indicated immediately.
+        #
+        # NOTE: These requests are in danger of being long-running. However, this code path should
+        # only be reached when JS is disabled.
+        success = @publisher.update(publisher_update_unverified_params)
+
+        if success && @publisher.brave_publisher_id_unnormalized
+          PublisherDomainSetter.new(publisher: @publisher).perform
+          success = @publisher.save
+        end
+
+        if success
+          redirect_to(publisher_next_step_path(@publisher))
+        else
+          render(:contact_info)
+        end
+      }
+    end
+  end
+
+  def domain_status
+    publisher = current_publisher
+    respond_to do |format|
+      format.json {
+        if publisher.brave_publisher_id.present?
+          render(json: {
+            brave_publisher_id: publisher.brave_publisher_id,
+            next_step: publisher_next_step_path(publisher)
+          }, status: 200)
+        elsif publisher.brave_publisher_id_error_code.present?
+          render(json: {
+            error: I18n.t('activerecord.attributes.publisher.brave_publisher_id') + ' ' + publisher.brave_publisher_id_error_description
+          }, status: 200)
+        else
+          head 404
+        end
+      }
     end
   end
 
@@ -379,27 +429,12 @@ class PublishersController < ApplicationController
     end
   end
 
-  # Used by #create_auth_token
-  # Kinda copied from Publisher #normalize_brave_publisher_id
-  def normalize_brave_publisher_id(brave_publisher_id)
-    require "faraday"
-    PublisherDomainNormalizer.new(domain: brave_publisher_id).perform
-  rescue PublisherDomainNormalizer::DomainExclusionError
-    "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
-  rescue PublisherDomainNormalizer::OfflineNormalizationError => e
-    e.message
-  rescue Faraday::Error
-    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
-  rescue URI::InvalidURIError
-    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
-  end
-
   def publisher_update_params
     params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status, :default_currency)
   end
 
   def publisher_update_unverified_params
-    params.require(:publisher).permit(:brave_publisher_id, :name, :phone, :show_verification_status)
+    params.require(:publisher).permit(:brave_publisher_id_unnormalized, :name, :phone, :show_verification_status)
   end
 
   def publisher_create_auth_token_params

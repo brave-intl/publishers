@@ -14,7 +14,7 @@ html
     #main
       = render("nav")
 
-      .notifications.navbar-static-top
+      .notifications.navbar-static-top#flash
         - if flash[:alert]
           .alert.alert-warning.flash= flash[:alert]
         - if flash[:login_link]
