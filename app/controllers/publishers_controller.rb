@@ -59,7 +59,7 @@ class PublishersController < ApplicationController
 
     @publisher = Publisher.new(pending_email: params[:email])
 
-    @should_throttle = should_throttle_create? || params[:captcha] == "true"
+    @should_throttle = should_throttle_create? || params[:captcha]
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
@@ -76,8 +76,7 @@ class PublishersController < ApplicationController
         redirect_to(root_path, notice: I18n.t("publishers.invalid_email_value") )
       end
     else
-      Rails.logger.error(I18n.t("recaptcha.errors.verification_failed"))
-      redirect_to(root_path, notice: I18n.t("recaptcha.errors.verification_failed"))
+      redirect_to root_path(:captcha => params[:captcha])
     end
   end
 
@@ -147,7 +146,7 @@ class PublishersController < ApplicationController
 
   def create_auth_token
     @publisher = Publisher.new(publisher_create_auth_token_params)
-    @should_throttle = should_throttle_create_auth_token? || params[:captcha] == "true"
+    @should_throttle = should_throttle_create_auth_token? || params[:captcha]
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)

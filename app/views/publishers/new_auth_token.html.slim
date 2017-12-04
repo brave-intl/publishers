@@ -20,7 +20,8 @@
             .form-group
               = f.label(:email, t("publishers.new_auth_token_email_html"), class: "control-label")
               = f.email_field(:email, class: "form-control", placeholder: "alice@example.com")
-              = hidden_field_tag(:captcha, params[:captcha])
+              - if params[:captcha]
+                = hidden_field_tag(:captcha)
             - if @should_throttle
               .form-group
                 = recaptcha_tags
