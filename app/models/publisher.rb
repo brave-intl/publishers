@@ -156,11 +156,13 @@ class Publisher < ApplicationRecord
   def brave_publisher_id_error_description
     case self.brave_publisher_id_error_code.to_sym
     when :exclusion_list_error
-      "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error")
     when :api_error_cant_normalize
       I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
     when :invalid_uri
       I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
+    when :taken
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
     else
       raise "Unrecognized brave_publisher_id_error_code: #{self.brave_publisher_id_error_code}"
     end

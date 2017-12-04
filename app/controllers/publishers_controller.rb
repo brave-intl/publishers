@@ -181,7 +181,9 @@ class PublishersController < ApplicationController
           }, status: 200)
         elsif publisher.brave_publisher_id_error_code.present?
           render(json: {
-            error: I18n.t('activerecord.attributes.publisher.brave_publisher_id') + ' ' + publisher.brave_publisher_id_error_description
+            error: I18n.t('activerecord.attributes.publisher.brave_publisher_id') +
+                   ': ' +
+                   publisher.brave_publisher_id_error_description
           }, status: 200)
         else
           head 404
