@@ -117,6 +117,7 @@ class PublishersController < ApplicationController
     if success && update_params[:pending_email]
       PublisherMailer.notify_email_change(publisher).deliver_later
       PublisherMailer.confirm_email_change(publisher).deliver_later
+      PublisherMailer.confirm_email_change_internal(publisher).deliver_later if PublisherMailer.should_send_internal_emails?
     end
 
     respond_to do |format|
