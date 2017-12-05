@@ -65,6 +65,19 @@ class PublisherDomainSetterTest < ActiveJob::TestCase
     assert_equal 'invalid_uri', publisher.brave_publisher_id_error_code
   end
 
+  test "raises exception when domain is already taken by a verified publisher" do
+    stub_request(:get, /v2\/publisher\/identity\?url=http:\/\/verified\.org/).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+      to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"verified.org\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"verified.org\"}", headers: {})
+
+    publisher = Publisher.new
+    existing_publisher = publishers(:verified)
+    publisher.brave_publisher_id_unnormalized = existing_publisher.brave_publisher_id
+    PublisherDomainSetter.new(publisher: publisher).perform
+
+    assert_equal 'taken', publisher.brave_publisher_id_error_code
+  end
+
   test "when online handles normalization failures by raising DomainExclusionError" do
     stub_request(:get, /v2\/publisher\/identity\?url=http:\/\/example3.com/).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
