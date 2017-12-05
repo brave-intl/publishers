@@ -76,7 +76,7 @@ class PublishersController < ApplicationController
         redirect_to(root_path, notice: I18n.t("publishers.invalid_email_value") )
       end
     else
-      redirect_to root_path(:captcha => params[:captcha])
+      redirect_to root_path(captcha: params[:captcha])
     end
   end
 
