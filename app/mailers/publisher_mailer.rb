@@ -95,6 +95,17 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def confirm_email_change_internal(publisher)
+    @publisher = publisher
+    @private_reauth_url = "{redacted}"
+    mail(
+      to: INTERNAL_EMAIL,
+      reply_to: @publisher.email,
+      subject: "<Internal> #{I18n.t(:subject, publication_title: @publisher.publication_title, scope: %w(publisher_mailer confirm_email_change))}",
+      template_name: "confirm_email_change"
+    )
+  end
+
   def notify_email_change(publisher)
     @publisher = publisher
     mail(
