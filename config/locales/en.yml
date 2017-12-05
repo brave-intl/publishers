@@ -290,7 +290,6 @@ en:
   recaptcha:
     errors:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
-      verification_failed: "In case you’re not a bot, we just wanted you to know that reCaptcha didn’t pass this time. Please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
     cancel: "Cancel"

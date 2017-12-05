@@ -21,6 +21,8 @@
                 .col.col-xs-12.col-sm-7
                   label.control-label for="email"
                     = email_field_tag(:email, nil, class: "form-control", placeholder: t("shared.email_address"), required: true)
+                  - if params[:captcha]
+                    = hidden_field_tag(:captcha)
                   - if @should_throttle
                     .form-group
                       = recaptcha_tags
