@@ -147,6 +147,7 @@ en:
     verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
     verification_download_verification: "Download"
     verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
+    verification_option_wordpress_not: "Not using WordPress? Choose another verification method."
     verification_option_wordpress_install_plugin_html: |
       <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
        entire process a snap.</p>
