@@ -9,7 +9,7 @@
   .sub-panel.process-panel.col-center
     .content-panel
       h3= t("publishers.verification_option_wordpress")
-      p= link_to t("publishers.verification_option_wordpress_not"), verification_choose_method_publishers_path
+      p== t("publishers.verification_option_wordpress_intro_html", choose_path: verification_choose_method_publishers_path, github_path: verification_github_publishers_path)
       = render :partial => 'https_check', :locals => { publisher: current_publisher }
 
       div class=(current_publisher.supports_https? ? "instructions" : "instructions dimmed")
