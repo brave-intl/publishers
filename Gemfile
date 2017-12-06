@@ -46,6 +46,8 @@ gem "rails", "~> 5.0.0", ">= 5.0.0.1"
 # Cache with Redis
 gem "redis-rails", "~> 5"
 
+gem "redis-store", "~> 1.4.0"
+
 # SCSS for stylesheets
 gem "sass-rails", "~> 5.0"
 
