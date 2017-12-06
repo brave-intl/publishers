@@ -1,103 +1,5 @@
 javascript:
   (function() {
-    var spinnerShown;
-
-    function showSpinner() {
-      var spinner = document.getElementById('cssload-container');
-      spinner.style.display = 'block';
-      spinnerShown = Date.now();
-    }
-
-    function hideSpinner() {
-      if (spinnerShown) {
-        var minTime = 500;
-        var now = Date.now();
-
-        var spinner = document.getElementById('cssload-container');
-        if (now - spinnerShown > minTime)
-          spinner.style.display = 'none';
-        else {
-          setTimeout(function() {
-            spinner.style.display = 'none';
-          }, minTime - (now - spinnerShown));
-        }
-      }
-    }
-
-    function submitForm(formId, method, showSpinners) {
-      var form = document.getElementById(formId);
-      var options = {
-        headers: {
-          'Accept': 'application/json'
-        },
-        credentials: 'same-origin',
-        method: method,
-        body: new FormData(form)
-      };
-      if (showSpinners) { showSpinner(); }
-      return window.fetch(form.action, options)
-        .then(function(response) {
-          if (showSpinners) { hideSpinner(); }
-          if (response.status === 401) {
-            // Force a page reload if the user is no longer authenticated.
-            window.location.reload();
-          }
-          return response;
-        })
-        .catch(function(e) {
-          if (showSpinners) { hideSpinner(); }
-          window.alert("An unexpected error occurred. Please try reloading this page.")
-        });
-    }
-
-    function pollUntilSuccess(url, delay, backoff, attempts) {
-      return new Promise(function(resolve, reject) {
-        var attempt = 0;
-        var currentDelay = delay;
-
-        function fetchAttempt() {
-          attempt++;
-
-          if (attempt > attempts) {
-            reject(new Error('Attempts exceeded!'));
-            return;
-          }
-
-          fetchAfterDelay(url, currentDelay)
-            .then(function(response) { resolve(response); })
-            .catch(function(e) {
-              currentDelay += backoff;
-              fetchAttempt();
-            });
-        }
-
-        fetchAttempt();
-      });
-    }
-
-    function fetchAfterDelay(url, delay) {
-      return new Promise(function(resolve, reject) {
-        setTimeout(function() {
-          var options = {
-            headers: {
-              'Accept': 'application/json'
-            },
-            credentials: 'same-origin',
-            method: 'GET'
-          };
-          window.fetch(url, options)
-            .then(function(response) {
-              if (response.status >= 200 && response.status < 300) {
-                resolve(response);
-              } else {
-                reject(response);
-              }
-            }, function(e) {
-              reject(e);
-            });
-        }, delay);
-      });
-    }
 
     function showPendingContactEmail(pendingEmail) {
       var pendingEmailNotice = document.getElementById('pending_email_notice');
@@ -174,7 +76,7 @@ javascript:
 
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
       if (defaultCurrencySelect) {
-        defaultCurrencySelect.addEventListener('change', function (event) {
+        defaultCurrencySelect.addEventListener('change', function(event) {
           submitForm('update_default_currency_form', 'PATCH', true);
           refreshBalance();
         }, false);
@@ -199,6 +101,7 @@ javascript:
 
       var generateStatement = document.getElementById('generate_statement');
       var generateStatementResult = document.getElementById('generate_statement_result');
+      var statementGenerator = document.getElementById('statement_generator');
       var statementPeriod = document.getElementById('statement_period');
       var generatedStatements = document.getElementById('generated_statements');
 
@@ -237,56 +140,58 @@ javascript:
           });
       }, false);
 
-      generateStatement.addEventListener('click', function(event) {
-        var statementId;
-        var statementDownloadDiv;
+      if (generateStatement) {
+        generateStatement.addEventListener('click', function(event) {
+          var statementId;
+          var statementDownloadDiv;
 
-        event.preventDefault();
-        generateStatement.style.display = 'none';
+          event.preventDefault();
+          generateStatement.style.display = 'none';
 
-        submitForm('statement_generator', 'PATCH', false)
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(json) {
-            var newStatementDiv = document.createElement('div');
-            newStatementDiv.className = 'statement';
+          submitForm('statement_generator', 'PATCH', false)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(json) {
+              statementPeriod.options.remove(statementPeriod.selectedIndex);
+              if (statementPeriod.options.length === 0) {
+                statementGenerator.style.display = 'none';
+              }
 
-            var statementDateDiv = document.createElement('div');
-            statementDateDiv.className = 'date';
-            statementDateDiv.appendChild(document.createTextNode(json.date));
-            newStatementDiv.appendChild(statementDateDiv);
+              var newStatementDiv = document.createElement('div');
+              newStatementDiv.className = 'statement';
 
-            var statementPeriodDiv = document.createElement('div');
-            statementPeriodDiv.className = 'period';
-            statementPeriodDiv.appendChild(document.createTextNode(json.period));
-            newStatementDiv.appendChild(statementPeriodDiv);
+              var statementPeriodDiv = document.createElement('div');
+              statementPeriodDiv.className = 'period';
+              statementPeriodDiv.appendChild(document.createTextNode(json.period));
+              newStatementDiv.appendChild(statementPeriodDiv);
 
-            statementDownloadDiv = document.createElement('div');
-            statementDownloadDiv.className = 'download';
-            statementDownloadDiv.appendChild(document.createTextNode('Generating'));
-            newStatementDiv.appendChild(statementDownloadDiv);
+              statementDownloadDiv = document.createElement('div');
+              statementDownloadDiv.className = 'download';
+              statementDownloadDiv.appendChild(document.createTextNode('Generating'));
+              newStatementDiv.appendChild(statementDownloadDiv);
 
-            generatedStatements.insertBefore(newStatementDiv, generatedStatements.firstChild);
+              generatedStatements.insertBefore(newStatementDiv, generatedStatements.firstChild);
 
-            dynamicEllipsis.start(statementDownloadDiv);
+              dynamicEllipsis.start(statementDownloadDiv);
 
-            statementId = json.id;
-            return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
-          })
-          .then(function() {
-            dynamicEllipsis.stop(statementDownloadDiv);
-            statementDownloadDiv.innerHTML = '<a href="/publishers/statement?id=' + statementId + '">Download</a>';
-            generateStatement.style.display = 'inline-block';
-          })
-          .catch(function(e) {
-            if (statementDownloadDiv) {
+              statementId = json.id;
+              return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
+            })
+            .then(function() {
               dynamicEllipsis.stop(statementDownloadDiv);
-              statementDownloadDiv.innerText = 'Delayed'
-            }
-            generateStatement.style.display = 'inline-block';
-          });
-      }, false);
+              statementDownloadDiv.innerHTML = '<a href="/publishers/statement?id=' + statementId + '">Download</a>';
+              generateStatement.style.display = 'inline-block';
+            })
+            .catch(function(e) {
+              if (statementDownloadDiv) {
+                dynamicEllipsis.stop(statementDownloadDiv);
+                statementDownloadDiv.innerText = 'Delayed';
+              }
+              generateStatement.style.display = 'inline-block';
+            });
+        }, false);
+      }
     }, false);
   })();
 
@@ -350,12 +255,6 @@ noscript
   - elsif current_publisher.publication_type == :youtube_channel
     .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
 
-#cssload-container
-  .cssload-container
-    .cssload-loading
-      i
-      i
-
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .publisher-status
@@ -404,17 +303,17 @@ noscript
       .statements#statement_section style=(current_publisher.uphold_verified ? '' : 'display: none')
         .panel-header.panel-header-h4#publishers_statement
           = t("publishers.statements")
-        = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
-          .form-group
-            = select_tag(:statement_period, options_for_select(statement_periods, :past_30_days))
-            .pull-right
-              a.edit-link#generate_statement href="#"
-                = t("shared.generate")
+        - if unused_statement_periods.length > 0
+          = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
+            .form-group
+              = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
+              .pull-right
+                a.edit-link#generate_statement href="#"
+                  = t("shared.generate")
         .clearfix
         #generated_statements
           - current_publisher.statements.each do |s|
             .statement
-              .date= statement_period_date(s.created_at)
               .period= statement_period_description(s.period.to_sym)
               .download= s.encrypted_contents? ? link_to(t("publishers.statement_download"), statement_publishers_url(id: s.id)) : t("publishers.statement_delayed")
 
@@ -442,7 +341,7 @@ noscript
             = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
           .form-group
             = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
-            = f.phone_field(:phone, class: "form-control", id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
+            = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.phone_number_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
           .button.form-group
             = f.submit(translate("shared.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
             a#cancel_edit_contact href="#"

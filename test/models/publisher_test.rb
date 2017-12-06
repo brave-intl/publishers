@@ -231,4 +231,36 @@ class PublisherTest < ActiveSupport::TestCase
       refute publisher.destroy
     end
   end
+
+  test "a publisher assigned a brave_publisher_id_error_code and brave_publisher_id will not be valid" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "foo@bar.com"
+    assert publisher.valid?
+
+    publisher.email = "foo@bar.com"
+    publisher.name = 'Joe Blow'
+    publisher.brave_publisher_id = 'asdf asdf'
+    publisher.brave_publisher_id_error_code = :invalid_uri
+
+    refute publisher.valid?
+    assert_equal [:brave_publisher_id], publisher.errors.keys
+    assert_equal "invalid_uri", publisher.brave_publisher_id_error_code
+    assert_equal I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri"), publisher.brave_publisher_id_error_description
+  end
+
+  test "a publisher assigned a brave_publisher_id_error_code and brave_publisher_id_unnormalized will not be valid" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "foo@bar.com"
+    publisher.brave_publisher_id_unnormalized = 'asdf asdf'
+    assert publisher.save
+
+    publisher.brave_publisher_id_error_code = :invalid_uri
+
+    refute publisher.valid?
+    assert_equal [:brave_publisher_id_unnormalized], publisher.errors.keys
+    assert_equal "invalid_uri", publisher.brave_publisher_id_error_code
+    assert_equal I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri"), publisher.brave_publisher_id_error_description
+  end
 end

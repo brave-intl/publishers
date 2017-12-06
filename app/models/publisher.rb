@@ -37,8 +37,15 @@ class Publisher < ApplicationRecord
   validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }
   validates :auth_user_id, absence: true, if: -> { brave_publisher_id.present? }
 
-  # TODO: Show user normalized domain before they commit
-  before_validation :normalize_inspect_brave_publisher_id, if: -> { brave_publisher_id.present? && brave_publisher_id_changed?}
+  # ensure that site publishers do not mix:
+  # - normalized and unnormalized domains
+  # - normalized domains and domain-related errors
+  validates :brave_publisher_id, absence: true, if: -> { brave_publisher_id_error_code.present? || brave_publisher_id_unnormalized.present? }
+
+  # clear/register domain errors as appropriate
+  before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
+  before_validation :register_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_error_code.present? }
+
   after_validation :generate_verification_token, if: -> { brave_publisher_id.present? && brave_publisher_id_changed? }
 
   before_destroy :dont_destroy_verified_publishers
@@ -138,20 +145,6 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def inspect_brave_publisher_id
-    require "faraday"
-    result = PublisherHostInspector.new(brave_publisher_id: self.brave_publisher_id).perform
-    if result[:host_connection_verified]
-      self.supports_https = result[:https]
-      self.detected_web_host = result[:web_host]
-      self.host_connection_verified = true
-    else
-      self.supports_https = false
-      self.detected_web_host = nil
-      self.host_connection_verified = false
-    end
-  end
-
   def publication_type
     if self.brave_publisher_id.present?
       :site
@@ -167,36 +160,35 @@ class Publisher < ApplicationRecord
     "oauth#google:#{auth_user_id}"
   end
 
+  def brave_publisher_id_error_description
+    case self.brave_publisher_id_error_code.to_sym
+    when :exclusion_list_error
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error")
+    when :api_error_cant_normalize
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
+    when :invalid_uri
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
+    when :taken
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
+    else
+      raise "Unrecognized brave_publisher_id_error_code: #{self.brave_publisher_id_error_code}"
+    end
+  end
+
   private
 
   def generate_verification_token
     update_attribute(:verification_token, PublisherTokenRequester.new(publisher: self).perform)
   end
 
-  def normalize_inspect_brave_publisher_id
-    normalize_brave_publisher_id
-    inspect_brave_publisher_id unless errors.any?
+  def clear_brave_publisher_id_error
+    self.brave_publisher_id_error_code = nil
   end
 
-  def normalize_brave_publisher_id
-    require "faraday"
-    self.brave_publisher_id = PublisherDomainNormalizer.new(domain: brave_publisher_id).perform
-  rescue PublisherDomainNormalizer::DomainExclusionError
-    errors.add(
-      :brave_publisher_id,
-      "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
-    )
-  rescue PublisherDomainNormalizer::OfflineNormalizationError => e
-    errors.add(:brave_publisher_id, e.message)
-  rescue Faraday::Error
-    errors.add(
-      :brave_publisher_id,
-      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
-    )
-  rescue URI::InvalidURIError
-    errors.add(
-      :brave_publisher_id,
-      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
+  def register_brave_publisher_id_error
+    self.errors.add(
+      :brave_publisher_id_unnormalized,
+      self.brave_publisher_id_error_description
     )
   end
 

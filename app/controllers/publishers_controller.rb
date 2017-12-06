@@ -22,6 +22,7 @@ class PublishersController < ApplicationController
   before_action :require_unverified_publisher,
     only: %i(email_verified
              contact_info
+             domain_status
              update_unverified
              verification
              verification_choose_method
@@ -59,7 +60,7 @@ class PublishersController < ApplicationController
 
     @publisher = Publisher.new(pending_email: params[:email])
 
-    @should_throttle = should_throttle_create?
+    @should_throttle = should_throttle_create? || params[:captcha]
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
@@ -67,7 +68,7 @@ class PublishersController < ApplicationController
 
     if throttle_legit
       if @publisher.save
-        PublisherMailer.verify_email(@publisher).deliver_later!
+        PublisherMailer.verify_email(@publisher).deliver_later
         PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
         session[:created_publisher_id] = @publisher.id
         redirect_to create_done_publishers_path
@@ -76,8 +77,7 @@ class PublishersController < ApplicationController
         redirect_to(root_path, notice: I18n.t("publishers.invalid_email_value") )
       end
     else
-      Rails.logger.error(I18n.t("recaptcha.errors.verification_failed"))
-      redirect_to(root_path, notice: I18n.t("publishers.verification_failed") )
+      redirect_to root_path(captcha: params[:captcha])
     end
   end
 
@@ -89,7 +89,7 @@ class PublishersController < ApplicationController
   def resend_email_verify_email
     @publisher = Publisher.find(session[:created_publisher_id])
 
-    PublisherMailer.verify_email(@publisher).deliver_later!
+    PublisherMailer.verify_email(@publisher).deliver_later
     PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
     session[:created_publisher_id] = @publisher.id
     session[:created_publisher_email] = @publisher.pending_email
@@ -115,8 +115,9 @@ class PublishersController < ApplicationController
     success = publisher.update(update_params)
 
     if success && update_params[:pending_email]
-      PublisherMailer.notify_email_change(publisher).deliver_later!
-      PublisherMailer.confirm_email_change(publisher).deliver_later!
+      PublisherMailer.notify_email_change(publisher).deliver_later
+      PublisherMailer.confirm_email_change(publisher).deliver_later
+      PublisherMailer.confirm_email_change_internal(publisher).deliver_later if PublisherMailer.should_send_internal_emails?
     end
 
     respond_to do |format|
@@ -132,11 +133,62 @@ class PublishersController < ApplicationController
 
   def update_unverified
     @publisher = current_publisher
+    @publisher.brave_publisher_id = nil
     success = @publisher.update(publisher_update_unverified_params)
-    if success
-      redirect_to(publisher_next_step_path(@publisher))
-    else
-      render(:contact_info)
+
+    respond_to do |format|
+      format.json {
+        if success
+          # Set the publisher's domain asynchronously when the form is submitted with xhr.
+          # The results of the domain normalization and inspection will be polled afterward.
+          if @publisher.brave_publisher_id_unnormalized
+            SetPublisherDomainJob.perform_later(publisher_id: @publisher.id)
+          end
+
+          head :no_content
+        else
+          render(json: { errors: @publisher.errors }, status: 400)
+        end
+      }
+      format.html {
+        # Set the publisher's domain synchronously when the form is submitted without xhr.
+        # The results of the domain normalization and inspection must be indicated immediately.
+        #
+        # NOTE: These requests are in danger of being long-running. However, this code path should
+        # only be reached when JS is disabled.
+        if success && @publisher.brave_publisher_id_unnormalized
+          PublisherDomainSetter.new(publisher: @publisher).perform
+          success = @publisher.save
+        end
+
+        if success
+          redirect_to(publisher_next_step_path(@publisher))
+        else
+          render(:contact_info)
+        end
+      }
+    end
+  end
+
+  def domain_status
+    publisher = current_publisher
+    respond_to do |format|
+      format.json {
+        if publisher.brave_publisher_id.present?
+          render(json: {
+            brave_publisher_id: publisher.brave_publisher_id,
+            next_step: publisher_next_step_path(publisher)
+          }, status: 200)
+        elsif publisher.brave_publisher_id_error_code.present?
+          render(json: {
+            error: I18n.t('activerecord.attributes.publisher.brave_publisher_id') +
+                   ': ' +
+                   publisher.brave_publisher_id_error_description
+          }, status: 200)
+        else
+          head 404
+        end
+      }
     end
   end
 
@@ -147,7 +199,7 @@ class PublishersController < ApplicationController
 
   def create_auth_token
     @publisher = Publisher.new(publisher_create_auth_token_params)
-    @should_throttle = should_throttle_create_auth_token?
+    @should_throttle = should_throttle_create_auth_token? || params[:captcha]
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
@@ -164,7 +216,8 @@ class PublishersController < ApplicationController
     if emailer.perform
       # Success shown in view #create_auth_token
     else
-      flash.now[:alert] = emailer.error
+      # Failed to find publisher
+      flash.now[:login_link] = "" # Uses login_link partial instead of explicit message
       render(:new_auth_token)
     end
   end
@@ -378,27 +431,12 @@ class PublishersController < ApplicationController
     end
   end
 
-  # Used by #create_auth_token
-  # Kinda copied from Publisher #normalize_brave_publisher_id
-  def normalize_brave_publisher_id(brave_publisher_id)
-    require "faraday"
-    PublisherDomainNormalizer.new(domain: brave_publisher_id).perform
-  rescue PublisherDomainNormalizer::DomainExclusionError
-    "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
-  rescue PublisherDomainNormalizer::OfflineNormalizationError => e
-    e.message
-  rescue Faraday::Error
-    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
-  rescue URI::InvalidURIError
-    I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
-  end
-
   def publisher_update_params
     params.require(:publisher).permit(:pending_email, :phone, :name, :show_verification_status, :default_currency)
   end
 
   def publisher_update_unverified_params
-    params.require(:publisher).permit(:brave_publisher_id, :name, :phone, :show_verification_status)
+    params.require(:publisher).permit(:brave_publisher_id_unnormalized, :name, :phone, :show_verification_status)
   end
 
   def publisher_create_auth_token_params

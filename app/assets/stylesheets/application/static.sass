@@ -33,6 +33,13 @@ body[data-controller="static"]
     margin-top: 75px
     margin-bottom: 75px
 
+  @media (max-width: $screen-md-max)
+    p.leadin
+      font-size: 20px
+    .logo
+      margin-top: 55px
+      margin-bottom: 20px
+
   .main-heading
     h2
       font-weight: 100
@@ -41,9 +48,11 @@ body[data-controller="static"]
     @media (max-width: $screen-md-max)
       h1
         font-weight: 600
-        font-size: 48px
+        font-size: 36px
         margin-top: 5px
         margin-bottom: 30px
+      h2
+        font-size: 24px
     @media (min-width: $screen-md-min)
       h1
         font-weight: 600
@@ -117,8 +126,8 @@ body[data-controller="static"]
 
   @media (max-width: $screen-xxs-max)
     .logo
-      margin-top: 50px
-      margin-bottom: 50px
+      margin-top: 35px
+      margin-bottom: 0px
     .col-centered
       float: none
       margin: 0 auto

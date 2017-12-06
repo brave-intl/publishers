@@ -24,6 +24,7 @@ en:
     attributes:
       publisher:
         brave_publisher_id: "Website Domain"
+        brave_publisher_id_unnormalized: "Website Domain"
         phone_normalized: "Phone Number"
         show_verification_status: "List my site in Brave's verified publisher site once verified."
         name: "Contact Name"
@@ -32,11 +33,12 @@ en:
         publisher:
           attributes:
             brave_publisher_id:
-              api_error_cant_normalize: "can't be normalized because of an API error"
-              exclusion_list_error: "is on the Brave Publisher website exclusion list. For questions please contact "
+              api_error_cant_normalize: "Can't be normalized because of an API error"
+              # TODO: Configurable email here
+              exclusion_list_error: "Is on the Brave Publisher website exclusion list. If you have questions please contact support+publishers@basicattentiontoken.org."
               # TODO: Configurable email here
               taken: "Another person has already verified that website. If you have questions please contact support+publishers@basicattentiontoken.org."
-              invalid_uri: "invalid domain URI"
+              invalid_uri: "Invalid domain URI"
     models:
       publisher: "Publisher"
     shared:
@@ -50,6 +52,7 @@ en:
     balance_pending_approximate: "Approximately %{amount} %{code}"
     contact_person: "Contact person"
     contact: "Contact"
+    copy_to_clipboard: "Copy to clipboard"
     create_done_header: "An email is on its way!"
     create_done_body_html: |
       <p>We're excited that you want to be in on Brave Payments. We just sent an email to
@@ -80,7 +83,8 @@ en:
     new_auth_token_button: "Email me a link to log in"
     new_auth_token_email_html: |
       Email Address <span class="optional">(for unverified domains)</span>
-    new_auth_token_publisher_not_found: "Couldn't find a publisher with that domain name. Please try again or start a new verification."
+    new_auth_token_publisher_not_found_part_one: "Couldn't find a publisher with that domain name. Please try again or "
+    new_auth_token_publisher_not_found_part_two: "start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     not_verified: "Unverified"
@@ -93,6 +97,7 @@ en:
     statement_delayed: "Delayed"
     verified_phone_html: |
       Phone Number <span class="optional">(optional)</span>
+    phone_number_validation: "Phone numbers should only include numbers, dashes, periods, plus (+), and/or parentheses."
     status_uphold_processing: "Your Uphold wallet is being connected to your account"
     status_unverified: "Your account has not been verified"
     uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
@@ -106,8 +111,9 @@ en:
     reconnect_to_uphold: "Reconnect to Uphold"
     verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
     verification_dns_record_help_2: " using the account for your DNS host."
-    verification_dns_record_instruction1: "Copy and Paste the info below into the zone file for "
+    verification_dns_record_instruction1: "Copy and paste the info below into the zone file for "
     verification_dns_record_instruction2: " using your DNS host's control panel."
+    verification_dns_record_instruction3: "Please add the record on your root domain, not a subdomain. The @ symbol is often used to indicate the root domain name/host/host record."
     verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
     verification_choose_header: "Choose a Verification Method"
     verification_choose_trusted_file_header: "Download a trusted file"
@@ -137,12 +143,13 @@ en:
     verification_background_header: "Now verifying your domain..."
     verification_background_help_html: |
       <p>You can leave this screen now. We will send you an <strong>email with instructions within 24 hours.</strong></p>
-    verification_https_check: "Your domain is using HTTPS."
-    verification_https_check_alt: "Good, your domain is using HTTPS."
     verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
     verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
     verification_download_verification: "Download"
     verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
+    verification_option_wordpress_intro_html: |
+     Follow the steps below to verify your Wordpress site.<br />
+     (Hmmm, my site is a <a href="%{choose_path}">normal website</a> or <a href="%{github_path}">on GitHub</a>.)
     verification_option_wordpress_install_plugin_html: |
       <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
        entire process a snap.</p>
@@ -286,7 +293,6 @@ en:
   recaptcha:
     errors:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
-      verification_failed: "In case you’re not a bot, we just wanted you to know that reCaptcha didn’t pass this time. Please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
     cancel: "Cancel"
