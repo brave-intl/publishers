@@ -133,10 +133,12 @@ class PublishersController < ApplicationController
 
   def update_unverified
     @publisher = current_publisher
+    @publisher.brave_publisher_id = nil
+    success = @publisher.update(publisher_update_unverified_params)
 
     respond_to do |format|
       format.json {
-        if @publisher.update(publisher_update_unverified_params)
+        if success
           # Set the publisher's domain asynchronously when the form is submitted with xhr.
           # The results of the domain normalization and inspection will be polled afterward.
           if @publisher.brave_publisher_id_unnormalized
@@ -154,8 +156,6 @@ class PublishersController < ApplicationController
         #
         # NOTE: These requests are in danger of being long-running. However, this code path should
         # only be reached when JS is disabled.
-        success = @publisher.update(publisher_update_unverified_params)
-
         if success && @publisher.brave_publisher_id_unnormalized
           PublisherDomainSetter.new(publisher: @publisher).perform
           success = @publisher.save
@@ -181,7 +181,9 @@ class PublishersController < ApplicationController
           }, status: 200)
         elsif publisher.brave_publisher_id_error_code.present?
           render(json: {
-            error: I18n.t('activerecord.attributes.publisher.brave_publisher_id') + ' ' + publisher.brave_publisher_id_error_description
+            error: I18n.t('activerecord.attributes.publisher.brave_publisher_id') +
+                   ': ' +
+                   publisher.brave_publisher_id_error_description
           }, status: 200)
         else
           head 404

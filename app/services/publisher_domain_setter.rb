@@ -7,7 +7,7 @@ class PublisherDomainSetter < BaseService
 
   def perform
     normalize_domain
-    inspect_host
+    inspect_host unless @publisher.brave_publisher_id_error_code
   end
 
   private
@@ -15,11 +15,15 @@ class PublisherDomainSetter < BaseService
   def normalize_domain
     require "faraday"
 
-    @publisher.brave_publisher_id = nil
-    @publisher.brave_publisher_id_error_code = nil
+    brave_publisher_id = PublisherDomainNormalizer.new(domain: @publisher.brave_publisher_id_unnormalized).perform
 
-    @publisher.brave_publisher_id = PublisherDomainNormalizer.new(domain: @publisher.brave_publisher_id_unnormalized).perform
-    @publisher.brave_publisher_id_unnormalized = nil
+    if Publisher.where(brave_publisher_id: brave_publisher_id, verified: true).any?
+      @publisher.brave_publisher_id_error_code = :taken
+    else
+      @publisher.brave_publisher_id = brave_publisher_id
+      @publisher.brave_publisher_id_error_code = nil
+      @publisher.brave_publisher_id_unnormalized = nil
+    end
 
   rescue PublisherDomainNormalizer::DomainExclusionError
     @publisher.brave_publisher_id_error_code = :exclusion_list_error

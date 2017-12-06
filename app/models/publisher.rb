@@ -37,8 +37,15 @@ class Publisher < ApplicationRecord
   validates :brave_publisher_id, absence: true, if: -> { auth_user_id.present? }
   validates :auth_user_id, absence: true, if: -> { brave_publisher_id.present? }
 
-  # TODO: Show user normalized domain before they commit
-  before_validation :register_brave_publisher_id_error, if: -> { brave_publisher_id_error_code.present? }
+  # ensure that site publishers do not mix:
+  # - normalized and unnormalized domains
+  # - normalized domains and domain-related errors
+  validates :brave_publisher_id, absence: true, if: -> { brave_publisher_id_error_code.present? || brave_publisher_id_unnormalized.present? }
+
+  # clear/register domain errors as appropriate
+  before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
+  before_validation :register_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_error_code.present? }
+
   after_validation :generate_verification_token, if: -> { brave_publisher_id.present? && brave_publisher_id_changed? }
 
   before_destroy :dont_destroy_verified_publishers
@@ -156,11 +163,13 @@ class Publisher < ApplicationRecord
   def brave_publisher_id_error_description
     case self.brave_publisher_id_error_code.to_sym
     when :exclusion_list_error
-      "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error")
     when :api_error_cant_normalize
       I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
     when :invalid_uri
       I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
+    when :taken
+      I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken")
     else
       raise "Unrecognized brave_publisher_id_error_code: #{self.brave_publisher_id_error_code}"
     end
@@ -172,13 +181,15 @@ class Publisher < ApplicationRecord
     update_attribute(:verification_token, PublisherTokenRequester.new(publisher: self).perform)
   end
 
+  def clear_brave_publisher_id_error
+    self.brave_publisher_id_error_code = nil
+  end
+
   def register_brave_publisher_id_error
-    if self.brave_publisher_id_error_code
-      self.errors.add(
-        :brave_publisher_id,
-        self.brave_publisher_id_error_description
-      )
-    end
+    self.errors.add(
+      :brave_publisher_id_unnormalized,
+      self.brave_publisher_id_error_description
+    )
   end
 
   def verified_publisher_exists?

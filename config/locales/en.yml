@@ -24,6 +24,7 @@ en:
     attributes:
       publisher:
         brave_publisher_id: "Website Domain"
+        brave_publisher_id_unnormalized: "Website Domain"
         phone_normalized: "Phone Number"
         show_verification_status: "List my site in Brave's verified publisher site once verified."
         name: "Contact Name"
@@ -32,11 +33,12 @@ en:
         publisher:
           attributes:
             brave_publisher_id:
-              api_error_cant_normalize: "can't be normalized because of an API error"
-              exclusion_list_error: "is on the Brave Publisher website exclusion list. For questions please contact "
+              api_error_cant_normalize: "Can't be normalized because of an API error"
+              # TODO: Configurable email here
+              exclusion_list_error: "Is on the Brave Publisher website exclusion list. If you have questions please contact support+publishers@basicattentiontoken.org."
               # TODO: Configurable email here
               taken: "Another person has already verified that website. If you have questions please contact support+publishers@basicattentiontoken.org."
-              invalid_uri: "invalid domain URI"
+              invalid_uri: "Invalid domain URI"
     models:
       publisher: "Publisher"
     shared:

@@ -88,6 +88,81 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_select('div.notifications') do |element|
       assert_match("Another person has already verified that website", element.text)
     end
+
+    # Now retry with a unique domain
+
+    update_params = {
+      publisher: {
+        brave_publisher_id_unnormalized: "this-one-is-unique.org",
+        name: "Alice the Pyramid",
+        phone: "+14159001420"
+      }
+    }
+
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: update_params)
+    end
+
+    assert_redirected_to verification_choose_method_publishers_path
+  end
+
+  test "a publisher's domain can be updated via an ajax patch" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    perform_enqueued_jobs do
+      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+    end
+
+    update_params = {
+      publisher: {
+        brave_publisher_id_unnormalized: "verified.org",
+        name: "Alice the Pyramid",
+        phone: "+14159001420"
+      }
+    }
+
+    url = update_unverified_publishers_path
+
+    perform_enqueued_jobs do
+      patch(url,
+            params: update_params,
+            headers: { 'HTTP_ACCEPT' => "application/json" })
+      assert_response 204
+    end
+
+    publisher.reload
+    assert_equal 'taken', publisher.brave_publisher_id_error_code
+    assert_nil publisher.brave_publisher_id
+    assert_nil publisher.brave_publisher_id_unnormalized
+
+    # Now retry with a unique domain
+
+    update_params = {
+      publisher: {
+        brave_publisher_id_unnormalized: "this-one-is-unique.org",
+        name: "Alice the Pyramid",
+        phone: "+14159001420"
+      }
+    }
+
+    url = update_unverified_publishers_path
+
+    perform_enqueued_jobs do
+      patch(url,
+            params: update_params,
+            headers: { 'HTTP_ACCEPT' => "application/json" })
+      assert_response 204
+    end
+
+    publisher.reload
+    assert_nil publisher.brave_publisher_id_error_code
+    assert_equal 'this-one-is-unique.org', publisher.brave_publisher_id
+    assert_nil publisher.brave_publisher_id_unnormalized
   end
 
   test "an unauthenticated html request redirects to home" do
