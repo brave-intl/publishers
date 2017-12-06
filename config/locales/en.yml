@@ -143,13 +143,13 @@ en:
     verification_background_header: "Now verifying your domain..."
     verification_background_help_html: |
       <p>You can leave this screen now. We will send you an <strong>email with instructions within 24 hours.</strong></p>
-    verification_https_check: "Your domain is using HTTPS."
-    verification_https_check_alt: "Good, your domain is using HTTPS."
     verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
     verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
     verification_download_verification: "Download"
     verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
-    verification_option_wordpress_not: "Not using WordPress? Choose another verification method."
+    verification_option_wordpress_intro_html: |
+     Follow the steps below to verify your Wordpress site.<br />
+     (Hmmm, my site is a <a href="%{choose_path}">normal website</a> or <a href="%{github_path}">on GitHub</a>.)
     verification_option_wordpress_install_plugin_html: |
       <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
        entire process a snap.</p>
