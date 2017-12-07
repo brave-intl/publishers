@@ -94,3 +94,17 @@ Some variables are set automagically with Heroku addons:
 #### Other vars
 
 A few variables are not configured in secrets.yml: currently none
+
+## Testing
+
+```sh
+bin/rake test
+```
+
+We use capybara which runs selenium tests, which depends on chromium.
+If you don't installed, you'll get an error "can't find chrome binary".
+On debian you can install it like:
+
+```sh
+sudo apt-get install chromium
+```
