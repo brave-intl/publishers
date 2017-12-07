@@ -146,6 +146,15 @@ module PublishersHelper
     end
   end
 
+  def publisher_status_timeout(publisher)
+    case publisher_status(publisher)
+    when :uphold_processing
+      t("publishers.status_uphold_processing_timeout")
+    else
+      nil
+    end
+  end
+
   def publisher_status_description(publisher)
     case publisher_status(publisher)
     when :complete
