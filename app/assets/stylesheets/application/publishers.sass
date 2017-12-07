@@ -14,6 +14,7 @@ body[data-controller="u2f_registrations"]
 
   .main-content
     padding-top: 25px
+    padding-bottom: 25px
     background: #eaedef
     background: -webkit-linear-gradient(-75deg, #e9eaef , #e0e3e6 , #d6d6d6 , #e7ccc9 ,#f7ada7 , #d68588 , #ca3884 , #c7297b )
     min-height: calc(100vh - 80px)
@@ -27,7 +28,6 @@ body[data-controller="u2f_registrations"]
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
   .publisher-panel
     max-width: 880px
-    min-width: 448px
   .publisher-main-panel
     margin-top: 0px
     margin-bottom: 150px
@@ -77,10 +77,36 @@ body[data-controller="u2f_registrations"]
       padding: 0 30px
 
   .login-panel
+    margin-top: 46px
     .row
       padding: 0 40px
     .site-login, .youtube-login
       padding: 30px 0
+
+  @media (max-width: $screen-sm-max)
+    .login-panel
+      margin-top: 0px
+      max-width: 500px
+    .process-panel
+      padding-bottom: 15px
+      .panel-controls
+        margin-top: 15px
+      h3
+        margin-bottom: 23px
+    .login-penal
+      .site-login
+        padding: 10px 0
+
+  @media (max-width: $screen-xxs-max)
+    .process-panel
+      padding-left: 0
+      padding-right: 0
+      padding-bottom: 0
+      h3
+        margin-bottom: 18px
+    .sub-panel
+      padding-left: 0
+      padding-right: 0
 
   .signup-panel
     .col
@@ -216,7 +242,7 @@ body[data-controller="u2f_registrations"]
         line-height: 14px
         padding: 0 5px
         color: $progress-train-label
-        @media (max-width: 991px)
+        @media (max-width: $screen-md-max)
           display: none
       &.unstarted, &.finished
         label
@@ -418,7 +444,7 @@ body[data-controller="u2f_registrations"]
       color: #999ea2
       a
         color: #00bcd6
-    @media (max-width: 991px)
+    @media (max-width: $screen-md-max)
       .content-panel
         width: 340px
       .or
@@ -459,7 +485,7 @@ body[data-controller="u2f_registrations"]
       .dashboard-panel
         padding-left: 95px
         padding-right: 45px
-        @media (min-width: 992px)
+        @media (min-width: $screen-md-min)
           min-height: 460px
         min-width: 450px
         .panel-header
@@ -762,12 +788,12 @@ body[data-controller="u2f_registrations"]
         background: #fff
         border-radius: 0
 
-    @media (max-width: 991px)
+    @media (max-width: $screen-md-max)
       .publisher-panel
-        width: 400px
+        max-width: 400px
       .site-operator
         margin-bottom: 32px
-    @media (min-width: 992px)
+    @media (min-width: $screen-md-min)
       .publisher-panel
         width: 840px
       .choice-panel-left
