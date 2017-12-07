@@ -1,4 +1,5 @@
 language: ruby
+cache: bundler
 bundler_args: --jobs=3 --retry=3 --without production --without staging
 dist: trusty
 addons:
