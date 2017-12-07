@@ -1,6 +1,27 @@
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
+require "selenium/webdriver"
+require "minitest/rails/capybara"
+require "webmock/minitest"
+
+WebMock.allow_net_connect!
+
+Capybara.register_driver :chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w(headless disable-gpu window-size=1680,1050) }
+  )
+
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+end
+
+class Capybara::Rails::TestCase
+  def setup
+    Capybara.current_driver = :chrome
+  end
+end
 
 module ActiveSupport
   class TestCase
@@ -14,11 +35,13 @@ end
 module ActionDispatch
   class IntegrationTest
     setup do
+      WebMock.disable_net_connect!
       DatabaseCleaner.start
     end
 
     teardown do
       DatabaseCleaner.clean
+      WebMock.allow_net_connect!
     end
 
     def visit_authentication_url(publisher)

@@ -118,6 +118,9 @@ group :development, :test do
   # Sweet REPL. To use, drop in "binding.pry" anywhere in code.
   gem "pry"
   gem "mocha"
+  gem "minitest-rails-capybara"
+  gem "capybara-selenium"
+  gem "chromedriver-helper"
 end
 
 group :production, :staging do
