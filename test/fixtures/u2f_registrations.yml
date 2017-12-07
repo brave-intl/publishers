@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+default:
+  publisher: verified
+  certificate: MIICTzCCBTegAwIBAgIEEjbRfzANBgkqhkiG9w0BAQsFADAuMSwwKgYDVQQDEyNZdWJpY28gVTJGIFJvb3QgQ0EgU2VyaWFsIDQ1NzIwMDYzMTAgFw0xNDA4MDEwMDAwMDBaGA8yMDUwMDkwNDAwMDAwMFowMTEvMC0GA1UEAwwmWXViaWNvIFUyRiBFRSBTZXJpYWwgMjM5MjU3MzQxMDMyNDEwODcwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATTZakeXpng1bQ5wNmvu4f0BY5H3RKxRO2xTSsz+NNcFRPkDXnw+Zmr4jZxlZOBydwrB4WLgqxjR2IEzPc01q4hozswOTAiBgkrBgEEAYLECgIEFTEuMy42LjEuNC4xLjQxNDgyLjEuNTATBgsrBgEEAYLlHAIBAQQEAwIFIDANBgkqhkiG9w0BAQsFAAOCAQEAIhubs7JyJPE+vqMi8DUer0ZJZqNvcmmFfI4j+eUFtVJ13U5BIj5/JhEJFGnPkp+lJj5sx3aBskhtqvQfsc+r6FUI8T9nUPbIGyneYBtecgi7+mR25WSpHX1kq1JK0E67Ws4hixUm8XH4fN71I5joQyxQub8VeBl6tuu+MqvRdpM4OJwkuMl6zuPxvGFkdsr0LxNn3yko0CZVxjudPNCrabaZb+VzeIuZUvgCq0+UEVWxCdweIOxtJUIXWFfuq+GbR4pfJheGDTGdPkWmD8QGmDVpBWHczmQmiHUG10WXn4Bn2zFIgAtoMFje34jx1fXrvNjWMqRlN9jooxvQY4Rrfw==
+  key_handle: BDMtoYwbf1M4pjkIN8yRg16kdWWqEruTmRZBWxUJCFCIEpzafDNKk1c_DN9iuOB3SWdbpy5AKVkla9nRhpV8Tg
+  public_key: BOQBbn+7WoedrGQsg9z966oPUDobYQciXRAAHrgbg36xHtjkijDy53Zr/api0H4Bc6fNXt0gFS1ZyP7vD0hQcVc=
+  counter: 0
+  name: My U2F Key

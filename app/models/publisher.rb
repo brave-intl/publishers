@@ -2,6 +2,7 @@ class Publisher < ApplicationRecord
   has_paper_trail
 
   has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
+  has_many :u2f_registrations, -> { order('updated_at DESC') }
 
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
@@ -84,7 +85,7 @@ class Publisher < ApplicationRecord
   end
 
   def encryption_key
-    Rails.application.secrets[:attr_encrypted_key]
+    Publisher.encryption_key
   end
 
   def publication_title
@@ -211,5 +212,11 @@ class Publisher < ApplicationRecord
 
   def dont_destroy_verified_publishers
     throw :abort if verified?
+  end
+
+  class << self
+    def encryption_key
+      Rails.application.secrets[:attr_encrypted_key]
+    end
   end
 end

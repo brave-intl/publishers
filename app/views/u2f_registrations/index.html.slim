@@ -1,0 +1,24 @@
+.main-content
+  .container
+    .row
+      .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center class="#{"col-md-10 col-center" if @u2f_registrations.empty?}"
+        .sub-panel
+          = render "new"
+
+      - if @u2f_registrations.any?
+        .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+          .sub-panel
+            h3 = t ".heading"
+
+            table.table
+              thead
+                tr
+                  th scope="col" = t ".name_label"
+                  th scope="col" = t ".date_label"
+                  th
+              tbody
+                - @u2f_registrations.each do |u2f|
+                  tr
+                    th scope="row" = u2f.name.presence || t(".name_default")
+                    td = l u2f.updated_at.to_date, format: :long
+                    td = link_to t(".delete_action"), u2f_registration_path(u2f), method: :delete
