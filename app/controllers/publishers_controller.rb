@@ -396,6 +396,7 @@ class PublishersController < ApplicationController
         render(json: {
           status: publisher_status(publisher).to_s,
           status_description: publisher_status_description(publisher),
+          timeout_message: publisher_status_timeout(publisher),
           uphold_status: publisher.uphold_status.to_s,
           uphold_status_description: uphold_status_description(publisher)
         }, status: 200)

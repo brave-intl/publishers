@@ -199,6 +199,7 @@ javascript:
   javascript:
     (function() {
       var checkUpholdStatusInterval;
+      var checkUpholdStatusCount = 0;
 
       function checkUpholdStatus() {
         var options = {
@@ -211,6 +212,7 @@ javascript:
 
         return window.fetch('./status', options)
           .then(function(response) {
+            checkUpholdStatusCount += 1;
             if (response.status === 200 || response.status === 304) {
               return response.json();
             }
@@ -223,6 +225,11 @@ javascript:
               publisherStatus.className = body.status;
               var upholdDashboard = document.getElementById('uphold_dashboard');
               upholdDashboard.style.display = '';
+              dynamicEllipsis.stop('publisher_status');
+              clearInterval(checkUpholdStatusInterval);
+            } else if (checkUpholdStatusCount >= 15) {
+              var publisherStatus = document.getElementById('publisher_status');
+              publisherStatus.innerText = body.timeout_message;
               dynamicEllipsis.stop('publisher_status');
               clearInterval(checkUpholdStatusInterval);
             }
