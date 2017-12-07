@@ -55,6 +55,20 @@ class Publisher < ApplicationRecord
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
+  # publishers that have uphold codes that have been sitting for five minutes
+  # can be cleared if publishers do not create wallet within 5 minute window
+  scope :has_stalled_uphold_code, -> {
+    where.not(encrypted_uphold_code: nil)
+    .where("uphold_updated_at < ?", Time.now - 5.minutes)
+  }
+
+  # publishers that have access params that havent accepted by eyeshade
+  # can be cleared after 2 hours
+  scope :has_stalled_uphold_access_parameters, -> {
+    where.not(encrypted_uphold_access_parameters: nil)
+    .where("uphold_updated_at < ?", Time.now - 2.hours)
+  }
+
   # API call to eyeshade
   def wallet
     return @_wallet if @_wallet
@@ -104,6 +118,7 @@ class Publisher < ApplicationRecord
   def prepare_uphold_state_token
     if self.uphold_state_token.nil?
       self.uphold_state_token = SecureRandom.hex(64)
+      self.uphold_updated_at = Time.now
       save!
     end
   end
@@ -113,6 +128,7 @@ class Publisher < ApplicationRecord
     self.uphold_code = code
     self.uphold_access_parameters = nil
     self.uphold_verified = false
+    self.uphold_updated_at = Time.now
     save!
   end
 
@@ -121,6 +137,7 @@ class Publisher < ApplicationRecord
     self.uphold_code = nil
     self.uphold_access_parameters = nil
     self.uphold_verified = true
+    self.uphold_updated_at = Time.now
     save!
   end
 

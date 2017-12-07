@@ -353,7 +353,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "after redirection back from uphold and uphold_api is offline a publisher's code is still set" do
+  test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set and able to be cleared after five minutes" do
     begin
       perform_enqueued_jobs do
         post(publishers_path, params: SIGNUP_PARAMS)
@@ -395,10 +395,19 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       # verify that the finished_header was not displayed
       refute_match(I18n.t('publishers.finished_header'), response.body)
+
+      # simulate publisher misses 5 minute window to exchange code for access parameters
+      travel 6.minutes
+
+      CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+      publisher.reload
+
+      # verify that uphold has been cleared
+      assert_nil publisher.uphold_code
     end
   end
 
-  test "after redirection back from uphold and uphold_api is online a publisher's code is nil and uphold_access_parameters is set" do
+  test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set and able to be cleared after 2 hours" do
     begin
       perform_enqueued_jobs do
         post(publishers_path, params: SIGNUP_PARAMS)
@@ -437,6 +446,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_match('FAKEACCESSTOKEN', publisher.uphold_access_parameters)
 
       assert_redirected_to '/publishers/home'
+
+      # simulate communication problem with eyeshade, 2 hours pass without wallet being set and access parameters cleared
+      travel 3.hours
+
+      CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+      publisher.reload
+
+      # verify that uphold has been cleared
+      assert_nil publisher.uphold_access_parameters
     end
   end
 
