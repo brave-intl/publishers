@@ -2,4 +2,9 @@
   .main-content
     #content.container
       = yield
-= render(template: "layouts/application")
+
+= render \
+  template: "layouts/application",
+  locals: { \
+    viewport_initial_scale: ((action_name === 'new_auth_token') && '1.0') \
+  }
