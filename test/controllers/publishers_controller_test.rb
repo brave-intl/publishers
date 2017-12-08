@@ -353,7 +353,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "after redirection back from uphold and uphold_api is offline a publisher's code is still set" do
+  test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
     begin
       perform_enqueued_jobs do
         post(publishers_path, params: SIGNUP_PARAMS)
@@ -398,7 +398,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "after redirection back from uphold and uphold_api is online a publisher's code is nil and uphold_access_parameters is set" do
+  test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
     begin
       perform_enqueued_jobs do
         post(publishers_path, params: SIGNUP_PARAMS)
