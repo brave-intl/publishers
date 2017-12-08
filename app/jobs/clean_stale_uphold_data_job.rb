@@ -1,9 +1,9 @@
-class CleanStalledUpholdCodesAndAccessParametersJob < ApplicationJob
+class CleanStaleUpholdDataJob < ApplicationJob
   queue_as :scheduler
 
   def perform
     # clear uphold codes sitting for over 5 minutes   
-    publishers = Publisher.has_stalled_uphold_code
+    publishers = Publisher.has_stale_uphold_code
     n = 0
     publishers.each do |publisher|
       raise if publisher.uphold_status != :code_acquired
@@ -13,18 +13,19 @@ class CleanStalledUpholdCodesAndAccessParametersJob < ApplicationJob
       n += 1
       Rails.logger.info("Cleaned stalled uphold code for #{publisher.brave_publisher_id}.")
     end
-    Rails.logger.info("CleanStalledUpholdCodesAndAccessParametersJob cleared #{n} stalled uphold codes.")
+    Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold codes.")
 
     # clear uphold access params sitting for over 2 hours
-    publishers = Publisher.has_stalled_uphold_access_parameters
+    publishers = Publisher.has_stale_uphold_access_parameters
     n = 0
     publishers.each do |publisher|
       raise if publisher.uphold_status != :access_parameters_acquired
       publisher.uphold_access_parameters = nil
       publisher.uphold_updated_at = Time.now
       publisher.save!
+      n += 1
       Rails.logger.info("Cleaned stalled uphold access parameters for #{publisher.brave_publisher_id}.")
     end
-    Rails.logger.info("CleanStalledUpholdCodesAndAccessParametersJob cleared #{n} stalled uphold access parameters.")
+    Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.")
   end
 end

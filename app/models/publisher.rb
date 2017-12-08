@@ -57,14 +57,14 @@ class Publisher < ApplicationRecord
 
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
-  scope :has_stalled_uphold_code, -> {
+  scope :has_stale_uphold_code, -> {
     where.not(encrypted_uphold_code: nil)
     .where("uphold_updated_at < ?", Time.now - 5.minutes)
   }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
-  scope :has_stalled_uphold_access_parameters, -> {
+  scope :has_stale_uphold_access_parameters, -> {
     where.not(encrypted_uphold_access_parameters: nil)
     .where("uphold_updated_at < ?", Time.now - 2.hours)
   }

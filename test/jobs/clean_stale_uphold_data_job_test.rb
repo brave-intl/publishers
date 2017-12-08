@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CleanStalledUpholdCodesAndAccessParametersJobTest < ActiveJob::TestCase
+class CleanStaleUpholdDataJobTest < ActiveJob::TestCase
   test "cleans uphold codes more than five minutes old" do
     publisher = publishers(:default)
     publisher.uphold_code = "foo"
@@ -8,7 +8,7 @@ class CleanStalledUpholdCodesAndAccessParametersJobTest < ActiveJob::TestCase
     publisher.uphold_updated_at = Time.now - 6.minutes
     publisher.save!
 
-    CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+    CleanStaleUpholdDataJob.perform_now
 
     publisher.reload
 
@@ -22,7 +22,7 @@ class CleanStalledUpholdCodesAndAccessParametersJobTest < ActiveJob::TestCase
     publisher.uphold_updated_at = Time.now - 3.hours
     publisher.save!
 
-    CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+    CleanStaleUpholdDataJob.perform_now
 
     publisher.reload
 
@@ -37,7 +37,7 @@ class CleanStalledUpholdCodesAndAccessParametersJobTest < ActiveJob::TestCase
     publisher.uphold_updated_at = Time.now
     publisher.save!
 
-    CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+    CleanStaleUpholdDataJob.perform_now
 
     publisher.reload
 
@@ -51,7 +51,7 @@ class CleanStalledUpholdCodesAndAccessParametersJobTest < ActiveJob::TestCase
     publisher.uphold_updated_at = Time.now - 1.hours
     publisher.save!
 
-    CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+    CleanStaleUpholdDataJob.perform_now
 
     publisher.reload
 

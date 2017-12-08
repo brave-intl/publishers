@@ -399,7 +399,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       # simulate publisher misses 5 minute window to exchange code for access parameters
       travel 6.minutes
 
-      CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+      CleanStaleUpholdDataJob.perform_now
       publisher.reload
 
       # verify that uphold has been cleared
@@ -450,7 +450,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       # simulate communication problem with eyeshade, 2 hours pass without wallet being set and access parameters cleared
       travel 3.hours
 
-      CleanStalledUpholdCodesAndAccessParametersJob.perform_now
+      CleanStaleUpholdDataJob.perform_now
       publisher.reload
 
       # verify that uphold has been cleared
