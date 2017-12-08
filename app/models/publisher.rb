@@ -1,6 +1,9 @@
 class Publisher < ApplicationRecord
   has_paper_trail
 
+  UPHOLD_CODE_TIMEOUT = 5.minutes
+  UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
+
   has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
   has_many :u2f_registrations, -> { order('updated_at DESC') }
 
@@ -59,14 +62,14 @@ class Publisher < ApplicationRecord
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
     where.not(encrypted_uphold_code: nil)
-    .where("uphold_updated_at < ?", Time.now - 5.minutes)
+    .where("uphold_updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
   scope :has_stale_uphold_access_parameters, -> {
     where.not(encrypted_uphold_access_parameters: nil)
-    .where("uphold_updated_at < ?", Time.now - 2.hours)
+    .where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
   # API call to eyeshade
