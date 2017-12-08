@@ -5,6 +5,9 @@ class CleanStaleUpholdDataJobTest < ActiveJob::TestCase
     publisher = publishers(:default)
     publisher.uphold_code = "foo"
     publisher.uphold_access_parameters = nil
+    publisher.save!
+
+    # override `before_validation :set_uphold_updated_at`
     publisher.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.second
     publisher.save!
 
@@ -19,6 +22,9 @@ class CleanStaleUpholdDataJobTest < ActiveJob::TestCase
   test "cleans stalled access params sitting longer than timeout" do
     publisher = publishers(:default)
     publisher.uphold_access_parameters = "foo"
+    publisher.save!
+    
+    # override `before_validation :set_uphold_updated_at`
     publisher.uphold_updated_at = Publisher::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.second
     publisher.save!
 

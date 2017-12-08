@@ -12,7 +12,6 @@ class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
       # The code acquired from https://uphold.com/authorize is only good for one request and times out in 5 minutes
       # it should now be cleared
       publisher.uphold_code = nil
-      publisher.uphold_updated_at = Time.now
       publisher.save!
 
       UploadUpholdAccessParametersJob.perform_later(publisher_id: publisher.id)

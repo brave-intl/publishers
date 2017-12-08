@@ -9,7 +9,6 @@ class CleanStaleUpholdDataJob < ApplicationJob
     publishers.each do |publisher|
       raise if publisher.uphold_status != :code_acquired
       publisher.uphold_code = nil
-      publisher.uphold_updated_at = Time.now
       publisher.save!
       n += 1
       Rails.logger.info("Cleaned stalled uphold code for #{publisher.id}.")
@@ -24,7 +23,6 @@ class CleanStaleUpholdDataJob < ApplicationJob
     publishers.each do |publisher|
       raise if publisher.uphold_status != :access_parameters_acquired
       publisher.uphold_access_parameters = nil
-      publisher.uphold_updated_at = Time.now
       publisher.save!
       n += 1
       Rails.logger.info("Cleaned stalled uphold access parameters for #{publisher.id}.")

@@ -24,6 +24,9 @@ class Publisher < ApplicationRecord
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
   validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
+  before_validation :set_uphold_updated_at, if: -> {
+    uphold_code_changed? || uphold_access_parameters_changed? || uphold_state_token_changed?
+  }
 
   # uphold_access_parameters should be cleared once uphold_verified has been set
   # (see `verify_uphold` method below)
@@ -121,7 +124,6 @@ class Publisher < ApplicationRecord
   def prepare_uphold_state_token
     if self.uphold_state_token.nil?
       self.uphold_state_token = SecureRandom.hex(64)
-      self.uphold_updated_at = Time.now
       save!
     end
   end
@@ -131,7 +133,6 @@ class Publisher < ApplicationRecord
     self.uphold_code = code
     self.uphold_access_parameters = nil
     self.uphold_verified = false
-    self.uphold_updated_at = Time.now
     save!
   end
 
@@ -140,7 +141,6 @@ class Publisher < ApplicationRecord
     self.uphold_code = nil
     self.uphold_access_parameters = nil
     self.uphold_verified = true
-    self.uphold_updated_at = Time.now
     save!
   end
 
@@ -164,6 +164,10 @@ class Publisher < ApplicationRecord
     else
       :unconnected
     end
+  end
+
+  def set_uphold_updated_at
+    self.uphold_updated_at = Time.now
   end
 
   def publication_type
