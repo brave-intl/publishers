@@ -3,8 +3,9 @@
 
   window.U2FShared = {
     clearErrors: function clearErrors(errorGroupClassName) {
-      let errorElements = document.querySelectorAll('.js-'+errorGroupClassName+' > div');
-      for (let i=0;i<errorElements.length;i++) {
+      var errorElements = document.querySelectorAll('.js-'+errorGroupClassName+' > div');
+      var i;
+      for (i=0;i<errorElements.length;i++) {
         errorElements[i].classList.remove('show');
       }
     },

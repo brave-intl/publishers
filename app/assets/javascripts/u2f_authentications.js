@@ -7,10 +7,10 @@
   function authenticate(formElement, responseInput) {
     formElement.classList.add('js-u2f-working');
 
-    let appId = formElement.querySelector('[name=u2f_app_id]').value;
-    let challenge = JSON.parse(formElement.querySelector('[name=u2f_challenge]').value);
-    let signRequests = JSON.parse(formElement.querySelector('[name=u2f_sign_requests]').value);
-    window.u2f.sign(appId, challenge, signRequests, signingResponse => {
+    var appId = formElement.querySelector('[name=u2f_app_id]').value;
+    var challenge = JSON.parse(formElement.querySelector('[name=u2f_challenge]').value);
+    var signRequests = JSON.parse(formElement.querySelector('[name=u2f_sign_requests]').value);
+    window.u2f.sign(appId, challenge, signRequests, function(signingResponse) {
       switch(signingResponse.errorCode) {
 
         case undefined: // OK
@@ -38,7 +38,7 @@
 
       formElement.classList.remove('js-u2f-working');
       // Reset the form after an error to permit a second attempt
-      let submit = formElement.querySelector('input[type=submit][disabled=disabled]');
+      var submit = formElement.querySelector('input[type=submit][disabled=disabled]');
       if (submit) {
         submit.removeAttribute('disabled');
         submit.blur();
@@ -50,12 +50,12 @@
    * Setup the DOM event listeners
    *
    */
-  document.addEventListener('DOMContentLoaded', () => {
-    let formElement = document.querySelector('.js-authenticate-u2f');
+  document.addEventListener('DOMContentLoaded', function() {
+    var formElement = document.querySelector('.js-authenticate-u2f');
 
     if (formElement) {
-      let responseInput = formElement.querySelector('[name=u2f_response]');
-      formElement.addEventListener('submit', event => {
+      var responseInput = formElement.querySelector('[name=u2f_response]');
+      formElement.addEventListener('submit', function(event) {
         window.U2FShared.clearErrors('register-u2f-error');
         if (!responseInput.value) {
           event.preventDefault();

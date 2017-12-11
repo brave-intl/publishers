@@ -4,8 +4,12 @@ bundler_args: --jobs=3 --retry=3 --without production --without staging
 dist: trusty
 addons:
   postgresql: "9.6"
+  chrome: "stable"
 services:
   - postgresql
   - redis-server
 before_script:
   - RAILS_ENV=test bundle exec rake db:setup
+    # Fails if assets don't build. If it is successful, these assets are then
+    # use by the subsequent test run.
+  - RAILS_ENV=test bundle exec rake assets:precompile
