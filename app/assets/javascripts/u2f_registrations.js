@@ -5,10 +5,10 @@
    * Register a u2f device
    */
   function registerU2fDevice(formElement, responseInput) {
-    let appId = formElement.querySelector('[name=u2f_app_id]').value;
-    let registrationRequests = JSON.parse(formElement.querySelector('[name=u2f_registration_requests]').value);
-    let registeredKeys = JSON.parse(formElement.querySelector('[name=u2f_sign_requests]').value);
-    window.u2f.register(appId, registrationRequests, registeredKeys, registerResponse => {
+    var appId = formElement.querySelector('[name=u2f_app_id]').value;
+    var registrationRequests = JSON.parse(formElement.querySelector('[name=u2f_registration_requests]').value);
+    var registeredKeys = JSON.parse(formElement.querySelector('[name=u2f_sign_requests]').value);
+    window.u2f.register(appId, registrationRequests, registeredKeys, function(registerResponse) {
       switch(registerResponse.errorCode) {
 
         case undefined: // OK
@@ -35,7 +35,7 @@
       }
 
       // Reset the form after an error to permit a second attempt
-      let submit = formElement.querySelector('input[type=submit][disabled=disabled]');
+      var submit = formElement.querySelector('input[type=submit][disabled=disabled]');
       if (submit) {
         submit.removeAttribute('disabled');
         submit.blur();
@@ -47,12 +47,12 @@
    * Setup the DOM event listeners
    *
    */
-  document.addEventListener('DOMContentLoaded', () => {
-    let formElement = document.querySelector('.js-register-u2f');
+  document.addEventListener('DOMContentLoaded', function() {
+    var formElement = document.querySelector('.js-register-u2f');
     if (formElement) {
-      formElement.addEventListener('submit', event => {
+      formElement.addEventListener('submit', function(event) {
         window.U2FShared.clearErrors('register-u2f-error');
-        let responseInput = formElement.querySelector('[name=u2f_response]');
+        var responseInput = formElement.querySelector('[name=u2f_response]');
         if (!responseInput.value) {
           event.preventDefault();
           registerU2fDevice(formElement, responseInput);
