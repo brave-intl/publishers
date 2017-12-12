@@ -1,18 +1,7 @@
+require "concerns/two_factor_auth"
+
 class U2fAuthenticationsController < ApplicationController
-  include PublishersHelper
-
-  before_action :require_pending_2fa_current_publisher
-
-  def new
-    @app_id = u2f.app_id
-    publisher = pending_2fa_current_publisher
-    key_handles = publisher.u2f_registrations.map(&:key_handle)
-
-    @sign_requests = u2f.authentication_requests(key_handles)
-    @challenge = u2f.challenge
-
-    session[:challenge] = @challenge
-  end
+  include TwoFactorAuth
 
   def create
     u2f_response = U2F::SignResponse.load_from_json(params[:u2f_response])
@@ -29,7 +18,7 @@ class U2fAuthenticationsController < ApplicationController
       )
     rescue U2F::Error => e
       Rails.logger.debug("U2F::Error! #{e}")
-      redirect_to new_u2f_authentication_path
+      redirect_to two_factor_authentications_path
       return
     ensure
       session.delete(:challenge)
@@ -41,17 +30,4 @@ class U2fAuthenticationsController < ApplicationController
     sign_in(:publisher, publisher)
     redirect_to publisher_next_step_path(publisher)
   end
-
-  private
-
-  def pending_2fa_current_publisher
-    Publisher.find(session[:pending_2fa_current_publisher_id])
-  end
-
-  def require_pending_2fa_current_publisher
-    if ! session[:pending_2fa_current_publisher_id]
-      redirect_to root_path
-    end
-  end
-
 end

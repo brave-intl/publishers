@@ -6,6 +6,7 @@ class Publisher < ApplicationRecord
 
   has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
   has_many :u2f_registrations, -> { order('updated_at DESC') }
+  has_one :totp_registration
 
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key

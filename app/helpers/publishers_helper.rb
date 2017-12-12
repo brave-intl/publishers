@@ -283,4 +283,16 @@ module PublishersHelper
 
     email.split("@")[0].try(:capitalize)
   end
+
+  def two_factor_enabled?(publisher)
+    totp_enabled?(publisher) || u2f_enabled?(publisher)
+  end
+
+  def totp_enabled?(publisher)
+    publisher.totp_registration.present?
+  end
+
+  def u2f_enabled?(publisher)
+    publisher.u2f_registrations.any?
+  end
 end

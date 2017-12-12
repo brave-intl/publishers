@@ -28,6 +28,8 @@ en:
         phone_normalized: "Phone Number"
         show_verification_status: "List my site in Brave's verified publisher site once verified."
         name: "Contact Name"
+      u2f_registration:
+        name: "Name Security Key"
     errors:
       models:
         publisher:
@@ -318,17 +320,30 @@ en:
     landing_login_body_html: "<strong>Already verified?</strong> Log in to your publisher dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
-  u2f_authentications:
-    new:
-      body: Press the button on your security key device to finish signing in.
-      heading: Insert Security Key
-      unavailable_heading: U2F Unsupported
-      unavailable_body_html: |
-        Your browser doesn't look like it supports U2F, the two factor
-        authentication method supported by <strong>Brave Payments</strong>.
-        Please use the latest version of Google Chrome to authenticate with your
-        security key.
+  two_factor_authentications:
+    totp:
+      heading: Two-factor Authentication
+      body: Enter the authentication code from your mobile app to verify your identity.
+      enter_code_placeholder: 6-digit code
+      submit_value: Verify
+      u2f_alternative_available: Having trouble with the code?
+      u2f_alternative_link: Use security key instead.
+    u2f:
+      heading: Two-factor Authentication
+      body: Insert your security key and press the button on the key when blinking.
+      totp_alternative_available: Don't have your security key?
+      totp_alternative_link: Use authentication code instead.
       submit_value: Try Again
+      unavailable:
+        totp_available: Your browser doesn't support security key, the preferred
+          two-factor authentication method for your account. Your account also
+          has authentication code configured. Please use authentication code
+          or change your browser to Google Chrome to use your security key.
+        heading: Security Key Unsupported
+        body_html: |
+          Your browser doesn't support security key, the only two-factor
+          authentication method your account has configured. Please use
+          Google Chrome to authenticate with your security key.
       u2f-error:
         bad-request: |
           There was an unexpected error in the authentication request made by
@@ -346,21 +361,56 @@ en:
           There was an unexpected timeout waiting your device to respond to
           the authentication request. Please re-attempt authentication and activate
           the device when it is blinking. (TIMEOUT)
-  u2f_registrations:
+  two_factor_registrations:
     index:
-      date_label: Last Used
-      delete_action: Delete
-      heading: Security Keys
-      name_default: Anonymous Key
-      name_label: Name
+      heading: Two-factor Authentication
+      intro: |
+        Two-factor authentication (2FA) is a method of confirming your identity
+        by using two different forms of verification when you access Brave
+        Payments in order to increase security (recommended for protecting your
+        account).
+      enabled_yes: Enabled
+      enabled_no: Not enabled
+      totp:
+        heading: App on your phone
+        intro: |
+          Use an app on your phone to get an authentication code.
+          You will be asked to type in this code when logging in.
+        enabled: Authenticator app has been set up
+        disabled: Authenticator app has not been set up
+        reconfigure: Reconfigure
+        button: Set Up
+        destroy: Disable
+      u2f:
+        heading: Hardware security keys
+        intro: |
+          Security key is a small device that connects to your computer via a
+          USB port and works with FIDO Universal 2nd Factor (U2F).
+          You will be asked to insert and press the key instead of typing in a
+          code (currently limited in browser support).
+        disabled: No keys have been added
+        button: Add Key
+  totp_registrations:
     new:
-      heading: Add Security Key
-      intro_html: |
-        Security keys are hardware devices that can be used as a second factor of authentication.
-        Security keys use the <a target="_blank" href="https://fidoalliance.org/">FIDO U2F</a> standard.
-      name_placeholder: Enter a nickname for this security key
-      submit_value: Register Key
-      submit_value_disabled: Waiting for Key...
+      heading: Set Up Authenticator App
+      warning: |
+        You already have authentication code configured.
+        Reconfiguring will invalidate your existing authentication code devices.
+      step_1: Install an authenticator app on your mobile phone.
+      step_2: Scan the QR code below with your app.
+      step_2_alt: "If you can't scan the QR code, enter this code:"
+      step_3: Enter the 6-digit code from the app one the scan is complete.
+      password_prompt: 6-digit code
+      submit_value: Complete
+  u2f_registrations:
+    new:
+      heading: Register Security Key
+      name_placeholder: Enter a nickname for the key
+      submit_value: Add
+      waiting_heading: Waiting for your security key...
+      waiting_description: |
+        Insert the new hardware key into your computer and press the button when
+        it's blinking.
       u2f-unavailable: |
         Your browser doesn't look like it supports U2F, the two factor auth
         platform supported by Brave. Please use the latest version of Chrome
@@ -382,6 +432,9 @@ en:
           There was an unexpected timeout waiting your device to respond to
           the registration request. Please re-attempt registration and activate
           the device when it is blinking. (TIMEOUT)
+    u2f_registration:
+      delete_action: Remove
+      name_default: Anonymous Key
   youtube:
     authenticate_with_youtube: "Authenticate with YouTube"
     account_not_found: "Couldn't find a matching publisher record"

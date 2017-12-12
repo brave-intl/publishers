@@ -1,0 +1,5 @@
+div
+  strong= "#{u2f_registration.name.presence || t(".name_default")}:"
+  = " registered on #{l(u2f_registration.created_at.to_date, format: :long)}"
+  = " | "
+  = link_to t(".delete_action"), u2f_registration_path(u2f_registration), method: :delete

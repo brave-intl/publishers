@@ -1,0 +1,35 @@
+div.js-feature-u2f-available
+
+  = form_tag u2f_authentications_path, class: "js-authenticate-u2f" do
+    input type="hidden" name="u2f_app_id" value=(app_id)
+    input type="hidden" name="u2f_challenge" value=(challenge.as_json.to_json)
+    input type="hidden" name="u2f_sign_requests" value=(sign_requests.as_json.to_json)
+    input type="hidden" name="u2f_response"
+    h3.text-center = t ".heading"
+    .js-u2f-is-working
+      p.alert.alert-warning = t ".body"
+    .error-group.js-register-u2f-error
+      .alert.alert-warning.js-u2f-error-bad-request = t ".u2f-error.bad-request"
+      .alert.alert-warning.js-u2f-error-configuration-unsupported = t ".u2f-error.configuration-unsupported"
+      .alert.alert-warning.js-u2f-error-device-ineligible = t ".u2f-error.device-ineligible"
+      .alert.alert-warning.js-u2f-error-other-error = t ".u2f-error.other-error"
+      .alert.alert-warning.js-u2f-error-timeout = t ".u2f-error.timeout"
+    .js-u2f-is-prompting.text-center
+      p= submit_tag t(".submit_value"), class: "btn btn-primary"
+
+  - if @totp_enabled
+    p.text-center
+      = t(".totp_alternative_available")
+      br
+      = link_to t(".totp_alternative_link"), two_factor_authentications_path(request_totp: true)
+
+
+div.js-feature-u2f-unavailable
+
+  - if @totp_enabled
+    = render "totp" do
+      p.alert.alert-warning = t("two_factor_authentications.u2f.unavailable.totp_available")
+
+  - else
+    h3.text-center = t ".unavailable.heading"
+    p.alert.alert-warning == t ".unavailable.body_html"

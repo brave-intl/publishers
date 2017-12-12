@@ -6,5 +6,5 @@
 = render \
   template: "layouts/application",
   locals: { \
-    viewport_initial_scale: (%w(new_auth_token create_auth_token).include?(action_name) && '1.0') \
+    viewport_initial_scale: '1.0' \
   }

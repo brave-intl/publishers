@@ -48,6 +48,9 @@ gem "redis-rails", "~> 5"
 
 gem "redis-store", "~> 1.4.0"
 
+# Generate QR codes for TOTP 2fa
+gem "rqrcode"
+
 # SCSS for stylesheets
 gem "sass-rails", "~> 5.0"
 
@@ -73,6 +76,9 @@ gem "vanilla-ujs", "~>1.3"
 
 # clipboard.js for rails
 gem "clipboard-rails"
+
+# One-time passwords for 2fa
+gem "rotp"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console

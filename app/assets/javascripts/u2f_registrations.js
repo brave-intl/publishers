@@ -9,6 +9,8 @@
     var registrationRequests = JSON.parse(formElement.querySelector('[name=u2f_registration_requests]').value);
     var registeredKeys = JSON.parse(formElement.querySelector('[name=u2f_sign_requests]').value);
     window.u2f.register(appId, registrationRequests, registeredKeys, function(registerResponse) {
+      window.U2FShared.clearErrors('register-u2f-waiting');
+
       switch(registerResponse.errorCode) {
 
         case undefined: // OK
@@ -55,6 +57,7 @@
         var responseInput = formElement.querySelector('[name=u2f_response]');
         if (!responseInput.value) {
           event.preventDefault();
+          window.U2FShared.showError('u2f-waiting');
           registerU2fDevice(formElement, responseInput);
         }
       });
