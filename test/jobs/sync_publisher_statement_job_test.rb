@@ -65,4 +65,21 @@ class SyncPublisherStatementTest < ActiveJob::TestCase
       SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id)
     end
   end
+
+  test "will stop retrying to sync statement after 3 minutes" do
+    publisher = publishers(:verified)
+    publisher_statement = PublisherStatement.new(
+      publisher: publisher,
+      period: :all,
+      source_url: '/report/123')
+    publisher_statement.save!
+
+    first_attempt = Time.now.to_i - 4.minutes
+
+    assert_no_enqueued_jobs(only: SyncPublisherStatementJob) do
+      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id, first_attempt: first_attempt)
+    end
+
+    assert_nil publisher_statement.contents
+  end
 end
