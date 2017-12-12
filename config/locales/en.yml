@@ -99,6 +99,7 @@ en:
       Phone Number <span class="optional">(optional)</span>
     phone_number_validation: "Phone numbers should only include numbers, dashes, periods, plus (+), and/or parentheses."
     status_uphold_processing: "Your Uphold wallet is being connected to your account"
+    status_uphold_processing_timeout: "We are having trouble connecting to your Uphold wallet. Please check back later."
     status_unverified: "Your account has not been verified"
     uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
     uphold_status_access_parameters_acquired: "Connecting your Uphold account."
@@ -317,6 +318,70 @@ en:
     landing_login_body_html: "<strong>Already verified?</strong> Log in to your publisher dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
+  u2f_authentications:
+    new:
+      body: Press the button on your security key device to finish signing in.
+      heading: Insert Security Key
+      unavailable_heading: U2F Unsupported
+      unavailable_body_html: |
+        Your browser doesn't look like it supports U2F, the two factor
+        authentication method supported by <strong>Brave Payments</strong>.
+        Please use the latest version of Google Chrome to authenticate with your
+        security key.
+      submit_value: Try Again
+      u2f-error:
+        bad-request: |
+          There was an unexpected error in the authentication request made by
+          Brave. Please try logging again with a fresh email.
+          (BAD_REQUEST)
+        configuration-unsupported: |
+          Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)
+        device-ineligible: |
+          The presented device is not eligible for authentication. This may mean
+          that you are using the incorrect device. (DEVICE_INELIGIBLE)
+        other-error: |
+          There was an unexpected error authenticating your device. Re-attempting
+          2FA may resolve this issue. (OTHER_ERROR)
+        timeout: |
+          There was an unexpected timeout waiting your device to respond to
+          the authentication request. Please re-attempt authentication and activate
+          the device when it is blinking. (TIMEOUT)
+  u2f_registrations:
+    index:
+      date_label: Last Used
+      delete_action: Delete
+      heading: Security Keys
+      name_default: Anonymous Key
+      name_label: Name
+    new:
+      heading: Add Security Key
+      intro_html: |
+        Security keys are hardware devices that can be used as a second factor of authentication.
+        Security keys use the <a target="_blank" href="https://fidoalliance.org/">FIDO U2F</a> standard.
+      name_placeholder: Enter a nickname for this security key
+      submit_value: Register Key
+      submit_value_disabled: Waiting for Key...
+      u2f-unavailable: |
+        Your browser doesn't look like it supports U2F, the two factor auth
+        platform supported by Brave. Please use the latest version of Chrome
+        to register your U2F-compatible device, for example a YubiKey.
+      u2f-error:
+        bad-request: |
+          There was an unexpected error in the registration request made by
+          Brave. Please reload this page and re-attempt registration.
+          (BAD_REQUEST)
+        configuration-unsupported: |
+          Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)
+        device-ineligible: |
+          The presented device is not eligible for registration. This may mean
+          that the token is already registered. (DEVICE_INELIGIBLE)
+        other-error: |
+          There was an unexpected error registering your device. Re-attempting
+          registration may resolve this issue. (OTHER_ERROR)
+        timeout: |
+          There was an unexpected timeout waiting your device to respond to
+          the registration request. Please re-attempt registration and activate
+          the device when it is blinking. (TIMEOUT)
   youtube:
     authenticate_with_youtube: "Authenticate with YouTube"
     account_not_found: "Couldn't find a matching publisher record"

@@ -46,22 +46,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "access link logs the user in, and works only once" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
+  test "re-used access link is rejected" do
+    publisher = publishers(:completed)
     url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
-    end
+ 
+    get url
+    assert_redirected_to home_publishers_url, "precond - publisher is logged in"
 
-    # assert_select("[data-test-id='current_publisher']", publisher.to_s)
-    sign_out(:publisher)
-    get(url)
-    assert_empty(css_select("[data-test-id='current_publisher']"))
+    get url
+    assert_redirected_to root_url, "re-used URL is rejected, publisher not logged in"
   end
 
   test "can't create verified Publisher with an existing verified Publisher with the brave_publisher_id" do
@@ -360,7 +353,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "after redirection back from uphold and uphold_api is offline a publisher's code is still set" do
+  test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
     begin
       perform_enqueued_jobs do
         post(publishers_path, params: SIGNUP_PARAMS)
@@ -405,7 +398,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "after redirection back from uphold and uphold_api is online a publisher's code is nil and uphold_access_parameters is set" do
+  test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
     begin
       perform_enqueued_jobs do
         post(publishers_path, params: SIGNUP_PARAMS)
@@ -625,6 +618,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_match(
       '{"status":"uphold_unconnected",' +
        '"status_description":"You need to create a wallet with Uphold to receive contributions from Brave Payments.",' +
+       '"timeout_message":null,' +
        '"uphold_status":"unconnected",' +
        '"uphold_status_description":"Not connected to Uphold."}',
       response.body)

@@ -16,6 +16,25 @@ verified:
   verification_token: "e3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
   verified: true
 
+# A publisher that has received an authentication email
+#
+completed:
+  brave_publisher_id: "completed.org"
+  email: "alice@completed.org"
+  name: "Alice the Completed"
+  phone: "4159001421"
+  phone_normalized: "+14159001421"
+  show_verification_status: false
+  verification_token: "e3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
+  verified: true
+  authentication_token_expires_at: "<%= 5.days.from_now %>"
+  encrypted_authentication_token_iv: "<%= Base64.encode64(Publisher.encryption_key) %>"
+  encrypted_authentication_token: "<%= Publisher.encrypt_authentication_token(
+    "authentication_token",
+    key: Publisher.encryption_key,
+    iv: Publisher.encryption_key
+  ) %>"
+
 stale:
   created_at: 2017-01-01
   updated_at: 2017-01-01

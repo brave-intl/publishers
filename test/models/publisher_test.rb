@@ -263,4 +263,92 @@ class PublisherTest < ActiveSupport::TestCase
     assert_equal "invalid_uri", publisher.brave_publisher_id_error_code
     assert_equal I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri"), publisher.brave_publisher_id_error_description
   end
+
+  test "test `has_stale_uphold_code` scopes to correct publishers" do
+    publisher = publishers(:default)
+    
+    # verify there are no publishers with stale codes to begin with
+    assert_equal Publisher.has_stale_uphold_code.count, 0
+
+    # verify scope includes publisher if uphold_code exist and exceeds timeout
+    publisher.uphold_code = "foo"
+    publisher.save
+    publisher.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.save
+    assert_equal Publisher.has_stale_uphold_code.count, 1
+
+    # verify scope does not include publisher if uphold_code exists and within timeout
+    publisher.uphold_code = "bar"
+    publisher.save    
+    assert_equal Publisher.has_stale_uphold_code.count, 0
+
+    # verify scope does not include publisher if uphold_code does not exist and within timeout
+    publisher.uphold_code = nil
+    publisher.save
+    assert_equal Publisher.has_stale_uphold_code.count, 0
+
+    # verify scope does not include publisher if uphold_code does not exist and exceeds timeout
+    publisher.uphold_code = nil
+    publisher.save!
+    publisher.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.save!
+    assert_equal Publisher.has_stale_uphold_code.count, 0
+  end
+
+  test "test `has_stale_access_params` scopes to correct publishers " do
+    publisher = publishers(:default)
+    
+    # verify there are no publishers with stale codes to begin with
+    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
+
+    # verify scope includes publisher if uphold_access_params exist and exceeds timeout
+    publisher.uphold_access_parameters = "foo"
+    publisher.save
+    publisher.uphold_updated_at = Publisher::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.minute
+    publisher.save
+    assert_equal Publisher.has_stale_uphold_access_parameters.count, 1
+
+    # verify scope does not include publisher if uphold_access_params exists and within timeout
+    publisher.uphold_access_parameters = "bar"
+    publisher.save    
+    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
+
+    # verify scope does not include publisher if uphold_access_params does not exist and within timeout
+    publisher.uphold_access_parameters = nil
+    publisher.save
+    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
+
+    # verify scope does not include publisher if uphold_access_params does not exist and exceeds timeout
+    publisher.uphold_access_parameters = nil
+    publisher.save!
+    publisher.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.save!
+    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
+  end
+
+  test "test `before_validation :set_uphold_updated_at` updates correctly" do
+    publisher = publishers(:default)
+
+    # verify uphold_updated_at has been set after `uphold_state_token` updated
+    publisher.uphold_updated_at = 1.hour.ago
+    publisher.save
+    publisher.uphold_state_token = "foo"
+    publisher.save
+    assert publisher.uphold_updated_at > 30.minutes.ago
+
+    # verify uphold_updated_at has been set after `uphold_code` updated
+    publisher.uphold_updated_at = 1.hour.ago
+    publisher.save
+    publisher.uphold_code = "foo"
+    publisher.save
+    assert publisher.uphold_updated_at > 30.minutes.ago
+
+    # verify uphold_updated_at has been set after `uphold_access_parameters` updated
+    publisher.uphold_updated_at = 1.hour.ago
+    publisher.uphold_code = nil
+    publisher.save
+    publisher.uphold_access_parameters = "foo"
+    publisher.save
+    assert publisher.uphold_updated_at > 30.minutes.ago
+  end
 end

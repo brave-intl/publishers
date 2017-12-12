@@ -62,8 +62,14 @@ gem "sidekiq-scheduler", "~> 2.0"
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
+# U2F for 2-factor auth
+gem "u2f", "~> 1.0"
+
 # Uglifier as compressor for JavaScript assets
 gem "uglifier", ">= 1.3.0"
+
+# Rails UJS without jQuery
+gem "vanilla-ujs", "~>1.3"
 
 # clipboard.js for rails
 gem "clipboard-rails"
@@ -111,6 +117,10 @@ end
 group :development, :test do
   # Sweet REPL. To use, drop in "binding.pry" anywhere in code.
   gem "pry"
+  gem "mocha"
+  gem "minitest-rails-capybara"
+  gem "capybara-selenium"
+  gem "chromedriver-helper"
 end
 
 group :production, :staging do

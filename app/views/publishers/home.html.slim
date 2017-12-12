@@ -199,6 +199,7 @@ javascript:
   javascript:
     (function() {
       var checkUpholdStatusInterval;
+      var checkUpholdStatusCount = 0;
 
       function checkUpholdStatus() {
         var options = {
@@ -211,6 +212,7 @@ javascript:
 
         return window.fetch('./status', options)
           .then(function(response) {
+            checkUpholdStatusCount += 1;
             if (response.status === 200 || response.status === 304) {
               return response.json();
             }
@@ -223,6 +225,11 @@ javascript:
               publisherStatus.className = body.status;
               var upholdDashboard = document.getElementById('uphold_dashboard');
               upholdDashboard.style.display = '';
+              dynamicEllipsis.stop('publisher_status');
+              clearInterval(checkUpholdStatusInterval);
+            } else if (checkUpholdStatusCount >= 15) {
+              var publisherStatus = document.getElementById('publisher_status');
+              publisherStatus.innerText = body.timeout_message;
               dynamicEllipsis.stop('publisher_status');
               clearInterval(checkUpholdStatusInterval);
             }
@@ -334,13 +341,13 @@ noscript
             = current_publisher.phone
         = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
           .form-group
-            = f.label(:name, class: "control-label")
+            = f.label(:name, class: "control-label", for: "update_contact_name")
             = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
           .form-group
-            = f.label(:email, class: "control-label")
+            = f.label(:email, class: "control-label", for: "update_contact_email")
             = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
           .form-group
-            = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
+            = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label", for: "update_contact_phone")
             = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.phone_number_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
           .button.form-group
             = f.submit(translate("shared.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")

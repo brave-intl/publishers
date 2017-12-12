@@ -1,7 +1,11 @@
 class Publisher < ApplicationRecord
   has_paper_trail
 
+  UPHOLD_CODE_TIMEOUT = 5.minutes
+  UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
+
   has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
+  has_many :u2f_registrations, -> { order('updated_at DESC') }
 
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
@@ -20,6 +24,9 @@ class Publisher < ApplicationRecord
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
   validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
+  before_validation :set_uphold_updated_at, if: -> {
+    uphold_code_changed? || uphold_access_parameters_changed? || uphold_state_token_changed?
+  }
 
   # uphold_access_parameters should be cleared once uphold_verified has been set
   # (see `verify_uphold` method below)
@@ -54,6 +61,20 @@ class Publisher < ApplicationRecord
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
+  # publishers that have uphold codes that have been sitting for five minutes
+  # can be cleared if publishers do not create wallet within 5 minute window
+  scope :has_stale_uphold_code, -> {
+    where.not(encrypted_uphold_code: nil)
+    .where("uphold_updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
+  }
+
+  # publishers that have access params that havent accepted by eyeshade
+  # can be cleared after 2 hours
+  scope :has_stale_uphold_access_parameters, -> {
+    where.not(encrypted_uphold_access_parameters: nil)
+    .where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
+  }
+
   # API call to eyeshade
   def wallet
     return @_wallet if @_wallet
@@ -84,7 +105,7 @@ class Publisher < ApplicationRecord
   end
 
   def encryption_key
-    Rails.application.secrets[:attr_encrypted_key]
+    Publisher.encryption_key
   end
 
   def publication_title
@@ -143,6 +164,10 @@ class Publisher < ApplicationRecord
     else
       :unconnected
     end
+  end
+
+  def set_uphold_updated_at
+    self.uphold_updated_at = Time.now
   end
 
   def publication_type
@@ -211,5 +236,11 @@ class Publisher < ApplicationRecord
 
   def dont_destroy_verified_publishers
     throw :abort if verified?
+  end
+
+  class << self
+    def encryption_key
+      Rails.application.secrets[:attr_encrypted_key]
+    end
   end
 end
