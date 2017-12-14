@@ -6,7 +6,7 @@ class PublisherDomainSetter < BaseService
   end
 
   def perform
-    normalize_domain
+    normalize_domain if @publisher.brave_publisher_id_unnormalized
     inspect_host unless @publisher.brave_publisher_id_error_code
   end
 

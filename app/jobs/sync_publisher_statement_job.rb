@@ -2,6 +2,7 @@ class SyncPublisherStatementJob < ApplicationJob
   queue_as :default
 
   def perform(publisher_statement_id:, first_attempt: nil)
+    require "sentry-raven"
     if first_attempt
       time_elapsed = Time.now.to_i - first_attempt
       if time_elapsed > 3.minutes

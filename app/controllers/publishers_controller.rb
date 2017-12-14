@@ -288,10 +288,10 @@ class PublishersController < ApplicationController
     redirect_to(publisher_last_verification_method_path(@publisher), alert: t("shared.api_error"))
   end
 
-  # TODO: Rate limit
+  # TODO: Rate limit and perform async
   def check_for_https
     @publisher = current_publisher
-    @publisher.inspect_brave_publisher_id
+    PublisherDomainSetter.new(publisher: @publisher).perform
     @publisher.save!
     redirect_to(publisher_last_verification_method_path(@publisher), alert: t("publishers.https_inspection_complete"))
   end

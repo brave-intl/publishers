@@ -158,6 +158,70 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil publisher.brave_publisher_id_unnormalized
   end
 
+  test "a publisher's domain can be rechecked for https support after an initial failure" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = false
+
+      perform_enqueued_jobs do
+        post(publishers_path, params: SIGNUP_PARAMS)
+      end
+      publisher = Publisher.order(created_at: :asc).last
+      url = publisher_url(publisher, token: publisher.authentication_token)
+      get(url)
+      follow_redirect!
+      perform_enqueued_jobs do
+        patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
+      end
+
+      publisher.verification_method = "public_file"
+      publisher.save
+
+      update_params = {
+        publisher: {
+          brave_publisher_id_unnormalized: "this-one-is-unique.org",
+          name: "Alice the Pyramid",
+          phone: "+14159001420"
+        }
+      }
+
+      stub_request(:get, "http://this-one-is-unique.org").
+        to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
+      stub_request(:get, "https://this-one-is-unique.org").
+        to_raise(Errno::ECONNREFUSED.new)
+      stub_request(:get, "https://www.this-one-is-unique.org").
+        to_raise(Errno::ECONNREFUSED.new)
+
+      perform_enqueued_jobs do
+        patch(update_unverified_publishers_path,
+              params: update_params,
+              headers: { 'HTTP_ACCEPT' => "application/json" })
+        assert_response 204
+      end
+
+      publisher.reload
+      assert_nil publisher.brave_publisher_id_error_code
+      assert_equal 'this-one-is-unique.org', publisher.brave_publisher_id
+      assert_nil publisher.brave_publisher_id_unnormalized
+      refute publisher.supports_https
+
+      stub_request(:get, "https://this-one-is-unique.org").
+        to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
+
+      perform_enqueued_jobs do
+        patch(check_for_https_publishers_path)
+        assert_response 302
+        assert_redirected_to '/publishers/verification_public_file'
+      end
+
+      publisher.reload
+      assert publisher.supports_https
+
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
+  end
+
   test "an unauthenticated html request redirects to home" do
     get home_publishers_path
     assert_response 302
