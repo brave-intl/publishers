@@ -67,6 +67,8 @@ class SyncPublisherStatementTest < ActiveJob::TestCase
   end
 
   test "will stop retrying to sync statement after 3 minutes" do
+    require "sentry-raven"
+
     publisher = publishers(:verified)
     publisher_statement = PublisherStatement.new(
       publisher: publisher,
