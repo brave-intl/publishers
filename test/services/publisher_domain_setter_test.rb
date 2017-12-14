@@ -34,6 +34,24 @@ class PublisherDomainSetterTest < ActiveJob::TestCase
     assert publisher.host_connection_verified
   end
 
+  test "skips normalization if it's unnecessary and just inspects the domain" do
+    stub_request(:get, "https://example.com").
+      to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
+
+    publisher = Publisher.new
+    publisher.brave_publisher_id = "example.com"
+
+    refute publisher.supports_https
+    assert_nil publisher.detected_web_host
+    refute publisher.host_connection_verified
+
+    PublisherDomainSetter.new(publisher: publisher).perform
+
+    assert publisher.supports_https
+    assert_nil publisher.detected_web_host
+    assert publisher.host_connection_verified
+  end
+
   test "normalization can succeed and inspection can fail if connection to site fails when https and http fail" do
     stub_request(:get, /v2\/publisher\/identity\?url=http:\/\/mywordpressisdown\.com/).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
