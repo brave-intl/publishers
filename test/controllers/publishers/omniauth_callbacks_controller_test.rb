@@ -357,5 +357,37 @@ module Publishers
         assert_redirected_to home_publishers_path
       end
     end
+
+    test "an authenticated publisher will be redirected to the email verified page on an oauth failure" do
+      OmniAuth.config.test_mode = true
+
+      perform_enqueued_jobs do
+        post(publishers_path, params: SIGNUP_PARAMS)
+      end
+      publisher = Publisher.order(created_at: :asc).last
+      url = publisher_url(publisher, token: publisher.authentication_token)
+      get(url)
+
+      publisher.verified = true
+      publisher.save!
+
+      OmniAuth.config.mock_auth[:google_oauth2] = :invalid_credentials
+
+      get(publisher_google_oauth2_omniauth_authorize_url)
+      follow_redirect!
+
+      assert_redirected_to email_verified_publishers_path
+    end
+
+    test "an unauthenticated publisher will be redirected to the landing page on an oauth failure" do
+      OmniAuth.config.test_mode = true
+
+      OmniAuth.config.mock_auth[:google_oauth2] = :invalid_credentials
+
+      get(publisher_google_oauth2_omniauth_authorize_url)
+      follow_redirect!
+
+      assert_redirected_to '/'
+    end
   end
 end
