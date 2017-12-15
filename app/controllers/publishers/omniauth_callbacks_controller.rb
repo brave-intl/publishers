@@ -119,5 +119,15 @@ module Publishers
       sign_out(current_publisher)
       redirect_to '/', notice: t('youtube.oauth_error')
     end
+
+    def after_omniauth_failure_path_for(scope)
+      publisher = current_publisher
+
+      if publisher
+        email_verified_publishers_path
+      else
+        '/'
+      end
+    end
   end
 end
