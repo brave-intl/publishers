@@ -5,7 +5,7 @@ class Publisher < ApplicationRecord
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
 
   has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
-  has_many :u2f_registrations, -> { order('updated_at DESC') }
+  has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
 
   attr_encrypted :authentication_token, key: :encryption_key
