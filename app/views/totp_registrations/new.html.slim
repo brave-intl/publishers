@@ -27,7 +27,7 @@
                       .totp-svg== qr_code_svg @provisioning_url
                   li.form-group
                     = t '.step_3'
-                    input.form-control name="totp_password" placeholder=t('.password_prompt')
+                    input.form-control name="totp_password" placeholder=t('.password_prompt') autofocus=true
 
                 .row
                   .col.col-md-6= f.submit t('.submit_value'), class: "btn btn-primary"

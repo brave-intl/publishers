@@ -7,7 +7,7 @@ p.text-center = t ".body"
 div.text-center
   = form_tag totp_authentications_path do
     div.form-group
-      input name="totp_password" placeholder=t(".enter_code_placeholder") class="form-control"
+      input.form-control name="totp_password" placeholder=t(".enter_code_placeholder") autofocus=true
 
     p= submit_tag t(".submit_value"), class: "btn btn-primary"
 
