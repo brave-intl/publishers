@@ -14,7 +14,7 @@ class TotpAuthenticationsController < ApplicationController
       Time.now - 30
     )
     if verified_at_timestamp
-      totp_registration.update_attribute(:last_logged_in_at, Time.at(verified_at_timestamp))
+      totp_registration.update_attributes!({ last_logged_in_at: Time.at(verified_at_timestamp) })
       session.delete(:pending_2fa_current_publisher_id)
       sign_in(:publisher, publisher)
 
