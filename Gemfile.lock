@@ -411,8 +411,8 @@ DEPENDENCIES
   recaptcha (~> 3.3)
   redis-rails (~> 5)
   redis-store (~> 1.4.0)
-  rotp
-  rqrcode
+  rotp (~> 3.3)
+  rqrcode (~> 0.10)
   rubocop
   sass-rails (~> 5.0)
   sentry-raven (~> 2.1)
