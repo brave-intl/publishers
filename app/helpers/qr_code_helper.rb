@@ -1,5 +1,5 @@
 module QrCodeHelper
-  require 'rqrcode'
+  require "rqrcode"
 
   def qr_code_svg(data, size: 3)
     qr_code = RQRCode::QRCode.new(data)

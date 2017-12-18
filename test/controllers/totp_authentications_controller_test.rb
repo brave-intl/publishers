@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -14,7 +14,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
 
     post totp_authentications_path, params: {
-      totp_password: '123456'
+      totp_password: "123456"
     }
 
     assert_redirected_to home_publishers_path, "after 2fa post user is directed to the home path"
@@ -31,7 +31,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(false)
 
     post totp_authentications_path, params: {
-      totp_password: '123456'
+      totp_password: "123456"
     }
 
     assert_redirected_to two_factor_authentications_path(request_totp: true), "error redirects to 2fa authentication forcing totp"

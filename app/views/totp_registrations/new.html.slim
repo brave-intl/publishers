@@ -7,28 +7,28 @@
           .row
             .col-md-10.col-md-offset-1
 
-              h3= t '.heading'
+              h3= t ".heading"
 
               - if totp_enabled?(current_publisher)
-                .alert.alert-warning= t '.warning'
+                .alert.alert-warning= t ".warning"
 
               = form_for @totp_registration do |f|
                 = f.hidden_field :secret
 
                 ol
-                  li.form-group= t '.step_1'
+                  li.form-group= t ".step_1"
                   li.form-group
-                    = t '.step_2'
+                    = t ".step_2"
                     '
-                    em= t '.step_2_alt'
+                    em= t ".step_2_alt"
                     '
                     strong= @totp_registration.secret.scan(/.{4}/).join(" ")
                     .text-center
                       .totp-svg== qr_code_svg @provisioning_url
                   li.form-group
-                    = t '.step_3'
-                    input.form-control name="totp_password" placeholder=t('.password_prompt') autofocus=true
+                    = t ".step_3"
+                    input.form-control name="totp_password" placeholder=t(".password_prompt") autofocus=true
 
                 .row
-                  .col.col-md-6= f.submit t('.submit_value'), class: "btn btn-primary"
-                  .col.col-md-6.text-right= link_to t('.cancel'), two_factor_registrations_path, class: "btn btn-link"
+                  .col.col-md-6= f.submit t(".submit_value"), class: "btn btn-primary"
+                  .col.col-md-6.text-right= link_to t(".cancel"), two_factor_registrations_path, class: "btn btn-link"

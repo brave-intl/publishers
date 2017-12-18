@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers

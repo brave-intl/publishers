@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
@@ -32,7 +32,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
       assert_select "input[name=totp_password]:not([value])"
       assert_select "input[type=submit]"
     end
-    assert_match 'Reconfiguring will invalidate your existing authentication code devices', response.body
+    assert_match "Reconfiguring will invalidate your existing authentication code devices", response.body
   end
 
   test "TOTP registration creation" do
@@ -42,7 +42,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
-        totp_password: '123456',
+        totp_password: "123456",
         totp_registration: { secret: ROTP::Base32.random_base32 }
       }
     end
@@ -61,7 +61,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
-        totp_password: '123456',
+        totp_password: "123456",
         totp_registration: { secret: ROTP::Base32.random_base32 }
       }
     end
@@ -78,8 +78,8 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     get two_factor_registrations_path
 
     assert_response :success
-    assert_match 'Enabled', response.body
-    assert_match 'Authenticator app has been set up', response.body
+    assert_match "Enabled", response.body
+    assert_match "Authenticator app has been set up", response.body
     assert_select "a[href=?]:contains(Reconfigure)", new_totp_registration_path
   end
 end
