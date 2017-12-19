@@ -1,0 +1,44 @@
+.main-content
+  .container
+    .row
+      .col.col-details.col-12.col-md-10.col-center
+        .sub-panel
+          .row
+            .col.col-md-8.col-md-offset-1
+              h3= t ".heading"
+              p= t ".intro"
+            .col.col-md-2.text-right
+              - if two_factor_enabled?(current_publisher)
+                span.two-factor-enabled= t ".enabled_yes"
+              - else
+                span.two-factor-disabled= t ".enabled_no"
+
+          .row
+            .col.col-md-8.col-md-offset-1
+              h5= t ".totp.heading"
+              p= t ".totp.intro"
+              - if totp_enabled?(current_publisher)
+                p
+                  span.green= t ".totp.enabled"
+                  = " | "
+                  = link_to t(".totp.reconfigure"), new_totp_registration_path
+              - else
+                p
+                  em= t ".totp.disabled"
+            .col.col-md-2.text-right
+              - if totp_enabled?(current_publisher)
+                = link_to t(".totp.destroy"), totp_registration_path(current_publisher.totp_registration), method: :delete, class: "btn btn-block btn-secondary"
+              - else
+                = link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
+
+          .row
+            .col.col-md-8.col-md-offset-1
+              h5= t ".u2f.heading"
+              p= t ".u2f.intro"
+              - if @u2f_registrations.any?
+                p= render @u2f_registrations
+              - else
+                p
+                  em= t ".u2f.disabled"
+            .col.col-md-2.text-right
+              = link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"

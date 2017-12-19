@@ -433,9 +433,9 @@ class PublishersController < ApplicationController
       if confirm_email.present? && publisher.email == confirm_email
         flash[:alert] = t("publishers.email_confirmed", email: publisher.email)
       end
-      if publisher.u2f_registrations.any?
+      if two_factor_enabled?(publisher)
         session[:pending_2fa_current_publisher_id] = publisher_id
-        redirect_to new_u2f_authentication_path
+        redirect_to two_factor_authentications_path
       else
         sign_in(:publisher, publisher)
       end

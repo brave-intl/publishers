@@ -5,7 +5,9 @@ $progress-train-fill: #FF4D3F
 $progress-train-active: #333
 
 body[data-controller="publishers"],
-body[data-controller="u2f_authentications"],
+body[data-controller="two_factor_authentications"],
+body[data-controller="two_factor_registrations"],
+body[data-controller="totp_registrations"],
 body[data-controller="u2f_registrations"]
   color: #606467
   font-weight: 300
@@ -104,9 +106,6 @@ body[data-controller="u2f_registrations"]
       padding-bottom: 0
       h3
         margin-bottom: 18px
-    .sub-panel
-      padding-left: 0
-      padding-right: 0
 
   .signup-panel
     .col
