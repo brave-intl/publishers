@@ -195,6 +195,7 @@ en:
     pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
     pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
     pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
+    pub_type_site_individual_creator_note_html: "You will need to authenticate with Google to demonstrate that you own the channel."
     youtube_channel_taken_dialog:
       title: "Channel already registered!"
       leadin: "The following YouTube channel has already been registered."
