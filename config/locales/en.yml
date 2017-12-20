@@ -326,6 +326,7 @@ en:
       heading: Two-factor Authentication
       body: Enter the authentication code from your mobile app to verify your identity.
       enter_code_placeholder: 6-digit code
+      totp_password_label: Authentication Code
       submit_value: Verify
       u2f_alternative_available: Having trouble with the code?
       u2f_alternative_link: Use security key instead.
