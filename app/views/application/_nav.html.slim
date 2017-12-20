@@ -9,6 +9,8 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
       .nav.pull-left
         = link_to(root_path) do
           .brave-logo.pull-left
+            = render "logo_svg"
+
           .navbar-brand= t("publishers.app_title")
       .text-center
         = yield(:navbar_content)
