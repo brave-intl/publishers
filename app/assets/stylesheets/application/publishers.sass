@@ -28,6 +28,8 @@ body[data-controller="u2f_registrations"]
     padding: 64px 20px 55px 20px
     border-radius: 8px
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
+    .md-content
+      background: transparent
   .publisher-panel
     max-width: 880px
   .publisher-main-panel
@@ -85,6 +87,10 @@ body[data-controller="u2f_registrations"]
     .site-login, .youtube-login
       padding: 30px 0
 
+  .md-container
+    .sub-panel
+      padding: 54px 20px 46px
+
   @media (max-width: $screen-sm-max)
     .login-panel
       margin-top: 0px
@@ -98,6 +104,11 @@ body[data-controller="u2f_registrations"]
     .login-penal
       .site-login
         padding: 10px 0
+    .sub-panel
+      padding: 32px 20px 22px
+    .md-container
+      .sub-panel
+        padding: 42px 15px 32px
 
   @media (max-width: $screen-xxs-max)
     .process-panel
@@ -106,6 +117,9 @@ body[data-controller="u2f_registrations"]
       padding-bottom: 0
       h3
         margin-bottom: 18px
+    .md-container
+      .sub-panel
+        padding: 18px 10px 12px
 
   .signup-panel
     .col
@@ -255,6 +269,7 @@ body[data-controller="u2f_registrations"]
           .inner-circle
             fill: $progress-train-fill
 
+body[data-controller="publishers"]
   &[data-action="verify"]
     .info-panel
       padding-top: 100px

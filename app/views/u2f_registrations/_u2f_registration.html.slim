@@ -2,4 +2,39 @@ div
   strong= "#{u2f_registration.name.presence || t(".name_default")}:"
   = " registered on #{l(u2f_registration.created_at.to_date, format: :long)}"
   = " | "
-  = link_to t(".delete_action"), u2f_registration_path(u2f_registration), method: :delete
+  = link_to \
+    t(".delete_action"),
+    u2f_registration_path(u2f_registration),
+    method: :delete,
+    data: { "js-confirm-with-modal": "disable-u2f-prompt-#{u2f_registration.id}" }
+  script id="disable-u2f-prompt-#{u2f_registration.id}" type="text/html"
+    .col.col-center.col-xs-12.col-sm-10.col-md-10.col-lg-10
+      h4 Remove Security Key?
+      p
+        | Your remaining two-factor authentication method:
+        - if current_publisher.totp_registration || current_publisher.u2f_registrations.length > 1
+          - if current_publisher.totp_registration
+            br
+            strong Authenticator app on your phone
+          - current_publisher.u2f_registrations.each do |remaining_u2f_registration|
+            - if u2f_registration != remaining_u2f_registration
+              br
+              strong
+                | Security key
+                = " \"#{remaining_u2f_registration.name.presence || t(".name_default")}\""
+              = " (registered #{l(remaining_u2f_registration.created_at.to_date, format: :short)})"
+        - else
+          br
+          strong.error None
+
+      - if !current_publisher.totp_registration && current_publisher.u2f_registrations.length == 1
+        p
+          | Removing this security key will effectively
+          strong = " turn off the two-factor authentication"
+          |  for your account.
+      p
+        | Are you sure you want to remove this security key?
+      .row
+        .col.md-confirm-buttons.pull-right
+          = link_to "Do Not Remove", "#", class: "js-deny btn btn-secondary"
+          = link_to "Remove Security Key", "#", class: "js-confirm btn btn-secondary"
