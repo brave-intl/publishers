@@ -65,4 +65,25 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_equal ['brave-publishers@localhost.local'], email.from
     assert_equal [publisher.pending_email], email.to
   end
+
+  test "verify_email raises error if there is no send address" do
+    publisher = publishers(:default)
+    publisher.pending_email = ""
+    publisher.email = ""
+    publisher.save
+
+    # verify error raised if no pending email
+    assert_raises do
+      PublisherMailer.verify_email(publisher).deliver_now
+    end
+
+    publisher.pending_email = "alice@default.org"
+    publisher.email = "alice@default.org"
+    publisher.save
+    
+    # verify nothing raised if pending email exists
+    assert_nothing_raised do
+      PublisherMailer.verify_email(publisher).deliver_now
+    end
+  end
 end
