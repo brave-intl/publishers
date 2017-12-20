@@ -66,6 +66,17 @@ class PublisherMailer < ApplicationMailer
   def verify_email(publisher)
     @publisher = publisher
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+
+    if @publisher.pending_email.blank?
+      begin
+        raise "SMTP To address must not be blank for PublisherMailer#verify_email"
+      rescue => e
+        require 'sentry-raven'
+        Raven.capture_exception(e,
+                                publisher: @publisher,
+                                publication_type: @publisher.publication_type)
+      end
+    end
     mail(
         to: @publisher.pending_email,
         subject: default_i18n_subject(publication_title: @publisher.publication_title)
