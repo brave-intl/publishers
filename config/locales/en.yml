@@ -380,6 +380,10 @@ en:
           You will be asked to type in this code when logging in.
         enabled: Authenticator app has been set up
         disabled: Authenticator app has not been set up
+        disabled_without_fallback_html: |
+          <strong>Recommended:</strong> Set up an authenticator as
+          the secondary 2FA in case you run into a problem with the security
+          key.
         reconfigure: Reconfigure
         button: Set Up
         destroy: Disable
