@@ -9,13 +9,13 @@ div
     data: { "js-confirm-with-modal": "disable-u2f-prompt-#{u2f_registration.id}" }
   script id="disable-u2f-prompt-#{u2f_registration.id}" type="text/html"
     .col.col-center.col-xs-12.col-sm-10.col-md-10.col-lg-10
-      h4 Remove Security Key?
+      h4 = t(".confirm_disable.header")
       p
-        | Your remaining two-factor authentication method:
+        = t(".confirm_disable.intro")
         - if current_publisher.totp_registration || current_publisher.u2f_registrations.length > 1
           - if current_publisher.totp_registration
             br
-            strong Authenticator app on your phone
+            strong = t(".confirm_disable.remaining_totp")
           - current_publisher.u2f_registrations.each do |remaining_u2f_registration|
             - if u2f_registration != remaining_u2f_registration
               br
@@ -25,16 +25,12 @@ div
               = " (registered #{l(remaining_u2f_registration.created_at.to_date, format: :short)})"
         - else
           br
-          strong.error None
+          strong.error = t(".confirm_disable.none")
 
       - if !current_publisher.totp_registration && current_publisher.u2f_registrations.length == 1
-        p
-          | Removing this security key will effectively
-          strong = " turn off the two-factor authentication"
-          |  for your account.
-      p
-        | Are you sure you want to remove this security key?
+        p == t(".confirm_disable.no_2fa_warning_html")
+      p = t(".confirm_disable.final_confirmation")
       .row
         .col.md-confirm-buttons.pull-right
-          = link_to "Do Not Remove", "#", class: "js-deny btn btn-secondary"
-          = link_to "Remove Security Key", "#", class: "js-confirm btn btn-secondary"
+          = link_to t(".confirm_disable.deny"), "#", class: "js-deny btn btn-secondary"
+          = link_to t(".confirm_disable.confirm"), "#", class: "js-confirm btn btn-secondary"

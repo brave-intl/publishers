@@ -383,6 +383,22 @@ en:
         reconfigure: Reconfigure
         button: Set Up
         destroy: Disable
+        confirm_disable:
+          header: Disable Authenticator App?
+          intro: "Your remaining two-factor authentication method:"
+          none: None
+          no_totp_warning: |
+            Authenticator app provides a good fallback method to log
+            in to your account securely in the case that you lose the
+            hardware security key.
+          no_2fa_warning_html: |
+            Disabling authenticator app will effectively
+            <strong>turn off the two-factor authentication</strong>
+            for your account.
+          final_confirmation: |
+            Are you sure you want to disable authenticator app?
+          deny: Do Not Disable
+          confirm: Disable it for now
       u2f:
         heading: Hardware security keys
         intro: |
@@ -439,7 +455,20 @@ en:
     u2f_registration:
       delete_action: Remove
       name_default: Anonymous Key
-  youtube:
+      confirm_disable:
+        header: Remove Security Key?
+        intro: "Your remaining two-factor authentication method:"
+        remaining_totp: Authenticator app on your phone
+        none: None
+        no_2fa_warning_html: |
+          Removing this security key will effectively
+          <strong>turn off the two-factor authentication</strong>
+          for your account.
+        final_confirmation: Are you sure you want to remove this security key?
+        deny: Do Not Remove
+        confirm: Remove Security Key
+          
+  youtubed:
     authenticate_with_youtube: "Authenticate with YouTube"
     account_not_found: "Couldn't find a matching publisher record"
     channel_not_found: "Channel not found"
