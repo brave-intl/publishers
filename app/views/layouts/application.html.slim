@@ -37,3 +37,13 @@ html
       = content_for?(:content) ? yield(:content) : yield
 
       = render("footer")
+
+    / This block of HTML is used by modal_shared.js to trigger modal
+    / boxes. See that JavaScript file for more details.
+    .js-shared-modal
+      .md-container.container
+        .col.col-10.col-md-8.col-sm-10.col-xs-12.col-center.sub-panel
+          .md-content
+          = link_to "#", class: "md-close js-deny"
+            = render "application/icon_x"
+      .md-overlay

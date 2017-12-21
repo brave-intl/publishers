@@ -389,7 +389,9 @@ en:
           Security key is a small device that connects to your computer via a
           USB port and works with FIDO Universal 2nd Factor (U2F).
           You will be asked to insert and press the key instead of typing in a
-          code (currently limited in browser support).
+          code.
+        intro_warning: |
+          Currently, security key is supported by Google Chrome and Opera.
         disabled: No keys have been added
         button: Add Key
   totp_registrations:

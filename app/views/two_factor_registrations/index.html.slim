@@ -27,14 +27,54 @@
                   em= t ".totp.disabled"
             .col.col-md-2.text-right
               - if totp_enabled?(current_publisher)
-                = link_to t(".totp.destroy"), totp_registration_path(current_publisher.totp_registration), method: :delete, class: "btn btn-block btn-secondary"
+                = link_to \
+                    t(".totp.destroy"),
+                    totp_registration_path(current_publisher.totp_registration),
+                    method: :delete,
+                    class: "btn btn-block btn-secondary",
+                    data: { "js-confirm-with-modal": "disable-totp-prompt" }
+                script#disable-totp-prompt type="text/html"
+                  .col.col-center.col-xs-12.col-sm-10.col-md-10.col-lg-10
+                    h4 Disable Authenticator App?
+                    p
+                      | Your remaining two-factor authentication method:
+                      - if current_publisher.u2f_registrations.any?
+                        - current_publisher.u2f_registrations.each do |u2f_registration|
+                          br
+                          strong
+                            | Security key
+                            = " \"#{u2f_registration.name.presence || t(".name_default")}\""
+                          = " (registered #{l(u2f_registration.created_at.to_date, format: :short)})"
+                      - else
+                        br
+                        strong.error None
+                    - if current_publisher.u2f_registrations.any?
+                      p
+                        | Authenticator app provides a good fallback method to log
+                        |  in to your account securely in the case that you lose the
+                        |  hardware security key.
+                    - else
+                      p
+                        | Disabling authenticator app will effectively turn off
+                        |  the two-factor authentication for your account.
+                    p
+                      | Are you sure you want to disable authenticator app?
+                    .row
+                      .col.md-confirm-buttons.pull-right
+                        = link_to "Do Not Disable", "#", class: "js-deny btn btn-secondary"
+                        = link_to "Disable it for now", "#", class: "js-confirm btn btn-secondary"
+
+
               - else
                 = link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
 
           .row
             .col.col-md-8.col-md-offset-1
               h5= t ".u2f.heading"
-              p= t ".u2f.intro"
+              p
+                = t ".u2f.intro"
+                br
+                span.warning= t ".u2f.intro_warning"
               - if @u2f_registrations.any?
                 p= render @u2f_registrations
               - else

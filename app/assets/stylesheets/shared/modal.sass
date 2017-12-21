@@ -11,14 +11,15 @@
   z-index: 9001
   visibility: hidden
   backface-visibility: hidden
-  .md-content
-    position: relative
-    margin: 0 auto
-    transform: scale(0.7)
-    opacity: 0
-    transition: all 200ms
-    background: #fff
-    padding: 10px
+
+.md-content
+  position: relative
+  margin: 0 auto
+  transform: scale(0.7)
+  opacity: 0
+  transition: all 200ms
+  background: #fff
+  padding: 10px
 
 .md-overlay
   background: rgba(64, 64, 64, 0.7)
@@ -41,3 +42,15 @@
 .md-show ~ .md-overlay
   opacity: 1
   visibility: visible
+
+.md-close
+  position: absolute
+  right: 30px
+  top: 24px
+
+.pull-right.md-confirm-buttons a.btn
+  margin-left: 15px
+
+@media (max-width: $screen-xs-max)
+  .md-container
+    width: 100%
