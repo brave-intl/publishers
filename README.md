@@ -67,7 +67,8 @@ These steps based on [directions at the omniauth-google-oauth2 gem](https://gith
 1. Follow the [setup instructions](https://github.com/brave-intl/bat-ledger) for bat-ledger
 2. Add `export API_EYESHADE_BASE_URI="http://127.0.0.1:3002"` to your secrets script
 3. Add `export API_EYESHADE_KEY="00000000-0000-4000-0000-000000000000"` to your secrets script
-4. In [config/secrets.yml](https://github.com/brave/publishers/blob/master/config/secrets.yml), under `development:` set `api_eyeshade_offline` to `false`
+
+To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
 
 ### Run
 
