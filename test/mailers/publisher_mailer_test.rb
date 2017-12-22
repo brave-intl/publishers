@@ -86,4 +86,39 @@ class PublisherMailerTest < ActionMailer::TestCase
       PublisherMailer.verify_email(publisher).deliver_now
     end
   end
+
+  test "unverified_domain_reached_threshold" do
+    domain = "default.org"
+    email_address = "alice@default.org"
+    email = PublisherMailer.unverified_domain_reached_threshold(domain, email_address)
+    
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal [email_address], email.to
+
+    # verify the domain is in the subject
+    assert_match "#{domain}", email.subject
+  end
+
+  test "unverified_domain_reached_threshold_internal" do
+    domain = "default.org"
+    email_address = "alice@default.org"
+    email = PublisherMailer.unverified_domain_reached_threshold_internal(domain, email_address)
+    
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal ['brave-publishers@localhost.local'], email.from
+
+    # verify the domain is in the subject
+    assert_match "#{domain}", email.subject
+
+    # verify email is marked as internal
+    assert_match "<Internal>", email.subject
+  end
 end

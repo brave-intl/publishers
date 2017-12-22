@@ -216,6 +216,9 @@ en:
       private_access_link_help: "Use this link to continue and manage publisher registration"
       salutation: "Hi %{name},"
       signature: "The Brave Payments Team"
+      post_script: |
+        <p>Got questions? Visit <a href="https://basicattentiontoken.org/">basicattentiontoken.org</a> to learn more about how the micropayments work.
+        <p>We look forward to having you join the thousands of domains already receiving funds from their audience.</p>
       button_not_working: "If the button above doesn't work, paste this link into your web browser: "
       erroneous_email_help: "If you did not make this request, you can ignore this email or contact us at "
       terms_of_service: "Terms of Service"
@@ -223,7 +226,16 @@ en:
       twitter: "Twitter"
       reddit: "Reddit"
       rocketchat: "Rocket.Chat"
-
+    
+    unverified_domain_reached_threshold:
+      subject: "Money is waiting for [%{publication_title}], verify your site with Brave to claim your funds!"
+      salutation: "Hi!"
+      title: "Money waiting for your unverified domain"
+      body_html: |
+        <p>Your site has accumulated quite a bit of fundage and we’d love to hand it over, but first we need you to verify ownership.</p>
+        <p>There are no fees, no gimmicks, we just want you to get paid and keep making awesome content.</p>
+      button: "Verify My Site"
+      button_not_working: "If the button above doesn't work, paste this link into your web browser: "
     uphold_account_changed:
       subject: "[%{publication_title}] Brave Publisher Uphold account changed"
       title: "Publisher Uphold account changed"
@@ -283,9 +295,6 @@ en:
         <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
         <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
       button: "Create My Wallet"
-      body_html_2: |
-        <p>Got questions? Visit <a href="https://basicattentiontoken.org/">basicattentiontoken.org</a> to learn more about how the micropayments work.
-        <p>We look forward to having you join the thousands of domains already receiving funds from their audience.</p>
   publisher_statement_periods:
     past_7_days: "Past 7 days"
     past_30_days: "Past 30 days"
