@@ -23,8 +23,14 @@
                   = " | "
                   = link_to t(".totp.reconfigure"), new_totp_registration_path
               - else
-                p
-                  em= t ".totp.disabled"
+                - if current_publisher.u2f_registrations.length == 1
+                  p.well
+                    span.well-icon
+                      = render "application/icon_circled_bang"
+                    = t ".totp.disabled_without_fallback_html"
+                - else
+                  p
+                    em = t ".totp.disabled"
             .col.col-md-2.text-right
               - if totp_enabled?(current_publisher)
                 = link_to \
