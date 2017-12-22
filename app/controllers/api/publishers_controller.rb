@@ -1,7 +1,6 @@
 class Api::PublishersController < Api::BaseController
   before_action :require_verified_publisher,
                 only: %i(notify)
-
   def notify
     if params[:type].blank?
       return render(status: 400, json: { message: "parameter 'type' is required" })
@@ -15,6 +14,20 @@ class Api::PublishersController < Api::BaseController
     render(json: { message: "success" })
   rescue PublisherNotifier::InvalidNotificationTypeError => error
     render(json: { message: error.message }, status: 400)
+  end
+
+  def notify_unverified
+    PublisherNotifierUnverified.new(
+      notification_params: params[:params],
+      publisher_type: params[:publisher_type],
+    ).perform
+    render(json: { message: "success" })
+
+    rescue PublisherNotifierUnverified::InvalidPublisherTypeError => error
+      render(json: { message: error.message }, status: 400)
+      
+    rescue PublisherNotifierUnverified::NoEmailsFoundError => error
+      render(json: { message: error.message }, status: 500)
   end
 
   def index_by_brave_publisher_id
