@@ -297,6 +297,7 @@ module PublishersHelper
   end
 
   def show_nav_menu?(publisher)
-    publisher.verified?
+    # TODO: [2FA] remove the two_factor_enabled? check below to publicly enable 2FA menu
+    publisher.verified? && two_factor_enabled?(publisher)
   end
 end
