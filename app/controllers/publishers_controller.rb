@@ -13,6 +13,7 @@ class PublishersController < ApplicationController
                create_done
                new
                new_auth_token
+               expired_auth_token
                resend_email_verify_email)
   before_action :require_unauthenticated_publisher,
     only: %i(create
@@ -220,6 +221,10 @@ class PublishersController < ApplicationController
       flash.now[:login_link] = "" # Uses login_link partial instead of explicit message
       render(:new_auth_token)
     end
+  end
+
+  def expired_auth_token
+    @publisher = Publisher.find(params[:publisher_id])
   end
 
   # User can move forward or will be contacted
