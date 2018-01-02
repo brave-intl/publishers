@@ -295,4 +295,8 @@ module PublishersHelper
   def u2f_enabled?(publisher)
     publisher.u2f_registrations.any?
   end
+
+  def show_nav_menu?(publisher)
+    publisher.verified?
+  end
 end

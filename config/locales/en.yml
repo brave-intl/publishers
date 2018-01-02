@@ -45,8 +45,11 @@ en:
       publisher: "Publisher"
     shared:
       errors: "There were errors saving your request:"
+  application:
+    nav:
+      security: Security
+      log_out: Log Out
   publishers:
-    app_title: "Brave Payments"
     already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
     authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
     balance_error: "Unavailable"
@@ -66,8 +69,6 @@ en:
     resend_confirmation_email_done: "The confirmation email has been resent."
     create_auth_token: "Login email sent!"
     create_auth_token_body: "Please check your email for the login link."
-    dashboard-id-html: |
-      Dashboard: <span class="publisher-id">%{publisher_id}</span>
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     dashboard_uphold_header: "Your Uphold Wallet"
     dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
@@ -79,7 +80,6 @@ en:
     log_in_for_youtube: "For YouTube creators, please log in with your Google account."
     log_in_for_site: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
     log_in_with_google_button: "Log in with Google"
-    log_out: "Log out"
     new: "Contact Information"
     new_auth_token: "Log in to Brave Payments"
     new_auth_token_button: "Email me a link to log in"
@@ -299,6 +299,7 @@ en:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
+    app_title: Brave Payments
     cancel: "Cancel"
     error: "Error"
     error_body: "Oops, sorry about that. You can try to refresh the page or return to"
@@ -471,7 +472,7 @@ en:
         final_confirmation: Are you sure you want to remove this security key?
         deny: Do Not Remove
         confirm: Remove Security Key
-          
+
   youtubed:
     authenticate_with_youtube: "Authenticate with YouTube"
     account_not_found: "Couldn't find a matching publisher record"
