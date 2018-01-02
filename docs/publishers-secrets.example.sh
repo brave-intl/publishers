@@ -6,9 +6,8 @@
 
 #export API_AUTH_TOKEN="" # Enable local API token auth.
 #export API_IP_WHITELIST="1.2.3.4,5.6.7.8" # Enable local API whitelisting.
-#export API_EYESHADE_KEY=""
-#export API_EYESHADE_BASE_URI="" # e.g. https://eyeshade-server.example.com/ or run with API_EYESHADE_OFFLINE_1
-export API_EYESHADE_OFFLINE=1
+#export API_EYESHADE_KEY="" # e.g. 00000000-0000-4000-0000-000000000000
+#export API_EYESHADE_BASE_URI="" # e.g. http://127.0.0.1:3002
 #export API_LEDGER_BASE_URI="" # e.g. https://ledger-server.example.com/ or run with API_LEDGER_OFFLINE=1
 export API_LEDGER_OFFLINE=1
 #export ATTR_ENCRYPTED_KEY="" # Encrypt sensitive things in the DB at rest.

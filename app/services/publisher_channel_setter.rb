@@ -8,7 +8,6 @@ class PublisherChannelSetter < BaseApiClient
 
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
-
     payload = {
       "authorizer" => {
         "owner" => publisher.owner_identifier,
