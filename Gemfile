@@ -81,9 +81,9 @@ gem "clipboard-rails"
 gem "rotp", "~> 3.3"
 
 # WHOIS lookup for unverified publishers
-gem "whois", "~> 4.0"
+gem "whois", "~> 4.0", require: false
 
-gem 'whois-parser', '~> 1.0'
+gem "whois-parser", "~> 1.0", require: false
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console

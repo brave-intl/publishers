@@ -370,6 +370,10 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    whois (4.0.5)
+    whois-parser (1.0.1)
+      activesupport (>= 4)
+      whois (>= 4.0.0)
     xpath (2.1.0)
       nokogiri (~> 1.3)
 
@@ -425,6 +429,8 @@ DEPENDENCIES
   vanilla-ujs (~> 1.3)
   web-console
   webmock (~> 3.0)
+  whois (~> 4.0)
+  whois-parser (~> 1.0)
 
 RUBY VERSION
    ruby 2.3.6p384

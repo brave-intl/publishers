@@ -5,7 +5,8 @@ class GetWhoisEmailsForDomain < BaseService
   end
 
   def perform    
-    require 'whois-parser'
+    require "whois"
+    require "whois-parser"
     record = Whois.whois(@domain)
     record.parser.contacts
   end

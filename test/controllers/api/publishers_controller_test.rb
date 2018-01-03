@@ -1,5 +1,6 @@
 require "test_helper"
 require "shared/mailer_test_helper"
+require "whois-parser"
 
 class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
