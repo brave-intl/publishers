@@ -1,5 +1,14 @@
 // Maintained at https://github.com/google/u2f-ref-code/blob/master/u2f-gae-demo/war/js/u2f-api.js
 
+// Brave has significantly changed this implementation.
+//
+// * Only permit the window.u2f property to be added to Chrome and Chrome-like
+//   browsers.
+// * Add an error code for INCOMPLETE_IMPLEMENTATION. This is returned in Brave
+//   which is a Chrome-alike but not does not have the required U2F Chrome
+//   extension bundled.
+//
+
 //Copyright 2014-2015 Google Inc. All rights reserved.
 
 //Use of this source code is governed by a BSD-style
@@ -27,6 +36,32 @@ var u2f = u2f || {};
  * @number
  */
 var js_api_version;
+
+// How long to wait before presuming setting up a communication port for
+// U2F has failed.
+var INCOMPLETE_IMPLEMENTATION_TIMEOUT = 30000;
+
+// Return a callbackWrapper which is a no-op after a timer expires. If the timer
+// does not expire before the wrapper is called, call the real callback. When
+// the timer expires, call the real callback with an error code.
+function applyIncompleteImplementationTimeout(callback, timeout) {
+  var isExpired = false;
+  var isCalled = false;
+
+  window.setTimeout(function incompleteImplementationTimeout() {
+    isExpired = true;
+    if (!isCalled) {
+      callback({ errorCode: u2f.ErrorCodes.IMPLEMENTATION_INCOMPLETE });
+    }
+  }, timeout);
+
+  return function callbackWrapper() {
+    isCalled = true;
+    if (!isExpired) {
+      callback.apply(null, arguments);
+    }
+  }
+}
 
 /**
  * The U2F extension id
@@ -68,7 +103,8 @@ u2f.ErrorCodes = {
     'BAD_REQUEST': 2,
     'CONFIGURATION_UNSUPPORTED': 3,
     'DEVICE_INELIGIBLE': 4,
-    'TIMEOUT': 5
+    'TIMEOUT': 5,
+    'IMPLEMENTATION_INCOMPLETE': 99900
 };
 
 
@@ -629,7 +665,8 @@ u2f.responseHandler_ = function(message) {
  * @param {function((u2f.Error|u2f.SignResponse))} callback
  * @param {number=} opt_timeoutSeconds
  */
-u2f.sign = function(appId, challenge, registeredKeys, callback, opt_timeoutSeconds) {
+u2f.sign = function(appId, challenge, registeredKeys, _callback, opt_timeoutSeconds) {
+  var callback = applyIncompleteImplementationTimeout(_callback, INCOMPLETE_IMPLEMENTATION_TIMEOUT);
   if (js_api_version === undefined) {
     // Send a message to get the extension to JS API version, then send the actual sign request.
     u2f.getApiVersion(
@@ -675,7 +712,8 @@ u2f.sendSignRequest = function(appId, challenge, registeredKeys, callback, opt_t
  * @param {function((u2f.Error|u2f.RegisterResponse))} callback
  * @param {number=} opt_timeoutSeconds
  */
-u2f.register = function(appId, registerRequests, registeredKeys, callback, opt_timeoutSeconds) {
+u2f.register = function(appId, registerRequests, registeredKeys, _callback, opt_timeoutSeconds) {
+  var callback = applyIncompleteImplementationTimeout(_callback, INCOMPLETE_IMPLEMENTATION_TIMEOUT);
   if (js_api_version === undefined) {
     // Send a message to get the extension to JS API version, then send the actual register request.
     u2f.getApiVersion(

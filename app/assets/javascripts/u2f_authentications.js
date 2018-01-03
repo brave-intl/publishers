@@ -34,6 +34,9 @@
         case 5: // TIMEOUT
           window.U2FShared.showError('u2f-error-timeout');
           break;
+        case 99900: // IMPLEMENTATION_INCOMPLETE
+          window.U2FShared.showError('u2f-error-implementation-incomplete');
+          break;
       }
 
       formElement.classList.remove('js-u2f-working');
