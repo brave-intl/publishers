@@ -256,12 +256,6 @@ noscript
         a.btn.btn-primary#verify_now= t("publishers.verify_modal_confirm")
   .md-overlay
 
-- content_for(:navbar_content_right) do
-  - if current_publisher.publication_type == :site
-    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
-  - elsif current_publisher.publication_type == :youtube_channel
-    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
-
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .publisher-status

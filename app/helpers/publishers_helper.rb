@@ -295,4 +295,9 @@ module PublishersHelper
   def u2f_enabled?(publisher)
     publisher.u2f_registrations.any?
   end
+
+  def show_nav_menu?(publisher)
+    # TODO: [2FA] remove the two_factor_enabled? check below to publicly enable 2FA menu
+    publisher.verified? && two_factor_enabled?(publisher)
+  end
 end

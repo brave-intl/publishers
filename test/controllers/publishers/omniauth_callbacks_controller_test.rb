@@ -234,7 +234,7 @@ module Publishers
         # should redirect to the existing publishers home page, as the existing publisher
         assert_redirected_to home_publishers_path
         follow_redirect!
-        assert_select('div.dashboard-id span') do |element|
+        assert_select('.publisher-youtube-channel .channel-name') do |element|
           assert_match("Some Other Guy's Channel", element.text)
         end
       end
