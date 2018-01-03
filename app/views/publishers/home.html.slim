@@ -258,12 +258,11 @@ noscript
   .md-overlay
 
 - content_for(:navbar_content_right) do
-  .btn.btn-secondary
-    = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path)
+  = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
 
 .row
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
-    .publisher-status
+  /.col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+  /  .publisher-status
       /- if current_publisher.publication_type == :site
       /  .publisher-domain-summary
       /    .publisher-domain-name= current_publisher.brave_publisher_id
@@ -274,7 +273,7 @@ noscript
       /    .channel-thumbnail= image_tag(current_publisher.youtube_channel.thumbnail_url)
       /    .channel-name title=current_publisher.youtube_channel.title
       /      = current_publisher.youtube_channel.title.truncate(30)
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+  .col.col-details.col-md-5.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
     .balance
       .pull-left
@@ -285,6 +284,10 @@ noscript
           span.bat-code= " BAT"
         .converted#converted_amount
           = publisher_converted_balance(current_publisher)
+  - if current_publisher.channels.empty?
+    .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+      .add-channel-cta
+        = t("publishers.add_channel_cta")
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel.uphold-panel
@@ -370,6 +373,10 @@ noscript
   .row.channels_row
     .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
       = link_to(channel.publication_title, channel_next_step_path(channel))
+- if current_publisher.channels.empty?
+  .row
+    .col.col-details.col-md-12.col-xs-10
+      = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'channel-placeholder')
 .row.tos-row
   .col.col-details.col-md-6.col-md-push-6.col-xs-10.col-xs-center.col-sm-center
     .terms-of-service
