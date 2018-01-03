@@ -11,7 +11,7 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
               .user-lock= render two_factor_enabled?(current_publisher) ? "locked_svg" : "unlocked_svg"
               .user-arrow= render "arrow_svg"
               .user-dropdown
-                .user-info
+                = link_to home_publishers_path, class: "user-info" do
                   .user-avatar= render "avatar_svg"
                   .user-name= current_publisher.name
                   .user-email= current_publisher.email
