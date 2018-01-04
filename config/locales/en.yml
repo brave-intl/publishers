@@ -418,6 +418,21 @@ en:
           code.
         intro_warning: |
           Currently, security key is supported by Google Chrome and Opera.
+        browser:
+          heading: Limited Browser Support
+          content_html: |
+            This means you will need to update to the latest <strong>Google
+            Chrome</strong> or <strong>Opera</strong> in order to set up and
+            log in using security keys. More browsers will start supporting the
+            security key in the near future. We will inform you on the changes.
+        device:
+          tooltip: A list of security keys that have been tested
+          heading: Tested Security Keys
+          content_html: |
+            The following products have been tested and proven to work with our
+            system:<br />
+            - <a href="https://www.yubico.com/products/yubikey-hardware/" target="_blank">YubiKey</a><br />
+            - <a href="https://www.ledgerwallet.com/products/ledger-blue" target="_blank">Ledger Blue</a>
         disabled: No keys have been added
         button: Add Key
   totp_registrations:

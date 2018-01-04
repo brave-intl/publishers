@@ -1,5 +1,6 @@
 $braveRed: red
 $disabledGray: #a7acb2
+$tooltipHeading: rebeccapurple
 
 body[data-controller="two_factor_registrations"]
   h3
@@ -21,3 +22,38 @@ body[data-controller="two_factor_registrations"]
     color: $braveGreen
   .warning
     color: $braveRed
+  span.tf-tooltip
+    position: relative
+    display: inline-block
+    color: $linkColor
+    span.tf-tooltip-content
+      display: none
+      position: absolute
+      z-index: 5
+      left: 50%
+      bottom: 100%
+      width: 500px
+      margin-left: -250px
+      padding: 30px
+      background: white
+      border-radius: 4px
+      box-shadow: 0 0 15px 0 rgba(0,0,0,0.5)
+      color: #606467
+      font-size: 14px
+      &::after
+        content: " "
+        position: absolute
+        top: 100%
+        left: 50%
+        margin-left: -5px
+        border: solid 5px transparent
+        border-top-color: white
+      span.tf-tooltip-content-heading
+        display: block
+        font-weight: bold
+        color: $tooltipHeading
+      span.tf-tooltip-content-content
+        display: block
+    &:hover
+      span.tf-tooltip-content
+        display: block
