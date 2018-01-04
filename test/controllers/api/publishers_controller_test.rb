@@ -23,9 +23,7 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
 
   UNVERIFIED_DOMAIN_PUBLISHER_PARAMS = {
     publisher_type: "domain",
-    params: {
-      domain: "default.org"      
-    }
+    publisher_id: "default.org"
   }.freeze
 
   test "can create Publishers" do
@@ -214,7 +212,8 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
   test "#notify_unverified returns 400 when invalid publisher type given" do
     # verify returns 400 if publisher_type is unknown
     invalid_publisher_params = {
-      publisher_type: "medium"
+      publisher_type: "medium",
+      publisher_id: "medium.com/alice"
     }
 
     assert_enqueued_emails 0 do
@@ -227,7 +226,7 @@ class Api::PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify returns 400 if only publisher_type is supplied and not the domain
     invalid_publisher_params = {
       publisher_type: "domain",
-      params: {}
+      publisher_id: ""
     }
 
     assert_enqueued_emails 0 do

@@ -1,11 +1,13 @@
 class PublisherNotifierUnverified < BaseService
   attr_reader :notification_params, :notification_type
 
-  PUBLISHER_TYPES = %w(youtube, domain)
+  PUBLISHER_TYPES = %w(domain) # TODO: youtube
 
-  def initialize(publisher_type:, notification_params: {})
-    @notification_params = (notification_params) || {}
+  def initialize(publisher_type:, publisher_id: )
+    @publisher_id = publisher_id
     @publisher_type = publisher_type
+
+    ensure_params_exist
 
     if !PUBLISHER_TYPES.include?(@publisher_type)
       raise InvalidPublisherTypeError.new("#{@publisher_type} is an invalid publisher type")
@@ -21,12 +23,8 @@ class PublisherNotifierUnverified < BaseService
   end
 
   def perform_domain
-    if !@notification_params.key?(:domain)
-      raise InvalidPublisherTypeError.new("No domain supplied")
-    end
-
-    domain = @notification_params[:domain]
-    contacts = GetWhoisEmailsForDomain.new(domain).perform
+    domain = @publisher_id
+    contacts = GetWhoisEmailsForDomain.new(@domain).perform
 
     if contacts.empty?
       raise NoEmailsFoundError.new("No contacts listed on whois info for '#{domain}'")
@@ -56,6 +54,7 @@ class PublisherNotifierUnverified < BaseService
     # TO DO
   end
 
+  class BlankParamsError < RuntimeError; end
   class InvalidPublisherTypeError < RuntimeError; end
   class NoEmailsFoundError < RuntimeError; end
 
@@ -63,5 +62,15 @@ class PublisherNotifierUnverified < BaseService
 
   def is_valid_email?(email)
     (email =~ Devise.email_regexp) != nil
+  end
+
+  def ensure_params_exist
+    if @publisher_id.blank?
+      raise BlankParamsError.new("No publisher id supplied")
+    end
+
+    if @publisher_type.blank?
+      raise BlankParamsError.new("No publisher type supplied")
+    end
   end
 end

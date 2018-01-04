@@ -18,12 +18,12 @@ class Api::PublishersController < Api::BaseController
 
   def notify_unverified
     PublisherNotifierUnverified.new(
-      notification_params: params[:params],
+      publisher_id: params[:publisher_id],
       publisher_type: params[:publisher_type],
     ).perform
     render(json: { message: "success" })
 
-    rescue PublisherNotifierUnverified::InvalidPublisherTypeError => error
+    rescue PublisherNotifierUnverified::InvalidPublisherTypeError, PublisherNotifierUnverified::BlankParamsError => error
       render(json: { message: error.message }, status: 400)
       
     rescue PublisherNotifierUnverified::NoEmailsFoundError => error
