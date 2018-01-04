@@ -46,7 +46,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "re-used access link is rejected" do
+  test "re-used access link is rejected and send publisher to the expired auth token page" do
     publisher = publishers(:completed)
     url = publisher_url(publisher, token: publisher.authentication_token)
  
@@ -54,7 +54,67 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to home_publishers_url, "precond - publisher is logged in"
 
     get url
-    assert_redirected_to root_url, "re-used URL is rejected, publisher not logged in"
+    assert_redirected_to expired_auth_token_publishers_path(publisher_id: publisher.id), "re-used URL is rejected, publisher not logged in"
+  end
+
+  test "expired login link takes unverified publishers to dashboard" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+
+    # expire token and attempt to cliam
+    publisher.authentication_token_expires_at = Time.now
+    publisher.save
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+
+    # verify that publisher attempt to claim expired token returns expired token page
+    assert_redirected_to expired_auth_token_publishers_path(publisher_id: publisher.id)
+    follow_redirect!
+
+    # verify that publisher is then redirect to root
+    assert_redirected_to root_path
+  end
+
+  test "expired login link takes verified publishers to expired auth token page" do
+    publisher = publishers(:verified)
+
+    request_login_email(publisher: publisher)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+
+    # expire the token and attempt to claim
+    publisher.authentication_token_expires_at = Time.now
+    publisher.save
+    get(url)
+
+    # verify that verified publishers are taken to expired token page
+    assert_redirected_to expired_auth_token_publishers_path(publisher_id: publisher.id)
+    follow_redirect!
+
+    # verify publisher is not redirected to homepage
+    assert_response :success
+  end
+
+  test "expired session redirects to login page" do
+    # login the publisher
+    publisher = publishers(:completed)
+    request_login_email(publisher: publisher)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    get(url)
+
+    # assert redirected to dashboard
+    assert_redirected_to home_publishers_path
+
+    # fast forward time to simulate timeout
+    travel 1.day do
+      publisher.save!
+      publisher.reload
+      get(home_publishers_path)
+    end
+
+    # verify publisher is redirected to login page
+    assert_redirected_to new_auth_token_publishers_path
   end
 
   test "can't create verified Publisher with an existing verified Publisher with the brave_publisher_id" do
