@@ -225,6 +225,11 @@ class PublishersController < ApplicationController
 
   def expired_auth_token
     @publisher = Publisher.find(params[:publisher_id])
+    if @publisher.verified?
+      return
+    end
+
+    redirect_to(root_path, alert: I18n.t("publishers.login_link_unverified_message"))
   end
 
   # User can move forward or will be contacted

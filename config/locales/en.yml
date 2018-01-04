@@ -84,6 +84,7 @@ en:
     login_link_expired_title: "Login Link Expired"
     login_link_expired_message: "Login link access expires after 30 minutes and can only be used once"
     login_link_expired_button: "Send me a new link"
+    login_link_unverified_message: "Your login link has expired. Please send yourself another one."
     new: "Contact Information"
     new_auth_token: "Log in to Brave Payments"
     new_auth_token_button: "Email me a link to log in"
