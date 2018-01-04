@@ -37,6 +37,8 @@
                   .col.col-sm-6
                     p
                       input.form-control name="totp_password" placeholder=t(".password_prompt") autofocus=true
+                  .col.col-sm-6.hidden-xs
+                    = render 'smartphone_with_code_tilted'
 
                 .row
                   .col.col-xs-6= f.submit t(".submit_value"), class: "btn btn-primary"
