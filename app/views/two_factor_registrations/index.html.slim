@@ -29,11 +29,12 @@
                       = render "application/icon_circled_bang"
                     = t ".totp.disabled_without_fallback_html"
                 - else
-                  p
-                    em = t ".totp.disabled"
+                  p.disabled
+                    == "&bull; "
+                    = t ".totp.disabled"
             .col.col-md-2.text-right
               - if totp_enabled?(current_publisher)
-                = link_to \
+                p= link_to \
                     t(".totp.destroy"),
                     totp_registration_path(current_publisher.totp_registration),
                     method: :delete,
@@ -65,7 +66,8 @@
                         = link_to t(".totp.confirm_disable.confirm"), "#", class: "js-confirm btn btn-secondary"
 
               - else
-                = link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
+                p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
+                p.text-center= render "smartphone_with_code"
 
           .row
             .col.col-md-8.col-md-offset-1
@@ -77,7 +79,9 @@
               - if @u2f_registrations.any?
                 p= render @u2f_registrations
               - else
-                p
-                  em= t ".u2f.disabled"
+                p.disabled
+                  == "&bull; "
+                  = t ".u2f.disabled"
             .col.col-md-2.text-right
-              = link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
+              p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
+              p.text-center= render "usb"
