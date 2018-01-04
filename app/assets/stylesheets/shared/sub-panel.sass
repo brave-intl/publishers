@@ -1,0 +1,56 @@
+/*
+ * .sub-panel is a box with rounded corners.
+ */
+
+/* This is the panel itself */
+.sub-panel
+  background-color: white
+  border: none
+  padding: 64px 20px 55px 20px
+  border-radius: 8px
+  box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15)
+  .md-content
+    background: transparent
+
+.sub-panel--panel--modal
+  padding: 54px 20px 46px
+
+.sub-panel--panel--top
+  padding-top: 28px
+  padding-bottom: 25px
+  border-bottom-left-radius: 0
+  border-bottom-right-radius: 0
+  background: #eefbfd
+  color: #00BCD6
+  border-bottom: 1px solid #e7ebee
+
+.sub-panel--panel--bottom
+  padding-top: 30px
+  border-top-left-radius: 0
+  border-top-right-radius: 0
+
+.sub-panel--top-icon
+  float: left
+
+.sub-panel--top-body
+  margin-left: 63px
+
+.sub-panel--list
+  padding-left: 0
+  list-style-position: inside
+
+@media (max-width: $screen-sm-max)
+  .sub-panel
+    padding-top: 32px
+    padding-bottom: 22px
+  .sub-panel--panel--modal
+    padding: 42px 15px 32px
+  .sub-panel--panel--top
+    padding-top: 18px
+    padding-bottom: 15px
+  .sub-panel--panel--bottom
+    padding-top: 20px
+
+@media (max-width: $screen-xxs-max)
+  .sub-panel--panel--modal
+    padding: 18px 10px 12px
