@@ -355,15 +355,20 @@ en:
         configuration-unsupported: |
           Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)
         device-ineligible: |
-          The presented device is not eligible for authentication. This may mean
-          that you are using the incorrect device. (DEVICE_INELIGIBLE)
+          The presented security key is not eligible for authentication. This may mean
+          that you are using the incorrect security key. (DEVICE_INELIGIBLE)
         other-error: |
-          There was an unexpected error authenticating your device. Re-attempting
+          There was an unexpected error authenticating your security key. Re-attempting
           2FA may resolve this issue. (OTHER_ERROR)
         timeout: |
-          There was an unexpected timeout waiting your device to respond to
+          There was an unexpected timeout waiting for your security key to respond to
           the authentication request. Please re-attempt authentication and activate
-          the device when it is blinking. (TIMEOUT)
+          the security key when it is blinking. (TIMEOUT)
+        implementation-incomplete: |
+          Please insert your security key and re-attempt authentication. Some
+          browsers (like Brave) have an incomplete implementation of this
+          protocol. Please use a current release of Google Chrome or Opera.
+          (IMPLEMENTATION_INCOMPLETE)
   two_factor_registrations:
     index:
       heading: Two-factor Authentication
@@ -448,15 +453,20 @@ en:
         configuration-unsupported: |
           Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)
         device-ineligible: |
-          The presented device is not eligible for registration. This may mean
+          The presented security key is not eligible for registration. This may mean
           that the token is already registered. (DEVICE_INELIGIBLE)
         other-error: |
-          There was an unexpected error registering your device. Re-attempting
+          There was an unexpected error registering your security key. Re-attempting
           registration may resolve this issue. (OTHER_ERROR)
         timeout: |
-          There was an unexpected timeout waiting your device to respond to
+          There was an unexpected timeout waiting for your security key to respond to
           the registration request. Please re-attempt registration and activate
-          the device when it is blinking. (TIMEOUT)
+          the security key when it is blinking. (TIMEOUT)
+        implementation-incomplete: |
+          Please insert your security key and re-attempt registration. Some
+          browsers (like Brave) have an incomplete implementation of this
+          protocol. Please use a current release of Google Chrome or Opera.
+          (IMPLEMENTATION_INCOMPLETE)
     u2f_registration:
       delete_action: Remove
       name_default: Anonymous Key
