@@ -1,0 +1,27 @@
+- content_for(:navbar_content) do
+
+.publisher-domain-panel.publisher-panel.col-center
+  .publisher-domain-name
+    | &nbsp;
+
+.publisher-panel.login-panel.col-center
+  .sub-panel.process-panel.col-center
+    .content-panel
+      h3.text-center= t("publishers.sign_up_header")
+      = form_tag publishers_path, method: :post do |f|
+        .form-group
+          .row.form-row
+            .col.col-xs-12.col-sm-8.col-center
+              = email_field_tag(:email, nil, class: "form-control", placeholder: t("publishers.enter_your_email"), required: true)
+              - if params[:captcha]
+                = hidden_field_tag(:captcha)
+              - if @should_throttle
+                .form-group
+                  = recaptcha_tags
+          .row.form-row
+            .col.col-xs-12.col-sm-8.col-center
+              = submit_tag(t("static.landing_begin_button"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+          .row.form-footer
+            .col.col-xs-12.col-sm-8.col-center
+              = t("static.landing_login")
+              = link_to(t("static.landing_login_button"), new_auth_token_publishers_path)

@@ -58,6 +58,9 @@ en:
     contact_person: "Contact person"
     contact: "Contact"
     copy_to_clipboard: "Copy to clipboard"
+    sign_up_header: "Join Brave Payments"
+
+
     create_done_header: "An email is on its way!"
     create_done_body_html: |
       <p>We're excited that you want to be in on Brave Payments. We just sent an email to
@@ -77,9 +80,6 @@ en:
     edit_contact: "Edit Contact"
     uphold_check_balance: "Check Balance"
     email_confirmed: "Your updated email address %{email} has been confirmed."
-    log_in_for_youtube: "For YouTube creators, please log in with your Google account."
-    log_in_for_site: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
-    log_in_with_google_button: "Log in with Google"
     log_out: "Log out"
     login_link_expired_title: "Login Link Expired"
     login_link_expired_message: "Login link access expires after 30 minutes and can only be used once"
@@ -87,7 +87,8 @@ en:
     login_link_unverified_message: "Your login link has expired. Please send yourself another one."
     login_session_expired: "Your session has expired.  Please log in again."
     new: "Contact Information"
-    new_auth_token: "Log in to Brave Payments"
+    log_in: "Log In"
+    enter_your_email: "Enter your email"
     new_auth_token_button: "Email me a link to log in"
     new_auth_token_email_html: |
       Email Address <span class="optional">(for unverified domains)</span>
@@ -95,6 +96,7 @@ en:
     new_auth_token_publisher_not_found_part_two: "start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
+    new_channel: "+ Add Channel"
     not_verified: "Unverified"
     progress:
       contact_info: "Contact Info"
@@ -178,7 +180,8 @@ en:
     verification_verify_note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
     verification_file_contents: "File contents:"
     verification_option_place_trusted_file: "Place a Trusted File into your Domain"
-    verification_required: "To continue please verify ownership of your domain."
+    email_verification_required: "To continue please confirm your email address."
+    verification_required: "To continue please confirm your email address and name."
     verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
     verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
     verification_helper_dns_contact: "Contact Brave Support"
@@ -195,6 +198,10 @@ en:
     verify_modal_content_html: "Thanks for helping to provide a better Web experience for the millions who've downloaded the Brave browser. We'd like to include you in the <strong>Verified Publishers list</strong> on our web site, which we may share in external communications and social media as well."
     verify_modal_cancel: "I'll do this later"
     verify_modal_confirm: "Yes, I'd like to be listed"
+    complete_signup_welcome: "One last thing..."
+    complete_signup_leadin: "Finish signup by entering below."
+    complete_signup_tos_html: "By clicking 'Sign Up', you're agreeing to our %{tos_link}"
+    complete_signup_submit: "Sign Up"
     pub_type_welcome: "Welcome Back!"
     pub_type_lets_start: "Let's start with choosing who you are based on where you're publishing your content."
     pub_type_site_operator: "SITE OPERATOR"
@@ -232,7 +239,7 @@ en:
       twitter: "Twitter"
       reddit: "Reddit"
       rocketchat: "Rocket.Chat"
-    
+
     unverified_domain_reached_threshold:
       subject: "Money is waiting for %{publication_title}, verify your site with Brave to claim your funds!"
       salutation: "Hi!"
@@ -334,9 +341,12 @@ en:
         of fans may have already filled your wallet!</p>
     landing_new_header: "New to Brave Payments?"
     landing_new_body: "Start verification by entering your email."
-    landing_login_body_html: "<strong>Already verified?</strong> Log in to your publisher dashboard."
+    landing_login: "Already have an account?"
+    landing_login_body: "Log in to your dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
+    landing_signup_prompt: "Don't have an account?"
+    landing_signup: "Sign Up"
   two_factor_authentications:
     totp:
       heading: Two-factor Authentication
@@ -512,10 +522,17 @@ en:
         final_confirmation: Are you sure you want to remove this security key?
         deny: Do Not Remove
         confirm: Remove Security Key
-
-  youtubed:
+  youtube:
     authenticate_with_youtube: "Authenticate with YouTube"
-    account_not_found: "Couldn't find a matching publisher record"
     channel_not_found: "Channel not found"
     channel_already_taken: "Channel already taken"
+    channel_already_registered: "You have already registered this YouTube channel."
     oauth_error: "Error connecting to YouTube"
+  channel:
+    channel_not_found: "Channel not found"
+    requires_uninitialized_channel: "An uninitialized channel is required"
+    requires_other_channel_type: "This pages is not valid for this channel type"
+    enter_domain: "Enter Domain Info"
+    channel_created: "Channel created."
+    please_log_in_and_retry: "Please log in to Brave Payments and retry the operation"
+    channel_removed: "Channel removed."

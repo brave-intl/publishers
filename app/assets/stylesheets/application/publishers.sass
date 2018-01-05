@@ -5,6 +5,7 @@ $progress-train-fill: #FF4D3F
 $progress-train-active: #333
 
 body[data-controller="publishers"],
+body[data-controller="site_channels"],
 body[data-controller="two_factor_authentications"],
 body[data-controller="two_factor_registrations"],
 body[data-controller="totp_registrations"],
@@ -71,13 +72,17 @@ body[data-controller="u2f_registrations"]
   .process-panel-narrow
     .content-panel
       padding: 0 30px
-
   .login-panel
-    margin-top: 46px
-    .row
-      padding: 0 40px
-    .site-login, .youtube-login
-      padding: 30px 0
+    h3
+      font-size: 32px
+      margin-bottom: 80px
+    .form-row
+      margin-bottom: 40px
+    .form-footer
+      margin-top: 100px
+      text-align: center
+      a
+        margin-left: 0.5em
 
   .expired-token-panel
     max-width: 710px
@@ -106,6 +111,7 @@ body[data-controller="u2f_registrations"]
       .panel-controls
         margin-top: 15px
       h3
+        font-size: 28px
         margin-bottom: 23px
     .login-penal
       .site-login
@@ -127,6 +133,7 @@ body[data-controller="u2f_registrations"]
       padding-right: 0
       padding-bottom: 0
       h3
+        font-size: 22px
         margin-bottom: 18px
 
   .signup-panel
@@ -375,7 +382,6 @@ body[data-controller="publishers"]
   &[data-action="verification_public_file"],
   &[data-action="verification_github"],
   &[data-action="verification_wordpress"],
-  &[data-action="verification_choose_method"],
   &[data-action="verify"]
     .hidden_form > *,
     #verification_in_progress
@@ -406,6 +412,18 @@ body[data-controller="publishers"]
     .img-center
       margin: 0 auto
       display: block
+
+  &[data-action="email_verified"],
+  &[data-action="complete_signup"]
+    .process-panel
+      padding: 80px 200px 80px 100px
+      background: #fff url(asset-path("img-brands.png")) top right no-repeat
+      h1
+        color: #ff3f3f
+      .tos
+        margin-bottom: 20px
+        font-size: 14px
+        color: $gray
 
   &[data-action="verification_choose_method"]
     .content-panel
@@ -647,40 +665,9 @@ body[data-controller="publishers"]
           color: rgba(#ededee, 0.65)
           font-size: 14px
           font-weight: 300
-    #verification_modal
-      width: 740px
-      .md-content
-        padding: 80px 200px 80px 100px
-        background: #fff url(asset-path("img-brands.png")) top right no-repeat
-        border-radius: 10px
-        h1
-          font-size: 40px
-          font-weight: 300
-          color: #ff3f3f
-          margin-top: 0
-          padding-top: 0
-        h2
-          font-size: 18px
-          font-weight: 300
-          color: #ff3f3f
-          display: inline-block
-          margin-top: 0px
-          margin-bottom: 20px
-          padding: 10px 45px 10px 0
-          background: url(asset-path("icn-verified.png")) right no-repeat
-        .panel-section
-          margin-top: 55px
-        a.btn
-          margin: 10px 15px
-        a.btn-cancel
-          color: #ff3f3f
-    @media (max-width: 550px)
-      #verification_modal .md-content
-        padding: 60px
-        background: #fff
-        border-radius: 0
 
-  &[data-action="email_verified"]
+  &[data-action="email_verified"],
+  &[data-action="choose_new_channel_type"]
     .publisher-panel
       margin-top: 40px
     h1

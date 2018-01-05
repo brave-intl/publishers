@@ -1,9 +1,9 @@
 - content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 80, wallet: 0 }, publisher: current_publisher }
+  /= render :partial => 'progress', :locals => { progress: { info: 100, verify: 80, wallet: 0 }, publisher: current_publisher }
 
 .publisher-domain-panel.publisher-panel.col-center
   .publisher-domain-name
-    = current_publisher.brave_publisher_id
+    = current_channel.details.brave_publisher_id
 
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.info-panel.col-center

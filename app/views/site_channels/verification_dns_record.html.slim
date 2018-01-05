@@ -1,18 +1,18 @@
 - content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
+  /= render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
 
 .publisher-domain-panel.publisher-panel.col-center
   .publisher-domain-name
-    = current_publisher.brave_publisher_id
+    = current_channel.details.brave_publisher_id
 
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.process-panel.col-center
     .content-panel
       .dns-record id="dns_records"
-        h3=I18n.t("publishers.verification_option_dns_record_add_new") + current_publisher.brave_publisher_id
+        h3=I18n.t("publishers.verification_option_dns_record_add_new") + current_channel.details.brave_publisher_id
         p
           span= I18n.t("publishers.verification_dns_record_help")
-          span= current_publisher.brave_publisher_id
+          span= current_channel.details.brave_publisher_id
           strong= I18n.t("publishers.verification_dns_record_help_2")
 
         p
@@ -20,7 +20,7 @@
 
         p
           span= I18n.t("publishers.verification_dns_record_instruction1")
-          strong= current_publisher.brave_publisher_id
+          strong= current_channel.details.brave_publisher_id
           span= I18n.t("publishers.verification_dns_record_instruction2")
 
         .form-group
@@ -31,7 +31,7 @@
         .form-group
           label.control-label= I18n.t("publishers.verification_option_dns_record_value")
           textarea.color-orange.dns-record-value.form-control#value readonly="true"
-            = publisher_verification_dns_record(current_publisher)
+            = site_channel_verification_dns_record(current_channel)
           button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value" 
             = I18n.t("publishers.copy_to_clipboard")
         .form-group
@@ -42,7 +42,7 @@
           .form-horizontal
             .form-group
               .col-xs-10.col-md-6
-                = form_for(current_publisher, method: :patch, url: verify_publishers_path) do |f|
+                = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
                   = f.submit(t("publishers.verify_dns_button"), class: "btn btn-block btn-primary btn-sm", :"data-piwik-action" => "DNSVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
               .col-xs-2.col-md-2
                 = popover_menu do
