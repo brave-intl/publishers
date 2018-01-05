@@ -100,10 +100,6 @@ en:
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     new_channel: "+ Add Channel"
     not_verified: "Unverified"
-    progress:
-      contact_info: "Contact Info"
-      verify_site: "Verify Your Site"
-      create_wallet: "Create Your Wallet"
     statements: "Statements"
     statement_download: "Download"
     statement_delayed: "Delayed"
@@ -333,6 +329,11 @@ en:
     update: "Update"
     email_address: "Email address"
     terms_of_service: "Terms of Service"
+  site_channels:
+    progress:
+      info: "Domain Info"
+      verify: "Verification Method"
+      instruction: "Instruction"
   static:
     landing_header-welcome: "Welcome to"
     landing_header: "Brave Payments"

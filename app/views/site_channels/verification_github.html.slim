@@ -1,5 +1,5 @@
-/- content_for(:navbar_content) do
-  /= render :partial => 'progress', :locals => { progress: { info: 100, verify: 50, wallet: 0 }, publisher: current_publisher }
+- content_for(:navbar_content) do
+  = render :partial => 'progress', :locals => {progress: {info: 100, verify: 50, instruction: 0}, publisher: current_publisher}
 
 .publisher-domain-panel.publisher-panel.col-center
   .publisher-domain-name
