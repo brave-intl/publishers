@@ -429,7 +429,7 @@ en:
       step_1: Install an authenticator app on your mobile phone.
       step_2: Scan the QR code below with your app.
       step_2_alt: "If you can't scan the QR code, enter this code:"
-      step_3: Enter the 6-digit code from the app one the scan is complete.
+      step_3: Enter the 6-digit code from the app once the scan is complete.
       password_prompt: 6-digit code
       submit_value: Complete
   u2f_registrations:
