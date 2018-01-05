@@ -23,11 +23,12 @@ en:
   activerecord:
     attributes:
       publisher:
-        brave_publisher_id: "Website Domain"
-        brave_publisher_id_unnormalized: "Website Domain"
         phone_normalized: "Phone Number"
         show_verification_status: "List my site in Brave's verified publisher site once verified."
         name: "Contact Name"
+      site_channel_details:
+        brave_publisher_id: "Website Domain"
+        brave_publisher_id_unnormalized: "Website Domain"
       u2f_registration:
         name: "Name Security Key"
     errors:
