@@ -62,11 +62,11 @@ class SiteChannelVerifier < BaseApiClient
   end
 
   def verified_channel_post_verify
-    PublisherMailer.verification_done(verified_publisher).deliver_later
+    PublisherMailer.verification_done(verified_channel).deliver_later
     if PublisherMailer.should_send_internal_emails?
-      PublisherMailer.verification_done_internal(verified_publisher).deliver_later
+      PublisherMailer.verification_done_internal(verified_channel).deliver_later
     end
-    SlackMessenger.new(message: "*#{verified_publisher}* verified by #{verified_publisher.name} (#{verified_publisher.email}); id=#{verified_publisher.id}").perform
+    SlackMessenger.new(message: "*#{verified_channel.publication_title}* verified by #{verified_channel.publisher.name} (#{verified_channel.publisher.email}); id=#{verified_channel.id}").perform
   end
 
   def verify_offline_publisher_id

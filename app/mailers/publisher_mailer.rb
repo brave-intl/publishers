@@ -7,34 +7,36 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+      subject: default_i18n_subject
     )
   end
 
-  def verification_done(publisher)
-    @publisher = publisher
+  def verification_done(channel)
+    @channel = channel
+    @publisher = @channel.publisher
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
-      to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+        to: @publisher.email,
+        subject: default_i18n_subject(publication_title: @channel.details.publication_title)
     )
   end
 
   # TODO: Refactor
   # Like the above but without the private access link
-  def verification_done_internal(publisher)
+  def verification_done_internal(channel)
     raise if !self.class.should_send_internal_emails?
-    @publisher = publisher
+    @channel = channel
+    @publisher = @channel.publisher
     @private_reauth_url = "{redacted}"
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, publication_title: @publisher.publication_title, scope: %w(publisher_mailer verification_done))}",
-      template_name: "verification_done"
+        to: INTERNAL_EMAIL,
+        reply_to: @publisher.email,
+        subject: "<Internal> #{I18n.t(:subject, publication_title: @channel.details.publication_title, scope: %w(publisher_mailer verification_done))}",
+        template_name: "verification_done"
     )
   end
 
@@ -44,7 +46,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+      subject: default_i18n_subject
     )
   end
 
@@ -57,7 +59,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, publication_title: @publisher.publication_title, scope: %w(publisher_mailer welcome))}",
+      subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer welcome))}",
       template_name: "welcome"
     )
   end
@@ -73,13 +75,12 @@ class PublisherMailer < ApplicationMailer
       rescue => e
         require 'sentry-raven'
         Raven.capture_exception(e,
-                                publisher: @publisher,
-                                publication_type: @publisher.publication_type)
+                                publisher: @publisher)
       end
     end
     mail(
         to: @publisher.pending_email,
-        subject: default_i18n_subject(publication_title: @publisher.publication_title)
+        subject: default_i18n_subject
     )
   end
 
@@ -102,7 +103,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher, @publisher.pending_email)
     mail(
       to: @publisher.pending_email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+      subject: default_i18n_subject
     )
   end
 
@@ -112,7 +113,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, publication_title: @publisher.publication_title, scope: %w(publisher_mailer confirm_email_change))}",
+      subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer confirm_email_change))}",
       template_name: "confirm_email_change"
     )
   end
@@ -121,7 +122,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+      subject: default_i18n_subject
     )
   end
 
@@ -129,7 +130,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+      subject: default_i18n_subject
     )
   end
 
@@ -138,7 +139,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher_statement.publisher
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject(publication_title: @publisher.publication_title)
+      subject: default_i18n_subject
     )
   end
 

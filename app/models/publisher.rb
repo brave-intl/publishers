@@ -100,11 +100,6 @@ class Publisher < ApplicationRecord
     email_verified? && name.present?
   end
 
-  def publication_title
-    # ToDo: Fix mailers to not use this?
-    name
-  end
-
   def to_s
     name
   end
