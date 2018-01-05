@@ -79,6 +79,24 @@ body[data-controller="u2f_registrations"]
     .site-login, .youtube-login
       padding: 30px 0
 
+  .expired-token-panel
+    max-width: 710px
+    .sub-panel
+      background-image: url(asset-path("icn-warning@2x.png"))
+      background-repeat: no-repeat
+      background-position: top 60px center
+      background-size: 70px
+      padding-top: 170px
+      padding-bottom: 75px
+      .panel-controls.col-center
+        width: 300px
+      p
+        padding-left: 52px
+        padding-right: 52px
+      .row
+        .col.col-md-8.col-md-offset-2.text-center.col-center
+          width: 448px
+
   @media (max-width: $screen-sm-max)
     .login-panel
       margin-top: 0px
@@ -92,6 +110,16 @@ body[data-controller="u2f_registrations"]
     .login-penal
       .site-login
         padding: 10px 0
+    .expired-token-panel
+      .sub-panel
+        width: 448px
+        .row
+          .col.col-md-8.col-md-offset-2.text-center.col-center
+            width: 300px
+            .panel-controls
+              width: 250px
+        p
+          padding: 0px
 
   @media (max-width: $screen-xxs-max)
     .process-panel

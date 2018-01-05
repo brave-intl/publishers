@@ -14,7 +14,7 @@ module Publishers
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.autoload_paths += %W("#{config.root}/app/services/" "#{config.root}/app/validators/")
+    config.autoload_paths += %W(#{config.root}/app/services/ #{config.root}/app/validators/ #{config.root}/lib/devise)
 
     config.exceptions_app = routes
 
