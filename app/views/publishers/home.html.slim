@@ -1,6 +1,6 @@
 javascript:
   (function() {
-
+    'use strict';
     function showPendingContactEmail(pendingEmail) {
       var pendingEmailNotice = document.getElementById('pending_email_notice');
       var showContactEmail = document.getElementById('show_contact_email');
@@ -21,7 +21,7 @@ javascript:
         method: 'GET'
       };
 
-      return fetchAfterDelay('./balance', 500)
+      return window.fetchAfterDelay('./balance', 500)
         .then(function(response) {
           if (response.status === 200 || response.status === 304) {
             return response.json();
@@ -37,12 +37,12 @@ javascript:
 
     function showVerificationModal() {
       var modal = document.getElementById('verification_modal');
-      classie.add(modal, 'md-show');
+      modal.classList.add('md-show');
     }
 
     function hideVerificationModal() {
       var modal = document.getElementById('verification_modal');
-      classie.remove(modal, 'md-show');
+      modal.classList.remove('md-show');
     }
 
     function verificationStatusUpdated(checked) {
@@ -53,7 +53,7 @@ javascript:
     window.addEventListener('load', function() {
       var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
       showVerificationStatusInput.addEventListener('click', function(event) {
-        submitForm('update_show_verification_status', 'PATCH', true);
+        window.submitForm('update_show_verification_status', 'PATCH', true);
         verificationStatusUpdated(showVerificationStatusInput.checked);
       }, false);
 
@@ -61,13 +61,13 @@ javascript:
         document.getElementById('verify_now').addEventListener('click', function(event) {
           showVerificationStatusInput.checked = true;
           verificationStatusUpdated(true);
-          submitForm('update_show_verification_status', 'PATCH', false);
+          window.submitForm('update_show_verification_status', 'PATCH', false);
           hideVerificationModal();
         });
         document.getElementById('verify_later').addEventListener('click', function(event) {
           showVerificationStatusInput.checked = false;
           verificationStatusUpdated(false);
-          submitForm('update_show_verification_status', 'PATCH', false);
+          window.submitForm('update_show_verification_status', 'PATCH', false);
           hideVerificationModal();
         });
 
@@ -77,7 +77,7 @@ javascript:
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
       if (defaultCurrencySelect) {
         defaultCurrencySelect.addEventListener('change', function(event) {
-          submitForm('update_default_currency_form', 'PATCH', true);
+          window.submitForm('update_default_currency_form', 'PATCH', true);
           refreshBalance();
         }, false);
       }
@@ -125,7 +125,7 @@ javascript:
 
       updateContact.addEventListener('submit', function(event) {
         event.preventDefault();
-        submitForm('update_contact', 'PATCH', true)
+        window.submitForm('update_contact', 'PATCH', true)
           .then(function() {
             var updatedEmail = updateContactEmail.value;
             showContactName.innerText = updateContactName.value;
@@ -148,7 +148,7 @@ javascript:
           event.preventDefault();
           generateStatement.style.display = 'none';
 
-          submitForm('statement_generator', 'PATCH', false)
+          window.submitForm('statement_generator', 'PATCH', false)
             .then(function(response) {
               return response.json();
             })
@@ -173,19 +173,19 @@ javascript:
 
               generatedStatements.insertBefore(newStatementDiv, generatedStatements.firstChild);
 
-              dynamicEllipsis.start(statementDownloadDiv);
+              window.dynamicEllipsis.start(statementDownloadDiv);
 
               statementId = json.id;
-              return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
+              return window.pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
             })
             .then(function() {
-              dynamicEllipsis.stop(statementDownloadDiv);
+              window.dynamicEllipsis.stop(statementDownloadDiv);
               statementDownloadDiv.innerHTML = '<a href="/publishers/statement?id=' + statementId + '">Download</a>';
               generateStatement.style.display = 'inline-block';
             })
             .catch(function(e) {
               if (statementDownloadDiv) {
-                dynamicEllipsis.stop(statementDownloadDiv);
+                window.dynamicEllipsis.stop(statementDownloadDiv);
                 statementDownloadDiv.innerText = 'Delayed';
               }
               generateStatement.style.display = 'inline-block';
@@ -225,20 +225,20 @@ javascript:
               publisherStatus.className = body.status;
               var upholdDashboard = document.getElementById('uphold_dashboard');
               upholdDashboard.style.display = '';
-              dynamicEllipsis.stop('publisher_status');
+              window.dynamicEllipsis.stop('publisher_status');
               clearInterval(checkUpholdStatusInterval);
             } else if (checkUpholdStatusCount >= 15) {
               var publisherStatus = document.getElementById('publisher_status');
               publisherStatus.innerText = body.timeout_message;
-              dynamicEllipsis.stop('publisher_status');
+              window.dynamicEllipsis.stop('publisher_status');
               clearInterval(checkUpholdStatusInterval);
             }
           });
       }
 
       window.addEventListener('load', function() {
-        dynamicEllipsis.start('publisher_status');
-        checkUpholdStatusInterval = setInterval(checkUpholdStatus, 2000);
+        window.dynamicEllipsis.start('publisher_status');
+        checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
       });
     })();
 
