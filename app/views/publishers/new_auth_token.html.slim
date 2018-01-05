@@ -11,7 +11,7 @@
       = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
         .row.form-row
           .col.col-xs-12.col-sm-8.col-center
-            = f.email_field(:email, class: "form-control", placeholder: t("publishers.enter_your_email"))
+            = f.email_field(:email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"))
             - if params[:captcha]
               = hidden_field_tag(:captcha)
             - if @should_throttle

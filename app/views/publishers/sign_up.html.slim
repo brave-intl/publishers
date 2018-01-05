@@ -12,7 +12,7 @@
         .form-group
           .row.form-row
             .col.col-xs-12.col-sm-8.col-center
-              = email_field_tag(:email, nil, class: "form-control", placeholder: t("publishers.enter_your_email"), required: true)
+              = email_field_tag(:email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"), required: true)
               - if params[:captcha]
                 = hidden_field_tag(:captcha)
               - if @should_throttle
