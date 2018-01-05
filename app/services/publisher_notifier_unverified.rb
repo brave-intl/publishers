@@ -1,9 +1,7 @@
 class PublisherNotifierUnverified < BaseService
-  attr_reader :notification_params, :notification_type
-
   PUBLISHER_TYPES = %w(domain) # TODO: youtube
 
-  def initialize(publisher_type:, publisher_id: )
+  def initialize(publisher_type:, publisher_id:)
     @publisher_id = publisher_id
     @publisher_type = publisher_type
 
@@ -15,16 +13,16 @@ class PublisherNotifierUnverified < BaseService
   end
 
   def perform
-    if @publisher_type == "domain"
-      return perform_domain
-    else
-      return perform_youtube
+    case @publisher_type
+    when "domain"
+      perform_domain
     end
+    # TO DO: youtube
   end
 
   def perform_domain
     domain = @publisher_id
-    contacts = GetWhoisEmailsForDomain.new(@domain).perform
+    contacts = GetWhoisEmailsForDomain.new(domain).perform
 
     if contacts.empty?
       raise NoEmailsFoundError.new("No contacts listed on whois info for '#{domain}'")
@@ -48,10 +46,6 @@ class PublisherNotifierUnverified < BaseService
       PublisherMailer.unverified_domain_reached_threshold(domain, email).deliver_later
       PublisherMailer.unverified_domain_reached_threshold_internal(domain, email).deliver_later
     end
-  end
-
-  def perform_youtube
-    # TO DO
   end
 
   class BlankParamsError < RuntimeError; end
