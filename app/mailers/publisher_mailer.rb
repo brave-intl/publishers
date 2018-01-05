@@ -161,4 +161,26 @@ class PublisherMailer < ApplicationMailer
       template_name: "verified_no_wallet"
     )
   end
+
+  def unverified_domain_reached_threshold(domain, email)
+    @domain = domain
+    @email = email
+    @home_url = root_url
+    mail(
+      to: @email,
+      subject: default_i18n_subject(publication_title: @domain)
+    )
+  end
+
+  def unverified_domain_reached_threshold_internal(domain, email)
+    @domain = domain
+    @email = email
+    @home_url = root_url
+    mail(
+      to: INTERNAL_EMAIL,
+      reply_to: @email,
+      subject: "<Internal> #{I18n.t(:subject, publication_title: @domain, scope: %w(publisher_mailer unverified_domain_reached_threshold))}",
+      template_name: "unverified_domain_reached_threshold"
+    )
+  end
 end
