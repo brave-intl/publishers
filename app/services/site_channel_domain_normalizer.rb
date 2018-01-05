@@ -1,5 +1,5 @@
-# Normalize a domain by calling the relevant ledger endpoint
-class PublisherDomainNormalizer < BaseApiClient
+# Normalize a domain by calling the relevant eyeshade endpoint
+class SiteChannelDomainNormalizer < BaseApiClient
   attr_reader :domain
 
   def initialize(domain:)
@@ -11,11 +11,11 @@ class PublisherDomainNormalizer < BaseApiClient
   end
 
   def perform
-    return perform_offline if Rails.application.secrets[:api_ledger_offline]
+    return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     url = "http://#{domain}"
     response = connection.get do |request|
       request.params["url"] = url
-      request.url("/v2/publisher/identity")
+      request.url("/v1/publishers/identity")
     end
     response_h = JSON.parse(response.body)
     # If the normalized publisher ID is missing, it's on the exclusion list.
@@ -29,7 +29,7 @@ class PublisherDomainNormalizer < BaseApiClient
   def perform_offline
     # Development Gemfile group. If you run in prod move the gem to the top level.
     require "domain_name"
-    Rails.logger.info("PublisherDomainNormalizer normalizing offline.")
+    Rails.logger.info("SiteChannelDomainNormalizer normalizing offline.")
     domain_name = DomainName(domain)
     unless domain_name.canonical_tld?
       raise DomainExclusionError.new("Normalized publisher ID unavailable for #{domain}")
@@ -40,7 +40,7 @@ class PublisherDomainNormalizer < BaseApiClient
   private
 
   def api_base_uri
-    Rails.application.secrets[:api_ledger_base_uri]
+    Rails.application.secrets[:api_eyeshade_base_uri]
   end
 
   class DomainExclusionError < RuntimeError

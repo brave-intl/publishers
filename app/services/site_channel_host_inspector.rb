@@ -1,7 +1,7 @@
 require 'publishers/fetch'
 
 # Inspect a brave_publisher_id's host for web_host and HTTPS support
-class PublisherHostInspector < BaseService
+class SiteChannelHostInspector < BaseService
   include Publishers::Fetch
 
   attr_reader :brave_publisher_id, :follow_local_redirects, :follow_all_redirects, :require_https, :check_web_host
@@ -95,9 +95,5 @@ class PublisherHostInspector < BaseService
     result[:https] = ENV["HOST_INSPECTOR_OFFLINE_HTTPS"] ? true?(ENV["HOST_INSPECTOR_OFFLINE_HTTPS"]) : true
     result[:web_host] = ENV["HOST_INSPECTOR_OFFLINE_WEB_HOST"]
     return result
-  end
-
-  def api_base_uri
-    Rails.application.secrets[:api_ledger_base_uri]
   end
 end

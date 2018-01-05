@@ -1,20 +1,20 @@
 require 'publishers/fetch'
 
 # Request verification from Eyeshade. Sets the matching
-# If the publisher previously has been verified, you can't reverify (for now)
+# If the brave_publisher_id (domain) has previously been verified, you can't reverify (for now)
 # TODO: Rate limit
-class PublisherVerifier < BaseApiClient
+class SiteChannelVerifier < BaseApiClient
   include Publishers::Fetch
 
-  attr_reader :attended, :brave_publisher_id, :publisher, :verified_publisher, :verified_publisher_id
+  attr_reader :attended, :brave_publisher_id, :channel, :verified_channel, :verified_channel_id
 
-  # publisher is optional. If given, service will raise errors if the provided publisher's verification token
+  # channel is optional. If given, service will raise errors if the provided publisher's verification token
   # doesn't match the one found on the domain.
   # attended: Passed through to Eyeshade; affects verbosity
-  def initialize(attended: true, brave_publisher_id:, publisher: nil)
+  def initialize(attended: true, brave_publisher_id:, channel: nil)
     @attended = attended
     @brave_publisher_id = brave_publisher_id
-    @publisher = publisher
+    @channel = channel
   end
 
   def perform
@@ -25,18 +25,18 @@ class PublisherVerifier < BaseApiClient
       request.url("/v1/publishers/#{brave_publisher_id}/verify")
     end
     response_hash = JSON.parse(response.body)
-    @verified_publisher_id = response_hash["verificationId"]
-    return false if response_hash["status"] != "success" || verified_publisher_id.blank?
-    update_verified_on_publishers
-    assert_publisher_matches_verified_id! if publisher
+    @verified_channel_id = response_hash["verificationId"]
+    return false if response_hash["status"] != "success" || verified_channel_id.blank?
+    update_verified_on_channel
+    assert_publisher_matches_verified_id! if channel
   end
 
   def perform_offline
-    Rails.logger.info("PublisherVerifier bypassing eyeshade and performing locally.")
-    @verified_publisher_id = verify_offline_publisher_id
-    return false if verified_publisher_id.blank?
-    update_verified_on_publishers
-    assert_publisher_matches_verified_id! if publisher
+    Rails.logger.info("SiteChannelVerifier bypassing eyeshade and performing locally.")
+    @verified_channel_id = verify_offline_publisher_id
+    return false if verified_channel_id.blank?
+    update_verified_on_channel
+    assert_publisher_matches_verified_id! if channel
   end
 
   private
@@ -46,28 +46,22 @@ class PublisherVerifier < BaseApiClient
   end
 
   def assert_publisher_matches_verified_id!
-    return true if publisher.id == verified_publisher_id
-    raise VerificationIdMismatch.new("Publisher UUID / verificationId mismatch: #{publisher.id} / #{verified_publisher_id}")
+    return true if channel.id == verified_channel_id
+    raise VerificationIdMismatch.new("Channel UUID / verificationId mismatch: #{channel.id} / #{verified_channel_id}")
   end
 
-  def update_verified_on_publishers
-    raise "#{verified_publisher_id} missing" if verified_publisher_id.blank?
+  def update_verified_on_channel
+    raise "#{verified_channel_id} missing" if verified_channel_id.blank?
 
-    publishers_to_unverify = Publisher
-      .where(brave_publisher_id: brave_publisher_id, verified: true)
-      .where.not(id: verified_publisher_id)
-    @verified_publisher = Publisher.find_by(brave_publisher_id: brave_publisher_id, id: verified_publisher_id)
-    verified_publisher_changed = (verified_publisher && verified_publisher.verified == false)
-    return if publishers_to_unverify.none? && !verified_publisher_changed
+    @verified_channel = Channel.find(verified_channel_id)
+    return if @verified_channel.verified
 
-    Publisher.transaction do
-      publishers_to_unverify.update_all(verified: false) if publishers_to_unverify.any?
-      verified_publisher.update_attribute(:verified, true) if verified_publisher_changed
-    end
-    verified_publisher_post_verify if verified_publisher_changed
+    verified_channel.update_attribute(:verified, true)
+
+    verified_channel_post_verify
   end
 
-  def verified_publisher_post_verify
+  def verified_channel_post_verify
     PublisherMailer.verification_done(verified_publisher).deliver_later
     if PublisherMailer.should_send_internal_emails?
       PublisherMailer.verification_done_internal(verified_publisher).deliver_later
@@ -76,9 +70,9 @@ class PublisherVerifier < BaseApiClient
   end
 
   def verify_offline_publisher_id
-    Rails.logger.info("PublisherVerifier offline by #{publisher.verification_method}")
+    Rails.logger.info("PublisherVerifier offline by #{channel.details.verification_method}")
 
-    case publisher.verification_method
+    case channel.details.verification_method
       when "dns_record"
         verify_offline_publisher_id_dns
       when "public_file"
@@ -90,7 +84,7 @@ class PublisherVerifier < BaseApiClient
       when "support_queue"
         verify_offline_publisher_id_support_queue
       else
-        Rails.logger.info("PublisherVerifier unknown verification_method: #{publisher.verification_method}")
+        Rails.logger.info("PublisherVerifier unknown verification_method: #{channel.details.verification_method}")
         nil
     end
   end
@@ -112,11 +106,11 @@ class PublisherVerifier < BaseApiClient
         token_match = /^brave\-ledger\-verification\=([a-zA-Z0-9]+)$/.match(string)
         next if !token_match || !token_match[1]
         Rails.logger.info("Found token on #{brave_publisher_id}: #{token_match[1]}")
-        dns_publisher = Publisher.find_by(brave_publisher_id: brave_publisher_id, verification_token: token_match[1])
-        if dns_publisher
-          return dns_publisher.id
+        dns_channel = Channel.joins(:site_channel_details).find_by("site_channel_details.brave_publisher_id": brave_publisher_id, "site_channel_details.verification_token": token_match[1])
+        if dns_channel
+          return dns_channel.id
         else
-          Rails.logger.warn("Verification token didn't match any Publishers.")
+          Rails.logger.warn("Verification token didn't match any channels.")
         end
       end
     end
@@ -127,14 +121,14 @@ class PublisherVerifier < BaseApiClient
   end
 
   def verify_offline_publisher_id_public_file
-    generator = PublisherVerificationFileGenerator.new(publisher: publisher)
+    generator = SiteChannelVerificationFileGenerator.new(site_channel: channel)
     uri = URI("https://#{brave_publisher_id}/.well-known/#{generator.filename}")
     response = fetch(uri: uri)
     if response.code == "200"
-      token_match = /#{publisher.verification_token}/.match(response.body)
+      token_match = /#{channel.details.verification_token}/.match(response.body)
       if token_match
         Rails.logger.warn("verify_offline_publisher_id_public_file: Token Found")
-        publisher.id
+        channel.id
       else
         Rails.logger.warn("verify_offline_publisher_id_public_file: Token Mismatch")
         nil

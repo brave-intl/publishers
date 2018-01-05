@@ -1,12 +1,12 @@
 # An option for domain verification.
 
-class PublisherDnsRecordGenerator < BaseService
-  attr_reader :publisher
+class SiteChannelDnsRecordGenerator < BaseService
+  attr_reader :channel
 
-  def initialize(publisher:)
-    @publisher = publisher
-    if !publisher.brave_publisher_id || !publisher.verification_token
-      raise "Publisher doesn't have valid #brave_publisher_id and #verification_token"
+  def initialize(channel:)
+    @channel = channel
+    if !channel.details.brave_publisher_id || !channel.details.verification_token
+      raise "Channel doesn't have valid #brave_publisher_id and #verification_token"
     end
   end
 
@@ -24,6 +24,6 @@ class PublisherDnsRecordGenerator < BaseService
   private
 
   def dns_record_value
-    "brave-ledger-verification=#{publisher.verification_token}"
+    "brave-ledger-verification=#{channel.details.verification_token}"
   end
 end
