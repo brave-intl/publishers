@@ -60,10 +60,7 @@ en:
     balance_pending_approximate: "Approximately %{amount} %{code}"
     contact_person: "Contact person"
     contact: "Contact"
-    copy_to_clipboard: "Copy to clipboard"
     sign_up_header: "Join Brave Payments"
-
-
     create_done_header: "An email is on its way!"
     create_done_body_html: |
       <p>We're excited that you want to be in on Brave Payments. We just sent an email to
@@ -119,84 +116,11 @@ en:
     verified_publisher_reconnect_to_uphold: "Uh oh! Connecting to Uphold has been denied. In order to deposit your contributions accrued we need you to reconnect to your Uphold wallet."
     create_uphold_wallet: "Create Uphold Wallet"
     reconnect_to_uphold: "Reconnect to Uphold"
-    verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
-    verification_dns_record_help_2: " using the account for your DNS host."
-    verification_dns_record_instruction1: "Copy and paste the info below into the zone file for "
-    verification_dns_record_instruction2: " using your DNS host's control panel."
-    verification_dns_record_instruction3: "Please add the record on your root domain, not a subdomain. The @ symbol is often used to indicate the root domain name/host/host record."
-    verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
-    verification_choose_header: "Choose a Verification Method"
-    verification_choose_trusted_file_header: "Download a trusted file"
-    verification_choose_trusted_file_subheader: "(Recommended & easiest)"
-    verification_choose_trusted_file_button: "I'll use a trusted file"
-    verification_choose_or: "OR"
-    verification_choose_dns_header: "Edit DNS records"
-    verification_choose_dns_subheader: "(You need DNS access)"
-    verification_choose_dns_button: "I'll edit my DNS record"
-    verification_choose_support_queue_link: "join the support queue."
-    verification_choose_support_queue_html: |
-      <p>If both of those options sound daunting to you, %{support_queue_link}</p>
-
-    verification_support_queue_header: "Thanks for waiting!"
-    verification_support_queue_help_html: |
-      <p>We will be reaching out to each member in the order the requests are received.</p>
-      <p>You will receive an email when our next available support member can assist you. Please keep in mind
-      that this may take a few days due to our current backlog.</p>
-    verification_support_review_options: "I'd like to review my options"
-    verification_wait_time: "3 days."
-    verification_already_done: "Your site is verified."
-    verification_option_dns_record_name: "Name (or Host / Hostname):"
-    verification_option_dns_record_type: "Type:"
-    verification_option_dns_record_value: "Value (or TXT Value / Data):"
-    verification_option_dns_record_add_new: "Add a new TXT record for "
-    verification_option_dns_record_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your DNS is hosted."
-    verification_background_header: "Now verifying your domain..."
-    verification_background_help_html: |
-      <p>You can leave this screen now. We will send you an <strong>email with instructions within 24 hours.</strong></p>
-    verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
-    verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
-    verification_download_verification: "Download"
-    verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
-    verification_option_wordpress_intro_html: |
-     Follow the steps below to verify your Wordpress site.<br />
-     (Hmmm, my site is a <a href="%{choose_path}">normal website</a> or <a href="%{github_path}">on GitHub</a>.)
-    verification_option_wordpress_install_plugin_html: |
-      <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
-       entire process a snap.</p>
-      <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/well-known-uris/">
-      https://wordpress.org/plugins/well-known-uris/</a>)</p>
-    verification_option_wordpress_verification_token: "Copy the verification code below into the plugin."
-    verification_option_wordpress_token: "Verification code:"
-    verification_option_wordpress_help_verify: "Once the code is pasted in, click verify."
-    verification_option_github_nojekyll_html: |
-      It looks like you are using <strong>GitHub</strong>. As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
-    verification_download_html: |
-      %{download_link} the verification file.
-    verification_upload_html: |
-      Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you
-      don't have one).
-    verification_verify: "Make sure the verification file is placed in the folder and click verify."
-    verification_verify_note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
-    verification_file_contents: "File contents:"
-    verification_option_place_trusted_file: "Place a Trusted File into your Domain"
     email_verification_required: "To continue please confirm your email address."
     verification_required: "To continue please confirm your email address and name."
-    verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
-    verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
-    verification_helper_dns_contact: "Contact Brave Support"
     verification_uphold_error: "There was a problem connecting with Uphold. Please try again."
     verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
-    verify_dns_button: "Verify DNS Record"
     verify_button: "Verify"
-    check_for_https_button: "Check for HTTPS"
-    https_inspection_complete: "Check for HTTPS complete"
-    requires_https: "This action requires HTTPS support"
-    verify_failed_dns_record: "Couldn't verify the DNS record. Please confirm the record in your DNS host, and also note it might take up to 24 hours for DNS to update. You can try again later; or we will check periodically and notify you when we've found it."
-    verify_modal_title: "Congrats!"
-    verify_modal_subtitle: "You are now a Brave Verified Publisher!"
-    verify_modal_content_html: "Thanks for helping to provide a better Web experience for the millions who've downloaded the Brave browser. We'd like to include you in the <strong>Verified Publishers list</strong> on our web site, which we may share in external communications and social media as well."
-    verify_modal_cancel: "I'll do this later"
-    verify_modal_confirm: "Yes, I'd like to be listed"
     complete_signup_welcome: "One last thing..."
     complete_signup_leadin: "Finish signup by entering below."
     complete_signup_tos_html: "By clicking 'Sign Up', you're agreeing to our %{tos_link}"
@@ -331,10 +255,79 @@ en:
     email_address: "Email address"
     terms_of_service: "Terms of Service"
   site_channels:
+    check_for_https_button: "Check for HTTPS"
+    copy_to_clipboard: "Copy to clipboard"
+    https_inspection_complete: "Check for HTTPS complete"
     progress:
       info: "Domain Info"
       verify: "Verification Method"
       instruction: "Instruction"
+    requires_https: "This action requires HTTPS support"
+    verify_dns_button: "Verify DNS Record"
+    verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
+    verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
+    verification_helper_dns_contact: "Contact Brave Support"
+    verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
+    verification_dns_record_help_2: " using the account for your DNS host."
+    verification_dns_record_instruction1: "Copy and paste the info below into the zone file for "
+    verification_dns_record_instruction2: " using your DNS host's control panel."
+    verification_dns_record_instruction3: "Please add the record on your root domain, not a subdomain. The @ symbol is often used to indicate the root domain name/host/host record."
+    verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
+    verification_choose_header: "Choose a Verification Method"
+    verification_choose_trusted_file_header: "Download a trusted file"
+    verification_choose_trusted_file_subheader: "(Recommended & easiest)"
+    verification_choose_trusted_file_button: "I'll use a trusted file"
+    verification_choose_or: "OR"
+    verification_choose_dns_header: "Edit DNS records"
+    verification_choose_dns_subheader: "(You need DNS access)"
+    verification_choose_dns_button: "I'll edit my DNS record"
+    verification_choose_support_queue_link: "join the support queue."
+    verification_choose_support_queue_html: |
+      <p>If both of those options sound daunting to you, %{support_queue_link}</p>
+    verification_support_queue_header: "Thanks for waiting!"
+    verification_support_queue_help_html: |
+      <p>We will be reaching out to each member in the order the requests are received.</p>
+      <p>You will receive an email when our next available support member can assist you. Please keep in mind
+      that this may take a few days due to our current backlog.</p>
+    verification_support_review_options: "I'd like to review my options"
+    verification_wait_time: "3 days."
+    verification_already_done: "Your site is verified."
+    verification_option_dns_record_name: "Name (or Host / Hostname):"
+    verification_option_dns_record_type: "Type:"
+    verification_option_dns_record_value: "Value (or TXT Value / Data):"
+    verification_option_dns_record_add_new: "Add a new TXT record for %{brave_publisher_id}"
+    verification_option_dns_record_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your DNS is hosted."
+    verification_background_header: "Now verifying your domain..."
+    verification_background_help_html: |
+      <p>You can leave this screen now. We will send you an <strong>email with instructions within 24 hours.</strong></p>
+    verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
+    verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
+    verification_https_check_https: "Your domain is using HTTPS."
+    verification_https_check_https_alt: "Your domain is using HTTPS."
+    verification_download_verification: "Download"
+    verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
+    verification_option_wordpress_intro_html: |
+     Follow the steps below to verify your Wordpress site.<br />
+     (Hmmm, my site is a <a href="%{choose_path}">normal website</a> or <a href="%{github_path}">on GitHub</a>.)
+    verification_option_wordpress_install_plugin_html: |
+      <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
+       entire process a snap.</p>
+      <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/well-known-uris/">
+      https://wordpress.org/plugins/well-known-uris/</a>)</p>
+    verification_option_wordpress_verification_token: "Copy the verification code below into the plugin."
+    verification_option_wordpress_token: "Verification code:"
+    verification_option_wordpress_help_verify: "Once the code is pasted in, click verify."
+    verification_option_github_nojekyll_html: |
+      It looks like you are using <strong>GitHub</strong>. As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
+    verification_download_html: |
+      %{download_link} the verification file.
+    verification_upload_html: |
+      Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you
+      don't have one).
+    verification_verify: "Make sure the verification file is placed in the folder and click verify."
+    verification_verify_note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
+    verification_file_contents: "File contents:"
+    verification_option_place_trusted_file: "Place a Trusted File into your Domain"
   static:
     landing_header-welcome: "Welcome to"
     landing_header: "Brave Payments"

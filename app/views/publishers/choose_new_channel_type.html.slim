@@ -1,3 +1,5 @@
+- @hide_nav=true
+
 - if @taken_youtube_channel
   - support_email = Rails.application.secrets[:support_email]
   - taken_youtube_channel_title = @taken_youtube_channel.title
@@ -56,6 +58,7 @@
         a.btn.btn-primary#close_modal= t("publishers.youtube_channel_taken_dialog.ok")
   .md-overlay
 
+= link_to(I18n.t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
 .publisher-panel.col-center
   h1.text-center=t("publishers.pub_type_welcome")
   h2.col-center.text-center=t("publishers.pub_type_lets_start")

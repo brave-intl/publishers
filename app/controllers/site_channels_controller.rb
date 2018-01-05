@@ -78,7 +78,7 @@ class SiteChannelsController < ApplicationController
     @channel = current_channel
     @channel.details.inspect_brave_publisher_id
     @channel.save!
-    redirect_to(site_last_verification_method_path(@channel), alert: t("publishers.https_inspection_complete"))
+    redirect_to(site_last_verification_method_path(@channel), alert: t("site_channels.https_inspection_complete"))
   end
 
   # Tied to button on verification_dns_record
@@ -119,7 +119,7 @@ class SiteChannelsController < ApplicationController
 
   def require_unverified_site
     return if !current_channel.verified?
-    redirect_to(channel_next_step_path(current_channel), alert: I18n.t("publishers.verification_already_done"))
+    redirect_to(channel_next_step_path(current_channel), alert: I18n.t("site_channels.verification_already_done"))
   end
 
   def require_https_enabled_site
