@@ -10,7 +10,7 @@
         fieldset
           .form-group
             = f.label(:name, class: "control-label")
-            = f.text_field(:name, class: "form-control", placeholder: "Alice Bloglette", required: true)
+            = f.text_field(:name, autofocus: true, class: "form-control", placeholder: "Alice Bloglette", required: true)
         .panel-controls
           .tos=t("publishers.complete_signup_tos_html", tos_link: link_to(t("shared.terms_of_service"), '/terms_of_service'))
           = f.submit(t("publishers.complete_signup_submit"), class: "btn btn-primary")
