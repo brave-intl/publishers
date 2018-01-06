@@ -14,7 +14,7 @@
       div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
         ol
           li
-            p= t("site_channels.verification_download_html", download_link: link_to(t("site_channels.verification_download_verification"), download_verification_file_publishers_path, class: "download-link"))
+            p= t("site_channels.verification_download_html", download_link: link_to(t("site_channels.verification_download_verification"), download_verification_file_site_channel_path, class: "download-link"))
             .pull-left
               = image_tag("file@1x.png", class: "instruction-img")
             .pull-right
