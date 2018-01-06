@@ -69,32 +69,35 @@
                 p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
               p.text-center= render "smartphone_with_code"
 
-          .row
-            .col.col-md-8.col-md-offset-1
-              h5= t ".u2f.heading"
-              p
-                = t ".u2f.intro"
-                br
-                span.warning= t ".u2f.intro_warning"
-                '
-                span.tf-tooltip
-                  = render "help_svg"
-                  span.tf-tooltip-content
-                    span.tf-tooltip-content-heading= t ".u2f.browser.heading"
-                    span.tf-tooltip-content-content== t ".u2f.browser.content_html"
-                br
-                | *
-                span.tf-tooltip.link-color
-                  = t ".u2f.device.tooltip"
-                  span.tf-tooltip-content
-                    span.tf-tooltip-content-heading= t ".u2f.device.heading"
-                    span.tf-tooltip-content-content== t ".u2f.device.content_html"
-              - if @u2f_registrations.any?
-                p= render @u2f_registrations
-              - else
-                p.disabled
-                  == "&bull; "
-                  = t ".u2f.disabled"
-            .col.col-md-2.text-right
-              p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
-              p.text-center= render "usb"
+          / FIXME: U2F is dark launched, and you need to specify params[:u2f]
+          / We will enable it when Brave is ready. See issue #442
+          - if @u2f_registrations.any? || params[:u2f].present?
+            .row
+              .col.col-md-8.col-md-offset-1
+                h5= t ".u2f.heading"
+                p
+                  = t ".u2f.intro"
+                  br
+                  span.warning= t ".u2f.intro_warning"
+                  '
+                  span.tf-tooltip
+                    = render "help_svg"
+                    span.tf-tooltip-content
+                      span.tf-tooltip-content-heading= t ".u2f.browser.heading"
+                      span.tf-tooltip-content-content== t ".u2f.browser.content_html"
+                  br
+                  | *
+                  span.tf-tooltip.link-color
+                    = t ".u2f.device.tooltip"
+                    span.tf-tooltip-content
+                      span.tf-tooltip-content-heading= t ".u2f.device.heading"
+                      span.tf-tooltip-content-content== t ".u2f.device.content_html"
+                - if @u2f_registrations.any?
+                  p= render @u2f_registrations
+                - else
+                  p.disabled
+                    == "&bull; "
+                    = t ".u2f.disabled"
+              .col.col-md-2.text-right
+                p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
+                p.text-center= render "usb"
