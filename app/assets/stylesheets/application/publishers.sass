@@ -421,6 +421,43 @@ body[data-controller="publishers"]
         &:hover
           color: #ffffff
           text-decoration: none
+      .channel-panel
+        padding: 0
+        .channel-summary
+          padding: 24px 20px 24px 40px
+          h3
+            font-size: 20px
+            margin-bottom: 8px
+          .channel-details
+            font-size: 12px
+            color: $gray
+        .channel-status
+          padding: 36px 20px
+          min-width: 350px
+          background: #f2f4f7
+          border-radius: 0 8px 8px 0
+          .list-label
+            display: block
+            width: 67%
+            white-space: nowrap
+          .inline-controls
+            padding: 0
+          .onoffswitch
+            display: inline-block
+            margin-top: 8px
+          .value-label
+            display: inline-block
+            float: right
+            margin-left: 12px
+            margin-top: 4px
+            font-size: 12px
+            font-weight: 500
+          .update-show-verification-status-form.checked .value-label:after
+            color: #4fbad6
+            content: "ON"
+          .update-show-verification-status-form.unchecked .value-label:after
+            color: $gray
+            content: "OFF"
       #default_currency_code
         font-weight: 600
       .payment-info
@@ -454,24 +491,6 @@ body[data-controller="publishers"]
         &#generate_statement
           line-height: 26px
           padding: 5px 0
-      #publishers_list
-        .list-label
-          display: block
-          width: 67%
-        .inline-controls
-          padding: 0
-        .onoffswitch
-          margin-top: 6px
-          display: inline-block
-        .value-label
-          display: inline-block
-          margin-left: 12px
-      #update_show_verification_status.checked .value-label:after
-        color: #4fbad6
-        content: "ON"
-      #update_show_verification_status.unchecked .value-label:after
-        color: $gray-dark
-        content: "OFF"
       .terms-of-service
         text-align: right
         margin-top: -10px

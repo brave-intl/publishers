@@ -35,7 +35,9 @@ Rails.application.routes.draw do
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
 
   resources :channels, only: %i(update destroy) do
-
+    member do
+      patch :update
+    end
   end
 
   resources :site_channels, only: %i(create update new show) do
