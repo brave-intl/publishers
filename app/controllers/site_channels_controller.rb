@@ -22,12 +22,18 @@ class SiteChannelsController < ApplicationController
              download_verification_file)
   before_action :require_https_enabled_site,
                 only: %i(download_verification_file)
+  before_action :require_verification_token,
+                only: %i(verification_dns_record
+                         verification_public_file
+                         verification_github
+                         verification_wordpress
+                         download_verification_file)
   before_action :update_site_verification_method,
                 only: %i(verification_dns_record
-             verification_public_file
-             verification_support_queue
-             verification_github
-             verification_wordpress)
+                         verification_public_file
+                         verification_support_queue
+                         verification_github
+                         verification_wordpress)
 
   attr_reader :current_channel
 
@@ -123,6 +129,13 @@ class SiteChannelsController < ApplicationController
     redirect_to(home_publishers_path(current_publisher), alert: t("channel.requires_other_channel_type"))
   rescue ActiveRecord::RecordNotFound => e
     redirect_to(home_publishers_path, alert: t("channel.channel_not_found"))
+  end
+
+  def require_verification_token
+    if current_channel.details.verification_token.blank?
+      current_channel.details.update_attribute(:verification_token, SiteChannelTokenRequester.new(channel: current_channel).perform)
+      current_channel.save!
+    end
   end
 
   def require_unverified_site

@@ -18,8 +18,6 @@ class SiteChannelDetails < ApplicationRecord
   # clear/register domain errors as appropriate
   before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
 
-  after_validation :generate_verification_token, if: -> { brave_publisher_id.present? && brave_publisher_id_changed? }
-
   scope :recent_unverified_site_channels, -> (max_age: 6.weeks) {
     joins(:channel)
         .select(:brave_publisher_id).distinct
@@ -67,10 +65,6 @@ class SiteChannelDetails < ApplicationRecord
   end
 
   private
-
-  def generate_verification_token
-    update_attribute(:verification_token, SiteChannelTokenRequester.new(channel: self.channel).perform)
-  end
 
   def verified_publisher_id_exists?
     self.class.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.verified": true).any?
