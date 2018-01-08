@@ -223,6 +223,7 @@ javascript:
               var publisherStatus = document.getElementById('publisher_status');
               publisherStatus.innerText = body.status_description;
               publisherStatus.className = body.status;
+              document.getElementById('uphold_connect').style.display = 'none';
               var upholdDashboard = document.getElementById('uphold_dashboard');
               upholdDashboard.style.display = '';
               dynamicEllipsis.stop('publisher_status');
@@ -292,7 +293,7 @@ noscript
           div#uphold_connect
             .panel-section= link_to(uphold_authorization_description(current_publisher),
                     uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
-        - else
+        - if current_publisher.uphold_status == :access_parameters_acquired || current_publisher.uphold_status == :verified
           .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none')
             .panel-section
               = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|

@@ -21,7 +21,7 @@ module PublishersHelper
   end
 
   def show_uphold_connect?(publisher)
-    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired
+    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
   end
 
   def show_uphold_dashboard?(publisher)
@@ -78,7 +78,7 @@ module PublishersHelper
   end
 
   def uphold_authorization_description(publisher)
-    if publisher_status(publisher) == :uphold_reauthorize
+    if publisher_status(publisher) == :uphold_reauthorize || publisher_status(publisher) == :uphold_processing
       t("publishers.reconnect_to_uphold")
     else
       t("publishers.create_uphold_wallet")
