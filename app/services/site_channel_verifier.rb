@@ -22,7 +22,7 @@ class SiteChannelVerifier < BaseApiClient
     # Will raise in case of error.
     response = connection.get do |request|
       request.params["backgroundP"] = "true" if !attended
-      request.url("/v1/publishers/#{brave_publisher_id}/verify")
+      request.url("/v1/owners/#{URI.escape(channel.publisher.owner_identifier)}/verify/#{brave_publisher_id}")
     end
     response_hash = JSON.parse(response.body)
     @verified_channel_id = response_hash["verificationId"]
@@ -59,6 +59,10 @@ class SiteChannelVerifier < BaseApiClient
     verified_channel.update_attribute(:verified, true)
 
     verified_channel_post_verify
+
+  rescue ActiveRecord::RecordNotFound => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
   end
 
   def verified_channel_post_verify
