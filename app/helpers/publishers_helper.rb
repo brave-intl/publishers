@@ -78,7 +78,7 @@ module PublishersHelper
   end
 
   def uphold_authorization_description(publisher)
-    if publisher_status(publisher) == :uphold_reauthorize
+    if publisher_status(publisher) == :uphold_reauthorize || publisher_status(publisher) == :uphold_processing
       t("publishers.reconnect_to_uphold")
     else
       t("publishers.create_uphold_wallet")

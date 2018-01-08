@@ -616,6 +616,43 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
   end
 
+  test "when uphold fails to return uphold_access_parameters, publisher has option to reconnect with uphold" do
+    publisher = publishers(:completed)
+
+    # sign in publisher
+    request_login_email(publisher: publisher)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    get(url)
+
+    # give pub uphold state token
+    uphold_state_token = SecureRandom.hex(64)
+    publisher.uphold_state_token = uphold_state_token
+    expected_uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+    publisher.save
+
+    # simulate return to homepage after creating wallet on uphold.com
+    # simulate failed response from uphold.com to get access params
+    stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+        .with(body: "code=#{expected_uphold_code}&grant_type=authorization_code")
+        .to_timeout
+    url = uphold_verified_publishers_path
+    get(url, params: { code: expected_uphold_code, state: uphold_state_token })
+    follow_redirect!
+
+    # verify uphold :code_acquired but not :access params
+    assert_equal publisher.reload.uphold_status, :code_acquired
+
+    # verify message tells publisher they need to reconnect
+    assert_select("div#publisher_status.uphold_processing") do |element|
+      assert_equal element.text, I18n.t("publishers.status_uphold_processing")
+    end
+
+    # verify button says 'reconnect to uphold' not 'create uphold wallet'
+    assert_select("div#uphold_connect div.panel-section a.btn.btn-primary") do |element|
+      assert_equal element.text, I18n.t("publishers.reconnect_to_uphold")
+    end
+  end
+
   test "a publisher's show_verification_status, pending_email, and name can be updated via an ajax patch" do
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
