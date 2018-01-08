@@ -1,6 +1,7 @@
 $braveRed: red
 $disabledGray: #a7acb2
-$tooltipHeading: rebeccapurple
+$tooltipBorder: #dbdfe3
+$tooltipHeading: #5C58C2
 
 body[data-controller="two_factor_registrations"]
   h3
@@ -35,22 +36,30 @@ body[data-controller="two_factor_registrations"]
       z-index: 5
       left: 50%
       bottom: 100%
-      width: 500px
-      margin-left: -250px
-      padding: 30px
+      width: 400px
+      margin-left: -200px
+      padding: 30px 40px
       background: white
+      border: solid 1px $tooltipBorder
       border-radius: 4px
-      box-shadow: 0 0 15px 0 rgba(0,0,0,0.5)
+      box-shadow: 0 0 10px 0 rgba(34,35,38,0.15)
       color: #606467
       font-size: 14px
+      line-height: 22px
       &::after
         content: " "
         position: absolute
         top: 100%
         left: 50%
+        width: 10px
+        height: 10px
+        margin-top: -5px
         margin-left: -5px
-        border: solid 5px transparent
-        border-top-color: white
+        background: white
+        transform: rotate(45deg)
+        border: solid 1px $tooltipBorder
+        border-top-color: transparent
+        border-left-color: transparent
       span.tf-tooltip-content-heading
         display: block
         font-weight: bold
