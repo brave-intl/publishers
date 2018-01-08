@@ -107,7 +107,7 @@ en:
       Phone Number <span class="optional">(optional)</span>
     phone_number_validation: "Phone numbers should only include numbers, dashes, periods, plus (+), and/or parentheses."
     status_uphold_processing: "Your Uphold wallet is being connected to your account.  If this takes more than a few minutes, please reconnect with Uphold."
-    status_uphold_processing_timeout: "We are having trouble connecting to your Uphold wallet. Please check back later."
+    status_uphold_processing_timeout: "We are having trouble connecting to your Uphold wallet. Please reconnect to Uphold."
     status_unverified: "Your account has not been verified"
     uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
     uphold_status_access_parameters_acquired: "Connecting your Uphold account."

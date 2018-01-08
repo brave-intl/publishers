@@ -21,7 +21,7 @@ module PublishersHelper
   end
 
   def show_uphold_connect?(publisher)
-    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired
+    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
   end
 
   def show_uphold_dashboard?(publisher)
