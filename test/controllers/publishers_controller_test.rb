@@ -417,7 +417,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify brave gets an internal email copy of confirmation email
     email = ActionMailer::Base.deliveries.find do |message|
       message.to == Rails.application.secrets[:internal_email]
-      message.subject == "<Internal>#{I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: '')}"
+      message.subject == "<Internal> #{I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: '')}"
     end
     assert_not_nil(email)
 
