@@ -51,6 +51,14 @@ class SiteChannelsController < ApplicationController
 
     respond_to do |format|
       if current_channel.save
+        # once the channel has been saved send it to eyeshade
+        begin
+          PublisherChannelSetter.new(publisher: current_publisher).perform
+        rescue => e
+          require "sentry-raven"
+          Raven.capture_exception(e)
+        end
+
         format.html { redirect_to(channel_next_step_path(current_channel), notice: t("channel.channel_created")) }
       else
         format.html { render :action => "new" }

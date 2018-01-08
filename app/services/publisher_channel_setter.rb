@@ -12,8 +12,8 @@ class PublisherChannelSetter < BaseApiClient
     channels = publisher.channels.collect do |channel|
       {
           "channelId" => channel.details.channel_identifier,
-          "authorizerEmail" => channel.details.auth_email,
-          "authorizerName" => channel.details.auth_name,
+          "authorizerEmail" => channel.details.try(:auth_email),
+          "authorizerName" => channel.details.try(:auth_name),
           "visible" => channel.show_verification_status?
       }.compact
     end
@@ -24,9 +24,10 @@ class PublisherChannelSetter < BaseApiClient
             "name" => publisher.name,
             "phone" => publisher.phone_normalized,
             "email" => publisher.email
-        }.compact,
-      "channels" => channels
+        }.compact
     }
+
+    payload["channels"] = channels if channels.count > 0
 
     # This raises when response is not 2xx.
     response = connection.post do |request|
