@@ -14,6 +14,7 @@ class SiteChannelDomainNormalizer < BaseApiClient
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
     url = "http://#{domain}"
     response = connection.get do |request|
+      request.headers["Authorization"] = api_authorization_header
       request.params["url"] = url
       request.url("/v1/publishers/identity")
     end
@@ -41,6 +42,10 @@ class SiteChannelDomainNormalizer < BaseApiClient
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]
+  end
+
+  def api_authorization_header
+    "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
   end
 
   class DomainExclusionError < RuntimeError
