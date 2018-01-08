@@ -26,7 +26,7 @@ class SiteChannelTokenRequesterTest < ActiveJob::TestCase
                body:
                    <<~BODY
                       {
-                        "verificationId": "#{details.brave_publisher_id}"
+                        "verificationId": "#{details.channel.id}"
                       }
                    BODY
           ).to_return(status: 200, body: "{\"token\":\"abc123\"}", headers: {})

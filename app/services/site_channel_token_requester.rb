@@ -14,12 +14,10 @@ class SiteChannelTokenRequester < BaseApiClient
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
 
-      request.body = "{\"verificationId\": \"#{channel.details.brave_publisher_id}\" }"
-
       request.body =
           <<~BODY
             {
-              "verificationId": "#{channel.details.brave_publisher_id}"
+              "verificationId": "#{channel.id}"
             }
           BODY
 
