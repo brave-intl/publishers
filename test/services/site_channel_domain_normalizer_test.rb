@@ -16,10 +16,10 @@ class SiteChannelDomainNormalizerTest < ActiveJob::TestCase
     prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     Rails.application.secrets[:api_eyeshade_offline] = false
 
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/example\.com/).
-        to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"example.com\"}", headers: {})
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/example\.com/).
+        to_return(status: 200, body: "{\"protocol\":\"https:\",\"slashes\":true,\"auth\":null,\"host\":\"example.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"example.com\"}", headers: {})
 
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/example2\.com/).
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/example2\.com/).
         to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example2.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"example2.com\"}", headers: {})
 
     assert_equal "example.com", SiteChannelDomainNormalizer.new(domain: "https://example.com").perform
@@ -44,7 +44,7 @@ class SiteChannelDomainNormalizerTest < ActiveJob::TestCase
     prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     Rails.application.secrets[:api_eyeshade_offline] = false
 
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/example3.com/).
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/example3.com/).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example2.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\"}", headers: {})
 

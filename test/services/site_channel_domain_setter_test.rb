@@ -16,7 +16,7 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
   end
 
   test "normalizes and inspects the domain" do
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/example\.com/).
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/example\.com/).
       to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"example.com\"}", headers: {})
 
     stub_request(:get, "https://example.com").
@@ -55,7 +55,7 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
   end
 
   test "normalization can succeed and inspection can fail if connection to site fails when https and http fail" do
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/mywordpressisdown\.com/).
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/mywordpressisdown\.com/).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
       to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"mywordpressisdown.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"mywordpressisdown.com\"}", headers: {})
 
@@ -88,7 +88,7 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
   end
 
   test "raises exception when domain is already taken by a verified publisher" do
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/verified\.org/).
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/verified\.org/).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
       to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"verified.org\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"verified.org\"}", headers: {})
 
@@ -103,7 +103,7 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
   end
 
   test "when online handles normalization failures by raising DomainExclusionError" do
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/example3.com/).
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/example3.com/).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example2.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\"}", headers: {})
 

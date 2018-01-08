@@ -6,13 +6,13 @@ class SiteChannelDomainNormalizer < BaseApiClient
     # normalize domain by stripping off the protocol, it it exists,
     # and checking if it parses as an http URL
     host_and_path = domain.split(/:\/\//).last
-    URI.parse("http://#{host_and_path}")
+    URI.parse("https://#{host_and_path}")
     @domain = host_and_path
   end
 
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
-    url = "http://#{domain}"
+    url = "https://#{domain}"
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.params["url"] = url

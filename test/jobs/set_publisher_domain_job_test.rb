@@ -18,7 +18,7 @@ class SetPublisherJobTest < ActiveJob::TestCase
   test "invokes the SiteChannelDomainSetter and saves the channel" do
     details = site_channel_details(:new_site_details)
 
-    stub_request(:get, /v1\/publishers\/identity\?url=http:\/\/new_site\.org/).
+    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/new_site\.org/).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
       to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"new_site.org\"}", headers: {})
 
