@@ -4,7 +4,7 @@ html
     title= t("shared.app_title")
     = csrf_meta_tags
     = stylesheet_link_tag('application', media: 'all')
-    = javascript_include_tag('application')
+    = javascript_pack_tag('static')
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
   body.headless data-action=params[:action] data-controller=params[:controller]

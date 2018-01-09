@@ -7,7 +7,12 @@ html
     meta name="viewport" content=("width=device-width, initial-scale=#{if local_assigns[:viewport_initial_scale] then viewport_initial_scale else '0.6' end}")
     title= t("shared.app_title")
     = stylesheet_link_tag('application', media: 'all')
-    = javascript_include_tag('application')
+
+    - if content_for?(:head_js_tags)
+      = yield(:head_js_tags)
+    - else
+      = javascript_pack_tag('application')
+
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
   body data-action=params[:action] data-controller=params[:controller]
