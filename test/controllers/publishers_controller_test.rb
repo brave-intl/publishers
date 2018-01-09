@@ -648,7 +648,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
 
     # verify button says 'reconnect to uphold' not 'create uphold wallet'
-    assert_select("div#uphold_connect div.panel-section a.btn.btn-primary") do |element|
+    assert_select("[data-test=reconnect-button]") do |element|
       assert_equal element.text, I18n.t("publishers.reconnect_to_uphold")
     end
   end

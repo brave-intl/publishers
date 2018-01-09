@@ -292,7 +292,7 @@ noscript
         - if show_uphold_connect?(current_publisher)
           div#uphold_connect
             .panel-section= link_to(uphold_authorization_description(current_publisher),
-                    uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
+                    uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button")
         - if current_publisher.uphold_status == :access_parameters_acquired || current_publisher.uphold_status == :verified
           .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none')
             .panel-section
