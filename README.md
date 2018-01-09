@@ -6,13 +6,33 @@ App for [publishers.brave.com](https://publishers.brave.com).
 
 ### Setup
 
-1. Ruby 2.3.3. For a Ruby version manager try [rbenv](https://github.com/rbenv/rbenv).
-2. Postgresql 9.5+: `brew install postgresql` (start with `brew services start postgresql`)
-3. Redis: `brew install redis`
-4. Install ruby gems [foreman](https://github.com/ddollar/foreman) and [mailcatcher](https://github.com/sj26/mailcatcher): `gem install bundler foreman mailcatcher`
-5. Install project dependencies: `bundle install --jobs=$(nproc)`
-  - Possible error: Nokogiri, with libxml2. Try installing a system libxml2 with `brew install libxml2` and then `bundle config build.nokogiri --use-system-libraries` then again `bundle install`.
-6. Create and initialize the database
+These steps presume you are using OSX and [Homebrew](https://brew.sh/).
+
+1. Ruby 2.3.6. For a Ruby version manager try
+   [rbenv](https://github.com/rbenv/rbenv).
+2. Node 6.12.3 (active LTS at writing) or greater. For a Node version manager
+   try [nvm](https://github.com/creationix/nvm#installation).
+3. Postgresql 9.5+: `brew install postgresql` (start with
+   `brew services start postgresql`)
+4. Redis: `brew install redis`
+5. Install Ruby gems with `gem install bundler foreman mailcatcher`.
+   - [bundler](http://bundler.io/)
+   - [foreman](https://github.com/ddollar/foreman)
+   - [mailcatcher](https://github.com/sj26/mailcatcher)
+6. [Yarn](https://yarnpkg.com/en/) for Node dependency management:
+   `brew install yarn --without-node`.
+   `--without-node` avoids installing Homebrew's version of Node, which is
+   desirable if you are using nvm for Node version management.
+7. Install project dependencies
+  * Ruby deps: `bundle install --jobs=$(nproc)`
+    - Possible error: Nokogiri, with libxml2. Try installing a system libxml2
+      with `brew install libxml2` and then
+      `bundle config build.nokogiri --use-system-libraries` then again
+      `bundle install`.
+  * Node deps: `yarn --frozen-lockfile`
+8. Get an `env.sh` file from another developer which contains development-mode
+   bash env exports. `source` that file.
+9. Create and initialize the database
   - `rails db:create RAILS_ENV=development`
   - `rails db:migrate RAILS_ENV=development`
 
