@@ -1,0 +1,45 @@
+.main-content
+  .container
+    .row
+      .col.col-details.col-md-8.col-center
+        - if totp_enabled?(current_publisher)
+          .sub-panel.sub-panel--panel--top
+            .row
+              .col-md-10.col-md-offset-1
+                .sub-panel--top-icon
+                  = render 'icon_circled_i'
+                .sub-panel--top-body
+                  = t ".warning"
+
+        div class="sub-panel #{totp_enabled?(current_publisher) && 'sub-panel--panel--bottom'}"
+          .row
+            .col-md-10.col-md-offset-1
+
+              h3= t ".heading"
+
+              = form_for @totp_registration do |f|
+                = f.hidden_field :secret
+
+                ol.sub-panel--list
+                  li.form-group= t ".step_1"
+                  li.form-group
+                    = t ".step_2"
+                    '
+                    em= t ".step_2_alt"
+                    '
+                    strong= @totp_registration.secret.scan(/.{4}/).join(" ")
+                    .text-center
+                      .totp-svg== qr_code_svg @provisioning_url
+                  li.form-group
+                    = t ".step_3"
+
+                .row
+                  .col.col-sm-6
+                    p
+                      input.form-control name="totp_password" placeholder=t(".password_prompt") autofocus=true
+                  .col.col-sm-6.hidden-xs
+                    = render 'smartphone_with_code_tilted'
+
+                .row
+                  .col.col-xs-6= f.submit t(".submit_value"), class: "btn btn-primary"
+                  .col.col-xs-6.text-right= link_to t(".cancel"), two_factor_registrations_path, class: "btn btn-link"

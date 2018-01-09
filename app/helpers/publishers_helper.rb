@@ -21,7 +21,7 @@ module PublishersHelper
   end
 
   def show_uphold_connect?(publisher)
-    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired
+    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
   end
 
   def show_uphold_dashboard?(publisher)
@@ -78,7 +78,7 @@ module PublishersHelper
   end
 
   def uphold_authorization_description(publisher)
-    if publisher_status(publisher) == :uphold_reauthorize
+    if publisher_status(publisher) == :uphold_reauthorize || publisher_status(publisher) == :uphold_processing
       t("publishers.reconnect_to_uphold")
     else
       t("publishers.create_uphold_wallet")
@@ -282,5 +282,21 @@ module PublishersHelper
     return "Publisher" unless email.is_a?(String)
 
     email.split("@")[0].try(:capitalize)
+  end
+
+  def two_factor_enabled?(publisher)
+    totp_enabled?(publisher) || u2f_enabled?(publisher)
+  end
+
+  def totp_enabled?(publisher)
+    publisher.totp_registration.present?
+  end
+
+  def u2f_enabled?(publisher)
+    publisher.u2f_registrations.any?
+  end
+
+  def show_nav_menu?(publisher)
+    publisher.verified?
   end
 end

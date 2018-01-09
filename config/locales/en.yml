@@ -28,6 +28,8 @@ en:
         phone_normalized: "Phone Number"
         show_verification_status: "List my site in Brave's verified publisher site once verified."
         name: "Contact Name"
+      u2f_registration:
+        name: "Name Security Key"
     errors:
       models:
         publisher:
@@ -43,8 +45,11 @@ en:
       publisher: "Publisher"
     shared:
       errors: "There were errors saving your request:"
+  application:
+    nav:
+      security: Security
+      log_out: Log Out
   publishers:
-    app_title: "Brave Payments"
     already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
     authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
     balance_error: "Unavailable"
@@ -64,8 +69,6 @@ en:
     resend_confirmation_email_done: "The confirmation email has been resent."
     create_auth_token: "Login email sent!"
     create_auth_token_body: "Please check your email for the login link."
-    dashboard-id-html: |
-      Dashboard: <span class="publisher-id">%{publisher_id}</span>
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     dashboard_uphold_header: "Your Uphold Wallet"
     dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
@@ -78,6 +81,11 @@ en:
     log_in_for_site: "Enter your domain to log in. You will receive a login link at the email address that was used to verify your domain."
     log_in_with_google_button: "Log in with Google"
     log_out: "Log out"
+    login_link_expired_title: "Login Link Expired"
+    login_link_expired_message: "Login link access expires after 30 minutes and can only be used once"
+    login_link_expired_button: "Send me a new link"
+    login_link_unverified_message: "Your login link has expired. Please send yourself another one."
+    login_session_expired: "Your session has expired.  Please log in again."
     new: "Contact Information"
     new_auth_token: "Log in to Brave Payments"
     new_auth_token_button: "Email me a link to log in"
@@ -98,8 +106,8 @@ en:
     verified_phone_html: |
       Phone Number <span class="optional">(optional)</span>
     phone_number_validation: "Phone numbers should only include numbers, dashes, periods, plus (+), and/or parentheses."
-    status_uphold_processing: "Your Uphold wallet is being connected to your account"
-    status_uphold_processing_timeout: "We are having trouble connecting to your Uphold wallet. Please check back later."
+    status_uphold_processing: "Your Uphold wallet is being connected to your account.  If this takes more than a few minutes, please reconnect with Uphold."
+    status_uphold_processing_timeout: "We are having trouble connecting to your Uphold wallet. Please reconnect to Uphold."
     status_unverified: "Your account has not been verified"
     uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
     uphold_status_access_parameters_acquired: "Connecting your Uphold account."
@@ -193,6 +201,7 @@ en:
     pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
     pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
     pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
+    pub_type_site_individual_creator_note_html: "You will need to authenticate with Google to demonstrate that you own the channel."
     youtube_channel_taken_dialog:
       title: "Channel already registered!"
       leadin: "The following YouTube channel has already been registered."
@@ -213,6 +222,9 @@ en:
       private_access_link_help: "Use this link to continue and manage publisher registration"
       salutation: "Hi %{name},"
       signature: "The Brave Payments Team"
+      post_script: |
+        <p>Got questions? Visit <a href="https://basicattentiontoken.org/">basicattentiontoken.org</a> to learn more about how the micropayments work.
+        <p>We look forward to having you join the thousands of domains already receiving funds from their audience.</p>
       button_not_working: "If the button above doesn't work, paste this link into your web browser: "
       erroneous_email_help: "If you did not make this request, you can ignore this email or contact us at "
       terms_of_service: "Terms of Service"
@@ -220,22 +232,31 @@ en:
       twitter: "Twitter"
       reddit: "Reddit"
       rocketchat: "Rocket.Chat"
-
+    
+    unverified_domain_reached_threshold:
+      subject: "Money is waiting for %{publication_title}, verify your site with Brave to claim your funds!"
+      salutation: "Hi!"
+      title: "Money waiting for your unverified domain"
+      body_html: |
+        <p>Your site has accumulated quite a bit of fundage and we’d love to hand it over, but first we need you to verify ownership.</p>
+        <p>There are no fees, no gimmicks, we just want you to get paid and keep making awesome content.</p>
+      button: "Verify My Site"
+      button_not_working: "If the button above doesn't work, paste this link into your web browser: "
     uphold_account_changed:
-      subject: "[%{publication_title}] Brave Publisher Uphold account changed"
+      subject: "%{publication_title} Brave Publisher Uphold account changed"
       title: "Publisher Uphold account changed"
       body: "This message confirms that you've updated your Uphold account through the Brave Payments website."
     login_email:
       body_html: |
         Click the private access link below to log in to your account with <strong>Brave Payments</strong>. This link can only be used once.
-      subject: "[%{publication_title}] Brave Publisher login link"
+      subject: "%{publication_title} Brave Publisher login link"
       title: "Brave Publisher login link"
       button: "Log in to Brave Payments"
     welcome:
       erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
       intro: "We've received a request to register a website with Brave Payments:"
       private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
-      subject: "[%{publication_title}] Brave Publisher registration"
+      subject: "%{publication_title} Brave Publisher registration"
       title: "Publisher registration"
     verify_email:
       body_html: |
@@ -245,12 +266,12 @@ en:
       button: "Verify Email"
     verification_done:
       intro: "Congratulations! You are now a verified Brave publisher Brave users will see a verified symbol next to your website domain."
-      subject: "[%{publication_title}] Publisher website verified"
+      subject: "%{publication_title} Publisher website verified"
       title: "Verification complete"
       claim_funds_header: "Ready to claim your funds?"
       claim_funds_body: "To claim your funds please visit the Publishers website to submit your payment information using the link below."
     confirm_email_change:
-      subject: "[%{publication_title}] Confirm your Brave Publisher email change"
+      subject: "%{publication_title} Confirm your Brave Publisher email change"
       title: "Confirm email change"
       erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
       intro: "We've received a request to update your email address with Brave Payments:"
@@ -262,13 +283,13 @@ en:
       confirmation_link: "Confirm your email change"
       confirmation_link_help: "Use this link to confirm that you would like to proceed with this change"
     notify_email_change:
-      subject: "[%{publication_title}] Notification of Brave Publisher email change"
+      subject: "%{publication_title} Notification of Brave Publisher email change"
       title: "Notification of email change"
       intro: "We're notifying you of an update made to your email address with Brave Payments:"
       change_ok: "If you made this change, check your new email account for a link to confirm it."
       contact_support: "If you did not make this change yourself, please contact support ASAP"
     statement_ready:
-      subject: "[%{publication_title}] Brave Publisher statement is ready to view"
+      subject: "%{publication_title} Brave Publisher statement is ready to view"
       title: "Publisher statement is ready to view"
       body: "The following statement has recently been generated:"
       expiration_note: "This statement must be downloaded within the next 24 hours."
@@ -280,9 +301,6 @@ en:
         <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
         <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
       button: "Create My Wallet"
-      body_html_2: |
-        <p>Got questions? Visit <a href="https://basicattentiontoken.org/">basicattentiontoken.org</a> to learn more about how the micropayments work.
-        <p>We look forward to having you join the thousands of domains already receiving funds from their audience.</p>
   publisher_statement_periods:
     past_7_days: "Past 7 days"
     past_30_days: "Past 30 days"
@@ -296,6 +314,7 @@ en:
       recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
   shared:
     api_error: "Your request couldn't be processed due to an API error."
+    app_title: Brave Payments
     cancel: "Cancel"
     error: "Error"
     error_body: "Oops, sorry about that. You can try to refresh the page or return to"
@@ -318,17 +337,31 @@ en:
     landing_login_body_html: "<strong>Already verified?</strong> Log in to your publisher dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
-  u2f_authentications:
-    new:
-      body: Press the button on your security key device to finish signing in.
-      heading: Insert Security Key
-      unavailable_heading: U2F Unsupported
-      unavailable_body_html: |
-        Your browser doesn't look like it supports U2F, the two factor
-        authentication method supported by <strong>Brave Payments</strong>.
-        Please use the latest version of Google Chrome to authenticate with your
-        security key.
+  two_factor_authentications:
+    totp:
+      heading: Two-factor Authentication
+      body: Enter the authentication code from your mobile app to verify your identity.
+      enter_code_placeholder: 6-digit code
+      totp_password_label: Authentication Code
+      submit_value: Verify
+      u2f_alternative_available: Having trouble with the code?
+      u2f_alternative_link: Use security key instead.
+    u2f:
+      heading: Two-factor Authentication
+      body: Insert your security key and press the button on the key when blinking.
+      totp_alternative_available: Don't have your security key?
+      totp_alternative_link: Use authentication code instead.
       submit_value: Try Again
+      unavailable:
+        totp_available: Your browser doesn't support security key, the preferred
+          two-factor authentication method for your account. Your account also
+          has authentication code configured. Please use authentication code
+          or change your browser to Google Chrome to use your security key.
+        heading: Security Key Unsupported
+        body_html: |
+          Your browser doesn't support security key, the only two-factor
+          authentication method your account has configured. Please use
+          Google Chrome to authenticate with your security key.
       u2f-error:
         bad-request: |
           There was an unexpected error in the authentication request made by
@@ -337,30 +370,107 @@ en:
         configuration-unsupported: |
           Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)
         device-ineligible: |
-          The presented device is not eligible for authentication. This may mean
-          that you are using the incorrect device. (DEVICE_INELIGIBLE)
+          The presented security key is not eligible for authentication. This may mean
+          that you are using the incorrect security key. (DEVICE_INELIGIBLE)
         other-error: |
-          There was an unexpected error authenticating your device. Re-attempting
+          There was an unexpected error authenticating your security key. Re-attempting
           2FA may resolve this issue. (OTHER_ERROR)
         timeout: |
-          There was an unexpected timeout waiting your device to respond to
+          There was an unexpected timeout waiting for your security key to respond to
           the authentication request. Please re-attempt authentication and activate
-          the device when it is blinking. (TIMEOUT)
-  u2f_registrations:
+          the security key when it is blinking. (TIMEOUT)
+        implementation-incomplete: |
+          Please insert your security key and re-attempt authentication. Some
+          browsers (like Brave) have an incomplete implementation of this
+          protocol. Please use a current release of Google Chrome or Opera.
+          (IMPLEMENTATION_INCOMPLETE)
+  two_factor_registrations:
     index:
-      date_label: Last Used
-      delete_action: Delete
-      heading: Security Keys
-      name_default: Anonymous Key
-      name_label: Name
+      heading: Two-factor Authentication
+      intro: |
+        Two-factor authentication (2FA) is a method of confirming your identity
+        by using two different forms of verification when you access Brave
+        Payments in order to increase security (recommended for protecting your
+        account).
+      enabled_yes: Enabled
+      enabled_no: Not enabled
+      totp:
+        heading: App on your phone
+        intro: |
+          Use an app on your phone to get an authentication code.
+          You will be asked to type in this code when logging in.
+        enabled: Authenticator app has been set up
+        disabled: Authenticator app has not been set up
+        disabled_without_fallback_html: |
+          <strong>Recommended:</strong> Set up an authenticator as
+          the secondary 2FA in case you run into a problem with the security
+          key.
+        reconfigure: Reconfigure
+        button: Set Up
+        destroy: Disable
+        confirm_disable:
+          header: Disable Authenticator App?
+          intro: "Your remaining two-factor authentication method:"
+          none: None
+          no_totp_warning: |
+            Authenticator app provides a good fallback method to log
+            in to your account securely in the case that you lose the
+            hardware security key.
+          no_2fa_warning_html: |
+            Disabling authenticator app will effectively
+            <strong>turn off the two-factor authentication</strong>
+            for your account.
+          final_confirmation: |
+            Are you sure you want to disable authenticator app?
+          deny: Do Not Disable
+          confirm: Disable it for now
+      u2f:
+        heading: Hardware security keys
+        intro: |
+          Security key is a small device that connects to your computer via a
+          USB port and works with FIDO Universal 2nd Factor (U2F).
+          You will be asked to insert and press the key instead of typing in a
+          code.
+        intro_warning: |
+          Currently, security key is supported by Google Chrome and Opera.
+        browser:
+          heading: Limited Browser Support
+          content_html: |
+            This means you will need to update to the latest <strong>Google
+            Chrome</strong> or <strong>Opera</strong> in order to set up and
+            log in using security keys. More browsers will start supporting the
+            security key in the near future. We will inform you on the changes.
+        device:
+          tooltip: A list of security keys that have been tested
+          heading: Tested Security Keys
+          content_html: |
+            The following products have been tested and proven to work with our
+            system:<br />
+            - <a href="https://www.yubico.com/products/yubikey-hardware/" target="_blank">YubiKey</a><br />
+            - <a href="https://www.ledgerwallet.com/products/ledger-blue" target="_blank">Ledger Blue</a>
+        disabled: No keys have been added
+        button: Add Key
+  totp_registrations:
     new:
-      heading: Add Security Key
-      intro_html: |
-        Security keys are hardware devices that can be used as a second factor of authentication.
-        Security keys use the <a target="_blank" href="https://fidoalliance.org/">FIDO U2F</a> standard.
-      name_placeholder: Enter a nickname for this security key
-      submit_value: Register Key
-      submit_value_disabled: Waiting for Key...
+      heading: Set Up Authenticator App
+      warning: |
+        You already have authentication code configured.
+        Reconfiguring will invalidate your existing authentication code devices.
+      step_1: Install an authenticator app on your mobile phone.
+      step_2: Scan the QR code below with your app.
+      step_2_alt: "If you can't scan the QR code, enter this code:"
+      step_3: Enter the 6-digit code from the app once the scan is complete.
+      password_prompt: 6-digit code
+      submit_value: Complete
+  u2f_registrations:
+    new:
+      heading: Register Security Key
+      name_placeholder: Enter a nickname for the key
+      submit_value: Add
+      waiting_heading: Waiting for your security key...
+      waiting_description: |
+        Insert the new hardware key into your computer and press the button when
+        it's blinking.
       u2f-unavailable: |
         Your browser doesn't look like it supports U2F, the two factor auth
         platform supported by Brave. Please use the latest version of Chrome
@@ -373,16 +483,37 @@ en:
         configuration-unsupported: |
           Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)
         device-ineligible: |
-          The presented device is not eligible for registration. This may mean
+          The presented security key is not eligible for registration. This may mean
           that the token is already registered. (DEVICE_INELIGIBLE)
         other-error: |
-          There was an unexpected error registering your device. Re-attempting
+          There was an unexpected error registering your security key. Re-attempting
           registration may resolve this issue. (OTHER_ERROR)
         timeout: |
-          There was an unexpected timeout waiting your device to respond to
+          There was an unexpected timeout waiting for your security key to respond to
           the registration request. Please re-attempt registration and activate
-          the device when it is blinking. (TIMEOUT)
-  youtube:
+          the security key when it is blinking. (TIMEOUT)
+        implementation-incomplete: |
+          Please insert your security key and re-attempt registration. Some
+          browsers (like Brave) have an incomplete implementation of this
+          protocol. Please use a current release of Google Chrome or Opera.
+          (IMPLEMENTATION_INCOMPLETE)
+    u2f_registration:
+      delete_action: Remove
+      name_default: Anonymous Key
+      confirm_disable:
+        header: Remove Security Key?
+        intro: "Your remaining two-factor authentication method:"
+        remaining_totp: Authenticator app on your phone
+        none: None
+        no_2fa_warning_html: |
+          Removing this security key will effectively
+          <strong>turn off the two-factor authentication</strong>
+          for your account.
+        final_confirmation: Are you sure you want to remove this security key?
+        deny: Do Not Remove
+        confirm: Remove Security Key
+
+  youtubed:
     authenticate_with_youtube: "Authenticate with YouTube"
     account_not_found: "Couldn't find a matching publisher record"
     channel_not_found: "Channel not found"

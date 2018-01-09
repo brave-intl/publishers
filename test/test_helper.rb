@@ -34,6 +34,8 @@ end
 
 module ActionDispatch
   class IntegrationTest
+    self.use_transactional_tests = false
+
     setup do
       WebMock.disable_net_connect!
       DatabaseCleaner.start

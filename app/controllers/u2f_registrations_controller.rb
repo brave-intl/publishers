@@ -2,7 +2,7 @@ class U2fRegistrationsController < ApplicationController
 
   before_action :authenticate_publisher!
 
-  def index
+  def new
     @u2f_registration = U2fRegistration.new
     @registration_requests = u2f.registration_requests
     session[:challenges] = @registration_requests.map(&:challenge)
@@ -21,7 +21,7 @@ class U2fRegistrationsController < ApplicationController
       u2f.register!(session[:challenges], u2f_response)
     rescue U2F::Error => e
       Rails.logger.debug("U2F::Error! #{e}")
-      redirect_to u2f_registrations_path
+      redirect_to new_u2f_registration_path
       return
     ensure
       session.delete(:challenges)
@@ -38,14 +38,14 @@ class U2fRegistrationsController < ApplicationController
       })
     )
 
-    redirect_to u2f_registrations_path
+    redirect_to two_factor_registrations_path
   end
 
   def destroy
     u2f_registration = current_publisher.u2f_registrations.find(params[:id])
     u2f_registration.destroy
 
-    redirect_to u2f_registrations_path
+    redirect_to two_factor_registrations_path
   end
 
 end

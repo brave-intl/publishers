@@ -223,6 +223,7 @@ javascript:
               var publisherStatus = document.getElementById('publisher_status');
               publisherStatus.innerText = body.status_description;
               publisherStatus.className = body.status;
+              document.getElementById('uphold_connect').style.display = 'none';
               var upholdDashboard = document.getElementById('uphold_dashboard');
               upholdDashboard.style.display = '';
               dynamicEllipsis.stop('publisher_status');
@@ -255,12 +256,6 @@ noscript
         a.btn.btn-cancel#verify_later= t("publishers.verify_modal_cancel")
         a.btn.btn-primary#verify_now= t("publishers.verify_modal_confirm")
   .md-overlay
-
-- content_for(:navbar_content_right) do
-  - if current_publisher.publication_type == :site
-    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.brave_publisher_id)
-  - elsif current_publisher.publication_type == :youtube_channel
-    .dashboard-id= t("publishers.dashboard-id-html", publisher_id: current_publisher.youtube_channel.title)
 
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
@@ -297,8 +292,8 @@ noscript
         - if show_uphold_connect?(current_publisher)
           div#uphold_connect
             .panel-section= link_to(uphold_authorization_description(current_publisher),
-                    uphold_authorization_endpoint(current_publisher), class: "btn btn-primary")
-        - else
+                    uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button")
+        - if current_publisher.uphold_status == :access_parameters_acquired || current_publisher.uphold_status == :verified
           .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none')
             .panel-section
               = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|

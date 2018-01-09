@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :home
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
+      get :expired_auth_token
       get :log_out
       get :email_verified
       get :verification_choose_method
@@ -27,8 +28,12 @@ Rails.application.routes.draw do
       patch :update
       patch :generate_statement
       patch :update_unverified
-      resources :u2f_registrations, only: %i(index create destroy)
-      resources :u2f_authentications, only: %i(new create)
+      resources :two_factor_authentications, only: %i(index)
+      resources :two_factor_registrations, only: %i(index)
+      resources :u2f_registrations, only: %i(new create destroy)
+      resources :u2f_authentications, only: %i(create)
+      resources :totp_registrations, only: %i(new create destroy)
+      resources :totp_authentications, only: %i(create)
     end
   end
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
@@ -47,6 +52,7 @@ Rails.application.routes.draw do
         post "/", action: :create, as: :create
         get "/:brave_publisher_id", action: :index_by_brave_publisher_id, constraints: { brave_publisher_id: %r{[^\/]+} }
         post "/:brave_publisher_id/notifications", action: :notify, constraints: { brave_publisher_id: %r{[^\/]+} }
+        post "/notify_unverified", action: :notify_unverified
         delete "/:brave_publisher_id", action: :destroy, as: :destroy, constraints: { brave_publisher_id: %r{[^\/]+} }
       end
     end

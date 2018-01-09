@@ -1,0 +1,10 @@
+- content_for(:content) do
+  .main-content
+    #content.container
+      = yield
+
+= render \
+  template: "layouts/application",
+  locals: { \
+    viewport_initial_scale: "1.0" \
+  }

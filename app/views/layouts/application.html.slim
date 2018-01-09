@@ -5,7 +5,7 @@ html
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content=("width=device-width, initial-scale=#{if local_assigns[:viewport_initial_scale] then viewport_initial_scale else '0.6' end}")
-    title= t("publishers.app_title")
+    title= t("shared.app_title")
     = stylesheet_link_tag('application', media: 'all')
     = javascript_include_tag('application')
     link rel="icon" type="image/png" href=image_path("favicon.ico")
@@ -37,3 +37,13 @@ html
       = content_for?(:content) ? yield(:content) : yield
 
       = render("footer")
+
+    / This block of HTML is used by modal_shared.js to trigger modal
+    / boxes. See that JavaScript file for more details.
+    .js-shared-modal
+      .md-container.container
+        .col.col-10.col-md-8.col-sm-10.col-xs-12.col-center.sub-panel.sub-panel--panel--modal
+          .md-content
+          = link_to "#", class: "md-close js-deny"
+            = render "application/icon_x"
+      .md-overlay

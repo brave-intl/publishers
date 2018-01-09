@@ -66,6 +66,17 @@ class PublisherMailer < ApplicationMailer
   def verify_email(publisher)
     @publisher = publisher
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+
+    if @publisher.pending_email.blank?
+      begin
+        raise "SMTP To address must not be blank for PublisherMailer#verify_email"
+      rescue => e
+        require 'sentry-raven'
+        Raven.capture_exception(e,
+                                publisher: @publisher,
+                                publication_type: @publisher.publication_type)
+      end
+    end
     mail(
         to: @publisher.pending_email,
         subject: default_i18n_subject(publication_title: @publisher.publication_title)
@@ -148,6 +159,28 @@ class PublisherMailer < ApplicationMailer
       reply_to: @publisher.email,
       subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer verified_no_wallet))}",
       template_name: "verified_no_wallet"
+    )
+  end
+
+  def unverified_domain_reached_threshold(domain, email)
+    @domain = domain
+    @email = email
+    @home_url = root_url
+    mail(
+      to: @email,
+      subject: default_i18n_subject(publication_title: @domain)
+    )
+  end
+
+  def unverified_domain_reached_threshold_internal(domain, email)
+    @domain = domain
+    @email = email
+    @home_url = root_url
+    mail(
+      to: INTERNAL_EMAIL,
+      reply_to: @email,
+      subject: "<Internal> #{I18n.t(:subject, publication_title: @domain, scope: %w(publisher_mailer unverified_domain_reached_threshold))}",
+      template_name: "unverified_domain_reached_threshold"
     )
   end
 end
