@@ -1,42 +1,91 @@
 .main-content
   .container
     .row
-      .col.col-details.col-md-8.col-center
-        .sub-panel
+      .col.col-details.col-xs-12.col-sm-10.col-md-8.col-lg-6.col-center
 
-          .row
-            .col-md-10.col-md-offset-1
+        .error-group--wrapper.js-register-u2f-error
 
-              h3 = t ".heading"
+          .js-u2f-error-bad-request
+            .sub-panel.sub-panel--panel--error-top
+              .row
+                .sub-panel--top-wrapper
+                  .sub-panel--top-icon
+                    = render 'icon_circled_x'
+                  .sub-panel--top-body
+                    = t ".u2f-error.bad-request"
 
-              .error-group.js-register-u2f-error
-                .alert.alert-warning.js-u2f-error-bad-request = t ".u2f-error.bad-request"
-                .alert.alert-warning.js-u2f-error-configuration-unsupported = t ".u2f-error.configuration-unsupported"
-                .alert.alert-warning.js-u2f-error-device-ineligible = t ".u2f-error.device-ineligible"
-                .alert.alert-warning.js-u2f-error-other-error = t ".u2f-error.other-error"
-                .alert.alert-warning.js-u2f-error-timeout = t ".u2f-error.timeout"
-                .alert.alert-warning.js-u2f-error-implementation-incomplete = t ".u2f-error.implementation-incomplete"
+          .js-u2f-error-configuration-unsupported
+            .sub-panel.sub-panel--panel--error-top
+              .row
+                .sub-panel--top-wrapper
+                  .sub-panel--top-icon
+                    = render 'icon_circled_x'
+                  .sub-panel--top-body
+                    = t ".u2f-error.configuration-unsupported"
 
-              = form_for @u2f_registration, html: { class: "js-register-u2f js-feature-u2f-available" } do |f|
-                input type="hidden" name="u2f_app_id" value=(@app_id)
-                input type="hidden" name="u2f_registration_requests" value=(@registration_requests.as_json.to_json)
-                input type="hidden" name="u2f_sign_requests" value=(@sign_requests.as_json.to_json)
-                input type="hidden" name="u2f_response"
+          .js-u2f-error-device-ineligible
+            .sub-panel.sub-panel--panel--error-top
+              .row
+                .sub-panel--top-wrapper
+                  .sub-panel--top-icon
+                    = render 'icon_circled_x'
+                  .sub-panel--top-body
+                    = t ".u2f-error.device-ineligible"
 
-                div.form-group
-                  = f.label :name
-                  = f.text_field :name, class: "form-control", placeholder: t(".name_placeholder")
+          .js-u2f-error-other-error
+            .sub-panel.sub-panel--panel--error-top
+              .row
+                .sub-panel--top-wrapper
+                  .sub-panel--top-icon
+                    = render 'icon_circled_x'
+                  .sub-panel--top-body
+                    = t ".u2f-error.other-error"
 
-                .row
-                  .col-md-6
-                    = f.submit t(".submit_value"), class: "btn btn-primary"
-                  .col-md-6.text-right
-                    = link_to t(".cancel"), two_factor_registrations_path, class: "btn btn-link"
+          .js-u2f-error-timeout
+            .sub-panel.sub-panel--panel--error-top
+              .row
+                .sub-panel--top-wrapper
+                  .sub-panel--top-icon
+                    = render 'icon_circled_x'
+                  .sub-panel--top-body
+                    = t ".u2f-error.timeout"
 
-                .error-group.js-register-u2f-waiting
-                  .js-u2f-waiting
-                    h5= t ".waiting_heading"
-                    p= t ".waiting_description"
+          .js-u2f-error-implementation-incomplete
+            .sub-panel.sub-panel--panel--error-top
+              .row
+                .sub-panel--top-wrapper
+                  .sub-panel--top-icon
+                    = render 'icon_circled_x'
+                  .sub-panel--top-body
+                    = t ".u2f-error.implementation-incomplete"
 
-              div.warning.js-feature-u2f-unavailable
-                p.alert.alert-warning = t ".u2f-unavailable"
+          .error-group--no-error.js-no-error
+            .sub-panel.sub-panel--panel--filler-top
+
+
+        .sub-panel.sub-panel--panel--bottom
+
+          h3 = t ".heading"
+
+          = form_for @u2f_registration, html: { class: "js-register-u2f js-feature-u2f-available" } do |f|
+            input type="hidden" name="u2f_app_id" value=(@app_id)
+            input type="hidden" name="u2f_registration_requests" value=(@registration_requests.as_json.to_json)
+            input type="hidden" name="u2f_sign_requests" value=(@sign_requests.as_json.to_json)
+            input type="hidden" name="u2f_response"
+
+            div.form-group
+              = f.label :name
+              = f.text_field :name, class: "form-control", placeholder: t(".name_placeholder")
+
+            div
+              .col.pull-left
+                = f.submit t(".submit_value"), class: "btn btn-primary"
+              .col.text-right
+                = link_to t(".cancel"), two_factor_registrations_path, class: "btn btn-link"
+
+            .js-u2f-is-working
+              h5= t ".waiting_heading"
+              p= t ".waiting_description"
+
+          div.warning.js-feature-u2f-unavailable
+            p.alert.alert-warning = t ".u2f-unavailable"

@@ -3,9 +3,9 @@
     .row
       .col.col-details.col-md-8.col-center
         - if totp_enabled?(current_publisher)
-          .sub-panel.sub-panel--panel--top
+          .sub-panel.sub-panel--panel--info-top
             .row
-              .col-md-10.col-md-offset-1
+              .sub-panel--top-wrapper
                 .sub-panel--top-icon
                   = render 'icon_circled_i'
                 .sub-panel--top-body
