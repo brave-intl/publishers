@@ -3,7 +3,7 @@ class Publisher < ApplicationRecord
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
-  WINBACK_THRESHOLD = 5.days
+  WIN_BACK_THRESHOLD = 5.days
 
   has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
   has_many :u2f_registrations, -> { order("created_at DESC") }
@@ -241,13 +241,13 @@ class Publisher < ApplicationRecord
   end
 
   # Returns publishers who have abandoned verification process and do not have another publisher account
-  def self.get_winback_publishers
+  def self.win_back_publishers
     verified_publishers = Publisher.where(verified: true)
 
     # Only include publishers who have filled contact information
-    unverified_publishers = Publisher.where(verified: false).where.not(brave_publisher_id: [nil]).where("created_at < ?", WINBACK_THRESHOLD.ago)
+    unverified_publishers = Publisher.where(verified: false).where.not(brave_publisher_id: [nil]).where("created_at < ?", WIN_BACK_THRESHOLD.ago)
 
-    winback_publishers = []
+    win_back_publihsers = []
     unverified_publishers.find_each do |publisher|
       include_publisher = true
 
@@ -263,11 +263,11 @@ class Publisher < ApplicationRecord
       end
 
       if include_publisher
-        winback_publishers.push(publisher)
+        win_back_publihsers.push(publisher)
       end
     end
 
-    winback_publishers
+    win_back_publihsers
   end
 
   class << self
