@@ -110,6 +110,9 @@ group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
 
+  # Locking to 5.10.3 to workaround issue in 5.11.1 (https://github.com/seattlerb/minitest/issues/730)
+  gem 'minitest', '5.10.3'
+
   gem "webmock", "~> 3.0"
 end
 

@@ -153,7 +153,7 @@ GEM
     method_source (0.9.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
-    minitest (5.11.1)
+    minitest (5.10.3)
     minitest-capybara (0.8.2)
       capybara (~> 2.2)
       minitest (~> 5.0)
@@ -398,6 +398,7 @@ DEPENDENCIES
   i18n-tasks (~> 0.9.12)
   listen (~> 3.0.5)
   lograge (~> 0.4)
+  minitest (= 5.10.3)
   minitest-rails-capybara
   mocha
   newrelic_rpm (~> 3.16)
