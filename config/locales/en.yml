@@ -458,6 +458,12 @@ en:
             - <a href="https://www.ledgerwallet.com/products/ledger-blue" target="_blank">Ledger Blue</a>
         disabled: No keys have been added
         button: Add Key
+    prompt:
+      heading: Protect your account
+      subheading: by enabling two-factor authentication
+      intro: This added security is recommended for making sure it's really you logging in to your account.
+      skip: Skip for now
+      setup: Set Up 2FA
   totp_registrations:
     new:
       heading: Set Up Authenticator App

@@ -14,6 +14,7 @@
 !/tmp/.keep
 clifton.sh
 dump.rdb
+yarn-error.log
 
 # Ignore Byebug command history file.
 .byebug_history

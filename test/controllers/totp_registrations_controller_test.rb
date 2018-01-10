@@ -68,18 +68,4 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
   end
-
-  test "index renders registered secret" do
-    publisher = publishers(:completed)
-    totp_registration = totp_registrations(:default)
-    publisher.update_attribute(:totp_registration, totp_registration)
-
-    sign_in publisher
-    get two_factor_registrations_path
-
-    assert_response :success
-    assert_match "Enabled", response.body
-    assert_match "Authenticator app has been set up", response.body
-    assert_select "a[href=?]:contains(Reconfigure)", new_totp_registration_path
-  end
 end

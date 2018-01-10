@@ -57,7 +57,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "re-used access link is rejected and send publisher to the expired auth token page" do
     publisher = publishers(:completed)
     url = publisher_url(publisher, token: publisher.authentication_token)
- 
+
     get url
     assert_redirected_to home_publishers_url, "precond - publisher is logged in"
 
@@ -276,6 +276,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
     end
 
+    # skip 2FA prompt
+    publisher.two_factor_prompted_at = 1.day.ago
+    publisher.save!
+
     # verify that the state token has not yet been set
     assert_nil(publisher.uphold_state_token)
 
@@ -395,6 +399,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
     end
 
+    publisher.two_factor_prompted_at = 1.day.ago
+    publisher.save!
+
     url = uphold_verified_publishers_path
     get(url, params: { code: 'ebb18043eb2e106fccb9d13d82bec119d8cd016c' })
     assert_redirected_to '/publishers/home'
@@ -419,6 +426,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     uphold_state_token = SecureRandom.hex(64)
     publisher.uphold_state_token = uphold_state_token
 
+    publisher.two_factor_prompted_at = 1.day.ago
     publisher.save!
 
     spoofed_uphold_state_token = SecureRandom.hex(64)
@@ -511,5 +519,18 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal(
         '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
         response.body)
+  end
+
+  test "home redirects to 2FA prompt on first visit" do
+    publisher = publishers(:unprompted)
+
+    sign_in publisher
+    get home_publishers_path
+
+    assert_redirected_to prompt_two_factor_registrations_path, "redirects on first visit"
+    follow_redirect!
+
+    get home_publishers_path
+    assert_response :success
   end
 end
