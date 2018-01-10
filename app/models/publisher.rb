@@ -248,7 +248,7 @@ class Publisher < ApplicationRecord
     unverified_publishers = Publisher.where(verified: false).where.not(brave_publisher_id: [nil]).where("created_at < ?", WINBACK_THRESHOLD.ago)
 
     winback_publishers = []
-    unverified_publishers.each do |publisher|
+    unverified_publishers.find_each do |publisher|
       include_publisher = true
 
       # Check if a verified publisher exists with same brave_publisher_id, email, or phone number
