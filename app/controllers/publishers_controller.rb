@@ -34,6 +34,8 @@ class PublishersController < ApplicationController
              update
              uphold_status
              uphold_verified)
+  before_action :prompt_for_two_factor_setup,
+    only: %i(home)
 
   def sign_up
 
@@ -372,5 +374,11 @@ class PublishersController < ApplicationController
       request.env["rack.attack.throttle_data"] &&
       request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"] &&
       request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"][:count] >= THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN
+  end
+
+  def prompt_for_two_factor_setup
+    return if current_publisher.two_factor_prompted_at.present? || two_factor_enabled?(current_publisher)
+    current_publisher.update! two_factor_prompted_at: Time.now
+    redirect_to prompt_two_factor_registrations_path
   end
 end

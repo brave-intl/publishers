@@ -25,7 +25,11 @@ Rails.application.routes.draw do
       patch :complete_signup
       get :choose_new_channel_type
       resources :two_factor_authentications, only: %i(index)
-      resources :two_factor_registrations, only: %i(index)
+      resources :two_factor_registrations, only: %i(index) do
+        collection do
+          get :prompt
+        end
+      end
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)
       resources :totp_registrations, only: %i(new create destroy)
