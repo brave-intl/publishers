@@ -342,28 +342,36 @@ noscript
   - current_publisher.channels.visible.each do |channel|
     .row
       .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
-        .sub-panel.channel-panel
-          .channel-summary.pull-left
-            h3= channel.publication_title
-            .channel-details
-              = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
-          .channel-status.pull-right
-            = form_for(channel, url: channel_path(channel),
-                    html: { id: "update_show_verification_status_" + channel.id,
-                            class: 'update-show-verification-status-form ' + (channel.show_verification_status? ? 'checked' : 'unchecked') }) do |f|
-              .panel-header.panel-header-h4
-                .inline-controls.pull-right
-                  .onoffswitch
-                    = f.check_box(:show_verification_status,
-                                  id: "show_verification_status_" + channel.id,
-                                  class: "show-channel-verification-status onoffswitch-checkbox",
-                                  "data-piwik-action": "ShowStatusToggleClicked", "data-piwik-name": "Clicked", "data-piwik-value": "Dashboard",
-                                  "data-channel-id": channel.id)
-                    = f.label(:show_verification_status, class: "onoffswitch-label", for: "show_verification_status_" + channel.id) do
-                      span.onoffswitch-inner
-                      span.onoffswitch-switch
-                  .value-label
-                .list-label= t("publishers.dashboard_list_in_verified_publishers")
+        div class=("sub-panel channel-panel #{channel.verified? ? 'channel-verified' : 'channel-unverified'}")
+          - if channel.verified?
+            .channel-summary.pull-left
+              h3= channel.publication_title
+              .channel-details
+                = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
+            .channel-status.pull-right
+              = form_for(channel, url: channel_path(channel),
+                      html: { id: "update_show_verification_status_" + channel.id,
+                              class: 'update-show-verification-status-form ' + (channel.show_verification_status? ? 'checked' : 'unchecked') }) do |f|
+                .panel-header.panel-header-h4
+                  .inline-controls.pull-right
+                    .onoffswitch
+                      = f.check_box(:show_verification_status,
+                                    id: "show_verification_status_" + channel.id,
+                                    class: "show-channel-verification-status onoffswitch-checkbox",
+                                    "data-piwik-action": "ShowStatusToggleClicked", "data-piwik-name": "Clicked", "data-piwik-value": "Dashboard",
+                                    "data-channel-id": channel.id)
+                      = f.label(:show_verification_status, class: "onoffswitch-label", for: "show_verification_status_" + channel.id) do
+                        span.onoffswitch-inner
+                        span.onoffswitch-switch
+                    .value-label
+                  .list-label= t("publishers.dashboard_list_in_verified_publishers")
+          -else
+            .channel-summary.pull-left
+              h3= channel.publication_title
+            .channel-progress.pull-left
+              .one-more-step= t("publishers.dashboard_channel_one_more_step")
+            .channel-status.pull-right
+              = link_to(t("publishers.dashboard_channel_lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
           .clearfix
 
 .row.tos-row

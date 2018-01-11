@@ -422,42 +422,60 @@ body[data-controller="publishers"]
           color: #ffffff
           text-decoration: none
       .channel-panel
-        padding: 0
+        padding: 24px 40px
         .channel-summary
-          padding: 24px 20px 24px 40px
+          margin-right: 20px
           h3
             font-size: 20px
-            margin-bottom: 8px
-          .channel-details
-            font-size: 12px
-            color: $gray
-        .channel-status
-          padding: 36px 20px
-          min-width: 350px
-          background: #f2f4f7
-          border-radius: 0 8px 8px 0
-          .list-label
-            display: block
-            width: 67%
-            white-space: nowrap
-          .inline-controls
-            padding: 0
-          .onoffswitch
-            display: inline-block
-            margin-top: 8px
-          .value-label
-            display: inline-block
-            float: right
-            margin-left: 12px
-            margin-top: 4px
-            font-size: 12px
-            font-weight: 500
-          .update-show-verification-status-form.checked .value-label:after
-            color: #4fbad6
-            content: "ON"
-          .update-show-verification-status-form.unchecked .value-label:after
-            color: $gray
-            content: "OFF"
+            margin: 0
+        &.channel-unverified
+          background-color: rgba(255,255,255,0.6)
+          .channel-summary
+            padding: 14px 0
+          .channel-progress
+            padding: 13px 0
+            .one-more-step
+              font-size: 14px
+              padding: 3px 0 3px 115px
+              background: url(asset-path("channel-progress.png")) no-repeat center left
+          .channel-status
+            padding: 7px 0
+
+        &.channel-verified
+          .channel-summary
+            padding-right: 20px
+            .channel-details
+              margin-top: 8px
+              font-size: 12px
+              color: $gray
+          .channel-status
+            margin: -24px -40px -24px 0
+            padding: 36px 20px
+            min-width: 350px
+            background: #f2f4f7
+            border-radius: 0 8px 8px 0
+            .list-label
+              display: block
+              width: 67%
+              white-space: nowrap
+            .inline-controls
+              padding: 0
+            .onoffswitch
+              display: inline-block
+              margin-top: 8px
+            .value-label
+              display: inline-block
+              float: right
+              margin-left: 12px
+              margin-top: 4px
+              font-size: 12px
+              font-weight: 500
+            .update-show-verification-status-form.checked .value-label:after
+              color: #4fbad6
+              content: "ON"
+            .update-show-verification-status-form.unchecked .value-label:after
+              color: $gray
+              content: "OFF"
       #default_currency_code
         font-weight: 600
       .payment-info

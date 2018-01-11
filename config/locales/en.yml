@@ -77,6 +77,8 @@ en:
     dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
     dashboard_list_in_verified_publishers: "Brave Verified Publishers"
     dashboard_channel_added: "added %{date}"
+    dashboard_channel_one_more_step: "One more step to complete..."
+    dashboard_channel_lets_finish: "Let's Finish"
     current_deposit_currency: "Current deposit currency: BAT to "
     edit_contact: "Edit Contact"
     uphold_check_balance: "Check Balance"
