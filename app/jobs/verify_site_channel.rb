@@ -1,4 +1,4 @@
-# Verify all Site Channels created in past 2 weeks with brave_publisher_id
+# Verify a Site Channel, by id
 class VerifySiteChannel < ApplicationJob
   queue_as :default
 
@@ -7,10 +7,12 @@ class VerifySiteChannel < ApplicationJob
     Rails.logger.warn("SiteChannelVerifier 404; publisher might not exist in eyeshade.")
   end
 
-  def perform(brave_publisher_id:)
+  def perform(channel_id:)
+    channel = Channel.find(channel_id)
+
     SiteChannelVerifier.new(
       attended: false,
-      brave_publisher_id: brave_publisher_id,
+      channel: channel
     ).perform
   end
 end

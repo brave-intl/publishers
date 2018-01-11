@@ -102,10 +102,7 @@ class SiteChannelsController < ApplicationController
   def verify
     @channel = current_channel
     require "faraday"
-    SiteChannelVerifier.new(
-        brave_publisher_id: current_channel.details.brave_publisher_id,
-        channel: current_channel
-    ).perform
+    SiteChannelVerifier.new(channel: @channel).perform
     current_channel.reload
     if current_channel.verified?
       redirect_to(home_publishers_path)

@@ -6,15 +6,13 @@ require 'publishers/fetch'
 class SiteChannelVerifier < BaseApiClient
   include Publishers::Fetch
 
-  attr_reader :attended, :brave_publisher_id, :channel, :verified_channel, :verified_channel_id
+  attr_reader :attended, :channel, :verified_channel, :verified_channel_id
 
-  # channel is optional. If given, service will raise errors if the provided publisher's verification token
-  # doesn't match the one found on the domain.
   # attended: Passed through to Eyeshade; affects verbosity
-  def initialize(attended: true, brave_publisher_id:, channel: nil)
+  def initialize(attended: true, channel:)
     @attended = attended
-    @brave_publisher_id = brave_publisher_id
     @channel = channel
+    raise UnsupportedChannelType.new unless @channel.details.is_a?(SiteChannelDetails)
   end
 
   def perform
@@ -22,7 +20,7 @@ class SiteChannelVerifier < BaseApiClient
     # Will raise in case of error.
     response = connection.get do |request|
       request.params["backgroundP"] = "true" if !attended
-      request.url("/v1/owners/#{URI.escape(channel.publisher.owner_identifier)}/verify/#{brave_publisher_id}")
+      request.url("/v1/owners/#{URI.escape(channel.publisher.owner_identifier)}/verify/#{channel.details.brave_publisher_id}")
     end
     response_hash = JSON.parse(response.body)
     @verified_channel_id = response_hash["verificationId"]
@@ -100,7 +98,7 @@ class SiteChannelVerifier < BaseApiClient
   def verify_offline_publisher_id_dns
     require "dnsruby"
     resolver = Dnsruby::Resolver.new
-    message = resolver.query(brave_publisher_id, "TXT")
+    message = resolver.query(channel.details.brave_publisher_id, "TXT")
     answer = message.answer
     return nil if answer.blank?
 
@@ -109,8 +107,8 @@ class SiteChannelVerifier < BaseApiClient
       answer_part.strings.each do |string|
         token_match = /^brave\-ledger\-verification\=([a-zA-Z0-9]+)$/.match(string)
         next if !token_match || !token_match[1]
-        Rails.logger.info("Found token on #{brave_publisher_id}: #{token_match[1]}")
-        dns_channel = Channel.joins(:site_channel_details).find_by("site_channel_details.brave_publisher_id": brave_publisher_id, "site_channel_details.verification_token": token_match[1])
+        Rails.logger.info("Found token on #{channel.details.brave_publisher_id}: #{token_match[1]}")
+        dns_channel = Channel.joins(:site_channel_details).find_by("site_channel_details.brave_publisher_id": channel.details.brave_publisher_id, "site_channel_details.verification_token": token_match[1])
         if dns_channel
           return dns_channel.id
         else
@@ -126,7 +124,7 @@ class SiteChannelVerifier < BaseApiClient
 
   def verify_offline_publisher_id_public_file
     generator = SiteChannelVerificationFileGenerator.new(site_channel: channel)
-    uri = URI("https://#{brave_publisher_id}/.well-known/#{generator.filename}")
+    uri = URI("https://#{channel.details.brave_publisher_id}/.well-known/#{generator.filename}")
     response = fetch(uri: uri)
     if response.code == "200"
       token_match = /#{channel.details.verification_token}/.match(response.body)
@@ -148,5 +146,8 @@ class SiteChannelVerifier < BaseApiClient
 
   # If the publisher previously has been verified, you can't reverify (for now)
   class VerificationIdMismatch < RuntimeError
+  end
+
+  class UnsupportedChannelType < RuntimeError
   end
 end

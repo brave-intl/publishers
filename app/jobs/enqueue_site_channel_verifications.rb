@@ -1,5 +1,4 @@
-# For Site Channels created recently, enqueue jobs to verify each unique
-# brave_publisher_id.
+# For Site Channels created recently, enqueue jobs to verify each channel
 class EnqueueSiteChannelVerifications < ApplicationJob
   MAX_AGE = 6.weeks
 
@@ -7,8 +6,8 @@ class EnqueueSiteChannelVerifications < ApplicationJob
 
   def perform
     n = 0
-    brave_publisher_ids.each do |brave_publisher_id|
-      VerifySiteChannel.perform_later(brave_publisher_id: brave_publisher_id)
+    recent_unverified_site_channels_ids.each do |id|
+      VerifySiteChannel.perform_later(channel_id: id)
       n += 1
     end
     Rails.logger.info("EnqueueSiteChannelVerifications enqueued VerifySiteChannels #{n} times.")
@@ -16,8 +15,8 @@ class EnqueueSiteChannelVerifications < ApplicationJob
 
   private
 
-  # Get distinct unverified brave_publisher_ids created recently.
-  def brave_publisher_ids
-    SiteChannelDetails.recent_unverified_site_channels(max_age: MAX_AGE).pluck(:brave_publisher_id)
+  # Get unverified channel ids created recently.
+  def recent_unverified_site_channels_ids
+    SiteChannelDetails.recent_unverified_site_channels(max_age: MAX_AGE).pluck("channels.id")
   end
 end
