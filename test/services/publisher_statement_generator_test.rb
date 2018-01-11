@@ -24,7 +24,7 @@ class PublisherStatementGeneratorTest < ActiveJob::TestCase
 
       publisher = publishers(:verified)
 
-      stub_request(:get, /v1\/publishers\/verified\.org\/statement/).
+      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/statement/).
           with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: "{\"reportURL\":\"example.com/fake-report\"}", headers: {})
 
@@ -42,7 +42,7 @@ class PublisherStatementGeneratorTest < ActiveJob::TestCase
 
       publisher = publishers(:google_verified)
 
-      stub_request(:get, /v1\/owners\/#{publisher.owner_identifier}\/statement/).
+      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/statement/).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: "{\"reportURL\":\"example.com/fake-report\"}", headers: {})
 

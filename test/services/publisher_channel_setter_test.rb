@@ -21,7 +21,7 @@ class PublisherChannelSetterTest < ActiveJob::TestCase
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
 
-      stub_request(:post, /v1\/owners/).
+      stub_request(:post, /v2\/owners/).
           with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: nil, headers: {})
 

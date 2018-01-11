@@ -1,7 +1,13 @@
 - content_for(:content) do
-  .main-content
-    #content.container
-      = yield
+  / ToDo: DRY this up
+  -if @hide_nav
+    .main-content.sans-nav
+      #content.container
+        = yield
+  -else
+    .main-content
+      #content.container
+        = yield
 
 = render \
   template: "layouts/application",

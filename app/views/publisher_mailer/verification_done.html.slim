@@ -7,7 +7,7 @@
 
 h3
   = image_tag(attachments["verified-icon.png"]&.url, alt: I18n.t("publishers.verified"), class: "attribute valign-mid verified-icon", height: 30)
-  span.publisher-domain-name.valign-mid= @publisher
+  span.publisher-domain-name.valign-mid= @channel.details.publication_title
 p= I18n.t("publisher_mailer.verification_done.intro")
 
 h4= I18n.t("publisher_mailer.verification_done.claim_funds_header")

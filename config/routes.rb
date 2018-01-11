@@ -1,21 +1,15 @@
 Rails.application.routes.draw do
   resources :publishers, only: %i(create update new show) do
     collection do
+      get :sign_up
       get :create_done
       post :resend_email_verify_email, action: :resend_email_verify_email
-      get :download_verification_file
       get :home
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :expired_auth_token
       get :log_out
       get :email_verified
-      get :verification_choose_method
-      get :verification_dns_record
-      get :verification_public_file
-      get :verification_github
-      get :verification_wordpress
-      get :verification_support_queue
       get :status
       get :balance
       get :uphold_verified
@@ -28,6 +22,8 @@ Rails.application.routes.draw do
       patch :update
       patch :generate_statement
       patch :update_unverified
+      patch :complete_signup
+      get :choose_new_channel_type
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
@@ -37,6 +33,27 @@ Rails.application.routes.draw do
     end
   end
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
+
+  resources :channels, only: %i(update destroy) do
+    member do
+      patch :update
+    end
+  end
+
+  resources :site_channels, only: %i(create update new show) do
+    member do
+      patch :update_unverified
+      patch :check_for_https
+      patch :verify
+      get :download_verification_file
+      get :verification_choose_method
+      get :verification_dns_record
+      get :verification_public_file
+      get :verification_github
+      get :verification_wordpress
+      get :verification_support_queue
+    end
+  end
 
   resources :static, only: [] do
     collection do
@@ -49,11 +66,26 @@ Rails.application.routes.draw do
   namespace :api do
     resources :publishers, format: false, only: [] do
       collection do
-        post "/", action: :create, as: :create
-        get "/:brave_publisher_id", action: :index_by_brave_publisher_id, constraints: { brave_publisher_id: %r{[^\/]+} }
-        post "/:brave_publisher_id/notifications", action: :notify, constraints: { brave_publisher_id: %r{[^\/]+} }
         post "/notify_unverified", action: :notify_unverified
-        delete "/:brave_publisher_id", action: :destroy, as: :destroy, constraints: { brave_publisher_id: %r{[^\/]+} }
+      end
+    end
+
+    resources :owners, format: false, only: [] do
+      resources :channels, only: %i() do
+        get "/", action: :show, constraints: { channel_id: %r{[^\/]+} }
+        patch "verifications", action: :verify, constraints: { channel_id: %r{[^\/]+} }
+      end
+
+      collection do
+        get "/:owner_id", action: :show
+        post "/:owner_id/notifications", action: :notify
+      end
+    end
+
+    resources :channels, format: false, only: [] do
+      collection do
+        get "/:channel_id", action: :show, constraints: { channel_id: %r{[^\/]+} }
+        # post "/:channel_id/notifications", action: :notify, constraints: { channel_id: %r{[^\/]+} }
       end
     end
   end

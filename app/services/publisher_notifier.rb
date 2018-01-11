@@ -5,7 +5,7 @@ class PublisherNotifier < BaseService
   # Should match methods in NotificationMailer starting with #publisher_*
   NOTIFICATION_TYPES = %w(verified_no_wallet)
 
-  def initialize(notification_params: {}, notification_type:, publisher:)
+  def initialize(notification_params: {}, notification_type:, publisher:, channel: nil)
     raise ":publisher invalid" if !publisher.is_a?(Publisher)
     @notification_type = notification_type.to_s
     if !NOTIFICATION_TYPES.include?(@notification_type)
@@ -13,6 +13,7 @@ class PublisherNotifier < BaseService
     end
     @notification_params = (notification_params && notification_params.to_hash.symbolize_keys) || {}
     @publisher = publisher
+    @channel = channel
   end
 
   def perform

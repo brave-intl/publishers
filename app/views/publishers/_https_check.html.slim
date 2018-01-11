@@ -1,7 +1,0 @@
-- unless current_publisher.supports_https?
-  .note-text
-    = image_tag("x.png", alt: t("publishers.verification_https_check_no_https_alt"), class: "https-check-icon")
-    = t("publishers.verification_https_check_no_https")
-  = form_for(current_publisher, method: :patch, url: check_for_https_publishers_path) do |f|
-    = f.submit(t("publishers.check_for_https_button"), class: "btn btn-primary btn-sm btn-check-https")
-  .clearfix

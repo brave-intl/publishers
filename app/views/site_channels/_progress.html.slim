@@ -1,0 +1,13 @@
+.div.progress-train
+  = render :partial => 'progress_item',
+          :locals => { fill: progress[:info],
+                       text: t('site_channels.progress.info'),
+                       include_connector: false }
+  = render :partial => 'progress_item',
+          :locals => { fill: progress[:verify],
+                       text: t('site_channels.progress.verify'),
+                       include_connector: true }
+  = render :partial => 'progress_item',
+          :locals => { fill: progress[:instruction],
+                       text: t('site_channels.progress.instruction'),
+                       include_connector: true }
