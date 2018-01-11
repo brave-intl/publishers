@@ -2,6 +2,7 @@ language: ruby
 cache: bundler
 bundler_args: --jobs=3 --retry=3 --without production --without staging
 dist: trusty
+sudo: required
 addons:
   postgresql: "9.6"
   chrome: "stable"
