@@ -29,7 +29,7 @@ if (!window.u2f && navigator.userAgent.indexOf('Chrome') != -1) {
  * Namespace for the U2F api.
  * @type {Object}
  */
-var u2f = u2f || {};
+window.u2f = {};
 
 /**
  * FIDO U2F Javascript API Version

@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@rails/webpacker": "^3.2.0",
+    "clipboard": "^1.7.1",
+    "rails-ujs": "^5.1.4"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^2.9.7"
+  }
+}

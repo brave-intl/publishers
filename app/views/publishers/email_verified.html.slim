@@ -15,7 +15,7 @@
     (function() {
       function showYoutubeChannelTakenModal() {
         var modal = document.getElementById('taken_youtube_channel_modal');
-        classie.add(modal, 'md-show');
+        modal.classList.add('md-show');
 
         var closeModal = document.getElementById('close_modal');
         closeModal.addEventListener('click', function() {
@@ -28,7 +28,7 @@
 
       function hideYoutubeChannelTakenModal() {
         var modal = document.getElementById('taken_youtube_channel_modal');
-        classie.remove(modal, 'md-show');
+        modal.classList.remove('md-show');
       }
 
       window.addEventListener('load', function() {

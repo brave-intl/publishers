@@ -1,9 +1,6 @@
-(function(self) {
-    'use strict';
+let fetch = window.fetch;
 
-    if (self.fetch) {
-        return
-    }
+if (!fetch) {
 
     var support = {
         searchParams: 'URLSearchParams' in self,
@@ -415,11 +412,7 @@
         return new Response(null, {status: status, headers: {location: url}})
     }
 
-    self.Headers = Headers
-    self.Request = Request
-    self.Response = Response
-
-    self.fetch = function(input, init) {
+    fetch = function(input, init) {
         return new Promise(function(resolve, reject) {
             var request = new Request(input, init)
             var xhr = new XMLHttpRequest()
@@ -462,5 +455,10 @@
             xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
         })
     }
-    self.fetch.polyfill = true
-})(typeof self !== 'undefined' ? self : this);
+
+    /* Legacy window.fetch usage from html files */
+    window.fetch = fetch;
+}
+
+
+export default fetch;

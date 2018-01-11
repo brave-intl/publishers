@@ -2,6 +2,7 @@ language: ruby
 cache: bundler
 bundler_args: --jobs=3 --retry=3 --without production --without staging
 dist: trusty
+sudo: required
 addons:
   postgresql: "9.6"
   chrome: "stable"
@@ -13,3 +14,6 @@ before_script:
     # Fails if assets don't build. If it is successful, these assets are then
     # use by the subsequent test run.
   - RAILS_ENV=test bundle exec rake assets:precompile
+before_install:
+  - # start your web application and listen on `localhost`
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &

@@ -68,17 +68,10 @@ gem "slim-rails", "~> 3.1"
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"
 
-# Uglifier as compressor for JavaScript assets
-gem "uglifier", ">= 1.3.0"
-
-# Rails UJS without jQuery
-gem "vanilla-ujs", "~>1.3"
-
-# clipboard.js for rails
-gem "clipboard-rails"
-
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
+
+gem 'webpacker', '~> 3.0'
 
 # WHOIS lookup for unverified publishers
 gem "whois", "~> 4.0", require: false
@@ -116,6 +109,9 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
+
+  # Locking to 5.10.3 to workaround issue in 5.11.1 (https://github.com/seattlerb/minitest/issues/730)
+  gem 'minitest', '5.10.3'
 
   gem "webmock", "~> 3.0"
 end
