@@ -6,8 +6,8 @@ html
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1"
     title= t("shared.app_title")
-    = stylesheet_link_tag('application', media: 'all')
-    = javascript_pack_tag('static')
+    = stylesheet_link_tag 'static', media: 'all'
+    = javascript_pack_tag 'static'
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
   body data-action=params[:action] data-controller=params[:controller]
