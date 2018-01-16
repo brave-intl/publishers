@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/kpfefferle/bootstrap-3-sass.git
+  revision: 82c67d11d00539d707dc29eedc09a9905397fb68
+  specs:
+    bootstrap-3-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -51,13 +59,10 @@ GEM
     ast (2.3.0)
     attr_encrypted (3.0.3)
       encryptor (~> 3.0.0)
-    autoprefixer-rails (7.2.4)
+    autoprefixer-rails (7.2.5)
       execjs
     bcrypt (3.1.11)
     bindex (0.5.0)
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
     builder (3.2.3)
     bundler-audit (0.6.0)
       bundler (~> 1.2)
@@ -384,7 +389,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   attr_encrypted (~> 3.0.0)
-  bootstrap-sass (~> 3.3.6)
+  bootstrap-3-sass!
   bundler-audit
   byebug
   capybara-selenium
