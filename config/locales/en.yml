@@ -362,6 +362,7 @@ en:
           Your browser doesn't support security key, the only two-factor
           authentication method your account has configured. Please use
           Google Chrome to authenticate with your security key.
+    index:
       u2f-error:
         bad-request: |
           There was an unexpected error in the authentication request made by
