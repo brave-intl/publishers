@@ -1,0 +1,10 @@
+- content_for(:content) do
+  .main-content
+    #content.container
+      .col-center
+        .sub-panel
+          .text-center
+            = yield
+
+= render \
+  template: "layouts/application"

@@ -1,0 +1,5 @@
+h3 data-test="promo-activate"= t("promo.activate.title")
+p= t("promo.activate.description")
+= form_for @publisher, {method: :post, url: promo_registrations_path} do |f|
+  .panel-controls.col-center
+    =f.submit(t("promo.activate.button"), class: "btn btn-block btn-primary")

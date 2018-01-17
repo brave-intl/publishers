@@ -161,6 +161,16 @@ class Publisher < ApplicationRecord
     "publishers#uuid:#{id}"
   end
 
+  def promo_status(promo_running)
+    if !promo_running
+      :over
+    elsif self.promo_enabled_2018q1
+      :active
+    else
+      :inactive
+    end
+  end
+
   private
 
   def dont_destroy_publishers_with_channels

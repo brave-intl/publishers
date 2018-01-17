@@ -1,0 +1,6 @@
+- if @publisher_promo_status == :active
+  = render "active", locals: @publisher
+- elsif @publisher_promo_status == :inactive
+  = render "activate", locals: @publisher
+- else
+  = render "over", locals: @publisher
