@@ -26,7 +26,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     # expire the promo
-    PromoRegistrationsController.any_instance.stubs(:active_promo_id).returns("")
+    PromoRegistrationsController.any_instance.stubs(:promo_running).returns(false)
 
     # verify over is rendered
     get promo_registrations_path
@@ -50,7 +50,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     # expire the promo
-    PromoRegistrationsController.any_instance.stubs(:active_promo_id).returns("")
+    PromoRegistrationsController.any_instance.stubs(:promo_running).returns(false)
 
     # verify :over is rendered
     post promo_registrations_path

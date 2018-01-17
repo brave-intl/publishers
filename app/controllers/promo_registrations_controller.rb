@@ -4,7 +4,6 @@ class PromoRegistrationsController < ApplicationController
 
   def index
     @publisher = current_publisher
-    promo_running = active_promo_id.present?
     @publisher_promo_status = @publisher.promo_status(promo_running)
     render(:index)
   end
@@ -14,15 +13,13 @@ class PromoRegistrationsController < ApplicationController
     @publisher.promo_enabled_2018q1 = true
     @publisher.save!
 
-    # TO DO: register channel with promo service
-    # TO DO: create new referral promo from response
-
+    PromoRegistrar.new(publisher: @publisher).perform
   end
 
   private
 
-  def active_promo_id
-    Rails.application.secrets[:active_promo_id]
+  def promo_running
+    Rails.application.secrets[:active_promo_id].present?
   end
 
   def publisher_activated_promo
@@ -30,7 +27,7 @@ class PromoRegistrationsController < ApplicationController
   end
 
   def require_active_promo
-    return if active_promo_id.present?
+    return if promo_running
     redirect_to index
   end
 end
