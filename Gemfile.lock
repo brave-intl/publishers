@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/kpfefferle/bootstrap-3-sass.git
+  remote: https://github.com/kpfefferle/bootstrap-3-sass.git
   revision: 82c67d11d00539d707dc29eedc09a9905397fb68
   specs:
     bootstrap-3-sass (3.3.7)

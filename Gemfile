@@ -7,7 +7,7 @@ gem "active_model_serializers", "~> 0.10.0"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.0.0"
 
-gem "bootstrap-3-sass", github: "kpfefferle/bootstrap-3-sass"
+gem "bootstrap-3-sass", git: "https://github.com/kpfefferle/bootstrap-3-sass.git"
 gem "bootstrap", "~> 4.0.0.beta3"
 
 # Authentication
