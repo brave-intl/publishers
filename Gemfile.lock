@@ -63,6 +63,10 @@ GEM
       execjs
     bcrypt (3.1.11)
     bindex (0.5.0)
+    bootstrap (4.0.0.beta3)
+      autoprefixer-rails (>= 6.0.3)
+      popper_js (>= 1.12.3, < 2)
+      sass (>= 3.5.2)
     builder (3.2.3)
     bundler-audit (0.6.0)
       bundler (~> 1.2)
@@ -211,6 +215,7 @@ GEM
     phony_rails (0.14.6)
       activesupport (>= 3.0)
       phony (> 2.15)
+    popper_js (1.12.9)
     powerpack (0.1.1)
     premailer (1.11.1)
       addressable
@@ -389,6 +394,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   attr_encrypted (~> 3.0.0)
+  bootstrap (~> 4.0.0.beta3)
   bootstrap-3-sass!
   bundler-audit
   byebug
