@@ -35,26 +35,6 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_match /#{channel.id}/, response.body
   end
 
-  test "show_verification_status returns as false if nil" do
-    channel = channels(:google_verified)
-    assert_nil channel.show_verification_status
-
-    get "/api/channels/#{URI.escape(channel.details.channel_identifier)}"
-
-    assert_equal(200, response.status)
-    refute_nil JSON.parse(response.body)['show_verification_status']
-  end
-
-  test "show_verification_status returns as true if true" do
-    channel = channels(:uphold_connected)
-    assert channel.show_verification_status
-
-    get "/api/channels/#{URI.escape(channel.details.channel_identifier)}"
-
-    assert_equal(200, response.status)
-    assert JSON.parse(response.body)['show_verification_status']
-  end
-
   test "verifies a channel" do
     channel = channels(:small_media_group_to_verify)
     publisher = channel.publisher

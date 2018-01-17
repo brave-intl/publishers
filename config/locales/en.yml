@@ -24,8 +24,8 @@ en:
     attributes:
       publisher:
         phone_normalized: "Phone Number"
-        show_verification_status: "List my site in Brave's verified publisher site once verified."
-        name: "Contact Name"
+        visible: "Yes, help me increase contributor awareness by listing my site in Brave’s marketing channels."
+        name: "Your Name"
       site_channel_details:
         brave_publisher_id: "Website Domain"
         brave_publisher_id_unnormalized: "Website Domain"
@@ -60,6 +60,7 @@ en:
     balance_pending_approximate: "Approximately %{amount} %{code}"
     contact_person: "Contact person"
     contact: "Contact"
+    contact_name_placeholder: "First and last name"
     sign_up_header: "Join Brave Payments"
     create_done_header: "An email is on its way!"
     create_done_body_html: |
@@ -79,6 +80,7 @@ en:
     dashboard_channel_added: "added %{date}"
     dashboard_channel_one_more_step: "One more step to complete..."
     dashboard_channel_lets_finish: "Let's Finish"
+    dashboard_channel_verified: "Verified"
     current_deposit_currency: "Current deposit currency: BAT to "
     edit_contact: "Edit Contact"
     uphold_check_balance: "Check Balance"
@@ -125,7 +127,7 @@ en:
     verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
     verify_button: "Verify"
     complete_signup_welcome: "One last thing..."
-    complete_signup_leadin: "Finish signup by entering below."
+    complete_signup_leadin: "Finish signing up by entering below."
     complete_signup_tos_html: "By clicking 'Sign Up', you're agreeing to our %{tos_link}"
     complete_signup_submit: "Sign Up"
     pub_type_welcome: "Add Channel"

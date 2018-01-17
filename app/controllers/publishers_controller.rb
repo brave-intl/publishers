@@ -333,11 +333,11 @@ class PublishersController < ApplicationController
   end
 
   def publisher_complete_signup_params
-    params.require(:publisher).permit(:name)
+    params.require(:publisher).permit(:name, :visible)
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :phone, :name, :default_currency)
+    params.require(:publisher).permit(:pending_email, :phone, :name, :default_currency, :visible)
   end
 
   def publisher_create_auth_token_params

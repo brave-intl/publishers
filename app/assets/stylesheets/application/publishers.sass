@@ -282,12 +282,24 @@ body[data-controller="publishers"]
   &[data-action="email_verified"],
   &[data-action="complete_signup"]
     .process-panel
-      padding: 80px 200px 80px 100px
+      padding: 80px 200px 80px 80px
       background: #fff url(asset-path("img-brands.png")) top right no-repeat
+      .content-panel form
+        width: 350px
+        .form-check-input
+          vertical-align: top
+          margin-top: 5px
+        .form-check-label
+          padding-left: 15px
+          width: 330px
+          font-size: 14px
+          font-weight: 300
+        .panel-controls
+          margin-top: 45px
       h1
         color: #ff3f3f
       .tos
-        margin-bottom: 20px
+        margin-top: 20px
         font-size: 14px
         color: $gray
 
@@ -384,6 +396,19 @@ body[data-controller="publishers"]
           background-repeat: no-repeat
           background-size: 42px
           background-image: url(asset-path("icn-warning@1x.png"))
+      #update_publisher_visible_form
+        margin-top: 40px
+        margin-left: -30px
+        width: 370px
+        .form-check-input
+          vertical-align: top
+          margin-top: 5px
+        .form-check-label
+          padding-left: 15px
+          width: 350px
+          font-size: 15px
+          font-weight: 300
+
       .balance
         font-size: $font-size-base
         vertical-align: top
@@ -449,33 +474,9 @@ body[data-controller="publishers"]
               font-size: 12px
               color: $gray
           .channel-status
-            margin: -24px -40px -24px 0
-            padding: 36px 20px
-            min-width: 350px
-            background: #f2f4f7
-            border-radius: 0 8px 8px 0
-            .list-label
-              display: block
-              width: 67%
-              white-space: nowrap
-            .inline-controls
-              padding: 0
-            .onoffswitch
-              display: inline-block
-              margin-top: 8px
-            .value-label
-              display: inline-block
-              float: right
-              margin-left: 12px
-              margin-top: 4px
-              font-size: 12px
-              font-weight: 500
-            .update-show-verification-status-form.checked .value-label:after
-              color: #4fbad6
-              content: "ON"
-            .update-show-verification-status-form.unchecked .value-label:after
-              color: $gray
-              content: "OFF"
+            background: url(asset-path("icn-verified.png")) no-repeat center left
+            padding: 12px 0 12px 38px
+
       #default_currency_code
         font-weight: 600
       .payment-info
@@ -649,8 +650,6 @@ body[data-controller="publishers"]
         border-radius: 0
 
     @media (max-width: $screen-md-max)
-      .publisher-panel
-        max-width: 400px
       .site-operator
         margin-bottom: 32px
     @media (min-width: $screen-md-min)

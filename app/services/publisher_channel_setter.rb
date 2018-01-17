@@ -13,8 +13,7 @@ class PublisherChannelSetter < BaseApiClient
       {
           "channelId" => channel.details.channel_identifier,
           "authorizerEmail" => channel.details.try(:auth_email),
-          "authorizerName" => channel.details.try(:auth_name),
-          "visible" => channel.show_verification_status?
+          "authorizerName" => channel.details.try(:auth_name)
       }.compact
     end
 

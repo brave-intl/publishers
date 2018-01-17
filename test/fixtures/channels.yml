@@ -1,24 +1,20 @@
 default: &default
   publisher: default
-  show_verification_status: true
   details: default_details (SiteChannelDetails)
   verified: false
 
 new_site:
   publisher: default
-  show_verification_status: true
   details: new_site_details (SiteChannelDetails)
   verified: false
 
 verified:
   publisher: verified
-  show_verification_status: true
   details: verified_details (SiteChannelDetails)
   verified: true
 
 completed:
   publisher: completed
-  show_verification_status: false
   details: completed_details (SiteChannelDetails)
   verified: true
 
@@ -41,7 +37,6 @@ fake2:
 
 uphold_connected:
   publisher: uphold_connected
-  show_verification_status: true
   details: uphold_connected_details (SiteChannelDetails)
   verified: true
 
@@ -72,13 +67,11 @@ global_yt2:
 
 global_verified:
   publisher: global_media_group
-  show_verification_status: true
   details: global_verified_details (SiteChannelDetails)
   verified: true
 
 global_inprocess:
   publisher: global_media_group
-  show_verification_status: true
   details: global_inprocess_details (SiteChannelDetails)
   verified: false
 
@@ -86,13 +79,11 @@ global_abandoned:
   publisher: global_media_group
   created_at: <%= Time.now - 20.weeks %>
   updated_at: <%= Time.now - 20.weeks %>
-  show_verification_status: true
   details: global_abandoned_details (SiteChannelDetails)
   verified: false
 
 small_media_group_to_delete:
   publisher: small_media_group
-  show_verification_status: true
   details: to_delete_details (SiteChannelDetails)
   verified: true
 
@@ -100,6 +91,5 @@ small_media_group_to_verify:
   publisher: small_media_group
   created_at: <%= Time.now - 20.weeks %>
   updated_at: <%= Time.now - 20.weeks %>
-  show_verification_status: true
   details: to_verify_details (SiteChannelDetails)
   verified: false
