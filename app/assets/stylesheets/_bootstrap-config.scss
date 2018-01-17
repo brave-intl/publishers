@@ -1,0 +1,26 @@
+// Overrides of settings found in bootstrap/variables
+
+// Color system
+
+$gray-100: $braveGray-10;
+$gray-200: $braveGray-9;
+$gray-300: $braveGray-8;
+$gray-400: $braveGray-7;
+$gray-500: $braveGray-6;
+$gray-600: $braveGray-5;
+$gray-700: $braveGray-4;
+$gray-800: $braveGray-3;
+$gray-900: $braveGray-2;
+$black:    $braveGray-1;
+
+// Fonts
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-family-base: "Muli", $font-family-sans-serif;
+
+$font-weight-light:  400;
+$font-weight-normal: 400;
+$font-weight-bold:   600;
+
+$headings-font-family: "Poppins", $font-family-sans-serif;
+$headings-font-weight: 400;
