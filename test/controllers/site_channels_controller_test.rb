@@ -9,25 +9,31 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   include PublishersHelper
 
   test "should create channel for logged in publisher" do
-    publisher = publishers(:verified)
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
+      publisher = publishers(:verified)
 
-    sign_in publishers(:verified)
+      sign_in publishers(:verified)
 
-    create_params = {
-        channel: {
-            details_attributes: {
-                brave_publisher_id_unnormalized: "new_site_54634.org"
-            }
-        }
-    }
+      create_params = {
+          channel: {
+              details_attributes: {
+                  brave_publisher_id_unnormalized: "new_site_54634.org"
+              }
+          }
+      }
 
-    assert_difference('publisher.channels.count') do
-      post site_channels_url, params: create_params
+      assert_difference('publisher.channels.count') do
+        post site_channels_url, params: create_params
+      end
+
+      new_channel = publisher.channels.order(created_at: :asc).last
+
+      assert_redirected_to verification_choose_method_site_channel_path(new_channel)
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
-
-    new_channel = publisher.channels.order(created_at: :asc).last
-
-    assert_redirected_to verification_choose_method_site_channel_path(new_channel)
   end
 
   # ToDo:

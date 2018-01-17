@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180109221848) do
+ActiveRecord::Schema.define(version: 20180116200817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,13 +18,12 @@ ActiveRecord::Schema.define(version: 20180109221848) do
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "publisher_id"
-    t.boolean  "created_via_api",          default: false, null: false
-    t.boolean  "show_verification_status"
-    t.boolean  "verified",                 default: false
+    t.boolean  "created_via_api", default: false, null: false
+    t.boolean  "verified",        default: false
     t.string   "details_type"
     t.uuid     "details_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true, using: :btree
     t.index ["publisher_id"], name: "index_channels_on_publisher_id", using: :btree
   end
@@ -124,6 +123,7 @@ ActiveRecord::Schema.define(version: 20180109221848) do
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.datetime "two_factor_prompted_at"
+    t.boolean  "visible",                               default: true
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["email"], name: "index_publishers_on_email", unique: true, using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree

@@ -14,7 +14,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   COMPLETE_SIGNUP_PARAMS = {
     publisher: {
-      name: "Alice the Pyramid"
+      name: "Alice the Pyramid",
+      visible: true
     }
   }.freeze
 
