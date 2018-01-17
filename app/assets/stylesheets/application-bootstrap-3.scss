@@ -1,11 +1,11 @@
-@import "variables/**/*";
+@import "legacy/variables/**/*";
 
 // Vendor
 @import "bootstrap-3-sprockets";
-@import "bootstrap-3-custom";
+@import "legacy/bootstrap-3-custom";
 @import "css-modal/modal";
 
-@import "shared/**/*";
-@import "partials/**/*";
-@import "layouts/**/*";
-@import "application/**/*";
+@import "legacy/shared/**/*";
+@import "legacy/partials/**/*";
+@import "legacy/layouts/**/*";
+@import "legacy/application/**/*";

@@ -1,4 +1,4 @@
-@import "variables/**/*";
+@import "legacy/variables/**/*";
 
 // Bootstrap
 @import "bootstrap-3-sprockets";
@@ -13,5 +13,5 @@
 @import "bootstrap-3/buttons";
 @import "bootstrap-3/utilities";
 
-@import "shared/forms";
+@import "legacy/shared/forms";
 @import "static/*";
