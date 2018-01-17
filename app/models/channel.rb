@@ -9,7 +9,8 @@ class Channel < ApplicationRecord
 
   belongs_to :youtube_channel_details, -> { where( channels: { details_type: 'YoutubeChannelDetails' } )
                                                 .includes( :channels ) }, foreign_key: 'details_id'
-
+  has_one :promo_registration
+  
   accepts_nested_attributes_for :details
 
   validate :details_not_changed?
