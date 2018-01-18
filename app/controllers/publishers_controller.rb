@@ -100,6 +100,10 @@ class PublishersController < ApplicationController
     @publisher = current_publisher
     update_params = publisher_complete_signup_params
 
+    if @publisher.agreed_to_tos.nil?
+      update_params[:agreed_to_tos] = Time.now
+    end
+
     if @publisher.update(update_params)
       # let eyeshade know about the new Publisher
       begin
