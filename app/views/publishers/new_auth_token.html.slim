@@ -4,23 +4,22 @@
   .publisher-domain-name
     | &nbsp;
 
-.publisher-panel.login-panel.col-center
-  .sub-panel.process-panel.col-center
-    .content-panel
-      h3.text-center= t("publishers.log_in")
-      = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
-        .row.form-row
-          .col.col-xs-12.col-sm-8.col-center
-            = f.email_field(:email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"))
-            - if params[:captcha]
-              = hidden_field_tag(:captcha)
-            - if @should_throttle
-              .form-group
-                = recaptcha_tags
-        .row.form-row
-          .col.col-xs-12.col-sm-8.col-center
-            = f.submit(t("publishers.log_in"), class: "btn btn-block btn-primary")
-        .row.form-footer
-          .col.col-xs-12.col-sm-8.col-center
-            = t("static.landing_signup_prompt")
-            = link_to(t("static.landing_signup"), sign_up_publishers_path)
+.publisher-panel.login-panel.col-center.sub-panel.process-panel.clearfix.col-md-10
+  .content-panel
+    h3.text-center= t("publishers.log_in")
+    = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
+      .row.form-row
+        .col.col-xs-12.col-sm-8.col-center
+          = f.email_field(:email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"))
+          - if params[:captcha]
+            = hidden_field_tag(:captcha)
+          - if @should_throttle
+            .form-group
+              = recaptcha_tags
+      .row.form-row
+        .col.col-xs-12.col-sm-8.col-center
+          = f.submit(t("publishers.log_in"), class: "btn btn-block btn-primary")
+      .row.form-footer
+        .col.col-xs-12.col-sm-8.col-center
+          = t("static.landing_signup_prompt")
+          = link_to(t("static.landing_signup"), sign_up_publishers_path)

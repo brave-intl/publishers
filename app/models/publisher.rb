@@ -69,7 +69,7 @@ class Publisher < ApplicationRecord
     if @_wallet
       # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
       save_needed = false
-      if self.uphold_verified && @_wallet.status['action'] == 're-authorize'
+      if self.uphold_verified && ['re-authorize', 'authorize'].include?(@_wallet.status['action'])
         self.uphold_verified = false
         save_needed = true
       end

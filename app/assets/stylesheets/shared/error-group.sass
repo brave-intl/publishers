@@ -1,5 +1,19 @@
-.error-group > div
+/*
+ * .error-group--wrapper is manipulated by JavaScript in the ErrorManager
+ * class. A child element can be promoted to visible by adding .show. If
+ * a child element has .error-group--no-error it will be visible regardless,
+ * but will not be displayed when the modifier .error-group--wrapper--has-error
+ * is present on the .error-group--wrapper.
+ */
+
+.error-group--wrapper > div
   display: none
 
-.error-group > div.show
+.error-group--wrapper > div.show
   display: block
+
+.error-group--wrapper .error-group--no-error
+  display: block
+
+.error-group--wrapper.error-group--wrapper--has-error .error-group--no-error
+  display: none
