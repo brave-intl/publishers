@@ -97,7 +97,7 @@ class Publisher < ApplicationRecord
   end
 
   def verified?
-    email_verified? && name.present?
+    email_verified? && name.present? && agreed_to_tos.present?
   end
 
   def to_s

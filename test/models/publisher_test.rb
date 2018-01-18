@@ -6,7 +6,7 @@ class PublisherTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   include MailerTestHelper
 
-  test "verified publishers have both a name and email" do
+  test "verified publishers have both a name and email and have agreed to the TOS" do
     publisher = Publisher.new
     refute publisher.email_verified?
     refute publisher.verified?
@@ -16,6 +16,9 @@ class PublisherTest < ActiveSupport::TestCase
     refute publisher.verified?
 
     publisher.name = "Jane"
+    refute publisher.verified?
+
+    publisher.agreed_to_tos = 1.minute.ago
     assert publisher.verified?
   end
 
