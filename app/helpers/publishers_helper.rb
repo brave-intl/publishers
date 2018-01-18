@@ -318,6 +318,27 @@ module PublishersHelper
     end
   end
 
+  def channel_thumbnail_url(channel)
+    url = case channel.details
+          when SiteChannelDetails
+
+          when YoutubeChannelDetails
+            channel.details.thumbnail_url
+          else
+          end
+
+    return url || asset_url('default-channel.png')
+  end
+
+  def channel_thumbnail_class(channel)
+    case channel.details
+    when YoutubeChannelDetails
+      'rounded'
+    else
+      'square'
+    end
+  end
+
   def publisher_id_from_owner_identifier(owner_identifier)
     owner_identifier[/publishers#uuid:(.*)/,1]
   end

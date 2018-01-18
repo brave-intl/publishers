@@ -351,26 +351,7 @@ body[data-controller="publishers"]
           margin-bottom: 40px
       .attribute-value
         margin-bottom: 24px
-      .publisher-domain-summary
-        margin-bottom: 12px
-      .publisher-domain-name
-        font-size: 28px
-        margin-bottom: 12px
-        font-weight: 500
-      .publisher-youtube-channel
-        margin-bottom: 18px
-        .channel-name
-          display: inline-block
-          font-size: 28px
-          font-weight: 500
-          vertical-align: middle
-        .channel-thumbnail
-          display: inline-block
-          margin-right: 15px
-          img
-            height: 50px
-            width: 50px
-            border-radius: 25px
+
       #publisher_verification_status
         font-size: $font-size-base
         vertical-align: middle
@@ -448,6 +429,15 @@ body[data-controller="publishers"]
           text-decoration: none
       .channel-panel
         padding: 24px 40px
+        .channel-thumbnail
+          margin-right: 15px
+          img
+            padding: 6px
+            height: 40px
+            width: 40px
+            &.rounded
+              padding: 0
+              border-radius: 20px
         .channel-summary
           margin-right: 20px
           h3

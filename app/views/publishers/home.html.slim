@@ -227,18 +227,6 @@ noscript
   = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
 
 .row
-  /.col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
-  /  .publisher-status
-      /- if current_publisher.publication_type == :site
-      /  .publisher-domain-summary
-      /    .publisher-domain-name= current_publisher.brave_publisher_id
-      /    #publisher_verification_status class=publisher_verification_status(current_publisher)
-      /      = publisher_verification_status_description(current_publisher)
-      /- elsif current_publisher.publication_type == :youtube_channel
-      /  .publisher-youtube-channel
-      /    .channel-thumbnail= image_tag(current_publisher.youtube_channel.thumbnail_url)
-      /    .channel-name title=current_publisher.youtube_channel.title
-      /      = current_publisher.youtube_channel.title.truncate(30)
   .col.col-details.col-md-5.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
     .balance
@@ -336,9 +324,11 @@ noscript
     .row
       .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
         div class=("sub-panel channel-panel #{channel.verified? ? 'channel-verified' : 'channel-unverified'}")
+          .channel-thumbnail.pull-left
+            img src=(channel_thumbnail_url(channel)) class=(channel_thumbnail_class(channel))
           - if channel.verified?
             .channel-summary.pull-left
-              h3= channel.publication_title
+              h3= channel.publication_title.truncate(30)
               .channel-details
                 = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
             .channel-status.pull-right
