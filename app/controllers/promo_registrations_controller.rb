@@ -1,15 +1,15 @@
 class PromoRegistrationsController < ApplicationController
-  before_action :authenticate_publisher!
-  before_action :require_active_promo, only: %i(create)
+  before_action :find_publisher
+  before_action :require_publisher_promo_disabled, only: %(create)
+  before_action :require_verified_publisher, only: %(create)
+  before_action :require_promo_running, only: %i(create)
 
   def index
-    @publisher = current_publisher
     @publisher_promo_status = @publisher.promo_status(promo_running)
     render(:index)
   end
 
   def create
-    @publisher = current_publisher
     @publisher.promo_enabled_2018q1 = true
     @publisher.save!
 
@@ -22,12 +22,41 @@ class PromoRegistrationsController < ApplicationController
     Rails.application.secrets[:active_promo_id].present?
   end
 
-  def publisher_activated_promo
-    current_publisher.promo_enabled_2018q1
-  end
-
-  def require_active_promo
+  def require_promo_running
     return if promo_running
     redirect_to index
+  end
+
+  def require_publisher_promo_disabled
+    return unless @publisher.promo_enabled_2018q1
+    redirect_to index
+  end
+
+  def require_verified_publisher
+    return if @publisher.verified?
+    redirect_to index
+  end
+  
+  # Fails when a pub is logged in and clicks "activate promo" button
+  # from email sent to their other publisher account
+  def find_publisher
+    if current_publisher
+      @publisher = current_publisher
+    else
+      begin
+        # Get promo auth token from params if they exist
+        promo_token = params.require(:promo_token)
+      rescue => e
+        require "sentry-raven"
+        Raven.capture_exception(e)
+        return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
+      end
+
+      if publisher = Publisher.find_by(promo_token_2018q1: promo_token)
+        @publisher = publisher
+      else
+        redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
+      end
+    end
   end
 end

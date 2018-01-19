@@ -410,6 +410,7 @@ en:
     last_year: "Last year"
     all: "All"
   promo:
+    publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
     activate:
       title: "Free Tokens"
       description: "Influence your fans to get on Brave."
