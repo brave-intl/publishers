@@ -425,6 +425,12 @@ en:
       title: "Sorry! The promotion has ended."
       description: "We're sorry that you missed on this program.  But you can still influence your fans to support you by using Brave!"
     back_to_dashboard: "Back to Dashboard"
+  promo_mailer:
+    activate_promo_2018q1:
+      title: "Limited Time Offer: Free tokens for your referral!"
+      subject: "Limited Time Offer: Free tokens for your referral!"
+      body: "Getting more fans on Brave means more income for oyu. And we'd like to chip in for that effort. We are giving away bonus tokens for refrring your fans to Brave. Find out more and activate this promo!"
+      button: "Activate Promo"
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.
