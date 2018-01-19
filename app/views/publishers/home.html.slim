@@ -325,7 +325,7 @@ noscript
       .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
         div class=("sub-panel channel-panel #{channel.verified? ? 'channel-verified' : 'channel-unverified'}")
           .channel-thumbnail.pull-left
-            img src=(channel_thumbnail_url(channel)) class=(channel_thumbnail_class(channel))
+            img src=(channel_thumbnail_url(channel))
           - if channel.verified?
             .channel-summary.pull-left
               h3= channel.publication_title.truncate(30)

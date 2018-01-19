@@ -427,12 +427,9 @@ body[data-controller="publishers"]
         .channel-thumbnail
           margin-right: 15px
           img
-            padding: 6px
             height: 40px
             width: 40px
-            &.rounded
-              padding: 0
-              border-radius: 20px
+            border-radius: 20px
         .channel-summary
           margin-right: 20px
           h3
@@ -440,6 +437,8 @@ body[data-controller="publishers"]
             margin: 0
         &.channel-unverified
           background-color: rgba(255,255,255,0.6)
+          .channel-thumbnail
+            padding: 7px 0
           .channel-summary
             padding: 14px 0
           .channel-progress
