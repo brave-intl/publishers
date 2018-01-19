@@ -14,11 +14,10 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     assert_difference("publisher.channels.count", -1) do
       assert_difference("SiteChannelDetails.count", -1) do
-        delete channel_path(channel)
-        assert_response 302
+        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        assert_response 204
       end
     end
-    assert_redirected_to home_publishers_path
   end
 
   test "delete does not remove a channel and associated details if channel does not belong to publisher" do
@@ -27,11 +26,10 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     assert_difference("publisher.channels.count", 0) do
       assert_difference("SiteChannelDetails.count", 0) do
-        delete channel_path(channel)
-        assert_response 302
+        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        assert_response 404
       end
     end
-    assert_redirected_to home_publishers_path
   end
 
   # ToDo:

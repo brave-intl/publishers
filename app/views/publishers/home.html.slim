@@ -45,10 +45,31 @@ javascript:
       modal.classList.remove('md-show');
     }
 
+    function removeChannel(channelId) {
+      submitForm('remove_channel_' + channelId, 'DELETE', true)
+        .then(function(response) {
+          var channelRow = document.getElementById('channel_row_' + channelId);
+          channelRow.classList.add('channel-hidden');
+        });
+    }
+
     window.addEventListener('load', function() {
+      var removeChannelLinks = document.querySelectorAll('a.remove-channel');
+      for (var i = 0, l = removeChannelLinks.length; i < l; i++) {
+        removeChannelLinks[i].addEventListener('click', function(event) {
+          var channelId = event.target.getAttribute('data-channel-id');
+          var confirmationMessage = event.target.getAttribute('data-confirmation-message');
+          if (window.confirm(confirmationMessage)) {
+            removeChannel(channelId);
+          }
+          event.preventDefault();
+        }, false);
+      }
+
       var publisherVisibleCheckbox = document.getElementById('publisher_visible');
       publisherVisibleCheckbox.addEventListener('click', function(event) {
         window.submitForm('update_publisher_visible_form', 'PATCH', true);
+        event.preventDefault();
       }, false);
 
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
@@ -56,6 +77,7 @@ javascript:
         defaultCurrencySelect.addEventListener('change', function(event) {
           window.submitForm('update_default_currency_form', 'PATCH', true);
           refreshBalance();
+          event.preventDefault();
         }, false);
       }
 
@@ -315,13 +337,13 @@ noscript
           = f.check_box(:visible, class: "form-check-input")
           = f.label(:visible, class: "form-check-label", for: "publisher_visible")
 
-- if current_publisher.channels.empty?
+- if current_publisher.channels.visible.empty?
   .row
     .col.col-details.col-md-12.col-xs-10
       = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'channel-placeholder')
 - else
   - current_publisher.channels.visible.each do |channel|
-    .row
+    .row.channel-row id=("channel_row_#{channel.id}")
       .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
         div class=("sub-panel channel-panel #{channel.verified? ? 'channel-verified' : 'channel-unverified'}")
           .channel-thumbnail.pull-left
@@ -330,7 +352,14 @@ noscript
             .channel-summary.pull-left
               h3= channel.publication_title.truncate(30)
               .channel-details
-                = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
+                .added-date
+                  = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
+                .separator
+                  = '|'
+                a.remove-channel href="#" data-channel-id=(channel.id) data-confirmation-message=(t("publishers.dashboard_channel_confirm_remove_channel", channel_name: channel.publication_title))
+                  = t("publishers.dashboard_channel_remove_verified_channel")
+                = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+
             .channel-status.pull-right
               = t("publishers.dashboard_channel_verified")
           -else
@@ -340,6 +369,9 @@ noscript
               .one-more-step= t("publishers.dashboard_channel_one_more_step")
             .channel-status.pull-right
               = link_to(t("publishers.dashboard_channel_lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
+            a.remove-channel.pull-right href="#" data-channel-id=(channel.id) data-confirmation-message=(t("publishers.dashboard_channel_confirm_remove_channel", channel_name: channel.publication_title))
+              = t("publishers.dashboard_channel_remove_unverified_channel")
+            = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
           .clearfix
 
 .row.tos-row
