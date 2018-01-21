@@ -1,5 +1,7 @@
 # Registers each verified channel for a publisher
 class PromoRegistrar < BaseApiClient
+  include PromosHelper
+
   def initialize(publisher:)
     @publisher = publisher
   end
@@ -25,7 +27,7 @@ class PromoRegistrar < BaseApiClient
       request.headers["Content-Type"] = "application/json"
       request.body = 
           {
-            "promo": "#{Rails.application.secrets[:active_promo_id]}",
+            "promo": "#{active_promo_id}",
             "publisher": "#{channel.publisher_id}",
             "name": "#{channel.publication_title}"
           }.compact.to_json
@@ -45,10 +47,6 @@ class PromoRegistrar < BaseApiClient
   end
 
   private
-
-  def active_promo_id
-    Rails.application.secrets[:active_promo_id]
-  end
 
   def api_base_uri
     Rails.application.secrets[:api_promo_base_uri]

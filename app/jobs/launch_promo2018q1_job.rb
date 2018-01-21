@@ -1,9 +1,11 @@
 # Generates the promo tokens and sends emails
 class LaunchPromo2018q1Job < ApplicationJob
+  include PromosHelper
+
   queue_as :default
 
   def perform
-    return unless promo_running
+    return unless promo_running?
     publishers = Publisher.all
 
     publishers.find_each do |publisher|
@@ -13,11 +15,5 @@ class LaunchPromo2018q1Job < ApplicationJob
     publishers.find_each do |publisher|
       PromoMailer.activate_promo_2018q1(publisher).deliver
     end
-  end
-
-  private
-
-  def promo_running
-    Rails.application.secrets[:active_promo_id].present?
   end
 end

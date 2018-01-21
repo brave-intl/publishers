@@ -1,11 +1,13 @@
 class PromoRegistrationsController < ApplicationController
+  include PromosHelper
+
   before_action :find_publisher
   before_action :require_publisher_promo_disabled, only: %(create)
   before_action :require_verified_publisher, only: %(create)
   before_action :require_promo_running, only: %i(create)
 
   def index
-    @publisher_promo_status = @publisher.promo_status(promo_running)
+    @publisher_promo_status = @publisher.promo_status(promo_running?)
     render(:index)
   end
 
@@ -18,12 +20,8 @@ class PromoRegistrationsController < ApplicationController
 
   private
 
-  def promo_running
-    Rails.application.secrets[:active_promo_id].present?
-  end
-
   def require_promo_running
-    return if promo_running
+    return if promo_running?
     redirect_to index
   end
 

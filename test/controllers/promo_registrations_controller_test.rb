@@ -3,7 +3,7 @@ require "webmock/minitest"
 
 class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-  include PublishersHelper
+  include PromosHelper
 
   test "#index renders :activate if publisher hasn't activated, otherwise renders :active" do
     publisher = publishers(:completed)
@@ -26,7 +26,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     # expire the promo
-    PromoRegistrationsController.any_instance.stubs(:promo_running).returns(false)
+    PromoRegistrationsController.any_instance.stubs(:promo_running?).returns(false)
 
     # verify over is rendered
     get promo_registrations_path
@@ -50,7 +50,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     # expire the promo
-    PromoRegistrationsController.any_instance.stubs(:promo_running).returns(false)
+    PromoRegistrationsController.any_instance.stubs(:promo_running?).returns(false)
 
     # verify :over is rendered
     post promo_registrations_path
