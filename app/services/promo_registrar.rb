@@ -2,8 +2,9 @@
 class PromoRegistrar < BaseApiClient
   include PromosHelper
 
-  def initialize(publisher:)
+  def initialize(publisher:, promo_id: active_promo_id)
     @publisher = publisher
+    @promo_id = promo_id
   end
 
   def perform
@@ -14,7 +15,7 @@ class PromoRegistrar < BaseApiClient
     channels.each do |channel|
       if should_register_channel?(channel)
         referral_code = register_channel(channel)
-        promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: active_promo_id, referral_code: referral_code)
+        promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, referral_code: referral_code)
         promo_registration.save!
       end
     end
@@ -27,7 +28,7 @@ class PromoRegistrar < BaseApiClient
       request.headers["Content-Type"] = "application/json"
       request.body = 
           {
-            "promo": "#{active_promo_id}",
+            "promo": "#{@promo_id}",
             "publisher": "#{channel.publisher_id}",
             "name": "#{channel.publication_title}"
           }.compact.to_json

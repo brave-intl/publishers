@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class PromoMailerTest < ActionMailer::TestCase
+  include PromosHelper
+
   test "activate_promo_2018q1" do
     publisher = publishers(:default)
     email = PromoMailer.activate_promo_2018q1(publisher)

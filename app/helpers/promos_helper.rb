@@ -1,6 +1,6 @@
 module PromosHelper
-  def generate_private_promo_2018q1_auth_url(publisher)
-    promo_token = PublisherPromoToken2018q1Generator.new(publisher: publisher).perform
+  def generate_private_promo_auth_url(publisher)
+    promo_token = PublisherPromoTokenGenerator.new(publisher: publisher).perform
     promo_registrations_url(promo_token: promo_token)
   end
 

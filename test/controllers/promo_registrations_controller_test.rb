@@ -82,7 +82,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     # ensure we use token, not session for promo auth
     sign_out publisher
 
-    promo_token = PublisherPromoToken2018q1Generator.new(publisher: publisher).perform
+    promo_token = PublisherPromoTokenGenerator.new(publisher: publisher).perform
 
     # verify promo token auth takes you to _activate page
     url = promo_registrations_path(promo_token: promo_token)
