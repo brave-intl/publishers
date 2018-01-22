@@ -23,6 +23,11 @@ class PromoRegistrationGetter < BaseApiClient
     registrations =  JSON.parse(response.body)
     referral_code = referral_code_for_promo_id(registrations)
     referral_code
+  rescue Faraday::Error => e
+    require "sentry-raven"
+    Rails.logger.error("PromoRegistrar #register_channel error: #{e}")
+    Raven.capture_exception("PromoRegistrar #register_channel error: #{e}")
+    nil
   end
 
   def perform_offline

@@ -2,6 +2,7 @@ require "test_helper"
 require "webmock/minitest"
 
 class PromoRegistrarTest < ActiveJob::TestCase
+  include PromosHelper
   test "registrar registers a verified channel" do
     publisher = publishers(:completed) # has one verified channel
 
@@ -49,6 +50,17 @@ class PromoRegistrarTest < ActiveJob::TestCase
   end
 
   test "registrar requests promo code for channel if encounters duplicate error" do
-    # TO DO
+    publisher = publishers(:completed)
+
+    # Force use register_channel, not register_channel_offline
+    PromoRegistrationsController.any_instance.stubs(:perform_promo_offline?).returns(false)
+
+    # Force duplicate error    
+    stub_request(:put, "#{Rails.application.secrets[:api_promi_base_uri]}/api/1/promo/publishers")
+      .to_return(status: 409)
+    
+    assert_difference "PromoRegistration.count", 1 do
+      PromoRegistrar.new(publisher: publisher).perform
+    end
   end
 end

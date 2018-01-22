@@ -36,9 +36,17 @@ class PromoRegistrar < BaseApiClient
     end
     referral_code = JSON.parse(response.body)["referral_code"]
     referral_code
-
-    # TO DO: if promo server returns a duplicate error, use the PromoRegistrationGetter to get/set it.
-    # TO DO: handle other errors
+  rescue Faraday::Error => e
+    if e.response[:status] == 409
+      Rails.logger.warn("PromoRegistrar #register_channel returned 409, channel already registered.  Using PromoRegistrationGetter to get the referral_code.")
+      referral_code = PromoRegistrationGetter.new(publisher: @publisher, channel: channel).perform
+      referral_code
+    else
+      require "sentry-raven"
+      Rails.logger.error("PromoRegistrar #register_channel error: #{e}")
+      Raven.capture_exception("PromoRegistrar #register_channel error: #{e}")
+      nil
+    end
   end
 
   def register_channel_offline
@@ -58,12 +66,6 @@ class PromoRegistrar < BaseApiClient
 
   # Register channel if it hasn't been registered, or if registration doesn't have referral code
   def should_register_channel?(channel)
-    if channel.promo_registration.blank?
-      return true
-    elsif channel.promo_registration.referral_code.blank?
-      return true
-    else
-      false
-    end
+    channel.promo_registration.blank?
   end
 end
