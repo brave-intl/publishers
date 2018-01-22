@@ -221,7 +221,7 @@ GEM
       byebug (~> 9.1)
       pry (~> 0.10)
     public_suffix (3.0.1)
-    puma (3.11.0)
+    puma (3.10.0)
     rack (2.0.3)
     rack-attack (5.0.1)
       rack
@@ -410,7 +410,7 @@ DEPENDENCIES
   premailer-rails (~> 1.9.4)
   pry
   pry-byebug
-  puma (~> 3.11)
+  puma (= 3.10)
   rack-attack (~> 5.0)
   rails (~> 5.0.0, >= 5.0.0.1)
   recaptcha (~> 3.3)
@@ -436,4 +436,4 @@ RUBY VERSION
    ruby 2.3.6p384
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
