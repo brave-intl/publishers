@@ -1,2 +1,4 @@
-h3 data-test="promo-activated"= t("promo.activated.title")
-p= t("promo.activated.description")
+- if @publisher_has_verified_channel
+  = render "activated_verified", locals: @publisher
+- else
+  = render "activated_unverified", locals: @publisher

@@ -3,10 +3,9 @@ class PromoRegistrationsController < ApplicationController
 
   before_action :find_publisher
   before_action :require_publisher_promo_disabled, only: %(create)
-  before_action :require_verified_publisher, only: %(create)
   before_action :require_promo_running, only: %i(create)
 
-  def index
+  def index    
     @publisher_promo_status = @publisher.promo_status(promo_running?)
     render(:index)
   end
@@ -14,8 +13,11 @@ class PromoRegistrationsController < ApplicationController
   def create
     @publisher.promo_enabled_2018q1 = true
     @publisher.save!
+    @publisher_has_verified_channel = @publisher.has_verified_channel?
 
-    PromoRegistrar.new(publisher: @publisher).perform
+    if @publisher_has_verified_channel
+      PromoRegistrar.new(publisher: @publisher).perform
+    end
   end
 
   private
@@ -27,11 +29,6 @@ class PromoRegistrationsController < ApplicationController
 
   def require_publisher_promo_disabled
     return unless @publisher.promo_enabled_2018q1
-    redirect_to index
-  end
-
-  def require_verified_publisher
-    return if @publisher.verified?
     redirect_to index
   end
   

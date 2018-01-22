@@ -416,8 +416,12 @@ en:
       description: "Influence your fans to get on Brave."
       button: "Activate"
     activated:
-      title: "Congrats! Your promo is activated."
-      description: "Your fans will have to use Brave for the duration of the promotion to qualify for the referral bonus.  Your promotion stats will be posted on your dashboard"
+      verified:
+        title: "Congrats! Your promo is activated."
+        description: "Your fans will have to use Brave for the duration of the promotion to qualify for the referral bonus.  Your promotion stats will be posted on your dashboard"
+      unverifed:
+        title: "Congrats! Your promo is activated, but..."
+        description: "You will need to verify one of your channels before you can share referral links and earn BAT."
     active:
       title: "Your promo is already active!"
       description: "Description goes here"

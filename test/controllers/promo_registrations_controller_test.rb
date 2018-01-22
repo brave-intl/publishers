@@ -33,13 +33,13 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select("[data-test=promo-over]")
   end
 
-  test "#create activates the promo, renders :activated and enables promo for publisher" do
+  test "#create activates the promo, renders _activated_verified and enables promo for publisher" do
     publisher = publishers(:completed)
     sign_in publisher
 
     # verify create is rendered
     post promo_registrations_path
-    assert_select("[data-test=promo-activated]")
+    assert_select("[data-test=promo-activated-verified]")
 
     # verify promo is enabled for publisher
     assert_equal publisher.promo_enabled_2018q1, true
@@ -72,8 +72,19 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select("[data-test=promo-active]")
   end
 
-  test "#create does not register unverified channels with promo service" do
-    # TO DO
+  test "#create activates promo, renders _activated_unverified, doesn't engage registrar if publisher has no verified channels" do
+    publisher = publishers(:default) # has one unverified channel
+    sign_in publisher
+
+    post promo_registrations_path
+
+    # verify activated_unverified is loaded
+    assert_select("[data-test=promo-activated-unverified]")
+
+    # verify the promo has been enabled
+    assert_equal publisher.promo_enabled_2018q1, true
+
+    # TO DO: verify promo regsitrar was not used
   end
 
   test "publisher can activate/visit promo without being signed in using promo token from email" do
@@ -93,11 +104,11 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     # verify the above does not enable the promo
     assert_equal publisher.promo_enabled_2018q1, false
 
-    # verify promo auth allows promo activation, takes publisher to :activated
+    # verify promo auth allows promo activation, takes publisher to _activated_verified
     post url
     publisher.reload
     assert_equal publisher.promo_enabled_2018q1, true
-    assert_select("[data-test=promo-activated]")
+    assert_select("[data-test=promo-activated-verified]")
 
     # verify promo auth allows users to view active page once authorized
     get url

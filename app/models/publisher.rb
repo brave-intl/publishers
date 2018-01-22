@@ -174,6 +174,17 @@ class Publisher < ApplicationRecord
     end
   end
 
+  # I suggest a Owner is 'verifed' if they have atleast one channel
+  def has_verified_channel?
+    channels = self.channels
+    channels.each do |channel|
+      if channel.verified?
+        return true
+      end
+    end
+    false
+  end
+
   private
 
   def dont_destroy_publishers_with_channels
