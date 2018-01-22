@@ -22,14 +22,14 @@ class PromoRegistrar < BaseApiClient
   end
 
   def register_channel(channel)
-    return register_channel_offline unless Rails.application.secrets[:api_promo_base_uri].present?
+    return register_channel_offline if perform_promo_offline?
     response = connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
       request.body = 
           {
             "promo": "#{@promo_id}",
-            "publisher": "#{channel.publisher_id}",
+            "publisher": "#{channel.details.youtube_channel_id}", # TO DO: create single method that selects the brave_publisher_id OR youtube_channel_id 
             "name": "#{channel.publication_title}"
           }.compact.to_json
       request.url("/api/1/promo/publishers")
@@ -37,14 +37,13 @@ class PromoRegistrar < BaseApiClient
     referral_code = JSON.parse(response.body)["referral_code"]
     referral_code
 
-    # TO DO: if promo server returns a duplicate error, use the GET endpoint to set it.
+    # TO DO: if promo server returns a duplicate error, use the PromoRegistrationGetter to get/set it.
     # TO DO: handle other errors
   end
 
   def register_channel_offline
-    Rails.logger.info("ChannelPromoRegistrar offline.")
-    referral_code = "BATS-#{rand(0..1000)}"
-    referral_code
+    Rails.logger.info("PromoRegistrar #register_channel offline.")
+    offline_referral_code
   end
 
   private
@@ -63,8 +62,8 @@ class PromoRegistrar < BaseApiClient
       return true
     elsif channel.promo_registration.referral_code.blank?
       return true
+    else
+      false
     end
-    
-    false
   end
 end
