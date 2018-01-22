@@ -6,7 +6,13 @@ class ChannelsController < ApplicationController
   attr_reader :current_channel
 
   def destroy
+    channel_identifier = current_channel.details.channel_identifier
+
     success = current_channel.destroy
+    if success
+      DeletePublisherChannelJob.perform_later(publisher_id: current_publisher.id, channel_identifier: channel_identifier)
+    end
+
     respond_to do |format|
       format.json {
         if success
