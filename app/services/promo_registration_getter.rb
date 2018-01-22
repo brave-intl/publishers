@@ -18,7 +18,7 @@ class PromoRegistrationGetter < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/1/promo/publishers?publisher=#{@channel.details.youtube_channel_id}") # TO DO: create single method that selects the brave_publisher_id OR youtube_channel_id 
+      request.url("/api/1/promo/publishers?publisher=#{@channel.channel_id}")
     end
     registrations =  JSON.parse(response.body)
     referral_code = referral_code_for_promo_id(registrations)
@@ -33,13 +33,13 @@ class PromoRegistrationGetter < BaseApiClient
       {
       "referral_code": offline_referral_code,
       "promo": "#{active_promo_id}",
-      "publisher": "#{@channel.details.site_channel_details}", # TO DO: See above
+      "publisher": "#{@channel.channel_id}",
       "name": "#{@channel.publication_title}",
       },
       {
       "referral_code": offline_referral_code,
       "promo": "free-bats-2018q2",
-      "publisher": "#{@channel.details.site_channel_details}", # TO DO: See above
+      "publisher": "#{@channel.channel_id}",
       "name": "#{@channel.publication_title}",
       }
     ]

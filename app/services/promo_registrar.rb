@@ -29,8 +29,8 @@ class PromoRegistrar < BaseApiClient
       request.body = 
           {
             "promo": "#{@promo_id}",
-            "publisher": "#{channel.details.youtube_channel_id}", # TO DO: create single method that selects the brave_publisher_id OR youtube_channel_id 
-            "name": "#{channel.publication_title}"
+            "publisher": "#{channel.channel_id}", 
+            "name": "#{channel.channel_id}"
           }.compact.to_json
       request.url("/api/1/promo/publishers")
     end

@@ -51,4 +51,16 @@ class Channel < ApplicationRecord
       errors.add(:details, "can't be changed")
     end
   end
+
+  def channel_id
+    channel_type = self.details_type
+    case channel_type
+    when "YoutubeChannelDetails"
+      return self.details.youtube_channel_id
+    when "SiteChannelDetails"
+      return self.details.brave_publisher_id
+    else
+      nil
+    end
+  end
 end
