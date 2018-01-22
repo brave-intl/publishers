@@ -1,0 +1,39 @@
+// Overrides of settings found in bootstrap/variables
+
+// Color system
+
+$gray-100: $braveGray-10;
+$gray-200: $braveGray-9;
+$gray-300: $braveGray-8;
+$gray-400: $braveGray-7;
+$gray-500: $braveGray-6;
+$gray-600: $braveGray-5;
+$gray-700: $braveGray-4;
+$gray-800: $braveGray-3;
+$gray-900: $braveGray-2;
+$black:    $braveGray-1;
+
+// Fonts
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-family-base: "Muli", $font-family-sans-serif;
+$body-color: $braveGray-3;
+
+$link-color: $braveAction;
+
+$font-weight-light:  400;
+$font-weight-normal: 400;
+$font-weight-bold:   600;
+
+$headings-font-family: "Poppins", $font-family-sans-serif;
+$headings-font-weight: 400;
+$headings-color: #212222;
+
+$primary: $braveBrand;
+
+$btn-border-radius: 1.5rem;
+
+$input-focus-border-color: $braveAction;
+$input-btn-focus-box-shadow: 0;
+
+$input-color: $braveGray-2;

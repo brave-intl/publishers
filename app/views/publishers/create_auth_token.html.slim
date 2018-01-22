@@ -1,9 +1,11 @@
-- content_for(:navbar_content) do
+- content_for(:head_style_tags) do
+  = stylesheet_link_tag("application", media: "all")
 
-.publisher-panel.login-panel.col-center.sub-panel.col-lg-6.col-md-8.col-sm-10.col-xs-12
-  .row
-    .col
-      h3.text-center= t("publishers.create_auth_token")
-  .row
-    .col.site-login
-      p.text-center= t("publishers.create_auth_token_body")
+.single-panel--wrapper
+  .single-panel--content
+    .row
+      h3.single-panel--headline = t("publishers.create_auth_token")
+
+    .row
+      .col-small-centered
+        p.text-center= t("publishers.create_auth_token_body")
