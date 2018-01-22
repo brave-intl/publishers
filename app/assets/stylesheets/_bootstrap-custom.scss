@@ -15,15 +15,15 @@
 // @import "bootstrap/code";
 @import "bootstrap/grid";
 // @import "bootstrap/tables";
-// @import "bootstrap/forms";
-// @import "bootstrap/buttons";
+@import "bootstrap/forms";
+@import "bootstrap/buttons";
 // @import "bootstrap/transitions";
 // @import "bootstrap/dropdown";
 // @import "bootstrap/button-group";
 // @import "bootstrap/input-group";
 // @import "bootstrap/custom-forms";
-// @import "bootstrap/nav";
-// @import "bootstrap/navbar";
+@import "bootstrap/nav";
+@import "bootstrap/navbar";
 // @import "bootstrap/card";
 // @import "bootstrap/breadcrumb";
 // @import "bootstrap/pagination";
@@ -38,5 +38,5 @@
 // @import "bootstrap/tooltip";
 // @import "bootstrap/popover";
 // @import "bootstrap/carousel";
-// @import "bootstrap/utilities";
+@import "bootstrap/utilities";
 // @import "bootstrap/print";

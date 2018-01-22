@@ -1,0 +1,33 @@
+.single-panel {
+
+  &--wrapper {
+    @include make-col-ready();
+    @include media-breakpoint-up(sm) {
+      @include make-col(10);
+      @include make-col-offset(1);
+    }
+    @include media-breakpoint-up(md) {
+      @include make-col(6);
+      @include make-col-offset(3);
+    }
+
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
+  }
+
+  &--content {
+    padding: $spacer*3 $spacer $spacer*2;
+    text-align: center;
+  }
+
+  &--headline {
+    width: 100%;
+    margin-bottom: $spacer*2;
+  }
+
+  &--footer {
+    margin-top: $spacer*2;
+    margin-bottom: $spacer;
+  }
+}

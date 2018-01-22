@@ -46,5 +46,6 @@ $braveBackground-3: $braveGray-10;
 $braveDivider-1: $braveGray-8;
 $braveDivider-2: $braveGray-9;
 
+$braveGradient-LegacyPink: linear-gradient(165deg, #e9eaef, #e0e3e6, #d6d6d6, #e7ccc9, #f7ada7, #d68588, #ca3884, #c7297b);
 $braveGradient-Pink: linear-gradient(to right, #dce6f5 0%, #dce6f5 15%, #d9d8e6 28%, #d9d8e6 39%, #e7ccc9 49%, #d7ada7 61%, #d68588 74%, #ca3884 86%, #c7297b 100%);
 $braveGradient-Purple: linear-gradient(to right, $braveSuccess-Ghost, #7d78df);

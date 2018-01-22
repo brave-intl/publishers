@@ -1,0 +1,6 @@
+.main-content {
+  padding-top: $spacer*2;
+  background: #eaedef;
+  background: $braveGradient-LegacyPink;
+  min-height: calc(100vh - #{$braveNavbarHeight});
+}
