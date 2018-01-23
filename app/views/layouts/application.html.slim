@@ -36,7 +36,11 @@ html
 
       .notifications.navbar-static-top#flash
         - if flash[:alert]
-          .alert.alert-warning.flash== flash[:alert]
+          .alert.alert-warning.flash= flash[:alert]
+        - if flash[:alert_html_safe]
+          / This should only be used in cases where we know the flash content is NOT user-provided
+          / (such as translation strings that include minor formatting or links)
+          .alert.alert-warning.flash== flash[:alert_html_safe]
         - if flash[:notice]
           .alert.alert-success.flash= flash[:notice]
         - if content_for(:content_form_errors)
