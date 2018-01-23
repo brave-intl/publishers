@@ -1,15 +1,20 @@
-- content_for(:navbar_content) do
+- content_for(:head_style_tags) do
+  = stylesheet_link_tag("application", media: "all")
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    | &nbsp;
+.single-panel--wrapper.single-panel--wrapper--medium
+  .single-panel--content.single-panel--content--email-sent
 
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.info-panel.col-center.email-panel
-    .content-panel
-      h3.text-center= t("publishers.create_done_header")
-      = t("publishers.create_done_body_html",
-              email: @publisher_email,
-              try_again: link_to(t("publishers.try_again"), "#", :onclick=>"document.getElementById('resend_email_form').submit();"))
+    h3.single-panel--headline= t("publishers.create_done_header")
+
+    .col-small-centered
+      = t( \
+          "publishers.create_done_body_html",
+          email: @publisher_email,
+          try_again: link_to( \
+            t("publishers.try_again"),
+            "#",
+            onclick: "document.getElementById('resend_email_form').submit();" \
+          ) \
+        )
 
       = form_tag(resend_email_verify_email_publishers_path, method: "post", class: "hidden", id: "resend_email_form")
