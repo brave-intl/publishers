@@ -7,10 +7,10 @@
     h3.single-panel--headline= t(".log_in")
 
     .col-small-centered
-      = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
-        div.form-group
+      = form_for @publisher, url: create_auth_token_publishers_path do |f|
+        .form-group
           = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email")
-        div.form-group
+        .form-group
           - if params[:captcha]
             = hidden_field_tag(:captcha)
           - if @should_throttle
