@@ -72,8 +72,6 @@ en:
       <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again}.</p>
     try_again: "try again"
     resend_confirmation_email_done: "The confirmation email has been resent."
-    create_auth_token: "Login email sent!"
-    create_auth_token_body: "Please check your email for the login link."
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     dashboard_uphold_header: "Your Uphold Wallet"
     dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
@@ -96,13 +94,10 @@ en:
     login_link_unverified_message: "Your login link has expired. Please send yourself another one."
     login_session_expired: "Your session has expired.  Please log in again."
     new: "Contact Information"
-    log_in: "Log In"
     enter_your_email: "Enter your email"
     new_auth_token_button: "Email me a link to log in"
     new_auth_token_email_html: |
       Email Address <span class="optional">(for unverified domains)</span>
-    new_auth_token_publisher_not_found_part_one: "Couldn't find a publisher with that domain name. Please try again or "
-    new_auth_token_publisher_not_found_part_two: "start a new verification."
     new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
     new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
     new_channel: "+ Add Channel"
@@ -154,6 +149,17 @@ en:
       Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
     missing_info_provide_email: "We seem to be missing some info. Please make sure you provided an email address."
     invalid_email_value: "We seem to be missing some info. Please make sure you have provided a full email address."
+    create_auth_token:
+      unfound_alert_html: |
+        Couldn't find a publisher with that email address. Please try again or
+        <a href="%{link}">sign up for an account</a>.
+      heading: Login email sent!
+      body: Please check your email for the login link.
+    new_auth_token:
+      log_in: Log In
+      signup:
+        prompt: Don't have an account?
+        link: Sign Up
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
@@ -351,8 +357,6 @@ en:
     landing_login_body: "Log in to your dashboard."
     landing_login_button: "Log in"
     landing_begin_button: "Get Started"
-    landing_signup_prompt: "Don't have an account?"
-    landing_signup: "Sign Up"
   two_factor_authentications:
     totp:
       heading: Two-factor Authentication
