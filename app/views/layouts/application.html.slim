@@ -34,18 +34,21 @@ html
       - unless @hide_nav
         = render("nav")
 
-      .notifications.navbar-static-top#flash
-        - if flash[:alert]
-          .alert.alert-warning.flash= flash[:alert]
-        - if flash[:alert_html_safe]
-          / This should only be used in cases where we know the flash content is NOT user-provided
-          / (such as translation strings that include minor formatting or links)
-          .alert.alert-warning.flash== flash[:alert_html_safe]
-        - if flash[:notice]
-          .alert.alert-success.flash= flash[:notice]
-        - if content_for(:content_form_errors)
-          .alert.alert-warning= I18n.t("activerecord.shared.errors")
-          = yield(:content_form_errors)
+      - if content_for?(:application_flash)
+        = yield(:application_flash)
+      - else
+        .notifications.navbar-static-top#flash
+          - if flash[:alert]
+            .alert.alert-warning.flash= flash[:alert]
+          - if flash[:alert_html_safe]
+            / This should only be used in cases where we know the flash content is NOT user-provided
+            / (such as translation strings that include minor formatting or links)
+            .alert.alert-warning.flash== flash[:alert_html_safe]
+          - if flash[:notice]
+            .alert.alert-success.flash= flash[:notice]
+          - if content_for(:content_form_errors)
+            .alert.alert-warning= I18n.t("activerecord.shared.errors")
+            = yield(:content_form_errors)
 
       = content_for?(:content) ? yield(:content) : yield
 

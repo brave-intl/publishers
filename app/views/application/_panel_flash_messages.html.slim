@@ -1,0 +1,23 @@
+- content_for :application_flash do
+  div
+    // Intentionally left blank to disable application flash
+
+- [:alert, :notice, :warning].each do |name|
+  - {alert: 'icon_circled_i', warning: 'icon_circled_x'}[name].tap do |icon_partial|
+    - if flash[name]
+      div class="single-panel--content single-panel--content--#{name} icon-and-text--wrapper"
+        - if icon_partial
+          .icon-and-text--icon
+            = render icon_partial
+        .icon-and-text--text
+          = flash[name]
+    / This should only be used in cases where we know the flash content is NOT user-provided
+    / (such as translation strings that include minor formatting or links)
+    - "#{name}_html_safe".tap do |html_safe_name|
+      - if flash[html_safe_name]
+        div class="single-panel--content single-panel--content--#{name} icon-and-text--wrapper"
+          - if icon_partial
+            .icon-and-text--icon
+              = render icon_partial
+          .icon-and-text--text
+            == flash[html_safe_name]
