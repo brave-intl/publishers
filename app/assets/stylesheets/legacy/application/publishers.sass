@@ -422,6 +422,12 @@ body[data-controller="publishers"]
         &:hover
           color: #ffffff
           text-decoration: none
+      .channel-row
+        max-height: 300px
+        &.channel-hidden
+          transition: max-height 300ms ease-out
+          max-height: 0
+          overflow: hidden
       .channel-panel
         padding: 24px 40px
         .channel-thumbnail
@@ -449,6 +455,10 @@ body[data-controller="publishers"]
               background: url(asset-path("channel-progress.png")) no-repeat center left
           .channel-status
             padding: 7px 0
+          .remove-channel
+            display: inline-block
+            margin: 14px 20px
+            color: rgb(255, 63, 63)
 
         &.channel-verified
           .channel-summary
@@ -457,6 +467,9 @@ body[data-controller="publishers"]
               margin-top: 8px
               font-size: 12px
               color: $gray
+              .added-date, .separator, .remove-channel
+                display: inline-block
+                margin-right: 12px
           .channel-status
             background: url(asset-path("icn-verified.png")) no-repeat center left
             padding: 12px 0 12px 38px

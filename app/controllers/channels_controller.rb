@@ -6,17 +6,33 @@ class ChannelsController < ApplicationController
   attr_reader :current_channel
 
   def destroy
-    current_channel.destroy
-    redirect_to(home_publishers_path, alert: t("channel.channel_removed"))
+    channel_identifier = current_channel.details.channel_identifier
+
+    success = current_channel.destroy
+    if success
+      DeletePublisherChannelJob.perform_later(publisher_id: current_publisher.id, channel_identifier: channel_identifier)
+    end
+
+    respond_to do |format|
+      format.json {
+        if success
+          head :no_content
+        else
+          render(json: { errors: current_channel.errors }, status: 400)
+        end
+      }
+    end
   end
 
   private
 
   def setup_current_channel
     @current_channel = current_publisher.channels.find(params[:id])
-    return if @current_channel
-    redirect_to(home_publishers_path)
   rescue ActiveRecord::RecordNotFound => e
-    redirect_to(home_publishers_path, alert: t("channel.channel_not_found"))
+    respond_to do |format|
+      format.json {
+        render status: 404
+      }
+    end
   end
 end
