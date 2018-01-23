@@ -3,22 +3,19 @@
 
 .single-panel--wrapper
   .single-panel--content
-    .row
-      h3.single-panel--headline = t("publishers.log_in")
 
-    .row
-      .col-small-centered
+    h3.single-panel--headline = t("publishers.log_in")
 
-        = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
-          div.form-group
-            = f.email_field(:email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"))
-          div.form-group
-            - if params[:captcha]
-              = hidden_field_tag(:captcha)
-            - if @should_throttle
-              .form-group
-                = recaptcha_tags
-          = f.submit(t("publishers.log_in"), class: "btn btn-block btn-primary")
+    .col-small-centered
+      = form_for @publisher, url: create_auth_token_publishers_path do |f|
+        .form-group
+          = f.email_field(:email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"))
+        - if params[:captcha]
+          = hidden_field_tag(:captcha)
+        - if @should_throttle
+          .form-group
+            = recaptcha_tags
+        = f.submit(t("publishers.log_in"), class: "btn btn-block btn-primary")
 
     .single-panel--footer
       = t("static.landing_signup_prompt")

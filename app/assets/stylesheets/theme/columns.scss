@@ -8,4 +8,6 @@
     @include make-col(8);
     @include make-col-offset(2);
   }
+  padding-left: 0;
+  padding-right: 0;
 }

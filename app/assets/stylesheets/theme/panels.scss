@@ -14,11 +14,32 @@
     background-color: white;
     border-radius: 8px;
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
+
+    &--medium {
+      @include media-breakpoint-up(sm) {
+        @include make-col(10);
+        @include make-col-offset(1);
+      }
+      @include media-breakpoint-up(md) {
+        @include make-col(10);
+        @include make-col-offset(1);
+      }
+    }
   }
 
   &--content {
+    @include make-row();
     padding: $spacer*3 $spacer $spacer*2;
     text-align: center;
+    &--email-sent {
+      @include media-breakpoint-up(lg) {
+        background-image: url(asset-path("email-2@1x.png"));
+        background-position: top 59px right 60px;
+        background-repeat: no-repeat;
+        padding-top: $spacer*9;
+        padding-bottom: $spacer*9;
+      }
+    }
   }
 
   &--headline {
@@ -27,7 +48,9 @@
   }
 
   &--footer {
+    width: 100%;
     margin-top: $spacer*2;
     margin-bottom: $spacer;
+    text-align: center;
   }
 }
