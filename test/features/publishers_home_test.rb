@@ -6,7 +6,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   test "land page renders, can navigate to log in" do
     visit root_path
     assert_content page, "Brave Payments"
-    click_link('Log in')
+    click_link('Log In')
     assert_content page, "Log In"
   end
 
