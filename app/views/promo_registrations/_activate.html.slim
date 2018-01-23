@@ -1,6 +1,12 @@
-h3 data-test="promo-activate"= t("promo.activate.title")
-p= t("promo.activate.description")
-= form_for @publisher, {method: :post, url: promo_registrations_path} do |f|
-  = f.hidden_field(:email, :value => params[:promo_token])
-  .panel-controls.col-center
-    =f.submit(t("promo.activate.button"), class: "btn btn-block btn-primary")
+.promo-panel.activate-promo.col-md-7.col-sm-9.col-xs-9.col-center
+  .text-center
+    h4#limited-time-offer = t("promo.activate.limited_time_offer")
+    h1#free-tokens data-test="promo-activate"= t("promo.activate.title")
+    h4#for-referring-fans = t("promo.activate.for_referring_your_fans")
+    p#influence-fans= t("promo.activate.description")
+    p#referral-reward = t("promo.activate.referral_reward")
+    = form_for @publisher, {method: :post, url: promo_registrations_path} do |f|
+      = f.hidden_field(:email, :value => params[:promo_token])
+      .text-center
+        = f.submit(t("promo.activate.button").upcase, class: "btn btn-block btn-primary", id: "promo-activate-button")
+    p#promo-footer-text= t("promo.activate.footer")

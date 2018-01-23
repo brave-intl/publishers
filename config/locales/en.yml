@@ -410,25 +410,46 @@ en:
     last_year: "Last year"
     all: "All"
   promo:
+    base_referral_link: "brave.com"
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
     activate:
       title: "Free Tokens"
-      description: "Influence your fans to get on Brave."
-      button: "Activate"
+      limited_time_offer: "Limited Time Offer"
+      limited_time_promo: "Limited Time Promo"
+      free_tokens: "Free Tokens"
+      for_referring_your_fans: "for Referring Your Fans!"
+      description: "Influence your fans to get on Brave.  More income and free token bonus!"
+      referral_reward: "1 referral = 5 BAT"
+      button: "Activate Promo"
+      button-dashboard: "Activate Now!"
+      footer: "Your fans will have to download Brave browser using the referral link and use it for the duration of the promotion to qualify for the referral.  This promo runs Feb 1 - March 1."
     activated:
       verified:
-        title: "Congrats! Your promo is activated."
-        description: "Your fans will have to use Brave for the duration of the promotion to qualify for the referral bonus.  Your promotion stats will be posted on your dashboard"
-      unverifed:
+        title: "Congrats!"
+        subtitle: "Your promo is activated."
+        description_one: "Your fans will have to use Brave for the duration of the promotion to qualify for the referral bonus.  Your promotion stats will be posted on "
+        description_two: "your dashboard"
+      unverified:
         title: "Congrats! Your promo is activated, but..."
         description: "You will need to verify one of your channels before you can share referral links and earn BAT."
     active:
       title: "Your promo is already active!"
-      description: "Description goes here"
+      description_one: "Your fans will have to use Brave for the duration of the promo to qualify for the referral bonus. "
+      description_two: "Check the status of your promo"
+      description_three: " on your dashboard"
     over:
-      title: "Sorry! The promotion has ended."
+      title: "Sorry!"
+      promo_ended: "The promo has ended."
       description: "We're sorry that you missed on this program.  But you can still influence your fans to support you by using Brave!"
-    back_to_dashboard: "Back to Dashboard"
+      brave_download_link: "brave.com/download"
+      footer: "Keep an eye out for the next event."
+    shared:
+      promo_period: "Promo period:"
+      promo_period_description: "Jan 1 - Feb 1"
+      reward: "Reward:"
+      reward_description: "5 BAT for each referral"
+      referral_link: "Referral link:"
+      copy: "Copy"
   promo_mailer:
     activate_promo_2018q1:
       title: "Limited Time Offer: Free tokens for your referral!"

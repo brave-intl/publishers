@@ -5,8 +5,8 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include PromosHelper
 
-  # NOTE: No longer passes since we need @promo_channels for these views to display
-  # TO DO: Replace with integration tests that yield valid @promo_channels
+  # NOTE: No longer passes since we need @promo_enabled_channels for these views to display
+  # TO DO: Replace with integration tests that yield valid @promo_enabled_channels
   # test "#index renders :activate if publisher hasn't activated, otherwise renders :active" do
   #   publisher = publishers(:completed)
   #   sign_in publisher
@@ -63,7 +63,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # NOTE: Same as above
-  # TO DO: Replace with integration tests that yield valid @promo_channels
+  # TO DO: Replace with integration tests that yield valid @promo_enabled_channels
   # test "#create redirects to #index if publisher promo enabled, renders _active" do
   #   publisher = publishers(:completed)
   #   publisher.promo_enabled_2018q1 = true

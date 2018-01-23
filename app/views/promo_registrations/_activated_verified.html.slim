@@ -1,2 +1,21 @@
-h3 data-test="promo-activated-verified"= t("promo.activated.verifed.title")
-p= t("promo.activated.verifed.description")
+.promo-panel.promo-activated-verified.col-md-7.col-sm-9.col-xs-9.col-center
+  .text-left
+    .row.bat-patch-adjacent
+      .col-md-8.col-sm-8.col-xs-12
+        h1.promo-title data-test="promo-activated-verified"= t("promo.activated.verified.title")
+        h3.promo-subtitle = t("promo.activated.verified.subtitle")
+        .promo-item
+          span.promo-item-label= t("promo.shared.promo_period")
+          span = t("promo.shared.promo_period_description")
+        .promo-item
+          span.promo-item-label = t("promo.shared.reward")
+          span = t("promo.shared.reward_description")
+        p.promo-description
+          span = t("promo.activated.verified.description_one")
+          span = t("promo.activated.verified.description_two")
+    .promo-item
+      span.promo-item-label= t("promo.shared.referral_link")
+    - @promo_enabled_channels.each do |channel|
+      .referral-links-container
+        span.referral-link id="#{channel.promo_registration.referral_code.downcase}" = "#{t("promo.base_referral_link")}/#{channel.promo_registration.referral_code.downcase}"
+        button.copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")
