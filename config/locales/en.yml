@@ -62,15 +62,6 @@ en:
     contact_person: "Contact person"
     contact: "Contact"
     contact_name_placeholder: "First and last name"
-    sign_up_header: "Join Brave Payments"
-    create_done_header: "An email is on its way!"
-    create_done_body_html: |
-      <p>We're excited that you want to be in on Brave Payments. We just sent an email to
-      <strong class="email-address">%{email}</strong>. Click on the access link provided in the email to jump into
-      the verification process.</p>
-      <hr>
-      <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again}.</p>
-    try_again: "try again"
     resend_confirmation_email_done: "The confirmation email has been resent."
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     dashboard_uphold_header: "Your Uphold Wallet"
@@ -155,11 +146,22 @@ en:
         <a href="%{link}">sign up for an account</a>.
       heading: Login email sent!
       body: Please check your email for the login link.
+    create_done:
+      heading: An email is on its way!
+      body_html: |
+        <p>We're excited that you want to be in on Brave Payments. We just sent an email to
+        <strong class="email-address">%{email}</strong>. Click on the access link provided in the email to jump into
+        the verification process.</p>
+        <hr>
+        <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.</p>
+      try_again: try again
     new_auth_token:
       log_in: Log In
       signup:
         prompt: Don't have an account?
         link: Sign Up
+    sign_up:
+      heading: Join Brave Payments
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
@@ -261,14 +263,17 @@ en:
     api_error: "Your request couldn't be processed due to an API error."
     app_title: Brave Payments
     cancel: "Cancel"
+    continue: "Continue"
+    email_address: "Email address"
+    existing_account: "Already have an account?"
     error: "Error"
     error_body: "Oops, sorry about that. You can try to refresh the page or return to"
     error_contact: "For assistance please contact us at: %{support_email}"
     generate: "Generate"
-    continue: "Continue"
-    update: "Update"
-    email_address: "Email address"
+    get_started: "Get Started"
+    log_in: "Log In"
     terms_of_service: "Terms of Service"
+    update: "Update"
   site_channels:
     check_for_https_button: "Check for HTTPS"
     copy_to_clipboard: "Copy to clipboard"
@@ -353,10 +358,7 @@ en:
         of fans may have already filled your wallet!</p>
     landing_new_header: "New to Brave Payments?"
     landing_new_body: "Start verification by entering your email."
-    landing_login: "Already have an account?"
     landing_login_body: "Log in to your dashboard."
-    landing_login_button: "Log in"
-    landing_begin_button: "Get Started"
   two_factor_authentications:
     totp:
       heading: Two-factor Authentication

@@ -10,13 +10,12 @@
       = form_for @publisher, url: create_auth_token_publishers_path do |f|
         .form-group
           = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email")
-        .form-group
-          - if params[:captcha]
-            = hidden_field_tag(:captcha)
-          - if @should_throttle
-            .form-group
-              = recaptcha_tags
-        = f.submit t(".log_in"), class: "btn btn-block btn-primary"
+        - if params[:captcha]
+          = hidden_field_tag(:captcha)
+        - if @should_throttle
+          .form-group
+            = recaptcha_tags
+        = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary")
 
     .single-panel--footer
       ' #{t(".signup.prompt")}

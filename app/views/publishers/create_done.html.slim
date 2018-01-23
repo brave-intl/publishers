@@ -4,17 +4,9 @@
 .single-panel--wrapper.single-panel--wrapper--medium
   .single-panel--content.single-panel--content--email-sent
 
-    h3.single-panel--headline= t("publishers.create_done_header")
+    h3.single-panel--headline= t ".heading"
 
     .col-small-centered
-      = t( \
-          "publishers.create_done_body_html",
-          email: @publisher_email,
-          try_again: link_to( \
-            t("publishers.try_again"),
-            "#",
-            onclick: "document.getElementById('resend_email_form').submit();" \
-          ) \
-        )
+      = t ".body_html", email: @publisher_email, try_again_link: link_to(t(".try_again"), "#", onclick: "document.getElementById('resend_email_form').submit();")
 
-      = form_tag(resend_email_verify_email_publishers_path, method: "post", class: "hidden", id: "resend_email_form")
+      = form_tag resend_email_verify_email_publishers_path, method: "post", class: "hidden", id: "resend_email_form"

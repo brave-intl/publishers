@@ -4,20 +4,19 @@
 .single-panel--wrapper
   .single-panel--content
 
-    h3.single-panel--headline = t("publishers.sign_up_header")
+    h3.single-panel--headline= t ".heading"
 
     .col-small-centered
       = form_tag publishers_path, method: :post do |f|
         .form-group
-          = email_field_tag(:email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"), required: true)
+          = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"), required: true
         - if params[:captcha]
-          = hidden_field_tag(:captcha)
+          = hidden_field_tag :captcha
         - if @should_throttle
           .form-group
             = recaptcha_tags
-        = submit_tag(t("static.landing_begin_button"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+        = submit_tag t("shared.get_started"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing"
 
     .single-panel--footer
-      = t("static.landing_login")
-      = " "
-      = link_to(t("static.landing_login_button"), new_auth_token_publishers_path)
+      ' #{t("shared.existing_account")}
+      = link_to t("shared.log_in"), new_auth_token_publishers_path
