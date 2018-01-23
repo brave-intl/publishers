@@ -45,7 +45,7 @@ class PublishersController < ApplicationController
     email = params[:email]
 
     if email.blank?
-      return redirect_to(root_path, notice: I18n.t("publishers.missing_info_provide_email") )
+      return redirect_to sign_up_publishers_path, alert: t(".missing_email")
     end
 
     @publisher = Publisher.new(pending_email: email)
@@ -70,7 +70,7 @@ class PublishersController < ApplicationController
         redirect_to create_done_publishers_path
       else
         Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-        redirect_to(root_path, notice: I18n.t("publishers.invalid_email_value") )
+        redirect_to sign_up_publishers_path, alert: t(".invalid_email")
       end
     else
       redirect_to root_path(captcha: params[:captcha])
