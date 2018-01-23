@@ -6,6 +6,7 @@
 
     h3.single-panel--headline= t(".log_in")
 
+    .col-small-centered
       = form_for(@publisher, url: create_auth_token_publishers_path) do |f|
         div.form-group
           = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email")
