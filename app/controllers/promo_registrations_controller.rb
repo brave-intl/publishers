@@ -5,8 +5,9 @@ class PromoRegistrationsController < ApplicationController
   before_action :require_publisher_promo_disabled, only: %(create)
   before_action :require_promo_running, only: %i(create)
 
-  def index    
+  def index
     @publisher_promo_status = @publisher.promo_status(promo_running?)
+    @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
     render(:index)
   end
 
@@ -17,6 +18,7 @@ class PromoRegistrationsController < ApplicationController
 
     if @publisher_has_verified_channel
       PromoRegistrar.new(publisher: @publisher).perform
+      @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
     end
   end
 
