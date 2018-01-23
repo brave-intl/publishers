@@ -12,11 +12,13 @@ class SiteChannelVerifier < BaseApiClient
   def initialize(attended: true, channel:)
     @attended = attended
     @channel = channel
-    raise UnsupportedChannelType.new unless @channel.details.is_a?(SiteChannelDetails)
+    raise UnsupportedChannelType.new unless @channel && @channel.details.is_a?(SiteChannelDetails)
   end
 
   def perform
+    return true if channel.verified?
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
+
     # Will raise in case of error.
     response = connection.get do |request|
       request.params["backgroundP"] = "true" if !attended
@@ -24,16 +26,25 @@ class SiteChannelVerifier < BaseApiClient
     end
     response_hash = JSON.parse(response.body)
     @verified_channel_id = response_hash["verificationId"]
+
     return false if response_hash["status"] != "success" || verified_channel_id.blank?
-    update_verified_on_channel
-    assert_publisher_matches_verified_id! if channel
+
+    assert_publisher_matches_verified_id!
+
+    # Channel should have been verified through a call to PATCH /api/owners/:owner_id/channels/:channel_id/verifications
+    # from eyeshade, so we won't update it here, just reload it
+    channel.reload
+
+    @verified_channel = channel
+
+    verified_channel_post_verify
   end
 
   def perform_offline
     Rails.logger.info("SiteChannelVerifier bypassing eyeshade and performing locally.")
     @verified_channel_id = verify_offline_publisher_id
     return false if verified_channel_id.blank?
-    update_verified_on_channel
+    update_verified_on_channel_offline
     assert_publisher_matches_verified_id! if channel
   end
 
@@ -48,7 +59,7 @@ class SiteChannelVerifier < BaseApiClient
     raise VerificationIdMismatch.new("Channel UUID / verificationId mismatch: #{channel.id} / #{verified_channel_id}")
   end
 
-  def update_verified_on_channel
+  def update_verified_on_channel_offline
     raise "#{verified_channel_id} missing" if verified_channel_id.blank?
 
     @verified_channel = Channel.find(verified_channel_id)

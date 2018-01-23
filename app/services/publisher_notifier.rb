@@ -1,11 +1,11 @@
 # TODO: Generalized Notifier service class
 class PublisherNotifier < BaseService
-  attr_reader :notification_params, :notification_type, :publisher
+  attr_reader :notification_params, :notification_type, :channel, :publisher
 
   # Should match methods in NotificationMailer starting with #publisher_*
   NOTIFICATION_TYPES = %w(verified_no_wallet)
 
-  def initialize(notification_params: {}, notification_type:, publisher:, channel: nil)
+  def initialize(notification_params: {}, notification_type:, publisher: nil, channel: nil)
     raise ":publisher invalid" if !publisher.is_a?(Publisher)
     @notification_type = notification_type.to_s
     if !NOTIFICATION_TYPES.include?(@notification_type)
