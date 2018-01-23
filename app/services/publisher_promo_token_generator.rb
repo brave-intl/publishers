@@ -25,12 +25,12 @@ class PublisherPromoTokenGenerator < BaseService
 
     if already_has_promo_token && !@force
       Rails.logger.info("Publisher #{@publisher} already has a promo token, use force=true to overwrite.")
+      nil
     else
       publisher.promo_token_2018q1 = SecureRandom.hex(32)
       publisher.save!
       publisher.promo_token_2018q1
     end
   end
-
   class InvalidPromoIdError < RuntimeError; end
 end

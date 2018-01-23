@@ -3,7 +3,8 @@ class PromoMailer < ApplicationMailer
 
   def activate_promo_2018q1(publisher)
     @publisher = publisher
-    @private_promo_2018q1_auth_url = generate_private_promo_auth_url(publisher)
+    promo_token = publisher.promo_token_2018q1
+    @private_promo_2018q1_auth_url = promo_registrations_url(promo_token: promo_token)
 
     mail(
       to: @publisher.email,
