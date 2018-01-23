@@ -266,7 +266,7 @@ noscript
   = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
 
 .row
-  .col.col-details.col-md-5.col-xs-10.col-xs-center.col-sm-center
+  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4.balance-header = t ".balance_pending"
     .balance
       .pull-left
@@ -277,6 +277,15 @@ noscript
           span.bat-code= " BAT"
         .converted#converted_amount
           = publisher_converted_balance(current_publisher)
+  - if promo_running?
+    .col.sub-panel.dashboard-promo-panel.col-md-6.col-xs-12
+      .promo-info
+        div#promo-limited-time= t("promo.activate.limited_time_promo")
+        h3#promo-title= t("promo.activate.title")
+        div#promo-referring-fans= t("promo.activate.for_referring_your_fans")
+      = form_for current_publisher, { method: :post, url: promo_registrations_path } do |f|
+        - if current_publisher.promo_status(promo_running?) == :inactive
+          = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
   - if current_publisher.channels.empty?
     .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
       .add-channel-cta

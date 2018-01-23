@@ -4,6 +4,7 @@ class PublishersController < ApplicationController
   THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN = 3
 
   include PublishersHelper
+  include PromosHelper
 
   before_action :authenticate_via_token,
     only: %i(show)
