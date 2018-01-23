@@ -36,9 +36,7 @@ html
 
       .notifications.navbar-static-top#flash
         - if flash[:alert]
-          .alert.alert-warning.flash= flash[:alert]
-        - if flash[:login_link]
-          = render partial: "publishers/login_link"
+          .alert.alert-warning.flash== flash[:alert]
         - if flash[:notice]
           .alert.alert-success.flash= flash[:notice]
         - if content_for(:content_form_errors)

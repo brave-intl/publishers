@@ -177,7 +177,7 @@ class PublishersController < ApplicationController
       # Success shown in view #create_auth_token
     else
       # Failed to find publisher
-      flash.now[:login_link] = "" # Uses login_link partial instead of explicit message
+      flash[:alert] = t('.unfound_alert_html', link: sign_up_publishers_path)
       render(:new_auth_token)
     end
   end

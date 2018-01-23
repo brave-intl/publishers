@@ -13,13 +13,16 @@ $gray-800: $braveGray-3;
 $gray-900: $braveGray-2;
 $black:    $braveGray-1;
 
+$primary: $braveBrand;
+
+// Body
+
+$body-color: $braveGray-3;
+
 // Fonts
 
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $font-family-base: "Muli", $font-family-sans-serif;
-$body-color: $braveGray-3;
-
-$link-color: $braveAction;
 
 $font-weight-light:  400;
 $font-weight-normal: 400;
@@ -29,11 +32,21 @@ $headings-font-family: "Poppins", $font-family-sans-serif;
 $headings-font-weight: 400;
 $headings-color: #212222;
 
-$primary: $braveBrand;
+// Links
+
+$link-color: $braveAction;
+
+// Buttons
 
 $btn-border-radius: 1.5rem;
+
+// Forms
+
+$input-color: $braveGray-2;
 
 $input-focus-border-color: $braveAction;
 $input-btn-focus-box-shadow: 0;
 
-$input-color: $braveGray-2;
+// Alerts
+
+$alert-margin-bottom: 0;
