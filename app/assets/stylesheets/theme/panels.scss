@@ -1,3 +1,5 @@
+$brave-panels-borderRadius: 8px;
+
 .single-panel {
 
   &--wrapper {
@@ -12,7 +14,7 @@
     }
 
     background-color: white;
-    border-radius: 8px;
+    border-radius: $brave-panels-borderRadius;
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
 
     &--medium {
@@ -40,6 +42,31 @@
         padding-bottom: $spacer*9;
       }
     }
+    &--alert {
+      padding: $spacer $spacer $spacer;
+      background: $braveInfo-Background;
+      color: $braveInfo-Foreground;
+      border-bottom: 1px solid $braveInfo-Border;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+      a {
+        text-decoration: underline;
+      }
+    }
+    &--warning {
+      padding: $spacer $spacer $spacer;
+      background: $braveError-Background;
+      color: $braveError-Foreground;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+    }
+    &--notice {
+      padding: $spacer $spacer $spacer;
+      background: theme-color-level('brave-success', -10);
+      color: theme-color-level('brave-success', 6);
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+    }
   }
 
   &--headline {
@@ -52,5 +79,22 @@
     margin-top: $spacer*2;
     margin-bottom: $spacer;
     text-align: center;
+  }
+}
+
+.icon-and-text {
+  &--wrapper {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  &--icon {
+    flex: 0 0 58px;
+    align-self: center;
+  }
+  &--text {
+    text-align: left;
+    flex: 1 1 100%;
   }
 }

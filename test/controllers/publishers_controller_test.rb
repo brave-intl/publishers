@@ -39,7 +39,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         post(publishers_path, params: { email: "alice@verified.org" })
       end
     end
-    assert_redirected_to(create_done_publishers_path)
+    assert_response :success
+    assert_template :create_auth_token
   end
 
   test "sends an email with an access link" do

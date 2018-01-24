@@ -2,6 +2,7 @@
   = stylesheet_link_tag("application", media: "all")
 
 .single-panel--wrapper
+  = render "panel_flash_messages"
   .single-panel--content
 
     h3.single-panel--headline= t ".heading"
