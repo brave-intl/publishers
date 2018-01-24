@@ -42,6 +42,21 @@ $brave-panels-borderRadius: 8px;
         @include make-col-offset(1);
       }
     }
+
+    &--small {
+      @include media-breakpoint-up(sm) {
+        @include make-col(12);
+        @include make-col-offset(0);
+      }
+      @include media-breakpoint-up(md) {
+        @include make-col(10);
+        @include make-col-offset(1);
+      }
+      @include media-breakpoint-up(lg) {
+        @include make-col(7);
+        @include make-col-offset(2.5);
+      }
+    }
   }
 
   &--content {

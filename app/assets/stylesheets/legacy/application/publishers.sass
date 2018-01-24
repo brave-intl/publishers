@@ -82,42 +82,64 @@ body[data-controller="u2f_registrations"]
       a
         margin-left: 0.5em
 
-  .dashboard-promo-panel
-    color: #00BCD6
+  .promo-panel
+    padding: 0px 15px 0px 105px
     background-color: #00BCD6
-    background-image: url(asset-path("bat-mercury-patch-jr.png"))
+    display: table
+    width: 100%
+    height: 150px
+    background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-polygon-narrow.png"))
     background-repeat: no-repeat
-    background-position: center left 35px
-    background-size: auto 100px
-    display: inline-block
-    width: 47%
-    margin-left: 16px
-    @media (max-width: $screen-sm-max)
-      margin-left: 10%
-      width: 79.5%
-      min-width: 450px
-    .promo-info
-      padding-left: 100px
-    #activate-promo-dashboard-button
-      background: white
-      color: #006192
-      &:hover, &focus
-        background: #00223B
-      font-size: 11px
-      font-weight: 600
-      font-weight: 700
-      margin-top: 15px
-      margin-left: 120px
-    #promo-limited-time
-      color: #006192
-      font-weight: 700
-    h3#promo-title
-      color: white
-      font-weight: 600
-      margin-bottom: 0px
-    #promo-referring-fans
-      color: #BCF0F7
-      font-size: 20px
+    background-position: center left 30px, left top 50px
+    background-size: auto 100px, cover
+    .promo-panel-item
+      display: table-cell
+      vertical-align: middle
+      #promo-limited-time
+        color: #006192
+        font-weight: 700
+      #promo-title
+        color: white
+        font-weight: 600
+        margin-bottom: 0px
+      #promo-referring-fans
+        color: #BCF0F7
+        font-size: 20px
+      .promo-item-content
+        color: #006192
+        font-weight: 600
+        font-size: 14px
+        &-header
+          margin-bottom: -10px
+        &-number
+          font-size: 32px
+        &-white
+          color: white
+      &-button
+        text-align: center
+      #activate-promo-dashboard-button
+        background: white
+        color: #006192
+        &:hover, &focus
+          background: #00223B
+        font-size: 11px
+        font-weight: 600
+        font-weight: 700
+      &-alert
+        width: 60%
+        #promo-panel-alert
+          width: 275px
+          padding: 30px 20px 30px 0px
+          padding-left: 60px
+          background-color: white
+          text-align: center
+          opacity: .5
+          border-radius: 10px
+          background-image: url(asset-path("icn-warning@1x.png"))
+          background-position: center left 15px
+          background-repeat: no-repeat
+
+
 
   .expired-token-panel
     max-width: 710px

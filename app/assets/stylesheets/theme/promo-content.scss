@@ -1,0 +1,12 @@
+.promo-content {
+  &--background {
+    min-height: 100vh;
+    background: $bravePromo-LightBlue;
+    padding-top: 90px;
+    margin-top: -40px;
+    padding-bottom: 40px;
+    background-image: url(asset-path("bat-polygon-med.png"));
+    background-position: center;
+    background-size: cover;
+  }
+}

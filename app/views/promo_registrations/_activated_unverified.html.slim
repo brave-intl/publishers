@@ -1,2 +1,19 @@
-h3 data-test="promo-activated-unverified"= t("promo.activated.unverified.title")
-p= t("promo.activated.unverified.description")
+.single-panel--wrapper.single-panel--wrapper--small.promo--panel.text-left
+  .promo--bat-patch-adjacent
+    h1.promo--title data-test="promo-activated-unverified"= t("promo.activated.title")
+    h3.promo--subtitle = t("promo.activated.subtitle")
+    .promo--item-container
+      span.promo--item-label= t("promo.shared.promo_period")
+      span = t("promo.shared.promo_period_description")
+    .promo--item-container
+      span.promo--item-label = t("promo.shared.reward")
+      span = t("promo.shared.reward_description")
+    p.promo--body-text
+      span = t("promo.activated.description_one")
+      span = t("promo.activated.description_two")
+  .promo--item-container
+    span.promo--item-label= t("promo.shared.referral_link")
+  p#promo--no-channels = t("promo.activated.unverified_no_channels")
+  .promo--unverified-container.text-center
+    p.promo--body-text = t("promo.activated.unverified_error")
+    = link_to(t("promo.activated.unverified_cta").upcase, home_publishers_path, class: "btn btn-primary promo--activate-button")

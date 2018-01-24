@@ -278,15 +278,42 @@ noscript
         .converted#converted_amount
           = publisher_converted_balance(current_publisher)
   - if promo_running?
-    .col.sub-panel.dashboard-promo-panel.col-md-6.col-xs-12
-      .promo-info
-        div#promo-limited-time= t("promo.activate.limited_time_promo")
-        h3#promo-title= t("promo.activate.title")
-        div#promo-referring-fans= t("promo.activate.for_referring_your_fans")
-      = form_for current_publisher, { method: :post, url: promo_registrations_path } do |f|
+    .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+      .sub-panel.promo-panel
         - if current_publisher.promo_status(promo_running?) == :inactive
-          = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
-  - if current_publisher.channels.empty?
+          .promo-panel-item.promo-panel-item-info
+            #promo-limited-time= t("promo.activate.limited_time_promo")
+            h3#promo-title= t("promo.activate.title")
+            #promo-referring-fans= t("promo.activate.for_referring_your_fans")
+          .promo-panel-item.promo-panel-item-button
+            = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
+              = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
+        - else
+          .promo-panel-item.promo-panel-item-info
+            .promo-item-content.promo-item-content-header
+              = t("promo.dashboard.promo_ends_in").upcase
+            span.promo-item-content.promo-item-content-number
+              = "25 "
+            span.promo-item-content
+             = t("promo.dashboard.days").upcase
+          - if current_publisher.has_verified_channel?
+            .promo-panel-item
+              .promo-item-content.promo-item-content-white.promo-item-content-header
+                = t("promo.dashboard.referral").upcase
+              .promo-item-content.promo-item-content-white.promo-item-content-number
+                = "15"
+            .promo-panel-item
+              .promo-item-content.promo-item-content-white.promo-item-content-header
+                = t("promo.dashboard.bonus").upcase
+              span.promo-item-content.promo-item-content-white.promo-item-content-number
+                = "75"
+              span.promo-item-content.promo-item-content-white
+                = t("promo.dashboard.bat").upcase
+          - else 
+            .promo-panel-item.promo-panel-item-alert
+              #promo-panel-alert
+                = t("promo.dashboard.add_channel").upcase
+  - elsif current_publisher.channels.empty?
     .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
       .add-channel-cta
         = t ".add_channel_cta"

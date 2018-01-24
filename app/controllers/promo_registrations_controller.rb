@@ -8,6 +8,7 @@ class PromoRegistrationsController < ApplicationController
   def index
     @publisher_promo_status = @publisher.promo_status(promo_running?)
     @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
+    
     render(:index)
   end
 

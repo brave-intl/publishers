@@ -510,17 +510,16 @@ en:
       description: "Influence your fans to get on Brave.  More income and free token bonus!"
       referral_reward: "1 referral = 5 BAT"
       button: "Activate Promo"
-      button-dashboard: "Activate Now!"
+      button-dashboard: "Learn More"
       footer: "Your fans will have to download Brave browser using the referral link and use it for the duration of the promotion to qualify for the referral.  This promo runs Feb 1 - March 1."
     activated:
-      verified:
-        title: "Congrats!"
-        subtitle: "Your promo is activated."
-        description_one: "Your fans will have to use Brave for the duration of the promotion to qualify for the referral bonus.  Your promotion stats will be posted on "
-        description_two: "your dashboard"
-      unverified:
-        title: "Congrats! Your promo is activated, but..."
-        description: "You will need to verify one of your channels before you can share referral links and earn BAT."
+      title: "Congrats!"
+      subtitle: "Your promo is activated."
+      description_one: "Your fans will have to use Brave for the duration of the promotion to qualify for the referral bonus.  Your promotion stats will be posted on "
+      description_two: "your dashboard."
+      unverified_no_channels: "No channels in the account."
+      unverified_error: "Verify your website or channel to get the referral link."
+      unverified_cta: "Go to my account"
     active:
       title: "Your promo is already active!"
       description_one: "Your fans will have to use Brave for the duration of the promo to qualify for the referral bonus. "
@@ -532,6 +531,13 @@ en:
       description: "We're sorry that you missed on this program.  But you can still influence your fans to support you by using Brave!"
       brave_download_link: "brave.com/download"
       footer: "Keep an eye out for the next event."
+    dashboard:
+      promo_ends_in: "promo ends in"
+      days: "days"
+      referral: "referral"
+      bonus: "bonus"
+      bat: "bat"
+      add_channel: "Add a channel below to get the referral link!"
     shared:
       promo_period: "Promo period:"
       promo_period_description: "Jan 1 - Feb 1"

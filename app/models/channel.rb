@@ -63,4 +63,16 @@ class Channel < ApplicationRecord
       nil
     end
   end
+
+  def channel_title
+    channel_type = self.details_type
+    case channel_type
+    when "YoutubeChannelDetails"
+      return self.details.title
+    when "SiteChannelDetails"
+      return self.details.brave_publisher_id
+    else
+      nil
+    end
+  end
 end
