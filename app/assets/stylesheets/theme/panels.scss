@@ -49,6 +49,9 @@ $brave-panels-borderRadius: 8px;
       border-bottom: 1px solid $braveInfo-Border;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+      a {
+        text-decoration: underline;
+      }
     }
     &--warning {
       padding: $spacer $spacer $spacer;
