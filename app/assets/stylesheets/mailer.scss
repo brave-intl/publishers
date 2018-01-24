@@ -21,6 +21,7 @@ body {
 
 .main {
   margin-top: 50px;
+  background: white;
   border-radius: 8px;
   border: 1px solid #eff2f5;
 }
@@ -28,7 +29,8 @@ body {
 .header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  padding: 72px 50px 58px 50px;
+  padding: 72px 50px 107px 50px;
+  margin-bottom: -49px;
   background-color: #ffffff;
   background-position: top right;
   background-repeat: no-repeat;
@@ -40,7 +42,7 @@ body {
 }
 
 .content {
-  background: #ffffff;
+  background: transparent;
   padding: 10px 50px 34px 50px;
 
   .attribute {
@@ -105,6 +107,31 @@ body {
 
   .btn-login {
     margin: 30px 0;
+  }
+
+  .promo-item {
+    display: block;
+    color: #006192;
+    padding-bottom: 12px;
+  }
+  .referral-link-container {
+    width: 100%;
+    color: black;
+    background: #edf3f9;
+    margin-bottom: 10px;
+    height: 30px;
+    display: table;
+
+    .referral-link {
+      display: table-cell;
+      vertical-align: middle;
+      padding-left: 8px;
+      width: 100%;
+      border: solid;
+      border-color: #cddeec;
+      border-width: 1px;
+      border-radius: 4px 0px 0px 4px;
+    }
   }
 }
 

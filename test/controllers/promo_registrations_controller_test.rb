@@ -35,12 +35,16 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select("[data-test=promo-over]")
   end
 
-  test "#create activates the promo, renders _activated_verified and enables promo for publisher" do
+  test "#create activates the promo, renders _activated_verified and enables promo for publisher, sends email" do
     publisher = publishers(:completed)
     sign_in publisher
 
+    # verify promo-activated email is sent
+    assert_difference("ActionMailer::Base.deliveries.count" , 1) do
+      post promo_registrations_path
+    end
+
     # verify create is rendered
-    post promo_registrations_path
     assert_select("[data-test=promo-activated-verified]")
 
     # verify promo is enabled for publisher
@@ -64,17 +68,17 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   # NOTE: Same as above
   # TO DO: Replace with integration tests that yield valid @promo_enabled_channels
-  # test "#create redirects to #index if publisher promo enabled, renders _active" do
-  #   publisher = publishers(:completed)
-  #   publisher.promo_enabled_2018q1 = true
-  #   publisher.save
+  test "#create redirects to #index if publisher promo enabled, renders _active" do
+    publisher = publishers(:completed)
+    publisher.promo_enabled_2018q1 = true
+    publisher.save
 
-  #   sign_in publisher
+    sign_in publisher
 
-  #   # verify _active is rendered
-  #   post promo_registrations_path
-  #   assert_select("[data-test=promo-active]")
-  # end
+    # verify _active is rendered
+    post promo_registrations_path
+    assert_select("[data-test=promo-active]")
+  end
 
   test "#create activates promo, renders _activated_unverified, doesn't engage registrar if publisher has no verified channels" do
     publisher = publishers(:default) # has one unverified channel

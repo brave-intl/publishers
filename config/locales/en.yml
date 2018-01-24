@@ -448,14 +448,18 @@ en:
       promo_period_description: "Jan 1 - Feb 1"
       reward: "Reward:"
       reward_description: "5 BAT for each referral"
-      referral_link: "Referral link:"
+      referral_link: "Referral links:"
       copy: "Copy"
   promo_mailer:
     activate_promo_2018q1:
-      title: "Limited Time Offer: Free tokens for your referral!"
       subject: "Limited Time Offer: Free tokens for your referral!"
-      body: "Getting more fans on Brave means more income for oyu. And we'd like to chip in for that effort. We are giving away bonus tokens for refrring your fans to Brave. Find out more and activate this promo!"
+      body: "Getting more fans on Brave means more income for you. And we'd like to chip in for that effort. We are giving away bonus tokens for referring your fans to Brave. Find out more and activate this promo!"
       button: "Activate Promo"
+    promo_activated_2018q1:
+      subject: "Your Referral Promo is Active"
+      body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral links we created for your channel, and get your fans to support you!"
+      body_two: "Bonus will be paid out at the end of the promo.  Check on the status of your qualified referrals on your dashboard."
+      body_three: "We wish you good luck!"
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.

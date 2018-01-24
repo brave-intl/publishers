@@ -25,6 +25,7 @@ class ApplicationMailer < ActionMailer::Base
     add_image("logo-rocketchat.png")
     add_image("logo-twitter.png")
     add_image("header-pattern.png")
+    add_image("header-pattern-promo.png")
     add_image("footer-top-pattern.png")
     add_image("logo-bat.png")
   end

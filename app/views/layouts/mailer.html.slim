@@ -5,9 +5,14 @@ html
     = stylesheet_link_tag('mailer', media: 'all')
   body
     .main
-      .header style="background-image: url(#{attachments["header-pattern.png"]&.url})"
-        .brand
-          = image_tag(attachments["brave-payments.png"]&.url, alt: t("shared.app_title"), height: 31, width: 268)
+      - if @_controller.is_a?(PromoMailer)
+        .header style="background-image: url(#{attachments["header-pattern-promo.png"]&.url})"
+          .brand
+            = image_tag(attachments["brave-payments.png"]&.url, alt: t("shared.app_title"), height: 31, width: 268)
+      - else
+        .header style="background-image: url(#{attachments["header-pattern.png"]&.url})"      
+          .brand
+            = image_tag(attachments["brave-payments.png"]&.url, alt: t("shared.app_title"), height: 31, width: 268)
       .content
         = yield
       .footer style="background-image: url(#{attachments["footer-top-pattern.png"]&.url})"

@@ -11,4 +11,15 @@ class PromoMailer < ApplicationMailer
       subject: default_i18n_subject
     )
   end
+
+  def promo_activated_2018q1(publisher, promo_enabled_channels)        
+    @promo_enabled_channels = promo_enabled_channels
+    @publisher = publisher
+    promo_token = publisher.promo_token_2018q1
+    
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject
+    )
+  end
 end

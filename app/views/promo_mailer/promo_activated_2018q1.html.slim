@@ -1,0 +1,20 @@
+- content_for(:title) do
+  h3= t("promo_mailer.promo_activated_2018q1.subject")
+
+p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
+
+p = t("promo_mailer.promo_activated_2018q1.body_one")
+
+.promo-item
+  span.promo-item-label= t("promo.shared.referral_link").upcase
+- @promo_enabled_channels.each do |channel|
+  .referral-link-container
+    span.referral-link = "#{t("promo.base_referral_link")}/#{channel.promo_registration.referral_code.downcase}"
+
+p = t("promo_mailer.promo_activated_2018q1.body_two")
+
+p = t("promo_mailer.promo_activated_2018q1.body_three")
+
+p= t("publisher_mailer.shared.signature")
+
+hr 
