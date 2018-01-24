@@ -23,6 +23,10 @@ $braveFailure: #e2052a;
 $braveFailure-Light: #ff5874;
 $braveFailure-Ghost: #ff9aab;
 
+$theme-colors: (
+  "brave-success": $braveSuccess-Light,
+);
+
 $braveInfo-Background: #eefbfd;
 $braveInfo-Foreground: #00bcd6;
 $braveInfo-Border: #e7ebee;

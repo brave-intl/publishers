@@ -59,8 +59,8 @@ $brave-panels-borderRadius: 8px;
     }
     &--notice {
       padding: $spacer $spacer $spacer;
-      background: $braveSuccess-Ghost;
-      color: $braveSuccess-Dark;
+      background: theme-color-level('brave-success', -10);
+      color: theme-color-level('brave-success', 6);
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
     }
