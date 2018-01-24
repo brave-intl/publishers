@@ -1,23 +1,24 @@
-h3.text-center = t(".heading")
+h3.single-panel--headline = t(".heading")
 
 = yield
 
-.col.col-xs-12.col-sm-10.col-md-8.col-lg-10.col-center.text-center
+.col-small-centered
+
   p = t ".body"
 
   = form_tag totp_authentications_path, class: "totp-authentication" do
-    div
-      .col.pull-left
-        = render "application/smartphone_with_code"
-      .col.authentication-code-prompt.text-left
-        label for="totp_password" = t ".totp_password_label"
-        input.form-control name="totp_password" placeholder=t(".enter_code_placeholder") autofocus=true
-    div
-      p = submit_tag t(".submit_value"), class: "btn btn-primary btn-wide"
+    .form-group
+      .icon-and-text--wrapper
+        .icon-and-text--icon
+          = render "application/smartphone_with_code"
+        .icon-and-text--text
+          label for="totp_password" = t ".totp_password_label"
+          input.form-control name="totp_password" placeholder=t(".enter_code_placeholder") autofocus=true
+    = submit_tag t(".submit_value"), class: "btn btn-primary btn-wide"
 
   - if @u2f_enabled
     div.js-feature-u2f-available
-      p.two-factor-authentication-alternative.text-center
-          = t(".u2f_alternative_available")
-          br
-          = link_to t(".u2f_alternative_link"), two_factor_authentications_path
+      p.two-factor-authentication-alternative
+        = t(".u2f_alternative_available")
+        br
+        = link_to t(".u2f_alternative_link"), two_factor_authentications_path

@@ -1,0 +1,25 @@
+.js-feature-u2f-available {
+  display: none;
+}
+
+body.js-feature-available-u2f {
+  .js-feature-u2f-available {
+    display: block;
+  }
+  .js-feature-u2f-unavailable {
+    display: none;
+  }
+}
+
+.js-u2f-is-working {
+  display: none;
+}
+
+.js-u2f-working {
+  .js-u2f-is-working {
+    display: block;
+  }
+  .js-u2f-is-prompting {
+    display: none;
+  }
+}
