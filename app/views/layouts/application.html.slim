@@ -82,11 +82,11 @@ html
           - [:alert, :notice, :warning].each do |name|
             - {alert: 'warning', notice: 'success', warning: 'warning'}[name].tap do |flash_class|
               - if flash[name]
-                div class="alert alert-#{flash_class} flash"
+                .alert.flash class="alert-#{flash_class}"
                   = flash[name]
               - "#{name}_html_safe".tap do |html_safe_name|
                 - if flash[html_safe_name]
-                  div class="alert alert-#{flash_class} flash"
+                  .alert.flash class="alert-#{flash_class}"
                     == flash[html_safe_name]
           - if content_for(:content_form_errors)
             .alert.alert-warning= I18n.t("activerecord.shared.errors")

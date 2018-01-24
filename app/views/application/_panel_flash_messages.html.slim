@@ -17,7 +17,7 @@
 - [:alert, :notice, :warning].each do |name|
   - {alert: 'icon_circled_i', warning: 'icon_circled_x'}[name].tap do |icon_partial|
     - if flash[name]
-      div class="single-panel--content single-panel--content--#{name} icon-and-text--wrapper"
+      .single-panel--content.icon-and-text--wrapper class="single-panel--content--#{name}"
         - if icon_partial
           .icon-and-text--icon
             = render icon_partial
@@ -25,7 +25,7 @@
           = flash[name]
     - "#{name}_html_safe".tap do |html_safe_name|
       - if flash[html_safe_name]
-        div class="single-panel--content single-panel--content--#{name} icon-and-text--wrapper"
+        .single-panel--content.icon-and-text--wrapper class="single-panel--content--#{name}"
           - if icon_partial
             .icon-and-text--icon
               = render icon_partial
