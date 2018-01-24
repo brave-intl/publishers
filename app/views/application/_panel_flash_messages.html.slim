@@ -1,3 +1,15 @@
+/ Flash messages *may* appear at the top of a panel in a styled page. To
+/ opt into that styling you must be using non-legacy styles and this partial.
+/ For example:
+/
+/     .single-panel--wrapper
+/       = render "panel_flash_messages" / <-- this partial
+/       .single-panel--content
+/
+/ Pages using that partial will only have messages appear on the top
+/ of the panel. The flash messages below the navigation bar wil be
+/ squashed.
+
 - content_for :application_flash do
   div
     // Intentionally left blank to disable application flash
@@ -11,8 +23,6 @@
             = render icon_partial
         .icon-and-text--text
           = flash[name]
-    / This should only be used in cases where we know the flash content is NOT user-provided
-    / (such as translation strings that include minor formatting or links)
     - "#{name}_html_safe".tap do |html_safe_name|
       - if flash[html_safe_name]
         div class="single-panel--content single-panel--content--#{name} icon-and-text--wrapper"

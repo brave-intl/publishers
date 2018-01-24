@@ -34,7 +34,48 @@ html
       - unless @hide_nav
         = render("nav")
 
+      /
+      / ## Using flash messages in Brave Publishers ##
+      /
+      / Three styled variants for flash messages in this app exist:
+      /
+      /   * `:alert` a message with neutral blue styling.
+      /   * `:notice` a message with positive green styling.
+      /   * `:warning` a message with negative red styling.
+      /
+      / By default these messages appear in a bar below the navigation.
+      /
+      / ## Flash messages in panels ##
+      /
+      / The messages *may* appear at the top of a panel in a styled page. To
+      / opt into that styling you must be using non-legacy styles and the
+      / following render partial:
+      /
+      /     .single-panel--wrapper
+      /       = render "panel_flash_messages" / <-- this partial
+      /       .single-panel--content
+      /
+      / Pages using that partial will only have messages appear on the top
+      / of the panel. The flash messages below the navigation bar wil be
+      / squashed.
+      /
+      / ## Flash messages with html content ##
+      /
+      / Sometime a translation string, or other content you want to include
+      / in a flash message, will contain HTML. In these cases you can use
+      / the symbol postfix `_html_safe`. For example:
+      /
+      /     flash[:alert_html_safe] = "<strong>Foo</strong>";
+      /
+      / THIS CONTENT WILL NOT BE ESCAPED. Thus it should contain NO
+      / user-entered content.
+      /
+      / The postfix is available for all three flash names and for rendering
+      / below the navigation bar or in a panel.
+      /
       - if content_for?(:application_flash)
+        / This branch permits the panel_flash_messages parital to disable
+        / navigation bar flash messages.
         = yield(:application_flash)
       - else
         .notifications.navbar-static-top#flash
@@ -45,8 +86,6 @@ html
                   = flash[name]
               - "#{name}_html_safe".tap do |html_safe_name|
                 - if flash[html_safe_name]
-                  / This should only be used in cases where we know the flash content is NOT user-provided
-                  / (such as translation strings that include minor formatting or links)
                   div class="alert alert-#{flash_class} flash"
                     == flash[html_safe_name]
           - if content_for(:content_form_errors)
