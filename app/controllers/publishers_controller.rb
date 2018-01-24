@@ -45,7 +45,8 @@ class PublishersController < ApplicationController
     email = params[:email]
 
     if email.blank?
-      return redirect_to sign_up_publishers_path, alert: t(".missing_email")
+      flash[:warning] = t(".missing_email")
+      return redirect_to sign_up_publishers_path
     end
 
     @publisher = Publisher.new(pending_email: email)
@@ -56,24 +57,25 @@ class PublishersController < ApplicationController
         verify_recaptcha(model: @publisher)
         : true
 
-    if throttle_legit
-      verified_publisher = Publisher.find_by(email: email)
-      if verified_publisher
-        @publisher = verified_publisher
-        PublisherLoginLinkEmailer.new(email: email).perform
-        session[:created_publisher_id] = @publisher.id
-        redirect_to create_done_publishers_path
-      elsif @publisher.save
-        PublisherMailer.verify_email(@publisher).deliver_later
-        PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-        session[:created_publisher_id] = @publisher.id
-        redirect_to create_done_publishers_path
-      else
-        Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-        redirect_to sign_up_publishers_path, alert: t(".invalid_email")
-      end
+    unless throttle_legit
+      return redirect_to root_path(captcha: params[:captcha]), alert: t(".access_throttled")
+    end
+
+    verified_publisher = Publisher.find_by(email: email)
+    if verified_publisher
+      @publisher = verified_publisher
+      PublisherLoginLinkEmailer.new(email: email).perform
+      flash.now[:alert] = t(".email_already_active", email: email)
+      render :create_auth_token
+    elsif @publisher.save
+      PublisherMailer.verify_email(@publisher).deliver_later
+      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      session[:created_publisher_id] = @publisher.id
+      redirect_to create_done_publishers_path
     else
-      redirect_to root_path(captcha: params[:captcha])
+      Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
+      flash[:warning] = t(".invalid_email")
+      redirect_to sign_up_publishers_path
     end
   end
 
@@ -87,8 +89,8 @@ class PublishersController < ApplicationController
 
     PublisherMailer.verify_email(@publisher).deliver_later
     PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+
     session[:created_publisher_id] = @publisher.id
-    session[:created_publisher_email] = @publisher.pending_email
     redirect_to create_done_publishers_path, alert: t("publishers.resend_confirmation_email_done")
   end
 

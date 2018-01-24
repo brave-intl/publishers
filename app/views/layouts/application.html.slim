@@ -38,14 +38,17 @@ html
         = yield(:application_flash)
       - else
         .notifications.navbar-static-top#flash
-          - if flash[:alert]
-            .alert.alert-warning.flash= flash[:alert]
-          - if flash[:alert_html_safe]
-            / This should only be used in cases where we know the flash content is NOT user-provided
-            / (such as translation strings that include minor formatting or links)
-            .alert.alert-warning.flash== flash[:alert_html_safe]
-          - if flash[:notice]
-            .alert.alert-success.flash= flash[:notice]
+          - [:alert, :notice, :warning].each do |name|
+            - {alert: 'warning', notice: 'success', warning: 'warning'}[name].tap do |flash_class|
+              - if flash[name]
+                div class="alert alert-#{flash_class} flash"
+                  = flash[name]
+              - "#{name}_html_safe".tap do |html_safe_name|
+                - if flash[html_safe_name]
+                  / This should only be used in cases where we know the flash content is NOT user-provided
+                  / (such as translation strings that include minor formatting or links)
+                  div class="alert alert-#{flash_class} flash"
+                    == flash[html_safe_name]
           - if content_for(:content_form_errors)
             .alert.alert-warning= I18n.t("activerecord.shared.errors")
             = yield(:content_form_errors)
