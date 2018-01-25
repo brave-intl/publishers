@@ -115,6 +115,8 @@ group :test do
   gem 'minitest', '5.10.3'
 
   gem "webmock", "~> 3.0"
+
+  gem "rails-controller-testing"
 end
 
 group :production do

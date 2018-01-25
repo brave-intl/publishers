@@ -102,6 +102,7 @@ google_verified:
   phone_normalized: "+14159001421"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  default_currency: "BAT"
 
 global_media_group:
   email: "fred@vglobal.org"

@@ -95,27 +95,10 @@ class SiteChannelsController < ApplicationController
     redirect_to(site_last_verification_method_path(@channel), alert: t("site_channels.https_inspection_complete"))
   end
 
-  # Tied to button on verification_dns_record
-  # Call to Eyeshade to perform verification
   # TODO: Rate limit
-  # TODO: Support XHR
   def verify
-    @channel = current_channel
-    require "faraday"
-    SiteChannelVerifier.new(
-        brave_publisher_id: current_channel.details.brave_publisher_id,
-        channel: current_channel
-    ).perform
-    current_channel.reload
-    if current_channel.verified?
-      redirect_to(home_publishers_path)
-    else
-      render(:verification_background)
-    end
-  rescue SiteChannelVerifier::VerificationIdMismatch
-    redirect_to(site_last_verification_method_path(@channel), alert: t("activerecord.errors.models.publisher.attributes.brave_publisher_id.taken"))
-  rescue Faraday::Error
-    redirect_to(publisher_last_verification_method_path(@channel), alert: t("shared.api_error"))
+    VerifySiteChannel.perform_later(channel_id: current_channel.id)
+    render(:verification_background)
   end
 
   private

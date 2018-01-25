@@ -9,7 +9,7 @@ class PublisherChannelSetter < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    channels = publisher.channels.collect do |channel|
+    verified_channels = publisher.channels.verified.collect do |channel|
       {
           "channelId" => channel.details.channel_identifier,
           "authorizerEmail" => channel.details.try(:auth_email),
@@ -26,7 +26,7 @@ class PublisherChannelSetter < BaseApiClient
         }.compact
     }
 
-    payload["channels"] = channels if channels.count > 0
+    payload["channels"] = verified_channels if verified_channels.count > 0
 
     # This raises when response is not 2xx.
     response = connection.post do |request|

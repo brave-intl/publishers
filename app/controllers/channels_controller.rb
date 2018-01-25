@@ -8,8 +8,10 @@ class ChannelsController < ApplicationController
   def destroy
     channel_identifier = current_channel.details.channel_identifier
 
+    channel_verified = current_channel.verified?
+
     success = current_channel.destroy
-    if success
+    if success && channel_verified
       DeletePublisherChannelJob.perform_later(publisher_id: current_publisher.id, channel_identifier: channel_identifier)
     end
 

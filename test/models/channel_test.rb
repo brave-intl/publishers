@@ -51,4 +51,8 @@ class ChannelTest < ActiveSupport::TestCase
   test "can get all visible channels" do
     assert_equal 4, publishers(:global_media_group).channels.visible.length
   end
+
+  test "can get all verified channels" do
+    assert_equal 3, publishers(:global_media_group).channels.verified.length
+  end
 end

@@ -30,6 +30,8 @@ class Channel < ApplicationRecord
         where('channels.verified = true or NOT site_channel_details.verification_method IS NULL')
   }
 
+  scope :verified, -> { where(verified: true) }
+
   scope :by_channel_identifier, -> (identifier) {
     case identifier.split("#")[0]
       when "youtube"

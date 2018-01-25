@@ -26,7 +26,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
       c.details.save
 
       refute c.verified?
-      verifier = SiteChannelVerifier.new(brave_publisher_id: c.details.brave_publisher_id, channel: c)
+      verifier = SiteChannelVerifier.new(channel: c)
       verifier.perform
       c.reload
       assert c.verified?
@@ -52,7 +52,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
       c.details.save
 
       refute c.verified?
-      verifier = SiteChannelVerifier.new(brave_publisher_id: c.details.brave_publisher_id, channel: c)
+      verifier = SiteChannelVerifier.new(channel: c)
       verifier.perform
       c.reload
       refute c.verified?
@@ -78,7 +78,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
       c.details.save
 
       refute c.verified?
-      verifier = SiteChannelVerifier.new(brave_publisher_id: c.details.brave_publisher_id, channel: c)
+      verifier = SiteChannelVerifier.new(channel: c)
       verifier.perform
       c.reload
 

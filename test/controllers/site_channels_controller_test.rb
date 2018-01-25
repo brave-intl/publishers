@@ -36,6 +36,19 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should create a VerifySiteChannel job to verify and render verification_background page" do
+    publisher = publishers(:global_media_group)
+    channel = channels(:global_inprocess)
+
+    sign_in publishers(:global_media_group)
+
+    assert_enqueued_with(job: VerifySiteChannel) do
+      patch(verify_site_channel_path(channel.id))
+    end
+
+    assert_template :verification_background
+  end
+
   # ToDo:
   # test "can't create verified Site Channel with an existing verified Site Chanel with the same brave_publisher_id" do
   #   publisher = publishers(:verified)

@@ -68,28 +68,11 @@ Rails.application.routes.draw do
   root "static#index"
 
   namespace :api do
-    resources :publishers, format: false, only: [] do
-      collection do
-        post "/notify_unverified", action: :notify_unverified
-      end
-    end
-
-    resources :owners, format: false, only: [] do
-      resources :channels, only: %i() do
-        get "/", action: :show, constraints: { channel_id: %r{[^\/]+} }
-        patch "verifications", action: :verify, constraints: { channel_id: %r{[^\/]+} }
-      end
-
-      collection do
-        get "/:owner_id", action: :show
-        post "/:owner_id/notifications", action: :notify
-      end
-    end
-
-    resources :channels, format: false, only: [] do
-      collection do
-        get "/:channel_id", action: :show, constraints: { channel_id: %r{[^\/]+} }
-        # post "/:channel_id/notifications", action: :notify, constraints: { channel_id: %r{[^\/]+} }
+    resources :owners, format: false, only: %i(), constraints: { owner_id: %r{[^\/]+} } do
+      resources :channels, only: %i(), constraints: { channel_id: %r{[^\/]+} } do
+        get "/", action: :show
+        patch "verifications", action: :verify
+        post "notifications", action: :notify
       end
     end
   end
