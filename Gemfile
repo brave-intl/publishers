@@ -4,6 +4,9 @@ source "https://rubygems.org"
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
 
+# Pagination
+gem "api-pagination"
+
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.0.0"
 
@@ -78,6 +81,9 @@ gem 'webpacker', '~> 3.0'
 gem "whois", "~> 4.0", require: false
 
 gem "whois-parser", "~> 1.0", require: false
+
+# pagination support for models
+gem "will_paginate"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
