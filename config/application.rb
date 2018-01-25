@@ -18,6 +18,12 @@ module Publishers
 
     config.exceptions_app = routes
 
+    if Rails.application.secrets[:log_verbose].present?
+      config.log_level = :debug
+    else
+      config.log_level = :info
+    end
+
     config.lograge.enabled = true
 
     config.time_zone = "Pacific Time (US & Canada)"
