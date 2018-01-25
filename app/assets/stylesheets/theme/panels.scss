@@ -9,6 +9,10 @@ $brave-panels-borderRadius: 8px;
       @include make-col-offset(1);
     }
     @include media-breakpoint-up(md) {
+      @include make-col(8);
+      @include make-col-offset(2);
+    }
+    @include media-breakpoint-up(lg) {
       @include make-col(6);
       @include make-col-offset(3);
     }
@@ -66,6 +70,9 @@ $brave-panels-borderRadius: 8px;
       color: theme-color-level('brave-success', 6);
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+    }
+    > form, > div {
+      width: 100%;
     }
   }
 
