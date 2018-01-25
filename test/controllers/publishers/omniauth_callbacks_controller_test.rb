@@ -85,7 +85,7 @@ module Publishers
       end
     end
 
-    test "a publisher who adds a channel taken by another will see youtube.channel_already_taken" do
+    test "a publisher who adds a channel taken by another will see custom dialog based on the taken channel" do
       begin
         publisher = publishers(:uphold_connected)
         request_login_email(publisher: publisher)
@@ -144,8 +144,8 @@ module Publishers
           follow_redirect!
         end
 
-        assert_select('div.notifications') do |element|
-          assert_match(I18n.t("youtube.channel_already_taken"), element.text)
+        assert_select('div#channel_taken_modal') do |element|
+          assert_match("The DIY Channel", element.text)
         end
       end
     end
