@@ -69,7 +69,6 @@ javascript:
       var publisherVisibleCheckbox = document.getElementById('publisher_visible');
       publisherVisibleCheckbox.addEventListener('click', function(event) {
         window.submitForm('update_publisher_visible_form', 'PATCH', true);
-        event.preventDefault();
       }, false);
 
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
@@ -77,7 +76,6 @@ javascript:
         defaultCurrencySelect.addEventListener('change', function(event) {
           window.submitForm('update_default_currency_form', 'PATCH', true);
           refreshBalance();
-          event.preventDefault();
         }, false);
       }
 
