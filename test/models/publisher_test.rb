@@ -6,18 +6,20 @@ class PublisherTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   include MailerTestHelper
 
-  test "publication_title is the site domain for site publishers" do
-    publisher = publishers(:verified)
-    assert_equal 'verified.org', publisher.brave_publisher_id
-    assert_equal 'verified.org', publisher.publication_title
-    assert_equal 'verified.org', publisher.to_s
-  end
+  test "verified publishers have both a name and email and have agreed to the TOS" do
+    publisher = Publisher.new
+    refute publisher.email_verified?
+    refute publisher.verified?
 
-  test "publication_title is the youtube channel title for youtube creators" do
-    publisher = publishers(:youtube_new)
-    assert_equal 'The DIY Channel', publisher.youtube_channel.title
-    assert_equal 'The DIY Channel', publisher.publication_title
-    assert_equal 'The DIY Channel', publisher.to_s
+    publisher.email = "jane@example.com"
+    assert publisher.email_verified?
+    refute publisher.verified?
+
+    publisher.name = "Jane"
+    refute publisher.verified?
+
+    publisher.agreed_to_tos = 1.minute.ago
+    assert publisher.verified?
   end
 
   test "uphold_code is only valid without uphold_access_parameters and before uphold_verified" do
@@ -134,12 +136,12 @@ class PublisherTest < ActiveSupport::TestCase
       
       body = "{ \"status\":{ \"provider\":\"uphold\", \"action\":\"re-authorize\" }, \"contributions\":{ \"amount\":\"9001.00\", \"currency\":\"USD\", \"altcurrency\":\"BAT\", \"probi\":\"38077497398351695427000\" }, \"rates\":{ \"BTC\":0.00005418424016883016, \"ETH\":0.000795331082073117, \"USD\":0.2363863335301452, \"EUR\":0.20187818378874756, \"GBP\":0.1799810085548496 }, \"wallet\":{ \"provider\":\"uphold\", \"authorized\":true, \"preferredCurrency\":\"USD\", \"availableCurrencies\":[ \"USD\", \"EUR\", \"BTC\", \"ETH\", \"BAT\" ] } }"
 
-      stub_request(:get, /v2\/publishers\/uphold_connected.org\/wallet/).
-          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-          to_return(status: 200, body: body, headers: {})
-
       publisher = publishers(:uphold_connected)
       assert publisher.uphold_verified
+
+      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+          to_return(status: 200, body: body, headers: {})
 
       publisher.wallet
       refute publisher.uphold_verified
@@ -147,45 +149,6 @@ class PublisherTest < ActiveSupport::TestCase
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
     end
-  end
-
-  test "a publisher cannot be associated with both a site and auth credentials" do
-    publisher = publishers(:verified)
-    assert publisher.valid?
-
-    publisher.auth_user_id = '123'
-    refute publisher.valid?
-
-    publisher.brave_publisher_id = nil
-    assert publisher.valid?
-
-    publisher.auth_user_id = nil
-    publisher.brave_publisher_id = 'example.com'
-    assert publisher.valid?
-  end
-
-  test "a publisher cannot change youtube channels" do
-    publisher = publishers(:youtube_initial)
-    assert publisher.valid?
-
-    some_channel = youtube_channels(:some_channel)
-    publisher.youtube_channel = some_channel
-    assert publisher.valid?
-
-    publisher.save
-
-    some_other_channel = youtube_channels(:some_other_channel)
-    publisher.youtube_channel = some_other_channel
-    refute publisher.valid?
-  end
-
-  test "a publisher cannot have the same youtube channel as another publisher" do
-    publisher = publishers(:youtube_initial)
-    assert publisher.valid?
-
-    diy_channel = youtube_channels(:diy_channel)
-    publisher.youtube_channel = diy_channel
-    refute publisher.valid?
   end
 
   test "a publisher must have a valid pending email address if it does not have an email address" do
@@ -225,43 +188,11 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
-  test "a publisher can not be destroyed if it is verified" do
+  test "a publisher can not be destroyed if it has channels" do
     publisher = publishers(:verified)
     assert_difference("Publisher.count", 0) do
       refute publisher.destroy
     end
-  end
-
-  test "a publisher assigned a brave_publisher_id_error_code and brave_publisher_id will not be valid" do
-    publisher = Publisher.new
-
-    publisher.pending_email = "foo@bar.com"
-    assert publisher.valid?
-
-    publisher.email = "foo@bar.com"
-    publisher.name = 'Joe Blow'
-    publisher.brave_publisher_id = 'asdf asdf'
-    publisher.brave_publisher_id_error_code = :invalid_uri
-
-    refute publisher.valid?
-    assert_equal [:brave_publisher_id], publisher.errors.keys
-    assert_equal "invalid_uri", publisher.brave_publisher_id_error_code
-    assert_equal I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri"), publisher.brave_publisher_id_error_description
-  end
-
-  test "a publisher assigned a brave_publisher_id_error_code and brave_publisher_id_unnormalized will not be valid" do
-    publisher = Publisher.new
-
-    publisher.pending_email = "foo@bar.com"
-    publisher.brave_publisher_id_unnormalized = 'asdf asdf'
-    assert publisher.save
-
-    publisher.brave_publisher_id_error_code = :invalid_uri
-
-    refute publisher.valid?
-    assert_equal [:brave_publisher_id_unnormalized], publisher.errors.keys
-    assert_equal "invalid_uri", publisher.brave_publisher_id_error_code
-    assert_equal I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri"), publisher.brave_publisher_id_error_description
   end
 
   test "test `has_stale_uphold_code` scopes to correct publishers" do
@@ -350,5 +281,11 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.uphold_access_parameters = "foo"
     publisher.save
     assert publisher.uphold_updated_at > 30.minutes.ago
+  end
+
+  test "formats owner_identifier correctly" do
+    publisher = publishers(:default)
+
+    assert_equal "publishers#uuid:02e81b29-f150-54b9-9a08-ce75944f6889", publisher.owner_identifier
   end
 end

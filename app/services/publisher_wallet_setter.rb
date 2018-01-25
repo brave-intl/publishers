@@ -21,34 +21,14 @@ class PublisherWalletSetter < BaseApiClient
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
 
-      if publisher.publication_type == :site
-        request.body =
-            <<~BODY
-            {
-              "provider": "uphold", 
-              "parameters": #{JSON.dump(uphold_access_parameters)}, 
-              "verificationId": "#{publisher.id}"
-            }
-        BODY
-        request.url("/v2/publishers/#{publisher.brave_publisher_id}/wallet")
-      elsif publisher.publication_type == :youtube_channel
-        request.body =
-            <<~BODY
-            {
-              "provider": "uphold", 
-              "parameters": #{JSON.dump(uphold_access_parameters)}
-            }
-        BODY
-        request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
-      else
-        begin
-          raise "PublisherWalletSetter can't set wallet for publication_type #{publisher.publication_type.to_s}"
-        rescue => e
-          require "sentry-raven"
-          Raven.capture_exception(e)
-        end
-        return nil
-      end
+      request.body =
+          <<~BODY
+          {
+            "provider": "uphold", 
+            "parameters": #{JSON.dump(uphold_access_parameters)}
+          }
+      BODY
+      request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
     end
     response
 

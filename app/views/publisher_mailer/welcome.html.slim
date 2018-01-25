@@ -6,9 +6,9 @@
 
 p= I18n.t("publisher_mailer.welcome.intro")
 
-p
-  strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
-  = link_to_brave_publisher_id(@publisher)
+/p
+/  strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
+/  = link_to_brave_publisher_id(@publisher)
 
 h4
   strong.attribute= "#{I18n.t("publishers.contact_person")}:"

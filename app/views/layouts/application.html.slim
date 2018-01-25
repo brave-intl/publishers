@@ -6,7 +6,12 @@ html
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content=("width=device-width, initial-scale=#{if local_assigns[:viewport_initial_scale] then viewport_initial_scale else '0.6' end}")
     title= t("shared.app_title")
-    = stylesheet_link_tag('application', media: 'all')
+    - if content_for?(:head_style_tags)
+      = yield(:head_style_tags)
+    - elsif params.has_key?(:bootstrap4)
+      = stylesheet_link_tag('application', media: 'all')
+    - else
+      = stylesheet_link_tag('application-bootstrap-3', media: 'all')
 
     - if content_for?(:head_js_tags)
       = yield(:head_js_tags)
@@ -26,18 +31,66 @@ html
       }
 
     #main
-      = render("nav")
+      - unless @hide_nav
+        = render("nav")
 
-      .notifications.navbar-static-top#flash
-        - if flash[:alert]
-          .alert.alert-warning.flash= flash[:alert]
-        - if flash[:login_link]
-          = render partial: "publishers/login_link"
-        - if flash[:notice]
-          .alert.alert-success.flash= flash[:notice]
-        - if content_for(:content_form_errors)
-          .alert.alert-warning= I18n.t("activerecord.shared.errors")
-          = yield(:content_form_errors)
+      /
+      / ## Using flash messages in Brave Publishers ##
+      /
+      / Three styled variants for flash messages in this app exist:
+      /
+      /   * `:alert` a message with neutral blue styling.
+      /   * `:notice` a message with positive green styling.
+      /   * `:warning` a message with negative red styling.
+      /
+      / By default these messages appear in a bar below the navigation.
+      /
+      / ## Flash messages in panels ##
+      /
+      / The messages *may* appear at the top of a panel in a styled page. To
+      / opt into that styling you must be using non-legacy styles and the
+      / following render partial:
+      /
+      /     .single-panel--wrapper
+      /       = render "panel_flash_messages" / <-- this partial
+      /       .single-panel--content
+      /
+      / Pages using that partial will only have messages appear on the top
+      / of the panel. The flash messages below the navigation bar wil be
+      / squashed.
+      /
+      / ## Flash messages with html content ##
+      /
+      / Sometime a translation string, or other content you want to include
+      / in a flash message, will contain HTML. In these cases you can use
+      / the symbol postfix `_html_safe`. For example:
+      /
+      /     flash[:alert_html_safe] = "<strong>Foo</strong>";
+      /
+      / THIS CONTENT WILL NOT BE ESCAPED. Thus it should contain NO
+      / user-entered content.
+      /
+      / The postfix is available for all three flash names and for rendering
+      / below the navigation bar or in a panel.
+      /
+      - if content_for?(:application_flash)
+        / This branch permits the panel_flash_messages parital to disable
+        / navigation bar flash messages.
+        = yield(:application_flash)
+      - else
+        .notifications.navbar-static-top#flash
+          - [:alert, :notice, :warning].each do |name|
+            - {alert: 'warning', notice: 'success', warning: 'warning'}[name].tap do |flash_class|
+              - if flash[name]
+                .alert.flash class="alert-#{flash_class}"
+                  = flash[name]
+              - "#{name}_html_safe".tap do |html_safe_name|
+                - if flash[html_safe_name]
+                  .alert.flash class="alert-#{flash_class}"
+                    == flash[html_safe_name]
+          - if content_for(:content_form_errors)
+            .alert.alert-warning= I18n.t("activerecord.shared.errors")
+            = yield(:content_form_errors)
 
       = content_for?(:content) ? yield(:content) : yield
 

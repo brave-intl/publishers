@@ -1,4 +1,6 @@
 module PublishersHelper
+  include ChannelsHelper
+
   def publisher_can_receive_funds?(publisher)
     publisher.uphold_status == :verified
   end
@@ -63,10 +65,10 @@ module PublishersHelper
     "https://#{publisher.brave_publisher_id}"
   end
 
-  def link_to_brave_publisher_id(publisher)
-    uri = URI::HTTP.build(host: publisher.brave_publisher_id)
-    link_to(publisher.brave_publisher_id, uri.to_s)
-  end
+  # def link_to_brave_publisher_id(publisher)
+  #   uri = URI::HTTP.build(host: publisher.brave_publisher_id)
+  #   link_to(publisher.brave_publisher_id, uri.to_s)
+  # end
 
   def uphold_authorization_endpoint(publisher)
     publisher.prepare_uphold_state_token
@@ -190,18 +192,22 @@ module PublishersHelper
   def publisher_next_step_path(publisher)
     if publisher.verified?
       home_publishers_path
-    elsif publisher.brave_publisher_id.blank?
+    elsif publisher.email_verified?
       email_verified_publishers_path
-    else
-      case publisher.detected_web_host
-        when "wordpress"
-          verification_wordpress_publishers_path
-        when "github"
-          verification_github_publishers_path
-        else
-          verification_choose_method_publishers_path
-      end
     end
+
+    # elsif publisher.brave_publisher_id.blank?
+    #   email_verified_publishers_path
+    # else
+    #   case publisher.detected_web_host
+    #     when "wordpress"
+    #       verification_wordpress_publishers_path
+    #     when "github"
+    #       verification_github_publishers_path
+    #     else
+    #       verification_choose_method_publishers_path
+    #   end
+    # end
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
@@ -249,7 +255,7 @@ module PublishersHelper
   end
 
   def publisher_statement_filename(publisher_statement)
-    publisher_id = publisher_statement.publisher.brave_publisher_id
+    publisher_id = publisher_statement.publisher.name
     date = publisher_statement.created_at.to_date.iso8601
     period = publisher_statement.period.to_s.gsub('_', '-')
 
@@ -298,5 +304,33 @@ module PublishersHelper
 
   def show_nav_menu?(publisher)
     publisher.verified?
+  end
+
+  def channel_edit_link(channel)
+    case channel.details
+      when SiteChannelDetails
+        link_to(home_publishers_path)
+
+      when YoutubeChannelDetails
+
+      else
+        link_to(home_publishers_path)
+    end
+  end
+
+  def channel_thumbnail_url(channel)
+    url = case channel.details
+          when SiteChannelDetails
+
+          when YoutubeChannelDetails
+            channel.details.thumbnail_url
+          else
+          end
+
+    return url || asset_url('default-channel.png')
+  end
+
+  def publisher_id_from_owner_identifier(owner_identifier)
+    owner_identifier[/publishers#uuid:(.*)/,1]
   end
 end

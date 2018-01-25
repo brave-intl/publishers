@@ -2,7 +2,7 @@
 - content_for(:title) do
   h3= t("publisher_mailer.login_email.title")
 
-p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
+p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name || name_from_email(@publisher.email))
 
 p= t("publisher_mailer.login_email.body_html")
 div.center= link_to(t("publisher_mailer.login_email.button"), @private_reauth_url, class: "btn-primary btn-login")

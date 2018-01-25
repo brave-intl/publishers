@@ -45,34 +45,31 @@ javascript:
       modal.classList.remove('md-show');
     }
 
-    function verificationStatusUpdated(checked) {
-      var form = document.getElementById('update_show_verification_status');
-      form.className = checked ? 'checked' : 'unchecked';
+    function removeChannel(channelId) {
+      submitForm('remove_channel_' + channelId, 'DELETE', true)
+        .then(function(response) {
+          var channelRow = document.getElementById('channel_row_' + channelId);
+          channelRow.classList.add('channel-hidden');
+        });
     }
 
     window.addEventListener('load', function() {
-      var showVerificationStatusInput = document.getElementById('publisher_show_verification_status');
-      showVerificationStatusInput.addEventListener('click', function(event) {
-        window.submitForm('update_show_verification_status', 'PATCH', true);
-        verificationStatusUpdated(showVerificationStatusInput.checked);
-      }, false);
-
-      if (document.getElementById('verification_modal')) {
-        document.getElementById('verify_now').addEventListener('click', function(event) {
-          showVerificationStatusInput.checked = true;
-          verificationStatusUpdated(true);
-          window.submitForm('update_show_verification_status', 'PATCH', false);
-          hideVerificationModal();
-        });
-        document.getElementById('verify_later').addEventListener('click', function(event) {
-          showVerificationStatusInput.checked = false;
-          verificationStatusUpdated(false);
-          window.submitForm('update_show_verification_status', 'PATCH', false);
-          hideVerificationModal();
-        });
-
-        showVerificationModal();
+      var removeChannelLinks = document.querySelectorAll('a.remove-channel');
+      for (var i = 0, l = removeChannelLinks.length; i < l; i++) {
+        removeChannelLinks[i].addEventListener('click', function(event) {
+          var channelId = event.target.getAttribute('data-channel-id');
+          var confirmationMessage = event.target.getAttribute('data-confirmation-message');
+          if (window.confirm(confirmationMessage)) {
+            removeChannel(channelId);
+          }
+          event.preventDefault();
+        }, false);
       }
+
+      var publisherVisibleCheckbox = document.getElementById('publisher_visible');
+      publisherVisibleCheckbox.addEventListener('click', function(event) {
+        window.submitForm('update_publisher_visible_form', 'PATCH', true);
+      }, false);
 
       var defaultCurrencySelect = document.getElementById('publisher_default_currency');
       if (defaultCurrencySelect) {
@@ -246,31 +243,11 @@ javascript:
 noscript
   div.noscript-warning = t("publishers.dashboard_noscript")
 
-- if current_publisher.show_verification_status.nil?
-  .md-container#verification_modal
-    .md-content
-      h1= t("publishers.verify_modal_title")
-      h2= t("publishers.verify_modal_subtitle")
-      p= t("publishers.verify_modal_content_html")
-      .panel-section
-        a.btn.btn-cancel#verify_later= t("publishers.verify_modal_cancel")
-        a.btn.btn-primary#verify_now= t("publishers.verify_modal_confirm")
-  .md-overlay
+- content_for(:navbar_content_right) do
+  = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
 
 .row
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
-    .publisher-status
-      - if current_publisher.publication_type == :site
-        .publisher-domain-summary
-          .publisher-domain-name= current_publisher.brave_publisher_id
-          #publisher_verification_status class=publisher_verification_status(current_publisher)
-            = publisher_verification_status_description(current_publisher)
-      - elsif current_publisher.publication_type == :youtube_channel
-        .publisher-youtube-channel
-          .channel-thumbnail= image_tag(current_publisher.youtube_channel.thumbnail_url)
-          .channel-name title=current_publisher.youtube_channel.title
-            = current_publisher.youtube_channel.title.truncate(30)
-  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+  .col.col-details.col-md-5.col-xs-10.col-xs-center.col-sm-center
     h4= t("publishers.balance_pending")
     .balance
       .pull-left
@@ -281,6 +258,10 @@ noscript
           span.bat-code= " BAT"
         .converted#converted_amount
           = publisher_converted_balance(current_publisher)
+  - if current_publisher.channels.empty?
+    .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+      .add-channel-cta
+        = t("publishers.add_channel_cta")
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel.uphold-panel
@@ -349,19 +330,48 @@ noscript
             a#cancel_edit_contact href="#"
               = t("shared.cancel")
         p#pending_email_notice style="display: none" class="note"
-      = form_for(current_publisher, url: publishers_path,
-              html: { id: "update_show_verification_status",
-                      class: current_publisher.show_verification_status? ? 'checked' : 'unchecked' }) do |f|
-        .form-group
-          .panel-header.panel-header-h4#publishers_list
-            .inline-controls.pull-right
-              .onoffswitch
-                = f.check_box(:show_verification_status, class: "onoffswitch-checkbox", :"data-piwik-action" => "ShowStatusToggleClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard", id: "publisher_show_verification_status")
-                = f.label(:show_verification_status, class: "onoffswitch-label", for: "publisher_show_verification_status") do
-                  span.onoffswitch-inner
-                  span.onoffswitch-switch
-              .value-label.pull-right#show_verification_status_value
-            .list-label= t("publishers.dashboard_list_in_verified_publishers_html")
+
+        = form_for(current_publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
+          = f.check_box(:visible, class: "form-check-input")
+          = f.label(:visible, class: "form-check-label", for: "publisher_visible")
+
+- if current_publisher.channels.visible.empty?
+  .row
+    .col.col-details.col-md-12.col-xs-10
+      = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'channel-placeholder')
+- else
+  - current_publisher.channels.visible.each do |channel|
+    .row.channel-row id=("channel_row_#{channel.id}")
+      .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
+        div class=("sub-panel channel-panel #{channel.verified? ? 'channel-verified' : 'channel-unverified'}")
+          .channel-thumbnail.pull-left
+            img src=(channel_thumbnail_url(channel))
+          - if channel.verified?
+            .channel-summary.pull-left
+              h3= channel.publication_title.truncate(30)
+              .channel-details
+                .added-date
+                  = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
+                .separator
+                  = '|'
+                a.remove-channel href="#" data-channel-id=(channel.id) data-confirmation-message=(t("publishers.dashboard_channel_confirm_remove_channel", channel_name: channel.publication_title))
+                  = t("publishers.dashboard_channel_remove_verified_channel")
+                = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+
+            .channel-status.pull-right
+              = t("publishers.dashboard_channel_verified")
+          -else
+            .channel-summary.pull-left
+              h3= channel.publication_title
+            .channel-progress.pull-left
+              .one-more-step= t("publishers.dashboard_channel_one_more_step")
+            .channel-status.pull-right
+              = link_to(t("publishers.dashboard_channel_lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
+            a.remove-channel.pull-right href="#" data-channel-id=(channel.id) data-confirmation-message=(t("publishers.dashboard_channel_confirm_remove_channel", channel_name: channel.publication_title))
+              = t("publishers.dashboard_channel_remove_unverified_channel")
+            = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+          .clearfix
+
 .row.tos-row
   .col.col-details.col-md-6.col-md-push-6.col-xs-10.col-xs-center.col-sm-center
     .terms-of-service

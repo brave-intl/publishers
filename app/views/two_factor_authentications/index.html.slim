@@ -1,69 +1,53 @@
-.container
-  .row
-    .col-center.col-xs-12.col-sm-10.col-md-8.col-lg-6
-      .error-group--wrapper.js-authenticate-u2f-error
+.single-panel--wrapper
+  = render "panel_flash_messages"
 
-        .js-u2f-error-bad-request
-          .sub-panel.sub-panel--panel--error-top
-            .row
-              .sub-panel--top-wrapper
-                .sub-panel--top-icon
-                  = render 'icon_circled_x'
-                .sub-panel--top-body
-                  = t ".u2f-error.bad-request"
+  .error-group--wrapper.js-authenticate-u2f-error
 
-        .js-u2f-error-configuration-unsupported
-          .sub-panel.sub-panel--panel--error-top
-            .row
-              .sub-panel--top-wrapper
-                .sub-panel--top-icon
-                  = render 'icon_circled_x'
-                .sub-panel--top-body
-                  = t ".u2f-error.configuration-unsupported"
+    .js-u2f-error-bad-request
+      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.bad-request"
 
-        .js-u2f-error-device-ineligible
-          .sub-panel.sub-panel--panel--error-top
-            .row
-              .sub-panel--top-wrapper
-                .sub-panel--top-icon
-                  = render 'icon_circled_x'
-                .sub-panel--top-body
-                  = t ".u2f-error.device-ineligible"
+    .js-u2f-error-configuration-unsupported
+      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.configuration-unsupported"
 
-        .js-u2f-error-other-error
-          .sub-panel.sub-panel--panel--error-top
-            .row
-              .sub-panel--top-wrapper
-                .sub-panel--top-icon
-                  = render 'icon_circled_x'
-                .sub-panel--top-body
-                  = t ".u2f-error.other-error"
+    .js-u2f-error-device-ineligible
+      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.device-ineligible"
 
-        .js-u2f-error-timeout
-          .sub-panel.sub-panel--panel--error-top
-            .row
-              .sub-panel--top-wrapper
-                .sub-panel--top-icon
-                  = render 'icon_circled_x'
-                .sub-panel--top-body
-                  = t ".u2f-error.timeout"
+    .js-u2f-error-other-error
+      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.other-error"
 
-        .js-u2f-error-implementation-incomplete
-          .sub-panel.sub-panel--panel--error-top
-            .row
-              .sub-panel--top-wrapper
-                .sub-panel--top-icon
-                  = render 'icon_circled_x'
-                .sub-panel--top-body
-                  = t ".u2f-error.implementation-incomplete"
+    .js-u2f-error-timeout
+      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.timeout"
 
-        .error-group--no-error.js-no-error
-          .sub-panel.sub-panel--panel--filler-top
+    .js-u2f-error-implementation-incomplete
+      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.implementation-incomplete"
 
-      .sub-panel.sub-panel--panel--bottom
+  .single-panel--content
+    - if @u2f_authentication_attempt
+      = render partial: "u2f", locals: @u2f_authentication_attempt
 
-        - if @u2f_authentication_attempt
-          = render partial: "u2f", locals: @u2f_authentication_attempt
-
-        - elsif @totp_enabled
-          = render "totp"
+    - elsif @totp_enabled
+      = render "totp"
