@@ -52,7 +52,7 @@ class PromoMailerTest < ActionMailer::TestCase
   end
 
   test "promo_activated_2018q1_unverified" do
-    publisher = publishers(:completed)
+    publisher = publishers(:default)
     email = PromoMailer.promo_activated_2018q1_unverified(publisher)
 
     # Send the email, then test that it got queued
@@ -63,4 +63,22 @@ class PromoMailerTest < ActionMailer::TestCase
     assert_equal ['brave-publishers@localhost.local'], email.from
     assert_equal [publisher.email], email.to
   end
+
+  test "new_channel_registered_2018q1" do
+    publisher = publishers(:completed)
+    channel = publisher.channels.first
+
+    referral_code = "BATS-321"
+    promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: "free-bats-2018q1", referral_code: referral_code)
+    promo_registration.save!
+
+    email = PromoMailer.new_channel_registered_2018q1(publisher, channel)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    referral_link = generate_referral_link(referral_code)
+    
+    assert_email_body_matches(matcher: referral_link, email: email)  end
 end

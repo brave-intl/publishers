@@ -15,6 +15,8 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
+  after_save :register_channel_for_promo, if: :should_register_channel_for_promo
+
   scope :site_channels, -> { joins(:site_channel_details) }
   scope :youtube_channels, -> { joins(:youtube_channel_details) }
 
@@ -74,5 +76,17 @@ class Channel < ApplicationRecord
     else
       nil
     end
+  end
+
+  private
+
+  def should_register_channel_for_promo
+    promo_running = Rails.application.secrets[:active_promo_id].present?  # Could use PromosHelper#active_promo_id
+    publisher_enabled_promo = self.publisher.promo_enabled_2018q1?
+    promo_running && publisher_enabled_promo && verified_changed? && verified
+  end
+
+  def register_channel_for_promo
+    RegisterChannelForPromoJob.new.perform(channel: self)
   end
 end
