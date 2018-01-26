@@ -37,16 +37,23 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create a VerifySiteChannel job to verify and render verification_background page" do
-    publisher = publishers(:global_media_group)
-    channel = channels(:global_inprocess)
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
 
-    sign_in publishers(:global_media_group)
+      publisher = publishers(:global_media_group)
+      channel = channels(:global_inprocess)
 
-    assert_enqueued_with(job: VerifySiteChannel) do
-      patch(verify_site_channel_path(channel.id))
+      sign_in publishers(:global_media_group)
+
+      assert_enqueued_with(job: VerifySiteChannel) do
+        patch(verify_site_channel_path(channel.id))
+      end
+
+      assert_template :verification_background
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
-
-    assert_template :verification_background
   end
 
   test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
