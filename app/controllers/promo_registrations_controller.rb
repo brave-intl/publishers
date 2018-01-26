@@ -38,26 +38,22 @@ class PromoRegistrationsController < ApplicationController
     redirect_to index
   end
   
-  # Fails when a pub is logged in and clicks "activate promo" button
-  # from email sent to their other publisher account
   def find_publisher
     if current_publisher
       @publisher = current_publisher
     else
-      begin
-        # Get promo auth token from params if they exist
-        promo_token = params.require(:promo_token)
-      rescue => e
-        require "sentry-raven"
-        Raven.capture_exception(e)
-        return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
-      end
-
+      # Get promo auth token from params if they exist
+      promo_token = params.require(:promo_token)
       if publisher = Publisher.find_by(promo_token_2018q1: promo_token)
         @publisher = publisher
       else
         redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
       end
     end
+  # Rescue when no promo_token found in params
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
   end
 end

@@ -1,29 +1,13 @@
 require "test_helper"
 require "webmock/minitest"
+require "shared/mailer_test_helper"
 
 class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include PromosHelper
+  include MailerTestHelper
 
-  # NOTE: No longer passes since we need @promo_enabled_channels for these views to display
-  # TO DO: Replace with integration tests that yield valid @promo_enabled_channels
-  # test "#index renders :activate if publisher hasn't activated, otherwise renders :active" do
-  #   publisher = publishers(:completed)
-  #   sign_in publisher
-
-  #   verify activate is rendered when promo inactive
-  #   get promo_registrations_path
-  #   assert_select("[data-test=promo-activate]")
-
-  #   publisher.promo_enabled_2018q1 = true
-  #   publisher.save
-
-  #   # verify active is rendered when promo active
-  #   get promo_registrations_path
-  #   assert_select("[data-test=promo-active]")
-  # end
-
-  test "#index renders :over if promo not running" do
+  test "#index renders _over if promo not running" do
     publisher = publishers(:completed)
     sign_in publisher
 
@@ -35,7 +19,31 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select("[data-test=promo-over]")
   end
 
-  test "#create activates the promo, renders _activated_verified and enables promo for publisher, sends email" do
+  test "#index renders activate when promo running" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    # verify activate is rendered
+    get promo_registrations_path
+    assert_select("[data-test=promo-activate]")
+  end
+
+  test "#create does nothing and redirects _over if promo not running" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    # expire the promo
+    PromoRegistrationsController.any_instance.stubs(:promo_running?).returns(false)
+
+    # verify _over is rendered
+    post promo_registrations_path
+    assert_select("[data-test=promo-over]")
+
+    # verify publisher has not enabled promo
+    assert_equal publisher.promo_enabled_2018q1, false
+  end
+
+  test "#create activates the promo, renders _activated_verified and enables promo for verfied publisher, sends email" do
     publisher = publishers(:completed)
     sign_in publisher
 
@@ -44,6 +52,14 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
       post promo_registrations_path
     end
 
+    email = ActionMailer::Base.deliveries.last
+
+    # verify email is sent to correct publisher
+    assert email.to, publisher.email
+
+    # verify the referral link sent matches the publisher's channel
+    assert_email_body_matches(matcher: generate_referral_link(publisher.channels.first.promo_registration.referral_code), email: email)
+
     # verify create is rendered
     assert_select("[data-test=promo-activated-verified]")
 
@@ -51,48 +67,53 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal publisher.promo_enabled_2018q1, true
   end
 
-  test "#create does nothing and redirects to dashboard if promo not running" do
-    publisher = publishers(:completed)
+  test "#create activates the promo, renders _activated_unverified and enables promo for unverified publisher, sends email" do
+    publisher = publishers(:default) # has one unverified channel
     sign_in publisher
 
-    # expire the promo
-    PromoRegistrationsController.any_instance.stubs(:promo_running?).returns(false)
+    # verify no promo-activated email is sent
+    assert_difference("ActionMailer::Base.deliveries.count" , 1) do
+      post promo_registrations_path
+    end
 
-    # verify :over is rendered
-    post promo_registrations_path
-    assert_select("[data-test=promo-over]")
+    email = ActionMailer::Base.deliveries.last
 
-    # verify publisher has not enabled promo
-    assert_equal publisher.promo_enabled_2018q1, false
+    # verify email is sent to correct publisher
+    assert email.to, publisher.email
+
+    # verify email has the "Login to Add Channel" call to action
+    assert_email_body_matches(matcher: I18n.t("promo_mailer.promo_activated_2018q1_unverified.cta").to_s, email: email)
+
+    # verify create is rendered
+    assert_select("[data-test=promo-activated-unverified]")
+
+    # verify promo is enabled for publisher
+    assert_equal publisher.promo_enabled_2018q1, true
   end
 
-  # NOTE: Same as above
-  # TO DO: Replace with integration tests that yield valid @promo_enabled_channels
-  test "#create redirects to #index if publisher promo enabled, renders _active" do
+  test "#create redirects to #index if publisher promo enabled and renders _active" do
     publisher = publishers(:completed)
-    publisher.promo_enabled_2018q1 = true
     publisher.save
 
     sign_in publisher
 
+    # verify activate is loaded 
+    get promo_registrations_path
+    assert_select("[data-test=promo-activate]")
+
+    # enabled promo
+    post promo_registrations_path
+
     # verify _active is rendered
-    post promo_registrations_path
+    assert_select("[data-test=promo-activated-verified]")
+
+    # verify they have enabled the promo
+    publisher.reload
+    assert publisher.promo_enabled_2018q1
+
+    # verify active page is loaded
+    get promo_registrations_path
     assert_select("[data-test=promo-active]")
-  end
-
-  test "#create activates promo, renders _activated_unverified, doesn't engage registrar if publisher has no verified channels" do
-    publisher = publishers(:default) # has one unverified channel
-    sign_in publisher
-
-    post promo_registrations_path
-
-    # verify activated_unverified is loaded
-    assert_select("[data-test=promo-activated-unverified]")
-
-    # verify the promo has been enabled
-    assert_equal publisher.promo_enabled_2018q1, true
-
-    # TO DO: verify promo regsitrar was not used
   end
 
   test "publisher can activate/visit promo without being signed in using promo token from email" do
@@ -140,7 +161,3 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path    
   end
 end
-
-
-
-

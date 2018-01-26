@@ -553,13 +553,15 @@ en:
     promo_activated_2018q1_verified:
       subject: "Your Referral Promo is Active"
       body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral links we created for your channel, and get your fans to support you!"
-      body_one_single_channel: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral link we created for your channel, and get your fans to support you!"
       body_two: "Bonus will be paid out at the end of the promo.  Check on the status of your qualified referrals on your dashboard."
       body_three: "We wish you good luck!"
     promo_activated_2018q1_unverified:
       subject: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT."
       cta: "Login to Add Channel"
       body: "Please verify a channel to participate in the promo"
+    new_channel_registered_2018q1:
+      subject: "Your Referral Promo is Active"
+      body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral link we created for your channel, and get your fans to support you!"    
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.

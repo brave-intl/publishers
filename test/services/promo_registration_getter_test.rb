@@ -12,14 +12,22 @@ class PromoRegistrationGetterTest < ActiveJob::TestCase
     end
   end
 
-  # NOTE: This will not pass until we the TO DOs in promo registation getter
   test "raises NoReferralCodeError when requesting referral_code for invalid promo_id " do
-    # publisher = publishers(:completed)
-    # channel = publisher.channels.first
-    # PromoRegistrationGetter.any_instance.stubs(:active_promo_id).returns("invalid-promo-id")
+    publisher = publishers(:completed)
+    channel = publisher.channels.first
 
-    # assert_raise PromoRegistrationGetter::NoReferralCodeError do
-    #   PromoRegistrationGetter.new(publisher: publisher, channel: channel).perform
-    # end
+    assert_raise PromoRegistrationGetter::NoReferralCodeError do
+      PromoRegistrationGetter.new(publisher: publisher, channel: channel, promo_id: "invalid-promo-id").perform
+    end
+  end
+
+  test "returns the promo code for a " do
+    publisher = publishers(:completed)
+    channel = publisher.channels.first
+
+    # PromoRegistrationGetter.any_instance.stubs(:active_promo_id).returns("free-bats-2018q1")
+    channel_referral_code = PromoRegistrationGetter.new(publisher: publisher, channel: channel).perform    
+
+    assert_not_nil channel_referral_code
   end
 end

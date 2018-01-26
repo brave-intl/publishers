@@ -36,16 +36,16 @@ class PromoRegistrationGetter < BaseApiClient
     registrations =
     [
       {
-      "referral_code": offline_referral_code,
-      "promo": "#{active_promo_id}",
-      "publisher": "#{@channel.channel_id}",
-      "name": "#{@channel.publication_title}",
+      "referral_code" => offline_referral_code,
+      "promo" => "#{@promo_id}",
+      "publisher" => "#{@channel.channel_id}",
+      "name" => "#{@channel.publication_title}",
       },
       {
-      "referral_code": offline_referral_code,
-      "promo": "free-bats-2018q2",
-      "publisher": "#{@channel.channel_id}",
-      "name": "#{@channel.publication_title}",
+      "referral_code" => offline_referral_code,
+      "promo" => "free-bats-2018q2",
+      "publisher" => "#{@channel.channel_id}",
+      "name" => "#{@channel.publication_title}",
       }
     ]
     referral_code = referral_code_for_promo_id(registrations)

@@ -40,9 +40,8 @@ class Publisher < ApplicationRecord
   # (see `verify_uphold` method below)
   validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
-  # Note: collisions in promo tokens break the app right now
-  # validates :promo_token_2018q1, uniqueness: true # presence: true, if -> { PROMO RUNNING # TO DO }
-
+  validates :promo_token_2018q1, uniqueness: true,  if: -> { self.promo_token_2018q1 != nil } 
+  
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
 
