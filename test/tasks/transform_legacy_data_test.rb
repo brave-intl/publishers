@@ -37,14 +37,12 @@ class TransformLegacyDataTest < ActiveJob::TestCase
             last_sign_in_at: "2017-11-28 12:10:45",
             phone: "6035551212",
             phone_normalized: "\+16035551212",
-            authentication_token: "asdfg",
+            encrypted_authentication_token: "asdfg",
+            encrypted_authentication_token_iv: "asdfg_iv",
             verification_method: "wordpress",
             authentication_token_expires_at: "2017-11-30 10:20:30",
             show_verification_status: false,
             created_via_api: false,
-            uphold_state_token: "UPHOLDSTATETOKEN",
-            uphold_code: nil,
-            uphold_access_parameters: nil,
             uphold_verified: true,
             pending_email: "new_user@company.com",
             supports_https: true,
@@ -67,10 +65,10 @@ class TransformLegacyDataTest < ActiveJob::TestCase
       assert_equal "\+16035551212", pub.phone_normalized
 
       assert_equal Time.zone.parse("2017-11-28 10:11:12"), pub.created_at
-      assert_equal "UPHOLDSTATETOKEN", pub.uphold_state_token
       assert pub.uphold_verified
       assert_equal "BAT",  pub.default_currency
       refute pub.visible
+      assert_equal Time.zone.parse("2017-11-30 20:30:40"), pub.uphold_updated_at
 
       # not carried over
       refute_equal Time.zone.parse("2017-11-28 12:10:45"), pub.updated_at
@@ -80,8 +78,6 @@ class TransformLegacyDataTest < ActiveJob::TestCase
       assert_nil pub.authentication_token
       assert_nil pub.authentication_token_expires_at
       assert_nil pub.pending_email
-      # uphold_updated_at auto set
-      assert pub.uphold_updated_at
       refute pub.created_via_api
       assert_nil pub.uphold_code
       assert_nil pub.uphold_access_parameters
@@ -103,14 +99,12 @@ class TransformLegacyDataTest < ActiveJob::TestCase
             last_sign_in_at: "2017-11-28 12:10:45",
             phone: "6035551212",
             phone_normalized: "\+16035551212",
-            authentication_token: "asdfg",
+            encrypted_authentication_token: "asdfg",
+            encrypted_authentication_token_iv: "asdfg_iv",
             verification_method: "wordpress",
             authentication_token_expires_at: "2017-11-30 10:20:30",
             show_verification_status: true,
             created_via_api: false,
-            uphold_state_token: nil,
-            uphold_code: nil,
-            uphold_access_parameters: nil,
             uphold_verified: false,
             pending_email: "new_user@company.com",
             supports_https: true,
@@ -119,7 +113,7 @@ class TransformLegacyDataTest < ActiveJob::TestCase
             default_currency: "BAT",
             brave_publisher_id_unnormalized: "COMPANY.COM",
             brave_publisher_id_error_code: nil,
-            uphold_updated_at: "2017-11-30 20:30:40"
+            uphold_updated_at: nil
         }
     ).save!
 
@@ -137,6 +131,7 @@ class TransformLegacyDataTest < ActiveJob::TestCase
       refute pub.uphold_verified
       assert_equal "BAT", pub.default_currency
       assert pub.visible
+      assert_nil pub.uphold_updated_at
 
       # not carried over
       refute_equal Time.zone.parse("2017-11-28 12:10:45"), pub.updated_at
@@ -146,8 +141,6 @@ class TransformLegacyDataTest < ActiveJob::TestCase
       assert_nil pub.authentication_token
       assert_nil pub.authentication_token_expires_at
       assert_nil pub.pending_email
-      # uphold_updated_at auto set
-      assert_nil pub.uphold_updated_at
       refute pub.created_via_api
       assert_nil pub.uphold_code
       assert_nil pub.uphold_access_parameters
@@ -169,14 +162,12 @@ class TransformLegacyDataTest < ActiveJob::TestCase
             last_sign_in_at: "2017-11-28 12:10:45",
             phone: "6035551212",
             phone_normalized: "\+16035551212",
-            authentication_token: "asdfg",
+            encrypted_authentication_token: "asdfg",
+            encrypted_authentication_token_iv: "asdfg_iv",
             verification_method: "wordpress",
             authentication_token_expires_at: "2017-11-30 10:20:30",
             show_verification_status: false,
             created_via_api: false,
-            uphold_state_token: "UPHOLDSTATETOKEN",
-            uphold_code: nil,
-            uphold_access_parameters: nil,
             uphold_verified: true,
             pending_email: "new_user@company.com",
             supports_https: true,
@@ -215,14 +206,12 @@ class TransformLegacyDataTest < ActiveJob::TestCase
             last_sign_in_at: "2017-11-28 12:10:45",
             phone: "6035551212",
             phone_normalized: "\+16035551212",
-            authentication_token: "asdfg",
+            encrypted_authentication_token: "asdfg",
+            encrypted_authentication_token_iv: "asdfg_iv",
             verification_method: "wordpress",
             authentication_token_expires_at: "2017-11-30 10:20:30",
             show_verification_status: false,
             created_via_api: false,
-            uphold_state_token: "UPHOLDSTATETOKEN",
-            uphold_code: nil,
-            uphold_access_parameters: nil,
             uphold_verified: true,
             pending_email: "new_user@company.com",
             supports_https: true,
@@ -277,12 +266,10 @@ class TransformLegacyDataTest < ActiveJob::TestCase
             last_sign_in_at: "2017-11-28 12:10:45",
             phone: "6035551212",
             phone_normalized: "\+16035551212",
-            authentication_token: "asdfg",
+            encrypted_authentication_token: "asdfg",
+            encrypted_authentication_token_iv: "asdfg_iv",
             authentication_token_expires_at: "2017-11-30 10:20:30",
             created_via_api: false,
-            uphold_state_token: "UPHOLDSTATETOKEN",
-            uphold_code: nil,
-            uphold_access_parameters: nil,
             uphold_verified: true,
             pending_email: "new_user@company.com",
             default_currency: "BAT",
@@ -432,7 +419,8 @@ class TransformLegacyDataTest < ActiveJob::TestCase
     LegacyData::LegacyTotpRegistration.new(
         {
             publisher_id: leg_pub.id,
-            secret: "this is a secret",
+            encrypted_secret: "this is a secret",
+            encrypted_secret_iv: "this is a secret_iv",
             last_logged_in_at: "2017-11-30 10:20:30"
         }
     ).save!
@@ -444,7 +432,8 @@ class TransformLegacyDataTest < ActiveJob::TestCase
       publisher = Publisher.find_by(email: "user@company.com")
 
       registration = publisher.totp_registration
-      assert_equal "this is a secret", registration.secret
+      assert_equal "this is a secret", registration.encrypted_secret
+      assert_equal "this is a secret_iv", registration.encrypted_secret_iv
       assert_equal Time.zone.parse("2017-11-30 10:20:30"), registration.last_logged_in_at
     end
   end
@@ -456,7 +445,8 @@ class TransformLegacyDataTest < ActiveJob::TestCase
     LegacyData::LegacyTotpRegistration.new(
         {
             publisher_id: leg_pub.id,
-            secret: "this is a secret",
+            encrypted_secret: "this is a secret",
+            encrypted_secret_iv: "this is a secret_iv",
             last_logged_in_at: "2017-11-30 10:20:30"
         }
     ).save!
@@ -467,7 +457,8 @@ class TransformLegacyDataTest < ActiveJob::TestCase
     LegacyData::LegacyTotpRegistration.new(
         {
             publisher_id: leg_pub.id,
-            secret: "this is secret two",
+            encrypted_secret: "this is secret two",
+            encrypted_secret_iv: "this is secret two_iv",
             last_logged_in_at: "2017-12-30 10:20:30"
         }
     ).save!

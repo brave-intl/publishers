@@ -1,9 +1,8 @@
-require "legacy_data"
-
 namespace :publishers do
   desc "Import legacy publishers"
   task :transform_legacy_data, [:commit] => [:environment] do |t, args|
 
+    require "legacy_data"
     extend LegacyData
 
     unless args[:commit]
@@ -28,7 +27,8 @@ namespace :publishers do
       end
 
       params = {
-          secret: totp_registration.secret,
+          encrypted_secret: totp_registration.encrypted_secret,
+          encrypted_secret_iv: totp_registration.encrypted_secret_iv,
           publisher_id: owner.id,
           last_logged_in_at: totp_registration.last_logged_in_at,
           created_at: totp_registration.created_at
@@ -163,8 +163,8 @@ namespace :publishers do
             phone: owner.phone || legacy_publisher.phone,
             created_via_api: owner.created_via_api || legacy_publisher.created_via_api,
             default_currency: owner.default_currency || legacy_publisher.default_currency,
-            uphold_state_token: owner.uphold_state_token || legacy_publisher.uphold_state_token,
             uphold_verified: owner.uphold_verified || legacy_publisher.uphold_verified,
+            uphold_updated_at: owner.uphold_updated_at || legacy_publisher.uphold_updated_at,
             created_at: legacy_publisher.created_at,
             visible: owner.visible && legacy_publisher.show_verification_status
         }
