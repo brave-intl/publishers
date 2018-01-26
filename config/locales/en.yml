@@ -236,6 +236,95 @@ en:
         note: You will need to authenticate with Google to demonstrate that you own the channel.
     contact_info:
       heading: Contact Information
+    add_channel: "Add Channel"
+    add_channel_cta: "Add a website or YouTube channel to see how much your fans on Brave have contributed so far."
+    app_title: "Brave Payments"
+    authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
+    balance_error: "Unavailable"
+    balance_pending: "CURRENT CONTRIBUTION BALANCE"
+    balance_pending_approximate: "Approximately %{amount} %{code}"
+    contact_person: "Contact person"
+    contact: "Contact"
+    contact_name_placeholder: "First and last name"
+    resend_confirmation_email_done: "The confirmation email has been resent."
+    dashboard: "Dashboard"
+    dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
+    dashboard_uphold_header: "Your Uphold Wallet"
+    dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
+    dashboard_list_in_verified_publishers: "Brave Verified Publishers"
+    dashboard_channel_added: "added %{date}"
+    dashboard_channel_one_more_step: "One more step to complete..."
+    dashboard_channel_lets_finish: "Let's Finish"
+    dashboard_channel_remove_verified_channel: "Remove Channel"
+    dashboard_channel_remove_unverified_channel: "Remove"
+    dashboard_channel_verified: "Verified"
+    current_deposit_currency: "Current deposit currency: BAT to "
+    edit_contact: "Edit Contact"
+    uphold_check_balance: "Check Balance"
+    email_confirmed: "Your updated email address %{email} has been confirmed."
+    log_out: "Log out"
+    login_link_expired_title: "Login Link Expired"
+    login_link_expired_message: "Login link access expires after 30 minutes and can only be used once"
+    login_link_expired_button: "Send me a new link"
+    login_link_unverified_message: "Your login link has expired. Please send yourself another one."
+    login_session_expired: "Your session has expired.  Please log in again."
+    new: "Contact Information"
+    enter_your_email: "Enter your email"
+    new_auth_token_button: "Email me a link to log in"
+    new_auth_token_email_html: |
+      Email Address <span class="optional">(for unverified domains)</span>
+    new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
+    new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
+    new_channel: "+ Add Channel"
+    not_verified: "Unverified"
+    statements: "Statements"
+    statement_download: "Download"
+    statement_delayed: "Delayed"
+    verified_phone_html: |
+      Phone Number <span class="optional">(optional)</span>
+    phone_number_validation: "Phone numbers should only include numbers, dashes, periods, plus (+), and/or parentheses."
+    status_uphold_processing: "Your Uphold wallet is being connected to your account.  If this takes more than a few minutes, please reconnect with Uphold."
+    status_uphold_processing_timeout: "We are having trouble connecting to your Uphold wallet. Please reconnect to Uphold."
+    status_unverified: "Your account has not been verified"
+    uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
+    uphold_status_access_parameters_acquired: "Connecting your Uphold account."
+    uphold_status_code_acquired: "A problem was experienced connecting your Uphold account."
+    uphold_status_unconnected: "Not connected to Uphold."
+    verified: "Verified"
+    verified_publisher_connect_to_uphold: "You need to create a wallet with Uphold to receive contributions from Brave Payments."
+    verified_publisher_reconnect_to_uphold: "Uh oh! Connecting to Uphold has been denied. In order to deposit your contributions accrued we need you to reconnect to your Uphold wallet."
+    create_uphold_wallet: "Create Uphold Wallet"
+    reconnect_to_uphold: "Reconnect to Uphold"
+    email_verification_required: "To continue please confirm your email address."
+    verification_required: "To continue please confirm your email address and name."
+    verification_uphold_error: "There was a problem connecting with Uphold. Please try again."
+    verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
+    verify_button: "Verify"
+    complete_signup_welcome: "One last thing..."
+    complete_signup_leadin: "Finish signing up by entering below."
+    complete_signup_tos_html: "By clicking 'Sign Up', you're agreeing to our %{tos_link}"
+    complete_signup_submit: "Sign Up"
+    pub_type_welcome: "Add Channel"
+    pub_type_lets_start: "Let's start with choosing where you're publishing your content."
+    pub_type_site_operator: "SITE OPERATOR"
+    pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
+    pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
+    pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
+    pub_type_site_individual_creator_note_html: "You will need to authenticate with Google to demonstrate that you own the channel."
+    channel_taken_modal:
+      title: "Channel taken"
+      leadin: "The following %{channel_type} has already been added to a different account."
+      registration_date: "Date"
+      registered_by: "Added by"
+      default_registerer: "A channel manager"
+      contact_support_html: "Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error."
+      ok: "OK"
+    channel_taken_message_with_registration_noscript_html: |
+      The %{channel_type} "%{channel_title}" was added and verified by %{channel_registered_by} on %{channel_registration_date}.
+      Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+    channel_taken_message_without_registration_noscript_html: |
+      The %{channel_type} "%{channel_title}" was previously added and verified by another user.
+      Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
     create:
       missing_email: We seem to be missing some info. Please make sure you provided an email address.
       invalid_email: There was an unexpected error creating your account. Please make sure you have provided a full email address.
@@ -455,11 +544,15 @@ en:
       subject: "Limited Time Offer: Free tokens for your referral!"
       body: "Getting more fans on Brave means more income for you. And we'd like to chip in for that effort. We are giving away bonus tokens for referring your fans to Brave. Find out more and activate this promo!"
       button: "Activate Promo"
-    promo_activated_2018q1:
+    promo_activated_2018q1_verified:
       subject: "Your Referral Promo is Active"
       body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral links we created for your channel, and get your fans to support you!"
       body_two: "Bonus will be paid out at the end of the promo.  Check on the status of your qualified referrals on your dashboard."
       body_three: "We wish you good luck!"
+    promo_activated_2018q1_unverified:
+      subject: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT."
+      cta: "Login to Add Channel"
+      body: "Please verify a channel to participate in the promo"
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.

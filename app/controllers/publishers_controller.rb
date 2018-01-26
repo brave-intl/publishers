@@ -359,7 +359,7 @@ class PublishersController < ApplicationController
   # If an active session is present require users to explicitly sign out
   def require_unauthenticated_publisher
     return if !current_publisher
-    redirect_to(publisher_next_step_path(current_publisher), alert: t(".already_logged_in"))
+    redirect_to(publisher_next_step_path(current_publisher))
   end
 
   def require_verified_email

@@ -19,7 +19,9 @@ class PromoRegistrationsController < ApplicationController
     if @publisher_has_verified_channel
       PromoRegistrar.new(publisher: @publisher).perform
       @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
-      PromoMailer.promo_activated_2018q1(@publisher, @promo_enabled_channels).deliver
+      PromoMailer.promo_activated_2018q1_verified(@publisher, @promo_enabled_channels).deliver
+    else
+      PromoMailer.promo_activated_2018q1_unverified(@publisher).deliver
     end
   end
 

@@ -27,7 +27,7 @@ class PromoMailerTest < ActionMailer::TestCase
     assert_email_body_matches(matcher: expected_promo_auth_url, email: email)
   end
 
-  test "promo_activated_2018q1" do
+  test "promo_activated_2018q1_verified" do
     publisher = publishers(:default)
     channel = publisher.channels.first
 
@@ -36,7 +36,7 @@ class PromoMailerTest < ActionMailer::TestCase
     promo_registration.save!
     promo_enabled_channels = publisher.channels.joins(:promo_registration)
 
-    email = PromoMailer.promo_activated_2018q1(publisher, promo_enabled_channels)
+    email = PromoMailer.promo_activated_2018q1_verified(publisher, promo_enabled_channels)
 
     # Send the email, then test that it got queued
     assert_emails 1 do
@@ -49,5 +49,18 @@ class PromoMailerTest < ActionMailer::TestCase
     referral_link = generate_referral_link(referral_code)
     
     assert_email_body_matches(matcher: referral_link, email: email)
+  end
+
+  test "promo_activated_2018q1_unverified" do
+    publisher = publishers(:completed)
+    email = PromoMailer.promo_activated_2018q1_unverified(publisher)
+
+    # Send the email, then test that it got queued
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal ['brave-publishers@localhost.local'], email.from
+    assert_equal [publisher.email], email.to
   end
 end
