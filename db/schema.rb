@@ -28,6 +28,18 @@ ActiveRecord::Schema.define(version: 20180118022455) do
     t.index ["publisher_id"], name: "index_channels_on_publisher_id", using: :btree
   end
 
+  create_table "legacy_publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "publisher_id",          null: false
+    t.string   "period"
+    t.string   "source_url"
+    t.text     "encrypted_contents"
+    t.string   "encrypted_contents_iv"
+    t.datetime "expires_at"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.index ["publisher_id"], name: "index_legacy_publisher_statements_on_publisher_id", using: :btree
+  end
+
   create_table "legacy_publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "brave_publisher_id"
     t.string   "name"
@@ -73,6 +85,29 @@ ActiveRecord::Schema.define(version: 20180118022455) do
     t.index ["verification_token"], name: "index_legacy_publishers_on_verification_token", using: :btree
     t.index ["verified"], name: "index_legacy_publishers_on_verified", using: :btree
     t.index ["youtube_channel_id"], name: "index_legacy_publishers_on_youtube_channel_id", using: :btree
+  end
+
+  create_table "legacy_totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "encrypted_secret"
+    t.string   "encrypted_secret_iv"
+    t.uuid     "publisher_id"
+    t.datetime "last_logged_in_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["publisher_id"], name: "index_legacy_totp_registrations_on_publisher_id", using: :btree
+  end
+
+  create_table "legacy_u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text     "certificate"
+    t.string   "key_handle"
+    t.string   "public_key"
+    t.integer  "counter",      null: false
+    t.string   "name"
+    t.uuid     "publisher_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["key_handle"], name: "index_legacy_u2f_registrations_on_key_handle", using: :btree
+    t.index ["publisher_id"], name: "index_legacy_u2f_registrations_on_publisher_id", using: :btree
   end
 
   create_table "legacy_youtube_channels", id: :string, force: :cascade do |t|
