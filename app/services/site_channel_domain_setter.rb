@@ -15,13 +15,11 @@ class SiteChannelDomainSetter < BaseService
   def normalize_domain
     require "faraday"
 
-    brave_publisher_id = SiteChannelDomainNormalizer.new(domain: channel_details.brave_publisher_id_unnormalized).perform
+    channel_details.brave_publisher_id = SiteChannelDomainNormalizer.new(domain: channel_details.brave_publisher_id_unnormalized).perform
 
-    if SiteChannelDetails.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.verified": true).any?
-      channel_details.brave_publisher_id = brave_publisher_id
+    if SiteChannelDetails.joins(:channel).where(brave_publisher_id: channel_details.brave_publisher_id, "channels.verified": true).any?
       channel_details.brave_publisher_id_error_code = :taken
     else
-      channel_details.brave_publisher_id = brave_publisher_id
       channel_details.brave_publisher_id_error_code = nil
       channel_details.brave_publisher_id_unnormalized = nil
     end

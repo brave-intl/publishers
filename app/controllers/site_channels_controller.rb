@@ -46,29 +46,31 @@ class SiteChannelsController < ApplicationController
   end
 
   def create
+    channel_details = SiteChannelDetails.new(channel_update_unverified_params)
+    SiteChannelDomainSetter.new(channel_details: channel_details).perform
+    if channel_details.brave_publisher_id_error_code == 'taken'
+      brave_publisher_id = channel_details.brave_publisher_id
+      existing_channel_details = SiteChannelDetails.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.verified": true).first
+      redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel_details.channel.id }
+      return
+    end
+
     @current_channel = Channel.new(publisher: current_publisher)
-    current_channel.details = SiteChannelDetails.new(channel_update_unverified_params)
+    current_channel.details = channel_details
 
-    # ToDo: Make async again
-    # SetSiteChannelDomainJob.new(channel_id: current_channel.id).perform
-
-    SiteChannelDomainSetter.new(channel: current_channel).perform
-    current_channel.details.brave_publisher_id_unnormalized = nil
-
-    respond_to do |format|
-      if current_channel.save
-        # once the channel has been saved send it to eyeshade
-        begin
-          PublisherChannelSetter.new(publisher: current_publisher).perform
-        rescue => e
-          require "sentry-raven"
-          Raven.capture_exception(e)
-        end
-
-        format.html { redirect_to(channel_next_step_path(current_channel), notice: t("channel.channel_created")) }
-      else
-        format.html { render :action => "new" }
+    if current_channel.save
+      # once the channel has been saved send it to eyeshade
+      begin
+        PublisherChannelSetter.new(publisher: current_publisher).perform
+      rescue => e
+        require "sentry-raven"
+        Raven.capture_exception(e)
       end
+
+      redirect_to(channel_next_step_path(current_channel), notice: t("channel.channel_created"))
+    else
+      @channel = @current_channel
+      render :action => "new"
     end
   end
 

@@ -49,45 +49,41 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_template :verification_background
   end
 
-  # ToDo:
-  # test "can't create verified Site Channel with an existing verified Site Chanel with the same brave_publisher_id" do
-  #   publisher = publishers(:verified)
-  #
-  #   sign_in publishers(:verified)
-  #
-  #   create_params = {
-  #       channel: {
-  #           details_attributes: {
-  #             brave_publisher_id_unnormalized: "verified.org"
-  #           }
-  #       }
-  #   }
-  #
-  #   perform_enqueued_jobs do
-  #     post site_channels_url, params: create_params
-  #   end
-  #
-  #   assert_select('div.notifications') do |element|
-  #     assert_match("Another person has already verified that website", element.text)
-  #   end
-  #
-  #   # Now retry with a unique domain
-  #
-  #   create_params = {
-  #       channel: {
-  #           details_attributes: {
-  #               brave_publisher_id_unnormalized: "unique.org"
-  #           }
-  #       }
-  #   }
-  #
-  #   perform_enqueued_jobs do
-  #     post site_channels_url, params: create_params
-  #   end
-  #
-  #   assert_redirected_to verification_choose_method_publishers_path
-  # end
+  test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
 
+      publisher = publishers(:verified)
+
+      sign_in publishers(:verified)
+
+      create_params = {
+          channel: {
+              details_attributes: {
+                brave_publisher_id_unnormalized: "verified.org"
+              }
+          }
+      }
+
+      perform_enqueued_jobs do
+
+      end
+      assert_difference("Channel.count", 0) do
+        post site_channels_url, params: create_params
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('div#channel_taken_modal') do |element|
+        assert_match("verified.org", element.text)
+      end
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
+  end
+
+  # ToDo:
   # test "a site channel's domain can be updated via an ajax patch" do
   #   publisher = publishers(:verified)
   #
