@@ -22,7 +22,7 @@ module ErrorHandler
       if publisher = introspect_publisher
         Raven.user_context(
           publisher_id: publisher.id,
-          brave_publisher_id: publisher.brave_publisher_id
+          email: publisher.email
         )
       end
       Raven.capture_exception(exception)

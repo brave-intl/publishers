@@ -45,6 +45,8 @@ class Publisher < ApplicationRecord
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
+  scope :email_verified, -> { where.not(email: nil) }
+
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
