@@ -33,14 +33,14 @@ en:
         name: "Name Security Key"
     errors:
       models:
-        publisher:
+        site_channel_details:
           attributes:
             brave_publisher_id:
               api_error_cant_normalize: "Can't be normalized because of an API error"
               # TODO: Configurable email here
-              exclusion_list_error: "Is on the Brave Publisher website exclusion list. If you have questions please contact support+publishers@basicattentiontoken.org."
+              exclusion_list_error: "Is on the Brave Publisher website exclusion list. Contact support+publishers@basicattentiontoken.org for additional help."
               # TODO: Configurable email here
-              taken: "Another person has already verified that website. If you have questions please contact support+publishers@basicattentiontoken.org."
+              taken: "The domain you entered is already verified and added to a different account. Contact support+publishers@basicattentiontoken.org for additional help."
               invalid_uri: "Invalid domain URI"
     models:
       publisher: "Publisher"
@@ -127,16 +127,19 @@ en:
     pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
     pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
     pub_type_site_individual_creator_note_html: "You will need to authenticate with Google to demonstrate that you own the channel."
-    youtube_channel_taken_dialog:
-      title: "Channel already registered!"
-      leadin: "The following YouTube channel has already been registered."
+    channel_taken_modal:
+      title: "Unable to add channel!"
+      leadin: "The following %{channel_type} has already been added and verified."
       registration_date: "Date"
       registered_by: "Registered by"
       default_registerer: "A channel manager"
       contact_support_html: "Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error."
       ok: "OK"
-    youtube_channel_taken_noscript_html: |
-      The YouTube channel "%{youtube_channel_title}" was registered by %{youtube_channel_registered_by} on %{youtube_channel_registration_date}.
+    channel_taken_message_with_registration_noscript_html: |
+      The %{channel_type} "%{channel_title}" was added and verified by %{channel_registered_by} on %{channel_registration_date}.
+      Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+    channel_taken_message_without_registration_noscript_html: |
+      The %{channel_type} "%{channel_title}" was previously added and verified by another user.
       Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
     create:
       missing_email: We seem to be missing some info. Please make sure you provided an email address.
@@ -547,7 +550,6 @@ en:
   youtube:
     authenticate_with_youtube: "Authenticate with YouTube"
     channel_not_found: "Channel not found"
-    channel_already_taken: "Channel already taken"
     channel_already_registered: "You have already registered this YouTube channel."
     oauth_error: "Error connecting to YouTube"
   channel:
@@ -558,3 +560,6 @@ en:
     channel_created: "Channel created."
     please_log_in_and_retry: "Please log in to Brave Payments and retry the operation"
     channel_removed: "Channel removed."
+    type:
+      youtube: "YouTube channel"
+      website: "Web site"

@@ -23,7 +23,7 @@ module Publishers
           redirect_to home_publishers_path, notice: t("youtube.channel_already_registered")
           return
         else
-          redirect_to home_publishers_path, notice: t("youtube.channel_already_taken")
+          redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
           return
         end
       end

@@ -1,0 +1,69 @@
+- channel = Channel.find(channel_id)
+- support_email = Rails.application.secrets[:support_email]
+- show_registration = show_taken_channel_registration?(channel)
+- if show_registration
+  - channel_registered_by = channel.publisher.name.present? ? channel.publisher.name : t("publishers.channel_taken_modal.default_registerer")
+  - channel_registration_date = channel.created_at.to_date
+
+noscript
+  div.noscript-warning
+    - if show_registration
+      = t("publishers.channel_taken_message_with_registration_noscript_html",
+         {support_email: support_email,
+          channel_type: channel_type(channel),
+          channel_title: channel.publication_title,
+          channel_registered_by: channel_registered_by,
+          channel_registration_date: channel_registration_date})
+    - else
+      = t("publishers.channel_taken_message_without_registration_noscript_html",
+         {support_email: support_email,
+          channel_type: channel_type(channel),
+          channel_title: channel.publication_title})
+javascript:
+ (function() {
+   function showChannelTakenModal() {
+     var modal = document.getElementById('channel_taken_modal');
+     modal.classList.add('md-show');
+
+     var closeModal = document.getElementById('close_channel_taken_modal');
+     closeModal.addEventListener('click', function() {
+       hideChannelTakenModal();
+     });
+
+     document.addEventListener('keyup', function(e) {
+       if (e.keyCode === 27) {
+         hideChannelTakenModal();
+       }
+     });
+   }
+
+   function hideChannelTakenModal() {
+     var modal = document.getElementById('channel_taken_modal');
+     modal.classList.remove('md-show');
+   }
+
+   window.addEventListener('DOMContentLoaded', function() {
+     showChannelTakenModal();
+   });
+ })();
+
+.md-container#channel_taken_modal
+ .md-content
+   h1= t("publishers.channel_taken_modal.title")
+   p= t("publishers.channel_taken_modal.leadin", channel_type: channel_type(channel))
+   .taken-channel
+     .summary
+       img src=channel_thumbnail_url(channel)
+       .title= channel.publication_title
+     - if show_registration
+       .registration-date
+         label= t("publishers.channel_taken_modal.registration_date") + ":"
+         .value= channel_registration_date
+       .registered-by
+         label= t("publishers.channel_taken_modal.registered_by") + ":"
+         .value= channel_registered_by
+   p= t("publishers.channel_taken_modal.contact_support_html", {support_email: support_email})
+
+   .panel-section
+     a.btn.btn-primary#close_channel_taken_modal= t("publishers.channel_taken_modal.ok")
+.md-overlay

@@ -306,6 +306,25 @@ module PublishersHelper
     publisher.verified?
   end
 
+  def channel_type(channel)
+    case channel.details
+    when SiteChannelDetails
+      t("channel.type.website")
+
+    when YoutubeChannelDetails
+      t("channel.type.youtube")
+    end
+  end
+
+  def show_taken_channel_registration?(channel)
+    case channel.details
+    when YoutubeChannelDetails
+      true
+    else
+      false
+    end
+  end
+
   def channel_edit_link(channel)
     case channel.details
       when SiteChannelDetails

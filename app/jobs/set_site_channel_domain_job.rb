@@ -5,7 +5,7 @@ class SetSiteChannelDomainJob < ApplicationJob
     channel = Channel.find(channel_id)
 
     if channel && channel.details.brave_publisher_id_unnormalized
-      SiteChannelDomainSetter.new(channel: channel).perform
+      SiteChannelDomainSetter.new(channel_details: channel.details).perform
       channel.details.brave_publisher_id_unnormalized = nil
       channel.save!
     end

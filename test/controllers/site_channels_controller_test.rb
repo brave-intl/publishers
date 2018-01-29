@@ -37,57 +37,58 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create a VerifySiteChannel job to verify and render verification_background page" do
-    publisher = publishers(:global_media_group)
-    channel = channels(:global_inprocess)
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
 
-    sign_in publishers(:global_media_group)
+      publisher = publishers(:global_media_group)
+      channel = channels(:global_inprocess)
 
-    assert_enqueued_with(job: VerifySiteChannel) do
-      patch(verify_site_channel_path(channel.id))
+      sign_in publishers(:global_media_group)
+
+      assert_enqueued_with(job: VerifySiteChannel) do
+        patch(verify_site_channel_path(channel.id))
+      end
+
+      assert_template :verification_background
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
+  end
 
-    assert_template :verification_background
+  test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
+
+      publisher = publishers(:verified)
+
+      sign_in publishers(:verified)
+
+      create_params = {
+          channel: {
+              details_attributes: {
+                brave_publisher_id_unnormalized: "verified.org"
+              }
+          }
+      }
+
+      perform_enqueued_jobs do
+
+      end
+      assert_difference("Channel.count", 0) do
+        post site_channels_url, params: create_params
+      end
+
+      assert_select('div#flash') do |element|
+        assert_match("The domain you entered is already verified and added to a different account", element.text)
+      end
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
   end
 
   # ToDo:
-  # test "can't create verified Site Channel with an existing verified Site Chanel with the same brave_publisher_id" do
-  #   publisher = publishers(:verified)
-  #
-  #   sign_in publishers(:verified)
-  #
-  #   create_params = {
-  #       channel: {
-  #           details_attributes: {
-  #             brave_publisher_id_unnormalized: "verified.org"
-  #           }
-  #       }
-  #   }
-  #
-  #   perform_enqueued_jobs do
-  #     post site_channels_url, params: create_params
-  #   end
-  #
-  #   assert_select('div.notifications') do |element|
-  #     assert_match("Another person has already verified that website", element.text)
-  #   end
-  #
-  #   # Now retry with a unique domain
-  #
-  #   create_params = {
-  #       channel: {
-  #           details_attributes: {
-  #               brave_publisher_id_unnormalized: "unique.org"
-  #           }
-  #       }
-  #   }
-  #
-  #   perform_enqueued_jobs do
-  #     post site_channels_url, params: create_params
-  #   end
-  #
-  #   assert_redirected_to verification_choose_method_publishers_path
-  # end
-
   # test "a site channel's domain can be updated via an ajax patch" do
   #   publisher = publishers(:verified)
   #
