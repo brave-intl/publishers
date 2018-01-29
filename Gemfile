@@ -25,7 +25,7 @@ gem "faraday", "~> 0.9.2", require: false
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.8.1"
+gem "nokogiri", "~> 1.8.2"
 
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
