@@ -23,10 +23,6 @@ $braveFailure: #e2052a;
 $braveFailure-Light: #ff5874;
 $braveFailure-Ghost: #ff9aab;
 
-$theme-colors: (
-  "brave-success": $braveSuccess-Light,
-);
-
 $braveInfo-Background: #eefbfd;
 $braveInfo-Foreground: #00bcd6;
 $braveInfo-Border: #e7ebee;
@@ -44,6 +40,9 @@ $braveGray-7: #cdd1d5;
 $braveGray-8: #dbdfe3;
 $braveGray-9: #e7ebee;
 $braveGray-10: #f7f8f9;
+
+$braveWarning-Background: #FFF8D2;
+$braveWarning-Foreground: $braveGray-1;
 
 $braveText-1: $braveGray-1;
 $braveText-2: $braveGray-2;

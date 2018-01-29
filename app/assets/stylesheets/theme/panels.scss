@@ -48,6 +48,20 @@ $brave-panels-borderRadius: 8px;
     }
     &--alert {
       padding: $spacer $spacer $spacer;
+      background: $braveError-Background;
+      color: $braveError-Foreground;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+    }
+    &--warning {
+      padding: $spacer $spacer $spacer;
+      background: $braveWarning-Background;
+      color: $braveWarning-Foreground;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+    }
+    &--notice {
+      padding: $spacer $spacer $spacer;
       background: $braveInfo-Background;
       color: $braveInfo-Foreground;
       border-bottom: 1px solid $braveInfo-Border;
@@ -56,20 +70,6 @@ $brave-panels-borderRadius: 8px;
       a {
         text-decoration: underline;
       }
-    }
-    &--warning {
-      padding: $spacer $spacer $spacer;
-      background: $braveError-Background;
-      color: $braveError-Foreground;
-      border-top-left-radius: $brave-panels-borderRadius;
-      border-top-right-radius: $brave-panels-borderRadius;
-    }
-    &--notice {
-      padding: $spacer $spacer $spacer;
-      background: theme-color-level('brave-success', -10);
-      color: theme-color-level('brave-success', 6);
-      border-top-left-radius: $brave-panels-borderRadius;
-      border-top-right-radius: $brave-panels-borderRadius;
     }
     > form, > div {
       width: 100%;
@@ -97,11 +97,17 @@ $brave-panels-borderRadius: 8px;
     flex-wrap: nowrap;
   }
   &--icon {
-    flex: 0 0 58px;
+    flex: 0 0 0;
     align-self: center;
+    margin: 0 14px 0 6px;
+    line-height: 0;
+    @include media-breakpoint-down(xs) {
+      display: none;
+    }
   }
   &--text {
     text-align: left;
     flex: 1 1 100%;
+    margin: auto 0;
   }
 }

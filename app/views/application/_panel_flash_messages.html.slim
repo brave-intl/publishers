@@ -15,7 +15,7 @@
     // Intentionally left blank to disable application flash
 
 - [:alert, :notice, :warning].each do |name|
-  - {alert: 'icon_circled_i', warning: 'icon_circled_x'}[name].tap do |icon_partial|
+  - {alert: 'icon_circled_x', notice: 'icon_circled_i', warning: 'icon_circled_bang_warning'}[name].tap do |icon_partial|
     - if flash[name]
       .single-panel--content.icon-and-text--wrapper class="single-panel--content--#{name}"
         - if icon_partial
