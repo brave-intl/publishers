@@ -12,7 +12,6 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
     assert response_json[1].has_key?("owner_identifier")
     assert response_json[1].has_key?("email")
     assert response_json[1].has_key?("name")
-    assert response_json[1].has_key?("phone")
     assert response_json[1].has_key?("phone_normalized")
     assert response_json[1].has_key?("channel_identifiers")
     assert response_json[1].has_key?("show_verification_status")
