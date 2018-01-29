@@ -29,7 +29,7 @@
 
   .promo--item-container {
     color: $bravePromo-DarkBlue;
-    // padding-bottom: 12px;
+    padding-bottom: 10px;
   }
 
   .promo--item-label {
@@ -37,6 +37,10 @@
     text-transform: uppercase;
     font-weight: 600;
     color: $bravePromo-LightBlue;
+
+    &-link-name {
+      font-size: 12px;
+    }
   }
 
   .promo--bat-patch-adjacent {
@@ -91,23 +95,34 @@
   }
 
   .promo--activate-button {
-      background: #03375D;
-      &:hover, &focus {
-        background: #00223B;
-      }
-      font-size: 11px;
-      font-weight: 600;
-      width: 100%;
-      display: inline-block;
-      border: none;
+    color: white;
+    background: #03375D;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    display: inline-block;
+    border: none;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    &:hover, &focus {
+      background-color: #00223B;
+    }
   }
 
   &-over {
     background-image: url(asset-path("bat-mercury-patch-jr-gray.png"));
   }
 
+  @include media-breakpoint-down(sm) {
+    background-image: none;
+
+    .promo--bat-patch-adjacent {
+      padding-right: 0px
+    }
+  }
+
   &-activate {
-    padding: 110px 80px 20px 80px;
+    padding: 110px 0px 80px 0px;
     color: white;
 
     background-image: url(asset-path("bat-logo-no-shadow@1.png"));
@@ -115,6 +130,13 @@
     background-repeat: no-repeat;
     background-position: top 40px center;
     background-size:  48px auto;
+    border: solid;
+    border-width: 1px;
+    border-color: rgba(47,48,50,0.15);
+
+    @include media-breakpoint-down(sm) {
+      background-image: url(asset-path("bat-logo-no-shadow@1.png"));
+    }
 
     .promo--title {
       color: white;
@@ -126,11 +148,12 @@
 
       &-alternative {
         color: #BCF0F7;
+        margin-bottom: 35px;
       }
     }
 
     .promo--activate-body-container {
-      margin: 0px 100px;
+      margin: 0px 25%;
     }
 
     .promo--body-text {
@@ -144,6 +167,7 @@
         line-height: 20px;
         letter-spacing: 1px;
         font-size: 15px;
+        padding-bottom: 15px;
       }
     }
 

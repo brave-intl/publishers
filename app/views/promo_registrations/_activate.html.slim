@@ -8,5 +8,4 @@
     = form_for @publisher, {method: :post, url: promo_registrations_path} do |f|
       = f.hidden_field(:email, :value => params[:promo_token])
       .text-center
-        = f.submit(t("promo.activate.button").upcase, class: "btn btn-primary promo--activate-button")
-  p.promo--body-text = t("promo.activate.footer")
+        = f.submit(t("promo.activate.button").upcase, class: "btn promo--activate-button")

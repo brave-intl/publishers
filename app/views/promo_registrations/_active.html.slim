@@ -12,7 +12,7 @@
       span = link_to(t("promo.active.description_two"), home_publishers_path)
       span = t("promo.active.description_three")
   - @promo_enabled_channels.each do |channel|
-    .promo--item-label = "#{channel.channel_title}"
+    .promo--item-label.promo--item-label-link-name = "#{channel.publication_title}"
     .promo--referral-link-container
       span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = "#{t("promo.base_referral_link")}/#{channel.promo_registration.referral_code.downcase}"
       button.copy-button.promo--copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")

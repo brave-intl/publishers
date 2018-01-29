@@ -16,7 +16,6 @@ module PromosHelper
     referral_code
   end
 
-  # TO DO: Use this in all views/emails that display these codes
   def generate_referral_link(referral_code)
     "#{I18n.t("promo.base_referral_link")}/#{referral_code.downcase}"
   end
