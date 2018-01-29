@@ -78,12 +78,10 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       end
       assert_difference("Channel.count", 0) do
         post site_channels_url, params: create_params
-        assert_redirected_to home_publishers_path
-        follow_redirect!
       end
 
-      assert_select('div#channel_taken_modal') do |element|
-        assert_match("verified.org", element.text)
+      assert_select('div#flash') do |element|
+        assert_match("The domain you entered is already verified and added to a different account", element.text)
       end
     ensure
       Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline

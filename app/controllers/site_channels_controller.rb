@@ -46,19 +46,11 @@ class SiteChannelsController < ApplicationController
   end
 
   def create
-    channel_details = SiteChannelDetails.new(channel_update_unverified_params)
-    SiteChannelDomainSetter.new(channel_details: channel_details).perform
-    if channel_details.brave_publisher_id_error_code == 'taken'
-      brave_publisher_id = channel_details.brave_publisher_id
-      existing_channel_details = SiteChannelDetails.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.verified": true).first
-      redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel_details.channel.id }
-      return
-    end
-
     @current_channel = Channel.new(publisher: current_publisher)
-    current_channel.details = channel_details
+    @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params)
+    SiteChannelDomainSetter.new(channel_details: @current_channel.details).perform
 
-    if current_channel.save
+    if @current_channel.save
       # once the channel has been saved send it to eyeshade
       begin
         PublisherChannelSetter.new(publisher: current_publisher).perform
@@ -67,7 +59,7 @@ class SiteChannelsController < ApplicationController
         Raven.capture_exception(e)
       end
 
-      redirect_to(channel_next_step_path(current_channel), notice: t("channel.channel_created"))
+      redirect_to(channel_next_step_path(@current_channel), notice: t("channel.channel_created"))
     else
       @channel = @current_channel
       render :action => "new"

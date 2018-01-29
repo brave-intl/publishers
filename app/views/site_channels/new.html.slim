@@ -1,7 +1,7 @@
 - content_for(:navbar_content) do
   = render :partial => 'progress', :locals => {progress: {info: 100, verify: 0, instruction: 0}, publisher: current_publisher}
 
-= render(partial: "model_errors", locals: { record: @channel })
+= render(partial: "model_errors", locals: { record: @channel.details })
 
 .publisher-domain-panel.publisher-panel.col-center
   .publisher-domain-name
