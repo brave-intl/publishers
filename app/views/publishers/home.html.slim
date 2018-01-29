@@ -88,7 +88,7 @@ javascript:
       var pendingContactEmail = document.getElementById('pending_contact_email');
       showPendingContactEmail(pendingContactEmail.innerText);
 
-      var updateContact = document.getElementById('update_contact');
+      var updateContactForm = document.getElementById('update_contact');
       var updateContactName = document.getElementById('update_contact_name');
       var updateContactEmail = document.getElementById('update_contact_email');
       var updateContactPhone = document.getElementById('update_contact_phone');
@@ -107,7 +107,7 @@ javascript:
         updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
         updateContactPhone.value = showContactPhone.innerText;
         showContact.style.display = 'none';
-        updateContact.style.display = 'block';
+        updateContactForm.style.display = 'block';
         editContact.style.display = 'none';
         updateContactName.focus();
         event.preventDefault();
@@ -115,12 +115,12 @@ javascript:
 
       cancelEditContact.addEventListener('click', function(event) {
         showContact.style.display = 'block';
-        updateContact.style.display = 'none';
+        updateContactForm.style.display = 'none';
         editContact.style.display = 'block';
         event.preventDefault();
       }, false);
 
-      updateContact.addEventListener('submit', function(event) {
+      updateContactForm.addEventListener('submit', function(event) {
         event.preventDefault();
         window.submitForm('update_contact', 'PATCH', true)
           .then(function() {
@@ -130,10 +130,17 @@ javascript:
             pendingContactEmail.innerText = updatedEmail;
             showPendingContactEmail(updatedEmail);
 
-            updateContact.style.display = 'none';
+            updateContactForm.style.display = 'none';
             showContact.style.display = 'block';
             editContact.style.display = 'block';
             showContactPhoneSeparator.style.display = (showContactPhone.innerText ? 'inline' : 'none');
+
+            // Re-enable submit button to allow form to be resubmitted
+            var submitButton = updateContactForm.querySelector('input[type=submit][disabled]');
+            if (submitButton) {
+              submitButton.removeAttribute('disabled');
+              submitButton.blur();
+            }
           });
       }, false);
 
