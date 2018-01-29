@@ -137,7 +137,6 @@ group :development, :test do
   gem "minitest-rails-capybara"
   gem "capybara-selenium"
   gem "chromedriver-helper"
-  gem "rails-controller-testing"
 end
 
 group :production, :staging do
