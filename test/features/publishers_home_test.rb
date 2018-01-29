@@ -27,5 +27,17 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
     assert_content page, new_name
     refute_content 'Update'
+
+    # Ensure that form has been reset and can be resubmitted
+
+    click_link('Edit Contact')
+
+    new_name = 'Thomas the Tank Engine'
+    fill_in 'update_contact_name', with: new_name
+
+    click_button('Update')
+
+    assert_content page, new_name
+    refute_content 'Update'
   end
 end
