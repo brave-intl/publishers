@@ -378,15 +378,15 @@ en:
       totp_alternative_link: Use authentication code instead.
       submit_value: Try Again
       unavailable:
-        totp_available: Your browser doesn't support security key, the preferred
-          two-factor authentication method for your account. Your account also
-          has authentication code configured. Please use authentication code
-          or change your browser to Google Chrome to use your security key.
-        heading: Security Key Unsupported
+        totp_available: |
+          Your preferred method of two-factor authentication is security key.
+          But it's not supported by your current browser. Switch to Google
+          Chrome or Opera or login using authentication code below.
+        heading: Security key not supported by your browser
         body_html: |
-          Your browser doesn't support security key, the only two-factor
-          authentication method your account has configured. Please use
-          Google Chrome to authenticate with your security key.
+          Switch to Google Chrome or Opera to log in. We recommend setting up
+          authenticator app as a backup method for two-factor authentication
+          for this situation.
     index:
       u2f-error:
         bad-request: |
