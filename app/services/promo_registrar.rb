@@ -15,10 +15,17 @@ class PromoRegistrar < BaseApiClient
     channels.each do |channel|
       if should_register_channel?(channel)
         referral_code = register_channel(channel)
-        promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, referral_code: referral_code)
-        promo_registration.save!
+        if referral_code.present?
+          promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, referral_code: referral_code)
+          promo_registration.save!
+        end
       end
     end
+  rescue => e
+    require "sentry-raven"
+    Rails.logger.error("PromoRegistrar #perform error: #{e}")
+    Raven.capture_exception("PromoRegistrar #perform error: #{e}")
+    nil
   end
 
   def register_channel(channel)
@@ -26,12 +33,7 @@ class PromoRegistrar < BaseApiClient
     response = connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.body = 
-          {
-            "promo": "#{@promo_id}",
-            "publisher": "#{channel.channel_id}", 
-            "name": "#{channel.channel_id}"
-          }.compact.to_json
+      request.body = request_body(channel)
       request.url("/api/1/promo/publishers")
     end
     referral_code = JSON.parse(response.body)["referral_code"]
@@ -64,7 +66,47 @@ class PromoRegistrar < BaseApiClient
     "Bearer #{Rails.application.secrets[:api_promo_key]}"
   end
 
-  # Register channel if it hasn't been registered, or if registration doesn't have referral code
+  def request_body(channel)
+    case channel.details_type
+    when "YoutubeChannelDetails"
+      return youtube_request_body(channel)
+    when "SiteChannelDetails"
+      return site_request_body(channel)
+    else
+      raise
+    end
+  end
+
+  def youtube_request_body(channel)
+    {
+      "owner_id": @publisher.id,
+      "promo": @promo_id,
+      "channel": channel.channel_id, 
+      "title": channel.publication_title,
+      "channel_type": "youtube",
+      "thumbnail_url": channel.details.thumbnail_url,
+      "description": make_empty_string_nil(channel.details.description)
+    }.to_json
+  end
+
+  def site_request_body(channel)
+    {
+      "owner_id": @publisher.id,
+      "promo": @promo_id,
+      "channel": channel.channel_id, 
+      "title": channel.publication_title,
+      "channel_type": "website",
+    }.to_json
+  end
+
+  def make_empty_string_nil(param)
+    if param == ""
+      return nil
+    else
+      return param
+    end
+  end
+
   def should_register_channel?(channel)
     channel.promo_registration.blank?
   end

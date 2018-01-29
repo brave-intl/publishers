@@ -18,7 +18,7 @@ class PromoRegistrationGetter < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/1/promo/publishers?publisher=#{@channel.channel_id}")
+      request.url("/api/1/promo/publishers?channel=#{@channel.channel_id}")
     end
     registrations =  JSON.parse(response.body)
     referral_code = referral_code_for_promo_id(registrations)
