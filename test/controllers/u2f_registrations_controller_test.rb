@@ -54,6 +54,35 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
+    refute @request.flash[:modal_partial]
+  end
+
+  test "U2F registration creation after prompt" do
+    sign_in publishers(:verified)
+
+    mock_u2f_registration = stub(
+      certificate: "cert",
+      key_handle: "handle",
+      public_key: "sdf",
+      counter: 1
+    )
+    U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(:register! => mock_u2f_registration))
+
+    get prompt_two_factor_registrations_path
+
+    assert_difference("U2fRegistration.count") do
+      post u2f_registrations_path, params: {
+        u2f_registration: { name: "Name" },
+        u2f_response: canned_u2f_response
+      }
+    end
+
+    assert_redirected_to home_publishers_path, "redirects to dashboard"
+    assert @request.flash[:modal_partial]
+
+    follow_redirect!
+
+    assert_select '#js-open-modal-on-load'
   end
 
   test "delete removes registered key" do

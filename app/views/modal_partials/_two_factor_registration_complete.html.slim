@@ -1,0 +1,10 @@
+.col.col-center.col-xs-12.col-sm-8.col-md-8.col-lg-9.text-center
+  = render "locked_green_svg"
+
+  br
+  br
+
+  h3 = t ".headline"
+  p = t ".body"
+
+  = link_to t("shared.close"), "#", class: "js-deny btn btn-primary btn-wide"

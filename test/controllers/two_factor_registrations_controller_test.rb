@@ -60,5 +60,7 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "a[href=?]", home_publishers_path
     assert_select "a[href=?]", two_factor_registrations_path
+
+    assert @request.session[:prompted_for_two_factor_registration_at_signup]
   end
 end
