@@ -5,13 +5,21 @@ module Publishers
     class RedirectError < StandardError; end
     class ConnectionFailedError < StandardError; end
 
+    # Based on Net::HTTP::get_response
+    def get_response(uri, &block)
+      Net::HTTP.start(uri.hostname, uri.port,
+                      use_ssl: uri.scheme == "https",
+                      open_timeout: 8) do |http|
+        return http.request_get(uri, &block)
+      end
+    end
+
     # Fetch URI, following redirects per options
     def fetch(uri:, limit: 10, follow_all_redirects: false, follow_local_redirects: true)
       raise RedirectError.new('too many HTTP redirects') if limit == 0
 
       begin
-        response = Net::HTTP.get_response(uri)
-
+        response = get_response(uri)
         case response
           when Net::HTTPSuccess then
             response
