@@ -54,7 +54,7 @@ html
       .container
         .menu-container
           = link_to(root_path, class: "home-logo pull-left") do
-            = image_tag("brave_logo_horz.svg", class: "brave-logo pull-left", height: 32)
+            = render("application/logo_wordmark_svg")
 
     .content
       = yield
