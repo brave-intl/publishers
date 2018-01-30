@@ -230,6 +230,7 @@ javascript:
               document.getElementById('uphold_connect').style.display = 'none';
               var upholdDashboard = document.getElementById('uphold_dashboard');
               upholdDashboard.style.display = '';
+              document.getElementById('statement_section').classList.remove('hidden');
               window.dynamicEllipsis.stop('publisher_status');
               clearInterval(checkUpholdStatusInterval);
             } else if (checkUpholdStatusCount >= 15) {
@@ -293,7 +294,7 @@ noscript
             = link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
-      .statements#statement_section style=(current_publisher.uphold_verified ? '' : 'display: none')
+      .statements#statement_section class=(current_publisher.uphold_verified ? '' : 'hidden')
         .panel-header.panel-header-h4#publishers_statement
           = t("publishers.statements")
         - if unused_statement_periods.length > 0
