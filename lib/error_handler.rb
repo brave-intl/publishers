@@ -29,6 +29,10 @@ module ErrorHandler
     else
       Rails.logger.warn(exception)
     end
+
+    # re-raise the exception now that it's been captured by sentry-raven or logged
+    # so that the standard rails error flow can happen
+    raise exception
   end
 
   def introspect_publisher

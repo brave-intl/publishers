@@ -29,7 +29,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("publisher.channels.count", 0) do
       assert_difference("SiteChannelDetails.count", 0) do
         delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
-        assert_response 404
+        assert_response 302
       end
     end
   end
