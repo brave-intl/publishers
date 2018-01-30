@@ -3,12 +3,12 @@ let tempId = 0;
 
 export default {
   start: function(elementOrId, durationBetween, maxEllipsis) {
-    var elementId;
-    var element;
-    var text;
-    var count = 0;
-    var max = maxEllipsis || 5;
-    var duration = durationBetween || 200;
+    let elementId;
+    let element;
+    let text;
+    let count = 0;
+    let max = maxEllipsis || 5;
+    let duration = durationBetween || 200;
 
     if (typeof elementOrId === 'string') {
       elementId = elementOrId;
@@ -25,7 +25,7 @@ export default {
     text = element.innerText;
 
     ellipsisIntervals[elementId] = setInterval(function() {
-      var displayText = text;
+      let displayText = text;
       count++;
       if (count > max) count = 0;
       for (let i = 0; i < count; i++) displayText += '.';
@@ -34,7 +34,7 @@ export default {
   },
 
   stop: function(elementOrId) {
-    var elementId = typeof elementOrId === 'string' ? elementOrId : elementOrId.id;
+    let elementId = typeof elementOrId === 'string' ? elementOrId : elementOrId.id;
     clearInterval(ellipsisIntervals[elementId]);
   }
 };
