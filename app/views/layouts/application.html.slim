@@ -39,9 +39,9 @@ html
       /
       / Three styled variants for flash messages in this app exist:
       /
-      /   * `:alert` a message with neutral blue styling.
-      /   * `:notice` a message with positive green styling.
-      /   * `:warning` a message with negative red styling.
+      /   * `:alert` a message with negative red styling.
+      /   * `:warning` a message with negative yellow styling.
+      /   * `:notice` a message with neutral blue styling.
       /
       / By default these messages appear in a bar below the navigation.
       /
@@ -80,7 +80,7 @@ html
       - else
         .notifications.navbar-static-top#flash
           - [:alert, :notice, :warning].each do |name|
-            - {alert: 'warning', notice: 'success', warning: 'warning'}[name].tap do |flash_class|
+            - {alert: 'danger', notice: 'info', warning: 'warning'}[name].tap do |flash_class|
               - if flash[name]
                 .alert.flash class="alert-#{flash_class}"
                   = flash[name]
