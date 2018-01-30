@@ -1,6 +1,8 @@
-.promo--panel-wrapper {
+#content {
+  @include media-breakpoint-down(sm) {
+    padding: 0px
+  }
 }
-
 .promo--panel {
   padding: 90px 80px;
   background-image: url(asset-path("bat-mercury-patch-jr.png"));
@@ -8,6 +10,7 @@
   background-position: top 65px right 60px;
   background-size:  auto 280px;
   min-height: 280px;
+  text-align: left;
 
   border: solid;
   border-width: .5px;
@@ -19,7 +22,7 @@
     font-size: 60px;
 
     &-active {
-      font-size: 40px;
+      font-size: 40px !important;
     }
   }
 
@@ -50,6 +53,9 @@
   .promo--body-text {
     color: $bravePromo-DarkBlue;
     font-size: 13px;
+    &-mobile {
+      display: none;
+    }
   }
 
   #promo--over-download-link {
@@ -58,39 +64,40 @@
     margin-bottom: 20px;
     margin-top: 20px;
   }
+  .promo--referral-link-container-container {
+    .promo--referral-link-container {
+      font-size: .8rem;
+      background: #edf3f9;
+      margin-bottom: 15px;
+      height: 40px;
+      width: 98%;
+      display: table;
 
-  .promo--referral-link-container {
-    font-size: .8rem;
-    background: #edf3f9;
-    margin-bottom: 15px;
-    height: 40px;
-    width: 98%;
-    display: table;
+      .promo--referral-link {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 8px;
+        width: 100%;
+        border: solid;
+        border-color: #cddeec;
+        border-width: 1px;
+        border-radius: 4px 0px 0px 4px;
+        border-right: none;
+      }
 
-    .promo--referral-link {
-      display: table-cell;
-      vertical-align: middle;
-      padding-left: 8px;
-      width: 100%;
-      border: solid;
-      border-color: #cddeec;
-      border-width: 1px;
-      border-radius: 4px 0px 0px 4px;
-      border-right: none;
-    }
-
-    .promo--copy-button {
-      display: table-cell;
-      vertical-align: middle;
-      color: white;
-      height: 100%;
-      background: red;
-      border: solid;
-      border-color: red;
-      border-width: 1px;
-      border-radius: 0px 4px 4px 0px;
-      border-left: none;
-      float: right;
+      .promo--copy-button {
+        display: table-cell;
+        vertical-align: middle;
+        color: white;
+        height: 100%;
+        background: red;
+        border: solid;
+        border-color: red;
+        border-width: 1px;
+        border-radius: 0px 4px 4px 0px;
+        border-left: none;
+        float: right;
+      }
     }
   }
 
@@ -107,17 +114,20 @@
     &:hover, &focus {
       background-color: #00223B;
     }
+    @include media-breakpoint-down(sm) {
+      height: 50px;
+      font-size: 16px; 
+    }
   }
 
   &-over {
     background-image: url(asset-path("bat-mercury-patch-jr-gray.png"));
-  }
-
-  @include media-breakpoint-down(sm) {
-    background-image: none;
-
-    .promo--bat-patch-adjacent {
-      padding-right: 0px
+    .promo--body-text {
+      display: unset;
+      &-mobile {
+        padding-top: 15px;
+        margin-top: -30px;
+      }
     }
   }
 
@@ -134,10 +144,6 @@
     border-width: 1px;
     border-color: rgba(47,48,50,0.15);
 
-    @include media-breakpoint-down(sm) {
-      background-image: url(asset-path("bat-logo-no-shadow@1.png"));
-    }
-
     .promo--title {
       color: white;
       margin-bottom: -5px;
@@ -145,6 +151,7 @@
 
     .promo--subtitle {
       color: $bravePromo-DarkBlue;
+      margin-bottom: -15px;
 
       &-alternative {
         color: #BCF0F7;
@@ -176,6 +183,15 @@
       font-weight: 600;
       margin-bottom: 30px;
     }
+
+    @include media-breakpoint-down(sm) {
+      background-image: url(asset-path("bat-logo-no-shadow@1.png"));
+      background-size: unset !important;
+      padding-top: 110px !important;
+      .promo--activate-body-container {
+        margin: 0px 12.5%;
+      }
+    }
   }
 
   #promo--no-channels {
@@ -197,6 +213,73 @@
       width: 230px;
       height: 40px;
       padding-top: 12px;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    // background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-logo-no-shadow@1.png"));
+    padding: 130px 30px 20px 30px;
+    background-position: top 20px center, bottom center;
+    background-size: auto 100px, auto;
+    text-align: center;
+
+    .promo--bat-patch-adjacent {
+      padding-right: 0px
+    }
+    .promo--title {
+      font-size: 50px;
+    }
+    .promo--subtitle {
+      font-size: 24px;
+    }
+
+    .promo--item-label {
+      display: block
+    }
+
+    .promo--body-text {
+      display: none;
+      &-mobile {
+        display: block;
+        color: $bravePromo-DarkBlue;
+        padding-top: 30px;
+      }
+    }
+
+    .promo--unverified-container {
+      background-position: top center;
+
+      .promo--activate-button {
+        padding-top: 8px;
+      }
+    }
+
+    .promo--item-label-link-name {
+      color: black;
+      text-align: left;
+      padding-left: 30px;
+      padding-right: 0px;
+      padding-top: 20px;
+    }
+    .promo--referral-link-container-container {
+      margin-left: -30px;
+      margin-right: -30px;
+      padding-bottom: 1px;
+      &-0{
+        background: #EFF2F5;
+      }
+      &-1{
+        background: #F7F8F9;
+      }
+      .promo--referral-link-container {
+        width: unset;
+        margin-right: 30px;
+        margin-left: 30px;
+        margin-top: 8px;
+        .promo--referral-link {
+          text-align: left;
+        }
+      }
     }
   }
 }

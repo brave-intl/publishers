@@ -1,4 +1,4 @@
-.single-panel--wrapper.single-panel--wrapper--small.promo--panel.text-left
+.single-panel--wrapper.single-panel--wrapper--small.promo--panel
   .promo--bat-patch-adjacent
     h1.promo--title data-test="promo-activated-verified"= t("promo.activated.title")
     h3.promo--subtitle = t("promo.activated.subtitle")
@@ -11,8 +11,14 @@
     p.promo--body-text
       span = t("promo.activated.description_one")
       span = t("promo.activated.description_two")
+  - n = 0
   - @promo_enabled_channels.each do |channel|
-    .promo--item-label = "#{channel.publication_title}"
-    .promo--referral-link-container
-      span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = "#{t("promo.shared.base_referral_link")}/#{channel.promo_registration.referral_code.downcase}"
-      button.copy-button.promo--copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")
+    .promo--referral-link-container-container class="promo--referral-link-container-container-#{n%2}"
+      .promo--item-label.promo--item-label-link-name = "#{channel.publication_title}"
+      .promo--referral-link-container
+        span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = "#{t("promo.shared.base_referral_link")}/#{channel.promo_registration.referral_code.downcase}"
+        button.copy-button.promo--copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")
+    - n += 1
+  p.promo--body-text-mobile
+    span = t("promo.activated.description_one")
+    span = link_to(t("promo.activated.description_two"), home_publishers_path)

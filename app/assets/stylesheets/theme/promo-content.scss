@@ -8,5 +8,17 @@
     background-image: url(asset-path("bat-polygon-med.png"));
     background-position: center;
     background-size: cover;
+    @include media-breakpoint-down(sm) {
+      background-size: unset;
+      margin-top: -65px;
+    }
   }
+}
+
+.nav--promo {
+  // @include media-breakpoint-down(sm){
+  //   display: block;
+  //   text-align: center;
+  //   padding-right: 30px;
+  // }
 }

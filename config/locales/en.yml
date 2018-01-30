@@ -543,7 +543,7 @@ en:
       reward: "Reward:"
       reward_description: "5 BAT for each referral"
       referral_links: "Referral links:"
-      referral_link: "Referral link"
+      referral_link: "Referral Link"
       copy: "Copy"
       base_referral_link: "brave.com/?ref="
   promo_mailer:
