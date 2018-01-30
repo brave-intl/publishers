@@ -28,7 +28,7 @@ export default {
       var displayText = text;
       count++;
       if (count > max) count = 0;
-      for (i = 0; i < count; i++) displayText += '.';
+      for (let i = 0; i < count; i++) displayText += '.';
       element.innerText = displayText;
     }, duration);
   },
