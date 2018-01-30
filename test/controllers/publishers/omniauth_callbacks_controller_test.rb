@@ -87,6 +87,8 @@ module Publishers
 
     test "a publisher who adds a channel taken by another will see custom dialog based on the taken channel" do
       begin
+        active_promo_id_original = Rails.application.secrets[:active_promo_id]
+        Rails.application.secrets[:active_promo_id] = ""
         publisher = publishers(:uphold_connected)
         request_login_email(publisher: publisher)
         url = publisher_url(publisher, token: publisher.reload.authentication_token)
@@ -147,11 +149,14 @@ module Publishers
         assert_select('div#channel_taken_modal') do |element|
           assert_match("The DIY Channel", element.text)
         end
+        Rails.application.secrets[:active_promo_id] = active_promo_id_original
       end
     end
 
     test "a publisher who adds a channel taken by themselves will see .channel_already_registered" do
       begin
+        active_promo_id_original = Rails.application.secrets[:active_promo_id]
+        Rails.application.secrets[:active_promo_id] = ""
         publisher = publishers(:google_verified)
         request_login_email(publisher: publisher)
         url = publisher_url(publisher, token: publisher.reload.authentication_token)
@@ -212,6 +217,7 @@ module Publishers
         assert_select('div.notifications') do |element|
           assert_match(I18n.t("publishers.omniauth_callbacks.google_oauth2.channel_already_registered"), element.text)
         end
+        Rails.application.secrets[:active_promo_id] = active_promo_id_original
       end
     end
   end

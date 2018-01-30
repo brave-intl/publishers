@@ -40,6 +40,7 @@ javascript:
       modal.classList.add('md-show');
     }
 
+
     function hideVerificationModal() {
       var modal = document.getElementById('verification_modal');
       modal.classList.remove('md-show');
@@ -203,6 +204,7 @@ javascript:
             });
         }, false);
       }
+
     }, false);
   })();
 
@@ -413,9 +415,21 @@ noscript
               script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
                 = render "publishers/remove_channel_modal", channel: channel
               = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-
-          .channel-status.pull-right
-            = t "publishers.shared.verified"
+          - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
+            .promo--referral-link-container.pull-right 
+              span.promo--referral-link-text.text-center 
+                = t("promo.shared.referral_link")
+              span.promo--referral-link.promo--referral-link-hide 
+                = "#{t("promo.shared.base_referral_link")}#{channel.promo_registration.referral_code.downcase}"
+              span.promo--referral-link-copy.promo--referral-link-copy-hide.copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}"
+                = t("promo.shared.copy")
+              span.promo--referral-link-text-mobile.text-center.copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}"
+                = t("promo.shared.referral_link")
+              .promo--referral-link-hidden id="#{channel.promo_registration.referral_code.downcase}"
+                = "#{channel.promo_registration.referral_code.downcase}"
+          - else 
+            .channel-status.pull-right
+              span= t("publishers.dashboard_channel_verified")
         -else
           .channel-summary.pull-left
             h3= channel.publication_title
@@ -429,8 +443,47 @@ noscript
             = render "publishers/remove_channel_modal", channel: channel
           = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
         .clearfix
-
 .row.tos-row
   .col.col-details.col-md-6.col-md-push-6.col-xs-10.col-xs-center.col-sm-center
     .terms-of-service
       = link_to(t("shared.terms_of_service"), terms_of_service_url)
+
+- if promo_running?
+  javascript:
+    (function() {
+      function closeReferralLink(){
+        referralLinkText = this;
+        // Delay closing so copybutton.js has time to copy
+        setTimeout(function(){
+          referralLinkText.classList.add('promo--referral-link-copy-hide');
+          referralLinkText.parentNode.children[0].innerText = "Referral Link";
+          referralLinkText.parentNode.children[1].classList.add('promo--referral-link-hide');
+          referralLinkText.parentNode.classList.remove('promo--referral-link-container-slideout');
+        }, 100);
+      }
+
+      function mobileCopyAnimation(){
+        // Reset all other mobile buttons
+        for (var i = 0; i < referralLinkTextMobile.length; i++){
+          referralLinkTextMobile[i].innerText = 'Referral Link'
+        }
+        this.innerText = ('Copied!')
+      }
+
+      function openReferralLink() {
+        this.parentNode.classList.add('promo--referral-link-container-slideout');
+        this.innerText = "";
+        this.parentNode.children[2].classList.remove('promo--referral-link-copy-hide');
+        this.parentNode.children[1].classList.remove('promo--referral-link-hide');
+      }
+
+      var referralLinkText = document.getElementsByClassName('promo--referral-link-text');
+      var referralLinkTextMobile = document.getElementsByClassName('promo--referral-link-text-mobile')
+      var referralLinkCopy = document.getElementsByClassName('promo--referral-link-copy-hide');
+
+      for (var i = 0; i < referralLinkText.length; i++) {
+          referralLinkCopy[i].addEventListener('click', closeReferralLink, false);
+          referralLinkText[i].addEventListener('click', openReferralLink, false);
+          referralLinkTextMobile[i].addEventListener('click', mobileCopyAnimation, false);
+      }
+    })();

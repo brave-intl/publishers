@@ -66,6 +66,15 @@ class Channel < ApplicationRecord
     end
   end
 
+  def promo_enabled?
+    if self.promo_registration.present?
+      if self.promo_registration.referral_code.present?
+        return true
+      end
+    end
+    false
+  end
+
   private
 
   def should_register_channel_for_promo

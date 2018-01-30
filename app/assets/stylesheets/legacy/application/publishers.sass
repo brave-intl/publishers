@@ -139,6 +139,63 @@ body[data-controller="u2f_registrations"]
           background-position: center left 15px
           background-repeat: no-repeat
 
+  .promo--referral-link-container
+    background: #edf3f9
+    display: table
+    transition: width .3s ease-in
+    width: 110px
+    height: 45px
+    text-align: right
+    border: solid
+    border-color: #cddeec
+    border-width: 1px
+    border-radius: 4px
+    &-slideout
+      width: 495px
+      border: none
+      transition: width .3s ease-out
+    .promo--referral-link-text
+      display: table-cell
+      vertical-align: middle
+      font-weight: 500
+      @media (max-width: $screen-sm-max)
+        display: none
+      &-mobile
+        display: table-cell
+        vertical-align: middle
+        font-weight: 500
+        @media (min-width: $screen-sm-max)
+          display: none
+    .promo--referral-link
+      height: 100%
+      padding-top: 10px
+      padding-left: 10px
+      white-space: nowrap
+      text-align: left
+      width: 100%
+      float: left
+      border: solid
+      border-color: #cddeec
+      border-width: 1px
+      border-radius: 4px 0px 0px 4px
+      border-right: none
+      &-hide
+        display: none
+    .promo--referral-link-copy
+      width: 60px
+      color: white
+      background: red
+      display: table-cell
+      vertical-align: middle
+      text-align: center
+      border-radius: 0px 4px 4px 0px
+      &-hide
+        display: none
+  .promo--referral-link-hidden
+    font-size: 0
+    width: 0
+    transition: all .5s
+
   .expired-token-panel
     max-width: 710px
     .sub-panel

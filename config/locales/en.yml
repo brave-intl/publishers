@@ -499,7 +499,6 @@ en:
     last_year: "Last year"
     all: "All"
   promo:
-    base_referral_link: "brave.com"
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
     activate:
       title: "Free Tokens"
@@ -543,8 +542,10 @@ en:
       promo_period_description: "Jan 1 - Feb 1"
       reward: "Reward:"
       reward_description: "5 BAT for each referral"
-      referral_link: "Referral links:"
+      referral_links: "Referral links:"
+      referral_link: "Referral link"
       copy: "Copy"
+      base_referral_link: "brave.com/?ref="
   promo_mailer:
     activate_promo_2018q1:
       subject: "Limited Time Offer: Free tokens for your referral!"

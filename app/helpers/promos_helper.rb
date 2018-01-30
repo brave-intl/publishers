@@ -17,6 +17,6 @@ module PromosHelper
   end
 
   def generate_referral_link(referral_code)
-    "#{I18n.t("promo.base_referral_link")}/#{referral_code.downcase}"
+    "#{I18n.t("promo.shared.base_referral_link")}/#{referral_code.downcase}"
   end
 end
