@@ -29,7 +29,7 @@ class SiteChannelVerifier < BaseApiClient
 
     return false if response_hash["status"] != "success" || verified_channel_id.blank?
 
-    assert_publisher_matches_verified_id!
+    return false unless channel.id == verified_channel_id
 
     # Channel should have been verified through a call to PATCH /api/owners/:owner_id/channels/:channel_id/verifications
     # from eyeshade, so we won't update it here, just reload it
@@ -45,18 +45,16 @@ class SiteChannelVerifier < BaseApiClient
     @verified_channel_id = verify_offline_publisher_id
     return false if verified_channel_id.blank?
     update_verified_on_channel_offline
-    assert_publisher_matches_verified_id! if channel
+
+    return false unless channel.id == verified_channel_id
+
+    verified_channel_post_verify
   end
 
   private
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]
-  end
-
-  def assert_publisher_matches_verified_id!
-    return true if channel.id == verified_channel_id
-    raise VerificationIdMismatch.new("Channel UUID / verificationId mismatch: #{channel.id} / #{verified_channel_id}")
   end
 
   def update_verified_on_channel_offline
