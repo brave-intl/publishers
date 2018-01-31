@@ -128,10 +128,10 @@ en:
     pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
     pub_type_site_individual_creator_note_html: "You will need to authenticate with Google to demonstrate that you own the channel."
     channel_taken_modal:
-      title: "Unable to add channel!"
-      leadin: "The following %{channel_type} has already been added and verified."
+      title: "Channel taken"
+      leadin: "The following %{channel_type} has already been added to a different account."
       registration_date: "Date"
-      registered_by: "Registered by"
+      registered_by: "Added by"
       default_registerer: "A channel manager"
       contact_support_html: "Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error."
       ok: "OK"
