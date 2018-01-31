@@ -1,4 +1,7 @@
+require "concerns/two_factor_registration"
+
 class U2fRegistrationsController < ApplicationController
+  include TwoFactorRegistration
 
   before_action :authenticate_publisher!
 
@@ -38,7 +41,7 @@ class U2fRegistrationsController < ApplicationController
       })
     )
 
-    redirect_to two_factor_registrations_path
+    handle_redirect_after_2fa_registration
   end
 
   def destroy

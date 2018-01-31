@@ -48,6 +48,29 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
+    refute @request.flash[:modal_partial]
+  end
+
+  test "TOTP registration creation after prompt" do
+    sign_in publishers(:completed)
+
+    ROTP::TOTP.any_instance.stubs(:verify_with_drift).returns(true)
+
+    get prompt_two_factor_registrations_path
+
+    assert_difference("TotpRegistration.count") do
+      post totp_registrations_path, params: {
+        totp_password: "123456",
+        totp_registration: { secret: ROTP::Base32.random_base32 }
+      }
+    end
+
+    assert_redirected_to home_publishers_path, "redirects to dashboard"
+    assert @request.flash[:modal_partial]
+
+    follow_redirect!
+
+    assert_select '#js-open-modal-on-load'
   end
 
   test "TOTP registration reconfiguration" do

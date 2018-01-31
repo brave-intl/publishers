@@ -50,6 +50,10 @@ en:
     nav:
       security: Security
       log_out: Log Out
+  modal_partials:
+    two_factor_registration_complete:
+      headline: "Great!"
+      body: "Two-factor Authentication has been enabled for your account"
   publishers:
     add_channel: "Add Channel"
     add_channel_cta: "Add a website or YouTube channel to see how much your fans on Brave have contributed so far."
@@ -269,6 +273,7 @@ en:
     api_error: "Your request couldn't be processed due to an API error."
     app_title: Brave Payments
     cancel: "Cancel"
+    close: "Close"
     continue: "Continue"
     email_address: "Email address"
     existing_account: "Already have an account?"

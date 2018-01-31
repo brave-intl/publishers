@@ -135,4 +135,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+
+  var modalTemplate = document.getElementById('js-open-modal-on-load');
+  if (modalTemplate) {
+    openModal(modalTemplate.innerHTML, function() {}, function() {
+      modalTemplate.parentNode.removeChild(modalTemplate);
+    });
+  }
 });

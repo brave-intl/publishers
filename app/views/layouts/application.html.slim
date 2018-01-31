@@ -105,3 +105,32 @@ html
           = link_to "#", class: "md-close js-deny"
             = render "application/icon_x"
       .md-overlay
+
+    /
+    / ## Using flash modals in Brave Publishers ##
+    /
+    / In addition to using flash to pass a message, you can use flash to
+    / cause a modal to open on the page. Do this with the :modal_partial
+    / flash name. For example:
+    /
+    /     flash[:modal_partial] = 'some_partial_name'
+    /
+    / This would cause the modal to be opened with content equivilent to:
+    /
+    /     <%= render 'model_partials/some_partial_name' %>
+    /
+    / Which would be the file path:
+    /
+    /     app/views/model_partials/_some_partial_name.html.erb
+    /
+    / This system leverages the modal system documented in
+    / app/javascript/modal.js.
+    /
+    / To offer a button do close the modal use the class `js-deny` on a
+    / button. For example:
+    /
+    /     <%= link_to "Close", "#", class: "js-deny btn btn-primary" %>
+    /
+    - if flash[:modal_partial]
+      script#js-open-modal-on-load type="text/html"
+        = render "modal_partials/#{flash[:modal_partial]}"
