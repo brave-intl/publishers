@@ -354,7 +354,7 @@ noscript
           = f.label(:visible, class: "form-check-label", for: "publisher_visible")
 
 .row id="add_channel_placeholder" class=(current_publisher.channels.visible.empty? ? '' : 'hidden')
-  .col.col-details.col-md-12.col-xs-10
+  .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
     = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'channel-placeholder')
 
 - current_publisher.channels.visible.each do |channel|
