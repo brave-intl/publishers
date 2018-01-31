@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 8</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Publisher-Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-446.000000, -158.000000)">
+        <g id="Group-8" transform="translate(447.000000, 159.000000)">
+            <g id="no-good/error" stroke="#00BCD6">
+                <circle id="Oval" cx="20" cy="20" r="20"></circle>
+            </g>
+            <path d="M22.018,27.954 C22.018,28.5260029 21.820002,29.009998 21.424,29.406 C21.027998,29.802002 20.5403362,30 19.961,30 C19.3816638,30 18.894002,29.802002 18.498,29.406 C18.101998,29.009998 17.904,28.5223362 17.904,27.943 C17.904,27.3636638 18.101998,26.876002 18.498,26.48 C18.894002,26.083998 19.3816638,25.886 19.961,25.886 C20.5403362,25.886 21.027998,26.083998 21.424,26.48 C21.820002,26.876002 22.018,27.3673304 22.018,27.954 Z M18.278,23.456 L17.838,12.456 L21.908,12.456 L21.468,23.456 L18.278,23.456 Z" id="!" fill="#00BCD6" transform="translate(19.928000, 21.228000) scale(1, -1) translate(-19.928000, -21.228000) "></path>
+        </g>
+    </g>
+</svg>
