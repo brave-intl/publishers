@@ -66,7 +66,7 @@ var MODAL_SHOW_CLASS = 'md-show';
 /*
  * On demand open a modal.
  */
-function openModal(html, confirmCallback, denyCallback) {
+self.openModal = function openModal(html, confirmCallback, denyCallback) {
   var modalElement = document.querySelector('.js-shared-modal');
   var contentElement = modalElement.querySelector('.md-content');
   var containerElement = modalElement.querySelector('.md-container');
@@ -85,15 +85,14 @@ function openModal(html, confirmCallback, denyCallback) {
       return;
     }
 
+    modalElement.removeEventListener('click', confirmationEventDelegate);
+    contentElement.innerHTML = '';
+    containerElement.classList.remove(MODAL_SHOW_CLASS);
+    event.preventDefault();
+
     if (target.classList.contains('js-confirm')) {
-      event.preventDefault();
       confirmCallback();
     } else if (target.classList.contains('js-deny')) {
-      modalElement.removeEventListener('click', confirmationEventDelegate);
-      contentElement.innerHTML = '';
-      containerElement.classList.remove(MODAL_SHOW_CLASS);
-      event.preventDefault();
-
       denyCallback();
     }
   }

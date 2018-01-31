@@ -65,10 +65,10 @@ javascript:
       for (var i = 0, l = removeChannelLinks.length; i < l; i++) {
         removeChannelLinks[i].addEventListener('click', function(event) {
           var channelId = event.target.getAttribute('data-channel-id');
-          var confirmationMessage = event.target.getAttribute('data-confirmation-message');
-          if (window.confirm(confirmationMessage)) {
+          var template = document.querySelector('[data-js-channel-removal-confirmation-template="'+channelId+'"]');
+          openModal(template.innerHTML, function() {
             removeChannel(channelId);
-          }
+          }, function() {});
           event.preventDefault();
         }, false);
       }
@@ -267,7 +267,7 @@ noscript
 
 .row
   .col.col-details.col-md-5.col-xs-10.col-xs-center.col-sm-center
-    h4= t("publishers.balance_pending")
+    h4.balance-header = t("publishers.balance_pending")
     .balance
       .pull-left
         = image_tag("bat-logo@1x.png", class: "")
@@ -372,8 +372,10 @@ noscript
                 = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
               .separator
                 = '|'
-              a.remove-channel href="#" data-channel-id=(channel.id) data-confirmation-message=(t("publishers.dashboard_channel_confirm_remove_channel", channel_name: channel.publication_title))
+              a.remove-channel href="#" data-channel-id=(channel.id)
                 = t("publishers.dashboard_channel_remove_verified_channel")
+              script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                = render "publishers/remove_channel_modal", channel: channel
               = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
 
           .channel-status.pull-right
@@ -385,8 +387,10 @@ noscript
             .one-more-step= t("publishers.dashboard_channel_one_more_step")
           .channel-status.pull-right
             = link_to(t("publishers.dashboard_channel_lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
-          a.remove-channel.pull-right href="#" data-channel-id=(channel.id) data-confirmation-message=(t("publishers.dashboard_channel_confirm_remove_channel", channel_name: channel.publication_title))
+          a.remove-channel.pull-right href="#" data-channel-id=(channel.id)
             = t("publishers.dashboard_channel_remove_unverified_channel")
+          script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+            = render "publishers/remove_channel_modal", channel: channel
           = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
         .clearfix
 

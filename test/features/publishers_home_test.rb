@@ -40,4 +40,32 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     assert_content page, new_name
     refute_content 'Update'
   end
+
+  test "publishers page renders, unverified channel can be removed after confirmation" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:small_media_group_to_verify)
+
+    sign_in publisher
+    visit home_publishers_path
+
+    assert_content page, channel.publication_title
+    click_link('Remove')
+    assert_content page, "Are you sure you want to remove this channel?"
+    find('[data-test-modal-container]').click_link("Remove Channel")
+    refute_content page, channel.publication_title
+  end
+
+  test "publishers page renders, verified channel can be removed after confirmation" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:small_media_group_to_delete)
+
+    sign_in publisher
+    visit home_publishers_path
+
+    assert_content page, channel.publication_title
+    click_link('Remove Channel')
+    assert_content page, "Are you sure you want to remove this channel?"
+    find('[data-test-modal-container]').click_link("Remove Channel")
+    refute_content page, channel.publication_title
+  end
 end

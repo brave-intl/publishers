@@ -99,7 +99,7 @@ html
     / This block of HTML is used by modal_shared.js to trigger modal
     / boxes. See that JavaScript file for more details.
     .js-shared-modal
-      .md-container.container
+      .md-container.container data-test-modal-container=""
         .col.col-10.col-md-8.col-sm-10.col-xs-12.col-center.sub-panel.sub-panel--panel--modal
           .md-content
           = link_to "#", class: "md-close js-deny"
