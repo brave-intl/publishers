@@ -77,7 +77,6 @@ en:
     dashboard_channel_lets_finish: "Let's Finish"
     dashboard_channel_remove_verified_channel: "Remove Channel"
     dashboard_channel_remove_unverified_channel: "Remove"
-    dashboard_channel_confirm_remove_channel: "Are you sure that you want to remove the channel '%{channel_name}'"
     dashboard_channel_verified: "Verified"
     current_deposit_currency: "Current deposit currency: BAT to "
     edit_contact: "Edit Contact"
@@ -173,6 +172,12 @@ en:
         link: Sign Up
     sign_up:
       heading: Join Brave Payments
+    remove_channel_modal:
+      headline: Remove Channel?
+      intro: "You are removing the channel:"
+      final_confirmation: Are you sure you want to remove this channel?
+      deny: Do Not Remove
+      confirm: Remove Channel
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"

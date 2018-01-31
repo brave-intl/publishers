@@ -117,6 +117,7 @@ small_media_group:
   name: "Small Media Group"
   phone: "4159001421"
   phone_normalized: "+14159001421"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
