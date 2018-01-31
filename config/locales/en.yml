@@ -379,18 +379,14 @@ en:
       body: Insert your security key and press the button on the key when blinking.
       totp_alternative_available: Don't have your security key?
       totp_alternative_link: Use authentication code instead.
+      u2f_unavailable_totp_alternative_link: Use Authentication Code Instead
       submit_value: Try Again
-      unavailable:
-        totp_available: |
-          Your preferred method of two-factor authentication is security key.
-          But it's not supported by your current browser. Switch to Google
-          Chrome or Opera or login using authentication code below.
-        heading: Security key not supported by your browser
-        body_html: |
-          Switch to Google Chrome or Opera to log in. We recommend setting up
-          authenticator app as a backup method for two-factor authentication
-          for this situation.
     index:
+      u2f_unavailable_html: |
+        <strong>Security key not supported by your browser.</strong><br>
+        Switch to Google Chrome or Opera browser to log in. We also recommend
+        setting up authenticator app as a backup method for two-factor
+        authentication for this situation.
       u2f-error:
         bad-request: |
           There was an unexpected error in the authentication request made by
