@@ -22,7 +22,7 @@ class TotpRegistrationsController < ApplicationController
       handle_redirect_after_2fa_registration
     else
       Rails.logger.info "ROTP::TOTP! Failed to verify unsaved #{totp_registration} for publisher #{current_publisher} with password '#{params[:totp_password]}'"
-      flash[:alert] = "Invalid 6-digit code. Please try again."
+      flash[:alert] = t(".invalid_code")
       redirect_to new_totp_registration_path
     end
   end

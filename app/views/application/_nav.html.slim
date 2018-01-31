@@ -8,7 +8,7 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
             .user-menu
               input.user-menu-trigger type="checkbox"
               .user-avatar= render "avatar_svg"
-              = current_publisher.name
+              span= current_publisher.name
               .user-lock= render two_factor_enabled?(current_publisher) ? "locked_svg" : "unlocked_svg"
               .user-arrow= render "arrow_svg"
               .user-dropdown
