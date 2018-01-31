@@ -16,6 +16,10 @@ module PromosHelper
     referral_code
   end
 
+  def offline_promo_stats
+    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}}
+  end
+
   def generate_referral_link(referral_code)
     "#{I18n.t("promo.shared.base_referral_link")}/#{referral_code.downcase}"
   end
