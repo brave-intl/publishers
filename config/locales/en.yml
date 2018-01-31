@@ -552,17 +552,18 @@ en:
       body: "Getting more fans on Brave means more income for you. And we'd like to chip in for that effort. We are giving away bonus tokens for referring your fans to Brave. Find out more and activate this promo!"
       button: "Activate Promo"
     promo_activated_2018q1_verified:
-      subject: "Your Referral Promo is Active"
+      subject: "Your Referral Promo is Active!"
       body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral links we created for your channel, and get your fans to support you!"
       body_two: "Bonus will be paid out at the end of the promo.  Check on the status of your qualified referrals on your dashboard."
       body_three: "We wish you good luck!"
     promo_activated_2018q1_unverified:
-      subject: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT."
-      cta: "Login to Add Channel"
-      body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral links we created for your channel, and get your fans to support you!"
-      body_two: "You don't have any verified channels.  Please verify a channel to get your referral link."
+      subject: "Your Referral Promo is Active!"
+      cta: "Add Channel"
+      body_one: "Great news! Your referral promo is now active.  To get this going, you'll need to add your Web Site or Youtube Channels to your account. We will then send you a specific referral link for you to pass to your fans."
+      body_two_html: |
+        <strong>Add and verify your channels to get the referral link.</strong> The promo runs only until March 9.
     new_channel_registered_2018q1:
-      subject: "Your Referral Promo is Active"
+      subject: "Your Referral Promo is Active!"
       body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral link we created for your channel, and get your fans to support you!"    
   recaptcha:
     errors:
