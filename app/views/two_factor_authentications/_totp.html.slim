@@ -14,7 +14,7 @@ h3.single-panel--headline = t(".heading")
         .icon-and-text--text
           label for="totp_password" = t ".totp_password_label"
           input.form-control name="totp_password" placeholder=t(".enter_code_placeholder") autofocus=true
-    = submit_tag t(".submit_value"), class: "btn btn-primary btn-wide"
+    = submit_tag t(".submit_value"), class: "btn btn-primary btn-block"
 
   - if @u2f_enabled
     div.js-feature-u2f-available

@@ -493,11 +493,11 @@ en:
       skip: Skip for now
       setup: Set Up 2FA
   totp_registrations:
+    create:
+      invalid_code: Invalid 6-digit code. Please try again.
     new:
       heading: Set Up Authenticator App
-      warning: |
-        You already have authentication code configured.
-        Reconfiguring will invalidate your existing authentication code devices.
+      warning: Reconfiguring will invalidate your existing authentication code devices.
       step_1: Install an authenticator app on your mobile phone.
       step_2: Scan the QR code below with your app.
       step_2_alt: "If you can't scan the QR code, enter this code:"

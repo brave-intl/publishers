@@ -1,0 +1,11 @@
+.totp-svg {
+  display: inline-block;
+  margin: 1em 0;
+  padding: 1em;
+  border: 1px solid $braveGray-6;
+  border-radius: $border-radius;
+
+  svg {
+    display: block;
+  }
+}
