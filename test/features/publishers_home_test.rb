@@ -68,4 +68,20 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     find('[data-test-modal-container]').click_link("Remove Channel")
     refute_content page, channel.publication_title
   end
+  
+  test "land page renders, bad login can create an account" do
+    email = 'new-test@example.com'
+
+    visit new_auth_token_publishers_path
+
+    assert_content page, "Log In"
+    fill_in 'publisher_email', with: email
+    click_button('Log In')
+
+    assert_content page, "Couldn't find a publisher with that email address"
+    click_link("create an account with the email #{email}")
+
+    assert_content page, "An email is on its way"
+  end
+
 end
