@@ -262,6 +262,7 @@ noscript
   = render :partial => 'channel_taken', :locals => { channel_id: flash[:taken_channel_id] }
 
 - content_for(:navbar_content_right) do
+  .title.hidden-sm.hidden-xs= t("publishers.dashboard")
   = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
 
 .row

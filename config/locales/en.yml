@@ -63,6 +63,7 @@ en:
     contact: "Contact"
     contact_name_placeholder: "First and last name"
     resend_confirmation_email_done: "The confirmation email has been resent."
+    dashboard: "Dashboard"
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     dashboard_uphold_header: "Your Uphold Wallet"
     dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
