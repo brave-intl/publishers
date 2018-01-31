@@ -1,7 +1,19 @@
 class PublisherSerializer < ActiveModel::Serializer
-  attributes :id, :email, :name, :phone, :phone_normalized, :verified, :verification_method, :verification_token, :show_verification_status, :created_at, :updated_at, :last_sign_in_at
+  attributes :owner_identifier, :email, :name, :phone_normalized, :channel_identifiers, :show_verification_status
 
   def show_verification_status
-    object.show_verification_status?
+    object.visible?
+  end
+
+  def channel_identifiers
+    object.channels.verified.collect do |channel|
+      channel.details.channel_identifier
+    end
+  end
+
+  def serializable_hash(adapter_options = nil, options = {}, adapter_instance = self.class.serialization_adapter_instance)
+    hash = super
+    hash.each { |key, value| hash.delete(key) if value.blank? }
+    hash
   end
 end

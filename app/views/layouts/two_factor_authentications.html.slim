@@ -1,3 +1,6 @@
+- content_for(:head_style_tags) do
+  = stylesheet_link_tag("application", media: "all")
+
 - content_for(:content) do
   .main-content
     #content.container

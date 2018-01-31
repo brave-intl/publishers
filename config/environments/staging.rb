@@ -45,11 +45,6 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
 
-  # Use the lowest log level to ensure availability of diagnostic information
-  # when problems arise.
-  # info so ActionMailer doesn't spam the logs with full attachments
-  config.log_level = :info
-
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 

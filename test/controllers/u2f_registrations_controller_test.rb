@@ -56,40 +56,6 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
   end
 
-  test "index renders a registered key" do
-    publisher = publishers(:completed)
-    u2f_registration = u2f_registrations(:default)
-    publisher.u2f_registrations << u2f_registration
-
-    sign_in publisher
-    get two_factor_registrations_path
-
-    assert_response :success
-    assert_match u2f_registration.name, response.body
-    assert_match /Set up an authenticator as\sthe secondary 2FA/, response.body
-    assert_select "a[data-method=delete][href=?]", u2f_registration_path(u2f_registration)
-  end
-
-  test "index renders many registered keys" do
-    publisher = publishers(:completed)
-
-    u2f_registration = u2f_registrations(:default)
-    publisher.u2f_registrations << u2f_registration
-
-    additional_u2f_registration = u2f_registrations(:additional)
-    publisher.u2f_registrations << additional_u2f_registration
-
-    sign_in publisher
-    get two_factor_registrations_path
-
-    assert_response :success
-    assert_match u2f_registration.name, response.body
-    assert_match additional_u2f_registration.name, response.body
-    assert_match "Authenticator app has not been set up", response.body
-    assert_select "a[data-method=delete][href=?]", u2f_registration_path(u2f_registration)
-    assert_select "a[data-method=delete][href=?]", u2f_registration_path(additional_u2f_registration)
-  end
-
   test "delete removes registered key" do
     publisher = publishers(:verified)
     u2f_registration = u2f_registrations(:default)

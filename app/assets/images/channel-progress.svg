@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="104px" height="24px" viewBox="0 0 104 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>icn</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="12" cy="12" r="12"></circle>
+        <circle id="path-3" cx="12" cy="12" r="12"></circle>
+    </defs>
+    <g id="Publisher-Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-461.000000, -701.000000)">
+        <g id="1" transform="translate(113.000000, 664.000000)">
+            <g id="icn" transform="translate(348.000000, 37.000000)">
+                <path d="M13.5,12.5 L81.5,12.5" id="Line" stroke="#6CDAC1" stroke-width="2" stroke-linecap="square"></path>
+                <g id="Group-11" transform="translate(82.000000, 2.000000)">
+                    <path d="M10.0534247,20.8356164 C4.05593443,20.8356164 -0.821369863,15.9583121 -0.821369863,9.96082192 C-0.821369863,3.96406646 4.05629551,-0.913972603 10.0534247,-0.913972603 C16.0500058,-0.913972603 20.9271233,3.96351853 20.9271233,9.96082192 C20.9271233,15.9581253 16.0500058,20.8356164 10.0534247,20.8356164 Z" id="Fill-1" stroke="#6CDAC1" stroke-width="2"></path>
+                    <path d="M10.122282,10.9406751 L10.122282,4.80808808 C10.122282,4.14953607 9.71890735,3.81322795 9.0267467,3.81322795 C8.33380217,3.81322795 8,4.14953607 8,4.80808808 L8,11.0675604 C8,11.3839237 8.13142952,11.6873741 8.36737557,11.9106163 L12.2645364,14.7584226 C12.5096276,14.991101 12.5680429,15.0224437 12.8896925,15.0224437 C13.2100356,15.0224437 13.8308114,15.0872123 14.038443,14.7584226 C14.2944837,14.3529757 14.3014073,13.7827934 13.8114861,13.3171882 L10.122282,10.9406751 Z" id="Fill-4" fill="#6CDAC1"></path>
+                </g>
+                <g id="Group-13" transform="translate(41.000000, 0.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#6CDAC1" xlink:href="#path-1"></use>
+                    <polygon id="Fill-4" fill="#FFFFFF" points="8.2643999 10.9317128 7 12.2148007 11.5831007 16.8571429 18 10.3822227 16.5402182 9 11.5663537 14.1465135"></polygon>
+                </g>
+                <g id="Group-12">
+                    <mask id="mask-4" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <use id="Mask" fill="#6CDAC1" xlink:href="#path-3"></use>
+                    <polygon id="Fill-4" fill="#FFFFFF" points="8.2643999 10.9317128 7 12.2148007 11.5831007 16.8571429 18 10.3822227 16.5402182 9 11.5663537 14.1465135"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

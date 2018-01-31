@@ -34,7 +34,7 @@ class PublisherStatementSyncerTest < ActiveJob::TestCase
     refute ActionMailer::Base.deliveries.empty?
     email = ActionMailer::Base.deliveries.last
     assert_equal [publisher.email], email.to
-    assert_equal I18n.t('publisher_mailer.statement_ready.subject', publication_title: publisher.publication_title), email.subject
+    assert_equal I18n.t('publisher_mailer.statement_ready.subject'), email.subject
   end
 
   test "retrieves the publisher statement contents - but does nothing if contents are not retrieved" do

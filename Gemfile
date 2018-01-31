@@ -4,10 +4,14 @@ source "https://rubygems.org"
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
 
+# Pagination
+gem "api-pagination"
+
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.0.0"
 
-gem "bootstrap-sass", "~> 3.3.6"
+gem "bootstrap-3-sass", git: "https://github.com/kpfefferle/bootstrap-3-sass.git"
+gem "bootstrap", "~> 4.0.0.beta3"
 
 # Authentication
 gem "devise", "~> 4.2.0"
@@ -21,7 +25,7 @@ gem "faraday", "~> 0.9.2", require: false
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.8.1"
+gem "nokogiri", "~> 1.8.2"
 
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
@@ -39,7 +43,7 @@ gem "phony_rails", "~> 0.14"
 gem "premailer-rails", "~> 1.9.4", require: false
 
 # Puma as app server
-gem "puma", "~> 3.11"
+gem "puma", "3.10"
 
 gem "rails", "~> 5.0.0", ">= 5.0.0.1"
 
@@ -78,6 +82,9 @@ gem "whois", "~> 4.0", require: false
 
 gem "whois-parser", "~> 1.0", require: false
 
+# pagination support for models
+gem "will_paginate"
+
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
   gem "byebug", platform: :mri
@@ -114,6 +121,8 @@ group :test do
   gem 'minitest', '5.10.3'
 
   gem "webmock", "~> 3.0"
+
+  gem "rails-controller-testing"
 end
 
 group :production do

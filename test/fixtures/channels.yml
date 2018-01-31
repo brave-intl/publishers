@@ -1,0 +1,95 @@
+default: &default
+  publisher: default
+  details: default_details (SiteChannelDetails)
+  verified: false
+
+new_site:
+  publisher: default
+  details: new_site_details (SiteChannelDetails)
+  verified: false
+
+verified:
+  publisher: verified
+  details: verified_details (SiteChannelDetails)
+  verified: true
+
+completed:
+  publisher: completed
+  details: completed_details (SiteChannelDetails)
+  verified: true
+
+stale:
+  created_at: <%= Time.now - 10.weeks %>
+  updated_at: <%= Time.now - 10.weeks %>
+  publisher: stale
+  details: stale_details (SiteChannelDetails)
+  verified: false
+
+fake1:
+  publisher: fake1
+  details: fake1_details (SiteChannelDetails)
+  verified: false
+
+fake2:
+  publisher: fake2
+  details: fake2_details (SiteChannelDetails)
+  verified: false
+
+uphold_connected:
+  publisher: uphold_connected
+  details: uphold_connected_details (SiteChannelDetails)
+  verified: true
+
+youtube_initial:
+  publisher: youtube_initial
+  details: youtube_initial_details (YoutubeChannelDetails)
+  verified: true
+
+youtube_new:
+  publisher: youtube_new
+  details: youtube_new_details (YoutubeChannelDetails)
+  verified: true
+
+google_verified:
+  publisher: google_verified
+  details: google_verified_details (YoutubeChannelDetails)
+  verified: true
+
+global_yt1:
+  publisher: global_media_group
+  details: global_yt1_details (YoutubeChannelDetails)
+  verified: true
+
+global_yt2:
+  publisher: global_media_group
+  details: global_yt2_details (YoutubeChannelDetails)
+  verified: true
+
+global_verified:
+  publisher: global_media_group
+  details: global_verified_details (SiteChannelDetails)
+  verified: true
+
+global_inprocess:
+  publisher: global_media_group
+  details: global_inprocess_details (SiteChannelDetails)
+  verified: false
+
+global_abandoned:
+  publisher: global_media_group
+  created_at: <%= Time.now - 20.weeks %>
+  updated_at: <%= Time.now - 20.weeks %>
+  details: global_abandoned_details (SiteChannelDetails)
+  verified: false
+
+small_media_group_to_delete:
+  publisher: small_media_group
+  details: to_delete_details (SiteChannelDetails)
+  verified: true
+
+small_media_group_to_verify:
+  publisher: small_media_group
+  created_at: <%= Time.now - 20.weeks %>
+  updated_at: <%= Time.now - 20.weeks %>
+  details: to_verify_details (SiteChannelDetails)
+  verified: false

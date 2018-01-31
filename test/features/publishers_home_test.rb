@@ -6,8 +6,8 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   test "land page renders, can navigate to log in" do
     visit root_path
     assert_content page, "Brave Payments"
-    click_link('Log in')
-    assert_content page, "Log in to Brave Payments"
+    click_link('Log In')
+    assert_content page, "Log In"
   end
 
   test "publishers page renders, 'edit contact' opens form, name can be changed" do
@@ -27,6 +27,17 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
     assert_content page, new_name
     refute_content 'Update'
-  end
 
+    # Ensure that form has been reset and can be resubmitted
+
+    click_link('Edit Contact')
+
+    new_name = 'Thomas the Tank Engine'
+    fill_in 'update_contact_name', with: new_name
+
+    click_button('Update')
+
+    assert_content page, new_name
+    refute_content 'Update'
+  end
 end

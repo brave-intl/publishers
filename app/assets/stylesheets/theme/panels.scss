@@ -1,0 +1,113 @@
+$brave-panels-borderRadius: 8px;
+
+.single-panel {
+
+  &--wrapper {
+    @include make-col-ready();
+    @include media-breakpoint-up(sm) {
+      @include make-col(10);
+      @include make-col-offset(1);
+    }
+    @include media-breakpoint-up(md) {
+      @include make-col(8);
+      @include make-col-offset(2);
+    }
+    @include media-breakpoint-up(lg) {
+      @include make-col(6);
+      @include make-col-offset(3);
+    }
+
+    background-color: white;
+    border-radius: $brave-panels-borderRadius;
+    box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
+
+    &--medium {
+      @include media-breakpoint-up(sm) {
+        @include make-col(10);
+        @include make-col-offset(1);
+      }
+      @include media-breakpoint-up(md) {
+        @include make-col(10);
+        @include make-col-offset(1);
+      }
+    }
+  }
+
+  &--content {
+    @include make-row();
+    padding: $spacer*3 $spacer $spacer*2;
+    text-align: center;
+    &--email-sent {
+      @include media-breakpoint-up(lg) {
+        background-image: url(asset-path("email-2@1x.png"));
+        background-position: top 59px right 60px;
+        background-repeat: no-repeat;
+        padding-top: $spacer*9;
+        padding-bottom: $spacer*9;
+      }
+    }
+    &--alert {
+      padding: $spacer $spacer $spacer;
+      background: $braveError-Background;
+      color: $braveError-Foreground;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+    }
+    &--warning {
+      padding: $spacer $spacer $spacer;
+      background: $braveWarning-Background;
+      color: $braveWarning-Foreground;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+    }
+    &--notice {
+      padding: $spacer $spacer $spacer;
+      background: $braveInfo-Background;
+      color: $braveInfo-Foreground;
+      border-bottom: 1px solid $braveInfo-Border;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+      a {
+        text-decoration: underline;
+      }
+    }
+    > form, > div {
+      width: 100%;
+    }
+  }
+
+  &--headline {
+    width: 100%;
+    margin-bottom: $spacer*2;
+  }
+
+  &--footer {
+    width: 100%;
+    margin-top: $spacer*2;
+    margin-bottom: $spacer;
+    text-align: center;
+  }
+}
+
+.icon-and-text {
+  &--wrapper {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  &--icon {
+    flex: 0 0 0;
+    align-self: center;
+    margin: 0 14px 0 6px;
+    line-height: 0;
+    @include media-breakpoint-down(xs) {
+      display: none;
+    }
+  }
+  &--text {
+    text-align: left;
+    flex: 1 1 100%;
+    margin: auto 0;
+  }
+}

@@ -1,11 +1,13 @@
-@import "variables/**/*";
+// Configuration
+@import "fonts";
+@import "colors";
+@import "bootstrap-config";
 
 // Vendor
-@import "bootstrap-sprockets";
 @import "bootstrap-custom";
-@import "css-modal/modal";
 
-@import "shared/**/*";
-@import "partials/**/*";
-@import "layouts/**/*";
-@import "application/**/*";
+// Application
+@import "application-config";
+@import "components/**/*";
+@import "theme/**/*";
+@import "pages/**/*";

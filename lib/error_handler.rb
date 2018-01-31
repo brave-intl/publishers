@@ -22,13 +22,17 @@ module ErrorHandler
       if publisher = introspect_publisher
         Raven.user_context(
           publisher_id: publisher.id,
-          brave_publisher_id: publisher.brave_publisher_id
+          email: publisher.email
         )
       end
       Raven.capture_exception(exception)
     else
       Rails.logger.warn(exception)
     end
+
+    # re-raise the exception now that it's been captured by sentry-raven or logged
+    # so that the standard rails error flow can happen
+    raise exception
   end
 
   def introspect_publisher

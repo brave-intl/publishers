@@ -1,0 +1,150 @@
+$menuColor: #222326
+$menuGray: #818589
+
+.navbar-default .navbar-brand
+  color: $brandColor
+  font-weight: 600
+.navbar
+  margin-bottom: 0px
+  height: 80px
+  padding-top: 15px
+  .container-fluid
+    .navbar-brand
+      margin-left: -10px
+
+.navbar-static-top
+  z-index: 1000
+  border-width: 0 0 0px
+.nav
+  padding: 10px 0
+  .menu-container
+    height: 50px
+    margin-top: 10px
+  .brave-logo
+    display: inline-block
+    margin-right: 8px
+    margin-left: 25px
+    height: 32px
+    width: 27px
+  img.verified-icon
+    margin-right: 8px
+  .btn-secondary
+    margin-top: -5px
+    margin-right: 25px
+  .user-menu
+    display: inline-block
+    position: relative
+    margin: -10px 25px -10px 0
+    padding: 15px 50px 15px 45px
+    cursor: pointer
+    color: $menuColor
+    .user-avatar
+      position: absolute
+      left: 0
+      top: 9px
+      width: 36px
+      height: 36px
+      border: solid 1px #d3d5d7
+      border-radius: 18px
+      overflow: hidden
+      svg
+        width: 34px
+        height: 34px
+    .user-lock
+      position: absolute
+      right: 25px
+      top: 20px
+      width: 15px
+      height: 15px
+      line-height: 15px
+    .user-arrow
+      position: absolute
+      right: 0
+      top: 20px
+      width: 15px
+      height: 15px
+      line-height: 15px
+      transition: 0.3s
+    .user-dropdown
+      display: none
+      position: absolute
+      right: 0
+      top: 100%
+      background: white
+      border-radius: 4px
+      box-shadow: 2px 2px 0 0 rgba(47,48,50,0.15)
+      .user-info
+        display: block
+        position: relative
+        padding: 30px 20px 30px 74px
+        color: $menuColor
+        text-decoration: none
+        .user-avatar
+          left: 20px
+          top: 50%
+          margin-top: -22px
+          width: 44px
+          height: 44px
+          border-radius: 22px
+          svg
+            width: 42px
+            height: 42px
+        .user-name
+          font-size: 20px
+          line-height: 1
+          margin-bottom: 5px
+          white-space: nowrap
+        .user-email
+          font-size: 14px
+          line-height: 1
+          color: $menuGray
+      ul.user-links
+        list-style-type: none
+        margin: 0
+        padding: 0
+        li
+          a
+            display: block
+            padding: 20px
+            text-align: center
+            border-top: solid 1px #e7ebee
+            font-size: 16px
+            line-height: 1
+            color: $menuColor
+            &:hover,
+            &:focus
+              color: $linkColor
+              text-decoration: none
+            .user-links-lock
+              position: relative
+              padding: 0 25px
+              .user-links-lock-icon
+                position: absolute
+                left: 0
+                top: 50%
+                margin-top: -7.5px
+                width: 15px
+                height: 15px
+                line-height: 15px
+          &:last-child
+            a
+              padding-bottom: 30px
+    .user-menu-trigger
+      opacity: 0
+      display: block
+      position: absolute
+      z-index: 5
+      top: 0
+      right: 0
+      bottom: 0
+      left: 0
+      width: 100%
+      height: 100%
+      margin: 0
+      padding: 0
+      cursor: pointer
+      &:checked
+        & ~ .user-arrow
+          transform: rotate(180deg)
+        & ~ .user-dropdown
+          display: block
