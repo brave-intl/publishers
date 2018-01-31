@@ -38,7 +38,7 @@ class PublishersController < ApplicationController
     only: %i(home)
 
   def sign_up
-
+    @publisher = Publisher.new(publisher_create_auth_token_params)
   end
 
   def create
@@ -162,6 +162,7 @@ class PublishersController < ApplicationController
   end
 
   def create_auth_token
+    email = publisher_create_auth_token_params[:email]
     @publisher = Publisher.new(publisher_create_auth_token_params)
     @should_throttle = should_throttle_create_auth_token? || params[:captcha]
     throttle_legit =
@@ -173,13 +174,17 @@ class PublishersController < ApplicationController
       return
     end
 
-    emailer = PublisherLoginLinkEmailer.new(email: publisher_create_auth_token_params[:email])
+    emailer = PublisherLoginLinkEmailer.new(email: email)
 
     if emailer.perform
       # Success shown in view #create_auth_token
     else
       # Failed to find publisher
-      flash.now[:alert_html_safe] = t('.unfound_alert_html', link: sign_up_publishers_path)
+      flash.now[:alert_html_safe] = t('.unfound_alert_html', {
+        new_publisher_path: sign_up_publishers_path(publisher: {email: email}),
+        create_publisher_path: publishers_path(email: email),
+        email: ERB::Util.html_escape(email)
+      })
       render(:new_auth_token)
     end
   end
