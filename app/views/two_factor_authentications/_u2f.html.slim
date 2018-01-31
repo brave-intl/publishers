@@ -19,7 +19,7 @@ div.js-feature-u2f-available
 
   - if @totp_enabled
     .col-small-centered
-      p.two-factor-authentication-alternative
+      p.two-factor-authentication--alternative-prompt
         = t(".totp_alternative_available")
         br
         = link_to t(".totp_alternative_link"), two_factor_authentications_path(request_totp: true)
@@ -27,14 +27,16 @@ div.js-feature-u2f-available
 div.js-feature-u2f-unavailable
 
   - if @totp_enabled
+    h3.single-panel--headline = t ".heading"
 
-    = render "totp" do
-      .col-small-centered
-        p.alert.alert-warning = t("two_factor_authentications.u2f.unavailable.totp_available")
-        br
+    .col-small-centered
+        p = render "application/usb"
+        hr.two-factor-authentication--alternative-hr
+        p
+          = link_to t(".u2f_unavailable_totp_alternative_link"), two_factor_authentications_path(request_totp: true), class: 'btn btn-primary btn-wide'
 
   - else
-    h3.single-panel--headline = t ".unavailable.heading"
+    h3.single-panel--headline = t ".heading"
     .col-small-centered
-      p.alert.alert-warning == t ".unavailable.body_html"
-      br
+      p = t ".body"
+      p = render "application/usb"

@@ -18,7 +18,7 @@ h3.single-panel--headline = t(".heading")
 
   - if @u2f_enabled
     div.js-feature-u2f-available
-      p.two-factor-authentication-alternative
+      p.two-factor-authentication--alternative-prompt
         = t(".u2f_alternative_available")
         br
         = link_to t(".u2f_alternative_link"), two_factor_authentications_path

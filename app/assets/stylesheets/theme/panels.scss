@@ -52,6 +52,9 @@ $brave-panels-borderRadius: 8px;
       color: $braveError-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+      b, strong {
+        color: inherit;
+      }
     }
     &--warning {
       padding: $spacer $spacer $spacer;
@@ -59,6 +62,9 @@ $brave-panels-borderRadius: 8px;
       color: $braveWarning-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+      b, strong {
+        color: inherit;
+      }
     }
     &--notice {
       padding: $spacer $spacer $spacer;
@@ -69,6 +75,9 @@ $brave-panels-borderRadius: 8px;
       border-top-right-radius: $brave-panels-borderRadius;
       a {
         text-decoration: underline;
+      }
+      b, strong {
+        color: inherit;
       }
     }
     > form, > div {

@@ -4,46 +4,55 @@
   .error-group--wrapper.js-authenticate-u2f-error
 
     .js-u2f-error-bad-request
-      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
         .icon-and-text--icon
-          = render 'icon_circled_x'
+          = render "icon_circled_x"
         .icon-and-text--text
           = t ".u2f-error.bad-request"
 
     .js-u2f-error-configuration-unsupported
-      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
         .icon-and-text--icon
-          = render 'icon_circled_x'
+          = render "icon_circled_x"
         .icon-and-text--text
           = t ".u2f-error.configuration-unsupported"
 
     .js-u2f-error-device-ineligible
-      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
         .icon-and-text--icon
-          = render 'icon_circled_x'
+          = render "icon_circled_x"
         .icon-and-text--text
           = t ".u2f-error.device-ineligible"
 
     .js-u2f-error-other-error
-      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
         .icon-and-text--icon
-          = render 'icon_circled_x'
+          = render "icon_circled_x"
         .icon-and-text--text
           = t ".u2f-error.other-error"
 
     .js-u2f-error-timeout
-      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
         .icon-and-text--icon
-          = render 'icon_circled_x'
+          = render "icon_circled_x"
         .icon-and-text--text
           = t ".u2f-error.timeout"
 
     .js-u2f-error-implementation-incomplete
-      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
         .icon-and-text--icon
-          = render 'icon_circled_x'
+          = render "icon_circled_x"
         .icon-and-text--text
           = t ".u2f-error.implementation-incomplete"
+
+  - if @u2f_authentication_attempt
+    div.js-feature-u2f-unavailable
+      .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render "icon_circled_bang_warning"
+        .icon-and-text--text
+          == t ".u2f_unavailable_html"
+
 
   .single-panel--content
     - if @u2f_authentication_attempt
