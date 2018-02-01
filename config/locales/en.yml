@@ -364,11 +364,12 @@ en:
       %{download_link} the verification file.
     verification_upload_html: |
       Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you
-      don't have one).
+      don't have one). <span class="file-note">* Do not change the file name or file content.</span>
     verification_verify: "Make sure the verification file is placed in the folder and click verify."
     verification_verify_note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
     verification_file_contents: "File contents:"
     verification_option_place_trusted_file: "Place a Trusted File into your Domain"
+    verification_file_name: "File name:"
   static:
     landing_header-welcome: "Welcome to"
     landing_header: "Brave Payments"

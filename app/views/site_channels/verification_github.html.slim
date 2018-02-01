@@ -20,6 +20,8 @@
             .pull-left
               = image_tag("file@1x.png", class: "instruction-img")
             .pull-right
+              .file-name-header= t("site_channels.verification_file_name")
+              .file-name= @public_file_name
               .file-content-header= t("site_channels.verification_file_contents")
               .file-content
                 = simple_format h site_channel_filter_public_file_content(current_channel, @public_file_content)
