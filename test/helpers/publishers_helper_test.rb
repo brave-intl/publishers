@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'eyeshade/wallet'
 
 class PublishersHelperTest < ActionView::TestCase
   # test "should render brave publisher id as a link" do
@@ -30,5 +31,52 @@ class PublishersHelperTest < ActionView::TestCase
 
   test "can extract the uuid from an owner_identifier" do
     assert_equal "b8317d8a-78a4-48a6-9eeb-a2674c6455c4", publisher_id_from_owner_identifier("publishers#uuid:b8317d8a-78a4-48a6-9eeb-a2674c6455c4")
+  end
+
+  test "publisher_humanize_balance should return a formatted & converted wallet balance" do
+    class FakePublisher
+      attr_reader :default_currency, :wallet
+
+      def initialize(wallet_json:)
+        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json) if wallet_json
+        @default_currency = 'USD'
+      end
+    end
+
+    publisher = FakePublisher.new(
+      wallet_json: {
+        "status" => {
+          "provider" => "uphold"
+        },
+        "contributions" => {
+          "amount" => "9001.00",
+          "currency" => "USD",
+          "altcurrency" => "BAT",
+          "probi" => "38077497398351695427000"
+        },
+        "rates" => {
+          "BTC" => 0.00005418424016883016,
+          "ETH" => 0.000795331082073117,
+          "USD" => 0.2363863335301452,
+          "EUR" => 0.20187818378874756,
+          "GBP" => 0.1799810085548496
+        },
+        "wallet" => {
+          "provider" => "uphold",
+          "authorized" => true,
+          "preferredCurrency" => 'USD',
+          "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
+        }
+      }
+    )
+    assert_not_nil publisher.wallet
+    assert_equal "9001.00", publisher_humanize_balance(publisher, "USD")
+
+    publisher = FakePublisher.new(
+      wallet_json: nil
+    )
+
+    assert_nil publisher.wallet
+    assert_equal "Unavailable", publisher_humanize_balance(publisher, "USD")
   end
 end

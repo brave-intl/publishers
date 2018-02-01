@@ -15,6 +15,7 @@
 clifton.sh
 dump.rdb
 yarn-error.log
+.DS_Store
 
 # Ignore Byebug command history file.
 .byebug_history

@@ -27,6 +27,17 @@ $brave-panels-borderRadius: 8px;
         @include make-col-offset(1);
       }
       @include media-breakpoint-up(md) {
+        @include make-col(8);
+        @include make-col-offset(2);
+      }
+    }
+
+    &--large {
+      @include media-breakpoint-up(sm) {
+        @include make-col(10);
+        @include make-col-offset(1);
+      }
+      @include media-breakpoint-up(md) {
         @include make-col(10);
         @include make-col-offset(1);
       }
@@ -37,6 +48,7 @@ $brave-panels-borderRadius: 8px;
     @include make-row();
     padding: $spacer*3 $spacer $spacer*2;
     text-align: center;
+
     &--email-sent {
       @include media-breakpoint-up(lg) {
         background-image: url(asset-path("email-2@1x.png"));
@@ -52,6 +64,9 @@ $brave-panels-borderRadius: 8px;
       color: $braveError-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+      b, strong {
+        color: inherit;
+      }
     }
     &--warning {
       padding: $spacer $spacer $spacer;
@@ -59,6 +74,9 @@ $brave-panels-borderRadius: 8px;
       color: $braveWarning-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+      b, strong {
+        color: inherit;
+      }
     }
     &--notice {
       padding: $spacer $spacer $spacer;
@@ -70,8 +88,12 @@ $brave-panels-borderRadius: 8px;
       a {
         text-decoration: underline;
       }
+      b, strong {
+        color: inherit;
+      }
     }
-    > form, > div {
+    > form,
+    > div {
       width: 100%;
     }
   }
@@ -79,6 +101,11 @@ $brave-panels-borderRadius: 8px;
   &--headline {
     width: 100%;
     margin-bottom: $spacer*2;
+  }
+
+  &--list {
+    padding-left: 0;
+    list-style-position: inside;
   }
 
   &--footer {

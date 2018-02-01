@@ -1,3 +1,27 @@
-.btn-wide {
-  width: 100%;
+.btn-link-primary {
+  // Modified version of .btn-link: https://git.io/vNHmB
+  font-weight: $font-weight-normal;
+  color: $primary;
+  background-color: transparent;
+
+  @include hover {
+    color: $primary;
+    text-decoration: none;
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  &:focus,
+  &.focus {
+    text-decoration: $primary;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  &:disabled,
+  &.disabled {
+    color: $btn-link-disabled-color;
+  }
+
+  // No need for an active state here
 }

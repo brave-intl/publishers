@@ -35,7 +35,7 @@ module PublishersHelper
   end
 
   def publisher_humanize_balance(publisher, currency)
-    if balance = publisher.wallet.contribution_balance
+    if balance = publisher.wallet && publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
     else
       I18n.t("publishers.balance_error")

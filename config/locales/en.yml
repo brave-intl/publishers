@@ -50,6 +50,10 @@ en:
     nav:
       security: Security
       log_out: Log Out
+  modal_partials:
+    two_factor_registration_complete:
+      headline: "Great!"
+      body: "Two-factor Authentication has been enabled for your account"
   publishers:
     add_channel: "Add Channel"
     add_channel_cta: "Add a website or YouTube channel to see how much your fans on Brave have contributed so far."
@@ -63,6 +67,7 @@ en:
     contact: "Contact"
     contact_name_placeholder: "First and last name"
     resend_confirmation_email_done: "The confirmation email has been resent."
+    dashboard: "Dashboard"
     dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
     dashboard_uphold_header: "Your Uphold Wallet"
     dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
@@ -72,7 +77,6 @@ en:
     dashboard_channel_lets_finish: "Let's Finish"
     dashboard_channel_remove_verified_channel: "Remove Channel"
     dashboard_channel_remove_unverified_channel: "Remove"
-    dashboard_channel_confirm_remove_channel: "Are you sure that you want to remove the channel '%{channel_name}'"
     dashboard_channel_verified: "Verified"
     current_deposit_currency: "Current deposit currency: BAT to "
     edit_contact: "Edit Contact"
@@ -128,10 +132,10 @@ en:
     pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
     pub_type_site_individual_creator_note_html: "You will need to authenticate with Google to demonstrate that you own the channel."
     channel_taken_modal:
-      title: "Unable to add channel!"
-      leadin: "The following %{channel_type} has already been added and verified."
+      title: "Channel taken"
+      leadin: "The following %{channel_type} has already been added to a different account."
       registration_date: "Date"
-      registered_by: "Registered by"
+      registered_by: "Added by"
       default_registerer: "A channel manager"
       contact_support_html: "Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error."
       ok: "OK"
@@ -148,8 +152,9 @@ en:
       access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
     create_auth_token:
       unfound_alert_html: |
-        Couldn't find a publisher with that email address. Please try again or
-        <a href="%{link}">sign up for an account</a>.
+        Couldn't find a publisher with that email address. Please try again, or
+        you may
+        <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.
       heading: Login email sent!
       body: Please check your email for the login link.
     create_done:
@@ -168,6 +173,12 @@ en:
         link: Sign Up
     sign_up:
       heading: Join Brave Payments
+    remove_channel_modal:
+      headline: Remove Channel?
+      intro: "You are removing the channel:"
+      final_confirmation: Are you sure you want to remove this channel?
+      deny: Do Not Remove
+      confirm: Remove Channel
   publisher_mailer:
     shared:
       contact_help: "If you have any questions, please contact us"
@@ -269,6 +280,7 @@ en:
     api_error: "Your request couldn't be processed due to an API error."
     app_title: Brave Payments
     cancel: "Cancel"
+    close: "Close"
     continue: "Continue"
     email_address: "Email address"
     existing_account: "Already have an account?"
@@ -379,18 +391,14 @@ en:
       body: Insert your security key and press the button on the key when blinking.
       totp_alternative_available: Don't have your security key?
       totp_alternative_link: Use authentication code instead.
+      u2f_unavailable_totp_alternative_link: Use Authentication Code Instead
       submit_value: Try Again
-      unavailable:
-        totp_available: |
-          Your preferred method of two-factor authentication is security key.
-          But it's not supported by your current browser. Switch to Google
-          Chrome or Opera or login using authentication code below.
-        heading: Security key not supported by your browser
-        body_html: |
-          Switch to Google Chrome or Opera to log in. We recommend setting up
-          authenticator app as a backup method for two-factor authentication
-          for this situation.
     index:
+      u2f_unavailable_html: |
+        <strong>Security key not supported by your browser.</strong><br>
+        Switch to Google Chrome or Opera browser to log in. We also recommend
+        setting up authenticator app as a backup method for two-factor
+        authentication for this situation.
       u2f-error:
         bad-request: |
           There was an unexpected error in the authentication request made by
@@ -486,11 +494,11 @@ en:
       skip: Skip for now
       setup: Set Up 2FA
   totp_registrations:
+    create:
+      invalid_code: Invalid 6-digit code. Please try again.
     new:
       heading: Set Up Authenticator App
-      warning: |
-        You already have authentication code configured.
-        Reconfiguring will invalidate your existing authentication code devices.
+      warning: Reconfiguring will invalidate your existing authentication code devices.
       step_1: Install an authenticator app on your mobile phone.
       step_2: Scan the QR code below with your app.
       step_2_alt: "If you can't scan the QR code, enter this code:"

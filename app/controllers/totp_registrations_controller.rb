@@ -1,5 +1,8 @@
+require "concerns/two_factor_registration"
+
 class TotpRegistrationsController < ApplicationController
   helper QrCodeHelper
+  include TwoFactorRegistration
 
   before_action :authenticate_publisher!
 
@@ -15,10 +18,11 @@ class TotpRegistrationsController < ApplicationController
       current_publisher.totp_registration.destroy! if current_publisher.totp_registration.present?
       totp_registration.publisher = current_publisher
       totp_registration.save!
-      redirect_to two_factor_registrations_path
+
+      handle_redirect_after_2fa_registration
     else
-      Rails.logger.info "ROTP::TOTP! Failed to verify unsaved #{@totp_registration} for publisher #{current_publisher} with password '#{params[:totp_password]}'"
-      flash[:alert] = "Invalid 6-digit code. Please try again."
+      Rails.logger.info "ROTP::TOTP! Failed to verify unsaved #{totp_registration} for publisher #{current_publisher} with password '#{params[:totp_password]}'"
+      flash[:alert] = t(".invalid_code")
       redirect_to new_totp_registration_path
     end
   end

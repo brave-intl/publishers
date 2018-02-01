@@ -1,0 +1,105 @@
+.two-factor-enabled-status {
+  margin-bottom: $spacer*2;
+  text-align: left;
+
+  @include media-breakpoint-up(md) {
+    text-align: right;
+  }
+
+  span.two-factor-enabled,
+  span.two-factor-disabled {
+    border-bottom: solid 3px $braveSuccess;
+    color: $braveSuccess;
+    font-weight: 600;
+    padding: 0.25em;
+    white-space: nowrap;
+  }
+
+  span.two-factor-disabled {
+    border-bottom-color: $braveFailure;
+    color: $braveFailure;
+  }
+}
+
+p.two-factor-method-disabled {
+  color: $braveGray-6;
+}
+
+span.totp-enabled {
+  color: $braveSuccess;
+}
+
+.card {
+  margin-bottom: $spacer;
+
+  .card-header:last-child {
+    border-bottom: 0;
+  }
+
+  .card-icon {
+    float: left;
+    margin-right: 15px;
+  }
+}
+
+span.tf-tooltip {
+  position: relative;
+  display: inline-block;
+  color: $link-color;
+
+  span.icon {
+    position: relative;
+    top: 2px;
+  }
+
+  span.tf-tooltip-content {
+    display: none;
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    bottom: 100%;
+    width: 400px;
+    margin-left: -200px;
+    padding: 30px 40px;
+    background: white;
+    border: solid 1px $braveGray-8;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 0 rgba(34,35,38,0.15);
+    color: $braveText-3;
+    font-size: 14px;
+    line-height: 22px;
+
+    &::after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      margin-top: -5px;
+      margin-left: -5px;
+      background: white;
+      transform: rotate(45deg);
+      border: solid 1px $braveGray-8;
+      border-top-color: transparent;
+      border-left-color: transparent;
+    }
+
+    span.tf-tooltip-content-heading {
+      display: block;
+      font-family: $headings-font-family;
+      font-weight: $headings-font-weight;
+      color: $braveAccent-Dark;
+    }
+
+    span.tf-tooltip-content-content {
+      display: block;
+    }
+  }
+
+  &:hover {
+    span.tf-tooltip-content {
+      display: block;
+    }
+  }
+}
