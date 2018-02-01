@@ -10,6 +10,13 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     assert_content page, "Log In"
   end
 
+  test "land page renders, can navigate to sign up" do
+    visit root_path
+    assert_content page, "Brave Payments"
+    click_link('Get Started')
+    assert_content page, "Join Brave Payments"
+  end
+
   test "publishers page renders, 'edit contact' opens form, name can be changed" do
     publisher = publishers(:completed)
     sign_in publisher
