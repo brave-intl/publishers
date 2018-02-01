@@ -6,10 +6,6 @@ class PromoRegistrationsController < ApplicationController
   before_action :require_promo_running, only: %i(create)
 
   def index
-    @publisher_promo_status = @publisher.promo_status(promo_running?)
-    @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
-    
-    render(:index)
   end
 
   def create
@@ -29,13 +25,15 @@ class PromoRegistrationsController < ApplicationController
   private
 
   def require_promo_running
-    return if promo_running?
-    redirect_to index
+    unless promo_running?
+      render(:index)
+    end
   end
 
   def require_publisher_promo_disabled
-    return unless @publisher.promo_enabled_2018q1
-    redirect_to index
+    if @publisher.promo_enabled_2018q1
+      render(:index)
+    end
   end
   
   def find_publisher
@@ -50,6 +48,9 @@ class PromoRegistrationsController < ApplicationController
         redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
       end
     end
+    
+    @publisher_promo_status = @publisher.promo_status(promo_running?)
+    @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
   # Rescue when no promo_token found in params
   rescue => e
     require "sentry-raven"

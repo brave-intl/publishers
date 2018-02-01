@@ -43,6 +43,21 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal publisher.promo_enabled_2018q1, false
   end
 
+  test "#create does nothing and renders _active if promo already enabled " do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    publisher.promo_enabled_2018q1 = true
+    publisher.save
+
+    # verify _over is rendered
+    post promo_registrations_path
+    assert_select("[data-test=promo-active]")
+
+    # verify publisher has not enabled promo
+    # assert_equal publisher.promo_enabled_2018q1, false
+  end
+
   test "#create activates the promo, renders _activated_verified and enables promo for verfied publisher, sends email" do
     publisher = publishers(:completed)
     sign_in publisher
