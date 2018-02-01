@@ -38,7 +38,7 @@ class PublishersController < ApplicationController
     only: %i(home)
 
   def sign_up
-    @publisher = Publisher.new(publisher_create_auth_token_params)
+    @publisher = Publisher.new(email: params[:email])
   end
 
   def create
@@ -181,7 +181,7 @@ class PublishersController < ApplicationController
     else
       # Failed to find publisher
       flash.now[:alert_html_safe] = t('.unfound_alert_html', {
-        new_publisher_path: sign_up_publishers_path(publisher: {email: email}),
+        new_publisher_path: sign_up_publishers_path(email: email),
         create_publisher_path: publishers_path(email: email),
         email: ERB::Util.html_escape(email)
       })
