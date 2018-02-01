@@ -74,19 +74,21 @@
         p
           = t ".u2f.intro"
           br
-          span.warning= t ".u2f.intro_warning"
-          '
-          span.tf-tooltip
-            span.icon= render "icon_help"
-            span.tf-tooltip-content
-              span.tf-tooltip-content-heading= t ".u2f.browser.heading"
-              span.tf-tooltip-content-content== t ".u2f.browser.content_html"
+          small
+            = "*#{t ".u2f.intro_warning"} "
+            span.tf-tooltip
+              span.icon= render "icon_help"
+              span.tf-tooltip-content
+                span.tf-tooltip-content-heading= t ".u2f.browser.heading"
+                span.tf-tooltip-content-content== t ".u2f.browser.content_html"
           br
-          span.tf-tooltip.link-color
-            = "*#{t(".u2f.device.tooltip")}"
-            span.tf-tooltip-content
-              span.tf-tooltip-content-heading= t ".u2f.device.heading"
-              span.tf-tooltip-content-content== t ".u2f.device.content_html"
+          small
+            = "*#{t(".u2f.device.tooltip")} "
+            span.tf-tooltip
+              span.icon= render "icon_help"
+              span.tf-tooltip-content
+                span.tf-tooltip-content-heading= t ".u2f.device.heading"
+                span.tf-tooltip-content-content== t ".u2f.device.content_html"
         - if @u2f_registrations.any?
           p= render @u2f_registrations
         - else
