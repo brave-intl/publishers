@@ -351,10 +351,10 @@ en:
      Follow the steps below to verify your Wordpress site.<br />
      (Hmmm, my site is a <a href="%{choose_path}">normal website</a> or <a href="%{github_path}">on GitHub</a>.)
     verification_option_wordpress_install_plugin_html: |
-      <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
+      <p class="li-text"><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a> that makes the
        entire process a snap.</p>
-      <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/well-known-uris/">
-      https://wordpress.org/plugins/well-known-uris/</a>)</p>
+      <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-payments-verification/">
+      https://wordpress.org/plugins/brave-payments-verification/</a>)</p>
     verification_option_wordpress_verification_token: "Copy the verification code below into the plugin."
     verification_option_wordpress_token: "Verification code:"
     verification_option_wordpress_help_verify: "Once the code is pasted in, click verify."
