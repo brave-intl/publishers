@@ -79,6 +79,13 @@ class SiteChannelsController < ApplicationController
   def verification_github
     generator = SiteChannelVerificationFileGenerator.new(site_channel: current_channel)
     @public_file_content = generator.generate_file_content
+    @public_file_name = generator.filename
+  end
+
+  def verification_public_file
+    generator = SiteChannelVerificationFileGenerator.new(site_channel: current_channel)
+    @public_file_content = generator.generate_file_content
+    @public_file_name = generator.filename
   end
 
   # TODO: Rate limit
