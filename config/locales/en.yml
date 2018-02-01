@@ -46,6 +46,9 @@ en:
       publisher: "Publisher"
     shared:
       errors: "There were errors saving your request:"
+  announcement_mailer:
+    multi_chan:
+      subject: "BAT Publishers: Multi-property support now live!"
   application:
     nav:
       security: Security

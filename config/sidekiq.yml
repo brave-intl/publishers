@@ -5,6 +5,7 @@
   - mailers
   - scheduler
   - default
+  - low
 :schedule:
   EnqueueSiteChannelVerifications:
     cron: "42 * * * *"

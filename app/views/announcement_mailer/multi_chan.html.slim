@@ -1,0 +1,47 @@
+p Dear publisher,
+
+p
+  span> We're reaching out because you've registered as a Verified Publisher with the Brave browser via
+  = link_to("Brave Payments", "https://publishers.basicattentiontoken.org")
+  span .
+
+p We recently upgraded the Publishers website to allow a single publisher account to manage multiple properties, where "property" is defined as a website or a YouTube channel. We heard from many of you who requested this feature and would like to explain why we made this change, how it might affect you, and how to give feedback.
+
+
+h3 Previously:
+ul
+  li Publishers accounts only had one property each.
+  li To manage multiple properties you had to create separate Publishers accounts for each property. This was cumbersome for publishers with many properties.
+  li Login was done by entering the web domain and clicking a link in an email; or logging in with Google (YouTube).
+
+h3 Going forward:
+ul
+  li Email addresses are now unique per account.
+  li A single account can have many properties.
+  li Login is done by entering the account email address and clicking a link in an email.
+
+p To match the new workflow, we've consolidated existing accounts by email address.
+
+
+h3 How this might affect you:
+ul
+  li If you have only one account with a website, this won't affect you.
+  li If you have many accounts, under the same email, you now have a single account.
+  li If you have many accounts, under different emails, you will continue to have multiple accounts, one per email.
+  li If you have two factor authentication enabled, it will remain.
+
+h3 Feedback and support:
+
+p If you have feedback or questions, please share them in the Brave Community thread at:
+p = link_to("https://community.brave.com/t/multi-property-support/15228", "https://community.brave.com/t/multi-property-support/15228")
+
+p If you want to report a problem with your account, please send us a message at:
+p= mail_to(Rails.application.secrets[:support_email])
+p Please note our support staff is quite small, however we will do our best to help you.
+
+
+p We hope you enjoy this new functionality as we strive to make Brave Payments efficient and easy to use. Thanks for your patience, and thank you for supporting the Basic Attention Token.
+
+div Ayumi Yu
+div Technical Lead, Brave Payments
+div Brave Software
