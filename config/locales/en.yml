@@ -533,7 +533,7 @@ en:
     dashboard:
       promo_ends_in: "promo ends in"
       days: "days"
-      referral: "referral"
+      downloads: "downloads"
       bonus: "bonus"
       bat: "bat"
       add_channel: "Add a channel below to get the referral link!"

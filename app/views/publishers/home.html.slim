@@ -295,20 +295,20 @@ noscript
             .promo-item-content.promo-item-content-header
               = t("promo.dashboard.promo_ends_in").upcase
             span.promo-item-content.promo-item-content-number
-              = "25 "
+              = promo_ends_in
             span.promo-item-content
              = t("promo.dashboard.days").upcase
           - if current_publisher.has_verified_channel?
             .promo-panel-item
               .promo-item-content.promo-item-content-white.promo-item-content-header
-                = t("promo.dashboard.referral").upcase
+                = t("promo.dashboard.downloads").upcase
               .promo-item-content.promo-item-content-white.promo-item-content-number
-                = "15"
+                = total_possible_referrals(current_publisher)
             .promo-panel-item
               .promo-item-content.promo-item-content-white.promo-item-content-header
                 = t("promo.dashboard.bonus").upcase
               span.promo-item-content.promo-item-content-white.promo-item-content-number
-                = "75"
+                = referral_bonus(current_publisher)
               span.promo-item-content.promo-item-content-white
                 = t("promo.dashboard.bat").upcase
           - else 
