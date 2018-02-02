@@ -46,7 +46,7 @@ class PromoMailerTest < ActionMailer::TestCase
     assert_equal ['brave-publishers@localhost.local'], email.from
     assert_equal [publisher.email], email.to
 
-    referral_link = generate_referral_link(referral_code)
+    referral_link = referral_link(referral_code)
     
     assert_email_body_matches(matcher: referral_link, email: email)
   end
@@ -78,7 +78,7 @@ class PromoMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    referral_link = generate_referral_link(referral_code)
+    referral_link = referral_link(referral_code)
     
     assert_email_body_matches(matcher: referral_link, email: email)  end
 end

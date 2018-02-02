@@ -538,6 +538,8 @@ en:
       bat: "bat"
       add_channel: "Add a channel below to get the referral link!"
     shared:
+      tweet_content: "Please support me by downloading Brave!"
+      tweet: "Tweet"
       promo_period: "Promo period:"
       promo_period_description: "Jan 1 - Feb 1"
       reward: "Reward:"
@@ -545,7 +547,7 @@ en:
       referral_links: "Referral links:"
       referral_link: "Referral Link"
       copy: "Copy"
-      base_referral_link: "brave.com/?ref="
+      base_referral_link: "brave.com/"
   promo_mailer:
     activate_promo_2018q1:
       subject: "Limited Time Offer: Free tokens for your referral!"

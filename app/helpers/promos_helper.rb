@@ -20,10 +20,6 @@ module PromosHelper
     {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}}
   end
 
-  def generate_referral_link(referral_code)
-    "#{I18n.t("promo.shared.base_referral_link")}/#{referral_code.downcase}"
-  end
-
   def promo_ends_in
     Rails.application.secrets[:promo_end_date].present? ? (Rails.application.secrets[:promo_end_date].to_datetime - DateTime.now).to_i : "∞"
   end
@@ -43,5 +39,17 @@ module PromosHelper
     total_possible_referrals = total_possible_referrals(publisher)
     promo_bonus_multiplier = Rails.application.secrets[:promo_bonus_multiplier].to_f
     bonus = total_possible_referrals * promo_bonus_multiplier
+  end
+
+  def referral_link(referral_code)
+    I18n.t("promo.shared.base_referral_link") + referral_code.downcase
+  end
+
+  def tweet_url(referral_link)
+    twitter_preamble = "https://twitter.com/intent/tweet/?text="
+    tweet_content = I18n.t("promo.shared.tweet_content") + "&url=http%3A%2F%2F" + referral_link
+    tweet_content_url = tweet_content.gsub(/\s/, '%20')
+    full_tweet_url = twitter_preamble + tweet_content_url
+    full_tweet_url
   end
 end

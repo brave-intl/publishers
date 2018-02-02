@@ -420,13 +420,13 @@ noscript
               span.promo--referral-link-text.text-center 
                 = t("promo.shared.referral_link")
               span.promo--referral-link.promo--referral-link-hide 
-                = "#{t("promo.shared.base_referral_link")}#{channel.promo_registration.referral_code.downcase}"
+                = referral_link(channel.promo_registration.referral_code)
               span.promo--referral-link-copy.promo--referral-link-copy-hide.copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}"
                 = t("promo.shared.copy")
               span.promo--referral-link-text-mobile.text-center.copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}"
                 = t("promo.shared.referral_link")
               .promo--referral-link-hidden id="#{channel.promo_registration.referral_code.downcase}"
-                = "#{channel.promo_registration.referral_code.downcase}"
+                = referral_link(channel.promo_registration.referral_code)
           - else 
             .channel-status.pull-right
               span= t("publishers.dashboard_channel_verified")

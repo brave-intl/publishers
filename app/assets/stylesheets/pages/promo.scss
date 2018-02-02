@@ -65,6 +65,28 @@
     margin-top: 20px;
   }
   .promo--referral-link-container-container {
+    .promo--twitter-button {
+      background-repeat: no-repeat;
+      border: none;
+      letter-spacing: 1px;
+      color: white;
+      text-decoration: none;
+      width: 40px;
+
+      &-mobile {
+        background: $bravePromo-TwitterBlue;
+        background-image: url(asset-path("icn-twitter.png"));
+        display: none;
+      }
+
+      &-desktop {
+        background-image: url(asset-path("tweet.png"));
+        background-position: center;
+        background-color: white;
+        display: table-cell;
+      }
+    }
+
     .promo--referral-link-container {
       font-size: .8rem;
       background: #edf3f9;
@@ -72,6 +94,7 @@
       height: 40px;
       width: 98%;
       display: table;
+      table-layout: fixed;
 
       .promo--referral-link {
         display: table-cell;
@@ -264,12 +287,36 @@
     .promo--referral-link-container-container {
       margin-left: -30px;
       margin-right: -30px;
-      padding-bottom: 1px;
+      padding-bottom: 80px;
       &-0{
         background: #EFF2F5;
       }
       &-1{
         background: #F7F8F9;
+      }
+      .promo--twitter-button {
+        background-repeat: no-repeat;
+        &:hover, &focus {
+          background-color: $bravePromo-TwitterBlue;
+          outline: 0;
+          border: none;
+        }
+
+        &-desktop {
+          display: none;
+        }
+        &-mobile {
+          float: right;
+          margin-right: 30px;
+          font-size: 13px;
+          width: 125px;
+          height: 35px;
+          background-position: center left 15px;
+          padding-top: 8px;
+          padding-left: 15px;
+          display: inline-block;
+          border-radius: 20px;
+        }
       }
       .promo--referral-link-container {
         width: unset;
