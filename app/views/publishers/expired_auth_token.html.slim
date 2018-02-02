@@ -8,11 +8,11 @@
   .sub-panel.col-center
     .row.col-center
       .col.col-md-12
-        h3.text-center= t("publishers.login_link_expired_title")
+        h3.text-center= t ".heading"
     .row
       .col.col-md-8.col-md-offset-2.text-center.col-center
-        p= t("publishers.login_link_expired_message")
+        p= t ".body"
         = form_for @publisher, {method: :post, url: create_auth_token_publishers_path} do |f|
           = f.hidden_field(:email, :value => @publisher.email)
           .panel-controls.col-center
-            = f.submit(t("publishers.login_link_expired_button"), class: "btn btn-block btn-primary")
+            = f.submit(t(".button"), class: "btn btn-block btn-primary")

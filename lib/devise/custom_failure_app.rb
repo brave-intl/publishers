@@ -14,7 +14,7 @@ class CustomFailureApp < Devise::FailureApp
       end
     elsif warden_message == :timeout && unauthenticated
       # send publishers whose session timed out to login page
-      flash[:alert] = I18n.t("publishers.login_session_expired")
+      flash[:alert] = I18n.t("publishers.devise.login_session_expired")
       new_auth_token_publishers_path
     else
       super

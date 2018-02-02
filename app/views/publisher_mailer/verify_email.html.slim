@@ -1,19 +1,19 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  h3= I18n.t("publisher_mailer.verify_email.title")
+  h3= t ".subject"
 
-p.salutation= t("publisher_mailer.shared.salutation", name: name_from_email(@publisher.pending_email))
+p.salutation= t "publisher_mailer.shared.salutation", name: name_from_email(@publisher.pending_email)
 
-p= t("publisher_mailer.verify_email.body_html")
-div.center= link_to(t("publisher_mailer.verify_email.button"), @private_reauth_url, class: "btn-primary btn-login")
+p= t ".body_html"
+div.center= link_to(t(".button"), @private_reauth_url, class: "btn-primary btn-login")
 p= t("publisher_mailer.shared.signature")
 
 hr
 
 .hint
   p
-    span= t("publisher_mailer.shared.button_not_working")
+    span= "#{t("publisher_mailer.shared.button_not_working")} "
     span= link_to(@private_reauth_url, @private_reauth_url, class: "fallback-link", onMouseOver: "this.style.color='#48494b'", onMouseOut: "this.style.color='#818589'")
 
-  span= "#{t("publisher_mailer.shared.erroneous_email_help")}"
+  span= "#{t("publisher_mailer.shared.erroneous_email_help")} "
   span= mail_to(Rails.application.secrets[:support_email], nil, { onMouseOver: "this.style.color='#48494b'", onMouseOut: "this.style.color='#818589'" })

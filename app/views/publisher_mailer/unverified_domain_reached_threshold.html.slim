@@ -1,17 +1,17 @@
-p.salutation= t("publisher_mailer.unverified_domain_reached_threshold.salutation")
+p.salutation= t ".salutation"
 
-== t("publisher_mailer.unverified_domain_reached_threshold.body_html")
+== t ".body_html"
 
-div.center= link_to(t("publisher_mailer.unverified_domain_reached_threshold.button"), @home_url, class: "btn-primary btn-login")
+div.center= link_to(t(".button"), @home_url, class: "btn-primary btn-login")
 
-== t("publisher_mailer.shared.post_script")
+== t "publisher_mailer.shared.post_script"
 
 hr
 
 .hint
   p
-    span= t("publisher_mailer.unverified_domain_reached_threshold.button_not_working")
+    span= "#{t(".button_not_working")}: "
     span= link_to(@home_url, @home_url, class: "fallback-link", onMouseOver: "this.style.color='#48494b'", onMouseOut: "this.style.color='#818589'")
 
-  span= t("publisher_mailer.shared.erroneous_email_help")
+  span= "#{t("publisher_mailer.shared.erroneous_email_help")} "
   span= mail_to(Rails.application.secrets[:support_email], nil)

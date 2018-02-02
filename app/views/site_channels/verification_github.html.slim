@@ -8,30 +8,30 @@
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.process-panel.col-center
     .content-panel
-      h3= t("site_channels.verification_option_place_trusted_file")
+      h3= t "site_channels.shared.trusted_file"
       = render :partial => 'https_check', :locals => { current_channel: current_channel }
 
       div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
         ol
           li
-            p= t("site_channels.verification_option_github_nojekyll_html")
+            p= t ".nojekyll_html"
           li
-            p= t("site_channels.verification_download_html", download_link: link_to(t("site_channels.verification_download_verification"), download_verification_file_site_channel_path, class: "download-link"))
+            p= t "site_channels.shared.verification_file.download_html", download_link: link_to(t("shared.download"), download_verification_file_site_channel_path, class: "download-link")
             .pull-left
               = image_tag("file@1x.png", class: "instruction-img")
             .pull-right
-              .file-name-header= t("site_channels.verification_file_name")
+              .file-name-header= t("site_channels.shared.verification_file.name")
               .file-name= @public_file_name
-              .file-content-header= t("site_channels.verification_file_contents")
+              .file-content-header= t "site_channels.shared.verification_file.contents"
               .file-content
                 = simple_format h site_channel_filter_public_file_content(current_channel, @public_file_content)
             .clearfix
           li
-            p= t("site_channels.verification_upload_html")
+            p= t "site_channels.shared.verification_file.upload_html"
             = image_tag("upload@1x.png", class: "instruction-img")
           li
-            p= t("site_channels.verification_verify")
-            p.note-text= t("site_channels.verification_verify_note")
+            p= t "site_channels.shared.verification_file.verify"
+            p.note-text= t "site_channels.shared.verification_file.note"
             .panel-controls
               = form_for(current_channel, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
-                = f.submit(t("publishers.verify_button"), class: "btn btn-primary", :"data-piwik-action" => "GithubVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "GithubFlow")
+                = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-primary", :"data-piwik-action" => "GithubVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "GithubFlow")

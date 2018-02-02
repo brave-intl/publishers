@@ -256,18 +256,18 @@ javascript:
     })();
 
 noscript
-  div.noscript-warning = t("publishers.dashboard_noscript")
+  div.noscript-warning = t ".noscript"
 
 - if flash[:taken_channel_id]
   = render :partial => 'channel_taken', :locals => { channel_id: flash[:taken_channel_id] }
 
 - content_for(:navbar_content_right) do
-  .title.hidden-sm.hidden-xs= t("publishers.dashboard")
-  = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
+  .title.hidden-sm.hidden-xs= t ".dashboard"
+  = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
 
 .row
   .col.col-details.col-md-5.col-xs-10.col-xs-center.col-sm-center
-    h4.balance-header = t("publishers.balance_pending")
+    h4.balance-header = t ".balance_pending"
     .balance
       .pull-left
         = image_tag("bat-logo@1x.png", class: "")
@@ -280,12 +280,12 @@ noscript
   - if current_publisher.channels.empty?
     .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
       .add-channel-cta
-        = t("publishers.add_channel_cta")
+        = t ".add_channel_cta"
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel.uphold-panel
       .panel-header.panel-header-h3#dashboard_uphold_header
-        = t("publishers.dashboard_uphold_header")
+        = t ".uphold.heading"
       .attribute-value.status
         #publisher_status class=publisher_status(current_publisher)
           = publisher_status_description(current_publisher)
@@ -297,33 +297,33 @@ noscript
           .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none')
             .panel-section
               = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
-                span= t("publishers.current_deposit_currency")
+                span= t ".deposit_currency"
                 span#default_currency_code= f.select(:default_currency, options_for_select(publisher_available_currencies(current_publisher), publisher_default_currency(current_publisher)))
-            = link_to(t("publishers.uphold_check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+            = link_to(t(".check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
       .statements#statement_section class=(current_publisher.uphold_verified ? '' : 'hidden')
         .panel-header.panel-header-h4#publishers_statement
-          = t("publishers.statements")
+          = t ".statements.heading"
         - if unused_statement_periods.length > 0
           = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
             .form-group
               = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
               .pull-right
                 a.edit-link#generate_statement href="#"
-                  = t("shared.generate")
+                  = t ".statements.generate"
         .clearfix
         #generated_statements
           - current_publisher.statements.each do |s|
             .statement
               .period= statement_period_description(s.period.to_sym)
-              .download= s.encrypted_contents? ? link_to(t("publishers.statement_download"), statement_publishers_url(id: s.id)) : t("publishers.statement_delayed")
+              .download= s.encrypted_contents? ? link_to(t("shared.download"), statement_publishers_url(id: s.id)) : t(".statements.delayed")
 
       .panel-header.panel-header-h4#publishers_contact
-        = t("publishers.contact")
+        = t ".contact.heading"
         .pull-right
           a.edit-link#edit_contact href="#"
-            = t("publishers.edit_contact")
+            = t ".contact.edit"
         .clearfix
       .attribute-value.contact-person
         #show_contact
@@ -342,12 +342,12 @@ noscript
             = f.label(:email, class: "control-label", for: "update_contact_email")
             = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
           .form-group
-            = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label", for: "update_contact_phone")
-            = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.phone_number_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
+            = f.label(:phone, t("publishers.shared.verified_phone_html"), class: "control-label", for: "update_contact_phone")
+            = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.shared.phone_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
           .button.form-group
-            = f.submit(translate("shared.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+            = f.submit(translate(".contact.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
             a#cancel_edit_contact href="#"
-              = t("shared.cancel")
+              = t "shared.cancel"
         p#pending_email_notice style="display: none" class="note"
 
         = form_for(current_publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
@@ -356,7 +356,7 @@ noscript
 
 .row id="add_channel_placeholder" class=(current_publisher.channels.visible.empty? ? '' : 'hidden')
   .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
-    = link_to(I18n.t("publishers.new_channel"), choose_new_channel_type_publishers_path, class: 'channel-placeholder')
+    = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'channel-placeholder')
 
 - current_publisher.channels.visible.each do |channel|
   .row.channel-row id=("channel_row_#{channel.id}")
@@ -369,26 +369,26 @@ noscript
             h3= channel.publication_title.truncate(30)
             .channel-details
               .added-date
-                = t("publishers.dashboard_channel_added", date: channel.created_at.to_date.iso8601)
+                = t ".channel.added", date: channel.created_at.to_date.iso8601
               .separator
                 = '|'
               a.remove-channel href="#" data-channel-id=(channel.id)
-                = t("publishers.dashboard_channel_remove_verified_channel")
+                = t ".channel.remove_verified"
               script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
                 = render "publishers/remove_channel_modal", channel: channel
               = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
 
           .channel-status.pull-right
-            = t("publishers.dashboard_channel_verified")
+            = t "publishers.shared.verified"
         -else
           .channel-summary.pull-left
             h3= channel.publication_title
           .channel-progress.pull-left
-            .one-more-step= t("publishers.dashboard_channel_one_more_step")
+            .one-more-step= t ".channel.one_more_step"
           .channel-status.pull-right
-            = link_to(t("publishers.dashboard_channel_lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
+            = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
           a.remove-channel.pull-right href="#" data-channel-id=(channel.id)
-            = t("publishers.dashboard_channel_remove_unverified_channel")
+            = t "shared.remove"
           script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
             = render "publishers/remove_channel_modal", channel: channel
           = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|

@@ -9,8 +9,8 @@
   .sub-panel.info-panel.col-center
     .content-panel
       h3.text-center
-        = t("site_channels.verification_support_queue_header")
+        = t ".heading"
 
-      = t("site_channels.verification_support_queue_help_html")
+      = t ".help_html"
       .text-center.panel-controls
-        = link_to(t("site_channels.verification_support_review_options"), verification_choose_method_site_channel_path(current_channel), class: "btn btn-primary", :"data-piwik-action" => "ReturnToOptionsClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+        = link_to(t(".review_options"), verification_choose_method_site_channel_path(current_channel), class: "btn btn-primary", :"data-piwik-action" => "ReturnToOptionsClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")

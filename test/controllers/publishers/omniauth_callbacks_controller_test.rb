@@ -150,7 +150,7 @@ module Publishers
       end
     end
 
-    test "a publisher who adds a channel taken by themselves will see youtube.channel_already_registered" do
+    test "a publisher who adds a channel taken by themselves will see .channel_already_registered" do
       begin
         publisher = publishers(:google_verified)
         request_login_email(publisher: publisher)
@@ -210,7 +210,7 @@ module Publishers
         end
 
         assert_select('div.notifications') do |element|
-          assert_match(I18n.t("youtube.channel_already_registered"), element.text)
+          assert_match(I18n.t("publishers.omniauth_callbacks.google_oauth2.channel_already_registered"), element.text)
         end
       end
     end

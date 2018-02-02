@@ -1,13 +1,13 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  h3= I18n.t("publisher_mailer.statement_ready.title")
+  h3= t ".subject"
 
-p= I18n.t("publisher_mailer.statement_ready.body")
+p= t ".body"
 
 p= link_to_publisher_statement(@publisher_statement)
 
-p= I18n.t("publisher_mailer.statement_ready.expiration_note")
+p= t ".expiration_note"
 
 p.hint
-  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  span.attribute= "#{t("publisher_mailer.shared.contact_help")}: "
   = mail_to(Rails.application.secrets[:support_email])

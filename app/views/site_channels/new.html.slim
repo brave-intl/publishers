@@ -10,7 +10,7 @@
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.process-panel.process-panel-narrow.col-center
     .content-panel
-      h3= t("channel.enter_domain")
+      h3= t ".heading"
       = form_for @channel, { method: :post, url: site_channels_path, html: { id: "enter_domain_info" }} do |f|
         fieldset
           = f.fields_for :details, @channel.details do |d|

@@ -2,11 +2,11 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
   .container-fluid
     .menu-container
       .nav.pull-right
-        = link_to(I18n.t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
+        = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
 
       .nav.pull-left
         / = link_to(root_path) do
-        .navbar-brand.page-title= t "publishers.add_channel"
+        .navbar-brand.page-title= t "shared.add_channel"
 
       .text-center
         = yield(:navbar_content)
