@@ -48,6 +48,7 @@
 
   .promo--bat-patch-adjacent {
     padding-right: 145px;
+    padding-bottom: 20px;
   }
 
   .promo--body-text {
@@ -241,7 +242,7 @@
 
   @include media-breakpoint-down(sm) {
     // background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-logo-no-shadow@1.png"));
-    padding: 130px 30px 20px 30px;
+    padding: 130px 30px 60px 30px;
     background-position: top 20px center, bottom center;
     background-size: auto 100px, auto;
     text-align: center;

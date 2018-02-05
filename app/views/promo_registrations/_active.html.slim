@@ -1,9 +1,9 @@
 .single-panel--wrapper.single-panel--wrapper--small.promo--panel
   .promo--bat-patch-adjacent
     h1.promo--title.promo--title-active data-test="promo-active"= t("promo.active.title")
-    .promo--item-container
-      span.promo--item-label= t("promo.shared.promo_period")
-      span = t("promo.shared.promo_period_description")
+    / .promo--item-container
+    /   span.promo--item-label= t("promo.shared.promo_period")
+    /   span = t("promo.shared.promo_period_description")
     .promo--item-container
       span.promo--item-label = t("promo.shared.reward")
       span = t("promo.shared.reward_description")
@@ -11,6 +11,8 @@
       span = t("promo.active.description_one")
       span = link_to(t("promo.active.description_two"), home_publishers_path)
       span = t("promo.active.description_three")
+  .promo--item-container
+    span.promo--item-label= t("promo.shared.referral_links")
   - n = 0
   - @promo_enabled_channels.each do |channel|
     .promo--referral-link-container-container class="promo--referral-link-container-container-#{n%2}"

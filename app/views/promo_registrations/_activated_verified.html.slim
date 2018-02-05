@@ -2,15 +2,17 @@
   .promo--bat-patch-adjacent
     h1.promo--title data-test="promo-activated-verified"= t("promo.activated.title")
     h3.promo--subtitle = t("promo.activated.subtitle")
-    .promo--item-container
-      span.promo--item-label= t("promo.shared.promo_period")
-      span = t("promo.shared.promo_period_description")
+    / .promo--item-container
+    /   span.promo--item-label= t("promo.shared.promo_period")
+    /   span = t("promo.shared.promo_period_description")
     .promo--item-container
       span.promo--item-label = t("promo.shared.reward")
       span = t("promo.shared.reward_description")
     p.promo--body-text
       span = t("promo.activated.description_one")
       span = t("promo.activated.description_two")
+  .promo--item-container
+    span.promo--item-label= t("promo.shared.referral_links")
   - n = 0
   - @promo_enabled_channels.each do |channel|
     .promo--referral-link-container-container class="promo--referral-link-container-container-#{n%2}"
