@@ -534,7 +534,7 @@ en:
       promo_ends_in: "promo ends in"
       days: "days"
       downloads: "downloads"
-      bonus: "bonus"
+      active_referral: "active"
       bat: "bat"
       add_channel: "Add a channel below to get the referral link!"
     shared:
