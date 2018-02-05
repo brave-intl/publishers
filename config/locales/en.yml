@@ -510,7 +510,6 @@ en:
       referral_reward: "1 referral = 5 BAT"
       button: "Activate Promo"
       button-dashboard: "Learn More"
-      footer: "Your fans will have to download Brave browser using the referral link and use it for the duration of the promotion to qualify for the referral.  This promo runs Feb 1 - March 1."
     activated:
       title: "Congrats!"
       subtitle: "Your promo is activated."
@@ -555,18 +554,18 @@ en:
       button: "Activate Promo"
     promo_activated_2018q1_verified:
       subject: "Your Referral Promo is Active!"
-      body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral links we created for your channel, and get your fans to support you!"
+      body_one: "Congrats! You are set to receive 5 BAT for every referral, up to 1000 BAT.  Use the referral links we created for your channel, and get your fans to support you!"
       body_two: "Bonus will be paid out at the end of the promo.  Check on the status of your qualified referrals on your dashboard."
       body_three: "We wish you good luck!"
     promo_activated_2018q1_unverified:
       subject: "Your Referral Promo is Active!"
       cta: "Add Channel"
-      body_one: "Great news! Your referral promo is now active.  To get this going, you'll need to add your Web Site or Youtube Channels to your account. We will then send you a specific referral link for you to pass to your fans."
+      body_one: "Great news! Your referral promo is now active.  To get this going, you'll need to add your web site or YouTube channels to your account. We will then send you a specific referral link for you to pass to your fans."
       body_two_html: |
-        <strong>Add and verify your channels to get the referral link.</strong> The promo runs only until March 9.
+        <strong>Add your web site or YouTube channel to your account to get the referral link.</strong>
     new_channel_registered_2018q1:
       subject: "Your Referral Promo is Active!"
-      body_one: "Congrats! You are set to receive 5 BAT for every referral, now through Feb 28, 2018, up to 1000 BAT.  Use the referral link we created for your channel, and get your fans to support you!"    
+      body_one: "Congrats! You are set to receive 5 BAT for every referral, up to 1000 BAT.  Use the referral link we created for your channel, and get your fans to support you!"    
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.
