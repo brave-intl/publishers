@@ -1,28 +1,28 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  h3= I18n.t("publisher_mailer.welcome.title")
+  h3= t ".title"
 
-.notice= I18n.t("publisher_mailer.welcome.private_email_notice")
+.notice= t "publisher_mailer.shared.private_email_notice"
 
-p= I18n.t("publisher_mailer.welcome.intro")
+p= "#{t ".intro"}:"
 
 /p
 /  strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
 /  = link_to_brave_publisher_id(@publisher)
 
 h4
-  strong.attribute= "#{I18n.t("publishers.contact_person")}:"
+  strong.attribute= "#{t ".contact"}:"
 p.header-help
   .name= @publisher.name
   .email= @publisher.email
   .phone= @publisher.phone
 
-h4= "#{I18n.t("publisher_mailer.shared.private_access_link")}:"
+h4= "#{t "publisher_mailer.shared.private_access_link"}:"
 p.header-help
-  = "#{I18n.t("publisher_mailer.shared.private_access_link_help")}:"
+  = "#{t ".private_access_link_help"}:"
 p= link_to(@private_reauth_url, @private_reauth_url)
 
-p.hint= I18n.t("publisher_mailer.welcome.erroneous_email_help")
+p.hint= t "publisher_mailer.shared.erroneous_email_ignore"
 p.hint
-  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  span.attribute= "#{t "publisher_mailer.shared.contact_help"}:"
   = mail_to(Rails.application.secrets[:support_email])

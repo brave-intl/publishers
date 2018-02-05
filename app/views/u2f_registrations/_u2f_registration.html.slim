@@ -3,7 +3,7 @@ div
   = " registered on #{l(u2f_registration.created_at.to_date, format: :long)}"
   = " | "
   = link_to \
-    t(".delete_action"),
+    t("shared.remove"),
     u2f_registration_path(u2f_registration),
     method: :delete,
     data: { "js-confirm-with-modal": "disable-u2f-prompt-#{u2f_registration.id}" }

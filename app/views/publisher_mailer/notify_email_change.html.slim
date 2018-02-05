@@ -1,19 +1,19 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  h3= I18n.t("publisher_mailer.notify_email_change.title")
+  h3= t ".title"
 
-p= I18n.t("publisher_mailer.notify_email_change.intro")
+p= "#{t(".intro")}:"
 
 p
   div
-    strong.attribute= "#{t('publisher_mailer.confirm_email_change.previous_email')}:"
+    strong.attribute= "#{t("publisher_mailer.shared.previous_email")}:"
     = @publisher.email
   div
-    strong.attribute= "#{t('publisher_mailer.confirm_email_change.updated_email')}:"
+    strong.attribute= "#{t("publisher_mailer.shared.updated_email")}:"
     = @publisher.pending_email
 
-p= t("publisher_mailer.notify_email_change.change_ok")
+p= t ".change_ok"
 
 p
-  span.attribute= "#{I18n.t("publisher_mailer.notify_email_change.contact_support")}:"
+  span.attribute= "#{t(".contact_support")}:"
   = mail_to(Rails.application.secrets[:support_email])

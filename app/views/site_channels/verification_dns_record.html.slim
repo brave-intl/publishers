@@ -9,46 +9,46 @@
   .sub-panel.process-panel.col-center
     .content-panel
       .dns-record id="dns_records"
-        h3=I18n.t("site_channels.verification_option_dns_record_add_new", brave_publisher_id: current_channel.details.brave_publisher_id)
+        h3= t ".heading", brave_publisher_id: current_channel.details.brave_publisher_id
 
         p
-          span= I18n.t("site_channels.verification_dns_record_help")
+          span= "#{t ".help"} "
           span= current_channel.details.brave_publisher_id
-          strong= I18n.t("site_channels.verification_dns_record_help_2")
+          strong= " #{t ".help_2"}"
 
         p
-          span= I18n.t("site_channels.verification_dns_record_instruction3")
+          span= t ".instruction_1"
 
         p
-          span= I18n.t("site_channels.verification_dns_record_instruction1")
+          span= "#{t ".instruction_2"} "
           strong= current_channel.details.brave_publisher_id
-          span= I18n.t("site_channels.verification_dns_record_instruction2")
+          span= " #{t ".instruction_3"}"
 
         .form-group
-          label.control-label= I18n.t("site_channels.verification_option_dns_record_type")
+          label.control-label= "#{t ".record.type"}:"
           span.color-orange.form-control#type TXT
           button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#type"
-            = I18n.t("site_channels.copy_to_clipboard")
+            = t ".copy_to_clipboard"
         .form-group
-          label.control-label= I18n.t("site_channels.verification_option_dns_record_value")
+          label.control-label= "#{t ".record.value"}:"
           textarea.color-orange.dns-record-value.form-control#value readonly="true"
             = site_channel_verification_dns_record(current_channel)
           button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value"
-            = I18n.t("site_channels.copy_to_clipboard")
+            = t "copy_to_clipboard"
         .form-group
-          p= I18n.t("site_channels.verification_dns_record_verify")
-          p.note-text= I18n.t("site_channels.verification_option_dns_record_note")
+          p= t ".verify"
+          p.note-text= t ".record.note"
 
         .form-group
           .form-horizontal
             .form-group
               .col-xs-10.col-md-6
                 = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
-                  = f.submit(t("site_channels.verify_dns_button"), class: "btn btn-block btn-primary btn-sm", :"data-piwik-action" => "DNSVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
+                  = f.submit(t(".button"), class: "btn btn-block btn-primary btn-sm", :"data-piwik-action" => "DNSVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
               .col-xs-2.col-md-2
                 = popover_menu do
-                  h5= I18n.t("site_channels.verification_helper_dns_title")
-                  .help-block= I18n.t("site_channels.verification_helper_dns_content")
+                  h5= t ".helper.heading"
+                  .help-block= t ".helper.body"
                   ul.pull-left
                     li
                       a target="_blank" href="https://help.1and1.com/domains-c36931/manage-domains-c79822/dns-c37586/add-or-remove-txt-records-a792509.html" 1&1
@@ -97,4 +97,4 @@
                     li
                       a target="_blank" href="https://support.office.com/en-us/article/Create-DNS-records-at-Aabaco-Small-Business-for-Office-365-53d1daba-6a4f-4814-8a68-8ad3d031463e#bkmk_verify" Yahoo/Aabaco
                   div
-                    a#contact-link.pull-right href="mailto:support+publishers@basicattentiontoken.org"=I18n.t("site_channels.verification_helper_dns_contact")
+                    a#contact-link.pull-right href="mailto:support+publishers@basicattentiontoken.org"= t ".helper.contact"

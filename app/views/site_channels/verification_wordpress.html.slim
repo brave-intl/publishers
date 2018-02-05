@@ -8,20 +8,20 @@
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.process-panel.col-center
     .content-panel
-      h3= t("site_channels.verification_option_wordpress")
+      h3= t ".heading"
       = render :partial => 'https_check', :locals => { current_channel: current_channel }
 
       div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
         ol
           li
-            = t("site_channels.verification_option_wordpress_install_plugin_html")
+            = t ".install_plugin_html"
           li
-            p.li-text= t("site_channels.verification_option_wordpress_verification_token")
-            .file-content-header= t("site_channels.verification_option_wordpress_token")
+            p.li-text= t ".verification_token"
+            .file-content-header= t ".wordpress_token"
             .verification-code= "brave-ledger-verification=#{site_channel_filtered_verification_token(current_channel)}"
           li
-            p.li-text= t("site_channels.verification_option_wordpress_help_verify")
-            p.note-text= t("site_channels.verification_verify_note")
+            p.li-text= t ".verify"
+            p.note-text= t("site_channels.shared.verification_file.note")
             .panel-controls
               = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
-                = f.submit(t("publishers.verify_button"), class: "btn btn-primary", :"data-piwik-action" => "WordpressVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "WordpressFlow")
+                = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-primary", :"data-piwik-action" => "WordpressVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "WordpressFlow")

@@ -8,13 +8,13 @@ module PublishersHelper
   def uphold_status_description(publisher)
     case publisher.uphold_status
     when :verified
-      t("publishers.uphold_status_verified")
+      I18n.t("helpers.publisher.uphold_status.verified")
     when :access_parameters_acquired
-      t("publishers.uphold_status_access_parameters_acquired")
+      I18n.t("helpers.publisher.uphold_status.access_parameters_acquired")
     when :code_acquired
-      t("publishers.uphold_status_code_acquired")
+      I18n.t("helpers.publisher.uphold_status.code_acquired")
     when :unconnected
-      t("publishers.uphold_status_unconnected")
+      I18n.t("helpers.publisher.uphold_status.unconnected")
     end
   end
 
@@ -38,12 +38,12 @@ module PublishersHelper
     if balance = publisher.wallet && publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
     else
-      I18n.t("publishers.balance_error")
+      I18n.t("helpers.publisher.balance_error")
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("publishers.balance_error")
+    I18n.t("helpers.publisher.balance_error")
   end
 
   def publisher_converted_balance(publisher)
@@ -51,14 +51,14 @@ module PublishersHelper
     return if currency == "BAT"
     if balance = publisher.wallet.contribution_balance
       converted_amount = '%.2f' % balance.convert_to(currency)
-      I18n.t("publishers.balance_pending_approximate", amount: converted_amount, code: currency)
+      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
     else
-      I18n.t("publishers.balance_error")
+      I18n.t("helpers.publisher.balance_error")
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("publishers.balance_error")
+    I18n.t("helpers.publisher.balance_error")
   end
 
   def publisher_uri(publisher)
@@ -81,9 +81,9 @@ module PublishersHelper
 
   def uphold_authorization_description(publisher)
     if publisher_status(publisher) == :uphold_reauthorize || publisher_status(publisher) == :uphold_processing
-      t("publishers.reconnect_to_uphold")
+      I18n.t("helpers.publisher.reconnect_to_uphold")
     else
-      t("publishers.create_uphold_wallet")
+      I18n.t("helpers.publisher.create_uphold_wallet")
     end
   end
 
@@ -111,9 +111,9 @@ module PublishersHelper
   def publisher_verification_status_description(publisher)
     case publisher_verification_status(publisher)
       when :verified
-        t("publishers.verified")
+        I18n.t("publishers.shared.verified")
       when :unverified
-        t("publishers.not_verified")
+        I18n.t("helpers.publisher.not_verified")
     end
   end
 
@@ -151,7 +151,7 @@ module PublishersHelper
   def publisher_status_timeout(publisher)
     case publisher_status(publisher)
     when :uphold_processing
-      t("publishers.status_uphold_processing_timeout")
+      I18n.t("helpers.publisher.uphold_status.processing_timeout")
     else
       nil
     end
@@ -160,15 +160,15 @@ module PublishersHelper
   def publisher_status_description(publisher)
     case publisher_status(publisher)
     when :complete
-      t("publishers.dashboard_uphold_balance_sending")
+      I18n.t("helpers.publisher.uphold_status.balance_sending")
     when :uphold_processing
-      t("publishers.status_uphold_processing")
+      I18n.t("helpers.publisher.uphold_status.processing")
     when :uphold_reauthorize
-      t("publishers.verified_publisher_reconnect_to_uphold")
+      I18n.t("helpers.publisher.uphold_status.reconnect_to_uphold")
     when :uphold_unconnected
-      t("publishers.verified_publisher_connect_to_uphold")
+      I18n.t("helpers.publisher.uphold_status.connect_to_uphold")
     when :unverified
-      t("publishers.status_unverified")
+      I18n.t("helpers.publisher.uphold_status.unverified")
     end
   end
 
@@ -247,7 +247,7 @@ module PublishersHelper
   end
 
   def statement_period_description(period)
-    t("publisher_statement_periods.#{period}")
+    I18n.t("helpers.publisher.statement_periods.#{period}")
   end
 
   def statement_period_date(date)
@@ -309,10 +309,10 @@ module PublishersHelper
   def channel_type(channel)
     case channel.details
     when SiteChannelDetails
-      t("channel.type.website")
+      I18n.t("helpers.publisher.channel_type.website")
 
     when YoutubeChannelDetails
-      t("channel.type.youtube")
+      I18n.t("helpers.publisher.channel_type.youtube")
     end
   end
 

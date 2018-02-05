@@ -2,20 +2,20 @@
 - support_email = Rails.application.secrets[:support_email]
 - show_registration = show_taken_channel_registration?(channel)
 - if show_registration
-  - channel_registered_by = channel.publisher.name.present? ? channel.publisher.name : t("publishers.channel_taken_modal.default_registerer")
+  - channel_registered_by = channel.publisher.name.present? ? channel.publisher.name : t(".default_registerer")
   - channel_registration_date = channel.created_at.to_date
 
 noscript
   div.noscript-warning
     - if show_registration
-      = t("publishers.channel_taken_message_with_registration_noscript_html",
+      = t(".noscript_with_registration_html",
          {support_email: support_email,
           channel_type: channel_type(channel),
           channel_title: channel.publication_title,
           channel_registered_by: channel_registered_by,
           channel_registration_date: channel_registration_date})
     - else
-      = t("publishers.channel_taken_message_without_registration_noscript_html",
+      = t(".noscript_without_registration_html",
          {support_email: support_email,
           channel_type: channel_type(channel),
           channel_title: channel.publication_title})
@@ -49,21 +49,21 @@ javascript:
 
 .md-container#channel_taken_modal
  .md-content
-   h1= t("publishers.channel_taken_modal.title")
-   p= t("publishers.channel_taken_modal.leadin", channel_type: channel_type(channel))
+   h1= t(".modal.title")
+   p= t(".modal.leadin", channel_type: channel_type(channel))
    .taken-channel
      .summary
        img src=channel_thumbnail_url(channel)
        .title= channel.publication_title
      - if show_registration
        .registration-date
-         label= t("publishers.channel_taken_modal.registration_date") + ":"
+         label= t(".modal.registration_date") + ":"
          .value= channel_registration_date
        .registered-by
-         label= t("publishers.channel_taken_modal.registered_by") + ":"
+         label= t(".modal.registered_by") + ":"
          .value= channel_registered_by
-   p= t("publishers.channel_taken_modal.contact_support_html", {support_email: support_email})
+   p= t(".modal.contact_support_html", {support_email: support_email})
 
    .panel-section
-     a.btn.btn-primary#close_channel_taken_modal= t("publishers.channel_taken_modal.ok")
+     a.btn.btn-primary#close_channel_taken_modal= t(".modal.ok")
 .md-overlay

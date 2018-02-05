@@ -44,7 +44,7 @@ javascript:
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.process-panel.process-panel-narrow.col-center
     .content-panel
-      h3= t("publishers.new")
+      h3= t ".heading"
       = form_for @publisher, { method: :patch, url: update_unverified_publishers_path,
               html: { id: "update_contact_info" }} do |f|
         fieldset
@@ -55,8 +55,8 @@ javascript:
             = f.label(:name, class: "control-label")
             = f.text_field(:name, class: "form-control", placeholder: "Alice Bloglette", required: true)
           .form-group
-            = f.label(:phone, t("publishers.verified_phone_html"), class: "control-label")
-            = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.phone_number_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
+            = f.label(:phone, t("publishers.shared.verified_phone_html"), class: "control-label")
+            = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.shared.phone_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
           - if @should_throttle
             .form-group
               = recaptcha_tags

@@ -432,7 +432,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Check that failure message is displayed
     follow_redirect!
-    assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
+    assert_match(I18n.t("publishers.uphold_verified.uphold_error"), response.body)
   end
 
   test "after redirection back from uphold, a mismatched publisher's `uphold_state_token` redirects back to home" do
@@ -460,7 +460,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Check that failure message is displayed
     follow_redirect!
-    assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
+    assert_match(I18n.t("publishers.uphold_verified.uphold_error"), response.body)
   end
 
   test "when uphold fails to return uphold_access_parameters, publisher has option to reconnect with uphold" do
@@ -491,12 +491,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # verify message tells publisher they need to reconnect
     assert_select("div#publisher_status.uphold_processing") do |element|
-      assert_equal element.text, I18n.t("publishers.status_uphold_processing")
+      assert_equal element.text, I18n.t("helpers.publisher.uphold_status.processing")
     end
 
     # verify button says 'reconnect to uphold' not 'create uphold wallet'
     assert_select("[data-test=reconnect-button]") do |element|
-      assert_equal element.text, I18n.t("publishers.reconnect_to_uphold")
+      assert_equal element.text, I18n.t("helpers.publisher.reconnect_to_uphold")
     end
   end
 

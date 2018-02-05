@@ -1,19 +1,19 @@
-p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name
 
-== t("publisher_mailer.verified_no_wallet.body_html_1", formatted_url: @publisher_dashboard_url.gsub(/http(s?):\/\//, '').gsub(/\/$/, ''), url: @publisher_dashboard_url)
+== t ".body_html", formatted_url: @publisher_dashboard_url.gsub(/http(s?):\/\//, '').gsub(/\/$/, ''), url: @publisher_dashboard_url
 
-div.center= link_to(t("publisher_mailer.verified_no_wallet.button"), @publisher_dashboard_url, class: "btn-primary btn-login")
+div.center= link_to t(".button"), @publisher_dashboard_url, class: "btn-primary btn-login"
 
-== t("publisher_mailer.shared.post_script")
+== t "publisher_mailer.shared.post_script"
 
-p= t("publisher_mailer.shared.signature")
+p= t "publisher_mailer.shared.signature"
 
 hr
 
 .hint
   p
-    span= t("publisher_mailer.shared.button_not_working")
+    span= "#{t "publisher_mailer.shared.button_not_working"} "
     span= link_to(@publisher_dashboard_url, @publisher_dashboard_url, class: "fallback-link")
 
-  span= t("publisher_mailer.shared.erroneous_email_help")
+  span= "#{t "publisher_mailer.shared.erroneous_email_help"} "
   span= mail_to(Rails.application.secrets[:support_email], nil)

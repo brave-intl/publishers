@@ -11,7 +11,7 @@ module Publishers
       youtube_channel_data = YoutubeChannelGetter.new(token: token).perform
 
       if youtube_channel_data.nil?
-        redirect_to home_publishers_path, notice: t("youtube.channel_not_found")
+        redirect_to home_publishers_path, notice: t("shared.channel_not_found")
         return
       end
 
@@ -20,7 +20,7 @@ module Publishers
 
       if existing_channel
         if existing_channel.publisher == current_publisher
-          redirect_to home_publishers_path, notice: t("youtube.channel_already_registered")
+          redirect_to home_publishers_path, notice: t(".channel_already_registered")
           return
         else
           redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
@@ -54,7 +54,7 @@ module Publishers
         Raven.capture_exception(e)
       end
 
-      redirect_to home_publishers_path, notice: t("channel.channel_created")
+      redirect_to home_publishers_path, notice: t("shared.channel_created")
       return
     end
 
@@ -71,7 +71,7 @@ module Publishers
     private
     def require_publisher
       return if current_publisher
-      redirect_to(root_path, alert: I18n.t("channel.please_log_in_and_retry"))
+      redirect_to(root_path, alert: t(".log_in_and_retry"))
     end
   end
 end

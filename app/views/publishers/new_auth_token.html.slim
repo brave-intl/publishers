@@ -5,12 +5,12 @@
   = render "panel_flash_messages"
   .single-panel--content
 
-    h3.single-panel--headline= t(".log_in")
+    h3.single-panel--headline= t "shared.log_in"
 
     .col-small-centered
       = form_for @publisher, url: create_auth_token_publishers_path do |f|
         .form-group
-          = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email")
+          = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email")
         - if params[:captcha]
           = hidden_field_tag(:captcha)
         - if @should_throttle
@@ -19,5 +19,5 @@
         = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary")
 
     .single-panel--footer
-      ' #{t(".signup.prompt")}
-      = link_to t(".signup.link"), sign_up_publishers_path
+      ' #{t(".signup_prompt")}
+      = link_to t("pubilshers.shared.sign_up"), sign_up_publishers_path

@@ -1,25 +1,25 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  h3= I18n.t("publisher_mailer.confirm_email_change.title")
+  h3= t ".title"
 
-.notice= I18n.t("publisher_mailer.confirm_email_change.private_email_notice")
+.notice= t ".notice"
 
-p= I18n.t("publisher_mailer.confirm_email_change.intro")
+p= t ".intro"
 
 p
   div
-    strong.attribute= "#{t('publisher_mailer.confirm_email_change.previous_email')}:"
+    strong.attribute= "#{t("publisher_mailer.shared.previous_email")}:"
     = @publisher.email
   div
-    strong.attribute= "#{t('publisher_mailer.confirm_email_change.updated_email')}:"
+    strong.attribute= "#{t('publisher_mailer.shared.updated_email')}:"
     = @publisher.pending_email
 
-h4= "#{I18n.t("publisher_mailer.confirm_email_change.confirmation_link")}:"
+h4= "#{t(".confirmation_link")}:"
 p.header-help
-  = "#{I18n.t("publisher_mailer.confirm_email_change.confirmation_link_help")}:"
+  = "#{t(".confirmation_link_help")}:"
 p= link_to(@private_reauth_url, @private_reauth_url)
 
-p.hint= I18n.t("publisher_mailer.confirm_email_change.erroneous_email_help")
+p.hint= t "publisher_mailer.shared.erroneous_email_ignore"
 p.hint
-  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  span.attribute= "#{t("publisher_mailer.shared.contact_help")}: "
   = mail_to(Rails.application.secrets[:support_email])

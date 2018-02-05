@@ -1,21 +1,21 @@
 - @hide_nav=true
 
-= link_to(I18n.t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
+= link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
 .publisher-panel.col-center
-  h1.text-center=t("publishers.pub_type_welcome")
-  h2.col-center.text-center=t("publishers.pub_type_lets_start")
+  h1.text-center= t "shared.add_channel"
+  h2.col-center.text-center= t ".intro"
 
 .publisher-main-panel.publisher-panel.col-center
   = link_to(new_site_channel_path) do
     .choice-panel.choice-panel-left
       .site-operator.select-choice
         .choice-description
-          h3.text-center= t("publishers.pub_type_site_operator")
-          p.text-center= t("publishers.pub_type_site_operator_description_html")
+          h3.text-center= t ".site_operator.heading"
+          p.text-center= t ".site_operator.description"
   = link_to(publisher_google_oauth2_omniauth_authorize_path) do
     .choice-panel.choice-panel-right
       .individual-creator.select-choice
         .choice-description
-          h3.text-center= t("publishers.pub_type_site_individual_creator")
-          p.text-center= t("publishers.pub_type_site_individual_creator_description_html")
-        p.text-center.note-text= t("publishers.pub_type_site_individual_creator_note_html")
+          h3.text-center= t ".individual_creator.heading"
+          p.text-center= t ".individual_creator.description_html"
+        p.text-center.note-text= t ".individual_creator.note"
