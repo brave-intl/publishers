@@ -49,7 +49,7 @@ module PublishersHelper
   def publisher_converted_balance(publisher)
     currency = publisher_default_currency(publisher)
     return if currency == "BAT"
-    if balance = publisher.wallet.contribution_balance
+    if balance = publisher.wallet && publisher.wallet.contribution_balance
       converted_amount = '%.2f' % balance.convert_to(currency)
       I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
     else
