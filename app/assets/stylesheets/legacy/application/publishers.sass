@@ -142,63 +142,60 @@ body[data-controller="u2f_registrations"]
           background-image: url(asset-path("icn-warning@1x.png"))
           background-position: center left 15px
           background-repeat: no-repeat
-
-  .promo--referral-link-container
-    background: #edf3f9
-    display: table
-    transition: width .3s ease-in
-    width: 110px
+  .channel--promo-info-container
+    float: right
     height: 45px
-    text-align: right
-    border: solid
-    border-color: #cddeec
-    border-width: 1px
-    border-radius: 4px
-    &-slideout
-      width: 495px
-      border: none
-      transition: width .3s ease-out
-    .promo--referral-link-text
-      display: table-cell
-      vertical-align: middle
-      font-weight: 500
-      @media (max-width: $screen-sm-max)
-        display: none
-      &-mobile
-        display: table-cell
-        vertical-align: middle
-        font-weight: 500
-        @media (min-width: $screen-sm-max)
-          display: none
-    .promo--referral-link
+    width: 110px
+    transition: .3s ease-in-out
+    display: table
+    .promo-info-item
       height: 100%
-      padding-top: 10px
-      padding-left: 10px
-      white-space: nowrap
-      text-align: left
-      width: 100%
-      float: left
-      border: solid
-      border-color: #cddeec
-      border-width: 1px
-      border-radius: 4px 0px 0px 4px
-      border-right: none
-      &-hide
-        display: none
-    .promo--referral-link-copy
-      width: 60px
-      color: white
-      background: red
+      text-align: center
       display: table-cell
       vertical-align: middle
-      text-align: center
-      border-radius: 0px 4px 4px 0px
-      &-hide
+    .referral-link-button
+      width: 110px
+      background: #edf3f9
+      display: table-cell
+      border: solid
+      border-width: 1px
+      border-radius: 4px
+      border-color: #cddeec
+      &-mobile
         display: none
-  .promo--referral-link-hidden
-    font-size: 0
-    width: 0
-    transition: all .5s
+    .referral-link-url
+      background: #edf3f9
+      height: 100%
+      text-align: left
+      padding-left: 8px
+      border: solid
+      border-width: 1px 0px 1px 1px
+      border-radius: 4px 0px 0px 4px
+      border-color: #cddeec
+      white-space: nowrap
+      display: none
+    .referral-link-copy-button
+      background: #ff3f3f
+      color: white
+      height: 100%   
+      border-radius: 0px 4px 4px 0px
+      display: none
+    &-slideout
+      width: 300px
+      .promo-info-item
+        display: table-cell
+      .referral-link-button
+        display: none
+    @media (max-width: $screen-sm-max)
+      .referral-link-button
+        &-mobile
+          display: table-cell
+        &-desktop
+          display: none
+      .referral-link-copy-button
+        display: none
+      .referral-link-url
+        display: none
 
   .expired-token-panel
     max-width: 710px

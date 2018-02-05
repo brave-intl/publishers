@@ -417,17 +417,15 @@ noscript
                 = render "publishers/remove_channel_modal", channel: channel
               = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
           - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
-            .promo--referral-link-container.pull-right 
-              span.promo--referral-link-text.text-center 
-                = t("promo.shared.referral_link")
-              span.promo--referral-link.promo--referral-link-hide 
+            .channel--promo-info-container
+              .referral-link-url.promo-info-item
                 = referral_link(channel.promo_registration.referral_code)
-              span.promo--referral-link-copy.promo--referral-link-copy-hide.copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}"
+              .referral-link-button.referral-link-button-desktop.promo-info-item
+                = t("promo.shared.referral_link")
+              .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{referral_link(channel.promo_registration.referral_code)}"
+                = t("promo.shared.referral_link")
+              .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{referral_link(channel.promo_registration.referral_code)}"
                 = t("promo.shared.copy")
-              span.promo--referral-link-text-mobile.text-center.copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}"
-                = t("promo.shared.referral_link")
-              .promo--referral-link-hidden id="#{channel.promo_registration.referral_code.downcase}"
-                = referral_link(channel.promo_registration.referral_code)
           - else 
             .channel-status.pull-right
               span= t("publishers.dashboard_channel_verified")
@@ -449,42 +447,52 @@ noscript
     .terms-of-service
       = link_to(t("shared.terms_of_service"), terms_of_service_url)
 
-- if promo_running?
+- if current_publisher.promo_status(promo_running?) == :active
   javascript:
     (function() {
-      function closeReferralLink(){
-        referralLinkText = this;
-        // Delay closing so copybutton.js has time to copy
+      function closeReferralLinkAnimation() {
+        var channelPromoInfoContainer = this.parentNode;
         setTimeout(function(){
-          referralLinkText.classList.add('promo--referral-link-copy-hide');
-          referralLinkText.parentNode.children[0].innerText = "Referral Link";
-          referralLinkText.parentNode.children[1].classList.add('promo--referral-link-hide');
-          referralLinkText.parentNode.classList.remove('promo--referral-link-container-slideout');
+          if (channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
+            channelPromoInfoContainer.classList.remove('channel--promo-info-container-slideout');
+          }
         }, 100);
       }
 
-      function mobileCopyAnimation(){
-        // Reset all other mobile buttons
-        for (var i = 0; i < referralLinkTextMobile.length; i++){
-          referralLinkTextMobile[i].innerText = 'Referral Link'
+      function openReferralLinkAnimation() {
+        var channelPromoInfoContainer = this.parentNode;
+        console.log("close referral animation");
+
+        if (!channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
+          channelPromoInfoContainer.classList.add('channel--promo-info-container-slideout');
         }
-        this.innerText = ('Copied!')
       }
 
-      function openReferralLink() {
-        this.parentNode.classList.add('promo--referral-link-container-slideout');
-        this.innerText = "";
-        this.parentNode.children[2].classList.remove('promo--referral-link-copy-hide');
-        this.parentNode.children[1].classList.remove('promo--referral-link-hide');
+      function copyButtonAnimation() {
+        console.log("mobile referral link animation")
+        channelPromoInfoContainer = this.parentNode;
+        var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
+        var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
+
+        for (var i = 0; i < mobileReferralLinkButtons.length; i++){
+          mobileReferralLinkButtons[i].innerText = 'Referral Link';
+          desktopReferralLinkButtons[i].innerText = 'Referral Link';
+        }
+        var mobileReferralLinkButton = channelPromoInfoContainer.children[2];
+        var desktopReferralLinkButton = channelPromoInfoContainer.children[1];
+        mobileReferralLinkButton.innerText = 'Copied!';
+        desktopReferralLinkButton.innerText = 'Copied!';
       }
 
-      var referralLinkText = document.getElementsByClassName('promo--referral-link-text');
-      var referralLinkTextMobile = document.getElementsByClassName('promo--referral-link-text-mobile')
-      var referralLinkCopy = document.getElementsByClassName('promo--referral-link-copy-hide');
+      var channelPromoInfoContainers = document.getElementsByClassName('channel--promo-info-container');
+      var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
+      var desktopCopyButtons = document.getElementsByClassName('referral-link-copy-button')
+      var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
 
-      for (var i = 0; i < referralLinkText.length; i++) {
-          referralLinkCopy[i].addEventListener('click', closeReferralLink, false);
-          referralLinkText[i].addEventListener('click', openReferralLink, false);
-          referralLinkTextMobile[i].addEventListener('click', mobileCopyAnimation, false);
+      for (var i = 0; i < channelPromoInfoContainers.length; i++) {
+        desktopReferralLinkButtons[i].addEventListener('click', openReferralLinkAnimation, false);
+        desktopCopyButtons[i].addEventListener('click', closeReferralLinkAnimation, false);
+        desktopCopyButtons[i].addEventListener('click', copyButtonAnimation, false);
+        mobileReferralLinkButtons[i].addEventListener('click', copyButtonAnimation, false);
       }
     })();
