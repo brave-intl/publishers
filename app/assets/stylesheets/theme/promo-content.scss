@@ -15,10 +15,25 @@
   }
 }
 
-.nav--promo {
-  // @include media-breakpoint-down(sm){
-  //   display: block;
-  //   text-align: center;
-  //   padding-right: 30px;
-  // }
+.footer--promo {
+
+  display: table;
+  width: 100%;
+  background: $bravePromo-LightBlue;
+  padding: 0px;
+
+  .footer--promo-item {
+    width: 50%;
+    float: left;
+    font-size: 13px;
+    padding: 10px;
+    a {
+      color: white;
+      opacity: .7;
+    }
+
+    &-tos {
+      text-align: right;
+    }
+  }
 }
