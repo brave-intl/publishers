@@ -4,6 +4,7 @@ import 'copyButton';
 import 'utils/request';
 import 'u2f/registrationPage';
 import 'u2f/authenticationPage';
+import 'publishers/home';
 import 'legacyGlobals';
 import Rails from 'rails-ujs';
 
