@@ -20,10 +20,6 @@ module PromosHelper
     {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}}
   end
 
-  def promo_ends_in
-    Rails.application.secrets[:promo_end_date].present? ? (Rails.application.secrets[:promo_end_date].to_datetime - DateTime.now).to_i : "∞"
-  end
-
   def total_possible_referrals(publisher)
     stats = publisher.promo_stats_2018q1
     if publisher.promo_stats_2018q1 == "{}"

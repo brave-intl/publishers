@@ -292,26 +292,16 @@ noscript
               = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
         - else
           .promo-panel-item.promo-panel-item-info
-            - if Rails.application.secrets[:promo_end_date].present?
-              .promo-item-content.promo-item-content-header
-                = t("promo.dashboard.promo_ends_in").upcase
-              span.promo-item-content.promo-item-content-number
-                = promo_ends_in
-              span.promo-item-content
-               = t("promo.dashboard.days").upcase
+            .promo-item-content
+              = t("promo.dashboard.promo").upcase
+            .promo-item-content
+              = t("promo.dashboard.progress").upcase
           - if current_publisher.has_verified_channel?
-            .promo-panel-item
+            #promo-downloaded.promo-panel-item
               .promo-item-content.promo-item-content-white.promo-item-content-header
-                = t("promo.dashboard.downloads").upcase
+                = t("promo.dashboard.downloaded").upcase
               .promo-item-content.promo-item-content-white.promo-item-content-number
                 = total_possible_referrals(current_publisher)
-            .promo-panel-item
-              .promo-item-content.promo-item-content-white.promo-item-content-header
-                = t("promo.dashboard.active_referral").upcase
-              span.promo-item-content.promo-item-content-white.promo-item-content-number
-                = referral_bonus(current_publisher)
-              span.promo-item-content.promo-item-content-white
-                = t("promo.dashboard.bat").upcase
           - else 
             .promo-panel-item.promo-panel-item-alert
               #promo-panel-alert

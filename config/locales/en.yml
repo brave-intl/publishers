@@ -530,12 +530,13 @@ en:
       brave_download_link: "brave.com/download"
       footer: "Keep an eye out for the next event."
     dashboard:
-      promo_ends_in: "promo ends in"
       days: "days"
-      downloads: "downloads"
+      downloaded: "downloaded"
       active_referral: "active"
       bat: "bat"
       add_channel: "Add a channel below to get the referral link!"
+      promo: "promo"
+      progress: "progress"
     shared:
       tweet_content: "Please support me by downloading Brave!"
       tweet: "Tweet"
