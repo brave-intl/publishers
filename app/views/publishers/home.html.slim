@@ -408,8 +408,8 @@ noscript
               = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
           - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
             .channel--promo-info-container
-              = link_to("", tweet_url(referral_link(channel.promo_registration.referral_code)), class: "promo-share-button promo-share-button-twitter")
-              = link_to("", facebook_url(referral_link(channel.promo_registration.referral_code)), class: "promo-share-button promo-share-button-facebook")
+              = link_to("", tweet_url(channel.promo_registration.referral_code), class: "promo-share-button promo-share-button-twitter")
+              = link_to("", facebook_url(channel.promo_registration.referral_code), class: "promo-share-button promo-share-button-facebook")
               .referral-link-url.promo-info-item
                 = referral_link(channel.promo_registration.referral_code)
               .referral-link-button.referral-link-button-desktop.promo-info-item
