@@ -13,9 +13,14 @@ class ApplicationMailer < ActionMailer::Base
 
   private
 
-  def add_image(image_file_name)
-    path = Rails.root.join("app/assets/images/mailer/#{image_file_name}")
-    attachments.inline[image_file_name] = File.read(path)
+  def add_image(image_file_name, source = "mailer")
+    if source == "mailer"
+      path = Rails.root.join("app/assets/images/mailer/#{image_file_name}")
+      attachments.inline[image_file_name] = File.read(path)
+    elsif source == "assets"
+      path = Rails.root.join("app/assets/images/#{image_file_name}")
+      attachments.inline[image_file_name] = File.read(path)
+    end
   end
 
   def add_images
@@ -24,11 +29,16 @@ class ApplicationMailer < ActionMailer::Base
     add_image("logo-reddit.png")
     add_image("logo-rocketchat.png")
     add_image("logo-twitter.png")
-    add_image("header-pattern.png")
-    add_image("header-pattern-promo.png")
-    add_image("tweet.png")
     add_image("footer-top-pattern.png")
     add_image("logo-bat.png")
+
+    if self.class == PromoMailer
+      add_image("tweet.png", "assets")
+      add_image("f-share.png", "assets")
+      add_image("header-pattern-promo.png")
+    elsif self.class == PublisherMailer
+      add_image("header-pattern.png")
+    end
   end
 
   def require_premailer

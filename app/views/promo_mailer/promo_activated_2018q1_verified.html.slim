@@ -9,8 +9,8 @@ p = t("promo_mailer.promo_activated_2018q1_verified.body_one")
   .promo--item-label = "#{channel.publication_title}"
   .promo--referral-link-container
     span.promo--referral-link = referral_link(channel.promo_registration.referral_code)
-    = link_to("", tweet_url(referral_link(channel.promo_registration.referral_code)), style: "background-image: url(#{attachments["tweet.png"]&.url})", class: 'promo--twitter-button')
-
+    = link_to("", tweet_url(referral_link(channel.promo_registration.referral_code)), style: "background-image: url(#{attachments["tweet.png"]&.url})", class: 'promo--share-button')
+    = link_to("", facebook_url(referral_link(channel.promo_registration.referral_code)), style: "background-image: url(#{attachments["f-share.png"]&.url})", class: 'promo--share-button promo--share-button-facebook')
 p = t("promo_mailer.promo_activated_2018q1_verified.body_two")
 
 p = t("promo_mailer.promo_activated_2018q1_verified.body_three")

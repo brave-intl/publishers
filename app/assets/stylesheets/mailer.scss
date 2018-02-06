@@ -111,7 +111,6 @@ body {
 
   .promo--referral-link-container {
     font-size: .8rem;
-    background: #edf3f9;
     margin-bottom: 15px;
     height: 40px;
     width: 98%;
@@ -121,7 +120,8 @@ body {
       display: table-cell;
       vertical-align: middle;
       padding-left: 8px;
-      width: 100%;
+      width: 320px;
+      background: #edf3f9;
       border: solid;
       border-color: #cddeec;
       border-width: 1px;
@@ -140,7 +140,7 @@ body {
     }
   }
 
-  .promo--twitter-button {
+  .promo--share-button {
     background-repeat: no-repeat;
     border: none;
     letter-spacing: 1px;
@@ -148,9 +148,13 @@ body {
     text-decoration: none;
     background-position: center;
     background-color: white;
-    display: block;
-    width: 50px;
+    display: inline-block;
+    width: 40px;
     height: 100%;
+    margin-left: 5px;
+    &-facebook {
+      margin-left: 0px;
+    }
   }
 }
 
