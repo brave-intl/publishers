@@ -93,3 +93,24 @@ small_media_group_to_verify:
   updated_at: <%= Time.now - 20.weeks %>
   details: to_verify_details (SiteChannelDetails)
   verified: false
+
+medium_media_group_abandoned_1:
+  publisher: medium_media_group
+  details: medium_media_group_abandoned_1_details (SiteChannelDetails)
+  verified: false
+  created_at: <%= Time.now - 1.day - 1.minute %>
+  updated_at: <%= Time.now - 1.day - 1.minute%>
+
+medium_media_group_abandoned_2:
+  publisher: medium_media_group
+  details: medium_media_group_abandoned_2_details (SiteChannelDetails)
+  verified: false
+  created_at: <%= Time.now - 1.day - 1.minute %>
+  updated_at: <%= Time.now - 1.day - 1.minute%>
+
+medium_media_group_abandoned_3:
+  publisher: medium_media_group
+  details: medium_media_group_abandoned_3_details (SiteChannelDetails)
+  verified: false
+  created_at: <%= Time.now - 1.hour %>
+  updated_at: <%= Time.now - 1.hour %>

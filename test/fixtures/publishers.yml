@@ -121,3 +121,12 @@ small_media_group:
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
+medium_media_group:
+  email: "barney@medium.org"
+  name: "Small Media Group"
+  phone: "4159008921"
+  phone_normalized: "+14159008921"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+
