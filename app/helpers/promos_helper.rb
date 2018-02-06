@@ -31,12 +31,6 @@ module PromosHelper
     end
   end
 
-  def referral_bonus(publisher)
-    total_possible_referrals = total_possible_referrals(publisher)
-    promo_bonus_multiplier = Rails.application.secrets[:promo_bonus_multiplier].to_f
-    bonus = total_possible_referrals * promo_bonus_multiplier
-  end
-
   def referral_link(referral_code)
     I18n.t("promo.shared.base_referral_link") + referral_code.downcase
   end
