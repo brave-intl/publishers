@@ -10,6 +10,7 @@
     background-size: cover;
     @include media-breakpoint-down(sm) {
       background-size: unset;
+      background-attachment: fixed;
       margin-top: -65px;
     }
   }
