@@ -6,6 +6,6 @@
     p.promo--body-text-alternative= t("promo.activate.description")
     #referral-reward = t("promo.activate.referral_reward")
     = form_for @publisher, {method: :post, url: promo_registrations_path} do |f|
-      = f.hidden_field(:email, :value => params[:promo_token])
+      = f.hidden_field(:promo_token, :value => params[:promo_token])
       .text-center
         = f.submit(t("promo.activate.button").upcase, class: "btn promo--activate-button")

@@ -40,18 +40,22 @@ class PromoRegistrationsController < ApplicationController
     if current_publisher
       @publisher = current_publisher
     else
-      # Get promo auth token from params if they exist
-      promo_token = params.require(:promo_token)
+      if params[:promo_token].present?
+        promo_token = params[:promo_token]
+      elsif params[:publisher][:promo_token].present?
+        promo_token = params[:publisher][:promo_token]
+      else
+        return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
+      end
       if publisher = Publisher.find_by(promo_token_2018q1: promo_token)
         @publisher = publisher
       else
-        redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
+        return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
       end
     end
-    
+
     @publisher_promo_status = @publisher.promo_status(promo_running?)
     @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
-  # Rescue when no promo_token found in params
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
