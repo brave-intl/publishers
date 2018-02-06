@@ -14,7 +14,7 @@ class PublisherLoginLinkEmailer < BaseService
   end
 
   def find_publisher
-    publisher_verified = Publisher.find_by("email": @email)
+    publisher_verified = Publisher.by_email_case_insensitive(email).first
 
     if publisher_verified
       @publisher = publisher_verified

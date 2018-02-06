@@ -24,7 +24,7 @@ class Publisher < ApplicationRecord
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
   validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
-  validates :email, uniqueness: true, allow_nil: true
+  validates :email, uniqueness: {case_sensitive: false}, allow_nil: true
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
   # validates :name, presence: true, if: -> { brave_publisher_id.present? }
   validates :phone_normalized, phony_plausible: true
@@ -42,6 +42,8 @@ class Publisher < ApplicationRecord
 
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
+
+  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
