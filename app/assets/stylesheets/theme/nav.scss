@@ -210,4 +210,7 @@
 
 .nav--promo {
   background: $bravePromo-LightBlue;
+  @include media-breakpoint-down(sm) {
+    margin-left: $spacer * 2;
+  }
 }
