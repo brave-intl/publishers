@@ -548,7 +548,6 @@ en:
       referral_links: "Referral links:"
       referral_link: "Referral Link"
       copy: "Copy"
-      base_referral_link: "brave.com/"
   promo_mailer:
     activate_promo_2018q1:
       subject: "Limited Time Offer: Free tokens for your referral!"

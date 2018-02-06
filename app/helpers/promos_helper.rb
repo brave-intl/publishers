@@ -32,7 +32,7 @@ module PromosHelper
   end
 
   def referral_link(referral_code)
-    I18n.t("promo.shared.base_referral_link") + referral_code.downcase
+    base_referral_link + referral_code.downcase
   end
 
   def tweet_url(referral_link)
@@ -47,5 +47,9 @@ module PromosHelper
     base_facebook_link = "https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F"
     sharable_facebook_link = base_facebook_link + referral_link
     sharable_facebook_link
+  end
+
+  def base_referral_link
+    Rails.application.secrets[:base_referral_link].to_s + "/"
   end
 end
