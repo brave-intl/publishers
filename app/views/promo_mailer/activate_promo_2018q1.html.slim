@@ -3,7 +3,8 @@
 
 p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
 
-p = t("promo_mailer.activate_promo_2018q1.body")
+p = t("promo_mailer.activate_promo_2018q1.body_one")
+p = t("promo_mailer.activate_promo_2018q1.body_two")
 
 div.center= link_to(t("promo_mailer.activate_promo_2018q1.button"), @private_promo_2018q1_auth_url, class: "btn-primary btn-login")
 p= t("publisher_mailer.shared.signature")
