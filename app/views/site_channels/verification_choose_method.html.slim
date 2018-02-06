@@ -8,21 +8,21 @@
 .publisher-main-panel.publisher-panel.col-center
   .sub-panel.process-panel.col-center
     .content-panel
-      h3= t("site_channels.verification_choose_header")
+      h3= t ".heading"
       .verification-methods
         .verification-method.optionA
-          h4= t("site_channels.verification_choose_trusted_file_header")
-          h5.recommended= t("site_channels.verification_choose_trusted_file_subheader")
+          h4= t ".trusted_file.heading"
+          h5.recommended= t ".trusted_file.subheading"
           .img-container= image_tag("choose-file@1x.png", class: "choose-trusted-file")
-          div= link_to(t("site_channels.verification_choose_trusted_file_button"), verification_public_file_site_channel_path(current_channel), class: "btn btn-primary", :"data-piwik-action" => "ChosePublicFileClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+          div= link_to(t(".trusted_file.button"), verification_public_file_site_channel_path(current_channel), class: "btn btn-primary", :"data-piwik-action" => "ChosePublicFileClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
 
         .or
-          strong= t("site_channels.verification_choose_or")
+          strong= t ".or"
 
         .verification-method.optionB
-          h4= t("site_channels.verification_choose_dns_header")
-          h5= t("site_channels.verification_choose_dns_subheader")
+          h4= t ".dns.heading"
+          h5= t ".dns.subheading"
           .img-container= image_tag("choose-dns@1x.png", class: "choose-dns")
-          div= link_to(t("site_channels.verification_choose_dns_button"), verification_dns_record_site_channel_path(current_channel), class: "btn btn-secondary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+          div= link_to(t(".dns.button"), verification_dns_record_site_channel_path(current_channel), class: "btn btn-secondary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
 
-      .fine-print.text-center= t("site_channels.verification_choose_support_queue_html", support_queue_link: link_to(t("site_channels.verification_choose_support_queue_link"), verification_support_queue_site_channel_path(current_channel), :"data-piwik-action" => "ChoseSupportClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow"))
+      .fine-print.text-center= t(".support_queue.body_html", support_queue_link: link_to(t(".support_queue.link"), verification_support_queue_site_channel_path(current_channel), :"data-piwik-action" => "ChoseSupportClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow"))

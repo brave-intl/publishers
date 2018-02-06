@@ -1,21 +1,21 @@
 / Sent as soon as a publisher fills out the first step.
 / This email can be forwarded to a webmaster or IT peep.
 - content_for(:title) do
-  h3= I18n.t("publisher_mailer.verification_done.title")
-  
-.notice= I18n.t("publisher_mailer.welcome.private_email_notice")
+  h3= t ".title"
+
+.notice= t "publisher_mailer.shared.private_email_notice"
 
 h3
-  = image_tag(attachments["verified-icon.png"]&.url, alt: I18n.t("publishers.verified"), class: "attribute valign-mid verified-icon", height: 30)
+  = image_tag(attachments["verified-icon.png"]&.url, alt: t("publishers.shared.verified"), class: "attribute valign-mid verified-icon", height: 30)
   span.publisher-domain-name.valign-mid= @channel.details.publication_title
-p= I18n.t("publisher_mailer.verification_done.intro")
+p= t ".intro"
 
-h4= I18n.t("publisher_mailer.verification_done.claim_funds_header")
-p= I18n.t("publisher_mailer.verification_done.claim_funds_body")
+h4= t ".claim_funds.heading"
+p= t ".claim_funds.body"
 
-h4= "#{I18n.t("publisher_mailer.shared.private_access_link")}:"
+h4= "#{t "publisher_mailer.shared.private_access_link"}: "
 p= link_to(@private_reauth_url, @private_reauth_url)
 
 p.hint
-  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  span.attribute= "#{t "publisher_mailer.shared.contact_help"}: "
   = mail_to(Rails.application.secrets[:support_email])

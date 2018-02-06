@@ -48,3 +48,21 @@ to_verify_details:
   brave_publisher_id: "to_verify.org"
   verification_token: "e3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
   verification_method: "wordpress"
+
+medium_media_group_abandoned_1_details:
+  brave_publisher_id: "medium_1.org"
+  verification_token: "e3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
+  verification_method: "wordpress"
+  created_at: <%= Time.now - 1.day - 1.minute %>
+  updated_at: <%= Time.now - 1.day - 1.minute%>
+
+medium_media_group_abandoned_2_details:
+  brave_publisher_id: "medium_2.org"
+  created_at: <%= Time.now - 1.day - 1.minute %>
+  updated_at: <%= Time.now - 1.day - 1.minute%>
+
+medium_media_group_abandoned_3_details:
+  brave_publisher_id: "medium_3.org"
+  verification_method: "wordpress"
+  created_at: <%= Time.now - 1.hour %>
+  updated_at: <%= Time.now - 1.hour %>

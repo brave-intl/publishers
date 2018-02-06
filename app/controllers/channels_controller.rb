@@ -31,6 +31,6 @@ class ChannelsController < ApplicationController
   def setup_current_channel
     @current_channel = current_publisher.channels.find(params[:id])
   rescue ActiveRecord::RecordNotFound => e
-    redirect_to home_publishers_path, notice: t("channel.channel_not_found")
+    redirect_to home_publishers_path, notice: t("shared.channel_not_found")
   end
 end

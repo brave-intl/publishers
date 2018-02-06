@@ -20,7 +20,7 @@ class PublisherLoginLinkEmailer < BaseService
       @publisher = publisher_verified
       return true
     else
-      @error = I18n.t("publishers.new_auth_token_wrong_email_publisher_verified")
+      @error = I18n.t("services.publisher_login_link_emailer.new_auth_token_wrong_email_publisher_verified")
       return false
     end
   end

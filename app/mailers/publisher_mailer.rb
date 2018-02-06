@@ -35,7 +35,7 @@ class PublisherMailer < ApplicationMailer
     mail(
         to: INTERNAL_EMAIL,
         reply_to: @publisher.email,
-        subject: "<Internal> #{I18n.t(:subject, publication_title: @channel.details.publication_title, scope: %w(publisher_mailer verification_done))}",
+        subject: "<Internal> #{t("publisher_mailer.verification_done.subject", publication_title: @channel.details.publication_title)}",
         template_name: "verification_done"
     )
   end
@@ -59,7 +59,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer welcome))}",
+      subject: "<Internal> #{t("publisher_mailer.welcome.subject")}",
       template_name: "welcome"
     )
   end
@@ -93,7 +93,7 @@ class PublisherMailer < ApplicationMailer
     mail(
         to: INTERNAL_EMAIL,
         reply_to: @publisher.email,
-        subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer verify_email))}",
+        subject: "<Internal> #{t("publisher_mailer.verify_email.subject")}",
         template_name: "verify_email"
     )
   end
@@ -113,7 +113,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer confirm_email_change))}",
+      subject: "<Internal> #{t("publisher_mailer.confirm_email_change.subject")}",
       template_name: "confirm_email_change"
     )
   end
@@ -158,7 +158,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @publisher.email,
-      subject: "<Internal> #{I18n.t(:subject, scope: %w(publisher_mailer verified_no_wallet))}",
+      subject: "<Internal> #{t("publisher_mailer.verified_no_wallet.subject")}",
       template_name: "verified_no_wallet"
     )
   end
@@ -180,7 +180,7 @@ class PublisherMailer < ApplicationMailer
     mail(
       to: INTERNAL_EMAIL,
       reply_to: @email,
-      subject: "<Internal> #{I18n.t(:subject, publication_title: @domain, scope: %w(publisher_mailer unverified_domain_reached_threshold))}",
+      subject: "<Internal> #{t("publisher_mailer.unverified_domain_reached_threshold.subject", publication_title: @domain)}",
       template_name: "unverified_domain_reached_threshold"
     )
   end

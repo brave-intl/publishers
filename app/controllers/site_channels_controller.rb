@@ -59,7 +59,7 @@ class SiteChannelsController < ApplicationController
         Raven.capture_exception(e)
       end
 
-      redirect_to(channel_next_step_path(@current_channel), notice: t("channel.channel_created"))
+      redirect_to(channel_next_step_path(@current_channel), notice: t("shared.channel_created"))
     else
       @channel = @current_channel
       render :action => "new"
@@ -93,7 +93,7 @@ class SiteChannelsController < ApplicationController
     @channel = current_channel
     @channel.details.inspect_brave_publisher_id
     @channel.save!
-    redirect_to(site_last_verification_method_path(@channel), alert: t("site_channels.https_inspection_complete"))
+    redirect_to(site_last_verification_method_path(@channel), alert: t(".alert"))
   end
 
   # TODO: Rate limit
@@ -110,9 +110,9 @@ class SiteChannelsController < ApplicationController
   def setup_current_channel
     @current_channel = current_publisher.channels.find(params[:id])
     return if current_channel && current_channel.details.is_a?(SiteChannelDetails)
-    redirect_to(home_publishers_path(current_publisher), alert: t("channel.requires_other_channel_type"))
+    redirect_to(home_publishers_path(current_publisher), alert: t(".alert"))
   rescue ActiveRecord::RecordNotFound => e
-    redirect_to(home_publishers_path, alert: t("channel.channel_not_found"))
+    redirect_to(home_publishers_path, alert: t("shared.channel_not_found"))
   end
 
   def require_verification_token
@@ -124,12 +124,12 @@ class SiteChannelsController < ApplicationController
 
   def require_unverified_site
     return if !current_channel.verified?
-    redirect_to(channel_next_step_path(current_channel), alert: I18n.t("site_channels.verification_already_done"))
+    redirect_to(channel_next_step_path(current_channel), alert: t(".alert"))
   end
 
   def require_https_enabled_site
     return if current_channel.details.supports_https?
-    redirect_to(site_last_verification_method_path(current_channel.details), alert: t("publishers.requires_https"))
+    redirect_to(site_last_verification_method_path(current_channel.details), alert: t(".alert"))
   end
 
   def update_site_verification_method

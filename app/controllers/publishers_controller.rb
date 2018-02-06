@@ -91,7 +91,7 @@ class PublishersController < ApplicationController
     PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
 
     session[:created_publisher_id] = @publisher.id
-    redirect_to create_done_publishers_path, alert: t("publishers.resend_confirmation_email_done")
+    redirect_to create_done_publishers_path, alert: t(".done")
   end
 
   def email_verified
@@ -195,7 +195,7 @@ class PublishersController < ApplicationController
       return
     end
 
-    redirect_to(root_path, alert: I18n.t("publishers.login_link_unverified_message"))
+    redirect_to(root_path, alert: t(".expired_error"))
   end
 
   def uphold_verified
@@ -203,7 +203,7 @@ class PublishersController < ApplicationController
 
     # Ensure the uphold_state_token has been set. If not send back to try again
     if @publisher.uphold_state_token.blank?
-      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_state_token_does_not_match"))
+      redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
 
@@ -211,14 +211,14 @@ class PublishersController < ApplicationController
     uphold_error = params[:error]
     if uphold_error.present?
       Rails.logger.error("Uphold Error: #{uphold_error}-> #{params[:error_description]}")
-      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_error"))
+      redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
 
     # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
     state_token = params[:state]
     if @publisher.uphold_state_token != state_token
-      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_state_token_does_not_match"))
+      redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
 
@@ -229,7 +229,7 @@ class PublishersController < ApplicationController
       @publisher.reload
     rescue Faraday::Error
       Rails.logger.error("Unable to exchange Uphold access token with eyeshade")
-      redirect_to(publisher_next_step_path(@publisher), alert: I18n.t("publishers.verification_uphold_error"))
+      redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
 
@@ -330,7 +330,7 @@ class PublishersController < ApplicationController
 
     if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
       if confirm_email.present? && publisher.email == confirm_email
-        flash[:alert] = t("publishers.email_confirmed", email: publisher.email)
+        flash[:alert] = t(".email_confirmed", email: publisher.email)
       end
       if two_factor_enabled?(publisher)
         session[:pending_2fa_current_publisher_id] = publisher_id
@@ -339,7 +339,7 @@ class PublishersController < ApplicationController
         sign_in(:publisher, publisher)
       end
     else
-      flash[:alert] = I18n.t("publishers.authentication_token_invalid")
+      flash[:alert] = t(".token_invalid")
     end
   end
 
@@ -358,17 +358,17 @@ class PublishersController < ApplicationController
   # If an active session is present require users to explicitly sign out
   def require_unauthenticated_publisher
     return if !current_publisher
-    redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.already_logged_in"))
+    redirect_to(publisher_next_step_path(current_publisher), alert: t(".already_logged_in"))
   end
 
   def require_verified_email
     return if current_publisher.email_verified?
-    redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.email_verification_required"))
+    redirect_to(publisher_next_step_path(current_publisher), alert: t(".email_verification_required"))
   end
 
   def require_verified_publisher
     return if current_publisher.verified?
-    redirect_to(publisher_next_step_path(current_publisher), alert: I18n.t("publishers.verification_required"))
+    redirect_to(publisher_next_step_path(current_publisher), alert: t(".verification_required"))
   end
 
   # Level 1 throttling -- After the first two requests, ask user to

@@ -5,7 +5,7 @@ html
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1"
-    title= t("shared.app_title")
+    title= t "shared.app_title"
     = stylesheet_link_tag 'static', media: 'all'
     = javascript_pack_tag 'static'
     link rel="icon" type="image/png" href=image_path("favicon.ico")
@@ -18,7 +18,7 @@ html
       - if flash[:notice]
         .alert.alert-success.flash= flash[:notice]
       - if content_for(:content_form_errors)
-        .alert.alert-warning= I18n.t("activerecord.shared.errors")
+        .alert.alert-warning= t "activerecord.shared.errors"
         = yield(:content_form_errors)
 
     = content_for?(:content) ? yield(:content) : yield

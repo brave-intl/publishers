@@ -53,17 +53,17 @@ class SiteChannelTest < ActiveSupport::TestCase
     assert_equal I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
   end
 
-  test "can get recent unverified site_channels can be found" do
+  test "recent unverified site_channels can be found" do
 
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels(max_age: 12.weeks).pluck(:brave_publisher_id)
 
-    assert_equal 3, brave_publisher_ids.length
+    assert_equal 6, brave_publisher_ids.length
     assert brave_publisher_ids.include?("stale.org")
 
     # Default max_age of 6 weeks
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels.pluck(:brave_publisher_id)
 
-    assert_equal 2, brave_publisher_ids.length
+    assert_equal 5, brave_publisher_ids.length
     refute brave_publisher_ids.include?("stale.org")
   end
 

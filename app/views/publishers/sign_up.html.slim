@@ -10,7 +10,7 @@
     .col-small-centered
       = form_tag publishers_path, method: :post do |f|
         .form-group
-          = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.enter_your_email"), required: true, value: @publisher.email
+          = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true, value: @publisher.email
         - if params[:captcha]
           = hidden_field_tag :captcha
         - if @should_throttle
