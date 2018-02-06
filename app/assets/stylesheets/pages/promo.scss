@@ -66,7 +66,7 @@
     margin-top: 20px;
   }
   .promo--referral-link-container-container {
-    .promo--twitter-button {
+    .promo--share-button {
       background-repeat: no-repeat;
       border: none;
       letter-spacing: 1px;
@@ -75,13 +75,22 @@
       width: 40px;
 
       &-mobile {
-        background: $bravePromo-TwitterBlue;
-        background-image: url(asset-path("icn-twitter.png"));
         display: none;
       }
 
-      &-desktop {
+      &-twitter {
+        background: $bravePromo-TwitterBlue;
         background-image: url(asset-path("tweet.png"));
+        background-repeat: no-repeat;
+      }
+
+      &-facebook {
+        background: $bravePromo-FacebookBlue;
+        background-image: url(asset-path("f-share.png"));
+        background-repeat: no-repeat;
+      }
+
+      &-desktop {
         background-position: center;
         background-color: white;
         display: table-cell;
@@ -295,10 +304,8 @@
       &-1{
         background: #F7F8F9;
       }
-      .promo--twitter-button {
-        background-repeat: no-repeat;
+      .promo--share-button {
         &:hover, &focus {
-          background-color: $bravePromo-TwitterBlue;
           outline: 0;
           border: none;
         }
@@ -306,17 +313,31 @@
         &-desktop {
           display: none;
         }
+
         &-mobile {
-          float: right;
-          margin-right: 30px;
-          font-size: 13px;
-          width: 125px;
-          height: 35px;
-          background-position: center left 15px;
+          font-size: 14px;
+          width: 140px;
+          height: 40px;
           padding-top: 8px;
           padding-left: 15px;
           display: inline-block;
           border-radius: 20px;
+        }
+
+        &-twitter {
+          background: $bravePromo-TwitterBlue;
+          background-image: url(asset-path("icn-twitter.png"));
+          background-repeat: no-repeat;
+          background-position: center left 15px;
+          margin-right: 10px;
+        }
+
+        &-facebook {
+          background: $bravePromo-FacebookBlue;
+          background-image: url(asset-path("icn-fb.png"));
+          background-repeat: no-repeat;
+          background-position: center left 15px;
+          margin-left: 10px;
         }
       }
       .promo--referral-link-container {

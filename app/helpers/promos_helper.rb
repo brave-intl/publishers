@@ -52,4 +52,10 @@ module PromosHelper
     full_tweet_url = twitter_preamble + tweet_content_url
     full_tweet_url
   end
+
+  def facebook_url(referral_link)
+    base_facebook_link = "https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F"
+    sharable_facebook_link = base_facebook_link + referral_link
+    sharable_facebook_link
+  end
 end

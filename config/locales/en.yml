@@ -539,6 +539,7 @@ en:
     shared:
       tweet_content: "Please support me by downloading Brave!"
       tweet: "Tweet"
+      share: "Share"
       promo_period: "Promo period:"
       promo_period_description: "Jan 1 - Feb 1"
       reward: "Reward:"
