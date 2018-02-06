@@ -145,7 +145,7 @@ body[data-controller="u2f_registrations"]
   .channel--promo-info-container
     float: right
     height: 45px
-    width: 110px
+    width: 166px
     transition: .3s ease-in-out
     display: table
     .promo-info-item
@@ -180,6 +180,16 @@ body[data-controller="u2f_registrations"]
       height: 100%   
       border-radius: 0px 4px 4px 0px
       display: none
+    .promo-share-button
+      height: 23px
+      width: 28px
+      display: table-cell
+      background-position: center
+      background-repeat: no-repeat
+      &-twitter
+        background-image: url(asset-path("tweet.png"))
+      &-facebook
+        background-image: url(asset-path("f-share.png"))
     &-slideout
       width: 300px
       .promo-info-item
