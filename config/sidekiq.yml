@@ -19,7 +19,7 @@
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
   SyncPublisherPromoStatsJob:
-    cron: "10 * * * *"
+    cron: "*/10 * * * *"
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server"
     queue: scheduler
 :verbose: true
