@@ -1,6 +1,6 @@
 function showPendingContactEmail(pendingEmail) {
-  var pendingEmailNotice = document.getElementById('pending_email_notice');
-  var showContactEmail = document.getElementById('show_contact_email');
+  let pendingEmailNotice = document.getElementById('pending_email_notice');
+  let showContactEmail = document.getElementById('show_contact_email');
   if (pendingEmail && pendingEmail != showContactEmail.innerText) {
     pendingEmailNotice.innerHTML = 'Pending: Email address has been updated to: <strong>' + pendingEmail + '</strong>. An email has been sent to this address to confirm this change.';
     pendingEmailNotice.style.display = 'block';
@@ -10,7 +10,7 @@ function showPendingContactEmail(pendingEmail) {
 }
 
 function refreshBalance() {
-  var options = {
+  let options = {
     headers: {
         'Accept': 'application/json'
     },
@@ -25,33 +25,33 @@ function refreshBalance() {
       }
     })
     .then(function(body) {
-      var batAmount = document.getElementById('bat_amount');
+      let batAmount = document.getElementById('bat_amount');
       batAmount.innerText = body.bat_amount;
-      var convertedAmount = document.getElementById('converted_amount');
+      let convertedAmount = document.getElementById('converted_amount');
       convertedAmount.innerText = body.converted_balance;
     });
 }
 
 function showVerificationModal() {
-  var modal = document.getElementById('verification_modal');
+  let modal = document.getElementById('verification_modal');
   modal.classList.add('md-show');
 }
 
 function hideVerificationModal() {
-  var modal = document.getElementById('verification_modal');
+  let modal = document.getElementById('verification_modal');
   modal.classList.remove('md-show');
 }
 
 function removeChannel(channelId) {
   submitForm('remove_channel_' + channelId, 'DELETE', true)
     .then(function(response) {
-      var channelRow = document.getElementById('channel_row_' + channelId);
+      let channelRow = document.getElementById('channel_row_' + channelId);
       channelRow.classList.add('channel-hidden');
 
       // Show channel placeholder if no channels are still visible
-      var visibleChannelRows = document.querySelectorAll("div.channel-row:not(.channel-hidden)");
+      let visibleChannelRows = document.querySelectorAll("div.channel-row:not(.channel-hidden)");
       if (visibleChannelRows.length === 0) {
-        var addChannelPlaceholder = document.getElementById("add_channel_placeholder");
+        let addChannelPlaceholder = document.getElementById("add_channel_placeholder");
         addChannelPlaceholder.classList.remove("hidden");
       }
     });
@@ -62,11 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  var removeChannelLinks = document.querySelectorAll('a.remove-channel');
-  for (var i = 0, l = removeChannelLinks.length; i < l; i++) {
+  let removeChannelLinks = document.querySelectorAll('a.remove-channel');
+  for (let i = 0, l = removeChannelLinks.length; i < l; i++) {
     removeChannelLinks[i].addEventListener('click', function(event) {
-      var channelId = event.target.getAttribute('data-channel-id');
-      var template = document.querySelector('[data-js-channel-removal-confirmation-template="' + channelId + '"]');
+      let channelId = event.target.getAttribute('data-channel-id');
+      let template = document.querySelector('[data-js-channel-removal-confirmation-template="' + channelId + '"]');
       openModal(template.innerHTML, function() {
         removeChannel(channelId);
       }, function() {
@@ -75,12 +75,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }, false);
   }
 
-  var publisherVisibleCheckbox = document.getElementById('publisher_visible');
+  let publisherVisibleCheckbox = document.getElementById('publisher_visible');
   publisherVisibleCheckbox.addEventListener('click', function(event) {
     window.submitForm('update_publisher_visible_form', 'PATCH', true);
   }, false);
 
-  var defaultCurrencySelect = document.getElementById('publisher_default_currency');
+  let defaultCurrencySelect = document.getElementById('publisher_default_currency');
   if (defaultCurrencySelect) {
     defaultCurrencySelect.addEventListener('change', function(event) {
       window.submitForm('update_default_currency_form', 'PATCH', true);
@@ -88,28 +88,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }, false);
   }
 
-  var showContact = document.getElementById('show_contact');
-  var showContactName = document.getElementById('show_contact_name');
-  var showContactEmail = document.getElementById('show_contact_email');
-  var showContactPhone = document.getElementById('show_contact_phone');
-  var showContactPhoneSeparator = document.getElementById('show_contact_phone_separator');
+  let showContact = document.getElementById('show_contact');
+  let showContactName = document.getElementById('show_contact_name');
+  let showContactEmail = document.getElementById('show_contact_email');
+  let showContactPhone = document.getElementById('show_contact_phone');
+  let showContactPhoneSeparator = document.getElementById('show_contact_phone_separator');
 
-  var pendingContactEmail = document.getElementById('pending_contact_email');
+  let pendingContactEmail = document.getElementById('pending_contact_email');
   showPendingContactEmail(pendingContactEmail.innerText);
 
-  var updateContactForm = document.getElementById('update_contact');
-  var updateContactName = document.getElementById('update_contact_name');
-  var updateContactEmail = document.getElementById('update_contact_email');
-  var updateContactPhone = document.getElementById('update_contact_phone');
+  let updateContactForm = document.getElementById('update_contact');
+  let updateContactName = document.getElementById('update_contact_name');
+  let updateContactEmail = document.getElementById('update_contact_email');
+  let updateContactPhone = document.getElementById('update_contact_phone');
 
-  var editContact = document.getElementById('edit_contact');
-  var cancelEditContact = document.getElementById('cancel_edit_contact');
+  let editContact = document.getElementById('edit_contact');
+  let cancelEditContact = document.getElementById('cancel_edit_contact');
 
-  var generateStatement = document.getElementById('generate_statement');
-  var generateStatementResult = document.getElementById('generate_statement_result');
-  var statementGenerator = document.getElementById('statement_generator');
-  var statementPeriod = document.getElementById('statement_period');
-  var generatedStatements = document.getElementById('generated_statements');
+  let generateStatement = document.getElementById('generate_statement');
+  let generateStatementResult = document.getElementById('generate_statement_result');
+  let statementGenerator = document.getElementById('statement_generator');
+  let statementPeriod = document.getElementById('statement_period');
+  let generatedStatements = document.getElementById('generated_statements');
 
   editContact.addEventListener('click', function(event) {
     updateContactName.value = showContactName.innerText;
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
     window.submitForm('update_contact', 'PATCH', true)
       .then(function() {
-        var updatedEmail = updateContactEmail.value;
+        let updatedEmail = updateContactEmail.value;
         showContactName.innerText = updateContactName.value;
         showContactPhone.innerText = updateContactPhone.value;
         pendingContactEmail.innerText = updatedEmail;
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showContactPhoneSeparator.style.display = (showContactPhone.innerText ? 'inline' : 'none');
 
         // Re-enable submit button to allow form to be resubmitted
-        var submitButton = updateContactForm.querySelector('input[type=submit][disabled]');
+        let submitButton = updateContactForm.querySelector('input[type=submit][disabled]');
         if (submitButton) {
           submitButton.removeAttribute('disabled');
           submitButton.blur();
@@ -155,8 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (generateStatement) {
     generateStatement.addEventListener('click', function(event) {
-      var statementId;
-      var statementDownloadDiv;
+      let statementId;
+      let statementDownloadDiv;
 
       event.preventDefault();
       generateStatement.style.display = 'none';
@@ -171,10 +171,10 @@ document.addEventListener('DOMContentLoaded', function() {
             statementGenerator.style.display = 'none';
           }
 
-          var newStatementDiv = document.createElement('div');
+          let newStatementDiv = document.createElement('div');
           newStatementDiv.className = 'statement';
 
-          var statementPeriodDiv = document.createElement('div');
+          let statementPeriodDiv = document.createElement('div');
           statementPeriodDiv.className = 'period';
           statementPeriodDiv.appendChild(document.createTextNode(json.period));
           newStatementDiv.appendChild(statementPeriodDiv);
