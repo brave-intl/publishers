@@ -20,8 +20,8 @@ class PublisherPromoStatsFetcher < BaseApiClient
     @publisher.save!
   rescue => e
     require "sentry-raven"
-    Rails.logger.error("PublisherPromoStatsFetcher #perform error: #{e}")
-    Raven.capture_exception("PublisherPromoStatsFetcher #perform error: #{e}")
+    Rails.logger.error("PublisherPromoStatsFetcher #perform error: #{e}, publisher: #{@publisher}")
+    Raven.capture_exception("PublisherPromoStatsFetcher #perform error: #{e}, publisher: #{@publisher}")
     nil
   end
 
