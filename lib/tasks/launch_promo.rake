@@ -18,7 +18,7 @@ namespace :promo do
 
     rescue PublisherPromoTokenGenerator::InvalidPromoIdError => error
       require "raven"
-      Raven.capture_exception(e)
+      Raven.capture_exception(error)
       puts "Did not launch promo because of invalid promo id. Check the active_promo_id config var."
     end
   end
