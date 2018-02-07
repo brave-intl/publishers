@@ -25,8 +25,8 @@ class PromoRegistrationGetter < BaseApiClient
     referral_code
   rescue Faraday::Error => e
     require "sentry-raven"
-    Rails.logger.error("PromoRegistrar #register_channel error: #{e}")
-    Raven.capture_exception("PromoRegistrar #register_channel error: #{e}")
+    Rails.logger.error("PromoRegistrationGetter #perform error: #{e}")
+    Raven.capture_exception("PromoRegistrationGetter #perform error: #{e}")
     nil
   end
 
