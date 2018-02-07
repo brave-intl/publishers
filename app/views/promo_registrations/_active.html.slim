@@ -9,8 +9,11 @@
       span = t("promo.shared.reward_description")
     p.promo--body-text
       span = t("promo.active.description_one")
-      span = link_to(t("promo.active.description_two"), home_publishers_path)
-      span = t("promo.active.description_three")
+      span = t("promo.active.description_two")
+      - if current_publisher
+        span = link_to(t("promo.active.description_three"), home_publishers_path)
+      - else
+        span = link_to(t("promo.active.description_three"), new_auth_token_publishers_path)
   .promo--item-container
     span.promo--item-label= t("promo.shared.referral_links")
   - n = 0
@@ -27,5 +30,8 @@
     - n += 1
   p.promo--body-text-mobile
     span = t("promo.active.description_one")
-    span = link_to(t("promo.active.description_two"), home_publishers_path)
-    span = t("promo.active.description_three")
+    span = t("promo.active.description_two")
+    - if current_publisher
+      span = link_to(t("promo.active.description_three"), home_publishers_path)
+    - else
+      span = link_to(t("promo.active.description_three"), new_auth_token_publishers_path)

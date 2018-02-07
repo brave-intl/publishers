@@ -16,4 +16,7 @@
   p#promo--no-channels = t("promo.activated.unverified_no_channels")
   .promo--unverified-container.text-center
     p.promo--body-text = t("promo.activated.unverified_error")
-    = link_to(t("promo.activated.unverified_cta").upcase, home_publishers_path, class: "btn btn-primary promo--activate-button")
+    - if current_publisher
+      = link_to(t("promo.activated.unverified_cta").upcase, home_publishers_path, class: "btn btn-primary promo--activate-button")
+    - else 
+      = link_to(t("promo.activated.unverified_cta").upcase, new_auth_token_publishers_path, class: "btn btn-primary promo--activate-button")
