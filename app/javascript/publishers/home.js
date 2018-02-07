@@ -1,3 +1,10 @@
+import {
+  fetchAfterDelay,
+  pollUntilSuccess,
+  submitForm
+} from '../utils/request';
+import dynamicEllipsis from '../utils/dynamicEllipsis';
+
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
   let showContactEmail = document.getElementById('show_contact_email');
@@ -18,7 +25,7 @@ function refreshBalance() {
     method: 'GET'
   };
 
-  return window.fetchAfterDelay('./balance', 500)
+  return fetchAfterDelay('./balance', 500)
     .then(function(response) {
       if (response.status === 200 || response.status === 304) {
         return response.json();
@@ -77,13 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let publisherVisibleCheckbox = document.getElementById('publisher_visible');
   publisherVisibleCheckbox.addEventListener('click', function(event) {
-    window.submitForm('update_publisher_visible_form', 'PATCH', true);
+    submitForm('update_publisher_visible_form', 'PATCH', true);
   }, false);
 
   let defaultCurrencySelect = document.getElementById('publisher_default_currency');
   if (defaultCurrencySelect) {
     defaultCurrencySelect.addEventListener('change', function(event) {
-      window.submitForm('update_default_currency_form', 'PATCH', true);
+      submitForm('update_default_currency_form', 'PATCH', true);
       refreshBalance();
     }, false);
   }
@@ -131,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   updateContactForm.addEventListener('submit', function(event) {
     event.preventDefault();
-    window.submitForm('update_contact', 'PATCH', true)
+    submitForm('update_contact', 'PATCH', true)
       .then(function() {
         let updatedEmail = updateContactEmail.value;
         showContactName.innerText = updateContactName.value;
@@ -161,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
       event.preventDefault();
       generateStatement.style.display = 'none';
 
-      window.submitForm('statement_generator', 'PATCH', false)
+      submitForm('statement_generator', 'PATCH', false)
         .then(function(response) {
           return response.json();
         })
@@ -186,19 +193,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
           generatedStatements.insertBefore(newStatementDiv, generatedStatements.firstChild);
 
-          window.dynamicEllipsis.start(statementDownloadDiv);
+          dynamicEllipsis.start(statementDownloadDiv);
 
           statementId = json.id;
-          return window.pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
+          return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
         })
         .then(function() {
-          window.dynamicEllipsis.stop(statementDownloadDiv);
+          dynamicEllipsis.stop(statementDownloadDiv);
           statementDownloadDiv.innerHTML = '<a href="/publishers/statement?id=' + statementId + '">Download</a>';
           generateStatement.style.display = 'inline-block';
         })
         .catch(function(e) {
           if (statementDownloadDiv) {
-            window.dynamicEllipsis.stop(statementDownloadDiv);
+            dynamicEllipsis.stop(statementDownloadDiv);
             statementDownloadDiv.innerText = 'Delayed';
           }
           generateStatement.style.display = 'inline-block';
