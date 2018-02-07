@@ -1,8 +1,6 @@
 # Overrides the Devise defaults for unauthenticated requests
 class CustomFailureApp < Devise::FailureApp
   def redirect_url
-    debugger
-    
     warden_message = warden_options[:message]
     attempted_path = warden_options[:attempted_path]
     unauthenticated = warden_options[:action] == "unauthenticated"

@@ -82,16 +82,17 @@
         background: $bravePromo-TwitterBlue;
         background-image: url(asset-path("tweet.png"));
         background-repeat: no-repeat;
+        background-position: right;
       }
 
       &-facebook {
         background: $bravePromo-FacebookBlue;
         background-image: url(asset-path("f-share.png"));
         background-repeat: no-repeat;
+        background-position: center;
       }
 
       &-desktop {
-        background-position: center;
         background-color: white;
         display: table-cell;
       }
@@ -328,7 +329,7 @@
           background: $bravePromo-TwitterBlue;
           background-image: url(asset-path("icn-twitter.png"));
           background-repeat: no-repeat;
-          background-position: center left 15px;
+          background-position: center left 20px;
           margin-right: 10px;
         }
 
@@ -336,7 +337,7 @@
           background: $bravePromo-FacebookBlue;
           background-image: url(asset-path("icn-fb.png"));
           background-repeat: no-repeat;
-          background-position: center left 15px;
+          background-position: center left 20px;
           margin-left: 10px;
         }
       }
