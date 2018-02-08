@@ -4,8 +4,8 @@ html
     meta http-equiv="Content-Type" content="text/html; charset=utf-8"
     = stylesheet_link_tag('mailer', media: 'all')
   body
-    .main
-      .header style="background-image: url(#{attachments["header-pattern.png"]&.url})"
+    .main style="background-image: url(#{attachments["header-pattern-promo.png"]&.url})"
+      .header 
         .brand
           = image_tag(attachments["brave-payments.png"]&.url, alt: t("shared.app_title"), height: 31, width: 268)
       .content

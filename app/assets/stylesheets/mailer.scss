@@ -22,6 +22,8 @@ body {
 .main {
   margin-top: 50px;
   background: white;
+  background-repeat: no-repeat;
+  background-position: top right;
   border-radius: 8px;
   border: 1px solid #eff2f5;
 }
@@ -29,9 +31,8 @@ body {
 .header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  padding: 72px 50px 107px 50px;
-  margin-bottom: -49px;
-  background-color: #ffffff;
+  padding: 72px 50px 58px 50px;;
+  background-color: transparent;
   background-position: top right;
   background-repeat: no-repeat;
 
