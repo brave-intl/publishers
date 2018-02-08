@@ -3,6 +3,7 @@
 :timeout: 8
 :queues:
   - mailers
+  - transactional
   - scheduler
   - default
   - low
@@ -21,5 +22,5 @@
   SyncPublisherPromoStatsJob:
     cron: "0 */3 * * *"
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server"
-    queue: scheduler
+    queue: transactional
 :verbose: true
