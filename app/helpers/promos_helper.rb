@@ -22,7 +22,7 @@ module PromosHelper
 
   def total_possible_referrals(publisher)
     stats = publisher.promo_stats_2018q1
-    if publisher.promo_stats_2018q1 == "{}"
+    if publisher.promo_stats_2018q1.blank?
       return 0
     else
       downloads_for_time_periods = stats["series"]["values"]  

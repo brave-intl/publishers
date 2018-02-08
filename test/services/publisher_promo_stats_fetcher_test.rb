@@ -57,7 +57,7 @@ class PublisherPromoStatsFetcherTest <  ActionDispatch::IntegrationTest
     PublisherPromoStatsFetcher.new(publisher: publisher).perform
 
     # verify the stats have not been changed
-    assert_equal publisher.promo_stats_2018q1, "{}"
+    assert_equal publisher.promo_stats_2018q1, {}
     
     # verify stats_updated_at has not been set
     assert_nil publisher.promo_stats_updated_at_2018q1
@@ -72,7 +72,7 @@ class PublisherPromoStatsFetcherTest <  ActionDispatch::IntegrationTest
     PublisherPromoStatsFetcher.new(publisher: publisher).perform
 
     # verify the stats have not been changed
-    assert_equal publisher.promo_stats_2018q1, "{}"
+    assert_equal publisher.promo_stats_2018q1, {}
     
     # verify stats_updated_at has not been set
     assert_nil publisher.promo_stats_updated_at_2018q1

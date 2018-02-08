@@ -6,11 +6,14 @@ class SyncPublisherPromoStatsJobTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
 
+    assert_equal publisher.promo_stats_2018q1, {} # sanity check
+
     # enable promo and register channel
     post promo_registrations_path
 
-    assert_difference -> {Publisher.where.not(promo_stats_2018q1: "{}").count}, 1 do
-      SyncPublisherPromoStatsJob.perform_now
-    end
+    SyncPublisherPromoStatsJob.perform_now
+    publisher.reload
+
+    assert_not_equal publisher.promo_stats_2018q1, {}
   end
 end
