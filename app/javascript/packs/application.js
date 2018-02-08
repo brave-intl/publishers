@@ -15,14 +15,14 @@ import Rails from 'rails-ujs';
  * For exmaple this link would delete when JS is present, but without JS
  * a click would take you to the URL `/publishers`:
  *
- *     <a herf="/publishers" data-method="delete">delete</a>
+ *     <a href="/publishers" data-method="delete">delete</a>
  *
  * These two behaviors are very different. To provide a URL for non-JS, pass
  * the JS URL as `data-href`:
  *
  *     <a
- *       herf="/publishers/confirm_delete_page"
- *       data-method="/publishers"
+ *       href="/publishers/confirm_delete_page"
+ *       data-href="/publishers"
  *       data-method="delete"
  *    >delete</a>
  *
@@ -35,4 +35,3 @@ Rails.href = function Rails_href_override(element) {
 };
 
 Rails.start();
-
