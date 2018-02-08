@@ -2,8 +2,8 @@
   .footer--promo
     .footer--promo-item.footer--promo-item-dashboard
       - if current_publisher
-        = link_to(t("publishers.app_title"), home_publishers_path)
+        = link_to(t("shared.app_title"), home_publishers_path)
       - else
-        = link_to(t("publishers.app_title"), new_auth_token_publishers_path)
+        = link_to(t("shared.app_title"), new_auth_token_publishers_path)
     .footer--promo-item.footer--promo-item-tos  
       = link_to(t("shared.terms_of_service"), terms_of_service_url)
