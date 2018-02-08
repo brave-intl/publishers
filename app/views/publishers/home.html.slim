@@ -415,12 +415,12 @@ noscript
               = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
               = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
               .referral-link-url.promo-info-item
-                = referral_link(channel.promo_registration.referral_code)
+                = referral_url(channel.promo_registration.referral_code)
               .referral-link-button.referral-link-button-desktop.promo-info-item
                 = t("promo.shared.referral_link")
-              .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{referral_link(channel.promo_registration.referral_code)}"
+              .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
                 = t("promo.shared.referral_link")
-              .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{referral_link(channel.promo_registration.referral_code)}"
+              .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
                 = t("promo.shared.copy")
           - else 
             .channel-status.pull-right
