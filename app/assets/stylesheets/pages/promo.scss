@@ -33,6 +33,10 @@
   .promo--item-container {
     color: $bravePromo-DarkBlue;
     padding-bottom: 10px;
+    &-reward {
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
   }
 
   .promo--item-label {
@@ -56,6 +60,9 @@
     font-size: 13px;
     &-mobile {
       display: none;
+    }
+    &-verified {
+      line-height: 1.6;
     }
   }
 
