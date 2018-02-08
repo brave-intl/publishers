@@ -61,7 +61,7 @@ class PublishersController < ApplicationController
       return redirect_to root_path(captcha: params[:captcha]), alert: t(".access_throttled")
     end
 
-    verified_publisher = Publisher.find_by(email: email)
+    verified_publisher = Publisher.by_email_case_insensitive(email).first
     if verified_publisher
       @publisher = verified_publisher
       PublisherLoginLinkEmailer.new(email: email).perform

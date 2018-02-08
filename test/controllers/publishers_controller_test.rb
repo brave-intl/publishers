@@ -145,6 +145,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def request_login_email_uppercase_email(publisher:)
+    perform_enqueued_jobs do
+      get(new_auth_token_publishers_path)
+      params = { publisher: { email: publisher.email.upcase } }
+      post(create_auth_token_publishers_path, params: params)
+    end
+  end
+
   test "relogin sends a login link email" do
     publisher = publishers(:default)
     request_login_email(publisher: publisher)
@@ -166,6 +174,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_out(:publisher)
     get(url)
     assert_empty(css_select("span.email"))
+  end
+
+  test "relogin sends a login link email using case insensitive_email comparison" do
+    publisher = publishers(:default)
+    request_login_email_uppercase_email(publisher: publisher)
+    email = ActionMailer::Base.deliveries.find do |message|
+      message.to.first == publisher.email
+    end
+    assert_not_nil(email)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    assert_email_body_matches(matcher: url, email: email)
   end
 
   # test "relogin for unverified publishers requires email" do

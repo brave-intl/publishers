@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118022455) do
+ActiveRecord::Schema.define(version: 20180207143046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,8 +160,8 @@ ActiveRecord::Schema.define(version: 20180118022455) do
     t.datetime "two_factor_prompted_at"
     t.boolean  "visible",                               default: true
     t.datetime "agreed_to_tos"
+    t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
-    t.index ["email"], name: "index_publishers_on_email", unique: true, using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree
   end
 
