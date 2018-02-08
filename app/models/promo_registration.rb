@@ -2,7 +2,6 @@ class PromoRegistration < ApplicationRecord
   has_paper_trail
   
   belongs_to :channel, validate: true, autosave: true
-  # belongs_to :publisher, polymorphic: true, validate: true, autosave: true
 
   validates :channel_id, presence: true
 
