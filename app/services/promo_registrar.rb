@@ -86,7 +86,7 @@ class PromoRegistrar < BaseApiClient
       "title": channel.publication_title,
       "channel_type": "youtube",
       "thumbnail_url": channel.details.thumbnail_url,
-      "description": make_empty_string_nil(channel.details.description)
+      "description": channel.details.description.presence
     }.to_json
   end
 
@@ -98,14 +98,6 @@ class PromoRegistrar < BaseApiClient
       "title": channel.publication_title,
       "channel_type": "website",
     }.to_json
-  end
-
-  def make_empty_string_nil(param)
-    if param == ""
-      return nil
-    else
-      return param
-    end
   end
 
   def should_register_channel?(channel)
