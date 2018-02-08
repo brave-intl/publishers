@@ -42,14 +42,9 @@ class PromoRegistrar < BaseApiClient
     if e.response[:status] == 409
       Rails.logger.warn("PromoRegistrar #register_channel returned 409, channel already registered.  Using PromoRegistrationGetter to get the referral_code.")
       referral_code = PromoRegistrationGetter.new(publisher: @publisher, channel: channel).perform
-      if referral_code.present?
-        promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, referral_code: referral_code)
-        promo_registration.save!
-        Rails.logger.info("Attempted to register channel #{channel.id}, but it already registered.  Saving referral code #{referral_code}.")
-      else
-        Rails.logger.warn("Attempt to get referral code from server returns #{referral_code}.  No registration saved.")
-        nil
-      end
+      promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, referral_code: referral_code)
+      promo_registration.save!
+      Rails.logger.info("Attempted to register channel #{channel.id}, but it already registered.  Saving referral code #{referral_code}.")
     else
       require "sentry-raven"
       Rails.logger.error("PromoRegistrar #register_channel error: #{e}")
