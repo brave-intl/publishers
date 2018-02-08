@@ -148,6 +148,8 @@ en:
         Before forwarding this email, ensure you trust the recipient.
       salutation: Hi %{name},
       signature: The Brave Payments Team
+      signature_html: |
+        <strong>The Brave Payments Team</strong>
       updated_email: New email
     confirm_email_change:
       subject: Confirm your Brave Publisher email change
