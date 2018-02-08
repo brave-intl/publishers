@@ -29,9 +29,11 @@ class ApplicationMailer < ActionMailer::Base
     add_image("mailer/logo-bat.png")
 
     if self.class == PromoMailer
-      add_image("tweet.png")
-      add_image("f-share.png")
       add_image("mailer/header-pattern-promo.png")
+      if should_add_share_images?
+        add_image("tweet.png")
+        add_image("f-share.png")
+      end
     elsif self.class == PublisherMailer
       add_image("mailer/header-pattern.png")
     else
@@ -41,5 +43,14 @@ class ApplicationMailer < ActionMailer::Base
 
   def require_premailer
     require "premailer/rails"
+  end
+
+  # TODO Find a better way to do this
+  def should_add_share_images?
+    if (@_action_name == "new_channel_registered_2018q1") || (@_action_name == "promo_activated_2018q1_verified")
+      return true
+    else
+      return false
+    end
   end
 end
