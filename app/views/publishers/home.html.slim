@@ -453,7 +453,6 @@ noscript
 
       function openReferralLinkAnimation() {
         var channelPromoInfoContainer = this.parentNode;
-        console.log("close referral animation");
 
         if (!channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
           channelPromoInfoContainer.classList.add('channel--promo-info-container-slideout');
@@ -461,7 +460,6 @@ noscript
       }
 
       function copyButtonAnimation() {
-        console.log("mobile referral link animation")
         channelPromoInfoContainer = this.parentNode;
         var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
         var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
