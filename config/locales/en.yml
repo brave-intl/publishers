@@ -537,6 +537,7 @@ en:
       add_channel: "Add a channel below to get the referral link!"
       promo: "promo"
       progress: "progress"
+      referral: "referral"
     shared:
       tweet_content: "Hey guys! Try the new Brave Browser and use it for 30 days. You’ll be helping me fund my channel through the referral bonus. Here is the link:"
       tweet: "Tweet"
