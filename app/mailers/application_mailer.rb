@@ -13,31 +13,29 @@ class ApplicationMailer < ActionMailer::Base
 
   private
 
-  def add_image(image_file_name, source = "mailer")
-    if source == "mailer"
-      path = Rails.root.join("app/assets/images/mailer/#{image_file_name}")
-      attachments.inline[image_file_name] = File.read(path)
-    elsif source == "assets"
-      path = Rails.root.join("app/assets/images/#{image_file_name}")
-      attachments.inline[image_file_name] = File.read(path)
-    end
+  def add_image(image_path)
+    path = Rails.root.join("app/assets/images/#{image_path}")
+    image_file_name = File.basename(image_path)
+    attachments.inline[image_file_name] = File.read(path)
   end
 
   def add_images
-    add_image("brave-payments.png")
-    add_image("logo-medium.png")
-    add_image("logo-reddit.png")
-    add_image("logo-rocketchat.png")
-    add_image("logo-twitter.png")
-    add_image("footer-top-pattern.png")
-    add_image("logo-bat.png")
+    add_image("mailer/brave-payments.png")
+    add_image("mailer/logo-medium.png")
+    add_image("mailer/logo-reddit.png")
+    add_image("mailer/logo-rocketchat.png")
+    add_image("mailer/logo-twitter.png")
+    add_image("mailer/footer-top-pattern.png")
+    add_image("mailer/logo-bat.png")
 
     if self.class == PromoMailer
-      add_image("tweet.png", "assets")
-      add_image("f-share.png", "assets")
-      add_image("header-pattern-promo.png")
+      add_image("tweet.png")
+      add_image("f-share.png")
+      add_image("mailer/header-pattern-promo.png")
     elsif self.class == PublisherMailer
-      add_image("header-pattern.png")
+      add_image("mailer/header-pattern.png")
+    else
+      raise
     end
   end
 
