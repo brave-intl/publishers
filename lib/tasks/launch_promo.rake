@@ -8,7 +8,7 @@ namespace :promo do
         puts "Promo is not running, check the active_promo_id config var."
       end
 
-      publishers = Publisher.all
+      publishers = Publisher.where(promo_token_2018q1: nil).where(promo_enabled_2018q1: false)
 
       publishers.find_each do |publisher|
         token = PublisherPromoTokenGenerator.new(publisher: publisher).perform
