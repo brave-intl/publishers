@@ -1,21 +1,37 @@
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.col-center
-    .content-panel
-      h1= t ".heading"
+- content_for(:head_style_tags) do
+  = stylesheet_link_tag("application", media: "all")
+
+.single-panel--wrapper.single-panel--wrapper--medium
+ .single-panel--content.single-panel--content--platforms
+    .col-small-centered.col-small-centered--with-right-background.text-left
+
+      h1.single-panel--headline.single-panel--headline--primary= t ".heading"
       p
         span= t ".intro"
 
-      = form_for @publisher, { method: :patch, url: complete_signup_publishers_path,
-              html: { id: "update_contact_info" }} do |f|
+      = form_for(@publisher, { \
+          method: :patch, \
+          url: complete_signup_publishers_path, \
+          html: { id: "update_contact_info" } \
+      }) do |f|
         .form-group
           = f.label(:name, class: "control-label")
-          = f.text_field(:name, autofocus: true, class: "form-control", placeholder: t(".name_placeholder"), required: true)
+          = f.text_field(:name, \
+              autofocus: true, \
+              class: "form-control", \
+              placeholder: t(".name_placeholder"), \
+              required: true \
+          )
         .form-group
-          = f.check_box(:visible, class: "form-check-input")
-          = f.label(:visible, class: "form-check-label", for: "publisher_visible")
-        .panel-controls
-          = f.submit(t("publishers.shared.sign_up"), class: "btn btn-primary")
+          .form-check
+            = f.check_box(:visible, class: "form-check-input")
+            = f.label(:visible, class: "form-check-label", for: "publisher_visible")
+        .form-group.panel-controls
+          = f.submit(t("publishers.shared.sign_up"), class: "btn btn-primary btn-block")
 
-      .tos=t(".tos_html",
-              tos_link: link_to(t("shared.terms_of_service"),
-                                'https://basicattentiontoken.org/publisher-terms-of-service/'))
+      .single-panel--footer= t(".tos_html", \
+          tos_link: link_to( \
+              t("shared.terms_of_service"), \
+              "https://basicattentiontoken.org/publisher-terms-of-service/" \
+          ) \
+      )

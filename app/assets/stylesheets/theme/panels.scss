@@ -58,6 +58,17 @@ $brave-panels-borderRadius: 8px;
         padding-bottom: $spacer*9;
       }
     }
+    &--platforms {
+      padding-top: $spacer*2;
+      padding-bottom: $spacer;
+      @include media-breakpoint-up(lg) {
+        background-image: url(asset-path("img-brands.png"));
+        background-position: top right;
+        background-repeat: no-repeat;
+        padding-top: $spacer*7;
+        padding-bottom: $spacer*7;
+      }
+    }
     &--alert {
       padding: $spacer $spacer $spacer;
       background: $braveError-Background;
@@ -101,6 +112,9 @@ $brave-panels-borderRadius: 8px;
   &--headline {
     width: 100%;
     margin-bottom: $spacer*2;
+    &--primary {
+      color: theme-color('primary');
+    }
   }
 
   &--list {
@@ -112,7 +126,9 @@ $brave-panels-borderRadius: 8px;
     width: 100%;
     margin-top: $spacer*2;
     margin-bottom: $spacer;
-    text-align: center;
+    &--secondary {
+      text-align: center;
+    }
   }
 }
 
