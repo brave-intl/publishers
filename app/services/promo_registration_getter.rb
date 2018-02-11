@@ -22,6 +22,11 @@ class PromoRegistrationGetter < BaseApiClient
     end
     registrations =  JSON.parse(response.body)
     referral_code = referral_code_for_promo_id(registrations)
+    
+    if should_update_channel_owner_on_promo_server(registrations)
+      PromoChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform
+    end
+    
     referral_code
   rescue Faraday::Error => e
     require "sentry-raven"
@@ -67,6 +72,15 @@ class PromoRegistrationGetter < BaseApiClient
 
   def publisher_owners_channel
     @publisher.channels.include?(@channel)
+  end
+
+  def should_update_channel_owner_on_promo_server(registrations)
+    owner_on_promo_server = registrations[0]["owner_id"]
+    if owner_on_promo_server != @publisher.id
+      return true
+    else
+      return false
+    end
   end
 
   def referral_code_for_promo_id(registrations)

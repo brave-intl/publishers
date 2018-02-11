@@ -15,7 +15,7 @@ class DeletePublisherChannelJobTest < ActiveJob::TestCase
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: nil, headers: {})
 
-      DeletePublisherChannelJob.perform_now(publisher_id: publisher.id, channel_identifier: channel_identifier)
+      DeletePublisherChannelJob.perform_now(publisher_id: publisher.id, channel_identifier: channel_identifier, update_promo_server: false, referral_code: nil)
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
