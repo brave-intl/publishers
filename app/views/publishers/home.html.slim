@@ -448,11 +448,9 @@ noscript
     (function() {
       function closeReferralLinkAnimation() {
         var channelPromoInfoContainer = this.parentNode;
-        setTimeout(function(){
-          if (channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
-            channelPromoInfoContainer.classList.remove('channel--promo-info-container-slideout');
-          }
-        }, 100);
+        if (channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
+          channelPromoInfoContainer.classList.remove('channel--promo-info-container-slideout');
+        }
       }
 
       function openReferralLinkAnimation() {
