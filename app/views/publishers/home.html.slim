@@ -415,13 +415,13 @@ noscript
               = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
               = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
               .referral-link-url.promo-info-item
-                = referral_url(channel.promo_registration.referral_code)
+                span= referral_url(channel.promo_registration.referral_code)
               .referral-link-button.referral-link-button-desktop.promo-info-item
-                = t("promo.shared.referral_link")
+                span= t("promo.shared.referral_link")
               .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
-                = t("promo.shared.referral_link")
+                span= t("promo.shared.referral_link")
               .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
-                = t("promo.shared.copy")
+                span= t("promo.shared.copy")
           - else 
             .channel-status.pull-right
               span= t("publishers.shared.verified")
@@ -469,13 +469,25 @@ noscript
         var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
 
         for (var i = 0; i < mobileReferralLinkButtons.length; i++){
-          mobileReferralLinkButtons[i].innerText = 'Referral Link';
-          desktopReferralLinkButtons[i].innerText = 'Referral Link';
+          mobileReferralLinkButtons[i].children[0].innerText = 'Referral Link';
+          desktopReferralLinkButtons[i].children[0].innerText = 'Referral Link';
         }
-        var mobileReferralLinkButton = channelPromoInfoContainer.children[4];
-        var desktopReferralLinkButton = channelPromoInfoContainer.children[3];
+        var mobileReferralLinkButton = channelPromoInfoContainer.children[4].children[0];
+        var desktopReferralLinkButton = channelPromoInfoContainer.children[3].children[0];
         mobileReferralLinkButton.innerText = 'Copied!';
         desktopReferralLinkButton.innerText = 'Copied!';
+
+        // Fade out 'copied!'
+        setTimeout(function(){
+          mobileReferralLinkButton.classList.add('fadedOut');
+          desktopReferralLinkButton.classList.add('fadedOut');
+          setTimeout(function(){
+            mobileReferralLinkButton.innerText = 'Referral Link';
+            desktopReferralLinkButton.innerText = 'Referral Link';
+            mobileReferralLinkButton.classList.remove('fadedOut');
+            desktopReferralLinkButton.classList.remove('fadedOut');
+          }, 500);
+        }, 1000);
       }
 
       var channelPromoInfoContainers = document.getElementsByClassName('channel--promo-info-container');
