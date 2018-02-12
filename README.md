@@ -74,13 +74,28 @@ Setup a google API project:
 * Then Select "Create credentials", then "OAuth client ID"
   * Application type is "Web application"
   * Name is "Publishers"
-  * Authorized redirect URIs is "http://localhost:3000/publishers/auth/google_oauth2/callback"
+  * Authorized redirect URIs is `http://localhost:3000/publishers/auth/google_oauth2/callback`
   * select "Create"
 * Record the Client ID and Client secret and enter them in your Env variables
 
 You may need to wait up to 10 minutes for the changes to propagate.
 
 These steps based on [directions at the omniauth-google-oauth2 gem](https://github.com/zquestz/omniauth-google-oauth2#google-api-setup).
+
+### Twitch API Setup
+
+Setup a google API project:
+
+* Login to your Twitch account (dev), or the Brave Twitch account (staging, production)
+* Go to [https://dev.twitch.tv/dashboard](dev.twitch.tv/dashboard)
+* Select "Get Started" for "App"
+* Give the project a name such as "publishers-dev"
+* Give the app a name and application category.
+* Use the redirect URI `https://localhost:3000/publishers/auth/register_twitch_channel/callback` in development.
+* Create a Client ID and secret, saving each of them.
+  * Update your env to include `TWITCH_CLIENT_ID="your-app-id"`
+  * Update your env to include `TWITCH_CLIENT_SECRET="your-app-secret"`
+* Save the app
 
 ### Local Eyeshade Setup
 

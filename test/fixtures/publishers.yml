@@ -104,6 +104,23 @@ google_verified:
   visible: true
   default_currency: "BAT"
 
+twitch_new:
+  email: "aliceTwitch@spud.com"
+  name: "Alice the Twitcher"
+  phone: "4159001420"
+  phone_normalized: "+14159001420"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+
+twitch_verified:
+  email: "aliceTwitch@verified.org"
+  name: "Alice the Verified"
+  phone: "4159001421"
+  phone_normalized: "+14159001421"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  default_currency: "BAT"
+
 global_media_group:
   email: "fred@vglobal.org"
   name: "Global Media Group"

@@ -16,6 +16,6 @@
 # end
 
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.uncountable %w( site_channel_details youtube_channel_details )
+  inflect.uncountable %w( site_channel_details youtube_channel_details twitch_channel_details )
   inflect.acronym 'OAuth'
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208202145) do
+ActiveRecord::Schema.define(version: 20180212233004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,9 +167,9 @@ ActiveRecord::Schema.define(version: 20180208202145) do
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.datetime "two_factor_prompted_at"
-    t.boolean  "promo_enabled_2018q1",                  default: false
     t.boolean  "visible",                               default: true
     t.datetime "agreed_to_tos"
+    t.boolean  "promo_enabled_2018q1",                  default: false
     t.string   "promo_token_2018q1"
     t.jsonb    "promo_stats_2018q1",                    default: {},    null: false
     t.datetime "promo_stats_updated_at_2018q1"
@@ -199,6 +199,19 @@ ActiveRecord::Schema.define(version: 20180208202145) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.index ["publisher_id"], name: "index_totp_registrations_on_publisher_id", using: :btree
+  end
+
+  create_table "twitch_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "twitch_channel_id"
+    t.string   "auth_provider"
+    t.string   "auth_user_id"
+    t.string   "email"
+    t.string   "name"
+    t.string   "display_name"
+    t.string   "thumbnail_url"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id", unique: true, using: :btree
   end
 
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

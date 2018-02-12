@@ -55,6 +55,16 @@ google_verified:
   details: google_verified_details (YoutubeChannelDetails)
   verified: true
 
+twitch_new:
+  publisher: twitch_new
+  details: twitch_new_details (TwitchChannelDetails)
+  verified: true
+
+twitch_verified:
+  publisher: twitch_verified
+  details: twitch_verified_details (TwitchChannelDetails)
+  verified: true
+
 global_yt1:
   publisher: global_media_group
   details: global_yt1_details (YoutubeChannelDetails)

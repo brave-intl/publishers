@@ -1,0 +1,15 @@
+twitch_new_details:
+  auth_user_id: "abc123"
+  auth_provider: "twitch"
+  twitch_channel_id: "323541525412313421"
+  name: "twtwtw"
+  display_name: "TwTwTw"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
+
+twitch_verified_details:
+  auth_user_id: "abc123"
+  auth_provider: "twitch"
+  twitch_channel_id: "78032"
+  name: "twtwtw"
+  display_name: "TwTwTw"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
