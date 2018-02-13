@@ -1,6 +1,7 @@
+# Registers a single channel for a promo immediately after verification
 class RegisterChannelForPromoJob < ApplicationJob
   include PromosHelper
-  queue_as :scheduler
+  queue_as :default
 
   def perform(channel:)
     if PromoRegistrar.new(publisher: channel.publisher).perform

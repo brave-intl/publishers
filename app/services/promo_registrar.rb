@@ -10,8 +10,6 @@ class PromoRegistrar < BaseApiClient
   def perform
     channels = @publisher.channels.where(verified: true)
 
-    return perform_later if channels.count > 5
-
     channels.each do |channel|
       if should_register_channel?(channel)
         referral_code = register_channel(channel)

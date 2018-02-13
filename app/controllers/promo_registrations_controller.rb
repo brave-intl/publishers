@@ -14,9 +14,14 @@ class PromoRegistrationsController < ApplicationController
     @publisher_has_verified_channel = @publisher.has_verified_channel?
 
     if @publisher_has_verified_channel
-      PromoRegistrar.new(publisher: @publisher).perform
-      @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
-      PromoMailer.promo_activated_2018q1_verified(@publisher, @promo_enabled_channels).deliver
+      if @publisher.channels.where(verified: true).count > 5
+        RegisterPublisherForPromoJob.perform_later(publisher: @publisher)
+        redirect_to home_publishers_path, notice: t("promo.activated.please_wait")
+      else
+        PromoRegistrar.new(publisher: @publisher).perform
+        @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
+        PromoMailer.promo_activated_2018q1_verified(@publisher, @promo_enabled_channels).deliver
+      end
     else
       PromoMailer.promo_activated_2018q1_unverified(@publisher).deliver
     end

@@ -337,6 +337,7 @@ en:
       unverified_no_channels: "No channels in the account."
       unverified_error: "Verify your website or channel to get the referral link."
       unverified_cta: "Go to my account"
+      please_wait: "Please wait while we register your channels for the promo."
     active:
       title: "Your promo is already active!"
       description_one: "Earn 10 tokens (about 5 USD) for every new user that you bring to Brave! Users are confirmed following 30 days of use. "
