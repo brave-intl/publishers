@@ -64,9 +64,54 @@ function removeChannel(channelId) {
     });
 }
 
+var checkUpholdStatusInterval;
+var checkUpholdStatusCount = 0;
+
+function checkUpholdStatus() {
+  var options = {
+    headers: {
+      'Accept': 'application/json'
+    },
+    credentials: 'same-origin',
+    method: 'GET'
+  };
+
+  return window.fetch('./status', options)
+    .then(function(response) {
+      checkUpholdStatusCount += 1;
+      if (response.status === 200 || response.status === 304) {
+        return response.json();
+      }
+    })
+    .then(function(body) {
+      if (body.uphold_status === 'verified') {
+        document.getElementById('publisher_status').innerText = body.uphold_status_description;
+        var publisherStatus = document.getElementById('publisher_status');
+        publisherStatus.innerText = body.status_description;
+        publisherStatus.className = body.status;
+        document.getElementById('uphold_connect').style.display = 'none';
+        var upholdDashboard = document.getElementById('uphold_dashboard');
+        upholdDashboard.style.display = '';
+        document.getElementById('statement_section').classList.remove('hidden');
+        dynamicEllipsis.stop('publisher_status');
+        clearInterval(checkUpholdStatusInterval);
+      } else if (checkUpholdStatusCount >= 15) {
+        var publisherStatus = document.getElementById('publisher_status');
+        publisherStatus.innerText = body.timeout_message;
+        dynamicEllipsis.stop('publisher_status');
+        clearInterval(checkUpholdStatusInterval);
+      }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   if (document.querySelectorAll('body[data-action="home"]').length === 0) {
     return;
+  }
+
+  if (document.querySelectorAll('div#uphold_dashboard.uphold-status-access-parameters-acquired').length > 0) {
+    window.dynamicEllipsis.start('publisher_status');
+    checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
   }
 
   let removeChannelLinks = document.querySelectorAll('a.remove-channel');
