@@ -312,16 +312,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:completed)
+    sign_in publisher
 
     # skip 2FA prompt
     publisher.two_factor_prompted_at = 1.day.ago
@@ -351,16 +343,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
     begin
-      perform_enqueued_jobs do
-        post(publishers_path, params: SIGNUP_PARAMS)
-      end
-      publisher = Publisher.order(created_at: :asc).last
-      url = publisher_url(publisher, token: publisher.authentication_token)
-      get(url)
-      follow_redirect!
-      perform_enqueued_jobs do
-        patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-      end
+      publisher = publishers(:completed)
+      sign_in publisher
 
       uphold_state_token = SecureRandom.hex(64)
       publisher.uphold_state_token = uphold_state_token
@@ -395,16 +379,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
     begin
-      perform_enqueued_jobs do
-        post(publishers_path, params: SIGNUP_PARAMS)
-      end
-      publisher = Publisher.order(created_at: :asc).last
-      url = publisher_url(publisher, token: publisher.authentication_token)
-      get(url)
-      follow_redirect!
-      perform_enqueued_jobs do
-        patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-      end
+      publisher = publishers(:completed)
+      sign_in publisher
 
       uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
       uphold_state_token = SecureRandom.hex(64)
@@ -435,16 +411,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "after redirection back from uphold, a missing publisher's `uphold_state_token` redirects back to home" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:completed)
+    sign_in publisher
 
     publisher.two_factor_prompted_at = 1.day.ago
     publisher.save!
@@ -459,16 +427,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "after redirection back from uphold, a mismatched publisher's `uphold_state_token` redirects back to home" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:completed)
+    sign_in publisher
 
     uphold_state_token = SecureRandom.hex(64)
     publisher.uphold_state_token = uphold_state_token
@@ -491,11 +451,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     active_promo_id_original = Rails.application.secrets[:active_promo_id]
     Rails.application.secrets[:active_promo_id] = ""
     publisher = publishers(:completed)
-
-    # sign in publisher
-    request_login_email(publisher: publisher)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
-    get(url)
+    sign_in publisher
 
     # give pub uphold state token
     uphold_state_token = SecureRandom.hex(64)
@@ -528,19 +484,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "a publisher's statement can be generated via ajax" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:uphold_connected)
+    sign_in publisher
 
-    url = generate_statement_publishers_path
-    patch(url,
+    patch(generate_statement_publishers_path,
           params: { statement_period: 'all' },
           headers: { 'HTTP_ACCEPT' => "application/json" })
 
@@ -552,24 +499,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         '"date":"' + publisher_statement.created_at.strftime('%B %e, %Y') + '",' +
         '"period":"All"}',
       response.body)
-    # assert_match("{\"id\":\"#{publisher_statement.id}\"}", response.body)
   end
 
   test "a publisher's balance can be polled via ajax" do
     publisher = publishers(:uphold_connected)
-    request_login_email(publisher: publisher)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
-    get(url)
-    follow_redirect!
+    sign_in publisher
 
-    url = balance_publishers_path
-    get(url,
-        headers: { 'HTTP_ACCEPT' => "application/json" })
+    get balance_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal(
-        '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
-        response.body)
+    assert_equal '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
+                 response.body
   end
 
   test "home redirects to 2FA prompt on first visit" do
