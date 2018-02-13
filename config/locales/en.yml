@@ -222,7 +222,7 @@ en:
       sign_up: Sign Up
       verified: Verified
       verified_phone_html: Phone Number <span class="optional">(optional)</span>
-    authenticate_via_token:
+    show:
       email_confirmed: Your updated email address %{email} has been confirmed.
       token_invalid: Authentication failed. Your login link may have expired; please send yourself a new sign in link.
     choose_new_channel_type:
@@ -409,7 +409,7 @@ en:
         <p>You will receive an email when our next available support member can assist you. Please keep in mind
         that this may take a few days due to our current backlog.</p>
       review_options: I'd like to review my options
-    verification_option_wordpress:
+    verification_wordpress:
       heading: Hello. It looks like you are using Wordpress!
       install_plugin_html: |
         <p class="li-text"><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a>
@@ -517,6 +517,7 @@ en:
             Are you sure you want to disable authenticator app?
           deny: Do Not Disable
           confirm: Disable it for now
+        name_default: Anonymous Key
       u2f:
         heading: Hardware security keys
         intro: |

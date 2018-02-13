@@ -47,7 +47,7 @@
                   br
                   strong
                     | Security key
-                    = " \"#{u2f_registration.name.presence || t(".name_default")}\""
+                    = " \"#{u2f_registration.name.presence || t(".totp.name_default")}\""
                   = " (registered #{l(u2f_registration.created_at.to_date, format: :short)})"
               - else
                 br
