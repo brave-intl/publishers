@@ -30,8 +30,8 @@ module PublishersHelper
     publisher.uphold_verified?
   end
 
-  def poll_uphold_status?(publisher)
-    publisher.uphold_status == :access_parameters_acquired
+  def uphold_status_class(publisher)
+    "uphold-status-#{publisher.uphold_status.to_s.gsub('_', '-')}"
   end
 
   def publisher_humanize_balance(publisher, currency)
