@@ -64,11 +64,11 @@ function removeChannel(channelId) {
     });
 }
 
-var checkUpholdStatusInterval;
-var checkUpholdStatusCount = 0;
+let checkUpholdStatusInterval;
+let checkUpholdStatusCount = 0;
 
 function checkUpholdStatus() {
-  var options = {
+  let options = {
     headers: {
       'Accept': 'application/json'
     },
@@ -86,17 +86,17 @@ function checkUpholdStatus() {
     .then(function(body) {
       if (body.uphold_status === 'verified') {
         document.getElementById('publisher_status').innerText = body.uphold_status_description;
-        var publisherStatus = document.getElementById('publisher_status');
+        let publisherStatus = document.getElementById('publisher_status');
         publisherStatus.innerText = body.status_description;
         publisherStatus.className = body.status;
         document.getElementById('uphold_connect').style.display = 'none';
-        var upholdDashboard = document.getElementById('uphold_dashboard');
+        let upholdDashboard = document.getElementById('uphold_dashboard');
         upholdDashboard.style.display = '';
         document.getElementById('statement_section').classList.remove('hidden');
         dynamicEllipsis.stop('publisher_status');
         clearInterval(checkUpholdStatusInterval);
       } else if (checkUpholdStatusCount >= 15) {
-        var publisherStatus = document.getElementById('publisher_status');
+        let publisherStatus = document.getElementById('publisher_status');
         publisherStatus.innerText = body.timeout_message;
         dynamicEllipsis.stop('publisher_status');
         clearInterval(checkUpholdStatusInterval);
