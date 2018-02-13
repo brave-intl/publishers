@@ -88,36 +88,4 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
   #           '"next_step":"/publishers/verification_choose_method"}',
   #       response.body)
   # end
-  #
-  # test "a channel's status can be polled via ajax" do
-  #   perform_enqueued_jobs do
-  #     post(publishers_path, params: SIGNUP_PARAMS)
-  #   end
-  #   publisher = Publisher.order(created_at: :asc).last
-  #   url = publisher_url(publisher, token: publisher.authentication_token)
-  #   get(url)
-  #   follow_redirect!
-  #   perform_enqueued_jobs do
-  #     patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
-  #   end
-  #
-  #   publisher.show_verification_status = false
-  #   publisher.verified = true
-  #   publisher.save!
-  #
-  #   assert_equal false, publisher.show_verification_status
-  #
-  #   url = status_publishers_path
-  #   get(url,
-  #       headers: { 'HTTP_ACCEPT' => "application/json" })
-  #
-  #   assert_response 200
-  #   assert_match(
-  #       '{"status":"uphold_unconnected",' +
-  #           '"status_description":"You need to create a wallet with Uphold to receive contributions from Brave Payments.",' +
-  #           '"timeout_message":null,' +
-  #           '"uphold_status":"unconnected",' +
-  #           '"uphold_status_description":"Not connected to Uphold."}',
-  #       response.body)
-  # end
 end

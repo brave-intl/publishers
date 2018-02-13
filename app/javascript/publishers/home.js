@@ -84,14 +84,17 @@ function checkUpholdStatus() {
       }
     })
     .then(function(body) {
+      let upholdDashboard = document.getElementById('uphold_dashboard');
+      if (body.uphold_status_class) {
+        upholdDashboard.className = body.uphold_status_class;
+      }
+
       if (body.uphold_status === 'verified') {
         document.getElementById('publisher_status').innerText = body.uphold_status_description;
         let publisherStatus = document.getElementById('publisher_status');
         publisherStatus.innerText = body.status_description;
         publisherStatus.className = body.status;
         document.getElementById('uphold_connect').style.display = 'none';
-        let upholdDashboard = document.getElementById('uphold_dashboard');
-        upholdDashboard.style.display = '';
         document.getElementById('statement_section').classList.remove('hidden');
         dynamicEllipsis.stop('publisher_status');
         clearInterval(checkUpholdStatusInterval);
