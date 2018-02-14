@@ -370,6 +370,7 @@ en:
       referral_link: "Referral Link"
       copy: "Copy"
       brave_payments_tm: "Brave Payments™"
+      footer: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period." 
   promo_mailer:
     activate_promo_2018q1:
       subject: "Limited Time Offer: Free tokens for your referral!"
@@ -379,7 +380,7 @@ en:
       button: "Activate Promo"
     promo_activated_2018q1_verified:
       subject: "Your Referral Promo is Active!"
-      body_one: "Congrats! You are set to receive 10 BAT for every new user you bring to Brave.  Use the referral links we created for your channel, and get your fans to support you!"
+      body_one: "Congrats! You are set to receive about 5 USD in tokens for every new user you bring to Brave. Use the referral links we created for your channel, and get your fans to support you!"
       body_two: "Users are confirmed following 30 days of use. Users that drop out will not be counted."
       body_three: "We wish you good luck!"
     promo_activated_2018q1_unverified:
