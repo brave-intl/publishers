@@ -75,7 +75,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     find('[data-test-modal-container]').click_link("Remove Channel")
     refute_content page, channel.publication_title
   end
-  
+
   test "land page renders, bad login can create an account" do
     email = 'new-test@example.com'
 
@@ -91,4 +91,21 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     assert_content page, "An email is on its way"
   end
 
+  test "email verified publishers path" do
+    name = 'Some name'
+    publisher = publishers(:unprompted)
+    sign_in publisher
+
+    visit email_verified_publishers_path
+
+    assert_content page, "Finish signing up"
+
+    fill_in 'publisher_name', with: name
+    click_button('Sign Up')
+
+    assert_current_path(prompt_two_factor_registrations_path)
+    click_link('Skip for now')
+
+    assert_current_path(home_publishers_path)
+  end
 end

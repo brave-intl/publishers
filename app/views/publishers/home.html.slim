@@ -297,9 +297,9 @@ noscript
           .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none')
             .panel-section
               = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
-                span= t ".deposit_currency"
+                span= t ".uphold.deposit_currency"
                 span#default_currency_code= f.select(:default_currency, options_for_select(publisher_available_currencies(current_publisher), publisher_default_currency(current_publisher)))
-            = link_to(t(".check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+            = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
       .statements#statement_section class=(current_publisher.uphold_verified ? '' : 'hidden')

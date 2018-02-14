@@ -23,8 +23,13 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
                       = t ".security"
                   li= link_to t(".log_out"), log_out_publishers_path
           - else
-            .btn.btn-secondary.btn-logout.pull-right.float-right
-              = link_to t(".log_out"), log_out_publishers_path
+            / btn-secondary and btn-highlight are legacy, can be dropped once
+            / bootstrap v3 is removed.
+            = link_to( \
+                t(".log_out"), \
+                log_out_publishers_path, \
+                class: 'btn btn-secondary btn-highlight btn-outline-primary user-solo-button' \
+            )
       .nav.pull-left.float-left
         = link_to(root_path) do
           .brave-logo
