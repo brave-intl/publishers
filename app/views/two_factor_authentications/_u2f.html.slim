@@ -10,12 +10,12 @@ div.js-feature-u2f-available
     .col-small-centered
       .js-u2f-is-working
         p = t ".body"
-        p = render "application/usb_with_lines"
+        = render "application/usb_with_lines"
 
     .col-small-centered
       .js-u2f-is-prompting
         p = render "application/usb"
-        p.retry = submit_tag t(".submit_value"), class: "btn btn-primary btn-block"
+        p.two-factor-authentication--retry = submit_tag t(".submit_value"), class: "btn btn-primary btn-block"
 
   - if @totp_enabled
     .col-small-centered

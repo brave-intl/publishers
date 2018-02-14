@@ -1,41 +1,40 @@
-- content_for(:head_style_tags) do
-  = stylesheet_link_tag("application", media: "all")
+.single-panel--wrapper.single-panel--wrapper--large
+  = render "panel_flash_messages"
+  .single-panel--content.single-panel--content--platforms
+    .single-panel--padded-content
+      .col-small-centered.col-small-centered--with-right-background.text-left
 
-.single-panel--wrapper.single-panel--wrapper--medium
- .single-panel--content.single-panel--content--platforms
-    .col-small-centered.col-small-centered--with-right-background.text-left
+        h1.single-panel--headline.single-panel--headline--primary= t ".heading"
+        p
+          span= t ".intro"
 
-      h1.single-panel--headline.single-panel--headline--primary= t ".heading"
-      p
-        span= t ".intro"
+        = form_for(@publisher, { \
+            method: :patch, \
+            url: complete_signup_publishers_path, \
+            html: { id: "update_contact_info" } \
+        }) do |f|
+          .form-group
+            = f.label(:name, class: "control-label")
+            = f.text_field(:name, \
+                autofocus: true, \
+                class: "form-control", \
+                placeholder: t(".name_placeholder"), \
+                required: true \
+            )
+          .form-group
+            .form-check
+              = f.check_box(:visible, class: "form-check-input")
+              = f.label(:visible, class: "form-check-label", for: "publisher_visible")
+          .form-group.panel-controls
+            - if @publisher_created_through_youtube_auth
+              - @action = t("shared.continue")
+            - else
+              - @action = t("publishers.shared.sign_up")
+            = f.submit(@action, class: "btn btn-primary btn-block")
 
-      = form_for(@publisher, { \
-          method: :patch, \
-          url: complete_signup_publishers_path, \
-          html: { id: "update_contact_info" } \
-      }) do |f|
-        .form-group
-          = f.label(:name, class: "control-label")
-          = f.text_field(:name, \
-              autofocus: true, \
-              class: "form-control", \
-              placeholder: t(".name_placeholder"), \
-              required: true \
-          )
-        .form-group
-          .form-check
-            = f.check_box(:visible, class: "form-check-input")
-            = f.label(:visible, class: "form-check-label", for: "publisher_visible")
-        .form-group.panel-controls
-          - if @publisher_created_through_youtube_auth
-            - @action = t("shared.continue")
-          - else
-            - @action = t("publishers.shared.sign_up")
-          = f.submit(@action, class: "btn btn-primary btn-block")
-
-      .single-panel--footer= t(".tos_html", action: @action, \
-          tos_link: link_to( \
-              t("shared.terms_of_service"), \
-              "https://basicattentiontoken.org/publisher-terms-of-service/" \
-          ) \
-      )
+        .single-panel--footer= t(".tos_html", action: @action, \
+            tos_link: link_to( \
+                t("shared.terms_of_service"), \
+                "https://basicattentiontoken.org/publisher-terms-of-service/" \
+            ) \
+        )

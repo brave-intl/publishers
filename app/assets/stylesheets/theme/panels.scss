@@ -1,46 +1,33 @@
 $brave-panels-borderRadius: 8px;
 
+.panels-container {
+  padding: 0 15px;
+}
+
 .single-panel {
 
   &--wrapper {
-    @include make-col-ready();
-    @include media-breakpoint-up(sm) {
-      @include make-col(10);
-      @include make-col-offset(1);
-    }
-    @include media-breakpoint-up(md) {
-      @include make-col(8);
-      @include make-col-offset(2);
-    }
-    @include media-breakpoint-up(lg) {
-      @include make-col(6);
-      @include make-col-offset(3);
-    }
+    max-width: $spacer*40;
+    min-height: $spacer*32;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
 
     background-color: white;
     border-radius: $brave-panels-borderRadius;
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
 
+    @include media-breakpoint-down(xs) {
+      min-height: $spacer*10; 
+    }
+
     &--medium {
-      @include media-breakpoint-up(sm) {
-        @include make-col(10);
-        @include make-col-offset(1);
-      }
-      @include media-breakpoint-up(md) {
-        @include make-col(8);
-        @include make-col-offset(2);
-      }
+      max-width: $spacer*45;
     }
 
     &--large {
-      @include media-breakpoint-up(sm) {
-        @include make-col(10);
-        @include make-col-offset(1);
-      }
-      @include media-breakpoint-up(md) {
-        @include make-col(10);
-        @include make-col-offset(1);
-      }
+      max-width: $spacer*50;
     }
 
     &--small {
@@ -61,22 +48,22 @@ $brave-panels-borderRadius: 8px;
 
   &--content {
     @include make-row();
-    padding: $spacer*3 $spacer $spacer*2;
+
     text-align: center;
+    justify-content: center;
+    flex: 1;
 
     &--email-sent {
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(md) {
         background-image: url(asset-path("email-2@1x.png"));
         background-position: top 59px right 60px;
         background-repeat: no-repeat;
-        padding-top: $spacer*9;
-        padding-bottom: $spacer*9;
       }
     }
     &--platforms {
       padding-top: $spacer*2;
       padding-bottom: $spacer;
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(md) {
         background-image: url(asset-path("img-brands.png"));
         background-position: top right;
         background-repeat: no-repeat;
@@ -85,7 +72,8 @@ $brave-panels-borderRadius: 8px;
       }
     }
     &--alert {
-      padding: $spacer $spacer $spacer;
+      flex: 0;
+      padding: $spacer*2 $spacer*2 $spacer*2;
       background: $braveError-Background;
       color: $braveError-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
@@ -95,7 +83,8 @@ $brave-panels-borderRadius: 8px;
       }
     }
     &--warning {
-      padding: $spacer $spacer $spacer;
+      flex: 0;
+      padding: $spacer*2 $spacer*2 $spacer*2;
       background: $braveWarning-Background;
       color: $braveWarning-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
@@ -105,7 +94,8 @@ $brave-panels-borderRadius: 8px;
       }
     }
     &--notice {
-      padding: $spacer $spacer $spacer;
+      flex: 0;
+      padding: $spacer*2 $spacer*2 $spacer*2;
       background: $braveInfo-Background;
       color: $braveInfo-Foreground;
       border-bottom: 1px solid $braveInfo-Border;
@@ -124,9 +114,25 @@ $brave-panels-borderRadius: 8px;
     }
   }
 
+  &--padded-content {
+    padding: $spacer*2;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    align-items: center;
+    justify-content: center;
+
+    @include media-breakpoint-down(xs) {
+      padding: $spacer;
+    }
+  }
+
   &--headline {
     width: 100%;
     margin-bottom: $spacer*2;
+    @include media-breakpoint-down(xs) {
+      margin-top: $spacer;
+    }
     &--primary {
       color: theme-color('primary');
     }

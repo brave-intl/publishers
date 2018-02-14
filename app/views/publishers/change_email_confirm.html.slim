@@ -1,14 +1,12 @@
-- content_for(:head_style_tags) do
-  = stylesheet_link_tag("application", media: "all")
-
 .single-panel--wrapper
   = render "panel_flash_messages"
   .single-panel--content
-    .col-small-centered
-      = render "icon_circled_check"
+    .single-panel--padded-content
+      .col-small-centered
+        = render "icon_circled_check"
 
-      h3.single-panel--headline= t ".login_email_changed"
+        h3.single-panel--headline= t ".login_email_changed"
 
-      p= t(".login_email_verified_html", login_email: @publisher.email)
+        p= t(".login_email_verified_html", login_email: @publisher.email)
 
-      = link_to(t("shared.ok"), email_verified_publishers_path, class: "btn btn-block btn-primary")
+        = link_to(t("shared.ok"), email_verified_publishers_path, class: "btn btn-block btn-primary")

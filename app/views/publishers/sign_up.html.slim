@@ -1,23 +1,21 @@
-- content_for(:head_style_tags) do
-  = stylesheet_link_tag("application", media: "all")
-
 .single-panel--wrapper
   = render "panel_flash_messages"
   .single-panel--content
+    .single-panel--padded-content
 
-    h3.single-panel--headline= t ".heading"
+      h3.single-panel--headline= t ".heading"
 
-    .col-small-centered
-      = form_tag publishers_path, method: :post do |f|
-        .form-group
-          = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true, value: @publisher.email
-        - if params[:captcha]
-          = hidden_field_tag :captcha
-        - if @should_throttle
+      .col-small-centered
+        = form_tag publishers_path, method: :post do |f|
           .form-group
-            = recaptcha_tags
-        = submit_tag t("shared.get_started"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing"
+            = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true, value: @publisher.email
+          - if params[:captcha]
+            = hidden_field_tag :captcha
+          - if @should_throttle
+            .form-group
+              = recaptcha_tags
+          = submit_tag t("shared.get_started"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing"
 
-    .single-panel--footer.single-panel--footer--secondary
-      ' #{t("shared.existing_account")}
-      = link_to t("shared.log_in"), new_auth_token_publishers_path
+      .single-panel--footer.single-panel--footer--secondary
+        ' #{t("shared.existing_account")}
+        = link_to t("shared.log_in"), new_auth_token_publishers_path
