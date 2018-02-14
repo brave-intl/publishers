@@ -111,17 +111,13 @@ body {
   }
 
   .promo--referral-link-container {
-    font-size: .8rem;
-    margin-bottom: 15px;
-    height: 40px;
-    width: 98%;
-    display: table;
-
+    width: 300px;
     .promo--referral-link {
       display: table-cell;
       vertical-align: middle;
+      width: inherit;
+      height: 40px;
       padding-left: 8px;
-      width: 320px;
       background: #edf3f9;
       border: solid;
       border-color: #cddeec;
@@ -136,26 +132,70 @@ body {
     color: #00BCD6; // $bravePromo-LightBlue;
 
     &-link-name {
-      font-size: 12px;
+      display: inline-block;
     }
   }
 
   .promo--share-button {
+    height: 30px;
+    width: 100px;
+    float: right;
+    margin: 20px 5px 20px 5px;
     background-repeat: no-repeat;
-    border: none;
-    letter-spacing: 1px;
+    display: inline-block;
+    border-radius: 20px;
+    text-align: center;
     color: white;
     text-decoration: none;
-    background-position: center;
-    background-color: white;
-    display: inline-block;
-    width: 40px;
-    height: 100%;
-    margin-left: 5px;
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    &-twitter {
+      background-color: #1DA1F2; // $bravePromo-TwitterBlue:
+      background-position: 15px;
+      padding: 12px 0px 0px 15px;
+    }
+
     &-facebook {
-      margin-left: 0px;
+      background-color: #3B5998; // $bravePromo-FacebookBlue:
+      background-position: 15px;
+      padding: 12px 0px 0px 10px;
     }
   }
+
+  #promo--ad-banner {
+    color: #00BCD6; // $bravePromo-LightBlue;
+    font-weight: 600;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  #promo--ad-banner-message {
+    margin-bottom: 20px;
+  }
+
+  #promo-ad-banner-download-site {
+    margin-left: 146px;
+  }
+
+  #promo-ad-banner-download-youtube {
+    margin-left: 160px;
+  }
+
+  .promo--ad-banner-container {
+    .promo--ad-banner-site {
+      margin-right: 15px;
+      float: left;
+    }
+
+    .promo--ad-banner-youtube {
+      float: left;
+    }
+  }
+}
+
+.promo--clear {
+  clear: both;
 }
 
 .footer {

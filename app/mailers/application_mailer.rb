@@ -31,8 +31,12 @@ class ApplicationMailer < ActionMailer::Base
     if self.class == PromoMailer
       add_image("mailer/header-pattern-promo.png")
       if should_add_share_images?
-        add_image("tweet.png")
-        add_image("f-share.png")
+        add_image("icn-twitter.png")
+        add_image("icn-fb.png")
+      end
+      if should_add_ad_banners?
+        add_image("mailer/switch_banner_1.png")
+        add_image("mailer/switch_banner_2.png")
       end
     elsif self.class == PublisherMailer
       add_image("mailer/header-pattern.png")
@@ -48,6 +52,14 @@ class ApplicationMailer < ActionMailer::Base
   # TODO Find a better way to do this
   def should_add_share_images?
     if (@_action_name == "new_channel_registered_2018q1") || (@_action_name == "promo_activated_2018q1_verified")
+      return true
+    else
+      return false
+    end
+  end
+
+  def should_add_ad_banners?
+    if @_action_name == "promo_activated_2018q1_verified"
       return true
     else
       return false

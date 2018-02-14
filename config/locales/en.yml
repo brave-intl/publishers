@@ -385,6 +385,9 @@ en:
       body_one: "Congrats! You are set to receive about 5 USD in tokens for every new user you bring to Brave. Use the referral links we created for your channel, and get your fans to support you!"
       body_two: "Users are confirmed following 30 days of use. Users that drop out will not be counted."
       body_three: "We wish you good luck!"
+      ad_banner_title: "Promo Ad Banner"
+      ad_banner_message: "Here is the promo ad banner you can use with the referral link."
+      download: "Download"
     promo_activated_2018q1_unverified:
       subject: "Your Referral Promo is Active!"
       cta: "Add Channel"
