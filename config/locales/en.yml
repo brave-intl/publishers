@@ -348,7 +348,7 @@ en:
       promo_ended: "The promo has ended."
       description: "We're sorry that you missed on this program.  But you can still influence your fans to support you by using Brave!"
       brave_download_link: "brave.com/download"
-      footer: "Keep an eye out for the next event."
+      footer: "Keep an eye out for an email about the next event."
     dashboard:
       days: "days"
       downloaded: "downloaded"
