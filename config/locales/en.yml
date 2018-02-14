@@ -325,8 +325,8 @@ en:
       limited_time_promo: "Limited Time Promo"
       free_tokens: "Free Tokens"
       for_referring_your_fans: "for Referring Your Fans!"
-      description: "Influence your fans to get on Brave.  More income and free token bonus!"
-      referral_reward: "1 referral = 10 BAT"
+      description: "Bring your fans to the Brave browser and grow your revenue!"
+      referral_reward: "1 referral = about 5 USD in tokens"
       button: "Activate Promo"
       button-dashboard: "Learn More"
     activated:
@@ -369,6 +369,7 @@ en:
       referral_links: "Referral links:"
       referral_link: "Referral Link"
       copy: "Copy"
+      brave_payments_tm: "Brave Payments™"
   promo_mailer:
     activate_promo_2018q1:
       subject: "Limited Time Offer: Free tokens for your referral!"

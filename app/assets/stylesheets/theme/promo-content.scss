@@ -17,23 +17,47 @@
 }
 
 .footer--promo {
-
   display: table;
   width: 100%;
+  color: $bravePromo-DarkBlue;
+  font-size: 11px;
+  text-align: center;
   padding: 0px;
+
+  &-message {
+    padding: 20px 75px 0px 75px;
+    @include media-breakpoint-down(sm){
+      padding: 20px 30px 0px 30px;
+    }
+  }
 
   .footer--promo-item {
     width: 50%;
     float: left;
-    font-size: 13px;
-    padding: 10px;
+    padding: 0px 10px 0px 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    letter-spacing: 1px;
+
     a {
       color: white;
-      opacity: .7;
+      opacity: .9;
+    }
+
+    &-dashboard {
+      text-align: right;
+      border-right: solid;
+      border-width: 1px;
     }
 
     &-tos {
-      text-align: right;
+      text-align: left;
+      border-left: solid;
+      border-width: 1px;
     }
+  }
+
+  .footer--promo-divider {
+
   }
 }
