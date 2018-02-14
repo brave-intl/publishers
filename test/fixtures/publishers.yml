@@ -120,6 +120,8 @@ small_media_group:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  default_currency: "BAT"
+
 
 medium_media_group:
   email: "barney@medium.org"
