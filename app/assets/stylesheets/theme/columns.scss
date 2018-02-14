@@ -14,6 +14,14 @@
   }
   padding-left: 0;
   padding-right: 0;
+  &--with-right-background {
+    @include make-col(12);
+    @include make-col-offset(0);
+    @include media-breakpoint-up(lg) {
+      @include make-col(6);
+      @include make-col-offset(2);
+    }
+  }
 }
 
 .col-medium-centered {

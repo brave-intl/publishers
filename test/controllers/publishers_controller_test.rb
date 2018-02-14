@@ -44,6 +44,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "sends an email with an access link" do
+    url = nil
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
       publisher = Publisher.order(created_at: :asc).last
@@ -54,6 +55,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       url = publisher_url(publisher, token: publisher.authentication_token)
       assert_email_body_matches(matcher: url, email: email)
     end
+
+    get url
+    assert_redirected_to email_verified_publishers_path
   end
 
   test "re-used access link is rejected and send publisher to the expired auth token page" do
