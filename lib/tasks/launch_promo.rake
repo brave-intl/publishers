@@ -13,7 +13,7 @@ namespace :promo do
       publishers.find_each do |publisher|
         token = PublisherPromoTokenGenerator.new(publisher: publisher).perform
         next unless token
-        PromoMailer.activate_promo_2018q1(publisher).deliver_later
+        PromoMailer.activate_promo_2018q1(publisher).deliver_later(queue: :low)
       end
 
     rescue PublisherPromoTokenGenerator::InvalidPromoIdError => error
