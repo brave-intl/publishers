@@ -372,6 +372,7 @@ en:
       copy: "Copy"
       brave_payments_tm: "Brave Payments™"
       footer: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period." 
+      on_youtube: "on YouTube"
   promo_mailer:
     activate_promo_2018q1:
       subject: "Limited Time Offer: Free tokens for your referral!"
