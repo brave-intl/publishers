@@ -41,7 +41,6 @@
 
   .promo--item-label {
     padding-right: 10px;
-    text-transform: uppercase;
     font-weight: 600;
     color: $bravePromo-LightBlue;
 
@@ -64,6 +63,10 @@
     &-verified {
       line-height: 1.6;
     }
+  }
+
+  .promo--item-label-link-name {
+    color: black;
   }
 
   #promo--over-download-link {
@@ -256,6 +259,7 @@
       padding-top: 12px;
     }
   }
+
 
   @include media-breakpoint-down(sm) {
     // background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-logo-no-shadow@1.png"));

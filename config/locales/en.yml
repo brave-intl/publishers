@@ -332,7 +332,7 @@ en:
     activated:
       title: "Congrats!"
       subtitle: "Your promo is activated."
-      description_one: "Earn 10 tokens (about 5 USD) for every new user that you bring to Brave! Users are confirmed following 30 days of use.  Users that drop out will not be counted.  That status of your influence will be posted on "
+      description_one: "For a referral payment to occur, the new user must be minimally active across a 30 day period. Check the promo status on "
       description_two: "your dashboard."
       unverified_no_channels: "No channels in the account."
       unverified_error: "Verify your website or channel to get the referral link."
@@ -340,8 +340,8 @@ en:
       please_wait: "Please wait while we register your channels for the promo."
     active:
       title: "Your promo is already active!"
-      description_one: "Earn 10 tokens (about 5 USD) for every new user that you bring to Brave! Users are confirmed following 30 days of use. "
-      description_two: "Check the status of your promo"
+      description_one: "For a referral payment to occur, the new user must be minimally active across a 30 day period. "
+      description_two: "Check the promo status"
       description_three: " on your dashboard."
     over:
       title: "Sorry!"
@@ -365,8 +365,8 @@ en:
       promo_period: "Promo period:"
       promo_period_description: "Jan 1 - Feb 1"
       reward: "Reward:"
-      reward_description: "10 BAT for each referral"
-      referral_links: "Referral links:"
+      reward_description: "about 5 USD per referral"
+      referral_links: "Share the link to increase referrals"
       referral_link: "Referral Link"
       copy: "Copy"
       brave_payments_tm: "Brave Payments™"

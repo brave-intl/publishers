@@ -5,7 +5,7 @@
     /   span.promo--item-label= t("promo.shared.promo_period")
     /   span = t("promo.shared.promo_period_description")
     .promo--item-container.promo--item-container-reward
-      span.promo--item-label = t("promo.shared.reward")
+      span.promo--item-label = t("promo.shared.reward").upcase
       span = t("promo.shared.reward_description")
     p.promo--body-text
       span = t("promo.active.description_one")
@@ -19,7 +19,7 @@
   - n = 0
   - @promo_enabled_channels.each do |channel|
     .promo--referral-link-container-container class="promo--referral-link-container-container-#{n%2}"
-      .promo--item-label.promo--item-label-link-name = "#{channel.publication_title}"
+      .promo--item-label.promo--item-label-link-name = "#{channel.publication_title}".upcase
       .promo--referral-link-container
         span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = referral_url(channel.promo_registration.referral_code)
         button.copy-button.promo--copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")
