@@ -292,21 +292,16 @@ noscript
               = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
         - elsif current_publisher.has_verified_channel?
           .promo-panel-item.promo-panel-item-info
-            .promo-item-content
-              = t("promo.dashboard.promo").upcase
-            .promo-item-content
-              = t("promo.dashboard.progress").upcase
+            .promo-item-content.promo-item-content-progress
+              = t("promo.dashboard.promo_progress").upcase
+            .promo-item-content.promo-item-content-tos
+              = t("promo.dashboard.dashboard_tos_html")
           #promo-downloaded.promo-panel-item
             .promo-item-content.promo-item-content-white.promo-item-content-header
               = t("promo.dashboard.downloaded").upcase
             .promo-item-content.promo-item-content-white.promo-item-content-number
               = total_possible_referrals(current_publisher)
         - else
-          .promo-panel-item.promo-panel-item-info
-            .promo-item-content
-              = t("promo.dashboard.referral").upcase
-            .promo-item-content
-              = t("promo.dashboard.promo").upcase
           .promo-panel-item.promo-panel-item-alert
             #promo-panel-alert
               = t("promo.dashboard.add_channel")
