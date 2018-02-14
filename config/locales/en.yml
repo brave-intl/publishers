@@ -372,8 +372,9 @@ en:
   promo_mailer:
     activate_promo_2018q1:
       subject: "Limited Time Offer: Free tokens for your referral!"
-      body_one: "Getting more fans on Brave means more income for you. And we'd like to chip in for that effort."
-      body_two: "We are giving away 10 tokens for referring your fans to Brave.  This is a limited time offer.  Don't miss out on the opportunity!"
+      body_one_html: |
+        <p>We are giving away <strong>$1 million in tokens</strong> to creators who get their audience to switch to the Brave browser. You get approximately <strong>5 USD in tokens for each user you bring to Brave</strong>. Your fans get a super fast browser that’s private and secure. And once your fans switch to Brave, they can continue contributing to you for years to come!</p?
+      body_two: "This is a limited time offer. Refer your audience before someone else does. Don’t miss out on the opportunity to earn big!"
       button: "Activate Promo"
     promo_activated_2018q1_verified:
       subject: "Your Referral Promo is Active!"
