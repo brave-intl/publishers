@@ -39,16 +39,6 @@ function refreshBalance() {
     });
 }
 
-function showVerificationModal() {
-  let modal = document.getElementById('verification_modal');
-  modal.classList.add('md-show');
-}
-
-function hideVerificationModal() {
-  let modal = document.getElementById('verification_modal');
-  modal.classList.remove('md-show');
-}
-
 function removeChannel(channelId) {
   submitForm('remove_channel_' + channelId, 'DELETE', true)
     .then(function(response) {
@@ -161,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let cancelEditContact = document.getElementById('cancel_edit_contact');
 
   let generateStatement = document.getElementById('generate_statement');
-  let generateStatementResult = document.getElementById('generate_statement_result');
   let statementGenerator = document.getElementById('statement_generator');
   let statementPeriod = document.getElementById('statement_period');
   let generatedStatements = document.getElementById('generated_statements');
