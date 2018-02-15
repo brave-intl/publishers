@@ -111,7 +111,8 @@ body {
   }
 
   .promo--referral-link-container {
-    width: 300px;
+    width: 230px;
+    display: initial;
     .promo--referral-link {
       display: table-cell;
       vertical-align: middle;
@@ -122,6 +123,7 @@ body {
       border: solid;
       border-color: #cddeec;
       border-width: 1px;
+      font-size: 16px;
       border-radius: 4px 0px 0px 4px;
     }
   }
@@ -132,15 +134,15 @@ body {
     color: #00BCD6; // $bravePromo-LightBlue;
 
     &-link-name {
-      display: inline-block;
+      display: block;
     }
   }
 
   .promo--share-button {
     height: 30px;
-    width: 100px;
+    width: 90px;
     float: right;
-    margin: 20px 5px 20px 5px;
+    margin: 0px 5px 0px 5px;
     background-repeat: no-repeat;
     display: inline-block;
     border-radius: 20px;
@@ -149,17 +151,18 @@ body {
     text-decoration: none;
     font-size: 12px;
     letter-spacing: 1px;
+    margin-bottom: 25px;
 
     &-twitter {
       background-color: #1DA1F2; // $bravePromo-TwitterBlue:
       background-position: 15px;
-      padding: 12px 0px 0px 15px;
+      padding: 12px 0px 0px 25px;
     }
 
     &-facebook {
       background-color: #3B5998; // $bravePromo-FacebookBlue:
       background-position: 15px;
-      padding: 12px 0px 0px 10px;
+      padding: 12px 0px 0px 15px;
     }
   }
 
