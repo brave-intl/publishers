@@ -5,6 +5,7 @@ require "webmock/minitest"
 class PublisherTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   include MailerTestHelper
+  include PromosHelper
 
   test "verified publishers have both a name and email and have agreed to the TOS" do
     publisher = Publisher.new

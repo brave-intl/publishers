@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       resources :u2f_authentications, only: %i(create)
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
+      resources :promo_registrations, only: %i(index create)
     end
   end
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }

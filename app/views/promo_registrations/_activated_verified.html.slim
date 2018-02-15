@@ -1,0 +1,33 @@
+.single-panel--wrapper.single-panel--wrapper--small.promo--panel
+  .promo--bat-patch-adjacent
+    h1.promo--title data-test="promo-activated-verified"= t("promo.activated.title")
+    h3.promo--subtitle = t("promo.activated.subtitle")
+    .promo--item-container.promo--item-container-reward
+      span.promo--item-label = t("promo.shared.reward").upcase
+      span = t("promo.shared.reward_description")
+    p.promo--body-text.promo--body-text-verified
+      span = t("promo.activated.description_one")
+      - if current_publisher
+        span = link_to(t("promo.activated.description_two"), home_publishers_path)
+      - else
+        span = link_to(t("promo.activated.description_two"), new_auth_token_publishers_path)
+  .promo--item-container
+    span.promo--item-label= t("promo.shared.referral_links")
+  - n = 0
+  - @promo_enabled_channels.each do |channel|
+    .promo--referral-link-container-container class="promo--referral-link-container-container-#{n%2}"
+      .promo--item-label.promo--item-label-link-name = channel.details_type == "YoutubeChannelDetails" ? "#{channel.publication_title.upcase} #{t("promo.shared.on_youtube")}" : "#{channel.publication_title.upcase}"
+      .promo--referral-link-container
+        span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = referral_url(channel.promo_registration.referral_code)
+        button.copy-button.promo--copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")
+        = link_to("".upcase, tweet_url(channel.promo_registration.referral_code), target: :_blank, class: 'promo--share-button promo--share-button-twitter promo--share-button-desktop')
+        = link_to("".upcase, facebook_url(channel.promo_registration.referral_code), target: :_blank, class: 'promo--share-button promo--share-button-facebook promo--share-button-desktop')
+      = link_to(t("promo.shared.tweet").upcase, tweet_url(channel.promo_registration.referral_code), target: :_blank, class: 'promo--share-button promo--share-button-mobile promo--share-button-twitter')
+      = link_to(t("promo.shared.share").upcase, facebook_url(channel.promo_registration.referral_code), target: :_blank, class: 'promo--share-button promo--share-button-mobile promo--share-button-facebook')
+    - n += 1
+  p.promo--body-text-mobile
+    span = t("promo.activated.description_one")
+    - if current_publisher
+      span = link_to(t("promo.activated.description_two"), home_publishers_path)
+    - else
+      span = link_to(t("promo.activated.description_two"), new_auth_token_publishers_path)

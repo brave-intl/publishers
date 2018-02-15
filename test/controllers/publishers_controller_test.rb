@@ -487,6 +487,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "when uphold fails to return uphold_access_parameters, publisher has option to reconnect with uphold" do
+    # Turn off promo
+    active_promo_id_original = Rails.application.secrets[:active_promo_id]
+    Rails.application.secrets[:active_promo_id] = ""
     publisher = publishers(:completed)
 
     # sign in publisher
@@ -521,6 +524,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_select("[data-test=reconnect-button]") do |element|
       assert_equal element.text, I18n.t("helpers.publisher.reconnect_to_uphold")
     end
+    Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
   test "a publisher's statement can be generated via ajax" do

@@ -3,6 +3,7 @@ class Publisher < ApplicationRecord
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
+  PROMO_STATS_UPDATE_DELAY = 10.minutes
 
   devise :timeoutable, :trackable, :omniauthable
 
@@ -40,10 +41,14 @@ class Publisher < ApplicationRecord
   # (see `verify_uphold` method below)
   validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
+  validates :promo_token_2018q1, uniqueness: true,  allow_nil: true
+    
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
 
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
+
+  after_save :set_promo_stats_updated_at_2018q1, if: -> { promo_stats_2018q1_changed? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -159,6 +164,36 @@ class Publisher < ApplicationRecord
 
   def owner_identifier
     "publishers#uuid:#{id}"
+  end
+
+  def promo_status(promo_running)
+    if !promo_running
+      :over
+    elsif self.promo_enabled_2018q1
+      :active
+    else
+      :inactive
+    end
+  end
+
+  def promo_stats_status
+    promo_disabled = !self.promo_enabled_2018q1
+    has_no_promo_enabled_channels = !self.channels.joins(:promo_registration).where.not(promo_registrations: {referral_code: nil}).any?
+    if promo_disabled || has_no_promo_enabled_channels
+      :disabled
+    elsif self.promo_stats_updated_at_2018q1.nil? || self.promo_stats_updated_at_2018q1 < PROMO_STATS_UPDATE_DELAY.ago
+      :update
+    else
+      :updated
+    end
+  end
+
+  def set_promo_stats_updated_at_2018q1
+    update_column(:promo_stats_updated_at_2018q1, Time.now)
+  end
+
+  def has_verified_channel?
+    channels.any?(&:verified?)
   end
 
   private

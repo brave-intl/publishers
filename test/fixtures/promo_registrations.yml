@@ -1,0 +1,13 @@
+# # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# one:
+#   channel: one
+#   channel_id: 
+#   promo_id: MyString
+#   referral_code: MyString
+
+# two:
+#   channel: two
+#   channel_id: 
+#   promo_id: MyString
+#   referral_code: MyString
