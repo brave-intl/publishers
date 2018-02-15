@@ -18,9 +18,12 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   end
 
   test "publishers page renders, 'edit contact' opens form, name can be changed" do
+    active_promo_id_original = Rails.application.secrets[:active_promo_id]
+    Rails.application.secrets[:active_promo_id] = ""
     publisher = publishers(:completed)
     sign_in publisher
 
+    # Turn off promo
     visit home_publishers_path
     assert_content page, publisher.name
     assert_content page, publisher.email
@@ -46,6 +49,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
     assert_content page, new_name
     refute_content 'Update'
+    Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
   test "publishers page renders, unverified channel can be removed after confirmation" do

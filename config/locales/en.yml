@@ -148,6 +148,8 @@ en:
         Before forwarding this email, ensure you trust the recipient.
       salutation: Hi %{name},
       signature: The Brave Payments Team
+      signature_html: |
+        <strong>The Brave Payments Team</strong>
       updated_email: New email
     confirm_email_change:
       subject: Confirm your Brave Publisher email change
@@ -315,6 +317,88 @@ en:
       confirm: Remove Channel
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
+  promo:
+    publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
+    activate:
+      title: "Free Tokens"
+      limited_time_offer: "Limited Time Offer"
+      limited_time_promo: "Limited Time Promo"
+      free_tokens: "Free Tokens"
+      for_referring_your_fans: "for Referring Your Fans!"
+      description: "Bring your fans to the Brave browser and grow your revenue!"
+      referral_reward: "1 referral = about 5 USD in tokens"
+      button: "Activate Promo"
+      button-dashboard: "Learn More"
+    activated:
+      title: "Congrats!"
+      subtitle: "Your promo is activated."
+      description_one: "For a referral payment to occur, the new user must be minimally active across a 30 day period. Check the promo status on "
+      description_two: "your dashboard."
+      unverified_no_channels: "No channels in the account."
+      unverified_error: "Verify your website or channel to get the referral link."
+      unverified_cta: "Go to my account"
+      please_wait: "Please wait while we register your channels for the promo."
+    active:
+      title: "Your promo is already active!"
+      description_one: "For a referral payment to occur, the new user must be minimally active across a 30 day period. "
+      description_two: "Check the promo status"
+      description_three: " on your dashboard."
+    over:
+      title: "Sorry!"
+      promo_ended: "The promo has ended."
+      description: "We're sorry that you missed on this program.  But you can still influence your fans to support you by using Brave!"
+      brave_download_link: "brave.com/download"
+      footer: "Keep an eye out for an email about the next event."
+    dashboard:
+      days: "days"
+      downloaded: "downloaded"
+      active_referral: "active"
+      bat: "bat"
+      add_channel: "Add a web site or youtube channel below to get the promo link!"
+      promo_progress: "promo progress"
+      referral: "referral"
+      dashboard_tos_html: |
+        For a referral payment to occur, the new user <strong> must be minimally active across a 30 day period.</strong>
+    shared:
+      tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
+      tweet: "Tweet"
+      share: "Share"
+      promo_period: "Promo period:"
+      promo_period_description: "Jan 1 - Feb 1"
+      reward: "Reward:"
+      reward_description: "about 5 USD per referral"
+      referral_links: "Share the link to increase referrals"
+      referral_link: "Referral Link"
+      copy: "Copy"
+      brave_payments_tm: "Brave Payments™"
+      on_youtube: "on YouTube"
+      tos_1: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period."
+      tos_2_html: |
+        The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the Brave Publisher Terms Of Service.  See Publisher <strong><a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a></strong> for additional details and restrictions.
+  promo_mailer:
+    activate_promo_2018q1:
+      subject: "Limited Time Offer: Free tokens for your referral!"
+      body_one_html: |
+        <p><strong>We are giving away $1 million in tokens</strong> to creators who get their audience to switch to the Brave browser. You get approximately <strong>5 USD in tokens for each user you bring to Brave</strong>. Your fans get a super fast browser that’s private and secure. And once your fans switch to Brave, they can continue contributing to you for years to come!</p?
+      body_two: "This is a limited time offer. Refer your audience before someone else does. Don’t miss out on the opportunity to earn big!"
+      button: "Activate Promo"
+    promo_activated_2018q1_verified:
+      subject: "Your Referral Promo is Active!"
+      body_one: "Congrats! You are set to receive about 5 USD in tokens for every new user you bring to Brave. Use the referral links we created for your channel, and get your fans to support you!"
+      body_two: "Users are confirmed following 30 days of use. Users that drop out will not be counted."
+      body_three: "We wish you good luck!"
+      ad_banner_title: "Promo Ad Banner"
+      ad_banner_message: "Here is the promo ad banner you can use with the referral link."
+      download: "Download"
+    promo_activated_2018q1_unverified:
+      subject: "Your Referral Promo is Active!"
+      cta: "Add Channel"
+      body_one: "Great news! Your referral promo is now active.  To get this going, you'll need to add your web site or YouTube channels to your account. We will then send you a specific referral link for you to pass to your fans."
+      body_two_html: |
+        <strong>Add your web site or YouTube channel to your account to get the referral link.</strong>
+    new_channel_registered_2018q1:
+      subject: "Your Referral Promo is Active!"
+      body_one: "Congrats! You are set to receive 10 BAT for every new user you bring to Brave.  Use the referral links we created for your channel, and get your fans to support you!"
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.

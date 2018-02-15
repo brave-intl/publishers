@@ -207,3 +207,10 @@
   border-left: 0;
   border-right: 0;
 }
+
+.nav--promo {
+  background: $bravePromo-LightBlue;
+  @include media-breakpoint-down(sm) {
+    margin-left: $spacer * 2;
+  }
+}

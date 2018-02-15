@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180207143046) do
+ActiveRecord::Schema.define(version: 20180208202145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,15 @@ ActiveRecord::Schema.define(version: 20180207143046) do
     t.index ["id"], name: "index_legacy_youtube_channels_on_id", unique: true, using: :btree
   end
 
+  create_table "promo_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "channel_id",    null: false
+    t.string   "promo_id",      null: false
+    t.string   "referral_code", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", using: :btree
+  end
+
   create_table "publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "publisher_id",          null: false
     t.string   "period"
@@ -158,8 +167,12 @@ ActiveRecord::Schema.define(version: 20180207143046) do
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.datetime "two_factor_prompted_at"
+    t.boolean  "promo_enabled_2018q1",                  default: false
     t.boolean  "visible",                               default: true
     t.datetime "agreed_to_tos"
+    t.string   "promo_token_2018q1"
+    t.jsonb    "promo_stats_2018q1",                    default: {},    null: false
+    t.datetime "promo_stats_updated_at_2018q1"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree

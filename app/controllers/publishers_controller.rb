@@ -4,6 +4,7 @@ class PublishersController < ApplicationController
   THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN = 3
 
   include PublishersHelper
+  include PromosHelper
 
   before_action :authenticate_via_token,
     only: %i(show)
@@ -243,6 +244,10 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
+    if current_publisher.promo_stats_status == :update
+      PublisherPromoStatsFetcher.new(publisher: current_publisher).perform
+    end
+    
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     current_publisher.wallet
@@ -358,7 +363,7 @@ class PublishersController < ApplicationController
   # If an active session is present require users to explicitly sign out
   def require_unauthenticated_publisher
     return if !current_publisher
-    redirect_to(publisher_next_step_path(current_publisher), alert: t(".already_logged_in"))
+    redirect_to(publisher_next_step_path(current_publisher))
   end
 
   def require_verified_email

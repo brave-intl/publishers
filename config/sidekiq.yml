@@ -3,6 +3,7 @@
 :timeout: 8
 :queues:
   - mailers
+  - transactional
   - scheduler
   - default
   - low
@@ -18,5 +19,8 @@
   CleanAbandonedSiteChannelsJob:
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
-    queue: scheduler
+  SyncPublisherPromoStatsJob:
+    cron: "0 */3 * * *"
+    description: "For Publishers who have enabled a promo, sync their referral stats with the promo server"
+    queue: transactional
 :verbose: true

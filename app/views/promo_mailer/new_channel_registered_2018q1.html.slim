@@ -1,0 +1,23 @@
+- content_for(:title) do
+  h3= t("promo_mailer.new_channel_registered_2018q1.subject")
+
+p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
+
+p = t("promo_mailer.promo_activated_2018q1_verified.body_one")
+
+a.promo--item-label.promo--item-label-link-name = @channel.details_type == "YoutubeChannelDetails" ? "#{@channel.publication_title.upcase} #{t("promo.shared.on_youtube")}" : "#{@channel.publication_title.upcase}"
+.promo--referral-link-container
+  .promo--referral-link = referral_url(@channel.promo_registration.referral_code)
+= link_to(t("promo.shared.tweet").upcase, tweet_url(@channel.promo_registration.referral_code), target: :_blank, style: "background-image: url(#{attachments["icn-twitter.png"]&.url})", class: 'promo--share-button promo--share-button-twitter')
+= link_to(t("promo.shared.share").upcase, facebook_url(@channel.promo_registration.referral_code), target: :_blank, style: "background-image: url(#{attachments["icn-fb.png"]&.url})", class: 'promo--share-button promo--share-button-facebook')
+br style="clear: both"
+
+hr style="border-top-width: 0px"
+
+p.promo--clear = t("promo.shared.tos_1")
+
+= t("publisher_mailer.shared.signature_html")
+
+hr style="border-top-width: 0px"
+
+p style="font-size: 12px" = t("promo.shared.tos_2_html")

@@ -1,0 +1,22 @@
+.single-panel--wrapper.single-panel--wrapper--small.promo--panel
+  .promo--bat-patch-adjacent
+    h1.promo--title data-test="promo-activated-unverified"= t("promo.activated.title")
+    h3.promo--subtitle = t("promo.activated.subtitle")
+    .promo--item-container.promo--item-container-reward
+      span.promo--item-label = t("promo.shared.reward").upcase
+      span = t("promo.shared.reward_description")
+    p.promo--body-text
+      span = t("promo.activated.description_one")
+      - if current_publisher
+        span = link_to(t("promo.activated.description_two"), home_publishers_path)
+      - else
+        span = link_to(t("promo.activated.description_two"), new_auth_token_publishers_path)
+  .promo--item-container
+    span.promo--item-label= t("promo.shared.referral_links")
+  p#promo--no-channels = t("promo.activated.unverified_no_channels")
+  .promo--unverified-container.text-center
+    p.promo--body-text = t("promo.activated.unverified_error")
+    - if current_publisher
+      = link_to(t("promo.activated.unverified_cta").upcase, home_publishers_path, class: "btn btn-primary promo--activate-button")
+    - else 
+      = link_to(t("promo.activated.unverified_cta").upcase, new_auth_token_publishers_path, class: "btn btn-primary promo--activate-button")

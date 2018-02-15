@@ -34,6 +34,23 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "delete removes a channel even if promo is enabled" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:global_verified)
+    sign_in publisher
+
+    post promo_registrations_path
+
+    assert_not_nil publisher.channels.first.promo_registration.referral_code
+
+    assert_difference("publisher.channels.count", 0) do
+      assert_difference("SiteChannelDetails.count", 0) do
+        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        assert_response 302
+      end
+    end
+  end
+
   # ToDo:
   #
   # test "a channel's domain status can be polled via ajax" do

@@ -21,6 +21,9 @@ body {
 
 .main {
   margin-top: 50px;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: top right;
   border-radius: 8px;
   border: 1px solid #eff2f5;
 }
@@ -28,8 +31,8 @@ body {
 .header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  padding: 72px 50px 58px 50px;
-  background-color: #ffffff;
+  padding: 72px 50px 58px 50px;;
+  background-color: transparent;
   background-position: top right;
   background-repeat: no-repeat;
 
@@ -40,7 +43,7 @@ body {
 }
 
 .content {
-  background: #ffffff;
+  background: transparent;
   padding: 10px 50px 34px 50px;
 
   .attribute {
@@ -106,6 +109,96 @@ body {
   .btn-login {
     margin: 30px 0;
   }
+
+  .promo--referral-link-container {
+    width: 230px;
+    display: initial;
+    .promo--referral-link {
+      display: table-cell;
+      vertical-align: middle;
+      width: inherit;
+      height: 40px;
+      padding-left: 8px;
+      background: #edf3f9;
+      border: solid;
+      border-color: #cddeec;
+      border-width: 1px;
+      font-size: 16px;
+      border-radius: 4px 0px 0px 4px;
+    }
+  }
+  
+  .promo--item-label {
+    padding-right: 10px;
+    font-weight: 600;
+    color: #00BCD6; // $bravePromo-LightBlue;
+
+    &-link-name {
+      display: block;
+    }
+  }
+
+  .promo--share-button {
+    height: 30px;
+    width: 90px;
+    float: right;
+    margin: 0px 5px 0px 5px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+
+    &-twitter {
+      background-color: #1DA1F2; // $bravePromo-TwitterBlue:
+      background-position: 15px;
+      padding: 12px 0px 0px 25px;
+    }
+
+    &-facebook {
+      background-color: #3B5998; // $bravePromo-FacebookBlue:
+      background-position: 15px;
+      padding: 12px 0px 0px 15px;
+    }
+  }
+
+  #promo--ad-banner {
+    color: #00BCD6; // $bravePromo-LightBlue;
+    font-weight: 600;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  #promo--ad-banner-message {
+    margin-bottom: 20px;
+  }
+
+  #promo-ad-banner-download-site {
+    margin-left: 146px;
+  }
+
+  #promo-ad-banner-download-youtube {
+    margin-left: 160px;
+  }
+
+  .promo--ad-banner-container {
+    .promo--ad-banner-site {
+      margin-right: 15px;
+      float: left;
+    }
+
+    .promo--ad-banner-youtube {
+      float: left;
+    }
+  }
+}
+
+.promo--clear {
+  clear: both;
 }
 
 .footer {

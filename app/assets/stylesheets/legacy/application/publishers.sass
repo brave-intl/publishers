@@ -82,6 +82,176 @@ body[data-controller="u2f_registrations"]
       a
         margin-left: 0.5em
 
+  #converted_amount
+    @media (max-width: $screen-sm-max)
+      margin-bottom: 20px
+
+  .promo--tos
+    color: white
+    opacity: .7
+    margin-left: 60px
+    margin-top: 20px
+    margin-right: 60px
+    font-size: 12px
+    text-align: center
+    a
+      color: white
+      &:hover, &focus
+        color: white
+
+    @media (max-width: $screen-sm-max)
+      margin-left: 85px
+      margin-right: 85px
+  .promo-panel
+    padding: 0px 15px 0px 100px
+    background-color: #00BCD6
+    display: table
+    width: 100%
+    height: 150px
+    background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-polygon-narrow.png"))
+    background-repeat: no-repeat
+    background-position: center left 30px, left top 50px
+    background-size: auto 100px, cover
+    #promo-downloaded
+      text-align: right
+      padding-right: 40px
+    .promo-panel-item
+      display: table-cell
+      vertical-align: middle
+      #promo-limited-time
+        color: #006192
+        font-weight: 700
+      #promo-title
+        color: white
+        font-weight: 600
+        margin-bottom: 0px
+      #promo-referring-fans
+        color: #BCF0F7
+        font-size: 20px
+        font-weight: 500
+      .promo-item-content
+        color: #006192
+        font-weight: 600
+        font-size: 14px
+        letter-spacing: 1px
+        &-header
+          font-weight: 500
+          margin-bottom: -8px
+        &-number
+          font-size: 32px
+          text-align: center
+        &-white
+          color: white
+          letter-spacing: 0px
+        &-tos
+          line-height: normal
+          letter-spacing: normal
+          font-size: 12px
+          font-weight: unset
+          padding-right: 110px
+          @media (max-width: $screen-md-max)
+            padding-right: 50px
+        &-progress
+          font-weight: 700
+      &-button
+        text-align: center
+      #activate-promo-dashboard-button
+        background: white
+        color: #006192
+        &:hover, &focus
+          background: #BCF0F7
+        font-size: 11px
+        font-weight: 600
+        font-weight: 700
+      &-alert
+        width: 60%
+        #promo-panel-alert
+          font-size: 14px
+          font-weight: 600
+          color: #006192
+          padding: 30px 30px 35px 70px
+          margin-right: 20px
+          background-color: white
+          text-align: left
+          opacity: .5
+          border-radius: 10px
+          background-image: url(asset-path("icn-info.png"))
+          background-position: center left 15px
+          background-repeat: no-repeat
+          
+  .channel--promo-info-container
+    float: right
+    height: 45px
+    width: 166px
+    transition: .3s ease-in-out
+    display: table
+    .promo-info-item
+      height: 100%
+      text-align: center
+      display: table-cell
+      vertical-align: middle
+    .referral-link-button
+      width: 110px
+      background: #edf3f9
+      display: table-cell
+      border: solid
+      border-width: 1px
+      border-radius: 4px
+      border-color: #cddeec
+      cursor: pointer
+      span
+        transition: opacity 0.7s linear
+      span.fadedOut
+        opacity: 0
+      &-mobile
+        display: none
+    .referral-link-url
+      background: #edf3f9
+      height: 100%
+      text-align: left
+      padding-left: 8px
+      border: solid
+      border-width: 1px 0px 1px 1px
+      border-radius: 4px 0px 0px 4px
+      border-color: #cddeec
+      white-space: nowrap
+      display: none
+    .referral-link-copy-button
+      background: #ff3f3f
+      color: white
+      height: 100%   
+      border-radius: 0px 4px 4px 0px
+      cursor: pointer
+      display: none
+    .promo-share-button
+      height: 23px
+      width: 28px
+      display: table-cell
+      background-position: center
+      background-repeat: no-repeat
+      &-twitter
+        background-image: url(asset-path("tweet.png"))
+      &-facebook
+        background-image: url(asset-path("f-share.png"))
+    &-slideout
+      width: 300px // 300px when using brave.com for base referral link
+      .promo-info-item
+        display: table-cell
+      .referral-link-button
+        display: none
+    @media (max-width: $screen-sm-max)
+      margin-top: 20px
+      margin-left: 30px
+      .referral-link-button
+        &-mobile
+          display: table-cell
+        &-desktop
+          display: none
+      .referral-link-copy-button
+        display: none
+      .referral-link-url
+        display: none
+
   .expired-token-panel
     max-width: 710px
     .sub-panel
@@ -237,7 +407,7 @@ body[data-controller="publishers"]
   &[data-action="create_done"]
     .email-panel
       background-image: url(asset-path("email-2@1x.png"))
-      background-position: top 60px right 60px
+      background-position: top 65px right 50px
       background-repeat: no-repeat
     .email-address
       color: #ff3f3f

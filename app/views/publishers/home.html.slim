@@ -40,6 +40,7 @@ javascript:
       modal.classList.add('md-show');
     }
 
+
     function hideVerificationModal() {
       var modal = document.getElementById('verification_modal');
       modal.classList.remove('md-show');
@@ -203,6 +204,7 @@ javascript:
             });
         }, false);
       }
+
     }, false);
   })();
 
@@ -266,7 +268,7 @@ noscript
   = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
 
 .row
-  .col.col-details.col-md-5.col-xs-10.col-xs-center.col-sm-center
+  .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4.balance-header = t ".balance_pending"
     .balance
       .pull-left
@@ -277,7 +279,33 @@ noscript
           span.bat-code= " BAT"
         .converted#converted_amount
           = publisher_converted_balance(current_publisher)
-  - if current_publisher.channels.empty?
+  - if promo_running?
+    .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
+      .sub-panel.promo-panel
+        - if current_publisher.promo_status(promo_running?) == :inactive
+          .promo-panel-item.promo-panel-item-info
+            #promo-limited-time= t("promo.activate.limited_time_promo")
+            h3#promo-title= t("promo.activate.title")
+            #promo-referring-fans= t("promo.activate.for_referring_your_fans")
+          .promo-panel-item.promo-panel-item-button
+            = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
+              = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
+        - elsif current_publisher.has_verified_channel?
+          .promo-panel-item.promo-panel-item-info
+            .promo-item-content.promo-item-content-progress
+              = t("promo.dashboard.promo_progress").upcase
+            .promo-item-content.promo-item-content-tos
+              = t("promo.dashboard.dashboard_tos_html")
+          #promo-downloaded.promo-panel-item
+            .promo-item-content.promo-item-content-white.promo-item-content-header
+              = t("promo.dashboard.downloaded").upcase
+            .promo-item-content.promo-item-content-white.promo-item-content-number
+              = total_possible_referrals(current_publisher)
+        - else
+          .promo-panel-item.promo-panel-item-alert
+            #promo-panel-alert
+              = t("promo.dashboard.add_channel")
+  - elsif current_publisher.channels.empty?
     .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
       .add-channel-cta
         = t ".add_channel_cta"
@@ -377,9 +405,21 @@ noscript
               script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
                 = render "publishers/remove_channel_modal", channel: channel
               = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-
-          .channel-status.pull-right
-            = t "publishers.shared.verified"
+          - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
+            .channel--promo-info-container
+              = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
+              = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
+              .referral-link-url.promo-info-item
+                span= referral_url(channel.promo_registration.referral_code)
+              .referral-link-button.referral-link-button-desktop.promo-info-item
+                span= t("promo.shared.referral_link")
+              .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
+                span= t("promo.shared.referral_link")
+              .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
+                span= t("promo.shared.copy")
+          - else 
+            .channel-status.pull-right
+              span= t("publishers.shared.verified")
         -else
           .channel-summary.pull-left
             h3= channel.publication_title
@@ -393,8 +433,70 @@ noscript
             = render "publishers/remove_channel_modal", channel: channel
           = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
         .clearfix
-
 .row.tos-row
-  .col.col-details.col-md-6.col-md-push-6.col-xs-10.col-xs-center.col-sm-center
-    .terms-of-service
-      = link_to(t("shared.terms_of_service"), terms_of_service_url)
+  - if current_publisher.promo_enabled_2018q1
+    .promo--tos
+      = t("promo.shared.tos_2_html")
+  - else
+    .col.col-details.col-md-6.col-md-push-6.col-xs-10.col-xs-center.col-sm-center
+      .terms-of-service
+        = link_to(t("shared.terms_of_service"), terms_of_service_url)
+
+
+- if current_publisher.promo_status(promo_running?) == :active
+  javascript:
+    (function() {
+      function closeReferralLinkAnimation() {
+        var channelPromoInfoContainer = this.parentNode;
+        if (channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
+          channelPromoInfoContainer.classList.remove('channel--promo-info-container-slideout');
+        }
+      }
+
+      function openReferralLinkAnimation() {
+        var channelPromoInfoContainer = this.parentNode;
+
+        if (!channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
+          channelPromoInfoContainer.classList.add('channel--promo-info-container-slideout');
+        }
+      }
+
+      function copyButtonAnimation() {
+        channelPromoInfoContainer = this.parentNode;
+        var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
+        var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
+
+        for (var i = 0; i < mobileReferralLinkButtons.length; i++){
+          mobileReferralLinkButtons[i].children[0].innerText = 'Referral Link';
+          desktopReferralLinkButtons[i].children[0].innerText = 'Referral Link';
+        }
+        var mobileReferralLinkButton = channelPromoInfoContainer.children[4].children[0];
+        var desktopReferralLinkButton = channelPromoInfoContainer.children[3].children[0];
+        mobileReferralLinkButton.innerText = 'Copied!';
+        desktopReferralLinkButton.innerText = 'Copied!';
+
+        // Fade out 'copied!'
+        setTimeout(function(){
+          mobileReferralLinkButton.classList.add('fadedOut');
+          desktopReferralLinkButton.classList.add('fadedOut');
+          setTimeout(function(){
+            mobileReferralLinkButton.innerText = 'Referral Link';
+            desktopReferralLinkButton.innerText = 'Referral Link';
+            mobileReferralLinkButton.classList.remove('fadedOut');
+            desktopReferralLinkButton.classList.remove('fadedOut');
+          }, 500);
+        }, 1000);
+      }
+
+      var channelPromoInfoContainers = document.getElementsByClassName('channel--promo-info-container');
+      var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
+      var desktopCopyButtons = document.getElementsByClassName('referral-link-copy-button')
+      var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
+
+      for (var i = 0; i < channelPromoInfoContainers.length; i++) {
+        desktopReferralLinkButtons[i].addEventListener('click', openReferralLinkAnimation, false);
+        desktopCopyButtons[i].addEventListener('click', closeReferralLinkAnimation, false);
+        desktopCopyButtons[i].addEventListener('click', copyButtonAnimation, false);
+        mobileReferralLinkButtons[i].addEventListener('click', copyButtonAnimation, false);
+      }
+    })();
