@@ -9,10 +9,10 @@ function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
   let showContactEmail = document.getElementById('show_contact_email');
   if (pendingEmail && pendingEmail != showContactEmail.innerText) {
-    pendingEmailNotice.innerHTML = 'Pending: Email address has been updated to: <strong>' + pendingEmail + '</strong>. An email has been sent to this address to confirm this change.';
-    pendingEmailNotice.style.display = 'block';
+    pendingEmailNotice.innerHTML = `Pending: Email address has been updated to: <strong>${pendingEmail}</strong>. An email has been sent to this address to confirm this change.`;
+    pendingEmailNotice.classList.remove('hidden');
   } else {
-    pendingEmailNotice.style.display = 'none';
+    pendingEmailNotice.classList.add('hidden');
   }
 }
 

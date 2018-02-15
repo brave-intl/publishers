@@ -52,6 +52,33 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
+  test "publishers page renders, 'edit contact' opens form, email can be changed" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    visit home_publishers_path
+    assert_content page, publisher.name
+    assert_content page, publisher.email
+
+    original_email = publisher.email
+    new_email = 'jane.doe@example.com'
+
+    # Update email. A "pending" change message should be displayed.
+    click_link 'Edit Contact'
+    fill_in 'update_contact_email', with: new_email
+    click_button 'Update'
+
+    assert_content page, 'Pending: Email address has been updated to: ' + new_email
+    refute_content 'Update'
+
+    # Let's change it back to the original. The "pending" message should be removed.
+    click_link 'Edit Contact'
+    fill_in 'update_contact_email', with: original_email
+    click_button 'Update'
+
+    refute_content page, 'Pending: Email address has been updated'
+  end
+
   test "publishers page renders, unverified channel can be removed after confirmation" do
     publisher = publishers(:small_media_group)
     channel = channels(:small_media_group_to_verify)

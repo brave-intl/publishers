@@ -117,7 +117,7 @@ noscript
             = f.submit(translate(".contact.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
             a#cancel_edit_contact href="#"
               = t "shared.cancel"
-        p#pending_email_notice style="display: none" class="note"
+        p#pending_email_notice class="note hidden"
 
         = form_for(current_publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
           = f.check_box(:visible, class: "form-check-input")
