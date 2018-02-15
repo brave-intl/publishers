@@ -63,7 +63,7 @@ noscript
             .panel-section= link_to(uphold_authorization_description(current_publisher),
                     uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button")
         - if current_publisher.uphold_status == :access_parameters_acquired || current_publisher.uphold_status == :verified
-          .panel-section#uphold_dashboard style=(show_uphold_dashboard?(current_publisher) ? '' : 'display: none') class=uphold_status_class(current_publisher)
+          .panel-section#uphold_dashboard class=(uphold_status_class(current_publisher) + (show_uphold_dashboard?(current_publisher) ? '' : ' hidden'))
             .panel-section
               = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
                 span= t ".uphold.deposit_currency"
@@ -99,11 +99,11 @@ noscript
           #show_contact_name= current_publisher.name
           span.email#show_contact_email= current_publisher.email
           span.hidden#pending_contact_email= current_publisher.pending_email
-          span#show_contact_phone_separator style=(current_publisher.phone.present? ? '' : 'display: none')
+          span#show_contact_phone_separator class=(current_publisher.phone.present? ? '' : 'hidden')
             |&nbsp;&bull;&nbsp;
           span.phone#show_contact_phone
             = current_publisher.phone
-        = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit", style: "display: none" }) do |f|
+        = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit hidden" }) do |f|
           .form-group
             = f.label(:name, class: "control-label", for: "update_contact_name")
             = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)

@@ -84,7 +84,7 @@ function checkUpholdStatus() {
         let publisherStatus = document.getElementById('publisher_status');
         publisherStatus.innerText = body.status_description;
         publisherStatus.className = body.status;
-        document.getElementById('uphold_connect').style.display = 'none';
+        document.getElementById('uphold_connect').classList.add('hidden');
         document.getElementById('statement_section').classList.remove('hidden');
         dynamicEllipsis.stop('publisher_status');
         clearInterval(checkUpholdStatusInterval);
@@ -159,17 +159,17 @@ document.addEventListener('DOMContentLoaded', function() {
     updateContactName.value = showContactName.innerText;
     updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
     updateContactPhone.value = showContactPhone.innerText;
-    showContact.style.display = 'none';
-    updateContactForm.style.display = 'block';
-    editContact.style.display = 'none';
+    showContact.classList.add('hidden');
+    updateContactForm.classList.remove('hidden');
+    editContact.classList.add('hidden');
     updateContactName.focus();
     event.preventDefault();
   }, false);
 
   cancelEditContact.addEventListener('click', function(event) {
-    showContact.style.display = 'block';
-    updateContactForm.style.display = 'none';
-    editContact.style.display = 'block';
+    showContact.classList.remove('hidden');
+    updateContactForm.classList.add('hidden');
+    editContact.classList.remove('hidden');
     event.preventDefault();
   }, false);
 
@@ -183,10 +183,14 @@ document.addEventListener('DOMContentLoaded', function() {
         pendingContactEmail.innerText = updatedEmail;
         showPendingContactEmail(updatedEmail);
 
-        updateContactForm.style.display = 'none';
-        showContact.style.display = 'block';
-        editContact.style.display = 'block';
-        showContactPhoneSeparator.style.display = (showContactPhone.innerText ? 'inline' : 'none');
+        updateContactForm.classList.add('hidden');
+        showContact.classList.remove('hidden');
+        editContact.classList.remove('hidden');
+        if (showContactPhone.innerText) {
+          showContactPhoneSeparator.classList.remove('hidden');
+        } else {
+          showContactPhoneSeparator.classList.add('hidden');
+        }
 
         // Re-enable submit button to allow form to be resubmitted
         let submitButton = updateContactForm.querySelector('input[type=submit][disabled]');
@@ -203,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let statementDownloadDiv;
 
       event.preventDefault();
-      generateStatement.style.display = 'none';
+      generateStatement.classList.add('hidden');
 
       submitForm('statement_generator', 'PATCH', false)
         .then(function(response) {
@@ -212,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(function(json) {
           statementPeriod.options.remove(statementPeriod.selectedIndex);
           if (statementPeriod.options.length === 0) {
-            statementGenerator.style.display = 'none';
+            statementGenerator.classList.add('hidden');
           }
 
           let newStatementDiv = document.createElement('div');
@@ -238,14 +242,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(function() {
           dynamicEllipsis.stop(statementDownloadDiv);
           statementDownloadDiv.innerHTML = '<a href="/publishers/statement?id=' + statementId + '">Download</a>';
-          generateStatement.style.display = 'inline-block';
+          generateStatement.classList.remove('hidden');
         })
         .catch(function(e) {
           if (statementDownloadDiv) {
             dynamicEllipsis.stop(statementDownloadDiv);
             statementDownloadDiv.innerText = 'Delayed';
           }
-          generateStatement.style.display = 'inline-block';
+          generateStatement.classList.remove('hidden');
         });
     }, false);
   }

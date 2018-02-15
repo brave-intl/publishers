@@ -20,11 +20,11 @@ export default {
 
   show: function() {
     var containerElement = flashElement();
-    containerElement.style.display = 'block';
+    containerElement.classList.remove('hidden');
   },
 
   hide: function() {
     var containerElement = flashElement();
-    containerElement.style.display = 'none';
+    containerElement.classList.add('hidden');
   }
 };

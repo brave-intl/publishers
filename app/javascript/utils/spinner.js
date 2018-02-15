@@ -53,9 +53,9 @@ export default {
       var minTime = 500;
       var now = Date.now();
 
-      if (now - shown > minTime)
+      if (now - shown > minTime) {
         element.style.display = 'none';
-      else {
+      } else {
         setTimeout(function() {
           element.style.display = 'none';
         }, minTime - (now - shown));
