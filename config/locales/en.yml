@@ -359,6 +359,9 @@ en:
       referral: "referral"
       dashboard_tos_html: |
         For a referral payment to occur, the new user <strong> must be minimally active across a 30 day period.</strong>
+      dashboard_tos_footer: "The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the Brave Publisher Terms of Service.  See Publisher Terms of Service for additional details and restrictions."
+      dashboard_tos_footer_html: |
+        The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the Brave Publisher Terms Of Service.  See Publisher <strong><a href="">Terms of Service</a></strong> for additional details and restrictions.
     shared:
       tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
       tweet: "Tweet"
