@@ -12,8 +12,12 @@ a.promo--item-label.promo--item-label-link-name = @channel.details_type == "Yout
 = link_to(t("promo.shared.share").upcase, facebook_url(@channel.promo_registration.referral_code), target: :_blank, style: "background-image: url(#{attachments["icn-fb.png"]&.url})", class: 'promo--share-button promo--share-button-facebook')
 br style="clear: both"
 
-p = t("promo.shared.footer")
+hr style="border-top-width: 0px"
+
+p.promo--clear = t("promo.shared.tos_1")
 
 = t("publisher_mailer.shared.signature_html")
 
-hr 
+hr style="border-top-width: 0px"
+
+p style="font-size: 10px" = t("promo.shared.tos_2_html")

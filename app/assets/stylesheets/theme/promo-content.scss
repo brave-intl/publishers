@@ -37,6 +37,9 @@
       }
       padding: 20px 75px 0px 75px;
       font-size: 11px;
+      @include media-breakpoint-down(sm){
+        padding: 20px 30px 0px 30px;
+      }    
     }
   }
 
