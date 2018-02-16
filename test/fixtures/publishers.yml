@@ -132,3 +132,11 @@ medium_media_group:
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
+joe_the_only_yt_verified:
+  email: "joes-great-channel@pages.plusgoogle.com"
+  name: "Joe Schmoe"
+  phone: "6035551212"
+  phone_normalized: "+16035551212"
+  visible: true
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"

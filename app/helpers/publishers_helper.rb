@@ -190,7 +190,9 @@ module PublishersHelper
   end
 
   def publisher_next_step_path(publisher)
-    if publisher.verified?
+    if session[:publisher_created_through_youtube_auth]
+      change_email_confirm_publishers_path
+    elsif publisher.verified?
       home_publishers_path
     elsif publisher.email_verified?
       email_verified_publishers_path
@@ -351,5 +353,27 @@ module PublishersHelper
 
   def publisher_id_from_owner_identifier(owner_identifier)
     owner_identifier[/publishers#uuid:(.*)/,1]
+  end
+
+  def email_is_youtube_format?(email)
+    /.+@pages\.plusgoogle\.com/.match(email)
+  end
+
+  def youtube_login_permitted?(channel)
+    details = channel.details
+    if details.is_a?(YoutubeChannelDetails)
+      publisher = channel.publisher
+      if details.auth_email == publisher.email
+        if publisher.email
+          return !email_is_youtube_format?(publisher.email).nil?
+        end
+      end
+    end
+
+    false
+  end
+
+  def publisher_created_through_youtube_auth?(publisher)
+    publisher && publisher.channels.visible.count == 1 && youtube_login_permitted?(publisher.channels.visible.first)
   end
 end

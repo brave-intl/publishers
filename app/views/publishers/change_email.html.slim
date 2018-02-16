@@ -1,0 +1,24 @@
+- content_for(:head_style_tags) do
+  = stylesheet_link_tag("application", media: "all")
+
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+
+    h3.single-panel--headline= t ".login_email"
+
+    .col-small-centered
+      p
+        span= t ".login_email_message"
+
+      = form_for @publisher, url: update_email_publishers_path do |f|
+        .form-group
+          = f.email_field :pending_email, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email")
+          .text-left
+            strong= t ".login_email_note"
+        - if params[:captcha]
+          = hidden_field_tag(:captcha)
+        - if @should_throttle
+          .form-group
+            = recaptcha_tags
+        = f.submit(t("shared.continue"), class: "btn btn-block btn-primary")

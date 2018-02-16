@@ -27,9 +27,13 @@
             = f.check_box(:visible, class: "form-check-input")
             = f.label(:visible, class: "form-check-label", for: "publisher_visible")
         .form-group.panel-controls
-          = f.submit(t("publishers.shared.sign_up"), class: "btn btn-primary btn-block")
+          - if @publisher_created_through_youtube_auth
+            - @action = t("shared.continue")
+          - else
+            - @action = t("publishers.shared.sign_up")
+          = f.submit(@action, class: "btn btn-primary btn-block")
 
-      .single-panel--footer= t(".tos_html", \
+      .single-panel--footer= t(".tos_html", action: @action, \
           tos_link: link_to( \
               t("shared.terms_of_service"), \
               "https://basicattentiontoken.org/publisher-terms-of-service/" \

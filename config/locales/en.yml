@@ -34,6 +34,7 @@ en:
     log_in: Log In
     remove: Remove
     terms_of_service: Terms of Service
+    ok: OK
   activerecord:
     shared:
       errors: "There were errors saving your request:"
@@ -227,6 +228,14 @@ en:
     show:
       email_confirmed: Your updated email address %{email} has been confirmed.
       token_invalid: Authentication failed. Your login link may have expired; please send yourself a new sign in link.
+    change_email:
+      login_email: Login Email
+      login_email_message: We need your valid email address for account access and recovery purposes.
+      login_email_note: "* This will be your login from now on."
+    change_email_confirm:
+      login_email_changed: Great!
+      login_email_verified_html: |
+        <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Payments.
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
       site_operator:
@@ -264,7 +273,7 @@ en:
       heading: One last thing...
       intro: Finish signing up by entering below.
       name_placeholder: First and last name
-      tos_html: By clicking 'Sign Up', you're agreeing to our %{tos_link}
+      tos_html: By clicking '%{action}', you're agreeing to our %{tos_link}
     expired_auth_token:
       expired_error: Your login link has expired. Please send yourself another one.
       heading: Login Link Expired
@@ -295,8 +304,10 @@ en:
     new_auth_token:
       signup_prompt: Don't have an account?
     omniauth_callbacks:
-      google_oauth2:
+      register_youtube_channel:
         channel_already_registered: You have already registered this YouTube channel.
+      youtube_login:
+        channel_not_eligable_for_youtube_login: Channel is not able to use Youtube login. Please use your email address.
       require_publisher:
         log_in_and_retry: Please log in to Brave Payments and retry the operation
     require_unauthenticated_publisher:

@@ -244,7 +244,16 @@ Devise.setup do |config|
                   Rails.application.secrets[:google_client_id],
                   Rails.application.secrets[:google_client_secret],
                   {
-                    scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
+                      name: 'register_youtube_channel',
+                      scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
+                  }
+
+  config.omniauth :google_oauth2,
+                  Rails.application.secrets[:google_client_id],
+                  Rails.application.secrets[:google_client_secret],
+                  {
+                      name: 'youtube_login',
+                      scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
                   }
 
   # ==> Warden configuration

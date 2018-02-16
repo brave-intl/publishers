@@ -1,10 +1,14 @@
 module Publishers
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
-    # ToDo: rework
-    before_action :require_publisher
+    include PublishersHelper
 
-    def google_oauth2
+    # ToDo: rework
+    before_action :require_publisher, only: [:register_youtube_channel]
+    before_action :require_publisher_not_created_through_youtube_auth,
+                  only: %i(register_youtube_channel)
+
+    def register_youtube_channel
       oauth_response = request.env['omniauth.auth']
       token = oauth_response.credentials.token
 
@@ -58,6 +62,38 @@ module Publishers
       return
     end
 
+    def youtube_login
+      if current_publisher
+        sign_out(current_publisher)
+      end
+
+      oauth_response = request.env['omniauth.auth']
+
+      channel_details = YoutubeChannelDetails.where(auth_user_id: oauth_response.uid).
+          where.not(youtube_channel_id: nil).first
+
+      if channel_details.nil?
+        redirect_to new_auth_token_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
+        return
+      end
+
+      publisher = channel_details.channel.publisher
+
+      # if publisher.email != oauth_response.dig('info', 'email')
+      unless youtube_login_permitted?(channel_details.channel)
+        redirect_to new_auth_token_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
+        return
+      end
+
+      session['google_oauth2_credentials_token'] = oauth_response.credentials.token
+
+      unless current_publisher
+        sign_in(:publisher, publisher)
+      end
+
+      redirect_to change_email_publishers_path
+    end
+
     def after_omniauth_failure_path_for(scope)
       publisher = current_publisher
 
@@ -72,6 +108,12 @@ module Publishers
     def require_publisher
       return if current_publisher
       redirect_to(root_path, alert: t(".log_in_and_retry"))
+    end
+
+    def require_publisher_not_created_through_youtube_auth
+      if publisher_created_through_youtube_auth?(current_publisher)
+        redirect_to(home_publishers_path)
+      end
     end
   end
 end

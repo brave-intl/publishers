@@ -33,6 +33,6 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
 
     response_json = JSON.parse(response.body)
-    assert_equal 4, response_json.length
+    assert_equal 5, response_json.length
   end
 end
