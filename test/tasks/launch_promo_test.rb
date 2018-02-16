@@ -66,4 +66,9 @@ class LaunchPromoTest < ActiveJob::TestCase
     # verify promo_token_one matches after rake task run twice 
     assert_equal promo_token_one, publisher_one.promo_token_2018q1
   end
+
+  # we don't want to select publishers to email that have opted out
+  test "doesn't select publishers that have opted out of marketing emails" do
+    assert_equal Publisher.where(marketing_opt_out: true).count, 0
+  end
 end
