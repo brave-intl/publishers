@@ -15,12 +15,9 @@ Rails.application.routes.draw do
       get :uphold_verified
       get :statement
       get :statement_ready
-      get :domain_status
       patch :verify
-      patch :check_for_https
       patch :update
       patch :generate_statement
-      patch :update_unverified
       patch :complete_signup
       get :choose_new_channel_type
       resources :two_factor_authentications, only: %i(index)
