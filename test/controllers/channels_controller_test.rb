@@ -50,42 +50,4 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
-
-  # ToDo:
-  #
-  # test "a channel's domain status can be polled via ajax" do
-  #   perform_enqueued_jobs do
-  #     post(publishers_path, params: SIGNUP_PARAMS)
-  #   end
-  #   publisher = Publisher.order(created_at: :asc).last
-  #   url = publisher_url(publisher, token: publisher.authentication_token)
-  #   get(url)
-  #   follow_redirect!
-  #
-  #   url = domain_status_publishers_path
-  #
-  #   # domain has not been set yet
-  #   get(url, headers: { 'HTTP_ACCEPT' => "application/json" })
-  #   assert_response 404
-  #
-  #   update_params = {
-  #       publisher: {
-  #           brave_publisher_id_unnormalized: "pyramid.net",
-  #           name: "Alice the Pyramid",
-  #           phone: "+14159001420"
-  #       }
-  #   }
-  #
-  #   perform_enqueued_jobs do
-  #     patch(update_unverified_publishers_path, params: update_params )
-  #   end
-  #
-  #   # domain has been set
-  #   get(url, headers: { 'HTTP_ACCEPT' => "application/json" })
-  #   assert_response 200
-  #   assert_match(
-  #       '{"brave_publisher_id":"pyramid.net",' +
-  #           '"next_step":"/publishers/verification_choose_method"}',
-  #       response.body)
-  # end
 end
