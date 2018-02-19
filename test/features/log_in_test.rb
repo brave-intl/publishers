@@ -10,6 +10,18 @@ class LogInTest < Capybara::Rails::TestCase
     assert_content page, "Log In"
   end
 
+  test "a user with an existing email can receive a login email" do
+    email = 'alice@verified.org'
+
+    visit new_auth_token_publishers_path
+
+    assert_content page, "Log In"
+    fill_in 'publisher_email', with: email
+    click_button('Log In')
+
+    assert_content page, "Login email sent! Please check your email for the login link."
+  end
+
   test "after failed login, user can create an account instead" do
     email = 'new-test@example.com'
 
