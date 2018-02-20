@@ -4,8 +4,11 @@ require "rails/test_help"
 require "selenium/webdriver"
 require "minitest/rails/capybara"
 require "webmock/minitest"
+require "chromedriver/helper"
 
 WebMock.allow_net_connect!
+
+Chromedriver.set_version "2.35"
 
 Capybara.register_driver :chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
