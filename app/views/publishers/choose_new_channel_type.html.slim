@@ -19,10 +19,11 @@
           h3.text-center= t ".individual_creator.heading"
           p.text-center= t ".individual_creator.description_html"
         p.text-center.note-text= t ".individual_creator.note"
-  = link_to(publisher_register_twitch_channel_omniauth_authorize_path) do
-    .choice-panel.choice-panel-left
-      .individual-creator.select-choice
-        .choice-description
-          h3.text-center= "Twitch"
-          p.text-center= "I use Twitch"
-        p.text-center.note-text= "Gotta auth with Twitch"
+  - if params[:twitch]
+    = link_to(publisher_register_twitch_channel_omniauth_authorize_path) do
+      .choice-panel.choice-panel-left
+        .individual-creator.select-choice
+          .choice-description
+            h3.text-center= "Twitch"
+            p.text-center= "I use Twitch"
+          p.text-center.note-text= "Gotta auth with Twitch"
