@@ -4,22 +4,17 @@ class SiteChannelsController < ApplicationController
   before_action :authenticate_publisher!
   before_action :setup_current_channel,
                 except: %i(new
-               create)
+                           create)
   before_action :require_unverified_site,
-                only: %i(email_verified
-             contact_info
-             domain_status
-             update_unverified
-             verification
-             verification_choose_method
-             verification_dns_record
-             verification_wordpress
-             verification_github
-             verification_public_file
-             verification_support_queue
-             verification_background
-             verify
-             download_verification_file)
+                only: %i(verification_choose_method
+                         verification_dns_record
+                         verification_wordpress
+                         verification_github
+                         verification_public_file
+                         verification_support_queue
+                         verification_background
+                         verify
+                         download_verification_file)
   before_action :require_https_enabled_site,
                 only: %i(download_verification_file)
   before_action :require_verification_token,

@@ -302,7 +302,8 @@ class PublishersController < ApplicationController
           status_description: publisher_status_description(publisher),
           timeout_message: publisher_status_timeout(publisher),
           uphold_status: publisher.uphold_status.to_s,
-          uphold_status_description: uphold_status_description(publisher)
+          uphold_status_description: uphold_status_description(publisher),
+          uphold_status_class: uphold_status_class(publisher)
         }, status: 200)
       }
     end
