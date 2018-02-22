@@ -21,8 +21,10 @@ hr style="border-top-width: 0px"
   .promo--ad-banner-container
     .promo--ad-banner-site
       = image_tag(attachments["switch_banner_1.png"]&.url, alt: t("shared.app_title"))
+      .promo--download-link = link_to(t("shared.download"), "https://brave.com/assets-for-creators?banner-b")
     .promo--ad-banner-youtube
       = image_tag(attachments["switch_banner_2.png"]&.url, alt: t("shared.app_title"))
+      .promo--download-link = link_to(t("shared.download"), "https://brave.com/assets-for-creators?banner-c")
 
 br style="clear: both"
 
