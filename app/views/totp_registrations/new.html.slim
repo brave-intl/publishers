@@ -1,4 +1,4 @@
-.single-panel--wrapper.single-panel--wrapper--medium
+.single-panel--wrapper
   = render "panel_flash_messages"
   - if totp_enabled?(current_publisher)
     .single-panel--content.single-panel--content--warning.icon-and-text--wrapper
@@ -7,34 +7,35 @@
       .icon-and-text--text
         = t ".warning"
   .single-panel--content
-    .col-medium-centered
+    .single-panel--padded-content
+      .col-medium-centered
 
-      .text-left
-        h3.single-panel--headline= t ".heading"
+        .text-left
+          h3.single-panel--headline= t ".heading"
 
-        = form_for @totp_registration do |f|
-          = f.hidden_field :secret
+          = form_for @totp_registration do |f|
+            = f.hidden_field :secret
 
-          ol.single-panel--list
-            li.form-group= t ".step_1"
-            li.form-group
-              = t ".step_2"
-              '
-              em= t ".step_2_alt"
-              '
-              strong= @totp_registration.secret.scan(/.{4}/).join(" ")
-              .text-center
-                .totp-svg== qr_code_svg @provisioning_url
-            li.form-group
-              = t ".step_3"
+            ol.single-panel--list
+              li.form-group= t ".step_1"
+              li.form-group
+                = t ".step_2"
+                '
+                em= t ".step_2_alt"
+                '
+                strong= @totp_registration.secret.scan(/.{4}/).join(" ")
+                .text-center
+                  .totp-svg== qr_code_svg @provisioning_url
+              li.form-group
+                = t ".step_3"
 
-          .col-halves
-            .col-half
-              .form-group
-                input.form-control name="totp_password" placeholder=t(".password_prompt") autofocus=true
-            .col-half
-              = render 'smartphone_with_code_tilted'
+            .col-halves
+              .col-half
+                .form-group
+                  input.form-control name="totp_password" placeholder=t(".password_prompt") autofocus=true
+              .col-half
+                = render 'smartphone_with_code_tilted'
 
-          .col-halves
-            .col-half= f.submit t(".submit_value"), class: "btn btn-primary"
-            .col-half.text-right= link_to t("shared.cancel"), two_factor_registrations_path, class: "btn btn-link"
+            .col-halves
+              .col-half= f.submit t(".submit_value"), class: "btn btn-primary"
+              .col-half.text-right= link_to t("shared.cancel"), two_factor_registrations_path, class: "btn btn-link"

@@ -1,23 +1,20 @@
-- content_for(:head_style_tags) do
-  = stylesheet_link_tag("application", media: "all")
-
 .single-panel--wrapper
   = render "panel_flash_messages"
   .single-panel--content
+    .single-panel--padded-content
+      h3.single-panel--headline= t "shared.log_in"
 
-    h3.single-panel--headline= t "shared.log_in"
-
-    .col-small-centered
-      = form_for @publisher, url: create_auth_token_publishers_path do |f|
-        .form-group
-          = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email")
-        - if params[:captcha]
-          = hidden_field_tag(:captcha)
-        - if @should_throttle
+      .col-small-centered
+        = form_for @publisher, url: create_auth_token_publishers_path do |f|
           .form-group
-            = recaptcha_tags
-        = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary")
+            = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email")
+          - if params[:captcha]
+            = hidden_field_tag(:captcha)
+          - if @should_throttle
+            .form-group
+              = recaptcha_tags
+          = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary")
 
-    .single-panel--footer.single-panel--footer--secondary
-      ' #{t(".signup_prompt")}
-      = link_to t("publishers.shared.sign_up"), sign_up_publishers_path
+      .single-panel--footer.single-panel--footer--secondary
+        ' #{t(".signup_prompt")}
+        = link_to t("publishers.shared.sign_up"), sign_up_publishers_path

@@ -1,16 +1,11 @@
-- content_for(:navbar_content) do
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    | &nbsp;
+      h3.single-panel--headline= t ".heading"
 
-.expired-token-panel.col-center
-  .sub-panel.col-center
-    .row.col-center
-      .col.col-md-12
-        h3.text-center= t ".heading"
-    .row
-      .col.col-md-8.col-md-offset-2.text-center.col-center
+      .col-small-centered
         p= t ".body"
         = form_for @publisher, {method: :post, url: create_auth_token_publishers_path} do |f|
           = f.hidden_field(:email, :value => @publisher.email)
