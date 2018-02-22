@@ -4,29 +4,38 @@ youtube_initial_details:
   youtube_channel_id:
 
 youtube_new_details:
-  auth_user_id: "abc123"
+  auth_user_id: "youtube_new_details_abc123"
   auth_provider: "google_oauth2"
   youtube_channel_id: "323541525412313421"
   title: "The DIY Channel"
   thumbnail_url: "https://some_image_host.com/some_image.png"
 
 google_verified_details:
-  auth_user_id: "abc123"
+  auth_user_id: "google_verified_details_abc123"
   auth_provider: "google_oauth2"
   youtube_channel_id: "78032"
   title: "Some Other Guy's Channel"
   thumbnail_url: "https://some_image_host.com/some_image.png"
 
 global_yt1_details:
-  auth_user_id: "abc123"
+  auth_user_id: "global_yt1_details_abc123"
+  auth_email: "global_yt1_details@pages.plusgoogle.com"
   auth_provider: "google_oauth2"
   youtube_channel_id: "dsfdsa"
   title: "Global 1"
   thumbnail_url: "https://some_image_host.com/some_image.png"
 
 global_yt2_details:
-  auth_user_id: "abc123"
+  auth_user_id: "global_yt2_details_abc123"
   auth_provider: "google_oauth2"
   youtube_channel_id: "dadsgdfssfdsa"
   title: "Global 2"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
+
+joe_yt1_details:
+  auth_user_id: "joe123456"
+  auth_email: "joes-great-channel@pages.plusgoogle.com"
+  auth_provider: "google_oauth2"
+  youtube_channel_id: "joeddfsads"
+  title: "Joe's awesome stuff"
   thumbnail_url: "https://some_image_host.com/some_image.png"

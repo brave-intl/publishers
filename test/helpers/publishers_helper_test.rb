@@ -126,4 +126,24 @@ class PublishersHelperTest < ActionView::TestCase
     assert_nil publisher.wallet
     assert_equal "Unavailable", publisher_humanize_balance(publisher, "USD")
   end
+
+  test "uphold_status_class returns a css class that corresponds to a publisher's uphold_status" do
+    class PublisherWithUpholdStatus
+      attr_accessor :uphold_status
+    end
+
+    publisher = PublisherWithUpholdStatus.new
+
+    publisher.uphold_status = :verified
+    assert_equal "uphold-status-verified", uphold_status_class(publisher)
+
+    publisher.uphold_status = :access_parameters_acquired
+    assert_equal "uphold-status-access-parameters-acquired", uphold_status_class(publisher)
+
+    publisher.uphold_status = :code_acquired
+    assert_equal "uphold-status-code-acquired", uphold_status_class(publisher)
+
+    publisher.uphold_status = :unconnected
+    assert_equal "uphold-status-unconnected", uphold_status_class(publisher)
+  end
 end

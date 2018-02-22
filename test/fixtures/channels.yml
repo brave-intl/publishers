@@ -114,3 +114,8 @@ medium_media_group_abandoned_3:
   verified: false
   created_at: <%= Time.now - 1.hour %>
   updated_at: <%= Time.now - 1.hour %>
+
+joe_yt1:
+  publisher: joe_the_only_yt_verified
+  details: joe_yt1_details (YoutubeChannelDetails)
+  verified: true
