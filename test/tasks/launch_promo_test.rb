@@ -24,8 +24,8 @@ class LaunchPromoTest < ActiveJob::TestCase
   # end
 
   test "generates a promo token and sends email to each publisher" do
-    assert_difference("Publisher.where.not(promo_token_2018q1: nil).count", Publisher.count) do
-      assert_enqueued_jobs(Publisher.count) do
+    assert_difference("Publisher.where.not(promo_token_2018q1: nil).count", Publisher.where.not(email: nil).count) do
+      assert_enqueued_jobs(Publisher.where.not(email: nil).count) do
         Rake::Task["promo:launch_promo"].invoke
         Rake::Task["promo:launch_promo"].reenable
       end
@@ -63,7 +63,7 @@ class LaunchPromoTest < ActiveJob::TestCase
       end
     end
 
-    # verify promo_token_one matches after rake task run twice 
+    # verify promo_token_one matches after rake task run twice
     assert_equal promo_token_one, publisher_one.promo_token_2018q1
   end
 end
