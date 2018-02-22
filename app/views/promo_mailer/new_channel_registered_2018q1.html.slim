@@ -7,7 +7,7 @@ p = t("promo_mailer.promo_activated_2018q1_verified.body_one")
 
 a.promo--item-label.promo--item-label-link-name = @channel.details_type == "YoutubeChannelDetails" ? "#{@channel.publication_title.upcase} #{t("promo.shared.on_youtube")}" : "#{@channel.publication_title.upcase}"
 .promo--referral-link-container
-  .promo--referral-link = referral_url(@channel.promo_registration.referral_code)
+  .promo--referral-link = link_to(referral_url(@channel.promo_registration.referral_code), "https://" + referral_url(@channel.promo_registration.referral_code))
 = link_to(t("promo.shared.tweet").upcase, tweet_url(@channel.promo_registration.referral_code), target: :_blank, style: "background-image: url(#{attachments["icn-twitter.png"]&.url})", class: 'promo--share-button promo--share-button-twitter')
 = link_to(t("promo.shared.share").upcase, facebook_url(@channel.promo_registration.referral_code), target: :_blank, style: "background-image: url(#{attachments["icn-fb.png"]&.url})", class: 'promo--share-button promo--share-button-facebook')
 br style="clear: both"
