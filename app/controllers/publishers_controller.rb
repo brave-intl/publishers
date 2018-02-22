@@ -26,6 +26,11 @@ class PublishersController < ApplicationController
   before_action :require_verified_email,
     only: %i(email_verified
              complete_signup)
+  before_action :require_publisher_email_not_verified_through_youtube_auth,
+    except: %i(update_email
+               change_email)
+  before_action :require_publisher_email_verified_through_youtube_auth,
+                only: %i(update_email)
   before_action :require_verified_publisher,
     only: %i(edit_payment_info
              generate_statement
@@ -97,6 +102,7 @@ class PublishersController < ApplicationController
 
   def email_verified
     @publisher = current_publisher
+    @publisher_created_through_youtube_auth = session[:publisher_created_through_youtube_auth]
   end
 
   def complete_signup
@@ -116,10 +122,30 @@ class PublishersController < ApplicationController
         Raven.capture_exception(e)
       end
 
+      session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
     else
       render(:email_verified)
     end
+  end
+
+  def update_email
+    @publisher = current_publisher
+    update_params = publisher_update_email_params
+
+    if update_params[:pending_email].present?
+      if @publisher.update(update_params)
+        PublisherMailer.notify_email_change(@publisher).deliver_later
+        PublisherMailer.confirm_email_change(@publisher).deliver_later
+        PublisherMailer.confirm_email_change_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+
+        @publisher_email = @publisher.pending_email
+        render :create_done
+        return
+      end
+    end
+
+    render :change_email
   end
 
   def update
@@ -237,6 +263,14 @@ class PublishersController < ApplicationController
     redirect_to(publisher_next_step_path(@publisher))
   end
 
+  def change_email
+    @publisher = current_publisher
+  end
+
+  def change_email_confirm
+    @publisher = current_publisher
+  end
+
   # Entrypoint for the authenticated re-login link.
   def show
     redirect_to(publisher_next_step_path(current_publisher))
@@ -333,11 +367,16 @@ class PublishersController < ApplicationController
     return if publisher_id.blank? || token.blank?
 
     publisher = Publisher.find(publisher_id)
+    publisher_created_through_youtube_auth = publisher_created_through_youtube_auth?(publisher)
+    if publisher_created_through_youtube_auth
+      session[:publisher_created_through_youtube_auth] = publisher_created_through_youtube_auth
+    end
 
     if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
-      if confirm_email.present? && publisher.email == confirm_email
+      if confirm_email.present? && publisher.email == confirm_email && !publisher_created_through_youtube_auth
         flash[:alert] = t(".email_confirmed", email: publisher.email)
       end
+
       if two_factor_enabled?(publisher)
         session[:pending_2fa_current_publisher_id] = publisher_id
         redirect_to two_factor_authentications_path
@@ -355,6 +394,10 @@ class PublishersController < ApplicationController
 
   def publisher_update_params
     params.require(:publisher).permit(:pending_email, :phone, :name, :default_currency, :visible)
+  end
+
+  def publisher_update_email_params
+    params.require(:publisher).permit(:pending_email)
   end
 
   def publisher_create_auth_token_params
@@ -375,6 +418,16 @@ class PublishersController < ApplicationController
   def require_verified_publisher
     return if current_publisher.verified?
     redirect_to(publisher_next_step_path(current_publisher), alert: t(".verification_required"))
+  end
+
+  def require_publisher_email_not_verified_through_youtube_auth
+    return unless publisher_created_through_youtube_auth?(current_publisher)
+    redirect_to(change_email_publishers_path)
+  end
+
+  def require_publisher_email_verified_through_youtube_auth
+    return if publisher_created_through_youtube_auth?(current_publisher)
+    redirect_to(change_email_publishers_path)
   end
 
   # Level 1 throttling -- After the first two requests, ask user to

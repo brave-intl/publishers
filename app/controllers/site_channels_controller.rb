@@ -1,5 +1,6 @@
 class SiteChannelsController < ApplicationController
   include ChannelsHelper
+  include PublishersHelper
 
   before_action :authenticate_publisher!
   before_action :setup_current_channel,
@@ -29,6 +30,8 @@ class SiteChannelsController < ApplicationController
                          verification_support_queue
                          verification_github
                          verification_wordpress)
+  before_action :require_publisher_email_not_verified_through_youtube_auth,
+                only: %i(create)
 
   attr_reader :current_channel
 
@@ -143,5 +146,10 @@ class SiteChannelsController < ApplicationController
         raise "unknown action"
     end
     current_channel.details.save! if current_channel.details.verification_method_changed?
+  end
+
+  def require_publisher_email_not_verified_through_youtube_auth
+    return unless publisher_created_through_youtube_auth?(current_publisher)
+    redirect_to(home_publishers_path)
   end
 end

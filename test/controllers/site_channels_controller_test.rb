@@ -88,6 +88,51 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "a publisher who was registered by youtube channel signup can't add additional site channels" do
+    begin
+      OmniAuth.config.test_mode = true
+
+      token = "ya29.Glz-BARu50BO8bmnXM247jcU42d5GX4LsVm1Vy57rcRxm9TfA_damOV0mX6ZY1H0vL3uxUglXykMC1NmZyr-Lg7J0JYwNkgfkFfKv_jn1ePsikVKkMjz1RqaLT3Hbw"
+
+      OmniAuth.config.mock_auth[:youtube_login] = OmniAuth::AuthHash.new(
+          {
+              "provider" => "youtube_login",
+              "uid" => "joe123456",
+              "info" => {
+                  "name" => "Joe's awesome stuff",
+                  "email" => "joes-great-channel@pages.plusgoogle.com",
+                  "first_name" => "Joe",
+                  "image" => "https://some_image_host.com/some_image.png"
+              },
+              "credentials" => {
+                  "token" => token,
+                  "expires_at" => 2510156374,
+                  "expires" => true
+              }
+          }
+      )
+
+      get(publisher_youtube_login_omniauth_authorize_url)
+      follow_redirect!
+      assert_redirected_to change_email_publishers_path
+
+      create_params = {
+          channel: {
+              details_attributes: {
+                  brave_publisher_id_unnormalized: "new_site_54634.org"
+              }
+          }
+      }
+
+      assert_difference("Channel.count", 0) do
+        post site_channels_url, params: create_params
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+        assert_redirected_to change_email_publishers_path
+      end
+    end
+  end
+
   # ToDo:
   # test "a site channel's domain can be updated via an ajax patch" do
   #   publisher = publishers(:verified)
