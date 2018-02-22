@@ -1,0 +1,15 @@
+.block-link--card {
+  color: inherit;
+  margin-bottom: $spacer*1.5 !important; // TODO remove, should factor 2fa styles
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #DBDFE3;
+    box-shadow: 0 0 22px 0 rgba(34, 35, 38, 0.12);
+  }
+
+  .card-body {
+    padding: $spacer*1.5 $spacer*4;
+  }
+}

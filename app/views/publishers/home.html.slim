@@ -6,7 +6,15 @@ noscript
 
 - content_for(:navbar_content_right) do
   .title.hidden-sm.hidden-xs= t ".dashboard"
-  = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
+  = link_to( \
+    "+ #{t "shared.add_channel"}", \
+    choose_new_channel_type_publishers_path, \
+    data: { "js-confirm-with-modal": "choose-channel-type" }, \
+    class: 'btn btn-secondary btn-highlight' \
+  )
+
+script id="choose-channel-type" type="text/html"
+  = render "home_modal__choose_channel_type"
 
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center

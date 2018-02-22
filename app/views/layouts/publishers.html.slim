@@ -1,11 +1,11 @@
-- %w(create new_auth_token create_auth_token sign_up create_done email_verified change_email change_email_confirm expired_auth_token).include?(action_name).tap do |is_bootstrap4|
+- %w(create new_auth_token create_auth_token sign_up create_done email_verified change_email change_email_confirm expired_auth_token choose_new_channel_type).include?(action_name).tap do |is_bootstrap4|
 
   - if is_bootstrap4
     - content_for(:head_style_tags) do
       = stylesheet_link_tag("application", media: "all")
 
   - content_for(:content) do
-    .main-content class="#{@hide_nav ? 'sans-nav' : '' }"
+    .main-content
       div id="#{is_bootstrap4 ? '' : 'content'}" class="#{is_bootstrap4 ? 'panels-container' : 'container' }"
         = yield
 
