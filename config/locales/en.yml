@@ -238,13 +238,15 @@ en:
         <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Payments.
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
-      site_operator:
-        heading: SITE OPERATOR
-        description: I have my own site and have access to the domain directory.
-      individual_creator:
-        heading: INDIVIDUAL CREATOR
-        description_html: I use other platforms to publish my content (currently <strong>YouTube</strong> only).
-        note: You will need to authenticate with Google to demonstrate that you own the channel.
+      website:
+        heading: WEBSITE
+        description: I have my own website and have access to the domain directory.
+      youtube:
+        heading: YOUTUBE CHANNEL
+        description: I own or manage a YouTube channel.
+      twitch:
+        heading: TWITCH CHANNEL
+        description: I'm the primary owner of a twitch channel.
     contact_info:
       heading: Contact Information
     create:
@@ -310,6 +312,8 @@ en:
         channel_not_eligable_for_youtube_login: Channel is not able to use Youtube login. Please use your email address.
       require_publisher:
         log_in_and_retry: Please log in to Brave Payments and retry the operation
+      register_twitch_channel:
+        channel_already_registered: This Twitch channel has already been registered.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_email:
