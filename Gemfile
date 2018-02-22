@@ -30,6 +30,9 @@ gem "nokogiri", "~> 1.8.2"
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
 
+# Oauth client for google / youtube
+gem "omniauth-twitch"
+
 # Model record auditing
 gem "paper_trail", "~> 5.2.2"
 

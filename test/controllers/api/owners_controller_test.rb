@@ -15,8 +15,6 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can paginate owners and set page size" do
-    owner = publishers(:verified)
-
     get "/api/owners/?per_page=10"
 
     assert_equal 200, response.status
@@ -26,13 +24,14 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can paginate owners and set page size and number" do
-    owner = publishers(:verified)
+    # Delete any records after the 9th
+    Publisher.where(id: Publisher.order("created_at desc").offset(9).pluck(:id)).delete_all
 
-    get "/api/owners/?per_page=5&page=3"
+    get "/api/owners/?per_page=5&page=2"
 
     assert_equal 200, response.status
 
     response_json = JSON.parse(response.body)
-    assert_equal 5, response_json.length
+    assert_equal 4, response_json.length
   end
 end

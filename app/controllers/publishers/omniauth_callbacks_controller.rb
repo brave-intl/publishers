@@ -48,7 +48,53 @@ module Publishers
 
       @current_channel.details = YoutubeChannelDetails.new(youtube_details_attrs)
 
-      @current_channel.save
+      @current_channel.save!
+
+      begin
+        PublisherChannelSetter.new(publisher: current_publisher).perform
+      rescue => e
+        # ToDo: What do we do if call to eyeshade fails
+        require "sentry-raven"
+        Raven.capture_exception(e)
+      end
+
+      redirect_to home_publishers_path, notice: t("shared.channel_created")
+      return
+    end
+
+    def register_twitch_channel
+      twitch_auth_hash = request.env['omniauth.auth']
+      twitch_info = twitch_auth_hash[:info]
+      uid = twitch_auth_hash[:uid]
+
+      existing_channel = Channel.joins(:twitch_channel_details).
+          where("twitch_channel_details.twitch_channel_id": uid).first
+
+      if existing_channel
+        if existing_channel.publisher == current_publisher
+          redirect_to home_publishers_path, notice: t(".channel_already_registered")
+          return
+        else
+          redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
+          return
+        end
+      end
+
+      @current_channel = Channel.new(publisher: current_publisher, verified: true)
+
+      twitch_details_attrs = {
+          twitch_channel_id: uid,
+          thumbnail_url: twitch_info.image,
+          auth_provider: twitch_auth_hash[:provider],
+          auth_user_id: uid,
+          display_name: twitch_info.name,
+          name: twitch_info.nickname,
+          email: twitch_info.email
+      }
+
+      @current_channel.details = TwitchChannelDetails.new(twitch_details_attrs)
+
+      @current_channel.save!
 
       begin
         PublisherChannelSetter.new(publisher: current_publisher).perform

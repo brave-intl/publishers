@@ -9,9 +9,21 @@ class YoutubeChannelDetails < ApplicationRecord
   validates :thumbnail_url, presence: true
   validates :auth_user_id, presence: true
 
+  ## Begin methods to satisfy the Eyeshade integration
+
   def channel_identifier
     "youtube#channel:#{youtube_channel_id}"
   end
+
+  def authorizerEmail
+    auth_email
+  end
+
+  def authorizerName
+    auth_name
+  end
+
+  ## End methods to satisfy the Eyeshade integration
 
   def publication_title
     title

@@ -9,8 +9,12 @@ class Channel < ApplicationRecord
 
   belongs_to :youtube_channel_details, -> { where( channels: { details_type: 'YoutubeChannelDetails' } )
                                                 .includes( :channels ) }, foreign_key: 'details_id'
+
+  belongs_to :twitch_channel_details, -> { where( channels: { details_type: 'TwitchChannelDetails' } )
+                                               .includes( :channels ) }, foreign_key: 'details_id'
+
   has_one :promo_registration, dependent: :destroy
-  
+
   accepts_nested_attributes_for :details
 
   validate :details_not_changed?
@@ -19,6 +23,7 @@ class Channel < ApplicationRecord
 
   scope :site_channels, -> { joins(:site_channel_details) }
   scope :youtube_channels, -> { joins(:youtube_channel_details) }
+  scope :twitch_channels, -> { joins(:twitch_channel_details) }
 
   # Once the verification_method has been set it shows we have presented the publisher with the token. We need to
   # ensure this site_channel will be preserved so the publisher cna come back to it.
@@ -27,6 +32,9 @@ class Channel < ApplicationRecord
   }
   scope :visible_youtube_channels, -> {
     youtube_channels.where.not('youtube_channel_details.youtube_channel_id': nil)
+  }
+  scope :visible_twitch_channels, -> {
+    twitch_channels.where.not('twitch_channel_details.twitch_channel_id': nil)
   }
   scope :visible, -> {
     left_outer_joins(:site_channel_details).
@@ -37,6 +45,8 @@ class Channel < ApplicationRecord
 
   scope :by_channel_identifier, -> (identifier) {
     case identifier.split("#")[0]
+      when "twitch"
+        visible_twitch_channels.where('twitch_channel_details.twitch_channel_id': identifier.split(":").last)
       when "youtube"
         visible_youtube_channels.where('youtube_channel_details.youtube_channel_id': identifier.split(":").last)
       else

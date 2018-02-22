@@ -256,6 +256,13 @@ Devise.setup do |config|
                       scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
                   }
 
+  config.omniauth :twitch,
+                  Rails.application.secrets[:twitch_client_id],
+                  Rails.application.secrets[:twitch_client_secret],
+                  {
+                    name: 'register_twitch_channel'
+                  }
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
