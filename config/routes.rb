@@ -75,6 +75,7 @@ Rails.application.routes.draw do
         post "notifications", action: :notify
       end
     end
+    resources :tokens, only: %i(index)
   end
 
   resources :errors, only: [], path: "/" do

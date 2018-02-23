@@ -12,8 +12,8 @@ class PublisherChannelSetter < BaseApiClient
     verified_channels = publisher.channels.verified.collect do |channel|
       {
           "channelId" => channel.details.channel_identifier,
-          "authorizerEmail" => channel.details.authorizerEmail,
-          "authorizerName" => channel.details.authorizerName
+          "authorizerEmail" => channel.details.authorizer_email,
+          "authorizerName" => channel.details.authorizer_name
       }.compact
     end
 
