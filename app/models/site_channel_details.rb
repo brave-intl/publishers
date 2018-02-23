@@ -45,6 +45,16 @@ class SiteChannelDetails < ApplicationRecord
     brave_publisher_id
   end
 
+  # Unused for Site Channels
+  def authorizer_email
+    nil
+  end
+
+  # Unused for Site Channels
+  def authorizer_name
+    nil
+  end
+
   def brave_publisher_id_error_description
     case self.brave_publisher_id_error_code.to_sym
       when :taken
