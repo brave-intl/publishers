@@ -15,11 +15,11 @@ class YoutubeChannelDetails < ApplicationRecord
     "youtube#channel:#{youtube_channel_id}"
   end
 
-  def authorizerEmail
+  def authorizer_email
     auth_email
   end
 
-  def authorizerName
+  def authorizer_name
     auth_name
   end
 
