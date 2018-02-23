@@ -1,100 +1,103 @@
 .single-panel--wrapper.single-panel--wrapper--large
   .single-panel--content
-    .col-two-factor--content
-      h3.single-panel--headline= t ".heading"
-      p= t ".intro"
-    .col-two-factor--action.two-factor-enabled-status
-      - if two_factor_enabled?(current_publisher)
-        span.two-factor-enabled= t ".enabled_yes"
-      - else
-        span.two-factor-disabled= t ".enabled_no"
+    .single-panel--padded-content
+      .row
+        .col-two-factor--content
+          h3.single-panel--headline= t ".heading"
+          p= t ".intro"
+        .col-two-factor--action.two-factor-enabled-status
+          - if two_factor_enabled?(current_publisher)
+            span.two-factor-enabled= t ".enabled_yes"
+          - else
+            span.two-factor-disabled= t ".enabled_no"
 
-    .col-two-factor--content
-      h5= t ".totp.heading"
-      p= t ".totp.intro"
-      - if totp_enabled?(current_publisher)
-        p
-          span.totp-enabled= t ".totp.enabled"
-          = " | "
-          = link_to t(".totp.reconfigure"), new_totp_registration_path
-      - else
-        - if current_publisher.u2f_registrations.length == 1
-          .card
-            .card-header.icon-and-text--wrapper
-              .icon-and-text--icon
-                = render "application/icon_circled_bang"
-              .icon-and-text--text
-                = t ".totp.disabled_without_fallback_html"
-        - else
-          p.two-factor-method-disabled
-            == "&bull; "
-            = t ".totp.disabled"
-    .col-two-factor--action
-      - if totp_enabled?(current_publisher)
-        p= link_to \
-            t(".totp.destroy"),
-            totp_registration_path(current_publisher.totp_registration),
-            method: :delete,
-            class: "btn btn-block btn-outline-secondary",
-            data: { "js-confirm-with-modal": "disable-totp-prompt" }
-        script#disable-totp-prompt type="text/html"
-          .col-medium-center
-            h4= t ".totp.confirm_disable.header"
+        br
+        .col-two-factor--content
+          h5= t ".totp.heading"
+          p= t ".totp.intro"
+          - if totp_enabled?(current_publisher)
             p
-              = t ".totp.confirm_disable.intro"
-              - if current_publisher.u2f_registrations.any?
-                - current_publisher.u2f_registrations.each do |u2f_registration|
-                  br
-                  strong
-                    | Security key
-                    = " \"#{u2f_registration.name.presence || t(".totp.name_default")}\""
-                  = " (registered #{l(u2f_registration.created_at.to_date, format: :short)})"
-              - else
-                br
-                strong.error = t(".totp.confirm_disable.none")
-            - if current_publisher.u2f_registrations.any?
-              p= t ".totp.confirm_disable.no_totp_warning"
+              span.totp-enabled= t ".totp.enabled"
+              = " | "
+              = link_to t(".totp.reconfigure"), new_totp_registration_path
+          - else
+            - if current_publisher.u2f_registrations.length == 1
+              .card
+                .card-header.icon-and-text--wrapper
+                  .icon-and-text--icon
+                    = render "application/icon_circled_bang"
+                  .icon-and-text--text
+                    = t ".totp.disabled_without_fallback_html"
             - else
-              p== t ".totp.confirm_disable.no_2fa_warning_html"
-            p= t ".totp.confirm_disable.final_confirmation"
-          .col-medium-center
-            .md-confirm-buttons
-              = link_to t(".totp.confirm_disable.deny"), "#", class: "js-deny btn btn-outline-secondary"
-              = link_to t(".totp.confirm_disable.confirm"), "#", class: "js-confirm btn btn-outline-secondary"
+              p.two-factor-method-disabled
+                == "&bull; "
+                = t ".totp.disabled"
+        .col-two-factor--action
+          - if totp_enabled?(current_publisher)
+            p= link_to \
+                t(".totp.destroy"),
+                totp_registration_path(current_publisher.totp_registration),
+                method: :delete,
+                class: "btn btn-block btn-outline-secondary",
+                data: { "js-confirm-with-modal": "disable-totp-prompt" }
+            script#disable-totp-prompt type="text/html"
+              .col-medium-center
+                h4= t ".totp.confirm_disable.header"
+                p
+                  = t ".totp.confirm_disable.intro"
+                  - if current_publisher.u2f_registrations.any?
+                    - current_publisher.u2f_registrations.each do |u2f_registration|
+                      br
+                      strong
+                        | Security key
+                        = " \"#{u2f_registration.name.presence || t(".totp.name_default")}\""
+                      = " (registered #{l(u2f_registration.created_at.to_date, format: :short)})"
+                  - else
+                    br
+                    strong.error = t(".totp.confirm_disable.none")
+                - if current_publisher.u2f_registrations.any?
+                  p= t ".totp.confirm_disable.no_totp_warning"
+                - else
+                  p== t ".totp.confirm_disable.no_2fa_warning_html"
+                p= t ".totp.confirm_disable.final_confirmation"
+              .col-medium-center
+                .md-confirm-buttons
+                  = link_to t(".totp.confirm_disable.deny"), "#", class: "js-deny btn btn-outline-secondary"
+                  = link_to t(".totp.confirm_disable.confirm"), "#", class: "js-confirm btn btn-outline-secondary"
 
-      - else
-        p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
-      p.icon= render "smartphone_with_code"
+          - else
+            p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
+          p.icon= render "smartphone_with_code"
 
-    / FIXME: U2F is dark launched, and you need to specify params[:u2f]
-    / We will enable it when Brave is ready. See issue #442
-    - if @u2f_registrations.any? || params[:u2f].present?
-      .col-two-factor--content
-        h5= t ".u2f.heading"
-        p
-          = t ".u2f.intro"
-          br
-          small
-            = "*#{t ".u2f.intro_warning"} "
-            span.tf-tooltip
-              span.icon= render "icon_help"
-              span.tf-tooltip-content
-                span.tf-tooltip-content-heading= t ".u2f.browser.heading"
-                span.tf-tooltip-content-content== t ".u2f.browser.content_html"
-          br
-          small
-            = "*#{t ".u2f.device.tooltip"} "
-            span.tf-tooltip
-              span.icon= render "icon_help"
-              span.tf-tooltip-content
-                span.tf-tooltip-content-heading= t ".u2f.device.heading"
-                span.tf-tooltip-content-content== t ".u2f.device.content_html"
-        - if @u2f_registrations.any?
-          p= render @u2f_registrations
-        - else
-          p.two-factor-method-disabled
-            == "&bull; "
-            = t ".u2f.disabled"
-      .col-two-factor--action
-        p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
-        p.icon= render "usb"
+        / FIXME: U2F is dark launched, and you need to specify params[:u2f]
+        / We will enable it when Brave is ready. See issue #442
+        - if @u2f_registrations.any? || params[:u2f].present?
+          .col-two-factor--content
+            h5= t ".u2f.heading"
+            p
+              = t ".u2f.intro"
+              br
+              small
+                = "*#{t ".u2f.intro_warning"} "
+                span.tf-tooltip
+                  span.icon= render "icon_help"
+                  span.tf-tooltip-content
+                    span.tf-tooltip-content-heading= t ".u2f.browser.heading"
+                    span.tf-tooltip-content-content== t ".u2f.browser.content_html"
+              br
+              small
+                = "*#{t ".u2f.device.tooltip"} "
+                span.tf-tooltip
+                  span.icon= render "icon_help"
+                  span.tf-tooltip-content
+                    span.tf-tooltip-content-heading= t ".u2f.device.heading"
+                    span.tf-tooltip-content-content== t ".u2f.device.content_html"
+            - if @u2f_registrations.any?
+              p= render @u2f_registrations
+            - else
+              p.two-factor-method-disabled
+                == "&bull; "
+                = t ".u2f.disabled"
+          .col-two-factor--action
+            p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
+            p.icon= render "usb"

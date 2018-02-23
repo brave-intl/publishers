@@ -55,8 +55,9 @@
 
 
   .single-panel--content
-    - if @u2f_authentication_attempt
-      = render partial: "u2f", locals: @u2f_authentication_attempt
+    .single-panel--padded-content
+      - if @u2f_authentication_attempt
+        = render partial: "u2f", locals: @u2f_authentication_attempt
 
-    - elsif @totp_enabled
-      = render "totp"
+      - elsif @totp_enabled
+        = render "totp"

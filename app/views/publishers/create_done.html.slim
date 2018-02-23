@@ -1,13 +1,10 @@
-- content_for(:head_style_tags) do
-  = stylesheet_link_tag("application", media: "all")
-
 .single-panel--wrapper.single-panel--wrapper--large
   = render "panel_flash_messages"
   .single-panel--content.single-panel--content--email-sent
+    .single-panel--padded-content
+      h3.single-panel--headline= t ".heading"
 
-    h3.single-panel--headline= t ".heading"
+      .col-small-centered
+        = t ".body_html", email: @publisher_email, try_again_link: link_to(t(".try_again"), "#", onclick: "document.getElementById('resend_email_form').submit();")
 
-    .col-small-centered
-      = t ".body_html", email: @publisher_email, try_again_link: link_to(t(".try_again"), "#", onclick: "document.getElementById('resend_email_form').submit();")
-
-      = form_tag resend_email_verify_email_publishers_path, method: "post", class: "hidden", id: "resend_email_form"
+        = form_tag resend_email_verify_email_publishers_path, method: "post", class: "hidden", id: "resend_email_form"

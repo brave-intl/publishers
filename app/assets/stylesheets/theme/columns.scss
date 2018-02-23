@@ -1,23 +1,15 @@
 .col-small-centered {
   @include make-col-ready();
-  @include media-breakpoint-up(sm) {
-    @include make-col(10);
-    @include make-col-offset(1);
-  }
-  @include media-breakpoint-up(md) {
-    @include make-col(9);
-    @include make-col-offset(1.5);
-  }
-  @include media-breakpoint-up(lg) {
-    @include make-col(8);
-    @include make-col-offset(2);
+  @include make-col(8);
+  margin: 0 auto; 
+  @include media-breakpoint-down(xs) {
+    @include make-col(12);
+    max-width: $spacer*19;
   }
   padding-left: 0;
   padding-right: 0;
   &--with-right-background {
-    @include make-col(12);
-    @include make-col-offset(0);
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up(md) {
       @include make-col(6);
       @include make-col-offset(2);
     }
@@ -26,9 +18,10 @@
 
 .col-medium-centered {
   @include make-col-ready();
-  @include media-breakpoint-up(sm) {
-    @include make-col(10);
-    @include make-col-offset(1);
+  @include make-col(10);
+  margin: 0 auto;
+  @include media-breakpoint-down(xs) {
+    @include make-col(12);
   }
   padding-left: 0;
   padding-right: 0;
@@ -72,22 +65,17 @@
 .col-two-factor {
   &--content {
     @include make-col-ready();
+    text-align: left;
+
     @include media-breakpoint-up(md) {
       @include make-col(9);
+      margin-bottom: $spacer*2;
     }
-    @include media-breakpoint-up(lg) {
-      @include make-col(8);
-      @include make-col-offset(1);
-    }
-    text-align: left;
   }
   &--action {
     @include make-col-ready();
     @include media-breakpoint-up(md) {
       @include make-col(3);
-    }
-    @include media-breakpoint-up(lg) {
-      @include make-col(2);
     }
 
     p.icon {

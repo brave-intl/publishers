@@ -1,18 +1,18 @@
-- content_for(:content) do
-  / ToDo: DRY this up
-  -if @hide_nav
-    .main-content.sans-nav
-      #content.container
-        = yield
-  -else
-    .main-content
-      #content.container
+- %w(new_auth_token create_auth_token sign_up create_done email_verified change_email change_email_confirm expired_auth_token).include?(action_name).tap do |is_bootstrap4|
+
+  - if is_bootstrap4
+    - content_for(:head_style_tags) do
+      = stylesheet_link_tag("application", media: "all")
+
+  - content_for(:content) do
+    .main-content class="#{@hide_nav ? 'sans-nav' : '' }"
+      div id="#{is_bootstrap4 ? '' : 'content'}" class="#{is_bootstrap4 ? 'panels-container' : 'container' }"
         = yield
 
-// viewport_initial_scale here is a whitelist of actions that have true
-// responsiveness, and no longer need to 0.6 viewport scaling.
-= render \
-  template: "layouts/application",
-  locals: { \
-    viewport_initial_scale: (%w(new_auth_token create_auth_token sign_up create_done email_verified).include?(action_name) && "1.0") \
-  }
+  // viewport_initial_scale here is a whitelist of actions that have true
+  // responsiveness, and no longer need to 0.6 viewport scaling.
+  = render \
+    template: "layouts/application",
+    locals: { \
+      viewport_initial_scale: (is_bootstrap4 && "1.0") \
+    }
