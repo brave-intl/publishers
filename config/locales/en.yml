@@ -238,13 +238,15 @@ en:
         <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Payments.
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
-      site_operator:
-        heading: SITE OPERATOR
-        description: I have my own site and have access to the domain directory.
-      individual_creator:
-        heading: INDIVIDUAL CREATOR
-        description_html: I use other platforms to publish my content (currently <strong>YouTube</strong> only).
-        note: You will need to authenticate with Google to demonstrate that you own the channel.
+      website:
+        heading: WEBSITE
+        description: I have my own website and have access to the domain directory.
+      youtube:
+        heading: YOUTUBE CHANNEL
+        description: I own or manage a YouTube channel.
+      twitch:
+        heading: TWITCH CHANNEL
+        description: I'm the primary owner of a twitch channel.
     contact_info:
       heading: Contact Information
     create:
