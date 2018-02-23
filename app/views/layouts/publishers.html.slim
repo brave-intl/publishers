@@ -1,4 +1,4 @@
-- %w(new_auth_token create_auth_token sign_up create_done email_verified change_email change_email_confirm expired_auth_token).include?(action_name).tap do |is_bootstrap4|
+- %w(create new_auth_token create_auth_token sign_up create_done email_verified change_email change_email_confirm expired_auth_token).include?(action_name).tap do |is_bootstrap4|
 
   - if is_bootstrap4
     - content_for(:head_style_tags) do
