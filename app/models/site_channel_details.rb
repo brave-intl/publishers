@@ -20,7 +20,6 @@ class SiteChannelDetails < ApplicationRecord
 
   scope :recent_unverified_site_channels, -> (max_age: 6.weeks) {
     joins(:channel)
-        .select(:brave_publisher_id).distinct
         .where.not(brave_publisher_id: SiteChannelDetails.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true))
         .where("channels.created_at": max_age.ago..Time.now)
   }
