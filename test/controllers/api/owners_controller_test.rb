@@ -43,6 +43,13 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 422, response.status
   end
 
+  test "POST api/owners failts to create owner with existing email" do
+    existing_email = publishers(:default).email
+
+    post api_owners_url, params: { email: existing_email}
+    assert_equal 422, response.status
+  end
+
   test "POST api/owners creates owner successfully" do
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
