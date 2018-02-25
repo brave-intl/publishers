@@ -34,4 +34,19 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
     response_json = JSON.parse(response.body)
     assert_equal 4, response_json.length
   end
+
+  test "POST api/owners fails to create owner without email" do
+    post api_owners_url, params: { email: ''}
+
+    assert_equal 422, response.status
+  end
+
+  test "POST api/owners creates owner successfully" do
+    post api_owners_url, params: { email: 'test@example.com'}
+
+    assert_equal 201, response.status
+    response_json = JSON.parse(response.body)
+    p response_json
+    assert_equal response['email'], 'test@example.com'
+  end
 end
