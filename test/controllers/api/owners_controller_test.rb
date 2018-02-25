@@ -1,6 +1,8 @@
 require "test_helper"
 
 class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
+  include ActionMailer::TestHelper
+
   test "can get owners with verifier channel identifiers as json" do
     owner = publishers(:verified)
 
@@ -42,11 +44,15 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "POST api/owners creates owner successfully" do
-    post api_owners_url, params: { email: 'test@example.com'}
+    assert_difference("Publisher.count") do
+      # Confirm email + Admin notification
+      assert_enqueued_emails(2) do
+        post api_owners_url, params: { email: 'fly@example.com'}
+      end
+    end
 
     assert_equal 201, response.status
-    response_json = JSON.parse(response.body)
-    p response_json
-    assert_equal response['email'], 'test@example.com'
+    publisher = Publisher.order(created_at: :asc).last
+    assert_equal publisher.pending_email, 'fly@example.com'
   end
 end
