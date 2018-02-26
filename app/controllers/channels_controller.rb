@@ -2,7 +2,8 @@ class ChannelsController < ApplicationController
   include ChannelsHelper
 
   before_action :authenticate_publisher!
-  before_action :setup_current_channel
+  before_action :setup_current_channel,
+                except: %i(cancel_add)
   attr_reader :current_channel
 
   def destroy
@@ -34,6 +35,14 @@ class ChannelsController < ApplicationController
         end
       }
     end
+  end
+
+  def cancel_add
+    channel = current_publisher.channels.find(params[:id])
+    if channel && !channel.verified?
+      channel.destroy
+    end
+    redirect_to(home_publishers_path)
   end
 
   private

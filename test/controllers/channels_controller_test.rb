@@ -50,4 +50,30 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "cancel_add removes an unverified channel and redirects to the dashboard" do
+    publisher = publishers(:default)
+    channel = channels(:new_site)
+    sign_in publisher
+
+    assert_difference("publisher.channels.count", -1) do
+      assert_difference("SiteChannelDetails.count", -1) do
+        get cancel_add_channel_path(channel)
+        assert_redirected_to '/publishers/home'
+      end
+    end
+  end
+
+  test "cancel_add will not remove an already verified channel" do
+    publisher = publishers(:verified)
+    channel = channels(:verified)
+    sign_in publisher
+
+    assert_difference("publisher.channels.count", 0) do
+      assert_difference("SiteChannelDetails.count", 0) do
+        get cancel_add_channel_path(channel)
+        assert_redirected_to '/publishers/home'
+      end
+    end
+  end
 end

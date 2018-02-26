@@ -2,7 +2,12 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
   .container-fluid
     .menu-container
       .nav.pull-right
-        = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
+        - if @current_channel && @current_channel.id
+          = link_to(t("shared.cancel"),
+                  cancel_add_channel_path(@current_channel),
+                  class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
+        - else
+          = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
 
       .nav.pull-left
         / = link_to(root_path) do
