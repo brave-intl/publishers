@@ -133,7 +133,12 @@ script id="choose-channel-type" type="text/html"
 
 .row id="add_channel_placeholder" class=(current_publisher.channels.visible.empty? ? '' : 'hidden')
   .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
-    = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'channel-placeholder')
+    = link_to( \
+      "+ #{t "shared.add_channel"}", \
+      choose_new_channel_type_publishers_path, \
+      data: { "js-confirm-with-modal": "choose-channel-type" }, \
+      class: 'channel-placeholder' \
+    )
 
 - current_publisher.channels.visible.each do |channel|
   .row.channel-row id=("channel_row_#{channel.id}")
