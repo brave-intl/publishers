@@ -599,7 +599,7 @@ body[data-controller="publishers"]
           max-height: 0
           overflow: hidden
       .channel-panel
-        padding: 24px 40px
+        padding: 18px 40px 20px
         .channel-thumbnail
           margin-right: 15px
           img
@@ -608,41 +608,59 @@ body[data-controller="publishers"]
             border-radius: 20px
         .channel-summary
           margin-right: 20px
+          width: 100%
           h3
+            font-weight: bolder
             font-size: 20px
             margin: 0
+            text-overflow: ellipsis
+            overflow: hidden
+            white-space: nowrap
         &.channel-unverified
           background-color: rgba(255,255,255,0.6)
-          .channel-thumbnail
-            padding: 7px 0
           .channel-summary
-            padding: 14px 0
+            padding: 9px 0
           .channel-progress
-            padding: 13px 0
+            padding: 8px 0
             .one-more-step
               font-size: 14px
               padding: 3px 0 3px 115px
               background: url(asset-path("channel-progress.png")) no-repeat center left
           .channel-status
-            padding: 7px 0
+            padding: 2px 0
           .remove-channel
             display: inline-block
-            margin: 14px 20px
+            margin: 9px 20px
             color: rgb(255, 63, 63)
 
         &.channel-verified
           .channel-summary
-            padding-right: 20px
+            padding-right: 120px
             .channel-details
-              margin-top: 8px
-              font-size: 12px
+              margin-top: 6px
+              font-size: 14px
               color: $gray
               .added-date, .separator, .remove-channel
                 display: inline-block
                 margin-right: 12px
           .channel-status
-            background: url(asset-path("icn-verified.png")) no-repeat center left
-            padding: 12px 0 12px 38px
+            background: url(asset-path("icn-verified.png")) no-repeat top left
+            padding: 3px 0 12px 38px
+            margin-top: -4px
+
+
+        &--intro
+          margin-bottom: 7px
+          font-size: 12px
+        &--intro-icon
+          float: left
+          margin-right: 7px
+        &--intro-body
+          line-height: 1.8
+
+        &.channel-unverified
+          .channel-panel--intro
+            margin-bottom: 3px
 
       #default_currency_code
         font-weight: 600

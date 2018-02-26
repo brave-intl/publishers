@@ -94,7 +94,9 @@ en:
       balance_pending_approximate: Approximately %{amount} %{code}
       channel_type:
         youtube: YouTube channel
-        website: Web site
+        website: Website
+        twitch: Twitch channel
+        unknown: Channel
       create_uphold_wallet: Create Uphold Wallet
       not_verified: Unverified
       reconnect_to_uphold: Reconnect to Uphold
