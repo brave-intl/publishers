@@ -92,4 +92,22 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     find('[data-test-modal-container]').click_link("Remove Channel")
     refute_content page, channel.publication_title
   end
+
+  test "website channel type can be chosen" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    # Turn off promo
+    visit home_publishers_path
+
+    click_link('+ Add Channel')
+
+    assert_content page, 'Add Channel'
+    assert_content page, 'WEBSITE'
+    assert_content page, 'YOUTUBE CHANNEL'
+
+    find('[data-test-choose-channel-website]').click
+
+    assert_current_path(new_site_channel_path)
+  end
 end

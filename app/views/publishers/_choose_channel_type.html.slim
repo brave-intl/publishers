@@ -1,0 +1,31 @@
+= link_to( \
+  new_site_channel_path, \
+  class: 'card block-link--card', \
+  data: { "test-choose-channel-website": 1} \
+) do
+  .card-body
+    .icon-and-text--wrapper
+      .icon-and-text--icon
+        = image_tag "choose-channel/choose-channel--site.jpg", height: 72, width: 88, class: "choose-channel--icon"
+      .icon-and-text--text
+        h6= t "publishers.choose_new_channel_type.website.heading"
+        = t "publishers.choose_new_channel_type.website.description"
+
+= link_to(publisher_register_youtube_channel_omniauth_authorize_path, class: 'card block-link--card') do
+  .card-body
+    .icon-and-text--wrapper
+      .icon-and-text--icon
+        = image_tag "choose-channel/choose-channel--youtube.jpg", height: 72, width: 88, class: "choose-channel--icon"
+      .icon-and-text--text
+        h6= t "publishers.choose_new_channel_type.youtube.heading"
+        = t "publishers.choose_new_channel_type.youtube.description"
+
+- if params[:twitch]
+  = link_to(publisher_register_twitch_channel_omniauth_authorize_path, class: 'card block-link--card') do
+    .card-body
+      .icon-and-text--wrapper
+        .icon-and-text--icon
+          = image_tag "choose-channel/choose-channel--twitch.jpg", height: 72, width: 88, class: "choose-channel--icon"
+        .icon-and-text--text
+          h6= t "publishers.choose_new_channel_type.twitch.heading"
+          = t "publishers.choose_new_channel_type.twitch.description"

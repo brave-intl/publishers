@@ -35,15 +35,15 @@ module Publishers
       @current_channel = Channel.new(publisher: current_publisher, verified: true)
 
       youtube_details_attrs = {
-          youtube_channel_id: youtube_channel_data['id'],
-          title: youtube_channel_data.dig('snippet', 'title'),
-          description: youtube_channel_data.dig('snippet', 'description'),
-          thumbnail_url: youtube_channel_data.dig('snippet', 'thumbnails', 'default', 'url'),
-          subscriber_count: youtube_channel_data.dig('statistics', 'subscriberCount'),
-          auth_provider: oauth_response.provider,
-          auth_user_id: oauth_response.uid,
-          auth_name: oauth_response.dig('info', 'name'),
-          auth_email: oauth_response.dig('info', 'email')
+        youtube_channel_id: youtube_channel_data['id'],
+        title: youtube_channel_data.dig('snippet', 'title'),
+        description: youtube_channel_data.dig('snippet', 'description'),
+        thumbnail_url: youtube_channel_data.dig('snippet', 'thumbnails', 'default', 'url'),
+        subscriber_count: youtube_channel_data.dig('statistics', 'subscriberCount'),
+        auth_provider: oauth_response.provider,
+        auth_user_id: oauth_response.uid,
+        auth_name: oauth_response.dig('info', 'name'),
+        auth_email: oauth_response.dig('info', 'email')
       }
 
       @current_channel.details = YoutubeChannelDetails.new(youtube_details_attrs)
@@ -83,13 +83,13 @@ module Publishers
       @current_channel = Channel.new(publisher: current_publisher, verified: true)
 
       twitch_details_attrs = {
-          twitch_channel_id: uid,
-          thumbnail_url: twitch_info.image,
-          auth_provider: twitch_auth_hash[:provider],
-          auth_user_id: uid,
-          display_name: twitch_info.name,
-          name: twitch_info.nickname,
-          email: twitch_info.email
+        twitch_channel_id: uid,
+        thumbnail_url: twitch_info.image,
+        auth_provider: twitch_auth_hash[:provider],
+        auth_user_id: uid,
+        display_name: twitch_info.name,
+        name: twitch_info.nickname,
+        email: twitch_info.email
       }
 
       @current_channel.details = TwitchChannelDetails.new(twitch_details_attrs)

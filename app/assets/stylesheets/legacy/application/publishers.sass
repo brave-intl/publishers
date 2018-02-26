@@ -827,3 +827,73 @@ body[data-controller="publishers"]
         float: left !important
       .choice-panel-right
         float: right !important
+
+
+.md-container--modal-identifier--choose-channel-type
+  max-width: 685px
+  & > div
+    width: 100%
+    background-image: url(asset-path("choose-channel/header.jpg"))
+    background-repeat: no-repeat
+    background-size: 685px
+    background-position: top center
+    background-color: #EFF2F5
+    padding-bottom: 0
+
+  .card
+    display: block 
+    border-radius: 4px
+    background: white
+    border: 1px solid white
+
+    &:hover
+      border: 1px solid #DBDFE3
+      box-shadow: 0 0 22px 0 rgba(34, 35, 38, 0.12)
+
+  .block-link--card
+    margin-bottom: 24px
+    color: inherit
+    text-decoration: inherit
+
+    &:hover
+      color: inherit
+      text-decoration: inherit
+
+  .card-body
+    padding: 24px 64px
+    h6
+      color: #7D7BDC
+      font-weight: bold
+      font-size: 18px
+
+  .icon-and-text
+    &--wrapper
+      display: flex
+      justify-content: flex-start
+      flex-direction: row
+      flex-wrap: nowrap
+    &--icon
+      flex: 0 0 0
+      align-self: center
+      margin: 0 14px 0 6px
+      line-height: 0
+      @media (max-width: $screen-xs-max)
+        display: none
+    &--text
+      text-align: left
+      flex: 1 1 100%
+      margin: auto 0
+
+  .choose-channel
+    &--icon
+      margin-right: 24px
+    &--header-box
+      height: 130px
+      h3
+        color: white
+        margin-bottom: 0
+      p
+        color: #BCC0F6
+        font-weight: bolder
+    &--body-box
+      padding: 16px
