@@ -16,7 +16,7 @@
   - n = 0
   - @promo_enabled_channels.each do |channel|
     .promo--referral-link-container-container class="promo--referral-link-container-container-#{n%2}"
-      .promo--item-label.promo--item-label-link-name = channel.details_type == "YoutubeChannelDetails" ? "#{channel.publication_title.upcase} #{t("promo.shared.on_youtube")}" : "#{channel.publication_title.upcase}"
+      .promo--item-label.promo--item-label-link-name = on_channel_type(channel)
       .promo--referral-link-container
         span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = human_referral_url(channel.promo_registration.referral_code)
         button.copy-button.promo--copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")
