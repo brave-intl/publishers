@@ -58,4 +58,17 @@ module PromosHelper
   def base_human_referral_url
     Rails.application.secrets[:base_referral_url].to_s + "/"
   end
+
+  def on_channel_type(channel)
+    case channel.details_type
+    when "YoutubeChannelDetails"
+      "#{channel.publication_title.upcase} #{t("promo.shared.on_youtube")}"
+    when "TwitchChannelDetails"
+      "#{channel.publication_title.upcase} #{t("promo.shared.on_twitch")}"
+    when "SiteChannelDetails"
+      "#{channel.publication_title.upcase}"
+    else
+      raise
+    end
+  end
 end
