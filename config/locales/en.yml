@@ -89,6 +89,9 @@ en:
       body: Oops, sorry about that. You can try to refresh the page or return to
       contact: "For assistance please contact us at: %{support_email}"
   helpers:
+    channels:
+      generic_verification_failure: Channel could not be verified!
+      verification_in_progress: Verification in progress
     publisher:
       balance_error: Unavailable
       balance_pending_approximate: Approximately %{amount} %{code}
@@ -522,6 +525,8 @@ en:
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.
+    verify:
+      alert: Site added. Verification in progress...
   static:
     index:
       welcome: Welcome to

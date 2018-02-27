@@ -56,6 +56,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
       verifier.perform
       c.reload
       refute c.verified?
+      assert c.verification_failed?
 
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = true

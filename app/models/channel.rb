@@ -19,6 +19,8 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
+  validates :verification_status, inclusion: { in: %w(started failed) }, allow_nil: true
+
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
 
   scope :site_channels, -> { joins(:site_channel_details) }
@@ -85,6 +87,26 @@ class Channel < ApplicationRecord
       end
     end
     false
+  end
+
+  def verification_started!
+    update!(verified: false, verification_status: 'started', verification_details: nil)
+  end
+
+  def verification_failed!(details = nil)
+    update!(verified: false, verification_status: 'failed', verification_details: details)
+  end
+
+  def verification_succeeded!
+    update!(verified: true, verification_status: nil, verification_details: nil)
+  end
+
+  def verification_started?
+    self.verification_status == 'started'
+  end
+
+  def verification_failed?
+    self.verification_status == 'failed'
   end
 
   private

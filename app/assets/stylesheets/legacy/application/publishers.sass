@@ -607,6 +607,7 @@ body[data-controller="publishers"]
             width: 40px
             border-radius: 20px
         .channel-summary
+          padding-right: 120px
           margin-right: 20px
           width: 100%
           h3
@@ -616,33 +617,34 @@ body[data-controller="publishers"]
             text-overflow: ellipsis
             overflow: hidden
             white-space: nowrap
-        &.channel-unverified
+          .channel-details
+            margin-top: 6px
+            font-size: 14px
+            color: $gray
+            .added-date, .separator, .remove-channel
+              display: inline-block
+              margin-right: 12px
+
+        &.channel-incomplete, &.channel-started, &.channel-failed
           background-color: rgba(255,255,255,0.6)
-          .channel-summary
-            padding: 9px 0
+
+        &.channel-incomplete
           .channel-progress
             padding: 8px 0
             .one-more-step
               font-size: 14px
               padding: 3px 0 3px 115px
+              margin-right: 10px
               background: url(asset-path("channel-progress.png")) no-repeat center left
+
+        &.channel-failed
           .channel-status
-            padding: 2px 0
-          .remove-channel
-            display: inline-block
-            margin: 9px 20px
-            color: rgb(255, 63, 63)
+            background: url(asset-path("unverified-icon.png")) no-repeat top left / 23px 28px
+            padding: 3px 0 12px 38px
+            margin-top: -4px
+            font-weight: bold
 
         &.channel-verified
-          .channel-summary
-            padding-right: 120px
-            .channel-details
-              margin-top: 6px
-              font-size: 14px
-              color: $gray
-              .added-date, .separator, .remove-channel
-                display: inline-block
-                margin-right: 12px
           .channel-status
             background: url(asset-path("icn-verified.png")) no-repeat top left
             padding: 3px 0 12px 38px
