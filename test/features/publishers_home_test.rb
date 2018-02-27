@@ -73,7 +73,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     visit home_publishers_path
 
     assert_content page, channel.publication_title
-    click_link('Remove')
+    find("#channel_row_#{channel.id}").click_link('Remove Channel')
     assert_content page, "Are you sure you want to remove this channel?"
     find('[data-test-modal-container]').click_link("Remove Channel")
     refute_content page, channel.publication_title
@@ -87,7 +87,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     visit home_publishers_path
 
     assert_content page, channel.publication_title
-    click_link('Remove Channel')
+    find("#channel_row_#{channel.id}").click_link('Remove Channel')
     assert_content page, "Are you sure you want to remove this channel?"
     find('[data-test-modal-container]').click_link("Remove Channel")
     refute_content page, channel.publication_title
