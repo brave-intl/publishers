@@ -36,7 +36,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "should create a VerifySiteChannel job to verify and render verification_background page" do
+  test "verify should start channel verification and redirect to dashboard" do
     prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
       Rails.application.secrets[:host_inspector_offline] = true
@@ -46,11 +46,16 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
       sign_in publishers(:global_media_group)
 
+      refute channel.verification_started?
+
       assert_enqueued_with(job: VerifySiteChannel) do
         patch(verify_site_channel_path(channel.id))
       end
 
-      assert_template :verification_background
+      channel.reload
+      assert channel.verification_started?
+
+      assert_redirected_to home_publishers_path
     ensure
       Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end

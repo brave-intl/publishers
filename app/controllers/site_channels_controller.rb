@@ -94,10 +94,11 @@ class SiteChannelsController < ApplicationController
     redirect_to(site_last_verification_method_path(@channel), alert: t(".alert"))
   end
 
-  # TODO: Rate limit
   def verify
     VerifySiteChannel.perform_later(channel_id: current_channel.id)
-    render(:verification_background)
+    current_channel.verification_started!
+
+    redirect_to(home_publishers_path)
   end
 
   private
