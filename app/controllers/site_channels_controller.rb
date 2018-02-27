@@ -98,7 +98,7 @@ class SiteChannelsController < ApplicationController
     VerifySiteChannel.perform_later(channel_id: current_channel.id)
     current_channel.verification_started!
 
-    redirect_to(home_publishers_path)
+    redirect_to(home_publishers_path, alert: t(".alert"))
   end
 
   private

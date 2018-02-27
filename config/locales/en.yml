@@ -525,6 +525,8 @@ en:
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.
+    verify:
+      alert: Site added. Verification in progress...
   static:
     index:
       welcome: Welcome to
