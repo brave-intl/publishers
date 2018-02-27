@@ -145,7 +145,7 @@ class PublishersController < ApplicationController
       end
     end
 
-    render :change_email
+    redirect_to :change_email_publishers, alert: t("publishers.change_email.login_email_taken")
   end
 
   def update

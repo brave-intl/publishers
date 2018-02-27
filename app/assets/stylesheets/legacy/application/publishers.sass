@@ -599,7 +599,7 @@ body[data-controller="publishers"]
           max-height: 0
           overflow: hidden
       .channel-panel
-        padding: 24px 40px
+        padding: 18px 40px 20px
         .channel-thumbnail
           margin-right: 15px
           img
@@ -608,41 +608,59 @@ body[data-controller="publishers"]
             border-radius: 20px
         .channel-summary
           margin-right: 20px
+          width: 100%
           h3
+            font-weight: bolder
             font-size: 20px
             margin: 0
+            text-overflow: ellipsis
+            overflow: hidden
+            white-space: nowrap
         &.channel-unverified
           background-color: rgba(255,255,255,0.6)
-          .channel-thumbnail
-            padding: 7px 0
           .channel-summary
-            padding: 14px 0
+            padding: 9px 0
           .channel-progress
-            padding: 13px 0
+            padding: 8px 0
             .one-more-step
               font-size: 14px
               padding: 3px 0 3px 115px
               background: url(asset-path("channel-progress.png")) no-repeat center left
           .channel-status
-            padding: 7px 0
+            padding: 2px 0
           .remove-channel
             display: inline-block
-            margin: 14px 20px
+            margin: 9px 20px
             color: rgb(255, 63, 63)
 
         &.channel-verified
           .channel-summary
-            padding-right: 20px
+            padding-right: 120px
             .channel-details
-              margin-top: 8px
-              font-size: 12px
+              margin-top: 6px
+              font-size: 14px
               color: $gray
               .added-date, .separator, .remove-channel
                 display: inline-block
                 margin-right: 12px
           .channel-status
-            background: url(asset-path("icn-verified.png")) no-repeat center left
-            padding: 12px 0 12px 38px
+            background: url(asset-path("icn-verified.png")) no-repeat top left
+            padding: 3px 0 12px 38px
+            margin-top: -4px
+
+
+        &--intro
+          margin-bottom: 7px
+          font-size: 12px
+        &--intro-icon
+          float: left
+          margin-right: 7px
+        &--intro-body
+          line-height: 1.8
+
+        &.channel-unverified
+          .channel-panel--intro
+            margin-bottom: 3px
 
       #default_currency_code
         font-weight: 600
@@ -827,3 +845,73 @@ body[data-controller="publishers"]
         float: left !important
       .choice-panel-right
         float: right !important
+
+
+.md-container--modal-identifier--choose-channel-type
+  max-width: 685px
+  & > div
+    width: 100%
+    background-image: url(asset-path("choose-channel/header.jpg"))
+    background-repeat: no-repeat
+    background-size: 685px
+    background-position: top center
+    background-color: #EFF2F5
+    padding-bottom: 0
+
+  .card
+    display: block 
+    border-radius: 4px
+    background: white
+    border: 1px solid white
+
+    &:hover
+      border: 1px solid #DBDFE3
+      box-shadow: 0 0 22px 0 rgba(34, 35, 38, 0.12)
+
+  .block-link--card
+    margin-bottom: 24px
+    color: inherit
+    text-decoration: inherit
+
+    &:hover
+      color: inherit
+      text-decoration: inherit
+
+  .card-body
+    padding: 24px 64px
+    h6
+      color: #7D7BDC
+      font-weight: bold
+      font-size: 18px
+
+  .icon-and-text
+    &--wrapper
+      display: flex
+      justify-content: flex-start
+      flex-direction: row
+      flex-wrap: nowrap
+    &--icon
+      flex: 0 0 0
+      align-self: center
+      margin: 0 14px 0 6px
+      line-height: 0
+      @media (max-width: $screen-xs-max)
+        display: none
+    &--text
+      text-align: left
+      flex: 1 1 100%
+      margin: auto 0
+
+  .choose-channel
+    &--icon
+      margin-right: 24px
+    &--header-box
+      height: 130px
+      h3
+        color: white
+        margin-bottom: 0
+      p
+        color: #BCC0F6
+        font-weight: bolder
+    &--body-box
+      padding: 16px

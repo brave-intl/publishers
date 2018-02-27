@@ -27,6 +27,9 @@ class Publisher < ApplicationRecord
   validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
   validates :email, uniqueness: {case_sensitive: false}, allow_nil: true
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
+  validate :pending_email_must_be_a_change
+  validate :pending_email_can_not_be_in_use
+
   # validates :name, presence: true, if: -> { brave_publisher_id.present? }
   validates :phone_normalized, phony_plausible: true
 
@@ -209,6 +212,18 @@ class Publisher < ApplicationRecord
     channel = Channel.new
     channel.publisher = self
     true
+  end
+
+  def pending_email_must_be_a_change
+    if pending_email == email
+      errors.add(:pending_email, "is not a change")
+    end
+  end
+
+  def pending_email_can_not_be_in_use
+    if pending_email && self.class.where(email: pending_email).count > 0
+      errors.add(:pending_email, "is taken")
+    end
   end
 
   class << self

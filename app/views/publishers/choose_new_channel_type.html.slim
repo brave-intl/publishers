@@ -1,29 +1,15 @@
-- @hide_nav=true
+= content_for :nav do
+  nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
+    .container-fluid
+      .menu-container
+        .nav.pull-right.float-right
+          = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-outline-primary')
 
-= link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
-.publisher-panel.col-center
-  h1.text-center= t "shared.add_channel"
-  h2.col-center.text-center= t ".intro"
+.single-panel--wrapper
+  .single-panel--content
+    .single-panel--padded-content
 
-.publisher-main-panel.publisher-panel.col-center
-  = link_to(new_site_channel_path) do
-    .choice-panel.choice-panel-left
-      .site-operator.select-choice
-        .choice-description
-          h3.text-center= t ".site_operator.heading"
-          p.text-center= t ".site_operator.description"
-  = link_to(publisher_register_youtube_channel_omniauth_authorize_path) do
-    .choice-panel.choice-panel-right
-      .individual-creator.select-choice
-        .choice-description
-          h3.text-center= t ".individual_creator.heading"
-          p.text-center= t ".individual_creator.description_html"
-        p.text-center.note-text= t ".individual_creator.note"
-  - if params[:twitch]
-    = link_to(publisher_register_twitch_channel_omniauth_authorize_path) do
-      .choice-panel.choice-panel-left
-        .individual-creator.select-choice
-          .choice-description
-            h3.text-center= "Twitch"
-            p.text-center= "I use Twitch"
-          p.text-center.note-text= "Gotta auth with Twitch"
+      h3.single-panel--headline= t "shared.add_channel"
+      p= t ".intro"
+
+      = render "choose_channel_type"

@@ -94,7 +94,9 @@ en:
       balance_pending_approximate: Approximately %{amount} %{code}
       channel_type:
         youtube: YouTube channel
-        website: Web site
+        website: Website
+        twitch: Twitch channel
+        unknown: Channel
       create_uphold_wallet: Create Uphold Wallet
       not_verified: Unverified
       reconnect_to_uphold: Reconnect to Uphold
@@ -232,19 +234,22 @@ en:
       login_email: Login Email
       login_email_message: We need your valid email address for account access and recovery purposes.
       login_email_note: "* This will be your login from now on."
+      login_email_taken: "This email address is in use. Please enter a different email address."
     change_email_confirm:
       login_email_changed: Great!
       login_email_verified_html: |
         <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Payments.
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
-      site_operator:
-        heading: SITE OPERATOR
-        description: I have my own site and have access to the domain directory.
-      individual_creator:
-        heading: INDIVIDUAL CREATOR
-        description_html: I use other platforms to publish my content (currently <strong>YouTube</strong> only).
-        note: You will need to authenticate with Google to demonstrate that you own the channel.
+      website:
+        heading: WEBSITE
+        description: I have my own website and have access to the domain directory.
+      youtube:
+        heading: YOUTUBE CHANNEL
+        description: I own or manage a YouTube channel.
+      twitch:
+        heading: TWITCH CHANNEL
+        description: I'm the primary owner of a twitch channel.
     contact_info:
       heading: Contact Information
     create:
@@ -310,6 +315,8 @@ en:
         channel_not_eligable_for_youtube_login: Channel is not able to use Youtube login. Please use your email address.
       require_publisher:
         log_in_and_retry: Please log in to Brave Payments and retry the operation
+      register_twitch_channel:
+        channel_already_registered: This Twitch channel has already been registered.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_email:
@@ -383,6 +390,7 @@ en:
       copy: "Copy"
       brave_payments_tm: "Brave Payments™"
       on_youtube: "on YouTube"
+      on_twitch: "on Twitch"
       tos_1: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period."
       tos_2_html: |
         The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the Brave Publisher Terms Of Service.  See Publisher <strong><a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a></strong> for additional details and restrictions.
