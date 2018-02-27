@@ -71,6 +71,8 @@ class Channel < ApplicationRecord
       return self.details.youtube_channel_id
     when "SiteChannelDetails"
       return self.details.brave_publisher_id
+    when "TwitchChannelDetails"
+      return self.details.name
     else
       nil
     end
