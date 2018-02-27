@@ -103,4 +103,49 @@ class ChannelTest < ActiveSupport::TestCase
 
     assert channel_copy.promo_registration.referral_code
   end
+
+  test "verification_started! updates verification status" do
+    channel = channels(:default)
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+
+    channel.verification_started!
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    assert channel.verification_started?
+  end
+
+  test "verification_failed! updates verification status" do
+    channel = channels(:default)
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+
+    channel.verification_failed!('something happened')
+
+    refute channel.verified?
+    assert channel.verification_failed?
+    refute channel.verification_started?
+    assert_equal 'something happened', channel.verification_details
+  end
+
+  test "verification_succeeded! updates verification status" do
+    channel = channels(:default)
+
+    channel.verification_started!
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    assert channel.verification_started?
+
+    channel.verification_succeeded!
+
+    assert channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+  end
 end
