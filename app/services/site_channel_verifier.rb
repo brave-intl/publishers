@@ -27,9 +27,10 @@ class SiteChannelVerifier < BaseApiClient
     response_hash = JSON.parse(response.body)
     @verified_channel_id = response_hash["verificationId"]
 
-    return false if response_hash["status"] != "success" || verified_channel_id.blank?
-
-    return false unless channel.id == verified_channel_id
+    if response_hash["status"] != "success" || verified_channel_id.blank? || channel.id != verified_channel_id
+      channel.verification_failed!
+      return false
+    end
 
     # Channel should have been verified through a call to PATCH /api/owners/:owner_id/channels/:channel_id/verifications
     # from eyeshade, so we won't update it here, just reload it
@@ -43,10 +44,18 @@ class SiteChannelVerifier < BaseApiClient
   def perform_offline
     Rails.logger.info("SiteChannelVerifier bypassing eyeshade and performing locally.")
     @verified_channel_id = verify_offline_publisher_id
-    return false if verified_channel_id.blank?
+
+    if verified_channel_id.blank?
+      channel.verification_failed!
+      return false
+    end
+
     update_verified_on_channel_offline
 
-    return false unless channel.id == verified_channel_id
+    unless channel.id == verified_channel_id
+      channel.verification_failed!
+      return false
+    end
 
     verified_channel_post_verify
   end
@@ -61,9 +70,9 @@ class SiteChannelVerifier < BaseApiClient
     raise "#{verified_channel_id} missing" if verified_channel_id.blank?
 
     @verified_channel = Channel.find(verified_channel_id)
-    return if @verified_channel.verified
+    return if @verified_channel.verified?
 
-    verified_channel.update_attribute(:verified, true)
+    verified_channel.verification_succeeded!
 
     verified_channel_post_verify
 
