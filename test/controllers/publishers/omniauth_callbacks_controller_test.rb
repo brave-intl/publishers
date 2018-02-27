@@ -291,7 +291,7 @@ module Publishers
       )
     end
 
-    test "a publisher can add a youtube channel" do
+    test "a publisher can add a twitch channel" do
       publisher = publishers(:uphold_connected)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
