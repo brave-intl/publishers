@@ -183,8 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
         pendingContactEmail.innerText = updatedEmail;
         showPendingContactEmail(updatedEmail);
 
-        let currentUserName = document.getElementById('current-user-name');
-        let userNameDropDown = document.getElementById('user-name-dropdown');
+        let currentUserName = document.querySelector('.js-current-user-name');
+        let userNameDropDown = document.querySelector('.js-user-name-dropdown');
         currentUserName.innerText = updateContactName.value;
         userNameDropDown.innerText = updateContactName.value;
 
