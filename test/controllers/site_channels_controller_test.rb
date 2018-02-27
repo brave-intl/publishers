@@ -138,6 +138,35 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "can't create duplicate Site Channel with the same brave_publisher_id" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
+
+      publisher = publishers(:verified)
+
+      sign_in publishers(:verified)
+
+      create_params = {
+          channel: {
+              details_attributes: {
+                brave_publisher_id_unnormalized: "something.org"
+              }
+          }
+      }
+
+      assert_difference("Channel.count") do
+        post site_channels_url, params: create_params
+      end
+
+      assert_no_difference("Channel.count") do
+        post site_channels_url, params: create_params
+      end
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
+  end
+
   # ToDo:
   # test "a site channel's domain can be updated via an ajax patch" do
   #   publisher = publishers(:verified)

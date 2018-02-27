@@ -8,6 +8,8 @@ class SiteChannelDetails < ApplicationRecord
   # formats to support more publishers.
   validates :brave_publisher_id, uniqueness: { if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_id_exists? } }
 
+  validates :same_publisher_brave_publisher_id_unique, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? }
+
   # - normalized and unnormalized domains
   # - normalized domains and domain-related errors
   validates :brave_publisher_id, absence: true, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id_unnormalized.present? }
@@ -81,6 +83,12 @@ class SiteChannelDetails < ApplicationRecord
       self.supports_https = false
       self.detected_web_host = nil
       self.host_connection_verified = false
+    end
+  end
+
+  def same_publisher_brave_publisher_id_unique
+    if self.class.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.publisher_id": channel.publisher_id).any?
+      errors.add(:brave_publisher_id, "must be unique within your account")
     end
   end
 
