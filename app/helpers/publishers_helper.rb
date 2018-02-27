@@ -312,9 +312,12 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       I18n.t("helpers.publisher.channel_type.website")
-
     when YoutubeChannelDetails
       I18n.t("helpers.publisher.channel_type.youtube")
+    when TwitchChannelDetails
+      I18n.t("helpers.publisher.channel_type.twitch")
+    else
+      I18n.t("helpers.publisher.channel_type.unknown")
     end
   end
 
@@ -339,13 +342,23 @@ module PublishersHelper
     end
   end
 
+  def channel_type_icon_url(channel)
+    case channel.details
+    when YoutubeChannelDetails
+      asset_url('publishers-home/youtube-icon_32x32.png')
+    when TwitchChannelDetails
+      asset_url('publishers-home/twitch-icon_32x32.png')
+    else
+      asset_url('publishers-home/website-icon_32x32.png')
+    end
+  end
+
   def channel_thumbnail_url(channel)
     url = case channel.details
-          when SiteChannelDetails
-
           when YoutubeChannelDetails
             channel.details.thumbnail_url
-          else
+          when TwitchChannelDetails
+            channel.details.thumbnail_url
           end
 
     return url || asset_url('default-channel.png')

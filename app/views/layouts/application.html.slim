@@ -34,8 +34,7 @@ html
       - if content_for?(:nav)
         = yield(:nav)
       - else
-        - unless @hide_nav
-          = render("nav")
+        = render("nav")
 
       /
       / ## Using flash messages in Brave Publishers ##

@@ -6,7 +6,15 @@ noscript
 
 - content_for(:navbar_content_right) do
   .title.hidden-sm.hidden-xs= t ".dashboard"
-  = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'btn btn-secondary btn-highlight')
+  = link_to( \
+    "+ #{t "shared.add_channel"}", \
+    choose_new_channel_type_publishers_path, \
+    data: { "js-confirm-with-modal": "choose-channel-type" }, \
+    class: 'btn btn-secondary btn-highlight' \
+  )
+
+script id="choose-channel-type" type="text/html"
+  = render "home_modal__choose_channel_type"
 
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
@@ -125,27 +133,25 @@ noscript
 
 .row id="add_channel_placeholder" class=(current_publisher.channels.visible.empty? ? '' : 'hidden')
   .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
-    = link_to("+ #{t "shared.add_channel"}", choose_new_channel_type_publishers_path, class: 'channel-placeholder')
+    = link_to( \
+      "+ #{t "shared.add_channel"}", \
+      choose_new_channel_type_publishers_path, \
+      data: { "js-confirm-with-modal": "choose-channel-type" }, \
+      class: 'channel-placeholder' \
+    )
 
 - current_publisher.channels.visible.each do |channel|
   .row.channel-row id=("channel_row_#{channel.id}")
     .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
-      div class=("sub-panel channel-panel #{channel.verified? ? 'channel-verified' : 'channel-unverified'}")
+      div class=("sub-panel channel-panel channel-#{channel_verification_status(channel)}")
+        .channel-panel--intro
+          .channel-panel--intro-icon
+            img src=(channel_type_icon_url(channel)) width=16 height=16
+          .channel-panel--intro-body
+            = channel_type(channel).upcase
         .channel-thumbnail.pull-left
           img src=(channel_thumbnail_url(channel))
         - if channel.verified?
-          .channel-summary.pull-left
-            h3= channel.publication_title.truncate(30)
-            .channel-details
-              .added-date
-                = t ".channel.added", date: channel.created_at.to_date.iso8601
-              .separator
-                = '|'
-              a.remove-channel href="#" data-channel-id=(channel.id)
-                = t ".channel.remove_verified"
-              script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-                = render "publishers/remove_channel_modal", channel: channel
-              = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
           - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
             .channel--promo-info-container
               = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
@@ -161,18 +167,26 @@ noscript
           - else
             .channel-status.pull-right
               span= t("publishers.shared.verified")
-        -else
-          .channel-summary.pull-left
-            h3= channel.publication_title
-          .channel-progress.pull-left
-            .one-more-step= t ".channel.one_more_step"
+        - elsif channel.verification_started? || channel.verification_failed?
+          .channel-status.pull-right
+            = channel_verification_details(channel)
+        - else
           .channel-status.pull-right
             = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
-          a.remove-channel.pull-right href="#" data-channel-id=(channel.id)
-            = t "shared.remove"
-          script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-            = render "publishers/remove_channel_modal", channel: channel
-          = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+          .channel-progress.pull-right
+            .one-more-step= t ".channel.one_more_step"
+        .channel-summary
+          h3= channel.publication_title
+          .channel-details
+            .added-date
+              = t ".channel.added", date: channel.created_at.to_date.iso8601
+            .separator
+              = '|'
+            a.remove-channel href="#" data-channel-id=(channel.id)
+              = t ".channel.remove_verified"
+            script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+              = render "publishers/remove_channel_modal", channel: channel
+            = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
         .clearfix
 .row.tos-row
   - if current_publisher.promo_enabled_2018q1

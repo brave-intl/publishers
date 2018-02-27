@@ -5,7 +5,6 @@ class PublisherUnverifiedCalculatorTest < ActiveJob::TestCase
 
     publisher_dave = Publisher.create!(
       name: "Dave",
-      pending_email: "dave@brave.com",
       email: "dave@brave.com"
     )
 
@@ -27,7 +26,6 @@ class PublisherUnverifiedCalculatorTest < ActiveJob::TestCase
 
     publisher_alice = Publisher.create!(
       name: "Alice",
-      pending_email: "alice@brave.com",
       email: "alice@brave.com",
       phone: "15555555555",
       phone_normalized: "+15555555555"

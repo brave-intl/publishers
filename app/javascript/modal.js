@@ -59,6 +59,23 @@
  *       = link_to "Yes", "#", class: "js-confirm"
  * ```
  *
+ * Additionally, the identifier for the modal template will be added to the
+ * `.md-container` element of the modal with a prefix. For example:
+ *
+ * ```slim
+ * = link_to \
+ *     "Disable Wobble",
+ *     wobble_path,
+ *     method: :delete,
+ *     data: { "js-confirm-with-modal": "disable-wobble" }
+ * ```
+ *
+ * Would open the modal inside an element:
+ *
+ * ```slim
+ * .md-container.md-container--modal-identifier--disable-wobble
+ * ```
+ *
  */
 
 var MODAL_SHOW_CLASS = 'md-show';
@@ -66,13 +83,28 @@ var MODAL_SHOW_CLASS = 'md-show';
 /*
  * On demand open a modal.
  */
-self.openModal = function openModal(html, confirmCallback, denyCallback) {
+self.openModal = function openModal(html, confirmCallback, denyCallback, identifier) {
   var modalElement = document.querySelector('.js-shared-modal');
   var contentElement = modalElement.querySelector('.md-content');
   var containerElement = modalElement.querySelector('.md-container');
 
   contentElement.innerHTML = html;
   containerElement.classList.add(MODAL_SHOW_CLASS);
+
+  let identifierClass = identifier && `md-container--modal-identifier--${identifier}`;
+  if (identifierClass) {
+    containerElement.classList.add(identifierClass);
+  }
+
+  function closeModal(event) {
+    modalElement.removeEventListener('click', confirmationEventDelegate);
+    contentElement.innerHTML = '';
+    if (identifierClass) {
+      containerElement.classList.remove(identifierClass);
+    }
+    containerElement.classList.remove(MODAL_SHOW_CLASS);
+    event.preventDefault();
+  }
 
   function confirmationEventDelegate(event) {
     var target = event.target;
@@ -85,14 +117,11 @@ self.openModal = function openModal(html, confirmCallback, denyCallback) {
       return;
     }
 
-    modalElement.removeEventListener('click', confirmationEventDelegate);
-    contentElement.innerHTML = '';
-    containerElement.classList.remove(MODAL_SHOW_CLASS);
-    event.preventDefault();
-
     if (target.classList.contains('js-confirm')) {
+      closeModal(event);
       confirmCallback();
     } else if (target.classList.contains('js-deny')) {
+      closeModal(event);
       denyCallback();
     }
   }
@@ -107,14 +136,15 @@ self.openModal = function openModal(html, confirmCallback, denyCallback) {
  * Open a modal based on the template specified by the confirmed link
  */
 function confirmWithModal(confirmableLink) {
-  var template = document.getElementById(confirmableLink.getAttribute('data-js-confirm-with-modal'));
+  let identifier = confirmableLink.getAttribute('data-js-confirm-with-modal');
+  var template = document.getElementById(identifier);
 
   openModal(template.innerHTML, function() {
     confirmableLink.setAttribute('data-user-verified', '');
     confirmableLink.click();
   }, function() {
     confirmableLink.blur();
-  });
+  }, identifier);
 }
 
 /*

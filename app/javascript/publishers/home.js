@@ -183,6 +183,11 @@ document.addEventListener('DOMContentLoaded', function() {
         pendingContactEmail.innerText = updatedEmail;
         showPendingContactEmail(updatedEmail);
 
+        let currentUserName = document.querySelector('.js-current-user-name');
+        let userNameDropDown = document.querySelector('.js-user-name-dropdown');
+        currentUserName.innerText = updateContactName.value;
+        userNameDropDown.innerText = updateContactName.value;
+
         updateContactForm.classList.add('hidden');
         showContact.classList.remove('hidden');
         editContact.classList.remove('hidden');

@@ -5,7 +5,7 @@ p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
 
 p = t("promo_mailer.promo_activated_2018q1_verified.body_one")
 
-a.promo--item-label.promo--item-label-link-name = @channel.details_type == "YoutubeChannelDetails" ? "#{@channel.publication_title.upcase} #{t("promo.shared.on_youtube")}" : "#{@channel.publication_title.upcase}"
+a.promo--item-label.promo--item-label-link-name = on_channel_type(@channel)
 .promo--referral-link-container
   .promo--referral-link = link_to(human_referral_url(@channel.promo_registration.referral_code), referral_url(@channel.promo_registration.referral_code))
 = link_to(t("promo.shared.tweet").upcase, tweet_url(@channel.promo_registration.referral_code), target: :_blank, style: "background-image: url(#{attachments["icn-twitter.png"]&.url})", class: 'promo--share-button promo--share-button-twitter')

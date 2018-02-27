@@ -29,7 +29,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("publisher.channels.count", 0) do
       assert_difference("SiteChannelDetails.count", 0) do
         delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
-        assert_response 302
+        assert_response 404
       end
     end
   end
@@ -46,8 +46,67 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("publisher.channels.count", 0) do
       assert_difference("SiteChannelDetails.count", 0) do
         delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
-        assert_response 302
+        assert_response 404
       end
     end
+  end
+
+  test "cancel_add removes an unverified channel and redirects to the dashboard" do
+    publisher = publishers(:default)
+    channel = channels(:new_site)
+    sign_in publisher
+
+    assert_difference("publisher.channels.count", -1) do
+      assert_difference("SiteChannelDetails.count", -1) do
+        get cancel_add_channel_path(channel)
+        assert_redirected_to '/publishers/home'
+      end
+    end
+  end
+
+  test "cancel_add will not remove an already verified channel" do
+    publisher = publishers(:verified)
+    channel = channels(:verified)
+    sign_in publisher
+
+    assert_difference("publisher.channels.count", 0) do
+      assert_difference("SiteChannelDetails.count", 0) do
+        get cancel_add_channel_path(channel)
+        assert_redirected_to '/publishers/home'
+      end
+    end
+  end
+
+  test "a channel's verification status can be polled via ajax" do
+    publisher = publishers(:default)
+    channel = channels(:new_site)
+    sign_in publisher
+
+    channel.verification_started!
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"started",' +
+       '"details":"Verification in progress"}',
+          response.body)
+
+    channel.verification_failed!('something happened')
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"failed",' +
+        '"details":"something happened"}',
+      response.body)
+
+    channel.verification_succeeded!
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"verified",' +
+        '"details":null}',
+      response.body)
   end
 end
