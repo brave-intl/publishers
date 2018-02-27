@@ -178,6 +178,26 @@ class PublisherTest < ActiveSupport::TestCase
     refute publisher.valid?
   end
 
+  test "a publisher pending_email address must not match an existing verified email address" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "foo@bar.com"
+    assert publisher.valid?
+
+    publisher.pending_email = "alice@verified.org"
+    refute publisher.valid?
+  end
+
+  test "a publisher pending_email address must not match the verified email address" do
+    publisher = Publisher.new
+
+    publisher.email = "foo@bar.com"
+    assert publisher.valid?
+
+    publisher.pending_email = "foo@bar.com"
+    refute publisher.valid?
+  end
+
   test "a publisher can be destroyed if it is not verified" do
     publisher = Publisher.new
 

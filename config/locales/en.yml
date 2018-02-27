@@ -232,6 +232,7 @@ en:
       login_email: Login Email
       login_email_message: We need your valid email address for account access and recovery purposes.
       login_email_note: "* This will be your login from now on."
+      login_email_taken: "This email address is in use. Please enter a different email address."
     change_email_confirm:
       login_email_changed: Great!
       login_email_verified_html: |

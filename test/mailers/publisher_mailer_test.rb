@@ -57,7 +57,7 @@ class PublisherMailerTest < ActionMailer::TestCase
   test "verify_email raises error if there is no send address" do
     publisher = publishers(:default)
     publisher.pending_email = ""
-    publisher.email = ""
+    publisher.email = "alice_verified@default.org"
     publisher.save
 
     # verify error raised if no pending email
@@ -65,8 +65,7 @@ class PublisherMailerTest < ActionMailer::TestCase
       PublisherMailer.verify_email(publisher).deliver_now
     end
 
-    publisher.pending_email = "alice@default.org"
-    publisher.email = "alice@default.org"
+    publisher.pending_email = "alice_new@default.org"
     publisher.save
     
     # verify nothing raised if pending email exists
