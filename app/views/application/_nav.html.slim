@@ -14,7 +14,7 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
               .user-dropdown
                 = link_to home_publishers_path, class: "user-info" do
                   .user-avatar= render "avatar_svg"
-                  .user-name#user-name-dd= current_publisher.name
+                  .user-name#user-name-dropdown= current_publisher.name
                   .user-email= current_publisher.email
                 ul.user-links
                   li= link_to two_factor_registrations_path do

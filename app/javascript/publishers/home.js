@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showPendingContactEmail(updatedEmail);
 
         let currentUserName = document.getElementById('current-user-name');
-        let userNameDropDown = document.getElementById('user-name-dd');
+        let userNameDropDown = document.getElementById('user-name-dropdown');
         currentUserName.innerText = updateContactName.value;
         userNameDropDown.innerText = updateContactName.value;
 
