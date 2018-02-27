@@ -76,4 +76,37 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "a channel's verification status can be polled via ajax" do
+    publisher = publishers(:default)
+    channel = channels(:new_site)
+    sign_in publisher
+
+    channel.verification_started!
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"started",' +
+       '"details":"Verification in progress"}',
+          response.body)
+
+    channel.verification_failed!('something happened')
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"failed",' +
+        '"details":"something happened"}',
+      response.body)
+
+    channel.verification_succeeded!
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"verified",' +
+        '"details":null}',
+      response.body)
+  end
 end

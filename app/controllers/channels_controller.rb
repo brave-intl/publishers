@@ -45,6 +45,15 @@ class ChannelsController < ApplicationController
     redirect_to(home_publishers_path)
   end
 
+  def verification_status
+    respond_to do |format|
+      format.json {
+        render(json: { status: channel_verification_status(current_channel),
+                       details: channel_verification_details(current_channel) }, status: 200)
+      }
+    end
+  end
+
   private
 
   def setup_current_channel

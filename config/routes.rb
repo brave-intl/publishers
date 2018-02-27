@@ -40,6 +40,7 @@ Rails.application.routes.draw do
 
   resources :channels, only: %i(destroy) do
     member do
+      get :verification_status
       get :cancel_add
       delete :destroy
     end

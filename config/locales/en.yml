@@ -89,6 +89,9 @@ en:
       body: Oops, sorry about that. You can try to refresh the page or return to
       contact: "For assistance please contact us at: %{support_email}"
   helpers:
+    channels:
+      generic_verification_failure: Channel could not be verified!
+      verification_in_progress: Verification in progress
     publisher:
       balance_error: Unavailable
       balance_pending_approximate: Approximately %{amount} %{code}
