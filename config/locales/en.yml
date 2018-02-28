@@ -79,6 +79,7 @@ en:
         registration_date: Date
         registered_by: Added by
         contact_support_html: Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+        try_logging_out: If this account is not the one you wanted to claim, please log out of %{channel_name} and try again.
         ok: OK
     nav:
       security: Security
@@ -100,6 +101,11 @@ en:
         website: Website
         twitch: Twitch channel
         unknown: Channel
+      channel_name:
+        youtube: YouTube
+        website: the website
+        twitch: Twitch
+        unknown: the website
       create_uphold_wallet: Create Uphold Wallet
       not_verified: Unverified
       reconnect_to_uphold: Reconnect to Uphold
@@ -319,7 +325,7 @@ en:
       require_publisher:
         log_in_and_retry: Please log in to Brave Payments and retry the operation
       register_twitch_channel:
-        channel_already_registered: This Twitch channel has already been registered.
+        channel_already_registered: You have already claimed the Twitch account %{channel_title}. If you would like to claim a second account, please sign out of Twitch and try again.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_email:

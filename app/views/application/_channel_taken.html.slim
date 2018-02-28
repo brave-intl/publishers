@@ -62,6 +62,7 @@ javascript:
        .registered-by
          label= t(".modal.registered_by") + ":"
          .value= channel_registered_by
+   p= t(".modal.try_logging_out", channel_name: channel_name(channel))
    p= t(".modal.contact_support_html", {support_email: support_email})
 
    .panel-section
