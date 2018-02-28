@@ -321,6 +321,19 @@ module PublishersHelper
     end
   end
 
+  def channel_name(channel)
+    case channel.details
+    when SiteChannelDetails
+      I18n.t("helpers.publisher.channel_name.website")
+    when YoutubeChannelDetails
+      I18n.t("helpers.publisher.channel_name.youtube")
+    when TwitchChannelDetails
+      I18n.t("helpers.publisher.channel_name.twitch")
+    else
+      I18n.t("helpers.publisher.channel_name.unknown")
+    end
+  end
+
   def show_taken_channel_registration?(channel)
     case channel.details
     when YoutubeChannelDetails
