@@ -8,7 +8,7 @@ class SiteChannelDetails < ApplicationRecord
   # formats to support more publishers.
   validates :brave_publisher_id, uniqueness: { if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_id_exists? } }
 
-  validates :same_publisher_brave_publisher_id_unique, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? }
+  validate :same_publisher_brave_publisher_id_unique, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? }
 
   # - normalized and unnormalized domains
   # - normalized domains and domain-related errors
@@ -86,12 +86,6 @@ class SiteChannelDetails < ApplicationRecord
     end
   end
 
-  def same_publisher_brave_publisher_id_unique
-    if self.class.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.publisher_id": channel.publisher_id).any?
-      errors.add(:brave_publisher_id, "must be unique within your account")
-    end
-  end
-
   private
 
   def verified_publisher_id_exists?
@@ -115,6 +109,12 @@ class SiteChannelDetails < ApplicationRecord
 
     if brave_publisher_id_was != brave_publisher_id
       errors.add(:brave_publisher_id, "can not change once initialized")
+    end
+  end
+
+  def same_publisher_brave_publisher_id_unique
+    if self.class.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.publisher_id": channel.publisher_id).any?
+      errors.add(:brave_publisher_id, "must be unique within your account")
     end
   end
 end
