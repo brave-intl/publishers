@@ -72,7 +72,7 @@ module Publishers
 
       if existing_channel
         if existing_channel.publisher == current_publisher
-          redirect_to home_publishers_path, notice: t(".channel_already_registered")
+          redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.display_name })
           return
         else
           redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
