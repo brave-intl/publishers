@@ -18,7 +18,7 @@
     .promo--referral-link-container-container class="promo--referral-link-container-container-#{n%2}"
       .promo--item-label.promo--item-label-link-name = on_channel_type(channel)
       .promo--referral-link-container
-        span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = human_referral_url(channel.promo_registration.referral_code)
+        span.promo--referral-link id="#{channel.promo_registration.referral_code.downcase}" = referral_url(channel.promo_registration.referral_code)
         button.copy-button.promo--copy-button data-clipboard-target="##{channel.promo_registration.referral_code.downcase}" = t("promo.shared.copy")
         = link_to("".upcase, tweet_url(channel.promo_registration.referral_code), target: :_blank, class: 'promo--share-button promo--share-button-twitter promo--share-button-desktop')
         = link_to("".upcase, facebook_url(channel.promo_registration.referral_code), target: :_blank, class: 'promo--share-button promo--share-button-facebook promo--share-button-desktop')

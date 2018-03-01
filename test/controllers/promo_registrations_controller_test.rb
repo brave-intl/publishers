@@ -73,7 +73,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert email.to, publisher.email
 
     # verify the referral link sent matches the publisher's channel
-    assert_email_body_matches(matcher: human_referral_url(publisher.channels.first.promo_registration.referral_code), email: email)
+    assert_email_body_matches(matcher: referral_url(publisher.channels.first.promo_registration.referral_code), email: email)
 
     # verify create is rendered
     assert_select("[data-test=promo-activated-verified]")
