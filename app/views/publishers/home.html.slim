@@ -21,7 +21,7 @@ script id="choose-channel-type" type="text/html"
     h4.balance-header = t ".balance_pending"
     .balance
       .pull-left
-        = image_tag("bat-logo@1x.png", class: "")
+        = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
       .pull-left.amounts
         .bat
           span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
@@ -166,7 +166,11 @@ script id="choose-channel-type" type="text/html"
                 span= t("promo.shared.copy")
           - else
             .channel-status.pull-right
-              span= t("publishers.shared.verified")
+              .bat-channel
+                h4.bat-channel--amount#bat_amount= publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+                span.bat-channel--currency= " BAT"
+                .bat-channel--period
+                  = t(".channel_balance_period")
         - elsif channel.verification_started? || channel.verification_failed?
           .channel-status.pull-right
             = channel_verification_details(channel)

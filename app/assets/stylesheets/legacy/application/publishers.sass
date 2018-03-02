@@ -646,9 +646,10 @@ body[data-controller="publishers"]
 
         &.channel-verified
           .channel-status
-            background: url(asset-path("icn-verified.png")) no-repeat top left
-            padding: 3px 0 12px 38px
-            margin-top: -4px
+            background: url(asset-path("bat-logo@1x.png")) no-repeat top left
+            background-size: 30px 28.5px
+            padding: 1px 0 12px 38px
+            margin-top: -11px
 
 
         &--intro
@@ -753,6 +754,24 @@ body[data-controller="publishers"]
         padding: 60px
         background: #fff
         border-radius: 0
+
+  .bat-channel
+    &--amount
+      font-size: 28px
+      font-weight: bolder
+      display: inline
+      line-height: 1
+    &--currency
+      font-size: 14px
+      display: inline
+      color: #2f3032
+      line-height: 1
+      padding-left: 3px
+    &--period
+      line-height: 1
+      color: #999999
+      font-size: 11px
+      font-weight: bolder
 
   &[data-action="email_verified"],
   &[data-action="choose_new_channel_type"]
