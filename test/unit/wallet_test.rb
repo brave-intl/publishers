@@ -28,10 +28,11 @@ class WalletTest < ActiveSupport::TestCase
             "preferredCurrency" => 'USD',
             "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
-      }
+      },
+      channel_json: {}
   )
 
-  empty_wallet = Eyeshade::Wallet.new(wallet_json: {})
+  empty_wallet = Eyeshade::Wallet.new(wallet_json: {}, channel_json: {})
 
   test "supports status" do
     assert(test_wallet.status)

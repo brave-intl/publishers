@@ -34,7 +34,7 @@ class PublishersHelperTest < ActionView::TestCase
       attr_reader :default_currency, :wallet
 
       def initialize(wallet_json:)
-        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json) if wallet_json
+        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json, channel_json: {}) if wallet_json
         @default_currency = 'USD'
       end
     end
@@ -85,7 +85,7 @@ class PublishersHelperTest < ActionView::TestCase
       attr_reader :default_currency, :wallet
 
       def initialize(wallet_json:)
-        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json) if wallet_json
+        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json, channel_json: {}) if wallet_json
         @default_currency = 'USD'
       end
     end

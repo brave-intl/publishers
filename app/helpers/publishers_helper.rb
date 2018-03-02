@@ -61,6 +61,22 @@ module PublishersHelper
     I18n.t("helpers.publisher.balance_error")
   end
 
+  def publisher_channel_balance(publisher, channel_identifier, currency)
+    if balance = (
+        publisher.wallet &&
+        publisher.wallet.channel_balances &&
+        publisher.wallet.channel_balances[channel_identifier]
+    )
+      '%.2f' % balance.convert_to(currency)
+    else
+      I18n.t("helpers.publisher.balance_error")
+    end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("helpers.publisher.balance_error")
+  end
+
   def publisher_uri(publisher)
     "https://#{publisher.brave_publisher_id}"
   end
