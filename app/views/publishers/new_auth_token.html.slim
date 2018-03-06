@@ -16,5 +16,7 @@
           = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary")
 
       .single-panel--footer.single-panel--footer--secondary
-        ' #{t(".signup_prompt")}
-        = link_to t("publishers.shared.sign_up"), sign_up_publishers_path
+        p
+          ' #{t(".signup_prompt")}
+          = link_to t("publishers.shared.sign_up"), sign_up_publishers_path
+        p = link_to t("publishers.new_auth_token.legacy_youtube_login"), publisher_youtube_login_omniauth_authorize_path, class: "text-muted"

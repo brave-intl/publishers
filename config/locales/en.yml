@@ -318,6 +318,7 @@ en:
       channel_balance_period: CURRENT PERIOD
     new_auth_token:
       signup_prompt: Don't have an account?
+      legacy_youtube_login: Legacy YouTube Login
     omniauth_callbacks:
       register_youtube_channel:
         channel_already_registered: You have already registered this YouTube channel.
