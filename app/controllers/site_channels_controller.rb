@@ -60,6 +60,7 @@ class SiteChannelsController < ApplicationController
       redirect_to(channel_next_step_path(@current_channel), notice: t("shared.channel_created"))
     else
       @channel = @current_channel
+      flash.now[:warning_model_errors] = @channel.details
       render :action => "new"
     end
   end
@@ -91,14 +92,16 @@ class SiteChannelsController < ApplicationController
     @channel = current_channel
     @channel.details.inspect_brave_publisher_id
     @channel.save!
-    redirect_to(site_last_verification_method_path(@channel), alert: t(".alert"))
+    flash[:notice] = t(".alert")
+    redirect_to(site_last_verification_method_path(@channel))
   end
 
   def verify
     VerifySiteChannel.perform_later(channel_id: current_channel.id)
     current_channel.verification_started!
 
-    redirect_to(home_publishers_path, alert: t(".alert"))
+    flash[:notice] = t(".alert")
+    redirect_to home_publishers_path
   end
 
   private

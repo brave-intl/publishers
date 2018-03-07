@@ -1,35 +1,41 @@
-- content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => {progress: {info: 0, verify: 0, instruction: 100}, publisher: current_publisher}
+= content_for :site_channel_progress
+  = render :partial => 'progress', :locals => { \
+    progress: {info: 0, verify: 0, instruction: 100}, \
+    publisher: current_publisher \
+  }
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    = current_channel.details.brave_publisher_id
+.single-panel--wrapper.single-panel--wrapper--large
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content.text-left
+      h3.single-panel--headline.text-center= t "site_channels.shared.trusted_file"
 
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.col-center
-    .content-panel
-      h3= t "site_channels.shared.trusted_file"
-      = render :partial => 'https_check', :locals => { publisher: current_channel.details }
+      .col-small-centered.text-left
 
-      div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
-        ol
-          li
-            p= t "site_channels.shared.verification_file.download_html", download_link: link_to(t("shared.download"), download_verification_file_site_channel_path, class: "download-link")
-            .pull-left
-              = image_tag("file@1x.png", class: "instruction-img")
-            .pull-right
-              .file-name-header= t("site_channels.shared.verification_file.name")
-              .file-name= @public_file_name
-              .file-content-header= t "site_channels.shared.verification_file.contents"
-              .file-content
-                = simple_format h publisher_filter_public_file_content(current_channel.details, @public_file_content)
-            .clearfix
-          li
-            p= t "site_channels.shared.verification_file.upload_html"
-            = image_tag("upload@1x.png", class: "instruction-img")
-          li
-            p= t "site_channels.shared.verification_file.verify"
-            p.note-text= t "site_channels.shared.verification_file.note"
-            .panel-controls
-              = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
-                = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-primary", :"data-piwik-action" => "PublicFileVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "PublicFileFlow")
+        .site-channels--https-check
+          = render :partial => 'https_check', :locals => { publisher: current_channel.details }
+
+        div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
+          ol.site-channels--body-list
+            li
+              p= t "site_channels.shared.verification_file.download_html", download_link: link_to(t("shared.download"), download_verification_file_site_channel_path, class: "download-link")
+              .icon-and-text--wrapper
+                .icon-and-text--icon.icon-and-text--icon--top
+                  = image_tag("file@2x.png", class: "instruction-img", width: 63, height: 78)
+                .icon-and-text--text
+                  .detailed-content--small-label= t("site_channels.shared.verification_file.name")
+                  .detailed-content--bold-content= @public_file_name
+                  p
+                    .detailed-content--small-label= t "site_channels.shared.verification_file.contents"
+                    .detailed-content--code
+                      = simple_format h publisher_filter_public_file_content(current_channel.details, @public_file_content)
+            li
+              p= t "site_channels.shared.verification_file.upload_html"
+              = image_tag("upload@2x.png", class: "instruction-img", width: 234, height: 137)
+            li
+              p= t "site_channels.shared.verification_file.verify"
+              p.note-text= t "site_channels.shared.verification_file.note"
+
+          .panel-controls
+            = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
+              = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-wide btn-primary", :"data-piwik-action" => "PublicFileVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "PublicFileFlow")

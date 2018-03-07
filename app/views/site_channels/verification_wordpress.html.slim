@@ -1,27 +1,32 @@
-- content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => {progress: {info: 0, verify: 0, instruction: 100}, publisher: current_publisher}
+= content_for :site_channel_progress
+  = render :partial => 'progress', :locals => { \
+    progress: {info: 0, verify: 0, instruction: 100}, \
+    publisher: current_publisher \
+  }
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    = current_channel.details.brave_publisher_id
+.single-panel--wrapper.single-panel--wrapper--large
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content.text-left
+      h3.single-panel--headline.text-center= t ".heading"
 
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.col-center
-    .content-panel
-      h3= t ".heading"
-      = render :partial => 'https_check', :locals => { current_channel: current_channel }
+      .col-small-centered.text-left
 
-      div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
-        ol
-          li
-            = t ".install_plugin_html"
-          li
-            p.li-text= t ".verification_token"
-            .file-content-header= t ".wordpress_token"
-            .verification-code= "brave-ledger-verification=#{site_channel_filtered_verification_token(current_channel)}"
-          li
-            p.li-text= t ".verify"
-            p.note-text= t("site_channels.shared.verification_file.note")
-            .panel-controls
-              = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
-                = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-primary", :"data-piwik-action" => "WordpressVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "WordpressFlow")
+        .site-channels--https-check
+          = render :partial => 'https_check', :locals => { current_channel: current_channel }
+
+        div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
+          ol.site-channels--body-list
+            li
+              = t ".install_plugin_html"
+            li
+              p= t ".verification_token"
+              .detailed-content--small-label= t ".wordpress_token"
+              .detailed-content--code= "brave-ledger-verification=#{site_channel_filtered_verification_token(current_channel)}"
+            li
+              p= t ".verify"
+              p.note-text= t("site_channels.shared.verification_file.note")
+
+          .panel-controls
+            = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
+              = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-wide btn-primary", :"data-piwik-action" => "WordpressVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "WordpressFlow")

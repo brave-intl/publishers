@@ -1,0 +1,71 @@
+$progress-train-lines: $braveGray-8;
+$progress-train-label: $braveGray-4;
+$progress-train-fill: $braveBrand;
+$progress-train-active: #333;
+
+.progress-train--wrapper {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding-top: 5px;
+  white-space: nowrap;
+  @include media-breakpoint-down(xs) {
+    display: none;
+  }
+}
+
+.progress-train--item {
+  display: inline-block;
+  vertical-align: middle;
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 -3px;
+    padding: 0;
+  }
+  .progress-connector {
+    stroke: $progress-train-lines;
+  }
+  .fill-circle {
+    .background-circle {
+      fill: #fff;
+    }
+    .outer-circle {
+      fill: none;
+      stroke: $progress-train-lines;
+    }
+    .inner-circle {
+      stroke: none;
+    }
+  }
+  label {
+    display: inline-block;
+    margin: 0;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 0 5px;
+    color: $progress-train-label;
+    @include media-breakpoint-down(md) {
+      display: none;
+    }
+  }
+  &.unstarted, &.finished {
+    label {
+      font-weight: 100;
+    }
+  }
+  &.started {
+    label {
+      font-weight: 300;
+      color: $progress-train-active
+    }
+  }
+  &.started, &.finished {
+    svg.fill-circle {
+      .inner-circle {
+        fill: $progress-train-fill;
+      }
+    }
+  }
+}

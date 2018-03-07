@@ -1,10 +1,29 @@
 b, strong {
-  color: $braveBrand;
   font-weight: 600;
+}
+
+.error {
+  color: $braveBrand;
 }
 
 h6 {
   color: $braveAccent;
   font-weight: bolder;
   font-size: 1.1rem;
+}
+
+.note-text {
+  font-size: 0.9rem;
+  color: $braveGray-5; 
+}
+
+.color-orange {
+  color: $braveOrange;
+}
+
+textarea[readonly].color-orange {
+  background: inherit;
+  &:focus {
+    color: $braveOrange;
+  }
 }

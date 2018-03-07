@@ -44,6 +44,10 @@ $brave-panels-borderRadius: 8px;
         @include make-col-offset(2.5);
       }
     }
+
+    &--collapsed {
+      min-height: auto;
+    }
   }
 
   &--content {
@@ -115,7 +119,8 @@ $brave-panels-borderRadius: 8px;
   }
 
   &--padded-content {
-    padding: $spacer*2;
+    position: relative;
+    padding: $spacer*4 $spacer*2;
     margin-top: auto;
     margin-bottom: auto;
 
@@ -167,6 +172,9 @@ $brave-panels-borderRadius: 8px;
     line-height: 0;
     @include media-breakpoint-down(xs) {
       display: none;
+    }
+    &--top {
+      align-self: flex-start;
     }
   }
   &--text {

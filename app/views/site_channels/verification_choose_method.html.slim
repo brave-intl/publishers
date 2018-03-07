@@ -1,28 +1,33 @@
-- content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => {progress: {info: 0, verify: 100, instruction: 0}, publisher: current_publisher}
+= content_for :site_channel_progress
+  = render partial: 'progress', locals: { \
+    progress: {info: 0, verify: 100, instruction: 0}, \
+    publisher: current_publisher \
+  }
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    = current_channel.details.brave_publisher_id
+.single-panel--wrapper.single-panel--wrapper--large
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+      h3.single-panel--headline= t ".heading"
 
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.col-center
-    .content-panel
-      h3= t ".heading"
-      .verification-methods
-        .verification-method.optionA
-          h4= t ".trusted_file.heading"
-          h5.recommended= t ".trusted_file.subheading"
-          .img-container= image_tag("choose-file@1x.png", class: "choose-trusted-file")
-          div= link_to(t(".trusted_file.button"), verification_public_file_site_channel_path(current_channel), class: "btn btn-primary", :"data-piwik-action" => "ChosePublicFileClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+      .col-medium-centered.text-left
+        .two-options--wrapper
+          .two-options--option-a
+            h4.two-options--option-a-header= t ".trusted_file.heading"
+            .two-options--subheader.two-options--subheader--recommended= t ".trusted_file.subheading"
+            .two-options--image-wrapper
+              = image_tag("choose-file@2x.png", class: "two-options--image", width: 234, height: 137)
+            div= link_to(t(".trusted_file.button"), verification_public_file_site_channel_path(current_channel), class: "btn btn-block btn-primary", :"data-piwik-action" => "ChosePublicFileClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
 
-        .or
-          strong= t ".or"
+          .two-options--or
+            = t ".or"
 
-        .verification-method.optionB
-          h4= t ".dns.heading"
-          h5= t ".dns.subheading"
-          .img-container= image_tag("choose-dns@1x.png", class: "choose-dns")
-          div= link_to(t(".dns.button"), verification_dns_record_site_channel_path(current_channel), class: "btn btn-secondary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+          .two-options--option-b
+            h4.two-options--option-b-header= t ".dns.heading"
+            .two-options--subheader= t ".dns.subheading"
+            .two-options--image-wrapper
+              = image_tag("choose-dns@2x.png", class: "two-options--image", width: 253, height: 96)
+            div= link_to(t(".dns.button"), verification_dns_record_site_channel_path(current_channel), class: "btn btn-block btn-outline-primary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
 
-      .fine-print.text-center= t(".support_queue.body_html", support_queue_link: link_to(t(".support_queue.link"), verification_support_queue_site_channel_path(current_channel), :"data-piwik-action" => "ChoseSupportClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow"))
+      .single-panel--footer.single-panel--footer--secondary
+        = t(".support_queue.body_html", support_queue_link: link_to(t(".support_queue.link"), verification_support_queue_site_channel_path(current_channel), :"data-piwik-action" => "ChoseSupportClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow"))

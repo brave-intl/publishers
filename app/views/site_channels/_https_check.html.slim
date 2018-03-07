@@ -1,11 +1,11 @@
 - if current_channel.details.supports_https?
   .note-text
-    = image_tag("verified-icon@2x.png", alt: t(".https"), class: "https-check-icon")
+    = image_tag("verified-icon@1x.png", alt: t(".https"), class: "https-check-icon", width: 11.5, height: 14)
     = t ".https"
 - else
-  .note-text
-    = image_tag("x.png", alt: t(".no_https_alt"), class: "https-check-icon")
+  p.note-text
+    = image_tag("x.png", alt: t(".no_https_alt"), class: "https-check-icon", width: 12, height: 12)
     = t ".no_https"
   = form_for(current_channel.details, method: :patch, url: check_for_https_site_channel_path(current_channel)) do |f|
-    = f.submit(t(".button"), class: "btn btn-primary btn-sm btn-check-https")
+    = f.submit(t(".button"), class: "btn btn-wide btn-primary")
 .clearfix
