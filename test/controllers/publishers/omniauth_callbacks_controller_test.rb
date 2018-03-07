@@ -337,12 +337,13 @@ module Publishers
 
     test "a publisher who adds a channel taken by themselves will see .channel_already_registered" do
       publisher = publishers(:twitch_verified)
+      verified_details = twitch_channel_details(:twitch_verified_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
       get(url)
       follow_redirect!
 
-      OmniAuth.config.mock_auth[:register_twitch_channel] = auth_hash("uid" => "78032")
+      OmniAuth.config.mock_auth[:register_twitch_channel] = auth_hash("uid" => verified_details[:twitch_channel_id])
 
       assert_difference("Channel.count", 0) do
         get(publisher_register_twitch_channel_omniauth_authorize_url)
@@ -352,7 +353,13 @@ module Publishers
       end
 
       assert_select('div.notifications') do |element|
-        assert_match(I18n.t("publishers.omniauth_callbacks.register_twitch_channel.channel_already_registered"), element.text)
+        assert_match(
+          I18n.t(
+            "publishers.omniauth_callbacks.register_twitch_channel.channel_already_registered",
+            channel_title: verified_details.display_name
+          ),
+          element.text
+        )
       end
     end
 

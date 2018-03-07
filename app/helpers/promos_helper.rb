@@ -31,16 +31,12 @@ module PromosHelper
     end
   end
 
-  def human_referral_url(referral_code)
-    base_human_referral_url + referral_code.downcase
-  end
-
   def referral_url(referral_code)
-    "https://" + human_referral_url(referral_code)
+    base_referral_url + referral_code.downcase
   end
 
   def tweet_url(referral_code)
-    referral_link = human_referral_url(referral_code)
+    referral_link = referral_url(referral_code)
     twitter_preamble = "https://twitter.com/intent/tweet/?text="
     tweet_content = I18n.t("promo.shared.tweet_content") + "&url=http%3A%2F%2F" + referral_link
     tweet_content_url = tweet_content.gsub(/\s/, '%20')
@@ -49,13 +45,13 @@ module PromosHelper
   end
 
   def facebook_url(referral_code)
-    referral_link = human_referral_url(referral_code)
+    referral_link = referral_url(referral_code)
     base_facebook_link = "https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F"
     sharable_facebook_link = base_facebook_link + referral_link
     sharable_facebook_link
   end
 
-  def base_human_referral_url
+  def base_referral_url
     Rails.application.secrets[:base_referral_url].to_s + "/"
   end
 

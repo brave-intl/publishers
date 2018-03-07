@@ -157,12 +157,12 @@ script id="choose-channel-type" type="text/html"
               = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
               = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
               .referral-link-url.promo-info-item
-                span= human_referral_url(channel.promo_registration.referral_code)
+                span= referral_url(channel.promo_registration.referral_code)
               .referral-link-button.referral-link-button-desktop.promo-info-item
                 span= t("promo.shared.referral_link")
-              .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{human_referral_url(channel.promo_registration.referral_code)}"
+              .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
                 span= t("promo.shared.referral_link")
-              .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{human_referral_url(channel.promo_registration.referral_code)}"
+              .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{referral_url(channel.promo_registration.referral_code)}"
                 span= t("promo.shared.copy")
           - else
             .channel-status.pull-right
