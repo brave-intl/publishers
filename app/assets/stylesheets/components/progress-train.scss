@@ -10,6 +10,7 @@ $progress-train-active: #333;
   right: 0;
   padding-top: 5px;
   white-space: nowrap;
+  z-index: -1;
   @include media-breakpoint-down(xs) {
     display: none;
   }
