@@ -69,9 +69,9 @@ Rails.application.routes.draw do
 
   root "static#index"
 
-  namespace :api do
-    resources :owners, format: false, only: %i(index), constraints: { owner_id: %r{[^\/]+} } do
-      resources :channels, only: %i(), constraints: { channel_id: %r{[^\/]+} } do
+  namespace :api, defaults: { format: :json } do
+    resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
+      resources :channels, only: %i(create), constraints: { channel_id: %r{[^\/]+} } do
         get "/", action: :show
         patch "verifications", action: :verify
         post "notifications", action: :notify

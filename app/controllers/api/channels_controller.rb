@@ -1,9 +1,12 @@
 class Api::ChannelsController < Api::BaseController
   before_action :require_owner,
-                only: %i(verify notify show)
+                only: %i(verify notify show create)
 
   before_action :require_channel,
                 only: %i(verify notify show)
+
+  before_action :ensure_json_content_type,
+                only: %i(create)
 
   include PublishersHelper
 
@@ -54,21 +57,41 @@ class Api::ChannelsController < Api::BaseController
   end
 
   def show
-    render(json: @channel.details)
+    render(json: @channel.details, status: :ok)
+  end
+
+  def create
+    channel = Channel.new(publisher: @owner, verified: true, created_via_api: true)
+
+    channel.details = SiteChannelDetails.new(site_channel_details_params)
+
+    SiteChannelDomainSetter.new(channel_details: channel.details).perform
+
+    channel.save!
+
+    # once the channel has been saved send it to eyeshade
+    begin
+      PublisherChannelSetter.new(publisher: @owner).perform
+    rescue => e
+      require "sentry-raven"
+      Raven.capture_exception(e)
+    end
+
+    render(json: channel.details, status: :ok)
   end
 
   private
 
   def require_owner
     owner_id = publisher_id_from_owner_identifier(params[:owner_id])
-    @owner = Publisher.find(owner_id)
+    @owner = Publisher.where(id: owner_id).first
 
     return @owner if @owner
     response = {
         error: "Invalid owner",
         message: "Can't find an owner with ID #{params[:owner_id]}"
     }
-    render(json: response, status: 404)
+    render(json: response, status: :not_found)
   end
 
   def require_channel
@@ -80,6 +103,13 @@ class Api::ChannelsController < Api::BaseController
       error: "Invalid channel",
       message: "Can't find a channel with ID #{params[:channel_id]}"
     }
-    render(json: response, status: 404)
+    render(json: response, status: :not_found)
+  end
+
+  private
+
+  def site_channel_details_params
+    details_params = params[:channel].permit(:brave_publisher_id)
+    details_params
   end
 end
