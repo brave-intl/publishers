@@ -176,17 +176,23 @@ document.addEventListener('DOMContentLoaded', function() {
   updateContactForm.addEventListener('submit', function(event) {
     event.preventDefault();
     submitForm('update_contact', 'PATCH', true)
-      .then(function() {
-        let updatedEmail = updateContactEmail.value;
-        showContactName.innerText = updateContactName.value;
-        showContactPhone.innerText = updateContactPhone.value;
-        pendingContactEmail.innerText = updatedEmail;
-        showPendingContactEmail(updatedEmail);
+      .then(function(response) {
+        if (response.ok === true) {
+          let updatedEmail = updateContactEmail.value;
+          showContactName.innerText = updateContactName.value;
+          showContactPhone.innerText = updateContactPhone.value;
+          pendingContactEmail.innerText = updatedEmail;
+          showPendingContactEmail(updatedEmail);
 
-        let currentUserName = document.querySelector('.js-current-user-name');
-        let userNameDropDown = document.querySelector('.js-user-name-dropdown');
-        currentUserName.innerText = updateContactName.value;
-        userNameDropDown.innerText = updateContactName.value;
+          let currentUserName = document.querySelector('.js-current-user-name');
+          let userNameDropDown = document.querySelector('.js-user-name-dropdown');
+          currentUserName.innerText = updateContactName.value;
+          userNameDropDown.innerText = updateContactName.value;
+        } else {
+          let pendingEmailNotice = document.getElementById('pending_email_notice');
+          pendingEmailNotice.innerHTML = 'Unable to change email; the email address may be in use. Please enter a different email address.';
+          pendingEmailNotice.classList.remove('hidden');
+        }
 
         updateContactForm.classList.add('hidden');
         showContact.classList.remove('hidden');
