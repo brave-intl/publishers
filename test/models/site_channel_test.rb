@@ -20,7 +20,7 @@ class SiteChannelTest < ActiveSupport::TestCase
 
     # Exists, but not verified
     new_details = SiteChannelDetails.new(brave_publisher_id: "default.org")
-    assert new_details.valid?
+    refute new_details.valid?
 
     # Exists and is verified
     new_details = SiteChannelDetails.new(brave_publisher_id: "verified.org")
