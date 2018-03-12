@@ -1,15 +1,16 @@
-- content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => {progress: {info: 0, verify: 0, instruction: 100}, publisher: current_publisher}
+= content_for :site_channel_progress
+  = render :partial => 'progress', :locals => { \
+    progress: {info: 0, verify: 0, instruction: 100}, \
+    publisher: current_publisher \
+  }
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    = current_channel.details.brave_publisher_id
+.single-panel--wrapper.single-panel--wrapper--large
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content.text-left
+      h3.single-panel--headline.text-center= t ".heading", brave_publisher_id: current_channel.details.brave_publisher_id
 
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.col-center
-    .content-panel
-      .dns-record id="dns_records"
-        h3= t ".heading", brave_publisher_id: current_channel.details.brave_publisher_id
+      .col-small-centered.text-left
 
         p
           span= "#{t ".help"} "
@@ -24,32 +25,50 @@
           strong= current_channel.details.brave_publisher_id
           span= " #{t ".instruction_3"}"
 
-        .form-group
-          label.control-label= "#{t ".record.type"}:"
-          span.color-orange.form-control#type TXT
-          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#type"
-            = t ".copy_to_clipboard"
-        .form-group
-          label.control-label= "#{t ".record.value"}:"
-          textarea.color-orange.dns-record-value.form-control#value readonly="true"
-            = site_channel_verification_dns_record(current_channel)
-          button.btn.btn-xs.btn-default.copy-button data-clipboard-target="#value"
-            = t ".copy_to_clipboard"
-        .form-group
-          p= t ".verify"
-          p.note-text= t ".record.note"
+        .site-channels--padded-group
+          .form-group
+            label.control-label= "#{t ".record.type"}:"
+            input.color-orange.form-control#type value="TXT"
+          .form-group
+            button.btn.btn-sm.btn-default.copy-button data-clipboard-target="#type"
+              = t ".copy_to_clipboard"
 
-        .form-group
-          .form-horizontal
-            .form-group
-              .col-xs-10.col-md-6
-                = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
-                  = f.submit(t(".button"), class: "btn btn-block btn-primary btn-sm", :"data-piwik-action" => "DNSVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
-              .col-xs-2.col-md-2
-                = popover_menu do
-                  h5= t ".helper.heading"
-                  .help-block= t ".helper.body"
-                  ul.pull-left
+        .site-channels--padded-group
+          .form-group
+            label.control-label= "#{t ".record.value"}:"
+            textarea.color-orange.form-control.form-control--code#value readonly="true"
+              = site_channel_verification_dns_record(current_channel)
+          .form-group
+            button.btn.btn-sm.btn-default.copy-button data-clipboard-target="#value"
+              = t ".copy_to_clipboard"
+
+        p= t ".verify"
+        p.note-text= t ".record.note"
+
+        div.btn--wrapper--with-icon
+          = form_for( \
+            current_channel.details, \
+            method: :patch, \
+            url: verify_site_channel_path(current_channel) \
+          ) do |f|
+            = f.submit( \
+              t(".button"), \
+              class: "btn btn-wide btn-primary", \
+              "data-piwik-action": "DNSVerificationClicked", \
+              "data-piwik-name": "Clicked", \
+              "data-piwik-value": "DNSFlow" \
+            )
+          a href="#" data-js-confirm-with-modal="dns-services"
+            span.icon= render "icon_help"
+
+          script id="dns-services" type="text/html"
+            .text-left
+              h5.single-panel--headline= t ".helper.heading"
+              p.help-block= t ".helper.body"
+
+              .row
+                .col.col-12.col-sm-4
+                  ul
                     li
                       a target="_blank" href="https://help.1and1.com/domains-c36931/manage-domains-c79822/dns-c37586/add-or-remove-txt-records-a792509.html" 1&1
                     li
@@ -66,7 +85,8 @@
                       a target="_blank" href="https://help.dyn.com/standard-dns/managing-resource-records-in-dyn-standard-dns/#record_txt" Dyn or Nettica
                     li
                       a target="_blank" href="https://www.dynadot.com/community/help/question/create-TXT-record" Dynadot
-                  ul.pull-left
+                .col.col-12.col-sm-4
+                  ul
                     li
                       a target="_blank" href="https://fusion.easydns.com/index.php?/Knowledgebase/Article/View/140/7/dns-entries" EasyDNS
                     li
@@ -83,7 +103,8 @@
                       a target="_blank" href="https://help.hover.com/hc/en-us/articles/217282457-How-to-Edit-DNS-records-A-CNAME-MX-TXT-and-SRV-Updated-Aug-2015-" Hover
                     li
                       a target="_blank" href="https://help.iwantmyname.com/customer/en/portal/articles/1769981" IWantMyName
-                  ul.pull-left
+                .col.col-12.col-sm-4
+                  ul
                     li
                       a target="_blank" href="https://www.name.com/support/articles/206127137-Adding-DNS-records-and-templates" Name.com
                     li
@@ -96,5 +117,6 @@
                       a target="_blank" href="https://forum.web.com/register/faq/?p_sid=&p_lva=&p_li=&p_accessibility=0&p_redirect=&p_page=1&p_cv=&p_pv=1.1&p_prods=1&p_cats=+&p_hidden_prods=&prod_lvl1=1&cat_lvl1=+&p_search_text=&p_new_search=1#AccountInformation/What_Is_a_DNS_Record.htm?Highlight=add a dns record" Register.com
                     li
                       a target="_blank" href="https://support.office.com/en-us/article/Create-DNS-records-at-Aabaco-Small-Business-for-Office-365-53d1daba-6a4f-4814-8a68-8ad3d031463e#bkmk_verify" Yahoo/Aabaco
-                  div
-                    a#contact-link.pull-right href="mailto:support+publishers@basicattentiontoken.org"= t ".helper.contact"
+
+              div
+                a#contact-link.float-right href="mailto:support+publishers@basicattentiontoken.org"= t ".helper.contact"

@@ -17,9 +17,15 @@ class Channel < ApplicationRecord
 
   accepts_nested_attributes_for :details
 
+  validates :publisher, presence: true
+
+  validates :details, presence: true
+
   validate :details_not_changed?
 
   validates :verification_status, inclusion: { in: %w(started failed) }, allow_nil: true
+
+  validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
 
@@ -121,5 +127,14 @@ class Channel < ApplicationRecord
 
   def register_channel_for_promo
     RegisterChannelForPromoJob.new.perform(channel: self)
+  end
+
+  def site_channel_details_brave_publisher_id_unique_for_publisher
+    dup_channels = self.class.visible_site_channels
+                       .where('site_channel_details.brave_publisher_id': details.brave_publisher_id).where.not(id: id)
+
+    if dup_channels.any?
+      errors.add(:brave_publisher_id, "must be unique")
+    end
   end
 end

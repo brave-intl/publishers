@@ -25,3 +25,21 @@
 
   // No need for an active state here
 }
+
+.btn-default {
+  color: $braveGray-1;
+  background: $braveGray-10;
+  border: 1px solid $braveGray-7;
+}
+
+.btn--wrapper--with-icon {
+  display: flex;
+  align-items: center;
+  > * {
+    margin-right: $spacer;
+  }
+}
+
+.btn-wide {
+  min-width: $spacer*10;
+}

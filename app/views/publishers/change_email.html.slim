@@ -13,7 +13,7 @@
           .form-group
             = f.email_field :pending_email, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email")
             .text-left
-              strong= t ".login_email_note"
+              strong.error= t ".login_email_note"
           - if params[:captcha]
             = hidden_field_tag(:captcha)
           - if @should_throttle

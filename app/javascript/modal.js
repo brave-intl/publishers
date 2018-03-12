@@ -152,15 +152,14 @@ function confirmWithModal(confirmableLink) {
  */
 document.addEventListener('DOMContentLoaded', function() {
   var confirmableLinks = document.querySelectorAll('[data-js-confirm-with-modal]');
-  var confirmableLink;
   for (var i=0;i<confirmableLinks.length;i++) {
-    confirmableLink = confirmableLinks[i];
+    let confirmableLink = confirmableLinks[i];
     confirmableLink.addEventListener('click', function(event) {
-      var userVerified = event.target.getAttribute('data-user-verified');
+      var userVerified = confirmableLink.getAttribute('data-user-verified');
       if (userVerified === null) {
         event.preventDefault();
         event.stopPropagation();
-        confirmWithModal(event.target);
+        confirmWithModal(confirmableLink);
       }
     });
   }

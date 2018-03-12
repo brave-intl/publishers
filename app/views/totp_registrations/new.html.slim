@@ -23,7 +23,7 @@
                 '
                 em= t ".step_2_alt"
                 '
-                strong= @totp_registration.secret.scan(/.{4}/).join(" ")
+                strong.error= @totp_registration.secret.scan(/.{4}/).join(" ")
                 .text-center
                   .totp-svg== qr_code_svg @provisioning_url
               li.form-group

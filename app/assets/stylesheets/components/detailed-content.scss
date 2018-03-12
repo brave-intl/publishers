@@ -1,0 +1,26 @@
+.detailed-content {
+
+  &--small-label {
+    font-size: 0.8rem;
+    color: $braveGray-1;
+    font-weight: bold;
+  }
+
+  &--bold-content {
+    font-weight: bold;
+  }
+
+  &--code {
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: $braveGray-4;
+    border: $braveGray-9 solid 1px;
+    border-radius: 2px;
+    word-break: break-all;
+    height: fit-content;
+    padding: $spacer*0.75;
+    margin-top: $spacer*0.5;
+    margin-bottom: $spacer*0.5;
+  }
+
+}

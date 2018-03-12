@@ -1,13 +1,13 @@
-.div.progress-train
+.progress-train--wrapper
   = render :partial => 'progress_item',
-          :locals => { fill: progress[:info],
-                       text: t(".info"),
-                       include_connector: false }
+           :locals => { fill: progress[:info],
+                        text: t(".info"),
+                        include_connector: false }
   = render :partial => 'progress_item',
-          :locals => { fill: progress[:verify],
-                       text: t(".verify"),
-                       include_connector: true }
+           :locals => { fill: progress[:verify],
+                        text: t(".verify"),
+                        include_connector: true }
   = render :partial => 'progress_item',
-          :locals => { fill: progress[:instruction],
-                       text: t(".instruction"),
-                       include_connector: true }
+           :locals => { fill: progress[:instruction],
+                        text: t(".instruction"),
+                        include_connector: true }

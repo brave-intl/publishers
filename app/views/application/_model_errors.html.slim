@@ -1,7 +1,0 @@
--# Locals: :record
-- if record.errors.any?
-  - content_for(:content_form_errors) do
-    - record.errors.each do |attribute, message|
-      .alert.alert-warning
-        strong= "#{record.class.human_attribute_name(attribute)}:"
-        span= " #{message}"
