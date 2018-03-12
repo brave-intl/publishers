@@ -1,7 +1,23 @@
+- content_for(:head_style_tags) do
+  = stylesheet_link_tag("application", media: "all")
+
+= content_for :nav do
+  nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
+    .container-fluid
+      .menu-container
+        .nav.float-left
+          h5.nav--title= t("shared.add_channel")
+        .nav.float-right
+          = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-outline-primary')
+        = yield(:site_channel_progress)
+
 - content_for(:content) do
   .main-content
-    #content.container
+    .panels-container
       = yield
 
 = render \
-  template: "layouts/application"
+  template: "layouts/application",
+  locals: { \
+    viewport_initial_scale: "1.0" \
+  }

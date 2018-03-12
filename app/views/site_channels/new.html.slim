@@ -1,24 +1,29 @@
-- content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => {progress: {info: 100, verify: 0, instruction: 0}, publisher: current_publisher}
+= content_for :site_channel_progress
+  = render partial: 'progress', locals: { \
+    progress: {info: 100, verify: 0, instruction: 0}, \
+    publisher: current_publisher \
+  }
 
-= render(partial: "model_errors", locals: { record: @channel.details })
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+      h3.single-panel--headline= t ".heading"
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    | &nbsp;
-
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.process-panel.process-panel-narrow.col-center
-    .content-panel
-      h3= t ".heading"
-      = form_for @channel, { method: :post, url: site_channels_path, html: { id: "enter_domain_info" }} do |f|
-        fieldset
-          = f.fields_for :details, @channel.details do |d|
-            .form-group
-              = d.label(:brave_publisher_id_unnormalized, class: "control-label")
-              = d.text_field(:brave_publisher_id_unnormalized, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
-            - if @should_throttle
+      .col-small-centered.text-left
+        = form_for @channel, { method: :post, url: site_channels_path, html: { id: "enter_domain_info" }} do |f|
+          fieldset
+            = f.fields_for :details, @channel.details do |d|
               .form-group
-                = recaptcha_tags
-        .panel-controls
-          = f.submit(t("shared.continue"), class: "btn btn-primary", :"data-piwik-action" => "ContactInfoClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ContactInfoFlow")
+                = d.label(:brave_publisher_id_unnormalized, class: "control-label")
+                = d.text_field(:brave_publisher_id_unnormalized, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
+              - if @should_throttle
+                .form-group
+                  = recaptcha_tags
+            = f.submit( \
+              t("shared.continue"), \
+              class: "btn btn-block btn-primary", \
+              "data-piwik-action": "ContactInfoClicked", \
+              "data-piwik-name": "Clicked", \
+              "data-piwik-value": "ContactInfoFlow" \
+            )

@@ -41,14 +41,14 @@
                 class: "btn btn-block btn-outline-secondary",
                 data: { "js-confirm-with-modal": "disable-totp-prompt" }
             script#disable-totp-prompt type="text/html"
-              .col-medium-center
+              .col-medium-center.text-left
                 h4= t ".totp.confirm_disable.header"
                 p
                   = t ".totp.confirm_disable.intro"
                   - if current_publisher.u2f_registrations.any?
                     - current_publisher.u2f_registrations.each do |u2f_registration|
                       br
-                      strong
+                      strong.error
                         | Security key
                         = " \"#{u2f_registration.name.presence || t(".totp.name_default")}\""
                       = " (registered #{l(u2f_registration.created_at.to_date, format: :short)})"

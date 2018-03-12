@@ -1,0 +1,28 @@
+.site-channels--body-list {
+  margin-left: -40px;
+  margin-bottom: $spacer*3;
+  @include media-breakpoint-down(xs) {
+    margin-left: -20px;
+  }
+
+  li {
+    margin-bottom: $spacer*2;
+  }
+}
+
+.site-channels--https-check {
+  margin-left: -22px;
+  margin-bottom: $spacer*2;
+  @include media-breakpoint-down(xs) {
+    margin-left: 0;
+  }
+
+  img {
+    margin-top: -1px;
+    margin-right: $spacer*0.5;
+  }
+}
+
+.site-channels--padded-group {
+  margin: $spacer*2 0;
+}

@@ -56,11 +56,12 @@
 .md-close {
   position: absolute;
   right: 30px;
-  top: 24px;
+  top: 7px;
 }
 
 
 .md-confirm-buttons {
+  margin-top: $spacer*2;
   text-align: right;
 
   .btn {

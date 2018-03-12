@@ -1,5 +1,5 @@
 div
-  strong= "#{u2f_registration.name.presence || t(".name_default")}:"
+  strong.error= "#{u2f_registration.name.presence || t(".name_default")}:"
   = " registered on #{l(u2f_registration.created_at.to_date, format: :long)}"
   = " | "
   = link_to \
@@ -8,18 +8,18 @@ div
     method: :delete,
     data: { "js-confirm-with-modal": "disable-u2f-prompt-#{u2f_registration.id}" }
   script id="disable-u2f-prompt-#{u2f_registration.id}" type="text/html"
-    .col-medium-center
+    .col-medium-center.text-left
       h4 = t(".confirm_disable.header")
       p
         = t(".confirm_disable.intro")
         - if current_publisher.totp_registration || current_publisher.u2f_registrations.length > 1
           - if current_publisher.totp_registration
             br
-            strong = t(".confirm_disable.remaining_totp")
+            strong.error= t(".confirm_disable.remaining_totp")
           - current_publisher.u2f_registrations.each do |remaining_u2f_registration|
             - if u2f_registration != remaining_u2f_registration
               br
-              strong
+              strong.error
                 | Security key
                 = " \"#{remaining_u2f_registration.name.presence || t(".name_default")}\""
               = " (registered #{l(remaining_u2f_registration.created_at.to_date, format: :short)})"

@@ -21,7 +21,7 @@
         - if icon_partial
           .icon-and-text--icon
             = render icon_partial
-        .icon-and-text--text
+        .icon-and-text--text data-test-panel-flash-message=""
           = flash[name]
     - "#{name}_html_safe".tap do |html_safe_name|
       - if flash[html_safe_name]
@@ -29,5 +29,17 @@
           - if icon_partial
             .icon-and-text--icon
               = render icon_partial
-          .icon-and-text--text
+          .icon-and-text--text data-test-panel-flash-message=""
             == flash[html_safe_name]
+    - "#{name}_model_errors".tap do |flash_model_key|
+      - if flash[flash_model_key] && flash[flash_model_key].errors.any?
+        .single-panel--content.icon-and-text--wrapper class="single-panel--content--#{name}"
+          - if icon_partial
+            .icon-and-text--icon
+              = render icon_partial
+          .icon-and-text--text data-test-panel-flash-message=""
+            p= t "activerecord.shared.errors"
+            - flash[flash_model_key].errors.each do |attribute, message|
+              p
+                strong.error= "#{flash[flash_model_key].class.human_attribute_name(attribute)}:"
+                span= " #{message}"

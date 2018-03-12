@@ -440,12 +440,13 @@ en:
       trusted_file: Place a Trusted File into your Domain
       verification_file:
         download_html: |
-          %{download_link} the verification file.
+          <strong>%{download_link}</strong> the verification file.
         name: "File name:"
         contents: "File contents:"
         upload_html: |
           Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you don't have one).
-          <span class="file-note">* Do not change the file name or file content.</span>
+          <br />
+          <span class="error">* Do not change the file name or file content.</span>
         verify: Make sure the verification file is placed in the folder and click verify.
         note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
       verify_button: Verify
@@ -510,7 +511,7 @@ en:
         heading: Need help with adding a TXT record in your DNS account?
         body: |
           Listed below are some of the most popular DNS hosting services with links to their TXT record help pages.
-          If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area.
+          If you don't see yours listed below, try searching for "add TXT record" in your DNS account support area.
         contact: Contact Brave Support
     verification_github:
       nojekyll_html: |
@@ -526,7 +527,7 @@ en:
     verification_wordpress:
       heading: Hello. It looks like you are using Wordpress!
       install_plugin_html: |
-        <p class="li-text"><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a>
+        <p><strong><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a></strong>
         that makes the entire process a snap.</p>
         <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-payments-verification/">
         https://wordpress.org/plugins/brave-payments-verification/</a>)</p>

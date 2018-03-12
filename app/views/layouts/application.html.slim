@@ -75,6 +75,25 @@ html
       / The postfix is available for all three flash names and for rendering
       / below the navigation bar or in a panel.
       /
+      / ## Flash messages of model errors
+      /
+      / When a model fails to save you may want to show its validation errors
+      / to the user. To do this in the flash you can use the `_model_errors`
+      / postfix. For exmaple:
+      /
+      /     if publisher.save
+      /       redirect_to success_url
+      /     else
+      /       flash.now[:warning_model_errors] = publisher
+      /       render action: :new
+      /     end
+      /
+      / Because the rendering expects that you pass a literal model, this
+      / utility can only be used with `flash.now`.
+      /
+      / The postfix is available for all three flash names and for rendering
+      / below the navigation bar or in a panel.
+      /
       - if content_for?(:application_flash)
         / This branch permits the panel_flash_messages parital to disable
         / navigation bar flash messages.
@@ -90,9 +109,14 @@ html
                 - if flash[html_safe_name]
                   .alert.flash class="alert-#{flash_class}"
                     == flash[html_safe_name]
-          - if content_for(:content_form_errors)
-            .alert.alert-warning= t "activerecord.shared.errors"
-            = yield(:content_form_errors)
+              - "#{name}_model_errors".tap do |name|
+                - if flash[name] && flash[name].errors.any?
+                  .alert.flash class="alert-#{flash_class}"
+                    p= t "activerecord.shared.errors"
+                    - flash[name].errors.each do |attribute, message|
+                      p
+                        strong.error= "#{flash[name].class.human_attribute_name(attribute)}:"
+                        span= " #{message}"
 
       = content_for?(:content) ? yield(:content) : yield
 
@@ -105,11 +129,12 @@ html
         / FIXME: This provides alternate modal markup during the Bootstrap 4 migration.
         / When Bootstrap 4 becomes the default, this should also become the default.
         - if content_for?(:head_style_tags) || params.has_key?(:bootstrap4)
-          .single-panel--wrapper
-            .single-panel--medium.md-panel
-              .md-content
-              = link_to "#", class: "md-close js-deny"
-                = render "application/icon_x"
+          .single-panel--wrapper.single-panel--wrapper--collapsed
+            .single-panel--content.md-panel
+              .single-panel--padded-content
+                .md-content
+                = link_to "#", class: "md-close js-deny"
+                  = render "application/icon_x"
         - else
           .col.col-10.col-md-8.col-sm-10.col-xs-12.col-center.sub-panel.sub-panel--panel--modal
             .md-content

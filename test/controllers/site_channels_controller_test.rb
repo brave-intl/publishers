@@ -85,7 +85,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
         post site_channels_url, params: create_params
       end
 
-      assert_select('div#flash') do |element|
+      assert_select('[data-test-panel-flash-message]') do |element|
         assert_match("The domain you entered is already verified and added to a different account", element.text)
       end
     ensure

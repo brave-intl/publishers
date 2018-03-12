@@ -1,16 +1,18 @@
-- content_for(:navbar_content) do
-  = render :partial => 'progress', :locals => {progress: {info: 0, verify: 0, instruction: 100}, publisher: current_publisher}
+= content_for :site_channel_progress
+  = render :partial => 'progress', :locals => { \
+    progress: {info: 0, verify: 0, instruction: 100}, \
+    publisher: current_publisher \
+  }
 
-.publisher-domain-panel.publisher-panel.col-center
-  .publisher-domain-name
-    = current_channel.details.brave_publisher_id
-
-.publisher-main-panel.publisher-panel.col-center
-  .sub-panel.info-panel.col-center
-    .content-panel
-      h3.text-center
+.single-panel--wrapper.single-panel--wrapper--large
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+      h3.single-panel--headline
         = t ".heading"
 
-      = t ".help_html"
-      .text-center.panel-controls
-        = link_to(t(".review_options"), verification_choose_method_site_channel_path(current_channel), class: "btn btn-primary", :"data-piwik-action" => "ReturnToOptionsClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+      .col-small-centered.text-left
+        == t ".help_html"
+
+      p.single-panel--footer
+        = link_to(t(".review_options"), verification_choose_method_site_channel_path(current_channel), class: "btn btn-wide btn-primary", :"data-piwik-action" => "ReturnToOptionsClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
