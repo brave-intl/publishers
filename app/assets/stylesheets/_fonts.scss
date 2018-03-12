@@ -10,14 +10,14 @@
   font-family: 'Muli';
   font-weight: 400;
   src: local('Muli Regular'), local('Muli-Regular'),
-    url('muli/muli-400.woff2') format('woff2'),
-    url('muli/muli-400.woff') format('woff');
+    font-url('muli/muli-400.woff2') format('woff2'),
+    font-url('muli/muli-400.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Muli';
   font-weight: 600;
   src: local('Muli SemiBold'), local('Muli-SemiBold'),
-    url('muli/muli-600.woff2') format('woff2'),
-    url('muli/muli-600.woff') format('woff');
+    font-url('muli/muli-600.woff2') format('woff2'),
+    font-url('muli/muli-600.woff') format('woff');
 }
