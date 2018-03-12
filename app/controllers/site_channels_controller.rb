@@ -59,6 +59,10 @@ class SiteChannelsController < ApplicationController
 
       redirect_to(channel_next_step_path(@current_channel), notice: t("shared.channel_created"))
     else
+      if @current_channel.errors.details.has_key?(:brave_publisher_id)
+        flash[:warning] = t(".duplicate_channel", domain: @current_channel.details.brave_publisher_id)
+      end
+
       @channel = @current_channel
       flash.now[:warning_model_errors] = @channel.details
       render :action => "new"

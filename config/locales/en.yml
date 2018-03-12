@@ -450,6 +450,8 @@ en:
         verify: Make sure the verification file is placed in the folder and click verify.
         note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
       verify_button: Verify
+    create:
+      duplicate_channel: "%{domain} is already present."
     check_for_https:
       alert: Check for HTTPS complete
     https_check:
