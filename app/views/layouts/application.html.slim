@@ -103,15 +103,15 @@ html
           - [:alert, :notice, :warning].each do |name|
             - {alert: 'danger', notice: 'info', warning: 'warning'}[name].tap do |flash_class|
               - if flash[name]
-                .alert.flash class="alert-#{flash_class}"
+                .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
                   = flash[name]
               - "#{name}_html_safe".tap do |html_safe_name|
                 - if flash[html_safe_name]
-                  .alert.flash class="alert-#{flash_class}"
+                  .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
                     == flash[html_safe_name]
               - "#{name}_model_errors".tap do |name|
                 - if flash[name] && flash[name].errors.any?
-                  .alert.flash class="alert-#{flash_class}"
+                  .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
                     p= t "activerecord.shared.errors"
                     - flash[name].errors.each do |attribute, message|
                       p

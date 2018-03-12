@@ -85,8 +85,8 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
         post site_channels_url, params: create_params
       end
 
-      assert_select('[data-test-panel-flash-message]') do |element|
-        assert_match("The domain you entered is already verified and added to a different account", element.text)
+      assert_select("[data-test-flash-message]") do |element|
+        assert_match(I18n.t("site_channels.create.duplicate_channel", domain: "verified.org"), element.text)
       end
     ensure
       Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
@@ -127,7 +127,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
         post site_channels_url, params: create_params
       end
 
-      assert_select('div#flash') do |element|
+      assert_select("[data-test-flash-message]") do |element|
         assert_match("newsite.org is already present.", element.text)
       end
     ensure
