@@ -71,11 +71,10 @@ class PublisherMailer < ApplicationMailer
 
     if @publisher.pending_email.blank?
       begin
-        raise "SMTP To address must not be blank for PublisherMailer#verify_email"
+        raise "SMTP To address must not be blank for PublisherMailer#verify_email for publisher #{@publisher.id}"
       rescue => e
         require 'sentry-raven'
-        Raven.capture_exception(e,
-                                publisher: @publisher)
+        Raven.capture_exception(e)
       end
     end
     mail(
