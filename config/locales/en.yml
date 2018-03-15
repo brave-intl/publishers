@@ -173,7 +173,7 @@ en:
       confirmation_link: Confirm your email change
       confirmation_link_help: Use this link to confirm that you would like to proceed with this change
     login_email:
-      subject: Brave Publisher login link
+      subject: Log In to Brave Payments
       body_html: |
         Click the private access link below to log in to your account with
         <strong>Brave Payments</strong>. This link can only be used once.
