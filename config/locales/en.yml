@@ -267,6 +267,7 @@ en:
       email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
       access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
     create_auth_token:
+      missing_email: We seem to be missing some info. Please make sure you provided an email address.
       unfound_alert_html: |
         Couldn't find a publisher with that email address. Please try again, or you may
         <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.

@@ -190,6 +190,12 @@ class PublishersController < ApplicationController
 
   def create_auth_token
     email = publisher_create_auth_token_params[:email]
+
+    if email.blank?
+      flash[:warning] = t(".missing_email")
+      return redirect_to new_auth_token_publishers_path
+    end
+
     @publisher = Publisher.new(publisher_create_auth_token_params)
     @should_throttle = should_throttle_create_auth_token? || params[:captcha]
     throttle_legit =
@@ -281,7 +287,7 @@ class PublishersController < ApplicationController
     if current_publisher.promo_stats_status == :update
       PublisherPromoStatsFetcher.new(publisher: current_publisher).perform
     end
-    
+
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     current_publisher.wallet
