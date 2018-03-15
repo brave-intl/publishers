@@ -4,6 +4,7 @@ import {
   submitForm
 } from '../utils/request';
 import dynamicEllipsis from '../utils/dynamicEllipsis';
+import '../userMenu';
 
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
