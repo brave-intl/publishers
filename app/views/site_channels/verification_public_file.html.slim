@@ -39,3 +39,4 @@
           .panel-controls
             = form_for(current_channel.details, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
               = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-wide btn-primary", :"data-piwik-action" => "PublicFileVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "PublicFileFlow")
+              = link_to(t("site_channels.shared.finish_verification_later"), home_publishers_path, class: "site-channels--finish-later")

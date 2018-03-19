@@ -16,3 +16,4 @@
 
       p.single-panel--footer
         = link_to(t(".review_options"), verification_choose_method_site_channel_path(current_channel), class: "btn btn-wide btn-primary", :"data-piwik-action" => "ReturnToOptionsClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
+        = link_to(t("site_channels.shared.finish_verification_later"), home_publishers_path, class: "site-channels--finish-later")
