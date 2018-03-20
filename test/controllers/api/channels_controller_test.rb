@@ -21,7 +21,7 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
     url = "/api/owners/#{URI.escape(publisher.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}"
 
-    assert_routing url, controller: "api/channels", action: "show", owner_id: publisher.owner_identifier, channel_id: channel.details.channel_identifier
+    assert_routing url, format: :json, controller: "api/channels", action: "show", owner_id: publisher.owner_identifier, channel_id: channel.details.channel_identifier
 
     get url
 
@@ -77,6 +77,52 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal 200, response.status
+  end
+
+  test "requires an owner" do
+    channel = channels(:small_media_group_to_verify)
+    publisher = channel.publisher
+
+    payload = {
+        verificationId: channel.id,
+        token: channel.details.verification_token,
+        verified: true,
+        reason: ""
+    }
+
+    refute channel.verified
+    patch "/api/owners/#{URI.escape('publishers#uuid:aaaaaaaa-0000-0000-0000-000000000000')}/channels/#{URI.escape(channel.details.channel_identifier)}/verifications", params: payload
+    assert_equal 404, response.status
+  end
+
+  test "can create site channels from json" do
+    owner = publishers(:small_media_group)
+
+    new_channel_details = {
+        "brave_publisher_id": "goodspud.com"
+    }
+
+    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels", as: :json, params: { channel: new_channel_details }
+
+    assert_equal 200, response.status
+
+    response_json = JSON.parse(response.body)
+    assert response_json["show_verification_status"]
+    assert_equal "goodspud.com", response_json["id"]
+  end
+
+  test "created site channel has created_via_api flag set" do
+    owner = publishers(:small_media_group)
+
+    new_channel_details = {
+        "brave_publisher_id": "goodspud.com"
+    }
+
+    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels", as: :json, params: { channel: new_channel_details }
+
+    assert_equal 200, response.status
+    channel = Channel.order(created_at: :asc).last
+    assert channel.created_via_api?
   end
 
 end

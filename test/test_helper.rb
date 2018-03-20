@@ -33,22 +33,38 @@ module ActiveSupport
   class TestCase
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
+    self.use_transactional_tests = true
 
     # Add more helper methods to be used by all tests here...
   end
 end
 
+module Capybara
+  module Rails
+    class TestCase < ::ActiveSupport::TestCase
+      self.use_transactional_tests = false
+
+      setup do
+        DatabaseCleaner.start
+      end
+
+      teardown do
+        DatabaseCleaner.clean
+      end
+
+    end
+  end
+end
+
 module ActionDispatch
   class IntegrationTest
-    self.use_transactional_tests = false
+    self.use_transactional_tests = true
 
     setup do
       WebMock.disable_net_connect!
-      DatabaseCleaner.start
     end
 
     teardown do
-      DatabaseCleaner.clean
       WebMock.allow_net_connect!
     end
 

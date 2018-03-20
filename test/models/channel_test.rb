@@ -133,6 +133,21 @@ class ChannelTest < ActiveSupport::TestCase
     assert_equal 'something happened', channel.verification_details
   end
 
+  test "verification_failed! updates verification status even with validation errors" do
+    channel = channels(:fake1)
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+
+    channel.verification_failed!('something happened')
+
+    refute channel.verified?
+    assert channel.verification_failed?
+    refute channel.verification_started?
+    assert_equal 'something happened', channel.verification_details
+  end
+
   test "verification_succeeded! updates verification status" do
     channel = channels(:default)
 

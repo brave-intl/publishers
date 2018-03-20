@@ -1,6 +1,7 @@
 import 'analytics';
 import 'modal';
 import 'copyButton';
+import 'userMenu';
 import 'utils/request';
 import 'u2f/registrationPage';
 import 'u2f/authenticationPage';

@@ -34,4 +34,77 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
     response_json = JSON.parse(response.body)
     assert_equal 4, response_json.length
   end
+
+  test "can create owners from json" do
+    new_owner = {
+        "email": "new_user@spud.com",
+        "name": "Alice the New",
+        "phone": "+16031230987",
+        "show_verification_status": true
+    }
+
+    post "/api/owners/", as: :json, params: { owner: new_owner }
+
+    assert_equal 200, response.status
+
+    response_json = JSON.parse(response.body)
+    assert response_json["show_verification_status"]
+    assert_equal "+16031230987", response_json["phone_normalized"]
+    assert_equal "Alice the New", response_json["name"]
+    assert_equal "new_user@spud.com", response_json["email"]
+  end
+
+  test "created owner has created_via_api flag set" do
+    new_owner = {
+        "email": "new_user@spud.com",
+        "name": "Alice the New",
+        "phone": "+16031230987",
+        "show_verification_status": true
+    }
+
+    post "/api/owners/", as: :json, params: { owner: new_owner }
+
+    assert_equal 200, response.status
+    owner = Publisher.order(created_at: :asc).last
+    assert owner.created_via_api?
+  end
+
+  test "will normalize phone numbers" do
+    new_owner = {
+        "email": "new_user@spud.com",
+        "name": "Alice the New",
+        "phone": "6031230987",
+        "show_verification_status": false
+    }
+
+    post "/api/owners/", as: :json, params: {owner: new_owner }
+
+    assert_equal 200, response.status
+
+    response_json = JSON.parse(response.body)
+
+    assert_equal "+16031230987", response_json["phone_normalized"]
+    assert_nil response_json["show_verification_status"]
+  end
+
+  test "will return validation errors" do
+    new_owner = {
+        "email": "new_user@spud.com",
+        "name": "Alice the New",
+        "phone": "6031230987",
+        "show_verification_status": false
+    }
+
+    post "/api/owners/", as: :json, params: {owner: new_owner }
+
+    assert_equal 200, response.status
+
+    new_owner["phone"] = "603thisisprivate"
+    post "/api/owners/", as: :json, params: {owner: new_owner }
+    assert_equal 422, response.status
+
+    response_json = JSON.parse(response.body)
+
+    assert_equal "Validation failed: Email has already been taken, Phone Number is an invalid number", response_json["message"]
+  end
 end

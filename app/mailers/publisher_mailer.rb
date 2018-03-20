@@ -68,22 +68,22 @@ class PublisherMailer < ApplicationMailer
   def verify_email(publisher)
     @publisher = publisher
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
-
-    if @publisher.pending_email.blank?
+    
+    if @publisher.pending_email.present?
+      mail(
+          to: @publisher.pending_email,
+          subject: default_i18n_subject
+      )
+    else
       begin
-        raise "SMTP To address must not be blank for PublisherMailer#verify_email"
+        raise "SMTP To address must not be blank for PublisherMailer#verify_email for publisher #{@publisher.id}"
       rescue => e
         require 'sentry-raven'
-        Raven.capture_exception(e,
-                                publisher: @publisher)
+        Raven.capture_exception(e)
       end
     end
-    mail(
-        to: @publisher.pending_email,
-        subject: default_i18n_subject
-    )
   end
-
+  
   # TODO: Refactor
   # Like the above but without the verify_email link
   def verify_email_internal(publisher)
