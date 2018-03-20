@@ -26,3 +26,13 @@
 .site-channels--padded-group {
   margin: $spacer*2 0;
 }
+
+.site-channels--finish-later {
+  padding-left: 40px;
+  color: $braveBrand;
+  &:hover,
+  &:focus {
+    color: $braveBrand-Dark;
+    text-decoration: none;
+  }
+}
