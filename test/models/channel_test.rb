@@ -43,7 +43,7 @@ class ChannelTest < ActiveSupport::TestCase
   end
 
   test "can get all visible site channels" do
-    assert_equal 2, publishers(:global_media_group).channels.visible_site_channels.length
+    assert_equal 4, publishers(:global_media_group).channels.visible_site_channels.length
   end
 
   test "can get all visible youtube channels" do
@@ -51,7 +51,7 @@ class ChannelTest < ActiveSupport::TestCase
   end
 
   test "can get all visible channels" do
-    assert_equal 4, publishers(:global_media_group).channels.visible.length
+    assert_equal 6, publishers(:global_media_group).channels.visible.length
   end
 
   test "can get all verified channels" do

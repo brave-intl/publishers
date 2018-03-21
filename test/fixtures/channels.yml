@@ -85,12 +85,25 @@ global_inprocess:
   details: global_inprocess_details (SiteChannelDetails)
   verified: false
 
+global_inprocess3:
+  publisher: global_media_group
+  details: global_inprocess3_details (SiteChannelDetails)
+  verified: false
+  verification_status: "started"
+
+global_inprocess4:
+  publisher: global_media_group
+  details: global_inprocess4_details (SiteChannelDetails)
+  verified: false
+  verification_status: "failed"
+
 global_abandoned:
   publisher: global_media_group
   created_at: <%= Time.now - 20.weeks %>
   updated_at: <%= Time.now - 20.weeks %>
   details: global_abandoned_details (SiteChannelDetails)
   verified: false
+  verification_status: "failed"
 
 small_media_group_to_delete:
   publisher: small_media_group
