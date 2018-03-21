@@ -87,7 +87,7 @@ These steps based on [directions at the omniauth-google-oauth2 gem](https://gith
 Setup a google API project:
 
 * Login to your Twitch account (dev), or the Brave Twitch account (staging, production)
-* Go to [https://dev.twitch.tv/dashboard](dev.twitch.tv/dashboard)
+* Go to [https://dev.twitch.tv/dashboard](https://dev.twitch.tv/dashboard)
 * Select "Get Started" for "App"
 * Give the project a name such as "publishers-dev"
 * Give the app a name and application category.
