@@ -97,7 +97,7 @@ class PublishersController < ApplicationController
     PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
 
     session[:created_publisher_id] = @publisher.id
-    redirect_to create_done_publishers_path, alert: t(".done")
+    redirect_to create_done_publishers_path, notice: t(".done")
   end
 
   def email_verified
