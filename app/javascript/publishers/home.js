@@ -3,6 +3,7 @@ import {
   pollUntilSuccess,
   submitForm
 } from '../utils/request';
+import fetch from '../utils/fetchPolyfill';
 import dynamicEllipsis from '../utils/dynamicEllipsis';
 import flash from '../utils/flash';
 
@@ -69,7 +70,7 @@ function checkUpholdStatus() {
     method: 'GET'
   };
 
-  return window.fetch('./status', options)
+  return fetch('./status', options)
     .then(function(response) {
       checkUpholdStatusCount += 1;
       if (response.status === 200 || response.status === 304) {
