@@ -53,7 +53,7 @@ function removeChannel(channelId) {
         addChannelPlaceholder.classList.remove("hidden");
       }
       flash.clear();
-      flash.append('warning', channelRow.getAttribute('data-remove-message'));
+      flash.append('info', channelRow.getAttribute('data-remove-message'));
     });
 }
 
