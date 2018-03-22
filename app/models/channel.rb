@@ -102,13 +102,7 @@ class Channel < ApplicationRecord
   end
 
   def verification_failed!(details = nil)
-    # Clear changes so we don't bypass validations when saving without checking them
-    self.reload
-
-    self.verified = false
-    self.verification_status = 'failed'
-    self.verification_details = details
-    self.save!(validate: false)
+    update!(verified: false, verification_status: 'failed', verification_details: details)
   end
 
   def verification_succeeded!

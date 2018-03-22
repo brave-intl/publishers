@@ -173,7 +173,7 @@ en:
       confirmation_link: Confirm your email change
       confirmation_link_help: Use this link to confirm that you would like to proceed with this change
     login_email:
-      subject: Log In to Brave Payments
+      subject: Brave Publisher login link
       body_html: |
         Click the private access link below to log in to your account with
         <strong>Brave Payments</strong>. This link can only be used once.
@@ -267,7 +267,6 @@ en:
       email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
       access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
     create_auth_token:
-      missing_email: We seem to be missing some info. Please make sure you provided an email address.
       unfound_alert_html: |
         Couldn't find a publisher with that email address. Please try again, or you may
         <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.
@@ -451,7 +450,6 @@ en:
         verify: Make sure the verification file is placed in the folder and click verify.
         note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
       verify_button: Verify
-      finish_verification_later: Complete Verification Later
     create:
       duplicate_channel: "%{domain} is already present."
     check_for_https:
