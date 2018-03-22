@@ -72,7 +72,7 @@ class PublishersController < ApplicationController
     if verified_publisher
       @publisher = verified_publisher
       PublisherLoginLinkEmailer.new(email: email).perform
-      flash.now[:alert] = t(".email_already_active", email: email)
+      flash.now[:notice] = t(".email_already_active", email: email)
       render :emailed_auth_token
     elsif @publisher.save
       PublisherMailer.verify_email(@publisher).deliver_later
