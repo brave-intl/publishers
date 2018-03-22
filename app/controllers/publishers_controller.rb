@@ -73,12 +73,10 @@ class PublishersController < ApplicationController
       @publisher = verified_publisher
       PublisherLoginLinkEmailer.new(email: email).perform
       flash.now[:alert] = t(".email_already_active", email: email)
-      params[:publisher_id] = @publisher.id
       render :emailed_auth_token
     elsif @publisher.save
       PublisherMailer.verify_email(@publisher).deliver_later
       PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-      params[:publisher_id] = @publisher.id
       render :emailed_auth_token
     else
       Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
