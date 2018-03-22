@@ -16,7 +16,7 @@ class PublishersController < ApplicationController
                new
                new_auth_token
                expired_auth_token
-               resend_email_verify_email)
+               resend_auth_email)
   before_action :require_unauthenticated_publisher,
     only: %i(sign_up
              create
@@ -56,6 +56,7 @@ class PublishersController < ApplicationController
     end
 
     @publisher = Publisher.new(pending_email: email)
+    @publisher_email = @publisher.pending_email
 
     @should_throttle = should_throttle_create? || params[:captcha]
     throttle_legit =
@@ -72,12 +73,13 @@ class PublishersController < ApplicationController
       @publisher = verified_publisher
       PublisherLoginLinkEmailer.new(email: email).perform
       flash.now[:alert] = t(".email_already_active", email: email)
-      render :create_auth_token
+      params[:publisher_id] = @publisher.id
+      render :emailed_auth_token
     elsif @publisher.save
       PublisherMailer.verify_email(@publisher).deliver_later
       PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-      session[:created_publisher_id] = @publisher.id
-      redirect_to create_done_publishers_path
+      params[:publisher_id] = @publisher.id
+      render :emailed_auth_token
     else
       Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
       flash[:warning] = t(".invalid_email")
@@ -88,16 +90,24 @@ class PublishersController < ApplicationController
   def create_done
     @publisher = Publisher.find(session[:created_publisher_id])
     @publisher_email = @publisher.pending_email
+        
+    render :emailed_auth_token
   end
 
-  def resend_email_verify_email
-    @publisher = Publisher.find(session[:created_publisher_id])
-
-    PublisherMailer.verify_email(@publisher).deliver_later
-    PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-
-    session[:created_publisher_id] = @publisher.id
-    redirect_to create_done_publishers_path, notice: t(".done")
+  def resend_auth_email    
+    @publisher = Publisher.find(params[:publisher_id])
+    
+    if @publisher.email.nil?
+      PublisherMailer.verify_email(@publisher).deliver_later
+      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      @publisher_email = @publisher.pending_email
+    else
+      PublisherMailer.login_email(@publisher).deliver_later
+      @publisher_email = @publisher.email
+    end
+    
+    flash.now[:notice] = t(".done")
+    render(:emailed_auth_token)
   end
 
   def email_verified
@@ -189,9 +199,9 @@ class PublishersController < ApplicationController
   end
 
   def create_auth_token
-    email = publisher_create_auth_token_params[:email]
+    @publisher_email = publisher_create_auth_token_params[:email].downcase
 
-    if email.blank?
+    if @publisher_email.blank?
       flash[:warning] = t(".missing_email")
       return redirect_to new_auth_token_publishers_path
     end
@@ -207,19 +217,23 @@ class PublishersController < ApplicationController
       return
     end
 
-    emailer = PublisherLoginLinkEmailer.new(email: email)
+    emailer = PublisherLoginLinkEmailer.new(email: @publisher_email)
 
     if emailer.perform
-      # Success shown in view #create_auth_token
+      # Success shown in view #emailed_auth_token
     else
       # Failed to find publisher
-      flash.now[:alert_html_safe] = t('.unfound_alert_html', {
-        new_publisher_path: sign_up_publishers_path(email: email),
-        create_publisher_path: publishers_path(email: email),
-        email: ERB::Util.html_escape(email)
+      flash.now[:alert_html_safe] = t('publishers.emailed_auth_token.unfound_alert_html', {
+        new_publisher_path: sign_up_publishers_path(email: @publisher_email),
+        create_publisher_path: publishers_path(email: @publisher_email),
+        email: ERB::Util.html_escape(@publisher_email)
       })
       render(:new_auth_token)
+      return
     end
+
+    @publisher = Publisher.where(email: @publisher_email).take
+    render :emailed_auth_token
   end
 
   def expired_auth_token
