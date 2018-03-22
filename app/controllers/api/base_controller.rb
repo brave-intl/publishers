@@ -15,6 +15,10 @@ class Api::BaseController < ActionController::API
 
   before_action :authenticate
 
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    render(json: { message: e.message }, status: :unprocessable_entity)
+  end
+
   private
 
   # before_action filter to protect API controller actions.
@@ -53,5 +57,10 @@ class Api::BaseController < ActionController::API
 
   def render_unauthorized
     render(json: { message: "authentication failed 🎷" }, status: 403)
+  end
+
+  def ensure_json_content_type
+    return if request.content_type == 'application/json'
+    render(json: { message: "Content-Type must be application/json" }, status: 406)
   end
 end

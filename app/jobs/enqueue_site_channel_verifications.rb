@@ -17,6 +17,6 @@ class EnqueueSiteChannelVerifications < ApplicationJob
 
   # Get unverified channel ids created recently.
   def recent_unverified_site_channels_ids
-    SiteChannelDetails.recent_unverified_site_channels(max_age: MAX_AGE).select(:brave_publisher_id).distinct.pluck("channels.id")
+    SiteChannelDetails.recent_ready_to_verify_site_channels(max_age: MAX_AGE).select(:brave_publisher_id).distinct.pluck("channels.id")
   end
 end

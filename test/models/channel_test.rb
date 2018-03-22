@@ -43,7 +43,7 @@ class ChannelTest < ActiveSupport::TestCase
   end
 
   test "can get all visible site channels" do
-    assert_equal 2, publishers(:global_media_group).channels.visible_site_channels.length
+    assert_equal 4, publishers(:global_media_group).channels.visible_site_channels.length
   end
 
   test "can get all visible youtube channels" do
@@ -51,7 +51,7 @@ class ChannelTest < ActiveSupport::TestCase
   end
 
   test "can get all visible channels" do
-    assert_equal 4, publishers(:global_media_group).channels.visible.length
+    assert_equal 6, publishers(:global_media_group).channels.visible.length
   end
 
   test "can get all verified channels" do
@@ -120,6 +120,21 @@ class ChannelTest < ActiveSupport::TestCase
 
   test "verification_failed! updates verification status" do
     channel = channels(:default)
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+
+    channel.verification_failed!('something happened')
+
+    refute channel.verified?
+    assert channel.verification_failed?
+    refute channel.verification_started?
+    assert_equal 'something happened', channel.verification_details
+  end
+
+  test "verification_failed! updates verification status even with validation errors" do
+    channel = channels(:fake1)
 
     refute channel.verified?
     refute channel.verification_failed?

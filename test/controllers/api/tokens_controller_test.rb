@@ -33,7 +33,7 @@ class Api::TokensControllerTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
 
     response_json = JSON.parse(response.body)
-    assert_equal 8, response_json.length
+    assert_equal 10, response_json.length
 
     details = site_channel_details(:to_verify_details)
     assert_match /#{details.channel.publisher.owner_identifier}/, response.body

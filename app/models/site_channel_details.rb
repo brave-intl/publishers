@@ -24,6 +24,11 @@ class SiteChannelDetails < ApplicationRecord
         .where("channels.created_at": max_age.ago..Time.now)
   }
 
+  scope :recent_ready_to_verify_site_channels, -> (max_age: 6.weeks) {
+    recent_unverified_site_channels(max_age: max_age).where("channels.verification_status": "started").
+        or(recent_unverified_site_channels(max_age: max_age).where("channels.verification_status": "failed"))
+  }
+
   # Channels with no verification_token will not be accessible once the user is no longer on the page, these
   # are considered abandoned. If we wait a day we can be reasonable sure the users session will have timed out.
   scope :abandoned, -> {
