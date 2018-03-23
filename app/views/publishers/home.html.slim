@@ -141,7 +141,7 @@ script id="choose-channel-type" type="text/html"
     )
 
 - current_publisher.channels.visible.each do |channel|
-  .row.channel-row id=("channel_row_#{channel.id}")
+  .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
     .col.col-details.col-md-12.col-xs-10.col-xs-center.col-sm-center
       div class=("sub-panel channel-panel channel-#{channel_verification_status(channel)}")
         .channel-panel--intro

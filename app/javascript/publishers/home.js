@@ -4,6 +4,7 @@ import {
   submitForm
 } from '../utils/request';
 import dynamicEllipsis from '../utils/dynamicEllipsis';
+import flash from '../utils/flash';
 
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
@@ -51,6 +52,8 @@ function removeChannel(channelId) {
         let addChannelPlaceholder = document.getElementById("add_channel_placeholder");
         addChannelPlaceholder.classList.remove("hidden");
       }
+      flash.clear();
+      flash.append('info', channelRow.getAttribute('data-remove-message'));
     });
 }
 

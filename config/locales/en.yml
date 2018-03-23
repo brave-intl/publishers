@@ -26,6 +26,7 @@ en:
     cancel: Cancel
     channel_created: Channel created.
     channel_not_found: Channel not found
+    channel_removed: Channel removed.
     continue: Continue
     download: Download
     existing_account: Already have an account?
