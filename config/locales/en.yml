@@ -530,7 +530,9 @@ en:
         that this may take a few days due to our current backlog.</p>
       review_options: I'd like to review my options
     verification_wordpress:
-      heading: Hello. It looks like you are using Wordpress!
+      escape_hatch_html: Not using wordpress, or unable to verify your site with the plugin? %{href}
+      verify_dns_record: Verify via a DNS record.
+      heading: Hello. It looks like you are using WordPress!
       install_plugin_html: |
         <p><strong><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a></strong>
         that makes the entire process a snap.</p>
