@@ -136,10 +136,12 @@ class Channel < ApplicationRecord
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
-    dup_channels = self.class.visible_site_channels
-                       .where('site_channel_details.brave_publisher_id': details.brave_publisher_id).where.not(id: id)
 
-    if dup_channels.any?
+    dupicate_unverified_channels = publisher.channels.visible_site_channels
+                                                     .where(site_channel_details: { brave_publisher_id: self.details.brave_publisher_id })
+                                                     .where.not(id: id)
+
+    if dupicate_unverified_channels.any?
       errors.add(:brave_publisher_id, "must be unique")
     end
   end
