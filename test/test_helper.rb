@@ -6,6 +6,7 @@ require "minitest/rails/capybara"
 require "webmock/minitest"
 require "chromedriver/helper"
 require 'sidekiq/testing'
+require 'mail_chimp/api'
 
 Sidekiq::Testing.fake!
 
@@ -21,6 +22,15 @@ Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new app,
     browser: :chrome,
     desired_capabilities: capabilities
+end
+
+VCR.configure do |config|
+  config.cassette_library_dir = "./test/cassettes"
+  config.hook_into :webmock
+  config.filter_sensitive_data("<ENCODED API KEY>") {
+    Base64.encode64(["apikey", Rails.application.secrets[:mailchimp_api_key]].join(':')).chomp
+  }
+  config.ignore_hosts '127.0.0.1', 'localhost'
 end
 
 class Capybara::Rails::TestCase

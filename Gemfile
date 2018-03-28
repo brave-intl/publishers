@@ -21,6 +21,9 @@ gem "email_validator", "~> 1.6"
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
+# MailChimp API Wrapper
+gem "gibbon"
+
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
@@ -122,6 +125,9 @@ group :test do
 
   # Locking to 5.10.3 to workaround issue in 5.11.1 (https://github.com/seattlerb/minitest/issues/730)
   gem 'minitest', '5.10.3'
+
+  # API recording and playback
+  gem "vcr"
 
   gem "webmock", "~> 3.0"
 
