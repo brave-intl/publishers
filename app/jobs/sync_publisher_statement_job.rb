@@ -6,7 +6,7 @@ class SyncPublisherStatementJob < ApplicationJob
     if first_attempt
       time_elapsed = Time.now.to_i - first_attempt
       if time_elapsed > 3.minutes
-        Raven.capture_message('SyncPublisherStatementJob timed out', publisher_statement_id: publisher_statement_id)
+        Raven.capture_message("SyncPublisherStatementJob timed out for publisher_statement_id #{publisher_statement_id}")
         return
       end
     else
