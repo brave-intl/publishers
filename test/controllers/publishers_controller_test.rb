@@ -26,7 +26,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         post(publishers_path, params: SIGNUP_PARAMS)
       end
     end
-    assert_redirected_to(create_done_publishers_path)
+    assert_response 200
+    assert_template :emailed_auth_token
+
     publisher = Publisher.order(created_at: :asc).last
     get(publisher_path(publisher))
     assert_redirected_to(root_path)
@@ -40,7 +42,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       end
     end
     assert_response :success
-    assert_template :create_auth_token
+    assert_template :emailed_auth_token
   end
 
   test "sends an email with an access link" do
@@ -199,7 +201,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   #     post(create_auth_token_publishers_path, params: params)
   #   end
   # end
-  #
+  
   # test "relogin for unverified publishers fails with the wrong email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
@@ -208,7 +210,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   #     post(create_auth_token_publishers_path, params: params)
   #   end
   # end
-  #
+  
   # test "relogin for verified publishers without an email sends to the publisher's email" do
   #   publisher = publishers(:verified)
   #   perform_enqueued_jobs do

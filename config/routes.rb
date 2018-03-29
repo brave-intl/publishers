@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     collection do
       get :sign_up
       get :create_done
-      post :resend_email_verify_email, action: :resend_email_verify_email
+      post :resend_auth_email, action: :resend_auth_email
       get :home
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
