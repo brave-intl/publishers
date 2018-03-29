@@ -1,5 +1,5 @@
 class RegisterPublisherWithMailChimpJob < ApplicationJob
-  queue_as :default
+  queue_as :low_priority
 
   def perform(publisher_id:, prior_email: nil)
     publisher = Publisher.find(publisher_id)

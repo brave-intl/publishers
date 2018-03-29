@@ -84,6 +84,10 @@ module ActionDispatch
   end
 end
 
+# Load rake tasks here so it only happens one time. If tasks are loaded again they will run once for each time loaded.
+require 'rake'
+Publishers::Application.load_tasks
+
 # One time test suite setup.
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean_with(:truncation)

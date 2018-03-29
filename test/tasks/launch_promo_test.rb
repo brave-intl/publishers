@@ -1,13 +1,6 @@
 require 'test_helper'
 
 class LaunchPromoTest < ActiveJob::TestCase
-
-  before do
-    require 'rake'
-    Rake::Task.define_task :environment
-    Rails.application.load_tasks
-  end
-
   # test "incorrect active_promo_id does not launch the promo" do
   #   # TO DO
 
