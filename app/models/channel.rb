@@ -50,6 +50,7 @@ class Channel < ApplicationRecord
   }
 
   scope :verified, -> { where(verified: true) }
+  scope :not_verified, -> { where(verified: false) }
 
   scope :by_channel_identifier, -> (identifier) {
     case identifier.split("#")[0]

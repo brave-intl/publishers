@@ -288,6 +288,8 @@ class PublishersController < ApplicationController
       PublisherPromoStatsFetcher.new(publisher: current_publisher).perform
     end
 
+    @last_non_verified_channel = current_publisher.channels.not_verified.last
+
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     current_publisher.wallet

@@ -318,6 +318,11 @@ en:
         one_more_step: One more step to complete...
         lets_finish: Let's Finish
       channel_balance_period: CURRENT PERIOD
+      verification_failed:
+        heading: Verification Failed
+        blurb: We could not verify your channel.
+        step1: "1. Check to make sure that the verification file is in the .well-known directory."
+        step2: "2. Make sure that the file name is <b>brave-payments-verification.txt</b>."
     new_auth_token:
       signup_prompt: Don't have an account?
       legacy_youtube_login: Legacy YouTube Login
