@@ -65,6 +65,23 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     refute_content page, 'Pending: Email address has been updated'
   end
 
+  test "publisher with unverified channel has a dialog popup" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:small_media_group_to_verify)
+
+    sign_in publisher
+    visit home_publishers_path
+    assert_content page, "Verification Failed"
+  end
+
+  test "publisher with no channels does not have a dialog popup"  do
+    publisher = publishers(:verified)
+    sign_in publisher
+
+    visit home_publishers_path
+    assert_no_content page, "Verification Failed"
+  end
+
   test "unverified channel can be removed after confirmation" do
     publisher = publishers(:small_media_group)
     channel = channels(:small_media_group_to_verify)
