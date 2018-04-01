@@ -72,6 +72,9 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     sign_in publisher
     visit home_publishers_path
 
+    # Close out of partial
+    find("#modal-close-button").click
+
     assert_content page, channel.publication_title
     find("#channel_row_#{channel.id}").click_link('Remove Channel')
     assert_content page, "Are you sure you want to remove this channel?"
@@ -85,6 +88,9 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
     sign_in publisher
     visit home_publishers_path
+
+    # Close out of partial
+    find("#modal-close-button").click
 
     assert_content page, channel.publication_title
     find("#channel_row_#{channel.id}").click_link('Remove Channel')
