@@ -121,6 +121,8 @@ class PublishersController < ApplicationController
       update_params[:agreed_to_tos] = Time.now
     end
 
+    update_mailchimp(publisher: @publisher)
+
     if @publisher.update(update_params)
       # let eyeshade know about the new Publisher
       begin
@@ -179,6 +181,8 @@ class PublishersController < ApplicationController
       PublisherMailer.confirm_email_change(publisher).deliver_later
       PublisherMailer.confirm_email_change_internal(publisher).deliver_later if PublisherMailer.should_send_internal_emails?
     end
+
+    update_mailchimp(publisher: publisher)
 
     respond_to do |format|
       format.json {
@@ -390,8 +394,16 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = publisher_created_through_youtube_auth
     end
 
+    if confirm_email.present?
+      prior_email = publisher.email
+    end
+
     if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: confirm_email).perform
       if confirm_email.present? && publisher.email == confirm_email && !publisher_created_through_youtube_auth
+
+        # Register the new email address with mailchimp, and clear the publisher interests on the old member
+        update_mailchimp(publisher: publisher, prior_email: prior_email)
+
         flash[:alert] = t(".email_confirmed", email: publisher.email)
       end
 
@@ -468,5 +480,9 @@ class PublishersController < ApplicationController
     return if current_publisher.two_factor_prompted_at.present? || two_factor_enabled?(current_publisher)
     current_publisher.update! two_factor_prompted_at: Time.now
     redirect_to prompt_two_factor_registrations_path
+  end
+
+  def update_mailchimp(publisher:, prior_email: nil)
+    RegisterPublisherWithMailChimpJob.perform_later(publisher_id: publisher.id, prior_email: prior_email)
   end
 end

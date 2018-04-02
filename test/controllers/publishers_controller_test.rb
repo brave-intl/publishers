@@ -313,6 +313,73 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_nil(publisher.pending_email)
   end
 
+  test "publisher updating contact email address will trigger RegisterPublisherWithMailChimpJobs" do
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+    assert_performed_with(job: RegisterPublisherWithMailChimpJob) do
+      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
+    end
+
+    # verify two emails (one internal) have been sent
+    assert ActionMailer::Base.deliveries.count == 2
+
+    # update the publisher email
+    assert_performed_with(job: RegisterPublisherWithMailChimpJob) do
+      patch(publishers_path,
+            params: { publisher: {pending_email: 'alice-pending@example.com' } },
+            headers: { 'HTTP_ACCEPT' => "application/json" })
+    end
+
+    publisher.reload
+
+    # verify pending email has been updated
+    assert_equal 'alice-pending@example.com', publisher.pending_email
+
+    # verify original email still is used
+    assert_equal 'alice@example.com', publisher.email
+
+    # verify 3 emails have been sent after update
+    assert ActionMailer::Base.deliveries.count == 5
+
+    # verify notification email sent to original address
+    email = ActionMailer::Base.deliveries.find do |message|
+      message.to == publisher.email
+      message.subject == I18n.t('publisher_mailer.notify_email_change.subject', publication_title: publisher.name)
+    end
+    assert_not_nil(email)
+
+    # verify brave gets an internal email copy of confirmation email
+    email = ActionMailer::Base.deliveries.find do |message|
+      message.to.first == Rails.application.secrets[:internal_email]
+      message.subject == "<Internal> #{I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: publisher.name)}"
+    end
+    assert_not_nil(email)
+
+    # verify confirmation email sent to pending address
+    email = ActionMailer::Base.deliveries.find do |message|
+      message.to == publisher.pending_email
+      message.subject == I18n.t('publisher_mailer.confirm_email_change.subject', publication_title: publisher.name)
+    end
+    assert_not_nil(email)
+
+    url = publisher_url(publisher, confirm_email: publisher.pending_email, token: publisher.authentication_token)
+    assert_enqueued_with(job: RegisterPublisherWithMailChimpJob) do
+      get(url)
+    end
+    publisher.reload
+
+    # verify email changes after confirmation
+    assert_equal('alice-pending@example.com', publisher.email)
+
+    # verify pending email is removed after confirmation
+    assert_nil(publisher.pending_email)
+  end
+
   test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
     publisher = publishers(:completed)
     sign_in publisher
