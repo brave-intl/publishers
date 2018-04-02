@@ -57,13 +57,6 @@ $brave-panels-borderRadius: 8px;
     justify-content: center;
     flex: 1;
 
-    &--email-sent {
-      @include media-breakpoint-up(md) {
-        background-image: url(asset-path("email-2@1x.png"));
-        background-position: top 59px right 60px;
-        background-repeat: no-repeat;
-      }
-    }
     &--platforms {
       padding-top: $spacer*2;
       padding-bottom: $spacer;
@@ -123,6 +116,16 @@ $brave-panels-borderRadius: 8px;
     padding: $spacer*4 $spacer*2;
     margin-top: auto;
     margin-bottom: auto;
+
+    &--email-sent {
+      padding-top: 125px;
+      margin-top: 30px;
+      @include media-breakpoint-up(md) {
+        background-image: url(asset-path("email-2@1x.png"));
+        background-position: center 20px;
+        background-repeat: no-repeat;
+      }
+    }
 
     align-items: center;
     justify-content: center;

@@ -135,6 +135,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+
   test "a publisher who was registered by youtube channel signup can't add additional site channels" do
     begin
       OmniAuth.config.test_mode = true
@@ -177,6 +178,43 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
         follow_redirect!
         assert_redirected_to change_email_publishers_path
       end
+    end
+  end
+
+  test "two different publishers can have the same unverifed site channel" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
+      create_params = {
+          channel: {
+              details_attributes: {
+                  brave_publisher_id_unnormalized: "newsite.org"
+              }
+          }
+      }
+
+      # create the first unverified site channel
+      publisher = publishers(:verified)
+
+      sign_in publisher
+      assert_difference("Channel.count", 1) do
+        post site_channels_url, params: create_params
+      end
+
+      sign_out publisher
+
+      # create the second instance of the unverified site channel
+      publisher = publishers(:completed)
+      sign_in publisher
+
+      assert_difference("Channel.count", 1) do
+        post site_channels_url, params: create_params
+      end
+
+      assert SiteChannelDetails.where(brave_publisher_id: "newsite.org").count, 2
+
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
   end
 

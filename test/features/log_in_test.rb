@@ -1,6 +1,7 @@
 require "test_helper"
 
 class LogInTest < Capybara::Rails::TestCase
+  include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
 
   test "can navigate to log in from landing page" do
@@ -19,7 +20,7 @@ class LogInTest < Capybara::Rails::TestCase
     fill_in 'publisher_email', with: email
     click_button('Log In')
 
-    assert_content page, "Login email sent! Please check your email for the login link."
+    assert_content page, "An email is on its way! We just sent an access link to #{email}"
   end
 
   test "after failed login, user can create an account instead" do
@@ -35,5 +36,19 @@ class LogInTest < Capybara::Rails::TestCase
     click_link("create an account with the email #{email}")
 
     assert_content page, "An email is on its way"
+  end
+
+  test "a user can resend log in email" do
+    email = 'alice@verified.org'
+
+    visit new_auth_token_publishers_path
+
+    assert_content page, "Log In"
+    fill_in 'publisher_email', with: email
+    click_button('Log In')
+
+    assert_enqueued_emails(1) do
+      click_link('try again')
+    end
   end
 end

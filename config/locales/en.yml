@@ -26,6 +26,7 @@ en:
     cancel: Cancel
     channel_created: Channel created.
     channel_not_found: Channel not found
+    channel_removed: Channel removed.
     continue: Continue
     download: Download
     existing_account: Already have an account?
@@ -266,19 +267,16 @@ en:
       invalid_email: There was an unexpected error creating your account. Please make sure you have provided a full email address.
       email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
       access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
-    create_auth_token:
+    emailed_auth_token:
       missing_email: We seem to be missing some info. Please make sure you provided an email address.
       unfound_alert_html: |
         Couldn't find a publisher with that email address. Please try again, or you may
         <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.
       heading: Login email sent!
       body: Please check your email for the login link.
-    create_done:
       heading: An email is on its way!
       body_html: |
-        <p>We're excited that you want to be in on Brave Payments. We just sent an email to
-        <strong class="email-address">%{email}</strong>. Click on the access link provided in the email to jump into
-        the verification process.</p>
+        <p>We just sent an access link to <strong class="email-address">%{email}</strong>.  Click on the link to log in to your account</p>
         <hr>
         <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.</p>
       try_again: try again
@@ -335,8 +333,8 @@ en:
       email_verification_required: To continue please confirm your email address.
     require_verified_publisher:
       verification_required: To continue please confirm your email address and name.
-    resend_email_verify_email:
-      done: The confirmation email has been resent.
+    resend_auth_email:
+      done: The access email has been resent.
     sign_up:
       heading: Join Brave Payments
     remove_channel_modal:
@@ -529,7 +527,9 @@ en:
         that this may take a few days due to our current backlog.</p>
       review_options: I'd like to review my options
     verification_wordpress:
-      heading: Hello. It looks like you are using Wordpress!
+      escape_hatch_html: Not using wordpress, or unable to verify your site with the plugin? %{href}
+      verify_dns_record: Verify via a DNS record.
+      heading: Hello. It looks like you are using WordPress!
       install_plugin_html: |
         <p><strong><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a></strong>
         that makes the entire process a snap.</p>
