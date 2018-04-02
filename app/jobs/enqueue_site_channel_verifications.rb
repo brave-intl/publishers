@@ -1,6 +1,6 @@
 # For Site Channels created recently, enqueue jobs to verify each channel
 class EnqueueSiteChannelVerifications < ApplicationJob
-  MAX_AGE = 6.weeks
+  MAX_AGE = Rails.application.secrets[:max_site_age].weeks
 
   queue_as :scheduler
 
