@@ -100,6 +100,10 @@ class SiteChannelsController < ApplicationController
     redirect_to(site_last_verification_method_path(@channel))
   end
 
+  def disable_verification_failed_modal
+    current_channel.update(shown_verification_failed_modal: true)
+  end
+
   def verify
     VerifySiteChannel.perform_later(channel_id: current_channel.id)
     current_channel.verification_started!

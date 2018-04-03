@@ -1,6 +1,14 @@
 class Channel < ApplicationRecord
   has_paper_trail
 
+  ##########################
+  # Constants
+  ##########################
+  VERIFICATION_STATUSES = [
+    STARTED = "started".freeze,
+    FAILED = "failed".freeze
+  ].freeze
+
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
@@ -23,7 +31,7 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
-  validates :verification_status, inclusion: { in: %w(started failed) }, allow_nil: true
+  validates :verification_status, inclusion: { in: VERIFICATION_STATUSES }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
@@ -51,6 +59,8 @@ class Channel < ApplicationRecord
 
   scope :verified, -> { where(verified: true) }
   scope :not_verified, -> { where(verified: false) }
+  scope :failed_verification, -> { where(verification_status: FAILED) }
+  scope :has_not_shown_verification_failed_modal, -> { failed_verification.where(shown_verification_failed_modal: false) }
 
   scope :by_channel_identifier, -> (identifier) {
     case identifier.split("#")[0]

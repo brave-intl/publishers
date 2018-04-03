@@ -11,7 +11,7 @@
 
           .row
             = link_to "Try Again", verify_site_channel_path(last_non_verified_channel.id), method: :patch, class: "btn btn-secondary btn-highlight", style: "margin-right:10px;", data: {disable_with: "Verifying..." }
-            button id="modal-close-button" aria-hidden="true" data-dismiss="modal" type="button" class="btn btn-primary" Close
+            = link_to "Close", disable_verification_failed_modal_site_channel_path(last_non_verified_channel.id), method: :patch, id: "modal-close-button", class: "btn btn-primary"
 
 javascript:
   (function() {
