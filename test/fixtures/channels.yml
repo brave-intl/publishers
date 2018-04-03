@@ -116,6 +116,7 @@ small_media_group_to_verify:
   updated_at: <%= Time.now - 20.weeks %>
   details: to_verify_details (SiteChannelDetails)
   verified: false
+  verification_status: 'failed'
 
 medium_media_group_abandoned_1:
   publisher: medium_media_group

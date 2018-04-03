@@ -109,15 +109,16 @@ class Channel < ApplicationRecord
   end
 
   def verification_started!
-    update!(verified: false, verification_status: 'started', verification_details: nil)
+    update!(verified: false, verification_status: STARTED, verification_details: nil)
   end
 
   def verification_failed!(details = nil)
     # Clear changes so we don't bypass validations when saving without checking them
     self.reload
+    PublisherMailer.verification_failed(self).deliver_later
 
     self.verified = false
-    self.verification_status = 'failed'
+    self.verification_status = FAILED
     self.verification_details = details
     self.save!(validate: false)
   end
@@ -127,11 +128,11 @@ class Channel < ApplicationRecord
   end
 
   def verification_started?
-    self.verification_status == 'started'
+    self.verification_status == STARTED
   end
 
   def verification_failed?
-    self.verification_status == 'failed'
+    self.verification_status == FAILED
   end
 
   private

@@ -68,7 +68,7 @@ class PublisherMailer < ApplicationMailer
   def verify_email(publisher)
     @publisher = publisher
     @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
-    
+
     if @publisher.pending_email.present?
       mail(
           to: @publisher.pending_email,
@@ -83,7 +83,7 @@ class PublisherMailer < ApplicationMailer
       end
     end
   end
-  
+
   # TODO: Refactor
   # Like the above but without the verify_email link
   def verify_email_internal(publisher)
@@ -160,6 +160,16 @@ class PublisherMailer < ApplicationMailer
       reply_to: @publisher.email,
       subject: "<Internal> #{t("publisher_mailer.verified_no_wallet.subject")}",
       template_name: "verified_no_wallet"
+    )
+  end
+
+  def verification_failed(channel)
+    @publisher = channel.publisher
+    @channel = channel
+    mail(
+      to: @publisher.email,
+      subject: "#{channel.details.publication_title} Verification Failed",
+      template_name: "verification_failed"
     )
   end
 
