@@ -115,7 +115,11 @@ class Channel < ApplicationRecord
   def verification_failed!(details = nil)
     # Clear changes so we don't bypass validations when saving without checking them
     self.reload
-    PublisherMailer.verification_failed(self).deliver_later
+
+    if manual_verification_running
+      PublisherMailer.verification_failed(self).deliver_later
+      self.update(manual_verification_running: false)
+    end
 
     self.verified = false
     self.verification_status = FAILED

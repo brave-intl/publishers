@@ -105,6 +105,7 @@ class SiteChannelsController < ApplicationController
   end
 
   def verify
+    current_channel.update(manual_verification_running: true)
     VerifySiteChannel.perform_later(channel_id: current_channel.id)
     current_channel.verification_started!
 
