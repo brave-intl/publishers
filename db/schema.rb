@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20180403031030) do
     t.string   "verification_status"
     t.string   "verification_details"
     t.boolean  "shown_verification_failed_modal", default: false
+    t.boolean  "manual_verification_running",     default: false
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true, using: :btree
     t.index ["publisher_id"], name: "index_channels_on_publisher_id", using: :btree
   end
