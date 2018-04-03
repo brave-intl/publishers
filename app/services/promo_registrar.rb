@@ -80,9 +80,9 @@ class PromoRegistrar < BaseApiClient
 
   def youtube_request_body(channel)
     {
-      "owner_id": @publisher.id,
+      "owner_id": @publisher.owner_identifier,
       "promo": @promo_id,
-      "channel": channel.channel_id, 
+      "channel": channel.details.channel_identifier, 
       "title": channel.publication_title,
       "channel_type": "youtube",
       "thumbnail_url": channel.details.thumbnail_url,
@@ -92,9 +92,9 @@ class PromoRegistrar < BaseApiClient
 
   def twitch_request_body(channel)
     {
-      "owner_id": @publisher.id,
+      "owner_id": @publisher.owner_identifier,
       "promo": @promo_id,
-      "channel": channel.channel_id, 
+      "channel": channel.details.channel_identifier, 
       "title": channel.publication_title,
       "channel_type": "twitch",
       "thumbnail_url": channel.details.thumbnail_url,
@@ -104,9 +104,9 @@ class PromoRegistrar < BaseApiClient
 
   def site_request_body(channel)
     {
-      "owner_id": @publisher.id,
+      "owner_id": @publisher.owner_identifier,
       "promo": @promo_id,
-      "channel": channel.channel_id, 
+      "channel": channel.details.channel_identifier, 
       "title": channel.publication_title,
       "channel_type": "website",
     }.to_json
