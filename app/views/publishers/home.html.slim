@@ -49,7 +49,7 @@ script id="choose-channel-type" type="text/html"
             .promo-item-content.promo-item-content-white.promo-item-content-header
               = t("promo.dashboard.downloaded").upcase
             .promo-item-content.promo-item-content-white.promo-item-content-number
-              = total_possible_referrals(current_publisher)
+              = total_referral_downloads(current_publisher)
         - else
           .promo-panel-item.promo-panel-item-alert
             #promo-panel-alert
