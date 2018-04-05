@@ -18,13 +18,13 @@ class PromoRegistrationGetter < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/1/promo/publishers?channel=#{@channel.details.channel_identifier}")
+      request.url("/api/1/promo/publishers?channel=#{URI.escape(@channel.details.channel_identifier)}")
     end
     registrations =  JSON.parse(response.body)
     referral_code = referral_code_for_promo_id(registrations)
     
     if should_update_channel_owner_on_promo_server(registrations)
-      PromoChannelOwnerUpdater.new(publisher_id: @publisher.owner_id, referral_code: referral_code).perform
+      PromoChannelOwnerUpdater.new(publisher_id: @publisher.owner_identifier, referral_code: referral_code).perform
     end
     
     referral_code

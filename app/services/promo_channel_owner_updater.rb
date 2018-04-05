@@ -18,8 +18,8 @@ class PromoChannelOwnerUpdater < BaseApiClient
     end
   rescue => e
     require "sentry-raven"
-    Rails.logger.error("PromoChannelOwnerUpdater #perform error: #{e}, publisher: #{@publisher.id}")
-    Raven.capture_exception("PromoChannelOwnerUpdater #perform error: #{e}, publisher: #{@publisher.id}")
+    Rails.logger.error("PromoChannelOwnerUpdater #perform error: #{e}, publisher: #{@publisher_id}")
+    Raven.capture_exception("PromoChannelOwnerUpdater #perform error: #{e}, publisher: #{@publisher_id}")
     nil
   end
 
