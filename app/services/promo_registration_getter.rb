@@ -24,7 +24,7 @@ class PromoRegistrationGetter < BaseApiClient
     referral_code = referral_code_for_promo_id(registrations)
     
     if should_update_channel_owner_on_promo_server(registrations)
-      PromoChannelOwnerUpdater.new(publisher_id: @publisher.owner_identifier, referral_code: referral_code).perform
+      PromoChannelOwnerUpdater.new(publisher: @publisher, referral_code: referral_code).perform
     end
     
     referral_code

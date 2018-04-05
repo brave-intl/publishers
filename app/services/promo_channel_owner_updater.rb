@@ -2,9 +2,14 @@
 class PromoChannelOwnerUpdater < BaseApiClient
   include PromosHelper
 
-  def initialize(publisher_id: "removed", referral_code:)
-    @publisher_id = publisher_id
-    @referral_code = referral_code # The brave_publisher_id or youtube channel id, not uuid
+  def initialize(publisher: "removed", referral_code:)
+    if publisher == "removed"
+      @publisher_id = "removed"
+    else
+      @publisher_id = publisher.owner_identifier
+    end
+
+    @referral_code = referral_code
   end
 
   def perform

@@ -39,3 +39,11 @@ joe_yt1_details:
   youtube_channel_id: "joeddfsads"
   title: "Joe's awesome stuff"
   thumbnail_url: "https://some_image_host.com/some_image.png"
+
+bart_yt_details:
+  auth_user_id: "bart515"
+  auth_email: "bart@pages.plusgoogle.com"
+  auth_provider: "google_oauth2"
+  youtube_channel_id: "ycS1032"
+  title: "Bart's Parody Music Videos"
+  thumbnail_url: "https://some_image_host.com/some_image.png"

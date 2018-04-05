@@ -8,29 +8,14 @@ class LaunchPromoTest < ActiveJob::TestCase
     Rails.application.load_tasks
   end
 
-  # test "incorrect active_promo_id does not launch the promo" do
-  #   # TO DO
-
-  #   # ?.any_instance.stubs(:active_promo_id).returns("invalid-promo-id")
-
-  #   # We can't stub this method, maybe we should consider moving rake task logic
-  #   # into a service/lib/job and call it from within the task
-
-  #   # assert_difference("Publisher.where.not(promo_token_2018q1: nil).count", 0) do
-  #   #   assert_difference("ActionMailer::Base.deliveries.count" , 0) do
-  #   #     Rake::Task["promo:launch_promo"].invoke
-  #   #   end
-  #   # end
+  # test "generates a promo token and sends email to each publisher" do
+  #   assert_difference("Publisher.where.not(promo_token_2018q1: nil).count", Publisher.where.not(email: nil).count) do
+  #     assert_enqueued_jobs(Publisher.where.not(email: nil).count) do
+  #       Rake::Task["promo:launch_promo"].invoke
+  #       Rake::Task["promo:launch_promo"].reenable
+  #     end
+  #   end
   # end
-
-  test "generates a promo token and sends email to each publisher" do
-    assert_difference("Publisher.where.not(promo_token_2018q1: nil).count", Publisher.where.not(email: nil).count) do
-      assert_enqueued_jobs(Publisher.where.not(email: nil).count) do
-        Rake::Task["promo:launch_promo"].invoke
-        Rake::Task["promo:launch_promo"].reenable
-      end
-    end
-  end
 
   test "only sends one email to each publisher if run twice (idempotence)" do
     publisher_one = publishers(:completed).dup

@@ -142,3 +142,8 @@ joe_yt1:
   publisher: joe_the_only_yt_verified
   details: joe_yt1_details (YoutubeChannelDetails)
   verified: true
+
+promo_registered_channel:
+  publisher: bart_the_promo_enabled
+  verified: true
+  details: bart_yt_details (YoutubeChannelDetails)

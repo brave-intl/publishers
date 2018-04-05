@@ -157,3 +157,13 @@ joe_the_only_yt_verified:
   visible: true
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
+
+bart_the_promo_enabled:
+  email: "bart@example.com"
+  name: "Bart"
+  phone: "5555555551"
+  phone_normalized: "+5555555551"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  promo_enabled_2018q1: true
+  promo_token_2018q1: fg2j023
