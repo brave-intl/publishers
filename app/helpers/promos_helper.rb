@@ -17,7 +17,7 @@ module PromosHelper
   end
 
   def offline_promo_stats
-    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)], "aggregate"=> {"downloaded"=> 200, "finalized"=> 30}}}
+    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}, "aggregate"=> {"downloads"=> 200, "finalized"=> 30}}
   end
 
   def total_referral_downloads(publisher)
@@ -25,7 +25,7 @@ module PromosHelper
     if publisher.promo_stats_2018q1.blank?
       return 0
     else
-      return stats["series"]["aggregate"]["downloaded"]
+      return stats["aggregate"]["downloads"]
     end
   end
 
@@ -34,7 +34,7 @@ module PromosHelper
     if publisher.promo_stats_2018q1.blank?
       return 0
     else
-      return stats["series"]["aggregate"]["finalized"]
+      return stats["aggregate"]["finalized"]
     end
   end
 
