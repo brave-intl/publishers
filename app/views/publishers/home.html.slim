@@ -40,16 +40,36 @@ script id="choose-channel-type" type="text/html"
             = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
               = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
         - elsif current_publisher.has_verified_channel?
-          .promo-panel-item.promo-panel-item-info
-            .promo-item-content.promo-item-content-progress
-              = t("promo.dashboard.promo_progress").upcase
-            .promo-item-content.promo-item-content-tos
-              = t("promo.dashboard.dashboard_tos_html")
-          #promo-downloaded.promo-panel-item
-            .promo-item-content.promo-item-content-white.promo-item-content-header
-              = t("promo.dashboard.downloaded").upcase
-            .promo-item-content.promo-item-content-white.promo-item-content-number
-              = total_referral_downloads(current_publisher)
+          .promo-flex-col
+            .promo-flex-row.promo-flex-row-main
+              .promo-flex-col.promo-panel-title
+                .promo-panel-title-item
+                  =t("promo.dashboard.referral").upcase
+                .promo-panel-title-item
+                  =t("promo.dashboard.promo").upcase
+              .promo-flex-col.promo-flex-col-downloaded
+                .promo-panel-header
+                  =t("promo.dashboard.downloaded").upcase
+                .promo-panel-number
+                  = total_referral_downloads(current_publisher)
+              .promo-flex-col.promo-flex-col-confirmed
+                .promo-panel-header
+                  =t("promo.dashboard.confirmed").upcase
+                .promo-panel-number
+                  = confirmed_referral_downloads(current_publisher)
+              - if current_publisher.wallet.present?
+                .promo-flex-col.promo-flex-col-earned
+                  .promo-panel-header
+                    =t("promo.dashboard.earned").upcase
+                  .promo-panel-number
+                      = bat_earned_in_promo(current_publisher)
+                      span.promo-panel-bat
+                        =t("promo.dashboard.bat").upcase
+            .promo-flex-row.promo-flex-row-sub
+              - if current_publisher.wallet.present?
+                =t("promo.dashboard.check_statement")
+              - else
+                =t("promo.dashboard.create_uphold_wallet")
         - else
           .promo-panel-item.promo-panel-item-alert
             #promo-panel-alert

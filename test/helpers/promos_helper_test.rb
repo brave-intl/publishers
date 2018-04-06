@@ -8,7 +8,7 @@ class PromosHelperTest < ActionView::TestCase
     total_referral_downloads = total_referral_downloads(publisher)
     assert_equal total_referral_downloads, 200
     
-    qualified_referral_downloads = qualified_referral_downloads(publisher)
-    assert_equal qualified_referral_downloads, 30
+    confirmed_referral_downloads = confirmed_referral_downloads(publisher)
+    assert_equal confirmed_referral_downloads, 30
   end
 end

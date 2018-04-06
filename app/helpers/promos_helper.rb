@@ -29,7 +29,7 @@ module PromosHelper
     end
   end
 
-  def qualified_referral_downloads(publisher)
+  def confirmed_referral_downloads(publisher)
     stats = publisher.promo_stats_2018q1
     if publisher.promo_stats_2018q1.blank?
       return 0
@@ -77,5 +77,13 @@ module PromosHelper
     else
       raise
     end
+  end
+
+  def bat_earned_in_promo(publisher)
+    exchange_rate = publisher.wallet.try(:wallet_json)["rates"]["USD"]
+    confirmed_referral = confirmed_referral_downloads(publisher)
+    usd_earned = confirmed_referral * 5
+    bat_earned = (usd_earned * exchange_rate).round(1)
+    bat_earned
   end
 end
