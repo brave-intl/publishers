@@ -47,8 +47,8 @@ module PublishersHelper
   end
 
   def publisher_converted_balance(publisher)
-    currency = publisher_default_currency(publisher)
-    return if currency == "BAT"
+    currency = publisher.default_currency
+    return if currency == "BAT" || currency.blank?
     if balance = publisher.wallet && publisher.wallet.contribution_balance
       converted_amount = '%.2f' % balance.convert_to(currency)
       I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
@@ -111,13 +111,15 @@ module PublishersHelper
     Rails.application.secrets[:terms_of_service_url]
   end
 
-  def publisher_default_currency(publisher)
-    publisher.default_currency.present? ? publisher.default_currency : 'BAT'
-  end
-
   def publisher_available_currencies(publisher)
     available_currencies = publisher.wallet.try(:wallet_details).try(:[], 'availableCurrencies')
-    available_currencies.blank? ? ['BAT'] : available_currencies
+    if available_currencies.blank?
+      available_currencies = ['BAT']
+    end
+    if publisher.default_currency.blank?
+      available_currencies.unshift(['-- Select currency --', nil])
+    end
+    available_currencies
   end
 
   def publisher_verification_status(publisher)
