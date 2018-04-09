@@ -180,6 +180,10 @@ class PublishersController < ApplicationController
       PublisherMailer.confirm_email_change_internal(publisher).deliver_later if PublisherMailer.should_send_internal_emails?
     end
 
+    if success && update_params[:default_currency]
+      UploadDefaultCurrencyJob.perform_later(publisher_id: publisher.id)
+    end
+
     respond_to do |format|
       format.json {
         if success

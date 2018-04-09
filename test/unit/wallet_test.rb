@@ -25,7 +25,7 @@ class WalletTest < ActiveSupport::TestCase
         "wallet" => {
             "provider" => "uphold",
             "authorized" => true,
-            "preferredCurrency" => 'USD',
+            "defaultCurrency" => 'USD',
             "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       },
@@ -57,7 +57,7 @@ class WalletTest < ActiveSupport::TestCase
   end
 
   test "supports wallet details preferred currency" do
-    assert_equal('USD', test_wallet.wallet_details['preferredCurrency'])
+    assert_equal('USD', test_wallet.wallet_details['defaultCurrency'])
   end
 
   test "supports wallet details available currencies" do
