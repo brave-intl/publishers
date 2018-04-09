@@ -113,9 +113,6 @@ module PublishersHelper
 
   def publisher_available_currencies(publisher)
     available_currencies = publisher.wallet.try(:wallet_details).try(:[], 'availableCurrencies')
-    if available_currencies.blank?
-      available_currencies = ['BAT']
-    end
     if publisher.default_currency.blank?
       available_currencies.unshift(['-- Select currency --', nil])
     end
