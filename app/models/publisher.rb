@@ -88,7 +88,7 @@ class Publisher < ApplicationRecord
 
       # Initialize the default_currency from the wallet, if it exists
       if self.default_currency.nil?
-        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'preferredCurrency')
+        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'defaultCurrency')
         if default_currency_code
           self.default_currency = default_currency_code
           save_needed = true
