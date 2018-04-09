@@ -78,12 +78,4 @@ module PromosHelper
       raise
     end
   end
-
-  def bat_earned_in_promo(publisher)
-    exchange_rate = publisher.wallet.try(:wallet_json)["rates"]["USD"]
-    confirmed_referral = confirmed_referral_downloads(publisher)
-    usd_earned = confirmed_referral * 5
-    bat_earned = (usd_earned * exchange_rate).round(1)
-    bat_earned
-  end
 end

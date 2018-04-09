@@ -57,19 +57,8 @@ script id="choose-channel-type" type="text/html"
                   =t("promo.dashboard.confirmed").upcase
                 .promo-panel-number
                   = confirmed_referral_downloads(current_publisher)
-              - if current_publisher.wallet.present?
-                .promo-flex-col.promo-flex-col-earned
-                  .promo-panel-header
-                    =t("promo.dashboard.earned").upcase
-                  .promo-panel-number
-                      = bat_earned_in_promo(current_publisher)
-                      span.promo-panel-bat
-                        =t("promo.dashboard.bat").upcase
             .promo-flex-row.promo-flex-row-sub
-              - if current_publisher.wallet.present?
                 =t("promo.dashboard.check_statement")
-              - else
-                =t("promo.dashboard.create_uphold_wallet")
         - else
           .promo-panel-item.promo-panel-item-alert
             #promo-panel-alert
