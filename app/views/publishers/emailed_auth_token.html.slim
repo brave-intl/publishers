@@ -5,5 +5,8 @@
       h3.single-panel--headline= t ".heading"
 
       .col-small-centered
+        - if @should_throttle
+          .form-group
+            = recaptcha_tags
         = t ".body_html", email: @publisher_email, try_again_link: link_to(t(".try_again"), "#", onclick: "document.getElementById('resend_email_form').submit();")
         = form_tag resend_auth_email_publishers_path(publisher_id: @publisher.id), method: "post", class: "hidden", id: "resend_email_form"
