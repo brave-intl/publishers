@@ -17,6 +17,7 @@ class PublisherNotifier < BaseService
   end
 
   def perform
+    return unless should_send_notifications?
     PublisherMailer.public_send(mailer_method, @publisher, notification_params).deliver_later
     if PublisherMailer.should_send_internal_emails? && PublisherMailer.respond_to?(mailer_method_internal)
       PublisherMailer.public_send(mailer_method_internal, @publisher, notification_params).deliver_later
@@ -34,5 +35,9 @@ class PublisherNotifier < BaseService
 
   def mailer_method_internal
     "#{mailer_method}_internal".to_sym
+  end
+
+  def should_send_notifications?
+    Rails.application.secrets[:should_send_notifications]
   end
 end
