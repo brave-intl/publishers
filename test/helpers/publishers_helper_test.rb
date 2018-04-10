@@ -60,7 +60,7 @@ class PublishersHelperTest < ActionView::TestCase
         "wallet" => {
           "provider" => "uphold",
           "authorized" => true,
-          "preferredCurrency" => 'USD',
+          "defaultCurrency" => 'USD',
           "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       }
@@ -111,7 +111,7 @@ class PublishersHelperTest < ActionView::TestCase
         "wallet" => {
           "provider" => "uphold",
           "authorized" => true,
-          "preferredCurrency" => 'USD',
+          "defaultCurrency" => 'USD',
           "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       }
