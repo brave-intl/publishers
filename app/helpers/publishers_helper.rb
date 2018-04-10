@@ -119,31 +119,6 @@ module PublishersHelper
     available_currencies
   end
 
-  def publisher_verification_status(publisher)
-    publisher.verified? ? :verified : :unverified
-  end
-
-  def publisher_verification_status_description(publisher)
-    case publisher_verification_status(publisher)
-      when :verified
-        I18n.t("publishers.shared.verified")
-      when :unverified
-        I18n.t("helpers.publisher.not_verified")
-    end
-  end
-
-  def publisher_verification_file_content(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_file_content
-  end
-
-  def publisher_verification_file_directory(publisher)
-    "<span class=\"strong-line\">https:</span>//#{publisher.brave_publisher_id}/.well-known/"
-  end
-
-  def publisher_verification_file_url(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
-  end
-
   # Overall publisher status combining verification and uphold wallet connection
   def publisher_status(publisher)
     if publisher.verified?

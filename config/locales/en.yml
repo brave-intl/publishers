@@ -108,7 +108,6 @@ en:
         twitch: Twitch
         unknown: the website
       create_uphold_wallet: Create Uphold Wallet
-      not_verified: Unverified
       reconnect_to_uphold: Reconnect to Uphold
       statement_periods:
         past_7_days: Past 7 days
