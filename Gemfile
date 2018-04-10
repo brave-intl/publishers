@@ -27,6 +27,9 @@ gem "lograge", "~> 0.4"
 # Dependency for rails
 gem "nokogiri", "~> 1.8.2"
 
+# Open Graph tag
+gem "meta-tags"
+
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
 
