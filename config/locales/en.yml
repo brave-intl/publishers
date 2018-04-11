@@ -302,6 +302,7 @@ en:
         deposit_currency_label: "Current deposit currency:"
         deposit_currency: "BAT to "
         check_balance: Check Balance
+        no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
       statements:
         heading: Statements
         generate: Generate
