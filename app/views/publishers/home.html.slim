@@ -40,16 +40,25 @@ script id="choose-channel-type" type="text/html"
             = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
               = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
         - elsif current_publisher.has_verified_channel?
-          .promo-panel-item.promo-panel-item-info
-            .promo-item-content.promo-item-content-progress
-              = t("promo.dashboard.promo_progress").upcase
-            .promo-item-content.promo-item-content-tos
-              = t("promo.dashboard.dashboard_tos_html")
-          #promo-downloaded.promo-panel-item
-            .promo-item-content.promo-item-content-white.promo-item-content-header
-              = t("promo.dashboard.downloaded").upcase
-            .promo-item-content.promo-item-content-white.promo-item-content-number
-              = total_possible_referrals(current_publisher)
+          .promo-flex-col
+            .promo-flex-row.promo-flex-row-main
+              .promo-flex-col.promo-panel-title
+                .promo-panel-title-item
+                  =t("promo.dashboard.referral").upcase
+                .promo-panel-title-item
+                  =t("promo.dashboard.promo").upcase
+              .promo-flex-col.promo-flex-col-downloaded
+                .promo-panel-header
+                  =t("promo.dashboard.downloaded").upcase
+                .promo-panel-number
+                  = total_referral_downloads(current_publisher)
+              .promo-flex-col.promo-flex-col-confirmed
+                .promo-panel-header
+                  =t("promo.dashboard.confirmed").upcase
+                .promo-panel-number
+                  = confirmed_referral_downloads(current_publisher)
+            .promo-flex-row.promo-flex-row-sub
+                =t("promo.dashboard.check_statement")
         - else
           .promo-panel-item.promo-panel-item-alert
             #promo-panel-alert
@@ -73,11 +82,15 @@ script id="choose-channel-type" type="text/html"
         - if current_publisher.uphold_status == :access_parameters_acquired || current_publisher.uphold_status == :verified
           .panel-section#uphold_dashboard class=(uphold_status_class(current_publisher) + (show_uphold_dashboard?(current_publisher) ? '' : ' hidden'))
             .panel-section
-              = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
-                .deposit-currency-label= t ".uphold.deposit_currency_label"
-                .deposit-currency
-                  span= t ".uphold.deposit_currency"
-                  span#default_currency_code= f.select(:default_currency, options_for_select(publisher_available_currencies(current_publisher), current_publisher.default_currency))
+              - available_currencies = publisher_available_currencies(current_publisher)
+              - if available_currencies
+                = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
+                  .deposit-currency-label= t ".uphold.deposit_currency_label"
+                  .deposit-currency
+                    span= t ".uphold.deposit_currency"
+                    span#default_currency_code= f.select(:default_currency, options_for_select(available_currencies, current_publisher.default_currency))
+              - else
+                .unavailable-currencies= t ".uphold.no_currencies_available"
             = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     .sub-panel.dashboard-panel
