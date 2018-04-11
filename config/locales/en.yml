@@ -210,6 +210,9 @@ en:
       claim_funds:
         heading: Ready to claim your funds?
         body: To claim your funds, please visit the Publishers website to submit your payment information using the link below.
+    verification_failed:
+      body_subject: "We could not verify your channel %{publication_title}"
+      instruction: Please make sure the verification file is in the .well-known folder, and the file name is **brave-payments-verification.txt**.
     verified_no_wallet:
       subject: Please create your new wallet to continue receiving funds
       body_html: |
@@ -316,6 +319,11 @@ en:
         one_more_step: One more step to complete...
         lets_finish: Let's Finish
       channel_balance_period: CURRENT PERIOD
+      verification_failed:
+        heading: Verification Failed
+        blurb: We could not verify your channel.
+        step1: "1. Check to make sure that the verification file is in the .well-known directory."
+        step2: "2. Make sure that the file name is <b>brave-payments-verification.txt</b>."
     new_auth_token:
       signup_prompt: Don't have an account?
       legacy_youtube_login: Legacy YouTube Login

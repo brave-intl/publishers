@@ -1,6 +1,14 @@
 class Channel < ApplicationRecord
   has_paper_trail
 
+  ##########################
+  # Constants
+  ##########################
+  VERIFICATION_STATUSES = [
+    STARTED = "started".freeze,
+    FAILED = "failed".freeze
+  ].freeze
+
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
@@ -23,7 +31,7 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
-  validates :verification_status, inclusion: { in: %w(started failed) }, allow_nil: true
+  validates :verification_status, inclusion: { in: VERIFICATION_STATUSES }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
@@ -50,6 +58,9 @@ class Channel < ApplicationRecord
   }
 
   scope :verified, -> { where(verified: true) }
+  scope :not_verified, -> { where(verified: false) }
+  scope :failed_verification, -> { where(verification_status: FAILED) }
+  scope :has_not_shown_verification_failed_modal, -> { failed_verification.where(shown_verification_failed_modal: false) }
 
   scope :by_channel_identifier, -> (identifier) {
     case identifier.split("#")[0]
@@ -98,15 +109,20 @@ class Channel < ApplicationRecord
   end
 
   def verification_started!
-    update!(verified: false, verification_status: 'started', verification_details: nil)
+    update!(verified: false, verification_status: STARTED, verification_details: nil)
   end
 
   def verification_failed!(details = nil)
     # Clear changes so we don't bypass validations when saving without checking them
     self.reload
 
+    if manual_verification_running
+      PublisherMailer.verification_failed(self).deliver_later
+      self.update(manual_verification_running: false)
+    end
+
     self.verified = false
-    self.verification_status = 'failed'
+    self.verification_status = FAILED
     self.verification_details = details
     self.save!(validate: false)
   end
@@ -116,11 +132,11 @@ class Channel < ApplicationRecord
   end
 
   def verification_started?
-    self.verification_status == 'started'
+    self.verification_status == STARTED
   end
 
   def verification_failed?
-    self.verification_status == 'failed'
+    self.verification_status == FAILED
   end
 
   private

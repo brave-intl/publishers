@@ -1,0 +1,21 @@
+.col.col-center.col-xs-12.col-sm-10.col-md-10.col-lg-10.modal id="modal-verification-failed" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        center
+          h4.modal-title Verification Failed
+          br
+          p We could not verify your channel. #{last_non_verified_channel.details_type} TODO
+          p 1. Check to make sure that the verification file is in the .well-known directory.
+          p 2. Make sure that the file name is <b>brave-payments-verification.txt</b>.
+
+          .row
+            = link_to "Try Again", verify_site_channel_path(last_non_verified_channel.id), method: :patch, class: "btn btn-secondary btn-highlight", style: "margin-right:10px;", data: {disable_with: "Verifying..." }
+            = link_to "Close", disable_verification_failed_modal_site_channel_path(last_non_verified_channel.id), method: :patch, id: "modal-close-button", class: "btn btn-primary"
+
+javascript:
+  (function() {
+        document.getElementById("modal-close-button").onclick = function() { 
+          document.getElementById("modal-verification-failed").style.display = 'none';
+        };
+    })();

@@ -51,6 +51,7 @@ Rails.application.routes.draw do
       patch :update_unverified
       patch :check_for_https
       patch :verify
+      patch :disable_verification_failed_modal
       get :download_verification_file
       get :verification_choose_method
       get :verification_dns_record

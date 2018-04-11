@@ -16,6 +16,8 @@ noscript
 script id="choose-channel-type" type="text/html"
   = render "home_modal__choose_channel_type"
 
+= render 'publishers/home/modal_verification_failed', last_non_verified_channel: @last_non_verified_channel if @last_non_verified_channel.present?
+
 .row
   .col.col-details.col-md-6.col-xs-10.col-xs-center.col-sm-center
     h4.balance-header = t ".balance_pending"
