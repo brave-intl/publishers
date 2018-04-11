@@ -17,17 +17,24 @@ module PromosHelper
   end
 
   def offline_promo_stats
-    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}}
+    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}, "aggregate"=> {"downloads"=> 200, "finalized"=> 30}}
   end
 
-  def total_possible_referrals(publisher)
+  def total_referral_downloads(publisher)
     stats = publisher.promo_stats_2018q1
     if publisher.promo_stats_2018q1.blank?
       return 0
     else
-      downloads_for_time_periods = stats["series"]["values"]  
-      total_downloads = downloads_for_time_periods.inject(0) {|sum, downloads_for_period| sum + downloads_for_period}
-      return total_downloads
+      return stats["aggregate"]["downloads"]
+    end
+  end
+
+  def confirmed_referral_downloads(publisher)
+    stats = publisher.promo_stats_2018q1
+    if publisher.promo_stats_2018q1.blank?
+      return 0
+    else
+      return stats["aggregate"]["finalized"]
     end
   end
 

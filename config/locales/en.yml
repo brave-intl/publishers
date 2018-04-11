@@ -382,13 +382,12 @@ en:
     dashboard:
       days: "days"
       downloaded: "downloaded"
+      confirmed: "confirmed"
       active_referral: "active"
-      bat: "bat"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
-      promo_progress: "promo progress"
       referral: "referral"
-      dashboard_tos_html: |
-        For a referral payment to occur, the new user <strong> must be minimally active across a 30 day period.</strong>
+      promo: "promo"
+      check_statement: "*Check your statement for this period payout."
     shared:
       tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
       tweet: "Tweet"
