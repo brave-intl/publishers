@@ -79,6 +79,15 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
   end
 
+  test "sends an verified_invalid_wallet notification to publisher" do
+    channel = channels(:uphold_connected)
+    owner = channel.publisher
+
+    assert_enqueued_emails 2 do
+      post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_invalid_wallet"
+    end
+  end
+
   test "requires an owner" do
     channel = channels(:small_media_group_to_verify)
     publisher = channel.publisher
