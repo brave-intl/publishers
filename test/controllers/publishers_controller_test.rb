@@ -530,6 +530,20 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                  response.body
   end
 
+  test "a publisher can be disconnected from uphold" do
+    publisher = publishers(:verified)
+    publisher.verify_uphold
+    assert publisher.uphold_verified?
+    sign_in publisher
+
+    patch disconnect_uphold_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+
+    assert_response 204
+
+    publisher.reload
+    refute publisher.uphold_verified?
+  end
+
   test "home redirects to 2FA prompt on first visit" do
     publisher = publishers(:unprompted)
 
