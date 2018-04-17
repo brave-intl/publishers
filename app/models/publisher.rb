@@ -163,6 +163,8 @@ class Publisher < ApplicationRecord
       :access_parameters_acquired
     elsif self.uphold_code.present?
       :code_acquired
+    elsif self.wallet.try(:status).try(:[], 'action') == 're-authorize'
+      :reauthorization_needed
     else
       :unconnected
     end

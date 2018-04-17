@@ -167,6 +167,7 @@ class PublisherTest < ActiveSupport::TestCase
 
       publisher.wallet
       refute publisher.uphold_verified
+      assert_equal :reauthorization_needed, publisher.uphold_status
 
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
