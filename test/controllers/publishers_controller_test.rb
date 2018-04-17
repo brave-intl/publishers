@@ -514,19 +514,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                  response.body
   end
 
-  test "a publisher's status can be polled via ajax" do
+  test "a publisher's uphold status can be polled via ajax" do
     publisher = publishers(:completed)
     sign_in publisher
 
-    get status_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    get uphold_status_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal '{"status":"uphold_unconnected",' +
-                  '"status_description":"You need to create a wallet with Uphold to receive contributions from Brave Payments.",' +
-                  '"timeout_message":null,' +
-                  '"uphold_status":"unconnected",' +
-                  '"uphold_status_description":"Not connected to Uphold.",' +
-                  '"uphold_status_class":"uphold-status-unconnected"}',
+    assert_equal '{"uphold_status":"unconnected",' +
+                  '"uphold_status_summary":"Not connected",' +
+                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Payments.",' +
+                  '"uphold_status_class":"uphold-unconnected"}',
                  response.body
   end
 
