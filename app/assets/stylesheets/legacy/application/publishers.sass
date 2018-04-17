@@ -1,5 +1,9 @@
 $subnav-active: #8F9397
 
+@keyframes blinker
+  50%
+    opacity: 0
+
 body[data-controller="publishers"],
 body[data-controller="site_channels"],
 body[data-controller="two_factor_authentications"],
@@ -506,28 +510,75 @@ body[data-controller="u2f_registrations"]
           margin-bottom: 40px
       .attribute-value
         margin-bottom: 24px
-      #publisher_status
+      #uphold_status
         vertical-align: top
-        margin-top: 20px
         margin-bottom: 25px
-        &.complete
-          // no background
-        &.uphold_processing,
-        &.uphold_reauthorize,
-        &.uphold_unconnected
+        .deposit-currency
+          margin-top: 10px
+        .unavailable-currencies
           padding: 0 0 5px 52px
           background-position: top left
           background-repeat: no-repeat
           background-size: 42px
           background-image: url(asset-path("icn-warning@1x.png"))
-      .deposit-currency
-        margin-top: 10px
-      .unavailable-currencies
-        padding: 0 0 5px 52px
-        background-position: top left
-        background-repeat: no-repeat
-        background-size: 42px
-        background-image: url(asset-path("icn-warning@1x.png"))
+        .status-summary
+          margin-top: -10px
+          margin-bottom: 20px
+          font-size: 14px
+          .text
+            display: inline-block
+            &:before
+              content: "\25CF\00a0"
+          .action
+            display: inline-block
+            margin-left: 15px
+            .disconnect-uphold
+              color: $mediumGray
+        .status-description
+          margin-top: 40px
+        &.uphold-timeout
+          .status-summary .action,
+          #uphold_dashboard,
+          #uphold_connect
+            display: none
+        &.uphold-complete,
+        &.uphold-processing
+          .status-summary .action .connect-uphold,
+          #uphold_connect
+            display: none
+        &.uphold-processing
+          #uphold_dashboard
+            display: none
+        &.uphold-reauthorization-needed,
+        &.uphold-unconnected
+          .status-description
+            margin-bottom: 40px
+            padding: 0 0 5px 52px
+            min-height: 42px
+            background-position: top left
+            background-repeat: no-repeat
+            background-size: 42px
+            background-image: url(asset-path("icn-warning@1x.png"))
+          #uphold_connect
+            margin-top: 30px
+          #uphold_dashboard,
+          .status-summary .action .disconnect-uphold
+            display: none
+        // Status summary label
+        &.uphold-complete,
+        &.uphold-processing
+          .status-summary .text
+            color: darken(#2aeaa1, 10%)
+        &.uphold-reauthorization-needed,
+        &.uphold-timeout
+          .status-summary .text
+            color: $braveRed
+        &.uphold-unconnected
+          .status-summary .text
+            color: $mediumGray
+        &.uphold-processing
+          .status-summary .text
+            animation: blinker 1s linear infinite
       #update_publisher_visible_form
         margin-top: 40px
         margin-left: -30px

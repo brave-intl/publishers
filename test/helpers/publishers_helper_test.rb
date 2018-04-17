@@ -135,15 +135,18 @@ class PublishersHelperTest < ActionView::TestCase
     publisher = PublisherWithUpholdStatus.new
 
     publisher.uphold_status = :verified
-    assert_equal "uphold-status-verified", uphold_status_class(publisher)
+    assert_equal "uphold-complete", uphold_status_class(publisher)
 
     publisher.uphold_status = :access_parameters_acquired
-    assert_equal "uphold-status-access-parameters-acquired", uphold_status_class(publisher)
+    assert_equal "uphold-processing", uphold_status_class(publisher)
 
     publisher.uphold_status = :code_acquired
-    assert_equal "uphold-status-code-acquired", uphold_status_class(publisher)
+    assert_equal "uphold-processing", uphold_status_class(publisher)
+
+    publisher.uphold_status = :reauthorization_needed
+    assert_equal "uphold-reauthorization-needed", uphold_status_class(publisher)
 
     publisher.uphold_status = :unconnected
-    assert_equal "uphold-status-unconnected", uphold_status_class(publisher)
+    assert_equal "uphold-unconnected", uphold_status_class(publisher)
   end
 end

@@ -339,7 +339,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                    .gsub('<STATE>', publisher.uphold_state_token)
 
     assert_select("a[href='#{endpoint}']") do |elements|
-      assert_equal(1, elements.length, 'A link with the correct href to Uphold.com is present')
+      assert_equal(2, elements.length, 'Two links with the correct href to Uphold.com are present (one link in the status area + one big button)')
     end
   end
 
@@ -474,13 +474,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal publisher.reload.uphold_status, :code_acquired
 
     # verify message tells publisher they need to reconnect
-    assert_select("div#publisher_status.uphold_processing") do |element|
-      assert_equal element.text, I18n.t("helpers.publisher.uphold_status.processing")
+    assert_select("div#uphold_status.uphold-processing .status-description") do |element|
+      assert_equal I18n.t("helpers.publisher.uphold_status_description.connecting"), element.text
     end
 
     # verify button says 'reconnect to uphold' not 'create uphold wallet'
     assert_select("[data-test=reconnect-button]") do |element|
-      assert_equal element.text, I18n.t("helpers.publisher.reconnect_to_uphold")
+      assert_equal I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold"), element.text
     end
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
