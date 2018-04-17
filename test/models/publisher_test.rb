@@ -76,6 +76,7 @@ class PublisherTest < ActiveSupport::TestCase
     assert_nil publisher.uphold_state_token
     assert_nil publisher.uphold_access_parameters
     assert publisher.valid?
+    assert publisher.uphold_processing?
     assert_equal :code_acquired, publisher.uphold_status
   end
 
@@ -84,9 +85,22 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.uphold_code = "foo"
     publisher.uphold_access_parameters = "bar"
     publisher.uphold_verified = false
+    assert publisher.uphold_processing?
     publisher.verify_uphold
 
     assert publisher.uphold_verified?
+    assert publisher.valid?
+    refute publisher.uphold_processing?
+  end
+
+  test "disconnect_uphold clears uphold settings" do
+    publisher = publishers(:verified)
+    publisher.verify_uphold
+    assert publisher.uphold_verified?
+
+    publisher.disconnect_uphold
+    refute publisher.uphold_verified?
+    refute publisher.uphold_processing?
     assert publisher.valid?
   end
 

@@ -139,6 +139,13 @@ class Publisher < ApplicationRecord
     save!
   end
 
+  def disconnect_uphold
+    self.uphold_code = nil
+    self.uphold_access_parameters = nil
+    self.uphold_verified = false
+    save!
+  end
+
   def uphold_complete?
     # check the wallet to see if the connection to uphold has been been denied
     action = wallet.try(:status).try(:[], 'action')
@@ -159,6 +166,10 @@ class Publisher < ApplicationRecord
     else
       :unconnected
     end
+  end
+
+  def uphold_processing?
+    self.uphold_access_parameters.present? || self.uphold_code.present?
   end
 
   def set_uphold_updated_at
