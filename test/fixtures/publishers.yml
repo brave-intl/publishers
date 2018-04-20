@@ -165,10 +165,9 @@ small_media_group:
   visible: true
   default_currency: "BAT"
 
-
 medium_media_group:
   email: "barney@medium.org"
-  name: "Small Media Group"
+  name: "Medium Media Group"
   phone: "4159008921"
   phone_normalized: "+14159008921"
   two_factor_prompted_at: "<%= 1.day.ago %>"
@@ -199,3 +198,12 @@ onboarding:
   name: "Owen the onboard"
   agreed_to_tos:
   two_factor_prompted_at:
+
+lockedout_media_group:
+  email: "barney_old@medium.org"
+  name: "Locked Out Group"
+  phone: "4159008923"
+  phone_normalized: "+14159008923"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true

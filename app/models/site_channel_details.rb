@@ -1,7 +1,5 @@
-class SiteChannelDetails < ApplicationRecord
+class SiteChannelDetails < BaseChannelDetails
   has_paper_trail
-
-  has_one :channel, as: :details
 
   # brave_publisher_id is a normalized identifier provided by eyeshade API
   # It is like base domain (eTLD + left part) but may include additional

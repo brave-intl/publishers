@@ -1,10 +1,6 @@
 noscript
   div.noscript-warning = t ".noscript"
 
-- if flash[:taken_channel_id]
-  #js-open-modal-on-load
-    = render partial: 'channel_taken_modal', locals: { channel_id: flash[:taken_channel_id] }
-
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
     current_publisher.uphold_verified? && \
     current_publisher.wallet.authorized? && \
@@ -182,7 +178,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     - current_publisher.channels.visible.each do |channel|
       .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
         .col
-          div class=("channel-panel channel-#{channel_verification_status(channel)}")
+          div class=(" channel-panel channel-#{channel_verification_status(channel)}")
             .channel-panel--intro
               .channel-panel--intro-icon
                 img src=(channel_type_icon_url(channel)) width=16 height=16
@@ -211,7 +207,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")
-            - elsif channel.verification_started? || channel.verification_failed?
+            - elsif channel.verification_started? || channel.verification_failed?|| channel.verification_pending
               .channel-status.float-right
                 = channel_verification_details(channel)
                 = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
@@ -231,6 +227,13 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 - unless channel.verified || channel.verification_awaiting_admin_approval?
                   .separator
                     = '|'
+                - if channel.contested_by_channel
+                  .channel-contested
+                    p = t "shared.channel_contested_by", verified_by_name: channel.contested_by_channel.publisher.name,
+                            verified_by_email: channel.contested_by_channel.publisher.email
+                    a.reject_transfer href=reject_transfer_path(channel)
+                      = t ".channel.reject_transfer"
+                - else
                   a.remove-channel href="#" data-channel-id=(channel.id)
                     = t ".channel.remove_verified"
                   script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)

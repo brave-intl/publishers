@@ -10,23 +10,6 @@ class SiteChannelTest < ActiveSupport::TestCase
     refute details.valid?
   end
 
-  test "a channel cannot have the same brave_publisher_id as another verified channel" do
-    details = site_channel_details(:verified_details)
-    assert details.valid?
-
-    # Does not exist
-    new_details = SiteChannelDetails.new(brave_publisher_id: "sdffadsdfsa.com")
-    assert new_details.valid?
-
-    # Exists, but not verified
-    new_details = SiteChannelDetails.new(brave_publisher_id: "default.org")
-    assert new_details.valid?
-
-    # Exists and is verified
-    new_details = SiteChannelDetails.new(brave_publisher_id: "verified.org")
-    refute new_details.valid?
-  end
-
   test "a channel can have blank verification_method" do
     details = site_channel_details(:new_site_details)
     assert details.verification_method.blank?
