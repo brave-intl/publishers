@@ -2,10 +2,10 @@ doctype html
 html
   head data-piwik-host=Rails.application.secrets[:piwik_host]
     = csrf_meta_tags
-    meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1"
-    title= t "shared.app_title"
+    - set_meta_tags(publishers_meta_tags)
+    = display_meta_tags
     = stylesheet_link_tag 'static', media: 'all'
     = javascript_pack_tag 'static'
     link rel="icon" type="image/png" href=image_path("favicon.ico")

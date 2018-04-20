@@ -94,7 +94,17 @@ class PublishersController < ApplicationController
 
   def resend_auth_email    
     @publisher = Publisher.find(params[:publisher_id])
-    
+
+    @should_throttle = should_throttle_create_auth_token? || params[:captcha]
+    throttle_legit =
+      @should_throttle ?
+        verify_recaptcha(model: @publisher)
+        : true
+    if !throttle_legit
+      render(:emailed_auth_token)
+      return
+    end
+
     if @publisher.email.nil?
       PublisherMailer.verify_email(@publisher).deliver_later
       PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
