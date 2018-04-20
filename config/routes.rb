@@ -48,6 +48,10 @@ Rails.application.routes.draw do
       get :verification_status
       get :cancel_add
       delete :destroy
+      resources :tokens, only: %() do
+        get :transfer, to: 'channel_transfer#transfer'
+        get :reject_transfer, to: 'channel_transfer#reject_transfer'
+      end
     end
   end
 

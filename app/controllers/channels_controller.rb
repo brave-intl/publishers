@@ -1,9 +1,15 @@
 class ChannelsController < ApplicationController
   include ChannelsHelper
 
-  before_action :authenticate_publisher!
+  before_action :authenticate_publisher!,
+                except: %i(approve_transfer reject_transfer)
+
   before_action :setup_current_channel,
-                except: %i(cancel_add)
+                except: %i(cancel_add approve_transfer reject_transfer)
+
+  before_action :verify_token,
+                only: %i(approve_transfer reject_transfer)
+
   attr_reader :current_channel
 
   def destroy
@@ -56,10 +62,43 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def approve_transfer
+    Channels::ApproveChannelTransfer.new(channel: current_channel).perform
+    redirect_to home_publishers_path, notice: t("shared.channel_transfered")
+  end
+
+  def reject_transfer
+    Channels::RejectChannelTransfer.new(channel: current_channel).perform
+    redirect_to home_publishers_path, notice: t("shared.channel_transfer_rejected")
+  end
+
   private
 
   def setup_current_channel
     @current_channel = current_publisher.channels.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    respond_to do |format|
+      format.json {
+        head 404
+      }
+      format.html {
+        redirect_to home_publishers_path, notice: t("shared.channel_not_found")
+      }
+    end
+  end
+
+  def verify_token
+    @current_channel = Channel.find(params[:id])
+    if @current_channel.nil? || @current_channel.contest_token.empty? || @current_channel.contest_token != params[:token]
+      respond_to do |format|
+        format.json {
+          head 404
+        }
+        format.html {
+          redirect_to home_publishers_path, notice: t("shared.channel_not_found")
+        }
+      end
+    end
   rescue ActiveRecord::RecordNotFound => e
     respond_to do |format|
       format.json {

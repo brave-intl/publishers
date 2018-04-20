@@ -39,3 +39,11 @@ joe_yt1_details:
   youtube_channel_id: "joeddfsads"
   title: "Joe's awesome stuff"
   thumbnail_url: "https://some_image_host.com/some_image.png"
+
+lockedout_yt1_details:
+  auth_user_id: "joe987654321"
+  auth_email: "lockedout-channel@pages.plusgoogle.com"
+  auth_provider: "google_oauth2"
+  youtube_channel_id: "lo12345"
+  title: "My channel"
+  thumbnail_url: "https://some_image_host.com/some_image.png"

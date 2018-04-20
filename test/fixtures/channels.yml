@@ -187,3 +187,8 @@ joe_yt1:
   publisher: joe_the_only_yt_verified
   details: joe_yt1_details (YoutubeChannelDetails)
   verified: true
+
+lockedout_yt1:
+  publisher: lockedout_media_group
+  details: lockedout_yt1_details (YoutubeChannelDetails)
+  verified: true
