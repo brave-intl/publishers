@@ -1,6 +1,20 @@
 module PublishersHelper
   include ChannelsHelper
 
+  def publishers_meta_tags
+    {
+      title: t("shared.app_title"),
+      charset: "utf-8",
+      og: {
+        title: :title,
+        image: image_url("open-graph-preview.png", host: root_url),
+        description: t("shared.app_description"),
+        url: request.url,
+        type: "website"
+      }
+    }
+  end
+
   def publisher_can_receive_funds?(publisher)
     publisher.uphold_status == :verified
   end
