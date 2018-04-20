@@ -2,10 +2,10 @@ doctype html
 html
   head data-piwik-host=Rails.application.secrets[:piwik_host]
     = csrf_meta_tags
-    meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content=("width=device-width, initial-scale=#{if local_assigns[:viewport_initial_scale] then viewport_initial_scale else '0.6' end}")
-    title= t "shared.app_title"
+    - set_meta_tags(publishers_meta_tags)
+    = display_meta_tags
     - if content_for?(:head_style_tags)
       = yield(:head_style_tags)
     - elsif params.has_key?(:bootstrap4)
