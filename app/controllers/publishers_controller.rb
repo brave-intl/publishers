@@ -95,7 +95,7 @@ class PublishersController < ApplicationController
   def resend_auth_email    
     @publisher = Publisher.find(params[:publisher_id])
 
-    @should_throttle = should_throttle_create_auth_token?
+    @should_throttle = should_throttle_create_auth_token? || params[:captcha]
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
