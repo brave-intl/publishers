@@ -65,33 +65,35 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     refute_content page, 'Pending: Email address has been updated'
   end
 
-  test "unverified channel can be removed after confirmation" do
-    publisher = publishers(:small_media_group)
-    channel = channels(:small_media_group_to_verify)
+  # TODO Uncomment when channel removal is enabled
+  # test "unverified channel can be removed after confirmation" do
+  #   publisher = publishers(:small_media_group)
+  #   channel = channels(:small_media_group_to_verify)
 
-    sign_in publisher
-    visit home_publishers_path
+  #   sign_in publisher
+  #   visit home_publishers_path
 
-    assert_content page, channel.publication_title
-    find("#channel_row_#{channel.id}").click_link('Remove Channel')
-    assert_content page, "Are you sure you want to remove this channel?"
-    find('[data-test-modal-container]').click_link("Remove Channel")
-    refute_content page, channel.publication_title
-  end
+  #   assert_content page, channel.publication_title
+  #   find("#channel_row_#{channel.id}").click_link('Remove Channel')
+  #   assert_content page, "Are you sure you want to remove this channel?"
+  #   find('[data-test-modal-container]').click_link("Remove Channel")
+  #   refute_content page, channel.publication_title
+  # end
 
-  test "verified channel can be removed after confirmation" do
-    publisher = publishers(:small_media_group)
-    channel = channels(:small_media_group_to_delete)
+  # TODO Uncomment when channel removal is enabled
+  # test "verified channel can be removed after confirmation" do
+  #   publisher = publishers(:small_media_group)
+  #   channel = channels(:small_media_group_to_delete)
 
-    sign_in publisher
-    visit home_publishers_path
+  #   sign_in publisher
+  #   visit home_publishers_path
 
-    assert_content page, channel.publication_title
-    find("#channel_row_#{channel.id}").click_link('Remove Channel')
-    assert_content page, "Are you sure you want to remove this channel?"
-    find('[data-test-modal-container]').click_link("Remove Channel")
-    refute_content page, channel.publication_title
-  end
+  #   assert_content page, channel.publication_title
+  #   find("#channel_row_#{channel.id}").click_link('Remove Channel')
+  #   assert_content page, "Are you sure you want to remove this channel?"
+  #   find('[data-test-modal-container]').click_link("Remove Channel")
+  #   refute_content page, channel.publication_title
+  # end
 
   test "website channel type can be chosen" do
     publisher = publishers(:completed)
