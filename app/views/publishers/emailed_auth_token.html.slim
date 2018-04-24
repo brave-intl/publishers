@@ -5,11 +5,12 @@
       h3.single-panel--headline= t ".heading"
 
       .col-small-centered
-        - if @should_throttle
-          .form-group
-            = recaptcha_tags
-        = t ".body_html", email: @publisher_email, try_again_link: link_to(t(".try_again"), "#", onclick: "document.getElementById('resend_email_form').submit();")
-        = form_tag resend_auth_email_publishers_path(publisher_id: @publisher.id), method: "post", class: "hidden", id: "resend_email_form" do 
+        p= t ".sent_access_link_html", email: @publisher_email
+        hr
+        = form_tag resend_auth_email_publishers_path(publisher_id: @publisher.id), method: "post", class: "hidden", id: "resend_email_form" do
           - if params[:captcha]
             = hidden_field_tag :captcha
-
+          - if @should_throttle
+            .col-small-centered
+              = recaptcha_tags
+        p= t ".resend_email_html", try_again_link: link_to(t(".try_again"), "#", onclick: "document.getElementById('resend_email_form').submit();")

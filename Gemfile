@@ -51,7 +51,13 @@ gem "premailer-rails", "~> 1.9.4", require: false
 # Puma as app server
 gem "puma", "3.10"
 
+# Make cracking a little bit harder
+gem "rack-attack", "~> 5.0"
+
 gem "rails", "~> 5.0.0", ">= 5.0.0.1"
+
+# I love captchas
+gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis-rails", "~> 5"
@@ -143,14 +149,6 @@ group :development, :test do
   gem "minitest-rails-capybara"
   gem "capybara-selenium"
   gem "chromedriver-helper"
-end
-
-group :production, :staging do
-  # Make cracking a little bit harder
-  gem "rack-attack", "~> 5.0"
-
-  # I love captchas
-  gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

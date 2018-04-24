@@ -97,6 +97,12 @@ Setup a google API project:
   * Update your env to include `TWITCH_CLIENT_SECRET="your-app-secret"`
 * Save the app
 
+### reCAPTCHA Setup
+
+In order to test the rate limiting and captcha components you will need to setup an account with Google's 
+[reCAPTCHA](https://www.google.com/recaptcha/intro/android.html). Instructions can be found at the 
+[reCAPTCHA gem repo](https://github.com/ambethia/recaptcha#rails-installation). Add the api keys to your Env variables.
+
 ### Local Eyeshade Setup
 
 1. Follow the [setup instructions](https://github.com/brave-intl/bat-ledger) for bat-ledger
