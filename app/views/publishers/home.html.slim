@@ -199,13 +199,14 @@ script id="choose-channel-type" type="text/html"
           .channel-details
             .added-date
               = t ".channel.added", date: channel.created_at.to_date.iso8601
-            / .separator
-            /   = '|'
-            / a.remove-channel href="#" data-channel-id=(channel.id)
-            /   = t ".channel.remove_verified"
-            / script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-            /   = render "publishers/remove_channel_modal", channel: channel
-            / = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+            - unless channel.verified
+              .separator
+                = '|'
+              a.remove-channel href="#" data-channel-id=(channel.id)
+                = t ".channel.remove_verified"
+              script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                = render "publishers/remove_channel_modal", channel: channel
+              = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
         .clearfix
 .row.tos-row
   - if current_publisher.promo_enabled_2018q1
