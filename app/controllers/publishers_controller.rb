@@ -2,6 +2,7 @@ class PublishersController < ApplicationController
   # Number of requests to #create before we present a captcha.
   THROTTLE_THRESHOLD_CREATE = 3
   THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN = 3
+  THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL = 3
 
   include PublishersHelper
   include PromosHelper
@@ -58,7 +59,7 @@ class PublishersController < ApplicationController
     @publisher = Publisher.new(pending_email: email)
     @publisher_email = @publisher.pending_email
 
-    @should_throttle = should_throttle_create? || params[:captcha]
+    @should_throttle = should_throttle_create? || params[:captcha].present?
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
@@ -95,7 +96,7 @@ class PublishersController < ApplicationController
   def resend_auth_email    
     @publisher = Publisher.find(params[:publisher_id])
 
-    @should_throttle = should_throttle_create_auth_token? || params[:captcha]
+    @should_throttle = should_throttle_resend_auth_email? || params[:captcha].present?
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
@@ -219,7 +220,7 @@ class PublishersController < ApplicationController
     end
 
     @publisher = Publisher.new(publisher_create_auth_token_params)
-    @should_throttle = should_throttle_create_auth_token? || params[:captcha]
+    @should_throttle = should_throttle_create_auth_token? || params[:captcha].present?
     throttle_legit =
       @should_throttle ?
         verify_recaptcha(model: @publisher)
@@ -465,17 +466,21 @@ class PublishersController < ApplicationController
   # Level 1 throttling -- After the first two requests, ask user to
   # submit a captcha. See rack-attack.rb for throttle keys.
   def should_throttle_create?
-    Rails.env.production? &&
-      request.env["rack.attack.throttle_data"] &&
-      request.env["rack.attack.throttle_data"]["registrations/ip"] &&
-      request.env["rack.attack.throttle_data"]["registrations/ip"][:count] >= THROTTLE_THRESHOLD_CREATE
+    request.env["rack.attack.throttle_data"] &&
+    request.env["rack.attack.throttle_data"]["registrations/ip"] &&
+    request.env["rack.attack.throttle_data"]["registrations/ip"][:count] >= THROTTLE_THRESHOLD_CREATE
   end
 
   def should_throttle_create_auth_token?
-    Rails.env.production? &&
-      request.env["rack.attack.throttle_data"] &&
-      request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"] &&
-      request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"][:count] >= THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN
+    request.env["rack.attack.throttle_data"] &&
+    request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"] &&
+    request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"][:count] >= THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN
+  end
+
+  def should_throttle_resend_auth_email?
+    request.env["rack.attack.throttle_data"] &&
+    request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"] &&
+    request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"][:count] >= THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL
   end
 
   def prompt_for_two_factor_setup

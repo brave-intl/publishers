@@ -15,6 +15,7 @@ export API_EYESHADE_OFFLINE=1
 export INTERNAL_EMAIL="admin@publishers.local" # Admin notifications get sent here.
 #export LOG_API_REQUESTS=1 # Enable to log publishers' external API access.
 #export MAILER_SENDER="" # The From: header in emails sent to users.
+export REDIS_URL="redis://127.0.0.1:6379/0"
 export RECAPTCHA_PUBLIC_KEY="" # For recaptcha for rate limiting.
 export RECAPTCHA_PRIVATE_KEY=""
 #export SENTRY_DSN="" # Exception handling

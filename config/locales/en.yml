@@ -276,10 +276,8 @@ en:
       heading: Login email sent!
       body: Please check your email for the login link.
       heading: An email is on its way!
-      body_html: |
-        <p>We just sent an access link to <strong class="email-address">%{email}</strong>.  Click on the link to log in to your account</p>
-        <hr>
-        <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.</p>
+      sent_access_link_html: We just sent an access link to <strong class="email-address">%{email}</strong>.  Click on the link to log in to your account
+      resend_email_html: Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.
       try_again: try again
     devise:
       login_session_expired: Your session has expired. Please log in again.
