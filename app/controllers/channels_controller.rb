@@ -7,6 +7,8 @@ class ChannelsController < ApplicationController
   attr_reader :current_channel
 
   def destroy
+    return if current_channel.verified
+
     channel_identifier = current_channel.details.channel_identifier
     update_promo_server = current_channel.promo_registration.present?
 

@@ -42,7 +42,7 @@ Rails.application.routes.draw do
     member do
       get :verification_status
       get :cancel_add
-      # delete :destroy
+      delete :destroy
     end
   end
 
