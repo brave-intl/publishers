@@ -73,12 +73,11 @@ class PublishersController < ApplicationController
     verified_publisher = Publisher.by_email_case_insensitive(email).first
     if verified_publisher
       @publisher = verified_publisher
-      PublisherLoginLinkEmailer.new(email: email).perform
+      MailerServices::PublisherLoginLinkEmailer.new(@publisher).perform
       flash.now[:notice] = t(".email_already_active", email: email)
       render :emailed_auth_token
     elsif @publisher.save
-      PublisherMailer.verify_email(@publisher).deliver_later
-      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      MailerServices::VerifyEmailEmailer.new(@publisher).perform
       render :emailed_auth_token
     else
       Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
@@ -108,12 +107,11 @@ class PublishersController < ApplicationController
     end
 
     if @publisher.email.nil?
-      PublisherMailer.verify_email(@publisher).deliver_later
-      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      MailerServices::VerifyEmailEmailer.new(@publisher).perform
       @publisher_email = @publisher.pending_email
     else
-      PublisherMailer.login_email(@publisher).deliver_later
       @publisher_email = @publisher.email
+      MailerServices::PublisherLoginLinkEmailer.new(@publisher).perform
     end
     
     flash.now[:notice] = t(".done")
@@ -155,10 +153,7 @@ class PublishersController < ApplicationController
 
     if update_params[:pending_email].present?
       if @publisher.update(update_params)
-        PublisherMailer.notify_email_change(@publisher).deliver_later
-        PublisherMailer.confirm_email_change(@publisher).deliver_later
-        PublisherMailer.confirm_email_change_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-
+        MailerServices::ConfirmEmailChangeEmailer.new(@publisher).perform
         @publisher_email = @publisher.pending_email
         render :create_done
         return
@@ -187,9 +182,7 @@ class PublishersController < ApplicationController
     success = publisher.update(update_params)
 
     if success && update_params[:pending_email]
-      PublisherMailer.notify_email_change(publisher).deliver_later
-      PublisherMailer.confirm_email_change(publisher).deliver_later
-      PublisherMailer.confirm_email_change_internal(publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      MailerServices::ConfirmEmailChangeEmailer.new(publisher).perform
     end
 
     if success && update_params[:default_currency]
@@ -220,7 +213,6 @@ class PublishersController < ApplicationController
       return redirect_to new_auth_token_publishers_path
     end
 
-    @publisher = Publisher.new(publisher_create_auth_token_params)
     @should_throttle = should_throttle_create_auth_token? || params[:captcha].present?
     throttle_legit =
       @should_throttle ?
@@ -231,10 +223,10 @@ class PublishersController < ApplicationController
       return
     end
 
-    emailer = PublisherLoginLinkEmailer.new(email: @publisher_email)
+    @publisher = Publisher.where(email: @publisher_email).take
 
-    if emailer.perform
-      # Success shown in view #emailed_auth_token
+    if @publisher
+      MailerServices::PublisherLoginLinkEmailer.new(@publisher).perform
     else
       # Failed to find publisher
       flash.now[:alert_html_safe] = t('publishers.emailed_auth_token.unfound_alert_html', {
@@ -242,11 +234,11 @@ class PublishersController < ApplicationController
         create_publisher_path: publishers_path(email: @publisher_email),
         email: ERB::Util.html_escape(@publisher_email)
       })
+      new_auth_token
       render(:new_auth_token)
       return
     end
 
-    @publisher = Publisher.where(email: @publisher_email).take
     render :emailed_auth_token
   end
 

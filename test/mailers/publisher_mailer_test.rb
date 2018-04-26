@@ -31,7 +31,7 @@ class PublisherMailerTest < ActionMailer::TestCase
     publisher.pending_email = "alice-pending@verified.com"
     publisher.save
 
-    email = PublisherMailer.confirm_email_change(publisher)
+    email = PublisherMailer.confirm_email_change(publisher, true)
 
     assert_emails 1 do
       email.deliver_now
@@ -49,7 +49,7 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     # verify error raised if no pending email
     assert_nothing_raised do
-      PublisherMailer.verify_email(publisher).deliver_now
+      PublisherMailer.verify_email(publisher, true).deliver_now
     end
 
     publisher.pending_email = "alice_new@default.org"
@@ -57,7 +57,7 @@ class PublisherMailerTest < ActionMailer::TestCase
     
     # verify nothing raised if pending email exists
     assert_nothing_raised do
-      PublisherMailer.verify_email(publisher).deliver_now
+      PublisherMailer.verify_email(publisher, true).deliver_now
     end
   end
 

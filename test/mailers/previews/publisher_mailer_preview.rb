@@ -3,15 +3,15 @@
 class PublisherMailerPreview < ActionMailer::Preview
 
   def login_email
-    PublisherMailer.login_email(Publisher.first)
+    PublisherMailer.login_email(Publisher.first, true)
   end
 
   def verify_email
-    PublisherMailer.verify_email(Publisher.first)
+    PublisherMailer.verify_email(Publisher.first, true)
   end
 
   def verification_done
-    PublisherMailer.verification_done(Channel.first)
+    PublisherMailer.verification_done(Channel.first, true)
   end
 
   def verification_done_internal

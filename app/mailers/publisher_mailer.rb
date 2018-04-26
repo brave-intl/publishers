@@ -2,19 +2,27 @@ class PublisherMailer < ApplicationMailer
   include PublishersHelper
   add_template_helper(PublishersHelper)
 
-  def login_email(publisher)
+  # Note: token_fresh is a reminder that you must refresh the token before sending this email.
+  # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
+  def login_email(publisher, token_fresh = false)
+    raise "token not fresh" unless token_fresh
+    
     @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     mail(
       to: @publisher.email,
       subject: default_i18n_subject
     )
   end
 
-  def verification_done(channel)
+  # Note: token_fresh is a reminder that you must refresh the token before sending this email.
+  # Best practice is to use the MailerServices::VerificationDoneEmailer service
+  def verification_done(channel, token_fresh = false)
+    raise "token not fresh" unless token_fresh
+
     @channel = channel
     @publisher = @channel.publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
@@ -41,9 +49,13 @@ class PublisherMailer < ApplicationMailer
   end
 
   # Contains registration details and a private verify_email link
-  def verify_email(publisher)
+  # Note: token_fresh is a reminder that you must refresh the token before sending this email.
+  # Best practice is to use the MailerServices::VerifyEmailEmailer service
+  def verify_email(publisher, token_fresh = false)
+    raise "token not fresh" unless token_fresh
+
     @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     
     if @publisher.pending_email.present?
       mail(
@@ -74,9 +86,13 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def confirm_email_change(publisher)
+  # Note: token_fresh is a reminder that you must refresh the token before sending this email.
+  # Best practice is to use the MailerServices::ConfirmEmailChangeEmailer service
+  def confirm_email_change(publisher, token_fresh = false)
+    raise "token not fresh" unless token_fresh
+
     @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher, @publisher.pending_email)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher, confirm_email: @publisher.pending_email)
     mail(
       to: @publisher.pending_email,
       subject: default_i18n_subject
