@@ -40,30 +40,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  # Contains registration details and a private reauthentication link
-  def welcome(publisher)
-    @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject
-    )
-  end
-
-  # TODO: Refactor
-  # Like the above but without the private access link
-  def welcome_internal(publisher)
-    raise if !self.class.should_send_internal_emails?
-    @publisher = publisher
-    @private_reauth_url = "{redacted}"
-    mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{t("publisher_mailer.welcome.subject")}",
-      template_name: "welcome"
-    )
-  end
-
   # Contains registration details and a private verify_email link
   def verify_email(publisher)
     @publisher = publisher

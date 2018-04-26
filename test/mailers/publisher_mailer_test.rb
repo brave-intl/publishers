@@ -1,19 +1,6 @@
 require 'test_helper'
 
 class PublisherMailerTest < ActionMailer::TestCase
-  test "welcome" do
-    publisher = publishers(:default)
-    email = PublisherMailer.welcome(publisher)
-
-    # # Send the email, then test that it got queued
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal [publisher.email], email.to
-  end
-
   test "uphold_account_changed" do
     publisher = publishers(:default)
     email = PublisherMailer.uphold_account_changed(publisher)

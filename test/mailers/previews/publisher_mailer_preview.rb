@@ -18,14 +18,6 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.verification_done_internal(Channel.first)
   end
 
-  def welcome
-    PublisherMailer.welcome(Publisher.first)
-  end
-
-  def welcome_internal
-    PublisherMailer.welcome_internal(Publisher.first)
-  end
-
   def uphold_account_changed
     PublisherMailer.uphold_account_changed(Publisher.first)
   end
