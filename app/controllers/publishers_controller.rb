@@ -57,7 +57,7 @@ class PublishersController < ApplicationController
       return redirect_to sign_up_publishers_path
     end
 
-    @publisher = Publisher.new(pending_email: email)
+    @publisher = Publisher.find_or_create_by(pending_email: email, email: nil)
     @publisher_email = @publisher.pending_email
 
     @should_throttle = should_throttle_create? || params[:captcha].present?
