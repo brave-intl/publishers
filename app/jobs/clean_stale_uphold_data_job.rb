@@ -15,7 +15,6 @@ class CleanStaleUpholdDataJob < ApplicationJob
       Raven.capture_message("Cleaned stalled uphold code for #{publisher.id}.")
     end
     Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold codes.")
-    Raven.capture_message("CleanStaleUpholdDataJob cleared #{n} stalled uphold codes.")
 
     # clear uphold access params sitting for over 2 hours
     publishers = Publisher.has_stale_uphold_access_parameters
@@ -29,6 +28,5 @@ class CleanStaleUpholdDataJob < ApplicationJob
       Raven.capture_message("Cleaned stalled uphold access parameters for #{publisher.id}.")
     end
     Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.")
-    Raven.capture_message("CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.")
   end
 end
