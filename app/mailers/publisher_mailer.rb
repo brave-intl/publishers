@@ -146,10 +146,19 @@ class PublisherMailer < ApplicationMailer
   def verified_no_wallet(publisher, params)
     @publisher = publisher
     @publisher_dashboard_url = root_url
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject
-    )
+    if @publisher.uphold_verified
+      begin
+        raise "Uphold verified publisher #{@publisher.id} cannot create Uphold wallet"
+      rescue => e
+        require 'sentry-raven'
+        Raven.capture_exception(e)
+      end
+    else
+      mail(
+        to: @publisher.email,
+        subject: default_i18n_subject
+      )
+    end
   end
 
   def verified_no_wallet_internal(publisher, params)
@@ -182,6 +191,34 @@ class PublisherMailer < ApplicationMailer
       reply_to: @email,
       subject: "<Internal> #{t("publisher_mailer.unverified_domain_reached_threshold.subject", publication_title: @domain)}",
       template_name: "unverified_domain_reached_threshold"
+    )
+  end
+
+  def verified_invalid_wallet(publisher)
+    @publisher = publisher
+    if !@publisher.uphold_verified
+      begin
+        raise "Non Uphold verified publisher #{@publisher.id} cannot reconnect to Uphold"
+      rescue => e
+        require 'sentry-raven'
+        Raven.capture_exception(e)
+      end
+    else
+      mail(
+        to: @publisher.email,
+        subject: default_i18n_subject
+      )
+    end
+  end
+
+  def verified_invalid_wallet_internal(publisher)
+    @publisher = publisher
+    return if !@publisher.uphold_verified
+    mail(
+      to: INTERNAL_EMAIL,
+      reply_to: @publisher.email,
+      subject: "<Internal> #{t("publisher_mailer.verified_invalid_wallet.subject")}",
+      template_name: "verified_invalid_wallet"
     )
   end
 end

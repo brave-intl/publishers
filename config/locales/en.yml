@@ -219,6 +219,11 @@ en:
         <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
         <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
       button: Create My Wallet
+    verified_invalid_wallet:
+      subject: Reconnect To Uphold To Receive Your Funds
+      body_html: |
+        <p>We are unable to deposit your earnings into your wallet with Uphold because Brave Payments is no longer authorized on your Uphold account.</p>
+        <p>To receive your earnings, log in to Brave Payments and <strong>reconnect to your Uphold account</strong> on the dashboard. No action is required if this was intentional and you do not wish to receive your fans' contributions from Brave. </p>
     verify_email:
       subject: Brave Publisher email confirmation
       body_html: |
