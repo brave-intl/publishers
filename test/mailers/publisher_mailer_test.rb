@@ -111,7 +111,7 @@ class PublisherMailerTest < ActionMailer::TestCase
 
   test "verified_invalid_wallet" do
     publisher = publishers(:uphold_connected)
-    email = PublisherMailer.verified_invalid_wallet(publisher)
+    email = PublisherMailer.verified_invalid_wallet(publisher, nil)
 
     assert_emails 1 do
       email.deliver_now
@@ -122,7 +122,7 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     # Ensure emails are not delivered if they have never created a wallet
     publisher = publishers(:default)
-    email = PublisherMailer.verified_invalid_wallet(publisher)
+    email = PublisherMailer.verified_invalid_wallet(publisher, nil)
 
     assert_emails 0 do
       email.deliver_now
@@ -131,7 +131,7 @@ class PublisherMailerTest < ActionMailer::TestCase
 
   test "verified_invalid_wallet_internal" do
     publisher = publishers(:uphold_connected)
-    email = PublisherMailer.verified_invalid_wallet_internal(publisher)
+    email = PublisherMailer.verified_invalid_wallet_internal(publisher, nil)
 
     assert_emails 1 do
       email.deliver_now

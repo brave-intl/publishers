@@ -194,7 +194,7 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def verified_invalid_wallet(publisher)
+  def verified_invalid_wallet(publisher, params)
     @publisher = publisher
     if !@publisher.uphold_verified
       begin
@@ -211,7 +211,7 @@ class PublisherMailer < ApplicationMailer
     end
   end
 
-  def verified_invalid_wallet_internal(publisher)
+  def verified_invalid_wallet_internal(publisher, params)
     @publisher = publisher
     return if !@publisher.uphold_verified
     mail(
