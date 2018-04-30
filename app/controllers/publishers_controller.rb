@@ -49,6 +49,8 @@ class PublishersController < ApplicationController
     @publisher = Publisher.new(email: params[:email])
   end
 
+  # Used by sign_up.html.slim.  If a user attempts to sign up with an existing email, a log in email
+  # is sent to the existing user. Otherwise, a new publisher is created and a sign up email is sent.
   def create
     email = params[:email]
 
@@ -59,7 +61,7 @@ class PublishersController < ApplicationController
 
     @should_throttle = should_throttle_create?
     throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
-    unless throttle_legit
+    if !throttle_legit
       return redirect_to root_path(captcha: params[:captcha]), alert: t(".access_throttled")
     end
 
@@ -73,8 +75,8 @@ class PublishersController < ApplicationController
       render :emailed_auth_token
     else
       # Check if an existing email unverified publisher record exists to prevent duplicating unverified publishers.
-      # Only find unverifed publishers that do not have an email to prevent sending an existing publisher
-      # midway through the email change flow a sign up email
+      # Requiring `email: nil` ensures we do not select a publisher with the same pending_email
+      # as a publisher in the middle of the change email flow
       @publisher = Publisher.find_or_create_by(pending_email: email, email: nil)
       @publisher_email = @publisher.pending_email
 
@@ -96,14 +98,14 @@ class PublishersController < ApplicationController
     render :emailed_auth_token
   end
 
+  # Used by emailed_auth_token.html.slim to send a new sign up or log in access email
+  # to the publisher passed through the params
   def resend_auth_email    
     @publisher = Publisher.find(params[:publisher_id])
 
     @should_throttle = should_throttle_resend_auth_email?
-    throttle_legit =
-      @should_throttle ?
-        verify_recaptcha(model: @publisher)
-        : true
+    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
+
     if !throttle_legit
       render(:emailed_auth_token)
       return
@@ -203,11 +205,12 @@ class PublishersController < ApplicationController
     end
   end
 
-  # "Magic sign in link" / One time sign-in token via email
+  # Log in page
   def new_auth_token
     @publisher = Publisher.new
   end
 
+  # Used by new_auth_token.html.slim to send a log in link to an existing publisher
   def create_auth_token
     @publisher_email = publisher_create_auth_token_params[:email].downcase
 
@@ -217,10 +220,7 @@ class PublishersController < ApplicationController
     end
 
     @should_throttle = should_throttle_create_auth_token?
-    throttle_legit =
-      @should_throttle ?
-        verify_recaptcha(model: @publisher)
-        : true
+    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
     if !throttle_legit
       render(:new_auth_token)
       return
