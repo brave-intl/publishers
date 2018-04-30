@@ -57,32 +57,35 @@ class PublishersController < ApplicationController
       return redirect_to sign_up_publishers_path
     end
 
-    @publisher = Publisher.find_or_create_by(pending_email: email, email: nil)
-    @publisher_email = @publisher.pending_email
-
     @should_throttle = should_throttle_create?
-    throttle_legit =
-      @should_throttle ?
-        verify_recaptcha(model: @publisher)
-        : true
-
+    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
     unless throttle_legit
       return redirect_to root_path(captcha: params[:captcha]), alert: t(".access_throttled")
     end
 
-    verified_publisher = Publisher.by_email_case_insensitive(email).first
-    if verified_publisher
-      @publisher = verified_publisher
+    # First check if publisher with the email already exists.
+    existing_email_verified_publisher = Publisher.by_email_case_insensitive(email).first
+    if existing_email_verified_publisher
+      @publisher = existing_email_verified_publisher
+      @publisher_email = existing_email_verified_publisher.email
       MailerServices::PublisherLoginLinkEmailer.new(@publisher).perform
       flash.now[:notice] = t(".email_already_active", email: email)
       render :emailed_auth_token
-    elsif @publisher.save
-      MailerServices::VerifyEmailEmailer.new(@publisher).perform
-      render :emailed_auth_token
     else
-      Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-      flash[:warning] = t(".invalid_email")
-      redirect_to sign_up_publishers_path
+      # Check if an existing email unverified publisher record exists to prevent duplicating unverified publishers.
+      # Only find unverifed publishers that do not have an email to prevent sending an existing publisher
+      # midway through the email change flow a sign up email
+      @publisher = Publisher.find_or_create_by(pending_email: email, email: nil)
+      @publisher_email = @publisher.pending_email
+
+      if @publisher.save
+        MailerServices::VerifyEmailEmailer.new(@publisher).perform
+        render :emailed_auth_token
+      else
+        Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
+        flash[:warning] = t(".invalid_email")
+        redirect_to sign_up_publishers_path
+      end
     end
   end
 
