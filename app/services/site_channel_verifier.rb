@@ -82,7 +82,7 @@ class SiteChannelVerifier < BaseApiClient
   end
 
   def verified_channel_post_verify
-    MailerServices::VerificationDoneEmailer.new(verified_channel).perform
+    MailerServices::VerificationDoneEmailer.new(verified_channel: verified_channel).perform
     SlackMessenger.new(message: "*#{verified_channel.publication_title}* verified by #{verified_channel.publisher.name} (#{verified_channel.publisher.email}); id=#{verified_channel.id}").perform
   end
 

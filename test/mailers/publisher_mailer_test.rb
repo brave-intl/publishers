@@ -27,11 +27,11 @@ class PublisherMailerTest < ActionMailer::TestCase
   end
 
   test "confirm_email_change" do
-    publisher = publishers(:verified)
+    publisher = publishers(:completed)
     publisher.pending_email = "alice-pending@verified.com"
     publisher.save
 
-    email = PublisherMailer.confirm_email_change(publisher, true)
+    email = PublisherMailer.confirm_email_change(publisher)
 
     assert_emails 1 do
       email.deliver_now
@@ -42,14 +42,14 @@ class PublisherMailerTest < ActionMailer::TestCase
   end
 
   test "verify_email error is rescued if there is no send address" do
-    publisher = publishers(:default)
+    publisher = publishers(:completed)
     publisher.pending_email = ""
     publisher.email = "alice_verified@default.org"
     publisher.save
 
     # verify error raised if no pending email
     assert_nothing_raised do
-      PublisherMailer.verify_email(publisher, true).deliver_now
+      PublisherMailer.verify_email(publisher).deliver_now
     end
 
     publisher.pending_email = "alice_new@default.org"
@@ -57,7 +57,7 @@ class PublisherMailerTest < ActionMailer::TestCase
     
     # verify nothing raised if pending email exists
     assert_nothing_raised do
-      PublisherMailer.verify_email(publisher, true).deliver_now
+      PublisherMailer.verify_email(publisher).deliver_now
     end
   end
 
@@ -123,5 +123,17 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_emails 1 do
       email.deliver_now
     end
+  end
+
+  test "login_email verify_email verification_done and confirm_email_change raise unless token fresh" do
+    publisher = publishers(:default)
+
+    publisher.authentication_token = nil
+    publisher.authentication_token_expires_at = 1.hour.ago
+
+    assert_raise do PublisherMailer.login_email(publisher).deliver end
+    assert_raise do PublisherMailer.verify_email(publisher).deliver end
+    assert_raise do PublisherMailer.confirm_email_change(publisher).deliver end
+    assert_raise do PublisherMailer.verification_done(publisher.channels.first).deliver end
   end
 end

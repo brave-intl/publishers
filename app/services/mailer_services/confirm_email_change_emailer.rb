@@ -4,7 +4,7 @@ module MailerServices
     attr_accessor :error
     attr_reader :publisher
 
-    def initialize(publisher)
+    def initialize(publisher:)
       @publisher = publisher
     end
 
@@ -23,7 +23,7 @@ module MailerServices
       PublisherMailer.notify_email_change(publisher).deliver_later
 
       # Send a new login link for the user to confirm
-      PublisherMailer.confirm_email_change(publisher, true).deliver_later
+      PublisherMailer.confirm_email_change(publisher).deliver_later
 
       if PublisherMailer.should_send_internal_emails?
         PublisherMailer.confirm_email_change_internal(publisher).deliver_later

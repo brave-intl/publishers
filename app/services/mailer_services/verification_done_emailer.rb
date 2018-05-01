@@ -4,7 +4,7 @@ module MailerServices
     attr_accessor :error
     attr_reader :verified_channel
 
-    def initialize(verified_channel)
+    def initialize(verified_channel:)
       @verified_channel = verified_channel
     end
 
@@ -19,7 +19,7 @@ module MailerServices
       # Updates the authentication_token and saves the publisher
       token = PublisherTokenGenerator.new(publisher: verified_channel.publisher).perform
 
-      PublisherMailer.verification_done(verified_channel, true).deliver_later
+      PublisherMailer.verification_done(verified_channel).deliver_later
 
       if PublisherMailer.should_send_internal_emails?
         PublisherMailer.verification_done_internal(verified_channel).deliver_later

@@ -4,7 +4,7 @@ module MailerServices
     attr_accessor :error
     attr_reader :publisher
 
-    def initialize(publisher)
+    def initialize(publisher:)
       @publisher = publisher
     end
 
@@ -18,8 +18,7 @@ module MailerServices
       return false if !publisher
       # Updates the authentication_token and saves the publisher
       token = PublisherTokenGenerator.new(publisher: publisher).perform
-
-      PublisherMailer.login_email(publisher, true).deliver_later
+      PublisherMailer.login_email(publisher).deliver_later
     end
   end
 end

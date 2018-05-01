@@ -70,7 +70,7 @@ class PublishersController < ApplicationController
     if existing_email_verified_publisher
       @publisher = existing_email_verified_publisher
       @publisher_email = existing_email_verified_publisher.email
-      MailerServices::PublisherLoginLinkEmailer.new(@publisher).perform
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
       flash.now[:notice] = t(".email_already_active", email: email)
       render :emailed_auth_token
     else
@@ -81,7 +81,7 @@ class PublishersController < ApplicationController
       @publisher_email = @publisher.pending_email
 
       if @publisher.save
-        MailerServices::VerifyEmailEmailer.new(@publisher).perform
+        MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
         render :emailed_auth_token
       else
         Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
@@ -112,11 +112,11 @@ class PublishersController < ApplicationController
     end
 
     if @publisher.email.nil?
-      MailerServices::VerifyEmailEmailer.new(@publisher).perform
+      MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
       @publisher_email = @publisher.pending_email
     else
       @publisher_email = @publisher.email
-      MailerServices::PublisherLoginLinkEmailer.new(@publisher).perform
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
     end
     
     flash.now[:notice] = t(".done")
@@ -158,7 +158,7 @@ class PublishersController < ApplicationController
 
     if update_params[:pending_email].present?
       if @publisher.update(update_params)
-        MailerServices::ConfirmEmailChangeEmailer.new(@publisher).perform
+        MailerServices::ConfirmEmailChangeEmailer.new(publisher: @publisher).perform
         @publisher_email = @publisher.pending_email
         render :create_done
         return
@@ -187,7 +187,7 @@ class PublishersController < ApplicationController
     success = publisher.update(update_params)
 
     if success && update_params[:pending_email]
-      MailerServices::ConfirmEmailChangeEmailer.new(publisher).perform
+      MailerServices::ConfirmEmailChangeEmailer.new(publisher: publisher).perform
     end
 
     if success && update_params[:default_currency]
@@ -229,7 +229,7 @@ class PublishersController < ApplicationController
     @publisher = Publisher.where(email: @publisher_email).take
 
     if @publisher
-      MailerServices::PublisherLoginLinkEmailer.new(@publisher).perform
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
     else
       # Failed to find publisher
       flash.now[:alert_html_safe] = t('publishers.emailed_auth_token.unfound_alert_html', {
