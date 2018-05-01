@@ -33,7 +33,8 @@ class PublishersController < ApplicationController
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
   before_action :require_verified_publisher,
-    only: %i(edit_payment_info
+    only: %i(disconnect_uphold
+             edit_payment_info
              generate_statement
              home
              statement
@@ -296,6 +297,14 @@ class PublishersController < ApplicationController
     redirect_to(publisher_next_step_path(@publisher))
   end
 
+  def disconnect_uphold
+    publisher = current_publisher
+    publisher.disconnect_uphold
+    DisconnectUpholdJob.perform_later(publisher_id: publisher.id)
+
+    head :no_content
+  end
+
   def change_email
     @publisher = current_publisher
   end
@@ -360,15 +369,13 @@ class PublishersController < ApplicationController
     end
   end
 
-  def status
+  def uphold_status
     publisher = current_publisher
     respond_to do |format|
       format.json {
         render(json: {
-          status: publisher_status(publisher).to_s,
-          status_description: publisher_status_description(publisher),
-          timeout_message: publisher_status_timeout(publisher),
           uphold_status: publisher.uphold_status.to_s,
+          uphold_status_summary: uphold_status_summary(publisher),
           uphold_status_description: uphold_status_description(publisher),
           uphold_status_class: uphold_status_class(publisher)
         }, status: 200)

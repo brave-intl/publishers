@@ -58,7 +58,7 @@ function removeChannel(channelId) {
     });
 }
 
-let checkUpholdStatusInterval;
+let checkUpholdStatusInterval = null;
 let checkUpholdStatusCount = 0;
 
 function checkUpholdStatus() {
@@ -70,7 +70,7 @@ function checkUpholdStatus() {
     method: 'GET'
   };
 
-  return fetch('./status', options)
+  return fetch('./uphold_status', options)
     .then(function(response) {
       checkUpholdStatusCount += 1;
       if (response.status === 200 || response.status === 304) {
@@ -78,26 +78,45 @@ function checkUpholdStatus() {
       }
     })
     .then(function(body) {
-      let upholdDashboard = document.getElementById('uphold_dashboard');
-      if (body.uphold_status_class) {
-        upholdDashboard.className = body.uphold_status_class;
+      let upholdStatus = document.getElementById('uphold_status');
+      let upholdStatusSummary = document.querySelector('#uphold_status .status-summary .text');
+      let upholdStatusDescription = document.querySelector('#uphold_status .status-description');
+      let timedOut = (checkUpholdStatusCount >= 15);
+
+      if (timedOut) {
+        // TODO - use resource strings for summary + description text
+        body = {
+          uphold_status_class: 'uphold-timeout',
+          uphold_status_summary: 'Connection problems',
+          uphold_status_description: 'We are experiencing communication problems. Please check back later.'
+        };
       }
 
-      if (body.uphold_status === 'verified') {
-        document.getElementById('publisher_status').innerText = body.uphold_status_description;
-        let publisherStatus = document.getElementById('publisher_status');
-        publisherStatus.innerText = body.status_description;
-        publisherStatus.className = body.status;
-        document.getElementById('uphold_connect').classList.add('hidden');
-        document.getElementById('statement_section').classList.remove('hidden');
-        dynamicEllipsis.stop('publisher_status');
-        clearInterval(checkUpholdStatusInterval);
-      } else if (checkUpholdStatusCount >= 15) {
-        let publisherStatus = document.getElementById('publisher_status');
-        publisherStatus.innerText = body.timeout_message;
-        dynamicEllipsis.stop('publisher_status');
-        clearInterval(checkUpholdStatusInterval);
+      if (body) {
+        if (body.uphold_status_class) {
+          upholdStatus.className = body.uphold_status_class;
+        }
+
+        if (body.uphold_status_summary) {
+          upholdStatusSummary.innerText = body.uphold_status_summary;
+        }
+
+        if (body.uphold_status_description) {
+          upholdStatusDescription.innerText = body.uphold_status_description;
+        }
+
+        if (checkUpholdStatusInterval != null && (body.uphold_status === 'verified' || timedOut)) {
+          clearInterval(checkUpholdStatusInterval);
+          checkUpholdStatusInterval = null;
+        }
       }
+    });
+}
+
+function disconnectUphold() {
+  submitForm('disconnect_uphold', 'PATCH', true)
+    .then(function(response) {
+      return checkUpholdStatus();
     });
 }
 
@@ -106,8 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  if (document.querySelectorAll('div#uphold_dashboard.uphold-status-access-parameters-acquired').length > 0) {
-    dynamicEllipsis.start('publisher_status');
+  if (document.querySelectorAll('div#uphold_status.uphold-processing').length > 0) {
     checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
   }
 
@@ -123,6 +141,16 @@ document.addEventListener('DOMContentLoaded', function() {
       event.preventDefault();
     }, false);
   }
+
+  let disconnectUpholdLink = document.querySelector('a.disconnect-uphold');
+  disconnectUpholdLink.addEventListener('click', function(event) {
+    let template = document.querySelector('[id="disconnect-uphold-js"]');
+    openModal(template.innerHTML, function() {
+      disconnectUphold();
+    }, function() {
+    });
+    event.preventDefault();
+  }, false);
 
   let publisherVisibleCheckbox = document.getElementById('publisher_visible');
   publisherVisibleCheckbox.addEventListener('click', function(event) {

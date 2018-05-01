@@ -1,0 +1,10 @@
+.col.col-center.col-xs-12.col-sm-10.col-md-10.col-lg-10
+  h4= t ".headline"
+  p
+    = t ".intro"
+  p
+    = t ".confirmation"
+  .row
+    .col.md-confirm-buttons.pull-right
+      = link_to t(".deny"), "#", class: "js-deny btn btn-secondary"
+      = link_to t(".confirm"), "#", class: "js-confirm btn btn-secondary"

@@ -108,9 +108,6 @@ en:
         website: the website
         twitch: Twitch
         unknown: the website
-      create_uphold_wallet: Create Uphold Wallet
-      not_verified: Unverified
-      reconnect_to_uphold: Reconnect to Uphold
       statement_periods:
         past_7_days: Past 7 days
         past_30_days: Past 30 days
@@ -119,10 +116,11 @@ en:
         this_year: This year
         last_year: Last year
         all: All
+      uphold_authorization_description:
+        connect_to_uphold: Connect to Uphold
+        reconnect_to_uphold: Reconnect to Uphold
       uphold_status:
-        access_parameters_acquired: Connecting your Uphold account.
         balance_sending: Contribution balance is transferred to your Uphold wallet monthly.
-        code_acquired: A problem was experienced connecting your Uphold account.
         connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Payments.
         processing: |
           Your Uphold wallet is being connected to your account.
@@ -131,8 +129,15 @@ en:
         reconnect_to_uphold: |
           Uh oh! Connecting to Uphold has been denied.
           In order to deposit your contributions accrued we need you to reconnect to your Uphold wallet.
-        unconnected: Not connected to Uphold.
-        unverified: Your account has not been verified
+      uphold_status_summary:
+        connected: Connected
+        connecting: Connecting
+        unconnected: Not connected
+        connection_problems: Connection problems
+      uphold_status_description:
+        connecting: Brave Payments is connecting to your Uphold account.
+        reauthorization_needed: We are having trouble communicating with Uphold.
+        unconnected: You need to connect to your Uphold account to receive contributions from Brave Payments.
         verified: Your Uphold wallet is ready to receive Brave Payments.
   layouts:
     mailer:
@@ -307,6 +312,8 @@ en:
         deposit_currency: "BAT to "
         check_balance: Check Balance
         no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
+        connect: Connect
+        disconnect: Disconnect
       statements:
         heading: Statements
         generate: Generate
@@ -349,6 +356,12 @@ en:
       confirmation: Are you sure you want to remove this channel?
       deny: Do Not Remove
       confirm: Remove Channel
+    disconnect_uphold_modal:
+      headline: Disconnect Uphold Account?
+      intro: You won't be able to receive the monthly contributions from your fans until your wallet at Uphold is connected to us.
+      confirmation: Are you sure you want to disconnect your account with Uphold?
+      deny: Cancel
+      confirm: Disconnect
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:
