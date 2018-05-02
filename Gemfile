@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
 
+# Rate limit ActiveJob
+gem 'activejob-traffic_control'
+
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
 
@@ -70,6 +73,9 @@ gem "rqrcode", "~> 0.10"
 # SCSS for stylesheets
 gem "sass-rails", "~> 5.0"
 
+# Sendgrid mail service
+gem 'sendgrid-ruby'
+
 # Exception logging
 gem "sentry-raven", "~> 2.1", require: false
 
@@ -131,6 +137,9 @@ group :test do
 
   # Locking to 5.10.3 to workaround issue in 5.11.1 (https://github.com/seattlerb/minitest/issues/730)
   gem 'minitest', '5.10.3'
+
+  # API recording and playback
+  gem "vcr"
 
   gem "webmock", "~> 3.0"
 
