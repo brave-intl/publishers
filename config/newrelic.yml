@@ -57,6 +57,8 @@ test:
 staging:
   <<: *default_settings
   agent_enabled: true
+  monitor_mode: true
 
 production:
   <<: *default_settings
+  monitor_mode: true
