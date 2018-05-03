@@ -19,11 +19,6 @@ class PromoRegistrar < BaseApiClient
         end
       end
     end
-  rescue => e
-    require "sentry-raven"
-    Rails.logger.error("PromoRegistrar #perform error: #{e}")
-    Raven.capture_exception("PromoRegistrar #perform error: #{e}")
-    nil
   end
 
   def register_channel(channel)
