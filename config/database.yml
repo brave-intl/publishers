@@ -6,14 +6,29 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: 0.0.0.0
+  port: 25432
+  username: postgres
+  password:
 
 development:
   <<: *default
+#  database: staging_copy
+#  database: staging2_copy
   database: brave_publishers_dev
+#  database: brave_publishers_dev_staging
+
+#Staging 2
+#  host: ec2-54-163-233-103.compute-1.amazonaws.com
+#  database: dc0gs7b1o0nd7q
+#  password: fb7ebaca30dda58947cf90e2f41efd196bdedd18978438a21c886246bf9fe0d4
+#  username: rofkmqlvyecjis
+#  port: 5432
 
 test:
   <<: *default
   database: brave_publishers_test
+#  database: brave_publishers_test_staging
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
