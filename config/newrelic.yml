@@ -56,7 +56,7 @@ test:
 
 staging:
   <<: *default_settings
-  agent_enabled: false
+  agent_enabled: true
 
 production:
   <<: *default_settings
