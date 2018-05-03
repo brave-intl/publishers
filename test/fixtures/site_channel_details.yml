@@ -59,6 +59,36 @@ to_verify_details:
   verification_token: "e3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
   verification_method: "wordpress"
 
+to_verify_dns_details:
+  brave_publisher_id: "to_verify_dns.org"
+  verification_token: "6d660f14752f460b59dc62907bfe3ae1cb4727ae0645de74493d99bcf63ddb94"
+  verification_method: "dns_record"
+
+to_verify_github_details:
+  brave_publisher_id: "to_verify.github.io"
+  verification_token: "93d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
+  verification_method: "github"
+
+to_verify_file_details:
+  brave_publisher_id: "to_verify_file.org"
+  verification_token: "03d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
+  verification_method: "public_file"
+
+to_verify_support_details:
+  brave_publisher_id: "to_verify_support.org"
+  verification_token: "xxxx01860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
+  verification_method: "support_queue"
+
+to_verify_wordpress_details:
+  brave_publisher_id: "to_verify_wordpress.org"
+  verification_token: "f3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
+  verification_method: "wordpress"
+
+to_verify_wordpress_blank_pub_id_details:
+  brave_publisher_id: ""
+  verification_token: "ad660f14752f460b59dc62907bfe3ae1cb4727ae0645de74493d99bcf63ddb94"
+  verification_method: "wordpress"
+
 medium_media_group_abandoned_1_details:
   brave_publisher_id: "medium_1.org"
   verification_token: "e3d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"

@@ -45,7 +45,7 @@ class Publisher < ApplicationRecord
   validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
   validates :promo_token_2018q1, uniqueness: true,  allow_nil: true
-    
+
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
 

@@ -327,6 +327,7 @@ en:
         remove_verified: Remove Channel
         one_more_step: One more step to complete...
         lets_finish: Let's Finish
+        try_again: Try Again
       channel_balance_period: CURRENT PERIOD
     new_auth_token:
       signup_prompt: Don't have an account?
@@ -557,7 +558,8 @@ en:
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.
     verify:
-      alert: Site added. Verification in progress...
+      alert: Could not verify at this moment. Please check you've updated details correctly, wait a bit and try again.
+      success: Channel verified!
   static:
     index:
       welcome: Welcome to

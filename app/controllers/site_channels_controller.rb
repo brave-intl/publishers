@@ -101,11 +101,14 @@ class SiteChannelsController < ApplicationController
   end
 
   def verify
-    VerifySiteChannel.perform_later(channel_id: current_channel.id)
     current_channel.verification_started!
-
-    flash[:notice] = t(".alert")
-    redirect_to home_publishers_path
+    result = SiteChannelVerifier.new(channel: current_channel).perform
+    if result
+      redirect_to home_publishers_path, notice: t(".success")
+    else
+      # TODO: Expose diagnostic failure info from SiteChannelVerifier and show to user.
+      redirect_to(site_last_verification_method_path(current_channel), alert: t(".alert"))
+    end
   end
 
   private
@@ -123,7 +126,7 @@ class SiteChannelsController < ApplicationController
 
   def require_verification_token
     if current_channel.details.verification_token.blank?
-      current_channel.details.update_attribute(:verification_token, SiteChannelTokenRequester.new(channel: current_channel).perform)
+      current_channel.details.update_attribute(:verification_token, SecureRandom.hex(32))
       current_channel.save!
     end
   end

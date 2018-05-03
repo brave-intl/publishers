@@ -200,6 +200,7 @@ script id="choose-channel-type" type="text/html"
         - elsif channel.verification_started? || channel.verification_failed?
           .channel-status.pull-right
             = channel_verification_details(channel)
+            = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
         - else
           .channel-status.pull-right
             = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
