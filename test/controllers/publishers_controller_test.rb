@@ -339,7 +339,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                    .gsub('<STATE>', publisher.uphold_state_token)
 
     assert_select("a[href='#{endpoint}']") do |elements|
-      assert_equal(1, elements.length, 'A link with the correct href to Uphold.com is present')
+      assert_equal(2, elements.length, 'Two links with the correct href to Uphold.com are present (one link in the status area + one big button)')
     end
   end
 
@@ -474,13 +474,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal publisher.reload.uphold_status, :code_acquired
 
     # verify message tells publisher they need to reconnect
-    assert_select("div#publisher_status.uphold_processing") do |element|
-      assert_equal element.text, I18n.t("helpers.publisher.uphold_status.processing")
+    assert_select("div#uphold_status.uphold-processing .status-description") do |element|
+      assert_equal I18n.t("helpers.publisher.uphold_status_description.connecting"), element.text
     end
 
     # verify button says 'reconnect to uphold' not 'create uphold wallet'
     assert_select("[data-test=reconnect-button]") do |element|
-      assert_equal element.text, I18n.t("helpers.publisher.reconnect_to_uphold")
+      assert_equal I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold"), element.text
     end
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
@@ -514,20 +514,32 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                  response.body
   end
 
-  test "a publisher's status can be polled via ajax" do
+  test "a publisher's uphold status can be polled via ajax" do
     publisher = publishers(:completed)
     sign_in publisher
 
-    get status_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    get uphold_status_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal '{"status":"uphold_unconnected",' +
-                  '"status_description":"You need to create a wallet with Uphold to receive contributions from Brave Payments.",' +
-                  '"timeout_message":null,' +
-                  '"uphold_status":"unconnected",' +
-                  '"uphold_status_description":"Not connected to Uphold.",' +
-                  '"uphold_status_class":"uphold-status-unconnected"}',
+    assert_equal '{"uphold_status":"unconnected",' +
+                  '"uphold_status_summary":"Not connected",' +
+                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Payments.",' +
+                  '"uphold_status_class":"uphold-unconnected"}',
                  response.body
+  end
+
+  test "a publisher can be disconnected from uphold" do
+    publisher = publishers(:verified)
+    publisher.verify_uphold
+    assert publisher.uphold_verified?
+    sign_in publisher
+
+    patch disconnect_uphold_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+
+    assert_response 204
+
+    publisher.reload
+    refute publisher.uphold_verified?
   end
 
   test "home redirects to 2FA prompt on first visit" do

@@ -19,31 +19,6 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
-  def uphold_status_description(publisher)
-    case publisher.uphold_status
-    when :verified
-      I18n.t("helpers.publisher.uphold_status.verified")
-    when :access_parameters_acquired
-      I18n.t("helpers.publisher.uphold_status.access_parameters_acquired")
-    when :code_acquired
-      I18n.t("helpers.publisher.uphold_status.code_acquired")
-    when :unconnected
-      I18n.t("helpers.publisher.uphold_status.unconnected")
-    end
-  end
-
-  def uphold_last_deposit_date(publisher)
-    "September 31st, 2022 (ToDo)"
-  end
-
-  def show_uphold_connect?(publisher)
-    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
-  end
-
-  def show_uphold_dashboard?(publisher)
-    publisher.uphold_verified?
-  end
-
   def uphold_status_class(publisher)
     "uphold-status-#{publisher.uphold_status.to_s.gsub('_', '-')}"
   end
@@ -110,10 +85,11 @@ module PublishersHelper
   end
 
   def uphold_authorization_description(publisher)
-    if publisher_status(publisher) == :uphold_reauthorize || publisher_status(publisher) == :uphold_processing
-      I18n.t("helpers.publisher.reconnect_to_uphold")
+    case publisher.uphold_status
+    when :unconnected
+      I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
     else
-      I18n.t("helpers.publisher.create_uphold_wallet")
+      I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
     end
   end
 
@@ -133,71 +109,42 @@ module PublishersHelper
     available_currencies
   end
 
-  def publisher_verification_status(publisher)
-    publisher.verified? ? :verified : :unverified
-  end
-
-  def publisher_verification_status_description(publisher)
-    case publisher_verification_status(publisher)
-      when :verified
-        I18n.t("publishers.shared.verified")
-      when :unverified
-        I18n.t("helpers.publisher.not_verified")
-    end
-  end
-
-  def publisher_verification_file_content(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_file_content
-  end
-
-  def publisher_verification_file_directory(publisher)
-    "<span class=\"strong-line\">https:</span>//#{publisher.brave_publisher_id}/.well-known/"
-  end
-
-  def publisher_verification_file_url(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
-  end
-
-  # Overall publisher status combining verification and uphold wallet connection
-  def publisher_status(publisher)
-    if publisher.verified?
-      if publisher.uphold_verified?
-        :complete
-      elsif publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
-        :uphold_processing
-      else
-        if publisher.wallet.try(:status).try(:[], 'action') == 're-authorize'
-          :uphold_reauthorize
-        else
-          :uphold_unconnected
-        end
-      end
+  def uphold_status_class(publisher)
+    case publisher.uphold_status
+    when :verified
+      'uphold-complete'
+    when :code_acquired, :access_parameters_acquired
+      'uphold-processing'
+    when :reauthorization_needed
+      'uphold-reauthorization-needed'
     else
-      :unverified
+      'uphold-unconnected'
     end
   end
 
-  def publisher_status_timeout(publisher)
-    case publisher_status(publisher)
-    when :uphold_processing
-      I18n.t("helpers.publisher.uphold_status.processing_timeout")
+  def uphold_status_summary(publisher)
+    case publisher.uphold_status
+    when :verified
+      I18n.t("helpers.publisher.uphold_status_summary.connected")
+    when :code_acquired, :access_parameters_acquired
+      I18n.t("helpers.publisher.uphold_status_summary.connecting")
+    when :reauthorization_needed
+      I18n.t("helpers.publisher.uphold_status_summary.connection_problems")
     else
-      nil
+      I18n.t("helpers.publisher.uphold_status_summary.unconnected")
     end
   end
 
-  def publisher_status_description(publisher)
-    case publisher_status(publisher)
-    when :complete
-      I18n.t("helpers.publisher.uphold_status.balance_sending")
-    when :uphold_processing
-      I18n.t("helpers.publisher.uphold_status.processing")
-    when :uphold_reauthorize
-      I18n.t("helpers.publisher.uphold_status.reconnect_to_uphold")
-    when :uphold_unconnected
-      I18n.t("helpers.publisher.uphold_status.connect_to_uphold")
-    when :unverified
-      I18n.t("helpers.publisher.uphold_status.unverified")
+  def uphold_status_description(publisher)
+    case publisher.uphold_status
+    when :verified
+      I18n.t("helpers.publisher.uphold_status_description.verified")
+    when :code_acquired, :access_parameters_acquired
+      I18n.t("helpers.publisher.uphold_status_description.connecting")
+    when :reauthorization_needed
+      I18n.t("helpers.publisher.uphold_status_description.reauthorization_needed")
+    when :unconnected
+      I18n.t("helpers.publisher.uphold_status_description.unconnected")
     end
   end
 

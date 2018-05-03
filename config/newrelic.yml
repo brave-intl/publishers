@@ -12,7 +12,7 @@
 
 common: &default_settings
   # Required license key associated with your New Relic account.
-  license_key: <%= ENV["NEW_RELIC_LICENSE_KEY"]
+  license_key: <%= ENV["NEW_RELIC_LICENSE_KEY"] %>
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
@@ -25,16 +25,16 @@ common: &default_settings
   log_level: info
 
   # Don't log sensitive things to New Relic
-  high_security: true
+#  high_security: true
 
-  cross_application_tracer:
-    enabled: false
+#  cross_application_tracer:
+#    enabled: false
 
-  browser_monitoring:
-    auto_instrument: false
+#  browser_monitoring:
+#    auto_instrument: false
 
-  analytics_events:
-    enabled: false
+#  analytics_events:
+#     enabled: false
 
 # Environment-specific settings are in this section.
 # RAILS_ENV or RACK_ENV (as appropriate) is used to determine the environment.
@@ -50,13 +50,11 @@ development:
 
 test:
   <<: *default_settings
-  agent_enabled: false
   # It doesn't make sense to report to New Relic from automated test runs.
   monitor_mode: false
 
 staging:
   <<: *default_settings
-  agent_enabled: false
 
 production:
   <<: *default_settings

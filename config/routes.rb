@@ -13,15 +13,16 @@ Rails.application.routes.draw do
       get :expired_auth_token
       get :log_out
       get :email_verified
-      get :status
       get :balance
       get :uphold_verified
       get :statement
       get :statement_ready
+      get :uphold_status
       patch :verify
       patch :update
       patch :generate_statement
       patch :complete_signup
+      patch :disconnect_uphold
       get :choose_new_channel_type
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index) do
