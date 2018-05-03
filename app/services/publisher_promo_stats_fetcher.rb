@@ -18,11 +18,6 @@ class PublisherPromoStatsFetcher < BaseApiClient
     stats = JSON.parse(response.body)
     @publisher.promo_stats_2018q1 = stats
     @publisher.save!
-  rescue => e
-    require "sentry-raven"
-    Rails.logger.error("PublisherPromoStatsFetcher #perform error: #{e}, publisher: #{@publisher}")
-    Raven.capture_exception("PublisherPromoStatsFetcher #perform error: #{e}, publisher: #{@publisher}")
-    nil
   end
 
   def perform_offline

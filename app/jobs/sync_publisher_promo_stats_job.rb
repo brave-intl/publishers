@@ -3,12 +3,17 @@ class SyncPublisherPromoStatsJob < ApplicationJob
   include PromosHelper
   queue_as :transactional
 
-  def perform(promo_id: active_promo_id)
-    # Might be able to select fewer with a more specific query
-    publishers = Publisher.where(promo_enabled_2018q1: true)
+  # Syncs promo stats for all publishers by default
+  # If a publisher is provided, sync stats for only that publisher
 
-    publishers.find_each do |publisher|
+  def perform(promo_id: active_promo_id, publisher: nil)
+    if publisher
       PublisherPromoStatsFetcher.new(publisher: publisher, promo_id: promo_id).perform
+    else
+      publishers = Publisher.where(promo_enabled_2018q1: true)
+      publishers.find_each do |publisher|
+        PublisherPromoStatsFetcher.new(publisher: publisher, promo_id: promo_id).perform
+      end
     end
   end
 end
