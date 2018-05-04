@@ -208,6 +208,6 @@ class PublisherMailer < ApplicationMailer
   private
 
   def ensure_fresh_token
-    raise if @publisher.authentication_token == nil || @publisher.authentication_token_expires_at <= Time.now
+    raise if @publisher.authentication_token.nil? || @publisher.authentication_token_expires_at <= Time.now
   end
 end

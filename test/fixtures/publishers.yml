@@ -26,7 +26,7 @@ completed:
   name: "Alice the Completed"
   phone: "4159001421"
   phone_normalized: "+14159001421"
-  authentication_token_expires_at: "<%= PublisherTokenGenerator::TOKEN_TTL.from_now %>"
+  authentication_token_expires_at: "<%= DateTime.now + PublisherTokenGenerator::TOKEN_TTL %>"
   encrypted_authentication_token_iv: "<%= Base64.encode64(salt) %>"
   encrypted_authentication_token: "<%= Publisher.encrypt_authentication_token(
     "authentication_token",
