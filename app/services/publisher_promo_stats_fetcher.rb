@@ -13,7 +13,7 @@ class PublisherPromoStatsFetcher < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/1/promo/owners/#{@publisher.id}/statsByTime?promo_id=#{@promo_id}")
+      request.url("/api/1/promo/owners/#{URI.escape(@publisher.owner_identifier)}/statsByTime?promo_id=#{@promo_id}")
     end
     stats = JSON.parse(response.body)
     @publisher.promo_stats_2018q1 = stats

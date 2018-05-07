@@ -18,13 +18,13 @@ class PromoRegistrationGetter < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/1/promo/publishers?channel=#{@channel.channel_id}")
+      request.url("/api/1/promo/publishers?channel=#{URI.escape(@channel.details.channel_identifier)}")
     end
     registrations =  JSON.parse(response.body)
     referral_code = referral_code_for_promo_id(registrations)
     
     if should_update_channel_owner_on_promo_server(registrations)
-      PromoChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform
+      PromoChannelOwnerUpdater.new(publisher: @publisher, referral_code: referral_code).perform
     end
     
     referral_code
@@ -43,13 +43,13 @@ class PromoRegistrationGetter < BaseApiClient
       {
       "referral_code" => offline_referral_code,
       "promo" => "#{@promo_id}",
-      "publisher" => "#{@channel.channel_id}",
+      "publisher" => "#{@channel.details.channel_identifier}",
       "name" => "#{@channel.publication_title}",
       },
       {
       "referral_code" => offline_referral_code,
       "promo" => "free-bats-2018q2",
-      "publisher" => "#{@channel.channel_id}",
+      "publisher" => "#{@channel.details.channel_identifier}",
       "name" => "#{@channel.publication_title}",
       }
     ]
@@ -76,7 +76,7 @@ class PromoRegistrationGetter < BaseApiClient
 
   def should_update_channel_owner_on_promo_server(registrations)
     owner_on_promo_server = registrations[0]["owner_id"]
-    if owner_on_promo_server != @publisher.id
+    if owner_on_promo_server != @publisher.owner_identifier
       return true
     else
       return false

@@ -72,22 +72,6 @@ class Channel < ApplicationRecord
     end
   end
 
-  # NOTE This method is should only be used in referral promo logic. Use {channel}.details.channel_identifer for everything else.
-  # This will return the channel_identifier without the youtube#channel: or twitch#channel: prefix
-  def channel_id
-    channel_type = self.details_type
-    case channel_type
-    when "YoutubeChannelDetails"
-      return self.details.youtube_channel_id
-    when "SiteChannelDetails"
-      return self.details.brave_publisher_id
-    when "TwitchChannelDetails"
-      return self.details.name
-    else
-      nil
-    end
-  end
-
   def promo_enabled?
     if self.promo_registration.present?
       if self.promo_registration.referral_code.present?
