@@ -146,16 +146,6 @@ class Publisher < ApplicationRecord
     save!
   end
 
-  def uphold_complete?
-    # check the wallet to see if the connection to uphold has been been denied
-    action = wallet.try(:status).try(:[], 'action')
-    if action == 're-authorize' || action == 'authorize'
-      false
-    else
-      self.uphold_verified || self.uphold_access_parameters.present?
-    end
-  end
-
   def uphold_status
     if self.uphold_verified
       :verified
