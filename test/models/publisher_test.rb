@@ -144,7 +144,7 @@ class PublisherTest < ActiveSupport::TestCase
     refute_nil publisher.default_currency
   end
 
-  test "when wallet is gotten uphold_verified will be reset if the wallet status directs it" do
+  test "when wallet is retrieved uphold_status will reflect if reauthorization is needed" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
@@ -166,7 +166,8 @@ class PublisherTest < ActiveSupport::TestCase
       end
 
       publisher.wallet
-      refute publisher.uphold_verified
+      assert publisher.uphold_verified?
+      assert publisher.uphold_reauthorization_needed?
       assert_equal :reauthorization_needed, publisher.uphold_status
 
     ensure
