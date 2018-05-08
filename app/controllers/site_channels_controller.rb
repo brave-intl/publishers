@@ -135,7 +135,7 @@ class SiteChannelsController < ApplicationController
 
   def require_https_enabled_site
     return if current_channel.details.supports_https?
-    redirect_to(site_last_verification_method_path(current_channel.details), alert: t(".alert"))
+    redirect_to(site_last_verification_method_path(channel=current_channel), alert: t("site_channels.#{__method__}.alert"))
   end
 
   def update_site_verification_method
