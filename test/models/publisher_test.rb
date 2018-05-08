@@ -331,4 +331,15 @@ class PublisherTest < ActiveSupport::TestCase
 
     assert_equal "publishers#uuid:02e81b29-f150-54b9-9a08-ce75944f6889", publisher.owner_identifier
   end
+
+  test "a publishers channel details can be selected from the publisher object" do
+    publisher = publishers(:completed)
+    site_channel_details = publisher.site_channel_details
+
+    assert_equal site_channel_details.first.brave_publisher_id, "completed.org" 
+
+    publisher = publishers(:google_verified)
+    youtube_channel_details = publisher.youtube_channel_details
+    assert_equal youtube_channel_details.first.title, "Some Other Guy's Channel"
+  end
 end
