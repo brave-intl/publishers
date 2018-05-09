@@ -136,7 +136,6 @@ It might be useful to maintain a local bash script with a list of env vars. For 
 
 Some variables are set automagically with Heroku addons:
 
-- `FIXIE_URL` - Proxy provider. For outbound API requests.
 - `MAILGUN_*` - For sending emails.
 - `NEW_RELIC_APP_NAME`, `NEW_RELIC_LICENSE_KEY` - New Relic app monitoring.
 - `REDIS_URL` - For Sidekiq and rack-attack
