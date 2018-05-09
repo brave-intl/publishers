@@ -145,27 +145,21 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     get api_channel_verification_status_path(channel)
 
     assert_response 200
-    assert_match(
-      '{"status":"started",' +
-       '"details":"Verification in progress"}',
-          response.body)
+    assert_match('failure', JSON.parse(response.body)["status"])
 
     channel.verification_failed!('something happened')
 
     get "/api/channels/#{channel.id}/verification_status"
     assert_response 200
-    assert_match(
-      '{"status":"failed",' +
-        '"details":"something happened"}',
-      response.body)
+    assert_match('failure', JSON.parse(response.body)["status"])
 
     channel.verification_succeeded!
 
     get "/api/channels/#{channel.id}/verification_status"
     assert_response 200
-    assert_match(
-      '{"status":"verified",' +
-        '"details":null}',
-      response.body)
+
+    json = JSON.parse(response.body)
+    assert_match('success', json["status"])
+    assert_match(channel.id, json["verificationId"])
   end
 end
