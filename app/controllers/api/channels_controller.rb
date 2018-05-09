@@ -81,6 +81,7 @@ class Api::ChannelsController < Api::BaseController
     render(json: channel.details, status: :ok)
   end
 
+  # Copied from eyeshade/controllers/publishers#getToken
   def verification_status
     if @current_channel.verified?
       render(
