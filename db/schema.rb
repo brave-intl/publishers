@@ -156,12 +156,12 @@ ActiveRecord::Schema.define(version: 20180521195417) do
     t.string   "encrypted_authentication_token"
     t.string   "encrypted_authentication_token_iv"
     t.datetime "authentication_token_expires_at"
-    t.integer  "sign_in_count",                         default: 0,     null: false
+    t.integer  "sign_in_count",                         default: 0,           null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.boolean  "created_via_api",                       default: false, null: false
+    t.boolean  "created_via_api",                       default: false,       null: false
     t.string   "default_currency"
     t.string   "uphold_state_token"
     t.boolean  "uphold_verified",                       default: false
@@ -170,15 +170,16 @@ ActiveRecord::Schema.define(version: 20180521195417) do
     t.string   "encrypted_uphold_access_parameters"
     t.string   "encrypted_uphold_access_parameters_iv"
     t.datetime "uphold_updated_at"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.datetime "two_factor_prompted_at"
     t.boolean  "visible",                               default: true
-    t.datetime "agreed_to_tos"
     t.boolean  "promo_enabled_2018q1",                  default: false
+    t.datetime "agreed_to_tos"
     t.string   "promo_token_2018q1"
-    t.jsonb    "promo_stats_2018q1",                    default: {},    null: false
+    t.jsonb    "promo_stats_2018q1",                    default: {},          null: false
     t.datetime "promo_stats_updated_at_2018q1"
+    t.text     "kind",                                  default: "publisher"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree
