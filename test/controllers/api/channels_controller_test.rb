@@ -3,6 +3,7 @@ require "shared/mailer_test_helper"
 
 class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
+  include Devise::Test::IntegrationHelpers
 
   test "can get owner's youtube channel by identifier" do
     channel = channels(:global_yt2)
@@ -134,4 +135,37 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert channel.created_via_api?
   end
 
+  test "a channel's verification status can be polled via api" do
+    publisher = publishers(:default)
+    channel = channels(:new_site)
+    sign_in publisher
+
+    channel.verification_started!
+
+    get api_channel_verification_status_path(channel)
+
+    assert_response 200
+    assert_match(
+      '{"status":"started",' +
+       '"details":"Verification in progress"}',
+          response.body)
+
+    channel.verification_failed!('something happened')
+
+    get "/api/channels/#{channel.id}/verification_status"
+    assert_response 200
+    assert_match(
+      '{"status":"failed",' +
+        '"details":"something happened"}',
+      response.body)
+
+    channel.verification_succeeded!
+
+    get "/api/channels/#{channel.id}/verification_status"
+    assert_response 200
+    assert_match(
+      '{"status":"verified",' +
+        '"details":null}',
+      response.body)
+  end
 end
