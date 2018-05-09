@@ -12,8 +12,8 @@ class Publisher < ApplicationRecord
   has_one :totp_registration
 
   has_many :channels, validate: true, autosave: true
-  has_many :site_channel_details, through: :channel, source: :details, source_type: 'SiteChannelDetails'
-  has_many :youtube_channel_details, through: :channel, source: :details, source_type: 'YoutubeChannelDetails'
+  has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
+  has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
 
   belongs_to :youtube_channel
 
