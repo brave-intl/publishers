@@ -28,11 +28,6 @@ class PromoRegistrationGetter < BaseApiClient
     end
     
     referral_code
-  rescue Faraday::Error => e
-    require "sentry-raven"
-    Rails.logger.error("PromoRegistrationGetter #perform error: #{e}")
-    Raven.capture_exception("PromoRegistrationGetter #perform error: #{e}")
-    nil
   end
 
   def perform_offline
