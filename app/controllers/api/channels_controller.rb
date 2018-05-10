@@ -7,6 +7,7 @@ class Api::ChannelsController < Api::BaseController
 
   before_action :ensure_json_content_type,
                 only: %i(create)
+  before_action :get_current_channel, only: :verification_status
 
   include PublishersHelper
 
@@ -50,6 +51,25 @@ class Api::ChannelsController < Api::BaseController
     render(json: channel.details, status: :ok)
   end
 
+  def verification_status
+    if @current_channel.verified?
+      render(
+        json: {
+          status: "success",
+          verificationId: @current_channel.id
+        },
+        status: :ok
+      ) and return
+    else
+      render(
+        json: {
+          status: "failure"
+        },
+        status: :ok
+      ) and return
+    end
+  end
+
   private
 
   def require_owner
@@ -81,5 +101,9 @@ class Api::ChannelsController < Api::BaseController
   def site_channel_details_params
     details_params = params[:channel].permit(:brave_publisher_id)
     details_params
+  end
+
+  def get_current_channel
+    @current_channel = Channel.find(params[:channel_id])
   end
 end
