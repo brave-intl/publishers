@@ -79,13 +79,6 @@ class Publisher < ApplicationRecord
 
     # if the wallet call fails the wallet will be nil
     if @_wallet
-      # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
-      save_needed = false
-      if self.uphold_verified && ['re-authorize', 'authorize'].include?(@_wallet.status['action'])
-        self.uphold_verified = false
-        save_needed = true
-      end
-
       # Initialize the default_currency from the wallet, if it exists
       if self.default_currency.nil?
         default_currency_code = @_wallet.try(:wallet_details).try(:[], 'defaultCurrency')
@@ -146,25 +139,18 @@ class Publisher < ApplicationRecord
     save!
   end
 
-  def uphold_complete?
-    # check the wallet to see if the connection to uphold has been been denied
-    action = wallet.try(:status).try(:[], 'action')
-    if action == 're-authorize' || action == 'authorize'
-      false
-    else
-      self.uphold_verified || self.uphold_access_parameters.present?
-    end
+  def uphold_reauthorization_needed?
+    self.uphold_verified? &&
+      ['re-authorize', 'authorize'].include?(self.wallet.try(:status).try(:[], 'action'))
   end
 
   def uphold_status
-    if self.uphold_verified
-      :verified
+    if self.uphold_verified?
+      self.uphold_reauthorization_needed? ? :reauthorization_needed : :verified
     elsif self.uphold_access_parameters.present?
       :access_parameters_acquired
     elsif self.uphold_code.present?
       :code_acquired
-    elsif self.wallet.try(:status).try(:[], 'action') == 're-authorize'
-      :reauthorization_needed
     else
       :unconnected
     end
