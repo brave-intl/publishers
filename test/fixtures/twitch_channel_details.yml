@@ -13,3 +13,11 @@ twitch_verified_details:
   name: "twtwtw"
   display_name: "TwTwTw"
   thumbnail_url: "https://some_image_host.com/some_image.png"
+
+uphold_connected_twitch_details:
+  auth_user_id: "abc124"
+  auth_provider: "twitch"
+  twitch_channel_id: "78033"
+  name: "ucTw"
+  display_name: "UCTW"
+  thumbnail_url: "https://some_image_host.com/some_image.png"

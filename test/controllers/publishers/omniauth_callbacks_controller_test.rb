@@ -12,7 +12,7 @@ module Publishers
     def request_login_email(publisher:)
       perform_enqueued_jobs do
         get(new_auth_token_publishers_path)
-        params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id email)) }
+        params = { publisher: publisher.attributes.slice(*%w(email)) }
         post(create_auth_token_publishers_path, params: params)
       end
     end
@@ -103,7 +103,7 @@ module Publishers
       assert_equal "DIY", channel.details.title
     end
 
-    test "a publisher who adds a channel taken by another will see custom dialog based on the taken channel" do
+    test "a publisher who adds a youtube channel taken by another will see custom dialog based on the taken channel" do
 
       publisher = publishers(:uphold_connected)
       request_login_email(publisher: publisher)
@@ -131,7 +131,7 @@ module Publishers
       end
     end
 
-    test "a publisher who adds a channel taken by themselves will see .channel_already_registered" do
+    test "a publisher who adds a youtube channel taken by themselves will see .channel_already_registered" do
       publisher = publishers(:google_verified)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
@@ -314,7 +314,7 @@ module Publishers
       assert_equal "twitch", channel.details.auth_provider
     end
 
-    test "a publisher who adds a channel taken by another will see custom dialog based on the taken channel" do
+    test "a publisher who adds a twitch channel taken by another will see custom dialog based on the taken channel" do
       publisher = publishers(:uphold_connected)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
@@ -335,9 +335,9 @@ module Publishers
       end
     end
 
-    test "a publisher who adds a channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:twitch_verified)
-      verified_details = twitch_channel_details(:twitch_verified_details)
+    test "a publisher who adds a twitch channel taken by themselves will see .channel_already_registered" do
+      publisher = publishers(:uphold_connected)
+      verified_details = twitch_channel_details(:uphold_connected_twitch_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
       get(url)

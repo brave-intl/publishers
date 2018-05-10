@@ -49,6 +49,8 @@ class PublishersController < ApplicationController
     @publisher = Publisher.new(email: params[:email])
   end
 
+  # Used by sign_up.html.slim.  If a user attempts to sign up with an existing email, a log in email
+  # is sent to the existing user. Otherwise, a new publisher is created and a sign up email is sent.
   def create
     email = params[:email]
 
@@ -57,33 +59,35 @@ class PublishersController < ApplicationController
       return redirect_to sign_up_publishers_path
     end
 
-    @publisher = Publisher.new(pending_email: email)
-    @publisher_email = @publisher.pending_email
-
-    @should_throttle = should_throttle_create? || params[:captcha].present?
-    throttle_legit =
-      @should_throttle ?
-        verify_recaptcha(model: @publisher)
-        : true
-
-    unless throttle_legit
+    @should_throttle = should_throttle_create?
+    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
+    if !throttle_legit
       return redirect_to root_path(captcha: params[:captcha]), alert: t(".access_throttled")
     end
 
-    verified_publisher = Publisher.by_email_case_insensitive(email).first
-    if verified_publisher
-      @publisher = verified_publisher
-      PublisherLoginLinkEmailer.new(email: email).perform
+    # First check if publisher with the email already exists.
+    existing_email_verified_publisher = Publisher.by_email_case_insensitive(email).first
+    if existing_email_verified_publisher
+      @publisher = existing_email_verified_publisher
+      @publisher_email = existing_email_verified_publisher.email
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
       flash.now[:notice] = t(".email_already_active", email: email)
       render :emailed_auth_token
-    elsif @publisher.save
-      PublisherMailer.verify_email(@publisher).deliver_later
-      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-      render :emailed_auth_token
     else
-      Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-      flash[:warning] = t(".invalid_email")
-      redirect_to sign_up_publishers_path
+      # Check if an existing email unverified publisher record exists to prevent duplicating unverified publishers.
+      # Requiring `email: nil` ensures we do not select a publisher with the same pending_email
+      # as a publisher in the middle of the change email flow
+      @publisher = Publisher.find_or_create_by(pending_email: email, email: nil)
+      @publisher_email = @publisher.pending_email
+
+      if @publisher.save
+        MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
+        render :emailed_auth_token
+      else
+        Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
+        flash[:warning] = t(".invalid_email")
+        redirect_to sign_up_publishers_path
+      end
     end
   end
 
@@ -94,26 +98,25 @@ class PublishersController < ApplicationController
     render :emailed_auth_token
   end
 
+  # Used by emailed_auth_token.html.slim to send a new sign up or log in access email
+  # to the publisher passed through the params
   def resend_auth_email    
     @publisher = Publisher.find(params[:publisher_id])
 
-    @should_throttle = should_throttle_resend_auth_email? || params[:captcha].present?
-    throttle_legit =
-      @should_throttle ?
-        verify_recaptcha(model: @publisher)
-        : true
+    @should_throttle = should_throttle_resend_auth_email?
+    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
+
     if !throttle_legit
       render(:emailed_auth_token)
       return
     end
 
     if @publisher.email.nil?
-      PublisherMailer.verify_email(@publisher).deliver_later
-      PublisherMailer.verify_email_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
       @publisher_email = @publisher.pending_email
     else
-      PublisherMailer.login_email(@publisher).deliver_later
       @publisher_email = @publisher.email
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
     end
     
     flash.now[:notice] = t(".done")
@@ -155,10 +158,7 @@ class PublishersController < ApplicationController
 
     if update_params[:pending_email].present?
       if @publisher.update(update_params)
-        PublisherMailer.notify_email_change(@publisher).deliver_later
-        PublisherMailer.confirm_email_change(@publisher).deliver_later
-        PublisherMailer.confirm_email_change_internal(@publisher).deliver_later if PublisherMailer.should_send_internal_emails?
-
+        MailerServices::ConfirmEmailChangeEmailer.new(publisher: @publisher).perform
         @publisher_email = @publisher.pending_email
         render :create_done
         return
@@ -187,9 +187,7 @@ class PublishersController < ApplicationController
     success = publisher.update(update_params)
 
     if success && update_params[:pending_email]
-      PublisherMailer.notify_email_change(publisher).deliver_later
-      PublisherMailer.confirm_email_change(publisher).deliver_later
-      PublisherMailer.confirm_email_change_internal(publisher).deliver_later if PublisherMailer.should_send_internal_emails?
+      MailerServices::ConfirmEmailChangeEmailer.new(publisher: publisher).perform
     end
 
     if success && update_params[:default_currency]
@@ -207,11 +205,12 @@ class PublishersController < ApplicationController
     end
   end
 
-  # "Magic sign in link" / One time sign-in token via email
+  # Log in page
   def new_auth_token
     @publisher = Publisher.new
   end
 
+  # Used by new_auth_token.html.slim to send a log in link to an existing publisher
   def create_auth_token
     @publisher_email = publisher_create_auth_token_params[:email].downcase
 
@@ -220,21 +219,17 @@ class PublishersController < ApplicationController
       return redirect_to new_auth_token_publishers_path
     end
 
-    @publisher = Publisher.new(publisher_create_auth_token_params)
-    @should_throttle = should_throttle_create_auth_token? || params[:captcha].present?
-    throttle_legit =
-      @should_throttle ?
-        verify_recaptcha(model: @publisher)
-        : true
+    @should_throttle = should_throttle_create_auth_token?
+    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
     if !throttle_legit
       render(:new_auth_token)
       return
     end
 
-    emailer = PublisherLoginLinkEmailer.new(email: @publisher_email)
+    @publisher = Publisher.where(email: @publisher_email).take
 
-    if emailer.perform
-      # Success shown in view #emailed_auth_token
+    if @publisher
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
     else
       # Failed to find publisher
       flash.now[:alert_html_safe] = t('publishers.emailed_auth_token.unfound_alert_html', {
@@ -242,11 +237,11 @@ class PublishersController < ApplicationController
         create_publisher_path: publishers_path(email: @publisher_email),
         email: ERB::Util.html_escape(@publisher_email)
       })
+      new_auth_token
       render(:new_auth_token)
       return
     end
 
-    @publisher = Publisher.where(email: @publisher_email).take
     render :emailed_auth_token
   end
 
@@ -473,21 +468,28 @@ class PublishersController < ApplicationController
   # Level 1 throttling -- After the first two requests, ask user to
   # submit a captcha. See rack-attack.rb for throttle keys.
   def should_throttle_create?
+    manually_triggered_captcha? ||
     request.env["rack.attack.throttle_data"] &&
     request.env["rack.attack.throttle_data"]["registrations/ip"] &&
     request.env["rack.attack.throttle_data"]["registrations/ip"][:count] >= THROTTLE_THRESHOLD_CREATE
   end
 
   def should_throttle_create_auth_token?
+    manually_triggered_captcha? ||
     request.env["rack.attack.throttle_data"] &&
     request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"] &&
     request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"][:count] >= THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN
   end
 
   def should_throttle_resend_auth_email?
+    manually_triggered_captcha? ||
     request.env["rack.attack.throttle_data"] &&
     request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"] &&
     request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"][:count] >= THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL
+  end
+
+  def manually_triggered_captcha?
+    params[:captcha].present?
   end
 
   def prompt_for_two_factor_setup

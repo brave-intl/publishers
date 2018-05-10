@@ -2,19 +2,24 @@ class PublisherMailer < ApplicationMailer
   include PublishersHelper
   add_template_helper(PublishersHelper)
 
+  after_action :ensure_fresh_token,
+    only: %i(login_email verify_email verification_done confirm_email_change)
+
+  # Best practice is to use the MailerServices::PublisherLoginLinkEmailer service
   def login_email(publisher)
     @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     mail(
       to: @publisher.email,
       subject: default_i18n_subject
     )
   end
 
+  # Best practice is to use the MailerServices::VerificationDoneEmailer service
   def verification_done(channel)
     @channel = channel
     @publisher = @channel.publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     path = Rails.root.join("app/assets/images/verified-icon.png")
     attachments.inline["verified-icon.png"] = File.read(path)
     mail(
@@ -40,34 +45,11 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  # Contains registration details and a private reauthentication link
-  def welcome(publisher)
-    @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject
-    )
-  end
-
-  # TODO: Refactor
-  # Like the above but without the private access link
-  def welcome_internal(publisher)
-    raise if !self.class.should_send_internal_emails?
-    @publisher = publisher
-    @private_reauth_url = "{redacted}"
-    mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{t("publisher_mailer.welcome.subject")}",
-      template_name: "welcome"
-    )
-  end
-
   # Contains registration details and a private verify_email link
+  # Best practice is to use the MailerServices::VerifyEmailEmailer service
   def verify_email(publisher)
     @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     
     if @publisher.pending_email.present?
       mail(
@@ -98,9 +80,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  # Best practice is to use the MailerServices::ConfirmEmailChangeEmailer service
   def confirm_email_change(publisher)
     @publisher = publisher
-    @private_reauth_url = generate_publisher_private_reauth_url(@publisher, @publisher.pending_email)
+    @private_reauth_url = publisher_private_reauth_url(publisher: @publisher, confirm_email: @publisher.pending_email)
     mail(
       to: @publisher.pending_email,
       subject: default_i18n_subject
@@ -220,5 +203,11 @@ class PublisherMailer < ApplicationMailer
       subject: "<Internal> #{t("publisher_mailer.verified_invalid_wallet.subject")}",
       template_name: "verified_invalid_wallet"
     )
+  end
+
+  private
+
+  def ensure_fresh_token
+    raise if @publisher.authentication_token.nil? || @publisher.authentication_token_expires_at <= Time.now
   end
 end

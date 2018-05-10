@@ -1,19 +1,6 @@
 require 'test_helper'
 
 class PublisherMailerTest < ActionMailer::TestCase
-  test "welcome" do
-    publisher = publishers(:default)
-    email = PublisherMailer.welcome(publisher)
-
-    # # Send the email, then test that it got queued
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal [publisher.email], email.to
-  end
-
   test "uphold_account_changed" do
     publisher = publishers(:default)
     email = PublisherMailer.uphold_account_changed(publisher)
@@ -40,7 +27,7 @@ class PublisherMailerTest < ActionMailer::TestCase
   end
 
   test "confirm_email_change" do
-    publisher = publishers(:verified)
+    publisher = publishers(:completed)
     publisher.pending_email = "alice-pending@verified.com"
     publisher.save
 
@@ -55,7 +42,7 @@ class PublisherMailerTest < ActionMailer::TestCase
   end
 
   test "verify_email error is rescued if there is no send address" do
-    publisher = publishers(:default)
+    publisher = publishers(:completed)
     publisher.pending_email = ""
     publisher.email = "alice_verified@default.org"
     publisher.save
@@ -136,5 +123,17 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_emails 1 do
       email.deliver_now
     end
+  end
+
+  test "login_email verify_email verification_done and confirm_email_change raise unless token fresh" do
+    publisher = publishers(:default)
+
+    publisher.authentication_token = nil
+    publisher.authentication_token_expires_at = 1.hour.ago
+
+    assert_raise do PublisherMailer.login_email(publisher).deliver end
+    assert_raise do PublisherMailer.verify_email(publisher).deliver end
+    assert_raise do PublisherMailer.confirm_email_change(publisher).deliver end
+    assert_raise do PublisherMailer.verification_done(publisher.channels.first).deliver end
   end
 end
