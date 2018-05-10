@@ -95,6 +95,7 @@ en:
     channels:
       generic_verification_failure: Channel could not be verified!
       verification_in_progress: Verification in progress
+      verification_awaiting_admin_approval: Awaiting admin approval
     publisher:
       balance_error: Unavailable
       balance_pending_approximate: Approximately %{amount} %{code}

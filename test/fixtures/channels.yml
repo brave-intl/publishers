@@ -43,6 +43,11 @@ to_verify_wordpress_blank_pub_id:
   details: to_verify_wordpress_blank_pub_id_details (SiteChannelDetails)
   verified: false
 
+to_verify_restricted:
+  publisher: default
+  details: to_verify_restricted_details (SiteChannelDetails)
+  verified: false
+
 completed:
   publisher: completed
   details: completed_details (SiteChannelDetails)

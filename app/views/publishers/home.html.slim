@@ -201,6 +201,9 @@ script id="choose-channel-type" type="text/html"
           .channel-status.pull-right
             = channel_verification_details(channel)
             = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
+        - elsif channel.verification_awaiting_admin_approval?
+          .channel-status.pull-right
+            = channel_verification_details(channel)
         - else
           .channel-status.pull-right
             = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")

@@ -1,6 +1,6 @@
 require 'publishers/fetch'
 
-class SiteChannelVerifier < BaseApiClient
+class SiteChannelVerifier < BaseService
   include Publishers::Fetch
 
   attr_reader :channel, :verified_channel, :verified_channel_id
@@ -31,18 +31,21 @@ class SiteChannelVerifier < BaseApiClient
 
   private
 
-  def api_base_uri
-    Rails.application.secrets[:api_eyeshade_base_uri]
-  end
-
   def update_verified_on_channel
+    require "publishers/restricted_channels"
+
     raise "#{verified_channel_id} missing" if verified_channel_id.blank?
 
     @verified_channel = Channel.find(verified_channel_id)
     return if @verified_channel.verified?
 
-    verified_channel.verification_succeeded!
+    if Publishers::RestrictedChannels.restricted?(verified_channel)
+      verified_channel.verification_awaiting_admin_approval!
+      # TODO Send notifications to admins
+      return
+    end
 
+    verified_channel.verification_succeeded!
     verified_channel_post_verify
 
   rescue ActiveRecord::RecordNotFound => e
