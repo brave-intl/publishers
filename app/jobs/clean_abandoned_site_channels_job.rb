@@ -2,7 +2,6 @@ class CleanAbandonedSiteChannelsJob < ApplicationJob
   queue_as :scheduler
 
   def perform
-    require "sentry-raven"
     # clear all abandoned site channels where a site channel is considered abandoned if it has no verification token,
     # and the publisher's session has expired. This ensures the channel will not be visible to them again and can
     # be safely deleted.

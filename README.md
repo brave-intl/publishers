@@ -30,11 +30,12 @@ These steps presume you are using OSX and [Homebrew](https://brew.sh/).
       `bundle config build.nokogiri --use-system-libraries` then again
       `bundle install`.
   * Node deps: `yarn --frozen-lockfile`
-8. Get an `env.sh` file from another developer which contains development-mode
-   bash env exports. `source` that file.
-9. Create and initialize the database
+8. (Optional) Get an `env.sh` file from another developer which contains development-mode
+   bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
+9. Create and initialize the database:
   - `rails db:create RAILS_ENV=development`
   - `rails db:migrate RAILS_ENV=development`
+10. Setup SSL as described below.
 
 ### HTTPS Setup
 
@@ -99,8 +100,8 @@ Setup a google API project:
 
 ### reCAPTCHA Setup
 
-In order to test the rate limiting and captcha components you will need to setup an account with Google's 
-[reCAPTCHA](https://www.google.com/recaptcha/intro/android.html). Instructions can be found at the 
+In order to test the rate limiting and captcha components you will need to setup an account with Google's
+[reCAPTCHA](https://www.google.com/recaptcha/intro/android.html). Instructions can be found at the
 [reCAPTCHA gem repo](https://github.com/ambethia/recaptcha#rails-installation). Add the api keys to your Env variables.
 
 ### Local Eyeshade Setup
@@ -135,7 +136,6 @@ It might be useful to maintain a local bash script with a list of env vars. For 
 
 Some variables are set automagically with Heroku addons:
 
-- `FIXIE_URL` - Proxy provider. For outbound API requests.
 - `MAILGUN_*` - For sending emails.
 - `NEW_RELIC_APP_NAME`, `NEW_RELIC_LICENSE_KEY` - New Relic app monitoring.
 - `REDIS_URL` - For Sidekiq and rack-attack

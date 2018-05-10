@@ -3,8 +3,7 @@ module Publishers
 
     include PublishersHelper
 
-    # ToDo: rework
-    before_action :require_publisher, only: [:register_youtube_channel]
+    before_action :require_publisher, only: [:register_youtube_channel, :register_twitch_channel]
     before_action :require_publisher_not_created_through_youtube_auth,
                   only: %i(register_youtube_channel)
 

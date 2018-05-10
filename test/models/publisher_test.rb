@@ -144,7 +144,7 @@ class PublisherTest < ActiveSupport::TestCase
     refute_nil publisher.default_currency
   end
 
-  test "when wallet is gotten uphold_verified will be reset if the wallet status directs it" do
+  test "when wallet is retrieved uphold_status will reflect if reauthorization is needed" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
@@ -166,7 +166,8 @@ class PublisherTest < ActiveSupport::TestCase
       end
 
       publisher.wallet
-      refute publisher.uphold_verified
+      assert publisher.uphold_verified?
+      assert publisher.uphold_reauthorization_needed?
       assert_equal :reauthorization_needed, publisher.uphold_status
 
     ensure
@@ -330,5 +331,16 @@ class PublisherTest < ActiveSupport::TestCase
     publisher = publishers(:default)
 
     assert_equal "publishers#uuid:02e81b29-f150-54b9-9a08-ce75944f6889", publisher.owner_identifier
+  end
+
+  test "a publishers channel details can be selected from the publisher object" do
+    publisher = publishers(:completed)
+    site_channel_details = publisher.site_channel_details
+
+    assert_equal site_channel_details.first.brave_publisher_id, "completed.org" 
+
+    publisher = publishers(:google_verified)
+    youtube_channel_details = publisher.youtube_channel_details
+    assert_equal youtube_channel_details.first.title, "Some Other Guy's Channel"
   end
 end

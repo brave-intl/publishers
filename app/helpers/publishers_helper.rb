@@ -189,8 +189,10 @@ module PublishersHelper
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
-  def generate_publisher_private_reauth_url(publisher, confirm_email = nil)
-    token = PublisherTokenGenerator.new(publisher: publisher).perform
+  # This also no longer  automatically updates the token, which should now be handled by calling one of the
+  # mailer services
+  def publisher_private_reauth_url(publisher:, confirm_email: nil)
+    token = publisher.authentication_token
     options = { token: token }
     options[:confirm_email] = confirm_email if (confirm_email)
     publisher_url(publisher, options)

@@ -40,6 +40,11 @@ uphold_connected:
   details: uphold_connected_details (SiteChannelDetails)
   verified: true
 
+uphold_connected_twitch:
+  publisher: uphold_connected
+  details: uphold_connected_twitch_details (TwitchChannelDetails)
+  verified: true
+
 youtube_initial:
   publisher: youtube_initial
   details: youtube_initial_details (YoutubeChannelDetails)
