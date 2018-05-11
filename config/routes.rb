@@ -78,8 +78,9 @@ Rails.application.routes.draw do
       end
     end
     resources :tokens, only: %i(index)
-    resources :channels, constraints: { channel_id: %r{[^\/]+} } do
-      get :verification_status
+    resources :channels, constraints: { channel_id: %r{[^\/]+} }
+    namespace :public, defaults: { format: :json } do
+      get "channels/identity", controller: 'channels/identity'
     end
   end
 

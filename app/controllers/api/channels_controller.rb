@@ -51,25 +51,6 @@ class Api::ChannelsController < Api::BaseController
     render(json: channel.details, status: :ok)
   end
 
-  def verification_status
-    if @current_channel.verified?
-      render(
-        json: {
-          status: "success",
-          verificationId: @current_channel.id
-        },
-        status: :ok
-      ) and return
-    else
-      render(
-        json: {
-          status: "failure"
-        },
-        status: :ok
-      ) and return
-    end
-  end
-
   private
 
   def require_owner

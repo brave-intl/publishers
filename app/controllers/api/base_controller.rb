@@ -36,6 +36,7 @@ class Api::BaseController < ActionController::API
     return true if API_AUTH_TOKEN.blank?
     authenticate_with_http_token do |token, _options|
       # Compare the tokens in a time-constant manner, to mitigate timing attacks.
+      p "ALBERT token #{token}"
       ActiveSupport::SecurityUtils.secure_compare(
         ::Digest::SHA256.hexdigest(token),
         ::Digest::SHA256.hexdigest(API_AUTH_TOKEN)
