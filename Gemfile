@@ -87,7 +87,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', '~> 3.0'
+gem 'webpacker', '~> 3.2'
 
 # WHOIS lookup for unverified publishers
 gem "whois", "~> 4.0", require: false
@@ -154,4 +154,4 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-ruby "2.3.7"
+ruby "2.3.5"
