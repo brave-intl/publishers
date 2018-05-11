@@ -1,0 +1,49 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+  publishers-web:
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+    environment:
+      - STREAM_KEY
+      - UPHOLD_CLIENT_SECRET
+      - UPHOLD_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET
+      - GOOGLE_CLIENT_ID
+      - TWITCH_CLIENT_SECRET
+      - TWITCH_CLIENT_ID
+      - "MONGODB_URI=${MONGODB_URI-mongodb://mongo}"
+      - "NODE_ENV=${NODE_ENV-development}"
+      - "REDIS_URL=${REDIS_URL-redis://redis:6379}"
+      - "BAT_LEDGER_SERVER=${BAT_LEDGER_SERVER-http://ledger-web:3001}"
+      - "BAT_EYESHADE_SERVER=${BAT_EYESHADE_SERVER-http://eyeshade-web:3002}"
+      - "BAT_HELPER_SERVER=${BAT_HELPER_SERVER-http://helper-web:3004}"
+      - "BAT_GRANT_SERVER=${BAT_GRANT_SERVER-http://grant-web:3333}"
+      - "API_PROMO_BASE_URI=${API_PROMO_BASE_URI-http://127.0.0.1:8194}"
+      - "API_PROMO_KEY=${API_PROMO_KEY-1234}"
+      - "ACTIVE_PROMO_ID=${ACTIVE_PROMO_ID-free-bats-2018q1}"
+      - "BASE_REFERRAL_LINK=${BASE_REFERRAL_LINK-brave.com}"
+      - "API_EYESHADE_KEY=${API_EYESHADE_KEY-00000000-0000-4000-0000-000000000000}"
+      - "API_EYESHADE_BASE_URI=${API_EYESHADE_BASE_URI-http://127.0.0.1:3002}"
+      - "API_LEDGER_OFFLINE=${API_LEDGER_OFFLINE-1}"
+      - "INTERNAL_EMAIL=${INTERNAL_EMAIL-admin@publishers.local}"
+      - "RECAPTCHA_PUBLIC_KEY=${RECAPTCHA_PUBLIC_KEY-''}"
+      - "RECAPTCHA_PRIVATE_KEY=${RECAPTCHA_PRIVATE_KEY-''}"
+      - "SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL-''}"
+      - "SUPPORT_EMAIL=${SUPPORT_EMAIL-''}"
+      - "UPHOLD_SCOPE=${UPHOLD_SCOPE-cards:read,cards:write,user:read}"
+      - "UPHOLD_AUTHORIZATION_ENDPOINT=${UPHOLD_AUTHORIZATION_ENDPOINT-https://sandbox.uphold.com/authorize/<UPHOLD_CLIENT_ID>?scope=<UPHOLD_SCOPE>&intention=signup&state=<STATE>}"
+      - "UPHOLD_API_URI=${UPHOLD_API_URI-https://api-sandbox.uphold.com}"
+      - "UPHOLD_DASHBOARD_URL=${UPHOLD_DASHBOARD_URL-https://sandbox.uphold.com/dashboard}"
+      - "TERMS_OF_SERVICE_URL=${TERMS_OF_SERVICE_URL-https://basicattentiontoken.org/publisher-terms-of-service/}"
+      - "DATABASE_PASSWORD=${DATABASE_PASSWORD-password}"

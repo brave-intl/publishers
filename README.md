@@ -28,7 +28,7 @@ These steps presume you are using OSX and [Homebrew](https://brew.sh/).
     - Possible error: Nokogiri, with libxml2. Try installing a system libxml2
       with `brew install libxml2` and then
       `bundle config build.nokogiri --use-system-libraries` then again
-      `bundle install`.
+      `bundle install`.,.
   * Node deps: `yarn --frozen-lockfile`
 8. (Optional) Get an `env.sh` file from another developer which contains development-mode
    bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.

@@ -482,13 +482,13 @@ DEPENDENCIES
   vcr
   web-console
   webmock (~> 3.0)
-  webpacker (~> 3.0)
+  webpacker (~> 3.2)
   whois (~> 4.0)
   whois-parser (~> 1.0)
   will_paginate
 
 RUBY VERSION
-   ruby 2.3.7p456
+   ruby 2.3.5p376
 
 BUNDLED WITH
    1.16.2
