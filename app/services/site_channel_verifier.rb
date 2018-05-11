@@ -3,15 +3,20 @@ require 'publishers/fetch'
 class SiteChannelVerifier < BaseService
   include Publishers::Fetch
 
-  attr_reader :channel, :verified_channel, :verified_channel_id
+  attr_reader :admin_approval, :channel, :verified_channel, :verified_channel_id
 
-  def initialize(channel:)
+  # admin_approval signifies that an admin is manually initiating verification and
+  # confirming the request is legit. do NOT run it automatically!
+  def initialize(admin_approval: false, channel:)
+    @admin_approval = admin_approval
     @channel = channel
     raise UnsupportedChannelType.new unless @channel && @channel.details.is_a?(SiteChannelDetails)
   end
 
   def perform
     return true if channel.verified?
+    return false if channel.verification_awaiting_admin_approval? && !admin_approval
+
     @verified_channel_id = verify_publisher_id
 
     if verified_channel_id.blank?
@@ -40,9 +45,14 @@ class SiteChannelVerifier < BaseService
     return if @verified_channel.verified?
 
     if Publishers::RestrictedChannels.restricted?(verified_channel)
-      verified_channel.verification_awaiting_admin_approval!
-      # TODO Send notifications to admins
-      return
+      if admin_approval
+        verified_channel.verification_admin_approval = admin_approval
+      else
+        verified_channel.verification_awaiting_admin_approval!
+        InternalMailer.channel_verification_approval_required(channel: verified_channel).deliver_later
+        SlackMessenger.new(message: "*Admin Action Required:* *#{verified_channel.publication_title}* on the restriction list verified by #{verified_channel.publisher.name} (#{verified_channel.publisher.email}); id=#{verified_channel.id}").perform
+        return
+      end
     end
 
     verified_channel.verification_succeeded!

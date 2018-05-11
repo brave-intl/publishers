@@ -561,6 +561,7 @@ en:
     verify:
       alert: Could not verify at this moment. Please check you've updated details correctly, wait a bit and try again.
       success: Channel verified!
+      awaiting_admin_approval: Verification is almost complete! We've notified an admin who will review and finalize your channel.
   static:
     index:
       welcome: Welcome to

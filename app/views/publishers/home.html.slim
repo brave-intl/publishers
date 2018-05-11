@@ -214,7 +214,7 @@ script id="choose-channel-type" type="text/html"
           .channel-details
             .added-date
               = t ".channel.added", date: channel.created_at.to_date.iso8601
-            - unless channel.verified
+            - unless channel.verified || channel.verification_awaiting_admin_approval?
               .separator
                 = '|'
               a.remove-channel href="#" data-channel-id=(channel.id)

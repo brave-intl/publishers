@@ -102,9 +102,12 @@ class SiteChannelsController < ApplicationController
 
   def verify
     current_channel.verification_started!
-    result = SiteChannelVerifier.new(channel: current_channel).perform
-    if result
+    SiteChannelVerifier.new(channel: current_channel).perform
+    current_channel.reload
+    if current_channel.verified?
       redirect_to home_publishers_path, notice: t(".success")
+    elsif current_channel.verification_awaiting_admin_approval?
+      redirect_to home_publishers_path, notice: t(".awaiting_admin_approval")
     else
       # TODO: Expose diagnostic failure info from SiteChannelVerifier and show to user.
       redirect_to(site_last_verification_method_path(current_channel), alert: t(".alert"))

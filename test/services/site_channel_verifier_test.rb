@@ -147,4 +147,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     c.reload
     assert c.verification_awaiting_admin_approval?
   end
+
+  test "restricted site channels verify with admin approval" do
+    c = channels(:to_verify_restricted)
+    stub_verification_public_file(c)
+    refute c.verification_awaiting_admin_approval?
+    verifier = SiteChannelVerifier.new(admin_approval: true, channel: c)
+    verifier.perform
+    c.reload
+    assert c.verified?
+  end
 end

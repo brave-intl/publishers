@@ -1,0 +1,22 @@
+h2 Verification approval required
+
+p A publisher initiated verification of a restricted channel, and they successfully confirmed ownership. Please review their details below. If it looks legit, finalize the verification.
+
+h3 Channel
+
+p
+  div
+    strong.attribute= "Type: "
+    = channel_type(@channel)
+  - [:channel_identifier, :verification_method].each do |attribute|
+    div
+      strong.attribute= "#{attribute.to_s.humanize}: "
+      = @channel.details.public_send(attribute)
+
+h3 Publisher
+
+p
+  - [:name, :email, :phone_normalized, :current_sign_in_ip].each do |attribute|
+    div
+      strong.attribute= "#{attribute.to_s.humanize}: "
+      = @channel.publisher.public_send(attribute)

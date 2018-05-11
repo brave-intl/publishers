@@ -40,8 +40,9 @@ class ApplicationMailer < ActionMailer::Base
       end
     elsif self.class == PublisherMailer
       add_image("mailer/header-pattern.png")
+    elsif self.class == InternalMailer
     else
-      raise
+      raise "Invalid mailer class; can't run #add_images."
     end
   end
 
