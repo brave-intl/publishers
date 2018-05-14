@@ -157,3 +157,14 @@ On debian you can install it like:
 ```sh
 sudo apt-get install chromium
 ```
+
+## Docker
+to start with docker, simply build
+```sh
+docker-compose build
+```
+and bring up publishers-web with
+```sh
+docker-compose up publishers-web
+```
+running tests normally afterward
