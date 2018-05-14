@@ -59,7 +59,6 @@
   top: 7px;
 }
 
-
 .md-confirm-buttons {
   margin-top: $spacer*2;
   text-align: right;
@@ -71,6 +70,36 @@
     @include media-breakpoint-up(md) {
       display: inline;
       margin-left: 15px;
+    }
+  }
+}
+
+.confirm-modal {
+  &--content {
+    @include make-col-ready();
+    text-align: left;
+
+    @include media-breakpoint-up(md) {
+      @include make-col(12);
+      margin-bottom: $spacer*3;
+    }
+  }
+  &--action {
+    @include make-col-ready();
+    @include media-breakpoint-up(md) {
+      @include make-col(12);
+    }
+
+    text-align: right;
+
+    .btn {
+      display: block;
+      margin-bottom: $spacer;
+
+      @include media-breakpoint-up(md) {
+        display: inline;
+        margin-left: 15px;
+      }
     }
   }
 }

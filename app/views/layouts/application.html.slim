@@ -8,10 +8,8 @@ html
     = display_meta_tags
     - if content_for?(:head_style_tags)
       = yield(:head_style_tags)
-    - elsif params.has_key?(:bootstrap4)
-      = stylesheet_link_tag('application', media: 'all')
     - else
-      = stylesheet_link_tag('application-bootstrap-3', media: 'all')
+      = stylesheet_link_tag('application', media: 'all')
 
     - if content_for?(:head_js_tags)
       = yield(:head_js_tags)
@@ -126,20 +124,12 @@ html
     / boxes. See that JavaScript file for more details.
     .js-shared-modal
       .md-container.container data-test-modal-container=""
-        / FIXME: This provides alternate modal markup during the Bootstrap 4 migration.
-        / When Bootstrap 4 becomes the default, this should also become the default.
-        - if content_for?(:head_style_tags) || params.has_key?(:bootstrap4)
-          .single-panel--wrapper.single-panel--wrapper--collapsed
-            .single-panel--content.md-panel
-              .single-panel--padded-content
-                .md-content
-                = link_to "#", class: "md-close js-deny"
-                  = render "application/icon_x"
-        - else
-          .col.col-10.col-md-8.col-sm-10.col-xs-12.col-center.sub-panel.sub-panel--panel--modal
-            .md-content
-            = link_to "#", class: "md-close js-deny"
-              = render "application/icon_x"
+        .single-panel--wrapper.single-panel--wrapper--collapsed
+          .single-panel--content.md-panel
+            .single-panel--padded-content
+              .md-content
+              = link_to "#", class: "md-close js-deny"
+                = render "application/icon_x"
       .md-overlay
 
     /
