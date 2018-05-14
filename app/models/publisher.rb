@@ -14,6 +14,7 @@ class Publisher < ApplicationRecord
   has_many :channels, validate: true, autosave: true
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
+  has_many :status_updates, -> { order('created_at DESC') }, class_name: 'PublisherStatusUpdate'
 
   belongs_to :youtube_channel
 
@@ -50,6 +51,10 @@ class Publisher < ApplicationRecord
   before_destroy :dont_destroy_publishers_with_channels
 
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
+
+  after_create :set_created_status
+  after_update :set_onboarding_status, if: -> { email.present? && email_was.nil? }
+  after_update :set_active_status, if: -> { two_factor_prompted_at_changed? && two_factor_prompted_at_was.nil? }
 
   after_save :set_promo_stats_updated_at_2018q1, if: -> { promo_stats_2018q1_changed? }
 
@@ -198,7 +203,30 @@ class Publisher < ApplicationRecord
     channels.any?(&:verified?)
   end
 
+  def last_status_update
+    status_updates.first
+  end
+
   private
+  
+  def set_created_status
+    created_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "created")
+    created_publisher_status_update.save!
+  end
+
+  def set_onboarding_status
+    onboarding_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "onboarding")
+    onboarding_publisher_status_update.save!
+  end
+
+  def set_active_status
+    if two_factor_prompted_at.nil? || agreed_to_tos.nil?
+      raise "Publisher must have agreed to TOS and addressed 2fa prompt to be active"
+    else
+      active_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "active")
+      active_publisher_status_update.save!
+    end
+  end
 
   def dont_destroy_publishers_with_channels
     if channels.count > 0

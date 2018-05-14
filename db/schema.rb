@@ -147,6 +147,13 @@ ActiveRecord::Schema.define(version: 20180521195417) do
     t.index ["publisher_id"], name: "index_publisher_statements_on_publisher_id", using: :btree
   end
 
+  create_table "publisher_status_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "publisher_id", null: false
+    t.string   "status",       null: false
+    t.datetime "created_at",   null: false
+    t.index ["publisher_id"], name: "index_publisher_status_updates_on_publisher_id", using: :btree
+  end
+
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "name"
     t.string   "email"

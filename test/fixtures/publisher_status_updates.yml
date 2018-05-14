@@ -1,0 +1,19 @@
+default: &default
+  publisher: default
+  status: "active"
+
+verified:
+  publisher: verified
+  status: "active"
+
+completed:
+  publisher: completed
+  status: "active"
+
+created:
+  publisher: created
+  status: "created"
+
+onboarding:
+  publisher: onboarding
+  status: "onboarding"
