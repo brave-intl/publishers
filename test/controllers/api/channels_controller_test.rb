@@ -3,7 +3,6 @@ require "shared/mailer_test_helper"
 
 class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
-  include Devise::Test::IntegrationHelpers
 
   test "can get owner's youtube channel by identifier" do
     channel = channels(:global_yt2)

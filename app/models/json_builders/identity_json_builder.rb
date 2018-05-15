@@ -97,17 +97,4 @@ class JsonBuilders::IdentityJsonBuilder
       json.timestamp Time.now
     end
   end
-
-=begin
-
-const publisherURLs = {
-  twitch: (props) => {
-    if (props.providerSuffix === 'channel') return ('https://www.twitch.tv/' + props.providerValue)
-  },
-
-  youtube: (props) => {
-    if (props.providerSuffix === 'channel') return ('https://www.youtube.com/channel/' + props.providerValue)
-  }
-}
-=end
 end
