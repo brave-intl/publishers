@@ -15,13 +15,13 @@
     // Intentionally left blank to disable application flash
 
 - [:alert, :notice, :warning].each do |name|
-  - {alert: 'icon_circled_i', warning: 'icon_circled_x'}[name].tap do |icon_partial|
+  - {alert: 'icon_circled_x', notice: 'icon_circled_i', warning: 'icon_circled_bang_warning'}[name].tap do |icon_partial|
     - if flash[name]
       .single-panel--content.icon-and-text--wrapper class="single-panel--content--#{name}"
         - if icon_partial
           .icon-and-text--icon
             = render icon_partial
-        .icon-and-text--text
+        .icon-and-text--text data-test-flash-message=""
           = flash[name]
     - "#{name}_html_safe".tap do |html_safe_name|
       - if flash[html_safe_name]
@@ -29,5 +29,17 @@
           - if icon_partial
             .icon-and-text--icon
               = render icon_partial
-          .icon-and-text--text
+          .icon-and-text--text data-test-flash-message=""
             == flash[html_safe_name]
+    - "#{name}_model_errors".tap do |flash_model_key|
+      - if flash[flash_model_key] && flash[flash_model_key].errors.any?
+        .single-panel--content.icon-and-text--wrapper class="single-panel--content--#{name}"
+          - if icon_partial
+            .icon-and-text--icon
+              = render icon_partial
+          .icon-and-text--text data-test-flash-message=""
+            p= t "activerecord.shared.errors"
+            - flash[flash_model_key].errors.each do |attribute, message|
+              p
+                strong.error= "#{flash[flash_model_key].class.human_attribute_name(attribute)}:"
+                span= " #{message}"

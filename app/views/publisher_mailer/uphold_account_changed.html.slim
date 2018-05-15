@@ -1,8 +1,8 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  h3= I18n.t("publisher_mailer.uphold_account_changed.title")
+  h3= t ".title"
 
-p= I18n.t("publisher_mailer.uphold_account_changed.body")
+p= t ".body"
 
 / ToDo:
 /p
@@ -10,5 +10,5 @@ p= I18n.t("publisher_mailer.uphold_account_changed.body")
 /  = link_to_brave_publisher_id(@publisher)
 
 p.hint
-  span.attribute= "#{I18n.t("publisher_mailer.shared.contact_help")}:"
+  span.attribute= "#{t("publisher_mailer.shared.contact_help")}: "
   = mail_to(Rails.application.secrets[:support_email])

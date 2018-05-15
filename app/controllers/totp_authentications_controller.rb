@@ -20,7 +20,7 @@ class TotpAuthenticationsController < ApplicationController
 
       redirect_to publisher_next_step_path(publisher)
     else
-      flash[:alert] = "Invalid 6-digit code. Please try again."
+      flash[:alert] = t("shared.invalid_totp")
       redirect_to two_factor_authentications_path(request_totp: true)
     end
   end

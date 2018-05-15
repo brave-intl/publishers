@@ -3,8 +3,10 @@
 :timeout: 8
 :queues:
   - mailers
+  - transactional
   - scheduler
   - default
+  - low
 :schedule:
   EnqueueSiteChannelVerifications:
     cron: "42 * * * *"
@@ -14,4 +16,11 @@
     cron: "0 4 * * *"
     description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
     queue: scheduler
+  CleanAbandonedSiteChannelsJob:
+    cron: "0 3 * * *"
+    description: "Remove abandoned site channels."
+  SyncPublisherPromoStatsJob:
+    cron: "0 */3 * * *"
+    description: "For Publishers who have enabled a promo, sync their referral stats with the promo server"
+    queue: transactional
 :verbose: true

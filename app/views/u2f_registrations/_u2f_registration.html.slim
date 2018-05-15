@@ -1,25 +1,25 @@
 div
-  strong= "#{u2f_registration.name.presence || t(".name_default")}:"
+  strong.error= "#{u2f_registration.name.presence || t(".name_default")}:"
   = " registered on #{l(u2f_registration.created_at.to_date, format: :long)}"
   = " | "
   = link_to \
-    t(".delete_action"),
+    t("shared.remove"),
     u2f_registration_path(u2f_registration),
     method: :delete,
     data: { "js-confirm-with-modal": "disable-u2f-prompt-#{u2f_registration.id}" }
   script id="disable-u2f-prompt-#{u2f_registration.id}" type="text/html"
-    .col.col-center.col-xs-12.col-sm-10.col-md-10.col-lg-10
+    .col-medium-center.text-left
       h4 = t(".confirm_disable.header")
       p
         = t(".confirm_disable.intro")
         - if current_publisher.totp_registration || current_publisher.u2f_registrations.length > 1
           - if current_publisher.totp_registration
             br
-            strong = t(".confirm_disable.remaining_totp")
+            strong.error= t(".confirm_disable.remaining_totp")
           - current_publisher.u2f_registrations.each do |remaining_u2f_registration|
             - if u2f_registration != remaining_u2f_registration
               br
-              strong
+              strong.error
                 | Security key
                 = " \"#{remaining_u2f_registration.name.presence || t(".name_default")}\""
               = " (registered #{l(remaining_u2f_registration.created_at.to_date, format: :short)})"
@@ -30,7 +30,7 @@ div
       - if !current_publisher.totp_registration && current_publisher.u2f_registrations.length == 1
         p == t(".confirm_disable.no_2fa_warning_html")
       p = t(".confirm_disable.final_confirmation")
-      .row
-        .col.md-confirm-buttons.pull-right
-          = link_to t(".confirm_disable.deny"), "#", class: "js-deny btn btn-secondary"
-          = link_to t(".confirm_disable.confirm"), "#", class: "js-confirm btn btn-secondary"
+    .col-medium-center
+      .md-confirm-buttons
+        = link_to t(".confirm_disable.deny"), "#", class: "js-deny btn btn-outline-secondary"
+        = link_to t(".confirm_disable.confirm"), "#", class: "js-confirm btn btn-outline-secondary"

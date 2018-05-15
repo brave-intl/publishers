@@ -1,6 +1,6 @@
 # For Site Channels created recently, enqueue jobs to verify each channel
 class EnqueueSiteChannelVerifications < ApplicationJob
-  MAX_AGE = 6.weeks
+  MAX_AGE = Rails.application.secrets[:max_site_age].weeks
 
   queue_as :scheduler
 
@@ -17,6 +17,6 @@ class EnqueueSiteChannelVerifications < ApplicationJob
 
   # Get unverified channel ids created recently.
   def recent_unverified_site_channels_ids
-    SiteChannelDetails.recent_unverified_site_channels(max_age: MAX_AGE).pluck("channels.id")
+    SiteChannelDetails.recent_ready_to_verify_site_channels(max_age: MAX_AGE).select(:brave_publisher_id).distinct.pluck("channels.id")
   end
 end

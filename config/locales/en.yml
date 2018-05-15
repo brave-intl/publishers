@@ -20,348 +20,559 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  shared:
+    add_channel: Add Channel
+    app_title: Brave Payments
+    app_description: Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!
+    cancel: Cancel
+    channel_created: Channel created.
+    channel_not_found: Channel not found
+    channel_removed: Channel removed.
+    continue: Continue
+    download: Download
+    existing_account: Already have an account?
+    get_started: Get Started
+    invalid_totp: Invalid 6-digit code. Please try again.
+    log_in: Log In
+    remove: Remove
+    terms_of_service: Terms of Service
+    ok: OK
   activerecord:
-    attributes:
-      publisher:
-        phone_normalized: "Phone Number"
-        visible: "Yes, help me increase contributor awareness by listing my site in Brave’s marketing channels."
-        name: "Your Name"
-      site_channel_details:
-        brave_publisher_id: "Website Domain"
-        brave_publisher_id_unnormalized: "Website Domain"
-      u2f_registration:
-        name: "Name Security Key"
-    errors:
-      models:
-        publisher:
-          attributes:
-            brave_publisher_id:
-              api_error_cant_normalize: "Can't be normalized because of an API error"
-              # TODO: Configurable email here
-              exclusion_list_error: "Is on the Brave Publisher website exclusion list. If you have questions please contact support+publishers@basicattentiontoken.org."
-              # TODO: Configurable email here
-              taken: "Another person has already verified that website. If you have questions please contact support+publishers@basicattentiontoken.org."
-              invalid_uri: "Invalid domain URI"
-    models:
-      publisher: "Publisher"
     shared:
       errors: "There were errors saving your request:"
+    attributes:
+      publisher:
+        phone_normalized: Phone Number
+        visible: Yes, help me increase contributor awareness by listing my site in Brave’s marketing channels.
+        name: Your Name
+      site_channel_details:
+        brave_publisher_id: Website Domain
+        brave_publisher_id_unnormalized: Website Domain
+      u2f_registration:
+        name: Name Security Key
+    errors:
+      models:
+        site_channel_details:
+          attributes:
+            brave_publisher_id:
+              api_error_cant_normalize: Can't be normalized because of an API error
+              # TODO: Configurable email here
+              exclusion_list_error: Is on the Brave Publisher website exclusion list. Contact support+publishers@basicattentiontoken.org for additional help.
+              # TODO: Configurable email here
+              taken: The domain you entered is already verified and added to a different account. Contact support+publishers@basicattentiontoken.org for additional help.
+              invalid_uri: Invalid domain URI
+    models:
+      publisher: Publisher
+  announcement_mailer:
+    multi_chan:
+      subject: "BAT Publishers: Multi-property support now live!"
   application:
+    channel_taken:
+      default_registerer: A channel manager
+      noscript_with_registration_html: |
+        The %{channel_type} "%{channel_title}" was added and verified by %{channel_registered_by} on %{channel_registration_date}.
+        Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+      noscript_without_registration_html: |
+        The %{channel_type} "%{channel_title}" was previously added and verified by another user.
+        Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+      modal:
+        title: Channel taken
+        leadin: The following %{channel_type} has already been added to a different account.
+        registration_date: Date
+        registered_by: Added by
+        contact_support_html: Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+        try_logging_out: If this account is not the one you wanted to claim, please log out of %{channel_name} and try again.
+        ok: OK
     nav:
       security: Security
       log_out: Log Out
+  errors:
+    shared:
+      heading: Error
+      body: Oops, sorry about that. You can try to refresh the page or return to
+      contact: "For assistance please contact us at: %{support_email}"
+  helpers:
+    channels:
+      generic_verification_failure: Channel could not be verified!
+      verification_in_progress: Verification in progress
+    publisher:
+      balance_error: Unavailable
+      balance_pending_approximate: Approximately %{amount} %{code}
+      channel_type:
+        youtube: YouTube channel
+        website: Website
+        twitch: Twitch channel
+        unknown: Channel
+      channel_name:
+        youtube: YouTube
+        website: the website
+        twitch: Twitch
+        unknown: the website
+      statement_periods:
+        past_7_days: Past 7 days
+        past_30_days: Past 30 days
+        this_month: This month
+        last_month: Last month
+        this_year: This year
+        last_year: Last year
+        all: All
+      uphold_authorization_description:
+        connect_to_uphold: Connect to Uphold
+        reconnect_to_uphold: Reconnect to Uphold
+      uphold_status:
+        balance_sending: Contribution balance is transferred to your Uphold wallet monthly.
+        connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Payments.
+        processing: |
+          Your Uphold wallet is being connected to your account.
+          If this takes more than a few minutes, please reconnect with Uphold.
+        processing_timeout: We are having trouble connecting to your Uphold wallet. Please reconnect to Uphold.
+        reconnect_to_uphold: |
+          Uh oh! Connecting to Uphold has been denied.
+          In order to deposit your contributions accrued we need you to reconnect to your Uphold wallet.
+      uphold_status_summary:
+        connected: Connected
+        connecting: Connecting
+        unconnected: Not connected
+        connection_problems: Connection problems
+      uphold_status_description:
+        connecting: Brave Payments is connecting to your Uphold account.
+        reauthorization_needed: We are having trouble communicating with Uphold.
+        unconnected: You need to connect to your Uphold account to receive contributions from Brave Payments.
+        verified: Your Uphold wallet is ready to receive Brave Payments.
+  layouts:
+    mailer:
+      medium: Medium
+      twitter: Twitter
+      reddit: Reddit
+      rocketchat: Rocket.Chat
+  modal_partials:
+    two_factor_registration_complete:
+      headline: Great!
+      body: Two-factor Authentication has been enabled for your account
+      close: Close
+  publisher_mailer:
+    shared:
+      button_not_working: "If the button above doesn't work, paste this link into your web browser:"
+      contact_help: If you have any questions, please contact us
+      erroneous_email_help: If you did not make this request, you can ignore this email or contact us at
+      erroneous_email_ignore: If you believe you received this message in error, you may safely ignore it.
+      post_script: |
+        <p>Got questions? Visit <a href="https://basicattentiontoken.org/">basicattentiontoken.org</a> to learn more about how the micropayments work.
+        <p>We look forward to having you join the thousands of domains already receiving funds from their audience.</p>
+      previous_email: Previous email
+      private_access_link: Private access link
+      private_email_notice: |
+        NOTE: This email contains a private access link.
+        Anyone with it can manage private publisher info, including payment information.
+        Before forwarding this email, ensure you trust the recipient.
+      salutation: Hi %{name},
+      signature: The Brave Payments Team
+      signature_html: |
+        <strong>The Brave Payments Team</strong>
+      updated_email: New email
+    confirm_email_change:
+      subject: Confirm your Brave Publisher email change
+      title: Confirm email change
+      notice: |
+        NOTE: This email contains a private access link. Anyone with it can manage private
+        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      intro: "We've received a request to update your email address with Brave Payments:"
+      confirmation_link: Confirm your email change
+      confirmation_link_help: Use this link to confirm that you would like to proceed with this change
+    login_email:
+      subject: Log In to Brave Payments
+      body_html: |
+        Click the private access link below to log in to your account with
+        <strong>Brave Payments</strong>. This link can only be used once.
+      button: Log in to Brave Payments
+    notify_email_change:
+      subject: Notification of Brave Publisher email change
+      title: Notification of email change
+      intro: We're notifying you of an update made to your email address with Brave Payments
+      change_ok: If you made this change, check your new email account for a link to confirm it.
+      contact_support: If you did not make this change yourself, please contact support ASAP
+    statement_ready:
+      subject: Brave Publisher statement is ready to view
+      body: "The following statement has recently been generated:"
+      expiration_note: This statement must be downloaded within the next 24 hours.
+    unverified_domain_reached_threshold:
+      subject: Money is waiting for %{publication_title}, verify your site with Brave to claim your funds!
+      salutation: Hi!
+      body_html: |
+        <p>Your site has accumulated quite a bit of fundage and we’d love to hand it over, but first we need you to verify ownership.</p>
+        <p>There are no fees, no gimmicks, we just want you to get paid and keep making awesome content.</p>
+      button: Verify My Site
+      button_not_working: If the button above doesn't work, paste this link into your web browser
+    uphold_account_changed:
+      subject: Brave Publisher Uphold account changed
+      title: Publisher Uphold account changed
+      body: This message confirms that you've updated your Uphold account through the Brave Payments website.
+    verification_done:
+      subject: "%{publication_title} Publisher website verified"
+      title: Verification complete
+      intro: |
+        Congratulations! You are now a verified Brave publisher.
+        Brave users will see a verified symbol next to your website domain.
+      claim_funds:
+        heading: Ready to claim your funds?
+        body: To claim your funds, please visit the Publishers website to submit your payment information using the link below.
+    verified_no_wallet:
+      subject: Please create your new wallet to continue receiving funds
+      body_html: |
+        <p>Thanks for verifying your channel! We have a small task for you.</p>
+        <p>We need you to create a wallet with our partner, Uphold.</p>
+        <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
+        <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
+      button: Create My Wallet
+    verified_invalid_wallet:
+      subject: Reconnect To Uphold To Receive Your Funds
+      body_html: |
+        <p>We are unable to deposit your earnings into your wallet with Uphold because Brave Payments is no longer authorized on your Uphold account.</p>
+        <p>To receive your earnings, log in to Brave Payments and <strong>reconnect to your Uphold account</strong> on the dashboard. No action is required if this was intentional and you do not wish to receive your fans' contributions from Brave. </p>
+    verify_email:
+      subject: Brave Publisher email confirmation
+      body_html: |
+        Click the private access link below to create your account with <strong>Brave Payments</strong>.
+        This link can only be used once.
+      button: Verify Email
+    welcome:
+      subject: Brave Publisher registration
+      title: Publisher registration
+      intro: We've received a request to register a website with Brave Payments
+      contact: Contact person
+      private_access_link_help: Use this link to continue and manage publisher registration
   publishers:
-    add_channel: "Add Channel"
-    add_channel_cta: "Add a website or YouTube channel to see how much your fans on Brave have contributed so far."
-    app_title: "Brave Payments"
-    already_logged_in: "You can't do that because you have an active session. Please exit or clear your cookies."
-    authentication_token_invalid: "Authentication failed. Your login link may have expired; please send yourself a new sign in link."
-    balance_error: "Unavailable"
-    balance_pending: "CURRENT CONTRIBUTION BALANCE"
-    balance_pending_approximate: "Approximately %{amount} %{code}"
-    contact_person: "Contact person"
-    contact: "Contact"
-    contact_name_placeholder: "First and last name"
-    resend_confirmation_email_done: "The confirmation email has been resent."
-    dashboard_noscript: "Please enable JavaScript in your browser if you wish to interact with the dashboard."
-    dashboard_uphold_header: "Your Uphold Wallet"
-    dashboard_uphold_balance_sending: "Contribution balance is transferred to your Uphold wallet monthly."
-    dashboard_list_in_verified_publishers: "Brave Verified Publishers"
-    dashboard_channel_added: "added %{date}"
-    dashboard_channel_one_more_step: "One more step to complete..."
-    dashboard_channel_lets_finish: "Let's Finish"
-    dashboard_channel_remove_verified_channel: "Remove Channel"
-    dashboard_channel_remove_unverified_channel: "Remove"
-    dashboard_channel_confirm_remove_channel: "Are you sure that you want to remove the channel '%{channel_name}'"
-    dashboard_channel_verified: "Verified"
-    current_deposit_currency: "Current deposit currency: BAT to "
-    edit_contact: "Edit Contact"
-    uphold_check_balance: "Check Balance"
-    email_confirmed: "Your updated email address %{email} has been confirmed."
-    log_out: "Log out"
-    login_link_expired_title: "Login Link Expired"
-    login_link_expired_message: "Login link access expires after 30 minutes and can only be used once"
-    login_link_expired_button: "Send me a new link"
-    login_link_unverified_message: "Your login link has expired. Please send yourself another one."
-    login_session_expired: "Your session has expired.  Please log in again."
-    new: "Contact Information"
-    enter_your_email: "Enter your email"
-    new_auth_token_button: "Email me a link to log in"
-    new_auth_token_email_html: |
-      Email Address <span class="optional">(for unverified domains)</span>
-    new_auth_token_wrong_email_publisher_not_verified: "Email doesn't match the publisher verification. Please try again or start a new verification."
-    new_auth_token_wrong_email_publisher_verified: "Email doesn't match the publisher verification. Try leaving email blank to use the most recent email."
-    new_channel: "+ Add Channel"
-    not_verified: "Unverified"
-    statements: "Statements"
-    statement_download: "Download"
-    statement_delayed: "Delayed"
-    verified_phone_html: |
-      Phone Number <span class="optional">(optional)</span>
-    phone_number_validation: "Phone numbers should only include numbers, dashes, periods, plus (+), and/or parentheses."
-    status_uphold_processing: "Your Uphold wallet is being connected to your account.  If this takes more than a few minutes, please reconnect with Uphold."
-    status_uphold_processing_timeout: "We are having trouble connecting to your Uphold wallet. Please reconnect to Uphold."
-    status_unverified: "Your account has not been verified"
-    uphold_status_verified: "Your Uphold wallet is ready to receive Brave Payments."
-    uphold_status_access_parameters_acquired: "Connecting your Uphold account."
-    uphold_status_code_acquired: "A problem was experienced connecting your Uphold account."
-    uphold_status_unconnected: "Not connected to Uphold."
-    verified: "Verified"
-    verified_publisher_connect_to_uphold: "You need to create a wallet with Uphold to receive contributions from Brave Payments."
-    verified_publisher_reconnect_to_uphold: "Uh oh! Connecting to Uphold has been denied. In order to deposit your contributions accrued we need you to reconnect to your Uphold wallet."
-    create_uphold_wallet: "Create Uphold Wallet"
-    reconnect_to_uphold: "Reconnect to Uphold"
-    email_verification_required: "To continue please confirm your email address."
-    verification_required: "To continue please confirm your email address and name."
-    verification_uphold_error: "There was a problem connecting with Uphold. Please try again."
-    verification_uphold_state_token_does_not_match: "There was a problem connecting with Uphold. Please try again."
-    verify_button: "Verify"
-    complete_signup_welcome: "One last thing..."
-    complete_signup_leadin: "Finish signing up by entering below."
-    complete_signup_tos_html: "By clicking 'Sign Up', you're agreeing to our %{tos_link}"
-    complete_signup_submit: "Sign Up"
-    pub_type_welcome: "Add Channel"
-    pub_type_lets_start: "Let's start with choosing where you're publishing your content."
-    pub_type_site_operator: "SITE OPERATOR"
-    pub_type_site_operator_description_html: "I have my own site and have access to the domain directory."
-    pub_type_site_individual_creator: "INDIVIDUAL CREATOR"
-    pub_type_site_individual_creator_description_html: "I use other platforms to publish my content (currently <strong>YouTube</strong> only)."
-    pub_type_site_individual_creator_note_html: "You will need to authenticate with Google to demonstrate that you own the channel."
-    youtube_channel_taken_dialog:
-      title: "Channel already registered!"
-      leadin: "The following YouTube channel has already been registered."
-      registration_date: "Date"
-      registered_by: "Registered by"
-      default_registerer: "A channel manager"
-      contact_support_html: "Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error."
-      ok: "OK"
-    youtube_channel_taken_noscript_html: |
-      The YouTube channel "%{youtube_channel_title}" was registered by %{youtube_channel_registered_by} on %{youtube_channel_registration_date}.
-      Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
+    shared:
+      enter_email: Enter your email
+      phone_validation: Phone numbers should only include numbers, dashes, periods, plus (+), and/or parentheses.
+      sign_up: Sign Up
+      verified: Verified
+      verified_phone_html: Phone Number <span class="optional">(optional)</span>
+    show:
+      email_confirmed: Your updated email address %{email} has been confirmed.
+      token_invalid: Authentication failed. Your login link may have expired; please send yourself a new sign in link.
+    change_email:
+      login_email: Login Email
+      login_email_message: We need your valid email address for account access and recovery purposes.
+      login_email_note: "* This will be your login from now on."
+      login_email_taken: "This email address is in use. Please enter a different email address."
+    change_email_confirm:
+      login_email_changed: Great!
+      login_email_verified_html: |
+        <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Payments.
+    choose_new_channel_type:
+      intro: Let's start with choosing where you're publishing your content.
+      website:
+        heading: WEBSITE
+        description: I have my own website and have access to the domain directory.
+      youtube:
+        heading: YOUTUBE CHANNEL
+        description: I own or manage a YouTube channel.
+      twitch:
+        heading: TWITCH CHANNEL
+        description: I'm the primary owner of a twitch channel.
+    contact_info:
+      heading: Contact Information
     create:
       missing_email: We seem to be missing some info. Please make sure you provided an email address.
       invalid_email: There was an unexpected error creating your account. Please make sure you have provided a full email address.
       email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
       access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
-    create_auth_token:
+    emailed_auth_token:
+      missing_email: We seem to be missing some info. Please make sure you provided an email address.
       unfound_alert_html: |
-        Couldn't find a publisher with that email address. Please try again or
-        <a href="%{link}">sign up for an account</a>.
+        Couldn't find a publisher with that email address. Please try again, or you may
+        <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.
       heading: Login email sent!
       body: Please check your email for the login link.
-    create_done:
       heading: An email is on its way!
-      body_html: |
-        <p>We're excited that you want to be in on Brave Payments. We just sent an email to
-        <strong class="email-address">%{email}</strong>. Click on the access link provided in the email to jump into
-        the verification process.</p>
-        <hr>
-        <p>Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.</p>
+      sent_access_link_html: We just sent an access link to <strong class="email-address">%{email}</strong>.  Click on the link to log in to your account
+      resend_email_html: Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.
       try_again: try again
+    devise:
+      login_session_expired: Your session has expired. Please log in again.
+    email_verified:
+      heading: One last thing...
+      intro: Finish signing up by entering below.
+      name_placeholder: First and last name
+      tos_html: By clicking '%{action}', you're agreeing to our %{tos_link}
+    expired_auth_token:
+      expired_error: Your login link has expired. Please send yourself another one.
+      heading: Login Link Expired
+      body: Login link access expires after 30 minutes and can only be used once
+      button: Send me a new link
+    home:
+      noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
+      dashboard: Dashboard
+      balance_pending: CURRENT CONTRIBUTION BALANCE
+      balance_pending_message: (to be paid out at next settlement)
+      add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
+      uphold:
+        heading: Your Uphold Wallet
+        deposit_currency_label: "Current deposit currency:"
+        deposit_currency: "BAT to "
+        check_balance: Check Balance
+        no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
+        connect: Connect
+        disconnect: Disconnect
+      statements:
+        heading: Statements
+        generate: Generate
+        delayed: Delayed
+      contact:
+        heading: Contact
+        edit: Edit Contact
+        update: Update
+      channel:
+        added: added %{date}
+        remove_verified: Remove Channel
+        one_more_step: One more step to complete...
+        lets_finish: Let's Finish
+      channel_balance_period: CURRENT PERIOD
     new_auth_token:
-      log_in: Log In
-      signup:
-        prompt: Don't have an account?
-        link: Sign Up
+      signup_prompt: Don't have an account?
+      legacy_youtube_login: Legacy YouTube Login
+    omniauth_callbacks:
+      register_youtube_channel:
+        channel_already_registered: You have already registered this YouTube channel.
+      youtube_login:
+        channel_not_eligable_for_youtube_login: Channel is not able to use Youtube login. Please use your email address.
+      require_publisher:
+        log_in_and_retry: Please log in to Brave Payments and retry the operation
+      register_twitch_channel:
+        channel_already_registered: You have already claimed the Twitch account %{channel_title}. If you would like to claim a second account, please sign out of Twitch and try again.
+    require_unauthenticated_publisher:
+      already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
+    require_verified_email:
+      email_verification_required: To continue please confirm your email address.
+    require_verified_publisher:
+      verification_required: To continue please confirm your email address and name.
+    resend_auth_email:
+      done: The access email has been resent.
     sign_up:
       heading: Join Brave Payments
-  publisher_mailer:
+    remove_channel_modal:
+      headline: Remove Channel?
+      intro: You are removing the channel
+      confirmation: Are you sure you want to remove this channel?
+      deny: Do Not Remove
+      confirm: Remove Channel
+    disconnect_uphold_modal:
+      headline: Disconnect Uphold Account?
+      intro: You won't be able to receive the monthly contributions from your fans until your wallet at Uphold is connected to us.
+      confirmation: Are you sure you want to disconnect your account with Uphold?
+      deny: Cancel
+      confirm: Disconnect
+    uphold_verified:
+      uphold_error: There was a problem connecting with Uphold. Please try again.
+  promo:
+    publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
+    activate:
+      title: "Free Tokens"
+      limited_time_offer: "Limited Time Offer"
+      limited_time_promo: "Limited Time Promo"
+      free_tokens: "Free Tokens"
+      for_referring_your_fans: "for Referring Your Fans!"
+      description: "Bring your fans to the Brave browser and grow your revenue!"
+      referral_reward: "1 referral = about 5 USD in tokens"
+      button: "Activate Promo"
+      button-dashboard: "Learn More"
+    activated:
+      title: "Congrats!"
+      subtitle: "Your promo is activated."
+      description_one: "For a referral payment to occur, the new user must be minimally active across a 30 day period. Check the promo status on "
+      description_two: "your dashboard."
+      unverified_no_channels: "No channels in the account."
+      unverified_error: "Verify your website or channel to get the referral link."
+      unverified_cta: "Go to my account"
+      please_wait: "Please wait while we register your channels for the promo."
+    active:
+      title: "Your promo is already active!"
+      description_one: "For a referral payment to occur, the new user must be minimally active across a 30 day period. "
+      description_two: "Check the promo status"
+      description_three: " on your dashboard."
+    over:
+      title: "Sorry!"
+      promo_ended: "The promo has ended."
+      description: "We're sorry that you missed on this program.  But you can still influence your fans to support you by using Brave!"
+      brave_download_link: "brave.com/download"
+      footer: "Keep an eye out for an email about the next event."
+    dashboard:
+      days: "days"
+      downloaded: "downloaded"
+      confirmed: "confirmed"
+      active_referral: "active"
+      add_channel: "Add a web site or youtube channel below to get the promo link!"
+      referral: "referral"
+      promo: "promo"
+      check_statement: "*Check your statement for this period's payout."
     shared:
-      contact_help: "If you have any questions, please contact us"
-      private_access_link: "Private access link"
-      private_access_link_help: "Use this link to continue and manage publisher registration"
-      salutation: "Hi %{name},"
-      signature: "The Brave Payments Team"
-      post_script: |
-        <p>Got questions? Visit <a href="https://basicattentiontoken.org/">basicattentiontoken.org</a> to learn more about how the micropayments work.
-        <p>We look forward to having you join the thousands of domains already receiving funds from their audience.</p>
-      button_not_working: "If the button above doesn't work, paste this link into your web browser: "
-      erroneous_email_help: "If you did not make this request, you can ignore this email or contact us at "
-      terms_of_service: "Terms of Service"
-      medium: "Medium"
-      twitter: "Twitter"
-      reddit: "Reddit"
-      rocketchat: "Rocket.Chat"
-
-    unverified_domain_reached_threshold:
-      subject: "Money is waiting for %{publication_title}, verify your site with Brave to claim your funds!"
-      salutation: "Hi!"
-      title: "Money waiting for your unverified domain"
-      body_html: |
-        <p>Your site has accumulated quite a bit of fundage and we’d love to hand it over, but first we need you to verify ownership.</p>
-        <p>There are no fees, no gimmicks, we just want you to get paid and keep making awesome content.</p>
-      button: "Verify My Site"
-      button_not_working: "If the button above doesn't work, paste this link into your web browser: "
-    uphold_account_changed:
-      subject: "Brave Publisher Uphold account changed"
-      title: "Publisher Uphold account changed"
-      body: "This message confirms that you've updated your Uphold account through the Brave Payments website."
-    login_email:
-      body_html: |
-        Click the private access link below to log in to your account with <strong>Brave Payments</strong>. This link can only be used once.
-      subject: "Brave Publisher login link"
-      title: "Brave Publisher login link"
-      button: "Log in to Brave Payments"
-    welcome:
-      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
-      intro: "We've received a request to register a website with Brave Payments:"
-      private_email_notice: "NOTE: This email contains a private access link. Anyone with it can manage private publisher info, including payment information. Before forwarding this email, ensure you trust the recipient."
-      subject: "Brave Publisher registration"
-      title: "Publisher registration"
-    verify_email:
-      body_html: |
-        Click the private access link below to create your account with <strong>Brave Payments</strong>. This link can only be used once.
-      subject: "Brave Publisher email confirmation"
-      title: "Brave Publisher email confirmation"
-      button: "Verify Email"
-    verification_done:
-      intro: "Congratulations! You are now a verified Brave publisher Brave users will see a verified symbol next to your website domain."
-      subject: "%{publication_title} Publisher website verified"
-      title: "Verification complete"
-      claim_funds_header: "Ready to claim your funds?"
-      claim_funds_body: "To claim your funds please visit the Publishers website to submit your payment information using the link below."
-    confirm_email_change:
-      subject: "Confirm your Brave Publisher email change"
-      title: "Confirm email change"
-      erroneous_email_help: "If you believe you received this message in error, you may safely ignore it."
-      intro: "We've received a request to update your email address with Brave Payments:"
-      private_email_notice: |
-        NOTE: This email contains a private access link. Anyone with it can manage private
-        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
-      previous_email: "Previous email"
-      updated_email: "New email"
-      confirmation_link: "Confirm your email change"
-      confirmation_link_help: "Use this link to confirm that you would like to proceed with this change"
-    notify_email_change:
-      subject: "Notification of Brave Publisher email change"
-      title: "Notification of email change"
-      intro: "We're notifying you of an update made to your email address with Brave Payments:"
-      change_ok: "If you made this change, check your new email account for a link to confirm it."
-      contact_support: "If you did not make this change yourself, please contact support ASAP"
-    statement_ready:
-      subject: "Brave Publisher statement is ready to view"
-      title: "Publisher statement is ready to view"
-      body: "The following statement has recently been generated:"
-      expiration_note: "This statement must be downloaded within the next 24 hours."
-    verified_no_wallet:
-      subject: "Please create your new wallet to continue receiving funds"
-      body_html_1: |
-        <p>Thanks for verifying your channel! We have a small task for you.</p>
-        <p>We need you to create a wallet with our partner, Uphold.</p>
-        <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
-        <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
-      button: "Create My Wallet"
-  publisher_statement_periods:
-    past_7_days: "Past 7 days"
-    past_30_days: "Past 30 days"
-    this_month: "This month"
-    last_month: "Last month"
-    this_year: "This year"
-    last_year: "Last year"
-    all: "All"
+      tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
+      tweet: "Tweet"
+      share: "Share"
+      promo_period: "Promo period:"
+      promo_period_description: "Jan 1 - Feb 1"
+      reward: "Reward:"
+      reward_description: "about 5 USD per referral"
+      referral_links: "Share the link to increase referrals"
+      referral_link: "Referral Link"
+      copy: "Copy"
+      brave_payments_tm: "Brave Payments™"
+      on_youtube: "on YouTube"
+      on_twitch: "on Twitch"
+      tos_1: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period."
+      tos_2_html: |
+        The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the Brave Publisher Terms Of Service.  See Publisher <strong><a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a></strong> for additional details and restrictions.
+  promo_mailer:
+    activate_promo_2018q1:
+      subject: "Limited Time Offer: Free tokens for your referral!"
+      body_one_html: |
+        <p><strong>We are giving away $1 million in tokens</strong> to creators who get their audience to switch to the Brave browser. You get approximately <strong>5 USD in tokens for each user you bring to Brave</strong>. Your fans get a super fast browser that’s private and secure. And once your fans switch to Brave, they can continue contributing to you for years to come!</p?
+      body_two: "This is a limited time offer. Refer your audience before someone else does. Don’t miss out on the opportunity to earn big!"
+      button: "Activate Promo"
+    promo_activated_2018q1_verified:
+      subject: "Your Referral Promo is Active!"
+      body_one: "Congrats! You are set to receive about 5 USD in tokens for every new user you bring to Brave. Use the referral links we created for your channel, and get your fans to support you!"
+      body_two: "Users are confirmed following 30 days of use. Users that drop out will not be counted."
+      body_three: "We wish you good luck!"
+      ad_banner_title: "Promo Ad Banner"
+      ad_banner_message: "Here is the promo ad banner you can use with the referral link."
+      download: "Download"
+    promo_activated_2018q1_unverified:
+      subject: "Your Referral Promo is Active!"
+      cta: "Add Channel"
+      body_one: "Great news! Your referral promo is now active.  To get this going, you'll need to add your web site or YouTube channels to your account. We will then send you a specific referral link for you to pass to your fans."
+      body_two_html: |
+        <strong>Add your web site or YouTube channel to your account to get the referral link.</strong>
+    new_channel_registered_2018q1:
+      subject: "Your Referral Promo is Active!"
+      body_one: "Congrats! You are set to receive 10 BAT for every new user you bring to Brave.  Use the referral links we created for your channel, and get your fans to support you!"
   recaptcha:
     errors:
-      recaptcha_unreachable: "reCAPTCHA server timeout; please try again."
-  shared:
-    api_error: "Your request couldn't be processed due to an API error."
-    app_title: Brave Payments
-    cancel: "Cancel"
-    continue: "Continue"
-    email_address: "Email address"
-    existing_account: "Already have an account?"
-    error: "Error"
-    error_body: "Oops, sorry about that. You can try to refresh the page or return to"
-    error_contact: "For assistance please contact us at: %{support_email}"
-    generate: "Generate"
-    get_started: "Get Started"
-    log_in: "Log In"
-    terms_of_service: "Terms of Service"
-    update: "Update"
+      recaptcha_unreachable: reCAPTCHA server timeout; please try again.
+  services:
+    publisher_login_link_emailer:
+      new_auth_token_wrong_email_publisher_verified: Email doesn't match the publisher verification. Try leaving email blank to use the most recent email.
   site_channels:
-    check_for_https_button: "Check for HTTPS"
-    copy_to_clipboard: "Copy to clipboard"
-    https_inspection_complete: "Check for HTTPS complete"
+    shared:
+      trusted_file: Place a Trusted File into your Domain
+      verification_file:
+        download_html: |
+          <strong>%{download_link}</strong> the verification file.
+        name: "File name:"
+        contents: "File contents:"
+        upload_html: |
+          Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you don't have one).
+          <br />
+          <span class="error">* Do not change the file name or file content.</span>
+        verify: Make sure the verification file is placed in the folder and click verify.
+        note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
+      verify_button: Verify
+      finish_verification_later: Complete Verification Later
+    create:
+      duplicate_channel: "%{domain} is already present."
+    check_for_https:
+      alert: Check for HTTPS complete
+    https_check:
+      https: Your domain is using HTTPS.
+      no_https_alt: Your domain is NOT using HTTPS.
+      no_https: Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing.
+      button: Check for HTTPS
+    new:
+      heading: Enter Domain Info
     progress:
-      info: "Domain Info"
-      verify: "Verification Method"
-      instruction: "Instruction"
-    requires_https: "This action requires HTTPS support"
-    verify_dns_button: "Verify DNS Record"
-    verification_helper_dns_title: "Need help with adding a TXT record in your DNS account?"
-    verification_helper_dns_content: "Listed below are some of the most popular DNS hosting services with links to their TXT record help pages. If you don't see yours listed below, try searching for \"add TXT record\" in your DNS account support area."
-    verification_helper_dns_contact: "Contact Brave Support"
-    verification_dns_record_help: "To verify ownership of your site, you'll need to add a new DNS record for "
-    verification_dns_record_help_2: " using the account for your DNS host."
-    verification_dns_record_instruction1: "Copy and paste the info below into the zone file for "
-    verification_dns_record_instruction2: " using your DNS host's control panel."
-    verification_dns_record_instruction3: "Please add the record on your root domain, not a subdomain. The @ symbol is often used to indicate the root domain name/host/host record."
-    verification_dns_record_verify: "After adding and saving this TXT record with your DNS host, click the button below to verify."
-    verification_choose_header: "Choose a Verification Method"
-    verification_choose_trusted_file_header: "Download a trusted file"
-    verification_choose_trusted_file_subheader: "(Recommended & easiest)"
-    verification_choose_trusted_file_button: "I'll use a trusted file"
-    verification_choose_or: "OR"
-    verification_choose_dns_header: "Edit DNS records"
-    verification_choose_dns_subheader: "(You need DNS access)"
-    verification_choose_dns_button: "I'll edit my DNS record"
-    verification_choose_support_queue_link: "join the support queue."
-    verification_choose_support_queue_html: |
-      <p>If both of those options sound daunting to you, %{support_queue_link}</p>
-    verification_support_queue_header: "Thanks for waiting!"
-    verification_support_queue_help_html: |
-      <p>We will be reaching out to each member in the order the requests are received.</p>
-      <p>You will receive an email when our next available support member can assist you. Please keep in mind
-      that this may take a few days due to our current backlog.</p>
-    verification_support_review_options: "I'd like to review my options"
-    verification_wait_time: "3 days."
-    verification_already_done: "Your site is verified."
-    verification_option_dns_record_name: "Name (or Host / Hostname):"
-    verification_option_dns_record_type: "Type:"
-    verification_option_dns_record_value: "Value (or TXT Value / Data):"
-    verification_option_dns_record_add_new: "Add a new TXT record for %{brave_publisher_id}"
-    verification_option_dns_record_note: "Note: This may take a few minutes to several hours to become available for verification depending on where your DNS is hosted."
-    verification_background_header: "Now verifying your domain..."
-    verification_background_help_html: |
-      <p>You can leave this screen now. We will send you an <strong>email with instructions within 24 hours.</strong></p>
-    verification_https_check_no_https: "Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing."
-    verification_https_check_no_https_alt: "Your domain is NOT using HTTPS."
-    verification_https_check_https: "Your domain is using HTTPS."
-    verification_https_check_https_alt: "Your domain is using HTTPS."
-    verification_download_verification: "Download"
-    verification_option_wordpress: "Hello. It looks like you are using Wordpress!"
-    verification_option_wordpress_intro_html: |
-     Follow the steps below to verify your Wordpress site.<br />
-     (Hmmm, my site is a <a href="%{choose_path}">normal website</a> or <a href="%{github_path}">on GitHub</a>.)
-    verification_option_wordpress_install_plugin_html: |
-      <p class="li-text"><a href="https://wordpress.org/plugins/well-known-uris/" class="download-link">Install the plugin</a> that makes the
-       entire process a snap.</p>
-      <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/well-known-uris/">
-      https://wordpress.org/plugins/well-known-uris/</a>)</p>
-    verification_option_wordpress_verification_token: "Copy the verification code below into the plugin."
-    verification_option_wordpress_token: "Verification code:"
-    verification_option_wordpress_help_verify: "Once the code is pasted in, click verify."
-    verification_option_github_nojekyll_html: |
-      It looks like you are using <strong>GitHub</strong>. As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
-    verification_download_html: |
-      %{download_link} the verification file.
-    verification_upload_html: |
-      Upload the verification file to the '<strong>.well-known</strong>' folder on your domain (create the folder if you
-      don't have one).
-    verification_verify: "Make sure the verification file is placed in the folder and click verify."
-    verification_verify_note: "Note: this process may take a few minutes to several hours depending on where your site is hosted."
-    verification_file_contents: "File contents:"
-    verification_option_place_trusted_file: "Place a Trusted File into your Domain"
+      info: Domain Info
+      verify: Verification Method
+      instruction: Instruction
+    require_https_enabled_site:
+      alert: This action requires HTTPS support
+    require_unverified_site:
+      alert: Your site is verified.
+    setup_current_channel:
+      alert: This page is not valid for this channel type
+    verification_background:
+      heading: Now verifying your domain...
+      help_html: |
+        <p>You can leave this screen now.
+        We will send you an <strong>email with instructions within 24 hours.</strong></p>
+    verification_choose_method:
+      heading: Choose a Verification Method
+      trusted_file:
+        heading: Download a trusted file
+        subheading: (Recommended & easiest)
+        button: I'll use a trusted file
+      or: OR
+      dns:
+        heading: Edit DNS records
+        subheading: (You need DNS access)
+        button: I'll edit my DNS record
+      support_queue:
+        body_html: |
+          <p>If both of those options sound daunting to you, %{support_queue_link}</p>
+        link: join the support queue.
+    verification_dns_record:
+      heading: Add a new TXT record for %{brave_publisher_id}
+      help: To verify ownership of your site, you'll need to add a new DNS record for
+      help_2: using the account for your DNS host.
+      instruction_1: |
+        Please add the record on your root domain, not a subdomain.
+        The @ symbol is often used to indicate the root domain name/host/host record.
+      instruction_2: Copy and paste the info below into the zone file for
+      instruction_3: using your DNS host's control panel.
+      record:
+        type: Type
+        value: Value (or TXT Value / Data)
+        note: |
+          Note: This may take a few minutes to several hours to become available
+          for verification depending on where your DNS is hosted.
+      copy_to_clipboard: Copy to clipboard
+      verify: After adding and saving this TXT record with your DNS host, click the button below to verify.
+      button: Verify DNS Record
+      helper:
+        heading: Need help with adding a TXT record in your DNS account?
+        body: |
+          Listed below are some of the most popular DNS hosting services with links to their TXT record help pages.
+          If you don't see yours listed below, try searching for "add TXT record" in your DNS account support area.
+        contact: Contact Brave Support
+    verification_github:
+      nojekyll_html: |
+        It looks like you are using <strong>GitHub</strong>.
+        As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
+    verification_support_queue:
+      heading: Thanks for waiting!
+      help_html: |
+        <p>We will be reaching out to each member in the order the requests are received.</p>
+        <p>You will receive an email when our next available support member can assist you. Please keep in mind
+        that this may take a few days due to our current backlog.</p>
+      review_options: I'd like to review my options
+    verification_wordpress:
+      escape_hatch_html: Not using wordpress, or unable to verify your site with the plugin? %{href}
+      verify_dns_record: Verify via a DNS record.
+      heading: Hello. It looks like you are using WordPress!
+      install_plugin_html: |
+        <p><strong><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a></strong>
+        that makes the entire process a snap.</p>
+        <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-payments-verification/">
+        https://wordpress.org/plugins/brave-payments-verification/</a>)</p>
+      verification_token: Copy the verification code below into the plugin.
+      wordpress_token: "Verification code:"
+      verify: Once the code is pasted in, click verify.
+    verify:
+      alert: Site added. Verification in progress...
   static:
-    landing_header-welcome: "Welcome to"
-    landing_header: "Brave Payments"
-    landing_body_html: |
-      <p class="leadin">Do you run a web site or are you a <strong>YouTube</strong> creator interested in monetizing
-        your content? Verify your site and unlock your contributions!</p>
-      <p>Brave Payments lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
-        of fans may have already filled your wallet!</p>
-    landing_new_header: "New to Brave Payments?"
-    landing_new_body: "Start verification by entering your email."
-    landing_login_body: "Log in to your dashboard."
+    index:
+      welcome: Welcome to
+      header: Brave Payments
+      body_html: |
+        <p class="leadin">Do you run a web site or are you a <strong>YouTube</strong> creator interested in monetizing
+          your content? Verify your site and unlock your contributions!</p>
+        <p>Brave Payments lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
+          of fans may have already filled your wallet!</p>
+      new:
+        header: New to Brave Payments?
+        body: Start verification by entering your email.
+      login:
+        body: Log in to your dashboard.
   two_factor_authentications:
     totp:
       heading: Two-factor Authentication
@@ -376,18 +587,14 @@ en:
       body: Insert your security key and press the button on the key when blinking.
       totp_alternative_available: Don't have your security key?
       totp_alternative_link: Use authentication code instead.
+      u2f_unavailable_totp_alternative_link: Use Authentication Code Instead
       submit_value: Try Again
-      unavailable:
-        totp_available: Your browser doesn't support security key, the preferred
-          two-factor authentication method for your account. Your account also
-          has authentication code configured. Please use authentication code
-          or change your browser to Google Chrome to use your security key.
-        heading: Security Key Unsupported
-        body_html: |
-          Your browser doesn't support security key, the only two-factor
-          authentication method your account has configured. Please use
-          Google Chrome to authenticate with your security key.
     index:
+      u2f_unavailable_html: |
+        <strong>Security key not supported by your browser.</strong><br>
+        Switch to Google Chrome or Opera browser to log in. We also recommend
+        setting up authenticator app as a backup method for two-factor
+        authentication for this situation.
       u2f-error:
         bad-request: |
           There was an unexpected error in the authentication request made by
@@ -450,6 +657,7 @@ en:
             Are you sure you want to disable authenticator app?
           deny: Do Not Disable
           confirm: Disable it for now
+        name_default: Anonymous Key
       u2f:
         heading: Hardware security keys
         intro: |
@@ -485,9 +693,7 @@ en:
   totp_registrations:
     new:
       heading: Set Up Authenticator App
-      warning: |
-        You already have authentication code configured.
-        Reconfiguring will invalidate your existing authentication code devices.
+      warning: Reconfiguring will invalidate your existing authentication code devices.
       step_1: Install an authenticator app on your mobile phone.
       step_2: Scan the QR code below with your app.
       step_2_alt: "If you can't scan the QR code, enter this code:"
@@ -530,7 +736,6 @@ en:
           protocol. Please use a current release of Google Chrome or Opera.
           (IMPLEMENTATION_INCOMPLETE)
     u2f_registration:
-      delete_action: Remove
       name_default: Anonymous Key
       confirm_disable:
         header: Remove Security Key?
@@ -544,17 +749,3 @@ en:
         final_confirmation: Are you sure you want to remove this security key?
         deny: Do Not Remove
         confirm: Remove Security Key
-  youtube:
-    authenticate_with_youtube: "Authenticate with YouTube"
-    channel_not_found: "Channel not found"
-    channel_already_taken: "Channel already taken"
-    channel_already_registered: "You have already registered this YouTube channel."
-    oauth_error: "Error connecting to YouTube"
-  channel:
-    channel_not_found: "Channel not found"
-    requires_uninitialized_channel: "An uninitialized channel is required"
-    requires_other_channel_type: "This pages is not valid for this channel type"
-    enter_domain: "Enter Domain Info"
-    channel_created: "Channel created."
-    please_log_in_and_retry: "Please log in to Brave Payments and retry the operation"
-    channel_removed: "Channel removed."

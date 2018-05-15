@@ -1,0 +1,14 @@
+- content_for(:title) do
+  h3= t("promo_mailer.promo_activated_2018q1_unverified.subject")
+
+p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
+
+p = t("promo_mailer.promo_activated_2018q1_unverified.body_one")
+
+= t("promo_mailer.promo_activated_2018q1_unverified.body_two_html")
+
+div.center= link_to(t("promo_mailer.promo_activated_2018q1_unverified.cta"), new_auth_token_publishers_url, class: "btn-primary btn-login")
+
+= t("publisher_mailer.shared.signature_html")
+
+hr 

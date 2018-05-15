@@ -1,0 +1,16 @@
+.single-panel--wrapper.single-panel--wrapper--large
+  = render "panel_flash_messages"
+  .single-panel--content.single-panel--content
+    .single-panel--padded-content--email-sent
+      h3.single-panel--headline= t ".heading"
+
+      .col-small-centered
+        p= t ".sent_access_link_html", email: @publisher_email
+        hr
+        = form_tag resend_auth_email_publishers_path(publisher_id: @publisher.id), method: "post", class: "hidden", id: "resend_email_form" do
+          - if params[:captcha]
+            = hidden_field_tag :captcha
+          - if @should_throttle
+            .col-small-centered
+              = recaptcha_tags
+        p= t ".resend_email_html", try_again_link: link_to(t(".try_again"), "#", onclick: "document.getElementById('resend_email_form').submit();")

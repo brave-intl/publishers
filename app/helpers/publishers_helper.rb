@@ -1,64 +1,69 @@
 module PublishersHelper
   include ChannelsHelper
 
+  def publishers_meta_tags
+    {
+      title: t("shared.app_title"),
+      charset: "utf-8",
+      og: {
+        title: :title,
+        image: image_url("open-graph-preview.png", host: root_url),
+        description: t("shared.app_description"),
+        url: request.url,
+        type: "website"
+      }
+    }
+  end
+
   def publisher_can_receive_funds?(publisher)
     publisher.uphold_status == :verified
   end
 
-  def uphold_status_description(publisher)
-    case publisher.uphold_status
-    when :verified
-      t("publishers.uphold_status_verified")
-    when :access_parameters_acquired
-      t("publishers.uphold_status_access_parameters_acquired")
-    when :code_acquired
-      t("publishers.uphold_status_code_acquired")
-    when :unconnected
-      t("publishers.uphold_status_unconnected")
-    end
-  end
-
-  def uphold_last_deposit_date(publisher)
-    "September 31st, 2022 (ToDo)"
-  end
-
-  def show_uphold_connect?(publisher)
-    publisher.uphold_status == :unconnected || publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
-  end
-
-  def show_uphold_dashboard?(publisher)
-    publisher.uphold_verified?
-  end
-
-  def poll_uphold_status?(publisher)
-    publisher.uphold_status == :access_parameters_acquired
+  def uphold_status_class(publisher)
+    "uphold-status-#{publisher.uphold_status.to_s.gsub('_', '-')}"
   end
 
   def publisher_humanize_balance(publisher, currency)
-    if balance = publisher.wallet.contribution_balance
+    if balance = publisher.wallet && publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
     else
-      I18n.t("publishers.balance_error")
+      I18n.t("helpers.publisher.balance_error")
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("publishers.balance_error")
+    I18n.t("helpers.publisher.balance_error")
   end
 
   def publisher_converted_balance(publisher)
-    currency = publisher_default_currency(publisher)
-    return if currency == "BAT"
-    if balance = publisher.wallet.contribution_balance
+    currency = publisher.default_currency
+    return if currency == "BAT" || currency.blank?
+    if balance = publisher.wallet && publisher.wallet.contribution_balance
       converted_amount = '%.2f' % balance.convert_to(currency)
-      I18n.t("publishers.balance_pending_approximate", amount: converted_amount, code: currency)
+      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
     else
-      I18n.t("publishers.balance_error")
+      I18n.t("helpers.publisher.balance_error")
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("publishers.balance_error")
+    I18n.t("helpers.publisher.balance_error")
+  end
+
+  def publisher_channel_balance(publisher, channel_identifier, currency)
+    if balance = (
+        publisher.wallet &&
+        publisher.wallet.channel_balances &&
+        publisher.wallet.channel_balances[channel_identifier]
+    )
+      '%.2f' % balance.convert_to(currency)
+    else
+      I18n.t("helpers.publisher.balance_error")
+    end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("helpers.publisher.balance_error")
   end
 
   def publisher_uri(publisher)
@@ -80,10 +85,11 @@ module PublishersHelper
   end
 
   def uphold_authorization_description(publisher)
-    if publisher_status(publisher) == :uphold_reauthorize || publisher_status(publisher) == :uphold_processing
-      t("publishers.reconnect_to_uphold")
+    case publisher.uphold_status
+    when :unconnected
+      I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
     else
-      t("publishers.create_uphold_wallet")
+      I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
     end
   end
 
@@ -95,80 +101,50 @@ module PublishersHelper
     Rails.application.secrets[:terms_of_service_url]
   end
 
-  def publisher_default_currency(publisher)
-    publisher.default_currency.present? ? publisher.default_currency : 'BAT'
-  end
-
   def publisher_available_currencies(publisher)
     available_currencies = publisher.wallet.try(:wallet_details).try(:[], 'availableCurrencies')
-    available_currencies.blank? ? ['BAT'] : available_currencies
-  end
-
-  def publisher_verification_status(publisher)
-    publisher.verified? ? :verified : :unverified
-  end
-
-  def publisher_verification_status_description(publisher)
-    case publisher_verification_status(publisher)
-      when :verified
-        t("publishers.verified")
-      when :unverified
-        t("publishers.not_verified")
+    if available_currencies && publisher.default_currency.blank?
+      available_currencies.unshift(['-- Select currency --', nil])
     end
+    available_currencies
   end
 
-  def publisher_verification_file_content(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_file_content
-  end
-
-  def publisher_verification_file_directory(publisher)
-    "<span class=\"strong-line\">https:</span>//#{publisher.brave_publisher_id}/.well-known/"
-  end
-
-  def publisher_verification_file_url(publisher)
-    PublisherVerificationFileGenerator.new(publisher: publisher).generate_url
-  end
-
-  # Overall publisher status combining verification and uphold wallet connection
-  def publisher_status(publisher)
-    if publisher.verified?
-      if publisher.uphold_verified?
-        :complete
-      elsif publisher.uphold_status == :code_acquired || publisher.uphold_status == :access_parameters_acquired
-        :uphold_processing
-      else
-        if publisher.wallet.try(:status).try(:[], 'action') == 're-authorize'
-          :uphold_reauthorize
-        else
-          :uphold_unconnected
-        end
-      end
+  def uphold_status_class(publisher)
+    case publisher.uphold_status
+    when :verified
+      'uphold-complete'
+    when :code_acquired, :access_parameters_acquired
+      'uphold-processing'
+    when :reauthorization_needed
+      'uphold-reauthorization-needed'
     else
-      :unverified
+      'uphold-unconnected'
     end
   end
 
-  def publisher_status_timeout(publisher)
-    case publisher_status(publisher)
-    when :uphold_processing
-      t("publishers.status_uphold_processing_timeout")
+  def uphold_status_summary(publisher)
+    case publisher.uphold_status
+    when :verified
+      I18n.t("helpers.publisher.uphold_status_summary.connected")
+    when :code_acquired, :access_parameters_acquired
+      I18n.t("helpers.publisher.uphold_status_summary.connecting")
+    when :reauthorization_needed
+      I18n.t("helpers.publisher.uphold_status_summary.connection_problems")
     else
-      nil
+      I18n.t("helpers.publisher.uphold_status_summary.unconnected")
     end
   end
 
-  def publisher_status_description(publisher)
-    case publisher_status(publisher)
-    when :complete
-      t("publishers.dashboard_uphold_balance_sending")
-    when :uphold_processing
-      t("publishers.status_uphold_processing")
-    when :uphold_reauthorize
-      t("publishers.verified_publisher_reconnect_to_uphold")
-    when :uphold_unconnected
-      t("publishers.verified_publisher_connect_to_uphold")
-    when :unverified
-      t("publishers.status_unverified")
+  def uphold_status_description(publisher)
+    case publisher.uphold_status
+    when :verified
+      I18n.t("helpers.publisher.uphold_status_description.verified")
+    when :code_acquired, :access_parameters_acquired
+      I18n.t("helpers.publisher.uphold_status_description.connecting")
+    when :reauthorization_needed
+      I18n.t("helpers.publisher.uphold_status_description.reauthorization_needed")
+    when :unconnected
+      I18n.t("helpers.publisher.uphold_status_description.unconnected")
     end
   end
 
@@ -190,7 +166,9 @@ module PublishersHelper
   end
 
   def publisher_next_step_path(publisher)
-    if publisher.verified?
+    if session[:publisher_created_through_youtube_auth]
+      change_email_confirm_publishers_path
+    elsif publisher.verified?
       home_publishers_path
     elsif publisher.email_verified?
       email_verified_publishers_path
@@ -211,8 +189,10 @@ module PublishersHelper
   end
 
   # NOTE: Be careful! This link logs the publisher a back in.
-  def generate_publisher_private_reauth_url(publisher, confirm_email = nil)
-    token = PublisherTokenGenerator.new(publisher: publisher).perform
+  # This also no longer  automatically updates the token, which should now be handled by calling one of the
+  # mailer services
+  def publisher_private_reauth_url(publisher:, confirm_email: nil)
+    token = publisher.authentication_token
     options = { token: token }
     options[:confirm_email] = confirm_email if (confirm_email)
     publisher_url(publisher, options)
@@ -247,7 +227,7 @@ module PublishersHelper
   end
 
   def statement_period_description(period)
-    t("publisher_statement_periods.#{period}")
+    I18n.t("helpers.publisher.statement_periods.#{period}")
   end
 
   def statement_period_date(date)
@@ -306,6 +286,41 @@ module PublishersHelper
     publisher.verified?
   end
 
+  def channel_type(channel)
+    case channel.details
+    when SiteChannelDetails
+      I18n.t("helpers.publisher.channel_type.website")
+    when YoutubeChannelDetails
+      I18n.t("helpers.publisher.channel_type.youtube")
+    when TwitchChannelDetails
+      I18n.t("helpers.publisher.channel_type.twitch")
+    else
+      I18n.t("helpers.publisher.channel_type.unknown")
+    end
+  end
+
+  def channel_name(channel)
+    case channel.details
+    when SiteChannelDetails
+      I18n.t("helpers.publisher.channel_name.website")
+    when YoutubeChannelDetails
+      I18n.t("helpers.publisher.channel_name.youtube")
+    when TwitchChannelDetails
+      I18n.t("helpers.publisher.channel_name.twitch")
+    else
+      I18n.t("helpers.publisher.channel_name.unknown")
+    end
+  end
+
+  def show_taken_channel_registration?(channel)
+    case channel.details
+    when YoutubeChannelDetails
+      true
+    else
+      false
+    end
+  end
+
   def channel_edit_link(channel)
     case channel.details
       when SiteChannelDetails
@@ -318,13 +333,23 @@ module PublishersHelper
     end
   end
 
+  def channel_type_icon_url(channel)
+    case channel.details
+    when YoutubeChannelDetails
+      asset_url('publishers-home/youtube-icon_32x32.png')
+    when TwitchChannelDetails
+      asset_url('publishers-home/twitch-icon_32x32.png')
+    else
+      asset_url('publishers-home/website-icon_32x32.png')
+    end
+  end
+
   def channel_thumbnail_url(channel)
     url = case channel.details
-          when SiteChannelDetails
-
           when YoutubeChannelDetails
             channel.details.thumbnail_url
-          else
+          when TwitchChannelDetails
+            channel.details.thumbnail_url
           end
 
     return url || asset_url('default-channel.png')
@@ -332,5 +357,27 @@ module PublishersHelper
 
   def publisher_id_from_owner_identifier(owner_identifier)
     owner_identifier[/publishers#uuid:(.*)/,1]
+  end
+
+  def email_is_youtube_format?(email)
+    /.+@pages\.plusgoogle\.com/.match(email)
+  end
+
+  def youtube_login_permitted?(channel)
+    details = channel.details
+    if details.is_a?(YoutubeChannelDetails)
+      publisher = channel.publisher
+      if details.auth_email == publisher.email
+        if publisher.email
+          return !email_is_youtube_format?(publisher.email).nil?
+        end
+      end
+    end
+
+    false
+  end
+
+  def publisher_created_through_youtube_auth?(publisher)
+    publisher && publisher.channels.visible.count == 1 && youtube_login_permitted?(publisher.channels.visible.first)
   end
 end

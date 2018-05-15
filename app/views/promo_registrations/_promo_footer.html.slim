@@ -1,0 +1,13 @@
+.single-panel--wrapper--small
+  .footer--promo.footer--promo-message
+    = t("promo.shared.tos_1")
+  .footer--promo.footer--promo-message-tos2
+    = t("promo.shared.tos_2_html")
+  .footer--promo
+    .footer--promo-item.footer--promo-item-dashboard
+      - if current_publisher
+        = link_to(t("promo.shared.brave_payments_tm"), home_publishers_path)
+      - else
+        = link_to(t("promo.shared.brave_payments_tm"), new_auth_token_publishers_path)
+    .footer--promo-item.footer--promo-item-tos  
+      = link_to(t("shared.terms_of_service"), terms_of_service_url)

@@ -35,9 +35,9 @@ class SiteChannelTest < ActiveSupport::TestCase
     details.brave_publisher_id_error_code = :invalid_uri
 
     refute details.valid?
-    assert_equal [:"brave_publisher_id"], details.errors.keys
+    assert_equal [:"brave_publisher_id_unnormalized"], details.errors.keys
     assert_equal "invalid_uri", details.brave_publisher_id_error_code
-    assert_equal I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
+    assert_equal I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
   end
 
   test "a site channel assigned a brave_publisher_id_error_code and brave_publisher_id_unnormalized will not be valid" do
@@ -50,21 +50,29 @@ class SiteChannelTest < ActiveSupport::TestCase
     refute details.valid?
     assert_equal [:brave_publisher_id_unnormalized], details.errors.keys
     assert_equal "invalid_uri", details.brave_publisher_id_error_code
-    assert_equal I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
+    assert_equal I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri"), details.brave_publisher_id_error_description
   end
 
-  test "can get recent unverified site_channels can be found" do
+  test "recent unverified site_channels can be found" do
 
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels(max_age: 12.weeks).pluck(:brave_publisher_id)
 
-    assert_equal 3, brave_publisher_ids.length
+    assert_equal 8, brave_publisher_ids.length
     assert brave_publisher_ids.include?("stale.org")
 
     # Default max_age of 6 weeks
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels.pluck(:brave_publisher_id)
 
-    assert_equal 2, brave_publisher_ids.length
+    assert_equal 7, brave_publisher_ids.length
     refute brave_publisher_ids.include?("stale.org")
   end
 
+  test "recent unverified site_channels ready to verify can be found" do
+    brave_publisher_ids = SiteChannelDetails.recent_ready_to_verify_site_channels(max_age: 12.weeks).pluck(:brave_publisher_id)
+
+    assert_equal 2, brave_publisher_ids.length
+    refute brave_publisher_ids.include?("stale.org")
+    assert brave_publisher_ids.include?("global3.org")
+    assert brave_publisher_ids.include?("global4.org")
+  end
 end

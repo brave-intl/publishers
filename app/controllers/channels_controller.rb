@@ -2,17 +2,30 @@ class ChannelsController < ApplicationController
   include ChannelsHelper
 
   before_action :authenticate_publisher!
-  before_action :setup_current_channel
+  before_action :setup_current_channel,
+                except: %i(cancel_add)
   attr_reader :current_channel
 
   def destroy
+    return if current_channel.verified
+
     channel_identifier = current_channel.details.channel_identifier
+    update_promo_server = current_channel.promo_registration.present?
+
+    if update_promo_server
+      referral_code = current_channel.promo_registration.referral_code
+    else
+      referral_code = nil
+    end
 
     channel_verified = current_channel.verified?
 
     success = current_channel.destroy
     if success && channel_verified
-      DeletePublisherChannelJob.perform_later(publisher_id: current_publisher.id, channel_identifier: channel_identifier)
+      DeletePublisherChannelJob.perform_later(publisher_id: current_publisher.id, 
+                                              channel_identifier: channel_identifier, 
+                                              update_promo_server: update_promo_server,
+                                              referral_code: referral_code)
     end
 
     respond_to do |format|
@@ -26,6 +39,23 @@ class ChannelsController < ApplicationController
     end
   end
 
+  def cancel_add
+    channel = current_publisher.channels.find(params[:id])
+    if channel && !channel.verified?
+      channel.destroy
+    end
+    redirect_to(home_publishers_path)
+  end
+
+  def verification_status
+    respond_to do |format|
+      format.json {
+        render(json: { status: channel_verification_status(current_channel),
+                       details: channel_verification_details(current_channel) }, status: 200)
+      }
+    end
+  end
+
   private
 
   def setup_current_channel
@@ -33,7 +63,10 @@ class ChannelsController < ApplicationController
   rescue ActiveRecord::RecordNotFound => e
     respond_to do |format|
       format.json {
-        render status: 404
+        head 404
+      }
+      format.html {
+        redirect_to home_publishers_path, notice: t("shared.channel_not_found")
       }
     end
   end

@@ -1,0 +1,17 @@
+- content_for(:title) do
+  h3= t("promo_mailer.activate_promo_2018q1.subject")
+
+p.salutation= t("publisher_mailer.shared.salutation", name: @publisher.name)
+
+= t("promo_mailer.activate_promo_2018q1.body_one_html")
+p = t("promo_mailer.activate_promo_2018q1.body_two")
+
+div.center= link_to(t("promo_mailer.activate_promo_2018q1.button"), @private_promo_2018q1_auth_url, class: "btn-primary btn-login")
+= t("publisher_mailer.shared.signature_html")
+
+hr
+
+.hint
+  p
+    span= t("publisher_mailer.shared.button_not_working")
+    span= link_to(@private_reauth_url, @private_promo_2018q1_auth_url, class: "fallback-link")

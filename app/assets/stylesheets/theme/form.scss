@@ -1,0 +1,8 @@
+.form-control--code {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: $braveGray-4;
+  word-break: break-all;
+  height: fit-content;
+  padding: $spacer*0.75;
+}

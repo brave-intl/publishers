@@ -1,5 +1,9 @@
 $subnav-active: #8F9397
 
+@keyframes blinker
+  50%
+    opacity: 0
+
 body[data-controller="publishers"],
 body[data-controller="site_channels"],
 body[data-controller="two_factor_authentications"],
@@ -81,6 +85,186 @@ body[data-controller="u2f_registrations"]
       text-align: center
       a
         margin-left: 0.5em
+
+  #converted_amount
+    @media (max-width: $screen-sm-max)
+      margin-bottom: 20px
+
+  .promo--tos
+    color: white
+    opacity: .7
+    margin-left: 60px
+    margin-top: 20px
+    margin-right: 60px
+    font-size: 12px
+    text-align: center
+    a
+      color: white
+      &:hover, &focus
+        color: white
+
+    @media (max-width: $screen-sm-max)
+      margin-left: 85px
+      margin-right: 85px
+  .promo-panel
+    padding: 0px 15px 0px 100px
+    background-color: #00BCD6
+    display: table
+    width: 100%
+    height: 150px
+    background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-polygon-narrow.png"))
+    background-repeat: no-repeat
+    background-position: center left 30px, left top 50px
+    background-size: auto 100px, cover
+    .promo-flex-col
+      display: flex
+      flex-direction: column
+      flex: 1
+      &-downloaded
+        color: white
+      &-confirmed
+        color: #03375D
+    .promo-flex-row
+      display: flex
+      flex-direction: row
+      &-sub
+        text-align: right
+        padding-right: 30px
+        padding-top: 15px
+        color: #03375D
+        margin-left: auto
+        font-size: 13px
+        font-weight: 600
+    .promo-panel-header
+      padding-top: 30px
+      text-align: center
+      font-weight: 600
+      font-size: 14px
+    .promo-panel-number
+      text-align: center
+      font-weight: 600
+      font-size: 30px
+      white-space: nowrap
+      margin-top: -10px
+    .promo-panel-title
+      padding-top: 40px
+      color: #006192      
+      &-item
+        padding-top: 0px
+        text-align: left
+        font-weight: 600
+    .promo-panel-item
+      display: table-cell
+      vertical-align: middle
+      #promo-limited-time
+        color: #006192
+        font-weight: 700
+      #promo-title
+        color: white
+        font-weight: 600
+        margin-bottom: 0px
+      #promo-referring-fans
+        color: #BCF0F7
+        font-size: 20px
+        font-weight: 500
+      &-button
+        text-align: center
+      #activate-promo-dashboard-button
+        background: white
+        color: #006192
+        &:hover, &focus
+          background: #BCF0F7
+        font-size: 11px
+        font-weight: 600
+        font-weight: 700
+      &-alert
+        width: 60%
+        #promo-panel-alert
+          font-size: 14px
+          font-weight: 600
+          color: #006192
+          padding: 30px 30px 35px 70px
+          margin-right: 20px
+          background-color: white
+          text-align: left
+          opacity: .5
+          border-radius: 10px
+          background-image: url(asset-path("icn-info.png"))
+          background-position: center left 15px
+          background-repeat: no-repeat
+          
+  .channel--promo-info-container
+    float: right
+    height: 45px
+    width: 166px
+    transition: .3s ease-in-out
+    display: table
+    .promo-info-item
+      height: 100%
+      text-align: center
+      display: table-cell
+      vertical-align: middle
+    .referral-link-button
+      width: 110px
+      background: #edf3f9
+      display: table-cell
+      border: solid
+      border-width: 1px
+      border-radius: 4px
+      border-color: #cddeec
+      cursor: pointer
+      span
+        transition: opacity 0.7s linear
+      span.fadedOut
+        opacity: 0
+      &-mobile
+        display: none
+    .referral-link-url
+      background: #edf3f9
+      height: 100%
+      text-align: left
+      padding-left: 8px
+      border: solid
+      border-width: 1px 0px 1px 1px
+      border-radius: 4px 0px 0px 4px
+      border-color: #cddeec
+      white-space: nowrap
+      display: none
+    .referral-link-copy-button
+      background: #ff3f3f
+      color: white
+      height: 100%   
+      border-radius: 0px 4px 4px 0px
+      cursor: pointer
+      display: none
+    .promo-share-button
+      height: 23px
+      width: 28px
+      display: table-cell
+      background-position: center
+      background-repeat: no-repeat
+      &-twitter
+        background-image: url(asset-path("tweet.png"))
+      &-facebook
+        background-image: url(asset-path("f-share.png"))
+    &-slideout
+      width: 340px
+      .promo-info-item
+        display: table-cell
+      .referral-link-button
+        display: none
+    @media (max-width: $screen-sm-max)
+      margin-top: 20px
+      margin-left: 30px
+      .referral-link-button
+        &-mobile
+          display: table-cell
+        &-desktop
+          display: none
+      .referral-link-copy-button
+        display: none
+      .referral-link-url
+        display: none
 
   .expired-token-panel
     max-width: 710px
@@ -233,16 +417,6 @@ body[data-controller="u2f_registrations"]
     margin-bottom: 20px
     color: #ff3f3f
 
-body[data-controller="publishers"]
-  &[data-action="create_done"]
-    .email-panel
-      background-image: url(asset-path("email-2@1x.png"))
-      background-position: top 60px right 60px
-      background-repeat: no-repeat
-    .email-address
-      color: #ff3f3f
-
-
   &[data-action="create_done"]
     .hidden_form > *,
     #verification_in_progress
@@ -303,10 +477,13 @@ body[data-controller="publishers"]
     .container
       .col-details
         margin-top: 30px
-      h4
+      h4.balance-header
         font-size: 13px
         font-weight: 300
         letter-spacing: 0.5px
+      #balance_pending_message
+        opacity: .6
+        padding-left: 7px
       legend
         margin-bottom: 12px
       .uphold-panel
@@ -346,32 +523,75 @@ body[data-controller="publishers"]
           margin-bottom: 40px
       .attribute-value
         margin-bottom: 24px
-
-      #publisher_verification_status
-        font-size: $font-size-base
-        vertical-align: middle
-        padding: 5px 0 5px 35px
-        background-position: center left
-        background-repeat: no-repeat
-        background-size: 25px
-        &.verified
-          background-image: url(asset-path("verified-icon@1x.png"))
-        &.unverified
-          background-image: url(asset-path("unverified-icon.png"))
-      #publisher_status
+      #uphold_status
         vertical-align: top
-        margin-top: 20px
-        margin-bottom: 45px
-        &.complete
-          // no background
-        &.uphold_processing,
-        &.uphold_reauthorize,
-        &.uphold_unconnected
+        margin-bottom: 25px
+        .deposit-currency
+          margin-top: 10px
+        .unavailable-currencies
           padding: 0 0 5px 52px
           background-position: top left
           background-repeat: no-repeat
           background-size: 42px
           background-image: url(asset-path("icn-warning@1x.png"))
+        .status-summary
+          margin-top: -10px
+          margin-bottom: 20px
+          font-size: 14px
+          .text
+            display: inline-block
+            &:before
+              content: "\25CF\00a0"
+          .action
+            display: inline-block
+            margin-left: 15px
+            .disconnect-uphold
+              color: $mediumGray
+        .status-description
+          margin-top: 40px
+        &.uphold-timeout
+          .status-summary .action,
+          #uphold_dashboard,
+          #uphold_connect
+            display: none
+        &.uphold-complete,
+        &.uphold-processing
+          .status-summary .action .connect-uphold,
+          #uphold_connect
+            display: none
+        &.uphold-processing
+          #uphold_dashboard
+            display: none
+        &.uphold-reauthorization-needed,
+        &.uphold-unconnected
+          .status-description
+            margin-bottom: 40px
+            padding: 0 0 5px 52px
+            min-height: 42px
+            background-position: top left
+            background-repeat: no-repeat
+            background-size: 42px
+            background-image: url(asset-path("icn-warning@1x.png"))
+          #uphold_connect
+            margin-top: 30px
+          #uphold_dashboard,
+          .status-summary .action .disconnect-uphold
+            display: none
+        // Status summary label
+        &.uphold-complete,
+        &.uphold-processing
+          .status-summary .text
+            color: darken(#2aeaa1, 10%)
+        &.uphold-reauthorization-needed,
+        &.uphold-timeout
+          .status-summary .text
+            color: $braveRed
+        &.uphold-unconnected
+          .status-summary .text
+            color: $mediumGray
+        &.uphold-processing
+          .status-summary .text
+            animation: blinker 1s linear infinite
       #update_publisher_visible_form
         margin-top: 40px
         margin-left: -30px
@@ -410,7 +630,7 @@ body[data-controller="publishers"]
         background-position: top left
         background-repeat: no-repeat
         background-size: 42px
-        background-image: url(asset-path("icn-warning@1x.png"))
+        background-image: url(asset-path("icn-info.png"))
       .channel-placeholder
         display: block
         padding: 30px
@@ -429,7 +649,7 @@ body[data-controller="publishers"]
           max-height: 0
           overflow: hidden
       .channel-panel
-        padding: 24px 40px
+        padding: 18px 40px 20px
         .channel-thumbnail
           margin-right: 15px
           img
@@ -437,42 +657,63 @@ body[data-controller="publishers"]
             width: 40px
             border-radius: 20px
         .channel-summary
+          padding-right: 120px
           margin-right: 20px
+          width: 100%
           h3
+            font-weight: bolder
             font-size: 20px
             margin: 0
-        &.channel-unverified
+            text-overflow: ellipsis
+            overflow: hidden
+            white-space: nowrap
+          .channel-details
+            margin-top: 6px
+            font-size: 14px
+            color: $gray
+            .added-date, .separator, .remove-channel
+              display: inline-block
+              margin-right: 12px
+
+        &.channel-incomplete, &.channel-started, &.channel-failed
           background-color: rgba(255,255,255,0.6)
-          .channel-thumbnail
-            padding: 7px 0
-          .channel-summary
-            padding: 14px 0
+
+        &.channel-incomplete
           .channel-progress
-            padding: 13px 0
+            padding: 8px 0
             .one-more-step
               font-size: 14px
               padding: 3px 0 3px 115px
+              margin-right: 10px
               background: url(asset-path("channel-progress.png")) no-repeat center left
+
+        &.channel-failed
           .channel-status
-            padding: 7px 0
-          .remove-channel
-            display: inline-block
-            margin: 14px 20px
-            color: rgb(255, 63, 63)
+            background: url(asset-path("unverified-icon.png")) no-repeat top left / 23px 28px
+            padding: 3px 0 12px 38px
+            margin-top: -4px
+            font-weight: bold
 
         &.channel-verified
-          .channel-summary
-            padding-right: 20px
-            .channel-details
-              margin-top: 8px
-              font-size: 12px
-              color: $gray
-              .added-date, .separator, .remove-channel
-                display: inline-block
-                margin-right: 12px
           .channel-status
-            background: url(asset-path("icn-verified.png")) no-repeat center left
-            padding: 12px 0 12px 38px
+            background: url(asset-path("bat-logo@1x.png")) no-repeat top left
+            background-size: 30px 28.5px
+            padding: 1px 0 12px 38px
+            margin-top: -11px
+
+
+        &--intro
+          margin-bottom: 7px
+          font-size: 12px
+        &--intro-icon
+          float: left
+          margin-right: 7px
+        &--intro-body
+          line-height: 1.8
+
+        &.channel-unverified
+          .channel-panel--intro
+            margin-bottom: 3px
 
       #default_currency_code
         font-weight: 600
@@ -515,6 +756,72 @@ body[data-controller="publishers"]
           color: rgba(#ededee, 0.65)
           font-size: 14px
           font-weight: 300
+
+    #channel_taken_modal
+      width: 650px
+      .md-content
+        padding: 70px 80px 70px 80px
+        background: #fff
+        border-radius: 10px
+        h1
+          font-size: 32px
+          font-weight: 300
+          color: #ff3f3f
+          margin-top: 0
+          padding-top: 0
+        .taken-channel
+          margin: 50px 0 50px 40px
+          .summary
+            margin-bottom: 20px
+            img
+              display: inline-block
+              width: 40px
+              height: 40px
+              border-radius: 20px
+              margin-right: 10px
+            .title
+              display: inline-block
+          .registration-date
+            label
+              display: inline-block
+              margin-right: 8px
+            .value
+              display: inline-block
+          .registered-by
+            label
+              display: inline-block
+              margin-right: 8px
+            .value
+              display: inline-block
+        .panel-section
+          margin-top: 35px
+          text-align: center
+        a.btn
+          min-width: 150px
+          margin: 10px 0
+    @media (max-width: 550px)
+      #channel_taken_modal .md-content
+        padding: 60px
+        background: #fff
+        border-radius: 0
+
+  .bat-channel
+    &--amount
+      font-size: 28px
+      font-weight: bolder
+      display: inline
+      line-height: 1
+    &--currency
+      font-size: 14px
+      display: inline
+      color: #2f3032
+      line-height: 1
+      padding-left: 3px
+    &--period
+      line-height: 1
+      color: #999999
+      font-size: 11px
+      font-weight: bolder
 
   &[data-action="email_verified"],
   &[data-action="choose_new_channel_type"]
@@ -598,53 +905,6 @@ body[data-controller="publishers"]
         width: 350px
         margin: auto
 
-    #taken_youtube_channel_modal
-      width: 650px
-      .md-content
-        padding: 70px 80px 70px 80px
-        background: #fff
-        border-radius: 10px
-        h1
-          font-size: 32px
-          font-weight: 300
-          color: #ff3f3f
-          margin-top: 0
-          padding-top: 0
-        .youtube-channel
-          margin: 50px 0 50px 40px
-          .summary
-            margin-bottom: 20px
-            img
-              display: inline-block
-              width: 40px
-              height: 40px
-              border-radius: 20px
-              margin-right: 10px
-            .title
-              display: inline-block
-          .registration-date
-            label
-              display: inline-block
-              margin-right: 8px
-            .value
-              display: inline-block
-          .registered-by
-            label
-              display: inline-block
-              margin-right: 8px
-            .value
-              display: inline-block
-        .panel-section
-          margin-top: 35px
-          text-align: center
-        a.btn
-          min-width: 150px
-          margin: 10px 0
-    @media (max-width: 550px)
-      #taken_youtube_channel_modal .md-content
-        padding: 60px
-        background: #fff
-        border-radius: 0
 
     @media (max-width: $screen-md-max)
       .site-operator
@@ -656,3 +916,73 @@ body[data-controller="publishers"]
         float: left !important
       .choice-panel-right
         float: right !important
+
+
+.md-container--modal-identifier--choose-channel-type
+  max-width: 685px
+  & > div
+    width: 100%
+    background-image: url(asset-path("choose-channel/header.jpg"))
+    background-repeat: no-repeat
+    background-size: 685px
+    background-position: top center
+    background-color: #EFF2F5
+    padding-bottom: 0
+
+  .card
+    display: block 
+    border-radius: 4px
+    background: white
+    border: 1px solid white
+
+    &:hover
+      border: 1px solid #DBDFE3
+      box-shadow: 0 0 22px 0 rgba(34, 35, 38, 0.12)
+
+  .block-link--card
+    margin-bottom: 24px
+    color: inherit
+    text-decoration: inherit
+
+    &:hover
+      color: inherit
+      text-decoration: inherit
+
+  .card-body
+    padding: 24px 64px
+    h6
+      color: #7D7BDC
+      font-weight: bold
+      font-size: 18px
+
+  .icon-and-text
+    &--wrapper
+      display: flex
+      justify-content: flex-start
+      flex-direction: row
+      flex-wrap: nowrap
+    &--icon
+      flex: 0 0 0
+      align-self: center
+      margin: 0 14px 0 6px
+      line-height: 0
+      @media (max-width: $screen-xs-max)
+        display: none
+    &--text
+      text-align: left
+      flex: 1 1 100%
+      margin: auto 0
+
+  .choose-channel
+    &--icon
+      margin-right: 24px
+    &--header-box
+      height: 130px
+      h3
+        color: white
+        margin-bottom: 0
+      p
+        color: #BCC0F6
+        font-weight: bolder
+    &--body-box
+      padding: 16px

@@ -53,4 +53,21 @@ module ChannelsHelper
     end
   end
 
+  def channel_verification_status(channel)
+    if channel.verified?
+      'verified'
+    elsif channel.verification_status.present?
+      channel.verification_status
+    else
+      'incomplete'
+    end
+  end
+
+  def channel_verification_details(channel)
+    if channel.verification_failed?
+      channel.verification_details || t("helpers.channels.generic_verification_failure")
+    elsif channel.verification_started?
+      t("helpers.channels.verification_in_progress")
+    end
+  end
 end

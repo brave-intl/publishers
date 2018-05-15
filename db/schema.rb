@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118022455) do
+ActiveRecord::Schema.define(version: 20180226211552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,12 +18,14 @@ ActiveRecord::Schema.define(version: 20180118022455) do
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "publisher_id"
-    t.boolean  "created_via_api", default: false, null: false
-    t.boolean  "verified",        default: false
+    t.boolean  "created_via_api",      default: false, null: false
+    t.boolean  "verified",             default: false
     t.string   "details_type"
     t.uuid     "details_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "verification_status"
+    t.string   "verification_details"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true, using: :btree
     t.index ["publisher_id"], name: "index_channels_on_publisher_id", using: :btree
   end
@@ -120,6 +122,16 @@ ActiveRecord::Schema.define(version: 20180118022455) do
     t.index ["id"], name: "index_legacy_youtube_channels_on_id", unique: true, using: :btree
   end
 
+  create_table "promo_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "channel_id",    null: false
+    t.string   "promo_id",      null: false
+    t.string   "referral_code", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", using: :btree
+    t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true, using: :btree
+  end
+
   create_table "publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "publisher_id",          null: false
     t.string   "period"
@@ -160,8 +172,12 @@ ActiveRecord::Schema.define(version: 20180118022455) do
     t.datetime "two_factor_prompted_at"
     t.boolean  "visible",                               default: true
     t.datetime "agreed_to_tos"
+    t.boolean  "promo_enabled_2018q1",                  default: false
+    t.string   "promo_token_2018q1"
+    t.jsonb    "promo_stats_2018q1",                    default: {},    null: false
+    t.datetime "promo_stats_updated_at_2018q1"
+    t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
-    t.index ["email"], name: "index_publishers_on_email", unique: true, using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree
   end
 
@@ -186,6 +202,19 @@ ActiveRecord::Schema.define(version: 20180118022455) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.index ["publisher_id"], name: "index_totp_registrations_on_publisher_id", using: :btree
+  end
+
+  create_table "twitch_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "twitch_channel_id"
+    t.string   "auth_provider"
+    t.string   "auth_user_id"
+    t.string   "email"
+    t.string   "name"
+    t.string   "display_name"
+    t.string   "thumbnail_url"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id", unique: true, using: :btree
   end
 
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

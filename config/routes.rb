@@ -3,26 +3,26 @@ Rails.application.routes.draw do
     collection do
       get :sign_up
       get :create_done
-      post :resend_email_verify_email, action: :resend_email_verify_email
+      post :resend_auth_email, action: :resend_auth_email
       get :home
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
+      get :change_email
+      get :change_email_confirm
+      patch :update_email
       get :expired_auth_token
       get :log_out
       get :email_verified
-      get :status
       get :balance
       get :uphold_verified
       get :statement
       get :statement_ready
-      get :contact_info
-      get :domain_status
+      get :uphold_status
       patch :verify
-      patch :check_for_https
       patch :update
       patch :generate_statement
-      patch :update_unverified
       patch :complete_signup
+      patch :disconnect_uphold
       get :choose_new_channel_type
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index) do
@@ -34,12 +34,15 @@ Rails.application.routes.draw do
       resources :u2f_authentications, only: %i(create)
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
+      resources :promo_registrations, only: %i(index create)
     end
   end
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
 
   resources :channels, only: %i(destroy) do
     member do
+      get :verification_status
+      get :cancel_add
       delete :destroy
     end
   end
@@ -67,14 +70,15 @@ Rails.application.routes.draw do
 
   root "static#index"
 
-  namespace :api do
-    resources :owners, format: false, only: %i(index), constraints: { owner_id: %r{[^\/]+} } do
-      resources :channels, only: %i(), constraints: { channel_id: %r{[^\/]+} } do
+  namespace :api, defaults: { format: :json } do
+    resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
+      resources :channels, only: %i(create), constraints: { channel_id: %r{[^\/]+} } do
         get "/", action: :show
         patch "verifications", action: :verify
         post "notifications", action: :notify
       end
     end
+    resources :tokens, only: %i(index)
   end
 
   resources :errors, only: [], path: "/" do

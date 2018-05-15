@@ -8,16 +8,29 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
   include MailerTestHelper
   include PublishersHelper
 
-  test "delete removes a channel and associated details" do
-    publisher = publishers(:small_media_group)
-    channel = channels(:small_media_group_to_delete)
+  # TODO Uncomment when verified channels can be removed
+  # test "delete removes a verified channel and associated details" do
+  #   publisher = publishers(:small_media_group)
+  #   channel = channels(:small_media_group_to_delete)
+  #   sign_in publisher
+  #   assert_difference("publisher.channels.count", -1) do
+  #     assert_difference("SiteChannelDetails.count", -1) do
+  #       assert_enqueued_jobs 1 do
+  #         delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+  #         assert_response 204
+  #       end
+  #     end
+  #   end
+  # end
+
+  test "delete removes an unverified channel and associated details" do
+    publisher = publishers(:default)
+    channel = channels(:default)
     sign_in publisher
     assert_difference("publisher.channels.count", -1) do
       assert_difference("SiteChannelDetails.count", -1) do
-        assert_enqueued_jobs 1 do
-          delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
-          assert_response 204
-        end
+        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        assert_response 204
       end
     end
   end
@@ -34,73 +47,79 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # ToDo:
-  #
-  # test "a channel's domain status can be polled via ajax" do
-  #   perform_enqueued_jobs do
-  #     post(publishers_path, params: SIGNUP_PARAMS)
-  #   end
-  #   publisher = Publisher.order(created_at: :asc).last
-  #   url = publisher_url(publisher, token: publisher.authentication_token)
-  #   get(url)
-  #   follow_redirect!
-  #
-  #   url = domain_status_publishers_path
-  #
-  #   # domain has not been set yet
-  #   get(url, headers: { 'HTTP_ACCEPT' => "application/json" })
-  #   assert_response 404
-  #
-  #   update_params = {
-  #       publisher: {
-  #           brave_publisher_id_unnormalized: "pyramid.net",
-  #           name: "Alice the Pyramid",
-  #           phone: "+14159001420"
-  #       }
-  #   }
-  #
-  #   perform_enqueued_jobs do
-  #     patch(update_unverified_publishers_path, params: update_params )
-  #   end
-  #
-  #   # domain has been set
-  #   get(url, headers: { 'HTTP_ACCEPT' => "application/json" })
-  #   assert_response 200
-  #   assert_match(
-  #       '{"brave_publisher_id":"pyramid.net",' +
-  #           '"next_step":"/publishers/verification_choose_method"}',
-  #       response.body)
-  # end
-  #
-  # test "a channel's status can be polled via ajax" do
-  #   perform_enqueued_jobs do
-  #     post(publishers_path, params: SIGNUP_PARAMS)
-  #   end
-  #   publisher = Publisher.order(created_at: :asc).last
-  #   url = publisher_url(publisher, token: publisher.authentication_token)
-  #   get(url)
-  #   follow_redirect!
-  #   perform_enqueued_jobs do
-  #     patch(update_unverified_publishers_path, params: PUBLISHER_PARAMS)
-  #   end
-  #
-  #   publisher.show_verification_status = false
-  #   publisher.verified = true
-  #   publisher.save!
-  #
-  #   assert_equal false, publisher.show_verification_status
-  #
-  #   url = status_publishers_path
-  #   get(url,
-  #       headers: { 'HTTP_ACCEPT' => "application/json" })
-  #
-  #   assert_response 200
-  #   assert_match(
-  #       '{"status":"uphold_unconnected",' +
-  #           '"status_description":"You need to create a wallet with Uphold to receive contributions from Brave Payments.",' +
-  #           '"timeout_message":null,' +
-  #           '"uphold_status":"unconnected",' +
-  #           '"uphold_status_description":"Not connected to Uphold."}',
-  #       response.body)
-  # end
+  test "delete removes a channel even if promo is enabled" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:global_verified)
+    sign_in publisher
+
+    post promo_registrations_path
+
+    assert_not_nil publisher.channels.first.promo_registration.referral_code
+
+    assert_difference("publisher.channels.count", 0) do
+      assert_difference("SiteChannelDetails.count", 0) do
+        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        assert_response 404
+      end
+    end
+  end
+
+  test "cancel_add removes an unverified channel and redirects to the dashboard" do
+    publisher = publishers(:default)
+    channel = channels(:new_site)
+    sign_in publisher
+
+    assert_difference("publisher.channels.count", -1) do
+      assert_difference("SiteChannelDetails.count", -1) do
+        get cancel_add_channel_path(channel)
+        assert_redirected_to '/publishers/home'
+      end
+    end
+  end
+
+  test "cancel_add will not remove an already verified channel" do
+    publisher = publishers(:verified)
+    channel = channels(:verified)
+    sign_in publisher
+
+    assert_difference("publisher.channels.count", 0) do
+      assert_difference("SiteChannelDetails.count", 0) do
+        get cancel_add_channel_path(channel)
+        assert_redirected_to '/publishers/home'
+      end
+    end
+  end
+
+  test "a channel's verification status can be polled via ajax" do
+    publisher = publishers(:default)
+    channel = channels(:new_site)
+    sign_in publisher
+
+    channel.verification_started!
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"started",' +
+       '"details":"Verification in progress"}',
+          response.body)
+
+    channel.verification_failed!('something happened')
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"failed",' +
+        '"details":"something happened"}',
+      response.body)
+
+    channel.verification_succeeded!
+
+    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
+    assert_response 200
+    assert_match(
+      '{"status":"verified",' +
+        '"details":null}',
+      response.body)
+  end
 end

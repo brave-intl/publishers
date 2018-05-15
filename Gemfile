@@ -25,10 +25,16 @@ gem "faraday", "~> 0.9.2", require: false
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.8.1"
+gem "nokogiri", "~> 1.8.2"
+
+# Open Graph tag
+gem "meta-tags"
 
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
+
+# Oauth client for google / youtube
+gem "omniauth-twitch"
 
 # Model record auditing
 gem "paper_trail", "~> 5.2.2"
@@ -45,7 +51,13 @@ gem "premailer-rails", "~> 1.9.4", require: false
 # Puma as app server
 gem "puma", "3.10"
 
+# Make cracking a little bit harder
+gem "rack-attack", "~> 5.0"
+
 gem "rails", "~> 5.0.0", ">= 5.0.0.1"
+
+# I love captchas
+gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
 # Cache with Redis
 gem "redis-rails", "~> 5"
@@ -137,18 +149,9 @@ group :development, :test do
   gem "minitest-rails-capybara"
   gem "capybara-selenium"
   gem "chromedriver-helper"
-  gem "rails-controller-testing"
-end
-
-group :production, :staging do
-  # Make cracking a little bit harder
-  gem "rack-attack", "~> 5.0"
-
-  # I love captchas
-  gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-ruby "2.3.6"
+ruby "2.3.7"

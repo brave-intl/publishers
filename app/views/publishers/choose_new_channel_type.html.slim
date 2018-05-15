@@ -1,79 +1,15 @@
-- @hide_nav=true
+= content_for :nav do
+  nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
+    .container-fluid
+      .menu-container
+        .nav.pull-right.float-right
+          = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-outline-primary')
 
-- if @taken_youtube_channel
-  - support_email = Rails.application.secrets[:support_email]
-  - taken_youtube_channel_title = @taken_youtube_channel.title
-  - taken_youtube_channel_registered_by = @taken_youtube_channel.publisher.name.present? ? @taken_youtube_channel.publisher.name : t("publishers.youtube_channel_taken_dialog.default_registerer")
-  - taken_youtube_channel_registration_date = @taken_youtube_channel.created_at.to_date
+.single-panel--wrapper
+  .single-panel--content
+    .single-panel--padded-content
 
-  noscript
-    div.noscript-warning= t("publishers.youtube_channel_taken_noscript_html",
-            { support_email: support_email,
-              youtube_channel_title: taken_youtube_channel_title,
-              youtube_channel_registered_by: taken_youtube_channel_registered_by,
-              youtube_channel_registration_date: taken_youtube_channel_registration_date })
+      h3.single-panel--headline= t "shared.add_channel"
+      p= t ".intro"
 
-  javascript:
-    (function() {
-      function showYoutubeChannelTakenModal() {
-        var modal = document.getElementById('taken_youtube_channel_modal');
-        classie.add(modal, 'md-show');
-
-        var closeModal = document.getElementById('close_modal');
-        closeModal.addEventListener('click', function() {
-          hideYoutubeChannelTakenModal();
-        });
-        document.addEventListener('keyup', function(e) {
-          if (e.keyCode === 27) hideYoutubeChannelTakenModal();
-        });
-      }
-
-      function hideYoutubeChannelTakenModal() {
-        var modal = document.getElementById('taken_youtube_channel_modal');
-        classie.remove(modal, 'md-show');
-      }
-
-      window.addEventListener('load', function() {
-        showYoutubeChannelTakenModal();
-      });
-    })();
-
-  .md-container#taken_youtube_channel_modal
-    .md-content
-      h1= t("publishers.youtube_channel_taken_dialog.title")
-      p= t("publishers.youtube_channel_taken_dialog.leadin")
-      .youtube-channel
-        .summary
-          img src=@taken_youtube_channel.thumbnail_url
-          .title= taken_youtube_channel_title
-        .registration-date
-          label= t("publishers.youtube_channel_taken_dialog.registration_date") + ":"
-          .value= taken_youtube_channel_registration_date
-        .registered-by
-          label= t("publishers.youtube_channel_taken_dialog.registered_by") + ":"
-          .value= taken_youtube_channel_registered_by
-      p= t("publishers.youtube_channel_taken_dialog.contact_support_html", { support_email: support_email })
-
-      .panel-section
-        a.btn.btn-primary#close_modal= t("publishers.youtube_channel_taken_dialog.ok")
-  .md-overlay
-
-= link_to(I18n.t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-highlight btn-cancel pull-right')
-.publisher-panel.col-center
-  h1.text-center=t("publishers.pub_type_welcome")
-  h2.col-center.text-center=t("publishers.pub_type_lets_start")
-
-.publisher-main-panel.publisher-panel.col-center
-  = link_to(new_site_channel_path) do
-    .choice-panel.choice-panel-left
-      .site-operator.select-choice
-        .choice-description
-          h3.text-center= t("publishers.pub_type_site_operator")
-          p.text-center= t("publishers.pub_type_site_operator_description_html")
-  = link_to(publisher_google_oauth2_omniauth_authorize_path) do
-    .choice-panel.choice-panel-right
-      .individual-creator.select-choice
-        .choice-description
-          h3.text-center= t("publishers.pub_type_site_individual_creator")
-          p.text-center= t("publishers.pub_type_site_individual_creator_description_html")
-        p.text-center.note-text= t("publishers.pub_type_site_individual_creator_note_html")
+      = render "choose_channel_type"

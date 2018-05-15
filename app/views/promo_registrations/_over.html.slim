@@ -1,0 +1,7 @@
+.single-panel--wrapper.single-panel--wrapper--small.promo--panel.promo--panel-over
+  .promo--bat-patch-adjacent
+    h1.promo--title data-test="promo-over"= t("promo.over.title")
+    h3.promo--subtitle = t("promo.over.promo_ended")
+    p.promo--body-text.promo--body-text-mobile= t("promo.over.description")
+    span = link_to(t("promo.over.brave_download_link"), "https://brave.com/download", id: "promo--over-download-link")
+  p.promo--body-text.promo--body-text-mobile = t("promo.over.footer")

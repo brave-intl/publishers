@@ -6,23 +6,36 @@ class SiteChannelDetails < ApplicationRecord
   # brave_publisher_id is a normalized identifier provided by eyeshade API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :brave_publisher_id, uniqueness: { if: -> { brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_id_exists? } }
+  validates :brave_publisher_id, uniqueness: { if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_id_exists? } }
 
   # - normalized and unnormalized domains
   # - normalized domains and domain-related errors
-  validates :brave_publisher_id, absence: true, if: -> { brave_publisher_id_error_code.present? || brave_publisher_id_unnormalized.present? }
+  validates :brave_publisher_id, absence: true, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id_unnormalized.present? }
   validate :brave_publisher_id_not_changed_once_initialized
 
-  before_validation :register_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_error_code.present? }
+  before_validation :register_brave_publisher_id_error, if: -> { brave_publisher_id_error_code.present? }
 
   # clear/register domain errors as appropriate
   before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
 
   scope :recent_unverified_site_channels, -> (max_age: 6.weeks) {
     joins(:channel)
-        .select(:brave_publisher_id).distinct
         .where.not(brave_publisher_id: SiteChannelDetails.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true))
         .where("channels.created_at": max_age.ago..Time.now)
+  }
+
+  scope :recent_ready_to_verify_site_channels, -> (max_age: 6.weeks) {
+    recent_unverified_site_channels(max_age: max_age).where("channels.verification_status": "started").
+        or(recent_unverified_site_channels(max_age: max_age).where("channels.verification_status": "failed"))
+  }
+
+  # Channels with no verification_token will not be accessible once the user is no longer on the page, these
+  # are considered abandoned. If we wait a day we can be reasonable sure the users session will have timed out.
+  scope :abandoned, -> {
+    joins(:channel)
+        .where(verification_token: nil)
+        .where("channels.verified": [false, nil])
+        .where("site_channel_details.updated_at < :updated_at", updated_at: Time.now - 1.day)
   }
 
   def initialized?
@@ -37,14 +50,26 @@ class SiteChannelDetails < ApplicationRecord
     brave_publisher_id
   end
 
+  # Unused for Site Channels
+  def authorizer_email
+    nil
+  end
+
+  # Unused for Site Channels
+  def authorizer_name
+    nil
+  end
+
   def brave_publisher_id_error_description
     case self.brave_publisher_id_error_code.to_sym
+      when :taken
+        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.taken")
       when :exclusion_list_error
-        "#{I18n.t('activerecord.errors.models.publisher.attributes.brave_publisher_id.exclusion_list_error')} #{Rails.application.secrets[:support_email]}"
+        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.exclusion_list_error")
       when :api_error_cant_normalize
-        I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.api_error_cant_normalize")
+        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.api_error_cant_normalize")
       when :invalid_uri
-        I18n.t("activerecord.errors.models.publisher.attributes.brave_publisher_id.invalid_uri")
+        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri")
       else
         raise "Unrecognized brave_publisher_id_error_code: #{self.brave_publisher_id_error_code}"
     end

@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ChannelTest < ActiveSupport::TestCase
+  include Devise::Test::IntegrationHelpers
+  include ActionMailer::TestHelper
 
   test "site channel must have details" do
     channel = channels(:verified)
@@ -41,7 +43,7 @@ class ChannelTest < ActiveSupport::TestCase
   end
 
   test "can get all visible site channels" do
-    assert_equal 2, publishers(:global_media_group).channels.visible_site_channels.length
+    assert_equal 4, publishers(:global_media_group).channels.visible_site_channels.length
   end
 
   test "can get all visible youtube channels" do
@@ -49,10 +51,116 @@ class ChannelTest < ActiveSupport::TestCase
   end
 
   test "can get all visible channels" do
-    assert_equal 4, publishers(:global_media_group).channels.visible.length
+    assert_equal 6, publishers(:global_media_group).channels.visible.length
   end
 
   test "can get all verified channels" do
     assert_equal 3, publishers(:global_media_group).channels.verified.length
+  end
+
+  # Maybe put this in a RegisterChannelForPromoJobTest?
+  test "verifying a channel calls register_channel_for_promo (site)" do
+    channel = channels(:default)
+    publisher = channel.publisher
+    publisher.promo_enabled_2018q1 = true
+    publisher.save!
+
+    # verify RegisterChannelForPromoJob is called
+    channel.verified = true
+    assert_enqueued_jobs(1) do
+      channel.save!
+    end
+
+    # verify it worked and the channel has a referral code
+    assert channel.promo_registration.referral_code
+
+    # verify nothing happens if verified_changed? to false, or to true but not saved
+    assert_enqueued_jobs(0) do
+      channel.verified = false
+      channel.save!
+      channel.verified = true
+    end
+  end
+
+  test "verifying a channel calls register_channel_for_promo (youtube)" do
+    # To 'verify' a new youtube channel, we delete a previously verified channel then instantiate it
+    channel_original = channels(:google_verified)
+    publisher = channel_original.publisher
+
+    # grab the details first, then destroy the original
+    channel_details_copy = channel_original.details.dup
+    channel_original.destroy!
+
+    publisher.promo_enabled_2018q1 = true
+    publisher.save!
+
+    # check that RegisterChannelForPromoJob is called when it is verified
+    # channel_copy.verified = true
+    channel_copy = Channel.new(details: channel_details_copy, verified: true, publisher: publisher)
+    assert_enqueued_jobs(1) do
+      channel_copy.save!
+    end
+
+    assert channel_copy.promo_registration.referral_code
+  end
+
+  test "verification_started! updates verification status" do
+    channel = channels(:default)
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+
+    channel.verification_started!
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    assert channel.verification_started?
+  end
+
+  test "verification_failed! updates verification status" do
+    channel = channels(:default)
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+
+    channel.verification_failed!('something happened')
+
+    refute channel.verified?
+    assert channel.verification_failed?
+    refute channel.verification_started?
+    assert_equal 'something happened', channel.verification_details
+  end
+
+  test "verification_failed! updates verification status even with validation errors" do
+    channel = channels(:fake1)
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+
+    channel.verification_failed!('something happened')
+
+    refute channel.verified?
+    assert channel.verification_failed?
+    refute channel.verification_started?
+    assert_equal 'something happened', channel.verification_details
+  end
+
+  test "verification_succeeded! updates verification status" do
+    channel = channels(:default)
+
+    channel.verification_started!
+
+    refute channel.verified?
+    refute channel.verification_failed?
+    assert channel.verification_started?
+
+    channel.verification_succeeded!
+
+    assert channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
   end
 end

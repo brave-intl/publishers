@@ -1,25 +1,21 @@
 class SiteChannelsController < ApplicationController
   include ChannelsHelper
+  include PublishersHelper
 
   before_action :authenticate_publisher!
   before_action :setup_current_channel,
                 except: %i(new
-               create)
+                           create)
   before_action :require_unverified_site,
-                only: %i(email_verified
-             contact_info
-             domain_status
-             update_unverified
-             verification
-             verification_choose_method
-             verification_dns_record
-             verification_wordpress
-             verification_github
-             verification_public_file
-             verification_support_queue
-             verification_background
-             verify
-             download_verification_file)
+                only: %i(verification_choose_method
+                         verification_dns_record
+                         verification_wordpress
+                         verification_github
+                         verification_public_file
+                         verification_support_queue
+                         verification_background
+                         verify
+                         download_verification_file)
   before_action :require_https_enabled_site,
                 only: %i(download_verification_file)
   before_action :require_verification_token,
@@ -34,6 +30,8 @@ class SiteChannelsController < ApplicationController
                          verification_support_queue
                          verification_github
                          verification_wordpress)
+  before_action :require_publisher_email_not_verified_through_youtube_auth,
+                only: %i(create)
 
   attr_reader :current_channel
 
@@ -47,28 +45,27 @@ class SiteChannelsController < ApplicationController
 
   def create
     @current_channel = Channel.new(publisher: current_publisher)
-    current_channel.details = SiteChannelDetails.new(channel_update_unverified_params)
+    @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params)
+    SiteChannelDomainSetter.new(channel_details: @current_channel.details).perform
 
-    # ToDo: Make async again
-    # SetSiteChannelDomainJob.new(channel_id: current_channel.id).perform
-
-    SiteChannelDomainSetter.new(channel: current_channel).perform
-    current_channel.details.brave_publisher_id_unnormalized = nil
-
-    respond_to do |format|
-      if current_channel.save
-        # once the channel has been saved send it to eyeshade
-        begin
-          PublisherChannelSetter.new(publisher: current_publisher).perform
-        rescue => e
-          require "sentry-raven"
-          Raven.capture_exception(e)
-        end
-
-        format.html { redirect_to(channel_next_step_path(current_channel), notice: t("channel.channel_created")) }
-      else
-        format.html { render :action => "new" }
+    if @current_channel.save
+      # once the channel has been saved send it to eyeshade
+      begin
+        PublisherChannelSetter.new(publisher: current_publisher).perform
+      rescue => e
+        require "sentry-raven"
+        Raven.capture_exception(e)
       end
+
+      redirect_to(channel_next_step_path(@current_channel), notice: t("shared.channel_created"))
+    else
+      if @current_channel.errors.details.has_key?(:brave_publisher_id)
+        flash[:warning] = t(".duplicate_channel", domain: @current_channel.details.brave_publisher_id)
+      end
+
+      @channel = @current_channel
+      flash.now[:warning_model_errors] = @channel.details
+      render :action => "new"
     end
   end
 
@@ -85,6 +82,13 @@ class SiteChannelsController < ApplicationController
   def verification_github
     generator = SiteChannelVerificationFileGenerator.new(site_channel: current_channel)
     @public_file_content = generator.generate_file_content
+    @public_file_name = generator.filename
+  end
+
+  def verification_public_file
+    generator = SiteChannelVerificationFileGenerator.new(site_channel: current_channel)
+    @public_file_content = generator.generate_file_content
+    @public_file_name = generator.filename
   end
 
   # TODO: Rate limit
@@ -92,13 +96,16 @@ class SiteChannelsController < ApplicationController
     @channel = current_channel
     @channel.details.inspect_brave_publisher_id
     @channel.save!
-    redirect_to(site_last_verification_method_path(@channel), alert: t("site_channels.https_inspection_complete"))
+    flash[:notice] = t(".alert")
+    redirect_to(site_last_verification_method_path(@channel))
   end
 
-  # TODO: Rate limit
   def verify
     VerifySiteChannel.perform_later(channel_id: current_channel.id)
-    render(:verification_background)
+    current_channel.verification_started!
+
+    flash[:notice] = t(".alert")
+    redirect_to home_publishers_path
   end
 
   private
@@ -109,9 +116,9 @@ class SiteChannelsController < ApplicationController
   def setup_current_channel
     @current_channel = current_publisher.channels.find(params[:id])
     return if current_channel && current_channel.details.is_a?(SiteChannelDetails)
-    redirect_to(home_publishers_path(current_publisher), alert: t("channel.requires_other_channel_type"))
+    redirect_to(home_publishers_path(current_publisher), alert: t(".alert"))
   rescue ActiveRecord::RecordNotFound => e
-    redirect_to(home_publishers_path, alert: t("channel.channel_not_found"))
+    redirect_to(home_publishers_path, alert: t("shared.channel_not_found"))
   end
 
   def require_verification_token
@@ -123,12 +130,12 @@ class SiteChannelsController < ApplicationController
 
   def require_unverified_site
     return if !current_channel.verified?
-    redirect_to(channel_next_step_path(current_channel), alert: I18n.t("site_channels.verification_already_done"))
+    redirect_to(channel_next_step_path(current_channel), alert: t(".alert"))
   end
 
   def require_https_enabled_site
     return if current_channel.details.supports_https?
-    redirect_to(site_last_verification_method_path(current_channel.details), alert: t("publishers.requires_https"))
+    redirect_to(site_last_verification_method_path(channel=current_channel), alert: t("site_channels.require_https_enabled_site.alert"))
   end
 
   def update_site_verification_method
@@ -147,5 +154,10 @@ class SiteChannelsController < ApplicationController
         raise "unknown action"
     end
     current_channel.details.save! if current_channel.details.verification_method_changed?
+  end
+
+  def require_publisher_email_not_verified_through_youtube_auth
+    return unless publisher_created_through_youtube_auth?(current_publisher)
+    redirect_to(home_publishers_path)
   end
 end

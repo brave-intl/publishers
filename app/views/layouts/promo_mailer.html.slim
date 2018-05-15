@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    meta http-equiv="Content-Type" content="text/html; charset=utf-8"
+    = stylesheet_link_tag('mailer', media: 'all')
+  body
+    .main style="background-image: url(#{attachments["header-pattern-promo.png"]&.url})"
+      .header 
+        .brand
+          = image_tag(attachments["brave-payments.png"]&.url, alt: t("shared.app_title"), height: 31, width: 268)
+      .content
+        = yield
+      .footer style="background-image: url(#{attachments["footer-top-pattern.png"]&.url})"
+        .bat style="background-image: url(#{attachments["logo-bat.png"]&.url})"
+          a href="https://basicattentiontoken.org/"
+            = "basicattentiontoken.org"
+          a href="https://basicattentiontoken.org/publisher-terms-of-service/"
+            = t "shared.terms_of_service"
+        .social
+          a.medium href= "#{Rails.application.secrets[:bat_medium_url]}"
+            = image_tag(attachments["logo-medium.png"]&.url, alt: t("layouts.mailer.medium"), class: "logo", height: 20, width: 25)
+          a.twitter href= "#{Rails.application.secrets[:bat_twitter_url]}"
+            = image_tag(attachments["logo-twitter.png"]&.url, alt: t("layouts.mailer.twitter"), class: "logo", height: 21, width: 25)
+          a.reddit href= "#{Rails.application.secrets[:bat_reddit_url]}"
+            = image_tag(attachments["logo-reddit.png"]&.url, alt: t("layouts.mailer.reddit"), class: "logo", height: 24, width: 28)
+          a.rocketchat href= "#{Rails.application.secrets[:bat_rocketchat_url]}"
+            = image_tag(attachments["logo-rocketchat.png"]&.url, alt: t("layouts.mailer.rocketchat"), class: "logo", height: 20, width: 25)

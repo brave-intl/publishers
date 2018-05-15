@@ -1,91 +1,77 @@
-.main-content
-  .container
-    .row
-      .col.col-details.col-xs-12.col-sm-10.col-md-8.col-lg-6.col-center
+.single-panel--wrapper
 
-        .error-group--wrapper.js-register-u2f-error
+  .error-group--wrapper.js-register-u2f-error
 
-          .js-u2f-error-bad-request
-            .sub-panel.sub-panel--panel--error-top
-              .row
-                .sub-panel--top-wrapper
-                  .sub-panel--top-icon
-                    = render 'icon_circled_x'
-                  .sub-panel--top-body
-                    = t ".u2f-error.bad-request"
+    .js-u2f-error-bad-request
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.bad-request"
 
-          .js-u2f-error-configuration-unsupported
-            .sub-panel.sub-panel--panel--error-top
-              .row
-                .sub-panel--top-wrapper
-                  .sub-panel--top-icon
-                    = render 'icon_circled_x'
-                  .sub-panel--top-body
-                    = t ".u2f-error.configuration-unsupported"
+    .js-u2f-error-configuration-unsupported
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.configuration-unsupported"
 
-          .js-u2f-error-device-ineligible
-            .sub-panel.sub-panel--panel--error-top
-              .row
-                .sub-panel--top-wrapper
-                  .sub-panel--top-icon
-                    = render 'icon_circled_x'
-                  .sub-panel--top-body
-                    = t ".u2f-error.device-ineligible"
+    .js-u2f-error-device-ineligible
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.device-ineligible"
 
-          .js-u2f-error-other-error
-            .sub-panel.sub-panel--panel--error-top
-              .row
-                .sub-panel--top-wrapper
-                  .sub-panel--top-icon
-                    = render 'icon_circled_x'
-                  .sub-panel--top-body
-                    = t ".u2f-error.other-error"
+    .js-u2f-error-other-error
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.other-error"
 
-          .js-u2f-error-timeout
-            .sub-panel.sub-panel--panel--error-top
-              .row
-                .sub-panel--top-wrapper
-                  .sub-panel--top-icon
-                    = render 'icon_circled_x'
-                  .sub-panel--top-body
-                    = t ".u2f-error.timeout"
+    .js-u2f-error-timeout
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.timeout"
 
-          .js-u2f-error-implementation-incomplete
-            .sub-panel.sub-panel--panel--error-top
-              .row
-                .sub-panel--top-wrapper
-                  .sub-panel--top-icon
-                    = render 'icon_circled_x'
-                  .sub-panel--top-body
-                    = t ".u2f-error.implementation-incomplete"
+    .js-u2f-error-implementation-incomplete
+      .single-panel--content.single-panel--content--alert.icon-and-text--wrapper
+        .icon-and-text--icon
+          = render 'icon_circled_x'
+        .icon-and-text--text
+          = t ".u2f-error.implementation-incomplete"
 
-          .error-group--no-error.js-no-error
-            .sub-panel.sub-panel--panel--filler-top
+    .error-group--no-error.js-no-error
 
+  .single-panel--content
+    .single-panel--padded-content
 
-        .sub-panel.sub-panel--panel--bottom
+      h3.single-panel--headline= t ".heading"
 
-          h3 = t ".heading"
+      .col-small-centered.text-left
 
-          = form_for @u2f_registration, html: { class: "js-register-u2f js-feature-u2f-available" } do |f|
-            input type="hidden" name="u2f_app_id" value=(@app_id)
-            input type="hidden" name="u2f_registration_requests" value=(@registration_requests.as_json.to_json)
-            input type="hidden" name="u2f_sign_requests" value=(@sign_requests.as_json.to_json)
-            input type="hidden" name="u2f_response"
+        = form_for @u2f_registration, html: { class: "js-register-u2f js-feature-u2f-available" } do |f|
+          input type="hidden" name="u2f_app_id" value=(@app_id)
+          input type="hidden" name="u2f_registration_requests" value=(@registration_requests.as_json.to_json)
+          input type="hidden" name="u2f_sign_requests" value=(@sign_requests.as_json.to_json)
+          input type="hidden" name="u2f_response"
 
-            div.form-group
-              = f.label :name
-              = f.text_field :name, class: "form-control", placeholder: t(".name_placeholder")
+          .form-group
+            = f.label :name
+            = f.text_field :name, class: "form-control", placeholder: t(".name_placeholder")
 
-            div
-              .col.pull-left
-                = f.submit t(".submit_value"), class: "btn btn-primary"
-              .col.text-right
-                = link_to t(".cancel"), two_factor_registrations_path, class: "btn btn-link"
+          .col-halves
+            .col-half
+              = f.submit t(".submit_value"), class: "btn btn-primary"
+            .col-half.text-right
+              = link_to t("shared.cancel"), two_factor_registrations_path, class: "btn btn-link"
 
-            .js-u2f-is-working
-              h5= t ".waiting_heading"
-              p= t ".waiting_description"
+          .mt-3.js-u2f-is-working
+            h5= t ".waiting_heading"
+            p= t ".waiting_description"
 
-          div.warning.js-feature-u2f-unavailable
-            p.alert.alert-warning = t ".u2f-unavailable"
+        .warning.js-feature-u2f-unavailable
+          p.alert.alert-warning = t ".u2f-unavailable"

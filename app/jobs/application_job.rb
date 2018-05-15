@@ -6,6 +6,11 @@ class ApplicationJob < ActiveJob::Base
     ErrorHandlerDelegator.new(super)
   end
 
+  rescue_from(ActiveRecord::RecordNotFound) do |exception|
+    require "sentry-raven"
+    Raven.capture_exception(exception)
+  end
+
   def self.instance
     @__instance__ ||= new
   end

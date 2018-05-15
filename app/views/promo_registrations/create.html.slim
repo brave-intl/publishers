@@ -1,0 +1,4 @@
+- if @publisher_has_verified_channel
+  = render "activated_verified", locals: @publisher
+- else
+  = render "activated_unverified", locals: @publisher

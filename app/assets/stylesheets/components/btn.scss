@@ -1,3 +1,45 @@
+.btn-link-primary {
+  // Modified version of .btn-link: https://git.io/vNHmB
+  font-weight: $font-weight-normal;
+  color: $primary;
+  background-color: transparent;
+
+  @include hover {
+    color: $primary;
+    text-decoration: none;
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  &:focus,
+  &.focus {
+    text-decoration: $primary;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  &:disabled,
+  &.disabled {
+    color: $btn-link-disabled-color;
+  }
+
+  // No need for an active state here
+}
+
+.btn-default {
+  color: $braveGray-1;
+  background: $braveGray-10;
+  border: 1px solid $braveGray-7;
+}
+
+.btn--wrapper--with-icon {
+  display: flex;
+  align-items: center;
+  > * {
+    margin-right: $spacer;
+  }
+}
+
 .btn-wide {
-  width: 100%;
+  min-width: $spacer*10;
 }

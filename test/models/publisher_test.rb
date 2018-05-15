@@ -5,6 +5,7 @@ require "webmock/minitest"
 class PublisherTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   include MailerTestHelper
+  include PromosHelper
 
   test "verified publishers have both a name and email and have agreed to the TOS" do
     publisher = Publisher.new
@@ -75,6 +76,7 @@ class PublisherTest < ActiveSupport::TestCase
     assert_nil publisher.uphold_state_token
     assert_nil publisher.uphold_access_parameters
     assert publisher.valid?
+    assert publisher.uphold_processing?
     assert_equal :code_acquired, publisher.uphold_status
   end
 
@@ -83,9 +85,22 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.uphold_code = "foo"
     publisher.uphold_access_parameters = "bar"
     publisher.uphold_verified = false
+    assert publisher.uphold_processing?
     publisher.verify_uphold
 
     assert publisher.uphold_verified?
+    assert publisher.valid?
+    refute publisher.uphold_processing?
+  end
+
+  test "disconnect_uphold clears uphold settings" do
+    publisher = publishers(:verified)
+    publisher.verify_uphold
+    assert publisher.uphold_verified?
+
+    publisher.disconnect_uphold
+    refute publisher.uphold_verified?
+    refute publisher.uphold_processing?
     assert publisher.valid?
   end
 
@@ -129,12 +144,12 @@ class PublisherTest < ActiveSupport::TestCase
     refute_nil publisher.default_currency
   end
 
-  test "when wallet is gotten uphold_verified will be reset if the wallet status directs it" do
+  test "when wallet is retrieved uphold_status will reflect if reauthorization is needed" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
       
-      body = "{ \"status\":{ \"provider\":\"uphold\", \"action\":\"re-authorize\" }, \"contributions\":{ \"amount\":\"9001.00\", \"currency\":\"USD\", \"altcurrency\":\"BAT\", \"probi\":\"38077497398351695427000\" }, \"rates\":{ \"BTC\":0.00005418424016883016, \"ETH\":0.000795331082073117, \"USD\":0.2363863335301452, \"EUR\":0.20187818378874756, \"GBP\":0.1799810085548496 }, \"wallet\":{ \"provider\":\"uphold\", \"authorized\":true, \"preferredCurrency\":\"USD\", \"availableCurrencies\":[ \"USD\", \"EUR\", \"BTC\", \"ETH\", \"BAT\" ] } }"
+      body = "{ \"status\":{ \"provider\":\"uphold\", \"action\":\"re-authorize\" }, \"contributions\":{ \"amount\":\"9001.00\", \"currency\":\"USD\", \"altcurrency\":\"BAT\", \"probi\":\"38077497398351695427000\" }, \"rates\":{ \"BTC\":0.00005418424016883016, \"ETH\":0.000795331082073117, \"USD\":0.2363863335301452, \"EUR\":0.20187818378874756, \"GBP\":0.1799810085548496 }, \"wallet\":{ \"provider\":\"uphold\", \"authorized\":true, \"defaultCurrency\":\"USD\", \"availableCurrencies\":[ \"USD\", \"EUR\", \"BTC\", \"ETH\", \"BAT\" ] } }"
 
       publisher = publishers(:uphold_connected)
       assert publisher.uphold_verified
@@ -143,8 +158,17 @@ class PublisherTest < ActiveSupport::TestCase
           with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: body, headers: {})
 
+      publisher.channels.each do |channel|
+        body = "{ \"amount\":\"9001.00\", \"currency\":\"USD\", \"altcurrency\":\"BAT\", \"probi\":\"38077497398351695427000\", \"rates\":{ \"BTC\":0.00005418424016883016, \"ETH\":0.000795331082073117, \"USD\":0.2363863335301452, \"EUR\":0.20187818378874756, \"GBP\":0.1799810085548496 } }"
+        stub_request(:get, /v2\/publishers\/#{URI.escape(channel.details.channel_identifier)}\/balance/).
+            with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+            to_return(status: 200, body: body, headers: {})
+      end
+
       publisher.wallet
-      refute publisher.uphold_verified
+      assert publisher.uphold_verified?
+      assert publisher.uphold_reauthorization_needed?
+      assert_equal :reauthorization_needed, publisher.uphold_status
 
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
@@ -174,6 +198,26 @@ class PublisherTest < ActiveSupport::TestCase
     publisher = Publisher.new
 
     publisher.pending_email = "bad_email_addresscom"
+    refute publisher.valid?
+  end
+
+  test "a publisher pending_email address must not match an existing verified email address" do
+    publisher = Publisher.new
+
+    publisher.pending_email = "foo@bar.com"
+    assert publisher.valid?
+
+    publisher.pending_email = "alice@verified.org"
+    refute publisher.valid?
+  end
+
+  test "a publisher pending_email address must not match the verified email address" do
+    publisher = Publisher.new
+
+    publisher.email = "foo@bar.com"
+    assert publisher.valid?
+
+    publisher.pending_email = "foo@bar.com"
     refute publisher.valid?
   end
 
@@ -287,5 +331,16 @@ class PublisherTest < ActiveSupport::TestCase
     publisher = publishers(:default)
 
     assert_equal "publishers#uuid:02e81b29-f150-54b9-9a08-ce75944f6889", publisher.owner_identifier
+  end
+
+  test "a publishers channel details can be selected from the publisher object" do
+    publisher = publishers(:completed)
+    site_channel_details = publisher.site_channel_details
+
+    assert_equal site_channel_details.first.brave_publisher_id, "completed.org" 
+
+    publisher = publishers(:google_verified)
+    youtube_channel_details = publisher.youtube_channel_details
+    assert_equal youtube_channel_details.first.title, "Some Other Guy's Channel"
   end
 end

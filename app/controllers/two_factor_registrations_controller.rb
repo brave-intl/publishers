@@ -1,5 +1,8 @@
+require "concerns/two_factor_registration"
+
 class TwoFactorRegistrationsController < ApplicationController
   include PublishersHelper
+  include TwoFactorRegistration
 
   before_action :authenticate_publisher!
 
@@ -8,5 +11,6 @@ class TwoFactorRegistrationsController < ApplicationController
   end
 
   def prompt
+    flag_2fa_registration_during_signup
   end
 end

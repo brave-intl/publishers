@@ -1,53 +1,98 @@
 $brave-panels-borderRadius: 8px;
 
+.panels-container {
+  padding: 0 15px;
+}
+
 .single-panel {
 
   &--wrapper {
-    @include make-col-ready();
-    @include media-breakpoint-up(sm) {
-      @include make-col(10);
-      @include make-col-offset(1);
-    }
-    @include media-breakpoint-up(md) {
-      @include make-col(8);
-      @include make-col-offset(2);
-    }
-    @include media-breakpoint-up(lg) {
-      @include make-col(6);
-      @include make-col-offset(3);
-    }
+    max-width: $spacer*40;
+    min-height: $spacer*32;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
 
     background-color: white;
     border-radius: $brave-panels-borderRadius;
     box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
 
+    @include media-breakpoint-down(xs) {
+      min-height: $spacer*10; 
+    }
+
     &--medium {
+      max-width: $spacer*45;
+    }
+
+    &--large {
+      max-width: $spacer*50;
+    }
+
+    &--small {
       @include media-breakpoint-up(sm) {
-        @include make-col(10);
-        @include make-col-offset(1);
+        @include make-col(12);
+        @include make-col-offset(0);
       }
       @include media-breakpoint-up(md) {
         @include make-col(10);
         @include make-col-offset(1);
       }
+      @include media-breakpoint-up(lg) {
+        @include make-col(7);
+        @include make-col-offset(2.5);
+      }
+    }
+
+    &--collapsed {
+      min-height: auto;
     }
   }
 
   &--content {
     @include make-row();
-    padding: $spacer*3 $spacer $spacer*2;
+
     text-align: center;
-    &--email-sent {
-      @include media-breakpoint-up(lg) {
-        background-image: url(asset-path("email-2@1x.png"));
-        background-position: top 59px right 60px;
+    justify-content: center;
+    flex: 1;
+
+    &--platforms {
+      padding-top: $spacer*2;
+      padding-bottom: $spacer;
+      @include media-breakpoint-up(md) {
+        background-image: url(asset-path("img-brands.png"));
+        background-position: top right;
         background-repeat: no-repeat;
-        padding-top: $spacer*9;
-        padding-bottom: $spacer*9;
+        padding-top: $spacer*7;
+        padding-bottom: $spacer*7;
       }
     }
     &--alert {
-      padding: $spacer $spacer $spacer;
+      flex: 0;
+      padding: $spacer*2 $spacer*2 $spacer*2;
+      background: $braveError-Background;
+      color: $braveError-Foreground;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+      b, strong {
+        color: inherit;
+      }
+    }
+    &--warning {
+      flex: 0;
+      padding: $spacer*2 $spacer*2 $spacer*2;
+      background: $braveWarning-Background;
+      color: $braveWarning-Foreground;
+      border-top-left-radius: $brave-panels-borderRadius;
+      border-top-right-radius: $brave-panels-borderRadius;
+      b, strong {
+        color: inherit;
+      }
+    }
+    &--notice {
+      flex: 0;
+      padding: $spacer*2 $spacer*2 $spacer*2;
       background: $braveInfo-Background;
       color: $braveInfo-Foreground;
       border-bottom: 1px solid $braveInfo-Border;
@@ -56,36 +101,63 @@ $brave-panels-borderRadius: 8px;
       a {
         text-decoration: underline;
       }
+      b, strong {
+        color: inherit;
+      }
     }
-    &--warning {
-      padding: $spacer $spacer $spacer;
-      background: $braveError-Background;
-      color: $braveError-Foreground;
-      border-top-left-radius: $brave-panels-borderRadius;
-      border-top-right-radius: $brave-panels-borderRadius;
-    }
-    &--notice {
-      padding: $spacer $spacer $spacer;
-      background: theme-color-level('brave-success', -10);
-      color: theme-color-level('brave-success', 6);
-      border-top-left-radius: $brave-panels-borderRadius;
-      border-top-right-radius: $brave-panels-borderRadius;
-    }
-    > form, > div {
+    > form,
+    > div {
       width: 100%;
+    }
+  }
+
+  &--padded-content {
+    position: relative;
+    padding: $spacer*4 $spacer*2;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    &--email-sent {
+      padding-top: 125px;
+      margin-top: 30px;
+      @include media-breakpoint-up(md) {
+        background-image: url(asset-path("email-2@1x.png"));
+        background-position: center 20px;
+        background-repeat: no-repeat;
+      }
+    }
+
+    align-items: center;
+    justify-content: center;
+
+    @include media-breakpoint-down(xs) {
+      padding: $spacer;
     }
   }
 
   &--headline {
     width: 100%;
     margin-bottom: $spacer*2;
+    @include media-breakpoint-down(xs) {
+      margin-top: $spacer;
+    }
+    &--primary {
+      color: theme-color('primary');
+    }
+  }
+
+  &--list {
+    padding-left: 0;
+    list-style-position: inside;
   }
 
   &--footer {
     width: 100%;
     margin-top: $spacer*2;
     margin-bottom: $spacer;
-    text-align: center;
+    &--secondary {
+      text-align: center;
+    }
   }
 }
 
@@ -97,11 +169,20 @@ $brave-panels-borderRadius: 8px;
     flex-wrap: nowrap;
   }
   &--icon {
-    flex: 0 0 58px;
+    flex: 0 0 0;
     align-self: center;
+    margin: 0 14px 0 6px;
+    line-height: 0;
+    @include media-breakpoint-down(xs) {
+      display: none;
+    }
+    &--top {
+      align-self: flex-start;
+    }
   }
   &--text {
     text-align: left;
     flex: 1 1 100%;
+    margin: auto 0;
   }
 }

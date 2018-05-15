@@ -3,6 +3,7 @@ class Publisher < ApplicationRecord
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
+  PROMO_STATS_UPDATE_DELAY = 10.minutes
 
   devise :timeoutable, :trackable, :omniauthable
 
@@ -11,8 +12,8 @@ class Publisher < ApplicationRecord
   has_one :totp_registration
 
   has_many :channels, validate: true, autosave: true
-  has_many :site_channel_details, through: :channel, source: :details, source_type: 'SiteChannelDetails'
-  has_many :youtube_channel_details, through: :channel, source: :details, source_type: 'YoutubeChannelDetails'
+  has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
+  has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
 
   belongs_to :youtube_channel
 
@@ -24,8 +25,11 @@ class Publisher < ApplicationRecord
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
   validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
-  validates :email, uniqueness: true, allow_nil: true
+  validates :email, uniqueness: {case_sensitive: false}, allow_nil: true
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
+  validate :pending_email_must_be_a_change
+  validate :pending_email_can_not_be_in_use
+
   # validates :name, presence: true, if: -> { brave_publisher_id.present? }
   validates :phone_normalized, phony_plausible: true
 
@@ -40,8 +44,14 @@ class Publisher < ApplicationRecord
   # (see `verify_uphold` method below)
   validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
+  validates :promo_token_2018q1, uniqueness: true,  allow_nil: true
+    
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
+
+  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
+
+  after_save :set_promo_stats_updated_at_2018q1, if: -> { promo_stats_2018q1_changed? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -69,16 +79,9 @@ class Publisher < ApplicationRecord
 
     # if the wallet call fails the wallet will be nil
     if @_wallet
-      # Reset the uphold_verified if eyeshade thinks we need to re-authorize (or authorize for the first time)
-      save_needed = false
-      if self.uphold_verified && ['re-authorize', 'authorize'].include?(@_wallet.status['action'])
-        self.uphold_verified = false
-        save_needed = true
-      end
-
       # Initialize the default_currency from the wallet, if it exists
       if self.default_currency.nil?
-        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'preferredCurrency')
+        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'defaultCurrency')
         if default_currency_code
           self.default_currency = default_currency_code
           save_needed = true
@@ -129,19 +132,21 @@ class Publisher < ApplicationRecord
     save!
   end
 
-  def uphold_complete?
-    # check the wallet to see if the connection to uphold has been been denied
-    action = wallet.try(:status).try(:[], 'action')
-    if action == 're-authorize' || action == 'authorize'
-      false
-    else
-      self.uphold_verified || self.uphold_access_parameters.present?
-    end
+  def disconnect_uphold
+    self.uphold_code = nil
+    self.uphold_access_parameters = nil
+    self.uphold_verified = false
+    save!
+  end
+
+  def uphold_reauthorization_needed?
+    self.uphold_verified? &&
+      ['re-authorize', 'authorize'].include?(self.wallet.try(:status).try(:[], 'action'))
   end
 
   def uphold_status
-    if self.uphold_verified
-      :verified
+    if self.uphold_verified?
+      self.uphold_reauthorization_needed? ? :reauthorization_needed : :verified
     elsif self.uphold_access_parameters.present?
       :access_parameters_acquired
     elsif self.uphold_code.present?
@@ -151,12 +156,46 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def uphold_processing?
+    self.uphold_access_parameters.present? || self.uphold_code.present?
+  end
+
   def set_uphold_updated_at
     self.uphold_updated_at = Time.now
   end
 
   def owner_identifier
     "publishers#uuid:#{id}"
+  end
+
+  def promo_status(promo_running)
+    if !promo_running
+      :over
+    elsif self.promo_enabled_2018q1
+      :active
+    else
+      :inactive
+    end
+  end
+
+  def promo_stats_status
+    promo_disabled = !self.promo_enabled_2018q1
+    has_no_promo_enabled_channels = !self.channels.joins(:promo_registration).where.not(promo_registrations: {referral_code: nil}).any?
+    if promo_disabled || has_no_promo_enabled_channels
+      :disabled
+    elsif self.promo_stats_updated_at_2018q1.nil? || self.promo_stats_updated_at_2018q1 < PROMO_STATS_UPDATE_DELAY.ago
+      :update
+    else
+      :updated
+    end
+  end
+
+  def set_promo_stats_updated_at_2018q1
+    update_column(:promo_stats_updated_at_2018q1, Time.now)
+  end
+
+  def has_verified_channel?
+    channels.any?(&:verified?)
   end
 
   private
@@ -172,6 +211,18 @@ class Publisher < ApplicationRecord
     channel = Channel.new
     channel.publisher = self
     true
+  end
+
+  def pending_email_must_be_a_change
+    if pending_email == email
+      errors.add(:pending_email, "is not a change")
+    end
+  end
+
+  def pending_email_can_not_be_in_use
+    if pending_email && self.class.where(email: pending_email).count > 0
+      errors.add(:pending_email, "is taken")
+    end
   end
 
   class << self

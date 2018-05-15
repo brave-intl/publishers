@@ -1,0 +1,366 @@
+#content {
+  @include media-breakpoint-down(sm) {
+    padding: 0px
+  }
+}
+.promo--panel {
+  padding: 90px 80px;
+  background-image: url(asset-path("bat-mercury-patch-jr.png"));
+  background-repeat: no-repeat;
+  background-position: top 65px right 60px;
+  background-size:  auto 280px;
+  min-height: 280px;
+  text-align: left;
+
+  border: solid;
+  border-width: .5px;
+  border-color: rgba(47,48,50,0.15);
+
+  .promo--title {
+    color: $bravePromo-LightBlue;
+    font-weight: 600;
+    font-size: 60px;
+
+    &-active {
+      font-size: 40px !important;
+    }
+  }
+
+  .promo--subtitle {
+    color: $bravePromo-LightBlue
+  }
+
+  .promo--item-container {
+    color: $bravePromo-DarkBlue;
+    padding-bottom: 10px;
+    &-reward {
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .promo--item-label {
+    padding-right: 10px;
+    font-weight: 600;
+    color: $bravePromo-LightBlue;
+
+    &-link-name {
+      font-size: 12px;
+    }
+  }
+
+  .promo--bat-patch-adjacent {
+    padding-right: 145px;
+    padding-bottom: 20px;
+  }
+
+  .promo--body-text {
+    color: $bravePromo-DarkBlue;
+    font-size: 13px;
+    &-mobile {
+      display: none;
+    }
+    &-verified {
+      line-height: 1.6;
+    }
+  }
+
+  .promo--item-label-link-name {
+    color: black;
+  }
+
+  #promo--over-download-link {
+    color: $braveBrand;
+    display: block;
+    margin-top: 20px;
+  }
+  .promo--referral-link-container-container {
+    .promo--share-button {
+      background-repeat: no-repeat;
+      border: none;
+      letter-spacing: 1px;
+      color: white;
+      text-decoration: none;
+      width: 40px;
+
+      &-mobile {
+        display: none;
+      }
+
+      &-twitter {
+        background: $bravePromo-TwitterBlue;
+        background-image: url(asset-path("tweet.png"));
+        background-repeat: no-repeat;
+        background-position: right;
+      }
+
+      &-facebook {
+        background: $bravePromo-FacebookBlue;
+        background-image: url(asset-path("f-share.png"));
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      &-desktop {
+        background-color: white;
+        display: table-cell;
+      }
+    }
+
+    .promo--referral-link-container {
+      font-size: .8rem;
+      background: #edf3f9;
+      margin-bottom: 15px;
+      height: 40px;
+      width: 98%;
+      display: table;
+      table-layout: fixed;
+
+      .promo--referral-link {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 8px;
+        width: 100%;
+        border: solid;
+        border-color: #cddeec;
+        border-width: 1px;
+        border-radius: 4px 0px 0px 4px;
+        border-right: none;
+      }
+
+      .promo--copy-button {
+        display: table-cell;
+        vertical-align: middle;
+        cursor: pointer;
+        color: white;
+        height: 40px;
+        background: red;
+        border: solid;
+        border-color: red;
+        border-width: 1px;
+        border-radius: 0px 4px 4px 0px;
+        border-left: none;
+        float: right;
+      }
+    }
+  }
+
+  .promo--activate-button {
+    color: white;
+    background: #03375D;
+    font-size: 11px;
+    font-weight: 600;
+    width: 100%;
+    display: inline-block;
+    border: none;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    &:hover, &focus {
+      background-color: #00223B;
+    }
+    @include media-breakpoint-down(sm) {
+      height: 50px;
+      font-size: 16px; 
+    }
+  }
+
+  &-over {
+    background-image: url(asset-path("bat-mercury-patch-jr-gray.png"));
+    .promo--body-text {
+      display: unset;
+      &-mobile {
+        padding-top: 15px;
+        margin-top: -30px;
+      }
+    }
+  }
+
+  &-activate {
+    padding: 110px 0px 80px 0px;
+    color: white;
+
+    background-image: url(asset-path("bat-logo-no-shadow@1.png"));
+    background-color: $bravePromo-LightBlue;
+    background-repeat: no-repeat;
+    background-position: top 40px center;
+    background-size:  58px auto;
+    border: solid;
+    border-width: 1px;
+    border-color: rgba(47,48,50,0.15);
+
+    .promo--title {
+      color: white;
+      margin-bottom: -5px;
+    }
+
+    .promo--subtitle {
+      color: $bravePromo-DarkBlue;
+      margin-bottom: -15px;
+
+      &-alternative {
+        color: #BCF0F7;
+        margin-bottom: 35px;
+      }
+    }
+
+    .promo--activate-body-container {
+      margin: 0px 25%;
+    }
+
+    .promo--body-text {
+      color: white;
+      opacity: .7;
+      margin: 20px 30px 0px 30px;
+
+      &-alternative {
+        margin: 0px;
+        opacity: 1;
+        line-height: 20px;
+        letter-spacing: 1px;
+        font-size: 16px;
+        padding-bottom: 15px;
+      }
+    }
+
+    #referral-reward {
+      color: $bravePromo-DarkBlue;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    @include media-breakpoint-down(sm) {
+      background-image: url(asset-path("bat-logo-no-shadow@1.png"));
+      background-size: unset !important;
+      padding-top: 110px !important;
+      .promo--activate-body-container {
+        margin: 0px 12.5%;
+      }
+    }
+  }
+
+  #promo--no-channels {
+    color: lightgray;
+    font-size: 13px;
+  }
+
+  .promo--unverified-container {
+    background-image: url(asset-path("icn-warning@1x.png"));
+    background-repeat: no-repeat;
+    background-position: top left 40px;
+    background-size: 35px;
+    .promo--body-text {
+      color: red;
+      padding-top: 8px;
+    }
+    .promo--activate-button {
+      background: $braveBrand;
+      width: 230px;
+      height: 40px;
+      padding-top: 12px;
+    }
+  }
+
+
+  @include media-breakpoint-down(sm) {
+    // background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-logo-no-shadow@1.png"));
+    padding: 130px 30px 60px 30px;
+    background-position: top 20px center, bottom center;
+    background-size: auto 100px, auto;
+    text-align: center;
+
+    .promo--bat-patch-adjacent {
+      padding-right: 0px
+    }
+    .promo--title {
+      font-size: 50px;
+    }
+    .promo--subtitle {
+      font-size: 24px;
+    }
+
+    .promo--item-label {
+      display: block
+    }
+
+    .promo--body-text {
+      display: none;
+      &-mobile {
+        display: block;
+        color: $bravePromo-DarkBlue;
+        padding-top: 30px;
+      }
+    }
+
+    .promo--unverified-container {
+      background-position: top center;
+
+      .promo--activate-button {
+        padding-top: 8px;
+      }
+    }
+
+    .promo--item-label-link-name {
+      color: black;
+      text-align: left;
+      padding-left: 30px;
+      padding-right: 0px;
+      padding-top: 20px;
+    }
+    .promo--referral-link-container-container {
+      margin-left: -30px;
+      margin-right: -30px;
+      padding-bottom: 80px;
+      &-0{
+        background: #EFF2F5;
+      }
+      &-1{
+        background: #F7F8F9;
+      }
+      .promo--share-button {
+        &:hover, &focus {
+          outline: 0;
+          border: none;
+        }
+
+        &-desktop {
+          display: none;
+        }
+
+        &-mobile {
+          font-size: 14px;
+          width: 140px;
+          height: 40px;
+          padding-top: 8px;
+          padding-left: 15px;
+          display: inline-block;
+          border-radius: 20px;
+        }
+
+        &-twitter {
+          background: $bravePromo-TwitterBlue;
+          background-image: url(asset-path("icn-twitter.png"));
+          background-repeat: no-repeat;
+          background-position: center left 20px;
+          margin-right: 10px;
+        }
+
+        &-facebook {
+          background: $bravePromo-FacebookBlue;
+          background-image: url(asset-path("icn-fb.png"));
+          background-repeat: no-repeat;
+          background-position: center left 20px;
+          margin-left: 10px;
+        }
+      }
+      .promo--referral-link-container {
+        width: unset;
+        margin-right: 30px;
+        margin-left: 30px;
+        margin-top: 8px;
+        .promo--referral-link {
+          text-align: left;
+        }
+      }
+    }
+  }
+}

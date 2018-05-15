@@ -1,14 +1,18 @@
-.main-content
-  .container
-    .row
-      .sub-panel.login-panel.col-center.col-xs-12.col-sm-10.col-md-8.col-lg-6
-        .col.col-xs-12.col-sm-10.col-md-8.col-lg-10.col-center.text-center
-          p= render "icon_security"
-          h3= t ".heading"
-          h4= t ".subheading"
-          p= t ".intro"
-        .row
-          .col.col-md-6
-            = link_to t(".skip"), home_publishers_path, class: "btn btn-link btn-block"
-          .col.col-md-6
+.single-panel--wrapper
+  .single-panel--content
+    .single-panel--padded-content
+
+      .col-small-centered
+        p= render "icon_security"
+
+      h3.single-panel--headline.mb-1= t".heading"
+
+      .col-small-centered
+        h4= t ".subheading"
+        p= t ".intro"
+
+        .col-buttons
+          .col-buttons-half
+            = link_to t(".skip"), home_publishers_path, class: "btn btn-link-primary btn-block"
+          .col-buttons-half
             = link_to t(".setup"), two_factor_registrations_path, class: "btn btn-primary btn-block"

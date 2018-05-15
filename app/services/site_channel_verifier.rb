@@ -27,9 +27,10 @@ class SiteChannelVerifier < BaseApiClient
     response_hash = JSON.parse(response.body)
     @verified_channel_id = response_hash["verificationId"]
 
-    return false if response_hash["status"] != "success" || verified_channel_id.blank?
-
-    assert_publisher_matches_verified_id!
+    if response_hash["status"] != "success" || verified_channel_id.blank? || channel.id != verified_channel_id
+      channel.verification_failed!
+      return false
+    end
 
     # Channel should have been verified through a call to PATCH /api/owners/:owner_id/channels/:channel_id/verifications
     # from eyeshade, so we won't update it here, just reload it
@@ -43,9 +44,20 @@ class SiteChannelVerifier < BaseApiClient
   def perform_offline
     Rails.logger.info("SiteChannelVerifier bypassing eyeshade and performing locally.")
     @verified_channel_id = verify_offline_publisher_id
-    return false if verified_channel_id.blank?
+
+    if verified_channel_id.blank?
+      channel.verification_failed!
+      return false
+    end
+
     update_verified_on_channel_offline
-    assert_publisher_matches_verified_id! if channel
+
+    unless channel.id == verified_channel_id
+      channel.verification_failed!
+      return false
+    end
+
+    verified_channel_post_verify
   end
 
   private
@@ -54,18 +66,13 @@ class SiteChannelVerifier < BaseApiClient
     Rails.application.secrets[:api_eyeshade_base_uri]
   end
 
-  def assert_publisher_matches_verified_id!
-    return true if channel.id == verified_channel_id
-    raise VerificationIdMismatch.new("Channel UUID / verificationId mismatch: #{channel.id} / #{verified_channel_id}")
-  end
-
   def update_verified_on_channel_offline
     raise "#{verified_channel_id} missing" if verified_channel_id.blank?
 
     @verified_channel = Channel.find(verified_channel_id)
-    return if @verified_channel.verified
+    return if @verified_channel.verified?
 
-    verified_channel.update_attribute(:verified, true)
+    verified_channel.verification_succeeded!
 
     verified_channel_post_verify
 
@@ -75,10 +82,7 @@ class SiteChannelVerifier < BaseApiClient
   end
 
   def verified_channel_post_verify
-    PublisherMailer.verification_done(verified_channel).deliver_later
-    if PublisherMailer.should_send_internal_emails?
-      PublisherMailer.verification_done_internal(verified_channel).deliver_later
-    end
+    MailerServices::VerificationDoneEmailer.new(verified_channel: verified_channel).perform
     SlackMessenger.new(message: "*#{verified_channel.publication_title}* verified by #{verified_channel.publisher.name} (#{verified_channel.publisher.email}); id=#{verified_channel.id}").perform
   end
 

@@ -26,7 +26,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         post(publishers_path, params: SIGNUP_PARAMS)
       end
     end
-    assert_redirected_to(create_done_publishers_path)
+    assert_response 200
+    assert_template :emailed_auth_token
+
     publisher = Publisher.order(created_at: :asc).last
     get(publisher_path(publisher))
     assert_redirected_to(root_path)
@@ -40,10 +42,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       end
     end
     assert_response :success
-    assert_template :create_auth_token
+    assert_template :emailed_auth_token
   end
 
   test "sends an email with an access link" do
+    url = nil
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
       publisher = Publisher.order(created_at: :asc).last
@@ -54,6 +57,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       url = publisher_url(publisher, token: publisher.authentication_token)
       assert_email_body_matches(matcher: url, email: email)
     end
+
+    get url
+    assert_redirected_to email_verified_publishers_path
   end
 
   test "re-used access link is rejected and send publisher to the expired auth token page" do
@@ -145,6 +151,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def request_login_email_uppercase_email(publisher:)
+    perform_enqueued_jobs do
+      get(new_auth_token_publishers_path)
+      params = { publisher: { email: publisher.email.upcase } }
+      post(create_auth_token_publishers_path, params: params)
+    end
+  end
+
   test "relogin sends a login link email" do
     publisher = publishers(:default)
     request_login_email(publisher: publisher)
@@ -168,6 +182,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_empty(css_select("span.email"))
   end
 
+  test "relogin sends a login link email using case insensitive_email comparison" do
+    publisher = publishers(:default)
+    request_login_email_uppercase_email(publisher: publisher)
+    email = ActionMailer::Base.deliveries.find do |message|
+      message.to.first == publisher.email
+    end
+    assert_not_nil(email)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    assert_email_body_matches(matcher: url, email: email)
+  end
+
   # test "relogin for unverified publishers requires email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
@@ -176,7 +201,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   #     post(create_auth_token_publishers_path, params: params)
   #   end
   # end
-  #
+  
   # test "relogin for unverified publishers fails with the wrong email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
@@ -185,7 +210,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   #     post(create_auth_token_publishers_path, params: params)
   #   end
   # end
-  #
+  
   # test "relogin for verified publishers without an email sends to the publisher's email" do
   #   publisher = publishers(:verified)
   #   perform_enqueued_jobs do
@@ -289,16 +314,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:completed)
+    sign_in publisher
 
     # skip 2FA prompt
     publisher.two_factor_prompted_at = 1.day.ago
@@ -322,22 +339,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                    .gsub('<STATE>', publisher.uphold_state_token)
 
     assert_select("a[href='#{endpoint}']") do |elements|
-      assert_equal(1, elements.length, 'A link with the correct href to Uphold.com is present')
+      assert_equal(2, elements.length, 'Two links with the correct href to Uphold.com are present (one link in the status area + one big button)')
     end
   end
 
   test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
     begin
-      perform_enqueued_jobs do
-        post(publishers_path, params: SIGNUP_PARAMS)
-      end
-      publisher = Publisher.order(created_at: :asc).last
-      url = publisher_url(publisher, token: publisher.authentication_token)
-      get(url)
-      follow_redirect!
-      perform_enqueued_jobs do
-        patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-      end
+      publisher = publishers(:completed)
+      sign_in publisher
 
       uphold_state_token = SecureRandom.hex(64)
       publisher.uphold_state_token = uphold_state_token
@@ -372,16 +381,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
     begin
-      perform_enqueued_jobs do
-        post(publishers_path, params: SIGNUP_PARAMS)
-      end
-      publisher = Publisher.order(created_at: :asc).last
-      url = publisher_url(publisher, token: publisher.authentication_token)
-      get(url)
-      follow_redirect!
-      perform_enqueued_jobs do
-        patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-      end
+      publisher = publishers(:completed)
+      sign_in publisher
 
       uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
       uphold_state_token = SecureRandom.hex(64)
@@ -412,16 +413,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "after redirection back from uphold, a missing publisher's `uphold_state_token` redirects back to home" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:completed)
+    sign_in publisher
 
     publisher.two_factor_prompted_at = 1.day.ago
     publisher.save!
@@ -432,20 +425,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Check that failure message is displayed
     follow_redirect!
-    assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
+    assert_match(I18n.t("publishers.uphold_verified.uphold_error"), response.body)
   end
 
   test "after redirection back from uphold, a mismatched publisher's `uphold_state_token` redirects back to home" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:completed)
+    sign_in publisher
 
     uphold_state_token = SecureRandom.hex(64)
     publisher.uphold_state_token = uphold_state_token
@@ -460,16 +445,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Check that failure message is displayed
     follow_redirect!
-    assert_match(I18n.t('publishers.verification_uphold_state_token_does_not_match'), response.body)
+    assert_match(I18n.t("publishers.uphold_verified.uphold_error"), response.body)
   end
 
   test "when uphold fails to return uphold_access_parameters, publisher has option to reconnect with uphold" do
+    # Turn off promo
+    active_promo_id_original = Rails.application.secrets[:active_promo_id]
+    Rails.application.secrets[:active_promo_id] = ""
     publisher = publishers(:completed)
-
-    # sign in publisher
-    request_login_email(publisher: publisher)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
-    get(url)
+    sign_in publisher
 
     # give pub uphold state token
     uphold_state_token = SecureRandom.hex(64)
@@ -490,30 +474,22 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_equal publisher.reload.uphold_status, :code_acquired
 
     # verify message tells publisher they need to reconnect
-    assert_select("div#publisher_status.uphold_processing") do |element|
-      assert_equal element.text, I18n.t("publishers.status_uphold_processing")
+    assert_select("div#uphold_status.uphold-processing .status-description") do |element|
+      assert_equal I18n.t("helpers.publisher.uphold_status_description.connecting"), element.text
     end
 
     # verify button says 'reconnect to uphold' not 'create uphold wallet'
     assert_select("[data-test=reconnect-button]") do |element|
-      assert_equal element.text, I18n.t("publishers.reconnect_to_uphold")
+      assert_equal I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold"), element.text
     end
+    Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
   test "a publisher's statement can be generated via ajax" do
-    perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
-    end
-    publisher = Publisher.order(created_at: :asc).last
-    url = publisher_url(publisher, token: publisher.authentication_token)
-    get(url)
-    follow_redirect!
-    perform_enqueued_jobs do
-      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
-    end
+    publisher = publishers(:uphold_connected)
+    sign_in publisher
 
-    url = generate_statement_publishers_path
-    patch(url,
+    patch(generate_statement_publishers_path,
           params: { statement_period: 'all' },
           headers: { 'HTTP_ACCEPT' => "application/json" })
 
@@ -525,24 +501,45 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         '"date":"' + publisher_statement.created_at.strftime('%B %e, %Y') + '",' +
         '"period":"All"}',
       response.body)
-    # assert_match("{\"id\":\"#{publisher_statement.id}\"}", response.body)
   end
 
   test "a publisher's balance can be polled via ajax" do
     publisher = publishers(:uphold_connected)
-    request_login_email(publisher: publisher)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
-    get(url)
-    follow_redirect!
+    sign_in publisher
 
-    url = balance_publishers_path
-    get(url,
-        headers: { 'HTTP_ACCEPT' => "application/json" })
+    get balance_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal(
-        '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
-        response.body)
+    assert_equal '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
+                 response.body
+  end
+
+  test "a publisher's uphold status can be polled via ajax" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    get uphold_status_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+
+    assert_response 200
+    assert_equal '{"uphold_status":"unconnected",' +
+                  '"uphold_status_summary":"Not connected",' +
+                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Payments.",' +
+                  '"uphold_status_class":"uphold-unconnected"}',
+                 response.body
+  end
+
+  test "a publisher can be disconnected from uphold" do
+    publisher = publishers(:verified)
+    publisher.verify_uphold
+    assert publisher.uphold_verified?
+    sign_in publisher
+
+    patch disconnect_uphold_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+
+    assert_response 204
+
+    publisher.reload
+    refute publisher.uphold_verified?
   end
 
   test "home redirects to 2FA prompt on first visit" do
@@ -556,5 +553,22 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     get home_publishers_path
     assert_response :success
+  end
+
+  test "og meta tags should be set" do
+    # ensure meta tags appear on static home apge
+    get root_path
+    ['og:image', 'og:title', 'og:description', 'og:url', 'og:type'].each do |meta_tag|
+      assert_select "meta[property='#{meta_tag}']"
+    end
+
+    # ensure meta tags appear in publisher dashboard and elsewhere
+    publisher = publishers(:completed)
+    sign_in publisher
+    get home_publishers_path
+    
+    ['og:image', 'og:title', 'og:description', 'og:url', 'og:type'].each do |meta_tag|
+      assert_select "meta[property='#{meta_tag}']"
+    end
   end
 end
