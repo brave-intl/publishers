@@ -50,6 +50,7 @@ class JsonBuilders::IdentityJsonBuilder
       json.providerName   @parsed_publisher_name[1]
       json.providerSuffix @parsed_publisher_name[2]
       json.providerValue  @parsed_publisher_name[3]
+      json.URL            "https://youtube.com/#{@parsed_publisher_name[2]}/#{@parsed_publisher_name[3]}"
       json.TLD            @publisher_name.split(':')[0]
       json.SLD            @publisher_name
       json.RLD            @parsed_publisher_name[3]
