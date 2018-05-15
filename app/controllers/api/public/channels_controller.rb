@@ -9,7 +9,7 @@ class Api::Public::ChannelsController < Api::BaseController
       render(status: 404,
         json: {
           errors: builder.errors.to_s
-        }.to_json) and return
+        })
     else
       render(status: 200, json: builder.result)
     end

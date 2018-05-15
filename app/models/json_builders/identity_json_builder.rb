@@ -10,6 +10,7 @@ class JsonBuilders::IdentityJsonBuilder
 
 
   def initialize(publisher_name:)
+    @errors = []
     @publisher_name = publisher_name
     @parsed_publisher_name = URL_REGULAR_EXPRESSION.match(@publisher_name)
     find_channel_detail
@@ -27,31 +28,19 @@ class JsonBuilders::IdentityJsonBuilder
 
   def build
     @json = if @channel_detail.nil?
-      build_no_identity_found_json
+      @errors << "Channel not found"
     elsif @channel_detail.is_a?(YoutubeChannelDetails)
       build_youtube_identity_json
     elsif @channel_detail.is_a?(TwitchChannelDetails)
       build_twitch_identity_json
     elsif @channel_detail.is_a?(SiteChannelDetails)
       build_site_identity_json
-    else
-      # TODO: Wording is not exact
-      @errors << "Channel not found"
     end
     self
   end
 
   def result
     @json
-  end
-
-  def build_no_identity_found_json
-    Jbuilder.encode do |json|
-      json.SLD @publisher_name
-      json.RLD ''
-      json.QLD ''
-      json.publisher @publisher_name
-    end
   end
 
   def build_youtube_identity_json
@@ -76,6 +65,7 @@ class JsonBuilders::IdentityJsonBuilder
       json.SLD            @publisher_name
       json.RLD            ''
       json.QLD            ''
+      json.URL            @publisher_name
       json.properties     do
         build_properties(json)
       end
