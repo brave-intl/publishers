@@ -28,7 +28,8 @@ class JsonBuilders::IdentityJsonBuilder
 
   def build
     @json = if @channel_detail.nil?
-      @errors << "Channel not found"
+      # @errors << "Channel not found"
+      build_site_identity_json
     elsif @channel_detail.is_a?(YoutubeChannelDetails)
       build_youtube_identity_json
     elsif @channel_detail.is_a?(TwitchChannelDetails)
@@ -95,7 +96,7 @@ class JsonBuilders::IdentityJsonBuilder
   def build_properties(json)
     if @channel_detail.present? && @channel_detail.channel.verified?
       json.verified true
-      json.timestamp Time.now
+      json.timestamp 2.years.from_now.to_i
     end
   end
 end
