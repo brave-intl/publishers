@@ -63,6 +63,7 @@ class JsonBuilders::IdentityJsonBuilder
 
   def build_site_identity_json
     Jbuilder.encode do |json|
+      json.publisher      @publisher_name
       json.SLD            @publisher_name
       json.RLD            ''
       json.QLD            ''
