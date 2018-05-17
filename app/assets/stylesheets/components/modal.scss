@@ -22,7 +22,6 @@
   transform: scale(0.7);
   opacity: 0;
   transition: all 200ms;
-  background: #fff;
   padding: 10px;
 }
 
@@ -101,5 +100,11 @@
         margin-left: 15px;
       }
     }
+  }
+}
+
+.js-shared-modal {
+  .single-panel--padded-content {
+    padding: $spacer $spacer;
   }
 }
