@@ -58,6 +58,7 @@ $braveWarning-Background: #FFF8D2;
 $braveWarning-Foreground: $braveGray-1;
 
 $braveOrange: #FF7A1D;
+$braveRed: #E2052A;
 
 $braveText-1: $braveGray-1;
 $braveText-2: $braveGray-2;
@@ -74,3 +75,21 @@ $braveDivider-2: $braveGray-9;
 $braveGradient-LegacyPink: linear-gradient(165deg, #e9eaef, #e0e3e6, #d6d6d6, #e7ccc9, #f7ada7, #d68588, #ca3884, #c7297b);
 $braveGradient-Pink: linear-gradient(to right, #dce6f5 0%, #dce6f5 15%, #d9d8e6 28%, #d9d8e6 39%, #e7ccc9 49%, #d7ada7 61%, #d68588 74%, #ca3884 86%, #c7297b 100%);
 $braveGradient-Purple: linear-gradient(to right, $braveSuccess-Ghost, #7d78df);
+
+$highlightBlue: #37A9FD;
+$chromePrimary: #F3F3F3;
+$chromeSecondary: #d3d3d3;
+
+$veryLightGray: rgb(250, 250, 250);
+$lightGray: rgb(236, 236, 236);
+$gray: rgb(153, 153, 153);
+$mediumGray: rgb(101, 101, 101);
+$darkGray: rgb(68, 68, 68);
+
+$white25: rgba(255, 255, 255, 0.25);
+$white50: rgba(255, 255, 255, 0.5);
+$gray25: rgba(116, 116, 130, 0.25);
+$gray50: rgba(116, 116, 130, 0.5);
+$black10: rgba(0, 0, 0, 0.1);
+$black25: rgba(0, 0, 0, 0.25);
+$black50: rgba(0, 0, 0, 0.5);
