@@ -528,6 +528,8 @@
   .channel-panel {
     padding: 18px 40px 20px;
     border-radius: $brave-panels-borderRadius;
+    background-color: white;
+    box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
 
     .channel-thumbnail {
       margin-right: 15px;
