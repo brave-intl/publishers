@@ -43,3 +43,38 @@
 .btn-wide {
   min-width: $spacer*10;
 }
+
+.btn-primary, .btn-secondary {
+  padding: 10px 24px;
+  letter-spacing: 0.02em;
+  font-size: 14px;
+  border-radius: 20px;
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid;
+  box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5);
+  color: #8F9397;
+  font-weight: 400;
+
+  &:hover {
+    color: white;
+    border: 1px solid #aaa;
+  }
+
+  &:active {
+    color: #8F9397;
+  }
+}
+
+.btn-highlight {
+  border-color: #fc4145;
+  color: #fc4145;
+
+  &:hover {
+    background: white;
+    border-color: #ff3f3f;
+    color: #ff3f3f;
+  }
+}

@@ -23,7 +23,7 @@
               p= t "site_channels.shared.verification_file.download_html", download_link: link_to(t("shared.download"), download_verification_file_site_channel_path, class: "download-link")
               .icon-and-text--wrapper
                 .icon-and-text--icon.icon-and-text--icon--top
-                  = image_tag("file@1x.png", class: "instruction-img")
+                  = image_tag("file@1x.png")
                 .icon-and-text--text
                   .detailed-content--small-label= t("site_channels.shared.verification_file.name")
                   .detailed-content--bold-content= @public_file_name
@@ -33,7 +33,7 @@
                       = simple_format h site_channel_filter_public_file_content(current_channel, @public_file_content)
             li
               p= t "site_channels.shared.verification_file.upload_html"
-              = image_tag("upload@1x.png", class: "instruction-img")
+              = image_tag("upload@1x.png")
             li
               p= t "site_channels.shared.verification_file.verify"
               p.note-text= t "site_channels.shared.verification_file.note"

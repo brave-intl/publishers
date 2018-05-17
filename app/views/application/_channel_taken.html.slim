@@ -26,9 +26,10 @@ javascript:
      modal.classList.add('md-show');
 
      var closeModal = document.getElementById('close_channel_taken_modal');
-     closeModal.addEventListener('click', function() {
+     closeModal.addEventListener('click', function(e) {
        hideChannelTakenModal();
-     });
+       e.preventDefault();
+     }, false);
 
      document.addEventListener('keyup', function(e) {
        if (e.keyCode === 27) {
@@ -66,5 +67,6 @@ javascript:
    p= t(".modal.contact_support_html", {support_email: support_email})
 
    .panel-section
-     a.btn.btn-primary#close_channel_taken_modal= t(".modal.ok")
+     a.btn.btn-primary#close_channel_taken_modal href="#"
+       = t(".modal.ok")
 .md-overlay
