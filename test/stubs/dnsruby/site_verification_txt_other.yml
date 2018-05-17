@@ -1,0 +1,87 @@
+--- &2 !ruby/object:Dnsruby::Message
+header: !ruby/object:Dnsruby::Header
+  id: 60615
+  qr: true
+  opcode: !ruby/object:Dnsruby::OpCode
+    code: 0
+    string: Query
+  aa: false
+  ad: false
+  tc: false
+  rd: true
+  ra: true
+  cd: false
+  rcode: !ruby/object:Dnsruby::RCode
+    code: 0
+    string: NOERROR
+  qdcount: 1
+  nscount: 0
+  ancount: 1
+  arcount: 0
+question:
+- !ruby/object:Dnsruby::Question
+  qtype: !ruby/object:Dnsruby::Types
+    code: 16
+    string: TXT
+  qclass: !ruby/object:Dnsruby::Classes
+    code: 1
+    string: IN
+  qname: !ruby/object:Dnsruby::Name
+    labels:
+    - !ruby/object:Dnsruby::Name::Label
+      downcase: to_verify_dns
+      string: to_verify_dns
+      string_length: 6
+    - !ruby/object:Dnsruby::Name::Label
+      downcase: org
+      string: org
+      string_length: 3
+    absolute: true
+answer: !ruby/array:Dnsruby::Section
+  internal:
+  - !ruby/object:Dnsruby::RR::IN::TXT
+    rdata: &1
+    - brave-ledger-verification=22660f14752f460b59dc62907bfe3ae1cb4727ae0645de74493d99bcf63ddb94
+    strings: *1
+    name: !ruby/object:Dnsruby::Name
+      labels:
+      - !ruby/object:Dnsruby::Name::Label
+        downcase: to_verify_dns
+        string: to_verify_dns
+        string_length: 6
+      - !ruby/object:Dnsruby::Name::Label
+        downcase: org
+        string: org
+        string_length: 3
+      absolute: true
+    ttl: 300
+    type: !ruby/object:Dnsruby::Types
+      code: 16
+      string: TXT
+    klass: !ruby/object:Dnsruby::Classes
+      code: 1
+      string: IN
+  ivars:
+    :@msg: *2
+authority: !ruby/array:Dnsruby::Section
+  internal: []
+  ivars:
+    :@msg: *2
+additional: !ruby/array:Dnsruby::Section
+  internal: []
+  ivars:
+    :@msg: *2
+tsigstate: :Unsigned
+signing: false
+tsigkey:
+answerfrom: 8.8.8.8
+answerip: 8.8.8.8
+send_raw: false
+do_validation: true
+do_caching: true
+security_level: !ruby/object:Dnsruby::Message::SecurityLevel
+  code: 0
+  string: UNCHECKED
+security_error:
+cached: false
+answersize: 131

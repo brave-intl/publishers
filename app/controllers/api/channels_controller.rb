@@ -1,9 +1,9 @@
 class Api::ChannelsController < Api::BaseController
   before_action :require_owner,
-                only: %i(verify notify show create)
+                only: %i(notify show create)
 
   before_action :require_channel,
-                only: %i(verify notify show)
+                only: %i(notify show)
 
   before_action :ensure_json_content_type,
                 only: %i(create)
@@ -24,36 +24,6 @@ class Api::ChannelsController < Api::BaseController
     render(json: { message: "success" })
   rescue PublisherNotifier::InvalidNotificationTypeError => error
     render(json: { message: error.message }, status: 400)
-  end
-
-  def verify
-    if params[:verificationId].blank?
-      return render(status: 400, json: { message: "parameter 'verificationId' is required" })
-    end
-
-    if params[:verificationId] != @channel.id
-      return render(status: 400, json: { message: "parameter 'verificationId' does not match the channel id" })
-    end
-
-    if params[:verified].nil?
-      return render(status: 400, json: { message: "parameter 'verified' is required" })
-    end
-
-    # Only set verified to true, and only if the channel is not already verified. This keeps verified from flipping
-    # back and forth resulting in sending the verified notification repeatedly.
-    # Eyeshade calls this endpoint in response to a `GET /v1/owners/{owner}/verify/{publisher}` call.
-    # Because of this we will send notification emails from the SiteChannelVerifier instead of here.
-    if !@channel.verified && params[:verified]
-      success = @channel.update!(verified: true)
-    else
-      success = true
-    end
-
-    if success
-      head :no_content
-    else
-      render(json: { errors: @channel.errors }, status: 400)
-    end
   end
 
   def show

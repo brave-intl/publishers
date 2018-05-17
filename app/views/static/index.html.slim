@@ -27,5 +27,5 @@
               p= t ".login.body"
             .col.col-xs-12.col-sm-4.button-column
               = link_to(t("shared.log_in"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
-        .terms-of-service.pull-right
+        .terms-of-service.float-right
           = link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")

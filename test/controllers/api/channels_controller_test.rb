@@ -30,24 +30,6 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_match /#{channel.details.channel_identifier}/, response.body
   end
 
-  test "verifies a channel" do
-    channel = channels(:small_media_group_to_verify)
-    publisher = channel.publisher
-
-    payload = {
-        verificationId: channel.id,
-        token: channel.details.verification_token,
-        verified: true,
-        reason: ""
-    }
-
-    refute channel.verified
-    patch "/api/owners/#{URI.escape(publisher.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/verifications", params: payload
-    channel.reload
-    assert channel.verified
-    assert_equal 204, response.status
-  end
-
   test "returns error for omitted notification type" do
     channel = channels(:verified)
     owner = channel.publisher
@@ -86,22 +68,6 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_enqueued_emails 2 do
       post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_invalid_wallet"
     end
-  end
-
-  test "requires an owner" do
-    channel = channels(:small_media_group_to_verify)
-    publisher = channel.publisher
-
-    payload = {
-        verificationId: channel.id,
-        token: channel.details.verification_token,
-        verified: true,
-        reason: ""
-    }
-
-    refute channel.verified
-    patch "/api/owners/#{URI.escape('publishers#uuid:aaaaaaaa-0000-0000-0000-000000000000')}/channels/#{URI.escape(channel.details.channel_identifier)}/verifications", params: payload
-    assert_equal 404, response.status
   end
 
   test "can create site channels from json" do

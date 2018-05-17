@@ -27,6 +27,43 @@ class SiteChannelTest < ActiveSupport::TestCase
     refute new_details.valid?
   end
 
+  test "a channel can have blank verification_method" do
+    details = site_channel_details(:new_site_details)
+    assert details.verification_method.blank?
+    assert details.valid?
+  end
+
+  test "a channel with verification_method must be well formed" do
+    details = site_channel_details(:new_site_details)
+    SiteChannelDetails::VERIFICATION_METHODS.each do |m|
+      details.verification_method = m
+      assert details.valid?
+    end
+    details.verification_method = "potato"
+    refute details.valid?
+  end
+
+  test "a channel can have blank verification_token" do
+    details = site_channel_details(:new_site_details)
+    assert details.verification_token.blank?
+    assert details.valid?
+  end
+
+  test "a channel with verification_token must be well formed" do
+    details = site_channel_details(:new_site_details)
+    details.verification_token = "6d660f14752f460b59dc62907bfe3ae1cb4727ae0645de74493d99bcf63ddb94"
+    assert details.valid?
+
+    details.verification_token = "short"
+    refute details.valid?
+
+    details.verification_token = "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong"
+    refute details.valid?
+
+    details.verification_token = "funny?!"
+    refute details.valid?
+  end
+
   test "a site channel assigned a brave_publisher_id_error_code and brave_publisher_id will not be valid" do
     details = SiteChannelDetails.new
     assert details.valid?
@@ -57,13 +94,13 @@ class SiteChannelTest < ActiveSupport::TestCase
 
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels(max_age: 12.weeks).pluck(:brave_publisher_id)
 
-    assert_equal 8, brave_publisher_ids.length
+    assert_equal 15, brave_publisher_ids.length
     assert brave_publisher_ids.include?("stale.org")
 
     # Default max_age of 6 weeks
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels.pluck(:brave_publisher_id)
 
-    assert_equal 7, brave_publisher_ids.length
+    assert_equal 14, brave_publisher_ids.length
     refute brave_publisher_ids.include?("stale.org")
   end
 

@@ -36,29 +36,56 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "verify should start channel verification and redirect to dashboard" do
-    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
-    begin
-      Rails.application.secrets[:host_inspector_offline] = true
+  test "verify can verify the channel and redirect to the dashboard" do
+    publisher = publishers(:global_media_group)
+    channel = channels(:global_inprocess)
 
-      publisher = publishers(:global_media_group)
-      channel = channels(:global_inprocess)
+    sign_in publishers(:global_media_group)
 
-      sign_in publishers(:global_media_group)
+    refute channel.verification_started?
 
-      refute channel.verification_started?
+    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
+    headers = {
+      'Accept' => '*/*',
+      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+      'Host' => channel.details.brave_publisher_id,
+      'User-Agent' => 'Ruby'
+    }
+    body = SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
+    stub_request(:get, url).
+      with(headers: headers).
+      to_return(status: 200, body: body, headers: {})
 
-      assert_enqueued_with(job: VerifySiteChannel) do
-        patch(verify_site_channel_path(channel.id))
-      end
+    patch(verify_site_channel_path(channel.id))
+    channel.reload
+    assert channel.verified?
+    assert_redirected_to home_publishers_path
+  end
 
-      channel.reload
-      assert channel.verification_started?
+  test "verify can fail verification" do
+    publisher = publishers(:global_media_group)
+    channel = channels(:global_inprocess)
 
-      assert_redirected_to home_publishers_path
-    ensure
-      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
-    end
+    sign_in publishers(:global_media_group)
+
+    refute channel.verification_started?
+
+    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
+    headers = {
+      'Accept' => '*/*',
+      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+      'Host' => channel.details.brave_publisher_id,
+      'User-Agent' => 'Ruby'
+    }
+    body = SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
+    stub_request(:get, url).
+      with(headers: headers).
+      to_return(status: 404, body: nil, headers: {})
+
+    patch(verify_site_channel_path(channel.id))
+    channel.reload
+    refute channel.verified?
+    assert_redirected_to verification_wordpress_site_channel_path(channel.id)
   end
 
   test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do

@@ -1,6 +1,8 @@
 class Channel < ApplicationRecord
   has_paper_trail
 
+  VERIFICATION_RESTRICTION_ERROR = "requires manual admin approval"
+
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
@@ -23,11 +25,17 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
-  validates :verification_status, inclusion: { in: %w(started failed) }, allow_nil: true
+  validates :verification_status, inclusion: { in: %w(started failed awaiting_admin_approval) }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
+  # Sensitive channels require manual admin approval to verify.
+  validate :verification_restriction_ok
+
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
+
+  # Set this to true prior to save to signnify admin approval.
+  attr_accessor :verification_admin_approval
 
   scope :site_channels, -> { joins(:site_channel_details) }
   scope :youtube_channels, -> { joins(:youtube_channel_details) }
@@ -111,6 +119,10 @@ class Channel < ApplicationRecord
     self.save!(validate: false)
   end
 
+  def verification_awaiting_admin_approval!
+    update!(verified: false, verification_status: 'awaiting_admin_approval', verification_details: nil)
+  end
+
   def verification_succeeded!
     update!(verified: true, verification_status: nil, verification_details: nil)
   end
@@ -121,6 +133,10 @@ class Channel < ApplicationRecord
 
   def verification_failed?
     self.verification_status == 'failed'
+  end
+
+  def verification_awaiting_admin_approval?
+    self.verification_status == 'awaiting_admin_approval'
   end
 
   private
@@ -143,6 +159,19 @@ class Channel < ApplicationRecord
 
     if dupicate_unverified_channels.any?
       errors.add(:brave_publisher_id, "must be unique")
+    end
+  end
+
+  # Sensitive channels require manual admin approval to verify.
+  # TODO: Create a better admin verification workflow.
+  def verification_restriction_ok
+    require "publishers/restricted_channels"
+
+    if !verified? || !verified_changed? || !Publishers::RestrictedChannels.restricted?(self)
+      return true
+    end
+    if !verification_admin_approval
+      errors.add(:verified, VERIFICATION_RESTRICTION_ERROR)
     end
   end
 end

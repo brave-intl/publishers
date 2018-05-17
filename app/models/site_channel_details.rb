@@ -13,6 +13,18 @@ class SiteChannelDetails < ApplicationRecord
   validates :brave_publisher_id, absence: true, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id_unnormalized.present? }
   validate :brave_publisher_id_not_changed_once_initialized
 
+  VERIFICATION_METHODS = %w(dns_record public_file github wordpress support_queue).freeze
+  validates :verification_method, allow_blank: true, inclusion: { in: VERIFICATION_METHODS }
+
+  class VerificationTokenValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      unless value =~ /\A[a-z0-9]{64}\z/i
+        record.errors[attribute] << (options[:message] || "is not a valid verification token with 64 hex digits")
+      end
+    end
+  end
+  validates :verification_token, allow_blank: true, verification_token: true
+
   before_validation :register_brave_publisher_id_error, if: -> { brave_publisher_id_error_code.present? }
 
   # clear/register domain errors as appropriate

@@ -1,18 +1,10 @@
-@import "legacy/variables/**/*";
+// Vendor
+@import "bootstrap-custom";
 
-// Bootstrap
-@import "bootstrap-3-sprockets";
-@import "bootstrap-3/variables";
-@import "bootstrap-3/mixins";
-@import "bootstrap-3/normalize";
-@import "bootstrap-3/print";
-@import "bootstrap-3/scaffolding";
-@import "bootstrap-3/type";
-@import "bootstrap-3/grid";
-@import "bootstrap-3/forms";
-@import "bootstrap-3/buttons";
-@import "bootstrap-3/alerts";
-@import "bootstrap-3/utilities";
+// Configuration
+@import "breakpoints";
+@import "fonts";
+@import "colors";
+@import "bootstrap-config";
 
-@import "legacy/shared/forms";
 @import "static/*";

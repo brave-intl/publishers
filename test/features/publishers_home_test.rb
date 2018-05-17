@@ -102,7 +102,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     # Turn off promo
     visit home_publishers_path
 
-    click_link('+ Add Channel')
+    find('.navbar').click_link('+ Add Channel')
 
     assert_content page, 'Add Channel'
     assert_content page, 'WEBSITE'
