@@ -69,7 +69,7 @@ class SiteChannelVerifier < BaseService
 
     # Let eyeshade know about the new Publisher
     begin
-      PublisherChannelSetter.new(publisher: @publisher).perform
+      PublisherChannelSetter.new(publisher: verified_channel.publisher).perform
     rescue => e
       # TODO: Retry if it fails
       require "sentry-raven"
