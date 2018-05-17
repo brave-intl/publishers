@@ -195,6 +195,10 @@ script id="choose-channel-type" type="text/html"
           - elsif channel.verification_started? || channel.verification_failed?
             .channel-status.float-right
               = channel_verification_details(channel)
+              = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
+          - elsif channel.verification_awaiting_admin_approval?
+            .channel-status.float-right
+              = channel_verification_details(channel)
           - else
             .channel-status.float-right
               = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
@@ -205,7 +209,7 @@ script id="choose-channel-type" type="text/html"
             .channel-details
               .added-date
                 = t ".channel.added", date: channel.created_at.to_date.iso8601
-              - unless channel.verified
+              - unless channel.verified || channel.verification_awaiting_admin_approval?
                 .separator
                   = '|'
                 a.remove-channel href="#" data-channel-id=(channel.id)

@@ -15,6 +15,8 @@ gem "bootstrap", "~> 4.0.0.beta3"
 # Authentication
 gem "devise", "~> 4.2.0"
 
+gem "dnsruby", "~> 1.60.0", require: false
+
 gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
@@ -104,9 +106,6 @@ end
 group :development, :staging do
   # Offline domain normalization
   gem "domain_name", require: false
-
-  # Offline DNS verification
-  gem "dnsruby", require: false
 end
 
 group :development do

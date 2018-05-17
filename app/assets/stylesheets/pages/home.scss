@@ -580,9 +580,12 @@
     &.channel-failed {
       .channel-status {
         background: url(asset-path("unverified-icon.png")) no-repeat top left / 23px 28px;
-        padding: 3px 0 12px 38px;
-        margin-top: -4px;
+        padding: 0 0 12px 38px;
         font-weight: bold;
+        .btn {
+          margin: -8px 0 0 12px;
+          vertical-align: top;
+        }
       }
     }
     &.channel-verified {

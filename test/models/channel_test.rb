@@ -163,4 +163,46 @@ class ChannelTest < ActiveSupport::TestCase
     refute channel.verification_failed?
     refute channel.verification_started?
   end
+
+  test "verification_succeeded! for restricted channels fails" do
+    channel = channels(:to_verify_restricted)
+
+    channel.verification_started!
+    assert_raise do
+      channel.verification_succeeded!
+    end
+    assert_equal Channel::VERIFICATION_RESTRICTION_ERROR, \
+      channel.errors.messages[:verified][0]
+
+    channel.reload
+    refute channel.verified?
+    refute channel.verification_failed?
+    assert channel.verification_started?
+  end
+
+  test "verification_succeeded! for restricted channels with admin approval succeeds" do
+    channel = channels(:to_verify_restricted)
+
+    channel.verification_started!
+    channel.verification_admin_approval = true
+    channel.verification_succeeded!
+
+    channel.reload
+    assert channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+  end
+
+  test "verification_awaits_admin_approval! works" do
+    channel = channels(:to_verify_restricted)
+
+    channel.verification_started!
+    channel.verification_awaiting_admin_approval!
+
+    channel.reload
+    refute channel.verified?
+    refute channel.verification_failed?
+    refute channel.verification_started?
+    assert channel.verification_awaiting_admin_approval?
+  end
 end

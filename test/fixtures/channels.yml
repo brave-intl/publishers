@@ -13,6 +13,41 @@ verified:
   details: verified_details (SiteChannelDetails)
   verified: true
 
+to_verify_dns:
+  publisher: default
+  details: to_verify_dns_details (SiteChannelDetails)
+  verified: false
+
+to_verify_file:
+  publisher: default
+  details: to_verify_file_details (SiteChannelDetails)
+  verified: false
+
+to_verify_github:
+  publisher: default
+  details: to_verify_github_details (SiteChannelDetails)
+  verified: false
+
+to_verify_support:
+  publisher: default
+  details: to_verify_support_details (SiteChannelDetails)
+  verified: false
+
+to_verify_wordpress:
+  publisher: default
+  details: to_verify_wordpress_details (SiteChannelDetails)
+  verified: false
+
+to_verify_wordpress_blank_pub_id:
+  publisher: default
+  details: to_verify_wordpress_blank_pub_id_details (SiteChannelDetails)
+  verified: false
+
+to_verify_restricted:
+  publisher: default
+  details: to_verify_restricted_details (SiteChannelDetails)
+  verified: false
+
 completed:
   publisher: completed
   details: completed_details (SiteChannelDetails)

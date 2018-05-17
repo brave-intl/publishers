@@ -68,6 +68,8 @@ module ChannelsHelper
       channel.verification_details || t("helpers.channels.generic_verification_failure")
     elsif channel.verification_started?
       t("helpers.channels.verification_in_progress")
+    elsif channel.verification_awaiting_admin_approval?
+      t("helpers.channels.verification_awaiting_admin_approval")
     end
   end
 end
