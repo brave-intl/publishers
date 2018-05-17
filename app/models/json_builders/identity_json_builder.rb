@@ -96,7 +96,7 @@ class JsonBuilders::IdentityJsonBuilder
   def build_properties(json)
     if @channel_detail.present? && @channel_detail.channel.verified?
       json.verified true
-      json.timestamp 2.years.from_now.to_i
+      json.timestamp (Time.now.to_i << 32)
     end
   end
 end
