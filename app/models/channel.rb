@@ -124,7 +124,7 @@ class Channel < ApplicationRecord
   end
 
   def verification_succeeded!
-    update!(verified: true, verification_status: nil, verification_details: nil)
+    update!(verified: true, verification_status: nil, verification_details: nil, verified_at: Time.now)
   end
 
   def verification_started?

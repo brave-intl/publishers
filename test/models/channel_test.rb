@@ -108,12 +108,14 @@ class ChannelTest < ActiveSupport::TestCase
     channel = channels(:default)
 
     refute channel.verified?
+    assert_nil channel.verified_at
     refute channel.verification_failed?
     refute channel.verification_started?
 
     channel.verification_started!
 
     refute channel.verified?
+    assert_nil channel.verified_at
     refute channel.verification_failed?
     assert channel.verification_started?
   end
@@ -122,12 +124,14 @@ class ChannelTest < ActiveSupport::TestCase
     channel = channels(:default)
 
     refute channel.verified?
+    assert_nil channel.verified_at
     refute channel.verification_failed?
     refute channel.verification_started?
 
     channel.verification_failed!('something happened')
 
     refute channel.verified?
+    assert_nil channel.verified_at
     assert channel.verification_failed?
     refute channel.verification_started?
     assert_equal 'something happened', channel.verification_details
@@ -137,12 +141,14 @@ class ChannelTest < ActiveSupport::TestCase
     channel = channels(:fake1)
 
     refute channel.verified?
+    assert_nil channel.verified_at
     refute channel.verification_failed?
     refute channel.verification_started?
 
     channel.verification_failed!('something happened')
 
     refute channel.verified?
+    assert_nil channel.verified_at
     assert channel.verification_failed?
     refute channel.verification_started?
     assert_equal 'something happened', channel.verification_details
@@ -154,12 +160,14 @@ class ChannelTest < ActiveSupport::TestCase
     channel.verification_started!
 
     refute channel.verified?
+    refute channel.verified_at
     refute channel.verification_failed?
     assert channel.verification_started?
 
     channel.verification_succeeded!
 
     assert channel.verified?
+    assert_not_nil channel.verified_at
     refute channel.verification_failed?
     refute channel.verification_started?
   end
@@ -176,6 +184,7 @@ class ChannelTest < ActiveSupport::TestCase
 
     channel.reload
     refute channel.verified?
+    assert_nil channel.verified_at
     refute channel.verification_failed?
     assert channel.verification_started?
   end
@@ -189,6 +198,7 @@ class ChannelTest < ActiveSupport::TestCase
 
     channel.reload
     assert channel.verified?
+    assert_not_nil channel.verified_at
     refute channel.verification_failed?
     refute channel.verification_started?
   end
@@ -201,6 +211,7 @@ class ChannelTest < ActiveSupport::TestCase
 
     channel.reload
     refute channel.verified?
+    assert_nil channel.verified_at
     refute channel.verification_failed?
     refute channel.verification_started?
     assert channel.verification_awaiting_admin_approval?
