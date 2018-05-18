@@ -1,21 +1,56 @@
 language: ruby
 cache: bundler
-bundler_args: --jobs=3 --retry=3 --without production --without staging
+bundler_args: "--jobs=3 --retry=3 --without production --without staging"
 dist: trusty
 sudo: required
 addons:
-  postgresql: "9.6"
-  chrome: "stable"
+  postgresql: '9.6'
+  chrome: stable
 services:
-  - postgresql
-  - redis-server
-before_script:
-  - RAILS_ENV=test bundle exec rake db:setup
-    # Fails if assets don't build. If it is successful, these assets are then
-    # use by the subsequent test run.
-  - RAILS_ENV=test bundle exec rake assets:precompile
+- postgresql
+- redis-server
+- docker
+env:
+  global:
+  - "MONGODB_URI=mongodb://mongo"
+  - "NODE_ENV=development"
+  - "REDIS_URL=redis://redis:6379"
+  - "BAT_LEDGER_SERVER=http://ledger-web:3001"
+  - "BAT_EYESHADE_SERVER=http://eyeshade-web:3002"
+  - "BAT_HELPER_SERVER=http://helper-web:3004"
+  - "BAT_GRANT_SERVER=http://grant-web:3333"
+  - "API_PROMO_BASE_URI=http://127.0.0.1:8194"
+  - "API_PROMO_KEY=1234"
+  - "ACTIVE_PROMO_ID=free-bats-2018q1"
+  - "BASE_REFERRAL_LINK=brave.com"
+  - "API_EYESHADE_KEY=00000000-0000-4000-0000-000000000000"
+  - "API_EYESHADE_BASE_URI=http://127.0.0.1:3002"
+  - "API_LEDGER_OFFLINE=1"
+  - "INTERNAL_EMAIL=admin@publishers.local"
+  - "RECAPTCHA_PUBLIC_KEY="
+  - "RECAPTCHA_PRIVATE_KEY="
+  - "SLACK_WEBHOOK_URL="
+  - "SUPPORT_EMAIL="
+  - "UPHOLD_SCOPE=cards:read,cards:write,user:read"
+  - "UPHOLD_AUTHORIZATION_ENDPOINT=https://sandbox.uphold.com/authorize/<UPHOLD_CLIENT_ID>?scope=<UPHOLD_SCOPE>&intention=signup&state=<STATE>"
+  - "UPHOLD_API_URI=https://api-sandbox.uphold.com"
+  - "UPHOLD_DASHBOARD_URL=https://sandbox.uphold.com/dashboard"
+  - "TERMS_OF_SERVICE_URL=https://basicattentiontoken.org/publisher-terms-of-service/"
+  - "DATABASE_PASSWORD=password"
+  - secure: dTjXLrn2vrEYHpSXd+F9J/CVMyDbik/ab/BJt6stt6IGTYoOc27GOe1w4Gry8QBpgv+W8uxPihTFMNKDwa9XmGf6RgmT/NXTnLM8fSv1zFlX+KaGrWrhifcGKde/yr5ZFYjxaEj1g+JgQoMgKu9QvOillJXe9lUGRgI77f4kEHJHzOmYi2uIykdj4H8JERSxZdqA1t8ZNZIZvWy/S0RcchAjafuO0cgGtJF9oqTKVf4BD+b0ajF/fazDmby1MpeOJFRINJpfqzn25cVF1Z+EFH6IeFrNGmr7rX1HATCt/kNhiOM+fwjywWDtcQsBVTVJdE1ew0pP7Beulc1z1gjBdHI7W+QgJCrrAG/HPOeXpWliUJeJiQqOVg3slzd0y5Zb5syXgVfm2mnbe7SLHZ2gdHGw1z3iJmSC+hW+Lj2pGwiNcG+8TLIc72241TElZvpKjRcFoV5/eEBWtnv5gaffCmK0m6pB4+V+v4l6VfSzLEGVN3BGQN+J3EGnuy7KktMyzcezR0BjZRV+oKBq/A8OJw1R2c+hh/PDPB1GDQRayBZdt9GKwXJ8ttj4DUZeMrae6CmQxnh3lJ1YcymC10k8UkHtWp/BhouCq/dpqtSOhqdgeGD6tuU3pIlKB/60pcaUqFTwlD4AXd/UZiA7u0qr3g0LgHBxv05YnCqvkWhKC8E=
+  - secure: e82ADsM0yyrfgCFGfmQrdCMEznc+qQU7C9znd/p4zfyCyJC5WwrYU8e1g55hOLQBXQ2qeNcqmVU/RTccb1ekNe+wOccchwwmKtwtMO0WcUFC5SzzJomxyXhdxnzz/9Zqel70xqg7p6CZ/E+euREqbEmYDeAuohpdm1MfiGQ+26s2hNbIoZVkUfLo+j+faDAgiu37wsQkWEPF2n6StikezysCtaFOZMT8mHn1grzbENiSgkxR4mqa3fOhDAWvQuzBThyYI9O+Z4LJJ6MxpMT9+he1BXEtWxhkEL28zQpECzztCSUI4nM+JSVCuJl7E+zusp6gK6QhjZFT2v7Ohq0pFgGFWUs2AzKbjsVivENtpMgM53ahPd8uLV91vHId5V2Vw0AqaYvIUiq+SvQHhzZV/pgaG/kdfnr/nQtfiT19A4IygaFsV/HwvzRWhEfe/ACOYGvbVKj7A5fTgwVIOk+jsuL5MzAb0kKBwFPykEm0OhAj2jipP17tEl44pZOjmf0WXDFB55RsjfVKghX9nDh4S6IiEaWaS4Z57dpW29HtpP0S9fYqNDBpf9PyuDhDT1uvuB4eC0wLbO3y2OYj3UEC7prBtOzxbGTdfwY0V6B18U5pPDt/mJqOI7hWx8llriM7P/ZNURa60s0tqLSEfMk9UDEAto3M2lDSpvZp5K+elRA=
+  - secure: dBh0D76CgiPAuVAhze5aabi5MRaQmHMFTAA4zzy40tRLnLe7Vc/IKX+I7Kkl/7ujWkONEHesneGASla/NUpgaWKSQPtbDnEVm05L/XsKy8lwLoGjisOZpGN8JpPS+edS4hy03g/9cIUFJjzNW5FsDEdEhasVb94/XXDQL/mlkCTy+rOvAzRwxKYjb0mp0gAYG103rVr28h520RJNUS9DNBOVuIIuS9cO1dPRfixB+6ydzTAHftq7IgA1TlyNtHodBCq02gYrGoJpnwzYSbQC9Btq63V/nPXqKdJS6dnel1k/d8mJodBJ1hnjmfBlvM6Gm3oHsZ5S9Y/D1mMveSfOXLC5aGYt1jWhcPOYfypfGnvXC9eEvW05wfir9VmMu79UpJd6G6d2wnjJI9GTe2/OhzBu5XKRcQiE3us9PJyQajUVQipqimiqN9rxp78Du7/q3xsAlI9/m07jbi99aNaV7DwVnF2SmxU/i/M79elL2bUTn4Wt6HSZc6WcJyhQyorKPjCdb95h3+nbaZOzLI7wGgH5i1gMjIqHug+tDOT7os+MyW5bN+Kak5nwPROJzLovibEuGwgauW7Bvq6ySvFHDQ8y/YP2IyAsc/kNUYrYfj6qU4hu70LKpCPQqHeeBChIrqaLZf84nmnfA1i28i9PM0Y014roHN0tiZlFWdXenOs=
+  - secure: xIAOS4upsrDh/6pNUUrP3kyKQYpHV1OlfTORZajSXQ2+KpoAIEEyC8QYf/DWvi+lAWQRB7cUyIF+OE2Gb0DwIyeczgys1lBDorR41vJPh+xbi6NF+X/skSv7B5HHfKLKgJVIz2FgQh8mKYf1ZPgovAEh04ou4sj0G8umTnnIrsz6Pfs2KUw/Ju8ypeXcQLuMczl3P7/tGRnjf0H9Ems8m+FJWKXtFB7vG9OPgAuPtrRSFTrY7IXSEnqnpf4nNLeOJ0ifFwxV0Qt2iPDhDocSsvYzGWGb9AIU6JYz6d8pnzLREC/PswyA6dAIkaHJojnJPOkQAhmWZ/RoDYq4jXZAfaEIclVeJMlzp0YjxfB8hpcxUw8Zd6MpTFfnIGUm6F/xiuT02bL2Y+giTpEE/KwXgSvbkqBJZEPg8StdwKgjO4mPeRumj4DaycT1ZfptNxhSoBNpEIJE5zQJ/FWy0LaPap8cPf6hTuZu8ZI/ntrNwk80OkQp1QLHeo58twBmA8Baezq2vrWkysqqRo6AQD9mU7Es18F6m52Aay+qJlsfclt0Wb11u4dfj39EyJo38qvCSL8G9aPOxYhQjQxM5hgFXNHUCLNnhqx15i1B2fxbBVEs2tOKH2Szdb3QpuqMQMnucwTEjIYPfrbQ08N/l+vp/gvsVew0K8o1slh/BA+Eub8=
+  - secure: P2dlx8cxnHRTrybk3mXcNb6fxyxUw+kEX/vzEtRdeumlIjpU4QP2wS5RdLJuu5tQWluZ5y26pDTQ1NoG48wmiaOUTg2VA/Qv0cmtYIKP0+ZeVeoEtxrGBlDe2RQ3/u2O+tUDKIlXyUxjBvsa6kl3pNAN5/kvkCTpniqv3wcviyi5CG9FFLyZ/z91hg3f0nNnl1hexqNCQbfuX4VNbE2s/A2Zlv0anpl07LEeETkjdC6O717Y5o+E2TeJ6AhP8Z8apIS1Uce/QxpNi1e4XGDnjx1cPEik74g+l2L7EebXgIdIP3GIr86bAG6iUEBlf+LOBPuASjiQXgtKUqmPDeXnFdVr63fDmuUp1wTqjcbmRvib1fNJL6H77kesAHadCFSGL6OsM84vlvno9/TiNoA1uzUdhIfa0haWdTLg84HJD8UTAcVIoJsmBfqMoBqO2CnYpQ8qoJpNZ1pobNtmD19fzE1jZIcn/CaIB4yj8hkAkD9hgIW+zSEjqIYx92tVGP+djV2v5Uhcy99eX+h+08BHlvZxJUmVCd1AqoN9kjSnB7sLMdU7vxxWncp+xMTJkpgwCQt1t4WLtPXP2mHvJPuncSKXstI/OAyqVk25meQcimaHT0Lk/CCpER0kVCgftejMvw9B0Rb0KBiuZAt8se5wE1Rdc5iNdZ7nB22JiFzxvoU=
+  - secure: RdAPnhxmj90XyKcVWgcSk1jxnatFqdb5UE9mN7Exq4vhf2mLPT0gDTYPct061IkUHiw3jSmb7yKIDlbRwWE5Gakj2rhKE00/Mng4eUZpqxrGeL4iYe1hzVdXuQfey0RNkdp4a74oupHSMs4mWBCox0tpLrgoR0iIlZ1j5b4rRLMsOVSIIL/KZevWIaYV4kKsCv5ds9Wv2joru3CqQ1pkwHVZ86hTq7cX/Y32M+zdDBg8eGJ994nJWh3HMdilS6F6vXtR/zIuzp50if8qCos0KA0avhrpoukKrWWMQi1BplTuxP9YA2eJbIgs/HiHzr9+HRemLmMhJhrhdDmd1TwRN4MAD9SXvSISY594JaZMWIJr0SrpicXo/zYNatbKnjGKPGx0RWadfi4Q1ZzTlTTCmZ5UqE24z8rZbQBHggZ+jGo9e58cQAC6y5rVZDLFjYnyCUzHtzrHxtLU1s5JdT+n7S27+W06Of7Q9xa9ZRGktSeHpMwK4ZIfVH7F/oRi9thUl6lZzImwpL/aunTtZYLXPuGPeYfci2576HRM1xWxGFnzD+ujZVlaGPbFif2pAQ3U6WnYeds+Mg9xmErirDLCwIM7Hd3ulITk7BCSZ6nitkR+HYD85Z5UtOPJu2UmRaPp5s5BJflZ9svTOwfKfk9ul3yu8fXbE7xrJWy/z7YuTCk=
+  - secure: frrSFqDZQ6MswDeHL2YLV6KqW0KvXtkrV7rpo54msC0dvY6XKHIhXvCIShwtrawPYvWC6Tzhljk0zfhMhypJOoqDmbiWBr8F35AV29rNxA5Lgpki8pQFoH6of7d0wjzwHoUMCGw0jryYQ58IlSRly6uPP/6engjhwijIbqhvtWcNa/nNrdQ0/tD18IXmAU1KMsr/tf2OeZDJLgTBaZd4BHkyXnrOzojr9b7H7M6d4BmkPuFPRf9LcUHWYEvOpEVTxskZa9vMrTb2RjY7vud7e/9hwhhxNrQkr30922z72IRCuQjPs1TCqz0exs5w/ntaBCVHO8zhysDoieytFv5xJkzfe3bGVdyOksf8FbZGS+Ow6/03XzaEeegalk3O5BvmPuy4sEpUdV0ZEYW/k7fRWJDhE0fvQQHID9jTN8Nj0W+9k1Rdn1b0gybeJwjTSZtMKMeFue8tZlS+S7rMYHpFZAuaAa7iDjvvHkxPtOVMV99/GXL4QQ+5MYiYEJ68c30SVTVX35AawNFd5ZwvBAXw+ciJACQ0Jb/aZBfJRq9tRBYJLGdaQ+gIFFCjH7vJGB7cqPb/VR4vxOzu/XWxtgnTDOlAGek7jzOyMPMZLfu2cmj0DirVnNXmyM7kXrxKoalQ6o2C/kQ93Z6X5ke13EOXi7HndbJ/qCjKKU+JhQzXa08=
 before_install:
-  - # start your web application and listen on `localhost`
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+- docker-compose build
+- docker-compose up -d publishers-web
+- sleep 10
+before_script:
+- RAILS_ENV=test bundle exec rake db:setup
+- RAILS_ENV=test bundle exec rake assets:precompile
 script:
-  - RAILS_ENV=test bin/rails test
+- RAILS_ENV=test bin/rails test
+
