@@ -11,17 +11,23 @@ Sidekiq::Testing.fake!
 
 WebMock.allow_net_connect!
 
-Chromedriver.set_version "2.35"
+Chromedriver.set_version "2.38"
 
-Capybara.register_driver :chrome do |app|
+Capybara.register_driver "chrome" do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w(headless disable-gpu window-size=1680,1050) }
+      chromeOptions: {
+          binary: ENV["CHROME_BINARY"],
+          args: %w{headless no-sandbox disable-gpu window-size=1680,1050}
+      }.compact
   )
-
-  Capybara::Selenium::Driver.new app,
-    browser: :chrome,
-    desired_capabilities: capabilities
+  driver = Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      desired_capabilities: capabilities
+  )
 end
+
+Capybara.default_driver = "chrome"
 
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
@@ -34,7 +40,7 @@ end
 
 class Capybara::Rails::TestCase
   def setup
-    Capybara.current_driver = :chrome
+    Capybara.current_driver = "chrome"
   end
 end
 
