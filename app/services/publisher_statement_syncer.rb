@@ -13,7 +13,8 @@ class PublisherStatementSyncer
       publisher_statement.contents = contents
       publisher_statement.save!
 
-      PublisherMailer.statement_ready(publisher_statement).deliver_later
+      # TODO uncomment when statement notification emails are sending
+      # PublisherMailer.statement_ready(publisher_statement).deliver_later
     end
   end
 end

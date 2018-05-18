@@ -31,10 +31,11 @@ class PublisherStatementSyncerTest < ActiveJob::TestCase
     publisher_statement.reload
     assert_equal "abc", publisher_statement.contents
 
-    refute ActionMailer::Base.deliveries.empty?
-    email = ActionMailer::Base.deliveries.last
-    assert_equal [publisher.email], email.to
-    assert_equal I18n.t('publisher_mailer.statement_ready.subject'), email.subject
+    # TODO uncomment when statement notification emails are sending
+    # refute ActionMailer::Base.deliveries.empty?
+    # email = ActionMailer::Base.deliveries.last
+    # assert_equal [publisher.email], email.to
+    # assert_equal I18n.t('publisher_mailer.statement_ready.subject'), email.subject
   end
 
   test "retrieves the publisher statement contents - but does nothing if contents are not retrieved" do
