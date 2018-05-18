@@ -17,11 +17,18 @@ environment rails_env
 
 address = ENV.fetch('ADDRESS') { '127.0.0.1' }
 if rails_env == "development"
-  ssl_bind address, '3000', {
-    key: ENV.fetch("SSL_KEY_PATH") { 'ssl/server.key' },
-    cert: ENV.fetch("SSL_CERT_PATH") { 'ssl/server.crt' },
-    verify_mode: 'none'
-  }
+  ssl = ENV["SSL"]
+  if ssl=="off"
+    bind ENV.fetch("BIND") {
+      "tcp://0.0.0.0:#{ENV.fetch('PORT') { 3000 }}"
+    }
+  else
+    ssl_bind address, '3000', {
+        key: ENV.fetch("SSL_KEY_PATH") { 'ssl/server.key' },
+        cert: ENV.fetch("SSL_CERT_PATH") { 'ssl/server.crt' },
+        verify_mode: 'none'
+    }
+  end
 else
   bind ENV.fetch("BIND") {
     "tcp://0.0.0.0:#{ENV.fetch('PORT') { 5000 }}"

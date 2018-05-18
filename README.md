@@ -163,8 +163,39 @@ to start with docker, simply build
 ```sh
 docker-compose build
 ```
-and bring up publishers-web with
+and bring up the full stack (note you must have your local ssl cert and key created)
 ```sh
-docker-compose up publishers-web
+docker-compose up
 ```
-running tests normally afterward
+
+### Configuration
+
+Add a `.env` file to override any values in the docker config (`publisher_vars.env`).
+
+### Tests
+Tests can be run on the container with
+```sh
+docker-compose run app rake test
+```
+
+Other one off commands can be run as above, but replacing `rake test`. Note this spaws a new container.
+
+### Debugging
+Debugging with byebug and pry can be done by attaching to the running process. First get the 
+```sh
+docker ps
+CONTAINER ID        IMAGE                    COMMAND                  CREATED                  STATUS              PORTS                                            NAMES
+234f116cd942        publishers_app           "foreman start --pro…"   Less than a second ago   Up 2 seconds        0.0.0.0:3000->3000/tcp                           publishers_app_1
+b592d489a8d3        redis                    "docker-entrypoint.s…"   15 minutes ago           Up 3 seconds        6379/tcp                                         publishers_redis_1
+f1c86172def7        schickling/mailcatcher   "mailcatcher --no-qu…"   15 minutes ago           Up 2 seconds        0.0.0.0:1025->1025/tcp, 0.0.0.0:1080->1080/tcp   publishers_mailcatcher_1
+```
+Then attach to the container and you will hit your `binding.pry` breakpoints
+```sh
+docker attach 234f116cd942
+```
+
+To connect with a bash shell on the container use:
+```sh
+docker exec -i -t 234f116cd942 /bin/bash
+root@234f116cd942:/var/www# 
+```

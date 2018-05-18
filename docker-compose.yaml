@@ -1,49 +1,112 @@
 version: '3'
 services:
-  postgres:
-    image: postgres
+  app:
+    extends:
+      file: base.yml
+      service: publishers
+    command: foreman start --procfile=Procfile.dev
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-  publishers-web:
-    build: .
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
-    volumes:
-      - .:/app
+      - "./:/var/www"
     ports:
-      - "3000:3000"
+      - 3000
+    tty: true
+    stdin_open: true
     depends_on:
       - postgres
-
+      - redis
+      - mailcatcher
+      - eyeshade-web
+      - eyeshade-worker
     environment:
-      - STREAM_KEY
-      - UPHOLD_CLIENT_SECRET
+      - CHROME_BINARY=/usr/bin/chrome
+      - ADDRESS=0.0.0.0
+      - API_EYESHADE_BASE_URI=http://eyeshade-web:3002/
+      - API_EYESHADE_KEY=b7747761-0656-48a1-8cb9-7b1b0315d054
+      - DATABASE_URL=postgres://postgres@postgres/brave_publishers_dev
+      - DATABASE_URL_TEST=postgres://postgres@postgres/brave_publishers_test
+      - MAILGUN_SMTP_PORT=1025
+      - MAILGUN_SMTP_SERVER=mailcatcher
+      - PORT=3000
+      - REDIS_URL=redis://redis:6379/0
+      # null ssl
+      - SSL=off
+      - UPHOLD_API_URI
+      - UPHOLD_AUTHORIZATION_ENDPOINT
       - UPHOLD_CLIENT_ID
-      - GOOGLE_CLIENT_SECRET
-      - GOOGLE_CLIENT_ID
-      - TWITCH_CLIENT_SECRET
-      - TWITCH_CLIENT_ID
-      - "MONGODB_URI=${MONGODB_URI-mongodb://mongo}"
-      - "NODE_ENV=${NODE_ENV-development}"
-      - "REDIS_URL=${REDIS_URL-redis://redis:6379}"
-      - "BAT_LEDGER_SERVER=${BAT_LEDGER_SERVER-http://ledger-web:3001}"
-      - "BAT_EYESHADE_SERVER=${BAT_EYESHADE_SERVER-http://eyeshade-web:3002}"
-      - "BAT_HELPER_SERVER=${BAT_HELPER_SERVER-http://helper-web:3004}"
-      - "BAT_GRANT_SERVER=${BAT_GRANT_SERVER-http://grant-web:3333}"
-      - "API_PROMO_BASE_URI=${API_PROMO_BASE_URI-http://127.0.0.1:8194}"
-      - "API_PROMO_KEY=${API_PROMO_KEY-1234}"
-      - "ACTIVE_PROMO_ID=${ACTIVE_PROMO_ID-free-bats-2018q1}"
-      - "BASE_REFERRAL_LINK=${BASE_REFERRAL_LINK-brave.com}"
-      - "API_EYESHADE_KEY=${API_EYESHADE_KEY-00000000-0000-4000-0000-000000000000}"
-      - "API_EYESHADE_BASE_URI=${API_EYESHADE_BASE_URI-http://127.0.0.1:3002}"
-      - "API_LEDGER_OFFLINE=${API_LEDGER_OFFLINE-1}"
-      - "INTERNAL_EMAIL=${INTERNAL_EMAIL-admin@publishers.local}"
-      - "RECAPTCHA_PUBLIC_KEY=${RECAPTCHA_PUBLIC_KEY-''}"
-      - "RECAPTCHA_PRIVATE_KEY=${RECAPTCHA_PRIVATE_KEY-''}"
-      - "SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL-''}"
-      - "SUPPORT_EMAIL=${SUPPORT_EMAIL-''}"
-      - "UPHOLD_SCOPE=${UPHOLD_SCOPE-cards:read,cards:write,user:read}"
-      - "UPHOLD_AUTHORIZATION_ENDPOINT=${UPHOLD_AUTHORIZATION_ENDPOINT-https://sandbox.uphold.com/authorize/<UPHOLD_CLIENT_ID>?scope=<UPHOLD_SCOPE>&intention=signup&state=<STATE>}"
-      - "UPHOLD_API_URI=${UPHOLD_API_URI-https://api-sandbox.uphold.com}"
-      - "UPHOLD_DASHBOARD_URL=${UPHOLD_DASHBOARD_URL-https://sandbox.uphold.com/dashboard}"
-      - "TERMS_OF_SERVICE_URL=${TERMS_OF_SERVICE_URL-https://basicattentiontoken.org/publisher-terms-of-service/}"
-      - "DATABASE_PASSWORD=${DATABASE_PASSWORD-password}"
+      - UPHOLD_CLIENT_SECRET
+      - UPHOLD_DASHBOARD_URL
+
+  eyeshade-worker:
+    container_name: eyeshade-worker-publishers
+    command: "npm run eyeshade-worker"
+    extends:
+      file: ../bat-ledger/base.yml
+      service: ledger
+    environment:
+      - MONGODB_URI=mongodb://mongo/eyeshade
+      - SERVICE=eyeshade
+      - PUBLISHERS_URL=http://app:3000
+      - TOKEN_LIST=b7747761-0656-48a1-8cb9-7b1b0315d054
+      - UPHOLD_ACCESS_TOKEN
+      - UPHOLD_CLIENT_ID
+      - UPHOLD_CLIENT_SECRET
+      - UPHOLD_ENVIRONMENT
+    depends_on:
+      - mongo
+      - redis
+
+  eyeshade-web:
+    container_name: eyeshade-web-publishers
+    ports:
+      - 3002
+    command: "npm run eyeshade-server"
+    extends:
+      file: ../bat-ledger/base.yml
+      service: ledger
+    environment:
+      - MONGODB_URI=mongodb://mongo/eyeshade
+      - SERVICE=eyeshade
+      - PUBLISHERS_URL=http://app:3000
+      - TOKEN_LIST=b7747761-0656-48a1-8cb9-7b1b0315d054
+      - UPHOLD_ACCESS_TOKEN
+      - UPHOLD_CLIENT_ID
+      - UPHOLD_CLIENT_SECRET
+      - UPHOLD_ENVIRONMENT
+    depends_on:
+      - mongo
+      - redis
+
+  proxy:
+    image: "dockercloud/haproxy"
+    ports:
+      - 3000:443
+      - 1936:1936
+    links:
+      - app
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      SSL_CERT: "-----BEGIN CERTIFICATE-----\nMIIG7jCCBNagAwIBAgIJAINQ0hQNQ9x4MA0GCSqGSIb3DQEBCwUAMIGxMQswCQYD\nVQQGEwJVUzETMBEGA1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FudGEgQmFy\nYmFyYTESMBAGA1UECgwJRW5kIFBvaW50MRcwFQYDVQQLDA5UZXN0aW5nIERvbWFp\nbjE0MDIGCSqGSIb3DQEJARYldGVzdGluZy1kb21haW5AdGVzaW5nLWRvbWFpbi5m\nYWtlLXRsZDESMBAGA1UEAwwJbG9jYWxob3N0MB4XDTE3MTIwNTAwMTk0OVoXDTI3\nMTIwMzAwMTk0OVowgbExCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlh\nMRYwFAYDVQQHDA1TYW50YSBCYXJiYXJhMRIwEAYDVQQKDAlFbmQgUG9pbnQxFzAV\nBgNVBAsMDlRlc3RpbmcgRG9tYWluMTQwMgYJKoZIhvcNAQkBFiV0ZXN0aW5nLWRv\nbWFpbkB0ZXNpbmctZG9tYWluLmZha2UtdGxkMRIwEAYDVQQDDAlsb2NhbGhvc3Qw\nggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCpSGgAUFIA48X0xHBXfF7q\n6uJgi8/nptnQHLKTiu45Tumj4cxyTPnYmrMgWHZNmi+lphkTfBLZ2X+j76d4JITv\n25WIX32liJUx5F+rlddcdgQLFwhwsAvxNHqYr+gml2ko5GdMCWdYMxwTyLa6RRIR\nLDTAoURsqcF5MSitRySetTOD9AOB8ERF0n76iMNlj9ZNt54td9qBpN2iMBGnIuRJ\nQcGJ3V4P6l8/DSRQDvbHcurYN6Ej8xmwthhmmwy5d6N3da2gdYaTunA2OsF6rzJz\nJBSJ1T9RUib5gVwuEXRBFHVVIKBJK3sCoQCYbkOYWcHg//4LOwb/MKqi0edWFVlc\nYgyKdFnqXpOuZcsv251/50OxSwuM1xUymDivlvS3BCIiCm7QnVLDUUK+D93EA74h\n0FY5IoA27QZNVRKDjDLvpgjGaOcag9XaeelQBj1HLrBK1rjlguhUBwFwtVC1ZpWc\nHFIqVCqgcvgQcucgwcVmO6nhdts4hI0WG2dpvdBT9S+PKF+HA1e04q+rYNzyDKyF\nGkOTQngjQxnN33KZI+Rb4UKIa3bd0rKSIZhH0I7DBcLX35HGPmQddEfBLwCo3B3Z\np192SHGt+GsEF+ZyVm7Q/85uXC0n3Brm0t8dWUzWc4K1wkqFl0TN2FlzTjEHbY39\nhaNZgdRVxk/VL+RJ26hfTQIDAQABo4IBBTCCAQEwgdAGA1UdIwSByDCBxaGBt6SB\ntDCBsTELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcM\nDVNhbnRhIEJhcmJhcmExEjAQBgNVBAoMCUVuZCBQb2ludDEXMBUGA1UECwwOVGVz\ndGluZyBEb21haW4xNDAyBgkqhkiG9w0BCQEWJXRlc3RpbmctZG9tYWluQHRlc2lu\nZy1kb21haW4uZmFrZS10bGQxEjAQBgNVBAMMCWxvY2FsaG9zdIIJANT72vwlyYWB\nMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgTwMBQGA1UdEQQNMAuCCWxvY2FsaG9zdDAN\nBgkqhkiG9w0BAQsFAAOCAgEAdESaQ7y45MWV38P91kop9r5lpUQxcGZCcGwBLEN9\nK/Movk2uOPmO4qeTYyw6HiBwzT9HiEE63irFpXnv3LdfRupByF0jihnIWHRvYwjY\nodcTspDDjaI2yGFAj6ZArssFu/auBIS4egRFDe2ArI7NmC12UMu3ORS29FEHCrlF\nl6CwRhDGpCjuxj4w7b2LO9JjIxzQc0VxMKvs46e/u0Y1TSqdhg9LQ5IBnmjHAEvo\nd21gIHEZ3V3bgDEde2h4s4xfxEDTzlI3PDDVhUn4cYd0k26A8AMxu1u1F2GUtQrR\nQwmyhFDfvbZ+SXSkGjHk018XfPuJF9W8DpT2icpMgQ+tnB8QMlPzY4n1O7jzdIVo\nPBQqyQM69YSkd6SkfBy3gKbSgvJbMSZwjacW/pf2txup08xIW/SmsPqRrgWbA20j\nZYPn0TBAhVcNKJmODz9s9V5M8x8Eww9qI2VtSJUsutrWRtoJFbBJk0SCXWG6Qwh1\n23Tlnke86OdSZry9lQlEZ+gEYBLihHNGe23HHCszkxIUykRqd+rhn3gwLqk9qoiv\nShzoPZq0SVYEJx+rrsEOPyvBJ46Y4NtQJ+++iSux+kHz35Tkod2KJLflifdgL6wm\nAqyhwxPNZQ6wqe2CTSXL8pX3H82PcIlulWSfq2otOCsFCI7UQtkhByVoe/f3qoBp\nNJw=\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\nMIIJKgIBAAKCAgEAqUhoAFBSAOPF9MRwV3xe6uriYIvP56bZ0Byyk4ruOU7po+HM\nckz52JqzIFh2TZovpaYZE3wS2dl/o++neCSE79uViF99pYiVMeRfq5XXXHYECxcI\ncLAL8TR6mK/oJpdpKORnTAlnWDMcE8i2ukUSESw0wKFEbKnBeTEorUcknrUzg/QD\ngfBERdJ++ojDZY/WTbeeLXfagaTdojARpyLkSUHBid1eD+pfPw0kUA72x3Lq2Deh\nI/MZsLYYZpsMuXejd3WtoHWGk7pwNjrBeq8ycyQUidU/UVIm+YFcLhF0QRR1VSCg\nSSt7AqEAmG5DmFnB4P/+CzsG/zCqotHnVhVZXGIMinRZ6l6TrmXLL9udf+dDsUsL\njNcVMpg4r5b0twQiIgpu0J1Sw1FCvg/dxAO+IdBWOSKANu0GTVUSg4wy76YIxmjn\nGoPV2nnpUAY9Ry6wSta45YLoVAcBcLVQtWaVnBxSKlQqoHL4EHLnIMHFZjup4Xbb\nOISNFhtnab3QU/UvjyhfhwNXtOKvq2Dc8gyshRpDk0J4I0MZzd9ymSPkW+FCiGt2\n3dKykiGYR9COwwXC19+Rxj5kHXRHwS8AqNwd2adfdkhxrfhrBBfmclZu0P/Oblwt\nJ9wa5tLfHVlM1nOCtcJKhZdEzdhZc04xB22N/YWjWYHUVcZP1S/kSduoX00CAwEA\nAQKCAgAVaHK+l2nHcwa1zaHnbnMSgmHek8/XG+KvzvFGd2tpE/G4J/YS/mkaW3YL\nwSQ07CraaAcDz80Sf88EjGpBZ1zoeHyQooLhTESR6q+uo2R47PPV8zO+DIV2G4zl\ngll5h+xkn33wv7+yB8SlO9zf8Zw3T7/cHIjqtQ0ipnTedQDMkV3Scil/ZUM9EUG9\nrU4IqggQDAiU93NKse7Vc/7HhEIagZZYOQaMPLeO4bqV5U6QKphIf8CBK100W9L6\nJuGVEuw5T0iF4lcCl7FZKlUNjtpydT2jsLQxNJJ5O0LNEKgDEvNDsLyUhEsqKfJJ\nVKh3u+Io8jbOdMiNvTnXHXSEDm8eax+cifT/ZjxyrxFJEFHL5dl1Zp0G55lWnLVQ\nGGSmE5k4Q+z4joVJMgV4hQCsNqC9Low1uzoigbM0blo6WUzk5NdDv+IapvSzayQ0\nmZAPMvvXTdb7I+MsvgNNmTdwO5JSXYRKByy/bXJiLPWv4F/kzTGeG2Gu1FqBbevy\nTfZOXKh5vcWt+ltDT/Cn0g1kpS8mXGN0axGabFD/OcuWsM3cJ3vX1ps1b+GZNUsl\nr2vg6pznZkWUWg3VQPXV/v34NIXD2/ogEwbCmYqcUN/9umQ4bSakag/Q+MxoqDwM\nlKyZxZHE+IFDBFQEx3vjZyqKWrXizxyspmbLtzx7mnd1hGRoAQKCAQEA0sbt5IYG\n4EtmoEHoLMe/BYUkB1uKmEiR9zoDjkdGmzy4iVuZBX5CfN1KMTrZNJR4OTeo1gTy\nqljaIeznxebSMzH0lqY4aXWKdw0pmKa7rSX0LsxZzFeNdj+zT3zlVly6WKzecSfD\nsQvd2OBYkP4sbO0gEXhCUDZh6bnEznVgDPWdAvOUlY70Sh14HUcfuTs0oAH5uP2z\nrPcMMAX+SFK3oA0x2FHB1rvPKV+/0EMozGdfTkRRMP0xWpUhnM8ilvZrkZ6/qSYo\nVhOCpKtUviai7mD3z/xbBMOqjCDEiHkUSz93sactuS7F1uCbt8v42aJj1LdwKajH\nUD+SzP0loKn6fQKCAQEAzZpg9hTVzXvlkAoEa8gITk4E3FKuFkRH+pKKAR4qeLuI\nO7lhPvBvToHKhuCn3ZbDzi4/BNNORfXoxfffX0c6jaUiKBCenF9/dcZptZk9U7tx\nC1AZNxyeAPDTQByp6pVc07/AKnZNncob42uywJmZR57A/pkCX4pqynhDRRTjgbbI\ncI8qxHq9SOGHMiB8v46cOrHCmhhpuGCrm1JlmDdLoFf0JtG11bFKqgBYuZNAkmHV\nYXUo9J/HEm+wuCABQEZOZt1/2mOQf1bUndjPrvSSWZxdUjzQh1wh8JscAXhguy4o\n/apmhWfJ39hh3xtfdz+xQjwaq5W+9FPg0AdD/OlBEQKCAQEAqWhd1+ipKikwKOoP\n873vmD40gP1gXZkmSHCGXxqGc0rQfwXx7WpXgghSE1NbNFmIb2R+/NUpPSUA3XeN\nqZAlriQek96xRIHGcn1Py3NnMHlq0xpHqmdMOZhlRCP8J/eLhq4acxQkwu3otuFK\nDe9cQYgs2B2yHso21CYNOms4cfIO6kpgR/yH9/HLkqyRoM0nNNuhnL+8Y+6ECy0l\n/XcOQ0OXpme/xhlZHcXpYzg3WGJVRZC/OQKnYkiupVwOTwtr1bSkEw2qKdSwki1q\nhRKErdeeFbqcZS3mq43CqHW4i+pNB6p4o3gmZthMD+OO9U0Bs/xj1/fhimwuTze/\nwGwd+QKCAQEAkkWvj8L47KylgFkwFgIErrjgymJkCeFgGAti9TKh4q0AWgUkAyQI\n/CBolpaDtqkI+sl5+hPezvUJOraDCwTgyl7eMwTH4tYqFv8mu5SexdBHt1Wv6r6I\nRoEOucDqvcKvfNIhg9QQmh5swtofHNjp7MMr6LWws4oFObBfo2keBm2kojeopInx\n2kTg6y+jsKBj03odyYVuyUa1L9ZqAuXr/tI0F94AcFwmk1WVycjSGpJRvXkdvxNh\nDGO7pPLYEQMzygjxacyFw6Jhtz7FWmITMH+HAPfVH0fTuZqQTRd4MhLABN/S+jwB\nqigGUTTnMS52DHo4OzRY2vhFq5pPq0HDEQKCAQEArSY3FUgAEHPPVYikcxZL8aTe\nUfVMtDekS7cvn7sxJw4UHvT8/cXInfXmXqos14MLliAa704ja7+YYf9LDaxpuR46\nCaBPUQgwaAb0MYBVCs+yeP3ezZr3NOdFJcdI/FvH9E8NWPIP+RA6EvjqWYzsEADo\n0V67bNu55ab+T6pd9ppTEyWulBB+aMKv7udjN6WOpXwGr9nm/C55xvmVHdQJqDYW\ngW7JyRROUpC6kMItuDBSeXE1VHB7+wvUbykEzejG32iiO6ycRq656DnLJr2kMJVP\nFRfC0dIGQ7co3dUiknUMvoJRUDF8B6XfevjPsVLdCkXTxebuDI9jRksBGsZ36Q==\n-----END RSA PRIVATE KEY-----\n"
+      TIMEOUT: "connect 5000, client 500000, server 500000"
+      ADDITIONAL_SERVICES: app
+
+  postgres:
+    image: postgres
+    ports:
+      - 5432
+
+  mailcatcher:
+    image: "schickling/mailcatcher"
+    ports:
+      - 1025
+      - 1080:1080
+
+  redis:
+    image: redis
+    ports:
+      - 6379
+
+  mongo:
+    image: mongo
+    ports:
+      - 27017
