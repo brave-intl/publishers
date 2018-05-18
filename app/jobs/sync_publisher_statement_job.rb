@@ -16,6 +16,7 @@ class SyncPublisherStatementJob < ApplicationJob
 
     publisher_statement = PublisherStatement.find(publisher_statement_id)
 
+    # Sends notification email to publisher on successful sync of statement
     PublisherStatementSyncer.new(publisher_statement: publisher_statement).perform
 
     publisher_statement.reload
