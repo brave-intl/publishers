@@ -4,7 +4,7 @@ class Api::TokensControllerTest < ActionDispatch::IntegrationTest
   test "can get tokens with verifier channel identifiers as json" do
     details = site_channel_details(:global_inprocess_details)
 
-    get "/api/tokens"
+    get "/api/tokens", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -19,7 +19,7 @@ class Api::TokensControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can paginate tokens and set page size" do
-    get "/api/tokens/?per_page=2"
+    get "/api/tokens/?per_page=2", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -28,7 +28,7 @@ class Api::TokensControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can set max_age in days" do
-    get "/api/tokens/?max_age=141"
+    get "/api/tokens/?max_age=141", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -41,7 +41,8 @@ class Api::TokensControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can paginate tokens, set page size and number, and set max_age in days" do
-    get "/api/tokens/?per_page=2&page=4&max_age=141"
+    get "/api/tokens/?per_page=2&page=4&max_age=141",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -50,7 +51,8 @@ class Api::TokensControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "max_age must be an integer" do
-    get "/api/tokens/?max_age=foo"
+    get "/api/tokens/?max_age=foo",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 400, response.status
     assert_match "Invalid arguement", response.body

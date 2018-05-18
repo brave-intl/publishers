@@ -4,7 +4,7 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
   test "can get owners with verifier channel identifiers as json" do
     owner = publishers(:verified)
 
-    get "/api/owners"
+    get "/api/owners", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -15,7 +15,7 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can paginate owners and set page size" do
-    get "/api/owners/?per_page=10"
+    get "/api/owners/?per_page=10", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -27,7 +27,7 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
     # Delete any records after the 9th
     Publisher.where(id: Publisher.order("created_at desc").offset(9).pluck(:id)).delete_all
 
-    get "/api/owners/?per_page=5&page=2"
+    get "/api/owners/?per_page=5&page=2", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -43,7 +43,8 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
         "show_verification_status": true
     }
 
-    post "/api/owners/", as: :json, params: { owner: new_owner }
+    post "/api/owners/", as: :json, params: { owner: new_owner },
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -62,7 +63,8 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
         "show_verification_status": true
     }
 
-    post "/api/owners/", as: :json, params: { owner: new_owner }
+    post "/api/owners/", as: :json, params: { owner: new_owner },
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
     owner = Publisher.order(created_at: :asc).last
@@ -77,7 +79,8 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
         "show_verification_status": false
     }
 
-    post "/api/owners/", as: :json, params: {owner: new_owner }
+    post "/api/owners/", as: :json, params: {owner: new_owner },
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -95,12 +98,14 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
         "show_verification_status": false
     }
 
-    post "/api/owners/", as: :json, params: {owner: new_owner }
+    post "/api/owners/", as: :json, params: {owner: new_owner },
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
     new_owner["phone"] = "603thisisprivate"
-    post "/api/owners/", as: :json, params: {owner: new_owner }
+    post "/api/owners/", as: :json, params: {owner: new_owner },
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     assert_equal 422, response.status
 
     response_json = JSON.parse(response.body)
