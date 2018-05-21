@@ -327,7 +327,7 @@ class PublishersController < ApplicationController
 
   def log_out
     path = after_sign_out_path_for(current_publisher)
-    sign_out(current_publisher)
+    sign_out
     redirect_to(path)
   end
 
