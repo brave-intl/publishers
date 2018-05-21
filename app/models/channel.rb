@@ -33,6 +33,7 @@ class Channel < ApplicationRecord
   validate :verification_restriction_ok
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
+  before_save :clear_verified_at_if_necessary
 
   # Set this to true prior to save to signnify admin approval.
   attr_accessor :verification_admin_approval
@@ -114,6 +115,7 @@ class Channel < ApplicationRecord
     self.reload
 
     self.verified = false
+    self.verified_at = nil
     self.verification_status = 'failed'
     self.verification_details = details
     self.save!(validate: false)
@@ -124,7 +126,7 @@ class Channel < ApplicationRecord
   end
 
   def verification_succeeded!
-    update!(verified: true, verification_status: nil, verification_details: nil)
+    update!(verified: true, verification_status: nil, verification_details: nil, verified_at: Time.now)
   end
 
   def verification_started?
@@ -145,6 +147,10 @@ class Channel < ApplicationRecord
     promo_running = Rails.application.secrets[:active_promo_id].present?  # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = self.publisher.promo_enabled_2018q1?
     promo_running && publisher_enabled_promo && verified_changed? && verified
+  end
+
+  def clear_verified_at_if_necessary
+    self.verified_at = nil if self.verified == false && self.verified_at.present?
   end
 
   def register_channel_for_promo
