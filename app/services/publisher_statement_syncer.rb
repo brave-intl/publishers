@@ -9,12 +9,11 @@ class PublisherStatementSyncer
     return if publisher_statement.contents.present?
 
     contents = PublisherStatementGetter.new(publisher_statement: publisher_statement).perform
-    if contents
+    if contents.present?
       publisher_statement.contents = contents
       publisher_statement.save!
 
-      # TODO uncomment when statement notification emails are sending
-      # PublisherMailer.statement_ready(publisher_statement).deliver_later
+      PublisherMailer.statement_ready(publisher_statement).deliver_later
     end
   end
 end
