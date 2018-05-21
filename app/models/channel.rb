@@ -115,7 +115,7 @@ class Channel < ApplicationRecord
     self.reload
 
     self.verified = false
-    self.verified_at = false
+    self.verified_at = nil
     self.verification_status = 'failed'
     self.verification_details = details
     self.save!(validate: false)
