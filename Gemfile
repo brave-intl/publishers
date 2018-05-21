@@ -7,6 +7,9 @@ gem 'activejob-traffic_control'
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
 
+# ActiveRecord Session store for server side storage of session data
+gem 'activerecord-session_store'
+
 # Pagination
 gem "api-pagination"
 
