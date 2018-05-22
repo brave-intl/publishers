@@ -28,9 +28,7 @@ class Api::BaseController < ActionController::API
 
   def authenticate_ip
     return true if API_IP_WHITELIST.blank?
-    # Set this in Fastly.
-    remote_ip = request.headers["Fastly-Client-IP"].presence || request.remote_ip
-    ip_auth_result = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(remote_ip) }
+    ip_auth_result = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(request.remote_ip) }
     ip_auth_result
   end
 
