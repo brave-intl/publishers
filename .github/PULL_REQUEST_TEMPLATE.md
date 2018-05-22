@@ -5,6 +5,7 @@ Submitter Checklist:
 - [ ] Added/updated tests for this change (for new code or code which already has tests).
 - [ ] Tagged reviewers.
 - [ ] Integrated piwik/matomo (for code that adds new buttons).
+- [ ] Addressed or ignored all brakeman warnings
 
 Test Plan:
 
