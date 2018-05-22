@@ -76,7 +76,6 @@ class JsonBuilders::IdentityJsonBuilder
   end
 
   def build_twitch_identity_json
-    # TODO with real values
     Jbuilder.encode do |json|
       json.publisher      @publisher_name
       json.publisherType  'provider'
@@ -94,9 +93,12 @@ class JsonBuilders::IdentityJsonBuilder
   end
 
   def build_properties(json)
+    require 'publishers/excluded_channels'
     if @channel_detail.present? && @channel_detail.channel.verified?
       json.verified true
-      json.timestamp (Time.now.to_i << 32)
+      # (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
+      json.timestamp (@channel_detail.channel.updated_at.to_i << 32)
+      json.exclude Publishers::ExcludedChannels.excluded?(@channel_detail)
     end
   end
 end

@@ -6,7 +6,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
   test 'a site not in the system' do
     get "/api/public/channels/identity?publisher=brave.com"
-    assert_equal 404, response.status
+    assert_equal 200, response.status
   end
 
   test 'a site not yet verified' do
@@ -19,6 +19,18 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ""         , response_body["QLD"]
     assert_equal channel.details.brave_publisher_id, response_body["URL"]
     assert_nil   response_body['properties']
+  end
+
+  test 'a site that is marked for exclude' do
+    channel = channels(:verified_exclude)
+    get "/api/public/channels/identity?publisher=#{channel.details.brave_publisher_id}"
+    response_body = JSON.parse(response.body)
+    assert_equal 200, response.status
+    assert_equal channel.details.brave_publisher_id , response_body["SLD"]
+    assert_equal ""                                 , response_body["RLD"]
+    assert_equal ""                                 , response_body["QLD"]
+    assert_equal true                               , response_body['properties']['verified']
+    assert_equal true                               , response_body['properties']['exclude']
   end
 
   test 'a site that is verified' do

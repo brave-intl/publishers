@@ -13,6 +13,11 @@ verified:
   details: verified_details (SiteChannelDetails)
   verified: true
 
+verified_exclude:
+  publisher: medium_media_group
+  details: verified_exclude_details (SiteChannelDetails)
+  verified: true
+
 to_verify_dns:
   publisher: default
   details: to_verify_dns_details (SiteChannelDetails)
