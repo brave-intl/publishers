@@ -26,7 +26,7 @@ gem "email_validator", "~> 1.6"
 gem "faraday", "~> 0.9.2", require: false
 
 # For building complex JSON objects
-gem 'jb', "~> 0.5"
+gem 'jbuilder', '~> 2.7.0'
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"

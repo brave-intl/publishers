@@ -141,8 +141,9 @@ GEM
       rainbow (~> 2.2)
       terminal-table (>= 1.5.1)
     io-like (0.3.0)
-    jb (0.5.0)
-      multi_json
+    jbuilder (2.7.0)
+      activesupport (>= 4.2.0)
+      multi_json (>= 1.2)
     json (2.1.0)
     jsonapi-renderer (0.2.0)
     jwt (1.5.6)
@@ -435,7 +436,7 @@ DEPENDENCIES
   email_validator (~> 1.6)
   faraday (~> 0.9.2)
   i18n-tasks (~> 0.9.12)
-  jb (~> 0.5)
+  jbuilder (~> 2.7.0)
   listen (~> 3.0.5)
   lograge (~> 0.4)
   meta-tags
