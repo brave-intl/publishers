@@ -2,7 +2,7 @@
 source "https://rubygems.org"
 
 # Rate limit ActiveJob
-gem 'activejob-traffic_control'
+gem "activejob-traffic_control"
 
 # Serialize models for JSON APIs
 gem "active_model_serializers", "~> 0.10.0"
@@ -75,7 +75,7 @@ gem "rqrcode", "~> 0.10"
 gem "sass-rails", "~> 5.0"
 
 # Sendgrid mail service
-gem 'sendgrid-ruby'
+gem "sendgrid-ruby"
 
 # Exception logging
 gem "sentry-raven", "~> 2.1", require: false
@@ -94,7 +94,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', '~> 3.0'
+gem "webpacker", "~> 3.0"
 
 # WHOIS lookup for unverified publishers
 gem "whois", "~> 4.0", require: false
@@ -103,6 +103,25 @@ gem "whois-parser", "~> 1.0", require: false
 
 # pagination support for models
 gem "will_paginate"
+
+group :development do
+  # Vulnerabilities
+  gem "bundler-audit", require: false
+
+  # Static security vulnerability scanner
+  gem "brakeman"
+
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem "web-console"
+  gem "listen", "~> 3.0.5"
+  gem "pry-byebug", require: false
+  gem "rubocop", require: false
+  # gem "spring"
+  # gem "spring-watcher-listen", "~> 2.0.0"
+
+  # i18n-tasks helps you find and manage missing and unused translations.
+  gem "i18n-tasks", "~> 0.9.12"
+end
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
@@ -114,27 +133,12 @@ group :development, :staging do
   gem "domain_name", require: false
 end
 
-group :development do
-  # Vulnerabilities
-  gem "bundler-audit", require: false
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem "web-console"
-  gem "listen", "~> 3.0.5"
-  gem "pry-byebug", require: false
-  gem "rubocop", require: false
-  # gem "spring"
-  # gem "spring-watcher-listen", "~> 2.0.0"
-
-  # i18n-tasks helps you find and manage missing and unused translations.
-  gem 'i18n-tasks', '~> 0.9.12'
-end
-
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
 
   # Locking to 5.10.3 to workaround issue in 5.11.1 (https://github.com/seattlerb/minitest/issues/730)
-  gem 'minitest', '5.10.3'
+  gem "minitest", "5.10.3"
 
   # API recording and playback
   gem "vcr"

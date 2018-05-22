@@ -64,6 +64,7 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.3, < 2)
       sass (>= 3.5.2)
+    brakeman (4.3.0)
     builder (3.2.3)
     bundler-audit (0.6.0)
       bundler (~> 1.2)
@@ -420,6 +421,7 @@ DEPENDENCIES
   api-pagination
   attr_encrypted (~> 3.0.0)
   bootstrap (~> 4.0.0.beta3)
+  brakeman
   bundler-audit
   byebug
   capybara-selenium

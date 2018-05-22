@@ -1,0 +1,44 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross-Site Request Forgery",
+      "warning_code": 7,
+      "fingerprint": "81654be028fa219953df42b67b1eb44466ef3d69b9400695b411bec8755e5bff",
+      "check_name": "ForgerySetting",
+      "message": "'protect_from_forgery' should be called in ErrorsController",
+      "file": "app/controllers/errors_controller.rb",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "controller",
+        "controller": "ErrorsController"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": "The ErrorsController only responds to GET requests."
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "f80a3232956f28402148bcc46b7fae2255679f00a0582bbd2c374846e97cbb03",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/totp_registrations/new.html.slim",
+      "line": 28,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "qr_code_svg(TotpRegistration.new(:secret => ROTP::Base32.random_base32).totp.provisioning_uri(current_publisher.email))",
+      "render_path": [{"type":"controller","class":"TotpRegistrationsController","method":"new","line":12,"file":"app/controllers/totp_registrations_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "totp_registrations/new"
+      },
+      "user_input": "TotpRegistration.new(:secret => ROTP::Base32.random_base32).totp",
+      "confidence": "Weak",
+      "note": "To set an email address in the publishers database the email must be validated first, thus manipulation of provisioning_uri is mitigated."
+    }
+  ],
+  "updated": "2018-05-22 13:44:33 -0400",
+  "brakeman_version": "4.3.0"
+}
