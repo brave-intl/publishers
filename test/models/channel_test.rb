@@ -193,23 +193,6 @@ class ChannelTest < ActiveSupport::TestCase
     refute channel.verification_started?
   end
 
-  test "verification fails for excluded channels" do
-    channel = channels(:to_verify_excluded)
-
-    channel.verification_started!
-    channel.verification_admin_approval = true
-    assert_raise do
-      channel.verification_succeeded!
-    end
-    assert_equal Channel::VERIFICATION_EXCLUSION_ERROR, \
-      channel.errors.messages[:verified][0]
-
-    channel.reload
-    refute channel.verified?
-    refute channel.verification_failed?
-    assert channel.verification_started?
-  end
-
   test "verification_awaits_admin_approval! works" do
     channel = channels(:to_verify_restricted)
 

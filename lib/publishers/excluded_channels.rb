@@ -1,6 +1,8 @@
-# A list of Site Channels which require manual admin approval in addition to the
-# standard verification flow.
-
+=begin
+(Albert Wang): ExcludedChannels library is a service which tells the browser through
+api/public/channels/identity about channels excluded from payouts. It does not
+enforce a server-side check against payouts.
+=end
 module Publishers
   module ExcludedChannels
     def self.brave_publisher_id_list

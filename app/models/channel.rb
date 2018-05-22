@@ -2,7 +2,6 @@ class Channel < ApplicationRecord
   has_paper_trail
 
   VERIFICATION_RESTRICTION_ERROR = "requires manual admin approval"
-  VERIFICATION_EXCLUSION_ERROR = "excluded from verification"
 
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
@@ -32,9 +31,6 @@ class Channel < ApplicationRecord
 
   # Sensitive channels require manual admin approval to verify.
   validate :verification_restriction_ok
-
-  # Don't allow anyone to exclude
-  validate :verification_exclusion_ok
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
 
@@ -171,16 +167,11 @@ class Channel < ApplicationRecord
   def verification_restriction_ok
     require "publishers/restricted_channels"
 
-    if verified? && verified_changed? && Publishers::RestrictedChannels.restricted?(self) && !verification_admin_approval
-      errors.add(:verified, VERIFICATION_RESTRICTION_ERROR)
+    if !verified? || !verified_changed? || !Publishers::RestrictedChannels.restricted?(self)
+      return true
     end
-  end
-
-  def verification_exclusion_ok
-    require "publishers/excluded_channels"
-
-    if verified? && verified_changed? && Publishers::ExcludedChannels.excluded?(self)
-      errors.add(:verified, VERIFICATION_EXCLUSION_ERROR)
+    if !verification_admin_approval
+      errors.add(:verified, VERIFICATION_RESTRICTION_ERROR)
     end
   end
 end

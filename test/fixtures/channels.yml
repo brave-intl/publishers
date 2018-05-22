@@ -48,11 +48,6 @@ to_verify_restricted:
   details: to_verify_restricted_details (SiteChannelDetails)
   verified: false
 
-to_verify_excluded:
-  publisher: default
-  details: to_verify_excluded_details (SiteChannelDetails)
-  verified: false
-
 completed:
   publisher: completed
   details: completed_details (SiteChannelDetails)
