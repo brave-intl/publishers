@@ -208,6 +208,16 @@ class PublisherMailer < ApplicationMailer
   private
 
   def ensure_fresh_token
-    raise if @publisher.authentication_token.nil? || @publisher.authentication_token_expires_at <= Time.now
+    # Check if we are missing the token and capture to sentry if we are. This should not happen.
+    begin
+      raise "missing token" if @publisher.authentication_token.nil?
+    rescue => e
+      require 'sentry-raven'
+      Raven.capture_exception(e)
+      raise
+    end
+
+    # Expired tokens are expected and will not be logged
+    raise "expired token" if @publisher.authentication_token_expires_at <= Time.now
   end
 end
