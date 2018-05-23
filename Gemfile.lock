@@ -60,7 +60,7 @@ GEM
       io-like (~> 0.3.0)
     arel (7.1.4)
     ast (2.3.0)
-    attr_encrypted (3.0.3)
+    attr_encrypted (3.1.0)
       encryptor (~> 3.0.0)
     autoprefixer-rails (7.2.5)
       execjs
@@ -426,7 +426,7 @@ DEPENDENCIES
   activejob-traffic_control
   activerecord-session_store
   api-pagination
-  attr_encrypted (~> 3.0.0)
+  attr_encrypted (~> 3.1.0)
   bootstrap (~> 4.0.0.beta3)
   brakeman
   bundler-audit
