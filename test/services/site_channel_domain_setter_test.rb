@@ -34,6 +34,30 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
     assert channel_details.host_connection_verified
   end
 
+  test "normalizes domain for http" do
+    channel_details = SiteChannelDetails.new
+    channel_details.brave_publisher_id_unnormalized = "https://http-lib.com"
+    SiteChannelDomainSetter.new(channel_details: channel_details).perform
+    assert_equal 'http-lib.com', channel_details.brave_publisher_id
+
+    channel_details = SiteChannelDetails.new
+    channel_details.brave_publisher_id_unnormalized = "http-lib.com"
+    SiteChannelDomainSetter.new(channel_details: channel_details).perform
+    assert_equal 'http-lib.com', channel_details.brave_publisher_id
+  end
+
+  test "captures subdomain" do
+    channel_details = SiteChannelDetails.new
+    channel_details.brave_publisher_id_unnormalized = "https://yachtcaptain23.github.io"
+    SiteChannelDomainSetter.new(channel_details: channel_details).perform
+    assert_equal 'yachtcaptain23.github.io', channel_details.brave_publisher_id
+
+    channel_details = SiteChannelDetails.new
+    channel_details.brave_publisher_id_unnormalized = "http://helloworld.blogspot.com"
+    SiteChannelDomainSetter.new(channel_details: channel_details).perform
+    assert_equal 'helloworld.blogspot.com', channel_details.brave_publisher_id
+  end
+
   test "skips normalization if it's unnecessary and just inspects the domain" do
     stub_request(:get, "https://example.com").
       to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})

@@ -21,8 +21,9 @@ class SiteChannelDomainSetter < BaseService
     end
 
 =begin
-    (Albert Wang): When we want to support subdomains, instead of calling domain(),
-    host() will give us the subdomain
+    May 24, 2018
+    (Albert Wang): When we want to support subdomains, so of calling domain(),
+    host() gives us the subdomain
 
     E.g.
     Addressable::URI.parse("http://helloworld.blogspot.com").domain
@@ -31,7 +32,7 @@ class SiteChannelDomainSetter < BaseService
     Addressable::URI.parse("http://helloworld.blogspot.com").host
     => helloworld.blogspot.com
 =end
-    channel_details.brave_publisher_id = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).domain
+    channel_details.brave_publisher_id = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).host
 
     unless DomainName(channel_details.brave_publisher_id).canonical_tld?
       raise DomainExclusionError.new("Non-canonical TLD for #{url}")
