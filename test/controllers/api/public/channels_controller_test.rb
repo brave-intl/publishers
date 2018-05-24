@@ -60,6 +60,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal channel.details.youtube_channel_id , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
     assert_equal true                               , response_body['properties']['verified']
+    assert_equal channel.updated_at.to_i << 32      , response_body['properties']['timestamp']
 
     channel.update(verified: false)
     get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}"
@@ -93,6 +94,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal channel.details.twitch_channel_id , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
     assert_equal true                               , response_body['properties']['verified']
+    assert_equal channel.updated_at.to_i << 32      , response_body['properties']['timestamp']
 
     channel.update(verified: false)
     get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}"

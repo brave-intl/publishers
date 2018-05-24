@@ -28,6 +28,10 @@ class JsonBuilders::IdentityJsonBuilder
 
   def build
     @json = if @channel_detail.nil?
+=begin
+  (Albert Wang): The implementation in the browser throws a 404 when a channel isn't found.
+  However, the browser seems to not particularly care about the status code.
+=end
       # @errors << "Channel not found"
       build_site_identity_json
     elsif @channel_detail.is_a?(YoutubeChannelDetails)
@@ -96,7 +100,10 @@ class JsonBuilders::IdentityJsonBuilder
     require 'publishers/excluded_channels'
     if @channel_detail.present? && @channel_detail.channel.verified?
       json.verified true
-      # (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
+=begin
+      (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
+      which erroneously uses Bson.timestamp().
+=end
       json.timestamp (@channel_detail.channel.updated_at.to_i << 32)
       json.exclude Publishers::ExcludedChannels.excluded?(@channel_detail)
     end

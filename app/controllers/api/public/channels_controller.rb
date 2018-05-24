@@ -1,7 +1,4 @@
 class Api::Public::ChannelsController < Api::BaseController
-#  skip_before_action :verify_authenticity_token, only: [:identity]
-#  force_ssl except: [:identity]
-
   def identity
     builder = JsonBuilders::IdentityJsonBuilder.new(publisher_name: params[:publisher]).build
 
