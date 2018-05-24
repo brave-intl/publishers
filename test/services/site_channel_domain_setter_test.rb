@@ -2,6 +2,7 @@ require "test_helper"
 require "webmock/minitest"
 
 class SiteChannelDomainSetterTest < ActiveJob::TestCase
+
   def setup
     @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     @prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
@@ -78,7 +79,13 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
     channel_details = SiteChannelDetails.new
     channel_details.brave_publisher_id_unnormalized = "https://bad url.com"
     SiteChannelDomainSetter.new(channel_details: channel_details).perform
+    assert_equal 'invalid_uri', channel_details.brave_publisher_id_error_code
+  end
 
+  test "raises exception with invalid url without protocol" do
+    channel_details = SiteChannelDetails.new
+    channel_details.brave_publisher_id_unnormalized = "bad url.com"
+    SiteChannelDomainSetter.new(channel_details: channel_details).perform
     assert_equal 'invalid_uri', channel_details.brave_publisher_id_error_code
   end
 

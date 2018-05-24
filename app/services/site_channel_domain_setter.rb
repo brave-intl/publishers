@@ -14,6 +14,7 @@ class SiteChannelDomainSetter < BaseService
 
   def normalize_domain
     require 'addressable'
+    require 'domain_name'
 
     unless channel_details.brave_publisher_id_unnormalized.starts_with?("http://") || channel_details.brave_publisher_id_unnormalized.starts_with?("https://")
       channel_details.brave_publisher_id_unnormalized = "http://" + channel_details.brave_publisher_id_unnormalized
@@ -32,13 +33,17 @@ class SiteChannelDomainSetter < BaseService
 =end
     channel_details.brave_publisher_id = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).domain
 
+    unless DomainName(channel_details.brave_publisher_id).canonical_tld?
+      raise DomainExclusionError.new("Non-canonical TLD for #{url}")
+    end
+
     if SiteChannelDetails.joins(:channel).where(brave_publisher_id: channel_details.brave_publisher_id, "channels.verified": true).any?
       channel_details.brave_publisher_id_error_code = :taken
     else
       channel_details.brave_publisher_id_error_code = nil
       channel_details.brave_publisher_id_unnormalized = nil
     end
-  rescue SiteChannelDomainNormalizer::DomainExclusionError
+  rescue DomainExclusionError
     channel_details.brave_publisher_id_error_code = :exclusion_list_error
   rescue Addressable::URI::InvalidURIError
     channel_details.brave_publisher_id_error_code = :invalid_uri
@@ -57,5 +62,8 @@ class SiteChannelDomainSetter < BaseService
       channel_details.detected_web_host = nil
       channel_details.host_connection_verified = false
     end
+  end
+
+  class DomainExclusionError < RuntimeError
   end
 end
