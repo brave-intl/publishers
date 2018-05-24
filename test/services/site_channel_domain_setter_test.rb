@@ -95,17 +95,4 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
 
     assert_equal 'taken', channel_details.brave_publisher_id_error_code
   end
-
-  test "when online handles normalization failures by raising DomainExclusionError" do
-    stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/example3.com/).
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"example2.com\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\"}", headers: {})
-
-    channel_details = SiteChannelDetails.new
-    channel_details.brave_publisher_id_unnormalized = "https://example3.com"
-
-    SiteChannelDomainSetter.new(channel_details: channel_details).perform
-
-    assert_equal 'exclusion_list_error', channel_details.brave_publisher_id_error_code
-  end
 end

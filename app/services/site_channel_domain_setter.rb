@@ -13,9 +13,13 @@ class SiteChannelDomainSetter < BaseService
   private
 
   def normalize_domain
-    require "faraday"
+    require 'addressable'
 
-    channel_details.brave_publisher_id = SiteChannelDomainNormalizer.new(domain: channel_details.brave_publisher_id_unnormalized).perform
+    unless channel_details.brave_publisher_id_unnormalized.starts_with?("http")
+      channel_details.brave_publisher_id_unnormalized = "http://" + channel_details.brave_publisher_id_unnormalized
+    end
+
+    channel_details.brave_publisher_id = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).host
 
     if SiteChannelDetails.joins(:channel).where(brave_publisher_id: channel_details.brave_publisher_id, "channels.verified": true).any?
       channel_details.brave_publisher_id_error_code = :taken
@@ -23,12 +27,9 @@ class SiteChannelDomainSetter < BaseService
       channel_details.brave_publisher_id_error_code = nil
       channel_details.brave_publisher_id_unnormalized = nil
     end
-
   rescue SiteChannelDomainNormalizer::DomainExclusionError
     channel_details.brave_publisher_id_error_code = :exclusion_list_error
-  rescue Faraday::Error
-    channel_details.brave_publisher_id_error_code = :api_error_cant_normalize
-  rescue URI::InvalidURIError
+  rescue Addressable::URI::InvalidURIError
     channel_details.brave_publisher_id_error_code = :invalid_uri
   end
 
