@@ -15,11 +15,22 @@ class SiteChannelDomainSetter < BaseService
   def normalize_domain
     require 'addressable'
 
-    unless channel_details.brave_publisher_id_unnormalized.starts_with?("http")
+    unless channel_details.brave_publisher_id_unnormalized.starts_with?("http://") || channel_details.brave_publisher_id_unnormalized.starts_with?("https://")
       channel_details.brave_publisher_id_unnormalized = "http://" + channel_details.brave_publisher_id_unnormalized
     end
 
-    channel_details.brave_publisher_id = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).host
+=begin
+    (Albert Wang): When we want to support subdomains, instead of calling domain(),
+    host() will give us the subdomain
+
+    E.g.
+    Addressable::URI.parse("http://helloworld.blogspot.com").domain
+    => blogspot.com
+
+    Addressable::URI.parse("http://helloworld.blogspot.com").host
+    => helloworld.blogspot.com
+=end
+    channel_details.brave_publisher_id = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).domain
 
     if SiteChannelDetails.joins(:channel).where(brave_publisher_id: channel_details.brave_publisher_id, "channels.verified": true).any?
       channel_details.brave_publisher_id_error_code = :taken
