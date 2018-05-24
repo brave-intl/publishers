@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180226211552) do
+ActiveRecord::Schema.define(version: 20180521195417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,14 +18,17 @@ ActiveRecord::Schema.define(version: 20180226211552) do
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "publisher_id"
-    t.boolean  "created_via_api",      default: false, null: false
-    t.boolean  "verified",             default: false
+    t.boolean  "created_via_api",                 default: false, null: false
+    t.boolean  "verified",                        default: false
     t.string   "details_type"
     t.uuid     "details_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.string   "verification_status"
     t.string   "verification_details"
+    t.boolean  "shown_verification_failed_modal", default: false
+    t.boolean  "manual_verification_running",     default: false
+    t.datetime "verified_at"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true, using: :btree
     t.index ["publisher_id"], name: "index_channels_on_publisher_id", using: :btree
   end
@@ -179,6 +182,15 @@ ActiveRecord::Schema.define(version: 20180226211552) do
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+    t.index ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
   end
 
   create_table "site_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
