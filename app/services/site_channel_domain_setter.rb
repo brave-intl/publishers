@@ -16,27 +16,30 @@ class SiteChannelDomainSetter < BaseService
     require 'addressable'
     require 'domain_name'
 
-    unless channel_details.brave_publisher_id_unnormalized.starts_with?("http://") || channel_details.brave_publisher_id_unnormalized.starts_with?("https://")
-      channel_details.brave_publisher_id_unnormalized = "http://" + channel_details.brave_publisher_id_unnormalized
-    end
+    remove_protocol(channel_details)
 
 =begin
     May 24, 2018
-    (Albert Wang): When we want to support subdomains, so of calling domain(),
-    host() gives us the subdomain
+    (Albert Wang): We've been supporting subdomains, so we need to use the PublicSuffix list
 
     E.g.
-    Addressable::URI.parse("http://helloworld.blogspot.com").domain
-    => blogspot.com
+      > PublicSuffix.domain("m.reddit.com")
+     => "reddit.com"
 
-    Addressable::URI.parse("http://helloworld.blogspot.com").host
-    => helloworld.blogspot.com
+      > PublicSuffix.domain("helloworld.github.io")
+     => "helloworld.github.io"
+
+      > PublicSuffix.domain("hello.blogspot.com")
+     => "hello.blogspot.com"
 =end
-    channel_details.brave_publisher_id = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).host
+    channel_details.brave_publisher_id = PublicSuffix.domain(channel_details.brave_publisher_id_unnormalized)
 
     unless DomainName(channel_details.brave_publisher_id).canonical_tld?
       raise DomainExclusionError.new("Non-canonical TLD for #{url}")
     end
+
+    # Throw a Addressable::URI:InvalidURIError if it's an invalid URI
+    Addressable::URI.parse("http://" + channel_details.brave_publisher_id)
 
     if SiteChannelDetails.joins(:channel).where(brave_publisher_id: channel_details.brave_publisher_id, "channels.verified": true).any?
       channel_details.brave_publisher_id_error_code = :taken
@@ -48,6 +51,15 @@ class SiteChannelDomainSetter < BaseService
     channel_details.brave_publisher_id_error_code = :exclusion_list_error
   rescue Addressable::URI::InvalidURIError
     channel_details.brave_publisher_id_error_code = :invalid_uri
+  end
+
+  def remove_protocol(channel_details)
+    ["http://", "https://"].each do |protocol|
+      if channel_details.brave_publisher_id_unnormalized.starts_with?(protocol)
+        channel_details.brave_publisher_id_unnormalized = channel_details.brave_publisher_id_unnormalized.remove(protocol)
+        break
+      end
+    end
   end
 
   def inspect_host
