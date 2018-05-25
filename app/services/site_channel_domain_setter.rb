@@ -16,7 +16,7 @@ class SiteChannelDomainSetter < BaseService
     require 'addressable'
     require 'domain_name'
 
-    remove_protocol(channel_details)
+    remove_protocol_and_suffix(channel_details)
 
 =begin
     May 24, 2018
@@ -32,10 +32,9 @@ class SiteChannelDomainSetter < BaseService
       > PublicSuffix.domain("hello.blogspot.com")
      => "hello.blogspot.com"
 =end
-    channel_details.brave_publisher_id = PublicSuffix.domain(channel_details.brave_publisher_id_unnormalized)
-
+    channel_details.brave_publisher_id = normalize_from_ruleset(channel_details.brave_publisher_id_unnormalized)
     unless DomainName(channel_details.brave_publisher_id).canonical_tld?
-      raise DomainExclusionError.new("Non-canonical TLD for #{url}")
+      raise DomainExclusionError.new("Non-canonical TLD for #{channel_details.brave_publisher_id}")
     end
 
     # Throw a Addressable::URI:InvalidURIError if it's an invalid URI
@@ -53,13 +52,20 @@ class SiteChannelDomainSetter < BaseService
     channel_details.brave_publisher_id_error_code = :invalid_uri
   end
 
-  def remove_protocol(channel_details)
-    ["http://", "https://"].each do |protocol|
-      if channel_details.brave_publisher_id_unnormalized.starts_with?(protocol)
-        channel_details.brave_publisher_id_unnormalized = channel_details.brave_publisher_id_unnormalized.remove(protocol)
-        break
-      end
+  def normalize_from_ruleset(unnormalized_domain)
+    # (Albert Wang) Store exceptions here e.g. keybase.pub
+    if PublicSuffix.domain(unnormalized_domain) == "keybase.pub"
+      Addressable::URI.parse("http://#{unnormalized_domain}").normalize.host
+    else
+      PublicSuffix.domain(unnormalized_domain)
     end
+  end
+
+  def remove_protocol_and_suffix(channel_details)
+    unless channel_details.brave_publisher_id_unnormalized.starts_with?(*["http://", "https://"])
+      channel_details.brave_publisher_id_unnormalized.prepend("http://")
+    end
+    channel_details.brave_publisher_id_unnormalized = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).normalize.host
   end
 
   def inspect_host
