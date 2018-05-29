@@ -3,7 +3,7 @@ require "publishers/excluded_channels"
 
 class ExcludedChannelsTest < ActiveSupport::TestCase
   test "excluded_brave_publisher_id? for excluded" do
-    assert Publishers::ExcludedChannels.excluded_brave_publisher_id?("amazon.com")
+    assert Publishers::ExcludedChannels.excluded_brave_publisher_id?("123.gov")
   end
 
   test "excluded_brave_publisher_id? for unexcluded" do
