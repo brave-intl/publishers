@@ -3,7 +3,7 @@ require "publishers/excluded_channels"
 
 class ExcludedChannelsTest < ActiveSupport::TestCase
   test "excluded_brave_publisher_id? for excluded" do
-    assert Publishers::ExcludedChannels.excluded_brave_publisher_id?("google.com")
+    assert Publishers::ExcludedChannels.excluded_brave_publisher_id?("amazon.com")
   end
 
   test "excluded_brave_publisher_id? for unexcluded" do
@@ -11,7 +11,7 @@ class ExcludedChannelsTest < ActiveSupport::TestCase
   end
 
   test "excluded? for excluded site Channel" do
-    c = channels(:to_verify_restricted)
+    c = channels(:verified_exclude)
     assert Publishers::ExcludedChannels.excluded?(c)
   end
 
