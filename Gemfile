@@ -14,7 +14,7 @@ gem 'activerecord-session_store'
 gem "api-pagination"
 
 # Encrypt DB data at rest
-gem "attr_encrypted", "~> 3.0.0"
+gem "attr_encrypted", "~> 3.1.0"
 
 gem "bootstrap", "~> 4.0.0.beta3"
 
