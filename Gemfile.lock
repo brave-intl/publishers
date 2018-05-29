@@ -241,7 +241,7 @@ GEM
     pry-byebug (3.5.1)
       byebug (~> 9.1)
       pry (~> 0.10)
-    public_suffix (3.0.1)
+    public_suffix (3.0.2)
     puma (3.10.0)
     rack (2.0.5)
     rack-attack (5.0.1)
@@ -456,6 +456,7 @@ DEPENDENCIES
   premailer-rails (~> 1.9.4)
   pry
   pry-byebug
+  public_suffix (~> 3.0.2)
   puma (= 3.10)
   rack-attack (~> 5.0)
   rails (~> 5.0.0, >= 5.0.0.1)
