@@ -99,5 +99,4 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = Channel.order(created_at: :asc).last
     assert channel.created_via_api?
   end
-
 end
