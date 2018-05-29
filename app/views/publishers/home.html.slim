@@ -2,232 +2,218 @@ noscript
   div.noscript-warning = t ".noscript"
 
 - if flash[:taken_channel_id]
-  = render :partial => 'channel_taken', :locals => { channel_id: flash[:taken_channel_id] }
+  = render partial: 'channel_taken', locals: { channel_id: flash[:taken_channel_id] }
 
 - content_for(:navbar_content_right) do
   .title= t ".title"
   = render partial: "choose_channel_button"
 
 .dashboard
-  .row
-    .col
-      h4.balance-header
-        span = t ".balance_pending"
-        span#balance_pending_message = t ".balance_pending_message"
-      .balance
-        .float-left
-          = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
-        .float-left.amounts
-          .bat
-            span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
-            span.bat-code= " BAT"
-          .converted#converted_amount
-            = publisher_converted_balance(current_publisher)
-    - if promo_running?
+  #uphold_status class=uphold_status_class(current_publisher)
+    .row
       .col
-        .promo-panel
-          - if current_publisher.promo_status(promo_running?) == :inactive
-            .promo-panel-item.promo-panel-item-info
-              #promo-limited-time= t("promo.activate.limited_time_promo")
-              h3#promo-title= t("promo.activate.title")
-              #promo-referring-fans= t("promo.activate.for_referring_your_fans")
-            .promo-panel-item.promo-panel-item-button
-              = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
-                = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
-          - elsif current_publisher.has_verified_channel?
-            .promo-flex-col
-              .promo-flex-row.promo-flex-row-main
-                .promo-flex-col.promo-panel-title
-                  .promo-panel-title-item
-                    =t("promo.dashboard.referral").upcase
-                  .promo-panel-title-item
-                    =t("promo.dashboard.promo").upcase
-                .promo-flex-col.promo-flex-col-downloaded
-                  .promo-panel-header
-                    =t("promo.dashboard.downloaded").upcase
-                  .promo-panel-number
-                    = total_referral_downloads(current_publisher)
-                .promo-flex-col.promo-flex-col-confirmed
-                  .promo-panel-header
-                    =t("promo.dashboard.confirmed").upcase
-                  .promo-panel-number
-                    = confirmed_referral_downloads(current_publisher)
-              .promo-flex-row.promo-flex-row-sub
-                  =t("promo.dashboard.check_statement")
-          - else
-            .promo-panel-item.promo-panel-item-alert
-              #promo-panel-alert
-                = t("promo.dashboard.add_channel")
-    - elsif current_publisher.channels.empty?
+        h4.balance-header
+          span = t ".balance_pending"
+          span#balance_pending_message = t ".balance_pending_message"
+        .balance
+          .float-left
+            = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
+          .float-left.amounts
+            .bat
+              span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
+              span.bat-code= " BAT"
+            .converted#converted_amount
+              = publisher_converted_balance(current_publisher)
+      - if promo_running?
+        .col
+          .promo-panel
+            - if current_publisher.promo_status(promo_running?) == :inactive
+              .promo-panel-item.promo-panel-item-info
+                #promo-limited-time= t("promo.activate.limited_time_promo")
+                h3#promo-title= t("promo.activate.title")
+                #promo-referring-fans= t("promo.activate.for_referring_your_fans")
+              .promo-panel-item.promo-panel-item-button
+                = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
+                  = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
+            - elsif current_publisher.has_verified_channel?
+              .promo-flex-col
+                .promo-flex-row.promo-flex-row-main
+                  .promo-flex-col.promo-panel-title
+                    .promo-panel-title-item
+                      =t("promo.dashboard.referral").upcase
+                    .promo-panel-title-item
+                      =t("promo.dashboard.promo").upcase
+                  .promo-flex-col.promo-flex-col-downloaded
+                    .promo-panel-header
+                      =t("promo.dashboard.downloaded").upcase
+                    .promo-panel-number
+                      = total_referral_downloads(current_publisher)
+                  .promo-flex-col.promo-flex-col-confirmed
+                    .promo-panel-header
+                      =t("promo.dashboard.confirmed").upcase
+                    .promo-panel-number
+                      = confirmed_referral_downloads(current_publisher)
+                .promo-flex-row.promo-flex-row-sub
+                    =t("promo.dashboard.check_statement")
+            - else
+              .promo-panel-item.promo-panel-item-alert
+                #promo-panel-alert
+                  = t("promo.dashboard.add_channel")
+      - elsif current_publisher.channels.empty?
+        .col
+          .add-channel-cta
+            = t ".add_channel_cta"
+    .row
       .col
-        .add-channel-cta
-          = t ".add_channel_cta"
-  .row
-    .col
-      .dashboard-panel--wrapper.uphold-panel
-        .dashboard-panel--header#dashboard_uphold_header
-          = t ".uphold.heading"
-        .dashboard-panel--content
-          #uphold_status class=uphold_status_class(current_publisher)
-            .attribute-value
-              .status-summary
-                .text= uphold_status_summary(current_publisher)
-                .action
-                  span= "("
-                  = link_to(t(".uphold.connect"), uphold_authorization_endpoint(current_publisher), class: "connect-uphold")
-                  a.disconnect-uphold href="#"
-                    = t ".uphold.disconnect"
-                  span= ")"
-                  script type="text/html" id="disconnect-uphold-js"
-                    = render "publishers/disconnect_uphold_modal"
-                  = form_for(current_publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|
-              .status-description
-                = uphold_status_description(current_publisher)
-            #uphold_connect
-              .panel-section
-                = link_to(uphold_authorization_description(current_publisher),
-                          uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button")
-            #uphold_dashboard class=uphold_status_class(current_publisher)
-              .panel-section
-                - available_currencies = publisher_available_currencies(current_publisher)
-                - if available_currencies
-                  = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
-                    .deposit-currency-label= t ".uphold.deposit_currency_label"
-                    .deposit-currency
-                      span= t ".uphold.deposit_currency"
-                      span#default_currency_code= f.select(:default_currency, options_for_select(publisher_available_currencies(current_publisher), current_publisher.default_currency))
-                - else
-                  .unavailable-currencies= t ".uphold.no_currencies_available"
-              = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
-    .col
-      .dashboard-panel--wrapper
-        .statements#statement_section class=(current_publisher.uphold_verified ? '' : 'hidden')
-          .dashboard-panel--header#publishers_statement
+        .dashboard-panel--wrapper.uphold-panel
+          .dashboard-panel--header#dashboard_uphold_header
+            = t ".uphold.heading"
+          .dashboard-panel--content#uphold_status_display
+            .status-summary
+              .text= uphold_status_summary(current_publisher)
+              .action
+                span= "("
+                = link_to(t(".uphold.connect"), uphold_authorization_endpoint(current_publisher), class: "connect-uphold")
+                a.disconnect-uphold href="#"
+                  = t ".uphold.disconnect"
+                span= ")"
+                script type="text/html" id="disconnect-uphold-js"
+                  = render "publishers/disconnect_uphold_modal"
+                = form_for(current_publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|
+            .status-description
+              = uphold_status_description(current_publisher)
+          .dashboard-panel--content#uphold_connect
+            = link_to(uphold_authorization_description(current_publisher),
+                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button")
+          .dashboard-panel--content#uphold_dashboard
+            - available_currencies = publisher_available_currencies(current_publisher)
+            - if available_currencies
+              = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
+                .deposit-currency-label= t ".uphold.deposit_currency_label"
+                .deposit-currency
+                  span= t ".uphold.deposit_currency"
+                  span#default_currency_code= f.select(:default_currency, options_for_select(publisher_available_currencies(current_publisher), current_publisher.default_currency))
+            - else
+              .unavailable-currencies= t ".uphold.no_currencies_available"
+            = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary", id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+      .col
+        .dashboard-panel--wrapper
+          .dashboard-panel--header#publishers_statements
             = t ".statements.heading"
-          - if unused_statement_periods.length > 0
-            = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
-              .form-group
-                = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
-                .float-right
-                  a.edit-link#generate_statement href="#"
-                    = t ".statements.generate"
-          .clearfix
-          #generated_statements
-            - current_publisher.statements.each do |s|
-              .statement
-                .period= statement_period_description(s.period.to_sym)
-                .download= s.encrypted_contents? ? link_to(t("shared.download"), statement_publishers_url(id: s.id)) : t(".statements.delayed")
-
-        .dashboard-panel--header#publishers_contact
-          = t ".contact.heading"
-          .float-right
-            a.edit-link#edit_contact href="#"
+          .dashboard-panel--content
+            .statements-available
+              = link_to_most_recent_statement
+            .statements-unavailable
+              = t ".statements.unavailable"
+          .dashboard-panel--header#publishers_contact
+            = t ".contact.heading"
+            a.header-link#edit_contact href="#"
               = t ".contact.edit"
-          .clearfix
-        .attribute-value.contact-person
-          #show_contact
-            #show_contact_name= current_publisher.name
-            span.email#show_contact_email= current_publisher.email
-            span.hidden#pending_contact_email= current_publisher.pending_email
-            span#show_contact_phone_separator class=(current_publisher.phone.present? ? '' : 'hidden')
-              |&nbsp;&bull;&nbsp;
-            span.phone#show_contact_phone
-              = current_publisher.phone
-          = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit hidden" }) do |f|
-            .form-group
-              = f.label(:name, class: "control-label", for: "update_contact_name")
-              = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
-            .form-group
-              = f.label(:email, class: "control-label", for: "update_contact_email")
-              = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
-            .form-group
-              = f.label(:phone, t("publishers.shared.verified_phone_html"), class: "control-label", for: "update_contact_phone")
-              = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.shared.phone_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
-            .button.form-group
-              = f.submit(translate(".contact.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
-              a#cancel_edit_contact href="#"
-                = t "shared.cancel"
-          p#pending_email_notice class="block-note hidden"
+            .clearfix
+          .dashboard-panel--content.contact-person
+            #show_contact
+              #show_contact_name= current_publisher.name
+              span.email#show_contact_email= current_publisher.email
+              span.hidden#pending_contact_email= current_publisher.pending_email
+              span#show_contact_phone_separator class=(current_publisher.phone.present? ? '' : 'hidden')
+                |&nbsp;&bull;&nbsp;
+              span.phone#show_contact_phone
+                = current_publisher.phone
+            = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit hidden" }) do |f|
+              .form-group
+                = f.label(:name, class: "control-label", for: "update_contact_name")
+                = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
+              .form-group
+                = f.label(:email, class: "control-label", for: "update_contact_email")
+                = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
+              .form-group
+                = f.label(:phone, t("publishers.shared.verified_phone_html"), class: "control-label", for: "update_contact_phone")
+                = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.shared.phone_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
+              .button.form-group
+                = f.submit(translate(".contact.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+                a#cancel_edit_contact href="#"
+                  = t "shared.cancel"
+            p#pending_email_notice class="block-note hidden"
 
-          = form_for(current_publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
-            = f.check_box(:visible, class: "form-check-input")
-            = f.label(:visible, class: "form-check-label", for: "publisher_visible")
+            = form_for(current_publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
+              = f.check_box(:visible, class: "form-check-input")
+              = f.label(:visible, class: "form-check-label", for: "publisher_visible")
 
-  - current_publisher.channels.visible.each do |channel|
-    .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
-      .col
-        div class=("channel-panel channel-#{channel_verification_status(channel)}")
-          .channel-panel--intro
-            .channel-panel--intro-icon
-              img src=(channel_type_icon_url(channel)) width=16 height=16
-            .channel-panel--intro-body
-              = channel_type(channel).upcase
-          .channel-thumbnail
-            img src=(channel_thumbnail_url(channel))
-          - if channel.verified?
-            - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
-              .channel--promo-info-container
-                = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
-                = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
-                .referral-link-url.promo-info-item
-                  span= https_referral_url(channel.promo_registration.referral_code)
-                .referral-link-button.referral-link-button-desktop.promo-info-item
-                  span= t("promo.shared.referral_link")
-                .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
-                  span= t("promo.shared.referral_link")
-                .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
-                  span= t("promo.shared.copy")
+    - current_publisher.channels.visible.each do |channel|
+      .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
+        .col
+          div class=("channel-panel channel-#{channel_verification_status(channel)}")
+            .channel-panel--intro
+              .channel-panel--intro-icon
+                img src=(channel_type_icon_url(channel)) width=16 height=16
+              .channel-panel--intro-body
+                = channel_type(channel).upcase
+            .channel-thumbnail
+              img src=(channel_thumbnail_url(channel))
+            - if channel.verified?
+              - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
+                .channel--promo-info-container
+                  = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
+                  = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
+                  .referral-link-url.promo-info-item
+                    span= https_referral_url(channel.promo_registration.referral_code)
+                  .referral-link-button.referral-link-button-desktop.promo-info-item
+                    span= t("promo.shared.referral_link")
+                  .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
+                    span= t("promo.shared.referral_link")
+                  .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
+                    span= t("promo.shared.copy")
+              - else
+                .channel-status.float-right
+                  .bat-channel
+                    h4.bat-channel--amount= publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+                    span.bat-channel--currency= " BAT"
+                    .bat-channel--period
+                      = t(".channel_balance_period")
+            - elsif channel.verification_started? || channel.verification_failed?
+              .channel-status.float-right
+                = channel_verification_details(channel)
+                = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
+            - elsif channel.verification_awaiting_admin_approval?
+              .channel-status.float-right
+                = channel_verification_details(channel)
             - else
               .channel-status.float-right
-                .bat-channel
-                  h4.bat-channel--amount= publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
-                  span.bat-channel--currency= " BAT"
-                  .bat-channel--period
-                    = t(".channel_balance_period")
-          - elsif channel.verification_started? || channel.verification_failed?
-            .channel-status.float-right
-              = channel_verification_details(channel)
-              = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
-          - elsif channel.verification_awaiting_admin_approval?
-            .channel-status.float-right
-              = channel_verification_details(channel)
-          - else
-            .channel-status.float-right
-              = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
-            .channel-progress.float-right
-              .one-more-step= t ".channel.one_more_step"
-          .channel-summary
-            h3= channel.publication_title
-            .channel-details
-              .added-date
-                = t ".channel.added", date: channel.created_at.to_date.iso8601
-              - unless channel.verified || channel.verification_awaiting_admin_approval?
-                .separator
-                  = '|'
-                a.remove-channel href="#" data-channel-id=(channel.id)
-                  = t ".channel.remove_verified"
-                script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-                  = render "publishers/remove_channel_modal", channel: channel
-                = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-          .clearfix
+                = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
+              .channel-progress.float-right
+                .one-more-step= t ".channel.one_more_step"
+            .channel-summary
+              h3= channel.publication_title
+              .channel-details
+                .added-date
+                  = t ".channel.added", date: channel.created_at.to_date.iso8601
+                - unless channel.verified || channel.verification_awaiting_admin_approval?
+                  .separator
+                    = '|'
+                  a.remove-channel href="#" data-channel-id=(channel.id)
+                    = t ".channel.remove_verified"
+                  script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                    = render "publishers/remove_channel_modal", channel: channel
+                  = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+            .clearfix
 
-  .row id="add_channel_placeholder"
-    .col
-      = link_to(\
-        "+ #{t "shared.add_channel"}", \
-        choose_new_channel_type_publishers_path, \
-        data: {"js-confirm-with-modal": "choose-channel-type"}, \
-        class: 'channel-placeholder' \
-      )
+    .row id="add_channel_placeholder"
+      .col
+        = link_to(\
+          "+ #{t "shared.add_channel"}", \
+          choose_new_channel_type_publishers_path, \
+          data: {"js-confirm-with-modal": "choose-channel-type"}, \
+          class: 'channel-placeholder' \
+        )
 
-  .row.tos-row
-    .col
-      - if current_publisher.promo_enabled_2018q1
-        .promo--tos
-          = t("promo.shared.tos_2_html")
-      - else
-        .terms-of-service
-          = link_to(t("shared.terms_of_service"), terms_of_service_url)
+    .row.tos-row
+      .col
+        - if current_publisher.promo_enabled_2018q1
+          .promo--tos
+            = t("promo.shared.tos_2_html")
+        - else
+          .terms-of-service
+            = link_to(t("shared.terms_of_service"), terms_of_service_url)
 
 - if current_publisher.promo_status(promo_running?) == :active
   javascript:
