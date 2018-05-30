@@ -5,16 +5,8 @@ noscript
   = render :partial => 'channel_taken', :locals => { channel_id: flash[:taken_channel_id] }
 
 - content_for(:navbar_content_right) do
-  .title= t ".dashboard"
-  = link_to( \
-    "+ #{t "shared.add_channel"}", \
-    choose_new_channel_type_publishers_path, \
-    data: { "js-confirm-with-modal": "choose-channel-type" }, \
-    class: 'btn btn-secondary btn-highlight' \
-  )
-
-script id="choose-channel-type" type="text/html"
-  = render "home_modal__choose_channel_type"
+  .title= t ".title"
+  = render partial: "choose_channel_button"
 
 .dashboard
   .row

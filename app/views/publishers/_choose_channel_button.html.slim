@@ -1,0 +1,9 @@
+= link_to( \
+  "+ #{t "shared.add_channel"}", \
+  choose_new_channel_type_publishers_path, \
+  data: { "js-confirm-with-modal": "choose-channel-type" }, \
+  class: 'btn btn-secondary btn-highlight' \
+)
+
+script id="choose-channel-type" type="text/html"
+  = render "home_modal__choose_channel_type"
