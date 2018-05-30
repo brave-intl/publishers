@@ -5,13 +5,15 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test 'a site not in the system' do
-    get "/api/public/channels/identity?publisher=brave.com"
+    get "/api/public/channels/identity?publisher=brave.com",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     assert_equal 200, response.status
   end
 
   test 'a site not yet verified' do
     channel = channels(:small_media_group_to_verify)
-    get "/api/public/channels/identity?publisher=#{channel.details.brave_publisher_id}"
+    get "/api/public/channels/identity?publisher=#{channel.details.brave_publisher_id}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
     assert_equal 200, response.status
     assert_equal channel.details.brave_publisher_id, response_body["SLD"]
@@ -23,7 +25,8 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
   test 'a site that is marked for exclude' do
     channel = channels(:verified_exclude)
-    get "/api/public/channels/identity?publisher=#{channel.details.brave_publisher_id}"
+    get "/api/public/channels/identity?publisher=#{channel.details.brave_publisher_id}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
     assert_equal 200, response.status
     assert_equal channel.details.brave_publisher_id , response_body["SLD"]
@@ -35,7 +38,8 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
   test 'a site that is verified' do
     channel = channels(:verified)
-    get "/api/public/channels/identity?publisher=#{channel.details.brave_publisher_id}"
+    get "/api/public/channels/identity?publisher=#{channel.details.brave_publisher_id}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
 
     assert_equal channel.details.brave_publisher_id , response_body["SLD"]
@@ -46,7 +50,8 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
   test 'a youtube channel' do
     channel = channels(:youtube_new)
-    get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}"
+    get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
 
     assert_equal 200                                , response.status
@@ -63,7 +68,8 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal channel.updated_at.to_i << 32      , response_body['properties']['timestamp']
 
     channel.update(verified: false)
-    get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}"
+    get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
 
     assert_equal 200                                , response.status
@@ -81,7 +87,8 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
   test 'a twitch channel' do
     channel = channels(:twitch_verified)
-    get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}"
+    get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
 
     assert_equal 200                                , response.status
@@ -97,7 +104,8 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal channel.updated_at.to_i << 32      , response_body['properties']['timestamp']
 
     channel.update(verified: false)
-    get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}"
+    get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
 
     assert_equal 200                                , response.status
