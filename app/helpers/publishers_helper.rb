@@ -19,10 +19,6 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
-  def uphold_status_class(publisher)
-    "uphold-status-#{publisher.uphold_status.to_s.gsub('_', '-')}"
-  end
-
   def publisher_humanize_balance(publisher, currency)
     if balance = publisher.wallet && publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
