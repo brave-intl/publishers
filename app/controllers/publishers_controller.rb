@@ -39,6 +39,7 @@ class PublishersController < ApplicationController
              home
              statement
              statement_ready
+             statements
              update
              uphold_status
              uphold_verified)
@@ -323,6 +324,9 @@ class PublishersController < ApplicationController
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     current_publisher.wallet
+  end
+
+  def statements
   end
 
   def log_out

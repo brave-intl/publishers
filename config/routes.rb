@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       get :uphold_verified
       get :statement
       get :statement_ready
+      get :statements
       get :uphold_status
       patch :verify
       patch :update
