@@ -227,7 +227,7 @@ module PublishersHelper
   end
 
   def statement_period_date(date)
-    date.strftime('%B %e')
+    date.strftime('%b %e')
   end
 
   def link_to_most_recent_statement

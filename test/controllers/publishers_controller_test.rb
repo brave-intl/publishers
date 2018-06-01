@@ -579,7 +579,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_match(
       '{"id":"' + publisher_statement.id + '",' +
-        '"date":"' + publisher_statement.created_at.strftime('%B %e') + '",' +
+        '"date":"' + publisher_statement.created_at.strftime('%b %e') + '",' +
         '"period":"All dates"}',
       response.body)
   end

@@ -5,7 +5,11 @@ noscript
   = render partial: 'channel_taken', locals: { channel_id: flash[:taken_channel_id] }
 
 - content_for(:navbar_content_right) do
-  .title= t ".title"
+  = link_to( \
+    t("shared.dashboard"), \
+    home_publishers_path, \
+    class: 'title' \
+  )
   = render partial: "choose_channel_button"
 
 .dashboard

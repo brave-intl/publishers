@@ -69,7 +69,10 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(function() {
           dynamicEllipsis.stop(statementDownloadDiv);
-          statementDownloadDiv.innerHTML = '<span>Ready</span><a class="download" href="/publishers/statement?id=' + statementId + '">Download</a>';
+          statementDownloadDiv.innerHTML = '<span>Ready</span>' +
+            '<a class="download" data-piwik-action="DownloadPublisherStatement" ' +
+               'data-piwik-name="Clicked" data-piwik-value="Dashboard" ' +
+               'href="/publishers/statement?id=' + statementId + '">Download</a>';
           spinner.hide();
           generating = false;
         })
