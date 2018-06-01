@@ -34,6 +34,6 @@ noscript
               .status
                 - if s.encrypted_contents?
                   span= 'Ready'
-                  = link_to(t("shared.download"), statement_publishers_url(id: s.id), class: 'download')
+                  = link_to(t("shared.download"), statement_publishers_url(id: s.id), class: 'download', "data-piwik-action": "DownloadPublisherStatement", "data-piwik-name": "Clicked", "data-piwik-value": "Dashboard")
                 - else
                   = t ".statements.delayed"
