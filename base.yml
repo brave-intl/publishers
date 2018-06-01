@@ -1,0 +1,60 @@
+version: "2.1"
+
+services:
+  publishers:
+    image: publishers
+    build: .
+    environment:
+      - CHROME_BINARY=/usr/bin/chrome
+      - ADDRESS
+      - ACTIVE_PROMO_ID
+      - API_AUTH_TOKEN
+      - API_EYESHADE_BASE_URI
+      - API_EYESHADE_KEY
+      - API_IP_WHITELIST
+      - API_PROMO_BASE_URI
+      - API_PROMO_KEY
+      - ATTR_ENCRYPTED_KEY
+      - BASE_REFERRAL_URL
+      - BASIC_AUTH_PASSWORD
+      - BASIC_AUTH_USER
+      - BAT_MEDIUM_URL
+      - BAT_REDDIT_URL
+      - BAT_ROCKETCHAT_URL
+      - BAT_TWITTER_URL
+      - DATABASE_URL
+      - DATABASE_URL_TEST
+      - DEFAULT_API_PAGE_SIZE
+      - FROM_EMAIL
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET
+      - HOST_INSPECTOR_OFFLINE
+      - INTERNAL_EMAIL
+      - LOG_API_REQUESTS
+      - LOG_VERBOSE
+      - MAILER_SENDER
+      - MAILGUN_SMTP_LOGIN
+      - MAILGUN_SMTP_PASSWORD
+      - MAILGUN_SMTP_PORT
+      - MAILGUN_SMTP_SERVER
+      - MAX_SITE_AGE
+      - PIWIK_HOST
+      - PORT
+      - PROXY_URL
+      - PROXIED
+      - REDIS_URL
+      - SECRET_KEY_BASE
+      - SHOULD_SEND_NOTIFICATIONS
+      - SLACK_CHANNEL_DIAGNOSTIC
+      - SLACK_WEBHOOK_URL
+      - SUPPORT_EMAIL
+      - TERMS_OF_SERVICE_URL
+      - TWITCH_CLIENT_ID
+      - TWITCH_CLIENT_SECRET
+      - UPHOLD_API_URI
+      - UPHOLD_AUTHORIZATION_ENDPOINT
+      - UPHOLD_CLIENT_ID
+      - UPHOLD_CLIENT_SECRET
+      - UPHOLD_DASHBOARD_URL
+      - UPHOLD_SCOPE
+      - URL_HOST

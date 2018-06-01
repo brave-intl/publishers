@@ -71,6 +71,13 @@ class Channel < ApplicationRecord
     end
   }
 
+  #########################
+  ## Constants
+  #########################
+
+  YOUTUBE = "youtube".freeze
+  TWITCH = "twitch".freeze
+
   def publication_title
     details.publication_title
   end

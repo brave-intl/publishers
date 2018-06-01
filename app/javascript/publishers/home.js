@@ -1,10 +1,8 @@
 import {
   fetchAfterDelay,
-  pollUntilSuccess,
   submitForm
 } from '../utils/request';
 import fetch from '../utils/fetchPolyfill';
-import dynamicEllipsis from '../utils/dynamicEllipsis';
 import flash from '../utils/flash';
 
 function showPendingContactEmail(pendingEmail) {
@@ -79,8 +77,8 @@ function checkUpholdStatus() {
     })
     .then(function(body) {
       let upholdStatus = document.getElementById('uphold_status');
-      let upholdStatusSummary = document.querySelector('#uphold_status .status-summary .text');
-      let upholdStatusDescription = document.querySelector('#uphold_status .status-description');
+      let upholdStatusSummary = document.querySelector('#uphold_status_display .status-summary .text');
+      let upholdStatusDescription = document.querySelector('#uphold_status_display .status-description');
       let timedOut = (checkUpholdStatusCount >= 15);
 
       if (timedOut) {
@@ -182,11 +180,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let editContact = document.getElementById('edit_contact');
   let cancelEditContact = document.getElementById('cancel_edit_contact');
 
-  let generateStatement = document.getElementById('generate_statement');
-  let statementGenerator = document.getElementById('statement_generator');
-  let statementPeriod = document.getElementById('statement_period');
-  let generatedStatements = document.getElementById('generated_statements');
-
   editContact.addEventListener('click', function(event) {
     updateContactName.value = showContactName.innerText;
     updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
@@ -243,57 +236,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
   }, false);
-
-  if (generateStatement) {
-    generateStatement.addEventListener('click', function(event) {
-      let statementId;
-      let statementDownloadDiv;
-
-      event.preventDefault();
-      generateStatement.classList.add('hidden');
-
-      submitForm('statement_generator', 'PATCH', false)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(json) {
-          statementPeriod.options.remove(statementPeriod.selectedIndex);
-          if (statementPeriod.options.length === 0) {
-            statementGenerator.classList.add('hidden');
-          }
-
-          let newStatementDiv = document.createElement('div');
-          newStatementDiv.className = 'statement';
-
-          let statementPeriodDiv = document.createElement('div');
-          statementPeriodDiv.className = 'period';
-          statementPeriodDiv.appendChild(document.createTextNode(json.period));
-          newStatementDiv.appendChild(statementPeriodDiv);
-
-          statementDownloadDiv = document.createElement('div');
-          statementDownloadDiv.className = 'download';
-          statementDownloadDiv.appendChild(document.createTextNode('Generating'));
-          newStatementDiv.appendChild(statementDownloadDiv);
-
-          generatedStatements.insertBefore(newStatementDiv, generatedStatements.firstChild);
-
-          dynamicEllipsis.start(statementDownloadDiv);
-
-          statementId = json.id;
-          return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
-        })
-        .then(function() {
-          dynamicEllipsis.stop(statementDownloadDiv);
-          statementDownloadDiv.innerHTML = '<a href="/publishers/statement?id=' + statementId + '">Download</a>';
-          generateStatement.classList.remove('hidden');
-        })
-        .catch(function(e) {
-          if (statementDownloadDiv) {
-            dynamicEllipsis.stop(statementDownloadDiv);
-            statementDownloadDiv.innerText = 'Delayed';
-          }
-          generateStatement.classList.remove('hidden');
-        });
-    }, false);
-  }
 });

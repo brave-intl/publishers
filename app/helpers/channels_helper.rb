@@ -65,11 +65,11 @@ module ChannelsHelper
 
   def channel_verification_details(channel)
     if channel.verification_failed?
-      channel.verification_details || t("helpers.channels.generic_verification_failure")
+      channel.verification_details || I18n.t("helpers.channels.generic_verification_failure")
     elsif channel.verification_started?
-      t("helpers.channels.verification_in_progress")
+      I18n.t("helpers.channels.verification_in_progress")
     elsif channel.verification_awaiting_admin_approval?
-      t("helpers.channels.verification_awaiting_admin_approval")
+      I18n.t("helpers.channels.verification_awaiting_admin_approval")
     end
   end
 end

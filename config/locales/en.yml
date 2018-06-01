@@ -29,6 +29,7 @@ en:
     channel_not_found: Channel not found
     channel_removed: Channel removed.
     continue: Continue
+    dashboard: Dashboard
     download: Download
     existing_account: Already have an account?
     get_started: Get Started
@@ -116,7 +117,7 @@ en:
         last_month: Last month
         this_year: This year
         last_year: Last year
-        all: All
+        all: All dates
       uphold_authorization_description:
         connect_to_uphold: Connect to Uphold
         reconnect_to_uphold: Reconnect to Uphold
@@ -304,9 +305,9 @@ en:
       button: Send me a new link
     home:
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
-      dashboard: Dashboard
+      title: Dashboard
       balance_pending: CURRENT CONTRIBUTION BALANCE
-      balance_pending_message: (to be paid out at next settlement)
+      balance_pending_message: Next payment occurs June 8, 2018
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
       uphold:
         heading: Your Uphold Wallet
@@ -318,8 +319,10 @@ en:
         disconnect: Disconnect
       statements:
         heading: Statements
-        generate: Generate
-        delayed: Delayed
+        statement_name: "%{created_at} statement - %{period}"
+        view_statements: View statements
+        view_recent_statement: Your %{statement_link} is ready.
+        unavailable: No statements available.
       contact:
         heading: Contact
         edit: Edit Contact
@@ -353,6 +356,13 @@ en:
       done: The access email has been resent.
     sign_up:
       heading: Join Brave Payments
+    statements:
+      title: Statements
+      description: Statements contain the details of deposit history.
+      create_statement: Create Statement
+      created_at: Requested
+      period: Time range
+      status: Status
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel

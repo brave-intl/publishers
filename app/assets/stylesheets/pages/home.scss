@@ -280,7 +280,7 @@
         padding-top: 14px;
         background-image: url(asset-path("wallet@1x.png"));
       }
-      &#publishers_statement {
+      &#publishers_statements {
         background-image: url(asset-path("download@1x.png"));
       }
       &#publishers_contact {
@@ -295,9 +295,7 @@
     }
 
     &--content {
-      .panel-section {
-        margin-bottom: 40px;
-      }
+      margin-bottom: 25px;
     }
   }
 
@@ -361,14 +359,16 @@
   }
 
   #uphold_status {
-    vertical-align: top;
-    margin-bottom: 25px;
+    #uphold_status_display {
+      vertical-align: top;
+      margin-bottom: 25px;
+    }
     .deposit-currency {
       margin-top: 10px;
     }
     .unavailable-currencies {
-      padding: 0 0 5px 52px;
-      background-position: top left;
+      padding: 9px 0 9px 52px;
+      background-position: left center;
       background-repeat: no-repeat;
       background-size: 42px;
       background-image: url(asset-path("icn-warning@1x.png"));
@@ -394,10 +394,14 @@
     .status-description {
       margin-top: 40px;
     }
+    #uphold_check_balance {
+      margin-top: 2rem;
+    }
     &.uphold-timeout {
       .status-summary .action,
       #uphold_dashboard,
-      #uphold_connect {
+      #uphold_connect,
+      .statements-available {
         display: none;
       }
     }
@@ -409,7 +413,13 @@
       }
     }
     &.uphold-processing {
-      #uphold_dashboard {
+      #uphold_dashboard,
+      .statements-available {
+        display: none;
+      }
+    }
+    &.uphold-complete {
+      .statements-unavailable {
         display: none;
       }
     }
@@ -428,7 +438,8 @@
         margin-top: 30px;
       }
       #uphold_dashboard,
-      .status-summary .action .disconnect-uphold {
+      .status-summary .action .disconnect-uphold,
+      .statements-available {
         display: none;
       }
     }
@@ -622,41 +633,12 @@
   .last-deposit {
     font-weight: 700;
   }
-  .statements {
-    white-space: nowrap;
-  }
-  #generated_statements {
-    margin: 12px 0 16px 0;
-    .statement {
-      font-size: 14px;
-      font-weight: 300;
-      margin-bottom: 6px;
-      .period {
-        display: inline-block;
-        width: 70%;
-      }
-      .download {
-        display: inline-block;
-        width: 30%;
-      }
-    }
-  }
-  #statement_period {
-    margin-top: 5px;
-    margin-right: 10px;
-  }
-  .btn-generate {
-    padding: 5px 10px;
-  }
-  .edit-link {
+  .header-link {
+    float: right;
     font-size: 16px;
     font-weight: 500;
     color: #00bcda;
     display: inline-block;
-    &#generate_statement {
-      line-height: 26px;
-      padding: 5px 0;
-    }
   }
   .terms-of-service {
     text-align: right;
@@ -740,7 +722,7 @@
       }
     }
     .panel-section {
-      margin-top: 35px;
+      margin-bottom: 35px;
       text-align: center;
     }
     a.btn {

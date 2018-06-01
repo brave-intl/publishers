@@ -1,0 +1,11 @@
+select {
+  appearance: none;
+  border-radius: 0.3rem;
+  border: 1px solid $braveGray-7;
+  background-color: white;
+  background-image: url(asset-path("select-down-arrow.svg"));
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 1.2rem 1.2rem;
+  padding: 0.4rem 2.0rem 0.4rem 1.0rem;
+}

@@ -19,10 +19,6 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
-  def uphold_status_class(publisher)
-    "uphold-status-#{publisher.uphold_status.to_s.gsub('_', '-')}"
-  end
-
   def publisher_humanize_balance(publisher, currency)
     if balance = publisher.wallet && publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
@@ -231,7 +227,23 @@ module PublishersHelper
   end
 
   def statement_period_date(date)
-    date.strftime('%B %e, %Y')
+    date.strftime('%b %e')
+  end
+
+  def link_to_most_recent_statement
+    most_recent_statement = current_publisher.statements.order(created_at: :desc).first
+    if most_recent_statement.present?
+      statement_name = t("publishers.home.statements.statement_name",
+                         created_at: statement_period_date(most_recent_statement.created_at),
+                         period: statement_period_description(most_recent_statement.period))
+
+      t("publishers.home.statements.view_recent_statement",
+        statement_link: link_to(statement_name, statements_publishers_path)).html_safe
+    else
+      (t("publishers.statements.description") +
+        '<br/>' +
+        link_to(t(".statements.view_statements"), statements_publishers_path)).html_safe
+    end
   end
 
   def publisher_statement_filename(publisher_statement)

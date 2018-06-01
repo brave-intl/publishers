@@ -7,7 +7,11 @@ module Publishers
   module ExcludedChannels
     def self.brave_publisher_id_list
       @@brave_publisher_id_list ||= begin
-        file_path = Rails.root.join("config/excluded_site_channels.yml")
+        if Rails.env.test?
+          file_path = Rails.root.join("test/config/excluded_site_channels.yml")
+        else
+          file_path = Rails.root.join("config/excluded_site_channels.yml")
+        end
         Set.new(YAML.load_file(file_path))
       end
     end

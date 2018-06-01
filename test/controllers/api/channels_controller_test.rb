@@ -8,7 +8,8 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = channels(:global_yt2)
     publisher = channel.publisher
 
-    get "/api/owners/#{URI.escape(publisher.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}"
+    get "/api/owners/#{URI.escape(publisher.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -23,7 +24,7 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
     assert_routing url, format: :json, controller: "api/channels", action: "show", owner_id: publisher.owner_identifier, channel_id: channel.details.channel_identifier
 
-    get url
+    get url, headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -34,7 +35,8 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = channels(:verified)
     owner = channel.publisher
 
-    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications"
+    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications",
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 400, response.status
     assert_match "parameter 'type' is required", response.body
@@ -44,7 +46,8 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = channels(:verified)
     owner = channel.publisher
 
-    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=invalid_type"
+    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=invalid_type",
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 400, response.status
     assert_match "invalid", response.body
@@ -55,7 +58,8 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     owner = channel.publisher
 
     assert_enqueued_emails 2 do
-      post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_no_wallet"
+      post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_no_wallet",
+           headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     end
 
     assert_equal 200, response.status
@@ -66,7 +70,8 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     owner = channel.publisher
 
     assert_enqueued_emails 2 do
-      post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_invalid_wallet"
+      post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_invalid_wallet",
+           headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     end
   end
 
@@ -77,7 +82,9 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
         "brave_publisher_id": "goodspud.com"
     }
 
-    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels", as: :json, params: { channel: new_channel_details }
+    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels",
+         as: :json, params: { channel: new_channel_details },
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
 
@@ -93,11 +100,12 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
         "brave_publisher_id": "goodspud.com"
     }
 
-    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels", as: :json, params: { channel: new_channel_details }
+    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels",
+         as: :json, params: { channel: new_channel_details },
+         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
     channel = Channel.order(created_at: :asc).last
     assert channel.created_via_api?
   end
-
 end

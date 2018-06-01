@@ -14,7 +14,7 @@ gem 'activerecord-session_store'
 gem "api-pagination"
 
 # Encrypt DB data at rest
-gem "attr_encrypted", "~> 3.0.0"
+gem "attr_encrypted", "~> 3.1.0"
 
 gem "bootstrap", "~> 4.0.0.beta3"
 
@@ -27,6 +27,9 @@ gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
+
+# For building complex JSON objects
+gem 'jbuilder', '~> 2.7.0'
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
@@ -54,6 +57,9 @@ gem "phony_rails", "~> 0.14"
 
 # Easy CSS-sthled emails
 gem "premailer-rails", "~> 1.9.4", require: false
+
+# Implementation of PublicSuffix
+gem 'public_suffix', '~> 3.0.2'
 
 # Puma as app server
 gem "puma", "3.10"
@@ -97,7 +103,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem "webpacker", "~> 3.0"
+gem 'webpacker', '~> 3.2'
 
 # WHOIS lookup for unverified publishers
 gem "whois", "~> 4.0", require: false
@@ -106,6 +112,11 @@ gem "whois-parser", "~> 1.0", require: false
 
 # pagination support for models
 gem "will_paginate"
+
+group :development, :staging do
+  # Offline domain normalization
+  gem "domain_name", require: false
+end
 
 group :development do
   # Vulnerabilities
@@ -117,7 +128,6 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
-  gem "pry-byebug", require: false
   gem "rubocop", require: false
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
@@ -157,8 +167,10 @@ group :production do
 end
 
 group :development, :test do
-  # Sweet REPL. To use, drop in "binding.pry" anywhere in code.
   gem "pry"
+  gem "byebug"
+  gem "pry-byebug", require: false
+
   gem "mocha"
   gem "minitest-rails-capybara"
   gem "capybara-selenium"

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       get :uphold_verified
       get :statement
       get :statement_ready
+      get :statements
       get :uphold_status
       patch :verify
       patch :update
@@ -78,6 +79,10 @@ Rails.application.routes.draw do
       end
     end
     resources :tokens, only: %i(index)
+    resources :channels, constraints: { channel_id: %r{[^\/]+} }
+    namespace :public, defaults: { format: :json } do
+      get "channels/identity", controller: 'channels/identity'
+    end
   end
 
   resources :errors, only: [], path: "/" do

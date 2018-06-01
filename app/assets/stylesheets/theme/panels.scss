@@ -30,6 +30,10 @@ $brave-panels-borderRadius: 8px;
       max-width: $spacer*50;
     }
 
+    &--xlarge {
+      max-width: $spacer*55;
+    }
+
     &--small {
       @include media-breakpoint-up(sm) {
         @include make-col(12);
