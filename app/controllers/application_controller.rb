@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
+  def current_user
+    current_publisher
+  end
+
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end

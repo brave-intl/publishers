@@ -1,5 +1,6 @@
 class Publisher < ApplicationRecord
   has_paper_trail
+  self.per_page = 50
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
@@ -196,6 +197,10 @@ class Publisher < ApplicationRecord
 
   def has_verified_channel?
     channels.any?(&:verified?)
+  end
+
+  def admin?
+    kind == 'admin'
   end
 
   private
