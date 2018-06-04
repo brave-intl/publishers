@@ -24,7 +24,7 @@ class PublisherPromoTokenGenerator < BaseService
     already_has_promo_token = publisher.promo_token_2018q1.present?
 
     if already_has_promo_token && !@force
-      Rails.logger.info("Publisher #{@publisher} already has a promo token, use force=true to overwrite.")
+      Rails.logger.info("Publisher #{@publisher.owner_identifier} already has a promo token, use force=true to overwrite.")
       nil
     else
       publisher.promo_token_2018q1 = SecureRandom.hex(32)
