@@ -50,7 +50,7 @@ class SiteChannelVerifier < BaseService
       else
         verified_channel.verification_awaiting_admin_approval!
         InternalMailer.channel_verification_approval_required(channel: verified_channel).deliver_later
-        SlackMessenger.new(message: "*Admin Action Required:* *#{verified_channel.publication_title}* on the restriction list verified by #{verified_channel.publisher.name} (#{verified_channel.publisher.email}); id=#{verified_channel.id}").perform
+        SlackMessenger.new(message: "*Admin Action Required:* *#{verified_channel.publication_title}* on the restriction list verified by #{verified_channel.publisher.owner_identifier}; id=#{verified_channel.details.channel_identifier}").perform
         return
       end
     end
@@ -65,7 +65,7 @@ class SiteChannelVerifier < BaseService
 
   def verified_channel_post_verify
     MailerServices::VerificationDoneEmailer.new(verified_channel: verified_channel).perform
-    SlackMessenger.new(message: "*#{verified_channel.publication_title}* verified by #{verified_channel.publisher.name} (#{verified_channel.publisher.email}); id=#{verified_channel.id}").perform
+    SlackMessenger.new(message: "*#{verified_channel.publication_title}* verified by owner #{verified_channel.publisher.owner_identifier}; id=#{verified_channel.details.channel_identifier}").perform
 
     # Let eyeshade know about the new Publisher
     begin
