@@ -83,7 +83,6 @@ en:
         registered_by: Added by
         contact_support_html: Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
         try_logging_out: If this account is not the one you wanted to claim, please log out of %{channel_name} and try again.
-        ok: OK
     nav:
       security: Security
       log_out: Log Out
@@ -376,6 +375,10 @@ en:
       confirmation: Are you sure you want to disconnect your account with Uphold?
       deny: Cancel
       confirm: Disconnect
+    confirm_default_currency_modal:
+      headline: Confirm your preferred deposit currency
+      leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
+      confirm: Confirm
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:

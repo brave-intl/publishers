@@ -674,6 +674,27 @@
   }
 }
 
+#confirm_default_currency_modal {
+  width: 650px;
+  text-align: center;
+
+  .md-content {
+    padding: 70px 80px 70px 80px;
+    background: white;
+    border-radius: 10px;
+  }
+
+  // the selector
+  #publisher_default_currency {
+    display: block;
+    margin: 0px auto 36px;
+  }
+
+  #close_confirm_default_currency_modal {
+    width: 200px;
+  }
+}
+
 #channel_taken_modal {
   width: 650px;
   .md-content {
