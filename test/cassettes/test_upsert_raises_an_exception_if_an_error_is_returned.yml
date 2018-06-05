@@ -25,11 +25,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 30 Apr 2018 19:20:55 GMT
+      - Tue, 05 Jun 2018 19:59:54 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '242'
+      - '162'
       Connection:
       - keep-alive
       Access-Control-Allow-Methods:
@@ -53,15 +53,14 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1525116056'
+      - '1528228796'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":1,"error_indices":[0],"unmodified_indices":[],"persisted_recipients":[],"errors":[{"message":"The
-        following parameters are not custom fields or reserved fields: [address]","error_indices":[0]}]}
+      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0],"persisted_recipients":["YWxpY2VAY29tcGxldGVkLm9yZw=="],"errors":[]}
 
 '
-    http_version:
-  recorded_at: Mon, 30 Apr 2018 19:20:55 GMT
+    http_version: 
+  recorded_at: Tue, 05 Jun 2018 19:59:54 GMT
 recorded_with: VCR 4.0.0

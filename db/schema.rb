@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180521195417) do
+ActiveRecord::Schema.define(version: 20180523151106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 20180521195417) do
     t.jsonb    "promo_stats_2018q1",                    default: {},          null: false
     t.datetime "promo_stats_updated_at_2018q1"
     t.text     "role",                                  default: "publisher"
+    t.datetime "default_currency_confirmed_at"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree

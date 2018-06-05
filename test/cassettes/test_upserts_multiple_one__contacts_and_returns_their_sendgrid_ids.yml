@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 12:11:48 GMT
+      - Tue, 05 Jun 2018 19:59:54 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,11 +49,11 @@ http_interactions:
       Strict-Transport-Security:
       - max-age=31536000
       X-Ratelimit-Remaining:
-      - '2'
+      - '1'
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1525263110'
+      - '1528228796'
       Powered-By:
       - Mako
     body:
@@ -62,5 +62,5 @@ http_interactions:
 
 '
     http_version: 
-  recorded_at: Wed, 02 May 2018 12:11:48 GMT
+  recorded_at: Tue, 05 Jun 2018 19:59:54 GMT
 recorded_with: VCR 4.0.0

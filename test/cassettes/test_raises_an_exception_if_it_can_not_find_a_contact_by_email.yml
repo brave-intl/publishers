@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:14:46 GMT
+      - Tue, 05 Jun 2018 19:59:53 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -51,12 +51,12 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1525266887'
+      - '1528228793'
     body:
       encoding: UTF-8
       string: '{"errors":[{"message":"Recipient not found."}]}
 
 '
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:14:46 GMT
+  recorded_at: Tue, 05 Jun 2018 19:59:53 GMT
 recorded_with: VCR 4.0.0

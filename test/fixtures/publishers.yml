@@ -45,6 +45,7 @@ completed:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  default_currency_confirmed_at: "<%= DateTime.now %>"
 
 unprompted:
   email: "alice@unprompted.org"
@@ -86,6 +87,17 @@ uphold_connected:
   phone_normalized: "+14159001421"
   uphold_verified: true
   agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_currency_unconfirmed:
+  email: "carol@upholdconnected.org"
+  name: "Carol the unconfirmed currency"
+  phone: "5555555555"
+  phone_normalized: "+15555555555"
+  uphold_verified: true
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
   visible: true
 
 youtube_initial:
