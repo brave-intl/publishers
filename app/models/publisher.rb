@@ -164,6 +164,26 @@ class Publisher < ApplicationRecord
     self.uphold_updated_at = Time.now
   end
 
+  def uphold_scope
+    wallet.try(:wallet_details).try(:[], 'scope')
+  end
+
+  def uphold_authorized?
+    wallet.try(:wallet_details).try(:[], 'authorized')
+  end
+
+  def eyeshade_default_currency
+    wallet.try(:wallet_details).try(:[], 'defaultCurrency')
+  end
+
+  def available_uphold_currencies
+    wallet.try(:wallet_details).try(:[], 'availableCurrencies')
+  end
+
+  def possible_uphold_currencies
+    wallet.try(:wallet_details).try(:[], 'possibleCurrencies')
+  end
+
   def owner_identifier
     "publishers#uuid:#{id}"
   end

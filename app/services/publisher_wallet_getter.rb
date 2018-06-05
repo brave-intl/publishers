@@ -85,7 +85,9 @@ class PublisherWalletGetter < BaseApiClient
             "provider" => "uphold",
             "authorized" => true,
             "defaultCurrency" => 'USD',
-            "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
+            "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ], 
+            "possibleCurrencies"=> ["AED", "ARS", "AUD", "BRL", "CAD", "CHF", "CNY", "DKK", "EUR", "GBP", "HKD", "ILS", "INR", "JPY", "KES", "MXN", "NOK", "NZD", "PHP", "PLN", "SEK", "SGD", "USD", "XAG", "XAU", "XPD", "XPT"],
+            "scope"=> "cards:read user:read"
         }
       },
       channel_json: channel_json
