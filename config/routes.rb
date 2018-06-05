@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get :change_email
       get :change_email_confirm
       patch :update_email
+      post :confirm_default_currency
       get :expired_auth_token
       get :log_out
       get :email_verified
