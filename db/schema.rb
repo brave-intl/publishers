@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 20180614215946) do
     t.datetime "promo_stats_updated_at_2018q1"
     t.text     "role",                                  default: "publisher"
     t.datetime "javascript_last_detected_at"
+    t.datetime "default_currency_confirmed_at"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree
