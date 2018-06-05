@@ -19,3 +19,4 @@ before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 script:
   - RAILS_ENV=test bin/rails test
+  - yarn test
