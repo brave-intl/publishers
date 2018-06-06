@@ -105,11 +105,6 @@ gem "rotp", "~> 3.3"
 
 gem 'webpacker', '~> 3.2'
 
-# WHOIS lookup for unverified publishers
-gem "whois", "~> 4.0", require: false
-
-gem "whois-parser", "~> 1.0", require: false
-
 # pagination support for models
 gem "will_paginate"
 
