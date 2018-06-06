@@ -1,12 +1,5 @@
 class AdminController < ApplicationController
-  before_action :authenticate_admin
-  before_filter :protect
-
-  def authenticate_admin
-    # TODO: (Albert Wang). Rename this to current_user
-    # Intentional duplicate logic
-    current_publisher.admin?
-  end
+  before_action :protect
 
   # Override this value to specify the number of elements to display at a time
   # on index pages. Defaults to 20.

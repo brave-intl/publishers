@@ -1,6 +1,7 @@
 require 'test_helper'
+require "webmock/minitest"
 
-class PublishersControllerTest < ActionController::TestCase
+class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   # For Devise >= 4.1.1
   include Devise::Test::IntegrationHelpers
   # Use the following instead if you are on Devise <= 4.1.0
@@ -10,15 +11,16 @@ class PublishersControllerTest < ActionController::TestCase
     publisher = publishers(:completed)
     sign_in publisher
 
-    get :index
-    assert_response :failure
+    assert_raises(CanCan::AccessDenied) {
+      get admin_publishers_path
+    }
   end
 
   test 'admin can access' do
     admin = publishers(:admin)
     sign_in admin
 
-    get :index
+    get admin_publishers_path
     assert_response :success
   end
 end
