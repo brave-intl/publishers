@@ -94,6 +94,8 @@ gem "sidekiq", "~> 4.2"
 
 gem "sidekiq-scheduler", "~> 2.0"
 
+gem 'sinatra', '~> 2.0.2'
+
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 

@@ -249,7 +249,7 @@ GEM
     rack (2.0.5)
     rack-attack (5.0.1)
       rack
-    rack-protection (2.0.1)
+    rack-protection (2.0.2)
       rack
     rack-proxy (0.6.3)
       rack
@@ -357,10 +357,10 @@ GEM
       rufus-scheduler (~> 3.2)
       sidekiq (>= 3)
       tilt (>= 1.4.0)
-    sinatra (2.0.1)
+    sinatra (2.0.2)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.1)
+      rack-protection (= 2.0.2)
       tilt (~> 2.0)
     slim (3.0.9)
       temple (>= 0.7.6, < 0.9)
@@ -476,6 +476,7 @@ DEPENDENCIES
   sentry-raven (~> 2.1)
   sidekiq (~> 4.2)
   sidekiq-scheduler (~> 2.0)
+  sinatra (~> 2.0.2)
   slim-rails (~> 3.1)
   tzinfo-data
   u2f (~> 1.0)
