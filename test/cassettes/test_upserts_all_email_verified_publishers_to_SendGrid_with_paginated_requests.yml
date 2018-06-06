@@ -6,10 +6,10 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"email":"alice@default.org","name":"Alice the Pyramid","phone":"+14159001420"},{"email":"alice@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
+        the Verified","phone":"+14159001421"},{"email":"alice_totp@verified.org","name":"Alice
+        the Verified TOTP User","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
         the Completed","phone":"+14159001421"},{"email":"alice@unprompted.org","name":"Alice
-        the Unprompted","phone":"+14159001421"},{"email":"alice@stale.org","name":"Alice
-        the Stale","phone":"+14159001422"}]'
+        the Unprompted","phone":"+14159001421"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -29,11 +29,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:29:56 GMT
+      - Tue, 05 Jun 2018 18:59:26 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '278'
+      - '290'
       Connection:
       - keep-alive
       Access-Control-Allow-Methods:
@@ -57,22 +57,22 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1525267798'
+      - '1528225168'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn"],"errors":[]}
+      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc="],"errors":[]}
 
 '
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:29:56 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:26 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
     body:
       encoding: UTF-8
-      string: '["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn"]'
+      string: '["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc="]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -92,7 +92,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:29:57 GMT
+      - Tue, 05 Jun 2018 18:59:27 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -120,23 +120,22 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1'
       X-Ratelimit-Reset:
-      - '1525267798'
+      - '1528225168'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:29:57 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:27 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice@fake.org","name":"Fake Alice","phone":"+14155551212"},{"email":"bob@fake.org","name":"Fake
-        Bob","phone":"+14155551234"},{"email":"alice@upholdconnected.org","name":"Alice
+      string: '[{"email":"alice@stale.org","name":"Alice the Stale","phone":"+14159001422"},{"email":"alice@fake.org","name":"Fake
+        Alice","phone":"+14155551212"},{"email":"bob@fake.org","name":"Fake Bob","phone":"+14155551234"},{"email":"alice@upholdconnected.org","name":"Alice
         the uphold_connected","phone":"+14159001421"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice2@spud.com","name":"Alice
         the Youtuber","phone":"+14159001420"}]'
     headers:
       Accept-Encoding:
@@ -157,7 +156,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:29:58 GMT
+      - Tue, 05 Jun 2018 18:59:29 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -185,22 +184,22 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1525267800'
+      - '1528225170'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t"],"errors":[]}
+      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20="],"errors":[]}
 
 '
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:29:58 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:29 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
     body:
       encoding: UTF-8
-      string: '["YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t"]'
+      string: '["YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20="]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -220,7 +219,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:29:58 GMT
+      - Tue, 05 Jun 2018 18:59:29 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -248,23 +247,23 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1'
       X-Ratelimit-Reset:
-      - '1525267799'
+      - '1528225170'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:29:58 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:29 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"aliceTwitch@spud.com","name":"Alice
+      string: '[{"email":"alice2@spud.com","name":"Alice the Youtuber","phone":"+14159001420"},{"email":"alice2@verified.org","name":"Alice
+        the Verified","phone":"+14159001421"},{"email":"aliceTwitch@spud.com","name":"Alice
         the Twitcher","phone":"+14159001420"},{"email":"aliceTwitch@verified.org","name":"Alice
         the Verified","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"},{"email":"fred@small.org","name":"Small
         Media Group","phone":"+14159001421"}]'
     headers:
       Accept-Encoding:
@@ -285,516 +284,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:29:59 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '286'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '1'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267800'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc="],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:29:59 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc="]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:29:59 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267800'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:29:59 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"barney@medium.org","name":"Small Media Group","phone":"+14159008921"},{"email":"joes-great-channel@pages.plusgoogle.com","name":"Joe
-        Schmoe","phone":"+16035551212"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:00 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '215'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '2'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267802'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1],"persisted_recipients":["YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:00 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:01 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267801'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:01 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"alice@default.org","name":"Alice the Pyramid","phone":"+14159001420"},{"email":"alice@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@unprompted.org","name":"Alice
-        the Unprompted","phone":"+14159001421"},{"email":"alice@stale.org","name":"Alice
-        the Stale","phone":"+14159001422"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:02 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '278'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '1'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267802'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn"],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:02 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn"]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:02 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267803'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:02 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"alice@fake.org","name":"Fake Alice","phone":"+14155551212"},{"email":"bob@fake.org","name":"Fake
-        Bob","phone":"+14155551234"},{"email":"alice@upholdconnected.org","name":"Alice
-        the uphold_connected","phone":"+14159001421"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice2@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:03 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '266'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '2'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267804'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t"],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:03 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t"]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:03 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267804'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:03 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"aliceTwitch@spud.com","name":"Alice
-        the Twitcher","phone":"+14159001420"},{"email":"aliceTwitch@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"},{"email":"fred@small.org","name":"Small
-        Media Group","phone":"+14159001421"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:04 GMT
+      - Tue, 05 Jun 2018 18:59:30 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -822,22 +312,22 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1525267806'
+      - '1528225172'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc="],"errors":[]}
+      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw=="],"errors":[]}
 
 '
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:04 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:30 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
     body:
       encoding: UTF-8
-      string: '["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc="]'
+      string: '["YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw=="]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -857,7 +347,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:30:04 GMT
+      - Tue, 05 Jun 2018 18:59:31 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -885,20 +375,21 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1'
       X-Ratelimit-Reset:
-      - '1525267805'
+      - '1528225171'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:04 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:31 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"barney@medium.org","name":"Small Media Group","phone":"+14159008921"},{"email":"joes-great-channel@pages.plusgoogle.com","name":"Joe
+      string: '[{"email":"fred@small.org","name":"Small Media Group","phone":"+14159001421"},{"email":"barney@medium.org","name":"Small
+        Media Group","phone":"+14159008921"},{"email":"joes-great-channel@pages.plusgoogle.com","name":"Joe
         Schmoe","phone":"+16035551212"}]'
     headers:
       Accept-Encoding:
@@ -919,139 +410,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:30:05 GMT
+      - Tue, 05 Jun 2018 18:59:32 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '215'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '1'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267806'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1],"persisted_recipients":["YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:05 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:06 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267807'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:06 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"alice@default.org","name":"Alice the Pyramid","phone":"+14159001420"},{"email":"alice@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@unprompted.org","name":"Alice
-        the Unprompted","phone":"+14159001421"},{"email":"alice@stale.org","name":"Alice
-        the Stale","phone":"+14159001422"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:07 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '278'
+      - '240'
       Connection:
       - keep-alive
       Access-Control-Allow-Methods:
@@ -1075,22 +438,22 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1525267808'
+      - '1528225174'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn"],"errors":[]}
+      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2],"persisted_recipients":["ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"],"errors":[]}
 
 '
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:07 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:32 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
     body:
       encoding: UTF-8
-      string: '["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn"]'
+      string: '["ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -1110,7 +473,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 13:30:07 GMT
+      - Tue, 05 Jun 2018 18:59:32 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -1138,393 +501,12 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1'
       X-Ratelimit-Reset:
-      - '1525267808'
+      - '1528225173'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:07 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"alice@fake.org","name":"Fake Alice","phone":"+14155551212"},{"email":"bob@fake.org","name":"Fake
-        Bob","phone":"+14155551234"},{"email":"alice@upholdconnected.org","name":"Alice
-        the uphold_connected","phone":"+14159001421"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice2@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:08 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '266'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '2'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267810'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t"],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:08 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t"]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:08 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267809'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:08 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"aliceTwitch@spud.com","name":"Alice
-        the Twitcher","phone":"+14159001420"},{"email":"aliceTwitch@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"},{"email":"fred@small.org","name":"Small
-        Media Group","phone":"+14159001421"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:09 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '286'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '1'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267810'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc="],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:09 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc="]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:09 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267810'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:09 GMT
-- request:
-    method: patch
-    uri: https://api.sendgrid.com/v3/contactdb/recipients
-    body:
-      encoding: UTF-8
-      string: '[{"email":"barney@medium.org","name":"Small Media Group","phone":"+14159008921"},{"email":"joes-great-channel@pages.plusgoogle.com","name":"Joe
-        Schmoe","phone":"+16035551212"}]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:10 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '215'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '2'
-      X-Ratelimit-Limit:
-      - '3'
-      X-Ratelimit-Reset:
-      - '1525267812'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1],"persisted_recipients":["YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:10 GMT
-- request:
-    method: post
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients
-    body:
-      encoding: UTF-8
-      string: '["YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"]'
-    headers:
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - application/json
-      User-Agent:
-      - sendgrid/5.2.0;ruby
-      Authorization:
-      - Bearer <ENCODED API KEY>
-      Content-Type:
-      - application/json
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 02 May 2018 13:30:11 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '0'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Methods:
-      - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
-      Access-Control-Max-Age:
-      - '21600'
-      Access-Control-Expose-Headers:
-      - Link, Location
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha
-      Content-Security-Policy:
-      - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Ratelimit-Remaining:
-      - '0'
-      X-Ratelimit-Limit:
-      - '1'
-      X-Ratelimit-Reset:
-      - '1525267812'
-      Powered-By:
-      - Mako
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Wed, 02 May 2018 13:30:11 GMT
+  recorded_at: Tue, 05 Jun 2018 18:59:32 GMT
 recorded_with: VCR 4.0.0
