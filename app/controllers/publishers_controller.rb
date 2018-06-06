@@ -225,7 +225,7 @@ class PublishersController < ApplicationController
       current_publisher.save!
     end
 
-    publisher_missing_write_scope = current_publisher.uphold_scope.exclude? "cards:write"
+    publisher_missing_write_scope = current_publisher.wallet.uphold_scope.exclude? "cards:write"
 
     if publisher_missing_write_scope # existing users
       redirect_to uphold_authorization_endpoint(current_publisher) and return # Card will be created in #home when they return
@@ -353,16 +353,16 @@ class PublishersController < ApplicationController
 
     # Create Uphold cards if they need to be created
     if current_publisher.uphold_verified && current_publisher.default_currency_confirmed_at.present?
-      if should_create_default_currency_card?
+      if current_publisher.should_create_default_currency_card?
         UpholdServices::CardCreationService.new(publisher: current_publisher,
                                                 currency_code: current_publisher.default_currency).perform
       end
 
-      if should_create_bat_card?
+      if current_publisher.should_create_bat_card?
         UpholdServices::CardCreationService.new(publisher: current_publisher, currency_code: "BAT").perform
       end      
 
-      if should_update_eyeshade_default_currency?
+      if current_publisher.should_update_eyeshade_default_currency?
         PublisherDefaultCurrencySetter.new(publisher: current_publisher).perform
       end
     end
@@ -544,21 +544,6 @@ class PublishersController < ApplicationController
     request.env["rack.attack.throttle_data"] &&
     request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"] &&
     request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"][:count] >= THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL
-  end
-
-  def should_create_default_currency_card?
-    current_publisher.available_uphold_currencies.exclude?(current_publisher.default_currency) && 
-    current_publisher.possible_uphold_currencies.include?(current_publisher.default_currency)
-  end
-
-  def should_create_bat_card?
-    current_publisher.available_uphold_currencies.exclude?("BAT") && 
-    current_publisher.possible_uphold_currencies.include?("BAT") &&
-    current_publisher.default_currency != "BAT"
-  end
-
-  def should_update_eyeshade_default_currency?
-    current_publisher.eyeshade_default_currency != current_publisher.default_currency
   end
 
   def manually_triggered_captcha?

@@ -98,7 +98,7 @@ module PublishersHelper
   end
 
   def publisher_available_currencies(publisher)
-    available_currencies = publisher.available_uphold_currencies
+    available_currencies = publisher.wallet.available_uphold_currencies
     if available_currencies && publisher.default_currency.blank?
       available_currencies.unshift(['-- Select currency --', nil])
     end
@@ -106,7 +106,7 @@ module PublishersHelper
   end
 
   def publisher_possible_currencies(publisher)
-    possible_currencies = publisher.possible_uphold_currencies
+    possible_currencies = publisher.wallet.possible_uphold_currencies
     if possible_currencies && publisher.default_currency.blank?
       possible_currencies.unshift(['-- Select currency --', nil])
     end

@@ -16,7 +16,7 @@ javascript:
     h4= t(".headline")
     p=t(".leadin")
     = form_for current_publisher, {method: :post, url: confirm_default_currency_publishers_path, html: {id: "confirm_default_currency_form"} } do |f|
-      = f.select(:default_currency, options_for_select(publisher_possible_currencies(current_publisher), "BAT" || current_publisher.eyeshade_default_currency))
+      = f.select(:default_currency, options_for_select(publisher_possible_currencies(current_publisher), "BAT" || current_publisher.wallet.eyeshade_default_currency))
       = f.submit(t(".confirm"), class: "btn btn-primary", id: "close_confirm_default_currency_modal")
     
 .md-overlay
