@@ -48,7 +48,7 @@ completed:
 
 admin:
   email: "hello@brave.com"
-  kind: "admin"
+  role: "admin"
 
 unprompted:
   email: "alice@unprompted.org"

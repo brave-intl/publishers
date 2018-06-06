@@ -10,7 +10,7 @@ class Ability
     alias_action :read,     :create,                  to: :cr
     alias_action :destroy,  :update,                  to: :modify
 
-    ROLES.each { |role| send(role) if @publisher.kind.to_sym == role }
+    ROLES.each { |role| send(role) if @publisher.role.to_sym == role }
   end
 
   private
