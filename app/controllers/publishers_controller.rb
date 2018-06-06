@@ -358,7 +358,7 @@ class PublishersController < ApplicationController
                                                 currency_code: current_publisher.default_currency).perform
       end
 
-      if current_publisher.should_create_bat_card?
+      if current_publisher.default_currency != "BAT" && current_publisher.should_create_bat_card?
         UpholdServices::CardCreationService.new(publisher: current_publisher, currency_code: "BAT").perform
       end      
 

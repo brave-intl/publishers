@@ -205,8 +205,7 @@ class Publisher < ApplicationRecord
 
   def should_create_bat_card?
     wallet.available_uphold_currencies.exclude?("BAT") && 
-    wallet.possible_uphold_currencies.include?("BAT") &&
-    default_currency != "BAT"
+    wallet.possible_uphold_currencies.include?("BAT")
   end
 
   def should_update_eyeshade_default_currency?
