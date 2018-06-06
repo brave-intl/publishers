@@ -94,6 +94,9 @@ gem "sidekiq", "~> 4.2"
 
 gem "sidekiq-scheduler", "~> 2.0"
 
+# Used by sendgrid-ruby. Forcing an update due to a security concern
+gem 'sinatra', '~> 2.0.2'
+
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
