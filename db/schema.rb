@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(version: 20180521195417) do
     t.string   "promo_token_2018q1"
     t.jsonb    "promo_stats_2018q1",                    default: {},          null: false
     t.datetime "promo_stats_updated_at_2018q1"
-    t.text     "kind",                                  default: "publisher"
+    t.text     "role",                                  default: "publisher"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
     t.index ["created_at"], name: "index_publishers_on_created_at", using: :btree
     t.index ["pending_email"], name: "index_publishers_on_pending_email", using: :btree
