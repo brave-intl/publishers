@@ -684,15 +684,23 @@
     border-radius: 10px;
   }
 
-  // the selector
   #publisher_default_currency {
     display: block;
     margin: 0px auto 36px;
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
 
   #close_confirm_default_currency_modal {
-    width: 200px;
+    width: 300px;
+    margin-bottom: 40px;
   }
+
+  #img-currency-setting{
+    padding-top: 30px;
+    padding-bottom: 60px;
+  }
+
 }
 
 #channel_taken_modal {

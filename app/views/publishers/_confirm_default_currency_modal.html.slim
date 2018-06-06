@@ -12,7 +12,7 @@ javascript:
 
 .md-container#confirm_default_currency_modal
   .md-content
-    = image_tag "img-currency-setting.png"
+    = image_tag "img-currency-setting.png", id: "img-currency-setting"
     h4= t(".headline")
     p=t(".leadin")
     = form_for current_publisher, {method: :post, url: confirm_default_currency_publishers_path, html: {id: "confirm_default_currency_form"} } do |f|
