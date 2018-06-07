@@ -204,7 +204,11 @@ class Publisher < ApplicationRecord
   end
 
   def admin?
-    role == 'admin'
+    role == ADMIN
+  end
+
+  def publisher?
+    role == PUBLISHER
   end
 
   private

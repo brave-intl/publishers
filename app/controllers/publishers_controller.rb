@@ -32,6 +32,7 @@ class PublishersController < ApplicationController
                change_email)
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
+  before_action :protect, only: %i(show home)
   before_action :require_verified_publisher,
     only: %i(disconnect_uphold
              edit_payment_info
@@ -45,6 +46,7 @@ class PublishersController < ApplicationController
              uphold_verified)
   before_action :prompt_for_two_factor_setup,
     only: %i(home)
+
 
   def sign_up
     @publisher = Publisher.new(email: params[:email])
@@ -95,13 +97,13 @@ class PublishersController < ApplicationController
   def create_done
     @publisher = Publisher.find(session[:created_publisher_id])
     @publisher_email = @publisher.pending_email
-        
+
     render :emailed_auth_token
   end
 
   # Used by emailed_auth_token.html.slim to send a new sign up or log in access email
   # to the publisher passed through the params
-  def resend_auth_email    
+  def resend_auth_email
     @publisher = Publisher.find(params[:publisher_id])
 
     @should_throttle = should_throttle_resend_auth_email?
@@ -119,7 +121,7 @@ class PublishersController < ApplicationController
       @publisher_email = @publisher.email
       MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
     end
-    
+
     flash.now[:notice] = t(".done")
     render(:emailed_auth_token)
   end
@@ -206,6 +208,10 @@ class PublishersController < ApplicationController
         end
       }
     end
+  end
+
+  def protect
+    return redirect_to admin_publishers_path unless current_publisher.publisher?
   end
 
   # Log in page
