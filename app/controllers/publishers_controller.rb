@@ -348,23 +348,10 @@ class PublishersController < ApplicationController
 
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
-
     wallet = current_publisher.wallet.wallet_json
 
-    # Create Uphold cards if they need to be created
-    if current_publisher.uphold_verified && current_publisher.default_currency_confirmed_at.present?
-      if current_publisher.should_create_default_currency_card?
-        UpholdServices::CardCreationService.new(publisher: current_publisher,
-                                                currency_code: current_publisher.default_currency).perform
-      end
-
-      if current_publisher.default_currency != "BAT" && current_publisher.should_create_bat_card?
-        UpholdServices::CardCreationService.new(publisher: current_publisher, currency_code: "BAT").perform
-      end      
-
-      if current_publisher.should_update_eyeshade_default_currency?
-        PublisherDefaultCurrencySetter.new(publisher: current_publisher).perform
-      end
+    if current_publisher.can_create_uphold_cards? && current_publisher.default_currency_confirmed_at.present?
+      CreateUpholdCardsJob.perform_later(publisher_id: current_publisher.id)
     end
   end
 

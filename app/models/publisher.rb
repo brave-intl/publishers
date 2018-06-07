@@ -198,6 +198,10 @@ class Publisher < ApplicationRecord
     channels.any?(&:verified?)
   end
 
+  def can_create_uphold_cards?
+    uphold_verified && wallet.uphold_authorized? && wallet.uphold_scope.include?("cards:write")
+  end
+
   def should_create_default_currency_card?
     wallet.available_uphold_currencies.exclude?(default_currency) && 
     wallet.possible_uphold_currencies.include?(default_currency)

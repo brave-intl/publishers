@@ -32,6 +32,7 @@ class PublisherWalletGetter < BaseApiClient
       channel_hash[identifier] = JSON.parse(response.body)
     end
 
+
     Eyeshade::Wallet.new(
       wallet_json: wallet_hash,
       channel_json: channel_hash

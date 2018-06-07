@@ -685,7 +685,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "#confirm_default_currency creates new card if not in available currency, sets new default currency" do
+  test "#confirm_default_currency sets new default currency, initiates CreateUpholdCardsJob if not currency in available currency" do
     prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
@@ -700,7 +700,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       # Mock the eyeshade wallet response to include cards:write scope
       wallet = { "wallet" => { "defaultCurrency" => "USD",
-                               "authorized" => false,
+                               "authorized" => true,
                                "availableCurrencies" => "",
                                "possibleCurrencies" => "BAT",
                                "scope" => "cards:read, cards:write, user:read" }
@@ -714,27 +714,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert publisher.default_currency_confirmed_at.present?
       assert publisher.default_currency == "BAT"
 
-      follow_redirect!
-
-      # ensure request to create BAT card was made
-      assert_requested :post,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        body: '{"currency":"BAT","label":"Brave Payments"}',
-        times: 1
-
-      # ensure only one request to create a card was made
-      assert_requested :post,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        times: 1
-
-      # ensure request to update eyeshade default currency was made
-      assert_requested :patch,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
-        body: '{
-  "defaultCurrency": "BAT" 
-}
-',
-        times: 1
+      assert_enqueued_jobs(1) do
+        follow_redirect!
+      end
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
@@ -755,7 +737,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       # Mock the eyeshade wallet response to include cards:write scope
       wallet = { "wallet" => { "defaultCurrency" => "USD",
-                               "authorized" => false,
+                               "authorized" => true,
                                "availableCurrencies" => "",
                                "possibleCurrencies" => "BAT, BTC",
                                "scope" => "cards:read, cards:write, user:read" }
@@ -770,32 +752,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert publisher.default_currency_confirmed_at.present?
       assert publisher.default_currency == "BTC"
 
-      follow_redirect!
-      
-      # ensure request to create BAT card was made
-      assert_requested :post,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        body: '{"currency":"BAT","label":"Brave Payments"}',
-        times: 1
+      assert_enqueued_jobs(1) do
+        follow_redirect!
+      end
 
-      # ensure only one request to create a card was made
-      assert_requested :post,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        times: 2
-
-      # ensure request to update eyeshade default currency was made
-      assert_requested :patch,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
-        body: '{
-  "defaultCurrency": "BTC" 
-}
-',
-        times: 1
-
-      # ensure only one request to update eyeshade default currency was made
-      assert_requested :patch,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
-        times: 1
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
@@ -816,7 +776,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       # Mock the eyeshade wallet response to include cards:write scope
       wallet = { "wallet" => { "defaultCurrency" => "BAT",
-                               "authorized" => false,
+                               "authorized" => true,
                                "availableCurrencies" => "BAT",
                                "possibleCurrencies" => "BAT",
                                "scope" => "cards:read, cards:write, user:read" }
@@ -825,18 +785,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-
-      # ensure no request to create a wallet was made
-      assert_requested :post,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        times: 0
-
-      # ensure no request to update default currency was made
-      assert_requested :patch,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
-        times: 0
-
-      post(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
+      assert_enqueued_jobs(0) do
+        post(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
+      end
       assert_redirected_to home_publishers_path
       assert publisher.default_currency_confirmed_at.present?
       assert publisher.default_currency == "BAT"
@@ -874,7 +825,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert publisher.default_currency == "BAT"
 
       wallet = { "wallet" => { "defaultCurrency" => "BAT",
-                               "authorized" => false,
+                               "authorized" => true,
                                "availableCurrencies" => "",  # BAT will not be available
                                "possibleCurrencies" => "BAT",
                                "scope" => "cards:read, cards:write, user:read" }
@@ -883,11 +834,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      get home_publishers_path
 
-      assert_requested :post,
-        "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        times: 1
+      assert_enqueued_jobs(1) do
+        get home_publishers_path
+      end
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
