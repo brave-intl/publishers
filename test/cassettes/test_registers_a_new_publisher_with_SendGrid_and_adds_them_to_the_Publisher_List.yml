@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 05 Jun 2018 19:59:36 GMT
+      - Thu, 07 Jun 2018 13:36:27 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,11 +49,11 @@ http_interactions:
       Strict-Transport-Security:
       - max-age=31536000
       X-Ratelimit-Remaining:
-      - '2'
+      - '1'
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1528228776'
+      - '1528378588'
       Powered-By:
       - Mako
     body:
@@ -62,7 +62,7 @@ http_interactions:
 
 '
     http_version: 
-  recorded_at: Tue, 05 Jun 2018 19:59:36 GMT
+  recorded_at: Thu, 07 Jun 2018 13:36:27 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3986776/recipients/YWxpY2VAY29tcGxldGVkLm9yZw==
@@ -88,7 +88,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 05 Jun 2018 19:59:36 GMT
+      - Thu, 07 Jun 2018 13:36:28 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -116,12 +116,12 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1528228777'
+      - '1528378589'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Tue, 05 Jun 2018 19:59:36 GMT
+  recorded_at: Thu, 07 Jun 2018 13:36:27 GMT
 recorded_with: VCR 4.0.0

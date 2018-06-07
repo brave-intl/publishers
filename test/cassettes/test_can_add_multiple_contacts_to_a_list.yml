@@ -42,19 +42,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-<<<<<<< HEAD
-      - Tue, 05 Jun 2018 17:44:12 GMT
+      - Thu, 07 Jun 2018 13:36:51 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '703'
-=======
-      - Tue, 05 Jun 2018 19:59:55 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '707'
->>>>>>> Add default_currency_confirmed_at to Publishers table
+      - '745'
       Connection:
       - keep-alive
       Access-Control-Allow-Methods:
@@ -78,38 +70,22 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-<<<<<<< HEAD
-      - '1528220654'
-=======
-      - '1528228796'
->>>>>>> Add default_currency_confirmed_at to Publishers table
+      - '1528378612'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
-<<<<<<< HEAD
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"persisted_recipients":["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"],"errors":[]}
+      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"persisted_recipients":["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","Y2Fyb2xAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"],"errors":[]}
 
 '
     http_version: 
-  recorded_at: Tue, 05 Jun 2018 17:44:12 GMT
-=======
-      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"persisted_recipients":["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","Y2Fyb2xAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"],"errors":[]}
-
-'
-    http_version: 
-  recorded_at: Tue, 05 Jun 2018 19:59:55 GMT
->>>>>>> Add default_currency_confirmed_at to Publishers table
+  recorded_at: Thu, 07 Jun 2018 13:36:51 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3986776/recipients
     body:
       encoding: UTF-8
-<<<<<<< HEAD
-      string: '["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"]'
-=======
-      string: '["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","Y2Fyb2xAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"]'
->>>>>>> Add default_currency_confirmed_at to Publishers table
+      string: '["YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAdmVyaWZpZWQub3Jn","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAdW5wcm9tcHRlZC5vcmc=","YWxpY2VAc3RhbGUub3Jn","YWxpY2VAZmFrZS5vcmc=","Ym9iQGZha2Uub3Jn","YWxpY2VAdXBob2xkY29ubmVjdGVkLm9yZw==","Y2Fyb2xAdXBob2xkY29ubmVjdGVkLm9yZw==","YWxpY2VAc3B1ZC5jb20=","YWxpY2UyQHNwdWQuY29t","YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2V0d2l0Y2hAc3B1ZC5jb20=","YWxpY2V0d2l0Y2hAdmVyaWZpZWQub3Jn","ZnJlZEB2Z2xvYmFsLm9yZw==","ZnJlZEBzbWFsbC5vcmc=","YmFybmV5QG1lZGl1bS5vcmc=","am9lcy1ncmVhdC1jaGFubmVsQHBhZ2VzLnBsdXNnb29nbGUuY29t"]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -129,11 +105,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-<<<<<<< HEAD
-      - Tue, 05 Jun 2018 17:44:12 GMT
-=======
-      - Tue, 05 Jun 2018 19:59:55 GMT
->>>>>>> Add default_currency_confirmed_at to Publishers table
+      - Thu, 07 Jun 2018 13:36:52 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -161,20 +133,12 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1'
       X-Ratelimit-Reset:
-<<<<<<< HEAD
-      - '1528220653'
-=======
-      - '1528228796'
->>>>>>> Add default_currency_confirmed_at to Publishers table
+      - '1528378612'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-<<<<<<< HEAD
-  recorded_at: Tue, 05 Jun 2018 17:44:12 GMT
-=======
-  recorded_at: Tue, 05 Jun 2018 19:59:55 GMT
->>>>>>> Add default_currency_confirmed_at to Publishers table
+  recorded_at: Thu, 07 Jun 2018 13:36:51 GMT
 recorded_with: VCR 4.0.0

@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 05 Jun 2018 19:59:56 GMT
+      - Thu, 07 Jun 2018 13:36:51 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -53,12 +53,12 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1528228796'
+      - '1528378612'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Tue, 05 Jun 2018 19:59:56 GMT
+  recorded_at: Thu, 07 Jun 2018 13:36:51 GMT
 recorded_with: VCR 4.0.0
