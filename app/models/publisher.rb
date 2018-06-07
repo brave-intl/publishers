@@ -198,6 +198,20 @@ class Publisher < ApplicationRecord
     channels.any?(&:verified?)
   end
 
+  def should_create_default_currency_card?
+    wallet.available_uphold_currencies.exclude?(default_currency) && 
+    wallet.possible_uphold_currencies.include?(default_currency)
+  end
+
+  def should_create_bat_card?
+    wallet.available_uphold_currencies.exclude?("BAT") && 
+    wallet.possible_uphold_currencies.include?("BAT")
+  end
+
+  def should_update_eyeshade_default_currency?
+    wallet.eyeshade_default_currency != default_currency
+  end
+
   private
 
   def dont_destroy_publishers_with_channels

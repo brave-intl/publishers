@@ -4,6 +4,9 @@ noscript
 - if flash[:taken_channel_id]
   = render partial: 'channel_taken', locals: { channel_id: flash[:taken_channel_id] }
 
+- if current_publisher.uphold_verified && current_publisher.default_currency_confirmed_at.nil? && current_publisher.wallet.uphold_authorized?
+  = render :partial => 'confirm_default_currency_modal'
+  
 - content_for(:navbar_content_right) do
   = link_to( \
     t("shared.dashboard"), \

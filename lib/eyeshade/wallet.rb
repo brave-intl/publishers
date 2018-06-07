@@ -22,5 +22,25 @@ module Eyeshade
         @channel_balances[identifier] = Eyeshade::Balance.new(balance_json: json)
       end
     end
+
+    def uphold_scope
+      wallet_json.try(:[], "wallet").try(:[], "scope")
+    end
+
+    def uphold_authorized?
+      wallet_json.try(:[], "wallet").try(:[], "authorized")
+    end
+
+    def eyeshade_default_currency
+      wallet_json.try(:[], "wallet").try(:[], "defaultCurrency")
+    end
+
+    def available_uphold_currencies
+      wallet_json.try(:[], "wallet").try(:[], "availableCurrencies")
+    end
+
+    def possible_uphold_currencies
+      wallet_json.try(:[], "wallet").try(:[], "possibleCurrencies")
+    end    
   end
 end

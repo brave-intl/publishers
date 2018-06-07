@@ -208,6 +208,32 @@ class PublishersController < ApplicationController
     end
   end
 
+  # Records default currency preference
+  # If user does not have Uphold's `cards:write` scope, we redirect to Uphold to get authorization
+  # Card creation is done in #home
+  def confirm_default_currency
+    confirm_default_currency_params = publisher_confirm_default_currency_params
+    selected_currency = confirm_default_currency_params[:default_currency]
+
+    current_publisher.default_currency_confirmed_at = Time.now
+    current_publisher.save!
+
+    default_currency_changed = current_publisher.default_currency != selected_currency
+
+    if default_currency_changed
+      current_publisher.default_currency = selected_currency
+      current_publisher.save!
+    end
+
+    publisher_missing_write_scope = current_publisher.wallet.uphold_scope.exclude? "cards:write"
+
+    if publisher_missing_write_scope # existing users
+      redirect_to uphold_authorization_endpoint(current_publisher) and return # Card will be created in #home when they return
+    end
+
+    redirect_to home_publishers_path
+  end
+
   # Log in page
   def new_auth_token
     @publisher = Publisher.new
@@ -318,12 +344,28 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
-    if current_publisher.promo_stats_status == :update
-      SyncPublisherPromoStatsJob.perform_later(publisher: current_publisher)
-    end
+    SyncPublisherPromoStatsJob.perform_later(publisher: current_publisher) if current_publisher.promo_stats_status == :update
+
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
-    current_publisher.wallet
+
+    wallet = current_publisher.wallet.wallet_json
+
+    # Create Uphold cards if they need to be created
+    if current_publisher.uphold_verified && current_publisher.default_currency_confirmed_at.present?
+      if current_publisher.should_create_default_currency_card?
+        UpholdServices::CardCreationService.new(publisher: current_publisher,
+                                                currency_code: current_publisher.default_currency).perform
+      end
+
+      if current_publisher.default_currency != "BAT" && current_publisher.should_create_bat_card?
+        UpholdServices::CardCreationService.new(publisher: current_publisher, currency_code: "BAT").perform
+      end      
+
+      if current_publisher.should_update_eyeshade_default_currency?
+        PublisherDefaultCurrencySetter.new(publisher: current_publisher).perform
+      end
+    end
   end
 
   def statements
@@ -445,6 +487,10 @@ class PublishersController < ApplicationController
 
   def publisher_update_email_params
     params.require(:publisher).permit(:pending_email)
+  end
+
+  def publisher_confirm_default_currency_params
+    params.require(:publisher).permit(:default_currency)
   end
 
   def publisher_create_auth_token_params

@@ -26,11 +26,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 02 May 2018 12:11:55 GMT
+      - Thu, 07 Jun 2018 13:36:50 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '193'
+      - '195'
       Connection:
       - keep-alive
       Access-Control-Allow-Methods:
@@ -54,14 +54,14 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1525263116'
+      - '1528378612'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
-      string: '{"new_count":1,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0],"persisted_recipients":["YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2UyQHZlcmlmaWVkLm9yZw=="],"errors":[]}
+      string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1],"persisted_recipients":["YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2UyQHZlcmlmaWVkLm9yZw=="],"errors":[]}
 
 '
     http_version: 
-  recorded_at: Wed, 02 May 2018 12:11:55 GMT
+  recorded_at: Thu, 07 Jun 2018 13:36:50 GMT
 recorded_with: VCR 4.0.0
