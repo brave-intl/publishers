@@ -10,7 +10,7 @@ namespace :sendgrid do
     total_count = Publisher.email_verified.count
 
     while page * limit < total_count
-      publishers = Publisher.email_verified.offset(page * limit).limit(limit)
+      publishers = Publisher.email_verified.order(:email).offset(page * limit).limit(limit)
       page = page + 1
 
       ids = SendGrid::ApiHelper.upsert_contacts(publishers: publishers)
