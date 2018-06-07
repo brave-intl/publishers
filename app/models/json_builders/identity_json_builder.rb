@@ -6,7 +6,7 @@ class JsonBuilders::IdentityJsonBuilder
   attr_reader :channel_detail, :publisher_name, :errors
 
   # Copy of bat-ledger/node_modules/bat-publisher/index.js `providerRE`
-  URL_REGULAR_EXPRESSION = /^([A-Za-z0-9][A-Za-z0-9-]{0,62})#([A-Za-z0-9][A-Za-z0-9-]{0,62}):(([A-Za-z0-9-._~]|%[0-9A-F]{2})+)$/
+  URL_REGULAR_EXPRESSION = /^([A-Za-z0-9][A-Za-z0-9]{0,62})#([A-Za-z0-9][A-Za-z0-9]{0,62}):(([A-Za-z0-9\-._~]|%[0-9A-F]{2})+)$/
 
 
   def initialize(publisher_name:)
