@@ -13,7 +13,7 @@ class Api::Public::ChannelsController < Api::BaseController
   end
 
   def timestamp
-    latest_updated_at = Rails.cache.fetch("last_updated_channel_timestamp", expires_in: 10.seconds) do
+    latest_updated_at = Rails.cache.fetch("last_updated_channel_timestamp", expires_in: 10.minutes) do
       # (Albert Wang): To satisfy backwards compatibility in Ledger's v3.timestamp
       Channel.maximum("updated_at").to_i << 32
     end
