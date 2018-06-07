@@ -134,16 +134,6 @@ group :development do
   gem "i18n-tasks", "~> 0.9.12"
 end
 
-group :development, :test do
-  # Call "byebug" anywhere in the code to stop execution and get a debugger console
-  gem "byebug", platform: :mri
-end
-
-group :development, :staging do
-  # Offline domain normalization
-  gem "domain_name", require: false
-end
-
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
