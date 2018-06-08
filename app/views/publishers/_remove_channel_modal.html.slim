@@ -1,13 +1,12 @@
-.confirm-modal
-  .confirm-modal--content
-    h4= t ".headline"
-    p
-      = "#{t ".intro"}:"
-      br
-      strong.error
-        = channel.publication_title
-    p
-      = t ".confirmation"
-  .confirm-modal--action
-    = link_to t(".deny"), "#", class: "js-deny btn btn-secondary"
-    = link_to t(".confirm"), "#", class: "js-confirm btn btn-secondary"
+h4= t ".headline"
+p
+  = "#{t ".intro"}:"
+  br
+  strong.error
+    = channel.publication_title
+p
+  = t ".confirmation"
+
+.modal-buttons
+  = link_to t(".deny"), "#", class: "js-deny btn btn-secondary"
+  = link_to t(".confirm"), "#", class: "js-confirm btn btn-secondary"

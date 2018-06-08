@@ -2,7 +2,8 @@ noscript
   div.noscript-warning = t ".noscript"
 
 - if flash[:taken_channel_id]
-  = render partial: 'channel_taken', locals: { channel_id: flash[:taken_channel_id] }
+  #js-open-modal-on-load
+    = render partial: 'channel_taken_modal', locals: { channel_id: flash[:taken_channel_id] }
 
 - content_for(:navbar_content_right) do
   = link_to( \
