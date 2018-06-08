@@ -29,7 +29,6 @@ verified_totp_only:
   visible: true
 
 # A publisher that has received an authentication email
-#
 completed:
   email: "alice@completed.org"
   name: "Alice the Completed"
@@ -166,3 +165,19 @@ joe_the_only_yt_verified:
   visible: true
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
+
+# A publisher that has not verified their email
+created:
+  email:
+  pending_email: "carolthecreated@example.com"
+  name: "Carol the created"
+  two_factor_prompted_at:
+  agreed_to_tos:
+
+# A publisher that has verified their email but not
+# agreed to TOS and addressed the 2fa prompt
+onboarding:
+  email: "owentheonboard@example.com"
+  name: "Owen the onboard"
+  agreed_to_tos:
+  two_factor_prompted_at:
