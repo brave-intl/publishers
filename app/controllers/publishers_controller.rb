@@ -95,13 +95,13 @@ class PublishersController < ApplicationController
   def create_done
     @publisher = Publisher.find(session[:created_publisher_id])
     @publisher_email = @publisher.pending_email
-        
+
     render :emailed_auth_token
   end
 
   # Used by emailed_auth_token.html.slim to send a new sign up or log in access email
   # to the publisher passed through the params
-  def resend_auth_email    
+  def resend_auth_email
     @publisher = Publisher.find(params[:publisher_id])
 
     @should_throttle = should_throttle_resend_auth_email?
@@ -119,7 +119,7 @@ class PublishersController < ApplicationController
       @publisher_email = @publisher.email
       MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
     end
-    
+
     flash.now[:notice] = t(".done")
     render(:emailed_auth_token)
   end
@@ -330,6 +330,9 @@ class PublishersController < ApplicationController
   end
 
   def log_out
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
     path = after_sign_out_path_for(current_publisher)
     sign_out
     redirect_to(path)
