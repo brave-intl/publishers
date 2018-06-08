@@ -126,10 +126,19 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
     }
   }
 
+  function keyupDelegate(event) {
+    if (event.keyCode === 27) {
+      closeModal(event);
+    }
+  }
+
   // Always attempt to remove the listener, ensuring that two
   // calls to openModal don't create duplicate listeners.
   modalElement.removeEventListener('click', confirmationEventDelegate);
   modalElement.addEventListener('click', confirmationEventDelegate);
+
+  document.removeEventListener('keyup', keyupDelegate);
+  document.addEventListener('keyup', keyupDelegate);
 }
 
 /*
