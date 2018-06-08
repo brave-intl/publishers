@@ -82,6 +82,7 @@ Rails.application.routes.draw do
     resources :channels, constraints: { channel_id: %r{[^\/]+} }
     namespace :public, defaults: { format: :json } do
       get "channels/identity", controller: 'channels/identity'
+      get "channels/timestamp", controller: 'channels/timestamp'
     end
   end
 
