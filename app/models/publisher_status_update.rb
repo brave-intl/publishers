@@ -1,6 +1,4 @@
-class PublisherStatusUpdate < ApplicationRecord
-  has_paper_trail
-  
+class PublisherStatusUpdate < ApplicationRecord  
   ALL_STATUSES = ["created", "onboarding", "active", "suspended"]
 
   belongs_to :publisher
