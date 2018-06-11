@@ -8,6 +8,7 @@ services:
       - CHROME_BINARY=/usr/bin/chrome
       - ADDRESS
       - ACTIVE_PROMO_ID
+      - ADMIN_IP_WHITELIST
       - API_AUTH_TOKEN
       - API_EYESHADE_BASE_URI
       - API_EYESHADE_KEY
