@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :publishers, only: %i(create update new show) do
+  resources :publishers, only: %i(create update new show javascript_detected) do
+    put :javascript_detected
     collection do
       get :sign_up
       get :create_done

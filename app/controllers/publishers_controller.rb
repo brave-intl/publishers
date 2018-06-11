@@ -95,13 +95,13 @@ class PublishersController < ApplicationController
   def create_done
     @publisher = Publisher.find(session[:created_publisher_id])
     @publisher_email = @publisher.pending_email
-        
+
     render :emailed_auth_token
   end
 
   # Used by emailed_auth_token.html.slim to send a new sign up or log in access email
   # to the publisher passed through the params
-  def resend_auth_email    
+  def resend_auth_email
     @publisher = Publisher.find(params[:publisher_id])
 
     @should_throttle = should_throttle_resend_auth_email?
@@ -119,7 +119,7 @@ class PublishersController < ApplicationController
       @publisher_email = @publisher.email
       MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
     end
-    
+
     flash.now[:notice] = t(".done")
     render(:emailed_auth_token)
   end
@@ -206,6 +206,10 @@ class PublishersController < ApplicationController
         end
       }
     end
+  end
+
+  def javascript_detected
+    Publisher.find(params[:publisher_id]).update(javascript_last_detected_at: Time.now)
   end
 
   # Log in page
@@ -318,6 +322,7 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
+    gon.current_publisher_id = current_publisher.id
     if current_publisher.promo_stats_status == :update
       SyncPublisherPromoStatsJob.perform_later(publisher: current_publisher)
     end

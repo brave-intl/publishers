@@ -23,6 +23,9 @@ gem "devise", "~> 4.2.0"
 
 gem "dnsruby", "~> 1.60.0", require: false
 
+# Know about current_user in javascript land
+gem 'gon'
+
 gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
