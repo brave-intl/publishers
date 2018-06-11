@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    title Publisher Admin Dashboard
+    = stylesheet_link_tag 'admin/main'
+  body
+    section id='container'
+      = render 'admin/shared/header'
+      = render 'admin/shared/sidebar'
+      section id='main-content'
+        section id='wrapper'
+          = yield

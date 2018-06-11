@@ -20,7 +20,7 @@ class SendGridRefreshTest < ActiveJob::TestCase
         where.not(email: "fred@vglobal.org").
         where.not(email: "fred@small.org").delete_all
 
-    assert_output(/Done. Refreshed #{Publisher.email_verified.count} publishers to SendGrid./) do
+    assert_output(/Done. Refreshed #{Publisher.email_verified.not_admin.count} publishers to SendGrid./) do
       Rake::Task["sendgrid:refresh"].invoke(5)
     end
   end

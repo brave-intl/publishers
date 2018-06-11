@@ -45,6 +45,10 @@ completed:
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
+admin:
+  email: "hello@brave.com"
+  role: "admin"
+
 unprompted:
   email: "alice@unprompted.org"
   name: "Alice the Unprompted"

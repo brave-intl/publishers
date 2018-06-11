@@ -19,6 +19,22 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     }
   }.freeze
 
+  test "publisher can access a publisher's dashboard" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    get home_publishers_path
+    assert_response :success
+  end
+
+  test "admin cannot access a publisher's dashboard" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    get home_publishers_path
+    assert_response 302
+  end
+
   test "can create a Publisher registration, pending email verification" do
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
@@ -201,7 +217,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   #     post(create_auth_token_publishers_path, params: params)
   #   end
   # end
-  
+
   # test "relogin for unverified publishers fails with the wrong email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
@@ -210,7 +226,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   #     post(create_auth_token_publishers_path, params: params)
   #   end
   # end
-  
+
   # test "relogin for verified publishers without an email sends to the publisher's email" do
   #   publisher = publishers(:verified)
   #   perform_enqueued_jobs do
@@ -647,7 +663,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
     get home_publishers_path
-    
+
     ['og:image', 'og:title', 'og:description', 'og:url', 'og:type'].each do |meta_tag|
       assert_select "meta[property='#{meta_tag}']"
     end

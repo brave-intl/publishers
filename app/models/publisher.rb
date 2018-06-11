@@ -1,9 +1,13 @@
 class Publisher < ApplicationRecord
   has_paper_trail
+  self.per_page = 50
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   PROMO_STATS_UPDATE_DELAY = 10.minutes
+  ADMIN = "admin"
+  PUBLISHER = "publisher"
+  ROLES = [ADMIN, PUBLISHER]
 
   devise :timeoutable, :trackable, :omniauthable
 
@@ -61,6 +65,7 @@ class Publisher < ApplicationRecord
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
   scope :email_verified, -> { where.not(email: nil) }
+  scope :not_admin, -> { where.not(role: ADMIN) }
 
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
@@ -203,6 +208,14 @@ class Publisher < ApplicationRecord
     channels.any?(&:verified?)
   end
 
+  def admin?
+    role == ADMIN
+  end
+
+  def publisher?
+    role == PUBLISHER
+  end
+  
   def last_status_update
     status_updates.first
   end

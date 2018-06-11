@@ -86,6 +86,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :admin do
+    resources :publishers
+    root to: "dashboard#index" # <--- Root route
+  end
+
   resources :errors, only: [], path: "/" do
     collection do
       get "400", action: :error_400

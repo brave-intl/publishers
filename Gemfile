@@ -16,7 +16,10 @@ gem "api-pagination"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
 
-gem "bootstrap", "~> 4.0.0.beta3"
+gem "bootstrap", "~> 4.1.1"
+
+# Authorization
+gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.2.0"
