@@ -25,3 +25,13 @@ verified_totp:
     key: TotpRegistration.encryption_key,
     iv: salt
   ) %>"
+
+admin:
+  publisher: admin
+  last_logged_in_at: <%= 2.days.ago %>
+  encrypted_secret_iv: "<%= Base64.encode64(salt) %>"
+  encrypted_secret: "<%= TotpRegistration.encrypt_secret(
+    ROTP::Base32.random_base32,
+    key: TotpRegistration.encryption_key,
+    iv: salt
+  ) %>"
