@@ -148,6 +148,11 @@ class Channel < ApplicationRecord
     self.verification_status == 'awaiting_admin_approval'
   end
 
+  def update_last_verification_timestamp
+    # Used for caching on the api/public/channels#timestamp
+    Rails.cache.set("last_updated_channel_timestamp", Time.now.to_i << 32)
+  end
+
   private
 
   def should_register_channel_for_promo

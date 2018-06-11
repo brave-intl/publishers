@@ -668,4 +668,41 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_select "meta[property='#{meta_tag}']"
     end
   end
+
+  test "completing signup adds, 'created', 'onboarding', 'active' status updates" do
+    # Sign up fresh publisher
+    url = nil
+    publisher = nil
+
+    perform_enqueued_jobs do
+      post(publishers_path, params: SIGNUP_PARAMS)
+      publisher = Publisher.order(created_at: :asc).last
+      
+      assert publisher.last_status_update.status == "created"
+
+      email = ActionMailer::Base.deliveries.find do |message|
+        message.to.first == SIGNUP_PARAMS[:email]
+      end
+      url = publisher_url(publisher, token: publisher.authentication_token)
+    end
+
+    # Verify email address
+    get url
+    assert publisher.last_status_update.status == "onboarding"
+
+    # Agree to TOS
+    perform_enqueued_jobs do
+      patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
+    end
+
+    publisher.reload
+    assert publisher.agreed_to_tos.present?
+
+    # Present two factor prompt
+    follow_redirect!
+    publisher.reload
+    assert publisher.two_factor_prompted_at.present?
+
+    assert publisher.last_status_update.status == "active"
+  end
 end

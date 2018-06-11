@@ -119,4 +119,13 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ""                                 , response_body["QLD"]
     assert_nil   response_body['properties']
   end
+
+  test 'last updated channel' do
+    channel = channels(:small_media_group_to_verify)
+    get "/api/public/channels/timestamp",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    response_body = JSON.parse(response.body)
+
+    assert_operator channel.updated_at.to_i << 32, :<=, response_body['timestamp']
+  end
 end
