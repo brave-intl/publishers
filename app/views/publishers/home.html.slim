@@ -17,10 +17,9 @@ noscript
   #uphold_status class=uphold_status_class(current_publisher)
     .row
       .col
-        h4.balance-header
-          span = t ".balance_pending"
-          span#balance_pending_message = t ".balance_pending_message"
         .balance
+          h4.balance-header
+            span = t ".balance_pending"
           .float-left
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
@@ -29,6 +28,9 @@ noscript
               span.bat-code= " BAT"
             .converted#converted_amount
               = publisher_converted_balance(current_publisher)
+            .next_deposit_date
+              span = t ".next_deposit_date"
+              span= next_deposit_date
       - if promo_running?
         .col
           .promo-panel
