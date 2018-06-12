@@ -36,17 +36,11 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "raises error unless admin is on admin whitelist" do
-    class ActionDispatch::Request #rails 2: ActionController::Request
-      def remote_ip
-        '1.2.3.4' # not on whitelist
-      end
-    end
-
     admin = publishers(:admin)
     sign_in admin
 
     assert_raises(Ability::AdminNotOnIPWhitelistError) do
-      get admin_publishers_path
+      get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
     end
   end
 end
