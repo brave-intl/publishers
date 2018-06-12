@@ -9,7 +9,10 @@ module Eyeshade
                 :available_currencies,
                 :possible_currencies,
                 :contribution_balance,
-                :channel_balances
+                :channel_balances,
+                :rates,
+                :last_settlement_balance,
+                :last_settlement_date
 
     def initialize(wallet_json:, channel_json:)
       details_json = wallet_json["wallet"] || {}
@@ -24,13 +27,18 @@ module Eyeshade
       @action = status_json["action"]
 
       balance_json = wallet_json["contributions"] || {}
-      balance_json["rates"] = wallet_json["rates"] || {}
+      @rates = balance_json["rates"] = wallet_json["rates"] || {}
 
       @contribution_balance = Eyeshade::Balance.new(balance_json: balance_json)
 
       @channel_balances = {}
       channel_json.each do |identifier, json|
         @channel_balances[identifier] = Eyeshade::Balance.new(balance_json: json)
+      end
+
+      if wallet_json["lastSettlement"]
+        @last_settlement_balance = Eyeshade::Balance.new(balance_json: wallet_json["lastSettlement"].merge({'rates' => @rates}))
+        @last_settlement_date = Time.at(wallet_json["lastSettlement"]["timestamp"]/1000).to_datetime
       end
     end
 
