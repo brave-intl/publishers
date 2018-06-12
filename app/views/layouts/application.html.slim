@@ -123,16 +123,13 @@ html
     / This block of HTML is used by modal_shared.js to trigger modal
     / boxes. See that JavaScript file for more details.
     .js-shared-modal
-      .md-container.container data-test-modal-container=""
-        .single-panel--wrapper.single-panel--wrapper--collapsed
-          .single-panel--content.md-panel
-            .single-panel--padded-content
-              .md-content
-              = link_to "#", class: "md-close js-deny"
-                = render "application/icon_x"
-      .md-overlay
+      .modal-container data-test-modal-container=""
+        .modal-panel
+          .modal-panel--content
+          = link_to "#", class: "modal-panel--close js-deny"
+            = render "application/icon_x"
+      .modal-overlay
 
-    /
     / ## Using flash modals in Brave Publishers ##
     /
     / In addition to using flash to pass a message, you can use flash to
