@@ -31,6 +31,13 @@ module PublishersHelper
     I18n.t("helpers.publisher.balance_error")
   end
 
+  def next_deposit_date(today = DateTime.now)
+    if today.day > 8
+      today = today + 1.month
+    end
+    today.strftime("%B 8th")
+  end
+
   def publisher_converted_balance(publisher)
     currency = publisher.default_currency
     return if currency == "BAT" || currency.blank?
