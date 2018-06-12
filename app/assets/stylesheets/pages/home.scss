@@ -361,7 +361,7 @@
   #uphold_status {
     #uphold_status_display {
       vertical-align: top;
-      margin-bottom: 25px;
+      margin-bottom: 5px;
     }
     .deposit-currency {
       margin-top: 10px;
@@ -394,6 +394,36 @@
     .status-description {
       margin-top: 40px;
     }
+    #last_settlement {
+      &.settlement-made {
+        display: block;
+      }
+      &.no-settlement-made {
+        display: none;
+      }
+      .last-deposit {
+        font-size: $font-size-base;
+        vertical-align: top;
+        margin-top: 34px;
+        .amounts {
+          .bat-amount {
+            font-size: 30px;
+            color: #fc4145;
+            font-weight: 500;
+          }
+          .bat-code {
+            font-size: 16px;
+            color: #222326;
+            font-weight: 500;
+          }
+          .converted {
+            margin-top: -8px;
+            font-size: 14px;
+            color: $braveGray-4;
+          }
+        }
+      }
+    }
     #uphold_check_balance {
       margin-top: 2rem;
     }
@@ -401,6 +431,7 @@
       .status-summary .action,
       #uphold_dashboard,
       #uphold_connect,
+      #last_settlement,
       .statements-available {
         display: none;
       }
@@ -414,6 +445,7 @@
     }
     &.uphold-processing {
       #uphold_dashboard,
+      #last_settlement,
       .statements-available {
         display: none;
       }
@@ -438,8 +470,9 @@
         margin-top: 30px;
       }
       #uphold_dashboard,
+      #last_settlement,
       .status-summary .action .disconnect-uphold,
-      .statements-available {
+      .statements-available  {
         display: none;
       }
     }

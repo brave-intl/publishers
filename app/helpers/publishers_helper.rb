@@ -20,7 +20,9 @@ module PublishersHelper
   end
 
   def publisher_humanize_balance(publisher, currency)
-    if balance = publisher.wallet && publisher.wallet.contribution_balance
+    if balance = publisher.wallet &&
+        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
+        publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
     else
       I18n.t("helpers.publisher.balance_error")
@@ -34,7 +36,9 @@ module PublishersHelper
   def publisher_converted_balance(publisher)
     currency = publisher.default_currency
     return if currency == "BAT" || currency.blank?
-    if balance = publisher.wallet && publisher.wallet.contribution_balance
+    if balance = publisher.wallet &&
+        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
+        publisher.wallet.contribution_balance
       converted_amount = '%.2f' % balance.convert_to(currency)
       I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
     else
@@ -44,6 +48,49 @@ module PublishersHelper
     require "sentry-raven"
     Raven.capture_exception(e)
     I18n.t("helpers.publisher.balance_error")
+  end
+
+  def publisher_humanize_last_settlement(publisher, currency)
+    if balance = publisher.wallet &&
+        publisher.wallet.last_settlement_balance.is_a?(Eyeshade::Balance) &&
+        publisher.wallet.last_settlement_balance
+      '%.2f' % balance.convert_to(currency)
+    else
+      I18n.t("helpers.publisher.no_deposit")
+    end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("helpers.publisher.balance_error")
+  end
+
+  def publisher_converted_last_settlement(publisher)
+    currency = publisher.default_currency
+    return if currency == "BAT" || currency.blank?
+    if balance = publisher.wallet &&
+        publisher.wallet.last_settlement_balance.is_a?(Eyeshade::Balance) &&
+        publisher.wallet.last_settlement_balance
+      converted_amount = '%.2f' % balance.convert_to(currency)
+      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
+    end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("helpers.publisher.balance_error")
+  end
+
+  def publisher_humanize_last_settlement_date(publisher)
+    if settlement_date = publisher.wallet &&
+        publisher.wallet.last_settlement_date.is_a?(Date) &&
+        publisher.wallet.last_settlement_date
+      settlement_date.strftime("%B %d, %Y")
+    else
+      I18n.t("helpers.publisher.no_deposit")
+    end
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    I18n.t("helpers.publisher.no_deposit")
   end
 
   def publisher_channel_balance(publisher, channel_identifier, currency)
@@ -115,6 +162,14 @@ module PublishersHelper
       'uphold-reauthorization-needed'
     else
       'uphold-unconnected'
+    end
+  end
+
+  def last_settlement_class(publisher)
+    if publisher.wallet.last_settlement_date
+      'settlement-made'
+    else
+      'no-settlement-made'
     end
   end
 

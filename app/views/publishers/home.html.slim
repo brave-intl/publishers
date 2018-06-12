@@ -58,7 +58,7 @@ noscript
                     .promo-panel-number
                       = confirmed_referral_downloads(current_publisher)
                 .promo-flex-row.promo-flex-row-sub
-                    =t("promo.dashboard.check_statement")
+                  =t("promo.dashboard.check_statement")
             - else
               .promo-panel-item.promo-panel-item-alert
                 #promo-panel-alert
@@ -84,22 +84,38 @@ noscript
                 script type="text/html" id="disconnect-uphold-js"
                   = render "publishers/disconnect_uphold_modal"
                 = form_for(current_publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|
+          .dashboard-panel--content#uphold_connect
             .status-description
               = uphold_status_description(current_publisher)
-          .dashboard-panel--content#uphold_connect
             = link_to(uphold_authorization_description(current_publisher),
                       uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button")
           .dashboard-panel--content#uphold_dashboard
-            - available_currencies = publisher_available_currencies(current_publisher)
-            - if available_currencies
+            .deposit-currency-label
               = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
-                .deposit-currency-label= t ".uphold.deposit_currency_label"
-                .deposit-currency
-                  span= t ".uphold.deposit_currency"
-                  span#default_currency_code= f.select(:default_currency, options_for_select(publisher_available_currencies(current_publisher), current_publisher.default_currency))
-            - else
-              .unavailable-currencies= t ".uphold.no_currencies_available"
-            = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary", id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+                = t ".uphold.deposit_currency_label"
+                span#default_currency_code
+                  - available_currencies = publisher_available_currencies(current_publisher)
+                  - if available_currencies
+                    = f.select(:default_currency, options_for_select(available_currencies, current_publisher.default_currency))
+                  - else
+                    = t ".uphold.no_currencies_available"
+            .last-deposit-date
+              = t ".uphold.last_deposit_date"
+              span.deposit-date#last_deposit_date= publisher_humanize_last_settlement_date(current_publisher)
+          .dashboard-panel--content#last_settlement class=last_settlement_class(current_publisher)
+            .last-deposit
+              = t ".uphold.last_deposit"
+              .amounts
+                .bat
+                  - last_depost_balance = publisher_humanize_last_settlement(current_publisher, "BAT")
+                  span.bat-amount#last_deposit_bat_amount= last_depost_balance
+                  - unless last_depost_balance == I18n.t("helpers.publisher.no_deposit")
+                    span.bat-code= " BAT"
+                .converted#last_deposit_converted_amount
+                  = publisher_converted_last_settlement(current_publisher)
+              = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
+                      id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
+                      :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
       .col
         .dashboard-panel--wrapper
           .dashboard-panel--header#publishers_statements
@@ -170,7 +186,8 @@ noscript
               - else
                 .channel-status.float-right
                   .bat-channel
-                    h4.bat-channel--amount= publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+                    h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
+                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")

@@ -4,6 +4,8 @@ import {
 } from '../utils/request';
 import fetch from '../utils/fetchPolyfill';
 import flash from '../utils/flash';
+import { Wallet } from '../wallet';
+import { formatFullDate } from '../utils/dates';
 
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
@@ -13,6 +15,47 @@ function showPendingContactEmail(pendingEmail) {
     pendingEmailNotice.classList.remove('hidden');
   } else {
     pendingEmailNotice.classList.add('hidden');
+  }
+}
+
+function updateTotalContributionBalance(balance) {
+  let batAmount = document.getElementById('bat_amount');
+  batAmount.innerText = balance.bat.toFixed(2);
+  let convertedAmount = document.getElementById('converted_amount');
+
+  convertedAmount.style.display = balance.currency === "BAT" ? 'none' : 'block';
+  convertedAmount.innerText = "~ " + balance.converted.toFixed(2) + " " + balance.currency;
+}
+
+function updateLastSettlement(settlement) {
+  let lastSettlement = document.getElementById('last_settlement');
+  let lastDepositDate = document.getElementById('last_deposit_date');
+  let lastDepositBatAmount = document.getElementById('last_deposit_bat_amount');
+  let lastDepositConvertedAmount = document.getElementById('last_deposit_converted_amount');
+
+  if (settlement.date) {
+    lastSettlement.classList.remove('no-settlement-made');
+    lastSettlement.classList.add('settlement-made');
+
+    lastDepositDate.innerText = formatFullDate(settlement.date);
+    lastDepositBatAmount.innerText = settlement.amount.bat.toFixed(2);
+    lastDepositConvertedAmount.style.display = settlement.amount.currency === "BAT" ? 'none' : 'block';
+    lastDepositConvertedAmount.innerText = "~ " + settlement.amount.converted.toFixed(2) + " " + settlement.amount.currency;
+  }
+  else {
+    lastSettlement.classList.remove('settlement-made');
+    lastSettlement.classList.add('no-settlement-made');
+
+    lastDepositDate.innerText = "No deposit made yet";
+    lastDepositBatAmount.innerText = "";
+    lastDepositConvertedAmount.style.display = 'none';
+  }
+}
+
+function updateChannelBalances(wallet) {
+  for (let channelId in wallet.channelBalances) {
+    let channelAmount = document.getElementById('channel_amount_bat_' + channelId);
+    channelAmount.innerText = wallet.getChannelAmount(channelId).bat.toFixed(2);
   }
 }
 
@@ -32,10 +75,15 @@ function refreshBalance() {
       }
     })
     .then(function(body) {
-      let batAmount = document.getElementById('bat_amount');
-      batAmount.innerText = body.bat_amount;
-      let convertedAmount = document.getElementById('converted_amount');
-      convertedAmount.innerText = body.converted_balance;
+      let wallet = new Wallet(body);
+
+      let contributionAmount = wallet.totalAmount;
+      updateTotalContributionBalance(contributionAmount);
+
+      let lastSettlement = wallet.lastSettlement;
+      updateLastSettlement(lastSettlement);
+
+      updateChannelBalances(wallet);
     });
 }
 
@@ -78,7 +126,7 @@ function checkUpholdStatus() {
     .then(function(body) {
       let upholdStatus = document.getElementById('uphold_status');
       let upholdStatusSummary = document.querySelector('#uphold_status_display .status-summary .text');
-      let upholdStatusDescription = document.querySelector('#uphold_status_display .status-description');
+      let upholdStatusDescription = document.querySelector('#uphold_connect .status-description');
       let timedOut = (checkUpholdStatusCount >= 15);
 
       if (timedOut) {
