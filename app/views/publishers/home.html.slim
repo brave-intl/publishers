@@ -277,19 +277,17 @@ noscript
       }
     })();
 
-= include_gon
-
 script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
 javascript:
   $(document).ready(function() {
-    console.log("click");
+    let options = {
+      headers: {
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': document.getElementsByTagName('meta')['csrf-token']['content']
+      },
+      credentials: 'same-origin',
+      method: 'PUT'
+    };
     var domainPath = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-
-    $.ajax({
-        url: domainPath + '/publishers/' + gon.current_publisher_id + '/javascript_detected',
-        type: 'PUT',
-        headers: {
-          'X-CSRF-TOKEN': document.getElementsByTagName('meta')['csrf-token']['content']
-        }
-    });
+    return fetch(domainPath + '/publishers/javascript_detected', options);
   });

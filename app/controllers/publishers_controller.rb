@@ -209,7 +209,7 @@ class PublishersController < ApplicationController
   end
 
   def javascript_detected
-    Publisher.find(params[:publisher_id]).update(javascript_last_detected_at: Time.now)
+    current_publisher.update(javascript_last_detected_at: Time.now)
   end
 
   # Log in page
@@ -322,7 +322,6 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
-    gon.current_publisher_id = current_publisher.id
     if current_publisher.promo_stats_status == :update
       SyncPublisherPromoStatsJob.perform_later(publisher: current_publisher)
     end

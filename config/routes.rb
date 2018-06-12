@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   resources :publishers, only: %i(create update new show javascript_detected) do
-    put :javascript_detected
     collection do
       get :sign_up
+      put :javascript_detected
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
       get :home
