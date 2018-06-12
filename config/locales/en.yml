@@ -84,7 +84,8 @@ en:
       verification_awaiting_admin_approval: Awaiting admin approval
     publisher:
       balance_error: Unavailable
-      balance_pending_approximate: Approximately %{amount} %{code}
+      no_deposit: No deposit made yet
+      balance_pending_approximate: ~ %{amount} %{code}
       channel_type:
         youtube: YouTube channel
         website: Website
@@ -319,12 +320,14 @@ en:
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
       uphold:
         heading: Your Uphold Wallet
-        deposit_currency_label: "Current deposit currency:"
+        deposit_currency_label: "Deposit Currency: "
         deposit_currency: "BAT to "
         check_balance: Check Balance
         no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
         connect: Connect
         disconnect: Disconnect
+        last_deposit: LAST DEPOSIT
+        last_deposit_date: "Last Deposit Date: "
       statements:
         heading: Statements
         statement_name: "%{created_at} statement - %{period}"
