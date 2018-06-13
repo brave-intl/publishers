@@ -281,18 +281,19 @@ javascript:
   function javascriptDetected() {
     let options = {
       headers: {
-        'Accept': 'application/json',
-        'X-CSRF-TOKEN': document.getElementsByTagName('meta')['csrf-token']['content']
+        'Accept': 'application/json'
       },
       credentials: 'same-origin',
       method: 'PUT'
     };
-    var domainPath = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
-    return fetch(domainPath + '/publishers/javascript_detected', options);
+    // CSRF protection is not enabled for tests, so we need flexibility here
+    let csrf = document.getElementsByTagName('meta')['csrf-token'];
+    if (csrf) {
+      options.headers['X-CSRF-TOKEN'] = csrf['content'];
+    }
+    fetch('./javascript_detected', options);
   };
 
-  // around line 121
   document.addEventListener('DOMContentLoaded', function() {
     javascriptDetected();
-    // ...
   });
