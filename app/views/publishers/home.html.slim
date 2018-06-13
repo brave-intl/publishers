@@ -278,7 +278,7 @@ noscript
     })();
 
 javascript:
-  (function() {
+  function javascriptDetected() {
     let options = {
       headers: {
         'Accept': 'application/json',
@@ -289,4 +289,10 @@ javascript:
     };
     var domainPath = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     return fetch(domainPath + '/publishers/javascript_detected', options);
-  })();
+  };
+
+  // around line 121
+  document.addEventListener('DOMContentLoaded', function() {
+    javascriptDetected();
+    // ...
+  });
