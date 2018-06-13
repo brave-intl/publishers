@@ -18,7 +18,8 @@ Capybara.register_driver "chrome" do |app|
       chromeOptions: {
           binary: ENV["CHROME_BINARY"],
           args: %w{headless no-sandbox disable-gpu window-size=1680,1050}
-      }.compact
+      }.compact,
+      loggingPrefs: { browser: 'ALL' }
   )
   driver = Capybara::Selenium::Driver.new(
       app,
@@ -67,6 +68,17 @@ module Capybara
         DatabaseCleaner.clean
       end
 
+      def js_logs
+        page.driver.browser.manage.logs.get(:browser)
+      end
+
+      def wait_until
+        require "timeout"
+        Timeout.timeout(Capybara.default_max_wait_time) do
+          sleep(0.1) until value = yield
+          value
+        end
+      end
     end
   end
 end
