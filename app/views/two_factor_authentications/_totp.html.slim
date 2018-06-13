@@ -13,7 +13,7 @@ h3.single-panel--headline = t(".heading")
           = render "application/smartphone_with_code"
         .icon-and-text--text
           label for="totp_password" = t ".totp_password_label"
-          input.form-control name="totp_password" placeholder=t(".enter_code_placeholder") autofocus=true
+          input.form-control name="totp_password" id="totp_password" placeholder=t(".enter_code_placeholder") autofocus=true
     = submit_tag t(".submit_value"), class: "btn btn-primary btn-block"
 
   - if @u2f_enabled

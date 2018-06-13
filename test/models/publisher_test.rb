@@ -343,4 +343,70 @@ class PublisherTest < ActiveSupport::TestCase
     youtube_channel_details = publisher.youtube_channel_details
     assert_equal youtube_channel_details.first.title, "Some Other Guy's Channel"
   end
+
+  test "created status is added upon create" do
+    publisher = Publisher.new(name: "Carol", pending_email: "carol@example.com")
+    publisher.save!
+
+    assert publisher.status_updates.count
+    assert publisher.last_status_update
+  end
+
+  test "onboarding status added to new publishers when they email verify" do
+    publisher = publishers(:created) # has no email address
+
+    assert publisher.last_status_update.status == "created"
+
+    publisher.email = "carol@example.com"
+    publisher.save!
+
+    assert publisher.last_status_update.status == "onboarding"
+  end
+
+  test "onboarding status not added to publishers when they change emails" do
+    publisher = publishers(:completed) # has an email address
+
+    publisher.email = "carol@example.com"
+    publisher.save!
+
+    refute publisher.last_status_update == "onboarding"
+  end
+
+  test "active status is added to publisher after agreeing TOS and addressing 2fa" do
+    publisher = publishers(:onboarding)
+
+    assert publisher.last_status_update.status == "onboarding"
+
+    publisher.two_factor_prompted_at = Time.now
+    publisher.agreed_to_tos = Time.now
+    publisher.save!
+
+    assert publisher.last_status_update.status == "active"
+  end
+
+  test "active status is not added to publishers who already agreed to TOS" do
+    publisher = publishers(:completed)
+
+    publisher.two_factor_prompted_at = Time.now
+    publisher.agreed_to_tos = Time.now
+    publisher.save!
+
+    assert publisher.status_updates.count == 1
+  end
+
+  test "publisher.last_status_update gets pulls the most recent status update" do
+    publisher = publishers(:created)
+
+    # add onboarding status
+    publisher.email = "carol@example.com"
+    publisher.save!
+
+    # add active status
+    publisher.two_factor_prompted_at = Time.now
+    publisher.agreed_to_tos = Time.now
+    publisher.save!
+
+    assert publisher.status_updates.count == 3
+    assert publisher.last_status_update.status == "active"
+  end
 end

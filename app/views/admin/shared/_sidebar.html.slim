@@ -1,0 +1,13 @@
+aside
+  div.nav-collapse id="sidebar"
+    div
+      ul.sidebar-menu id="nav-accordion"
+        li
+          = link_to admin_root_path
+            i.fa.fa-dashboard
+            span Dashboard
+        - if can? :access, :admin
+          li
+            = link_to admin_publishers_path
+              i.fa.fa-person
+              span Publishers

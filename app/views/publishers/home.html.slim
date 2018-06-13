@@ -2,7 +2,8 @@ noscript
   div.noscript-warning = t ".noscript"
 
 - if flash[:taken_channel_id]
-  = render partial: 'channel_taken', locals: { channel_id: flash[:taken_channel_id] }
+  #js-open-modal-on-load
+    = render partial: 'channel_taken_modal', locals: { channel_id: flash[:taken_channel_id] }
 
 - content_for(:navbar_content_right) do
   = link_to( \
@@ -16,10 +17,9 @@ noscript
   #uphold_status class=uphold_status_class(current_publisher)
     .row
       .col
-        h4.balance-header
-          span = t ".balance_pending"
-          span#balance_pending_message = t ".balance_pending_message"
         .balance
+          h4.balance-header
+            span = t ".balance_pending"
           .float-left
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
@@ -28,6 +28,9 @@ noscript
               span.bat-code= " BAT"
             .converted#converted_amount
               = publisher_converted_balance(current_publisher)
+            .next_deposit_date
+              span = t ".next_deposit_date"
+              span= next_deposit_date
       - if promo_running?
         .col
           .promo-panel
@@ -77,7 +80,7 @@ noscript
               .text= uphold_status_summary(current_publisher)
               .action
                 span= "("
-                = link_to(t(".uphold.connect"), uphold_authorization_endpoint(current_publisher), class: "connect-uphold")
+                = link_to(t(".uphold.connect"), uphold_authorization_endpoint(current_publisher), class: "connect-uphold", :"data-piwik-action" => "UpholdConnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
                 a.disconnect-uphold href="#"
                   = t ".uphold.disconnect"
                 span= ")"
@@ -88,7 +91,7 @@ noscript
               = uphold_status_description(current_publisher)
           .dashboard-panel--content#uphold_connect
             = link_to(uphold_authorization_description(current_publisher),
-                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button")
+                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
           .dashboard-panel--content#uphold_dashboard
             - available_currencies = publisher_available_currencies(current_publisher)
             - if available_currencies

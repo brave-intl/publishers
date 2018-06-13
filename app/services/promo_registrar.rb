@@ -34,7 +34,7 @@ class PromoRegistrar < BaseApiClient
   rescue Faraday::Error => e
     if e.response[:status] == 409
       Rails.logger.warn("PromoRegistrar #register_channel returned 409, channel already registered.  Using PromoRegistrationGetter to get the referral_code.")
-      Rails.logger.info("Attempted to register channel #{channel.id}, but it already registered.  Saving referral code #{referral_code}.")
+      Rails.logger.info("Attempted to register channel #{channel.details.channel_identifier}, but it already registered.  Saving referral code #{referral_code}.")
       referral_code = PromoRegistrationGetter.new(publisher: @publisher, channel: channel).perform
       referral_code
     else

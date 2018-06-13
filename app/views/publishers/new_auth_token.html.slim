@@ -13,7 +13,7 @@
           - if @should_throttle
             .form-group
               = recaptcha_tags
-          = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary")
+          = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary", :"data-piwik-action" => "NewAuthLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "NewAuthFlow")
 
       .single-panel--footer.single-panel--footer--secondary
         p

@@ -58,7 +58,7 @@
               "data-piwik-name": "Clicked", \
               "data-piwik-value": "DNSFlow" \
             )
-            = link_to(t("site_channels.shared.finish_verification_later"), home_publishers_path, class: "site-channels--finish-later")
+            = link_to(t("site_channels.shared.finish_verification_later"), home_publishers_path, class: "site-channels--finish-later", :"data-piwik-action" => "DNSFinishLaterClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "DNSFlow")
           a href="#" data-js-confirm-with-modal="dns-services"
             span.icon= render "icon_help"
 

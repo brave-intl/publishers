@@ -149,4 +149,10 @@ class PublishersHelperTest < ActionView::TestCase
     publisher.uphold_status = :unconnected
     assert_equal "uphold-unconnected", uphold_status_class(publisher)
   end
+
+  test "next settlement date is current month if <= 8th, otherwise next month" do
+    assert_equal "June 8th", next_deposit_date(DateTime.parse("June 7, 2018"))
+    assert_equal "June 8th", next_deposit_date(DateTime.parse("June 8, 2018"))
+    assert_equal "July 8th", next_deposit_date(DateTime.parse("June 9, 2018"))
+  end
 end

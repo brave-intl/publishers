@@ -41,29 +41,28 @@
                 class: "btn btn-block btn-outline-secondary",
                 data: { "js-confirm-with-modal": "disable-totp-prompt" }
             script#disable-totp-prompt type="text/html"
-              .col-medium-center.text-left
-                h4= t ".totp.confirm_disable.header"
-                p
-                  = t ".totp.confirm_disable.intro"
-                  - if current_publisher.u2f_registrations.any?
-                    - current_publisher.u2f_registrations.each do |u2f_registration|
-                      br
-                      strong.error
-                        | Security key
-                        = " \"#{u2f_registration.name.presence || t(".totp.name_default")}\""
-                      = " (registered #{l(u2f_registration.created_at.to_date, format: :short)})"
-                  - else
-                    br
-                    strong.error = t(".totp.confirm_disable.none")
+              h4= t ".totp.confirm_disable.header"
+              p
+                = t ".totp.confirm_disable.intro"
                 - if current_publisher.u2f_registrations.any?
-                  p= t ".totp.confirm_disable.no_totp_warning"
+                  - current_publisher.u2f_registrations.each do |u2f_registration|
+                    br
+                    strong.error
+                      | Security key
+                      = " \"#{u2f_registration.name.presence || t(".totp.name_default")}\""
+                    = " (registered #{l(u2f_registration.created_at.to_date, format: :short)})"
                 - else
-                  p== t ".totp.confirm_disable.no_2fa_warning_html"
-                p= t ".totp.confirm_disable.final_confirmation"
-              .col-medium-center
-                .md-confirm-buttons
-                  = link_to t(".totp.confirm_disable.deny"), "#", class: "js-deny btn btn-outline-secondary"
-                  = link_to t(".totp.confirm_disable.confirm"), "#", class: "js-confirm btn btn-outline-secondary"
+                  br
+                  strong.error = t(".totp.confirm_disable.none")
+              - if current_publisher.u2f_registrations.any?
+                p= t ".totp.confirm_disable.no_totp_warning"
+              - else
+                p== t ".totp.confirm_disable.no_2fa_warning_html"
+              p= t ".totp.confirm_disable.final_confirmation"
+
+              .modal-buttons
+                = link_to t(".totp.confirm_disable.deny"), "#", class: "js-deny btn btn-wide btn-outline-secondary"
+                = link_to t(".totp.confirm_disable.confirm"), "#", class: "js-confirm btn btn-wide btn-outline-secondary"
 
           - else
             p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"

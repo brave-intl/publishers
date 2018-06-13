@@ -351,6 +351,7 @@
     font-weight: 300;
     letter-spacing: 0.5px;
     white-space: nowrap;
+    padding-left: 75px;
 
     #balance_pending_message {
       opacity: .6;
@@ -675,72 +676,43 @@
 }
 
 #channel_taken_modal {
-  width: 650px;
-  .md-content {
-    padding: 70px 80px 70px 80px;
-    background: white;
-    border-radius: 10px;
-    h1 {
-      font-size: 32px;
-      font-weight: 300;
-      color: #ff3f3f;
-      margin-top: 0;
-      padding-top: 0;
-    }
-    .taken-channel {
-      margin: 50px 0 50px 40px;
-      .summary {
-        margin-bottom: 20px;
-        img {
-          display: inline-block;
-          width: 40px;
-          height: 40px;
-          border-radius: 20px;
-          margin-right: 10px;
-        }
-        .title {
-          display: inline-block;
-        }
+  .taken-channel {
+    margin: $spacer*2;
+    .summary {
+      margin-bottom: 20px;
+      img {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin-right: 10px;
       }
-      .registration-date {
-        label {
-          display: inline-block;
-          margin-right: 8px;
-        }
-        .value {
-          display: inline-block;
-        }
-      }
-      .registered-by {
-        label {
-          display: inline-block;
-          margin-right: 8px;
-        }
-        .value {
-          display: inline-block;
-        }
+      .title {
+        display: inline-block;
       }
     }
-    .panel-section {
-      margin-bottom: 35px;
-      text-align: center;
+    .registration-date {
+      label {
+        display: inline-block;
+        margin-right: 8px;
+      }
+      .value {
+        display: inline-block;
+      }
     }
-    a.btn {
-      min-width: 150px;
-      margin: 10px 0;
+    .registered-by {
+      label {
+        display: inline-block;
+        margin-right: 8px;
+      }
+      .value {
+        display: inline-block;
+      }
     }
   }
 }
 
-@media (max-width: 550px) {
-  #channel_taken_modal .md-content {
-    padding: 60px;
-    background: white;
-    border-radius: 0;
-  }
-}
-
-.md-container--modal-identifier--choose-channel-type {
+.modal-container--modal-identifier--choose-channel-type {
   max-width: 685px;
   & > div {
     width: 100%;

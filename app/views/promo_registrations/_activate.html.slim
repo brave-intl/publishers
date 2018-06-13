@@ -8,4 +8,4 @@
     = form_for @publisher, {method: :post, url: promo_registrations_path} do |f|
       = f.hidden_field(:promo_token, :value => params[:promo_token])
       .text-center
-        = f.submit(t("promo.activate.button").upcase, class: "btn promo--activate-button")
+        = f.submit(t("promo.activate.button").upcase, class: "btn promo--activate-button", :"data-piwik-action" => "ActivatePromoClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "PromoFlow")

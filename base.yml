@@ -8,6 +8,7 @@ services:
       - CHROME_BINARY=/usr/bin/chrome
       - ADDRESS
       - ACTIVE_PROMO_ID
+      - ADMIN_IP_WHITELIST
       - API_AUTH_TOKEN
       - API_EYESHADE_BASE_URI
       - API_EYESHADE_KEY
@@ -44,6 +45,7 @@ services:
       - PROXIED
       - REDIS_URL
       - SECRET_KEY_BASE
+      - SENDGRID_API_KEY
       - SHOULD_SEND_NOTIFICATIONS
       - SLACK_CHANNEL_DIAGNOSTIC
       - SLACK_WEBHOOK_URL

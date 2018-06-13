@@ -16,7 +16,10 @@ gem "api-pagination"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
 
-gem "bootstrap", "~> 4.0.0.beta3"
+gem "bootstrap", "~> 4.1.1"
+
+# Authorization
+gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.2.0"
@@ -94,6 +97,9 @@ gem "sidekiq", "~> 4.2"
 
 gem "sidekiq-scheduler", "~> 2.0"
 
+# Used by sendgrid-ruby. Forcing an update due to a security concern
+gem 'sinatra', '~> 2.0.2'
+
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
@@ -104,11 +110,6 @@ gem "u2f", "~> 1.0"
 gem "rotp", "~> 3.3"
 
 gem 'webpacker', '~> 3.2'
-
-# WHOIS lookup for unverified publishers
-gem "whois", "~> 4.0", require: false
-
-gem "whois-parser", "~> 1.0", require: false
 
 # pagination support for models
 gem "will_paginate"
@@ -134,16 +135,6 @@ group :development do
 
   # i18n-tasks helps you find and manage missing and unused translations.
   gem "i18n-tasks", "~> 0.9.12"
-end
-
-group :development, :test do
-  # Call "byebug" anywhere in the code to stop execution and get a debugger console
-  gem "byebug", platform: :mri
-end
-
-group :development, :staging do
-  # Offline domain normalization
-  gem "domain_name", require: false
 end
 
 group :test do

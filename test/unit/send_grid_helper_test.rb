@@ -81,9 +81,10 @@ class SendGridHelperTest < ActiveSupport::TestCase
   end
 
   test "can add multiple contacts to a list" do
-    publishers = Publisher.email_verified
+    publishers = Publisher.where(email: "alice@completed.org").or(Publisher.where(email: "aliceTwitch@spud.com"))
     ids = SendGrid::ApiHelper.upsert_contacts(publishers: publishers)
 
+    assert_equal 2, ids.length
     assert SendGrid::ApiHelper.add_contacts_to_list(list_id: '3648346', contact_ids: ids)
   end
 end

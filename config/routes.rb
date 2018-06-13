@@ -82,7 +82,13 @@ Rails.application.routes.draw do
     resources :channels, constraints: { channel_id: %r{[^\/]+} }
     namespace :public, defaults: { format: :json } do
       get "channels/identity", controller: 'channels/identity'
+      get "channels/timestamp", controller: 'channels/timestamp'
     end
+  end
+
+  namespace :admin do
+    resources :publishers
+    root to: "dashboard#index" # <--- Root route
   end
 
   resources :errors, only: [], path: "/" do

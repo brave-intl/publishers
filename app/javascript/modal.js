@@ -1,5 +1,5 @@
 /*
- * Implement a simple confirm/deny modal system on top of the md- modal
+ * Implement a simple confirm/deny modal system on top of the `modal-`
  * classes. This relies on the .js-shared-modal div in the application
  * layout.
  *
@@ -36,9 +36,9 @@
  * script#disable-wobble type="text/html"
  *   h4 Disable Wobble?
  *   p Are you sure?
- *   p
- *     = link_to "Do Not Disable", "#", class: "js-deny"
- *     = link_to "Disable it for now", "#", class: "js-confirm"
+ *   .modal-buttons
+ *     = link_to "Do Not Disable", "#", class: "btn js-deny"
+ *     = link_to "Disable it for now", "#", class: "btn js-confirm"
  * ```
  *
  * Using string interpolation in the template `id` field can be useful when
@@ -54,13 +54,13 @@
  *   script id="delete-widget-#{widget.id} type="text/html"
  *     h4 = "Delete Widget #{widget.name}?"
  *     p Are you sure?
- *     p
- *       = link_to "No", "#", class: "js-deny"
- *       = link_to "Yes", "#", class: "js-confirm"
+ *     .modal-buttons
+ *       = link_to "No", "#", class: "btn js-deny"
+ *       = link_to "Yes", "#", class: "btn js-confirm"
  * ```
  *
  * Additionally, the identifier for the modal template will be added to the
- * `.md-container` element of the modal with a prefix. For example:
+ * `.modal-container` element of the modal with a prefix. For example:
  *
  * ```slim
  * = link_to \
@@ -73,25 +73,25 @@
  * Would open the modal inside an element:
  *
  * ```slim
- * .md-container.md-container--modal-identifier--disable-wobble
+ * .modal-container.modal-container--modal-identifier--disable-wobble
  * ```
  *
  */
 
-var MODAL_SHOW_CLASS = 'md-show';
+var MODAL_SHOW_CLASS = 'modal-show';
 
 /*
  * On demand open a modal.
  */
 self.openModal = function openModal(html, confirmCallback, denyCallback, identifier) {
   var modalElement = document.querySelector('.js-shared-modal');
-  var contentElement = modalElement.querySelector('.md-content');
-  var containerElement = modalElement.querySelector('.md-container');
+  var contentElement = modalElement.querySelector('.modal-panel--content');
+  var containerElement = modalElement.querySelector('.modal-container');
 
   contentElement.innerHTML = html;
   containerElement.classList.add(MODAL_SHOW_CLASS);
 
-  let identifierClass = identifier && `md-container--modal-identifier--${identifier}`;
+  let identifierClass = identifier && `modal-container--modal-identifier--${identifier}`;
   if (identifierClass) {
     containerElement.classList.add(identifierClass);
   }
@@ -126,10 +126,19 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
     }
   }
 
+  function keyupDelegate(event) {
+    if (event.keyCode === 27) {
+      closeModal(event);
+    }
+  }
+
   // Always attempt to remove the listener, ensuring that two
   // calls to openModal don't create duplicate listeners.
   modalElement.removeEventListener('click', confirmationEventDelegate);
   modalElement.addEventListener('click', confirmationEventDelegate);
+
+  document.removeEventListener('keyup', keyupDelegate);
+  document.addEventListener('keyup', keyupDelegate);
 }
 
 /*
