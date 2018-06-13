@@ -279,3 +279,24 @@ noscript
         mobileReferralLinkButtons[i].addEventListener('click', copyButtonAnimation, false);
       }
     })();
+
+javascript:
+  function javascriptDetected() {
+    let options = {
+      headers: {
+        'Accept': 'application/json'
+      },
+      credentials: 'same-origin',
+      method: 'PUT'
+    };
+    // CSRF protection is not enabled for tests, so we need flexibility here
+    let csrf = document.getElementsByTagName('meta')['csrf-token'];
+    if (csrf) {
+      options.headers['X-CSRF-TOKEN'] = csrf['content'];
+    }
+    fetch('./javascript_detected', options);
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    javascriptDetected();
+  });

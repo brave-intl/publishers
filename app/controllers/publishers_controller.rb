@@ -210,6 +210,10 @@ class PublishersController < ApplicationController
     end
   end
 
+  def javascript_detected
+    current_publisher.update(javascript_last_detected_at: Time.now)
+  end
+  
   def protect
     return redirect_to admin_publishers_path unless current_publisher.publisher?
   end
