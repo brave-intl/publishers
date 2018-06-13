@@ -1,8 +1,6 @@
-.md-panel {
-  padding: $spacer*2 $spacer;
-}
+$brave-modal-borderRadius: 8px;
 
-.md-container {
+.modal-container {
   position: fixed;
   margin-left: auto;
   margin-right: auto;
@@ -16,16 +14,58 @@
   visibility: hidden;
 }
 
-.md-content {
+.modal-panel {
+  max-width: $spacer*40;
+  min-width: $spacer*30;
+  padding: $spacer*2 $spacer*2;
   position: relative;
   margin: 0 auto;
-  transform: scale(0.7);
   opacity: 0;
+  transform: scale(0.7);
   transition: all 200ms;
-  padding: 10px;
+  text-align: left;
+  background: white;
+  border-radius: $brave-modal-borderRadius;
+
+  @media (max-width: $spacer*30) {
+    border-radius: 0;
+  }
+
+  &--content {
+    padding: $spacer $spacer;
+
+    h4 {
+      margin: 0 0 $spacer*1.5 0;
+
+      &.alert {
+        color: $braveRed;
+      }
+    }
+
+    .modal-buttons {
+      margin-top: $spacer*2;
+      text-align: center;
+
+      .btn {
+        display: block;
+        margin: $spacer 0;
+
+        @include media-breakpoint-up(md) {
+          display: inline-block;
+          margin: $spacer;
+        }
+      }
+    }
+  }
+
+  &--close {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+  }
 }
 
-.md-overlay {
+.modal-overlay {
   background: rgba(64, 64, 64, 0.7);
   position: fixed;
   top: 0;
@@ -38,73 +78,20 @@
   visibility: hidden;
 }
 
-.md-show {
+.modal-show {
   visibility: visible;
 
-  .md-content {
+  .modal-panel {
     transform: scale(1);
     opacity: 1;
   }
 }
 
-.md-show ~ .md-overlay {
+.modal-show ~ .modal-overlay {
   opacity: 1;
   visibility: visible;
 }
 
-.md-close {
-  position: absolute;
-  right: 30px;
-  top: 7px;
-}
-
-.md-confirm-buttons {
-  margin-top: $spacer*2;
-  text-align: right;
-
-  .btn {
-    display: block;
-    margin-bottom: $spacer;
-
-    @include media-breakpoint-up(md) {
-      display: inline;
-      margin-left: 15px;
-    }
-  }
-}
-
-.confirm-modal {
-  &--content {
-    @include make-col-ready();
-    text-align: left;
-
-    @include media-breakpoint-up(md) {
-      @include make-col(12);
-      margin-bottom: $spacer*3;
-    }
-  }
-  &--action {
-    @include make-col-ready();
-    @include media-breakpoint-up(md) {
-      @include make-col(12);
-    }
-
-    text-align: right;
-
-    .btn {
-      display: block;
-      margin-bottom: $spacer;
-
-      @include media-breakpoint-up(md) {
-        display: inline;
-        margin-left: 15px;
-      }
-    }
-  }
-}
-
-.js-shared-modal {
-  .single-panel--padded-content {
-    padding: $spacer $spacer;
-  }
+#main #js-open-modal-on-load {
+  display: none;
 }

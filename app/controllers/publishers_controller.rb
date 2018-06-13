@@ -32,6 +32,7 @@ class PublishersController < ApplicationController
                change_email)
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
+  before_action :protect, only: %i(show home)
   before_action :require_verified_publisher,
     only: %i(disconnect_uphold
              edit_payment_info
@@ -45,6 +46,7 @@ class PublishersController < ApplicationController
              uphold_verified)
   before_action :prompt_for_two_factor_setup,
     only: %i(home)
+
 
   def sign_up
     @publisher = Publisher.new(email: params[:email])
@@ -210,6 +212,10 @@ class PublishersController < ApplicationController
 
   def javascript_detected
     current_publisher.update(javascript_last_detected_at: Time.now)
+  end
+  
+  def protect
+    return redirect_to admin_publishers_path unless current_publisher.publisher?
   end
 
   # Log in page

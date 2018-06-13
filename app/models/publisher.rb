@@ -1,9 +1,13 @@
 class Publisher < ApplicationRecord
   has_paper_trail
+  self.per_page = 50
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   PROMO_STATS_UPDATE_DELAY = 10.minutes
+  ADMIN = "admin"
+  PUBLISHER = "publisher"
+  ROLES = [ADMIN, PUBLISHER]
 
   devise :timeoutable, :trackable, :omniauthable
 
@@ -14,6 +18,7 @@ class Publisher < ApplicationRecord
   has_many :channels, validate: true, autosave: true
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
+  has_many :status_updates, -> { order('created_at DESC') }, class_name: 'PublisherStatusUpdate'
 
   belongs_to :youtube_channel
 
@@ -51,11 +56,16 @@ class Publisher < ApplicationRecord
 
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
 
+  after_create :set_created_status
+  after_update :set_onboarding_status, if: -> { email.present? && email_was.nil? }
+  after_update :set_active_status, if: -> { two_factor_prompted_at_changed? && two_factor_prompted_at_was.nil? }
+
   after_save :set_promo_stats_updated_at_2018q1, if: -> { promo_stats_2018q1_changed? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
   scope :email_verified, -> { where.not(email: nil) }
+  scope :not_admin, -> { where.not(role: ADMIN) }
 
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
@@ -198,7 +208,38 @@ class Publisher < ApplicationRecord
     channels.any?(&:verified?)
   end
 
+  def admin?
+    role == ADMIN
+  end
+
+  def publisher?
+    role == PUBLISHER
+  end
+  
+  def last_status_update
+    status_updates.first
+  end
+
   private
+  
+  def set_created_status
+    created_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "created")
+    created_publisher_status_update.save!
+  end
+
+  def set_onboarding_status
+    onboarding_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "onboarding")
+    onboarding_publisher_status_update.save!
+  end
+
+  def set_active_status
+    if two_factor_prompted_at.nil? || agreed_to_tos.nil?
+      raise "Publisher must have agreed to TOS and addressed 2fa prompt to be active"
+    else
+      active_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "active")
+      active_publisher_status_update.save!
+    end
+  end
 
   def dont_destroy_publishers_with_channels
     if channels.count > 0

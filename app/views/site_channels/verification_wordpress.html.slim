@@ -10,7 +10,7 @@
     .single-panel--padded-content.text-left
       h3.single-panel--headline.text-center= t ".heading"
       .single-panel.text-center
-        p#wordpress_escape_hatch = t(".escape_hatch_html", { :href => link_to(t(".verify_dns_record"), verification_dns_record_site_channel_path) })
+        p#wordpress_escape_hatch = t(".escape_hatch_html", { :href => link_to(t(".verify_dns_record"), verification_dns_record_site_channel_path, :"data-piwik-action" => "WordpressEscapeHatchClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "WordpressFlow") })
         
       .col-small-centered.text-left
         .site-channels--https-check
