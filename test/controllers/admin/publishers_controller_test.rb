@@ -24,6 +24,32 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "admin filters appropriately on name & email" do
+    admin = publishers(:admin)
+    publisher = publishers(:completed)
+    sign_in admin
+
+    get admin_publishers_path
+    assert_response :success
+    assert_select 'tbody' do
+      assert_select 'tr' do
+        assert_select 'td', publisher.id
+      end
+    end
+
+    get admin_publishers_path, params: {q: "#{publisher.name}"}
+    assert_response :success
+    assert_select 'tbody' do
+      assert_select 'tr', true
+    end
+
+    get admin_publishers_path, params: {q: "#{publisher.name}failure"}
+    assert_response :success
+    assert_select 'tbody' do
+      assert_select 'tr', false
+    end
+  end
+
   test "raises error unless admin has 2fa enabled" do
     admin = publishers(:admin)
     admin.totp_registration.destroy! # remove 2fa
