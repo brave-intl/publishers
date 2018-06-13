@@ -14,6 +14,7 @@ class Publisher < ApplicationRecord
   has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
+  has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
@@ -219,6 +220,10 @@ class Publisher < ApplicationRecord
   
   def last_status_update
     status_updates.first
+  end
+
+  def last_login_activity
+    login_activity = login_activities.last
   end
 
   private
