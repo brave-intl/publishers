@@ -3,6 +3,10 @@ div.row
     section.panel
       header.panel-heading
         h4 Publishers
+      = form_tag(admin_publishers_path, method: "get")
+        = text_field_tag(:q)
+        = submit_tag("Search")
+      br
       div.panel-body
         div.adv-table
           table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
