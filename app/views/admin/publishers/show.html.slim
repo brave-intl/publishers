@@ -6,7 +6,7 @@
       .db-value = @publisher.email
     .db-info-row
       .db-field = "Status:"
-      .db-value = @publisher.last_status_update.status
+      .db-value = @publisher.last_status_update.present? ? @publisher.last_status_update.status : "active"
     .db-info-row
       .db-field = "Uphold connected:"
       .db-value = @publisher.uphold_verified?
