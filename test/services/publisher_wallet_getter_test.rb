@@ -65,9 +65,23 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       to_return(status: 200, body: wallet, headers: {})
 
     publisher.channels.each do |channel|
+      balance_json = {
+        "amount" => "5.80",
+        "currency" => "USD",
+        "altcurrency" => "BAT",
+        "probi" => "25000000000000000000",
+        "rates" => {
+          "BTC" => 0.00005418424016883016,
+          "ETH" => 0.000795331082073117,
+          "USD" => 0.2363863335301452,
+          "EUR" => 0.20187818378874756,
+          "GBP" => 0.1799810085548496
+        }
+      }.to_json
+
       stub_request(:get, %r{v2/publishers/#{URI.escape(channel.details.channel_identifier)}/balance}).
           with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-          to_return(status: 200, body: '{}', headers: {})
+          to_return(status: 200, body: balance_json, headers: {})
     end
 
     result = PublisherWalletGetter.new(publisher: publisher).perform
@@ -76,8 +90,8 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     assert_equal "USD", result.default_currency
 
     assert_equal(
-      publisher.channels.inject({}) { |t,i| t[i.details.channel_identifier] = {}; t },
-      result.channel_json
+      25.0,
+      result.channel_balances["completed.org"].BAT
     )
   end
 
