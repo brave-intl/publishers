@@ -18,9 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let isAdminShowAction = ((document.querySelectorAll('body[data-action="show"]').length === 1) &&
                            (document.querySelectorAll('body[data-controller="admin/publishers"').length === 1))
 
-  console.log(isPublisherStatementAction);
-  console.log(isAdminShowAction);
-
   if (!(isPublisherStatementAction || isAdminShowAction)){
     return;
   }
