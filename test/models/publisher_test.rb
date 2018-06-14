@@ -409,4 +409,57 @@ class PublisherTest < ActiveSupport::TestCase
     assert publisher.status_updates.count == 3
     assert publisher.last_status_update.status == "active"
   end
+
+  test "publisher.can_create_uphold_cards? depends on uphold status and scope" do
+    publisher = publishers(:created)
+    refute publisher.can_create_uphold_cards?
+
+    prev_offline = Rails.application.secrets[:api_eyeshade_offline]
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
+
+      refute publisher.can_create_uphold_cards?
+
+      body = {
+        "contributions": {
+          "amount": "9001.00",
+          "currency": "USD",
+          "altcurrency": "BAT",
+          "probi": "38077497398351695427000"
+        },
+        "rates": {
+          "BTC": 0.00005418424016883016,
+          "ETH": 0.000795331082073117,
+          "USD": 0.2363863335301452,
+          "EUR": 0.20187818378874756,
+          "GBP": 0.1799810085548496
+        },
+        "status": {
+          "provider": "uphold",
+          "action": ""
+        },
+        "wallet": {
+          "provider": "uphold",
+          "authorized": true,
+          "defaultCurrency": 'USD',
+          "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
+          "scope": ["cards:write"]
+        }
+      }.to_json
+
+      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: body, headers: {})
+
+      publisher.reload
+      publisher.verify_uphold
+
+      assert publisher.uphold_verified?
+      assert publisher.can_create_uphold_cards?
+
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_offline
+    end
+  end
+
 end

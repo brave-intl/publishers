@@ -230,6 +230,13 @@ class Publisher < ApplicationRecord
     login_activity = login_activities.last
   end
 
+  def can_create_uphold_cards?
+    uphold_verified? &&
+      wallet.authorized? &&
+      wallet.scope &&
+      wallet.scope.include?("cards:write")
+  end
+
   private
 
   def set_created_status
