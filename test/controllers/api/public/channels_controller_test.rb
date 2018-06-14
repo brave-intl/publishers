@@ -65,7 +65,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal channel.details.youtube_channel_id , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
     assert_equal true                               , response_body['properties']['verified']
-    assert_equal channel.updated_at.to_i << 32      , response_body['properties']['timestamp']
+    assert_equal (channel.updated_at.to_i << 32).to_s, response_body['properties']['timestamp']
 
     channel.update(verified: false)
     get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}",
@@ -101,7 +101,23 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal channel.details.twitch_channel_id , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
     assert_equal true                               , response_body['properties']['verified']
-    assert_equal channel.updated_at.to_i << 32      , response_body['properties']['timestamp']
+    assert_equal (channel.updated_at.to_i << 32).to_s, response_body['properties']['timestamp']
+
+    get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.name}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    response_body = JSON.parse(response.body)
+
+    assert_equal 200                                , response.status
+    assert_equal 'provider'                         , response_body['publisherType']
+    assert_equal 'twitch'                           , response_body['providerName']
+    assert_equal 'author'                           , response_body['providerSuffix']
+    assert_equal channel.details.name               , response_body['providerValue']
+    assert_equal "twitch#author"                    , response_body["TLD"]
+    assert_equal "twitch#author:#{channel.details.name}", response_body["SLD"]
+    assert_equal channel.details.name               , response_body["RLD"]
+    assert_equal ""                                 , response_body["QLD"]
+    assert_equal true                               , response_body['properties']['verified']
+    assert_equal (channel.updated_at.to_i << 32).to_s, response_body['properties']['timestamp']
 
     channel.update(verified: false)
     get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}",
