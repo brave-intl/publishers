@@ -3,9 +3,10 @@ class PublisherStatementGenerator < BaseApiClient
   attr_reader :publisher
   attr_reader :statement_period
 
-  def initialize(publisher:, statement_period:)
+  def initialize(publisher:, statement_period:, created_by_admin: false)
     @publisher = publisher
     @statement_period = statement_period
+    @created_by_admin = created_by_admin
   end
 
   def perform
@@ -19,7 +20,8 @@ class PublisherStatementGenerator < BaseApiClient
     statement = PublisherStatement.new(
       publisher: @publisher,
       period: @statement_period,
-      source_url: JSON.parse(response.body)["reportURL"])
+      source_url: JSON.parse(response.body)["reportURL"],
+      created_by_admin: @created_by_admin)
 
     statement.save!
 
@@ -34,7 +36,8 @@ class PublisherStatementGenerator < BaseApiClient
     statement = PublisherStatement.new(
       publisher: @publisher,
       period: @statement_period,
-      source_url: fake_report)
+      source_url: fake_report,
+      created_by_admin: @created_by_admin)
 
     statement.save!
 
