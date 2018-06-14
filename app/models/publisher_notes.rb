@@ -1,3 +1,3 @@
-class PublisherNotes < ApplicationRecord
+class PublisherNote < ApplicationRecord
   belongs_to :publisher
 end
