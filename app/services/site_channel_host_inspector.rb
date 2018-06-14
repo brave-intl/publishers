@@ -37,7 +37,7 @@ class SiteChannelHostInspector < BaseService
 
     { response: response, web_host: web_host }
   rescue Publishers::Fetch::RedirectError, Publishers::Fetch::ConnectionFailedError => e
-    Rails.logger.warn("PublisherHostInspector #inspect_uri error: #{e}")
+    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
     { response: e }
   end
 
@@ -80,7 +80,7 @@ class SiteChannelHostInspector < BaseService
   end
 
   def failure_result(inspect_result)
-    Rails.logger.warn("PublisherHostInspector #perform failure: #{inspect_result[:response]}")
+    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{inspect_result[:response]}")
     { response: inspect_result[:response], host_connection_verified: false, https: false }
   end
 
