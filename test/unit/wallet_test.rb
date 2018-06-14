@@ -63,4 +63,10 @@ class WalletTest < ActiveSupport::TestCase
     assert_equal [ 'USD', 'EUR', 'BAT' ], test_wallet.available_currencies
     assert_equal [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ], test_wallet.possible_currencies
   end
+
+  test "currency_is_possible_but_not_available? checks available and possible currencies" do
+    assert test_wallet.currency_is_possible_but_not_available?('ETH')
+    refute test_wallet.currency_is_possible_but_not_available?('USD')
+    refute test_wallet.currency_is_possible_but_not_available?('FAKE')
+  end
 end

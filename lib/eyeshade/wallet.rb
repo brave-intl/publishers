@@ -37,5 +37,9 @@ module Eyeshade
     def authorized?
       @authorized == true
     end
+
+    def currency_is_possible_but_not_available?(currency)
+      @available_currencies.exclude?(currency) && @possible_currencies.include?(currency)
+    end
   end
 end
