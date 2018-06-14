@@ -67,11 +67,12 @@ class JsonBuilders::IdentityJsonBuilder
   end
 
   def build_site_identity_json
+    public_suffix = PublicSuffix.parse(@publisher_name)
     Jbuilder.encode do |json|
       json.publisher      @publisher_name
-      json.SLD            @publisher_name
-      json.RLD            ''
-      json.QLD            ''
+      json.SLD            public_suffix.sld + '.' + public_suffix.tld
+      json.RLD            public_suffix.trd || ""
+      json.QLD            public_suffix.trd.try(:split, '.').try(:last) || ""
       json.URL            @publisher_name
       json.properties     do
         build_properties(json)
@@ -98,14 +99,22 @@ class JsonBuilders::IdentityJsonBuilder
 
   def build_properties(json)
     require 'publishers/excluded_channels'
+
     if @channel_detail.present? && @channel_detail.channel.verified?
+      show_timestamp = true
       json.verified true
+    end
+
+    if Publishers::ExcludedChannels.excluded?(@channel_detail)
+      show_timestamp = true
 =begin
       (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
       which erroneously uses Bson.timestamp().
 =end
+      json.exclude true
+    end
+    if show_timestamp
       json.timestamp (@channel_detail.channel.updated_at.to_i << 32)
-      json.exclude Publishers::ExcludedChannels.excluded?(@channel_detail)
     end
   end
 end
