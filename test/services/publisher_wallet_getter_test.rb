@@ -24,7 +24,16 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
     publisher = publishers(:google_verified)
     publisher.channels.delete_all
-    wallet = "{\"wallet\":\"abc123\"}"
+    wallet = {
+      "wallet": {
+        "provider": "uphold",
+        "authorized": true,
+        "defaultCurrency": "USD",
+        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
+        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
+        "scope": ["cards:write"]
+      }
+    }.to_json
 
     stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
@@ -33,14 +42,23 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
     assert result.kind_of?(Eyeshade::Wallet)
-    assert_equal JSON.parse(wallet), result.wallet_json
+    assert_equal "USD", result.default_currency
   end
 
   test "when online returns a wallet with channel data" do
     Rails.application.secrets[:api_eyeshade_offline] = false
 
     publisher = publishers(:completed)
-    wallet = "{\"wallet\":\"abc123\"}"
+    wallet = {
+      "wallet": {
+        "provider": "uphold",
+        "authorized": true,
+        "defaultCurrency": "USD",
+        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
+        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
+        "scope": ["cards:write"]
+      }
+    }.to_json
 
     stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
@@ -55,7 +73,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
     assert result.kind_of?(Eyeshade::Wallet)
-    assert_equal JSON.parse(wallet), result.wallet_json
+    assert_equal "USD", result.default_currency
 
     assert_equal(
       publisher.channels.inject({}) { |t,i| t[i.details.channel_identifier] = {}; t },

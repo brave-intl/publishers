@@ -2,25 +2,40 @@ require "eyeshade/balance"
 
 module Eyeshade
   class Wallet
-    attr_reader :wallet_json, :status, :contribution_balance, :wallet_details,
-                :channel_json, :channel_balances
+    attr_reader :action,
+                :provider,
+                :scope,
+                :default_currency,
+                :available_currencies,
+                :possible_currencies,
+                :contribution_balance,
+                :channel_balances
 
     def initialize(wallet_json:, channel_json:)
-      @wallet_json = wallet_json
-      @channel_json = channel_json
-      @status = wallet_json["status"].is_a?(Hash) ? wallet_json["status"] : {}
+      details_json = wallet_json["wallet"] || {}
+      @authorized = details_json["authorized"]
+      @provider = details_json["provider"]
+      @scope = details_json["scope"]
+      @default_currency = details_json["defaultCurrency"]
+      @available_currencies = details_json["availableCurrencies"] || []
+      @possible_currencies = details_json["possibleCurrencies"] || []
 
-      balance_json = wallet_json["contributions"].is_a?(Hash) ? wallet_json["contributions"] : {}
-      balance_json["rates"] = wallet_json["rates"].is_a?(Hash) ? wallet_json["rates"] : {}
+      status_json = wallet_json["status"] || {}
+      @action = status_json["action"]
+
+      balance_json = wallet_json["contributions"] || {}
+      balance_json["rates"] = wallet_json["rates"] || {}
 
       @contribution_balance = Eyeshade::Balance.new(balance_json: balance_json)
 
-      @wallet_details = wallet_json["wallet"].is_a?(Hash) ? wallet_json["wallet"] : {}
-
       @channel_balances = {}
-      @channel_json.each do |identifier, json|
+      channel_json.each do |identifier, json|
         @channel_balances[identifier] = Eyeshade::Balance.new(balance_json: json)
       end
+    end
+
+    def authorized?
+      @authorized == true
     end
   end
 end

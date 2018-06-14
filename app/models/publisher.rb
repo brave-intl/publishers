@@ -93,7 +93,7 @@ class Publisher < ApplicationRecord
     if @_wallet
       # Initialize the default_currency from the wallet, if it exists
       if self.default_currency.nil?
-        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'defaultCurrency')
+        default_currency_code = @_wallet.default_currency
         if default_currency_code
           self.default_currency = default_currency_code
           save_needed = true
@@ -157,7 +157,7 @@ class Publisher < ApplicationRecord
 
   def uphold_reauthorization_needed?
     self.uphold_verified? &&
-      ['re-authorize', 'authorize'].include?(self.wallet.try(:status).try(:[], 'action'))
+      ['re-authorize', 'authorize'].include?(self.wallet.action)
   end
 
   def uphold_status
