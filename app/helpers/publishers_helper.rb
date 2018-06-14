@@ -105,8 +105,8 @@ module PublishersHelper
   end
 
   def publisher_available_currencies(publisher)
-    available_currencies = publisher.wallet.available_currencies
-    if available_currencies && publisher.default_currency.blank?
+    available_currencies = publisher.wallet.available_currencies.clone
+    if publisher.default_currency.blank?
       available_currencies.unshift(['-- Select currency --', nil])
     end
     available_currencies
