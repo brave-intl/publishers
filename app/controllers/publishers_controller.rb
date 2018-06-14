@@ -32,7 +32,7 @@ class PublishersController < ApplicationController
                change_email)
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
-  before_action :protect, only: %i(show home)
+  # before_action :protect, only: %i(show home)
   before_action :require_verified_publisher,
     only: %i(disconnect_uphold
              edit_payment_info
@@ -352,7 +352,7 @@ class PublishersController < ApplicationController
     publisher = current_publisher
     statement_period = params[:statement_period]
     statement = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
-    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id)
+    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id, send_email: true)
     render(json: {
       id: statement.id,
       date: statement_period_date(statement.created_at),

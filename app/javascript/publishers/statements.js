@@ -12,7 +12,16 @@ function formatDate(date) {
 let generating = false;
 
 document.addEventListener('DOMContentLoaded', function() {
-  if (document.querySelectorAll('body[data-action="statements"]').length === 0) {
+
+  let isPublisherStatementAction = ((document.querySelectorAll('body[data-action="statements"]').length === 1) &&
+                                    (document.querySelectorAll('body[data-controller="publishers"').length === 1))
+  let isAdminShowAction = ((document.querySelectorAll('body[data-action="show"]').length === 1) &&
+                           (document.querySelectorAll('body[data-controller="admin/publishers"').length === 1))
+
+  console.log(isPublisherStatementAction);
+  console.log(isAdminShowAction);
+
+  if (!(isPublisherStatementAction || isAdminShowAction)){
     return;
   }
 
@@ -20,6 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
   let statementGenerator = document.getElementById('statement_generator');
   let statementPeriod = document.getElementById('statement_period');
   let generatedStatements = document.getElementById('generated_statements');
+
+  if (isPublisherStatementAction) {
+    var statementReadyPath = '/publishers/statement_ready?id='
+  } else {
+    var statementReadyPath = '/admin/publishers/statement_ready?id='
+  }
 
   if (generateStatement) {
     generateStatement.addEventListener('click', function(event) {
@@ -65,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
           dynamicEllipsis.start(statementDownloadDiv);
 
           statementId = json.id;
-          return pollUntilSuccess('/publishers/statement_ready?id=' + statementId, 3000, 2000, 7);
+          return pollUntilSuccess(statementReadyPath + statementId, 3000, 2000, 7);
         })
         .then(function() {
           dynamicEllipsis.stop(statementDownloadDiv);

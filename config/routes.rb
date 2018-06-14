@@ -88,7 +88,13 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :publishers
+    resources :publishers do
+      collection do      
+        patch :generate_statement
+        get :statement_ready
+      end
+    end
+    
     root to: "dashboard#index" # <--- Root route
   end
 
