@@ -112,6 +112,14 @@ module PublishersHelper
     available_currencies
   end
 
+  def publisher_possible_currencies(publisher)
+    possible_currencies = publisher.wallet.possible_currencies.clone
+    if publisher.default_currency.blank?
+      possible_currencies.unshift(['-- Select currency --', nil])
+    end
+    possible_currencies
+  end
+
   def uphold_status_class(publisher)
     case publisher.uphold_status
     when :verified
