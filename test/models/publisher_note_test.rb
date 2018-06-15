@@ -5,7 +5,8 @@ class PublisherNoteTest < ActiveSupport::TestCase
     publisher = publishers(:created)
     admin = publishers(:admin)
 
-    note = PublisherNote.new(notes: "this is a note", publisher: publisher, created_by: admin.id)
+    note = PublisherNote.new(note: "this is a note", publisher: publisher, created_by: admin)
+
     note.save!
 
     assert publisher.notes.first == note
@@ -15,7 +16,7 @@ class PublisherNoteTest < ActiveSupport::TestCase
     publisher = publishers(:created)
     admin = publishers(:admin)
 
-    note = PublisherNote.new(notes: "this is a note", publisher: publisher, created_by: admin.id)
+    note = PublisherNote.new(note: "this is a note", publisher: publisher, created_by: admin)
     note.save!
 
     publisher.destroy!

@@ -1,6 +1,9 @@
 /* header */
 #header {
   background:#32323a;
+  top: 0;
+  position: fixed;
+  width: 100%;
 }
 
 /*sidebar navigation*/
@@ -10,6 +13,7 @@
   height:100%;
   position:fixed;
   background:#28282e;
+  margin-top: 46px;
 
   li {
     position: relative;
@@ -70,8 +74,9 @@
 
 #wrapper {
   display:inline-block;
-  padding: 25px 50px;
+  padding: 25px 100px;
   width:100%;
+  margin-top: 46px;
 }
 
 .brand {
@@ -105,6 +110,15 @@ a.logo span {
       text-align: center;
     }
 
+    .rounded-box {
+      border-width: 1px;
+      border-style: solid;
+      border-color: lightgray;
+      border-radius: 5px;
+      padding: 20px;
+      margin: 10px 0px;
+    }
+
     .db-info-row {
       display: flex;
       .db-field {
@@ -122,11 +136,14 @@ a.logo span {
       margin: 30px 0px;
     }
 
-    #publisher-info {      
+    #publisher-section {      
+    }
+
+    #statement-section {
       .statements-table {
         max-width: 450px;
-
         .header {
+          font-weight: bold;
           display: flex;
         }
         .statement {
@@ -147,10 +164,10 @@ a.logo span {
       }
       #generate_statement {
         margin-left: 10px;
-      }
+      }      
     }
 
-    #channels-info {
+    #channels-section {
       .channel {
         border-width: 1px;
         display: flex;
@@ -168,6 +185,33 @@ a.logo span {
           flex: 2;
         }
       }      
+    }
+    #notes-section {
+      .note {
+        hr {
+          margin: 10px 0px;
+        }
+        .note-header {
+          display: flex;
+          .note-created-by{
+            flex: 1;
+          }
+          .note-created-at {
+            flex: 1;
+          }
+        }
+        .note-content {
+        }
+      }
+      #create-note {
+        #create-note-content {
+          min-width: 100%;
+          min-height: 150px;
+        }
+        #submit-create-note {
+          display: block;
+        }
+      }
     }
   }  
 }
