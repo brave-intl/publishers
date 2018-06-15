@@ -5,6 +5,11 @@ noscript
   #js-open-modal-on-load
     = render partial: 'channel_taken_modal', locals: { channel_id: flash[:taken_channel_id] }
 
+- open_confirm_default_currency_modal = !flash[:taken_channel_id] && current_publisher.uphold_verified? && current_publisher.default_currency_confirmed_at.nil? && current_publisher.wallet.authorized?
+
+script type="text/html" id="confirm_default_currency_modal_wrapper"
+  = render :partial => 'confirm_default_currency_modal'
+
 - content_for(:navbar_content_right) do
   = link_to( \
     t("shared.dashboard"), \
@@ -13,7 +18,7 @@ noscript
   )
   = render partial: "choose_channel_button"
 
-.dashboard
+.dashboard data-open-confirm-default_currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
   #uphold_status class=uphold_status_class(current_publisher)
     .row
       .col

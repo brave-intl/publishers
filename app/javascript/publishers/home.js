@@ -118,6 +118,41 @@ function disconnectUphold() {
     });
 }
 
+function openDefaultCurrencyModal() {
+  let template = document.querySelector('#confirm_default_currency_modal_wrapper');
+  let closeFn = openModal(template.innerHTML);
+
+  let form = document.getElementById('confirm_default_currency_form');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let modal = document.getElementById('confirm_default_currency_modal');
+    let status = document.querySelector('#confirm_default_currency_modal .status');
+
+    modal.classList.add('transitioning');
+
+    submitForm('confirm_default_currency_form', 'PATCH', false)
+      .then(response => response.json())
+      .then(body => {
+        status.innerHTML = body.status;
+        setTimeout(
+          function() {
+            if (body.action === 'redirect') {
+              window.location.href = body.redirectURL;
+            } else if (body.action === 'refresh' ) {
+              refreshBalance()
+                .then(() => closeFn());
+            } else {
+              closeFn();
+            }
+          },
+          body.timeout
+        );
+      });
+  }, false);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   if (document.querySelectorAll('body[data-action="home"]').length === 0) {
     return;
@@ -125,6 +160,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (document.querySelectorAll('div#uphold_status.uphold-processing').length > 0) {
     checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
+  }
+
+  let dashboard = document.querySelector('.dashboard');
+  if (dashboard.getAttribute('data-open-confirm-default_currency-modal') === 'true') {
+    openDefaultCurrencyModal();
   }
 
   let removeChannelLinks = document.querySelectorAll('a.remove-channel');

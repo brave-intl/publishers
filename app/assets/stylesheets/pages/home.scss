@@ -675,6 +675,42 @@
   }
 }
 
+#confirm_default_currency_modal {
+  text-align: center;
+
+  #publisher_default_currency {
+    display: block;
+    margin: 0px auto 36px;
+  }
+
+  #img-currency-setting {
+    height: 79px;
+    width: 71px;
+    margin-top: 30px;
+    margin-bottom: 60px;
+  }
+
+  .transition {
+    display: none;
+  }
+
+  &.transitioning {
+    .entry {
+      display: none;
+    }
+    .transition {
+      display: block;
+      .spinner {
+        padding: 40px 100px;
+      }
+      .status {
+        min-height: 3rem;
+        font-size: 18px;
+      }
+    }
+  }
+}
+
 #channel_taken_modal {
   .taken-channel {
     margin: $spacer*2;
