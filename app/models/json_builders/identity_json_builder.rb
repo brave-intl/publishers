@@ -100,21 +100,19 @@ class JsonBuilders::IdentityJsonBuilder
   def build_properties(json)
     require 'publishers/excluded_channels'
 
-    if @channel_detail.present? && @channel_detail.channel.verified?
-      show_timestamp = true
-      json.verified true
-    end
-
-    if Publishers::ExcludedChannels.excluded?(@channel_detail)
-      show_timestamp = true
+    if @channel_detail.present? && @channel_detail.channel.present?
 =begin
       (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
       which erroneously uses Bson.timestamp().
 =end
-      json.exclude true
-    end
-    if show_timestamp
       json.timestamp (@channel_detail.channel.updated_at.to_i << 32)
+      if @channel_detail.channel.verified?
+        json.verified true
+      end
+    end
+
+    if Publishers::ExcludedChannels.excluded?(@channel_detail)
+      json.exclude true
     end
   end
 end
