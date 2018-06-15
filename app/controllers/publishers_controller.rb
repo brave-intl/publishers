@@ -32,7 +32,7 @@ class PublishersController < ApplicationController
                change_email)
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
-  # before_action :protect, only: %i(show home)
+  before_action :protect, only: %i(show home)
   before_action :require_verified_publisher,
     only: %i(disconnect_uphold
              edit_payment_info
