@@ -27,13 +27,13 @@ class Api::BaseController < ActionController::API
   end
 
   def authenticate_ip
-    return true if API_IP_WHITELIST.blank?
+    return true if API_IP_WHITELIST.blank? && Rails.env.development?
     ip_auth_result = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(request.remote_ip) }
     ip_auth_result
   end
 
   def authenticate_token
-    return true if API_AUTH_TOKEN.blank?
+    return true if API_AUTH_TOKEN.blank? && Rails.env.development?
     authenticate_with_http_token do |token, _options|
       # Compare the tokens in a time-constant manner, to mitigate timing attacks.
       ActiveSupport::SecurityUtils.secure_compare(

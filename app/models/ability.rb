@@ -39,7 +39,7 @@ class Ability
   end
 
   def admin_ip_whitelisted?
-    return true if ADMIN_IP_WHITELIST.blank?
+    return true if ADMIN_IP_WHITELIST.blank? && Rails.env.development?
     admin_ip_whitelisted = ADMIN_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(@ip) }
     admin_ip_whitelisted
   end
