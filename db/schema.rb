@@ -18,16 +18,14 @@ ActiveRecord::Schema.define(version: 20180613170836) do
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "publisher_id"
-    t.boolean  "created_via_api",                 default: false, null: false
-    t.boolean  "verified",                        default: false
+    t.boolean  "created_via_api",      default: false, null: false
+    t.boolean  "verified",             default: false
     t.string   "details_type"
     t.uuid     "details_id"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "verification_status"
     t.string   "verification_details"
-    t.boolean  "shown_verification_failed_modal", default: false
-    t.boolean  "manual_verification_running",     default: false
     t.datetime "verified_at"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true, using: :btree
     t.index ["publisher_id"], name: "index_channels_on_publisher_id", using: :btree
@@ -144,14 +142,15 @@ ActiveRecord::Schema.define(version: 20180613170836) do
   end
 
   create_table "publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "publisher_id",          null: false
+    t.uuid     "publisher_id",                          null: false
     t.string   "period"
     t.string   "source_url"
     t.text     "encrypted_contents"
     t.string   "encrypted_contents_iv"
     t.datetime "expires_at"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.boolean  "created_by_admin",      default: false
     t.index ["publisher_id"], name: "index_publisher_statements_on_publisher_id", using: :btree
   end
 

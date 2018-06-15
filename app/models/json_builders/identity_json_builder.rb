@@ -20,10 +20,23 @@ class JsonBuilders::IdentityJsonBuilder
     @channel_detail = if @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::YOUTUBE
       YoutubeChannelDetails.find_by(youtube_channel_id: @parsed_publisher_name[3])
     elsif @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::TWITCH
-      TwitchChannelDetails.find_by(twitch_channel_id: @parsed_publisher_name[3])
+      find_twitch_channel_detail
     else
       SiteChannelDetails.find_by(brave_publisher_id: @publisher_name)
     end
+  end
+
+  def find_twitch_channel_detail
+    twitch_channel_details = TwitchChannelDetails.where(
+      "twitch_channel_id = :parsed_twitch_suffix OR name = :parsed_twitch_suffix",
+      {parsed_twitch_suffix: @parsed_publisher_name[3]}
+    )
+
+    if twitch_channel_details.count > 1
+      LogException.perform(StandardError.new("Multiple twitch channels found"), params: { parsed_twitch_parameter: @parsed_publisher_name[3] })
+    end
+
+    twitch_channel_details.first
   end
 
   def build
@@ -105,7 +118,7 @@ class JsonBuilders::IdentityJsonBuilder
       (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
       which erroneously uses Bson.timestamp().
 =end
-      json.timestamp (@channel_detail.channel.updated_at.to_i << 32)
+      json.timestamp (@channel_detail.channel.updated_at.to_i << 32).to_s
       if @channel_detail.channel.verified?
         json.verified true
       end

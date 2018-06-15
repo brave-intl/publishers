@@ -1,7 +1,7 @@
 class SyncPublisherStatementJob < ApplicationJob
   queue_as :default
 
-  def perform(publisher_statement_id:, first_attempt: nil)
+  def perform(publisher_statement_id:, send_email:, first_attempt: nil)
     require "sentry-raven"
     if first_attempt
       time_elapsed = Time.now.to_i - first_attempt
@@ -17,12 +17,12 @@ class SyncPublisherStatementJob < ApplicationJob
     publisher_statement = PublisherStatement.find(publisher_statement_id)
 
     # Sends notification email to publisher on successful sync of statement
-    PublisherStatementSyncer.new(publisher_statement: publisher_statement).perform
+    PublisherStatementSyncer.new(publisher_statement: publisher_statement, send_email: send_email).perform
 
     publisher_statement.reload
 
     unless publisher_statement.contents.present?
-      SyncPublisherStatementJob.set(wait: wait_to_retry(time_elapsed)).perform_later(publisher_statement_id: publisher_statement.id, first_attempt: first_attempt)
+      SyncPublisherStatementJob.set(wait: wait_to_retry(time_elapsed)).perform_later(publisher_statement_id: publisher_statement.id, first_attempt: first_attempt, send_email: send_email)
     end
   end
 

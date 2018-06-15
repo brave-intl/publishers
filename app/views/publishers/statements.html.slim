@@ -27,7 +27,7 @@ noscript
           .period= t ".period"
           .status= t ".status"
         .content#generated_statements
-          - current_publisher.statements.each do |s|
+          - current_publisher.statements.visible_statements.each do |s|
             .statement
               .created-at= statement_period_date(s.created_at)
               .period= statement_period_description(s.period.to_sym)
