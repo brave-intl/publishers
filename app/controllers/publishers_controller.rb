@@ -220,6 +220,48 @@ class PublishersController < ApplicationController
     return redirect_to admin_publishers_path unless current_publisher.publisher?
   end
 
+  # Records default currency preference
+  # If user does not have Uphold's `cards:write` scope, we redirect to Uphold to get authorization
+  # Card creation is done in #home
+  def confirm_default_currency
+    confirm_default_currency_params = publisher_confirm_default_currency_params
+    selected_currency = confirm_default_currency_params[:default_currency]
+
+    current_publisher.default_currency_confirmed_at = Time.now
+    current_publisher.save!
+
+    default_currency_changed = current_publisher.default_currency != selected_currency
+
+    if default_currency_changed
+      current_publisher.default_currency = selected_currency
+      current_publisher.save!
+
+      UploadDefaultCurrencyJob.perform_now(publisher_id: current_publisher.id)
+    end
+
+    # Check if the publisher is currently missing the ability to create cards
+    publisher_missing_write_scope = current_publisher.wallet.scope.exclude? "cards:write"
+
+    if publisher_missing_write_scope
+      # Redirect the publisher to Uphold in order to authorize card creation.
+      # Card will be created in #home when they return.
+      render(json: {
+        action: 'redirect',
+        status: t("publishers.confirm_default_currency_modal.redirecting"),
+        redirectURL: uphold_authorization_endpoint(current_publisher),
+        timeout: 3000
+      }, status: 200)
+    else
+      create_uphold_card_for_default_currency_if_needed
+
+      render(json: {
+        action: 'refresh',
+        status: t("publishers.confirm_default_currency_modal.refreshing"),
+        timeout: 2000
+      }, status: 200)
+    end
+  end
+
   # Log in page
   def new_auth_token
     @publisher = Publisher.new
@@ -341,6 +383,8 @@ class PublishersController < ApplicationController
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     current_publisher.wallet
+
+    create_uphold_card_for_default_currency_if_needed
   end
 
   def statements
@@ -414,6 +458,15 @@ class PublishersController < ApplicationController
 
   private
 
+  def create_uphold_card_for_default_currency_if_needed
+    if current_publisher.can_create_uphold_cards? &&
+      current_publisher.default_currency_confirmed_at.present? &&
+      current_publisher.wallet.available_currencies.exclude?(current_publisher.default_currency)
+
+      CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
+    end
+  end
+
   def authenticate_via_token
     sign_out(current_publisher) if current_publisher
 
@@ -462,6 +515,10 @@ class PublishersController < ApplicationController
 
   def publisher_update_email_params
     params.require(:publisher).permit(:pending_email)
+  end
+
+  def publisher_confirm_default_currency_params
+    params.require(:publisher).permit(:default_currency)
   end
 
   def publisher_create_auth_token_params

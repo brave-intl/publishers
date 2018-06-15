@@ -386,6 +386,13 @@ en:
       confirmation: Are you sure you want to disconnect your account with Uphold?
       deny: Cancel
       confirm: Disconnect
+    confirm_default_currency_modal:
+      headline: Confirm your preferred deposit currency
+      leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
+      confirm: Confirm
+      saving: Saving ...
+      redirecting: Redirecting to Uphold for authorization ...
+      refreshing: Refreshing balances ...
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:
