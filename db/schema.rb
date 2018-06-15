@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180613170836) do
+ActiveRecord::Schema.define(version: 20180614215946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,10 +134,12 @@ ActiveRecord::Schema.define(version: 20180613170836) do
   end
 
   create_table "publisher_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid     "publisher_id", null: false
+    t.uuid     "publisher_id",  null: false
     t.text     "note"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.uuid     "created_by_id", null: false
+    t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id", using: :btree
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id", using: :btree
   end
 
@@ -188,12 +190,11 @@ ActiveRecord::Schema.define(version: 20180613170836) do
     t.datetime "updated_at",                                                  null: false
     t.datetime "two_factor_prompted_at"
     t.boolean  "visible",                               default: true
-    t.datetime "agreed_to_tos"
     t.boolean  "promo_enabled_2018q1",                  default: false
+    t.datetime "agreed_to_tos"
     t.string   "promo_token_2018q1"
     t.jsonb    "promo_stats_2018q1",                    default: {},          null: false
     t.datetime "promo_stats_updated_at_2018q1"
-    t.datetime "default_currency_confirmed_at"
     t.text     "role",                                  default: "publisher"
     t.datetime "javascript_last_detected_at"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true, using: :btree
@@ -284,4 +285,5 @@ ActiveRecord::Schema.define(version: 20180613170836) do
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id", unique: true, using: :btree
   end
 
+  add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
 end
