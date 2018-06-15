@@ -1,8 +1,9 @@
 let spinnerElements = {};
 let spinnerShown = {};
+let tempId = 0;
 
 export default {
-  show: function(elementOrId) {
+  show: function(elementOrId, parentElementOrId) {
     var elementId;
     var element;
 
@@ -13,7 +14,7 @@ export default {
       if (element.id) {
         elementId = element.id;
       } else {
-        elementId = element.id = 'temp-' + tempId++;
+        elementId = element.id = 'spinner-temp-' + tempId++;
       }
     } else {
       elementId = 'cssload-container';
@@ -25,7 +26,18 @@ export default {
         element = document.createElement('div');
         element.id = elementId;
         element.innerHTML = '<div class="cssload-container"><div class="cssload-loading"><i></i><i></i></div></div>';
-        document.body.appendChild(element);
+
+        let parentElement;
+        if (parentElementOrId) {
+          if (typeof parentElementOrId === 'string') {
+            parentElement = document.getElementById(parentElementOrId);
+          } else {
+            parentElement = parentElement;
+          }
+        } else {
+          parentElement = document.body;
+        }
+        parentElement.appendChild(element);
       }
     }
 
