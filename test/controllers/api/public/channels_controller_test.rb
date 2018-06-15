@@ -20,7 +20,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ""         , response_body["RLD"]
     assert_equal ""         , response_body["QLD"]
     assert_equal channel.details.brave_publisher_id, response_body["URL"]
-    assert_nil   response_body['properties']
+    assert       response_body['properties']['timestamp'] != nil
   end
 
   test 'a site that is marked for exclude' do
@@ -46,6 +46,19 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ""                                 , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
     assert_equal true                               , response_body['properties']['verified']
+  end
+
+  test 'a site that was never registered with Publishers' do
+    random_url = "shouldfail.github.io"
+    get "/api/public/channels/identity?publisher=#{random_url}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    response_body = JSON.parse(response.body)
+
+    assert_equal random_url                         , response_body["SLD"]
+    assert_equal random_url                         , response_body["publisher"]
+    assert_equal ""                                 , response_body["RLD"]
+    assert_equal ""                                 , response_body["QLD"]
+    assert_equal nil                                , response_body['properties']
   end
 
   test 'a youtube channel' do
@@ -82,7 +95,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "youtube#channel:#{channel.details.youtube_channel_id}", response_body["SLD"]
     assert_equal channel.details.youtube_channel_id , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
-    assert_nil   response_body['properties']
+    assert       response_body['properties']['timestamp'] != nil
   end
 
   test 'a twitch channel' do
@@ -133,7 +146,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "twitch#author:#{channel.details.twitch_channel_id}", response_body["SLD"]
     assert_equal channel.details.twitch_channel_id , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
-    assert_nil   response_body['properties']
+    assert       response_body['properties']['timestamp'] != nil
   end
 
   test 'last updated channel' do
