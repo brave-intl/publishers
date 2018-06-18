@@ -26,7 +26,7 @@ class PublishersHelperTest < ActionView::TestCase
     publisher = publishers(:default)
     publisher.default_currency = "USD"
     publisher.save
-    assert_dom_equal %{Approximately 9001.00 USD}, publisher_converted_balance(publisher)
+    assert_dom_equal %{~ 9001.00 USD}, publisher_converted_balance(publisher)
   end
 
   test "publisher_converted_balance should return `Unavailable` when no wallet is set" do
@@ -66,7 +66,7 @@ class PublishersHelperTest < ActionView::TestCase
       }
     )
     assert_not_nil publisher.wallet
-    assert_dom_equal %{Approximately 9001.00 USD}, publisher_converted_balance(publisher)
+    assert_dom_equal %{~ 9001.00 USD}, publisher_converted_balance(publisher)
 
     publisher = FakePublisher.new(
       wallet_json: nil

@@ -34,7 +34,8 @@ class PublishersController < ApplicationController
                 only: %i(update_email)
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher,
-    only: %i(disconnect_uphold
+    only: %i(balance
+             disconnect_uphold
              edit_payment_info
              generate_statement
              home
@@ -394,14 +395,12 @@ class PublishersController < ApplicationController
   end
 
   def balance
-    publisher = current_publisher
-    respond_to do |format|
-      format.json {
-        render(json: {
-            bat_amount: publisher_humanize_balance(current_publisher, "BAT"),
-            converted_balance: publisher_converted_balance(publisher)
-        }, status: 200)
-      }
+    wallet = current_publisher.wallet
+    if wallet
+      json = JsonBuilders::WalletJsonBuilder.new(wallet: wallet).build
+      render(json: json, status: :ok)
+    else
+      render(nothing: true, status: 404)
     end
   end
 

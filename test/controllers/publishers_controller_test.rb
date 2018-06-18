@@ -607,7 +607,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get balance_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal '{"bat_amount":"38077.50","converted_balance":"Approximately 9001.00 USD"}',
+    assert_equal '{"providerWallet":{"provider":"uphold","authorized":true,"defaultCurrency":"USD","rates":{"BTC":5.418424016883016e-05,"ETH":0.000795331082073117,"USD":0.2363863335301452,"EUR":0.20187818378874756,"GBP":0.1799810085548496},"availableCurrencies":["USD","EUR","BTC","ETH","BAT"],"possibleCurrencies":null,"scope":null},"channelBalances":{"uphold_connected.org":{"probi":"38077497398351695427000"},"twitch#channel:ucTw":{"probi":"38077497398351695427000"}},"status":{"provider":"uphold"}}',
                  response.body
   end
 
