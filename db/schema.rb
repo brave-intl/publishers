@@ -123,6 +123,16 @@ ActiveRecord::Schema.define(version: 20180614215946) do
     t.index ["id"], name: "index_legacy_youtube_channels_on_id", unique: true, using: :btree
   end
 
+  create_table "login_activities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid     "publisher_id"
+    t.text     "user_agent"
+    t.text     "accept_language"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["created_at"], name: "index_login_activities_on_created_at", using: :btree
+    t.index ["publisher_id"], name: "index_login_activities_on_publisher_id", using: :btree
+  end
+
   create_table "promo_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid     "channel_id",    null: false
     t.string   "promo_id",      null: false

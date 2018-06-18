@@ -1,0 +1,13 @@
+verified_1:
+  publisher: verified
+  created_at: "<%= 1.day.ago %>"
+  updated_at: "<%= 1.day.ago %>"
+  user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+  accept_language: "en-US,en;q=0.9"
+
+verified_2:
+  publisher: verified
+  created_at: "<%= 1.minute.ago %>"
+  updated_at: "<%= 1.minute.ago %>"
+  user_agent: "Googlebot"
+  accept_language: "en-US,en;q=0.9"

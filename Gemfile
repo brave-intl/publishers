@@ -18,6 +18,9 @@ gem "attr_encrypted", "~> 3.1.0"
 
 gem "bootstrap", "~> 4.1.1"
 
+# browser details
+gem 'browser'
+
 # Authorization
 gem 'cancancan'
 
