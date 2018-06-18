@@ -198,10 +198,6 @@ class PublishersController < ApplicationController
       MailerServices::ConfirmEmailChangeEmailer.new(publisher: publisher).perform
     end
 
-    if success && update_params[:default_currency]
-      UploadDefaultCurrencyJob.perform_later(publisher_id: publisher.id)
-    end
-
     respond_to do |format|
       format.json {
         if success
@@ -509,7 +505,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :phone, :name, :default_currency, :visible)
+    params.require(:publisher).permit(:pending_email, :phone, :name, :visible)
   end
 
   def publisher_update_email_params
