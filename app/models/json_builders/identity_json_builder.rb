@@ -57,7 +57,7 @@ class JsonBuilders::IdentityJsonBuilder
     Jbuilder.encode do |json|
       json.publisher      @publisher_name
       json.publisherType  'provider'
-      json.providerName   @parsed_publisher_name[1]
+      json.providerName   Channel::YOUTUBE
       json.providerSuffix @parsed_publisher_name[2]
       json.providerValue  @parsed_publisher_name[3]
       json.URL            "https://youtube.com/#{@parsed_publisher_name[2]}/#{@parsed_publisher_name[3]}"
@@ -87,9 +87,9 @@ class JsonBuilders::IdentityJsonBuilder
 
   def build_twitch_identity_json
     Jbuilder.encode do |json|
-      json.publisher      Channel::TWITCH
+      json.publisher      @publisher_name
       json.publisherType  'provider'
-      json.providerName   @parsed_publisher_name[1]
+      json.providerName   Channel::TWITCH
       json.providerSuffix @parsed_publisher_name[2]
       json.providerValue  @parsed_publisher_name[3]
       json.TLD            @publisher_name.split(':')[0]

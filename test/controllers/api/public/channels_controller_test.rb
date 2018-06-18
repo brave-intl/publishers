@@ -81,16 +81,17 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
 
-    assert_equal 200                                , response.status
-    assert_equal 'provider'                         , response_body['publisherType']
-    assert_equal Channel::YOUTUBE                   , response_body['providerName']
-    assert_equal 'channel'                           , response_body['providerSuffix']
-    assert_equal not_present_channel                , response_body['providerValue']
-    assert_equal "youtube#channel"                    , response_body["TLD"]
-    assert_equal "youtube#channel:#{not_present_channel}", response_body["SLD"]
-    assert_equal not_present_channel                , response_body["RLD"]
-    assert_equal ""                                 , response_body["QLD"]
-    assert_equal nil                                , response_body['properties']
+    assert_equal 200                                      , response.status
+    assert_equal "youtube#channel:#{not_present_channel}" , response_body["publisher"]
+    assert_equal 'provider'                               , response_body['publisherType']
+    assert_equal Channel::YOUTUBE                         , response_body['providerName']
+    assert_equal 'channel'                                , response_body['providerSuffix']
+    assert_equal not_present_channel                      , response_body['providerValue']
+    assert_equal "youtube#channel"                        , response_body["TLD"]
+    assert_equal "youtube#channel:#{not_present_channel}" , response_body["SLD"]
+    assert_equal not_present_channel                      , response_body["RLD"]
+    assert_equal ""                                       , response_body["QLD"]
+    assert_equal nil                                      , response_body['properties']
 
     channel = channels(:youtube_new)
     get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}",
@@ -134,16 +135,17 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     response_body = JSON.parse(response.body)
 
-    assert_equal 200                                , response.status
-    assert_equal 'provider'                         , response_body['publisherType']
-    assert_equal Channel::TWITCH                    , response_body['providerName']
-    assert_equal 'author'                           , response_body['providerSuffix']
-    assert_equal not_present_channel                , response_body['providerValue']
-    assert_equal "twitch#author"                    , response_body["TLD"]
-    assert_equal "twitch#author:#{not_present_channel}", response_body["SLD"]
-    assert_equal not_present_channel                , response_body["RLD"]
-    assert_equal ""                                 , response_body["QLD"]
-    assert_equal nil                                , response_body['properties']
+    assert_equal 200                                    , response.status
+    assert_equal "twitch#author:#{not_present_channel}" , response_body["publisher"]
+    assert_equal 'provider'                             , response_body['publisherType']
+    assert_equal Channel::TWITCH                        , response_body['providerName']
+    assert_equal 'author'                               , response_body['providerSuffix']
+    assert_equal not_present_channel                    , response_body['providerValue']
+    assert_equal "twitch#author"                        , response_body["TLD"]
+    assert_equal "twitch#author:#{not_present_channel}" , response_body["SLD"]
+    assert_equal not_present_channel                    , response_body["RLD"]
+    assert_equal ""                                     , response_body["QLD"]
+    assert_equal nil                                    , response_body['properties']
 
     channel = channels(:twitch_verified)
     get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}",
