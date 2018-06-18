@@ -181,6 +181,13 @@ function openDefaultCurrencyModal() {
 
   let form = document.getElementById('confirm_default_currency_form');
 
+  // Sync default currency selected in modal with value displayed on dashboard
+  let currentDefaultCurrency = document.getElementById('default_currency_code').innerText;
+  let currencySelectInModal = document.getElementById('publisher_default_currency');
+  if (currentDefaultCurrency && currentDefaultCurrency.length > 0) {
+    currencySelectInModal.value = currentDefaultCurrency;
+  }
+
   form.addEventListener('submit', function(event) {
     event.preventDefault();
 
