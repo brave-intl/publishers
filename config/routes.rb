@@ -93,7 +93,6 @@ Rails.application.routes.draw do
         patch :generate_statement
         get :statement_ready
         post :create_note
-        patch :update_note
       end
     end
     
