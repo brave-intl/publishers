@@ -33,7 +33,7 @@ class Ability
 
   def admin
     raise AdminNotOnIPWhitelistError.new("Administrator must be IP whitelisted") unless admin_ip_whitelisted?
-    raise TwoFactorDisabledError.new("2fa must be enabled for administrators") unless two_factor_enabled?(@publisher)
+    raise U2fDisabledError.new("U2F must be enabled for administrators") unless u2f_enabled?(@publisher)
     can :manage, :all
     can :access, :all
   end
@@ -44,7 +44,7 @@ class Ability
     admin_ip_whitelisted
   end
 
-  class TwoFactorDisabledError < RuntimeError
+  class U2fDisabledError < RuntimeError
   end
   
   class AdminNotOnIPWhitelistError < RuntimeError

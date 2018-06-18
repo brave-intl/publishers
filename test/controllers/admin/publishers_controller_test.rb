@@ -50,13 +50,13 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "raises error unless admin has 2fa enabled" do
+  test "raises error unless admin has u2f enabled" do
     admin = publishers(:admin)
-    admin.totp_registration.destroy! # remove 2fa
+    admin.u2f_registrations.each { |r| r.destroy } # remove all u2f registrations
     admin.reload
     sign_in admin
 
-    assert_raises(Ability::TwoFactorDisabledError) do
+    assert_raises(Ability::U2fDisabledError) do
       get admin_publishers_path
     end
   end
