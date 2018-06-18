@@ -92,6 +92,8 @@ Rails.application.routes.draw do
       collection do      
         patch :generate_statement
         get :statement_ready
+        post :create_note
+        patch :update_note
       end
     end
     

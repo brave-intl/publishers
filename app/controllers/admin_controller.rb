@@ -11,11 +11,12 @@ class AdminController < ApplicationController
 
   def show
     @publisher = Publisher.find(params[:id])
+    @note = PublisherNote.new
   end
 
   # generates a publisher statement for an admin
   # does not send an email
-  def generate_statement
+  def generate_statement    
     publisher = Publisher.find(params[:id])
     statement_period = params[:statement_period]
     statement = PublisherStatementGenerator.new(publisher: publisher,
@@ -39,9 +40,24 @@ class AdminController < ApplicationController
     end
   end
 
+  def create_note
+    publisher = Publisher.find(publisher_create_note_params[:publisher])
+    admin = current_publisher
+    note_content = publisher_create_note_params[:note]
+
+    note = PublisherNote.new(publisher: publisher, created_by: admin, note: note_content)    
+    note.save!
+
+    redirect_to(admin_publisher_path(publisher.id))
+  end
+
   private
 
   def protect
     authorize! :access, :admin
+  end
+
+  def publisher_create_note_params
+    params.require(:publisher_note).permit(:publisher, :note)
   end
 end
