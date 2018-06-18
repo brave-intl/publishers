@@ -55,7 +55,9 @@ function updateLastSettlement(settlement) {
 function updateChannelBalances(wallet) {
   for (let channelId in wallet.channelBalances) {
     let channelAmount = document.getElementById('channel_amount_bat_' + channelId);
-    channelAmount.innerText = wallet.getChannelAmount(channelId).bat.toFixed(2);
+    if (channelAmount) {
+      channelAmount.innerText = wallet.getChannelAmount(channelId).bat.toFixed(2);
+    }
   }
 }
 
