@@ -1,10 +1,11 @@
 module JsonBuilders
   class WalletJsonBuilder
 
-    attr_reader :wallet
+    attr_reader :wallet, :publisher
 
-    def initialize(wallet:)
+    def initialize(wallet:, publisher:)
       @wallet = wallet
+      @publisher = publisher
     end
 
     def build
@@ -25,7 +26,7 @@ module JsonBuilders
           json.providerWallet do
             json.provider @wallet.provider
             json.authorized @wallet.authorized?
-            json.defaultCurrency @wallet.default_currency
+            json.defaultCurrency @publisher.default_currency
             json.rates @wallet.rates
             json.availableCurrencies @wallet.available_currencies
             json.possibleCurrencies @wallet.possible_currencies

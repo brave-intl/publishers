@@ -136,12 +136,22 @@ class PublisherTest < ActiveSupport::TestCase
     assert_equal :verified, publisher.uphold_status
   end
 
-  test "when wallet is gotten the default currency will be initialized if not already set" do
+  test "when wallet is gotten the default currency will be sent to eyeshade if it is mismatched" do
     publisher = publishers(:verified)
+    publisher.default_currency = "CAD"
 
-    assert_nil publisher.default_currency
-    publisher.wallet
-    refute_nil publisher.default_currency
+    assert_enqueued_jobs(1) do
+      assert_equal "USD", publisher.wallet.default_currency
+    end
+  end
+
+  test "when wallet is gotten the default currency will not be sent to eyeshade if it is equal" do
+    publisher = publishers(:verified)
+    publisher.default_currency = "USD"
+
+    assert_enqueued_jobs(0) do
+      assert_equal "USD", publisher.wallet.default_currency
+    end
   end
 
   test "when wallet is retrieved uphold_status will reflect if reauthorization is needed" do

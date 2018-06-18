@@ -444,7 +444,7 @@ class PublishersController < ApplicationController
   def balance
     wallet = current_publisher.wallet
     if wallet
-      json = JsonBuilders::WalletJsonBuilder.new(wallet: wallet).build
+      json = JsonBuilders::WalletJsonBuilder.new(publisher: current_publisher, wallet: wallet).build
       render(json: json, status: :ok)
     else
       render(nothing: true, status: 404)

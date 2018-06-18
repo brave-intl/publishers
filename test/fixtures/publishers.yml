@@ -92,6 +92,7 @@ uphold_connected:
   uphold_verified: true
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  default_currency: "USD"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
 
 uphold_connected_currency_unconfirmed:

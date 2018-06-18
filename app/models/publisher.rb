@@ -91,16 +91,12 @@ class Publisher < ApplicationRecord
 
     # if the wallet call fails the wallet will be nil
     if @_wallet
-      # Initialize the default_currency from the wallet, if it exists
-      if self.default_currency.nil?
-        default_currency_code = @_wallet.default_currency
-        if default_currency_code
-          self.default_currency = default_currency_code
-          save_needed = true
-        end
+      # Sync the default_currency to eyeshade, if they are mismatched
+      # ToDo: This can be eliminated once eyeshade no longer maintains a default_currency
+      # (which should be after publishers is driving payout report generation)
+      if self.default_currency.present? && self.default_currency != @_wallet.default_currency
+        UploadDefaultCurrencyJob.perform_later(publisher_id: self.id)
       end
-
-      save! if save_needed
     end
     @_wallet
   end
