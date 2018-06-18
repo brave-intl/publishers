@@ -328,6 +328,7 @@ en:
         disconnect: Disconnect
         last_deposit: LAST DEPOSIT
         last_deposit_date: "Last Deposit Date: "
+        change: Change
       statements:
         heading: Statements
         statement_name: "%{created_at} statement - %{period}"

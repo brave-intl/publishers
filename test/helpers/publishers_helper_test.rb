@@ -127,43 +127,6 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal "Unavailable", publisher_humanize_balance(publisher, "USD")
   end
 
-  test "publisher_available_currencies should an array of possible currencies" do
-    class FakePublisher
-      attr_reader :default_currency, :wallet
-
-      def initialize(default_currency:, wallet_json:)
-        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json, channel_json: {}) if wallet_json
-        @default_currency = default_currency
-      end
-    end
-
-    wallet_json = {
-      "wallet" => {
-        "provider" => "uphold",
-        "authorized" => true,
-        "defaultCurrency" => "USD",
-        "availableCurrencies" => [ "USD", "EUR", "BAT" ],
-        "possibleCurrencies" => [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-        "scope" => "cards:write"
-      }
-    }
-
-    publisher = FakePublisher.new(
-      default_currency: 'USD',
-      wallet_json: wallet_json
-    )
-
-    assert_equal [ "USD", "EUR", "BAT" ], publisher_available_currencies(publisher)
-    refute_same publisher.wallet.available_currencies, publisher_available_currencies(publisher)
-
-    publisher = FakePublisher.new(
-      default_currency: nil,
-      wallet_json: wallet_json
-    )
-
-    assert_equal [ ["-- Select currency --", nil], "USD", "EUR", "BAT" ], publisher_available_currencies(publisher)
-  end
-
   test "publisher_possible_currencies should an array of possible currencies" do
     class FakePublisher
       attr_reader :default_currency, :wallet

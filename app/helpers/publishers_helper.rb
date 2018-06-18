@@ -151,14 +151,6 @@ module PublishersHelper
     Rails.application.secrets[:terms_of_service_url]
   end
 
-  def publisher_available_currencies(publisher)
-    available_currencies = publisher.wallet.available_currencies.clone
-    if publisher.default_currency.blank?
-      available_currencies.unshift(['-- Select currency --', nil])
-    end
-    available_currencies
-  end
-
   def publisher_possible_currencies(publisher)
     possible_currencies = publisher.wallet.possible_currencies.clone
     if publisher.default_currency.blank?

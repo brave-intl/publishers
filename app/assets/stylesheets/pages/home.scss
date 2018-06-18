@@ -364,9 +364,6 @@
       vertical-align: top;
       margin-bottom: 5px;
     }
-    .deposit-currency {
-      margin-top: 10px;
-    }
     .unavailable-currencies {
       padding: 9px 0 9px 52px;
       background-position: left center;
@@ -394,6 +391,21 @@
     }
     .status-description {
       margin-top: 40px;
+    }
+    .field {
+      margin: $spacer*0.4 0;
+      label {
+        display: inline-block;
+        margin: 0;
+      }
+      .value {
+        display: inline-block;
+        margin-left: 11px;
+      }
+      .action {
+        display: inline-block;
+        margin-left: 11px;
+      }
     }
     #last_settlement {
       &.settlement-made {

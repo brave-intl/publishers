@@ -243,13 +243,11 @@ document.addEventListener('DOMContentLoaded', function() {
     submitForm('update_publisher_visible_form', 'PATCH', true);
   }, false);
 
-  let defaultCurrencySelect = document.getElementById('publisher_default_currency');
-  if (defaultCurrencySelect) {
-    defaultCurrencySelect.addEventListener('change', function(event) {
-      submitForm('update_default_currency_form', 'PATCH', true);
-      refreshBalance();
-    }, false);
-  }
+  let changeDefaultCurrencyLink = document.getElementById('change_default_currency');
+  changeDefaultCurrencyLink.addEventListener('click', function(event) {
+    openDefaultCurrencyModal();
+    event.preventDefault();
+  }, false);
 
   let showContact = document.getElementById('show_contact');
   let showContactName = document.getElementById('show_contact_name');

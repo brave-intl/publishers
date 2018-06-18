@@ -98,18 +98,17 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = link_to(uphold_authorization_description(current_publisher),
                       uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
           .dashboard-panel--content#uphold_dashboard
-            .deposit-currency-label
-              = form_for(current_publisher, url: publishers_path, html: { id: "update_default_currency_form" }) do |f|
-                = t ".uphold.deposit_currency_label"
-                span#default_currency_code
-                  - available_currencies = publisher_available_currencies(current_publisher)
-                  - if available_currencies
-                    = f.select(:default_currency, options_for_select(available_currencies, current_publisher.default_currency))
-                  - else
-                    = t ".uphold.no_currencies_available"
-            .last-deposit-date
-              = t ".uphold.last_deposit_date"
-              span.deposit-date#last_deposit_date= publisher_humanize_last_settlement_date(current_publisher)
+            .deposit-currency.field
+              label= t ".uphold.deposit_currency_label"
+              .value#default_currency_code= current_publisher.default_currency
+              .action
+                span= "("
+                a#change_default_currency href="#"
+                  = t ".uphold.change"
+                span= ")"
+            .last-deposit-date.field
+              label= t ".uphold.last_deposit_date"
+              .value.deposit-date#last_deposit_date= publisher_humanize_last_settlement_date(current_publisher)
           .dashboard-panel--content#last_settlement class=last_settlement_class(current_publisher)
             .last-deposit
               = t ".uphold.last_deposit"
