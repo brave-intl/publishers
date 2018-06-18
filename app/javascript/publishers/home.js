@@ -61,6 +61,11 @@ function updateChannelBalances(wallet) {
   }
 }
 
+function updateDefaultCurrencyValue(wallet) {
+  let defaultCurrencyValue = document.getElementById('default_currency_code');
+  defaultCurrencyValue.innerText = wallet.providerWallet.defaultCurrency;
+}
+
 function refreshBalance() {
   let options = {
     headers: {
@@ -78,6 +83,8 @@ function refreshBalance() {
     })
     .then(function(body) {
       let wallet = new Wallet(body);
+
+      updateDefaultCurrencyValue(wallet);
 
       let contributionAmount = wallet.totalAmount;
       updateTotalContributionBalance(contributionAmount);
