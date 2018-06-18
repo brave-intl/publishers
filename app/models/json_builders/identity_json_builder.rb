@@ -13,11 +13,10 @@ class JsonBuilders::IdentityJsonBuilder
     @errors = []
     @publisher_name = publisher_name
     @parsed_publisher_name = URL_REGULAR_EXPRESSION.match(@publisher_name)
-    find_channel_detail
   end
 
   def find_channel_detail
-    @channel_detail = if @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::YOUTUBE
+    channel_detail = if @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::YOUTUBE
       YoutubeChannelDetails.find_by(youtube_channel_id: @parsed_publisher_name[3])
     elsif @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::TWITCH
       find_twitch_channel_detail
@@ -40,18 +39,11 @@ class JsonBuilders::IdentityJsonBuilder
   end
 
   def build
-    @json = if @channel_detail.nil?
-=begin
-  (Albert Wang): The implementation in the browser throws a 404 when a channel isn't found.
-  However, the browser seems to not particularly care about the status code.
-=end
-      # @errors << "Channel not found"
-      build_site_identity_json
-    elsif @channel_detail.is_a?(YoutubeChannelDetails)
+    @json = if @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::YOUTUBE
       build_youtube_identity_json
-    elsif @channel_detail.is_a?(TwitchChannelDetails)
+    elsif @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::TWITCH
       build_twitch_identity_json
-    elsif @channel_detail.is_a?(SiteChannelDetails)
+    else
       build_site_identity_json
     end
     self
@@ -65,7 +57,7 @@ class JsonBuilders::IdentityJsonBuilder
     Jbuilder.encode do |json|
       json.publisher      @publisher_name
       json.publisherType  'provider'
-      json.providerName   @parsed_publisher_name[1]
+      json.providerName   Channel::YOUTUBE
       json.providerSuffix @parsed_publisher_name[2]
       json.providerValue  @parsed_publisher_name[3]
       json.URL            "https://youtube.com/#{@parsed_publisher_name[2]}/#{@parsed_publisher_name[3]}"
@@ -82,7 +74,7 @@ class JsonBuilders::IdentityJsonBuilder
   def build_site_identity_json
     public_suffix = PublicSuffix.parse(@publisher_name)
     Jbuilder.encode do |json|
-      json.publisher      @publisher_name
+      json.publisher      public_suffix.sld + '.' + public_suffix.tld
       json.SLD            public_suffix.sld + '.' + public_suffix.tld
       json.RLD            public_suffix.trd || ""
       json.QLD            public_suffix.trd.try(:split, '.').try(:last) || ""
@@ -97,7 +89,7 @@ class JsonBuilders::IdentityJsonBuilder
     Jbuilder.encode do |json|
       json.publisher      @publisher_name
       json.publisherType  'provider'
-      json.providerName   @parsed_publisher_name[1]
+      json.providerName   Channel::TWITCH
       json.providerSuffix @parsed_publisher_name[2]
       json.providerValue  @parsed_publisher_name[3]
       json.TLD            @publisher_name.split(':')[0]
@@ -113,19 +105,27 @@ class JsonBuilders::IdentityJsonBuilder
   def build_properties(json)
     require 'publishers/excluded_channels'
 
-    if @channel_detail.present? && @channel_detail.channel.present?
+    channel_detail = find_channel_detail
+
+    if channel_detail.present? && channel_detail.channel.present?
 =begin
       (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
       which erroneously uses Bson.timestamp().
 =end
-      json.timestamp (@channel_detail.channel.updated_at.to_i << 32).to_s
-      if @channel_detail.channel.verified?
+      json.timestamp (channel_detail.channel.updated_at.to_i << 32).to_s
+      if channel_detail.channel.verified?
         json.verified true
       end
     end
 
-    if Publishers::ExcludedChannels.excluded?(@channel_detail)
-      json.exclude true
+    if channel_detail.present?
+      if Publishers::ExcludedChannels.excluded?(channel_detail)
+        json.exclude true
+      end
+    else
+      if Publishers::ExcludedChannels.excluded_brave_publisher_id?(@publisher_name)
+        json.exclude true
+      end
     end
   end
 end
