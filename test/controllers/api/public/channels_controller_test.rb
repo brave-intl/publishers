@@ -48,6 +48,19 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal true                               , response_body['properties']['verified']
   end
 
+  test 'an invalid url that was never registered with Publishers' do
+    random_url = "foo.amazon.com"
+    get "/api/public/channels/identity?publisher=#{random_url}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    response_body = JSON.parse(response.body)
+
+    assert_equal 'amazon.com'                       , response_body["SLD"]
+    assert_equal 'amazon.com'                       , response_body["publisher"]
+    assert_equal "foo"                              , response_body["RLD"]
+    assert_equal "foo"                              , response_body["QLD"]
+    assert_equal nil                                , response_body['properties']
+  end
+
   test 'a site that was never registered with Publishers' do
     random_url = "shouldfail.github.io"
     get "/api/public/channels/identity?publisher=#{random_url}",

@@ -74,7 +74,7 @@ class JsonBuilders::IdentityJsonBuilder
   def build_site_identity_json
     public_suffix = PublicSuffix.parse(@publisher_name)
     Jbuilder.encode do |json|
-      json.publisher      @publisher_name
+      json.publisher      public_suffix.sld + '.' + public_suffix.tld
       json.SLD            public_suffix.sld + '.' + public_suffix.tld
       json.RLD            public_suffix.trd || ""
       json.QLD            public_suffix.trd.try(:split, '.').try(:last) || ""
