@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get :email_verified
       get :balance
       get :uphold_verified
-      get :suspended_publisher_error
+      get :suspended_error
       get :statement
       get :statement_ready
       get :statements

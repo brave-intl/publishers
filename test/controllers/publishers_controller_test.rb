@@ -35,6 +35,38 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 302
   end
 
+  test "suspended publisher visits the page for suspended users" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    # Start off as an active user
+    publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
+
+    get home_publishers_path
+    assert_response 200
+
+    get statements_publishers_path
+    assert_response 200
+
+    # Get suspended
+    publisher.status_updates.create(status: PublisherStatusUpdate::SUSPENDED)
+
+    get home_publishers_path
+    assert_redirected_to(suspended_error_publishers_path)
+
+    get statement_publishers_path
+    assert_redirected_to(suspended_error_publishers_path)
+
+    # Go back to active
+    publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
+
+    get home_publishers_path
+    assert_response 200
+
+    get statements_publishers_path
+    assert_response 200
+  end
+
   test "can create a Publisher registration, pending email verification" do
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
@@ -677,7 +709,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
       publisher = Publisher.order(created_at: :asc).last
-      
+
       assert publisher.last_status_update.status == "created"
 
       email = ActionMailer::Base.deliveries.find do |message|
