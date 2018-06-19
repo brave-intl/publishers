@@ -58,7 +58,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'amazon.com'                       , response_body["publisher"]
     assert_equal "foo"                              , response_body["RLD"]
     assert_equal "foo"                              , response_body["QLD"]
-    assert_equal nil                                , response_body['properties']
+    assert_nil                                        response_body['properties']
   end
 
   test 'a site that was never registered with Publishers' do
@@ -71,7 +71,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal random_url                         , response_body["publisher"]
     assert_equal ""                                 , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
-    assert_equal nil                                , response_body['properties']
+    assert_nil                                        response_body['properties']
   end
 
   test 'an excluded site that was never registered with Publishers' do
@@ -86,6 +86,23 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ""                                 , response_body["RLD"]
     assert_equal ""                                 , response_body["QLD"]
     assert_equal true                               , response_body['properties']['exclude']
+    assert_equal excluded_url                       , response_body['URL']
+  end
+
+  test 'a subdomain of an excluded domain that was never registered with Publishers' do
+    subdomain = 'foo'
+    file_path = Rails.root.join("test/config/excluded_site_channels.yml")
+    excluded_url = Set.new(YAML.load_file(file_path)).first
+    get "/api/public/channels/identity?publisher=#{subdomain}.#{excluded_url}",
+        headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    response_body = JSON.parse(response.body)
+
+    assert_equal excluded_url                       , response_body["SLD"]
+    assert_equal excluded_url                       , response_body["publisher"]
+    assert_equal subdomain                          , response_body["RLD"]
+    assert_equal subdomain                          , response_body["QLD"]
+    assert_equal true                               , response_body['properties']['exclude']
+    assert_equal "#{subdomain}.#{excluded_url}"     , response_body['URL']
   end
 
   test 'a youtube channel' do
@@ -104,7 +121,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "youtube#channel:#{not_present_channel}" , response_body["SLD"]
     assert_equal not_present_channel                      , response_body["RLD"]
     assert_equal ""                                       , response_body["QLD"]
-    assert_equal nil                                      , response_body['properties']
+    assert_nil                                              response_body['properties']
 
     channel = channels(:youtube_new)
     get "/api/public/channels/identity?publisher=youtube%23channel%3A#{channel.details.youtube_channel_id}",
@@ -158,7 +175,7 @@ class Api::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "twitch#author:#{not_present_channel}" , response_body["SLD"]
     assert_equal not_present_channel                    , response_body["RLD"]
     assert_equal ""                                     , response_body["QLD"]
-    assert_equal nil                                    , response_body['properties']
+    assert_nil                                            response_body['properties']
 
     channel = channels(:twitch_verified)
     get "/api/public/channels/identity?publisher=twitch%23author%3A#{channel.details.twitch_channel_id}",
