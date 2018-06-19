@@ -329,6 +329,7 @@ en:
         last_deposit: LAST DEPOSIT
         last_deposit_date: "Last Deposit Date: "
         change: Change
+        no_currency_selected: None selected
       statements:
         heading: Statements
         statement_name: "%{created_at} statement - %{period}"

@@ -5,7 +5,10 @@ noscript
   #js-open-modal-on-load
     = render partial: 'channel_taken_modal', locals: { channel_id: flash[:taken_channel_id] }
 
-- open_confirm_default_currency_modal = !flash[:taken_channel_id] && current_publisher.uphold_verified? && current_publisher.default_currency_confirmed_at.nil? && current_publisher.wallet.authorized?
+- open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
+    current_publisher.uphold_verified? && \
+    current_publisher.wallet.authorized? && \
+    (current_publisher.default_currency_confirmed_at.nil? || !current_publisher.default_currency.present?)
 
 script type="text/html" id="confirm_default_currency_modal_wrapper"
   = render :partial => 'confirm_default_currency_modal'
@@ -18,8 +21,10 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
   )
   = render partial: "choose_channel_button"
 
-.dashboard data-open-confirm-default_currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
-  #uphold_status class=uphold_status_class(current_publisher)
+.dashboard
+  #uphold_status { class=uphold_status_class(current_publisher)
+                   data-open-confirm-default-currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
+                   data-default-currency=current_publisher.default_currency }
     .row
       .col
         .balance
@@ -100,7 +105,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           .dashboard-panel--content#uphold_dashboard
             .deposit-currency.field
               label= t ".uphold.deposit_currency_label"
-              .value#default_currency_code= current_publisher.default_currency
+              .value#default_currency_code= current_publisher.default_currency.present? ? current_publisher.default_currency : t(".uphold.no_currency_selected")
               .action
                 span= "("
                 a#change_default_currency href="#"

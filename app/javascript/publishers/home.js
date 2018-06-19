@@ -7,6 +7,9 @@ import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
 
+// ToDo - import resource strings
+const NO_CURRENCY_SELECTED = 'None selected';
+
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
   let showContactEmail = document.getElementById('show_contact_email');
@@ -23,7 +26,7 @@ function updateTotalContributionBalance(balance) {
   batAmount.innerText = balance.bat.toFixed(2);
   let convertedAmount = document.getElementById('converted_amount');
 
-  convertedAmount.style.display = balance.currency === "BAT" ? 'none' : 'block';
+  convertedAmount.style.display = balance.currency === "BAT" || balance.currency === null ? 'none' : 'block';
   convertedAmount.innerText = "~ " + balance.converted.toFixed(2) + " " + balance.currency;
 }
 
@@ -39,7 +42,7 @@ function updateLastSettlement(settlement) {
 
     lastDepositDate.innerText = formatFullDate(settlement.date);
     lastDepositBatAmount.innerText = settlement.amount.bat.toFixed(2);
-    lastDepositConvertedAmount.style.display = settlement.amount.currency === "BAT" ? 'none' : 'block';
+    lastDepositConvertedAmount.style.display = settlement.amount.currency === "BAT" || settlement.amount.currency === null ? 'none' : 'block';
     lastDepositConvertedAmount.innerText = "~ " + settlement.amount.converted.toFixed(2) + " " + settlement.amount.currency;
   }
   else {
@@ -62,8 +65,11 @@ function updateChannelBalances(wallet) {
 }
 
 function updateDefaultCurrencyValue(wallet) {
-  let defaultCurrencyValue = document.getElementById('default_currency_code');
-  defaultCurrencyValue.innerText = wallet.providerWallet.defaultCurrency;
+  let upholdStatusElement = document.getElementById('uphold_status');
+  upholdStatusElement.setAttribute('data-default-currency', wallet.providerWallet.defaultCurrency || '');
+
+  let defaultCurrencyDisplay = document.getElementById('default_currency_code');
+  defaultCurrencyDisplay.innerText = wallet.providerWallet.defaultCurrency || NO_CURRENCY_SELECTED;
 }
 
 function refreshBalance() {
@@ -93,6 +99,10 @@ function refreshBalance() {
       updateLastSettlement(lastSettlement);
 
       updateChannelBalances(wallet);
+
+      if (!wallet.providerWallet.defaultCurrency) {
+        openDefaultCurrencyModal();
+      }
     });
 }
 
@@ -163,6 +173,10 @@ function checkUpholdStatus() {
         if (checkUpholdStatusInterval != null && (body.uphold_status === 'verified' || timedOut)) {
           clearInterval(checkUpholdStatusInterval);
           checkUpholdStatusInterval = null;
+
+          if (body.uphold_status === 'verified') {
+            refreshBalance();
+          }
         }
       }
     });
@@ -181,18 +195,22 @@ function openDefaultCurrencyModal() {
 
   let form = document.getElementById('confirm_default_currency_form');
 
-  // Sync default currency selected in modal with value displayed on dashboard
-  let currentDefaultCurrency = document.getElementById('default_currency_code').innerText;
+  // Sync default currency selected in modal with value on dashboard
+  let upholdStatusElement = document.getElementById('uphold_status');
+  let currentDefaultCurrency = upholdStatusElement.getAttribute('data-default-currency');
   let currencySelectInModal = document.getElementById('publisher_default_currency');
-  if (currentDefaultCurrency && currentDefaultCurrency.length > 0) {
-    currencySelectInModal.value = currentDefaultCurrency;
-  }
+  currencySelectInModal.value = currentDefaultCurrency || "";
 
   form.addEventListener('submit', function(event) {
     event.preventDefault();
 
     let modal = document.getElementById('confirm_default_currency_modal');
     let status = document.querySelector('#confirm_default_currency_modal .status');
+
+    if (!currencySelectInModal.value) {
+      closeFn();
+      return;
+    }
 
     modal.classList.add('transitioning');
 
@@ -222,12 +240,12 @@ document.addEventListener('DOMContentLoaded', function() {
     return;
   }
 
-  if (document.querySelectorAll('div#uphold_status.uphold-processing').length > 0) {
-    checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
-  }
+  let upholdStatusElement = document.getElementById('uphold_status');
 
-  let dashboard = document.querySelector('.dashboard');
-  if (dashboard.getAttribute('data-open-confirm-default_currency-modal') === 'true') {
+  if (upholdStatusElement.classList.contains('uphold-processing')) {
+    checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
+
+  } else if (upholdStatusElement.getAttribute('data-open-confirm-default-currency-modal') === 'true') {
     openDefaultCurrencyModal();
   }
 
