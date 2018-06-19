@@ -182,6 +182,12 @@ en:
       subject: Brave Publisher statement is ready to view
       body: "The following statement has recently been generated:"
       expiration_note: This statement must be downloaded within the next 24 hours.
+    suspended_publisher:
+      subject: Suspicious Activity on Your Account
+      intro: Thank you for being a Brave publisher.
+      body_html: In the past few months, we have noticed some unusual or suspicious contributions to your Publishers account.  As a result, we have frozen payment to your account.<br/><br/>Suspicious contributions are payments that appear as aberrant and unnatural.  This may include (but is not limited to) unreasonably large contributions for small channels, and/or contributions that solely originate from the user growth pool.<br/><br/>If you feel this is in error, please reply and provide further details or explain the various contributions made to your account.
+      closing_html: Thank you.<br/>The Brave Payments Team
+      contact_support: If you did not make this change yourself, please contact support ASAP
     unverified_domain_reached_threshold:
       subject: Money is waiting for %{publication_title}, verify your site with Brave to claim your funds!
       salutation: Hi!
@@ -365,6 +371,9 @@ en:
       created_at: Requested
       period: Time range
       status: Status
+    suspended_error:
+      heading_html: Due to suspicious activity,<br/> your account is suspended.
+      body: Please contact support+publishers@basicattentiontoken.org if you believe that activities on your account are not aberrant or irregular.
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel
