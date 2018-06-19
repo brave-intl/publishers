@@ -217,7 +217,7 @@ module PublishersHelper
 
   def unused_statement_periods
     periods = all_statement_periods
-    current_publisher.statements.each do |s|
+    current_publisher.statements.visible_statements.each do |s|
       periods.delete(s.period.to_sym)
     end
     periods

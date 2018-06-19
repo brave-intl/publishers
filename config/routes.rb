@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :publishers, only: %i(create update new show) do
     collection do
       get :sign_up
+      put :javascript_detected
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
       get :home
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
       get :email_verified
       get :balance
       get :uphold_verified
+      get :suspended_error
       get :statement
       get :statement_ready
       get :statements
@@ -87,7 +89,15 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :publishers
+    resources :publishers do
+      collection do
+        patch :generate_statement
+        get :statement_ready
+        post :create_note
+        patch :update_note
+      end
+    end
+
     root to: "dashboard#index" # <--- Root route
   end
 

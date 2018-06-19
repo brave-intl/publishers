@@ -32,4 +32,15 @@ class PublisherStatementTest < ActiveSupport::TestCase
 
     assert_equal 2,PublisherStatement.expired.count
   end
+
+  test "`visible_statements` excludes statements created by admins" do
+    publisher = publishers(:verified)
+    statement1 = PublisherStatement.new(publisher: publisher, period: 'past_7_days')
+    statement2 = PublisherStatement.new(publisher: publisher, period: 'past_7_days', created_by_admin: true)
+    statement1.save
+    statement2.save
+
+    assert publisher.statements.visible_statements.include? statement1
+    refute publisher.statements.visible_statements.include? statement2
+  end
 end

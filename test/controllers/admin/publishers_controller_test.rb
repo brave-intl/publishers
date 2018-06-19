@@ -69,4 +69,22 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
     end
   end
+
+  test "statements created by admin have created_by_admin flag" do
+    admin = publishers(:admin)
+    publisher = publishers(:uphold_connected)
+    sign_in admin
+
+    prev_total_publisher_statements = PublisherStatement.count
+    
+    patch generate_statement_admin_publishers_path(id: publisher.id, statement_period: :past_7_days)
+
+    # ensure a statement is created
+    assert PublisherStatement.count == prev_total_publisher_statements + 1
+
+    created_statement = PublisherStatement.order("created_at").last
+
+    # ensure it has the created by admin flag
+    assert created_statement.created_by_admin
+  end
 end

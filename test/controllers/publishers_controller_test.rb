@@ -35,6 +35,38 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 302
   end
 
+  test "suspended publisher visits the page for suspended users" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    # Start off as an active user
+    publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
+
+    get home_publishers_path
+    assert_response 200
+
+    get statements_publishers_path
+    assert_response 200
+
+    # Get suspended
+    publisher.status_updates.create(status: PublisherStatusUpdate::SUSPENDED)
+
+    get home_publishers_path
+    assert_redirected_to(suspended_error_publishers_path)
+
+    get statement_publishers_path
+    assert_redirected_to(suspended_error_publishers_path)
+
+    # Go back to active
+    publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
+
+    get home_publishers_path
+    assert_response 200
+
+    get statements_publishers_path
+    assert_response 200
+  end
+
   test "can create a Publisher registration, pending email verification" do
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
@@ -677,7 +709,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
       publisher = Publisher.order(created_at: :asc).last
-      
+
       assert publisher.last_status_update.status == "created"
 
       email = ActionMailer::Base.deliveries.find do |message|
@@ -704,5 +736,21 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert publisher.two_factor_prompted_at.present?
 
     assert publisher.last_status_update.status == "active"
+  end
+
+  test "publisher login activity is recorded" do
+    publisher = publishers(:completed)
+    login = publisher.last_login_activity
+    assert_nil login
+
+    sign_in publisher
+    get home_publishers_path, headers: { "HTTP_USER_AGENT" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36",
+                                         "HTTP_ACCEPT_LANGUAGE" => "en-US,en;q=0.9" }
+
+    login = publisher.last_login_activity
+    assert login
+    assert_equal login.user_agent, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+    assert_equal login.accept_language, "en-US,en;q=0.9"
+    assert login.browser.chrome?
   end
 end

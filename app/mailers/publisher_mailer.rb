@@ -50,7 +50,7 @@ class PublisherMailer < ApplicationMailer
   def verify_email(publisher)
     @publisher = publisher
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
-    
+
     if @publisher.pending_email.present?
       mail(
           to: @publisher.pending_email,
@@ -65,7 +65,7 @@ class PublisherMailer < ApplicationMailer
       end
     end
   end
-  
+
   # TODO: Refactor
   # Like the above but without the verify_email link
   def verify_email_internal(publisher)
@@ -120,6 +120,14 @@ class PublisherMailer < ApplicationMailer
   def statement_ready(publisher_statement)
     @publisher_statement = publisher_statement
     @publisher = publisher_statement.publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject
+    )
+  end
+
+  def suspended_publisher(publisher)
+    @publisher = publisher
     mail(
       to: @publisher.email,
       subject: default_i18n_subject

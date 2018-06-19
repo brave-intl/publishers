@@ -7,6 +7,18 @@ class PublishersController < ApplicationController
   include PublishersHelper
   include PromosHelper
 
+  VERIFIED_PUBLISHER_ROUTES = [
+    :disconnect_uphold,
+    :edit_payment_info,
+    :generate_statement,
+    :home,
+    :statement,
+    :statement_ready,
+    :statements,
+    :update,
+    :uphold_status,
+    :uphold_verified]
+
   before_action :authenticate_via_token,
     only: %i(show)
   before_action :authenticate_publisher!,
@@ -33,20 +45,10 @@ class PublishersController < ApplicationController
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
   before_action :protect, only: %i(show home)
-  before_action :require_verified_publisher,
-    only: %i(disconnect_uphold
-             edit_payment_info
-             generate_statement
-             home
-             statement
-             statement_ready
-             statements
-             update
-             uphold_status
-             uphold_verified)
+  before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
+  before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
   before_action :prompt_for_two_factor_setup,
     only: %i(home)
-
 
   def sign_up
     @publisher = Publisher.new(email: params[:email])
@@ -210,6 +212,10 @@ class PublishersController < ApplicationController
     end
   end
 
+  def javascript_detected
+    current_publisher.update(javascript_last_detected_at: Time.now)
+  end
+
   def protect
     return redirect_to admin_publishers_path unless current_publisher.publisher?
   end
@@ -322,6 +328,11 @@ class PublishersController < ApplicationController
     redirect_to(publisher_next_step_path(current_publisher))
   end
 
+  def redirect_if_suspended
+    # Redirect to suspended page if they're logged in
+    redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
+  end
+
   # Domain verified. See balance and submit payment info.
   def home
     if current_publisher.promo_stats_status == :update
@@ -348,7 +359,7 @@ class PublishersController < ApplicationController
     publisher = current_publisher
     statement_period = params[:statement_period]
     statement = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
-    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id)
+    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id, send_email: true)
     render(json: {
       id: statement.id,
       date: statement_period_date(statement.created_at),

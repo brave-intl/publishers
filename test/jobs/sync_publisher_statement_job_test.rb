@@ -22,7 +22,7 @@ class SyncPublisherStatementTest < ActiveJob::TestCase
     publisher_statement.save!
 
     assert_no_enqueued_jobs do
-      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id)
+      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id, send_email: true)
     end
 
     publisher_statement.reload
@@ -42,7 +42,7 @@ class SyncPublisherStatementTest < ActiveJob::TestCase
     publisher_statement.save!
 
     assert_no_enqueued_jobs(only: SyncPublisherStatementJob) do
-      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id)
+      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id, send_email: true)
     end
 
     publisher_statement.reload
@@ -62,7 +62,7 @@ class SyncPublisherStatementTest < ActiveJob::TestCase
       to_return(status: 404, headers: {})
 
     assert_enqueued_jobs(1, only: SyncPublisherStatementJob) do
-      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id)
+      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id, send_email: true)
     end
   end
 
@@ -79,7 +79,7 @@ class SyncPublisherStatementTest < ActiveJob::TestCase
     first_attempt = Time.now.to_i - 4.minutes
 
     assert_no_enqueued_jobs(only: SyncPublisherStatementJob) do
-      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id, first_attempt: first_attempt)
+      SyncPublisherStatementJob.perform_now(publisher_statement_id: publisher_statement.id, first_attempt: first_attempt, send_email: true)
     end
 
     assert_nil publisher_statement.contents
