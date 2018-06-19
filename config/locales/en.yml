@@ -83,7 +83,7 @@ en:
       verification_in_progress: Verification in progress
       verification_awaiting_admin_approval: Awaiting admin approval
     publisher:
-      balance_error: Unavailable
+      conversion_unavailable: "%{code} unavailable"
       no_deposit: No deposit made yet
       balance_pending_approximate: ~ %{amount} %{code}
       channel_type:

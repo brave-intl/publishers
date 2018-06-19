@@ -25,12 +25,12 @@ module PublishersHelper
         publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
     else
-      I18n.t("helpers.publisher.balance_error")
+      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_error")
+    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def next_deposit_date(today = DateTime.now)
@@ -49,12 +49,12 @@ module PublishersHelper
       converted_amount = '%.2f' % balance.convert_to(currency)
       I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
     else
-      I18n.t("helpers.publisher.balance_error")
+      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_error")
+    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def publisher_humanize_last_settlement(publisher, currency)
@@ -68,7 +68,7 @@ module PublishersHelper
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_error")
+    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def publisher_converted_last_settlement(publisher)
@@ -83,7 +83,7 @@ module PublishersHelper
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_error")
+    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def publisher_humanize_last_settlement_date(publisher)
@@ -108,12 +108,12 @@ module PublishersHelper
     )
       '%.2f' % balance.convert_to(currency)
     else
-      I18n.t("helpers.publisher.balance_error")
+      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_error")
+    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def publisher_uri(publisher)

@@ -10,6 +10,7 @@ import { formatFullDate } from '../utils/dates';
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
 const SELECT_CURRENCY = '-- Select currency --';
+const UNAVAILABLE = 'unavailable';
 
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
@@ -28,7 +29,15 @@ function updateTotalContributionBalance(balance) {
   let convertedAmount = document.getElementById('converted_amount');
 
   convertedAmount.style.display = balance.currency === "BAT" || balance.currency === null ? 'none' : 'block';
-  convertedAmount.innerText = "~ " + balance.converted.toFixed(2) + " " + balance.currency;
+  convertedAmount.innerText = formatBalance(balance.converted, balance.currency);
+}
+
+function formatBalance(amount, currency) {
+  if (isNaN(amount)) {
+    return `${currency} ${UNAVAILABLE}`;
+  } else {
+    return `~ ${amount.toFixed(2)} ${currency}`;
+  }
 }
 
 function updateLastSettlement(settlement) {
@@ -44,7 +53,7 @@ function updateLastSettlement(settlement) {
     lastDepositDate.innerText = formatFullDate(settlement.date);
     lastDepositBatAmount.innerText = settlement.amount.bat.toFixed(2);
     lastDepositConvertedAmount.style.display = settlement.amount.currency === "BAT" || settlement.amount.currency === null ? 'none' : 'block';
-    lastDepositConvertedAmount.innerText = "~ " + settlement.amount.converted.toFixed(2) + " " + settlement.amount.currency;
+    lastDepositConvertedAmount.innerText = formatBalance(settlement.amount.converted, settlement.amount.currency);
   }
   else {
     lastSettlement.classList.remove('settlement-made');
@@ -75,7 +84,6 @@ function updateDefaultCurrencyValue(wallet) {
 
 function updatePossibleCurrencies(wallet) {
   let possibleCurrencies = wallet.providerWallet.possibleCurrencies || [];
-
   let upholdStatusElement = document.getElementById('uphold_status');
   upholdStatusElement.setAttribute('data-possible-currencies', JSON.stringify(possibleCurrencies));
 }
