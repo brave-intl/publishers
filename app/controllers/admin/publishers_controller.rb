@@ -20,25 +20,25 @@ def sql(query)
                              INNER JOIN site_channel_details 
                                      ON site_channel_details.id = channels.details_id 
                                         AND channels.details_type = 'SiteChannelDetails' 
-                                        AND site_channel_details.brave_publisher_id LIKE '%#{query}%' 
+                                        AND site_channel_details.brave_publisher_id ILIKE '%#{query}%' 
                       UNION ALL 
                       SELECT channels.* 
                       FROM   channels 
                              INNER JOIN youtube_channel_details 
                                      ON youtube_channel_details.id = 
                                         channels.details_id 
-                                        AND youtube_channel_details.title LIKE '%#{query}%' 
+                                        AND youtube_channel_details.title ILIKE '%#{query}%' 
                       UNION ALL 
                       SELECT channels.* 
                       FROM   channels 
                              INNER JOIN twitch_channel_details 
                                      ON twitch_channel_details.id = channels.details_id 
-                                        AND twitch_channel_details.NAME LIKE '%#{query}%') 
+                                        AND twitch_channel_details.NAME ILIKE '%#{query}%') 
                                        c 
                    ON c.publisher_id = publishers.id
     UNION ALL
     SELECT publishers.id
     FROM publishers
-    WHERE publishers.email LIKE '%#{query}%'
-          OR publishers.name LIKE '%#{query}%'}
+    WHERE publishers.email ILIKE '%#{query}%'
+          OR publishers.name ILIKE '%#{query}%'}
 end
