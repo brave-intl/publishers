@@ -122,8 +122,9 @@ class JsonBuilders::IdentityJsonBuilder
       if Publishers::ExcludedChannels.excluded?(channel_detail)
         json.exclude true
       end
-    else
-      if Publishers::ExcludedChannels.excluded_brave_publisher_id?(@publisher_name)
+    elsif @parsed_publisher_name.nil?
+      public_suffix = PublicSuffix.parse(@publisher_name)
+      if Publishers::ExcludedChannels.excluded_brave_publisher_id?(public_suffix.sld + '.' + public_suffix.tld)
         json.exclude true
       end
     end
