@@ -24,6 +24,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 .dashboard
   #uphold_status { class=uphold_status_class(current_publisher)
                    data-open-confirm-default-currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
+                   data-possible-currencies=current_publisher.wallet.possible_currencies
                    data-default-currency=current_publisher.default_currency }
     .row
       .col

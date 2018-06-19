@@ -151,14 +151,6 @@ module PublishersHelper
     Rails.application.secrets[:terms_of_service_url]
   end
 
-  def publisher_possible_currencies(publisher)
-    possible_currencies = publisher.wallet.possible_currencies.clone
-    if publisher.default_currency.blank?
-      possible_currencies.unshift(['-- Select currency --', nil])
-    end
-    possible_currencies
-  end
-
   def uphold_status_class(publisher)
     case publisher.uphold_status
     when :verified

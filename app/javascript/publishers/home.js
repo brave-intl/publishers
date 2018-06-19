@@ -9,6 +9,7 @@ import { formatFullDate } from '../utils/dates';
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
+const SELECT_CURRENCY = '-- Select currency --';
 
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
@@ -72,6 +73,38 @@ function updateDefaultCurrencyValue(wallet) {
   defaultCurrencyDisplay.innerText = wallet.providerWallet.defaultCurrency || NO_CURRENCY_SELECTED;
 }
 
+function updatePossibleCurrencies(wallet) {
+  let possibleCurrencies = wallet.providerWallet.possibleCurrencies || [];
+
+  let upholdStatusElement = document.getElementById('uphold_status');
+  upholdStatusElement.setAttribute('data-possible-currencies', JSON.stringify(possibleCurrencies));
+}
+
+function getPossibleCurrencies() {
+  let upholdStatusElement = document.getElementById('uphold_status');
+  return JSON.parse(upholdStatusElement.getAttribute('data-possible-currencies'));
+}
+
+function populateCurrencySelect(select, possibleCurrencies, selectedCurrency) {
+  select.innerHTML = '';
+
+  if (!selectedCurrency || selectedCurrency.length === 0) {
+    let option = document.createElement('option');
+    option.value = '';
+    option.innerHTML = SELECT_CURRENCY;
+    option.selected = true
+    select.appendChild(option);
+  }
+
+  possibleCurrencies.forEach(currency => {
+    let option = document.createElement('option');
+    option.value = currency;
+    option.innerHTML = currency;
+    option.selected = (currency === selectedCurrency);
+    select.appendChild(option);
+  });
+}
+
 function refreshBalance() {
   let options = {
     headers: {
@@ -91,6 +124,8 @@ function refreshBalance() {
       let wallet = new Wallet(body);
 
       updateDefaultCurrencyValue(wallet);
+
+      updatePossibleCurrencies(wallet);
 
       let contributionAmount = wallet.totalAmount;
       updateTotalContributionBalance(contributionAmount);
@@ -195,11 +230,11 @@ function openDefaultCurrencyModal() {
 
   let form = document.getElementById('confirm_default_currency_form');
 
-  // Sync default currency selected in modal with value on dashboard
+  // Sync default currency selected in modal with options and value from dashboard
   let upholdStatusElement = document.getElementById('uphold_status');
   let currentDefaultCurrency = upholdStatusElement.getAttribute('data-default-currency');
   let currencySelectInModal = document.getElementById('publisher_default_currency');
-  currencySelectInModal.value = currentDefaultCurrency || "";
+  populateCurrencySelect(currencySelectInModal, getPossibleCurrencies(), currentDefaultCurrency || "");
 
   form.addEventListener('submit', function(event) {
     event.preventDefault();
