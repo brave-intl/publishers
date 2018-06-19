@@ -127,7 +127,7 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal "Unavailable", publisher_humanize_balance(publisher, "USD")
   end
 
-  test "publisher_possible_currencies should an array of possible currencies" do
+  test "publisher_possible_currencies should be an array of possible currencies" do
     class FakePublisher
       attr_reader :default_currency, :wallet
 
