@@ -213,7 +213,7 @@ class PublishersController < ApplicationController
   def javascript_detected
     current_publisher.update(javascript_last_detected_at: Time.now)
   end
-  
+
   def protect
     return redirect_to admin_publishers_path unless current_publisher.publisher?
   end
@@ -323,7 +323,11 @@ class PublishersController < ApplicationController
 
   # Entrypoint for the authenticated re-login link.
   def show
-    redirect_to(publisher_next_step_path(current_publisher))
+    if current_publisher.suspended?
+      render('suspended_publisher_error')
+    else
+      redirect_to(publisher_next_step_path(current_publisher))
+    end
   end
 
   # Domain verified. See balance and submit payment info.

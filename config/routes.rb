@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :email_verified
       get :balance
       get :uphold_verified
+      get :suspended_publisher_error
       get :statement
       get :statement_ready
       get :statements
@@ -89,14 +90,14 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :publishers do
-      collection do      
+      collection do
         patch :generate_statement
         get :statement_ready
         post :create_note
         patch :update_note
       end
     end
-    
+
     root to: "dashboard#index" # <--- Root route
   end
 

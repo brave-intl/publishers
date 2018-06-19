@@ -19,7 +19,7 @@ class Publisher < ApplicationRecord
   has_many :channels, validate: true, autosave: true
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
-  has_many :status_updates, -> { order('created_at DESC') }, class_name: 'PublisherStatusUpdate'
+  has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
 
   belongs_to :youtube_channel
@@ -111,6 +111,10 @@ class Publisher < ApplicationRecord
 
   def email_verified?
     email.present?
+  end
+
+  def suspended?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
   end
 
   def verified?
@@ -217,7 +221,7 @@ class Publisher < ApplicationRecord
   def publisher?
     role == PUBLISHER
   end
-  
+
   def last_status_update
     status_updates.first
   end
@@ -227,7 +231,7 @@ class Publisher < ApplicationRecord
   end
 
   private
-  
+
   def set_created_status
     created_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "created")
     created_publisher_status_update.save!
