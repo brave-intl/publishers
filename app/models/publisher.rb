@@ -1,6 +1,6 @@
 class Publisher < ApplicationRecord
   has_paper_trail
-  self.per_page = 50
+  self.per_page = 20
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
