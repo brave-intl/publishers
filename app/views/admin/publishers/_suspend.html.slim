@@ -1,8 +1,0 @@
-<div aria-hidden="true" aria-labelledby="addCaseLabel" role="dialog" tabindex="-1" id="add-case-form" class="modal fade">
-h4 Change current status of the user
-
-= form_for(@publisher, url: admin_suspend_publisher_path, method: :post) do |f|
-  .form-group
-    = select_tag(:publisher_status, PubisherStatusUpdate::ALL_STATUSES)
-
-  = f.submit("Save", class: 'btn btn-default')
