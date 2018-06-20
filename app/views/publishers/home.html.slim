@@ -100,9 +100,16 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = form_for(current_publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|
           .dashboard-panel--content#uphold_connect
             .status-description
-              = uphold_status_description(current_publisher)
+              = uphold_status_description(current_publisher).html_safe
             = link_to(uphold_authorization_description(current_publisher),
-                      uphold_authorization_endpoint(current_publisher), class: "btn btn-primary", :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+                      uphold_authorization_endpoint(current_publisher),
+                      id: "reconnect_to_uphold", class: "btn btn-primary", :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+            .reconnect-instructions
+              = "Having trouble with Uphold registration?"
+              br
+              = link_to(t(".uphold.connect_to_a_new_account"), uphold_authorization_endpoint(current_publisher),
+                    :"data-piwik-action" => "ConnectNewUpholdAccountClicked",
+                    :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
           .dashboard-panel--content#uphold_dashboard
             .deposit-currency.field
               label= t ".uphold.deposit_currency_label"

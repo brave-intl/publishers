@@ -156,9 +156,19 @@ class Publisher < ApplicationRecord
       ['re-authorize', 'authorize'].include?(self.wallet.action)
   end
 
+  def uphold_incomplete?
+    self.uphold_verified? && !self.wallet.authorized?
+  end
+
   def uphold_status
     if self.uphold_verified?
-      self.uphold_reauthorization_needed? ? :reauthorization_needed : :verified
+      if self.uphold_reauthorization_needed?
+        :reauthorization_needed
+      elsif self.uphold_incomplete?
+        :incomplete
+      else
+        :verified
+      end
     elsif self.uphold_access_parameters.present?
       :access_parameters_acquired
     elsif self.uphold_code.present?

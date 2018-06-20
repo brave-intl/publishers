@@ -143,7 +143,7 @@ function refreshBalance() {
 
       updateChannelBalances(wallet);
 
-      if (!wallet.providerWallet.defaultCurrency) {
+      if (!wallet.providerWallet.defaultCurrency && wallet.providerWallet.authorized) {
         openDefaultCurrencyModal();
       }
     });
@@ -210,10 +210,14 @@ function checkUpholdStatus() {
         }
 
         if (body.uphold_status_description) {
-          upholdStatusDescription.innerText = body.uphold_status_description;
+          upholdStatusDescription.innerHTML = body.uphold_status_description;
         }
 
-        if (checkUpholdStatusInterval != null && (body.uphold_status === 'verified' || timedOut)) {
+        if (checkUpholdStatusInterval != null &&
+            (timedOut ||
+             body.uphold_status === 'verified' ||
+             body.uphold_status === 'incomplete')) {
+
           clearInterval(checkUpholdStatusInterval);
           checkUpholdStatusInterval = null;
 

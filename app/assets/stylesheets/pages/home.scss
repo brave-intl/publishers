@@ -445,6 +445,7 @@
       #uphold_dashboard,
       #uphold_connect,
       #last_settlement,
+      #uphold_incomplete,
       .statements-available {
         display: none;
       }
@@ -459,6 +460,7 @@
     &.uphold-processing {
       #uphold_dashboard,
       #last_settlement,
+      #uphold_incomplete,
       .statements-available {
         display: none;
       }
@@ -469,9 +471,10 @@
       }
     }
     &.uphold-reauthorization-needed,
+    &.uphold-incomplete,
     &.uphold-unconnected {
       .status-description {
-        margin-bottom: 40px;
+        margin: 50px 0 30px -52px;
         padding: 0 0 5px 52px;
         min-height: 42px;
         background-position: top left;
@@ -484,9 +487,25 @@
       }
       #uphold_dashboard,
       #last_settlement,
-      .status-summary .action .disconnect-uphold,
       .statements-available  {
         display: none;
+      }
+    }
+    &.uphold-reauthorization-needed,
+    &.uphold-unconnected {
+      .status-summary .action .disconnect-uphold,
+      .reconnect-instructions {
+        display: none;
+      }
+    }
+    &.uphold-incomplete {
+      .status-summary,
+      #reconnect_to_uphold {
+        display: none;
+      }
+      .reconnect-instructions {
+        font-size: 14px;
+        color: $braveGray-4;
       }
     }
     // Status summary label
@@ -497,11 +516,13 @@
       }
     }
     &.uphold-reauthorization-needed,
+    &.uphold-incomplete,
     &.uphold-timeout {
       .status-summary .text {
         color: $braveRed;
       }
     }
+    &.uphold-incomplete,
     &.uphold-unconnected {
       .status-summary .text {
         color: $mediumGray;

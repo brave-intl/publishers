@@ -122,11 +122,16 @@ en:
         connecting: Connecting
         unconnected: Not connected
         connection_problems: Connection problems
+        incomplete: Registration incomplete
       uphold_status_description:
         connecting: Brave Payments is connecting to your Uphold account.
         reauthorization_needed: We are having trouble communicating with Uphold.
         unconnected: You need to connect to your Uphold account to receive contributions from Brave Payments.
         verified: Your Uphold wallet is ready to receive Brave Payments.
+        incomplete: |
+          <p>Your Uphold account registration is incomplete.</p>
+          <p><strong>Please check your email for verification
+          instructions from Uphold and finish the registration process.</strong></p>
   layouts:
     mailer:
       medium: Medium
@@ -323,6 +328,7 @@ en:
         deposit_currency_label: "Deposit Currency: "
         deposit_currency: "BAT to "
         check_balance: Check Balance
+        connect_to_a_new_account: Connect to a new Uphold account
         no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
         connect: Connect
         disconnect: Disconnect

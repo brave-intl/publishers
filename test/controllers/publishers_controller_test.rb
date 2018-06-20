@@ -467,9 +467,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                    .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
                    .gsub('<STATE>', publisher.uphold_state_token)
 
-    assert_select("a[href='#{endpoint}']") do |elements|
-      assert_equal(2, elements.length, 'Two links with the correct href to Uphold.com are present (one link in the status area + one big button)')
-    end
+    assert_select "a[href='#{endpoint}']", text: "Connect", count: 1
+    assert_select "a[href='#{endpoint}']", text: "Connect to Uphold", count: 1
   end
 
   test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
