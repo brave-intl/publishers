@@ -183,6 +183,21 @@ a.logo span {
         }
         .channel-info {
           flex: 2;
+          hr {
+            margin: 10px
+          }
+          .admin-approval {
+            display: flex;
+            justify-content: space-between;
+
+            .admin-approval-warning {
+              color: red;
+            }
+            .admin-approval-success {
+              color: green;
+            }
+
+          }
         }
       }      
     }

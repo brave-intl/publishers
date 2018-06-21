@@ -51,6 +51,18 @@ class AdminController < ApplicationController
     redirect_to(admin_publisher_path(publisher.id))
   end
 
+  def approve_channel
+    channel = Channel.find(admin_approval_channel_params)
+    success = SiteChannelVerifier.new(admin_approval: true, channel: channel).perform
+    if success
+      channel.verification_approved_by_admin!
+      Rails.logger.info("#{channel.publication_title} has been approved by admin #{current_publisher.name}, #{current_publisher.owner_identifier}")
+      SlackMessenger.new(message: "#{channel.details.brave_publisher_id} has been approved by admin #{current_publisher.name}, #{current_publisher.owner_identifier}").perform
+    end
+
+    redirect_to(admin_publisher_path(channel.publisher))
+  end
+
   private
 
   def protect
@@ -59,5 +71,9 @@ class AdminController < ApplicationController
 
   def publisher_create_note_params
     params.require(:publisher_note).permit(:publisher, :note)
+  end
+
+  def admin_approval_channel_params
+    params.require(:channel_id)
   end
 end

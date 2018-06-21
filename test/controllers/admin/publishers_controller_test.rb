@@ -2,10 +2,21 @@ require 'test_helper'
 require "webmock/minitest"
 
 class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
-  # For Devise >= 4.1.1
   include Devise::Test::IntegrationHelpers
-  # Use the following instead if you are on Devise <= 4.1.0
-  # include Devise::TestHelpers
+
+  def stub_verification_public_file(channel, body: nil, status: 200)
+    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
+    headers = {
+      'Accept' => '*/*',
+      'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+      'Host' => channel.details.brave_publisher_id,
+      'User-Agent' => 'Ruby'
+    }
+    body ||= SiteChannelVerificationFileGenerator.new(site_channel: channel).generate_file_content
+    stub_request(:get, url).
+      with(headers: headers).
+      to_return(status: status, body: body, headers: {})
+  end
 
   test "regular users cannot access" do
     publisher = publishers(:completed)
@@ -86,5 +97,24 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # ensure it has the created by admin flag
     assert created_statement.created_by_admin
+  end
+
+  test "admins can approve channels waiting for admin approval" do
+    admin = publishers(:admin)
+    c = channels(:to_verify_restricted)
+    stub_verification_public_file(c)
+
+    # simulate verification attempt that will be blocked
+    verifier = SiteChannelVerifier.new(channel: c)
+    verifier.perform
+    c.reload
+    assert c.verification_awaiting_admin_approval?
+
+    # simulate admin approving channel
+    sign_in admin
+    patch approve_channel_admin_publishers_path(channel_id: c.id)
+    c.reload
+    assert c.verified?
+    assert c.verification_approved_by_admin?
   end
 end

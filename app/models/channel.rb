@@ -25,7 +25,7 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
-  validates :verification_status, inclusion: { in: %w(started failed awaiting_admin_approval) }, allow_nil: true
+  validates :verification_status, inclusion: { in: %w(started failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
@@ -146,6 +146,14 @@ class Channel < ApplicationRecord
 
   def verification_awaiting_admin_approval?
     self.verification_status == 'awaiting_admin_approval'
+  end
+
+  def verification_approved_by_admin!
+    update!(verification_status: 'approved_by_admin')
+  end
+
+  def verification_approved_by_admin?
+    self.verification_status == 'approved_by_admin'
   end
 
   def update_last_verification_timestamp
