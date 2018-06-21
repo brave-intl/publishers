@@ -12,7 +12,7 @@ class TwitchChannelDetails < ApplicationRecord
   ## Begin methods to satisfy the Eyeshade integration
 
   def channel_identifier
-    "twitch#channel:#{name}"
+    "twitch#author:#{name}"
   end
 
   def authorizer_email
