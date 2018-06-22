@@ -6,6 +6,8 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
 
   def create
     @publisher.status_updates.create(status: params[:publisher_status])
-    redirect_to :back
+    @publisher.reload
+    flash[:notice] = "Updated publisher's status to #{@publisher.inferred_status}"
+    redirect_to admin_publisher_path(id: @publisher.id)
   end
 end
