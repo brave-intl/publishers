@@ -55,7 +55,6 @@ class AdminController < ApplicationController
     channel = Channel.find(admin_approval_channel_params)
     success = SiteChannelVerifier.new(admin_approval: true, channel: channel).perform
     if success
-      channel.verification_approved_by_admin!
       Rails.logger.info("#{channel.publication_title} has been approved by admin #{current_publisher.name}, #{current_publisher.owner_identifier}")
       SlackMessenger.new(message: "#{channel.details.brave_publisher_id} has been approved by admin #{current_publisher.name}, #{current_publisher.owner_identifier}").perform
     end

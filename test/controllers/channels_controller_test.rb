@@ -113,7 +113,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
         '"details":"something happened"}',
       response.body)
 
-    channel.verification_succeeded!
+    channel.verification_succeeded!(false)
 
     get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
     assert_response 200

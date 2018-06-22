@@ -13,7 +13,7 @@ class PublishersHelperTest < ActionView::TestCase
     channel.verification_failed!('something happened')
     assert_equal 'failed', channel_verification_status(channel)
 
-    channel.verification_succeeded!
+    channel.verification_succeeded!(false)
     assert_equal 'verified', channel_verification_status(channel)
   end
 
@@ -30,7 +30,7 @@ class PublishersHelperTest < ActionView::TestCase
     channel.verification_failed!('something happened')
     assert_equal 'something happened', channel_verification_details(channel)
 
-    channel.verification_succeeded!
+    channel.verification_succeeded!(false)
     assert_nil channel_verification_details(channel)
   end
 end
