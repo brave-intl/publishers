@@ -26,7 +26,9 @@ class WalletTest < ActiveSupport::TestCase
             "provider" => "uphold",
             "authorized" => true,
             "defaultCurrency" => 'USD',
-            "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
+            "availableCurrencies" => [ 'USD', 'EUR', 'BAT' ],
+            "possibleCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
+            "scope" => 'cards:write'
         }
       },
       channel_json: {}
@@ -34,9 +36,8 @@ class WalletTest < ActiveSupport::TestCase
 
   empty_wallet = Eyeshade::Wallet.new(wallet_json: {}, channel_json: {})
 
-  test "supports status" do
-    assert(test_wallet.status)
-    assert_equal('re-authorize', test_wallet.status['action'])
+  test "supports action" do
+    assert_equal('re-authorize', test_wallet.action)
   end
 
   test "translates contributions to a Balance" do
@@ -48,21 +49,24 @@ class WalletTest < ActiveSupport::TestCase
   end
 
   test "handles initialization with empty wallet details" do
-    assert empty_wallet.status.is_a?(Hash)
+    assert empty_wallet.available_currencies.is_a?(Array)
+    assert empty_wallet.possible_currencies.is_a?(Array)
     assert empty_wallet.contribution_balance.is_a?(Eyeshade::Balance)
   end
 
-  test "supports wallet details" do
-    assert(test_wallet.wallet_details.is_a?(Hash))
+  test "parses wallet status and details" do
+    assert_equal "re-authorize", test_wallet.action
+    assert_equal true, test_wallet.authorized?
+    assert_equal "uphold", test_wallet.provider
+    assert_equal 'cards:write', test_wallet.scope
+    assert_equal "USD", test_wallet.default_currency
+    assert_equal [ 'USD', 'EUR', 'BAT' ], test_wallet.available_currencies
+    assert_equal [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ], test_wallet.possible_currencies
   end
 
-  test "supports wallet details preferred currency" do
-    assert_equal('USD', test_wallet.wallet_details['defaultCurrency'])
-  end
-
-  test "supports wallet details available currencies" do
-    assert(test_wallet.wallet_details['availableCurrencies'].is_a?(Array))
-    assert_equal('USD', test_wallet.wallet_details['availableCurrencies'][0])
-    assert_equal('EUR', test_wallet.wallet_details['availableCurrencies'][1])
+  test "currency_is_possible_but_not_available? checks available and possible currencies" do
+    assert test_wallet.currency_is_possible_but_not_available?('ETH')
+    refute test_wallet.currency_is_possible_but_not_available?('USD')
+    refute test_wallet.currency_is_possible_but_not_available?('FAKE')
   end
 end

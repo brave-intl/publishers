@@ -103,7 +103,10 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
       containerElement.classList.remove(identifierClass);
     }
     containerElement.classList.remove(MODAL_SHOW_CLASS);
-    event.preventDefault();
+
+    if (event) {
+      event.preventDefault();
+    }
   }
 
   function confirmationEventDelegate(event) {
@@ -122,7 +125,9 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
       confirmCallback();
     } else if (target.classList.contains('js-deny')) {
       closeModal(event);
-      denyCallback();
+      if (denyCallback) {
+        denyCallback();
+      }
     }
   }
 
@@ -139,6 +144,8 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
 
   document.removeEventListener('keyup', keyupDelegate);
   document.addEventListener('keyup', keyupDelegate);
+
+  return closeModal;
 }
 
 /*

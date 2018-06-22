@@ -26,10 +26,10 @@ class PublishersHelperTest < ActionView::TestCase
     publisher = publishers(:default)
     publisher.default_currency = "USD"
     publisher.save
-    assert_dom_equal %{Approximately 9001.00 USD}, publisher_converted_balance(publisher)
+    assert_dom_equal %{~ 9001.00 USD}, publisher_converted_balance(publisher)
   end
 
-  test "publisher_converted_balance should return `Unavailable` when no wallet is set" do
+  test "publisher_converted_balance should return `CURRENCY unavailable` when no wallet is set" do
     class FakePublisher
       attr_reader :default_currency, :wallet
 
@@ -66,14 +66,14 @@ class PublishersHelperTest < ActionView::TestCase
       }
     )
     assert_not_nil publisher.wallet
-    assert_dom_equal %{Approximately 9001.00 USD}, publisher_converted_balance(publisher)
+    assert_dom_equal %{~ 9001.00 USD}, publisher_converted_balance(publisher)
 
     publisher = FakePublisher.new(
       wallet_json: nil
     )
 
     assert_nil publisher.wallet
-    assert_equal "Unavailable", publisher_converted_balance(publisher)
+    assert_equal "USD unavailable", publisher_converted_balance(publisher)
   end
 
   test "can extract the uuid from an owner_identifier" do
@@ -124,7 +124,7 @@ class PublishersHelperTest < ActionView::TestCase
     )
 
     assert_nil publisher.wallet
-    assert_equal "Unavailable", publisher_humanize_balance(publisher, "USD")
+    assert_equal "USD unavailable", publisher_humanize_balance(publisher, "USD")
   end
 
   test "uphold_status_class returns a css class that corresponds to a publisher's uphold_status" do
@@ -148,6 +148,9 @@ class PublishersHelperTest < ActionView::TestCase
 
     publisher.uphold_status = :unconnected
     assert_equal "uphold-unconnected", uphold_status_class(publisher)
+
+    publisher.uphold_status = :incomplete
+    assert_equal "uphold-incomplete", uphold_status_class(publisher)
   end
 
   test "next settlement date is current month if <= 8th, otherwise next month" do

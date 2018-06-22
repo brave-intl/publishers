@@ -122,4 +122,40 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
     wait_until { publisher.reload.javascript_last_detected_at != nil }
   end
+
+  test "confirm default currency modal appears after uphold signup" do
+    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    sign_in publisher
+
+    visit home_publishers_path
+    assert_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
+  end
+
+  test "confirm default currency modal does not appear for non uphold verified publishers" do
+    publisher = publishers(:uphold_connected)
+    sign_in publisher
+
+    visit home_publishers_path
+    refute_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
+  end
+
+  test "confirm default currency modal does not appear for non uphold authorized publishers" do
+    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
+      publisher = publishers(:uphold_connected_currency_unconfirmed)
+      sign_in publisher
+
+      wallet = { "wallet" => { "authorized" => false } }.to_json
+      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: wallet, headers: {})
+
+      visit home_publishers_path
+      refute_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
+    end
+  end
 end
+

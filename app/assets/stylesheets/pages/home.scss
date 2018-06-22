@@ -362,10 +362,7 @@
   #uphold_status {
     #uphold_status_display {
       vertical-align: top;
-      margin-bottom: 25px;
-    }
-    .deposit-currency {
-      margin-top: 10px;
+      margin-bottom: 5px;
     }
     .unavailable-currencies {
       padding: 9px 0 9px 52px;
@@ -395,6 +392,51 @@
     .status-description {
       margin-top: 40px;
     }
+    .field {
+      margin: $spacer*0.4 0;
+      label {
+        display: inline-block;
+        margin: 0;
+      }
+      .value {
+        display: inline-block;
+        margin-left: 11px;
+      }
+      .action {
+        display: inline-block;
+        margin-left: 11px;
+      }
+    }
+    #last_settlement {
+      &.settlement-made {
+        display: block;
+      }
+      &.no-settlement-made {
+        display: none;
+      }
+      .last-deposit {
+        font-size: $font-size-base;
+        vertical-align: top;
+        margin-top: 34px;
+        .amounts {
+          .bat-amount {
+            font-size: 30px;
+            color: #fc4145;
+            font-weight: 500;
+          }
+          .bat-code {
+            font-size: 16px;
+            color: #222326;
+            font-weight: 500;
+          }
+          .converted {
+            margin-top: -8px;
+            font-size: 14px;
+            color: $braveGray-4;
+          }
+        }
+      }
+    }
     #uphold_check_balance {
       margin-top: 2rem;
     }
@@ -402,6 +444,8 @@
       .status-summary .action,
       #uphold_dashboard,
       #uphold_connect,
+      #last_settlement,
+      #uphold_incomplete,
       .statements-available {
         display: none;
       }
@@ -415,6 +459,8 @@
     }
     &.uphold-processing {
       #uphold_dashboard,
+      #last_settlement,
+      #uphold_incomplete,
       .statements-available {
         display: none;
       }
@@ -425,9 +471,10 @@
       }
     }
     &.uphold-reauthorization-needed,
+    &.uphold-incomplete,
     &.uphold-unconnected {
       .status-description {
-        margin-bottom: 40px;
+        margin: 50px 0 30px -52px;
         padding: 0 0 5px 52px;
         min-height: 42px;
         background-position: top left;
@@ -439,9 +486,26 @@
         margin-top: 30px;
       }
       #uphold_dashboard,
-      .status-summary .action .disconnect-uphold,
-      .statements-available {
+      #last_settlement,
+      .statements-available  {
         display: none;
+      }
+    }
+    &.uphold-reauthorization-needed,
+    &.uphold-unconnected {
+      .status-summary .action .disconnect-uphold,
+      .reconnect-instructions {
+        display: none;
+      }
+    }
+    &.uphold-incomplete {
+      .status-summary,
+      #reconnect_to_uphold {
+        display: none;
+      }
+      .reconnect-instructions {
+        font-size: 14px;
+        color: $braveGray-4;
       }
     }
     // Status summary label
@@ -452,11 +516,13 @@
       }
     }
     &.uphold-reauthorization-needed,
+    &.uphold-incomplete,
     &.uphold-timeout {
       .status-summary .text {
         color: $braveRed;
       }
     }
+    &.uphold-incomplete,
     &.uphold-unconnected {
       .status-summary .text {
         color: $mediumGray;
@@ -671,6 +737,42 @@
       color: #999999;
       font-size: 11px;
       font-weight: bolder;
+    }
+  }
+}
+
+#confirm_default_currency_modal {
+  text-align: center;
+
+  #publisher_default_currency {
+    display: block;
+    margin: 0px auto 36px;
+  }
+
+  #img-currency-setting {
+    height: 79px;
+    width: 71px;
+    margin-top: 30px;
+    margin-bottom: 60px;
+  }
+
+  .transition {
+    display: none;
+  }
+
+  &.transitioning {
+    .entry {
+      display: none;
+    }
+    .transition {
+      display: block;
+      .spinner {
+        padding: 40px 100px;
+      }
+      .status {
+        min-height: 3rem;
+        font-size: 18px;
+      }
     }
   }
 }
