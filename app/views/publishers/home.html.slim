@@ -127,9 +127,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               = t ".uphold.last_deposit"
               .amounts
                 .bat
-                  - last_depost_balance = publisher_humanize_last_settlement(current_publisher, "BAT")
-                  span.bat-amount#last_deposit_bat_amount= last_depost_balance
-                  - unless last_depost_balance == I18n.t("helpers.publisher.no_deposit")
+                  - last_deposit_balance = publisher_humanize_last_settlement(current_publisher, "BAT")
+                  span.bat-amount#last_deposit_bat_amount= last_deposit_balance
+                  - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
                     span.bat-code= " BAT"
                 .converted#last_deposit_converted_amount
                   = publisher_converted_last_settlement(current_publisher)
