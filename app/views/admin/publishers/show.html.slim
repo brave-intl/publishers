@@ -1,11 +1,5 @@
 #publisher
   #publisher-section
-    - if flash[:notice]
-      .alert.alert-success role="alert"
-        = flash[:notice]
-    - if flash[:alert]
-      .alert.alert-danger role="alert"
-        = flash[:alert]
     h2 = @publisher.name
     .rounded-box
       .db-info-row
@@ -13,7 +7,7 @@
         .db-value = @publisher.email
       .db-info-row
         .db-field = "Status:"
-        .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
+        .db-value = @publisher.last_status_update.present? ? @publisher.last_status_update.status : "active"
       .db-info-row
         .db-field = "Uphold connected:"
         .db-value = @publisher.uphold_verified?
@@ -34,11 +28,11 @@
     h3.admin-header = "Statements"
     #statement-section
       .statement
-        = form_for(@publisher, url: generate_statement_admin_publishers_path, html: { id: "statement_generator" }, method: :patch) do |f|
+        = form_for(@publisher, url: generate_statement_admin_publishers_path, html: { id: "statement_generator" }) do |f|
           .form-group
             = hidden_field_tag(:id, @publisher.id)
             = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
-            a#generate_statement href="#" class="btn btn-primary"
+            a#generate_statement href="#"
               = "Generate statement"
       .statements-table.rounded-box
         .header
@@ -89,7 +83,7 @@
       = form_for @note, { method: :post, url: create_note_admin_publishers_path } do |f|
         = f.text_area(:note, id: "create-note-content")
         = f.hidden_field(:publisher, :value => @publisher.id)
-        = f.submit("Add note", class: 'btn btn-primary')
+        = f.submit("Add note", id: "submit-create-note")
     - @publisher.notes.order(created_at: :desc).each do |note|
       .note.rounded-box
         .note-header
