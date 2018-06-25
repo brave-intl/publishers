@@ -107,7 +107,7 @@ a.logo span {
   /* show */
   #publisher {
     .admin-header {
-      text-align: center;
+      text-align: left;
     }
 
     .rounded-box {
@@ -207,9 +207,6 @@ a.logo span {
         #create-note-content {
           min-width: 100%;
           min-height: 150px;
-        }
-        #submit-create-note {
-          display: block;
         }
       }
     }

@@ -1,0 +1,26 @@
+h5.admin_header Current status: #{@publisher.inferred_status}
+
+hr
+
+h5.admin-header Change current status for #{@publisher.name}
+= form_for(@publisher, url: admin_publisher_publisher_status_updates_path(@publisher.id), method: :create) do |f|
+  .form-group
+    - label_tag(:publisher_id, @publisher.id)
+    = select_tag(:publisher_status, options_for_select(PublisherStatusUpdate::ALL_STATUSES))
+  = f.submit("Save", class: 'btn btn-primary')
+
+hr
+
+h5.admin-header Status history
+div.panel-body
+  div.adv-table
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th Status
+        th Created At
+      tbody
+        - @publisher.status_updates.each do |status_update|
+          tr.gradeX
+            td = status_update.status
+            td = status_update.created_at
+

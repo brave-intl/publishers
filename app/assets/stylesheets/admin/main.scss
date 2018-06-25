@@ -2,11 +2,9 @@
 @import "*";
 @import "breakpoints";
 @import "fonts";
-@import "colors";
-@import "bootstrap-config";
+@import 'admin/bootstrap.min';
 
 // Vendor
-@import "bootstrap-custom";
 
 // Application
 @import "application-config";
