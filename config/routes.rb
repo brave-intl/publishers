@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get :change_email
       get :change_email_confirm
       patch :update_email
+      patch :confirm_default_currency
       get :expired_auth_token
       get :log_out
       get :email_verified
@@ -94,7 +95,6 @@ Rails.application.routes.draw do
         patch :generate_statement
         get :statement_ready
         post :create_note
-        patch :update_note
       end
     end
 

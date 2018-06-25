@@ -1,6 +1,6 @@
 class Publisher < ApplicationRecord
   has_paper_trail
-  self.per_page = 50
+  self.per_page = 20
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
@@ -91,16 +91,12 @@ class Publisher < ApplicationRecord
 
     # if the wallet call fails the wallet will be nil
     if @_wallet
-      # Initialize the default_currency from the wallet, if it exists
-      if self.default_currency.nil?
-        default_currency_code = @_wallet.try(:wallet_details).try(:[], 'defaultCurrency')
-        if default_currency_code
-          self.default_currency = default_currency_code
-          save_needed = true
-        end
+      # Sync the default_currency to eyeshade, if they are mismatched
+      # ToDo: This can be eliminated once eyeshade no longer maintains a default_currency
+      # (which should be after publishers is driving payout report generation)
+      if self.default_currency.present? && self.default_currency != @_wallet.default_currency
+        UploadDefaultCurrencyJob.perform_later(publisher_id: self.id)
       end
-
-      save! if save_needed
     end
     @_wallet
   end
@@ -157,12 +153,22 @@ class Publisher < ApplicationRecord
 
   def uphold_reauthorization_needed?
     self.uphold_verified? &&
-      ['re-authorize', 'authorize'].include?(self.wallet.try(:status).try(:[], 'action'))
+      ['re-authorize', 'authorize'].include?(self.wallet.action)
+  end
+
+  def uphold_incomplete?
+    self.uphold_verified? && !self.wallet.authorized?
   end
 
   def uphold_status
     if self.uphold_verified?
-      self.uphold_reauthorization_needed? ? :reauthorization_needed : :verified
+      if self.uphold_reauthorization_needed?
+        :reauthorization_needed
+      elsif self.uphold_incomplete?
+        :incomplete
+      else
+        :verified
+      end
     elsif self.uphold_access_parameters.present?
       :access_parameters_acquired
     elsif self.uphold_code.present?
@@ -228,6 +234,13 @@ class Publisher < ApplicationRecord
 
   def last_login_activity
     login_activity = login_activities.last
+  end
+
+  def can_create_uphold_cards?
+    uphold_verified? &&
+      wallet.authorized? &&
+      wallet.scope &&
+      wallet.scope.include?("cards:write")
   end
 
   private

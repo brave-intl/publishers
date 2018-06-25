@@ -83,8 +83,9 @@ en:
       verification_in_progress: Verification in progress
       verification_awaiting_admin_approval: Awaiting admin approval
     publisher:
-      balance_error: Unavailable
-      balance_pending_approximate: Approximately %{amount} %{code}
+      conversion_unavailable: "%{code} unavailable"
+      no_deposit: No deposit made yet
+      balance_pending_approximate: ~ %{amount} %{code}
       channel_type:
         youtube: YouTube channel
         website: Website
@@ -121,11 +122,16 @@ en:
         connecting: Connecting
         unconnected: Not connected
         connection_problems: Connection problems
+        incomplete: Registration incomplete
       uphold_status_description:
         connecting: Brave Payments is connecting to your Uphold account.
         reauthorization_needed: We are having trouble communicating with Uphold.
         unconnected: You need to connect to your Uphold account to receive contributions from Brave Payments.
         verified: Your Uphold wallet is ready to receive Brave Payments.
+        incomplete: |
+          <p>Your Uphold account registration is incomplete.</p>
+          <p><strong>Please check your email for verification
+          instructions from Uphold and finish the registration process.</strong></p>
   layouts:
     mailer:
       medium: Medium
@@ -185,7 +191,7 @@ en:
     suspended_publisher:
       subject: Suspicious Activity on Your Account
       intro: Thank you for being a Brave publisher.
-      body_html: In the past few months, we have noticed some unusual or suspicious contributions to your Publishers account.  As a result, we have frozen payment to your account.<br/><br/>Suspicious contributions are payments that appear as aberrant and unnatural.  This may include (but is not limited to) unreasonably large contributions for small channels, and/or contributions that solely originate from the user growth pool.<br/><br/>If you feel this is in error, please reply and provide further details or explain the various contributions made to your account.
+      body_html: In the past few months, we have noticed some unusual or suspicious contributions to your Publishers account.  As a result, we have frozen payment to your account.<br/><br/>Suspicious contributions include (but are not limited to) unreasonably large contributions for small channels, and/or contributions that solely originate from the user growth pool. Any contributions that seem out of the ordinary get flagged as suspicious leading to frozen accounts immediately.<br/><br/>If you feel this is in error, please reply and provide further details or explain the various contributions made to your account.
       closing_html: Thank you.<br/>The Brave Payments Team
       contact_support: If you did not make this change yourself, please contact support ASAP
     unverified_domain_reached_threshold:
@@ -319,12 +325,17 @@ en:
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
       uphold:
         heading: Your Uphold Wallet
-        deposit_currency_label: "Current deposit currency:"
+        deposit_currency_label: "Deposit Currency: "
         deposit_currency: "BAT to "
         check_balance: Check Balance
+        connect_to_a_new_account: Connect to a new Uphold account
         no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
         connect: Connect
         disconnect: Disconnect
+        last_deposit: LAST DEPOSIT
+        last_deposit_date: "Last Deposit Date: "
+        change: Change
+        no_currency_selected: None selected
       statements:
         heading: Statements
         statement_name: "%{created_at} statement - %{period}"
@@ -386,6 +397,13 @@ en:
       confirmation: Are you sure you want to disconnect your account with Uphold?
       deny: Cancel
       confirm: Disconnect
+    confirm_default_currency_modal:
+      headline: Confirm your preferred deposit currency
+      leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
+      confirm: Confirm
+      saving: Saving ...
+      redirecting: Redirecting to Uphold for authorization ...
+      refreshing: Refreshing balances ...
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:
