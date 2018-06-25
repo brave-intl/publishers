@@ -13,6 +13,11 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   before_action :set_paper_trail_whodunnit
+  before_action :no_cache
+
+  def no_cache
+    response.headers['Cache-Control'] = 'no-cache, no-store'
+  end
 
   def current_user
     current_publisher
