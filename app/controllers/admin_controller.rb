@@ -42,7 +42,7 @@ class AdminController < ApplicationController
 
   def create_note
     publisher = Publisher.find(publisher_create_note_params[:publisher])
-    admin = current_publisher
+    admin = current_user
     note_content = publisher_create_note_params[:note]
 
     note = PublisherNote.new(publisher: publisher, created_by: admin, note: note_content)    
@@ -51,12 +51,13 @@ class AdminController < ApplicationController
     redirect_to(admin_publisher_path(publisher.id))
   end
 
+  # Allows a restricted channel to be verified
   def approve_channel
     channel = Channel.find(admin_approval_channel_params)
     success = SiteChannelVerifier.new(admin_approval: true, channel: channel).perform
     if success
-      Rails.logger.info("#{channel.publication_title} has been approved by admin #{current_publisher.name}, #{current_publisher.owner_identifier}")
-      SlackMessenger.new(message: "#{channel.details.brave_publisher_id} has been approved by admin #{current_publisher.name}, #{current_publisher.owner_identifier}").perform
+      Rails.logger.info("#{channel.publication_title} has been approved by admin #{current_user.name}, #{current_user.owner_identifier}")
+      SlackMessenger.new(message: "#{channel.details.brave_publisher_id} has been approved by admin #{current_user.name}, #{current_user.owner_identifier}").perform
     end
 
     redirect_to(admin_publisher_path(channel.publisher))
