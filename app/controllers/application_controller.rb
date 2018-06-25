@@ -18,14 +18,10 @@ class ApplicationController < ActionController::Base
     current_publisher
   end
 
-  def user_for_paper_trail
-    current_user.try(:id)
-  end
-
   def current_ability
     @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
-
+  
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end

@@ -96,7 +96,6 @@ Rails.application.routes.draw do
         get :statement_ready
         post :create_note
       end
-      resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
     root to: "dashboard#index" # <--- Root route
