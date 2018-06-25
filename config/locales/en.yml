@@ -38,6 +38,7 @@ en:
     remove: Remove
     terms_of_service: Terms of Service
     ok: OK
+    choose_different_verification_method: Choose Different Verification Method
   activerecord:
     shared:
       errors: "There were errors saving your request:"
