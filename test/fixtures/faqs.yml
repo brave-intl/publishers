@@ -1,0 +1,23 @@
+one:
+  question: First Q
+  answer: My answer
+  rank: 1
+  faq_category: brave_payments
+
+verification100:
+  question: A100
+  answer: My _answer_
+  rank: 100
+  faq_category: verification
+
+verification50:
+  question: Z50
+  answer: My _answer_
+  rank: 50
+  faq_category: verification
+
+verification1:
+  question: A1
+  answer: My _answer_
+  rank: 1
+  faq_category: verification

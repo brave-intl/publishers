@@ -78,6 +78,9 @@ gem "rails", "~> 5.0.0", ">= 5.0.0.1"
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
+# Markdown support
+gem "redcarpet"
+
 # Cache with Redis
 gem "redis-rails", "~> 5"
 

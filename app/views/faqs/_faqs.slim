@@ -1,0 +1,10 @@
+.faqs_accordion
+  - faqs.each do |faq|
+    .panel
+      input type="checkbox" name="panels" id="panel#{faq.id}"
+        label for="panel#{faq.id}"
+          .question
+            == markdown.render(faq.question)
+      .panel-content
+        .answer
+          == markdown.render(faq.answer)

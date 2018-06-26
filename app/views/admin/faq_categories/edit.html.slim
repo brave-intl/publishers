@@ -1,0 +1,6 @@
+h1 Edit FAQ Category
+span = button_to 'Destroy', [:admin, @faq_category],
+        method: :delete, remote: false, data: { confirm: 'Are you sure?' }, class: 'delete-button'
+
+== render 'form'
+

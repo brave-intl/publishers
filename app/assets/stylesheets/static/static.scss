@@ -130,14 +130,19 @@ p {
       margin-top: 35px;
     }
   }
+  hr.tos-faq--divider {
+    margin-top: 0;
+  }
 }
 
-.terms-of-service {
-  margin: 20px 0 150px 0;
+.tos-faq {
   a {
     color: rgba(#ededee, 0.65);
     font-size: 14px;
     font-weight: 300;
+  }
+  .link-separator {
+    color: $white30;
   }
 }
 

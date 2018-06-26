@@ -1,0 +1,6 @@
+h1 Edit FAQ
+span = button_to 'Delete', [:admin, @faq],
+        method: :delete, data: { confirm: 'Are you sure?' }, class: "delete-button"
+
+== render 'form'
+
