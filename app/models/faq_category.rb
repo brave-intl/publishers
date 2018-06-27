@@ -8,7 +8,9 @@ class FaqCategory < ApplicationRecord
 
   before_destroy :check_for_faqs
 
-  scope :ready_for_display, -> { joins(:faqs).select('DISTINCT faq_categories.*')}
+  scope :ready_for_display, -> {
+    joins(:faqs).where('faqs.published = true').order('faqs.rank asc').select('DISTINCT faq_categories.*')
+  }
 
   private
 

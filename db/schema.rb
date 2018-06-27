@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180619210829) do
+ActiveRecord::Schema.define(version: 20180627121434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20180619210829) do
     t.string   "answer"
     t.integer  "rank"
     t.uuid     "faq_category_id"
+    t.boolean  "published",       default: false
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id", using: :btree

@@ -4,7 +4,7 @@
       input type="checkbox" name="panels" id="panel#{faq.id}"
         label for="panel#{faq.id}"
           = link_to "Edit", edit_admin_faq_path(faq), class: "edit-link"
-          .rank= "(#{faq.rank}) "
+          .rank= "(#{faq.rank}) #{faq.published ? 'P' : 'U'} "
           .question
             == markdown.render(faq.question)
       .panel-content

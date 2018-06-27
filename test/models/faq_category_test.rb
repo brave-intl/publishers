@@ -1,10 +1,10 @@
 require "test_helper"
 
 class FaqCategoryTest < ActiveSupport::TestCase
-  test "faq categories without faqs are excluded from ready_for_display" do
+  test "faq categories without published faqs are excluded from ready_for_display" do
     all_categories_count = FaqCategory.count
     ready_for_display_categories_count = FaqCategory.ready_for_display.count
-    assert_equal all_categories_count - 1, ready_for_display_categories_count
+    assert_equal all_categories_count - 2, ready_for_display_categories_count
   end
 
   test "faq categories require a name" do
@@ -26,5 +26,4 @@ class FaqCategoryTest < ActiveSupport::TestCase
     assert_equal 0, faq_categories.first.rank
     assert_equal 100, faq_categories.last.rank
   end
-
 end

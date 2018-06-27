@@ -11,3 +11,7 @@ verification:
 about:
   name: About
   rank: 100
+
+empty:
+  name: Empty
+  rank: 50

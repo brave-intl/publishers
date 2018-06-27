@@ -1,4 +1,4 @@
-class CreateFaqQuestions < ActiveRecord::Migration[5.0]
+class CreateFaqs < ActiveRecord::Migration[5.0]
   def change
     create_table :faqs, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|
       t.string :question
