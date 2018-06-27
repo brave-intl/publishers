@@ -199,3 +199,9 @@ onboarding:
   name: "Owen the onboard"
   agreed_to_tos:
   two_factor_prompted_at:
+
+suspended:
+  email: "susanthesuspended@example.com"
+  name: "Susan the suspended"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
