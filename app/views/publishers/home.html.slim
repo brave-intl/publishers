@@ -7,7 +7,7 @@ noscript
 
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
     current_publisher.uphold_verified? && \
-    current_publisher.wallet.authorized? && \
+    current_publisher.wallet.present? && current_publisher.wallet.authorized? && \
     (current_publisher.default_currency_confirmed_at.nil? || !current_publisher.default_currency.present?)
 
 script type="text/html" id="confirm_default_currency_modal_wrapper"
@@ -24,7 +24,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 .dashboard
   #uphold_status { class=uphold_status_class(current_publisher)
                    data-open-confirm-default-currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
-                   data-possible-currencies=current_publisher.wallet.possible_currencies
+                   data-possible-currencies=possible_currencies(current_publisher)
                    data-default-currency=current_publisher.default_currency }
     .row
       .col

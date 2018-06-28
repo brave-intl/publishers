@@ -153,11 +153,12 @@ class Publisher < ApplicationRecord
 
   def uphold_reauthorization_needed?
     self.uphold_verified? &&
+      self.wallet.present? &&
       ['re-authorize', 'authorize'].include?(self.wallet.action)
   end
 
   def uphold_incomplete?
-    self.uphold_verified? && !self.wallet.authorized?
+    self.uphold_verified? && self.wallet.present? && !self.wallet.authorized?
   end
 
   def uphold_status
@@ -247,6 +248,7 @@ class Publisher < ApplicationRecord
 
   def can_create_uphold_cards?
     uphold_verified? &&
+      wallet.present? &&
       wallet.authorized? &&
       wallet.scope &&
       wallet.scope.include?("cards:write")
