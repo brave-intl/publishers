@@ -3,10 +3,16 @@ class Admin::PublishersController < AdminController
 
   def index
     @publishers = Publisher
+
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
       @publishers = Publisher.where("publishers.id IN (#{sql(params[:q])})").distinct
     end
+
+    if params[:suspended].present?
+      @publishers = @publishers.suspended
+    end
+
     @publishers = @publishers.paginate(page: params[:page])
   end
 

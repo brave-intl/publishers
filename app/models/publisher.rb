@@ -68,6 +68,14 @@ class Publisher < ApplicationRecord
 
   scope :email_verified, -> { where.not(email: nil) }
   scope :not_admin, -> { where.not(role: ADMIN) }
+  scope :suspended, -> {
+    joins(:status_updates)
+    .where('publisher_status_updates.created_at =
+            (SELECT MAX(publisher_status_updates.created_at)
+            FROM publisher_status_updates
+            WHERE publisher_status_updates.publisher_id = publishers.id)')
+    .where("publisher_status_updates.status = 'suspended'")
+  }
 
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
@@ -237,7 +245,7 @@ class Publisher < ApplicationRecord
       return PublisherStatusUpdate::ONBOARDING
     end
   end
-
+  
   def last_status_update
     status_updates.first
   end
