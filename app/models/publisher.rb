@@ -236,6 +236,15 @@ class Publisher < ApplicationRecord
     role == PUBLISHER
   end
 
+  def inferred_status
+    return last_status_update.status if last_status_update.present?
+    if verified?
+      return PublisherStatusUpdate::ACTIVE
+    else
+      return PublisherStatusUpdate::ONBOARDING
+    end
+  end
+  
   def last_status_update
     status_updates.first
   end
