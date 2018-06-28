@@ -65,6 +65,17 @@
         .channel-link
           = link_to(on_channel_type(channel), channel_url(channel))
         .channel-info
+          - if channel.verification_awaiting_admin_approval?
+            .admin-approval
+              span.admin-approval-warning = "Admin approval required"
+              span.admin-approval-button
+                = form_for channel, as: :channel, method: :patch, url: approve_channel_admin_publishers_path(channel_id: channel.id) do |f|
+                  = f.submit("Approve", class: "btn btn-primary")
+            hr
+          - elsif channel.verification_approved_by_admin?
+            .admin-approval
+              span.admin-approval-success = "Admin approved"
+            hr
           .db-info-row
             .db-field = "Current contribution balance"
             .db-value = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
@@ -82,6 +93,7 @@
             .db-info-row
               .db-field = "Referral code:"
               .db-value = channel.promo_registration.referral_code
+
   hr
   h3.admin-header = "Notes"
   #notes-section

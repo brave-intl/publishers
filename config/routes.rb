@@ -92,6 +92,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :publishers do
       collection do
+        patch :approve_channel
         patch :generate_statement
         get :statement_ready
         post :create_note
