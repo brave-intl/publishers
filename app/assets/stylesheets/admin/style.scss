@@ -119,6 +119,13 @@ a.logo span {
       margin: 10px 0px;
     }
 
+    .split-row-container {
+      display: flex;
+    }
+
+    .split-row {
+      flex: 1;
+    }
     .db-info-row {
       display: flex;
       .db-field {
