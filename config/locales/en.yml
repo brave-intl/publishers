@@ -38,6 +38,7 @@ en:
     remove: Remove
     terms_of_service: Terms of Service
     ok: OK
+    choose_different_verification_method: Choose Different Verification Method
   activerecord:
     shared:
       errors: "There were errors saving your request:"
@@ -587,7 +588,6 @@ en:
         that this may take a few days due to our current backlog.</p>
       review_options: I'd like to review my options
     verification_wordpress:
-      escape_hatch_html: Not using wordpress, or unable to verify your site with the plugin? %{href}
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!
       install_plugin_html: |
