@@ -35,8 +35,6 @@ class Ability
     raise AdminNotOnIPWhitelistError.new("Administrator must be IP whitelisted") unless admin_ip_whitelisted?
     if Rails.env.production?
       raise U2fDisabledError.new("U2F must be enabled for administrators") unless u2f_enabled?(@publisher)
-    else
-      raise TwoFactorDisabledError.new("2fa must be enabled for administrators") unless two_factor_enabled?(@publisher)
     end
     can :manage, :all
     can :access, :all
