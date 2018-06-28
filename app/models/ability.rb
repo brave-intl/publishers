@@ -33,7 +33,7 @@ class Ability
 
   def admin
     raise AdminNotOnIPWhitelistError.new("Administrator must be IP whitelisted") unless admin_ip_whitelisted?
-    if Rails.env.production?
+    if Rails.env.production? || Rails.env.test?
       raise U2fDisabledError.new("U2F must be enabled for administrators") unless u2f_enabled?(@publisher)
     end
     can :manage, :all
@@ -50,8 +50,5 @@ class Ability
   end
 
   class AdminNotOnIPWhitelistError < RuntimeError
-  end
-
-  class TwoFactorDisabledError < RuntimeError
   end
 end
