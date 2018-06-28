@@ -1,12 +1,10 @@
-class SiteChannelDetails < ApplicationRecord
+class SiteChannelDetails < BaseChannelDetails
   has_paper_trail
-
-  has_one :channel, as: :details
 
   # brave_publisher_id is a normalized identifier provided by eyeshade API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
-  validates :brave_publisher_id, uniqueness: { if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_id_exists? } }
+  # validates :brave_publisher_id, uniqueness: { if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id.present? && brave_publisher_id_changed? && verified_publisher_id_exists? } }
 
   # - normalized and unnormalized domains
   # - normalized domains and domain-related errors
@@ -103,9 +101,9 @@ class SiteChannelDetails < ApplicationRecord
 
   private
 
-  def verified_publisher_id_exists?
-    self.class.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.verified": true).any?
-  end
+  # def verified_publisher_id_exists?
+  #   self.class.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.verified": true).any?
+  # end
 
   def clear_brave_publisher_id_error
     self.brave_publisher_id_error_code = nil

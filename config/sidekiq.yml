@@ -19,6 +19,9 @@
   CleanAbandonedSiteChannelsJob:
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
+  TransferChannelsJob:
+    cron: "*/1 * * * *"
+    description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
   SyncPublisherPromoStatsJob:
     cron: "0 */3 * * *"
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server"

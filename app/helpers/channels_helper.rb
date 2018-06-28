@@ -66,10 +66,20 @@ module ChannelsHelper
   def channel_verification_details(channel)
     if channel.verification_failed?
       channel.verification_details || I18n.t("helpers.channels.generic_verification_failure")
+    elsif channel.verification_pending
+      t("shared.channel_contested")
     elsif channel.verification_started?
       I18n.t("helpers.channels.verification_in_progress")
     elsif channel.verification_awaiting_admin_approval?
       I18n.t("helpers.channels.verification_awaiting_admin_approval")
     end
+  end
+
+  def transfer_path(channel)
+    token_transfer_url(channel, channel.contest_token)
+  end
+
+  def reject_transfer_path(channel)
+    token_reject_transfer_url(channel, channel.contest_token)
   end
 end

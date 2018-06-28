@@ -229,4 +229,104 @@ class ChannelTest < ActiveSupport::TestCase
     channel.update(verified: false)
     assert_nil channel.verified_at
   end
+
+  test "can remove a channel that is not contested" do
+    channel = channels(:default)
+    assert channel.destroy
+  end
+
+  test "can not destroy a channel if it is contested" do
+    channel = channels(:default)
+    contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
+    contested_by_channel.details = SiteChannelDetails.new(brave_publisher_id: "default.org")
+
+    Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
+
+    contested_by_channel.save!
+
+    refute channel.destroy
+  end
+
+  test "if channel is a duplicate of a verified channel it must be contested sites" do
+    channel = channels(:verified)
+    contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
+    contested_by_channel.details = SiteChannelDetails.new(brave_publisher_id: "verified.org")
+
+    Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
+
+    assert channel.valid?
+    assert contested_by_channel.valid?
+  end
+
+  test "if channel is a duplicate of a verified channel it must be contested youtube" do
+    channel = channels(:youtube_new)
+    contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
+    contested_by_channel.details = YoutubeChannelDetails.new(youtube_channel_id: "323541525412313421",
+                                                             auth_user_id: "youtube_new_details_abc123",
+                                                             auth_provider: "google_oauth2",
+                                                             title: "The DIY Channel",
+                                                             thumbnail_url: "https://some_image_host.com/some_image.png")
+
+    Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
+
+    assert channel.valid?
+    assert contested_by_channel.valid?
+  end
+
+  test "if channel is a duplicate of a verified channel it must be contested twitch" do
+    channel = channels(:twitch_verified)
+    contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
+    contested_by_channel.details = TwitchChannelDetails.new(twitch_channel_id: "78032",
+                                                            auth_user_id: "abc123",
+                                                            auth_provider: "twitch",
+                                                            name: "twtwtw",
+                                                            display_name: "TwTwTw",
+                                                            thumbnail_url: "https://some_image_host.com/some_image.png")
+
+    Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
+
+    assert channel.valid?
+    assert contested_by_channel.valid?
+  end
+
+  test "duplicate of a verified channel isn't valid if the original isn't contested sites" do
+    channel = channels(:verified)
+
+    contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
+    contested_by_channel.details = SiteChannelDetails.new(brave_publisher_id: "verified.org")
+    contested_by_channel.save!
+
+    assert channel.valid?
+    refute contested_by_channel.valid?
+  end
+
+  test "duplicate of a verified channel isn't valid if the original isn't contested youtube" do
+    channel = channels(:youtube_new)
+
+    contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
+    contested_by_channel.details = YoutubeChannelDetails.new(youtube_channel_id: "323541525412313421",
+                                                             auth_user_id: "youtube_new_details_abc123",
+                                                             auth_provider: "google_oauth2",
+                                                             title: "The DIY Channel",
+                                                             thumbnail_url: "https://some_image_host.com/some_image.png")
+    contested_by_channel.save!
+
+    assert channel.valid?
+    refute contested_by_channel.valid?
+  end
+
+  test "duplicate of a verified channel isn't valid if the original isn't contested twitch" do
+    channel = channels(:twitch_verified)
+    contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
+    contested_by_channel.details = TwitchChannelDetails.new(twitch_channel_id: "78032",
+                                                            auth_user_id: "abc123",
+                                                            auth_provider: "twitch",
+                                                            name: "twtwtw",
+                                                            display_name: "TwTwTw",
+                                                            thumbnail_url: "https://some_image_host.com/some_image.png")
+    contested_by_channel.save!
+
+    assert channel.valid?
+    refute contested_by_channel.valid?
+  end
 end

@@ -1,0 +1,11 @@
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+
+      h3.single-panel--headline= t ".heading"
+
+      / = form_tag url: reject_transfer_path(@current_channel) do |f|
+      /   .form-group
+      /     / = f.text_field nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email")
+      /   = f.submit(t(".reject"), class: "btn btn-block btn-primary")
