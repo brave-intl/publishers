@@ -90,7 +90,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
+    assert result[:response].is_a?(Errno::ECONNREFUSED)
   end
 
   test "connection to site fails when https fails and http is require_https is true" do
@@ -103,7 +103,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
+    assert result[:response].is_a?(Errno::ECONNREFUSED)
   end
 
   test "follows local redirects" do
@@ -145,7 +145,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
+    assert result[:response].is_a?(Publishers::Fetch::RedirectError)
     assert_equal "non local redirects prohibited", result[:response].to_s
   end
 

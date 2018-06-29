@@ -36,7 +36,7 @@ class SiteChannelHostInspector < BaseService
     end
 
     { response: response, web_host: web_host }
-  rescue Publishers::Fetch::RedirectError, Publishers::Fetch::ConnectionFailedError => e
+  rescue => e
     Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
     { response: e }
   end
@@ -47,23 +47,23 @@ class SiteChannelHostInspector < BaseService
     # test HTTPS first
     https_result = inspect_uri(URI("https://#{brave_publisher_id}"))
     if success_response?(https_result)
-      return response_result(https_result, true)
+      return response_result(inspect_result: https_result, https: true)
     end
 
     # test HTTPS for www subdomain next
     https_www_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
     if success_response?(https_www_result)
-      return response_result(https_www_result, true)
+      return response_result(inspect_result: https_www_result, https: true)
     elsif require_https
-      return failure_result(https_www_result)
+      return failure_result(https_result[:response])
     end
 
     # test HTTP last
     http_result = inspect_uri(URI("http://#{brave_publisher_id}"))
     if success_response?(http_result)
-      return response_result(http_result, false)
+      return response_result(inspect_result: http_result, https: false, https_error: https_result[:response])
     else
-      return failure_result(http_result)
+      return failure_result(https_result[:response])
     end
   end
 
@@ -73,15 +73,34 @@ class SiteChannelHostInspector < BaseService
     inspect_result[:response].is_a?(Net::HTTPSuccess)
   end
 
-  def response_result(inspect_result, https)
+  def response_result(inspect_result:, https:, https_error: nil)
     result = { host_connection_verified: true, https: https }
+    result[:https_error] = https_error_message(https_error)
     result[:web_host] = inspect_result[:web_host] if check_web_host
     result
   end
 
-  def failure_result(inspect_result)
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{inspect_result[:response]}")
-    { response: inspect_result[:response], host_connection_verified: false, https: false }
+  def failure_result(error_response)
+    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{error_response}")
+    result  = { response: error_response, host_connection_verified: false, https: false }
+    result[:https_error] = https_error_message(error_response)
+    result
+  end
+
+  def https_error_message(error_response)
+    case error_response
+    when OpenSSL::SSL::SSLError
+      error_response.to_s
+    when RedirectError
+      # error_response.to_s
+      nil
+    when Errno::ECONNREFUSED
+      nil
+    when Net::OpenTimeout
+      nil
+    else
+      nil
+    end
   end
 
   def true?(obj)

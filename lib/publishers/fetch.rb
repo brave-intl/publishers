@@ -45,9 +45,10 @@ module Publishers
           else
             response.value
         end
-
+      rescue OpenSSL::SSL::SSLError, RedirectError, Errno::ECONNREFUSED, Net::OpenTimeout
+        raise
       rescue => e
-        raise ConnectionFailedError.new(e)
+        raise ConnectionFailedError.new(e.to_s)
       end
     end
   end

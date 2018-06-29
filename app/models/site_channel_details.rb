@@ -99,6 +99,7 @@ class SiteChannelDetails < ApplicationRecord
       self.detected_web_host = nil
       self.host_connection_verified = false
     end
+    self.https_error = result[:https_error]
   end
 
   private
