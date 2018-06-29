@@ -6,6 +6,10 @@
   p.note-text
     = image_tag("x.png", alt: t(".no_https_alt"), class: "https-check-icon", width: 12, height: 12)
     = t ".no_https"
+  - if current_channel.details.https_error
+    p.note-text
+      = t ".https_error_encountered"
+      = current_channel.details.https_error
   = form_for(current_channel.details, method: :patch, url: check_for_https_site_channel_path(current_channel)) do |f|
     = f.submit(t(".button"), class: "btn btn-wide btn-primary")
 .clearfix
