@@ -81,6 +81,22 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
         .col
           .add-channel-cta
             = t ".add_channel_cta"
+
+    - # Only show WIP charts when `?charts=true` param is used
+    - if params[:charts]
+      .row
+        .col
+          .dashboard-panel--wrapper.with-charts
+            .dashboard-panel--header
+            .dashboard-panel--content
+              #contributions_chart
+
+        .col
+          .dashboard-panel--wrapper.with-charts
+            .dashboard-panel--header
+            .dashboard-panel--content
+              #monthly_deposits_chart
+
     .row
       .col
         .dashboard-panel--wrapper.uphold-panel

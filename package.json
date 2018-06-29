@@ -6,7 +6,8 @@
   "dependencies": {
     "@rails/webpacker": "^3.2.0",
     "clipboard": "^1.7.1",
-    "rails-ujs": "^5.1.4"
+    "rails-ujs": "^5.1.4",
+    "d3": "^4.12.2"
   },
   "devDependencies": {
     "karma": "^2.0.2",
