@@ -115,10 +115,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               label= t ".uphold.deposit_currency_label"
               .value#default_currency_code= current_publisher.default_currency.present? ? current_publisher.default_currency : t(".uphold.no_currency_selected")
               .action
-                span= "("
+                / TODO Fill in when cards:write works 
+                span= ""
                 a#change_default_currency href="#"
-                  = t ".uphold.change"
-                span= ")"
+                  = ""
+                span= ""
             .last-deposit-date.field
               label= t ".uphold.last_deposit_date"
               .value.deposit-date#last_deposit_date= publisher_humanize_last_settlement_date(current_publisher)
