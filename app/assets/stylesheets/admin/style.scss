@@ -119,6 +119,13 @@ a.logo span {
       margin: 10px 0px;
     }
 
+    .split-row-container {
+      display: flex;
+    }
+
+    .split-row {
+      flex: 1;
+    }
     .db-info-row {
       display: flex;
       .db-field {
@@ -183,6 +190,21 @@ a.logo span {
         }
         .channel-info {
           flex: 2;
+          hr {
+            margin: 10px
+          }
+          .admin-approval {
+            display: flex;
+            justify-content: space-between;
+
+            .admin-approval-warning {
+              color: red;
+            }
+            .admin-approval-success {
+              color: green;
+            }
+
+          }
         }
       }      
     }

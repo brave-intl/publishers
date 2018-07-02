@@ -17,3 +17,7 @@ created:
 onboarding:
   publisher: onboarding
   status: "onboarding"
+
+suspended:
+  publisher: suspended
+  status: "suspended"

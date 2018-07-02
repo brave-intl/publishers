@@ -96,6 +96,7 @@ Rails.application.routes.draw do
     resources :faqs, except: [:show]
     resources :publishers do
       collection do
+        patch :approve_channel
         patch :generate_statement
         get :statement_ready
         post :create_note

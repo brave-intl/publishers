@@ -7,55 +7,55 @@
       .alert.alert-danger role="alert"
         = flash[:alert]
     h2 = @publisher.name
-    .rounded-box
-      .db-info-row
-        .db-field = "Email:"
-        .db-value = @publisher.email
-      .db-info-row
-        .db-field = "Status:"
-        .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
-      .db-info-row
-        .db-field = "Uphold connected:"
-        .db-value = @publisher.uphold_verified?
-      .db-info-row
-        .db-field = "Current contribution balance:"
-        .db-value = publisher_converted_balance(@publisher) || publisher_humanize_balance(@publisher, "BAT")
-      .db-info-row
-        .db-field = "Default currency:"
-        .db-value = @publisher.default_currency
-      - if @publisher.promo_enabled_2018q1
+    .rounded-box.split-row-container
+      .split-row
         .db-info-row
-          .db-field = "Referral downloads:"
-          .db-value = total_referral_downloads(@publisher)
+          .db-field = "Email:"
+          .db-value = @publisher.email
         .db-info-row
-          .db-field = "Referral confirmations:"
-          .db-value = confirmed_referral_downloads(@publisher)
-  hr
-    h3.admin-header = "Statements"
-    #statement-section
-      .statement
-        = form_for(@publisher, url: generate_statement_admin_publishers_path, html: { id: "statement_generator" }, method: :patch) do |f|
-          .form-group
-            = hidden_field_tag(:id, @publisher.id)
-            = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
-            a#generate_statement href="#" class="btn btn-primary"
-              = "Generate statement"
-      .statements-table.rounded-box
-        .header
-          .created-at= t ".created_at"
-          .period= t ".period"
-          .status= t ".status"
-        .content#generated_statements
-          - @publisher.statements.each do |s|
-            .statement
-              .created-at= statement_period_date(s.created_at)
-              .period= statement_period_description(s.period.to_sym)
-              .status
-                - if s.encrypted_contents?
-                  span= 'Ready'
-                  = link_to(t("shared.download"), statement_publishers_url(id: s.id), class: 'download')
-                - else
-                  = t ".statements.delayed"
+          .db-field = "Status:"
+          .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
+        .db-info-row
+          .db-field = "Uphold connected:"
+          .db-value = @publisher.uphold_verified?
+        .db-info-row
+          .db-field = "Current contribution balance:"
+          .db-value = publisher_converted_balance(@publisher) || publisher_humanize_balance(@publisher, "BAT")
+        .db-info-row
+          .db-field = "Default currency:"
+          .db-value = @publisher.default_currency
+        - if @publisher.promo_enabled_2018q1
+          .db-info-row
+            .db-field = "Referral downloads:"
+            .db-value = total_referral_downloads(@publisher)
+          .db-info-row
+            .db-field = "Referral confirmations:"
+            .db-value = confirmed_referral_downloads(@publisher)
+      #statement-section.split-row
+        h3.admin-header = "Statements"
+        .statement
+          = form_for(@publisher, url: generate_statement_admin_publishers_path, html: { id: "statement_generator" }, method: :patch) do |f|
+            .form-group
+              = hidden_field_tag(:id, @publisher.id)
+              = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
+              a#generate_statement href="#" class="btn btn-primary"
+                = "Generate statement"
+        .statements-table.rounded-box
+          .header
+            .created-at= t ".created_at"
+            .period= t ".period"
+            .status= t ".status"
+          .content#generated_statements
+            - @publisher.statements.each do |s|
+              .statement
+                .created-at= statement_period_date(s.created_at)
+                .period= statement_period_description(s.period.to_sym)
+                .status
+                  - if s.encrypted_contents?
+                    span= 'Ready'
+                    = link_to(t("shared.download"), statement_publishers_url(id: s.id), class: 'download')
+                  - else
+                    = t ".statements.delayed"
   hr
 
   h3.admin-header = "Channels (#{@publisher.channels.count})"
@@ -65,6 +65,17 @@
         .channel-link
           = link_to(on_channel_type(channel), channel_url(channel))
         .channel-info
+          - if channel.verification_awaiting_admin_approval?
+            .admin-approval
+              span.admin-approval-warning = "Admin approval required"
+              span.admin-approval-button
+                = form_for channel, as: :channel, method: :patch, url: approve_channel_admin_publishers_path(channel_id: channel.id) do |f|
+                  = f.submit("Approve", class: "btn btn-primary")
+            hr
+          - elsif channel.verification_approved_by_admin?
+            .admin-approval
+              span.admin-approval-success = "Admin approved"
+            hr
           .db-info-row
             .db-field = "Current contribution balance"
             .db-value = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
@@ -82,6 +93,7 @@
             .db-info-row
               .db-field = "Referral code:"
               .db-value = channel.promo_registration.referral_code
+
   hr
   h3.admin-header = "Notes"
   #notes-section

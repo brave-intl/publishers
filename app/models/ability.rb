@@ -9,7 +9,7 @@ class Ability
     ADMIN_IP_WHITELIST = [].freeze
   end
 
-  def initialize(publisher, ip)    
+  def initialize(publisher, ip)
     @publisher = publisher || Publisher.new
     @ip = ip
 
@@ -33,7 +33,9 @@ class Ability
 
   def admin
     raise AdminNotOnIPWhitelistError.new("Administrator must be IP whitelisted") unless admin_ip_whitelisted?
-    raise TwoFactorDisabledError.new("2fa must be enabled for administrators") unless two_factor_enabled?(@publisher)
+    if Rails.env.production? || Rails.env.test?
+      raise U2fDisabledError.new("U2F must be enabled for administrators") unless u2f_enabled?(@publisher)
+    end
     can :manage, :all
     can :access, :all
   end
@@ -44,9 +46,9 @@ class Ability
     admin_ip_whitelisted
   end
 
-  class TwoFactorDisabledError < RuntimeError
+  class U2fDisabledError < RuntimeError
   end
-  
+
   class AdminNotOnIPWhitelistError < RuntimeError
   end
 end
