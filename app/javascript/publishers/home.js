@@ -237,7 +237,6 @@ function disconnectUphold() {
 }
 
 function openDefaultCurrencyModal() {
-  return // TODO Uncomment when cards:write works
   let template = document.querySelector('#confirm_default_currency_modal_wrapper');
   let closeFn = openModal(template.innerHTML);
 
