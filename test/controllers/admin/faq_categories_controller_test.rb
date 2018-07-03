@@ -21,13 +21,13 @@ class Admin::FaqCategoriesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "raises error unless admin has 2fa enabled" do
+  test "raises error unless admin has U2F enabled" do
     admin = publishers(:admin)
-    admin.totp_registration.destroy! # remove 2fa
+    admin.u2f_registrations.destroy_all # remove 2fa
     admin.reload
     sign_in admin
 
-    assert_raises(Ability::TwoFactorDisabledError) do
+    assert_raises(Ability::U2fDisabledError) do
       get admin_faq_categories_path
     end
   end
