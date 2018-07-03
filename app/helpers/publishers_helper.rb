@@ -362,6 +362,10 @@ module PublishersHelper
     publisher.verified?
   end
 
+  def show_faq_link?
+    !Rails.application.secrets[:hide_faqs] && FaqCategory.ready_for_display.count > 0
+  end
+
   def channel_type(channel)
     case channel.details
     when SiteChannelDetails

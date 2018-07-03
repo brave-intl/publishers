@@ -1,0 +1,106 @@
+.faq-category {
+  padding-bottom: 24px;
+
+  h5 {
+    padding-bottom: 10px;
+  }
+}
+
+.faq_login {
+  float: right;
+}
+
+.title {
+  padding-top: 8px;
+}
+
+.faqs_accordion {
+  .panel {
+    position: relative;
+    margin-bottom: 10px;
+    width: 100%;
+    color: #212222;
+    overflow: hidden;
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+  label {
+    font-family: $headings-font-family;
+    font-weight: $headings-font-weight;
+    position: relative;
+    display: block;
+    background: $braveGray-8;
+    min-height: 30px;
+    padding: 10px 40px 8px 40px;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  .question p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .edit-link {
+    float: right;
+    padding-right: 40px;
+  }
+
+  .panel-content {
+    max-height: 0;
+    overflow: hidden;
+    border-width: 0 2px 2px 2px;
+    border-color: $braveGray-8;
+    color: $braveGray-4;
+    -webkit-transition: max-height .35s;
+    -o-transition: max-height .35s;
+    transition: max-height .35s;
+  }
+
+  .answer {
+    display: block;
+    padding: 15px 60px;
+  }
+
+  input:checked ~ .panel-content {
+    max-height: 50em;
+    border-style: solid;
+  }
+  input:not(:checked) ~ .panel-content {
+    border-style: none;
+  }
+
+  /* Icon */
+  label::after {
+    content: "";
+    position: absolute;
+    right: 5px;
+    top: 6px;
+    display: block;
+    height: 30px;
+    width: 30px;
+    background-image: url(asset-path("select-down-arrow.svg"));
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: 5px;
+    -webkit-transition: all .35s;
+    -o-transition: all .35s;
+    transition: all .35s;
+  }
+  input[type=checkbox]:checked + label::after {
+    transform: rotate(180deg);
+  }
+
+  /* question and answer content styles
+     define styles for the questions and answers here
+  */
+  .question, .answer {
+    p {
+      line-height: 1.9em;
+    }
+  }
+
+}

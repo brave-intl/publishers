@@ -1,0 +1,7 @@
+p#notice = notice
+
+h3= @faq_category.name
+
+= render 'faqs', faqs: @faq_category.faqs, default_faq_category: @faq_category.id
+
+=> link_to 'Edit', edit_admin_faq_category_path(@faq_category)

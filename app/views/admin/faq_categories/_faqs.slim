@@ -1,0 +1,13 @@
+.faqs_accordion
+  - faqs.each do |faq|
+    .panel
+      input type="checkbox" name="panels" id="panel#{faq.id}"
+        label for="panel#{faq.id}"
+          = link_to "Edit", edit_admin_faq_path(faq), class: "edit-link"
+          .rank= "(#{faq.rank}) #{faq.published ? 'P' : 'U'} "
+          .question
+            h5 == faq.question
+      .panel-content
+        .answer
+          h5 == faq.answer
+= link_to "+ #{default_faq_category.name} Question", new_admin_faq_path(faq_category_id: default_faq_category.id)

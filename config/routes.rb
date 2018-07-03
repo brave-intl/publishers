@@ -72,6 +72,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :faqs, only: [:index]
+
   root "static#index"
 
   namespace :api, defaults: { format: :json } do
@@ -90,6 +92,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :faq_categories, except: [:show]
+    resources :faqs, except: [:show]
     resources :publishers do
       collection do
         patch :approve_channel

@@ -37,6 +37,7 @@ en:
     log_in: Log In
     remove: Remove
     terms_of_service: Terms of Service
+    faqs: FAQs
     ok: OK
     choose_different_verification_method: Choose Different Verification Method
   activerecord:
@@ -73,11 +74,15 @@ en:
     nav:
       security: Security
       log_out: Log Out
+      faqs: FAQs
   errors:
     shared:
       heading: Error
       body: Oops, sorry about that. You can try to refresh the page or return to
       contact: "For assistance please contact us at: %{support_email}"
+  faqs:
+    index:
+      title: Frequently Asked Questions
   helpers:
     channels:
       generic_verification_failure: Channel could not be verified!

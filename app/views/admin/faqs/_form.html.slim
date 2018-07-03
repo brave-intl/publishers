@@ -1,0 +1,26 @@
+= form_for [:admin, @faq] do |f|
+  .form-group
+    = f.label(:question, class: "control-label", for: "faq_question")
+    = f.text_area(:question, class: "form-control", id: "faq_question", required: true, rows: 4)
+  .form-group
+    = f.label(:answer, class: "control-label", for: "faq_answer")
+    = f.text_area(:answer, class: "form-control", id: "faq_answer", required: true, rows: 7)
+  .form-group
+    = f.label(:rank, class: "control-label", for: "faq_rank")
+    = f.text_field(:rank, class: "form-control", id: "faq_rank", required: true)
+  .form-group
+    = f.label(:published, class: "control-label", for: "faq_published")
+    = f.check_box(:published, class: "form-control", id: "faq_published", required: false)
+  .form-group
+    = f.label(:category, class: "control-label", for: "faq_category")
+    span &nbsp;
+    = f.select(:faq_category_id, categories_select_options(@faq.faq_category_id), id: "faq_category", required: true)
+
+  - if @faq.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@faq.errors.count, "error")} prohibited this question from being saved:"
+      ul
+        - @faq.errors.full_messages.each do |message|
+          li = message
+
+  .actions = f.submit

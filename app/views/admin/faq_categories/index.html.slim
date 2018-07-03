@@ -1,0 +1,16 @@
+div.row
+  div.col-sm-12
+    section.panel
+      header.panel-heading
+        h4 FAQs
+        p= "(#) = rank, P=Published, U=Unpublished"
+        = link_to '+ New Category', new_admin_faq_category_path
+      br
+      .categories
+        - @faq_categories.each do |faq_category|
+          .faq-category
+            = link_to "Edit", edit_admin_faq_category_path(faq_category), class: "edit-link"
+            .rank= "(#{faq_category.rank}) "
+            h5= faq_category.name
+
+            = render 'faqs', faqs: faq_category.faqs, default_faq_category: faq_category
