@@ -266,6 +266,10 @@
         background-repeat: no-repeat;
         background-position: top right;
       }
+
+      &.with-charts {
+        padding: 30px 30px 30px 40px;
+      }
     }
     &--header {
       margin: 0 0 0 -50px;
@@ -892,5 +896,36 @@
     &--body-box {
       padding: 16px;
     }
+  }
+}
+
+#contributions_chart {
+  .legend {
+    font-size: 14px;
+  }
+  .total {
+    font-size: 30px;
+  }
+  .alt-total {
+    font-size: 15px;
+    fill: gray;
+  }
+}
+
+#monthly_deposits_chart {
+  .tick line,
+  .x-axis .domain {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+  }
+  .y-axis .domain,
+  .x-axis .tick line {
+    display: none;
+  }
+  .y-units,
+  .tick text {
+    font-size: 13px;
+    fill: gray;
   }
 }
