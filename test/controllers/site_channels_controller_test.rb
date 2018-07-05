@@ -42,8 +42,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in publishers(:global_media_group)
 
-    refute channel.verification_started?
-
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
     headers = {
       'Accept' => '*/*',
@@ -67,8 +65,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = channels(:global_inprocess)
 
     sign_in publishers(:global_media_group)
-
-    refute channel.verification_started?
 
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
     headers = {

@@ -101,7 +101,6 @@ class SiteChannelsController < ApplicationController
   end
 
   def verify
-    current_channel.verification_started!
     SiteChannelVerifier.new(channel: current_channel).perform
     current_channel.reload
     if current_channel.verified?

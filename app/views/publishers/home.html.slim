@@ -211,7 +211,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")
-            - elsif channel.verification_started? || channel.verification_failed?
+            - elsif channel.verification_failed?
               .channel-status.float-right
                 = channel_verification_details(channel)
                 = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")

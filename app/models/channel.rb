@@ -25,7 +25,7 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
-  validates :verification_status, inclusion: { in: %w(started failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
+  validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
@@ -113,10 +113,6 @@ class Channel < ApplicationRecord
     false
   end
 
-  def verification_started!
-    update!(verified: false, verification_status: 'started', verification_details: nil)
-  end
-
   def verification_failed!(details = nil)
     # Clear changes so we don't bypass validations when saving without checking them
     self.reload
@@ -140,10 +136,6 @@ class Channel < ApplicationRecord
     end
     
     update!(verified: true, verification_status: verification_status, verification_details: nil, verified_at: Time.now)
-  end
-
-  def verification_started?
-    self.verification_status == 'started'
   end
 
   def verification_failed?
