@@ -58,6 +58,16 @@ completed:
   details: completed_details (SiteChannelDetails)
   verified: true
 
+partially_completed_verified:
+  publisher: partially_completed
+  details: partially_completed_verified (SiteChannelDetails)
+  verified: true
+
+partially_completed_unverified:
+  publisher: partially_completed
+  details: partially_completed_unverified (SiteChannelDetails)
+  verified: false
+
 stale:
   created_at: <%= Time.now - 10.weeks %>
   updated_at: <%= Time.now - 10.weeks %>
