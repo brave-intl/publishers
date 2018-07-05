@@ -2,6 +2,7 @@
 @import "*";
 @import "breakpoints";
 @import "fonts";
+@import 'admin/bootstrap';
 @import "colors";
 @import "bootstrap-config";
 
@@ -10,3 +11,6 @@
 
 // Application
 @import "application-config";
+
+// Admin pages
+@import "pages/**/*";

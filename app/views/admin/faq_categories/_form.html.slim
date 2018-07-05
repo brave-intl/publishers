@@ -1,0 +1,16 @@
+= form_for [:admin, @faq_category] do |f|
+  .form-group
+    = f.label(:name, class: "control-label", for: "faq_category_name")
+    = f.text_field(:name, class: "form-control", id: "faq_category_name", required: true)
+  .form-group
+    = f.label(:rank, class: "control-label", for: "faq_category_rank")
+    = f.text_field(:rank, class: "form-control", id: "faq_category_name", required: true)
+
+  - if @faq_category.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@faq_category.errors.count, "error")} prohibited this category from being saved:"
+      ul
+        - @faq_category.errors.full_messages.each do |message|
+          li = message
+
+  .actions = f.submit

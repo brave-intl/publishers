@@ -13,15 +13,24 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   before_action :set_paper_trail_whodunnit
+  before_action :no_cache
+
+  def no_cache
+    response.headers['Cache-Control'] = 'no-cache, no-store'
+  end
 
   def current_user
     current_publisher
   end
 
+  def user_for_paper_trail
+    current_user.try(:id)
+  end
+
   def current_ability
     @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
-  
+
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end

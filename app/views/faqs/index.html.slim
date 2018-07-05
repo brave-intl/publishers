@@ -1,0 +1,27 @@
+- content_for(:navbar_content_right) do
+  - unless current_publisher
+    .faq_login
+      = link_to(\
+        t("shared.log_in"), \
+        new_auth_token_publishers_path, \
+        class: "btn btn-block btn-secondary", \
+        :"data-piwik-action" => "FAQLoginClicked", \
+        :"data-piwik-name" => "Clicked", \
+        :"data-piwik-value" => "FAQ")
+
+  = link_to(\
+    t(".title"), \
+    faqs_path, \
+    class: 'title' \
+  )
+
+.single-panel--wrapper.single-panel--wrapper--xlarge#statements_panel
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content.text-left
+      .categories
+        - @faq_categories.each do |faq_category|
+          / - if faq_category.faqs.count > 0
+          .faq-category
+            h5= faq_category.name
+            = render 'faqs', faqs: faq_category.faqs

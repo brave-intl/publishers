@@ -72,6 +72,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :faqs, only: [:index]
+
   root "static#index"
 
   namespace :api, defaults: { format: :json } do
@@ -90,12 +92,16 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :faq_categories, except: [:show]
+    resources :faqs, except: [:show]
     resources :publishers do
       collection do
+        patch :approve_channel
         patch :generate_statement
         get :statement_ready
         post :create_note
       end
+      resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
     root to: "dashboard#index" # <--- Root route

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+brave_payments:
+  name: Brave Payments
+  rank: 10
+
+verification:
+  name: Verification
+  rank: 0
+
+about:
+  name: About
+  rank: 100
+
+empty:
+  name: Empty
+  rank: 50

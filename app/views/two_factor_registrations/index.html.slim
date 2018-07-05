@@ -65,38 +65,35 @@
                 = link_to t(".totp.confirm_disable.confirm"), "#", class: "js-confirm btn btn-wide btn-outline-secondary"
 
           - else
-            p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary"
+            p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "CreateTOTPClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "2FA"
           p.icon= render "smartphone_with_code"
 
-        / FIXME: U2F is dark launched, and you need to specify params[:u2f]
-        / We will enable it when Brave is ready. See issue #442
-        - if @u2f_registrations.any? || params[:u2f].present?
-          .col-two-factor--content
-            h5= t ".u2f.heading"
-            p
-              = t ".u2f.intro"
-              br
-              small
-                = "*#{t ".u2f.intro_warning"} "
-                span.tf-tooltip
-                  span.icon= render "icon_help"
-                  span.tf-tooltip-content
-                    span.tf-tooltip-content-heading= t ".u2f.browser.heading"
-                    span.tf-tooltip-content-content== t ".u2f.browser.content_html"
-              br
-              small
-                = "*#{t ".u2f.device.tooltip"} "
-                span.tf-tooltip
-                  span.icon= render "icon_help"
-                  span.tf-tooltip-content
-                    span.tf-tooltip-content-heading= t ".u2f.device.heading"
-                    span.tf-tooltip-content-content== t ".u2f.device.content_html"
-            - if @u2f_registrations.any?
-              p= render @u2f_registrations
-            - else
-              p.two-factor-method-disabled
-                == "&bull; "
-                = t ".u2f.disabled"
-          .col-two-factor--action
-            p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary"
-            p.icon= render "usb"
+        .col-two-factor--content
+          h5= t ".u2f.heading"
+          p
+            = t ".u2f.intro"
+            br
+            small
+              = "*#{t ".u2f.intro_warning"} "
+              span.tf-tooltip
+                span.icon= render "icon_help"
+                span.tf-tooltip-content
+                  span.tf-tooltip-content-heading= t ".u2f.browser.heading"
+                  span.tf-tooltip-content-content== t ".u2f.browser.content_html"
+            br
+            small
+              = "*#{t ".u2f.device.tooltip"} "
+              span.tf-tooltip
+                span.icon= render "icon_help"
+                span.tf-tooltip-content
+                  span.tf-tooltip-content-heading= t ".u2f.device.heading"
+                  span.tf-tooltip-content-content== t ".u2f.device.content_html"
+          - if @u2f_registrations.any?
+            p= render @u2f_registrations
+          - else
+            p.two-factor-method-disabled
+              == "&bull; "
+              = t ".u2f.disabled"
+        .col-two-factor--action
+          p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "CreateU2FClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "2FA"
+          p.icon= render "usb"

@@ -164,7 +164,7 @@ class ChannelTest < ActiveSupport::TestCase
     refute channel.verification_failed?
     assert channel.verification_started?
 
-    channel.verification_succeeded!
+    channel.verification_succeeded!(false)
 
     assert channel.verified?
     assert_not_nil channel.verified_at
@@ -177,7 +177,7 @@ class ChannelTest < ActiveSupport::TestCase
 
     channel.verification_started!
     assert_raise do
-      channel.verification_succeeded!
+      channel.verification_succeeded!(false)
     end
     assert_equal Channel::VERIFICATION_RESTRICTION_ERROR, \
       channel.errors.messages[:verified][0]
@@ -194,7 +194,7 @@ class ChannelTest < ActiveSupport::TestCase
 
     channel.verification_started!
     channel.verification_admin_approval = true
-    channel.verification_succeeded!
+    channel.verification_succeeded!(false)
 
     channel.reload
     assert channel.verified?
@@ -221,12 +221,20 @@ class ChannelTest < ActiveSupport::TestCase
     channel = channels(:default)
 
     channel.verification_started!
-    channel.verification_succeeded!
+    channel.verification_succeeded!(false)
 
     assert channel.verified?
     assert_not_nil channel.verified_at
 
     channel.update(verified: false)
     assert_nil channel.verified_at
+  end
+
+  test "verification_succeeded!() sets approved_by_admin flag" do
+    channel = channels(:default)
+
+    channel.verification_started!
+    channel.verification_succeeded!(true)
+    assert channel.verification_status = "approved_by_admin"
   end
 end

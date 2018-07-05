@@ -20,12 +20,18 @@
             .col.col-xs-12.col-sm-12
               = link_to(t("shared.get_started"), sign_up_publishers_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "StartSignupClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
           hr.divider
-          .row
+          .row.login
             .col.col-xs-12.col-sm-8
               p.alt-path-copy
                 strong= t("shared.existing_account")
               p= t ".login.body"
             .col.col-xs-12.col-sm-4.button-column
               = link_to(t("shared.log_in"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
-        .terms-of-service.float-right
-          = link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")
+          hr.tos-faq--divider
+          .row
+            .col.col-xs-12.col-sm-8
+              .tos-faq
+                - if show_faq_link?
+                  span= link_to(t("shared.faqs"), faqs_path)
+                  span.link-separator= " | "
+                span= link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")

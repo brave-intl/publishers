@@ -68,6 +68,14 @@ class Publisher < ApplicationRecord
 
   scope :email_verified, -> { where.not(email: nil) }
   scope :not_admin, -> { where.not(role: ADMIN) }
+  scope :suspended, -> {
+    joins(:status_updates)
+    .where('publisher_status_updates.created_at =
+            (SELECT MAX(publisher_status_updates.created_at)
+            FROM publisher_status_updates
+            WHERE publisher_status_updates.publisher_id = publishers.id)')
+    .where("publisher_status_updates.status = 'suspended'")
+  }
 
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
@@ -153,11 +161,12 @@ class Publisher < ApplicationRecord
 
   def uphold_reauthorization_needed?
     self.uphold_verified? &&
+      self.wallet.present? &&
       ['re-authorize', 'authorize'].include?(self.wallet.action)
   end
 
   def uphold_incomplete?
-    self.uphold_verified? && !self.wallet.authorized?
+    self.uphold_verified? && self.wallet.present? && !self.wallet.authorized?
   end
 
   def uphold_status
@@ -228,6 +237,15 @@ class Publisher < ApplicationRecord
     role == PUBLISHER
   end
 
+  def inferred_status
+    return last_status_update.status if last_status_update.present?
+    if verified?
+      return PublisherStatusUpdate::ACTIVE
+    else
+      return PublisherStatusUpdate::ONBOARDING
+    end
+  end
+  
   def last_status_update
     status_updates.first
   end
@@ -238,6 +256,7 @@ class Publisher < ApplicationRecord
 
   def can_create_uphold_cards?
     uphold_verified? &&
+      wallet.present? &&
       wallet.authorized? &&
       wallet.scope &&
       wallet.scope.include?("cards:write")

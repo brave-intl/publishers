@@ -1,0 +1,15 @@
+- content_for(:head_style_tags) do
+  = stylesheet_link_tag("application", media: "all")
+
+- content_for(:content) do
+  .main-content
+    div class="panels-container"
+      = yield
+
+// viewport_initial_scale here is a whitelist of actions that have true
+// responsiveness, and no longer need to 0.6 viewport scaling.
+= render \
+  template: "layouts/application",
+  locals: { \
+    viewport_initial_scale: "1.0" \
+  }

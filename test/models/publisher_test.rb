@@ -574,4 +574,16 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
+  test "suspended scope returns suspended publishers" do
+    # ensure all suspended publishers are included in the scope
+    suspended_publishers = Publisher.suspended
+    suspended_publishers.each {|publisher| assert publisher.last_status_update, PublisherStatusUpdate::SUSPENDED}
+
+    # ensure a publisher that is unsuspended does not appear in scope
+    publisher = publishers(:suspended)
+    assert suspended_publishers.include?(publisher)
+    status_update = PublisherStatusUpdate.new(status: "active", publisher: publisher)
+    status_update.save!
+    assert Publisher.suspended.exclude?(publisher)
+  end
 end

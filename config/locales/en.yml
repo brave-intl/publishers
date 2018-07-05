@@ -37,7 +37,9 @@ en:
     log_in: Log In
     remove: Remove
     terms_of_service: Terms of Service
+    faqs: FAQs
     ok: OK
+    choose_different_verification_method: Choose Different Verification Method
   activerecord:
     shared:
       errors: "There were errors saving your request:"
@@ -72,11 +74,15 @@ en:
     nav:
       security: Security
       log_out: Log Out
+      faqs: FAQs
   errors:
     shared:
       heading: Error
       body: Oops, sorry about that. You can try to refresh the page or return to
       contact: "For assistance please contact us at: %{support_email}"
+  faqs:
+    index:
+      title: Frequently Asked Questions
   helpers:
     channels:
       generic_verification_failure: Channel could not be verified!
@@ -587,7 +593,6 @@ en:
         that this may take a few days due to our current backlog.</p>
       review_options: I'd like to review my options
     verification_wordpress:
-      escape_hatch_html: Not using wordpress, or unable to verify your site with the plugin? %{href}
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!
       install_plugin_html: |
@@ -635,7 +640,7 @@ en:
     index:
       u2f_unavailable_html: |
         <strong>Security key not supported by your browser.</strong><br>
-        Switch to Google Chrome or Opera browser to log in. We also recommend
+        Switch to Brave, Google Chrome or Opera browser to log in. We also recommend
         setting up authenticator app as a backup method for two-factor
         authentication for this situation.
       u2f-error:
@@ -713,7 +718,7 @@ en:
         browser:
           heading: Limited Browser Support
           content_html: |
-            This means you will need to update to the latest <strong>Google
+            This means you will need to update to the latest <strong>Brave</strong>, <strong>Google
             Chrome</strong> or <strong>Opera</strong> in order to set up and
             log in using security keys. More browsers will start supporting the
             security key in the near future. We will inform you on the changes.
@@ -754,8 +759,8 @@ en:
         it's blinking.
       u2f-unavailable: |
         Your browser doesn't look like it supports U2F, the two factor auth
-        platform supported by Brave. Please use the latest version of Chrome
-        to register your U2F-compatible device, for example a YubiKey.
+        platform supported by Brave. Please use the latest version of Brave, Chrome
+        or Opera to register your U2F-compatible device, for example a YubiKey.
       u2f-error:
         bad-request: |
           There was an unexpected error in the registration request made by
@@ -775,8 +780,8 @@ en:
           the security key when it is blinking. (TIMEOUT)
         implementation-incomplete: |
           Please insert your security key and re-attempt registration. Some
-          browsers (like Brave) have an incomplete implementation of this
-          protocol. Please use a current release of Google Chrome or Opera.
+          browsers have an incomplete implementation of this
+          protocol. Please use a current release of Brave, Google Chrome or Opera.
           (IMPLEMENTATION_INCOMPLETE)
     u2f_registration:
       name_default: Anonymous Key

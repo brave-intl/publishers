@@ -8,7 +8,10 @@
         .nav.float-left
           h5.nav--title= t("shared.add_channel")
         .nav.float-right
-          = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-outline-primary')
+          - if params[:action] != "verification_choose_method" && params[:id].present?
+            = link_to(t("shared.choose_different_verification_method"), verification_choose_method_site_channel_path(current_channel), class: 'btn btn-secondary btn-outline-primary')
+          - else
+            = link_to(t("shared.cancel"), home_publishers_path, class: 'btn btn-secondary btn-outline-primary')
         = yield(:site_channel_progress)
 
 - content_for(:content) do

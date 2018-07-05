@@ -6,6 +6,9 @@ div.row
       = form_tag(admin_publishers_path, method: "get")
         = text_field_tag(:q)
         = submit_tag("Search")
+        .filters
+          = label_tag('Suspended')
+          = check_box_tag('suspended', 1, params[:suspended].present?)
       br
       div.panel-body
         div.adv-table

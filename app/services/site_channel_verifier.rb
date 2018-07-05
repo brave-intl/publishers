@@ -55,7 +55,7 @@ class SiteChannelVerifier < BaseService
       end
     end
 
-    verified_channel.verification_succeeded!
+    verified_channel.verification_succeeded!(admin_approval)
     verified_channel_post_verify
 
   rescue ActiveRecord::RecordNotFound => e

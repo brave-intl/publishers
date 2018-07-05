@@ -151,6 +151,10 @@ module PublishersHelper
     Rails.application.secrets[:terms_of_service_url]
   end
 
+  def possible_currencies(publisher)
+    publisher.wallet.present? ? publisher.wallet.possible_currencies : []
+  end
+
   def uphold_status_class(publisher)
     case publisher.uphold_status
     when :verified
@@ -167,7 +171,7 @@ module PublishersHelper
   end
 
   def last_settlement_class(publisher)
-    if publisher.wallet.last_settlement_date
+    if publisher.wallet.present? && publisher.wallet.last_settlement_date
       'settlement-made'
     else
       'no-settlement-made'
@@ -356,6 +360,10 @@ module PublishersHelper
 
   def show_nav_menu?(publisher)
     publisher.verified?
+  end
+
+  def show_faq_link?
+    !Rails.application.secrets[:hide_faqs] && FaqCategory.ready_for_display.count > 0
   end
 
   def channel_type(channel)

@@ -21,6 +21,8 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
                     span.user-links-lock
                       .user-links-lock-icon= render two_factor_enabled?(current_publisher) ? "locked_svg" : "unlocked_svg"
                       = t ".security"
+                  - if show_faq_link?
+                    li= link_to t(".faqs"), faqs_path
                   li= link_to t(".log_out"), log_out_publishers_path
           - else
             / btn-secondary and btn-highlight are legacy, can be dropped once

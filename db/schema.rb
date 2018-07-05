@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180614215946) do
+ActiveRecord::Schema.define(version: 20180628164707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,28 @@ ActiveRecord::Schema.define(version: 20180614215946) do
     t.datetime "verified_at"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true, using: :btree
     t.index ["publisher_id"], name: "index_channels_on_publisher_id", using: :btree
+  end
+
+  create_table "faq_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "name"
+    t.integer  "rank"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_faq_categories_on_name", unique: true, using: :btree
+    t.index ["rank"], name: "index_faq_categories_on_rank", using: :btree
+  end
+
+  create_table "faqs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "question"
+    t.string   "answer"
+    t.integer  "rank"
+    t.uuid     "faq_category_id"
+    t.boolean  "published",       default: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id", using: :btree
+    t.index ["question"], name: "index_faqs_on_question", unique: true, using: :btree
+    t.index ["rank"], name: "index_faqs_on_rank", using: :btree
   end
 
   create_table "legacy_publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -170,7 +192,7 @@ ActiveRecord::Schema.define(version: 20180614215946) do
     t.uuid     "publisher_id", null: false
     t.string   "status",       null: false
     t.datetime "created_at",   null: false
-    t.index ["publisher_id"], name: "index_publisher_status_updates_on_publisher_id", using: :btree
+    t.index ["publisher_id", "created_at"], name: "index_publisher_status_updates_on_publisher_id_and_created_at", using: :btree
   end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -272,12 +294,13 @@ ActiveRecord::Schema.define(version: 20180614215946) do
   end
 
   create_table "versions", force: :cascade do |t|
-    t.string   "item_type",  null: false
-    t.integer  "item_id",    null: false
-    t.string   "event",      null: false
+    t.string   "item_type",      null: false
+    t.integer  "item_id",        null: false
+    t.string   "event",          null: false
     t.string   "whodunnit"
     t.text     "object"
     t.datetime "created_at"
+    t.text     "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
