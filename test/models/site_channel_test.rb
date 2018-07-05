@@ -94,13 +94,13 @@ class SiteChannelTest < ActiveSupport::TestCase
 
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels(max_age: 12.weeks).pluck(:brave_publisher_id)
 
-    assert_equal 15, brave_publisher_ids.length
+    assert_equal 16, brave_publisher_ids.length
     assert brave_publisher_ids.include?("stale.org")
 
     # Default max_age of 6 weeks
     brave_publisher_ids = SiteChannelDetails.recent_unverified_site_channels.pluck(:brave_publisher_id)
 
-    assert_equal 14, brave_publisher_ids.length
+    assert_equal 15, brave_publisher_ids.length
     refute brave_publisher_ids.include?("stale.org")
   end
 

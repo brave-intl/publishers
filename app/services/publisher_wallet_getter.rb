@@ -17,7 +17,7 @@ class PublisherWalletGetter < BaseApiClient
     end
 
     channel_responses = {}
-    publisher.channels.each do |channel|
+    publisher.channels.verified.each do |channel|
       identifier =  channel.details.channel_identifier
       channel_responses[identifier] = connection.get do |request|
         request.headers["Authorization"] = api_authorization_header

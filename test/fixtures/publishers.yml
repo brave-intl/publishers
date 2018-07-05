@@ -205,3 +205,10 @@ suspended:
   name: "Susan the suspended"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
+
+# Has one verified channel, and one unverified channel
+partially_completed:
+  email: "partially_completed@example.com"
+  name: "Perry"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
