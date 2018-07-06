@@ -29,14 +29,8 @@ class Channel < ApplicationRecord
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
-  # Sensitive channels require manual admin approval to verify.
-  validate :verification_restriction_ok
-
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
   before_save :clear_verified_at_if_necessary
-
-  # Set this to true prior to save to signnify admin approval.
-  attr_accessor :verification_admin_approval
 
   scope :site_channels, -> { joins(:site_channel_details) }
   scope :youtube_channels, -> { joins(:youtube_channel_details) }
@@ -128,14 +122,23 @@ class Channel < ApplicationRecord
     update!(verified: false, verification_status: 'awaiting_admin_approval', verification_details: nil)
   end
 
-  def verification_succeeded!(admin_approval)
-    if admin_approval
-      verification_status = 'approved_by_admin'
+  def verification_succeeded!(has_admin_approval)
+    if needs_admin_approval?
+      if has_admin_approval
+        verification_status = 'approved_by_admin'
+      else
+        raise VERIFICATION_RESTRICTION_ERROR
+      end
     else
       verification_status = nil
     end
     
     update!(verified: true, verification_status: verification_status, verification_details: nil, verified_at: Time.now)
+  end
+
+  def needs_admin_approval?
+    require "publishers/restricted_channels"
+    Publishers::RestrictedChannels.restricted?(self)
   end
 
   def verification_failed?
@@ -179,19 +182,6 @@ class Channel < ApplicationRecord
 
     if dupicate_unverified_channels.any?
       errors.add(:brave_publisher_id, "must be unique")
-    end
-  end
-
-  # Sensitive channels require manual admin approval to verify.
-  # TODO: Create a better admin verification workflow.
-  def verification_restriction_ok
-    require "publishers/restricted_channels"
-
-    if !verified? || !verified_changed? || !Publishers::RestrictedChannels.restricted?(self)
-      return true
-    end
-    if !verification_admin_approval
-      errors.add(:verified, VERIFICATION_RESTRICTION_ERROR)
     end
   end
 end

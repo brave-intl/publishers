@@ -154,8 +154,6 @@ class ChannelTest < ActiveSupport::TestCase
     assert_raise do
       channel.verification_succeeded!(false)
     end
-    assert_equal Channel::VERIFICATION_RESTRICTION_ERROR, \
-      channel.errors.messages[:verified][0]
 
     channel.reload
     refute channel.verified?
@@ -166,8 +164,7 @@ class ChannelTest < ActiveSupport::TestCase
   test "verification_succeeded! for restricted channels with admin approval succeeds" do
     channel = channels(:to_verify_restricted)
 
-    channel.verification_admin_approval = true
-    channel.verification_succeeded!(false)
+    channel.verification_succeeded!(true)
 
     channel.reload
     assert channel.verified?
