@@ -160,6 +160,10 @@ class PublishersController < ApplicationController
     end
   end
 
+  def dashboard_charts
+    render partial: 'dashboard_charts', locals: {channel_balances_json: PublisherWalletGetter.new(publisher: current_publisher).perform.channel_balances.to_json}
+  end
+
   def update_email
     @publisher = current_publisher
     update_params = publisher_update_email_params

@@ -84,18 +84,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
     - # Only show WIP charts when `?charts=true` param is used
     - if params[:charts]
-      .row
-        .col
-          .dashboard-panel--wrapper.with-charts
-            .dashboard-panel--header
-            .dashboard-panel--content
-              #contributions_chart
-
-        .col
-          .dashboard-panel--wrapper.with-charts
-            .dashboard-panel--header
-            .dashboard-panel--content
-              #monthly_deposits_chart
+      = render_async dashboard_charts_publishers_path, event_name: 'eyeshade-balance-received'
 
     .row
       .col
@@ -350,3 +339,5 @@ javascript:
   document.addEventListener('DOMContentLoaded', function() {
     javascriptDetected();
   });
+
+= content_for :render_async

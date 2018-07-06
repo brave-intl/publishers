@@ -83,6 +83,9 @@ gem "redis-rails", "~> 5"
 
 gem "redis-store", "~> 1.4.0"
 
+# Allows rendering of partials asynchronously without writing excess boilerplate
+gem 'render_async', '~> 1.2.0'
+
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"
 

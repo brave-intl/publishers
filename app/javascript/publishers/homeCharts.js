@@ -284,11 +284,13 @@ export function renderContributionsDonutChart(options) {
  * This should be replaced with dynamic code in home.js that renders charts after querying eyeshade for deposit data.
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('eyeshade-balance-received', function() {
   if (document.querySelectorAll('body[data-action="home"]').length === 0 ||
       !document.getElementById('contributions_chart')) {
     return;
   }
+
+  channel_balances = JSON.parse($('#channel_balances').getAttribute('data-channel-balances-json'));
 
   let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
   let colors = ['#e79895', '#5edaea', '#1db899'];

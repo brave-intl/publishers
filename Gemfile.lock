@@ -309,6 +309,8 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.4.1)
       redis (>= 2.2, < 5)
+    render_async (1.2.0)
+      bundler (~> 1.8)
     request_store (1.4.0)
       rack (>= 1.4)
     responders (2.4.0)
@@ -468,6 +470,7 @@ DEPENDENCIES
   recaptcha (~> 3.3)
   redis-rails (~> 5)
   redis-store (~> 1.4.0)
+  render_async (~> 1.2.0)
   rotp (~> 3.3)
   rqrcode (~> 0.10)
   rubocop
