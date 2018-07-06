@@ -88,6 +88,17 @@ en:
       generic_verification_failure: Channel could not be verified!
       verification_in_progress: Verification in progress
       verification_awaiting_admin_approval: Awaiting admin approval
+      verification_failure_explanation:
+        support_queue: "We did not attempt verification because you are on the support queue."
+        domain_not_found: "Your domain does not exist."
+        connection_failed: "We could not find the public file at %{domain}/.well-known/brave-payments-verification.txt"
+        too_many_redirects: "We were redirected too many times to verify your domain."
+        no_txt_records: "We could not find a TXT records on your domain's DNS."
+        token_incorrect_dns: "The token in your TXT records is incorrect.  It should be %{verification_token}."
+        token_not_found_dns: "We could not find any token in your DNS TXT records."
+        token_not_found_public_file: "We could not find a token ."
+        no_https: "We could not verify your site because HTTPS is not enabled.."
+        generic: "Channel could not be verified!"
     publisher:
       conversion_unavailable: "%{code} unavailable"
       no_deposit: No deposit made yet
