@@ -27,6 +27,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     verifier.perform
     channel.reload
     assert channel.verified?
+    assert channel.verification_details.nil?
   end
 
   def refute_verification(channel)
@@ -54,12 +55,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     c = channels(:to_verify_file)
     stub_verification_public_file(c, body: "", status: 404)
     refute_verification(c)
+    assert c.verification_details, "connection_failed"
   end
 
   test "file method fails with junk public file with correct token at .well-known URL" do
     c = channels(:to_verify_file)
     stub_verification_public_file(c, body: "420")
     refute_verification(c)
+    assert c.verification_details, "token_not_found_public_file"
   end
 
   test "github method verifies with public file at .well-known URL" do
@@ -86,6 +89,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     Dnsruby::Resolver.any_instance.stubs(:query).returns(dns_response)
     c = channels(:to_verify_dns)
     refute_verification(c)
+    assert c.verification_details, "token_not_found_dns"
   end
 
   test "DNS method fails for domain with different TXT entry" do
@@ -93,6 +97,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     Dnsruby::Resolver.any_instance.stubs(:query).returns(dns_response)
     c = channels(:to_verify_dns)
     refute_verification(c)
+    assert c.verification_details, "token_incorrect_dns"
   end
 
   test "DNS method fails for domain without any TXT entries" do
@@ -100,6 +105,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     Dnsruby::Resolver.any_instance.stubs(:query).returns(dns_response)
     c = channels(:to_verify_dns)
     refute_verification(c)
+    assert c.verification_details, "no_txt_records"
   end
 
   test "DNS method fails for domain with unrelated TXT entries" do
@@ -107,17 +113,20 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     Dnsruby::Resolver.any_instance.stubs(:query).returns(dns_response)
     c = channels(:to_verify_dns)
     refute_verification(c)
+    assert c.verification_details, "token_not_found_dns"
   end
 
   test "DNS method fails for nonexistent (NX) domain" do
     Dnsruby::Resolver.any_instance.stubs(:query).raises(Dnsruby::NXDomain.new)
     c = channels(:to_verify_dns)
     refute_verification(c)
+    assert c.verification_details, "domain_not_found"
   end
 
   test "support queue method fails" do
     c = channels(:to_verify_support)
     refute_verification(c)
+    assert c.verification_details, "support_queue"
   end
 
   test "fails and raises if channel is not a site channel" do
@@ -126,6 +135,8 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
       verifier = SiteChannelVerifier.new(channel: c)
       verifier.perform
     end
+
+    assert c.verification_details.nil?
   end
 
   test "restricted site channels do not verify" do
@@ -136,6 +147,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     verifier.perform
     c.reload
     refute c.verified?
+    assert c.verification_details.nil?
   end
 
   test "restricted site channels await admin approval" do
@@ -146,6 +158,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     verifier.perform
     c.reload
     assert c.verification_awaiting_admin_approval?
+    assert c.verification_details.nil?
   end
 
   test "restricted site channels verify with admin approval" do
@@ -156,5 +169,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     verifier.perform
     c.reload
     assert c.verified?
+    assert c.verification_details.nil?
+    assert c.verification_status, "approved_by_admin"
   end
 end

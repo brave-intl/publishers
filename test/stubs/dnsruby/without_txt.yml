@@ -38,31 +38,6 @@ question:
       string_length: 3
     absolute: true
 answer: !ruby/array:Dnsruby::Section
-  internal:
-  - !ruby/object:Dnsruby::RR::IN::TXT
-    rdata: &1
-    - v=spf1 -all
-    strings: *1
-    name: !ruby/object:Dnsruby::Name
-      labels:
-      - !ruby/object:Dnsruby::Name::Label
-        downcase: to_verify_dns
-        string: to_verify_dns
-        string_length: 7
-      - !ruby/object:Dnsruby::Name::Label
-        downcase: org
-        string: org
-        string_length: 3
-      absolute: true
-    ttl: 86390
-    type: !ruby/object:Dnsruby::Types
-      code: 16
-      string: TXT
-    klass: !ruby/object:Dnsruby::Classes
-      code: 1
-      string: IN
-  ivars:
-    :@msg: *2
 authority: !ruby/array:Dnsruby::Section
   internal: []
   ivars:
