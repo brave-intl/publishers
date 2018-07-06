@@ -27,6 +27,10 @@ class Channel < ApplicationRecord
 
   validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
 
+  validates :verification_details, inclusion: {
+    in: %w(support_queue no_txt_records token_not_found_dns token_not_found_public_file domain_not_found no_https connection_failed too_many_redirects token_incorrect_dns)
+  }, allow_nil: true
+
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
@@ -115,7 +119,7 @@ class Channel < ApplicationRecord
     self.verified_at = nil
     self.verification_status = 'failed'
     self.verification_details = details
-    self.save!(validate: false)
+    self.save!
   end
 
   def verification_awaiting_admin_approval!

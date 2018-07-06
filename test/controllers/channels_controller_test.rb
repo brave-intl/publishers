@@ -95,13 +95,12 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = channels(:new_site)
     sign_in publisher
 
-    channel.verification_failed!('something happened')
-
+    channel.verification_failed!("no_txt_records")
     get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
     assert_response 200
     assert_match(
       '{"status":"failed",' +
-        '"details":"something happened"}',
+        '"details":"no_txt_records"}',
       response.body)
 
     channel.verification_succeeded!(false)

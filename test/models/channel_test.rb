@@ -111,12 +111,12 @@ class ChannelTest < ActiveSupport::TestCase
     assert_nil channel.verified_at
     refute channel.verification_failed?
 
-    channel.verification_failed!('something happened')
+    channel.verification_failed!('no_https')
 
     refute channel.verified?
     assert_nil channel.verified_at
     assert channel.verification_failed?
-    assert_equal 'something happened', channel.verification_details
+    assert_equal 'no_https', channel.verification_details
   end
 
   test "verification_failed! updates verification status even with validation errors" do
@@ -126,12 +126,12 @@ class ChannelTest < ActiveSupport::TestCase
     assert_nil channel.verified_at
     refute channel.verification_failed?
 
-    channel.verification_failed!('something happened')
+    channel.verification_failed!('token_not_found_dns')
 
     refute channel.verified?
     assert_nil channel.verified_at
     assert channel.verification_failed?
-    assert_equal 'something happened', channel.verification_details
+    assert_equal 'token_not_found_dns', channel.verification_details
   end
 
   test "verification_succeeded! updates verification status" do

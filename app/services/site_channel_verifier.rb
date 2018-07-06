@@ -98,7 +98,7 @@ class SiteChannelVerifier < BaseService
         if channel.details.verification_token == token_match[1]
           return true
         else
-          @verification_details = "token_incorrect"
+          @verification_details = "token_incorrect_dns"
           Rails.logger.debug("Found incorrect channel for channel #{channel.id}")
           return false
         end
