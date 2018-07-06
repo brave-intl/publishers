@@ -198,7 +198,7 @@ GEM
     mustermann (1.0.2)
     newrelic_rpm (3.18.1.330)
     nio4r (2.3.0)
-    nokogiri (1.8.2)
+    nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
@@ -451,7 +451,7 @@ DEPENDENCIES
   minitest-rails-capybara
   mocha
   newrelic_rpm (~> 3.16)
-  nokogiri (~> 1.8.2)
+  nokogiri (~> 1.8.4)
   omniauth-google-oauth2 (~> 0.5.2)
   omniauth-twitch
   paper_trail (~> 5.2.2)
