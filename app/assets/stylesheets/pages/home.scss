@@ -664,6 +664,52 @@
           margin: -8px 0 0 12px;
           vertical-align: top;
         }
+        .verification-failed {
+          .verification-failed-content {
+            display: none;
+            position: absolute;
+            left: 54%;
+            bottom: 50%;
+            width: 400px;
+            padding: 30px 40px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
+            font-size: 14px;
+
+            &::after {
+              content: " ";
+              position: absolute;
+              top: 100%;
+              left: 50%;
+              width: 10px;
+              height: 10px;
+              margin-top: -5px;
+              margin-left: -5px;
+              background: white;
+              transform: rotate(45deg);
+              border: solid 1px $braveGray-8;
+              border-top-color: transparent;
+              border-left-color: transparent;
+            }
+
+            span.verification-failed-content-heading {
+              display: block;
+              font-family: $headings-font-family;
+              font-weight: $headings-font-weight;
+              color: $braveAccent-Dark;
+            }
+
+            span.verification-failed-content-content {
+              display: block;
+            }
+          }
+          &:hover {
+            span.verification-failed-content {
+              display: block;
+            }
+          }
+        }
       }
     }
     &.channel-verified {

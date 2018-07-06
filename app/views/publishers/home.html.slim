@@ -213,8 +213,12 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       = t(".channel_balance_period")
             - elsif channel.verification_failed?
               .channel-status.float-right
-                = channel_verification_details(channel)
+                = t("helpers.channels.generic_verification_failure")
                 = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
+                .verification-failed
+                  span = "What happened"
+                  span.verification-failed-content
+                    span.verification-failed-content-content = channel_verification_details(channel)
             - elsif channel.verification_awaiting_admin_approval?
               .channel-status.float-right
                 = channel_verification_details(channel)
