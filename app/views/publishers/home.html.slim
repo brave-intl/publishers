@@ -84,7 +84,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
     - # Only show WIP charts when `?charts=true` param is used
     - if params[:charts]
-      = render_async dashboard_charts_publishers_path, event_name: 'eyeshade-balance-received'
+      .row
+        = render_async dashboard_donut_chart_publishers_path, event_name: 'eyeshade-balance-received'
+        = render_async dashboard_statement_chart_publishers_path, event_name: 'eyeshade-statement-received'
 
     .row
       .col

@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
       get :home
-      get :dashboard_charts
+      get :dashboard_donut_chart
+      get :dashboard_statement_chart
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email

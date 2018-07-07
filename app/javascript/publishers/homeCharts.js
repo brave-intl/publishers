@@ -290,20 +290,23 @@ document.addEventListener('eyeshade-balance-received', function() {
     return;
   }
 
-  channel_balances = JSON.parse($('#channel_balances').getAttribute('data-channel-balances-json'));
+  let channel_balances = JSON.parse(document.getElementById('channel_balances').getAttribute('data-channel-balances-json'));
 
-  let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
+//  let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
+  let channels = Object.keys(channel_balances);
+
   let colors = ['#e79895', '#5edaea', '#1db899'];
+  let amounts = {};
+
+  for (var k in channel_balances) {
+    amounts[k] = '' + channel_balances[k]["amount"];
+  }
 
   renderContributionsDonutChart({
     parentSelector: '#contributions_chart',
     channels,
     colors,
-    amounts: {
-      'AmazingBlog on YouTube': 63,
-      'amazingblog.com': 200,
-      'Amazon.com': 50
-    },
+    amounts: amounts,
     currency: 'BAT',
     currencyConversion: 1.0,
     altCurrency: 'USD',
@@ -313,6 +316,25 @@ document.addEventListener('eyeshade-balance-received', function() {
     margin: { left: 0, right: 250, top: 0, bottom: 0},
     donutWidth: 30
   });
+});
+
+document.addEventListener('eyeshade-statement-received', function() {
+  if (document.querySelectorAll('body[data-action="home"]').length === 0 ||
+      !document.getElementById('contributions_chart')) {
+    return;
+  }
+
+  let channel_balances = JSON.parse(document.getElementById('channel_balances').getAttribute('data-channel-balances-json'));
+
+//  let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
+  let channels = Object.keys(channel_balances);
+
+  let colors = ['#e79895', '#5edaea', '#1db899'];
+  let amounts = {};
+
+  for (var k in channel_balances) {
+    amounts[k] = '' + channel_balances[k]["amount"];
+  }
 
   renderDepositsBarChart({
     parentSelector: '#monthly_deposits_chart',
