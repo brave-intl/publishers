@@ -631,8 +631,11 @@
         overflow: hidden;
         white-space: nowrap;
       }
+
+      h3.unverified {
+        padding-top: 11px;
+      }
       .channel-details {
-        margin-top: 6px;
         font-size: 14px;
         color: $mediumGray;
         .added-date, .separator, .remove-channel {
@@ -657,14 +660,23 @@
     }
     &.channel-failed {
       .channel-status {
-        background: url(asset-path("unverified-icon.png")) no-repeat top left / 23px 28px;
+        display: flex;
+        background: url(asset-path("icn-warning@1x.png")) no-repeat top left / 24px 24px;
         padding: 0 0 12px 38px;
         font-weight: bold;
         .btn {
-          margin: -8px 0 0 12px;
           vertical-align: top;
+          margin-left: 10px;
         }
         .verification-failed {
+          .verification-failed-details {
+            font-size: 14px;
+            font-weight: 500;
+            .verification-failed-what-happened {
+              color: $braveAction;
+              cursor: pointer;
+            }
+          }
           .verification-failed-content {
             display: none;
             position: absolute;
@@ -701,11 +713,6 @@
             }
 
             span.verification-failed-content-content {
-              display: block;
-            }
-          }
-          &:hover {
-            span.verification-failed-content {
               display: block;
             }
           }

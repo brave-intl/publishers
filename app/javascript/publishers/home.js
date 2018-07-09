@@ -282,6 +282,16 @@ function openDefaultCurrencyModal() {
   }, false);
 }
 
+function showWhatHappenedVerificationFailure() {
+  let elementToReveal = this.nextSibling;
+  elementToReveal.style.display = "block";
+}
+
+function hideVerificationFailureWhatHappenend(element) {
+  let elementToHide = element.nextSibling
+  elementToHide.style.display = "none"
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   if (document.querySelectorAll('body[data-action="home"]').length === 0) {
     return;
@@ -346,6 +356,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let editContact = document.getElementById('edit_contact');
   let cancelEditContact = document.getElementById('cancel_edit_contact');
+
+  let verificationFailureWhatHappenedElements = document.getElementsByClassName('verification-failed-what-happened');
+
+  for (let i=0; i<verificationFailureWhatHappenedElements.length; i++) {
+    verificationFailureWhatHappenedElements[i].addEventListener('click', showWhatHappenedVerificationFailure, false);
+  }
+
+  // Hide all verification failed bubbles when anywhere on DOM is clicked
+  document.body.addEventListener('click', function(event) {
+    for (var i=0; i<verificationFailureWhatHappenedElements.length; i++) {
+      // Do not hide if the clicked element is supposed to show the bubble
+      let e = verificationFailureWhatHappenedElements[i];
+      if (e === event.target) {
+        continue;
+      } else {
+        hideVerificationFailureWhatHappenend(e);        
+      }
+    }
+  })
 
   editContact.addEventListener('click', function(event) {
     updateContactName.value = showContactName.innerText;

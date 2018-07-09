@@ -100,7 +100,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_match(
       '{"status":"failed",' +
-        '"details":"We could not find a TXT records on your domain\'s DNS."}', # This is I18n.t("helpers.channels.verification_failure_explanation.no_txt_records")
+        '"details":"There are no TXT records on your domain\'s DNS. ', # This is I18n.t("helpers.channels.verification_failure_explanation.no_txt_records")
       response.body)
 
     channel.verification_succeeded!(false)

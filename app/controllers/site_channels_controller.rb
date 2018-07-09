@@ -108,8 +108,7 @@ class SiteChannelsController < ApplicationController
     elsif current_channel.verification_awaiting_admin_approval?
       redirect_to home_publishers_path, notice: t(".awaiting_admin_approval")
     else
-      # TODO: Expose diagnostic failure info from SiteChannelVerifier and show to user.
-      redirect_to(site_last_verification_method_path(current_channel), alert: t(".alert"))
+      redirect_to(site_last_verification_method_path(current_channel))
     end
   end
 

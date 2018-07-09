@@ -88,4 +88,41 @@ module ChannelsHelper
         I18n.t("helpers.channels.verification_failure_explanation.generic")
     end
   end
+
+  def failed_verification_call_to_action(channel)
+    return if channel.verified? || channel.details_type != "SiteChannelDetails"
+    case channel.verification_details
+      when "support_queue"
+        I18n.t("helpers.channels.verification_failure_cta.support_queue")
+      when "domain_not_found"
+        I18n.t("helpers.channels.verification_failure_cta.domain_not_found")
+      when "connection_failed"
+        I18n.t("helpers.channels.verification_failure_cta.connection_failed")
+      when "too_many_redirects"
+        I18n.t("helpers.channels.verification_failure_cta.too_many_redirects")
+      when "no_txt_records"
+        I18n.t("helpers.channels.verification_failure_cta.no_txt_records")
+      when "token_incorrect_dns"
+        I18n.t("helpers.channels.verification_failure_cta.token_incorrect_dns")
+      when "token_not_found_dns"
+        I18n.t("helpers.channels.verification_failure_cta.token_not_found_dns")
+      when "token_not_found_public_file"
+        I18n.t("helpers.channels.verification_failure_cta.token_not_found_public_file", domain: channel.details.brave_publisher_id)
+      when "no_https"
+        I18n.t("helpers.channels.verification_failure_cta.no_https")
+      else
+        I18n.t("helpers.channels.verification_failure_cta.generic", support_email: Rails.application.secrets[:support_email])
+    end
+  end
+
+  def should_display_verification_token?(channel)
+    return false if channel.verified? || channel.details_type != "SiteChannelDetails"
+    ["no_txt_records", "token_incorrect_dns", "token_not_found_dns"].include?(channel.verification_details)
+  end
+
+  def capitalize_first_letter(str)
+    return if str.nil?
+    str[0] = str[0].capitalize
+    str
+  end
 end

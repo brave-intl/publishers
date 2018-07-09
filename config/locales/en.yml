@@ -85,20 +85,33 @@ en:
       title: Frequently Asked Questions
   helpers:
     channels:
-      generic_verification_failure: Channel could not be verified!
       verification_in_progress: Verification in progress
-      verification_awaiting_admin_approval: Awaiting admin approval
+      verification_awaiting_admin_approval: Under review
+      verification_failure_what_happend: What happened
+      verification_failure: Your channel could not be verified!
       verification_failure_explanation:
-        support_queue: "We did not attempt verification because you are on the support queue."
-        domain_not_found: "Your domain does not exist."
-        connection_failed: "We could not find the public file at %{domain}/.well-known/brave-payments-verification.txt"
-        too_many_redirects: "We were redirected too many times to verify your domain."
-        no_txt_records: "We could not find a TXT records on your domain's DNS."
-        token_incorrect_dns: "The token in your TXT records is incorrect.  It should be %{verification_token}."
-        token_not_found_dns: "We could not find any token in your DNS TXT records."
-        token_not_found_public_file: "We could not find a token ."
-        no_https: "We could not verify your site because HTTPS is not enabled.."
-        generic: "Channel could not be verified!"
+        support_queue: "you are in the support queue."
+        domain_not_found: "we could not find your domain."
+        connection_failed: |
+          we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
+        too_many_redirects: "we were redirected too many times to verify your domain. "
+        no_txt_records: "there are no TXT records on your domain's DNS. "
+        token_incorrect_dns: "the token in your TXT records is incorrect. "
+        token_not_found_dns: "we could not find the token in any of the TXT records. "
+        token_not_found_public_file: "we could not find the token in your public file. "
+        no_https: "HTTPS is not enabled. "
+        generic: "of an unkown reason. "
+      verification_failure_cta:
+        support_queue: "Please choose a different verification method."
+        domain_not_found: "Please check if the domain is correct."
+        connection_failed: "Please make sure the file exists and is publicly available."
+        too_many_redirects: "Please reduce the number of redirects."
+        no_txt_records: "Please make sure you have entered the token in your DNS records:"
+        token_incorrect_dns: "Please make sure the token in your DNS entry is correct."
+        token_not_found_dns: "Please add this TXT entry to your DNS records:"
+        token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
+        no_https: "Please enabled HTTPS on your domain, or choose another verification method."
+        generic: "Please contact %{support_email}."
     publisher:
       conversion_unavailable: "%{code} unavailable"
       no_deposit: No deposit made yet
@@ -574,7 +587,6 @@ en:
       help_2: using the account for your DNS host.
       instruction_1: |
         Please add the record on your root domain, not a subdomain.
-        The @ symbol is often used to indicate the root domain name/host/host record.
       instruction_2: Copy and paste the info below into the zone file for
       instruction_3: using your DNS host's control panel.
       record:
@@ -614,6 +626,11 @@ en:
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.
+    verification_failed_modal:
+      headline: Retry Verification
+      leadin: "Your website, %{domain}, was not verified because "
+      try_again: Retry Verification
+      close: Close
     verify:
       alert: Could not verify at this moment. Please check you've updated details correctly, wait a bit and try again.
       success: Channel verified!

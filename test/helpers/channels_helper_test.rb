@@ -27,7 +27,8 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal t("helpers.channels.verification_failure_explanation.domain_not_found"), channel_verification_details(channel)
 
     channel.verification_failed!("connection_failed")
-    assert_equal t("helpers.channels.verification_failure_explanation.connection_failed"), channel_verification_details(channel)
+    assert_equal t("helpers.channels.verification_failure_explanation.connection_failed", domain: channel.details.brave_publisher_id),
+     channel_verification_details(channel)
 
     channel.verification_failed!("too_many_redirects")
     assert_equal t("helpers.channels.verification_failure_explanation.too_many_redirects"), channel_verification_details(channel)

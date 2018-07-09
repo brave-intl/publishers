@@ -4,6 +4,9 @@
     publisher: current_publisher \
   }
 
+script type="text/html" id="verification_failed_modal_wrapper" data-open-verification-failed-modal="#{current_channel.verification_failed?}"
+  = render :partial => 'verification_failed_modal'
+
 .single-panel--wrapper.single-panel--wrapper--large
   = render "panel_flash_messages"
   .single-panel--content

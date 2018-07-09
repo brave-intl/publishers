@@ -210,15 +210,31 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
-                      = t(".channel_balance_period")
+                      = t(".channel_balance_period")            
+              .channel-summary
+                h3= channel.publication_title
+                .channel-details
+                  .added-date
+                    = t ".channel.added", date: channel.created_at.to_date.iso8601
             - elsif channel.verification_failed?
               .channel-status.float-right
-                = t("helpers.channels.verification_failure_explanation.generic")
-                = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
                 .verification-failed
-                  span = "What happened"
-                  span.verification-failed-content
-                    span.verification-failed-content-content = channel_verification_details(channel)
+                  .
+                    = t("helpers.channels.verification_failure")
+                  .verification-failed-details
+                    // JS will break if the next two elements aren't siblings
+                    span.verification-failed-what-happened=t("helpers.channels.verification_failure_what_happend")
+                    span.verification-failed-content
+                      span.verification-failed-content-content
+                        = capitalize_first_letter(channel_verification_details(channel))
+                    span.separator
+                      = ' | '
+                    a.remove-channel href="#" data-channel-id=(channel.id)
+                      = t ".channel.remove_verified"
+                    script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                      = render "publishers/remove_channel_modal", channel: channel
+                    = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+                = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
             - elsif channel.verification_awaiting_admin_approval?
               .channel-status.float-right
                 = t("helpers.channels.verification_awaiting_admin_approval")
@@ -227,19 +243,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
               .channel-progress.float-right
                 .one-more-step= t ".channel.one_more_step"
-            .channel-summary
-              h3= channel.publication_title
-              .channel-details
-                .added-date
-                  = t ".channel.added", date: channel.created_at.to_date.iso8601
-                - unless channel.verified || channel.verification_awaiting_admin_approval?
-                  .separator
-                    = '|'
-                  a.remove-channel href="#" data-channel-id=(channel.id)
-                    = t ".channel.remove_verified"
-                  script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-                    = render "publishers/remove_channel_modal", channel: channel
-                  = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+            - unless channel.verified
+              .channel-summary
+                h3.unverified = channel.publication_title
             .clearfix
 
     .row id="add_channel_placeholder"
