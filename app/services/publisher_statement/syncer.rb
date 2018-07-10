@@ -1,4 +1,4 @@
-class PublisherStatementSyncer
+class PublisherStatement::Syncer
   attr_reader :publisher_statement
 
   def initialize(publisher_statement:, send_email:)
@@ -9,7 +9,7 @@ class PublisherStatementSyncer
   def perform
     return if publisher_statement.contents.present?
 
-    contents = PublisherStatementGetter.new(publisher_statement: publisher_statement).perform
+    contents = PublisherStatement::Getter.new(publisher_statement: publisher_statement).perform
     if contents.present?
       publisher_statement.contents = contents
       publisher_statement.save!

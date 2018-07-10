@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class PublisherStatementSyncerTest < ActiveJob::TestCase
+class PublisherStatement::SyncerTest < ActiveJob::TestCase
   def setup
     @prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     Rails.application.secrets[:api_eyeshade_offline] = false
@@ -26,7 +26,7 @@ class PublisherStatementSyncerTest < ActiveJob::TestCase
     publisher_statement.save!
 
     perform_enqueued_jobs do
-      PublisherStatementSyncer.new(publisher_statement: publisher_statement, send_email: true).perform
+      PublisherStatement::Syncer.new(publisher_statement: publisher_statement, send_email: true).perform
     end
 
     publisher_statement.reload
@@ -52,7 +52,7 @@ class PublisherStatementSyncerTest < ActiveJob::TestCase
     publisher_statement.save!
 
     assert_no_enqueued_jobs do
-      PublisherStatementSyncer.new(publisher_statement: publisher_statement, send_email: true).perform
+      PublisherStatement::Syncer.new(publisher_statement: publisher_statement, send_email: true).perform
     end
 
     publisher_statement.reload
@@ -73,7 +73,7 @@ class PublisherStatementSyncerTest < ActiveJob::TestCase
     publisher_statement.save!
 
     assert_no_enqueued_jobs do
-      PublisherStatementSyncer.new(publisher_statement: publisher_statement, send_email: true).perform
+      PublisherStatement::Syncer.new(publisher_statement: publisher_statement, send_email: true).perform
     end
 
     publisher_statement.reload
@@ -96,7 +96,7 @@ class PublisherStatementSyncerTest < ActiveJob::TestCase
     publisher_statement.save!
 
     perform_enqueued_jobs do
-      PublisherStatementSyncer.new(publisher_statement: publisher_statement, send_email: false).perform
+      PublisherStatement::Syncer.new(publisher_statement: publisher_statement, send_email: false).perform
     end
 
     publisher_statement.reload

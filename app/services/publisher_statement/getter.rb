@@ -1,4 +1,4 @@
-class PublisherStatementGetter < BaseApiClient
+class PublisherStatement::Getter < BaseApiClient
   attr_reader :publisher_statement
 
   def initialize(publisher_statement:)

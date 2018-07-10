@@ -1,12 +1,15 @@
 # Ask Eyeshade to generate a publisher statement.
-class PublisherStatementGenerator < BaseApiClient
+class PublisherStatement::Generator < BaseApiClient
   attr_reader :publisher
   attr_reader :statement_period
+  attr_accessor :starting, :ending
 
-  def initialize(publisher:, statement_period:, created_by_admin: false)
+  def initialize(publisher:, statement_period:, created_by_admin: false, starting: nil, ending: nil)
     @publisher = publisher
     @statement_period = statement_period
     @created_by_admin = created_by_admin
+    @starting = starting
+    @ending = ending
   end
 
   def perform
@@ -31,7 +34,7 @@ class PublisherStatementGenerator < BaseApiClient
   def perform_offline
     fake_report = "/assets/fake_statement.pdf#{query_params}"
 
-    Rails.logger.info("PublisherStatementGenerator eyeshade offline; generating fake report: #{fake_report}")
+    Rails.logger.info("PublisherStatement::Generator eyeshade offline; generating fake report: #{fake_report}")
 
     statement = PublisherStatement.new(
       publisher: @publisher,
@@ -45,8 +48,8 @@ class PublisherStatementGenerator < BaseApiClient
   end
 
   def query_params
-    starting = statement_period_start
-    ending = statement_period_end
+    starting ||= statement_period_start
+    ending ||= statement_period_end
 
     if starting || ending
       qps = []

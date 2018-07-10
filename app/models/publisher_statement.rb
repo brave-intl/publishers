@@ -7,9 +7,7 @@ class PublisherStatement < ApplicationRecord
 
   belongs_to :publisher
   validates :publisher_id, presence: true
-  validates :period,
-            inclusion: { in: %w(past_7_days past_30_days this_month last_month this_year last_year all) },
-            presence: true
+  validates :period, presence: true
 
   after_create :set_expiration
 

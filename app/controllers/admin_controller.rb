@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   before_action :protect
-  
+
   include PublishersHelper
 
   # Override this value to specify the number of elements to display at a time
@@ -16,10 +16,10 @@ class AdminController < ApplicationController
 
   # generates a publisher statement for an admin
   # does not send an email
-  def generate_statement    
+  def generate_statement
     publisher = Publisher.find(params[:id])
     statement_period = params[:statement_period]
-    statement = PublisherStatementGenerator.new(publisher: publisher,
+    statement = PublisherStatement::Generator.new(publisher: publisher,
                                                 statement_period: statement_period.to_sym,
                                                 created_by_admin: true).perform
 
@@ -45,7 +45,7 @@ class AdminController < ApplicationController
     admin = current_user
     note_content = publisher_create_note_params[:note]
 
-    note = PublisherNote.new(publisher: publisher, created_by: admin, note: note_content)    
+    note = PublisherNote.new(publisher: publisher, created_by: admin, note: note_content)
     note.save!
 
     redirect_to(admin_publisher_path(publisher.id))

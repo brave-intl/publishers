@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class PublisherStatementGetterTest < ActiveJob::TestCase
+class PublisherStatement::GetterTest < ActiveJob::TestCase
   test "when offline returns true" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
@@ -14,7 +14,7 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
         period: :all,
         source_url: 'example.com')
 
-      result = PublisherStatementGetter.new(publisher_statement: publisher_statement).perform
+      result = PublisherStatement::Getter.new(publisher_statement: publisher_statement).perform
 
       assert_equal "Fake offline data", result
 
@@ -39,7 +39,7 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
         period: :all,
         source_url: '/report/123')
 
-      result = PublisherStatementGetter.new(publisher_statement: publisher_statement).perform
+      result = PublisherStatement::Getter.new(publisher_statement: publisher_statement).perform
       assert_equal "Fake", result
 
     ensure
@@ -63,7 +63,7 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
         period: :all,
         source_url: '/report/123')
 
-      result = PublisherStatementGetter.new(publisher_statement: publisher_statement).perform
+      result = PublisherStatement::Getter.new(publisher_statement: publisher_statement).perform
       assert_nil result
 
     ensure
