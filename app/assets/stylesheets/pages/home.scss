@@ -814,6 +814,19 @@
   }
 }
 
+#verifying_domain_modal {
+  text-align: center;
+
+  h3 {
+    padding-top: 100px;
+    width: 100%;
+    background-image: url(asset-path("icn-hourglass.svg"));
+    background-repeat: no-repeat;
+    background-position: top center;
+    margin-bottom: 20px;
+  }
+}
+
 .modal-container--modal-identifier--choose-channel-type {
   max-width: 685px;
   & > div {
