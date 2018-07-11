@@ -3,4 +3,7 @@
 # such as commerce sites, financial services sites like banks, SaaS vendors and government sites.
 
 # DOMAINS (automated export from ledger)
-- "123.gov" # services
+- "123.gov" # services # verified channel
+- "123.gov" # added twice for tests to prevent duplicates
+- "456.gov" # unverified channel
+- "456.gov" # added twice for tests to prevent duplicates
