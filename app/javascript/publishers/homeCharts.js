@@ -324,7 +324,7 @@ document.addEventListener('eyeshade-statement-received', function() {
     return;
   }
 
-  let channel_balances = JSON.parse(document.getElementById('channel_balances').getAttribute('data-channel-balances-json'));
+  let channel_balances = JSON.parse(document.getElementById('monthly_statement_balances').getAttribute('data-monthly-statement-json'));
 
 //  let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
   let channels = Object.keys(channel_balances);

@@ -165,7 +165,7 @@ class PublishersController < ApplicationController
   end
 
   def dashboard_statement_chart
-    render partial: 'dashboard_statement_chart', locals: {channel_balances_json: PublisherWalletGetter.new(publisher: current_publisher).perform.channel_balances.to_json}
+    render partial: 'dashboard_statement_chart', locals: {monthly_statement_json: PublisherStatement::FetchAll.new(publisher: current_publisher).perform.stringify.to_json}
   end
 
   def update_email

@@ -1,4 +1,8 @@
 # Ask Eyeshade to generate a publisher statement since the earliest created by month
+require 'net/http'
+require 'net/https'
+require 'json'
+require 'csv'
 class PublisherStatement::FetchAll < BaseApiClient
   attr_reader :publisher
 
@@ -16,11 +20,31 @@ class PublisherStatement::FetchAll < BaseApiClient
   def stringify
     # Read out from CSVs into JSON
     PublisherStatement.where(id: @publisher_statement_ids).find_each do |publisher_statement|
-      # TODO
+      result = CSV.read(retrieve_payload(publisher_statement.source_url))
+      keys = result[0]
+      CSV.parse(result[1..-1]).map {|a| Hash[ keys.zip(a) ] }
     end
   end
 
   private
+
+  def retrieve_payload(source_url)
+    uri = URI(source_url)
+
+    # Create client
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+
+    # Create Request
+    req =  Net::HTTP::Post.new(uri)
+
+    # Add headers
+    req.add_field "Content-Type", "application/json; charset=utf-8"
+
+    # Fetch Request
+    http.request(req)
+  end
 
   def load_statements
     iterative_date_date = Publisher.channels.order(created_at: :asc).first.created_at.utc.beginning_of_month
