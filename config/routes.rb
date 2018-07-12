@@ -85,9 +85,11 @@ Rails.application.routes.draw do
     end
     resources :tokens, only: %i(index)
     resources :channels, constraints: { channel_id: %r{[^\/]+} }
-    namespace :public, defaults: { format: :json } do
-      get "channels/identity", controller: 'channels/identity'
-      get "channels/timestamp", controller: 'channels/timestamp'
+    
+    namespace :v1, defaults: { format: :json } do
+      namespace :public, defaults: { format: :json } do
+        get "channels", controller: "channels"
+      end
     end
   end
 

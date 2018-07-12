@@ -94,6 +94,10 @@ class Rack::Attack
     end
   end
 
+  # Throttle requests to public api, /api/public  
+  throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
+    req.ip if req.path.start_with?("/api/public")
+  end
 
   ### Custom Throttle Response ###
   self.throttled_response = lambda do |env|
