@@ -1,4 +1,4 @@
-class Api::Public::ChannelsController < Api::Public::BaseController
+class Api::V1::Public::ChannelsController < Api::V1::Public::BaseController
   def channels
     channels_json = Rails.cache.fetch('browser_channels_json', race_condition_ttl: 30) do
       require 'sentry-raven'
