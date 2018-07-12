@@ -23,4 +23,8 @@
     cron: "0 */3 * * *"
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server"
     queue: transactional
+  CacheBrowserChannelsJsonJob:
+    cron: "0 */2 * * *"
+    description: "Refreshes the redis cache for browser channel json"
+    queue: transactional
 :verbose: true
