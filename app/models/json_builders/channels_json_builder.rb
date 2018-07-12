@@ -1,17 +1,15 @@
-# Builds a list of verified and exluded channels for the Brave Browser
+# Builds a list of distinct channels that are either verified, excluded or both for the Brave Browser.
+# 
+# Each channel is an array:
+# [channel_identifier, verified, excluded]
+#
 # ex.
 # [
-#     {
-#         channelId: "brave.com",
-#         verified: true,
-#         excluded: false
-#     },
-#     {
-#         channelId: "123.gov",
-#         verified: true,
-#         excluded: false
-#     }
+#   ["brave.com", true, false],
+#   ["google.com", false, true],
+#   ["us.gov", false, false]
 # ]
+
 class JsonBuilders::ChannelsJsonBuilder
   def initialize
     require "publishers/excluded_channels"
@@ -21,25 +19,25 @@ class JsonBuilders::ChannelsJsonBuilder
   end
 
   def build
-    Jbuilder.encode do |json|
-      json.array! @verified_channels.find_each do |verified_channel|
-        json.channelId verified_channel.details.channel_identifier
-        json.verified true
+    channels = []
+
+    [Channel.verified.site_channels, Channel.youtube_channels, Channel.twitch_channels].each do |verified_channels|
+      verified_channels.find_each do |verified_channel|
         if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
-          json.excluded true
+          excluded = true
           @excluded_verified_channel_ids.push(verified_channel.details.channel_identifier)
         else
-          json.excluded false
+          excluded = false
         end
-      end
-
-      json.array! @excluded_channel_ids.each do |excluded_channel_id|
-        # skip if excluded channel is verified, since it's already been accounted
-        next if @excluded_verified_channel_ids.include?(excluded_channel_id)
-        json.channelId excluded_channel_id
-        json.verified false
-        json.excluded true
+        channels.push([verified_channel.details.channel_identifier, true, excluded])
       end
     end
+
+    @excluded_channel_ids.each do |excluded_channel_id|
+      next if @excluded_verified_channel_ids.include?(excluded_channel_id)
+      channels.push([excluded_channel_id, false, true])
+    end
+
+    channels.to_json
   end
 end

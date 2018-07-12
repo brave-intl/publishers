@@ -3,8 +3,8 @@ require 'test_helper'
 class ChannelsJsonBuilderTest < ActiveSupport::TestCase
 
   def get_channel_from_json(channels, channel_id)
-    channels.each do |channel|
-      return channel if channel["channelId"] == channel_id
+    channels.each do |channel_info|
+      return channel_info if channel_info.first == channel_id
     end
 
     nil
@@ -36,10 +36,10 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     assert channel
 
     # ensure channel is marked as verified
-    assert_equal channel["verified"], true
+    assert_equal channel.second, true
 
     # ensure channel is marked as not excluded
-    assert_equal channel["excluded"], false
+    assert_equal channel.third, false
   end
 
   test "unverified channel that is not excluded is not returned" do
@@ -60,10 +60,10 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     assert channel
 
     # ensure channel is marked as verified
-    assert_equal channel["verified"], true
+    assert_equal channel.second, true
 
     # ensure channel is marked as excluded
-    assert_equal channel["excluded"], true
+    assert_equal channel.third, true
   end
 
   test "unverified channel that is excluded is returned and marked correctly" do
@@ -75,10 +75,10 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     assert channel
 
     # ensure channel is marked as verified
-    assert_equal channel["verified"], false
+    assert_equal channel.second, false
 
     # ensure channel is marked as not verified
-    assert_equal channel["excluded"], true
+    assert_equal channel.third, true
   end
 
   test "returned channels only appear once" do
@@ -86,11 +86,11 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     
     returned_channel_ids = []
     channels.each do |channel|
-      if returned_channel_ids.include?(channel["channelId"])
+      if returned_channel_ids.include?(channel.first)
         debugger
         assert false
       else
-        returned_channel_ids.push(channel["channelId"])
+        returned_channel_ids.push(channel.first)
       end
     end
   end
