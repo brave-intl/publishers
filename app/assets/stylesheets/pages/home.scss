@@ -669,15 +669,15 @@
           margin-left: 10px;
         }
         .verification-failed {
-          .verification-failed-details {
+          .verification-failed--details {
             font-size: 14px;
             font-weight: 500;
-            .verification-failed-what-happened {
+            .verification-failed--what-happened {
               color: $braveAction;
               cursor: pointer;
             }
           }
-          .verification-failed-content {
+          .verification-failed--explanation {
             display: none;
             position: absolute;
             left: 54%;
@@ -705,14 +705,7 @@
               border-left-color: transparent;
             }
 
-            span.verification-failed-content-heading {
-              display: block;
-              font-family: $headings-font-family;
-              font-weight: $headings-font-weight;
-              color: $braveAccent-Dark;
-            }
-
-            span.verification-failed-content-content {
+            .verification-failed--explanation-content {
               display: block;
             }
           }

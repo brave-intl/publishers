@@ -119,10 +119,4 @@ module ChannelsHelper
     return false if channel.verified? || channel.details_type != "SiteChannelDetails"
     ["no_txt_records", "token_incorrect_dns", "token_not_found_dns"].include?(channel.verification_details)
   end
-
-  def capitalize_first_letter(str)
-    return if str.nil?
-    str[0] = str[0].capitalize
-    str
-  end
 end

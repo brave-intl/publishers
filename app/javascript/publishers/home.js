@@ -357,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let editContact = document.getElementById('edit_contact');
   let cancelEditContact = document.getElementById('cancel_edit_contact');
 
-  let verificationFailureWhatHappenedElements = document.getElementsByClassName('verification-failed-what-happened');
+  let verificationFailureWhatHappenedElements = document.getElementsByClassName('verification-failed--what-happened');
 
   for (let i=0; i<verificationFailureWhatHappenedElements.length; i++) {
     verificationFailureWhatHappenedElements[i].addEventListener('click', showWhatHappenedVerificationFailure, false);

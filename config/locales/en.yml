@@ -87,7 +87,7 @@ en:
     channels:
       verification_in_progress: Verification in progress
       verification_awaiting_admin_approval: Under review
-      verification_failure_what_happend: What happened
+      verification_failure_what_happened: What happened
       verification_failure: Your channel could not be verified!
       verification_failure_explanation:
         support_queue: "you are in the support queue."

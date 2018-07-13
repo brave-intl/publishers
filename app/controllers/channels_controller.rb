@@ -51,7 +51,8 @@ class ChannelsController < ApplicationController
     respond_to do |format|
       format.json {
         render(json: { status: channel_verification_status(current_channel),
-                       details: capitalize_first_letter(channel_verification_details(current_channel)) }, status: 200)
+                       details: channel_verification_details(current_channel).nil? ? nil : channel_verification_details(current_channel).upcase_first },
+               status: 200)
       }
     end
   end

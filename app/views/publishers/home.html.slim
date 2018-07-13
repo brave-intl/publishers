@@ -219,14 +219,14 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             - elsif channel.verification_failed?
               .channel-status.float-right
                 .verification-failed
-                  .
+                  .verification-failed--header
                     = t("helpers.channels.verification_failure")
-                  .verification-failed-details
+                  .verification-failed--details
                     // JS will break if the next two elements aren't siblings
-                    span.verification-failed-what-happened=t("helpers.channels.verification_failure_what_happend")
-                    span.verification-failed-content
-                      span.verification-failed-content-content
-                        = capitalize_first_letter(channel_verification_details(channel))
+                    span.verification-failed--what-happened=t("helpers.channels.verification_failure_what_happened")
+                    span.verification-failed--explanation
+                      span.verification-failed-explanation--content
+                        = channel_verification_details(channel).upcase_first
                     span.separator
                       = ' | '
                     a.remove-channel href="#" data-channel-id=(channel.id)
