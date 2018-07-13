@@ -287,7 +287,7 @@ function showWhatHappenedVerificationFailure() {
   elementToReveal.style.display = "block";
 }
 
-function hideVerificationFailureWhatHappenend(element) {
+function hideVerificationFailureWhatHappened(element) {
   let elementToHide = element.nextSibling
   elementToHide.style.display = "none"
 }
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
         continue;
       } else {
-        hideVerificationFailureWhatHappenend(e);        
+        hideVerificationFailureWhatHappened(e);        
       }
     }
   })
