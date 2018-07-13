@@ -670,6 +670,7 @@
         }
         .verification-failed {
           .verification-failed--details {
+            position: relative;
             font-size: 14px;
             font-weight: 500;
             .verification-failed--what-happened {
@@ -680,8 +681,8 @@
           .verification-failed--explanation {
             display: none;
             position: absolute;
-            left: 54%;
-            bottom: 50%;
+            left: -145px;
+            bottom: 100%;
             width: 400px;
             padding: 30px 40px;
             background: white;

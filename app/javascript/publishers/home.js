@@ -367,8 +367,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.addEventListener('click', function(event) {
     for (var i=0; i<verificationFailureWhatHappenedElements.length; i++) {
       // Do not hide if the clicked element is supposed to show the bubble
+      // Or if the clicked element is the bubble
       let e = verificationFailureWhatHappenedElements[i];
-      if (e === event.target) {
+      if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
         continue;
       } else {
         hideVerificationFailureWhatHappenend(e);        
