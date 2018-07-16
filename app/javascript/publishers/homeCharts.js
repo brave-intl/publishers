@@ -41,7 +41,7 @@ import * as d3 from "d3";
  let colors = ['#e79895', '#5edaea', '#1db899'];
 
  renderDepositsBarChart({
-    parentSelector: '#monthly_deposits_chart',
+    parentSelector: '#monthly_statements_chart',
     deposits,
     channels,
     colors,
@@ -324,22 +324,33 @@ document.addEventListener('eyeshade-statement-received', function() {
     return;
   }
 
-  let channel_balances = JSON.parse(document.getElementById('monthly_statement_balances').getAttribute('data-monthly-statement-json'));
+  let allStatementBalances = JSON.parse(document.getElementById('dashboard_monthly_statement_balances_chart').getAttribute('data-monthly-statement-json'));
 
-//  let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
-  let channels = Object.keys(channel_balances);
+  let channels = [];
+  let deposits = [];
+  let deposit = {};
+  allStatementBalances.forEach(function(monthlyStatementBalances) {
+    monthlyStatementBalances['channel_statements'].forEach(
+      function(channelStatement) {
+        channels.push(channelStatement['publisher']);
+        deposit['date'] = monthlyStatementBalances['month'],
+        deposit[channelStatement['publisher']] = channelStatement['amount'] || channelStatement['BAT']
+      });
+    deposits.push(deposit);
+    deposit = {};
+  });
+
+  channels = [...new Set(channels)]
 
   let colors = ['#e79895', '#5edaea', '#1db899'];
-  let amounts = {};
-
-  for (var k in channel_balances) {
-    amounts[k] = '' + channel_balances[k]["amount"];
-  }
+  // channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
 
   renderDepositsBarChart({
-    parentSelector: '#monthly_deposits_chart',
+    parentSelector: '#monthly_statements_chart',
     channels,
     colors,
+    deposits: deposits,
+    /*
     deposits: [
       {
         date: '7/30',
@@ -371,6 +382,7 @@ document.addEventListener('eyeshade-statement-received', function() {
         'Amazon.com': 200
       }
     ],
+    */
     currency: 'USD',
     currencyConversion: 0.25,
     height: 160,

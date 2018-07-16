@@ -13,6 +13,7 @@ class PublisherStatement::Generator < BaseApiClient
   end
 
   def perform
+    p "generating!"
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
     response = connection.get do |request|
@@ -32,7 +33,7 @@ class PublisherStatement::Generator < BaseApiClient
   end
 
   def perform_offline
-    fake_report = "/assets/fake_statement.pdf#{query_params}"
+    fake_report = "/assets/fake_statement.csv#{query_params}"
 
     Rails.logger.info("PublisherStatement::Generator eyeshade offline; generating fake report: #{fake_report}")
 
