@@ -12,7 +12,7 @@ class Api::StatsController < Api::BaseController
     render(json: fill_in_blank_dates(result).to_json, status: 200)
   end
 
-  def verified_signups_per_day
+  def email_verified_signups_per_day
     sql =
     """
       select created_at::date, count(*)
