@@ -85,7 +85,10 @@ Rails.application.routes.draw do
     end
     resources :tokens, only: %i(index)
     resources :channels, constraints: { channel_id: %r{[^\/]+} }
-    
+    namespace :stats do
+      get 'signups_per_day'
+      get 'verified_signups_per_day'
+    end
     namespace :v1, defaults: { format: :json } do
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
