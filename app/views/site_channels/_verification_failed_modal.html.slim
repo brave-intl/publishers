@@ -13,7 +13,7 @@
     = form_for( \
             current_channel.details, \
             method: :patch, \
-            url: verify_site_channel_path(current_channel), \
+            url: verify_site_channel_path(current_channel, verification_method: current_channel.details.verification_method), \
             html: {style: "display: inline-block"} \
           ) do |f|
             = f.submit( \

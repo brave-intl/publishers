@@ -4,7 +4,7 @@
     publisher: current_publisher \
   }
 
-script type="text/html" id="verification_failed_modal_wrapper" data-open-verification-failed-modal="#{current_channel.verification_failed?}"
+script type="text/html" id="verification_failed_modal_wrapper" data-open-verification-failed-modal="#{should_open_verification_failed_modal?(current_channel, 'dns_record')}"
   = render :partial => 'verification_failed_modal'
 
 .single-panel--wrapper.single-panel--wrapper--large
@@ -52,7 +52,7 @@ script type="text/html" id="verification_failed_modal_wrapper" data-open-verific
           = form_for( \
             current_channel.details, \
             method: :patch, \
-            url: verify_site_channel_path(current_channel) \
+            url: verify_site_channel_path(current_channel, verification_method: "dns_record"), \
           ) do |f|
             = f.submit( \
               t(".button"), \

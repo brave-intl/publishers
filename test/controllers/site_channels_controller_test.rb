@@ -54,7 +54,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       with(headers: headers).
       to_return(status: 200, body: body, headers: {})
 
-    patch(verify_site_channel_path(channel.id))
+    patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
     assert channel.verified?
     assert_redirected_to home_publishers_path
@@ -78,7 +78,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       with(headers: headers).
       to_return(status: 404, body: nil, headers: {})
 
-    patch(verify_site_channel_path(channel.id))
+    patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
     refute channel.verified?
     assert_redirected_to verification_wordpress_site_channel_path(channel.id)
