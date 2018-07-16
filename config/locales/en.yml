@@ -90,7 +90,6 @@ en:
       verification_failure_what_happened: What happened
       verification_failure: Your channel could not be verified!
       verification_failure_explanation:
-        support_queue: "you are in the support queue."
         domain_not_found: "we could not find your domain."
         connection_failed: |
           we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
@@ -102,7 +101,6 @@ en:
         no_https: "HTTPS is not enabled. "
         generic: "of an unkown reason. "
       verification_failure_cta:
-        support_queue: "Please choose a different verification method."
         domain_not_found: "Please check if the domain is correct."
         connection_failed: "Please make sure the file exists and is publicly available."
         too_many_redirects: "Please reduce the number of redirects."
@@ -577,10 +575,6 @@ en:
         heading: Edit DNS records
         subheading: (You need DNS access)
         button: I'll edit my DNS record
-      support_queue:
-        body_html: |
-          <p>If both of those options sound daunting to you, %{support_queue_link}</p>
-        link: join the support queue.
     verification_dns_record:
       heading: Add a new TXT record for %{brave_publisher_id}
       help: To verify ownership of your site, you'll need to add a new DNS record for
@@ -608,13 +602,6 @@ en:
       nojekyll_html: |
         It looks like you are using <strong>GitHub</strong>.
         As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
-    verification_support_queue:
-      heading: Thanks for waiting!
-      help_html: |
-        <p>We will be reaching out to each member in the order the requests are received.</p>
-        <p>You will receive an email when our next available support member can assist you. Please keep in mind
-        that this may take a few days due to our current backlog.</p>
-      review_options: I'd like to review my options
     verification_wordpress:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!

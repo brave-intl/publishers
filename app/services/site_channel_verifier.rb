@@ -66,16 +66,9 @@ class SiteChannelVerifier < BaseService
         verify_site_channel_public_file
       when "wordpress"
         verify_site_channel_public_file
-      when "support_queue"
-        verify_site_channel_support_queue
       else
         raise UnsupportedVerificationMethod.new("PublisherVerifier unknown verification_method:  #{channel.details.verification_method}")
     end
-  end
-
-  def verify_site_channel_support_queue
-    @verification_details = "support_queue"
-    false
   end
 
   def verify_site_channel_dns

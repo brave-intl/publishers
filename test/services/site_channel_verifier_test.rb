@@ -123,12 +123,6 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     assert c.verification_details, "domain_not_found"
   end
 
-  test "support queue method fails" do
-    c = channels(:to_verify_support)
-    refute_verification(c)
-    assert c.verification_details, "support_queue"
-  end
-
   test "fails and raises if channel is not a site channel" do
     c = channels(:youtube_initial)
     assert_raise SiteChannelVerifier::UnsupportedChannelType do

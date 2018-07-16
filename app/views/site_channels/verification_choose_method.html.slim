@@ -28,6 +28,3 @@
             .two-options--image-wrapper
               = image_tag("choose-dns@2x.png", class: "two-options--image", width: 253, height: 96)
             div= link_to(t(".dns.button"), verification_dns_record_site_channel_path(current_channel), class: "btn btn-block btn-outline-primary", :"data-piwik-action" => "ChoseDNSClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow")
-
-      .single-panel--footer.single-panel--footer--secondary
-        = t(".support_queue.body_html", support_queue_link: link_to(t(".support_queue.link"), verification_support_queue_site_channel_path(current_channel), :"data-piwik-action" => "ChoseSupportClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "ChooserFlow"))

@@ -14,8 +14,6 @@ module ChannelsHelper
         verification_github_site_channel_path(channel)
       when "wordpress"
         verification_wordpress_site_channel_path(channel)
-      when "support_queue"
-        verification_support_queue_site_channel_path(channel)
       else
         verification_choose_method_site_channel_path(channel)
     end
@@ -66,8 +64,6 @@ module ChannelsHelper
   def channel_verification_details(channel)
     return if channel.verified? || channel.details_type != "SiteChannelDetails"
     case channel.verification_details
-      when "support_queue"
-        I18n.t("helpers.channels.verification_failure_explanation.support_queue")
       when "domain_not_found"
         I18n.t("helpers.channels.verification_failure_explanation.domain_not_found")
       when "connection_failed"
@@ -92,8 +88,6 @@ module ChannelsHelper
   def failed_verification_call_to_action(channel)
     return if channel.verified? || channel.details_type != "SiteChannelDetails"
     case channel.verification_details
-      when "support_queue"
-        I18n.t("helpers.channels.verification_failure_cta.support_queue")
       when "domain_not_found"
         I18n.t("helpers.channels.verification_failure_cta.domain_not_found")
       when "connection_failed"

@@ -20,9 +20,6 @@ class PublishersHelperTest < ActionView::TestCase
     channel.verification_failed!
     assert_equal t("helpers.channels.verification_failure_explanation.generic"), channel_verification_details(channel)
 
-    channel.verification_failed!("support_queue")
-    assert_equal t("helpers.channels.verification_failure_explanation.support_queue"), channel_verification_details(channel)
-
     channel.verification_failed!("domain_not_found")
     assert_equal t("helpers.channels.verification_failure_explanation.domain_not_found"), channel_verification_details(channel)
 

@@ -12,7 +12,6 @@ class SiteChannelsController < ApplicationController
                          verification_wordpress
                          verification_github
                          verification_public_file
-                         verification_support_queue
                          verification_background
                          verify
                          download_verification_file)
@@ -148,8 +147,6 @@ class SiteChannelsController < ApplicationController
         current_channel.details.verification_method = "github"
       when "wordpress"
         current_channel.details.verification_method = "wordpress"
-      when "support_queue"
-        current_channel.details.verification_method = "support_queue"
       else
         raise "unknown action"
     end
