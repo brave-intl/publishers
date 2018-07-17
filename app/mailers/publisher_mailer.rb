@@ -126,7 +126,7 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def suspended_publisher(publisher)
+  def suspend_publisher(publisher)
     @publisher = publisher
     mail(
       to: @publisher.email,
