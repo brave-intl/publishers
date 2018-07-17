@@ -60,16 +60,15 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: Rails.application.secrets[:url_host] }
 
-  # Enable Mailgu on Heroku
   config.action_mailer.smtp_settings = {
-    port: ENV["MAILGUN_SMTP_PORT"],
-    address: ENV["MAILGUN_SMTP_SERVER"],
-    user_name: ENV["MAILGUN_SMTP_LOGIN"],
-    password: ENV["MAILGUN_SMTP_PASSWORD"],
+    port: Rails.application.secrets[:smtp_server_port],
+    address: Rails.application.secrets[:smtp_server_address],
+    user_name: Rails.application.secrets[:smtp_server_login],
+    password: Rails.application.secrets[:smtp_server_password],
     domain: Rails.application.secrets[:url_host],
     authentication: :plain,
+    enable_starttls_auto: true
   }
-  config.action_mailer.delivery_method = :smtp
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
