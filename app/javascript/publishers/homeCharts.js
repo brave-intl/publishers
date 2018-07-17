@@ -1,6 +1,26 @@
 // TODO: import only the aspects of d3 that are being used
 import * as d3 from "d3";
 
+function getUrlCleanly(url) {
+  if (url.startsWith("twitch#channel:") || url.startsWith("twitch#author:")) {
+    return "https://twitch.tv/" + url.split(":")[1];
+  } else if (url.startsWith("youtube#channel:")) {
+    return "https://youtube.com/channel/" + url.split(":")[1];
+  } else {
+    return "https://" + url;
+  }
+}
+
+function displayUrl(url) {
+  if (url.startsWith("twitch#channel:") || url.startsWith("twitch#author:")) {
+    return "Twitch.tv: " + url.split(":")[1];
+  } else if (url.startsWith("youtube#channel:")) {
+    return "Your YouTube Channel";
+  } else {
+    return url;
+  }
+}
+
 /**
  renderDepositsBarChart example usage:
 
@@ -183,12 +203,12 @@ export function renderContributionsDonutChart(options) {
     donutWidth
   } = options;
 
-  margin = margin || { top: 0, right: 300, bottom: 0, left: 0 };
+  margin = margin || { top: 0, right: 100, bottom: 0, left: 0 };
   width = width || 250;
   height = height || 250;
   donutWidth = donutWidth || 40;
 
-  let marginRight = 300;
+  let marginRight = 100;
   let radius = Math.min(width , height) / 2;
   let legendRadius = 10;
   let legendSpacing = 4;
@@ -271,10 +291,12 @@ export function renderContributionsDonutChart(options) {
     .style('fill', (d, i) => d.color)
     .style('stroke', (d, i) => d.color);
 
-  legend.append('text')
+  legend
+    .append("svg:a").attr("href", function(d){ return getUrlCleanly(d.channel) })
+    .append('text')
     .attr('x', legendRadius * 1.5 + legendSpacing)
     .attr('y', legendRadius * 0.7 - legendSpacing)
-    .text(d => d.channel);
+    .text(d => displayUrl(d.channel));
 }
 
 /**
@@ -295,8 +317,9 @@ document.addEventListener('eyeshade-balance-received', function() {
 //  let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
   let channels = Object.keys(channel_balances);
 
-  let colors = ['#e79895', '#5edaea', '#1db899'];
+  // let colors = ['#e79895', '#5edaea', '#1db899'];
   let amounts = {};
+  let colors = ['#f80c12', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
 
   for (var k in channel_balances) {
     amounts[k] = '' + channel_balances[k]["amount"];
@@ -311,9 +334,9 @@ document.addEventListener('eyeshade-balance-received', function() {
     currencyConversion: 1.0,
     altCurrency: 'USD',
     altCurrencyConversion: 0.25,
-    width: 210,
-    height: 210,
-    margin: { left: 0, right: 250, top: 0, bottom: 0},
+    width: 250,
+    height: 250,
+    margin: { left: 0, right: 210, top: 0, bottom: 0},
     donutWidth: 30
   });
 });
@@ -342,8 +365,9 @@ document.addEventListener('eyeshade-statement-received', function() {
 
   channels = [...new Set(channels)]
 
-  let colors = ['#e79895', '#5edaea', '#1db899'];
-  // channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
+//  let colors = ['#e79895', '#5edaea', '#1db899'];
+  let colors = ['#f80c12', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
+//  channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
 
   renderDepositsBarChart({
     parentSelector: '#monthly_statements_chart',
