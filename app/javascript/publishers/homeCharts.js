@@ -81,7 +81,7 @@ export function renderDepositsBarChart(options) {
   });
 
   margin = margin || { top: 50, right: 50, bottom: 50, left: 50 };
-  width = width || data.length * 50;
+  width = width || data.length * 70;
   height = height || 180;
 
   let keys = channels;
