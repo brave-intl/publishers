@@ -22,6 +22,37 @@ function displayUrl(url) {
 }
 
 /**
+  x: x-coordinate
+  y: y-coordinate
+  w: width
+  h: height
+  r: corner radius
+  tl: top_left rounded?
+  tr: top_right rounded?
+  bl: bottom_left rounded?
+  br: bottom_right rounded?
+*/
+
+function roundedRect(x, y, w, h, r, tl, tr, bl, br) {
+  let retval;
+  retval  = "M" + (x + r) + "," + y;
+  retval += "h" + (w - 2*r);
+  if (tr) { retval += "a" + r + "," + r + " 0 0 1 " + r + "," + r; }
+  else { retval += "h" + r; retval += "v" + r; }
+  retval += "v" + (h - 2*r);
+  if (br) { retval += "a" + r + "," + r + " 0 0 1 " + -r + "," + r; }
+  else { retval += "v" + r; retval += "h" + -r; }
+  retval += "h" + (2*r - w);
+  if (bl) { retval += "a" + r + "," + r + " 0 0 1 " + -r + "," + -r; }
+  else { retval += "h" + -r; retval += "v" + -r; }
+  retval += "v" + (2*r - h);
+  if (tl) { retval += "a" + r + "," + r + " 0 0 1 " + r + "," + -r; }
+  else { retval += "v" + -r; retval += "h" + r; }
+  retval += "z";
+  return retval;
+}
+
+/**
  renderDepositsBarChart example usage:
 
  ```
@@ -127,6 +158,8 @@ export function renderDepositsBarChart(options) {
     .range(colors);
 
   let maxY = d3.max(data, (d) => d.total);
+  var barCount = 0;
+  var topBarLimit = data.length * (channels.length - 1);
 
   x.domain(data.map((d) => d.date));
   y.domain([0, maxY]);
@@ -150,16 +183,17 @@ export function renderDepositsBarChart(options) {
 
   svg.append("g")
     .selectAll("g")
-    .data(d3.stack().keys(keys)(data))
-    .enter().append("g")
-    .attr("fill", function(d) { return z(d.key); })
-    .selectAll("rect")
-    .data(function(d) { return d; })
-    .enter().append("rect")
-    .attr("x", function(d) { return x(d.data.date); })
-    .attr("y", function(d) { return y(d[1]); })
-    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-    .attr("width", x.bandwidth());
+      .data(d3.stack().keys(keys)(data))
+      .enter().append("g")
+      .attr("fill", function(d) { return z(d.key); })
+      .selectAll("rect")
+        .data(function(d) { return d; })
+        .enter().append("path")
+          .attr("d", function(d, i, q) {
+            barCount += 1;
+            var curveTopBar = barCount > topBarLimit;
+            return roundedRect(x(d.data.date), y(d[1]), x.bandwidth(), y(d[0]) - y(d[1]), 17, curveTopBar, curveTopBar, false, false);
+          });
 }
 
 /**
@@ -363,17 +397,15 @@ document.addEventListener('eyeshade-statement-received', function() {
     deposit = {};
   });
 
+  // Example: channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
   channels = [...new Set(channels)]
 
-//  let colors = ['#e79895', '#5edaea', '#1db899'];
   let colors = ['#f80c12', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
-//  channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
 
   renderDepositsBarChart({
     parentSelector: '#monthly_statements_chart',
     channels,
     colors,
-    deposits: deposits,
     /*
     deposits: [
       {
@@ -407,6 +439,7 @@ document.addEventListener('eyeshade-statement-received', function() {
       }
     ],
     */
+    deposits: deposits,
     currency: 'USD',
     currencyConversion: 0.25,
     height: 160,
