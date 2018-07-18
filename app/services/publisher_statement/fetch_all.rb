@@ -23,14 +23,14 @@ class PublisherStatement::FetchAll < BaseApiClient
     # Read out from CSVs into JSON
     PublisherStatement.where(id: @publisher_statement_ids).find_each do |publisher_statement|
       if Rails.env.test? || Rails.env.development?
-        results.append({channel_statements: mock_publisher_statement_values}.merge({month: publisher_statement.period.split("-")[0..1].join("-")}))
+        results.append({channel_statements: mock_publisher_statement_values}.merge({month: publisher_statement.period.split("_")[0]}))
       else
         result = CSV.read(retrieve_payload(publisher_statement.source_url))
         keys = result[0]
-        results.append({channel_statements: CSV.parse(result[1..-1]).map {|a| Hash[ keys.zip(a) ] }}.merge({month: publisher_statement.period}))
-
+        results.append({channel_statements: CSV.parse(result[1..-1]).map {|a| Hash[ keys.zip(a) ] }}.merge({month: publisher_statement.period.split("_")[0]}))
       end
     end
+    results.sort! { |x,y| Date.parse(x[:month]) <=> Date.parse(y[:month]) }
     results
   end
 

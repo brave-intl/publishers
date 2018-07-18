@@ -115,10 +115,12 @@ export function renderDepositsBarChart(options) {
     margin
   } = options;
 
+  const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
   let data = deposits.map(d => {
     let total = 0;
     let deposit = {
-      date: d.date
+      date: MONTH_NAMES[parseInt(d.date.split("-")[1])]
     };
     for (let i = 0; i < channels.length; i++) {
       let channel = channels[i];
@@ -132,7 +134,7 @@ export function renderDepositsBarChart(options) {
   });
 
   margin = margin || { top: 50, right: 50, bottom: 50, left: 50 };
-  width = width || data.length * 70;
+  width = width || data.length * 35;
   height = height || 180;
 
   let keys = channels;
@@ -192,7 +194,7 @@ export function renderDepositsBarChart(options) {
           .attr("d", function(d, i, q) {
             barCount += 1;
             var curveTopBar = barCount > topBarLimit;
-            return roundedRect(x(d.data.date), y(d[1]), x.bandwidth(), y(d[0]) - y(d[1]), 17, curveTopBar, curveTopBar, false, false);
+            return roundedRect(x(d.data.date), y(d[1]), x.bandwidth(), y(d[0]) - y(d[1]), 8, curveTopBar, curveTopBar, false, false);
           });
 }
 
@@ -351,9 +353,8 @@ document.addEventListener('eyeshade-balance-received', function() {
 //  let channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
   let channels = Object.keys(channel_balances);
 
-  // let colors = ['#e79895', '#5edaea', '#1db899'];
+  let colors = ['#e79895', '#5edaea', '#1db899', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
   let amounts = {};
-  let colors = ['#f80c12', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
 
   for (var k in channel_balances) {
     amounts[k] = '' + channel_balances[k]["amount"];
@@ -400,7 +401,8 @@ document.addEventListener('eyeshade-statement-received', function() {
   // Example: channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
   channels = [...new Set(channels)]
 
-  let colors = ['#f80c12', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
+  // let colors = ['#f80c12', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
+  let colors = ['#e79895', '#5edaea', '#1db899'];
 
   renderDepositsBarChart({
     parentSelector: '#monthly_statements_chart',
