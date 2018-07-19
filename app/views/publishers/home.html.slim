@@ -34,9 +34,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           .dashboard-panel--content
             .explanation
               = t ".explanation"
-          .with_charts
-            = render_async dashboard_donut_chart_publishers_path, event_name: 'eyeshade-balance-received'
-          .next_deposit_date
+          = render_async dashboard_donut_chart_publishers_path, event_name: 'eyeshade-balance-received'
+          .dashboard-panel--next-deposit-date
             span = t ".next_deposit_date"
             span = next_deposit_date
       .col

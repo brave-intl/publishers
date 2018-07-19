@@ -262,7 +262,40 @@
       }
 
       &.with-charts {
-        padding: 30px 30px 30px 40px;
+        padding: 30px 0px 30px 40px;
+      }
+
+      #monthly_statements_chart {
+        .tick line,
+        .x-axis .domain {
+          stroke: lightgrey;
+          stroke-opacity: 0.7;
+          shape-rendering: crispEdges;
+        }
+        .y-axis .domain,
+        .x-axis .tick line {
+          display: none;
+        }
+        .y-units,
+        .tick text {
+          font-size: 13px;
+          fill: gray;
+        }
+        margin-left: -50px;
+      }
+
+      #contributions_chart {
+        .legend {
+          font-size: 14px;
+        }
+        .total {
+          font-size: 30px;
+        }
+        .alt-total {
+          font-size: 15px;
+          fill: gray;
+        }
+        margin-left: -40px;
       }
     }
     &--header {
@@ -301,6 +334,12 @@
 
     &--content {
       margin-bottom: 25px;
+
+      .explanation {
+        margin-top: -8px;
+        font-size: 14px;
+        color: $braveGray-4;
+      }
     }
 
     &--statement {
@@ -415,11 +454,6 @@
         font-size: $font-size-base;
         vertical-align: top;
         margin-top: 34px;
-        .explanation {
-          margin-top: -8px;
-          font-size: 14px;
-          color: $braveGray-4;
-        }
       }
     }
     #uphold_check_balance {
@@ -854,36 +888,5 @@
     &--body-box {
       padding: 16px;
     }
-  }
-}
-
-#contributions_chart {
-  .legend {
-    font-size: 14px;
-  }
-  .total {
-    font-size: 30px;
-  }
-  .alt-total {
-    font-size: 15px;
-    fill: gray;
-  }
-}
-
-#monthly_statements_chart {
-  .tick line,
-  .x-axis .domain {
-    stroke: lightgrey;
-    stroke-opacity: 0.7;
-    shape-rendering: crispEdges;
-  }
-  .y-axis .domain,
-  .x-axis .tick line {
-    display: none;
-  }
-  .y-units,
-  .tick text {
-    font-size: 13px;
-    fill: gray;
   }
 }
