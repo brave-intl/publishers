@@ -28,71 +28,21 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                    data-default-currency=current_publisher.default_currency }
     .row
       .col
-        .balance
-          h4.balance-header
-            span = t ".balance_pending"
-          .float-left
-            = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
-          .float-left.amounts
-            .bat
-              span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
-              span.bat-code= " BAT"
-            .converted#converted_amount
-              = publisher_converted_balance(current_publisher)
-            .next_deposit_date
-              span = t ".next_deposit_date"
-              span= next_deposit_date
-      - if promo_running?
-        .col
-          .promo-panel
-            - if current_publisher.promo_status(promo_running?) == :inactive
-              .promo-panel-item.promo-panel-item-info
-                #promo-limited-time= t("promo.activate.limited_time_promo")
-                h3#promo-title= t("promo.activate.title")
-                #promo-referring-fans= t("promo.activate.for_referring_your_fans")
-              .promo-panel-item.promo-panel-item-button
-                = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
-                  = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
-            - elsif current_publisher.has_verified_channel?
-              .promo-flex-col
-                .promo-flex-row.promo-flex-row-main
-                  .promo-flex-col.promo-panel-title
-                    .promo-panel-title-item
-                      =t("promo.dashboard.referral").upcase
-                    .promo-panel-title-item
-                      =t("promo.dashboard.promo").upcase
-                  .promo-flex-col.promo-flex-col-downloaded
-                    .promo-panel-header
-                      =t("promo.dashboard.downloaded").upcase
-                    .promo-panel-number
-                      = total_referral_downloads(current_publisher)
-                  .promo-flex-col.promo-flex-col-confirmed
-                    .promo-panel-header
-                      =t("promo.dashboard.confirmed").upcase
-                    .promo-panel-number
-                      = confirmed_referral_downloads(current_publisher)
-                .promo-flex-row.promo-flex-row-sub
-                  =t("promo.dashboard.check_statement")
-            - else
-              .promo-panel-item.promo-panel-item-alert
-                #promo-panel-alert
-                  = t("promo.dashboard.add_channel")
-      - elsif current_publisher.channels.empty?
-        .col
-          .add-channel-cta
-            = t ".add_channel_cta"
-
-    - # Only show WIP charts when `?charts=true` param is used
-    - if params[:charts]
-      .row
-        = render_async dashboard_donut_chart_publishers_path, event_name: 'eyeshade-balance-received'
-        = render_async dashboard_statement_chart_publishers_path, event_name: 'eyeshade-statement-received'
-
-    .row
+        .dashboard-panel--wrapper
+          h4.dashboard-panel--header#dashboard_brave_header
+            = t ".brave_fan_contributions"
+          .dashboard-panel--content
+            .explanation
+              = t ".explanation"
+          .with_charts
+            = render_async dashboard_donut_chart_publishers_path, event_name: 'eyeshade-balance-received'
+          .next_deposit_date
+            span = t ".next_deposit_date"
+            span = next_deposit_date
       .col
-        .dashboard-panel--wrapper.uphold-panel
+        .dashboard-panel--wrapper
           .dashboard-panel--header#dashboard_uphold_header
-            = t ".uphold.heading"
+            = t ".statements.heading"
           .dashboard-panel--content#uphold_status_display
             .status-summary
               .text= uphold_status_summary(current_publisher)
@@ -143,15 +93,52 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
                       id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                       :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+          .with-charts
+            = render_async dashboard_statement_chart_publishers_path, event_name: 'eyeshade-statement-received'
+          .dashboard-panel--statement#publisher_statements
+            = link_to(t(".statements.view_statements"), statements_publishers_path)
+    .row
+      - if promo_running?
+        .col
+          .promo-panel
+            - if current_publisher.promo_status(promo_running?) == :inactive
+              .promo-panel-item.promo-panel-item-info
+                #promo-limited-time= t("promo.activate.limited_time_promo")
+                h3#promo-title= t("promo.activate.title")
+                #promo-referring-fans= t("promo.activate.for_referring_your_fans")
+              .promo-panel-item.promo-panel-item-button
+                = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
+                  = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
+            - elsif current_publisher.has_verified_channel?
+              .promo-flex-col
+                .promo-flex-row.promo-flex-row-main
+                  .promo-flex-col.promo-panel-title
+                    .promo-panel-title-item
+                      =t("promo.dashboard.referral").upcase
+                    .promo-panel-title-item
+                      =t("promo.dashboard.promo").upcase
+                  .promo-flex-col.promo-flex-col-downloaded
+                    .promo-panel-header
+                      =t("promo.dashboard.downloaded").upcase
+                    .promo-panel-number
+                      = total_referral_downloads(current_publisher)
+                  .promo-flex-col.promo-flex-col-confirmed
+                    .promo-panel-header
+                      =t("promo.dashboard.confirmed").upcase
+                    .promo-panel-number
+                      = confirmed_referral_downloads(current_publisher)
+                .promo-flex-row.promo-flex-row-sub
+                  =t("promo.dashboard.check_statement")
+            - else
+              .promo-panel-item.promo-panel-item-alert
+                #promo-panel-alert
+                  = t("promo.dashboard.add_channel")
+      - elsif current_publisher.channels.empty?
+        .col
+          .add-channel-cta
+            = t ".add_channel_cta"
       .col
         .dashboard-panel--wrapper
-          .dashboard-panel--header#publishers_statements
-            = t ".statements.heading"
-          .dashboard-panel--content
-            .statements-available
-              = link_to_most_recent_statement
-            .statements-unavailable
-              = t ".statements.unavailable"
           .dashboard-panel--header#publishers_contact
             = t ".contact.heading"
             a.header-link#edit_contact href="#"

@@ -369,9 +369,9 @@ document.addEventListener('eyeshade-balance-received', function() {
     currencyConversion: 1.0,
     altCurrency: 'USD',
     altCurrencyConversion: 0.25,
-    width: 250,
-    height: 250,
-    margin: { left: 0, right: 210, top: 0, bottom: 0},
+    width: 200,
+    height: 200,
+    margin: { left: 0, right: 250, top: 0, bottom: 0},
     donutWidth: 30
   });
 });
@@ -401,8 +401,7 @@ document.addEventListener('eyeshade-statement-received', function() {
   // Example: channels = ['AmazingBlog on YouTube', 'amazingblog.com', 'Amazon.com'];
   channels = [...new Set(channels)]
 
-  // let colors = ['#f80c12', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
-  let colors = ['#e79895', '#5edaea', '#1db899'];
+  let colors = ['#e79895', '#5edaea', '#1db899', '#442299', '#ff6644', '#11aabb', '#ff9933', '#22ccaa', '#feae2d', '#d0c310', '#aacc22', '#69d025', '#4444dd']
 
   renderDepositsBarChart({
     parentSelector: '#monthly_statements_chart',
@@ -442,8 +441,14 @@ document.addEventListener('eyeshade-statement-received', function() {
     ],
     */
     deposits: deposits,
+    // (Albert Wang): We'll change this later, it's possible that dollar amounts can't be determined due to
+    // volatility of crypto to fiat.
+    currency: 'BAT',
+    currencyConversion: 1,
+    /*
     currency: 'USD',
     currencyConversion: 0.25,
+    */
     height: 160,
     margin: { left: 50, right: 50, top: 30, bottom: 30},
   });

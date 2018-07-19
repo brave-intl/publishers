@@ -325,9 +325,9 @@ en:
     home:
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       title: Dashboard
-      balance_pending: CURRENT CONTRIBUTION BALANCE
+      brave_fan_contributions: Brave Fan Contributions
+      explanation: Estimated BAT Accrual this Period
       next_deposit_date: "Next Deposit Date: "
-
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
       uphold:
         heading: Your Uphold Wallet
@@ -343,7 +343,7 @@ en:
         change: Change
         no_currency_selected: None selected
       statements:
-        heading: Statements
+        heading: Deposits to Uphold
         statement_name: "%{created_at} statement - %{period}"
         view_statements: View statements
         view_recent_statement: Your %{statement_link} is ready.

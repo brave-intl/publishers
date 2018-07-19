@@ -245,8 +245,8 @@
 
   .dashboard-panel {
     &--wrapper {
-      margin-top: 30px;
-      padding: 64px 45px 55px 95px;
+      margin-top: 10px;
+      padding: 35px 45px 55px 95px;
       min-width: 450px;
 
       @include media-breakpoint-up(md) {
@@ -259,12 +259,6 @@
 
       @include media-breakpoint-down(xs) {
         min-height: $spacer*10;
-      }
-
-      &.uphold-panel {
-        background-image: url(asset-path("uphold@1x.png"));
-        background-repeat: no-repeat;
-        background-position: top right;
       }
 
       &.with-charts {
@@ -280,9 +274,16 @@
       background-repeat: no-repeat;
       background-size: 34px 42px;
       font-size: 20px;
+      &#dashboard_brave_header {
+        padding-top: 14px;
+        background-image: url(asset-path("bat-logo@1x.png"));
+      }
       &#dashboard_uphold_header {
         padding-top: 14px;
         background-image: url(asset-path("wallet@1x.png"));
+      }
+      &#dashboard_uphold_logo {
+        background-image: url(asset-path("uphold@1x.png"));
       }
       &#publishers_statements {
         background-image: url(asset-path("download@1x.png"));
@@ -294,12 +295,17 @@
         background-image: url(asset-path("list@1x.png"));
       }
       h4 {
-        font-size: $font-size-base;
+        font-size: 18px;
       }
     }
 
     &--content {
       margin-bottom: 25px;
+    }
+
+    &--statement {
+      margin-bottom: 25px;
+      text-align: right;
     }
   }
 
@@ -347,19 +353,6 @@
   #converted_amount {
     @include media-breakpoint-down(sm) {
       margin-bottom: 20px;
-    }
-  }
-
-  h4.balance-header {
-    font-size: 13px;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    padding-left: 75px;
-
-    #balance_pending_message {
-      opacity: .6;
-      padding-left: 7px;
     }
   }
 
@@ -422,22 +415,10 @@
         font-size: $font-size-base;
         vertical-align: top;
         margin-top: 34px;
-        .amounts {
-          .bat-amount {
-            font-size: 30px;
-            color: #fc4145;
-            font-weight: 500;
-          }
-          .bat-code {
-            font-size: 16px;
-            color: #222326;
-            font-weight: 500;
-          }
-          .converted {
-            margin-top: -8px;
-            font-size: 14px;
-            color: $braveGray-4;
-          }
+        .explanation {
+          margin-top: -8px;
+          font-size: 14px;
+          color: $braveGray-4;
         }
       }
     }
@@ -551,29 +532,6 @@
       width: 350px;
       font-size: 15px;
       font-weight: 300;
-    }
-  }
-  .balance {
-    font-size: $font-size-base;
-    vertical-align: top;
-    .amounts {
-      margin-top: -16px;
-      margin-left: 15px;
-      .bat-amount {
-        font-size: 48px;
-        color: #222326;
-        font-weight: 500;
-      }
-      .bat-code {
-        font-size: 16px;
-        color: #222326;
-        font-weight: 500;
-      }
-      .converted {
-        margin-top: -8px;
-        font-size: 14px;
-        color: $braveGray-4;
-      }
     }
   }
   .add-channel-cta {
