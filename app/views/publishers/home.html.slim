@@ -48,7 +48,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = next_deposit_date
       .col
         .dashboard-panel--wrapper
-          .dashboard-panel--header#dashboard_uphold_header
+          h4.dashboard-panel--header#dashboard_uphold_header
             = t ".statements.heading"
           .dashboard-panel--content#uphold_status_display
             .status-summary
@@ -103,7 +103,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           .with-charts
             = render_async dashboard_statement_chart_publishers_path, event_name: 'eyeshade-statement-received'
           .dashboard-panel--statement#publisher_statements
-            = link_to(t(".statements.view_statements"), statements_publishers_path)
+            = image_tag("statemt@1x.png")
+            = link_to(" " +t(".statements.view_statements"), statements_publishers_path)
     .row
       - if promo_running?
         .col

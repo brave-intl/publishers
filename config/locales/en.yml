@@ -345,7 +345,7 @@ en:
       statements:
         heading: Deposits to Uphold
         statement_name: "%{created_at} statement - %{period}"
-        view_statements: View statements
+        view_statements: Statements
         view_recent_statement: Your %{statement_link} is ready.
         unavailable: No statements available.
       contact:
