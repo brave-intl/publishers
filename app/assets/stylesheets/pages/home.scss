@@ -43,6 +43,7 @@
   }
 
   .promo-panel {
+    margin-top: 10px;
     padding: 0px 15px 0px 100px;
     background-color: #00bcd6;
     display: table;
@@ -296,24 +297,38 @@
           fill: gray;
         }
         margin-left: -40px;
+        margin-top: 40px;
       }
     }
     &--header {
       margin: 0 0 0 -50px;
-      padding: 12px 0 12px 50px;
+      padding: 12px 0 2px 50px;
       vertical-align: middle;
       font-weight: 400;
       background-position: center left;
       background-repeat: no-repeat;
       background-size: 34px 42px;
       font-size: 20px;
+      .row {
+        .col {
+          &#dashboard_info_box {
+            font-size: 14px;
+            border-radius: 3px;
+            color: $braveGray-4;
+            height: 25px;
+            background-color: #e0e0e0;
+            vertical-align: initial !important;
+            text-align: center;
+          }
+        }
+      }
       &#dashboard_brave_header {
-        padding-top: 14px;
+        margin-top: 6px;
+        background-size: 42px 42px;
         background-image: url(asset-path("bat-logo@1x.png"));
       }
       &#dashboard_uphold_header {
-        padding-top: 14px;
-        background-image: url(asset-path("wallet@1x.png"));
+        background-image: url(asset-path("icn-uphold-logo@2x.png"));
       }
       &#dashboard_uphold_logo {
         background-image: url(asset-path("uphold@1x.png"));
@@ -340,10 +355,20 @@
         font-size: 14px;
         color: $braveGray-4;
       }
+
+      .next_deposit {
+        margin-top: 55px;
+        margin-left: -50px;
+        font-size: 14px;
+        color: $braveGray-4;
+
+        .--bolded {
+          font-weight: bold;
+        }
+      }
     }
 
     &--statement {
-      margin-bottom: 25px;
       text-align: right;
     }
   }

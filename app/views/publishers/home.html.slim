@@ -30,14 +30,22 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
       .col
         .dashboard-panel--wrapper
           h4.dashboard-panel--header#dashboard_brave_header
-            = t ".brave_fan_contributions"
+            .row
+              .col.col-md-8
+                = t ".brave_fan_contributions"
+              .col.col-md-4#dashboard_info_box
+                = image_tag("small-calendar@1.5x.png")
+                = " #{Date.today.beginning_of_month.strftime('%m/%d')} - #{Date.today.strftime('%m/%d')}"
           .dashboard-panel--content
             .explanation
               = t ".explanation"
           = render_async dashboard_donut_chart_publishers_path, event_name: 'eyeshade-balance-received'
-          .dashboard-panel--next-deposit-date
-            span = t ".next_deposit_date"
-            span = next_deposit_date
+          .dashboard-panel--content
+            .next_deposit
+              span.--bolded
+                = t ".next_deposit_date"
+              span
+                = next_deposit_date
       .col
         .dashboard-panel--wrapper
           .dashboard-panel--header#dashboard_uphold_header
