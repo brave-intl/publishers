@@ -161,15 +161,20 @@ class PublishersController < ApplicationController
   end
 
   def dashboard_donut_chart
-    render partial: 'dashboard_donut_chart', locals: {channel_balances_json: PublisherWalletGetter.new(publisher: current_publisher).perform.channel_balances.to_json}
+    result = PublisherWalletGetter.new(publisher: current_publisher).perform
+    if result.present?
+      render partial: 'publishers/dashboard_partials/donut_chart', locals: {channel_balances_json: result.channel_balances.to_json} and return
+    else
+      render partial: 'publishers/dashboard_partials/no_donut_chart' and return
+    end
   end
 
   def dashboard_statement_chart
     result = PublisherStatement::FetchAll.new(publisher: current_publisher).perform_and_stringify
     if result.present?
-      render partial: 'dashboard_monthly_statement_balances_chart', locals: {monthly_statement_json: result.to_json} and return
+      render partial: 'publishers/dashboard_partials/monthly_statement_balances_chart', locals: {monthly_statement_json: result.to_json} and return
     else
-      render partial: 'dashboard_no_statements_chart' and return
+      render partial: 'publishers/dashboard_partials/no_monthly_statements_balances_chart' and return
     end
   end
 
