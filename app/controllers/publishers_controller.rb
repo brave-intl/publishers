@@ -165,7 +165,12 @@ class PublishersController < ApplicationController
   end
 
   def dashboard_statement_chart
-    render partial: 'dashboard_monthly_statement_balances_chart', locals: {monthly_statement_json: PublisherStatement::FetchAll.new(publisher: current_publisher).perform_and_stringify.to_json}
+    result = PublisherStatement::FetchAll.new(publisher: current_publisher).perform_and_stringify
+    if result.present?
+      render partial: 'dashboard_monthly_statement_balances_chart', locals: {monthly_statement_json: result.to_json} and return
+    else
+      render partial: 'dashboard_no_statements_chart' and return
+    end
   end
 
   def update_email

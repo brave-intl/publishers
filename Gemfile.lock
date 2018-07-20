@@ -394,6 +394,8 @@ GEM
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     u2f (1.0.0)
+    uglifier (4.1.15)
+      execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
@@ -483,6 +485,7 @@ DEPENDENCIES
   slim-rails (~> 3.1)
   tzinfo-data
   u2f (~> 1.0)
+  uglifier (~> 4.1.15)
   vcr
   web-console
   webmock (~> 3.0)

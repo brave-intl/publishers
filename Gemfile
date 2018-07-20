@@ -112,6 +112,8 @@ gem "slim-rails", "~> 3.1"
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"
 
+gem 'uglifier', "~> 4.1.15"
+
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 

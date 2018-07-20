@@ -10,7 +10,7 @@ class PublisherStatement::GeneratorTest < ActiveJob::TestCase
       publisher = publishers(:verified)
       result = PublisherStatement::Generator.new(publisher: publisher, statement_period: :past_7_days).perform
 
-      assert_equal "/assets/fake_statement.pdf?starting=#{(Date.today - 7).iso8601}&ending=#{Date.today.iso8601}", result.source_url
+      assert_equal "/assets/fake_statement.csv?starting=#{(Date.today - 7).iso8601}&ending=#{Date.today.iso8601}", result.source_url
 
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline

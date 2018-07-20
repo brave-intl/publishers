@@ -14,11 +14,13 @@ class PublisherStatement::FetchAll < BaseApiClient
 
   def perform
     load_statements
+    return if @publisher_statement_ids.nil?
     PublisherStatement.where(id: @publisher_statement_ids)
   end
 
   def perform_and_stringify
     load_statements
+    return if @publisher_statement_ids.nil?
     results = []
     # Read out from CSVs into JSON
     PublisherStatement.where(id: @publisher_statement_ids).find_each do |publisher_statement|
@@ -78,6 +80,7 @@ class PublisherStatement::FetchAll < BaseApiClient
   end
 
   def load_statements
+    return if @publisher.channels.empty?
     iterative_date = @publisher.channels.order(created_at: :asc).first.created_at.utc.beginning_of_month
     todays_date = Time.now.utc.to_date
     while iterative_date.end_of_month < todays_date
