@@ -4,7 +4,7 @@ class PublisherStatement::Generator < BaseApiClient
   attr_reader :statement_period
   attr_accessor :starting, :ending
 
-  def initialize(publisher:, statement_period:, created_by_admin: false, starting: nil, ending: nil)
+  def initialize(publisher:, statement_period:, created_by_admin: false, starting: nil, ending: nil, hidden: false)
     @publisher = publisher
     @statement_period = statement_period
     @created_by_admin = created_by_admin
@@ -13,7 +13,6 @@ class PublisherStatement::Generator < BaseApiClient
   end
 
   def perform
-    p "generating!"
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
     response = connection.get do |request|

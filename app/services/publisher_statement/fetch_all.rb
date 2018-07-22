@@ -13,13 +13,13 @@ class PublisherStatement::FetchAll < BaseApiClient
   end
 
   def perform
-    load_statements
+    load_payout_statements
     return if @publisher_statement_ids.nil?
     PublisherStatement.where(id: @publisher_statement_ids)
   end
 
   def perform_and_stringify
-    load_statements
+    load_payout_statements
     return if @publisher_statement_ids.nil?
     results = []
     # Read out from CSVs into JSON
@@ -27,9 +27,17 @@ class PublisherStatement::FetchAll < BaseApiClient
       if Rails.env.test? || Rails.env.development?
         results.append({channel_statements: mock_publisher_statement_values}.merge({month: publisher_statement.period.split("_")[0]}))
       else
-        result = CSV.read(retrieve_payload(publisher_statement.source_url))
+        result = CSV.parse(retrieve_payload(publisher_statement.source_url))
         keys = result[0]
-        results.append({channel_statements: CSV.parse(result[1..-1]).map {|a| Hash[ keys.zip(a) ] }}.merge({month: publisher_statement.period.split("_")[0]}))
+        # Only read from payouts
+        results.append(
+          { channel_statements: result[1..-1].select {
+            |row| row[0]&.ends_with?("payout")
+          }.map {
+            |a| Hash[ keys.zip(a) ]
+          }
+          }.merge({month: publisher_statement.period.split("_")[0]})
+        )
       end
     end
     results.sort! { |x,y| Date.parse(x[:month]) <=> Date.parse(y[:month]) }
@@ -41,7 +49,7 @@ class PublisherStatement::FetchAll < BaseApiClient
   def mock_publisher_statement_values
     [
       {
-        note: "Finalized referrals",
+        note: "Contribution payout",
         timestamp: nil,
         publisher: "yachtcaptain23 <https://www.youtube.com/channel/UC_3xPuguXslZl-AUWXGkgIA>",
         currency: nil,
@@ -50,7 +58,7 @@ class PublisherStatement::FetchAll < BaseApiClient
         'BAT fees' => "80.975616903552825051"
       },
       {
-        note: "Finalized referrals",
+        note: "Referral payout",
         timestamp: nil,
         publisher: "yachtcaptain23 <yachtcaptain23.github.io>",
         currency: nil,
@@ -70,23 +78,26 @@ class PublisherStatement::FetchAll < BaseApiClient
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
     # Create Request
-    req =  Net::HTTP::Post.new(uri)
+    req =  Net::HTTP::Get.new(uri)
 
     # Add headers
     req.add_field "Content-Type", "application/json; charset=utf-8"
 
     # Fetch Request
-    http.request(req)
+    http.request(req).body
   end
 
-  def load_statements
+  def load_payout_statements
     return if @publisher.channels.empty?
     iterative_date = @publisher.channels.order(created_at: :asc).first.created_at.utc.beginning_of_month
     todays_date = Time.now.utc.to_date
     while iterative_date.end_of_month < todays_date
       # (Albert Wang): TODO This will change due to an updated API.
       publisher_statement = PublisherStatement.find_by(period: formatted_period(iterative_date, todays_date))
-      @publisher_statement_ids.append(publisher_statement.present? ? publisher_statement.id : PublisherStatement::Generator.new(publisher: @publisher, statement_period: formatted_period(iterative_date, iterative_date.end_of_month), starting: iterative_date, ending: iterative_date.end_of_month).perform)
+      if publisher_statement.nil?
+        publisher_statement = PublisherStatement::Generator.new(publisher: @publisher, statement_period: formatted_period(iterative_date, iterative_date.end_of_month), starting: iterative_date, ending: iterative_date.end_of_month, hidden: true).perform
+      end
+      @publisher_statement_ids.append(publisher_statement.id)
       iterative_date = iterative_date.next_month
     end
   end
