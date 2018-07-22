@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180628164707) do
+ActiveRecord::Schema.define(version: 20180722192428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,6 +185,7 @@ ActiveRecord::Schema.define(version: 20180628164707) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.boolean  "created_by_admin",      default: false
+    t.boolean  "hidden",                default: false
     t.index ["publisher_id"], name: "index_publisher_statements_on_publisher_id", using: :btree
   end
 
