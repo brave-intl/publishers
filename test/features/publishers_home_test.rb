@@ -174,7 +174,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
       refute publisher.wallet.present?
       assert_content page, publisher.name
-      assert_content page, "BAT unavailable"
+      assert_content page, "No contributions yet"
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end

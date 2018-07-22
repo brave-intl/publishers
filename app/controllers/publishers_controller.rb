@@ -162,7 +162,8 @@ class PublishersController < ApplicationController
 
   def dashboard_donut_chart
     result = PublisherWalletGetter.new(publisher: current_publisher).perform
-    if result.present?
+
+    if result&.channel_balances.present?
       render partial: 'publishers/dashboard_partials/donut_chart', locals: {channel_balances_json: result.channel_balances.to_json} and return
     else
       render partial: 'publishers/dashboard_partials/no_donut_chart' and return
