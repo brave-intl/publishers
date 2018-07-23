@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180628164707) do
+ActiveRecord::Schema.define(version: 20180719173113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 20180628164707) do
     t.integer  "rank"
     t.uuid     "faq_category_id"
     t.boolean  "published",       default: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id", using: :btree
     t.index ["question"], name: "index_faqs_on_question", unique: true, using: :btree
     t.index ["rank"], name: "index_faqs_on_rank", using: :btree
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(version: 20180628164707) do
     t.string   "detected_web_host"
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.jsonb    "stats",                           default: "{}",  null: false
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -275,8 +276,9 @@ ActiveRecord::Schema.define(version: 20180628164707) do
     t.string   "name"
     t.string   "display_name"
     t.string   "thumbnail_url"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.jsonb    "stats",             default: "{}", null: false
     t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id", unique: true, using: :btree
   end
 
@@ -314,8 +316,9 @@ ActiveRecord::Schema.define(version: 20180628164707) do
     t.string   "description"
     t.string   "thumbnail_url"
     t.integer  "subscriber_count"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.jsonb    "stats",              default: "{}", null: false
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id", unique: true, using: :btree
   end
 
