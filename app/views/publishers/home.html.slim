@@ -101,7 +101,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                       :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
           .with-charts
-            = render_async dashboard_statement_chart_publishers_path, event_name: 'eyeshade-statement-received'
+            / (Albert Wang): We'll re-enable this and use separate logic to show statements
+            / = render_async dashboard_statement_chart_publishers_path, event_name: 'eyeshade-statement-received'
           .dashboard-panel--statement#publisher_statements
             = image_tag("statemt@1x.png")
             = link_to(" " +t(".statements.view_statements"), statements_publishers_path)

@@ -1,4 +1,8 @@
 # Ask Eyeshade to generate a publisher statement since the earliest created by month
+=begin
+(Albert Wang): Some of this logic might be useful when we integrate
+the chart with the transaction table.
+
 require 'net/http'
 require 'net/https'
 require 'json'
@@ -106,3 +110,4 @@ class PublisherStatement::FetchAll < BaseApiClient
     starting_date.strftime("%Y-%m-%d") + '_' + ending_date.strftime("%Y-%m-%d")
   end
 end
+=end
