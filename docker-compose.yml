@@ -24,8 +24,8 @@ services:
       - API_EYESHADE_KEY=b7747761-0656-48a1-8cb9-7b1b0315d054
       - DATABASE_URL=postgres://postgres@postgres/brave_publishers_dev
       - DATABASE_URL_TEST=postgres://postgres@postgres/brave_publishers_test
-      - MAILGUN_SMTP_PORT=1025
-      - MAILGUN_SMTP_SERVER=mailcatcher
+      - SENDGRID_SMTP_PORT=1025
+      - SENDGRID_SMTP_SERVER=mailcatcher
       - PORT=3000
       - REDIS_URL=redis://redis:6379/0
       # null ssl

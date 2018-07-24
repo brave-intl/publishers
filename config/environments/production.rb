@@ -66,7 +66,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: Rails.application.secrets[:url_host] }
 
-  # SMTP mailer settings (Mailgun on Heroku)
+  # SMTP mailer settings (Sendgrid)
   config.action_mailer.smtp_settings = {
     port: Rails.application.secrets[:smtp_server_port],
     address: Rails.application.secrets[:smtp_server_address],
@@ -74,7 +74,9 @@ Rails.application.configure do
     password: Rails.application.secrets[:smtp_server_password],
     domain: Rails.application.secrets[:url_host],
     authentication: :plain,
+    enable_starttls_auto: true
   }
+
   config.action_mailer.delivery_method = :smtp
 
   # Ignore bad email addresses and do not raise email delivery errors.
