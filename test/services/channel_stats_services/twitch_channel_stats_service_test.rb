@@ -27,13 +27,13 @@ class TwitchChannelStatsServiceTest < ActiveJob::TestCase
       .to_return(status: 200, body: view_count_response_json)
 
     # stub follows_count request
-    follows_count_response_json = {"total":8,"data":[],"pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiIn0"}}.to_json
+    followers_count_response_json = {"total":8,"data":[],"pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiIn0"}}.to_json
     stub_request(:get, "#{Rails.application.secrets[:api_twitch_base_uri]}/users/follows?to_id=198524994")
-      .to_return(status: 200, body: follows_count_response_json)
+      .to_return(status: 200, body: followers_count_response_json)
 
     ChannelStatsServices::TwitchChannelStatsService.new(twitch_channel_details: twitch_channel_details).perform
 
     assert_equal twitch_channel_details.stats["view_count"], 40030
-    assert_equal twitch_channel_details.stats["follows_count"], 8 
+    assert_equal twitch_channel_details.stats["followers_count"], 8 
   end
 end

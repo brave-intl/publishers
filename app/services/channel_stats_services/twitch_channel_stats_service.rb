@@ -9,7 +9,7 @@ module ChannelStatsServices
       return perform_offline if Rails.application.secrets[:api_twitch_base_uri].blank?
       stats = {
         "view_count": view_count,
-        "follows_count": follows_count
+        "followers_count": followers_count
       }
 
       @channel_details.stats = stats
@@ -33,13 +33,13 @@ module ChannelStatsServices
       channel_view_count
     end
 
-    def follows_count
+    def followers_count
       response = connection.get do |request|
         request.headers["Client-ID"] = api_authorization_header
         request.url("users/follows?to_id=#{URI.escape(@twitch_id)}")
       end
-      channel_follows_count = JSON.parse(response.body)["total"]
-      channel_follows_count
+      channel_followers_count = JSON.parse(response.body)["total"]
+      channel_followers_count
     end
 
     def api_base_uri

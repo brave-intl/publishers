@@ -12,7 +12,7 @@ module ChannelStatsServices
       stats = {
         "video_count": response.video_count,
         "view_count": response.view_count,
-        "subscribe_count": response.subscriber_count,
+        "subscriber_count": response.subscriber_count,
         "comment_count": response.comment_count        
       }
 
