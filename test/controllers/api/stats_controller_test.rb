@@ -109,6 +109,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'counts number of users with javascript enabled and disabled' do
+    Publisher.update_all(last_sign_in_at: Time.now)
     get "/api/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     assert_equal response.status, 200
     assert_equal response.body, {

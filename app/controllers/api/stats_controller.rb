@@ -71,18 +71,20 @@ class Api::StatsController < Api::BaseController
 
   def javascript_enabled_usage
 
-    active_users_with_javascript_enabled = Publisher
-      .distinct
-      .joins("inner join channels on channels.publisher_id = publishers.id")
-      .where.not(javascript_last_detected_at: nil)
-      .where("publishers.created_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME)
-      .count
+    active_users_with_javascript_enabled = Publisher.
+      distinct.
+      joins("inner join channels on channels.publisher_id = publishers.id").
+      where.not(javascript_last_detected_at: nil).
+      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
+      count
 
-    active_users_with_javascript_disabled = Publisher
-      .distinct
-      .joins("inner join channels on channels.publisher_id = publishers.id")
-      .where(javascript_last_detected_at: nil)
-      .where("publishers.created_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).count
+    active_users_with_javascript_disabled = Publisher.
+      distinct.
+      joins("inner join channels on channels.publisher_id = publishers.id").
+      where(javascript_last_detected_at: nil).
+      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
+      count
+
     render(
       json: {
         active_users_with_javascript_enabled: active_users_with_javascript_enabled,
