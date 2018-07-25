@@ -13,6 +13,8 @@ twitch_verified_details:
   name: "twtwtw2"
   display_name: "TwTwTw2"
   thumbnail_url: "https://some_image_host.com/some_image.png"
+  stats:
+    :view_count: 400
 
 uphold_connected_twitch_details:
   auth_user_id: "abc124"
@@ -21,3 +23,5 @@ uphold_connected_twitch_details:
   name: "ucTw"
   display_name: "UCTW"
   thumbnail_url: "https://some_image_host.com/some_image.png"
+  stats:
+    :view_count: 40000

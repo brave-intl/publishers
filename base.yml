@@ -15,6 +15,7 @@ services:
       - API_IP_WHITELIST
       - API_PROMO_BASE_URI
       - API_PROMO_KEY
+      - API_TWITCH_BASE_URI
       - ATTR_ENCRYPTED_KEY
       - BASE_REFERRAL_URL
       - BASIC_AUTH_PASSWORD
@@ -60,3 +61,4 @@ services:
       - UPHOLD_DASHBOARD_URL
       - UPHOLD_SCOPE
       - URL_HOST
+      - YOUTUBE_API_KEY
