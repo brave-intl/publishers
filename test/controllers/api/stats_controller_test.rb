@@ -49,28 +49,28 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
     # ensure all view counts are within bucket_one range
     channel_ids_in_bucket_one = result.first
     channel_ids_in_bucket_one.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = YoutubeChannelDetails.find(id).stats["view_count"]
       assert view_count >= 0
       assert view_count < 1000
     end
 
     channel_ids_in_bucket_two = result.second
     channel_ids_in_bucket_two.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = YoutubeChannelDetails.find(id).stats["view_count"]
       assert view_count >= 1000
       assert view_count < 10000
     end
 
     channel_ids_in_bucket_three = result.third
     channel_ids_in_bucket_three.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = YoutubeChannelDetails.find(id).stats["view_count"]
       assert view_count >= 10000
       assert view_count < 100000
     end
 
     channel_ids_in_bucket_four = result.fourth
     channel_ids_in_bucket_four.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = YoutubeChannelDetails.find(id).stats["view_count"]
       assert view_count >= 100000
     end
   end
@@ -82,28 +82,28 @@ test "twitch_channels_by_view_count returns sorts channels into buckets by view 
     # ensure all view counts are within bucket_one range
     channel_ids_in_bucket_one = result.first
     channel_ids_in_bucket_one.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = TwitchChannelDetails.find(id).stats["view_count"]
       assert view_count >= 0
       assert view_count < 1000
     end
 
     channel_ids_in_bucket_two = result.second
     channel_ids_in_bucket_two.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = TwitchChannelDetails.find(id).stats["view_count"]
       assert view_count >= 1000
       assert view_count < 10000
     end
 
     channel_ids_in_bucket_three = result.third
     channel_ids_in_bucket_three.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = TwitchChannelDetails.find(id).stats["view_count"]
       assert view_count >= 10000
       assert view_count < 100000
     end
 
     channel_ids_in_bucket_four = result.fourth
     channel_ids_in_bucket_four.each do |id|
-      view_count = Channel.find(id).details.stats["view_count"]
+      view_count = TwitchChannelDetails.find(id).stats["view_count"]
       assert view_count >= 100000
     end
   end
