@@ -115,5 +115,14 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
       active_users_with_javascript_enabled: 0,
       active_users_with_javascript_disabled: Publisher.distinct.joins("inner join channels on channels.publisher_id = publishers.id").count
     }.to_json
+
+    Publisher.joins("inner join channels on channels.publisher_id = publishers.id").last.update(javascript_last_detected_at: Time.now)
+
+    get "/api/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    assert_equal response.status, 200
+    assert_equal response.body, {
+      active_users_with_javascript_enabled: 1,
+      active_users_with_javascript_disabled: Publisher.distinct.joins("inner join channels on channels.publisher_id = publishers.id").count - 1
+    }.to_json
   end
 end

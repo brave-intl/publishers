@@ -8,6 +8,7 @@ class Publisher < ApplicationRecord
   ADMIN = "admin"
   PUBLISHER = "publisher"
   ROLES = [ADMIN, PUBLISHER]
+  JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
   devise :timeoutable, :trackable, :omniauthable
 
@@ -245,7 +246,7 @@ class Publisher < ApplicationRecord
       return PublisherStatusUpdate::ONBOARDING
     end
   end
-  
+
   def last_status_update
     status_updates.first
   end
