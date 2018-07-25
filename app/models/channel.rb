@@ -1,8 +1,6 @@
 class Channel < ApplicationRecord
   has_paper_trail
 
-  VERIFICATION_RESTRICTION_ERROR = "requires manual admin approval"
-
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
@@ -129,9 +127,10 @@ class Channel < ApplicationRecord
   def verification_succeeded!(has_admin_approval)
     if needs_admin_approval?
       if has_admin_approval
-        verification_status = 'approved_by_admin'
+        verification_status = "approved_by_admin"
       else
-        raise VERIFICATION_RESTRICTION_ERROR
+        errors.add(:base, "requires manual admin approval")
+        return
       end
     else
       verification_status = nil

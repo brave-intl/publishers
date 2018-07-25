@@ -151,11 +151,10 @@ class ChannelTest < ActiveSupport::TestCase
   test "verification_succeeded! for restricted channels fails" do
     channel = channels(:to_verify_restricted)
 
-    assert_raise do
-      channel.verification_succeeded!(false)
-    end
+    channel.verification_succeeded!(false)
 
     channel.reload
+    assert channel.errors[:base].include?("requires manual admin approval")
     refute channel.verified?
     assert_nil channel.verified_at
     refute channel.verification_failed?
