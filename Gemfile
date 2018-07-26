@@ -59,7 +59,7 @@ gem "omniauth-google-oauth2", "~> 0.5.2"
 gem "omniauth-twitch"
 
 # Model record auditing
-gem "paper_trail", "~> 5.2.2"
+gem "paper_trail", "~> 8.1.2"
 
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
