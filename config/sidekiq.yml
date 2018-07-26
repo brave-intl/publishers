@@ -1,6 +1,7 @@
 ---
 :concurrency: 5
 :timeout: 8
+:max_retries: 3
 :queues:
   - mailers
   - transactional

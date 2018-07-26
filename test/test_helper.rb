@@ -109,4 +109,4 @@ Publishers::Application.load_tasks
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean_with(:truncation)
 
-require 'mocha/mini_test'
+require 'mocha/minitest'
