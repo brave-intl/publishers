@@ -118,13 +118,13 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', '~> 3.2'
-
-# YouTube API client
-gem 'yt'
+gem 'webpacker'
 
 # pagination support for models
 gem "will_paginate"
+
+# YouTube API client
+gem 'yt'
 
 group :development, :staging do
   # Offline domain normalization

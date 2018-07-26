@@ -20,6 +20,7 @@ yarn-error.log
 # Ignore Byebug command history file.
 .byebug_history
 /ssl/
+/public/assets
 /public/packs
 /public/packs-test
 /node_modules

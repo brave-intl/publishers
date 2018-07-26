@@ -487,7 +487,7 @@ DEPENDENCIES
   vcr
   web-console
   webmock (~> 3.0)
-  webpacker (~> 3.2)
+  webpacker
   will_paginate
   yt
 
