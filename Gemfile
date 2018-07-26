@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
 
+gem 'actionmailer', '~> 5.1.6'
+gem 'actionpack', '~> 5.1.6'
+gem 'activemodel', '~> 5.1.6'
+gem 'activerecord', '~> 5.1.6'
+gem 'activesupport', '~> 5.1.6'
+
 # Rate limit ActiveJob
 gem "activejob-traffic_control"
 
@@ -25,7 +31,7 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.2.0"
+gem "devise", "~> 4.4.3"
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -73,7 +79,9 @@ gem "puma", "3.10"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem "rails", "~> 5.0.0", ">= 5.0.0.1"
+gem 'railties', "~> 5.1.6"
+
+gem "rails", "~> 5.1.6"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -98,7 +106,7 @@ gem "sentry-raven", "~> 2.1", require: false
 # Async job processing
 gem "sidekiq", "~> 4.2"
 
-gem "sidekiq-scheduler", "~> 2.0"
+gem "sidekiq-scheduler", "~> 2.2.2"
 
 # Used by sendgrid-ruby. Forcing an update due to a security concern
 gem 'sinatra', '~> 2.0.2'
