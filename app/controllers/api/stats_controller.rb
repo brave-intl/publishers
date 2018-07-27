@@ -32,7 +32,7 @@ class Api::StatsController < Api::BaseController
     bucket_one = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "0").
                                       where("stats -> 'view_count' < ?", "1000").
                                       select(:id).map {|details| details.id}
-    
+
     # 1000 - 10,000 views
     bucket_two = TwitchChannelDetails.where("stats -> 'view_count' >= ?", "1000").
                                       where("stats -> 'view_count' < ?", "10000").
@@ -53,7 +53,7 @@ class Api::StatsController < Api::BaseController
     bucket_one = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "0").
                                        where("stats -> 'view_count' < ?", "1000").
                                        select(:id).map {|details| details.id}
-    
+
     # 1000 - 10,000 views
     bucket_two = YoutubeChannelDetails.where("stats -> 'view_count' >= ?", "1000").
                                        where("stats -> 'view_count' < ?", "10000").
@@ -67,6 +67,31 @@ class Api::StatsController < Api::BaseController
                                         select(:id).map {|details| details.id}
 
     render(json: [bucket_one, bucket_two, bucket_three, bucket_four].to_json, status: 200)
+  end
+
+  def javascript_enabled_usage
+
+    active_users_with_javascript_enabled = Publisher.
+      distinct.
+      joins("inner join channels on channels.publisher_id = publishers.id").
+      where.not(javascript_last_detected_at: nil).
+      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
+      count
+
+    active_users_with_javascript_disabled = Publisher.
+      distinct.
+      joins("inner join channels on channels.publisher_id = publishers.id").
+      where(javascript_last_detected_at: nil).
+      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
+      count
+
+    render(
+      json: {
+        active_users_with_javascript_enabled: active_users_with_javascript_enabled,
+        active_users_with_javascript_disabled: active_users_with_javascript_disabled,
+      },
+      status: 200
+    )
   end
 
   private

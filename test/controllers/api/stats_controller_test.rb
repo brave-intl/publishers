@@ -75,7 +75,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-test "twitch_channels_by_view_count returns sorts channels into buckets by view count" do
+  test "twitch_channels_by_view_count returns sorts channels into buckets by view count" do
     get "/api/stats/twitch_channels_by_view_count", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     result = JSON.parse(response.body)
 
@@ -106,5 +106,24 @@ test "twitch_channels_by_view_count returns sorts channels into buckets by view 
       view_count = TwitchChannelDetails.find(id).stats["view_count"]
       assert view_count >= 100000
     end
+  end
+
+  test 'counts number of users with javascript enabled and disabled' do
+    Publisher.update_all(last_sign_in_at: Time.now)
+    get "/api/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    assert_equal response.status, 200
+    assert_equal response.body, {
+      active_users_with_javascript_enabled: 0,
+      active_users_with_javascript_disabled: Publisher.distinct.joins("inner join channels on channels.publisher_id = publishers.id").count
+    }.to_json
+
+    Publisher.joins("inner join channels on channels.publisher_id = publishers.id").last.update(javascript_last_detected_at: Time.now)
+
+    get "/api/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    assert_equal response.status, 200
+    assert_equal response.body, {
+      active_users_with_javascript_enabled: 1,
+      active_users_with_javascript_disabled: Publisher.distinct.joins("inner join channels on channels.publisher_id = publishers.id").count - 1
+    }.to_json
   end
 end
