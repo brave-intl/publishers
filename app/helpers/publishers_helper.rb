@@ -374,6 +374,8 @@ module PublishersHelper
       I18n.t("helpers.publisher.channel_type.youtube")
     when TwitchChannelDetails
       I18n.t("helpers.publisher.channel_type.twitch")
+    when TwitterChannelDetails
+      I18n.t("helpers.publisher.channel_type.twitter")
     else
       I18n.t("helpers.publisher.channel_type.unknown")
     end
@@ -419,6 +421,8 @@ module PublishersHelper
       asset_url('publishers-home/youtube-icon_32x32.png')
     when TwitchChannelDetails
       asset_url('publishers-home/twitch-icon_32x32.png')
+    when TwitterChannelDetails
+      asset_url('publishers-home/twitter-icon_32x32.png')
     else
       asset_url('publishers-home/website-icon_32x32.png')
     end
@@ -429,6 +433,8 @@ module PublishersHelper
           when YoutubeChannelDetails
             channel.details.thumbnail_url
           when TwitchChannelDetails
+            channel.details.thumbnail_url
+          when TwitterChannelDetails
             channel.details.thumbnail_url
           end
 
