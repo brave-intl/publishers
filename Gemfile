@@ -49,8 +49,11 @@ gem "meta-tags"
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
 
-# Oauth client for google / youtube
+# Oauth client for twitch
 gem "omniauth-twitch"
+
+# Oauth client for twitter
+gem "omniauth-twitter"
 
 # Model record auditing
 gem "paper_trail", "~> 9.2.0"

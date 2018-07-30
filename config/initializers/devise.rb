@@ -262,6 +262,18 @@ Devise.setup do |config|
                   {
                     name: 'register_twitch_channel'
                   }
+                  
+  config.omniauth :twitter,
+                  Rails.application.secrets[:twitter_client_id],
+                  Rails.application.secrets[:twitter_client_secret],
+                  {
+                    name: 'register_twitter_channel',
+                    secure_image_url: true,
+                    image_size: 'normal',
+                    authorize_params: {
+                      force_login: true
+                    }
+                  }
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
