@@ -5,9 +5,19 @@
   },
   "dependencies": {
     "@rails/webpacker": "3.5",
+    "@types/react": "^16.4.7",
+    "@types/react-dom": "^16.0.6",
+    "babel-preset-react": "^6.24.1",
+    "brave-ui": "0.23.0",
     "clipboard": "^1.7.1",
     "chart.js": "^2.7.2",
-    "rails-ujs": "^5.1.4"
+    "prop-types": "^15.6.2",
+    "rails-ujs": "^5.1.4",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "styled-components": "^3.2.6",
+    "ts-loader": "3.5.0",
+    "typescript": "^2.9.2"
   },
   "devDependencies": {
     "hoek": "^5.0.3",

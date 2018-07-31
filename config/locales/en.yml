@@ -37,6 +37,8 @@ en:
     download: Download
     existing_account: Already have an account?
     get_started: Get Started
+    instant_donation: Instant Donation
+    instant_donation_body: Instant Donation allows your fans to donate BAT at a set amount at the time of browsing your properties through the brand banner. This brand banner comes up when the user clicks the BAT icon next to the URL bar. Customize this brand banner with your own voice and image!
     invalid_totp: Invalid 6-digit code. Please try again.
     log_in: Log In
     remove: Remove
