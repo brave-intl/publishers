@@ -4,10 +4,12 @@ hr
 
 h5.admin-header Change current status for #{@publisher.name}
 = form_for(@publisher, url: admin_publisher_publisher_status_updates_path(@publisher.id), method: :create) do |f|
-  .form-group
-    - label_tag(:publisher_id, @publisher.id)
-    = select_tag(:publisher_status, options_for_select(PublisherStatusUpdate::ALL_STATUSES))
-  = f.submit("Save", class: 'btn btn-primary')
+  - label_tag(:publisher_id, @publisher.id)
+  = select_tag(:publisher_status, options_for_select(PublisherStatusUpdate::ALL_STATUSES))
+  .
+    = check_box_tag("send_email", true)
+    = label_tag("Send email (suspended only)")
+  = f.submit("Update Status", class: 'btn btn-primary')
 
 hr
 
@@ -23,4 +25,3 @@ div.panel-body
           tr.gradeX
             td = status_update.status
             td = status_update.created_at
-

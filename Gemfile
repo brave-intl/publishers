@@ -114,6 +114,9 @@ gem "rotp", "~> 3.3"
 
 gem 'webpacker', '~> 3.2'
 
+# YouTube API client
+gem 'yt'
+
 # pagination support for models
 gem "will_paginate"
 
