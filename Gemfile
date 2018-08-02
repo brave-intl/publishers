@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
 
-gem 'actionmailer', '~> 5.2.0'
-gem 'actionpack', '~> 5.2.0'
-gem 'activemodel', '~> 5.2.0'
-gem 'activerecord', '~> 5.2.0'
-gem 'activesupport', '~> 5.2.0'
-
 # Rate limit ActiveJob
 gem "activejob-traffic_control"
 

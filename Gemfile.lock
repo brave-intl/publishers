@@ -423,14 +423,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionmailer (~> 5.2.0)
-  actionpack (~> 5.2.0)
   active_model_serializers (~> 0.10.0)
   activejob-traffic_control
-  activemodel (~> 5.2.0)
-  activerecord (~> 5.2.0)
   activerecord-session_store
-  activesupport (~> 5.2.0)
   api-pagination
   attr_encrypted (~> 3.1.0)
   bootstrap (~> 4.1.1)
