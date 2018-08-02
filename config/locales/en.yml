@@ -99,7 +99,7 @@ en:
         token_not_found_dns: "we could not find the token in any of the TXT records. "
         token_not_found_public_file: "we could not find the token in your public file. "
         no_https: "HTTPS is not enabled. "
-        generic: "of an unkown reason. "
+        generic: "of an unknown reason. "
       verification_failure_cta:
         domain_not_found: "Please check if the domain is correct."
         connection_failed: "Please make sure the file exists and is publicly available."
@@ -109,7 +109,7 @@ en:
         token_not_found_dns: "Please add this TXT entry to your DNS records:"
         token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
         no_https: "Please enabled HTTPS on your domain, or choose another verification method."
-        generic: "Please contact %{support_email}."
+        generic: "If this verification failure continues to occur, please reach us at %{support_email}."
     publisher:
       conversion_unavailable: "%{code} unavailable"
       no_deposit: No deposit made yet
