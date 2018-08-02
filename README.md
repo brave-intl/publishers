@@ -78,6 +78,8 @@ Setup a google API project:
   * Authorized redirect URIs is `http://localhost:3000/publishers/auth/google_oauth2/callback`
   * select "Create"
 * Record the Client ID and Client secret and enter them in your Env variables
+* Back at the console select "Create credentials" and select API key.  This will be used for youtube channel stats via the data api.
+* Record the API and enter it in your Env variables
 
 You may need to wait up to 10 minutes for the changes to propagate.
 
