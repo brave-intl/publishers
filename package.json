@@ -9,7 +9,7 @@
     "rails-ujs": "^5.1.4"
   },
   "devDependencies": {
-    "karma": "^2.0.2",
+    "karma": "^2.0.5",
     "karma-chrome-launcher": "^2.2.0",
     "karma-qunit": "^2.1.0",
     "karma-webpack": "^3.0.0",
