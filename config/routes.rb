@@ -29,7 +29,6 @@ Rails.application.routes.draw do
       patch :disconnect_uphold
       get :choose_new_channel_type
       get :instant_donation_modal
-      patch :preview_banner_modal
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index) do
         collection do
@@ -51,6 +50,9 @@ Rails.application.routes.draw do
       get :cancel_add
       delete :destroy
     end
+  end
+
+  resources :banners, only: %i(new) do
   end
 
   resources :site_channels, only: %i(create update new show) do
