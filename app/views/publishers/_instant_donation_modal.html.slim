@@ -1,0 +1,15 @@
+.col.col-center.col-xs-12.col-sm-10.col-md-10.col-lg-10.modal id="instant-donation-modal" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        center
+          h4.modal-title = t "shared.instant_donation"
+          br
+          p = t "shared.instant_donation_body"
+          .col.col-md-12
+            .row
+              .col-md-4
+                a href="#" class="btn btn-link-primary js-deny" Skip for now
+              .col-md-3
+                = link_to "Preview Banner", preview_banner_modal_publishers_path, method: :patch, class: 'btn btn-primary'
+              / = link_to "Continue", preview_banner_modal_publishers_path, method: :patch
