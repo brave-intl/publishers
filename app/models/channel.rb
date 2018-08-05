@@ -138,7 +138,7 @@ class Channel < ApplicationRecord
     else
       verification_status = nil
     end
-    
+
     update!(verified: true, verification_status: verification_status, verification_details: nil, verified_at: Time.now)
   end
 
@@ -168,7 +168,7 @@ class Channel < ApplicationRecord
   def should_register_channel_for_promo
     promo_running = Rails.application.secrets[:active_promo_id].present?  # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = self.publisher.promo_enabled_2018q1?
-    promo_running && publisher_enabled_promo && verified_changed? && verified
+    promo_running && publisher_enabled_promo && saved_change_to_verified? && verified
   end
 
   def clear_verified_at_if_necessary

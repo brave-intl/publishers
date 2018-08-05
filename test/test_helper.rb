@@ -7,6 +7,11 @@ require "webmock/minitest"
 require "chromedriver/helper"
 require 'sidekiq/testing'
 
+# https://github.com/rails/rails/issues/31324
+if ActionPack::VERSION::STRING >= "5.2.0"
+  Minitest::Rails::TestUnit = Rails::TestUnit
+end
+
 Sidekiq::Testing.fake!
 
 WebMock.allow_net_connect!
@@ -109,4 +114,4 @@ Publishers::Application.load_tasks
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean_with(:truncation)
 
-require 'mocha/mini_test'
+require 'mocha/minitest'

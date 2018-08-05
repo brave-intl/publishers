@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
 
+gem 'actionmailer', '~> 5.2.0'
+gem 'actionpack', '~> 5.2.0'
+gem 'activemodel', '~> 5.2.0'
+gem 'activerecord', '~> 5.2.0'
+gem 'activesupport', '~> 5.2.0'
+
 # Rate limit ActiveJob
 gem "activejob-traffic_control"
 
@@ -25,7 +31,7 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.2.0"
+gem "devise", "~> 4.4.3"
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -53,7 +59,7 @@ gem "omniauth-google-oauth2", "~> 0.5.2"
 gem "omniauth-twitch"
 
 # Model record auditing
-gem "paper_trail", "~> 5.2.2"
+gem "paper_trail", "~> 9.2.0"
 
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
@@ -73,15 +79,15 @@ gem "puma", "3.10"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem "rails", "~> 5.0.0", ">= 5.0.0.1"
+gem 'railties', "~> 5.2.0"
+
+gem "rails", "~> 5.2.0"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
 # Cache with Redis
-gem "redis-rails", "~> 5"
-
-gem "redis-store", "~> 1.4.0"
+gem 'redis', '~> 4.0.1'
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"
@@ -96,9 +102,9 @@ gem "sendgrid-ruby"
 gem "sentry-raven", "~> 2.1", require: false
 
 # Async job processing
-gem "sidekiq", "~> 4.2"
+gem "sidekiq"
 
-gem "sidekiq-scheduler", "~> 2.0"
+gem "sidekiq-scheduler", "~> 2.2.2"
 
 # Used by sendgrid-ruby. Forcing an update due to a security concern
 gem 'sinatra', '~> 2.0.2'
@@ -112,13 +118,13 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', '~> 3.2'
-
-# YouTube API client
-gem 'yt'
+gem 'webpacker'
 
 # pagination support for models
 gem "will_paginate"
+
+# YouTube API client
+gem 'yt'
 
 group :development, :staging do
   # Offline domain normalization
@@ -147,9 +153,6 @@ group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
 
-  # Locking to 5.10.3 to workaround issue in 5.11.1 (https://github.com/seattlerb/minitest/issues/730)
-  gem "minitest", "5.10.3"
-
   # API recording and playback
   gem "vcr"
 
@@ -167,9 +170,8 @@ group :development, :test do
   gem "pry"
   gem "byebug"
   gem "pry-byebug", require: false
-
   gem "mocha"
-  gem "minitest-rails-capybara"
+  gem 'minitest-rails-capybara', '~> 3.0.1'
   gem "capybara-selenium"
   gem "chromedriver-helper"
 end

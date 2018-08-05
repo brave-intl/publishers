@@ -1,6 +1,6 @@
 language: ruby
 cache: bundler
-bundler_args: --jobs=3 --retry=3 --without production --without staging
+bundler_args: --jobs=3 --retry=3 --without production --without staging --binstubs
 dist: trusty
 sudo: required
 addons:
@@ -9,14 +9,24 @@ addons:
 services:
   - postgresql
   - redis-server
-before_script:
-  - RAILS_ENV=test bundle exec rake db:setup
-    # Fails if assets don't build. If it is successful, these assets are then
-    # use by the subsequent test run.
-  - RAILS_ENV=test bundle exec rake assets:precompile
-before_install:
-  - # start your web application and listen on `localhost`
+env:
+  global:
+    - RAILS_ENV=test
+install:
+  - bundle install
+  - chromedriver-update
+  - sudo apt-get update
+  - sudo apt-get install google-chrome-stable
+  - nvm install stable && nvm alias default stable
+  - npm install -g npm@5.6.x
+  - npm install -g yarn
+  - node --version
+  - npm --version
+  - google-chrome --version
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - yarn install
+  - rake db:setup
+  - bundle exec rake assets:precompile
 script:
-  - RAILS_ENV=test bin/rails test
+  - bin/rails test
   - yarn test
