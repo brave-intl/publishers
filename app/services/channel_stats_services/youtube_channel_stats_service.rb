@@ -18,6 +18,10 @@ module ChannelStatsServices
 
       @channel_details.stats = stats
       @channel_details.save!
+    rescue Yt::Errors::NoItems => e
+      # Occurs when a youtube channel doesn't exist, only a google account
+      # We can safely ignore
+      nil
     end
 
     def perform_offline
