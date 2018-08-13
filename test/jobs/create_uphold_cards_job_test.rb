@@ -22,13 +22,15 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read" }
       }.to_json
 
+      # stub wallet response
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+      # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw").
+        to_return(status: 200, body: [].to_json)
 
+      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 
       # ensure request to create BAT card was made
@@ -64,12 +66,13 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read" }
       }.to_json
 
+      # stub wallet response
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+      # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw").
+        to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 
@@ -113,12 +116,13 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read" }
       }.to_json
 
+      # stub wallet response
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+      # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw").
+        to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 
@@ -160,12 +164,13 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read" }
       }.to_json
 
+      # stub wallet response
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+      # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw").
+        to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 

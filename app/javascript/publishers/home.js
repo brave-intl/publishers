@@ -7,6 +7,7 @@ import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
 
+console.log(Wallet)
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
 const SELECT_CURRENCY = '-- Select currency --';
@@ -23,37 +24,48 @@ function showPendingContactEmail(pendingEmail) {
   }
 }
 
-function updateTotalContributionBalance(balance) {
+
+function updateOwnerBalance(wallet) {
+
+  let balance = wallet.ownerBalance;
+  let defaultCurrency = wallet.defaultCurrency;
+
+  // Update primary owner balance displayed in BAT
   let batAmount = document.getElementById('bat_amount');
-  batAmount.innerText = balance.bat.toFixed(2);
+  batAmount.innerText = balance;
+
+  // Update advisory owner balance in the default currency
   let convertedAmount = document.getElementById('converted_amount');
 
-  convertedAmount.style.display = balance.currency === "BAT" || balance.currency === null ? 'none' : 'block';
-  convertedAmount.innerText = formatBalance(balance.converted, balance.currency);
+  // Do not display advisory balance if no default currency is set or if BAT is default currency  
+  convertedAmount.style.display = defaultCurrency === "BAT" || defaultCurrency === null ? 'none' : 'block';
+
+  convertedAmount.innerText = formatBalance(wallet.convertBatToDefaultCurrency(balance), defaultCurrency);
 }
 
 function formatBalance(amount, currency) {
   if (isNaN(amount)) {
     return `${currency} ${UNAVAILABLE}`;
   } else {
-    return `~ ${amount.toFixed(2)} ${currency}`;
+    return `~ ${parseFloat(amount).toFixed(2)} ${currency}`;
   }
 }
 
-function updateLastSettlement(settlement) {
+function updateLastSettlement(settlementBalance, settlementDate, currency) {
   let lastSettlement = document.getElementById('last_settlement');
   let lastDepositDate = document.getElementById('last_deposit_date');
   let lastDepositBatAmount = document.getElementById('last_deposit_bat_amount');
   let lastDepositConvertedAmount = document.getElementById('last_deposit_converted_amount');
 
-  if (settlement.date) {
+  if (settlementDate) {
     lastSettlement.classList.remove('no-settlement-made');
     lastSettlement.classList.add('settlement-made');
 
-    lastDepositDate.innerText = formatFullDate(settlement.date);
-    lastDepositBatAmount.innerText = settlement.amount.bat.toFixed(2);
-    lastDepositConvertedAmount.style.display = settlement.amount.currency === "BAT" || settlement.amount.currency === null ? 'none' : 'block';
-    lastDepositConvertedAmount.innerText = formatBalance(settlement.amount.converted, settlement.amount.currency);
+    lastDepositDate.innerText = formatFullDate(settlementDate);
+    lastDepositBatAmount.innerText = settlementBalance;
+    lastDepositConvertedAmount.style.display = currency === "BAT" || currency === null ? 'none' : 'block';
+    // lastDepositConvertedAmount.innerText = formatBalance(settlement.amount.converted, settlement.amount.currency);
+    lastDepositConvertedAmount.innerText = settlementBalance;
   }
   else {
     lastSettlement.classList.remove('settlement-made');
@@ -69,27 +81,28 @@ function updateChannelBalances(wallet) {
   for (let channelId in wallet.channelBalances) {
     let channelAmount = document.getElementById('channel_amount_bat_' + channelId);
     if (channelAmount) {
-      channelAmount.innerText = wallet.getChannelAmount(channelId).bat.toFixed(2);
+      channelAmount.innerText = wallet.channelBalances[channelId]
     }
   }
 }
 
 function updateDefaultCurrencyValue(wallet) {
   let upholdStatusElement = document.getElementById('uphold_status');
-  upholdStatusElement.setAttribute('data-default-currency', wallet.providerWallet.defaultCurrency || '');
+  upholdStatusElement.setAttribute('data-default-currency', wallet.defaultCurrency || '');
 
   let defaultCurrencyDisplay = document.getElementById('default_currency_code');
-  defaultCurrencyDisplay.innerText = wallet.providerWallet.defaultCurrency || NO_CURRENCY_SELECTED;
+  defaultCurrencyDisplay.innerText = wallet.defaultCurrency || NO_CURRENCY_SELECTED;
 }
 
 function updatePossibleCurrencies(wallet) {
-  let possibleCurrencies = wallet.providerWallet.possibleCurrencies || [];
+  let possibleCurrencies = wallet.possibleCurrencies || [];
   let upholdStatusElement = document.getElementById('uphold_status');
   upholdStatusElement.setAttribute('data-possible-currencies', JSON.stringify(possibleCurrencies));
 }
 
 function getPossibleCurrencies() {
   let upholdStatusElement = document.getElementById('uphold_status');
+
   return JSON.parse(upholdStatusElement.getAttribute('data-possible-currencies'));
 }
 
@@ -135,15 +148,18 @@ function refreshBalance() {
 
       updatePossibleCurrencies(wallet);
 
-      let contributionAmount = wallet.totalAmount;
-      updateTotalContributionBalance(contributionAmount);
+      let ownerBalance = wallet.ownerBalance;
+      let defaultCurrency = wallet.defaultCurrency;
 
-      let lastSettlement = wallet.lastSettlement;
-      updateLastSettlement(lastSettlement);
+      updateOwnerBalance(wallet);        
+
+      let lastSettlementBalance = wallet.lastSettlementBalance;
+      let lastSettlementDate = wallet.lastSettlementDate;
+      updateLastSettlement(lastSettlementBalance, lastSettlementDate, defaultCurrency);
 
       updateChannelBalances(wallet);
 
-      if (!wallet.providerWallet.defaultCurrency && wallet.providerWallet.authorized) {
+      if (!wallet.defaultCurrency && wallet.authorized) {
         openDefaultCurrencyModal();
       }
     });
@@ -246,6 +262,7 @@ function openDefaultCurrencyModal() {
   let upholdStatusElement = document.getElementById('uphold_status');
   let currentDefaultCurrency = upholdStatusElement.getAttribute('data-default-currency');
   let currencySelectInModal = document.getElementById('publisher_default_currency');
+
   populateCurrencySelect(currencySelectInModal, getPossibleCurrencies(), currentDefaultCurrency || "");
 
   form.addEventListener('submit', function(event) {
@@ -283,6 +300,8 @@ function openDefaultCurrencyModal() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  refreshBalance()
+
   if (document.querySelectorAll('body[data-action="home"]').length === 0) {
     return;
   }

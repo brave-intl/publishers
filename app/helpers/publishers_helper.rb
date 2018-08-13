@@ -19,18 +19,46 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
-  def publisher_humanize_balance(publisher, currency)
-    if balance = publisher.wallet &&
-        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.contribution_balance
-      '%.2f' % balance.convert_to(currency)
+  def publisher_owner_bat_balance(publisher)
+    owner_balance_available = publisher.wallet &&
+                              publisher.wallet.owner_balance
+    if owner_balance_available
+      '%.2f' % publisher.wallet.owner_balance
+    else
+      "Balance unavailable"
+    end
+  end
+
+  def publisher_owner_converted_balance(publisher)
+    return if publisher.default_currency == "BAT" || publisher.default_currency.blank?
+
+    owner_balance_available = publisher.wallet &&
+                              publisher.wallet.owner_balance
+
+    conversion_available = publisher.wallet &&
+                           publisher.wallet.rates[publisher.default_currency]
+
+    if owner_balance_available && conversion_available
+      owner_balance = publisher.wallet.owner_balance
+      converted_owner_balance = publisher.wallet.convert_balance(owner_balance, publisher.default_currency)
+      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_owner_balance, code: publisher.default_currency || "BAT")
+    else
+      I18n.t("helpers.publisher.conversion_unavailable", code: publisher.default_currency)
+    end
+  end
+
+  def publisher_channel_balance(publisher, channel_identifier, currency)
+    channel_balance_available = publisher.wallet &&
+                                publisher.wallet.channel_balances &&
+                                publisher.wallet.channel_balances[channel_identifier]
+
+    if channel_balance_available
+      channel_bat_balance = publisher.wallet.channel_balances[channel_identifier]
+      channel_bat_balance
+      # channel_converted_balance = publisher.wallet.convert_balance(channel_bat_balance, currency)
     else
       I18n.t("helpers.publisher.conversion_unavailable", code: currency)
     end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def next_deposit_date(today = DateTime.now)
@@ -38,23 +66,6 @@ module PublishersHelper
       today = today + 1.month
     end
     today.strftime("%B 8th")
-  end
-
-  def publisher_converted_balance(publisher)
-    currency = publisher.default_currency
-    return if currency == "BAT" || currency.blank?
-    if balance = publisher.wallet &&
-        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.contribution_balance
-      converted_amount = '%.2f' % balance.convert_to(currency)
-      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
-    else
-      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def publisher_humanize_last_settlement(publisher, currency)
@@ -98,22 +109,6 @@ module PublishersHelper
     require "sentry-raven"
     Raven.capture_exception(e)
     I18n.t("helpers.publisher.no_deposit")
-  end
-
-  def publisher_channel_balance(publisher, channel_identifier, currency)
-    if balance = (
-        publisher.wallet &&
-        publisher.wallet.channel_balances &&
-        publisher.wallet.channel_balances[channel_identifier]
-    )
-      '%.2f' % balance.convert_to(currency)
-    else
-      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def publisher_uri(publisher)

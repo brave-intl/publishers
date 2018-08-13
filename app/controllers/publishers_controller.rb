@@ -444,8 +444,7 @@ class PublishersController < ApplicationController
   def balance
     wallet = current_publisher.wallet
     if wallet
-      json = JsonBuilders::WalletJsonBuilder.new(publisher: current_publisher, wallet: wallet).build
-      render(json: json, status: :ok)
+      render(json: wallet.to_json, status: :ok)
     else
       render(nothing: true, status: 404)
     end
@@ -533,7 +532,7 @@ class PublishersController < ApplicationController
 
   def require_verified_publisher
     return if current_publisher.verified?
-    redirect_to(publisher_next_step_path(current_publisher), alert: t(".verification_required"))
+    redirect_to(publisher_next_step_path(current_publisher))
   end
 
   def require_publisher_email_not_verified_through_youtube_auth
