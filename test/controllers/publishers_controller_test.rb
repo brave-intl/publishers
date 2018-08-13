@@ -634,12 +634,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "a publisher's balance can be polled via ajax" do
     publisher = publishers(:uphold_connected)
     sign_in publisher
-
+    
     get balance_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
+    wallet_response = JSON.parse(response.body)
+
     assert_response 200
-    assert_equal "{\"providerWallet\":{\"provider\":\"uphold\",\"authorized\":true,\"defaultCurrency\":\"USD\",\"rates\":{\"BTC\":5.418424016883016e-05,\"ETH\":0.000795331082073117,\"USD\":0.2363863335301452,\"EUR\":0.20187818378874756,\"GBP\":0.1799810085548496},\"availableCurrencies\":[\"USD\",\"EUR\",\"BTC\",\"ETH\",\"BAT\"],\"possibleCurrencies\":[\"AED\",\"ARS\",\"AUD\",\"BRL\",\"CAD\",\"CHF\",\"CNY\",\"DKK\",\"EUR\",\"GBP\",\"HKD\",\"ILS\",\"INR\",\"JPY\",\"KES\",\"MXN\",\"NOK\",\"NZD\",\"PHP\",\"PLN\",\"SEK\",\"SGD\",\"USD\",\"XAG\",\"XAU\",\"XPD\",\"XPT\"],\"scope\":\"cards:read user:read\"},\"channelBalances\":{\"uphold_connected.org\":{\"probi\":\"38077497398351695427000\"},\"twitch#channel:ucTw\":{\"probi\":\"38077497398351695427000\"},\"twitter#channel:def456\":{\"probi\":\"38077497398351695427000\"}}}",
-                 response.body
+    assert wallet_response["channel_balances"].present?
+    assert wallet_response["owner_balance"].present?
   end
 
   test "a publisher's uphold status can be polled via ajax" do

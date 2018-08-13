@@ -248,9 +248,9 @@ and bring up the full stack
 docker-compose up
 ```
 
-### Create the database
+### Create the databases
 ```sh
-docker-compose run app rake db:setup
+docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
 ```
 
 ### Run Tests

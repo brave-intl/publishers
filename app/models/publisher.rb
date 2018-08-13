@@ -257,6 +257,7 @@ class Publisher < ApplicationRecord
 
   def can_create_uphold_cards?
     uphold_verified? &&
+      default_currency.present? &&
       wallet.present? &&
       wallet.authorized? &&
       wallet.scope &&

@@ -35,10 +35,12 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
             .bat
-              span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
+              / span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
+              span.bat-amount#bat_amount= publisher_owner_bat_balance(current_publisher)
               span.bat-code= " BAT"
             .converted#converted_amount
-              = publisher_converted_balance(current_publisher)
+              / = publisher_converted_balance(current_publisher)
+              = publisher_owner_converted_balance(current_publisher)
             .next_deposit_date
               span = t ".next_deposit_date"
               span= next_deposit_date
@@ -207,8 +209,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 .channel-status.float-right
                   .bat-channel
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
-                    span.bat-channel--currency= " BAT"
+                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, current_publisher.default_currency)
+                    span.bat-channel--currency= "BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")
             - elsif channel.verification_started? || channel.verification_failed?
