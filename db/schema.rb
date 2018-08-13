@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180719173113) do
+ActiveRecord::Schema.define(version: 20180726203322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,6 +280,19 @@ ActiveRecord::Schema.define(version: 20180719173113) do
     t.datetime "updated_at",                       null: false
     t.jsonb    "stats",             default: "{}", null: false
     t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id", unique: true, using: :btree
+  end
+
+  create_table "twitter_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "twitter_channel_id"
+    t.string   "auth_provider"
+    t.string   "auth_email"
+    t.string   "name"
+    t.string   "screen_name"
+    t.string   "thumbnail_url"
+    t.jsonb    "stats"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id", unique: true, using: :btree
   end
 
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

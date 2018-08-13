@@ -95,6 +95,11 @@ uphold_connected_twitch:
   details: uphold_connected_twitch_details (TwitchChannelDetails)
   verified: true
 
+uphold_connected_twitter:
+  publisher: uphold_connected
+  details: uphold_connected_twitter_details (TwitterChannelDetails)
+  verified: true
+
 youtube_initial:
   publisher: youtube_initial
   details: youtube_initial_details (YoutubeChannelDetails)
@@ -118,6 +123,11 @@ twitch_new:
 twitch_verified:
   publisher: twitch_verified
   details: twitch_verified_details (TwitchChannelDetails)
+  verified: true
+
+twitter_new:
+  publisher: twitter_new
+  details: twitter_new_details (TwitterChannelDetails)
   verified: true
 
 global_yt1:

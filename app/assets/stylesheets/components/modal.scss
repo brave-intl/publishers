@@ -32,7 +32,7 @@ $brave-modal-borderRadius: 8px;
   }
 
   &--content {
-    padding: $spacer $spacer;
+    padding: $spacer $spacer 0 $spacer;
 
     h4 {
       margin: 0 0 $spacer*1.5 0;

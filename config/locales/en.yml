@@ -96,6 +96,7 @@ en:
         youtube: YouTube channel
         website: Website
         twitch: Twitch channel
+        twitter: Twitter
         unknown: Channel
       channel_name:
         youtube: YouTube
@@ -292,6 +293,9 @@ en:
       twitch:
         heading: TWITCH CHANNEL
         description: I'm the primary owner of a twitch channel.
+      twitter:
+        heading: TWITTER
+        description: I'm the primary owner of a twitter account.
     contact_info:
       heading: Contact Information
     create:
@@ -371,6 +375,8 @@ en:
         log_in_and_retry: Please log in to Brave Payments and retry the operation
       register_twitch_channel:
         channel_already_registered: You have already claimed the Twitch account %{channel_title}. If you would like to claim a second account, please sign out of Twitch and try again.
+      register_twitter_channel:
+        channel_already_registered: You have already claimed this Twitter account.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_email:
@@ -467,6 +473,7 @@ en:
       brave_payments_tm: "Brave Payments™"
       on_youtube: "on YouTube"
       on_twitch: "on Twitch"
+      on_twitter: "on Twitter"
       tos_1: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period."
       tos_2_html: |
         The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the Brave Publisher Terms Of Service.  See Publisher <strong><a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a></strong> for additional details and restrictions.

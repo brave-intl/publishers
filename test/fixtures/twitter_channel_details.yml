@@ -1,0 +1,25 @@
+twitter_new_details:
+  twitter_channel_id: "abc124"
+  auth_provider: "register_twitter_channel"
+  name: "Twitter New"
+  screen_name: "twitternew"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
+  stats:
+    :verified: false
+    :followers_count: 40000
+    :status_count: 200
+  created_at: <%= Time.now - 2.weeks %>
+  updated_at: <%= Time.now - 2.weeks %>
+
+uphold_connected_twitter_details:
+  twitter_channel_id: "def456"
+  auth_provider: "register_twitter_channel"
+  name: "Uphold Connected Twitter"
+  screen_name: "uphold_connected_twitter"
+  thumbnail_url: "https://some_image_host.com/some_image2.png"
+  stats:
+    :verified: false
+    :followers_count: 90000
+    :status_count: 330
+  created_at: <%= Time.now - 2.weeks %>
+  updated_at: <%= Time.now - 2.weeks %>

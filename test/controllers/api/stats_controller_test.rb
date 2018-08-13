@@ -10,6 +10,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal 200, response.status
     resp = JSON.parse(response.body)
+
     assert_equal resp, [
       [6.days.ago.to_date.to_s, 1],
       [5.days.ago.to_date.to_s, 0],
@@ -17,7 +18,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 1],
-      [0.days.ago.to_date.to_s, 21]
+      [0.days.ago.to_date.to_s, 22]
     ]
 
     get "/api/stats/email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
@@ -31,7 +32,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 1],
-      [0.days.ago.to_date.to_s, 20]
+      [0.days.ago.to_date.to_s, 21]
     ]
   end
 
