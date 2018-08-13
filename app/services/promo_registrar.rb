@@ -66,6 +66,8 @@ class PromoRegistrar < BaseApiClient
       return youtube_request_body(channel)
     when "TwitchChannelDetails"
       return twitch_request_body(channel)
+    when "TwitterChannelDetails"
+      return twitter_request_body(channel)
     when "SiteChannelDetails"
       return site_request_body(channel)
     else
@@ -94,6 +96,18 @@ class PromoRegistrar < BaseApiClient
       "channel_type": "twitch",
       "thumbnail_url": channel.details.thumbnail_url,
       "description": nil
+    }.to_json
+  end
+
+  def twitter_request_body(channel)
+    {
+      "owner_id": @publisher.id,
+      "promo": @promo_id,
+      "channel": channel.channel_id, 
+      "title": channel.publication_title,
+      "channel_type": "twitter",
+      "thumbnail_url": channel.details.thumbnail_url,
+      "description": nil # TODO: Should we store the twitter bio when channel is added to display here?
     }.to_json
   end
 

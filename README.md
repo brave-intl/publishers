@@ -78,6 +78,8 @@ Setup a google API project:
   * Authorized redirect URIs is `http://localhost:3000/publishers/auth/google_oauth2/callback`
   * select "Create"
 * Record the Client ID and Client secret and enter them in your Env variables
+* Back at the console select "Create credentials" and select API key.  This will be used for youtube channel stats via the data api.
+* Record the API and enter it in your Env variables
 
 You may need to wait up to 10 minutes for the changes to propagate.
 
@@ -85,7 +87,7 @@ These steps based on [directions at the omniauth-google-oauth2 gem](https://gith
 
 ### Twitch API Setup
 
-Setup a google API project:
+Setup a twitch API project:
 
 * Login to your Twitch account (dev), or the Brave Twitch account (staging, production)
 * Go to [https://dev.twitch.tv/dashboard](https://dev.twitch.tv/dashboard)
@@ -97,6 +99,19 @@ Setup a google API project:
   * Update your env to include `TWITCH_CLIENT_ID="your-app-id"`
   * Update your env to include `TWITCH_CLIENT_SECRET="your-app-secret"`
 * Save the app
+
+### Twitter API Setup
+
+* Apply for a developer account at [developer.twitter.com](https://developer.twitter.com/)
+* Select "Create an App"
+* Give the app a name like "Brave Payments Dev"
+* Make sure "Enable Sign in with Twitter" is checked
+* Set the callback url to `https://localhost:3000/publishers/auth/register_twitter_channel/callback`.  If it does not allow you to set `localhost`, use a place holder for now, and later add the correct callback url through apps.twitter.com instead.
+* Fill in the remaining information and hit "Create"
+* Navigate to your app settings -> permissions and ensure it is readonly and requests the user email
+* Regenerate your Consumer API keys
+* Update your env to include `TWITCH_CLIENT_ID="your-api-key"` and `TWITTER_CLIENT_SECRET="your-api-secret-key"`
+* Save
 
 ### reCAPTCHA Setup
 

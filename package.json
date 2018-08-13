@@ -4,16 +4,17 @@
     "test": "NODE_ENV=test karma start --single-run --browsers ChromeHeadless karma.conf.js"
   },
   "dependencies": {
-    "@rails/webpacker": "^3.2.0",
+    "@rails/webpacker": "3.5",
     "clipboard": "^1.7.1",
     "rails-ujs": "^5.1.4"
   },
   "devDependencies": {
-    "karma": "^2.0.2",
-    "karma-webpack": "^3.0.0",
+    "hoek": "^5.0.3",
+    "karma": "^2.0.5",
     "karma-chrome-launcher": "^2.2.0",
     "karma-qunit": "^2.1.0",
+    "karma-webpack": "^3.0.0",
     "qunit": "^2.6.1",
-    "webpack-dev-server": "^2.9.7"
+    "webpack-dev-server": "2.11.2"
   }
 }

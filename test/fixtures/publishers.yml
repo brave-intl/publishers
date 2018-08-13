@@ -147,6 +147,14 @@ twitch_verified:
   visible: true
   default_currency: "BAT"
 
+twitter_new:
+  email: "aliceTwitter@spud.com"
+  name: "Alice the Tweeter"
+  phone: "4159001420"
+  phone_normalized: "+14159001420"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+
 global_media_group:
   email: "fred@vglobal.org"
   name: "Global Media Group"
@@ -164,7 +172,6 @@ small_media_group:
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   default_currency: "BAT"
-
 
 medium_media_group:
   email: "barney@medium.org"

@@ -21,7 +21,7 @@ Rails.application.configure do
   # Enable/disable caching. By default caching is disabled.
   if Rails.application.secrets[:redis_url]
     config.action_controller.perform_caching = true
-    config.cache_store = :redis_store
+    config.cache_store = :redis_cache_store, { url: Rails.application.secrets[:redis_url] }
     config.public_file_server.headers = {
       "Cache-Control" => "public, max-age=172800"
     }

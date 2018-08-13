@@ -72,6 +72,8 @@ module PromosHelper
       "#{channel.publication_title.upcase} #{t("promo.shared.on_youtube")}"
     when "TwitchChannelDetails"
       "#{channel.publication_title.upcase} #{t("promo.shared.on_twitch")}"
+    when "TwitterChannelDetails"
+      "#{channel.publication_title.upcase} #{t("promo.shared.on_twitter")}"
     when "SiteChannelDetails"
       "#{channel.publication_title.upcase}"
     else

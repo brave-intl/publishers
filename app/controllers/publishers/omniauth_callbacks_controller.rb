@@ -149,7 +149,53 @@ module Publishers
       end
     end
 
+    def register_twitter_channel
+      oauth_response = request.env['omniauth.auth']
+      twitter_details_attrs = {
+        auth_provider: oauth_response.provider,
+        auth_email: oauth_response.info.email,
+        twitter_channel_id: oauth_response.uid,
+        name: oauth_response.info.name,
+        screen_name: oauth_response.extra.raw_info.screen_name,
+        thumbnail_url: oauth_response.info.image,
+        stats: {
+          followers_count: oauth_response.extra.raw_info.followers_count,
+          statuses_count: oauth_response.extra.raw_info.statuses_count,
+          verified: oauth_response.extra.raw_info.verified,
+        }
+      }
+
+      existing_channel = Channel.joins(:twitter_channel_details).
+          where("twitter_channel_details.twitter_channel_id": twitter_details_attrs[:twitter_channel_id]).first
+
+      if existing_channel
+        if existing_channel.publisher == current_publisher
+          redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.screen_name })
+          return
+        else
+          redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
+          return
+        end
+      end
+
+      @current_channel = Channel.new(publisher: current_publisher, verified: true)
+      @current_channel.details = TwitterChannelDetails.new(twitter_details_attrs)      
+      @current_channel.save!
+
+      begin
+        PublisherChannelSetter.new(publisher: current_publisher).perform
+      rescue => e
+        # ToDo: What do we do if call to eyeshade fails
+        require "sentry-raven"
+        Raven.capture_exception(e)
+      end
+
+      redirect_to home_publishers_path, notice: t("shared.channel_created")
+      return
+    end
+
     private
+
     def require_publisher
       return if current_publisher
       redirect_to(root_path, alert: t(".log_in_and_retry"))

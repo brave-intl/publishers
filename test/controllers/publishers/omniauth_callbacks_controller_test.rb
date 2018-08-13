@@ -364,4 +364,108 @@ module Publishers
     end
 
   end
+
+  class TwitterOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+
+    def token
+      "459609731-kjE9N6xB6DmRDL8okQykgnEa7MeECh3Fp8enmAkj"
+    end
+
+    def auth_hash(options={})
+      OmniAuth::AuthHash.new(
+          {
+            "provider" => "register_twitter_channel",
+            "uid" => "123545",
+            "info" => {
+              "name"=>"Ted the Twitter User",
+              "email"=>"ted@example.com",
+              "image"=>"https://pbs.twimg.com/profile_images/974726646438744064/ivNCZILF_normal.jpg"
+            },
+            "credentials" => {
+              "token" => token
+            },
+            "extra" => {
+              "raw_info" => {
+                "screen_name" => "tedthetwitteruser",
+                "followers_count" => 456,
+                "statuses_count" => 1000,
+                "verified" => false
+              }
+            }
+          }.deep_merge(options)
+      )
+    end
+
+    test "a publisher can add a twitter channel" do
+      publisher = publishers(:uphold_connected)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash
+
+      assert_difference("Channel.count", 1) do
+        get(publisher_register_twitter_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+      end
+
+      channel = Channel.order(created_at: :asc).last
+
+      assert_equal channel.details.auth_provider, "register_twitter_channel"
+      assert_equal channel.details.auth_email, "ted@example.com"
+      assert_equal channel.details.twitter_channel_id, "123545"
+      assert_equal channel.details.auth_provider, "register_twitter_channel"
+      assert_equal channel.details.name, "Ted the Twitter User"
+      assert_equal channel.details.screen_name, "tedthetwitteruser"
+      assert_equal channel.details.thumbnail_url, "https://pbs.twimg.com/profile_images/974726646438744064/ivNCZILF_normal.jpg"
+      assert_equal channel.details.stats["followers_count"], 456
+      assert_equal channel.details.stats["statuses_count"], 1000
+      assert_equal channel.details.stats["verified"], false
+    end
+
+    test "a publisher who adds a twitter channel taken by another will see custom dialog based on the taken channel" do
+      publisher = publishers(:uphold_connected)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash("uid" => "abc124")
+
+      assert_difference("Channel.count", 0) do
+        get(publisher_register_twitter_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('div#channel_taken_modal') do |element|
+        assert_match("Twitter New", element.text)
+      end
+    end
+
+    test "a publisher who adds a twitter channel taken by themselves will see .channel_already_registered" do
+      publisher = publishers(:uphold_connected)
+      verified_details = twitter_channel_details(:uphold_connected_twitter_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash("uid" => verified_details[:twitter_channel_id])
+
+      assert_difference("Channel.count", 0) do
+        get(publisher_register_twitter_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('div.notifications') do |element|
+        assert_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
+      end
+    end
+  end
 end

@@ -60,10 +60,10 @@ class Publisher < ApplicationRecord
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
 
   after_create :set_created_status
-  after_update :set_onboarding_status, if: -> { email.present? && email_was.nil? }
-  after_update :set_active_status, if: -> { two_factor_prompted_at_changed? && two_factor_prompted_at_was.nil? }
+  after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
+  after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
 
-  after_save :set_promo_stats_updated_at_2018q1, if: -> { promo_stats_2018q1_changed? }
+  after_save :set_promo_stats_updated_at_2018q1, if: -> { saved_change_to_promo_stats_2018q1? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 

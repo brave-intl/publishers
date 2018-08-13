@@ -15,6 +15,9 @@ class Channel < ApplicationRecord
   belongs_to :twitch_channel_details, -> { where( channels: { details_type: 'TwitchChannelDetails' } )
                                                .includes( :channels ) }, foreign_key: 'details_id'
 
+  belongs_to :twitter_channel_details, -> { where( channels: { details_type: 'TwitterChannelDetails' } )
+                                               .includes( :channels ) }, foreign_key: 'details_id'
+
   has_one :promo_registration, dependent: :destroy
 
   accepts_nested_attributes_for :details
@@ -41,6 +44,7 @@ class Channel < ApplicationRecord
   scope :site_channels, -> { joins(:site_channel_details) }
   scope :youtube_channels, -> { joins(:youtube_channel_details) }
   scope :twitch_channels, -> { joins(:twitch_channel_details) }
+  scope :twitter_channels, -> { joins(:twitter_channel_details) }
 
   # Once the verification_method has been set it shows we have presented the publisher with the token. We need to
   # ensure this site_channel will be preserved so the publisher cna come back to it.
@@ -53,6 +57,10 @@ class Channel < ApplicationRecord
   scope :visible_twitch_channels, -> {
     twitch_channels.where.not('twitch_channel_details.twitch_channel_id': nil)
   }
+  scope :visible_twitter_channels, -> {
+    twitch_channels.where.not('twitter_channel_details.twitter_channel_id': nil)
+  }
+
   scope :visible, -> {
     left_outer_joins(:site_channel_details).
         where('channels.verified = true or NOT site_channel_details.verification_method IS NULL')
@@ -66,6 +74,8 @@ class Channel < ApplicationRecord
         visible_twitch_channels.where('twitch_channel_details.twitch_channel_id': identifier.split(":").last)
       when "youtube"
         visible_youtube_channels.where('youtube_channel_details.youtube_channel_id': identifier.split(":").last)
+      when "twitter"
+        visible_twitter_channels.where('twitch_channel_details.twitter_channel_id': identifier.split(":").last)
       else
         visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
     end
@@ -77,6 +87,7 @@ class Channel < ApplicationRecord
 
   YOUTUBE = "youtube".freeze
   TWITCH = "twitch".freeze
+  TWITTER = "twitter".freeze
 
   def publication_title
     details.publication_title
@@ -94,11 +105,13 @@ class Channel < ApplicationRecord
     channel_type = self.details_type
     case channel_type
     when "YoutubeChannelDetails"
-      return self.details.youtube_channel_id
+      self.details.youtube_channel_id
     when "SiteChannelDetails"
-      return self.details.brave_publisher_id
+      self.details.brave_publisher_id
     when "TwitchChannelDetails"
-      return self.details.name
+      self.details.name
+    when "TwitterChannelDetails"
+      self.details.twitch_channel_id
     else
       nil
     end
@@ -138,7 +151,7 @@ class Channel < ApplicationRecord
     else
       verification_status = nil
     end
-    
+
     update!(verified: true, verification_status: verification_status, verification_details: nil, verified_at: Time.now)
   end
 
@@ -168,7 +181,7 @@ class Channel < ApplicationRecord
   def should_register_channel_for_promo
     promo_running = Rails.application.secrets[:active_promo_id].present?  # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = self.publisher.promo_enabled_2018q1?
-    promo_running && publisher_enabled_promo && verified_changed? && verified
+    promo_running && publisher_enabled_promo && saved_change_to_verified? && verified
   end
 
   def clear_verified_at_if_necessary
