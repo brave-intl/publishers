@@ -638,8 +638,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get balance_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
-    assert_equal "{\"providerWallet\":{\"provider\":\"uphold\",\"authorized\":true,\"defaultCurrency\":\"USD\",\"rates\":{\"BTC\":5.418424016883016e-05,\"ETH\":0.000795331082073117,\"USD\":0.2363863335301452,\"EUR\":0.20187818378874756,\"GBP\":0.1799810085548496},\"availableCurrencies\":[\"USD\",\"EUR\",\"BTC\",\"ETH\",\"BAT\"],\"possibleCurrencies\":[\"AED\",\"ARS\",\"AUD\",\"BRL\",\"CAD\",\"CHF\",\"CNY\",\"DKK\",\"EUR\",\"GBP\",\"HKD\",\"ILS\",\"INR\",\"JPY\",\"KES\",\"MXN\",\"NOK\",\"NZD\",\"PHP\",\"PLN\",\"SEK\",\"SGD\",\"USD\",\"XAG\",\"XAU\",\"XPD\",\"XPT\"],\"scope\":\"cards:read user:read\"},\"channelBalances\":{\"uphold_connected.org\":{\"probi\":\"38077497398351695427000\"},\"twitch#channel:ucTw\":{\"probi\":\"38077497398351695427000\"},\"twitter#channel:def456\":{\"probi\":\"38077497398351695427000\"}}}",
-                 response.body
+
+    wallet_response = JSON.parse(response.body)
+
+    assert wallet_response["channelBalances"].present?
   end
 
   test "a publisher's uphold status can be polled via ajax" do
@@ -770,7 +772,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "authorized" => false,
                                "availableCurrencies" => [],
                                "possibleCurrencies" => ["BAT"],
-                               "scope" => "cards:read, user:read" }
+                               "scope" => "cards:read, user:read" },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -812,7 +816,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "authorized" => true,
                                "availableCurrencies" => [],
                                "possibleCurrencies" => ["BAT"],
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "scope" => "cards:read, cards:write, user:read"},
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -853,7 +859,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "authorized" => true,
                                "availableCurrencies" => [],
                                "possibleCurrencies" => ["BAT", "BTC"],
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "scope" => "cards:read, cards:write, user:read" },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -894,7 +902,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "authorized" => true,
                                "availableCurrencies" => ["BAT"],
                                "possibleCurrencies" => ["BAT"],
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "scope" => "cards:read, cards:write, user:read" },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -933,7 +943,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "authorized" => false,
                                "availableCurrencies" => [],
                                "possibleCurrencies" => ["BAT"],
-                               "scope" => "cards:read, user:read" }
+                               "scope" => "cards:read, user:read" },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -956,7 +968,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "authorized" => true,
                                "availableCurrencies" => [],  # BAT will not be available
                                "possibleCurrencies" => ["BAT"],
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "scope" => "cards:read, cards:write, user:read" },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
