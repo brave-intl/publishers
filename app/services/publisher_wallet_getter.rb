@@ -90,7 +90,7 @@ class PublisherWalletGetter < BaseApiClient
   def parse_channel_balances_response(channel_balances_response, rates, default_currency)
     channel_hash = {}
     channel_balances_response.each do |channel_balance|
-      channel_id = channel_balance["account"]
+      channel_id = channel_balance["account_id"]
       channel_bat = channel_balance["balance"].to_d
       channel_probi = channel_bat * 1E18
 
@@ -109,6 +109,7 @@ class PublisherWalletGetter < BaseApiClient
   def sum_channel_balances(channel_balances_response)
     sum = 0
     channel_balances_response.each do |channel_balance|
+      next if channel_balance["account_type"] == "owner" # Do not sum owner accounts
       sum += channel_balance["balance"].to_d
     end
     sum

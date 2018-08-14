@@ -18,7 +18,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     channel_without_balance_id = publisher.channels.second.details.channel_identifier
 
     stubbed_response_body = [{
-      "account" => "#{channel_with_balance_id}",
+      "account_id" => "#{channel_with_balance_id}",
       "balance" => "900"
     }]
     
@@ -31,10 +31,10 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     assert_equal result.length, 3
 
     # demonstrate first result has balance
-    assert_equal result.first["account"], channel_with_balance_id
+    assert_equal result.first["account_id"], channel_with_balance_id
     assert_equal result.first["balance"], "900"
 
-    assert_equal result.third["account"], channel_without_balance_id
+    assert_equal result.third["account_id"], channel_without_balance_id
     assert_equal result.third["balance"], "0.00"
   end
 

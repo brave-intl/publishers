@@ -67,11 +67,11 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     # stub balance respose
     channel_balances_response = [
       {
-        "account" => "completed.org",
+        "account_id" => "completed.org",
         "balance" => "25.00"
       },
       {
-        "account" => "youtube#channeldef456",
+        "account_id" => "youtube#channeldef456",
         "balance" => "10014"
       }
     ]
