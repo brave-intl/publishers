@@ -26,7 +26,7 @@ class PublishersHelperTest < ActionView::TestCase
     publisher = publishers(:default)
     publisher.default_currency = "USD"
     publisher.save
-    assert_dom_equal %{~ 9001.00 USD}, publisher_converted_balance(publisher)
+    assert_dom_equal %{~ 0.00 USD}, publisher_converted_balance(publisher)
   end
 
   test "publisher_converted_balance should return `CURRENCY unavailable` when no wallet is set" do

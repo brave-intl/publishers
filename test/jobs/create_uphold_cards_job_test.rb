@@ -19,15 +19,18 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "authorized" => true,
                                "availableCurrencies" => "",
                                "possibleCurrencies" => "BAT",
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "scope" => "cards:read, cards:write, user:read",
+                             },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+     # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 
@@ -61,15 +64,19 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "authorized" => true,
                                "availableCurrencies" => "BAT",
                                "possibleCurrencies" => "BAT",
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "scope" => "cards:read, cards:write, user:read",
+                             },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
+
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+     # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 
@@ -109,16 +116,18 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       wallet = { "wallet" => { "defaultCurrency" => "USD",
                                "authorized" => true,
                                "availableCurrencies" => "",
-                               "possibleCurrencies" => "BAT,LOL",
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "possibleCurrencies" => "BAT, LOL",
+                               "scope" => "cards:read, cards:write, user:read",
+                             },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
-
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+     # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 
@@ -153,19 +162,23 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       publisher.save!
 
       # stub wallet response
+
       wallet = { "wallet" => { "defaultCurrency" => "BAT",
                                "authorized" => true,
                                "availableCurrencies" => "BAT",
                                "possibleCurrencies" => "BAT,LOL",
-                               "scope" => "cards:read, cards:write, user:read" }
+                               "scope" => "cards:read, cards:write, user:read",
+                             },
+                 "rates" => {},
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
-      # ensures the PublisherWalletGetter does not fail for the per channel balances belonging to this fixture.
-      stub_request(:get, /v2/).
-        to_return(status: 200, body: "".to_json)
+     # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
 
