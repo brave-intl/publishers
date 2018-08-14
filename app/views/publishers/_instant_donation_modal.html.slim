@@ -11,5 +11,5 @@
               .col-md-4
                 a href="#" class="btn btn-link-primary js-deny" Skip for now
               .col-md-3
-                = link_to "Preview Banner", new_banner_path, class: 'btn btn-primary'
+                = link_to "Preview Banner", new_publisher_site_banner_path(current_publisher.id), class: 'btn btn-primary'
               / = link_to "Continue", preview_banner_modal_publishers_path, method: :patch

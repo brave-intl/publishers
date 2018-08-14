@@ -37,8 +37,35 @@ class BraveRewardsPageForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.title);
-    event.preventDefault();
+    const url = '/publishers/' + document.getElementById('publisher_id').value + "/site_banners";
+    var request = new XMLHttpRequest();
+    const body = JSON.stringify({
+        title: this.state.title,
+        description: this.state.description,
+        background_image: this.state.backgroundImage,
+        logo: this.state.logo
+    });
+
+    /*
+    request.open('POST', url);
+    request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    request.setRequestHeader('X-CSRF-Token', document.head.querySelector("[name=csrf-token]").content);
+    request.send(body);
+    */
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
+      },
+      body: JSON.stringify({
+        title: this.state.title,
+        description: this.state.description,
+        background_image: this.state.backgroundImage,
+        logo: this.state.logo
+      })
+    });
   }
 
   render() {

@@ -16,6 +16,9 @@ gem "api-pagination"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
 
+# Use AWS gem for s3 uploads
+gem 'aws-sdk-s3', require: false
+
 gem "bootstrap", "~> 4.1.1"
 
 # browser details

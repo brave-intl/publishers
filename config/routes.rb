@@ -41,7 +41,9 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
     end
+    resources :site_banners, only: %i(new create), controller: 'publishers/site_banners'
   end
+
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
 
   resources :channels, only: %i(destroy) do
@@ -50,9 +52,6 @@ Rails.application.routes.draw do
       get :cancel_add
       delete :destroy
     end
-  end
-
-  resources :banners, only: %i(new) do
   end
 
   resources :site_channels, only: %i(create update new show) do
