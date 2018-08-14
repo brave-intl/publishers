@@ -57,8 +57,10 @@ class BraveRewardsPageForm extends React.Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
       },
+      credentials: "same-origin",
       body: JSON.stringify({
         title: this.state.title,
         description: this.state.description,

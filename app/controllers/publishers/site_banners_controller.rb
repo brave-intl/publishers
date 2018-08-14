@@ -5,8 +5,6 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def create
-    p params
-    p "what is happening"
     redirect_to(new_publisher_site_banner_path(current_publisher))
   end
 end
