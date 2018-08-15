@@ -50,7 +50,8 @@ class PublisherBalanceGetter < BaseApiClient
     end
 
     # Fill in missing channel accounts if needed
-    channel_ids_to_fill_in = (verified_channel_ids.map { |verified_channel_id| account_ids.include?(verified_channel_id) ? nil : verified_channel_id }).compact
+    channel_ids_to_fill_in = verified_channel_ids.select { |verified_channel_id| account_ids.exclude?(verified_channel_id) }
+
     accounts += channel_ids_to_fill_in.map do |channel_id|
       {
         "account_id" => "#{channel_id}",
