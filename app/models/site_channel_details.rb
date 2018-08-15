@@ -101,6 +101,10 @@ class SiteChannelDetails < ApplicationRecord
     end
   end
 
+  def url
+    "https://#{brave_publisher_id}"
+  end
+
   private
 
   def verified_publisher_id_exists?

@@ -29,6 +29,10 @@ class TwitchChannelDetails < ApplicationRecord
     display_name
   end
 
+  def url
+    "https://twitch.tv/#{name}"
+  end
+
   private
 
   # verification to ensure twitch_channel is not changed
