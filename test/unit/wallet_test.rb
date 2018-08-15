@@ -52,6 +52,7 @@ class WalletTest < ActiveSupport::TestCase
     assert empty_wallet.available_currencies.is_a?(Array)
     assert empty_wallet.possible_currencies.is_a?(Array)
     assert empty_wallet.contribution_balance.is_a?(Eyeshade::Balance)
+    assert empty_wallet.address.is_a?(String)
   end
 
   test "parses wallet status and details" do
