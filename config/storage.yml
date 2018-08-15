@@ -4,3 +4,11 @@ amazon:
   secret_access_key: <%= ENV['S3_REWARDS_SECRET_ACCESS_KEY'] %>
   region: us-east-2
   bucket: <%= ENV['S3_REWARDS_BUCKET_NAME'] %>
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>

@@ -36,15 +36,33 @@ class BraveRewardsPageForm extends React.Component {
     this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
   }
 
+  submitById(id, suffix) {
+    console.log(id);
+    var file = document.getElementById(id);
+    var reader = new FileReader();
+    reader.readAsDataURL(file.files[0]);
+    reader.onloadend = function () {
+      const body = new FormData();
+      body.append('image', reader.result);
+      fetch("/publishers/" + document.getElementById('publisher_id').value + "/site_banners/update_" + suffix, {
+        method: 'POST',
+        headers: {
+          'Accept': 'text/html',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
+        },
+        credentials: "same-origin",
+        body: body
+      });
+    };
+  }
+
   handleSubmit(event) {
     const url = '/publishers/' + document.getElementById('publisher_id').value + "/site_banners";
     var request = new XMLHttpRequest();
-    const body = JSON.stringify({
-        title: this.state.title,
-        description: this.state.description,
-        background_image: this.state.backgroundImage,
-        logo: this.state.logo
-    });
+    const body = new FormData();
+    body.append('title', this.state.title);
+    body.append('description', this.state.description);
 
     /*
     request.open('POST', url);
@@ -55,19 +73,16 @@ class BraveRewardsPageForm extends React.Component {
     fetch(url, {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Accept': 'text/html',
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
       },
       credentials: "same-origin",
-      body: JSON.stringify({
-        title: this.state.title,
-        description: this.state.description,
-        background_image: this.state.backgroundImage,
-        logo: this.state.logo
-      })
+      body: body
     });
+
+    this.submitById("backgroundImageSelect", "background_image");
+    this.submitById("logoSelect", "logo");
   }
 
   render() {
