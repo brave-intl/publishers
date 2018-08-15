@@ -18,19 +18,37 @@ class PublisherWalletGetter < BaseApiClient
 
     wallet_hash = JSON.parse(wallet_response.body)
 
-    rates = wallet_hash["rates"]
-    
-    currency = wallet_hash.dig("contributions", "currency") || publisher.default_currency
+    # TODO: Remove else condition when transaction table is stable
+    if should_use_transaction_table?
+      if publisher.channels.verified.present?
+        accounts = PublisherBalanceGetter.new(publisher: publisher).perform
 
-    if publisher.channels.verified.present?
-      channel_balances_response = PublisherBalanceGetter.new(publisher: publisher).perform
-      channel_hash = parse_channel_balances_response(channel_balances_response, rates, currency)
+        # Override owner balance with transaction table value
+        if wallet_hash.dig("contributions", "probi")
+          owner_balance = owner_balance_bat(accounts)
+          wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * 1E18
+          wallet_hash["contributions"]["amount"] = owner_balance 
+        end
 
-      # Replace owner balance with sum of channel balances # TODO: Remove owner balance from the /wallet response
-      owner_balance_probi = sum_channel_balances(channel_balances_response) * 1E18
-      wallet_hash["contributions"]["probi"] = owner_balance_probi if wallet_hash.dig("contributions","probi")
+        # Convert accounts into Eyeshade::Wallet format
+        channel_hash = parse_accounts(accounts, wallet_hash)
+      else
+        channel_hash = {}
+      end
     else
+      channel_responses = {}
+      publisher.channels.verified.each do |channel|
+        identifier =  channel.details.channel_identifier
+        channel_responses[identifier] = connection.get do |request|
+          request.headers["Authorization"] = api_authorization_header
+          request.url("/v2/publishers/#{URI.escape(identifier)}/balance")
+        end
+      end
+
       channel_hash = {}
+      channel_responses.each do |identifier, response|
+        channel_hash[identifier] = JSON.parse(response.body)
+      end
     end
 
     Eyeshade::Wallet.new(wallet_json: wallet_hash,channel_json: channel_hash)
@@ -72,12 +90,21 @@ class PublisherWalletGetter < BaseApiClient
         }
       }
 
-    channel_balances_response = PublisherBalanceGetter.new(publisher: publisher).perform
-    channel_hash = parse_channel_balances_response(channel_balances_response, wallet_hash["rates"], wallet_hash["contributions"]["currency"])
+    if publisher.channels.verified.any?
+      accounts = PublisherBalanceGetter.new(publisher: publisher).perform
 
-    # Replace owner balance with sum of channel balance # TODO: Remove owner balance from the /wallet response
-    owner_balance_probi = sum_channel_balances(channel_balances_response) * 1E18
-    wallet_hash["contributions"]["probi"] = owner_balance_probi if wallet_hash.dig("contributions","probi")
+      # Override owner balance with transaction table value
+      if wallet_hash.dig("contributions", "probi")
+        owner_balance = owner_balance_bat(accounts)
+        wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * 1E18
+        wallet_hash["contributions"]["amount"] = owner_balance 
+      end
+
+      # Convert accounts into Eyeshade::Wallet format
+      channel_hash = parse_accounts(accounts, wallet_hash)
+    else
+      channel_hash = {}
+    end
 
     Eyeshade::Wallet.new(
       wallet_json: wallet_hash,
@@ -87,32 +114,46 @@ class PublisherWalletGetter < BaseApiClient
 
   private
 
-  def parse_channel_balances_response(channel_balances_response, rates, default_currency)
-    channel_hash = {}
-    channel_balances_response.each do |channel_balance|
-      channel_id = channel_balance["account_id"]
-      channel_bat = channel_balance["balance"].to_d
-      channel_probi = channel_bat * 1E18
+  def should_use_transaction_table?
+    Rails.application.secrets[:should_use_transaction_table]
+  end
 
-      channel_hash[channel_id] = {
+  # Converts the account_balances returned in the PublisherBalanceGetter
+  # into a format suitable for the Eyeshade::Wallet
+  def parse_accounts(accounts, wallet_hash)
+    rates = wallet_hash["rates"]
+    currency = wallet_hash.dig("contributions", "currency") || publisher.default_currency
+
+    channel_hash = {}
+
+    accounts.each do |account|
+      next if account["account_type"] == "owner"
+
+      channel_identifier = account["account_id"]
+      channel_balance = account["balance"]
+
+      channel_hash[channel_identifier] = {
         "rates" => rates,
         "altcurrency" => "BAT",
-        "probi" => channel_probi,
-        "amount" => channel_bat,
-        "currency" => default_currency
+        "probi" => channel_balance.to_d * 1E18,
+        "amount" => channel_balance,
+        "currency" => currency
       }
     end
 
     channel_hash
   end
 
-  def sum_channel_balances(channel_balances_response)
-    sum = 0
-    channel_balances_response.each do |channel_balance|
-      next if channel_balance["account_type"] == "owner" # Do not sum owner accounts
-      sum += channel_balance["balance"].to_d
+  def owner_balance_bat(accounts)
+    owner_balance = nil
+
+    accounts.each do |account|
+      next unless account["account_type"] == "owner"
+      owner_balance = account["balance"]
     end
-    sum
+
+    raise if owner_balance == nil # Owner balance should always exist
+    owner_balance
   end
 
   def api_base_uri

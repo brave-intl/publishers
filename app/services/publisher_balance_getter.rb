@@ -10,43 +10,19 @@ class PublisherBalanceGetter < BaseApiClient
     return [] if publisher.channels.verified.empty?
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    channel_balances_response = connection.get do |request|
+    accounts_response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.options.params_encoder = Faraday::FlatParamsEncoder
       request.url("v1/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}")
     end
 
-    channel_balances = JSON.parse(channel_balances_response.body)
-
-    # Eyeshade returns an empty response for verified channels/owners
-    # that have never received a transaction, and 0.000 for
-    # verified channels with settled transactions.
-    #
-    # So we must fill in 0.00 balances for verified channels
-    # that have never received a transaction.
-
-    # Select all verified channel identifiers
-    verified_channel_ids = []
-    publisher.channels.verified.each {|channel| verified_channel_ids.push(channel.details.channel_identifier)}
-
-    channel_balances.each do |channel_balance|
-      channel_identifier = channel_balance["account_id"]
-
-      # Remove the owner balance from the channel_balances response to prevent incorrect sums
-      channel_balances.delete(channel_balance) if channel_balance["account_type"] == "owner"
-
-      # Remove those which eyeshade has returned a response for
-      verified_channel_ids.delete(channel_identifier) if verified_channel_ids.include?(channel_identifier)
-    end
-
-    # Set balances for channels not included in eyeshade reponse to 0.00
-    channel_balances += verified_channel_ids.map { |verified_channel_id| { "account_id" => "#{verified_channel_id}", "balance" => "0.00" } }
-  
-    channel_balances
+    accounts = JSON.parse(accounts_response.body)
+    complete_accounts = fill_in_missing_accounts(accounts)
+    complete_accounts
   end
 
   def perform_offline
-    @publisher.channels.verified.map { |channel| { "account_id" => "#{channel.details.channel_identifier}", "balance" => "#{rand(0..3000)}"} }
+    fill_in_missing_accounts([])
   end
 
   private
@@ -54,6 +30,46 @@ class PublisherBalanceGetter < BaseApiClient
   def channels_query_string
     return "" if publisher.channels.verified.count == 0
     publisher.channels.verified.map { |channel| "&account=#{URI.escape(channel.details.channel_identifier)}" }.reduce(:+)
+  end
+
+  # Eyeshade may return a 0 balance or an empty response for accounts (channel and owner)
+  # with no balance, so we must fill in these values
+  def fill_in_missing_accounts(accounts)
+    # Find all of the publisher's verified channel ids
+    verified_channel_ids = publisher.channels.verified.map { |channel| channel.details.channel_identifier }
+
+    # Find which verified channel ids have been included in the response
+    account_ids = accounts.map { |account| account["account_id"] }
+
+    # Find whether the owner account was included in the response
+    accounts_include_owner_account = false
+    accounts.each do |account|
+      if account["account_type"] == "owner"
+        accounts_include_owner_account = true
+      end
+    end
+
+    # Fill in missing channel accounts if needed
+    channel_ids_to_fill_in = verified_channel_ids.select { |verified_channel_id| account_ids.exclude?(verified_channel_id) }
+
+    accounts += channel_ids_to_fill_in.map do |channel_id|
+      {
+        "account_id" => "#{channel_id}",
+        "account_type" => "channel",
+        "balance" => "0.00",
+      }
+    end
+
+    # Fill in missing owner account if needed
+    unless accounts_include_owner_account
+      accounts.push({
+        "account_id" => "#{publisher.owner_identifier}",
+        "account_type" => "owner",
+        "balance" => "0.00"
+      })
+    end
+
+    accounts
   end
 
   def api_base_uri
