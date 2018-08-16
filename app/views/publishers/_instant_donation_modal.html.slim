@@ -12,9 +12,14 @@
                 .col-md-3
                   a href="#" class="btn btn-link-primary js-deny" Skip for now
                 .col-md-4
-                  = link_to("+ Preview Banner", "#", data: {'js-confirm-with-modal' => 'preview-banner-selection' }, class: 'btn btn-primary', id: "preview-banner-button")
+                  = link_to("Preview Banner", "#", class: 'btn btn-primary', id: "preview-banner-button")
                 .col-md-4
-                  = link_to "Edit Banner", new_publisher_site_banner_path(current_publisher.id), class: 'btn btn-primary'
+                  = link_to("Edit Banner", "#", class: 'btn btn-primary', id: "edit-banner-button")
+                  /= link_to "Edit Banner", new_publisher_site_banner_path(current_publisher.id), class: 'btn btn-primary'
         .modal-header style="display: none;" id="instant-donation-modal-preview"
           center
-            h4 Hello World
+            h4 TODO PREVIEW
+        .modal-header style="display: none;" id="instant-donation-modal-edit"
+          h4 WTF
+          = hidden_field_tag 'publisher_id', current_publisher.id
+          = javascript_pack_tag("brave_rewards_banner_display")

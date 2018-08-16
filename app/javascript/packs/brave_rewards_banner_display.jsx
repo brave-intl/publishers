@@ -89,32 +89,38 @@ class BraveRewardsPageForm extends React.Component {
     initLocale(locale);
 
     return (
-      <div>
-        <div id="site_banner" style={{height: '50vh'}}>
-          <SiteBanner
-            bgImage={this.state.backgroundImage}
-            logo={this.state.logo}
-            title={this.state.title}
-            currentDonation={"5"}
-            donationAmounts={[
-              {
-                "tokens": 1,
-                "converted": 0.3,
-                "selected": false
-              },
-              {
-                "tokens": 5,
-                "converted": 1.5,
-                "selected": false
-              },
-              {
-                "tokens": 10,
-                "converted": 3,
-                "selected": false
-              }
-            ]}
-          ><p style={{'white-space': "pre-line"}}>{this.state.description}</p></SiteBanner>
-        </div>
+      <div id="controller_form">
+      </div>
+      <div id="site_banner">
+        <SiteBanner
+          bgImage={this.state.backgroundImage}
+          logo={this.state.logo}
+          title={this.state.title}
+          currentDonation={"5"}
+          donationAmounts={[
+            {
+              "tokens": 1,
+              "converted": 0.3,
+              "selected": false
+            },
+            {
+              "tokens": 5,
+              "converted": 1.5,
+              "selected": false
+            },
+            {
+              "tokens": 10,
+              "converted": 3,
+              "selected": false
+            }
+          ]}
+        ><p style={{'white-space': "pre-line"}}>{this.state.description}</p></SiteBanner>
+      </div>
+    );
+  }
+}
+
+/*
         <div id="controller_form">
           <hr/>
           <h4>PREVIEW</h4>
@@ -140,16 +146,39 @@ class BraveRewardsPageForm extends React.Component {
             <input type="submit" value="Submit"/>
           </form>
         </div>
-      </div>
-    );
-  }
+        */
+
+export function renderBraveRewardsBannerDisplay() {
+
+  const braveRewardsPageForm = <BraveRewardsPageForm />;
+
+  ReactDOM.render(
+    braveRewardsPageForm,
+    document.getElementById("instant-donation-modal").parentElement.parentElement
+  )
+  document.getElementById('site_banner').children[0].style.height = '0vh';
+
+  // Set h3 editable
+  document.getElementsByClassName("sc-gZMcBi fvLbBz")[0].setAttribute("contenteditable", true)
+
+  // Set p editable
+  document.getElementsByClassName("sc-gqjmRU gfESut")[0].setAttribute("contenteditable", true)
+
+  // Resize modal container
+  document.getElementsByClassName("modal-container")[0].style.height = document.getElementById('site_banner').children[0].children[0].offsetHeight + "px";
+  document.getElementsByClassName("modal-container")[0].style.width = document.getElementById('site_banner').children[0].children[0].offsetWidth + "px";
+
+  // Reset margins
+  document.getElementsByClassName("modal-panel")[0].style.marginLeft = "0px";
 }
 
-const braveRewardsPageForm = <BraveRewardsPageForm />;
+/*
+  const braveRewardsPageForm = <BraveRewardsPageForm />;
 
-ReactDOM.render(
-  braveRewardsPageForm,
-  document.body.appendChild(document.createElement("div"))
-)
+  ReactDOM.render(
+    braveRewardsPageForm,
+    document.body.appendChild(document.createElement("div"))
+  )
 
-document.getElementById('site_banner').children[0].style.height = '50vh';
+  document.getElementById('site_banner').children[0].style.height = '50vh';
+*/

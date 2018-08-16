@@ -6,6 +6,7 @@ import fetch from '../utils/fetchPolyfill';
 import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
+import { renderBraveRewardsBannerDisplay } from '../packs/brave_rewards_banner_display';
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
@@ -371,6 +372,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("preview-banner-button").onclick = function() { 
       document.getElementById("instant-donation-modal-selection").style.display = 'none';
       document.getElementById("instant-donation-modal-preview").style.display = 'block';
+    };
+    document.getElementById("edit-banner-button").onclick = function() { 
+      document.getElementById("instant-donation-modal-selection").style.display = 'none';
+      document.getElementById("instant-donation-modal-edit").style.display = 'block';
+      renderBraveRewardsBannerDisplay();
     };
   }, false);
 
