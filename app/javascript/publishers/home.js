@@ -347,6 +347,8 @@ document.addEventListener('DOMContentLoaded', function() {
   let editContact = document.getElementById('edit_contact');
   let cancelEditContact = document.getElementById('cancel_edit_contact');
 
+  let instantDonationButton = document.getElementById("instant-donation-button");
+
   editContact.addEventListener('click', function(event) {
     updateContactName.value = showContactName.innerText;
     updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
@@ -363,6 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
     updateContactForm.classList.add('hidden');
     editContact.classList.remove('hidden');
     event.preventDefault();
+  }, false);
+
+  instantDonationButton.addEventListener("click", function(event) {
+    document.getElementById("preview-banner-button").onclick = function() { 
+      document.getElementById("instant-donation-modal-selection").style.display = 'none';
+      document.getElementById("instant-donation-modal-preview").style.display = 'block';
+    };
   }, false);
 
   updateContactForm.addEventListener('submit', function(event) {

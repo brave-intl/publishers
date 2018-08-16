@@ -396,10 +396,6 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
-  def instant_donation_modal
-    render partial: "instant_donation_modal"
-  end
-
   def generate_statement
     publisher = current_publisher
     statement_period = params[:statement_period]

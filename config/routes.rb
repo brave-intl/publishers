@@ -28,7 +28,6 @@ Rails.application.routes.draw do
       patch :complete_signup
       patch :disconnect_uphold
       get :choose_new_channel_type
-      get :instant_donation_modal
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index) do
         collection do
