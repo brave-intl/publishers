@@ -134,7 +134,7 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def verified_no_wallet(publisher, params)
+  def verified_no_wallet(publisher)
     @publisher = publisher
     @publisher_dashboard_url = root_url
     if @publisher.uphold_verified
@@ -152,7 +152,7 @@ class PublisherMailer < ApplicationMailer
     end
   end
 
-  def verified_no_wallet_internal(publisher, params)
+  def verified_no_wallet_internal(publisher)
     @publisher = publisher
     @publisher_dashboard_url = root_url
     mail(
@@ -185,9 +185,9 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def verified_invalid_wallet(publisher, params)
+  def verified_invalid_wallet(publisher)
     @publisher = publisher
-    if !@publisher.uphold_verified
+    if !@publisher.uphold_verified?
       begin
         raise "Non Uphold verified publisher #{@publisher.id} cannot reconnect to Uphold"
       rescue => e
@@ -202,7 +202,7 @@ class PublisherMailer < ApplicationMailer
     end
   end
 
-  def verified_invalid_wallet_internal(publisher, params)
+  def verified_invalid_wallet_internal(publisher)
     @publisher = publisher
     return if !@publisher.uphold_verified
     mail(
