@@ -89,9 +89,21 @@ class BraveRewardsPageForm extends React.Component {
     initLocale(locale);
 
     return (
-      <div id="controller_form">
-      </div>
       <div id="site_banner">
+        <div id="controller-form" className="nav navbar navbar-default navbar-static-top">
+          <div className="container-fluid">
+              <div className="menu-container">
+                <div className="nav pull-left float-left">
+                  <h4 style={{'marginTop': '12px'}}>All Channels</h4>
+                </div>
+                <div className="nav pull-right float-right">
+                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Don't Change</a>
+                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-save-changes" href="#">Preview Banner</a>
+                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-primary" id="instant-donation-save-changes" href="#">Save Change</a>
+                </div>
+              </div>
+          </div>
+        </div>
         <SiteBanner
           bgImage={this.state.backgroundImage}
           logo={this.state.logo}
@@ -149,14 +161,28 @@ class BraveRewardsPageForm extends React.Component {
         */
 
 export function renderBraveRewardsBannerDisplay() {
-
   const braveRewardsPageForm = <BraveRewardsPageForm />;
 
   ReactDOM.render(
     braveRewardsPageForm,
     document.getElementById("instant-donation-modal").parentElement.parentElement
   )
-  document.getElementById('site_banner').children[0].style.height = '0vh';
+  document.getElementById('site_banner').children[1].style.height = '0vh';
+
+  // Resize modal container
+  document.getElementsByClassName("modal-container")[0].style.height = document.getElementById('site_banner').children[1].children[0].offsetHeight + "px";
+  document.getElementsByClassName("modal-container")[0].style.width = document.getElementById('site_banner').children[1].children[0].offsetWidth + "px";
+
+  // Reset margins
+  document.getElementsByClassName("modal-panel")[0].style.marginLeft = "0px";
+  document.getElementById("controller-form").style.marginLeft = "-48px";
+  document.getElementById("controller-form").style.marginTop = "-128px";
+  document.getElementById("controller-form").style.paddingTop = "16px";
+  document.getElementById("controller-form").style.width = document.getElementById('site_banner').children[1].children[0].offsetWidth + "px";
+  document.getElementById("controller-form").style.backgroundColor = "white";
+
+  // Hide unused close button
+  document.getElementsByClassName("modal-panel--close")[0].style.visibility = 'hidden';
 
   // Set h3 editable
   document.getElementsByClassName("sc-gZMcBi fvLbBz")[0].setAttribute("contenteditable", true)
@@ -164,12 +190,10 @@ export function renderBraveRewardsBannerDisplay() {
   // Set p editable
   document.getElementsByClassName("sc-gqjmRU gfESut")[0].setAttribute("contenteditable", true)
 
-  // Resize modal container
-  document.getElementsByClassName("modal-container")[0].style.height = document.getElementById('site_banner').children[0].children[0].offsetHeight + "px";
-  document.getElementsByClassName("modal-container")[0].style.width = document.getElementById('site_banner').children[0].children[0].offsetWidth + "px";
-
-  // Reset margins
-  document.getElementsByClassName("modal-panel")[0].style.marginLeft = "0px";
+  document.getElementById("instant-donation-dont-save-changes").onclick = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
+    document.getElementsByClassName("modal-panel--close")[0].click();
+  }
 }
 
 /*
