@@ -1,0 +1,172 @@
+require 'test_helper'
+require "webmock/minitest"
+
+class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+  include ActionMailer::TestHelper
+
+  before do
+    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+  end
+
+  after do
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+  end
+
+  def delete_publishers_except(publisher_ids)
+    Publisher.all.each do |publisher|
+      publisher.delete unless publisher_ids.include?(publisher.id)
+    end
+  end
+
+  test "#create launches GeneratePayoutReportJob for admin" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    assert_enqueued_with(job: GeneratePayoutReportJob) do
+      post admin_payout_reports_path
+    end
+  end
+
+  test "#create raises error for non-admin" do
+    publisher = publishers(:default)
+    sign_in publisher
+
+    assert_raises do
+      post admin_payout_reports_path
+    end
+  end
+
+  test "#create doesn't send email or set final if no params are present in POST" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    assert_difference("PayoutReport.count", 1) do
+      assert_difference("ActionMailer::Base.deliveries.count", 0) do
+        perform_enqueued_jobs do
+          post admin_payout_reports_path
+        end
+      end
+    end
+
+    # Ensure payout report was not marked as final
+    refute PayoutReport.order(created_at: :desc).first.final
+  end
+
+  test "#create generates final payout report if final flag is set" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    assert_difference("PayoutReport.count", 1) do
+      assert_difference("ActionMailer::Base.deliveries.count", 0) do
+        perform_enqueued_jobs do
+          post admin_payout_reports_path(final: true)
+        end
+      end
+    end
+
+    # Ensure payout report was not marked as final
+    assert PayoutReport.order(created_at: :desc).first.final
+  end
+
+  test "#download inserts the admin's email as the authority" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    admin = publishers(:admin)
+    publisher = publishers(:uphold_connected)
+    delete_publishers_except([admin.id, publisher.id])
+    sign_in admin
+
+    # Stub disconnected /wallet response
+    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
+
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    # Stub /balances response
+    balance_response = [
+      {
+        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+        "account_type" => "owner",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "uphold_connected.org",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "twitch#channel:ucTw",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },      {
+        "account_id" => "twitter#channel:def456",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      }
+    ].to_json
+
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+      to_return(status: 200, body: balance_response)
+
+    # Create the non blank payout report
+    perform_enqueued_jobs do
+      post admin_payout_reports_path(final: true, should_send_notifications: true)
+    end
+
+    # Ensure the authority is GeneratePayoutReportJob
+    payout_report = PayoutReport.all.order(created_at: :desc).first
+    JSON.parse(payout_report.contents).each { |channel| assert_equal channel["authority"], "GeneratePayoutReportJob"}
+
+    # Ensure authority is the admin's email when the file is downloaded
+    get download_admin_payout_report_path(payout_report)
+    JSON.parse(response.body).each { |channel| assert_equal channel["authority"], admin.email}
+  end
+
+  test "#create sends email if should_send_notifications flag is set" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    admin = publishers(:admin)
+    publisher = publishers(:uphold_connected)
+    delete_publishers_except([admin.id, publisher.id])
+    sign_in admin
+
+    # Stub disconnected /wallet response
+    wallet_response = {}.to_json
+
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    # Stub /balances response
+    balance_response = [
+      {
+        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+        "account_type" => "owner",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "uphold_connected.org",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "twitch#channel:ucTw",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },      {
+        "account_id" => "twitter#channel:def456",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      }
+    ].to_json
+
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+      to_return(status: 200, body: balance_response)
+
+    assert_difference("PayoutReport.count", 1) do
+      assert_difference("ActionMailer::Base.deliveries.count", 1) do
+        perform_enqueued_jobs do
+          post admin_payout_reports_path(final: true, should_send_notifications: true)
+        end
+      end
+    end
+  end
+end
