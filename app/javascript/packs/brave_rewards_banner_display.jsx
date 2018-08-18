@@ -36,6 +36,32 @@ class BraveRewardsPageForm extends React.Component {
     this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
   }
 
+  setupBackgroundLabel() {
+    // Allow uploads
+    var backgroundButton = document.createElement("button");
+    backgroundButton.id = "background-image-select-button";
+    backgroundButton.innerHTML = "Upload background image";
+
+    var backgroundInput = document.createElement("input");
+    backgroundInput.id="background-image-select-input";
+    backgroundInput.type="file";
+    backgroundInput.style.display = "none";
+    backgroundInput.onchange = this.handleBackgroundImageChange;
+
+    backgroundButton.addEventListener("click", function (e) {
+      if (backgroundInput) {
+        backgroundInput.click();
+      }
+    }, false);
+
+    document.getElementsByClassName("sc-kgoBCf")[0].appendChild(backgroundInput);
+    document.getElementsByClassName("sc-kgoBCf")[0].appendChild(backgroundButton);
+  }
+
+  componentDidMount() {
+    this.setupBackgroundLabel();
+  }
+
   submitById(id, suffix) {
     console.log(id);
     var file = document.getElementById(id);
@@ -81,7 +107,7 @@ class BraveRewardsPageForm extends React.Component {
       body: body
     });
 
-    this.submitById("backgroundImageSelect", "background_image");
+    this.submitById("background-image-select-input", "background_image");
     this.submitById("logoSelect", "logo");
   }
 
@@ -126,7 +152,11 @@ class BraveRewardsPageForm extends React.Component {
               "selected": false
             }
           ]}
-        ><p style={{'white-space': "pre-line"}}>{this.state.description}</p></SiteBanner>
+        ><p style={{'whiteSpace': "pre-line"}}>{this.state.description}</p></SiteBanner>
+        <div>
+          <input type="file" id="background-image-select-input" style={{display:"none"}} onChange={this.handleBackgroundImageChange}/>
+          <label htmlFor="background-image-select-input">Select a background image</label>
+        </div>
       </div>
     );
   }
@@ -148,8 +178,8 @@ class BraveRewardsPageForm extends React.Component {
               </label>
             </div>
             <div>
-              <input type="file" id="backgroundImageSelect" style={{display:"none"}} onChange={this.handleBackgroundImageChange}/>
-              <label htmlFor="backgroundImageSelect">Select a background image</label>
+              <input type="file" id="background-image-select-input" style={{display:"none"}} onChange={this.handleBackgroundImageChange}/>
+              <label htmlFor="background-image-select-input">Select a background image</label>
             </div>
             <div>
               <input type="file" id="logoSelect" style={{display:"none"}} onChange={this.handleLogoChange}/>
