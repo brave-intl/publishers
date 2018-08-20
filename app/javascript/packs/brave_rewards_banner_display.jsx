@@ -15,7 +15,7 @@ class BraveRewardsPageForm extends React.Component {
     this.state = {title: 'YOUR TITLE', description: 'A brief description'};
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleLogoChange = this.handleLogoChange.bind(this);
+    this.handleLogoImageChange = this.handleLogoImageChange.bind(this);
     this.handleBackgroundImageChange = this.handleBackgroundImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -28,7 +28,7 @@ class BraveRewardsPageForm extends React.Component {
     this.setState({description: event.target.value});
   }
 
-  handleLogoChange(event) {
+  handleLogoImageChange(event) {
     this.setState({logo: URL.createObjectURL(event.target.files[0])});
   }
 
@@ -54,12 +54,37 @@ class BraveRewardsPageForm extends React.Component {
       }
     }, false);
 
-    document.getElementsByClassName("sc-kgoBCf")[0].appendChild(backgroundInput);
-    document.getElementsByClassName("sc-kgoBCf")[0].appendChild(backgroundButton);
+    var backgroundDiv = "sc-chPdSV";
+    document.getElementsByClassName(backgroundDiv)[0].appendChild(backgroundInput);
+    document.getElementsByClassName(backgroundDiv)[0].appendChild(backgroundButton);
+  }
+
+  setupLogoLabel() {
+    // Allow uploads
+    var logoButton = document.createElement("button");
+    logoButton.id = "logo-image-select-button";
+    logoButton.innerHTML = "Upload logo image";
+
+    var logoInput = document.createElement("input");
+    logoInput.id="logo-image-select-input";
+    logoInput.type="file";
+    logoInput.style.display = "none";
+    logoInput.onchange = this.handleLogoImageChange;
+
+    logoButton.addEventListener("click", function (e) {
+      if (logoInput) {
+        logoInput.click();
+      }
+    }, false);
+
+    var logoDiv = "sc-dnqmqq";
+    document.getElementsByClassName(logoDiv)[0].appendChild(logoInput);
+    document.getElementsByClassName(logoDiv)[0].appendChild(logoButton);
   }
 
   componentDidMount() {
     this.setupBackgroundLabel();
+    this.setupLogoLabel();
   }
 
   submitById(id, suffix) {
@@ -134,7 +159,7 @@ class BraveRewardsPageForm extends React.Component {
           bgImage={this.state.backgroundImage}
           logo={this.state.logo}
           title={this.state.title}
-          currentDonation={"5"}
+          currentAmount={5}
           donationAmounts={[
             {
               "tokens": 1,
@@ -182,7 +207,7 @@ class BraveRewardsPageForm extends React.Component {
               <label htmlFor="background-image-select-input">Select a background image</label>
             </div>
             <div>
-              <input type="file" id="logoSelect" style={{display:"none"}} onChange={this.handleLogoChange}/>
+              <input type="file" id="logoSelect" style={{display:"none"}} onChange={this.handleLogoImageChange}/>
               <label htmlFor="logoSelect">Select a logo</label>
             </div>
             <input type="submit" value="Submit"/>

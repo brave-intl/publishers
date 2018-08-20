@@ -8,7 +8,7 @@
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
     "babel-preset-react": "^6.24.1",
-    "brave-ui": "0.20.3",
+    "brave-ui": "0.21.0",
     "clipboard": "^1.7.1",
     "prop-types": "^15.6.2",
     "rails-ujs": "^5.1.4",
