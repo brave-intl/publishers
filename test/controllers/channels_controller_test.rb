@@ -8,20 +8,19 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
   include MailerTestHelper
   include PublishersHelper
 
-  # TODO Uncomment when verified channels can be removed
-  # test "delete removes a verified channel and associated details" do
-  #   publisher = publishers(:small_media_group)
-  #   channel = channels(:small_media_group_to_delete)
-  #   sign_in publisher
-  #   assert_difference("publisher.channels.count", -1) do
-  #     assert_difference("SiteChannelDetails.count", -1) do
-  #       assert_enqueued_jobs 1 do
-  #         delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
-  #         assert_response 204
-  #       end
-  #     end
-  #   end
-  # end
+  test "delete removes a verified channel and associated details" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:small_media_group_to_delete)
+    sign_in publisher
+    assert_difference("publisher.channels.count", -1) do
+      assert_difference("SiteChannelDetails.count", -1) do
+        assert_enqueued_jobs 1 do
+          delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+          assert_response 204
+        end
+      end
+    end
+  end
 
   test "delete removes an unverified channel and associated details" do
     publisher = publishers(:default)

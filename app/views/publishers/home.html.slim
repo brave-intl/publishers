@@ -228,7 +228,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               .channel-details
                 .added-date
                   = t ".channel.added", date: channel.created_at.to_date.iso8601
-                - unless channel.verified || channel.verification_awaiting_admin_approval?
+                - unless channel.verification_awaiting_admin_approval?
                   .separator
                     = '|'
                   a.remove-channel href="#" data-channel-id=(channel.id)

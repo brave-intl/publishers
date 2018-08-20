@@ -1,15 +1,15 @@
-# Updates the promo server when a channel has been deleted or moved owners
+# Updates the promo server when a channel has been deleted or moves owners
 class PromoChannelOwnerUpdater < BaseApiClient
   include PromosHelper
 
-  def initialize(publisher_id: "removed", referral_code:)
-    @publisher_id = publisher_id
-    @referral_code = referral_code # The brave_publisher_id or youtube channel id, not uuid
+  def initialize(publisher: "removed", referral_code:)
+    @publisher_id = publisher == "removed" ? "removed" : publisher.id
+    @referral_code = referral_code
   end
 
   def perform
     return perform_offline if perform_promo_offline?
-    return nil if @referral_code.nil?
+    return if @referral_code.nil?
     response = connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"

@@ -51,3 +51,11 @@ joe_yt1_details:
   stats:
     :view_count: 1004
     :video_count: 9
+
+bart_yt_details:
+  auth_user_id: "bart515"
+  auth_email: "bart@pages.plusgoogle.com"
+  auth_provider: "google_oauth2"
+  youtube_channel_id: "ycS1032"
+  title: "Bart's Parody Music Videos"
+  thumbnail_url: "https://some_image_host.com/some_image.png"

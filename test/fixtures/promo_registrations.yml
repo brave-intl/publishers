@@ -1,0 +1,4 @@
+barts_promo_registration:
+  channel: promo_registered_channel
+  promo_id: freebats
+  referral_code: BAR515
