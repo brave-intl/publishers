@@ -22,6 +22,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
   = render partial: "instant_donation_button"
 
 = hidden_field_tag 'publisher_id', current_publisher.id
+= hidden_field_tag 'site-banner-react-props', current_publisher&.site_banner.read_only_react_property
+
 .dashboard
   #uphold_status { class=uphold_status_class(current_publisher)
                    data-open-confirm-default-currency-modal=(open_confirm_default_currency_modal ? "true" : "false")

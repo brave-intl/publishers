@@ -12,7 +12,7 @@ import locale from 'locale/en'
 class BraveRewardsPageForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {title: 'YOUR TITLE', description: 'A brief description'};
+    this.state = {title: props.details.title || 'YOUR TITLE', description: props.details.description || 'A brief description'};
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleLogoImageChange = this.handleLogoImageChange.bind(this);
@@ -83,8 +83,10 @@ class BraveRewardsPageForm extends React.Component {
   }
 
   componentDidMount() {
-    this.setupBackgroundLabel();
-    this.setupLogoLabel();
+    if (this.props.editMode) {
+      this.setupBackgroundLabel();
+      this.setupLogoLabel();
+    }
   }
 
   submitById(id, suffix) {
@@ -215,8 +217,8 @@ class BraveRewardsPageForm extends React.Component {
         </div>
         */
 
-export function renderBraveRewardsBannerDisplay() {
-  const braveRewardsPageForm = <BraveRewardsPageForm publisher_id={document.getElementById("publisher_id").value} />;
+export function renderBraveRewardsBannerDisplay(editMode) {
+  const braveRewardsPageForm = <BraveRewardsPageForm publisher_id={document.getElementById("publisher_id").value} editMode={editMode} details={JSON.parse(document.getElementById('site-banner-react-props').value)} />;
 
   ReactDOM.render(
     braveRewardsPageForm,
@@ -239,15 +241,17 @@ export function renderBraveRewardsBannerDisplay() {
   // Hide unused close button
   document.getElementsByClassName("modal-panel--close")[0].style.visibility = 'hidden';
 
-  // Set h3 editable
-  document.getElementsByClassName("sc-gZMcBi fvLbBz")[0].setAttribute("contenteditable", true)
+  if (editMode) {
+    // Set h3 editable
+    document.getElementsByClassName("sc-gZMcBi fvLbBz")[0].setAttribute("contenteditable", true)
 
-  // Set p editable
-  document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
+    // Set p editable
+    document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
 
-  document.getElementById("instant-donation-dont-save-changes").onclick = function() {
-    ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
-    document.getElementsByClassName("modal-panel--close")[0].click();
+    document.getElementById("instant-donation-dont-save-changes").onclick = function() {
+      ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
+      document.getElementsByClassName("modal-panel--close")[0].click();
+    }
   }
 }
 

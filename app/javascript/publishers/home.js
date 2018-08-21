@@ -372,11 +372,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("preview-banner-button").onclick = function() { 
       document.getElementById("instant-donation-modal-selection").style.display = 'none';
       document.getElementById("instant-donation-modal-preview").style.display = 'block';
+      renderBraveRewardsBannerDisplay(false);
     };
     document.getElementById("edit-banner-button").onclick = function() { 
       document.getElementById("instant-donation-modal-selection").style.display = 'none';
       document.getElementById("instant-donation-modal-edit").style.display = 'block';
-      renderBraveRewardsBannerDisplay();
+      renderBraveRewardsBannerDisplay(true);
     };
   }, false);
 
