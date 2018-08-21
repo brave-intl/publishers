@@ -12,7 +12,12 @@ import locale from 'locale/en'
 class BraveRewardsPageForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {title: props.details.title || 'YOUR TITLE', description: props.details.description || 'A brief description'};
+    this.state = {
+      title: props.details.title || 'YOUR TITLE', 
+      description: props.details.description || 'A brief description',
+      backgroundImage: props.details.backgroundUrl,
+      logo: props.details.logoUrl,
+    };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleLogoImageChange = this.handleLogoImageChange.bind(this);
