@@ -88,14 +88,14 @@ class BraveRewardsPageForm extends React.Component {
   }
 
   submitById(id, suffix) {
-    console.log(id);
+    const url = '/publishers/' + this.props.publisher_id + "/site_banners/update_" + suffix;
     var file = document.getElementById(id);
     var reader = new FileReader();
     reader.readAsDataURL(file.files[0]);
     reader.onloadend = function () {
       const body = new FormData();
       body.append('image', reader.result);
-      fetch("/publishers/" + document.getElementById('publisher_id').value + "/site_banners/update_" + suffix, {
+      fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'text/html',
@@ -109,7 +109,7 @@ class BraveRewardsPageForm extends React.Component {
   }
 
   handleSubmit(event) {
-    const url = '/publishers/' + document.getElementById('publisher_id').value + "/site_banners";
+    const url = '/publishers/' + this.props.publisher_id + "/site_banners";
     var request = new XMLHttpRequest();
     const body = new FormData();
     body.append('title', this.state.title);
@@ -133,7 +133,7 @@ class BraveRewardsPageForm extends React.Component {
     });
 
     this.submitById("background-image-select-input", "background_image");
-    this.submitById("logoSelect", "logo");
+    this.submitById("logo-image-select-input", "logo");
   }
 
   render() {
@@ -150,7 +150,7 @@ class BraveRewardsPageForm extends React.Component {
                 <div className="nav pull-right float-right">
                   <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Don't Change</a>
                   <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-save-changes" href="#">Preview Banner</a>
-                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-primary" id="instant-donation-save-changes" href="#">Save Change</a>
+                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-primary" id="instant-donation-save-changes" href="#" onClick={this.handleSubmit}>Save Change</a>
                 </div>
               </div>
           </div>
@@ -216,7 +216,7 @@ class BraveRewardsPageForm extends React.Component {
         */
 
 export function renderBraveRewardsBannerDisplay() {
-  const braveRewardsPageForm = <BraveRewardsPageForm />;
+  const braveRewardsPageForm = <BraveRewardsPageForm publisher_id={document.getElementById("publisher_id").value} />;
 
   ReactDOM.render(
     braveRewardsPageForm,
@@ -243,7 +243,7 @@ export function renderBraveRewardsBannerDisplay() {
   document.getElementsByClassName("sc-gZMcBi fvLbBz")[0].setAttribute("contenteditable", true)
 
   // Set p editable
-  document.getElementsByClassName("sc-gqjmRU gfESut")[0].setAttribute("contenteditable", true)
+  document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
 
   document.getElementById("instant-donation-dont-save-changes").onclick = function() {
     ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
