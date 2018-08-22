@@ -80,7 +80,6 @@ Rails.application.routes.draw do
     resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
       resources :channels, only: %i(create), constraints: { channel_id: %r{[^\/]+} } do
         get "/", action: :show
-        post "notifications", action: :notify
       end
     end
     resources :tokens, only: %i(index)

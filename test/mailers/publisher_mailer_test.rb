@@ -1,6 +1,15 @@
 require 'test_helper'
 
 class PublisherMailerTest < ActionMailer::TestCase
+
+  before do
+    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+  end
+
+  after do
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+  end
+
   test "uphold_account_changed" do
     publisher = publishers(:default)
     email = PublisherMailer.uphold_account_changed(publisher)
@@ -14,9 +23,9 @@ class PublisherMailerTest < ActionMailer::TestCase
     assert_equal [publisher.email], email.to
   end
 
-  test "verified_no_wallet" do
-    publisher = publishers(:verified)
-    email = PublisherMailer.verified_no_wallet(publisher)
+  test "wallet_not_connected" do
+    publisher = publishers(:uphold_connected)
+    email = PublisherMailer.wallet_not_connected(publisher)
 
     assert_emails 1 do
       email.deliver_now
@@ -24,6 +33,21 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     assert_equal ['brave-publishers@localhost.local'], email.from
     assert_equal [publisher.email], email.to
+  end
+
+  test "wallet_not_connected raises error if publisher has address and is uphold_connected" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+  
+    publisher = publishers(:uphold_connected)
+    email = PublisherMailer.wallet_not_connected(publisher)
+
+    wallet_response = {"wallet" => {"address" => "123ABC" }}.to_json
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    assert_raises do
+      email.deliver_now
+    end
   end
 
   test "confirm_email_change" do
@@ -94,35 +118,6 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     # verify email is marked as internal
     assert_match "<Internal>", email.subject
-  end
-
-  test "verified_invalid_wallet" do
-    publisher = publishers(:uphold_connected)
-    email = PublisherMailer.verified_invalid_wallet(publisher)
-
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal [publisher.email], email.to
-
-    # Ensure emails are not delivered if they have never created a wallet
-    publisher = publishers(:default)
-    email = PublisherMailer.verified_invalid_wallet(publisher)
-
-    assert_emails 0 do
-      email.deliver_now
-    end
-  end
-
-  test "verified_invalid_wallet_internal" do
-    publisher = publishers(:uphold_connected)
-    email = PublisherMailer.verified_invalid_wallet_internal(publisher)
-
-    assert_emails 1 do
-      email.deliver_now
-    end
   end
 
   test "login_email verify_email verification_done and confirm_email_change raise unless token fresh" do

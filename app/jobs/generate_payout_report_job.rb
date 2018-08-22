@@ -46,13 +46,8 @@ class GeneratePayoutReportJob < ApplicationJob
 
       # Notify publishers that have money waiting, but will not will not receive funds
       if publisher_has_unsettled_balance && should_send_notifications
-        if !publisher.uphold_verified?
-          PublisherMailer.verified_no_wallet(publisher).deliver_later
-          
-          # TO DO tell the publisher how much BAT they are missing out on
-        elsif wallet.address.blank?
-          PublisherMailer.verified_invalid_wallet(publisher).deliver_later
-          # TO DO tell the publisher how much BAT they are missing out on
+        if !publisher.uphold_verified? || wallet.address.blank?
+          PublisherMailer.wallet_not_connected(publisher).deliver_later
         end
       end
     end

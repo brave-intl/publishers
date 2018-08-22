@@ -79,7 +79,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     email = ActionMailer::Base.deliveries.last
 
     # Ensure the correct email is sent
-    assert_equal email.subject, I18n.t('publisher_mailer.verified_no_wallet.subject')
+    assert_equal email.subject, I18n.t('publisher_mailer.wallet_not_connected.subject')
 
     # Ensure empty payout
     assert_equal payout_report.num_payments, 0
@@ -137,7 +137,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     email = ActionMailer::Base.deliveries.last
 
     # Ensure the correct email is sent
-    assert_equal email.subject, I18n.t('publisher_mailer.verified_invalid_wallet.subject')
+    assert_equal email.subject, I18n.t('publisher_mailer.wallet_not_connected.subject')
 
     # Ensure empty payout
     assert_equal payout_report.num_payments, 0

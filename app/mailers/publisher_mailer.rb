@@ -134,35 +134,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def verified_no_wallet(publisher)
-    @publisher = publisher
-    @publisher_dashboard_url = root_url
-    if @publisher.uphold_verified
-      begin
-        raise "Uphold verified publisher #{@publisher.id} cannot create Uphold wallet"
-      rescue => e
-        require 'sentry-raven'
-        Raven.capture_exception(e)
-      end
-    else
-      mail(
-        to: @publisher.email,
-        subject: default_i18n_subject
-      )
-    end
-  end
-
-  def verified_no_wallet_internal(publisher)
-    @publisher = publisher
-    @publisher_dashboard_url = root_url
-    mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{t("publisher_mailer.verified_no_wallet.subject")}",
-      template_name: "verified_no_wallet"
-    )
-  end
-
   def unverified_domain_reached_threshold(domain, email)
     @domain = domain
     @email = email
@@ -185,11 +156,13 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def verified_invalid_wallet(publisher)
+  def wallet_not_connected(publisher)
     @publisher = publisher
-    if !@publisher.uphold_verified?
+    @publisher_log_in_url = new_auth_token_publishers_url
+
+    if @publisher.uphold_verified? && publisher.wallet.address.present?
       begin
-        raise "Non Uphold verified publisher #{@publisher.id} cannot reconnect to Uphold"
+        raise "#{@publisher.id}'s wallet is connected."
       rescue => e
         require 'sentry-raven'
         Raven.capture_exception(e)
@@ -200,17 +173,6 @@ class PublisherMailer < ApplicationMailer
         subject: default_i18n_subject
       )
     end
-  end
-
-  def verified_invalid_wallet_internal(publisher)
-    @publisher = publisher
-    return if !@publisher.uphold_verified
-    mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @publisher.email,
-      subject: "<Internal> #{t("publisher_mailer.verified_invalid_wallet.subject")}",
-      template_name: "verified_invalid_wallet"
-    )
   end
 
   private
