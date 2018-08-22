@@ -92,7 +92,7 @@ class Publisher < ApplicationRecord
     .where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
-  scope :has_verified_channel, -> {
+  scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
 

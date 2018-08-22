@@ -560,22 +560,22 @@ class PublisherTest < ActiveSupport::TestCase
     assert Publisher.suspended.exclude?(publisher)
   end
 
-  test "has_verified_channel scope only selects publishers with verified channels" do
-    publishers = Publisher.has_verified_channel
+  test "with_verified_channel scope only selects publishers with verified channels" do
+    publishers = Publisher.with_verified_channel
 
     publishers.each do |publisher|
-      has_verified_channel = false # initialize to false
+      with_verified_channel = false # initialize to false
 
       publisher.channels.each do |channel|
-        has_verified_channel = true if channel.verified?
+        with_verified_channel = true if channel.verified?
       end
 
-      assert has_verified_channel # should have been set to true by at least one channel
+      assert with_verified_channel # should have been set to true by at least one channel
     end
   end
 
-  test "has_verified_channel does not select two of the same publisher" do
-    publishers = Publisher.has_verified_channel.select(:id)
+  test "with_verified_channel does not select two of the same publisher" do
+    publishers = Publisher.with_verified_channel.select(:id)
     assert_equal publishers.uniq.length, publishers.length
   end
 end
