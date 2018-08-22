@@ -1,3 +1,41 @@
+.camera-background {
+  background-size: 60px 47px;
+  width: 60px;
+  height: 47px;
+  background-image: url(asset-path("camera@2x.png"));
+  background-color: transparent;
+  border-style: none;
+}
+
+.brave-rewards-banner {
+  &--background { 
+    &-label {
+      display: block;
+      margin-left: -4px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    &-camera {
+      margin-left: 46%;
+      margin-top: -60px;
+    }
+  }
+  &--logo {
+    &-label {
+      display: block;
+      margin-left: -4px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    &-camera {
+      margin-left: 30%;
+      margin-top: -10px;
+    }
+  }
+}
+
 .nav {
   display: block;
 

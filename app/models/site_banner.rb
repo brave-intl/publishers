@@ -14,6 +14,8 @@ class SiteBanner < ApplicationRecord
   end
 
   def url_for(object)
+    return "" if object.nil?
+    return "https://rewards-stg.s3.us-east-2.amazonaws.com/#{object.blob.key}"
     if Rails.env.development? || Rails.env.test?
       "https://127.0.0.1:3000" + rails_blob_path(object, disposition: "attachment", only_path: true)
     elsif Rails.env.production? || Rails.env.staging?

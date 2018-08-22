@@ -35,17 +35,35 @@ class BraveRewardsPageForm extends React.Component {
 
   handleLogoImageChange(event) {
     this.setState({logo: URL.createObjectURL(event.target.files[0])});
+
+    // Apply fade
+    /*
+    var divClass = document.getElementsByClassName("sc-dnqmqq")[0].classList[1]
+    document.querySelectorAll('[data-styled-components]').forEach(function(element) {
+        if (element.innerHTML.includes(divClass)) {
+          element.innerHTML = element.innerHTML.replace(/background:url/g, "background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
+        }
+    });
+    */
   }
 
   handleBackgroundImageChange(event) {
     this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
+
+    // Apply fade
+    var divClass = document.getElementsByClassName("sc-EHOje")[0].classList[1]
+    document.querySelectorAll('[data-styled-components]').forEach(function(element) {
+        if (element.innerHTML.includes(divClass)) {
+          element.innerHTML = element.innerHTML.replace(/background:url/g, "background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
+        }
+    });
   }
 
   setupBackgroundLabel() {
     // Allow uploads
     var backgroundButton = document.createElement("button");
     backgroundButton.id = "background-image-select-button";
-    backgroundButton.innerHTML = "Upload background image";
+    backgroundButton.classList.add("camera-background");
 
     var backgroundInput = document.createElement("input");
     backgroundInput.id="background-image-select-input";
@@ -59,16 +77,24 @@ class BraveRewardsPageForm extends React.Component {
       }
     }, false);
 
-    var backgroundDiv = "sc-chPdSV";
-    document.getElementsByClassName(backgroundDiv)[0].appendChild(backgroundInput);
-    document.getElementsByClassName(backgroundDiv)[0].appendChild(backgroundButton);
+    var label = document.createElement("label");
+    label.innerHTML="900 x 176";
+    label.classList.add("brave-rewards-banner--background-label");
+
+    var backgroundDiv = document.getElementsByClassName("sc-EHOje")[0];
+    var callToActionDiv = document.createElement("div");
+    callToActionDiv.classList.add("brave-rewards-banner--background-camera");
+    backgroundDiv.append(callToActionDiv);
+    callToActionDiv.appendChild(backgroundInput);
+    callToActionDiv.appendChild(backgroundButton);
+    callToActionDiv.appendChild(label);
   }
 
   setupLogoLabel() {
     // Allow uploads
     var logoButton = document.createElement("button");
     logoButton.id = "logo-image-select-button";
-    logoButton.innerHTML = "Upload logo image";
+    logoButton.classList.add("camera-background");
 
     var logoInput = document.createElement("input");
     logoInput.id="logo-image-select-input";
@@ -82,9 +108,12 @@ class BraveRewardsPageForm extends React.Component {
       }
     }, false);
 
-    var logoDiv = "sc-dnqmqq";
-    document.getElementsByClassName(logoDiv)[0].appendChild(logoInput);
-    document.getElementsByClassName(logoDiv)[0].appendChild(logoButton);
+    var logoDiv = document.getElementsByClassName("sc-dnqmqq")[0];
+    var callToActionDiv = document.createElement("div");
+    callToActionDiv.classList.add("brave-rewards-banner--logo-camera");
+    logoDiv.append(callToActionDiv);
+    callToActionDiv.appendChild(logoInput);
+    callToActionDiv.appendChild(logoButton);
   }
 
   componentDidMount() {
@@ -141,6 +170,8 @@ class BraveRewardsPageForm extends React.Component {
 
     this.submitById("background-image-select-input", "background_image");
     this.submitById("logo-image-select-input", "logo");
+    ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
+    document.getElementsByClassName("modal-panel--close")[0].click();
   }
 
   render() {
