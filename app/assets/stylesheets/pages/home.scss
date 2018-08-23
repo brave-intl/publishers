@@ -22,6 +22,10 @@
     }
   }
   &--logo {
+    &-parent {
+      position: relative;
+    }
+
     &-label {
       display: block;
       margin-left: -4px;
@@ -29,9 +33,15 @@
       font-size: 16px;
     }
 
+    &-no-attachment {
+      margin-left: 30%;
+      position: absolute;
+    }
+
     &-camera {
       margin-left: 30%;
-      margin-top: -10px;
+      margin-top: 30%;
+      position: absolute;
     }
   }
 }

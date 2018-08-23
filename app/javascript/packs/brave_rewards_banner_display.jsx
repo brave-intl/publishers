@@ -35,10 +35,16 @@ class BraveRewardsPageForm extends React.Component {
 
   handleLogoImageChange(event) {
     this.setState({logo: URL.createObjectURL(event.target.files[0])});
-
+    var logoImageDiv = document.getElementsByClassName("brave-rewards-banner--logo-no-attachment")[0];
+    var logoDiv = document.getElementsByClassName("sc-dnqmqq")[0];
+    if (this.state.logo != null) {
+      logoImageDiv.classList.remove("brave-rewards-banner--logo-no-attachment");
+      logoImageDiv.classList.add("brave-rewards-banner--logo-camera");
+      logoDiv.classList.add("brave-rewards-banner--logo-parent");
+    }
     // Apply fade
     /*
-    var divClass = document.getElementsByClassName("sc-dnqmqq")[0].classList[1]
+    var divClass = document.getElementsByClassName("sc-dnqmqq")[0].classList[1];
     document.querySelectorAll('[data-styled-components]').forEach(function(element) {
         if (element.innerHTML.includes(divClass)) {
           element.innerHTML = element.innerHTML.replace(/background:url/g, "background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
@@ -108,12 +114,22 @@ class BraveRewardsPageForm extends React.Component {
       }
     }, false);
 
+    var label = document.createElement("label");
+    label.innerHTML="148 x 148";
+    label.classList.add("brave-rewards-banner--logo-label");
+
     var logoDiv = document.getElementsByClassName("sc-dnqmqq")[0];
+    logoDiv.classList.add("brave-rewards-banner--logo-parent");
     var callToActionDiv = document.createElement("div");
-    callToActionDiv.classList.add("brave-rewards-banner--logo-camera");
-    logoDiv.append(callToActionDiv);
+    if (this.state.logo == null) {
+      callToActionDiv.classList.add("brave-rewards-banner--logo-no-attachment");
+    } else {
+      callToActionDiv.classList.add("brave-rewards-banner--logo-camera");
+    }
+    logoDiv.prepend(callToActionDiv);
     callToActionDiv.appendChild(logoInput);
     callToActionDiv.appendChild(logoButton);
+    callToActionDiv.appendChild(label);
   }
 
   componentDidMount() {
