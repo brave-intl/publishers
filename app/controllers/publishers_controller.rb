@@ -411,9 +411,9 @@ class PublishersController < ApplicationController
   def statement_ready
     statement = PublisherStatement.find(params[:id])
     if statement && statement.contents
-      render(nothing: true, status: 204)
+      head 204
     else
-      render(nothing: true, status: 404)
+      head 404
     end
   end
 
@@ -423,7 +423,7 @@ class PublishersController < ApplicationController
     if statement
       send_data statement.contents, filename: publisher_statement_filename(statement)
     else
-      render(nothing: true, status: 404)
+      head 404
     end
   end
 
@@ -447,7 +447,7 @@ class PublishersController < ApplicationController
       json = JsonBuilders::WalletJsonBuilder.new(publisher: current_publisher, wallet: wallet).build
       render(json: json, status: :ok)
     else
-      render(nothing: true, status: 404)
+      head 404
     end
   end
 
