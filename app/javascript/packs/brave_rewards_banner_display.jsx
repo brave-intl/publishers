@@ -42,20 +42,9 @@ class BraveRewardsPageForm extends React.Component {
       logoImageDiv.classList.add("brave-rewards-banner--logo-camera");
       logoDiv.classList.add("brave-rewards-banner--logo-parent");
     }
-    // Apply fade
-    /*
-    var divClass = document.getElementsByClassName("sc-dnqmqq")[0].classList[1];
-    document.querySelectorAll('[data-styled-components]').forEach(function(element) {
-        if (element.innerHTML.includes(divClass)) {
-          element.innerHTML = element.innerHTML.replace(/background:url/g, "background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
-        }
-    });
-    */
   }
 
-  handleBackgroundImageChange(event) {
-    this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
-
+  applyFade() {
     // Apply fade
     var divClass = document.getElementsByClassName("sc-EHOje")[0].classList[1]
     document.querySelectorAll('[data-styled-components]').forEach(function(element) {
@@ -63,6 +52,11 @@ class BraveRewardsPageForm extends React.Component {
           element.innerHTML = element.innerHTML.replace(/background:url/g, "background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
         }
     });
+  }
+
+  handleBackgroundImageChange(event) {
+    this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
+    this.applyFade();
   }
 
   setupBackgroundLabel() {
@@ -94,6 +88,10 @@ class BraveRewardsPageForm extends React.Component {
     callToActionDiv.appendChild(backgroundInput);
     callToActionDiv.appendChild(backgroundButton);
     callToActionDiv.appendChild(label);
+
+    if (this.state.backgroundImage != null) {
+      this.applyFade();
+    }
   }
 
   setupLogoLabel() {
@@ -193,6 +191,19 @@ class BraveRewardsPageForm extends React.Component {
   render() {
     initLocale(locale);
 
+    let topController;
+
+    if (this.props.editMode) {
+      topController = 
+                    <React.Fragment>
+                      <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Don't Change</a>
+                      <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-save-changes" href="#">Preview Banner</a>
+                      <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-primary" id="instant-donation-save-changes" href="#" onClick={this.handleSubmit}>Save Change</a>
+                    </React.Fragment>
+    } else {
+      topController = <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Close</a>
+    }
+
     return (
       <div id="site_banner">
         <div id="controller-form" className="nav navbar navbar-default navbar-static-top">
@@ -202,9 +213,7 @@ class BraveRewardsPageForm extends React.Component {
                   <h4 style={{'marginTop': '12px'}}>All Channels</h4>
                 </div>
                 <div className="nav pull-right float-right">
-                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Don't Change</a>
-                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-save-changes" href="#">Preview Banner</a>
-                  <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-primary" id="instant-donation-save-changes" href="#" onClick={this.handleSubmit}>Save Change</a>
+                  {topController}
                 </div>
               </div>
           </div>
@@ -299,11 +308,11 @@ export function renderBraveRewardsBannerDisplay(editMode) {
 
     // Set p editable
     document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
+  }
 
-    document.getElementById("instant-donation-dont-save-changes").onclick = function() {
-      ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
-      document.getElementsByClassName("modal-panel--close")[0].click();
-    }
+  document.getElementById("instant-donation-dont-save-changes").onclick = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
+    document.getElementsByClassName("modal-panel--close")[0].click();
   }
 }
 
