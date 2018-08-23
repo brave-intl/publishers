@@ -9,7 +9,7 @@ class GeneratePayoutReportJob < ApplicationJob
 
     payouts = []
     total_amount_probi = 0
-    total_fees_probi = 0
+    total_fee_probi = 0
     num_payments = 0
 
     publishers.find_each do |publisher|
@@ -17,23 +17,24 @@ class GeneratePayoutReportJob < ApplicationJob
       wallet = publisher.wallet
 
       publisher.channels.verified.each do |channel|
-        probi = wallet.channel_balances[channel.details.channel_identifier].probi
+        probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
         next if probi <= 0
 
         publisher_has_unsettled_balance = true
 
         next if !publisher.uphold_verified? || wallet.address.blank?
 
+        fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
+
         num_payments += 1
         total_amount_probi += probi
-        fees_probi = calculate_fees(probi)
-        total_fees_probi += fees_probi
+        total_fee_probi += fee_probi
 
         payouts.push({
           "publisher" => "#{channel.details.channel_identifier}",
           "altcurrency" => "BAT",
           "probi" => probi,
-          "fees" => fees_probi,
+          "fees" => fee_probi,
           "authority" => "GeneratePayoutReportJob",
           "transactionId" => "#{payout_report.id}",
           "owner" => "#{publisher.owner_identifier}",
@@ -52,26 +53,19 @@ class GeneratePayoutReportJob < ApplicationJob
       end
     end
 
-    total_amount_bat = total_amount_probi / 1E18
-    total_fees_bat = total_fees_probi / 1E18
-
-    payout_report.update!(amount: total_amount_bat,
+    payout_report.update!(amount: total_amount_probi,
                           num_payments: num_payments,
                           contents: payouts.to_json,
-                          fees: total_fees_bat)
+                          fees: total_fee_probi)
 
-    Rails.logger.info("Generated payout report #{payout_report.id}. #{num_payments} channels will be paid #{total_amount_bat} BAT.")
+    Rails.logger.info("Generated payout report #{payout_report.id}. #{num_payments} channels will be paid #{total_amount_probi * 1E18} BAT.")
     payout_report
   end
 
   private
 
-  def calculate_fees(probi)
-    probi.to_d * fee_rate
-  end
-
   def fee_rate
     raise if Rails.application.secrets[:fee_rate].blank?
-    Rails.application.secrets[:fee_rate]
+    Rails.application.secrets[:fee_rate].to_d
   end
 end

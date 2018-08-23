@@ -35,7 +35,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     payout_report = GeneratePayoutReportJob.perform_now
 
     assert_equal payout_report.num_payments, 0
-    assert_equal payout_report.amount, 0
+    assert_equal payout_report.amount, "0"
     assert_equal JSON.parse(payout_report.contents), []
   end
 
@@ -83,7 +83,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
 
     # Ensure empty payout
     assert_equal payout_report.num_payments, 0
-    assert_equal payout_report.amount, 0
+    assert_equal payout_report.amount, "0"
     assert_equal JSON.parse(payout_report.contents), []
   end
 
@@ -141,7 +141,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
 
     # Ensure empty payout
     assert_equal payout_report.num_payments, 0
-    assert_equal payout_report.amount, 0
+    assert_equal payout_report.amount, "0"
     assert_equal JSON.parse(payout_report.contents), []
   end
 
@@ -193,9 +193,11 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
 
     # Ensure data is correct
     assert_equal payout_report.num_payments, publisher.channels.count
-    assert_equal payout_report.amount, 60
+
+    assert_equal payout_report.amount, "60000000000000000000"
     assert_equal payout_report.fee_rate, 0.05
-    assert_equal payout_report.fees, payout_report.amount * payout_report.fee_rate
+    
+    assert_equal payout_report.fees.to_d, payout_report.amount.to_d * payout_report.fee_rate
 
     contents = JSON.parse(payout_report.contents)
 

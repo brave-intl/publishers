@@ -26,7 +26,7 @@ class PublisherWalletGetter < BaseApiClient
         # Override owner balance with transaction table value
         if wallet_hash.dig("contributions", "probi")
           owner_balance = owner_balance_bat(accounts)
-          wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * 1E18
+          wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * BigDecimal.new('1.0e18')
           wallet_hash["contributions"]["amount"] = owner_balance 
         end
 
@@ -96,7 +96,7 @@ class PublisherWalletGetter < BaseApiClient
       # Override owner balance with transaction table value
       if wallet_hash.dig("contributions", "probi")
         owner_balance = owner_balance_bat(accounts)
-        wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * 1E18
+        wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * BigDecimal.new('1.0e18')
         wallet_hash["contributions"]["amount"] = owner_balance 
       end
 
@@ -135,7 +135,7 @@ class PublisherWalletGetter < BaseApiClient
       channel_hash[channel_identifier] = {
         "rates" => rates,
         "altcurrency" => "BAT",
-        "probi" => channel_balance.to_d * 1E18,
+        "probi" => channel_balance.to_d * BigDecimal.new('1.0e18'),
         "amount" => channel_balance,
         "currency" => currency
       }

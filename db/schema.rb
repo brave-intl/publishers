@@ -162,8 +162,8 @@ ActiveRecord::Schema.define(version: 2018_08_15_211735) do
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
-    t.integer "amount"
-    t.integer "fees"
+    t.string "amount"
+    t.string "fees"
     t.integer "num_payments"
     t.text "encrypted_contents"
     t.string "encrypted_contents_iv"
