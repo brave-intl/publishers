@@ -17,6 +17,7 @@ class BraveRewardsPageForm extends React.Component {
       description: props.details.description || 'A brief description',
       backgroundImage: props.details.backgroundUrl,
       logo: props.details.logoUrl,
+      appliedFade: false
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -37,6 +38,7 @@ class BraveRewardsPageForm extends React.Component {
     this.setState({logo: URL.createObjectURL(event.target.files[0])});
     var logoImageDiv = document.getElementsByClassName("brave-rewards-banner--logo-no-attachment")[0];
     var logoDiv = document.getElementsByClassName("sc-dnqmqq")[0];
+
     if (this.state.logo != null) {
       logoImageDiv.classList.remove("brave-rewards-banner--logo-no-attachment");
       logoImageDiv.classList.add("brave-rewards-banner--logo-camera");
@@ -44,19 +46,24 @@ class BraveRewardsPageForm extends React.Component {
     }
   }
 
-  applyFade() {
+  attemptToApplyFade() {
     // Apply fade
+    if (this.state.backgroundImage == null || this.state.appliedFade) {
+      return;
+    }
     var divClass = document.getElementsByClassName("sc-EHOje")[0].classList[1]
     document.querySelectorAll('[data-styled-components]').forEach(function(element) {
         if (element.innerHTML.includes(divClass)) {
           element.innerHTML = element.innerHTML.replace(/background:url/g, "background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
         }
     });
+
+    this.setState({appliedFade: true});
   }
 
   handleBackgroundImageChange(event) {
     this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
-    this.applyFade();
+    this.attemptToApplyFade();
   }
 
   setupBackgroundLabel() {
@@ -88,10 +95,7 @@ class BraveRewardsPageForm extends React.Component {
     callToActionDiv.appendChild(backgroundInput);
     callToActionDiv.appendChild(backgroundButton);
     callToActionDiv.appendChild(label);
-
-    if (this.state.backgroundImage != null) {
-      this.applyFade();
-    }
+    this.attemptToApplyFade();
   }
 
   setupLogoLabel() {
@@ -134,6 +138,9 @@ class BraveRewardsPageForm extends React.Component {
     if (this.props.editMode) {
       this.setupBackgroundLabel();
       this.setupLogoLabel();
+
+      // Hide X-mark
+      document.getElementsByClassName("sc-bZQynM")[0].style = "display: none";
     }
   }
 
@@ -141,6 +148,11 @@ class BraveRewardsPageForm extends React.Component {
     const url = '/publishers/' + this.props.publisher_id + "/site_banners/update_" + suffix;
     var file = document.getElementById(id);
     var reader = new FileReader();
+
+    // Don't upload if user didn't upload a new image
+    if (file.value == "" || file.value == null) {
+      return;
+    }
     reader.readAsDataURL(file.files[0]);
     reader.onloadend = function () {
       const body = new FormData();
@@ -158,19 +170,21 @@ class BraveRewardsPageForm extends React.Component {
     };
   }
 
+  setTextsFromDiv() {
+    this.setState({
+      title: document.getElementsByClassName("sc-gZMcBi")[0].innerText,
+      description: document.getElementsByClassName("sc-gqjmRU")[0].innerText
+    });
+  }
+
   handleSubmit(event) {
     const url = '/publishers/' + this.props.publisher_id + "/site_banners";
     var request = new XMLHttpRequest();
     const body = new FormData();
-    body.append('title', this.state.title);
-    body.append('description', this.state.description);
 
-    /*
-    request.open('POST', url);
-    request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    request.setRequestHeader('X-CSRF-Token', document.head.querySelector("[name=csrf-token]").content);
-    request.send(body);
-    */
+    body.append('title', document.getElementsByClassName("sc-gZMcBi")[0].innerText);
+    body.append('description', document.getElementsByClassName("sc-gqjmRU")[0].innerText);
+
     fetch(url, {
       method: 'POST',
       headers: {
@@ -201,7 +215,7 @@ class BraveRewardsPageForm extends React.Component {
                       <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-primary" id="instant-donation-save-changes" href="#" onClick={this.handleSubmit}>Save Change</a>
                     </React.Fragment>
     } else {
-      topController = <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Close</a>
+      topController = <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" >Close</a>
     }
 
     return (
@@ -304,7 +318,7 @@ export function renderBraveRewardsBannerDisplay(editMode) {
 
   if (editMode) {
     // Set h3 editable
-    document.getElementsByClassName("sc-gZMcBi fvLbBz")[0].setAttribute("contenteditable", true)
+    document.getElementsByClassName("sc-gZMcBi")[0].setAttribute("contenteditable", true)
 
     // Set p editable
     document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
