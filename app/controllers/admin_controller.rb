@@ -34,9 +34,9 @@ class AdminController < ApplicationController
   def statement_ready
     statement = PublisherStatement.find(params[:id])
     if statement && statement.contents
-      render(nothing: true, status: 204)
+      head 204
     else
-      render(nothing: true, status: 404)
+      head 404
     end
   end
 
