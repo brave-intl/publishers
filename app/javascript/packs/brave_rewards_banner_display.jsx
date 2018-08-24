@@ -51,11 +51,12 @@ class BraveRewardsPageForm extends React.Component {
     if (this.state.backgroundImage == null || this.state.appliedFade) {
       return;
     }
+    return;
     var divClass = document.getElementsByClassName("sc-EHOje")[0].classList[1]
     document.querySelectorAll('[data-styled-components]').forEach(function(element) {
-        if (element.innerHTML.includes(divClass)) {
-          element.innerHTML = element.innerHTML.replace(/background:url/g, "background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
-        }
+      if (element.innerHTML.includes(divClass)) {
+        element.innerHTML = element.innerHTML.replace(/height:176px;background:url/g, "height:176px;background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
+      }
     });
 
     this.setState({appliedFade: true});
