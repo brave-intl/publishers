@@ -285,8 +285,11 @@ ActiveRecord::Schema.define(version: 2018_09_04_183644) do
 
   create_table "site_banners", force: :cascade do |t|
     t.uuid "publisher_id", null: false
-    t.text "title"
-    t.text "description"
+    t.text "title", null: false
+    t.text "description", null: false
+    t.integer "donation_amounts", null: false, array: true
+    t.integer "default_donation", null: false
+    t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
