@@ -31,50 +31,6 @@ class Api::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_match /#{channel.details.channel_identifier}/, response.body
   end
 
-  test "returns error for omitted notification type" do
-    channel = channels(:verified)
-    owner = channel.publisher
-
-    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications",
-         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-
-    assert_equal 400, response.status
-    assert_match "parameter 'type' is required", response.body
-  end
-
-  test "returns error for invalid notification type" do
-    channel = channels(:verified)
-    owner = channel.publisher
-
-    post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=invalid_type",
-         headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-
-    assert_equal 400, response.status
-    assert_match "invalid", response.body
-  end
-
-  test "send email for valid notification type" do
-    channel = channels(:verified)
-    owner = channel.publisher
-
-    assert_enqueued_emails 2 do
-      post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_no_wallet",
-           headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-    end
-
-    assert_equal 200, response.status
-  end
-
-  test "sends an verified_invalid_wallet notification to publisher" do
-    channel = channels(:uphold_connected)
-    owner = channel.publisher
-
-    assert_enqueued_emails 2 do
-      post "/api/owners/#{URI.escape(owner.owner_identifier)}/channels/#{URI.escape(channel.details.channel_identifier)}/notifications?type=verified_invalid_wallet",
-           headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-    end
-  end
-
   test "can create site channels from json" do
     owner = publishers(:small_media_group)
 

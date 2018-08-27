@@ -222,19 +222,12 @@ en:
       claim_funds:
         heading: Ready to claim your funds?
         body: To claim your funds, please visit the Publishers website to submit your payment information using the link below.
-    verified_no_wallet:
-      subject: Please create your new wallet to continue receiving funds
+    wallet_not_connected:
+      subject: Please Connect a Wallet To Continue Receiving Funds
       body_html: |
-        <p>Thanks for verifying your channel! We have a small task for you.</p>
-        <p>We need you to create a wallet with our partner, Uphold.</p>
-        <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
-        <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
-      button: Create My Wallet
-    verified_invalid_wallet:
-      subject: Reconnect To Uphold To Receive Your Funds
-      body_html: |
-        <p>We are unable to deposit your earnings into your wallet with Uphold because Brave Payments is no longer authorized on your Uphold account.</p>
-        <p>To receive your earnings, log in to Brave Payments and <strong>reconnect to your Uphold account</strong> on the dashboard. No action is required if this was intentional and you do not wish to receive your fans' contributions from Brave. </p>
+        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p> 
+        <p>Log in to Brave Payments to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>
+      button: Log In to Brave Payments 
     verify_email:
       subject: Brave Publisher email confirmation
       body_html: |

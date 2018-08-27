@@ -78,6 +78,10 @@ class Publisher < ApplicationRecord
     .where("publisher_status_updates.status = 'suspended'")
   }
 
+  scope :not_suspended, -> {
+    where.not(id: suspended)
+  }
+
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
@@ -90,6 +94,10 @@ class Publisher < ApplicationRecord
   scope :has_stale_uphold_access_parameters, -> {
     where.not(encrypted_uphold_access_parameters: nil)
     .where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
+  }
+
+  scope :with_verified_channel, -> {
+    joins(:channels).where('channels.verified = true').distinct
   }
 
   # API call to eyeshade

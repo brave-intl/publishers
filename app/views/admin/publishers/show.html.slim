@@ -63,7 +63,7 @@
     - @publisher.channels.each do |channel|
       .channel
         .channel-link
-          = link_to(on_channel_type(channel), channel_url(channel))
+          = link_to(on_channel_type(channel), channel.details.url)
         .channel-info
           - if channel.verification_awaiting_admin_approval?
             .admin-approval

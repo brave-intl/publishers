@@ -29,6 +29,10 @@ class TwitterChannelDetails < ApplicationRecord
     name
   end
 
+  def url
+    "https://twitter.com/#{screen_name}"
+  end
+
   private
 
   # verification to ensure twitter_channel is not changed

@@ -207,3 +207,8 @@ joe_yt1:
   publisher: joe_the_only_yt_verified
   details: joe_yt1_details (YoutubeChannelDetails)
   verified: true
+
+suspended:
+  publisher: suspended
+  details: suspended_details (SiteChannelDetails)
+  verified: true

@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_26_203322) do
+ActiveRecord::Schema.define(version: 2018_08_15_211735) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -28,6 +27,10 @@ ActiveRecord::Schema.define(version: 2018_07_26_203322) do
     t.string "verification_status"
     t.string "verification_details"
     t.datetime "verified_at"
+    t.boolean "verification_pending", default: false, null: false
+    t.uuid "contested_by_channel_id"
+    t.string "contest_token"
+    t.datetime "contest_timesout_at"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
   end
@@ -156,6 +159,18 @@ ActiveRecord::Schema.define(version: 2018_07_26_203322) do
     t.index ["publisher_id"], name: "index_login_activities_on_publisher_id"
   end
 
+  create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.boolean "final"
+    t.decimal "fee_rate"
+    t.string "amount"
+    t.string "fees"
+    t.integer "num_payments"
+    t.text "encrypted_contents"
+    t.string "encrypted_contents_iv"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "promo_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "channel_id", null: false
     t.string "promo_id", null: false
@@ -223,8 +238,8 @@ ActiveRecord::Schema.define(version: 2018_07_26_203322) do
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "visible", default: true
-    t.datetime "agreed_to_tos"
     t.boolean "promo_enabled_2018q1", default: false
+    t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
     t.jsonb "promo_stats_2018q1", default: {}, null: false
     t.datetime "promo_stats_updated_at_2018q1"
@@ -280,7 +295,7 @@ ActiveRecord::Schema.define(version: 2018_07_26_203322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "stats", default: "{}", null: false
-    t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id", unique: true
+    t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id"
   end
 
   create_table "twitter_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -333,8 +348,9 @@ ActiveRecord::Schema.define(version: 2018_07_26_203322) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "stats", default: "{}", null: false
-    t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id", unique: true
+    t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end
 
+  add_foreign_key "channels", "channels", column: "contested_by_channel_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
 end
