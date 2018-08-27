@@ -7,12 +7,10 @@ class ChannelsController < ApplicationController
   attr_reader :current_channel
 
   def destroy
-    return if current_channel.verified
-
     channel_identifier = current_channel.details.channel_identifier
-    update_promo_server = current_channel.promo_registration.present?
+    should_update_promo_server = current_channel.promo_registration.present?
 
-    if update_promo_server
+    if should_update_promo_server
       referral_code = current_channel.promo_registration.referral_code
     else
       referral_code = nil
@@ -24,7 +22,7 @@ class ChannelsController < ApplicationController
     if success && channel_verified
       DeletePublisherChannelJob.perform_later(publisher_id: current_publisher.id, 
                                               channel_identifier: channel_identifier, 
-                                              update_promo_server: update_promo_server,
+                                              should_update_promo_server: should_update_promo_server,
                                               referral_code: referral_code)
     end
 
