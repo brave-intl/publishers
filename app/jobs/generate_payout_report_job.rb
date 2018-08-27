@@ -53,10 +53,10 @@ class GeneratePayoutReportJob < ApplicationJob
       end
     end
 
-    payout_report.update!(amount: total_amount_probi,
+    payout_report.update!(amount: total_amount_probi.to_s,
                           num_payments: num_payments,
                           contents: payouts.to_json,
-                          fees: total_fee_probi)
+                          fees: total_fee_probi.to_s)
 
     Rails.logger.info("Generated payout report #{payout_report.id}. #{num_payments} channels will be paid #{total_amount_probi * 1E18} BAT.")
     payout_report
