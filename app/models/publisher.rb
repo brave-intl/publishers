@@ -78,6 +78,10 @@ class Publisher < ApplicationRecord
     .where("publisher_status_updates.status = 'suspended'")
   }
 
+  scope :not_suspended, -> {
+    where.not(id: suspended)
+  }
+
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {

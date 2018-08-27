@@ -5,7 +5,7 @@ class GeneratePayoutReportJob < ApplicationJob
     Rails.logger.info("Generating payout report..")
 
     payout_report = PayoutReport.create(final: final, fee_rate: fee_rate)
-    publishers = Publisher.with_verified_channel
+    publishers = Publisher.with_verified_channel.not_suspended
 
     payouts = []
     total_amount_probi = 0

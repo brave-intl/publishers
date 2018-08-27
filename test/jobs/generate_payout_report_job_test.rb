@@ -220,4 +220,18 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
       end
     end
   end
+
+  test "suspended publisher with balance is not included in payout report" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:suspended)
+    delete_publishers_except([publisher])
+
+    payout_report = nil
+
+    perform_enqueued_jobs do 
+      payout_report = GeneratePayoutReportJob.perform_now
+    end
+
+    assert_equal payout_report.num_payments, 0
+  end
 end

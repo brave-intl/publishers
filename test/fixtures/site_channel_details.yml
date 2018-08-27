@@ -123,3 +123,6 @@ medium_media_group_abandoned_3_details:
   verification_method: "wordpress"
   created_at: <%= Time.now - 1.hour %>
   updated_at: <%= Time.now - 1.hour %>
+
+suspended_details:
+  brave_publisher_id: "suspended.org"

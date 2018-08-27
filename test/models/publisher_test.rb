@@ -547,10 +547,16 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
-  test "suspended scope returns suspended publishers" do
+  test "suspended scope returns suspended publishers, not_suspended returns not suspended" do
     # ensure all suspended publishers are included in the scope
     suspended_publishers = Publisher.suspended
-    suspended_publishers.each {|publisher| assert publisher.last_status_update, PublisherStatusUpdate::SUSPENDED}
+    not_suspended_publishers = Publisher.not_suspended
+    suspended_publishers.each do |publisher|
+      assert publisher.last_status_update, PublisherStatusUpdate::SUSPENDED
+      assert not_suspended_publishers.exclude?(publisher)
+    end
+
+    not_suspended_publishers.each { |publisher| refute publisher.suspended? }
 
     # ensure a publisher that is unsuspended does not appear in scope
     publisher = publishers(:suspended)
@@ -558,6 +564,9 @@ class PublisherTest < ActiveSupport::TestCase
     status_update = PublisherStatusUpdate.new(status: "active", publisher: publisher)
     status_update.save!
     assert Publisher.suspended.exclude?(publisher)
+    assert Publisher.not_suspended.include?(publisher)
+
+    assert_equal Publisher.count, Publisher.suspended.count + Publisher.not_suspended.count
   end
 
   test "with_verified_channel scope only selects publishers with verified channels" do
