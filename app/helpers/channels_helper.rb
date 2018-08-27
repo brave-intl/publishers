@@ -14,8 +14,6 @@ module ChannelsHelper
         verification_github_site_channel_path(channel)
       when "wordpress"
         verification_wordpress_site_channel_path(channel)
-      when "support_queue"
-        verification_support_queue_site_channel_path(channel)
       else
         verification_choose_method_site_channel_path(channel)
     end
@@ -64,12 +62,55 @@ module ChannelsHelper
   end
 
   def channel_verification_details(channel)
-    if channel.verification_failed?
-      channel.verification_details || I18n.t("helpers.channels.generic_verification_failure")
-    elsif channel.verification_started?
-      I18n.t("helpers.channels.verification_in_progress")
-    elsif channel.verification_awaiting_admin_approval?
-      I18n.t("helpers.channels.verification_awaiting_admin_approval")
+    return if channel.verified? || channel.details_type != "SiteChannelDetails"
+    case channel.verification_details
+      when "domain_not_found"
+        I18n.t("helpers.channels.verification_failure_explanation.domain_not_found")
+      when "connection_failed"
+        I18n.t("helpers.channels.verification_failure_explanation.connection_failed", domain: channel.details.brave_publisher_id)
+      when "too_many_redirects"
+        I18n.t("helpers.channels.verification_failure_explanation.too_many_redirects")
+      when "no_txt_records"
+        I18n.t("helpers.channels.verification_failure_explanation.no_txt_records")
+      when "token_incorrect_dns"
+        I18n.t("helpers.channels.verification_failure_explanation.token_incorrect_dns")
+      when "token_not_found_dns"
+        I18n.t("helpers.channels.verification_failure_explanation.token_not_found_dns")
+      when "token_not_found_public_file"
+        I18n.t("helpers.channels.verification_failure_explanation.token_not_found_public_file")
+      when "no_https"
+        I18n.t("helpers.channels.verification_failure_explanation.no_https")
+      else
+        I18n.t("helpers.channels.verification_failure_explanation.generic")
     end
+  end
+
+  def failed_verification_call_to_action(channel)
+    return if channel.verified? || channel.details_type != "SiteChannelDetails"
+    case channel.verification_details
+      when "domain_not_found"
+        I18n.t("helpers.channels.verification_failure_cta.domain_not_found")
+      when "connection_failed"
+        I18n.t("helpers.channels.verification_failure_cta.connection_failed")
+      when "too_many_redirects"
+        I18n.t("helpers.channels.verification_failure_cta.too_many_redirects")
+      when "no_txt_records"
+        I18n.t("helpers.channels.verification_failure_cta.no_txt_records")
+      when "token_incorrect_dns"
+        I18n.t("helpers.channels.verification_failure_cta.token_incorrect_dns")
+      when "token_not_found_dns"
+        I18n.t("helpers.channels.verification_failure_cta.token_not_found_dns")
+      when "token_not_found_public_file"
+        I18n.t("helpers.channels.verification_failure_cta.token_not_found_public_file", domain: channel.details.brave_publisher_id)
+      when "no_https"
+        I18n.t("helpers.channels.verification_failure_cta.no_https")
+      else
+        I18n.t("helpers.channels.verification_failure_cta.generic", support_email: Rails.application.secrets[:support_email])
+    end
+  end
+
+  def should_display_verification_token?(channel)
+    return false if channel.verified? || channel.details_type != "SiteChannelDetails"
+    ["no_txt_records", "token_incorrect_dns", "token_not_found_dns"].include?(channel.verification_details)
   end
 end

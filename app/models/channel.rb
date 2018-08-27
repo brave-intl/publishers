@@ -1,8 +1,6 @@
 class Channel < ApplicationRecord
   has_paper_trail
 
-  VERIFICATION_RESTRICTION_ERROR = "requires manual admin approval"
-
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
@@ -28,18 +26,16 @@ class Channel < ApplicationRecord
 
   validate :details_not_changed?
 
-  validates :verification_status, inclusion: { in: %w(started failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
+  validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
+
+  validates :verification_details, inclusion: {
+    in: %w(domain_not_found connection_failed too_many_redirects no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
+  }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
-  # Sensitive channels require manual admin approval to verify.
-  validate :verification_restriction_ok
-
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
   before_save :clear_verified_at_if_necessary
-
-  # Set this to true prior to save to signnify admin approval.
-  attr_accessor :verification_admin_approval
 
   scope :site_channels, -> { joins(:site_channel_details) }
   scope :youtube_channels, -> { joins(:youtube_channel_details) }
@@ -126,10 +122,6 @@ class Channel < ApplicationRecord
     false
   end
 
-  def verification_started!
-    update!(verified: false, verification_status: 'started', verification_details: nil)
-  end
-
   def verification_failed!(details = nil)
     # Clear changes so we don't bypass validations when saving without checking them
     self.reload
@@ -138,16 +130,21 @@ class Channel < ApplicationRecord
     self.verified_at = nil
     self.verification_status = 'failed'
     self.verification_details = details
-    self.save!(validate: false)
+    self.save!
   end
 
   def verification_awaiting_admin_approval!
     update!(verified: false, verification_status: 'awaiting_admin_approval', verification_details: nil)
   end
 
-  def verification_succeeded!(admin_approval)
-    if admin_approval
-      verification_status = 'approved_by_admin'
+  def verification_succeeded!(has_admin_approval)
+    if needs_admin_approval?
+      if has_admin_approval
+        verification_status = "approved_by_admin"
+      else
+        errors.add(:base, "requires manual admin approval")
+        return
+      end
     else
       verification_status = nil
     end
@@ -155,8 +152,9 @@ class Channel < ApplicationRecord
     update!(verified: true, verification_status: verification_status, verification_details: nil, verified_at: Time.now)
   end
 
-  def verification_started?
-    self.verification_status == 'started'
+  def needs_admin_approval?
+    require "publishers/restricted_channels"
+    Publishers::RestrictedChannels.restricted?(self)
   end
 
   def verification_failed?
@@ -200,19 +198,6 @@ class Channel < ApplicationRecord
 
     if dupicate_unverified_channels.any?
       errors.add(:brave_publisher_id, "must be unique")
-    end
-  end
-
-  # Sensitive channels require manual admin approval to verify.
-  # TODO: Create a better admin verification workflow.
-  def verification_restriction_ok
-    require "publishers/restricted_channels"
-
-    if !verified? || !verified_changed? || !Publishers::RestrictedChannels.restricted?(self)
-      return true
-    end
-    if !verification_admin_approval
-      errors.add(:verified, VERIFICATION_RESTRICTION_ERROR)
     end
   end
 end

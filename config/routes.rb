@@ -62,7 +62,6 @@ Rails.application.routes.draw do
       get :verification_public_file
       get :verification_github
       get :verification_wordpress
-      get :verification_support_queue
     end
   end
 

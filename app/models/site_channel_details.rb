@@ -13,7 +13,7 @@ class SiteChannelDetails < ApplicationRecord
   validates :brave_publisher_id, absence: true, if: -> { !errors.include?(:brave_publisher_id_unnormalized) && brave_publisher_id_unnormalized.present? }
   validate :brave_publisher_id_not_changed_once_initialized
 
-  VERIFICATION_METHODS = %w(dns_record public_file github wordpress support_queue).freeze
+  VERIFICATION_METHODS = %w(dns_record public_file github wordpress).freeze
   validates :verification_method, allow_blank: true, inclusion: { in: VERIFICATION_METHODS }
 
   class VerificationTokenValidator < ActiveModel::EachValidator

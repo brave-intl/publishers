@@ -12,7 +12,6 @@ class SiteChannelsController < ApplicationController
                          verification_wordpress
                          verification_github
                          verification_public_file
-                         verification_support_queue
                          verification_background
                          verify
                          download_verification_file)
@@ -25,11 +24,7 @@ class SiteChannelsController < ApplicationController
                          verification_wordpress
                          download_verification_file)
   before_action :update_site_verification_method,
-                only: %i(verification_dns_record
-                         verification_public_file
-                         verification_support_queue
-                         verification_github
-                         verification_wordpress)
+                only: %i(verify)
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 only: %i(create)
 
@@ -101,7 +96,6 @@ class SiteChannelsController < ApplicationController
   end
 
   def verify
-    current_channel.verification_started!
     SiteChannelVerifier.new(channel: current_channel).perform
     current_channel.reload
     if current_channel.verified?
@@ -109,8 +103,7 @@ class SiteChannelsController < ApplicationController
     elsif current_channel.verification_awaiting_admin_approval?
       redirect_to home_publishers_path, notice: t(".awaiting_admin_approval")
     else
-      # TODO: Expose diagnostic failure info from SiteChannelVerifier and show to user.
-      redirect_to(site_last_verification_method_path(current_channel), alert: t(".alert"))
+      redirect_to(site_last_verification_method_path(current_channel))
     end
   end
 
@@ -145,17 +138,15 @@ class SiteChannelsController < ApplicationController
   end
 
   def update_site_verification_method
-    case params[:action]
-      when "verification_dns_record"
+    case params[:verification_method]
+      when "dns_record"
         current_channel.details.verification_method = "dns_record"
-      when "verification_public_file"
+      when "public_file"
         current_channel.details.verification_method = "public_file"
-      when "verification_github"
+      when "github"
         current_channel.details.verification_method = "github"
-      when "verification_wordpress"
+      when "wordpress"
         current_channel.details.verification_method = "wordpress"
-      when "verification_support_queue"
-        current_channel.details.verification_method = "support_queue"
       else
         raise "unknown action"
     end

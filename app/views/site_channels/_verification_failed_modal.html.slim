@@ -1,0 +1,27 @@
+#verification_failed_modal
+  .entry
+    = render "application/icon_circled_x"
+    h4= t(".headline")
+    p
+      =t(".leadin", domain: current_channel.details.brave_publisher_id)
+      =channel_verification_details(current_channel)
+      =failed_verification_call_to_action(current_channel)
+    - if should_display_verification_token?(current_channel)
+      textarea.color-orange.form-control.form-control--code#value readonly="true"
+        = site_channel_verification_dns_record(current_channel)
+  .modal-buttons
+    = form_for( \
+            current_channel.details, \
+            method: :patch, \
+            url: verify_site_channel_path(current_channel, verification_method: current_channel.details.verification_method), \
+            html: {style: "display: inline-block"} \
+          ) do |f|
+            = f.submit( \
+              t(".try_again"), \
+              class: "js-deny btn btn-primary", \
+              style: "display: inherit", \
+              "data-piwik-action": "RetryVerificationClicked", \
+              "data-piwik-name": "Clicked", \
+              "data-piwik-value": "SiteChannelFlow" \
+            )
+    = link_to t(".close"), "#", class: "js-deny btn btn-outline-primary"

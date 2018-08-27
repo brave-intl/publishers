@@ -30,4 +30,43 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     assert_content "Choose Different Verification Method"
     refute_content "Cancel"
   end
+
+  test "verification_failed modal appears after failed verification attempt for all methods" do
+    publisher = publishers(:default)
+    sign_in publisher
+    channel = publisher.channels.first
+
+    assert_nil channel.details.verification_method
+
+    # dns
+    visit verification_dns_record_site_channel_path(channel)
+    click_button("Verify DNS Record")
+    assert_content("Retry Verification")
+    channel.reload
+    assert_equal channel.details.verification_method, "dns_record"
+
+    # public file
+    visit verification_public_file_site_channel_path(channel)
+    refute_content("Retry Verification")
+    click_button("Verify")
+    assert_content("Retry Verification")
+    channel.reload
+    assert_equal channel.details.verification_method, "public_file"
+
+    # wordpress
+    visit verification_wordpress_site_channel_path(channel)
+    refute_content("Retry Verification")
+    click_button("Verify")
+    assert_content("Retry Verification")
+    channel.reload
+    assert_equal channel.details.verification_method, "wordpress"
+
+    # github
+    visit verification_github_site_channel_path(channel)
+    refute_content("Retry Verification")
+    click_button("Verify")
+    assert_content("Retry Verification")
+    channel.reload
+    assert_equal channel.details.verification_method, "github"
+  end
 end

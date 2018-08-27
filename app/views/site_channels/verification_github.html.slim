@@ -4,6 +4,9 @@
     publisher: current_publisher \
   }
 
+script type="text/html" id="verification_failed_modal_wrapper" data-open-verification-failed-modal="#{should_open_verification_failed_modal?(current_channel, 'github')}"
+  = render :partial => 'verification_failed_modal'
+
 .single-panel--wrapper.single-panel--wrapper--large
   = render "panel_flash_messages"
   .single-panel--content
@@ -39,6 +42,6 @@
               p.note-text= t "site_channels.shared.verification_file.note"
 
           .panel-controls
-            = form_for(current_channel, method: :patch, url: verify_site_channel_path(current_channel)) do |f|
+            = form_for(current_channel, method: :patch, url: verify_site_channel_path(current_channel, verification_method: "github")) do |f|
               = f.submit(t("site_channels.shared.verify_button"), class: "btn btn-wide btn-primary", :"data-piwik-action" => "GithubVerificationClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "GithubFlow")
               = link_to(t("site_channels.shared.finish_verification_later"), home_publishers_path, class: "site-channels--finish-later", :"data-piwik-action" => "GithubFinishLaterClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "GithubFlow")

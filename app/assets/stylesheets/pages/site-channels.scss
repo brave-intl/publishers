@@ -42,3 +42,18 @@
   font-size: 12px;
   margin-top: -25px;
 }
+
+#verification_failed_modal {
+  text-align: center;
+  #icn-warning {
+    padding: 20px;
+  }
+
+  .icon-circled-x {
+    width: 84px;
+    height: 84px;
+  }
+  h4 {
+    margin-top: 20px;
+  }
+}

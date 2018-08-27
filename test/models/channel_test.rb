@@ -104,37 +104,19 @@ class ChannelTest < ActiveSupport::TestCase
     assert channel_copy.promo_registration.referral_code
   end
 
-  test "verification_started! updates verification status" do
-    channel = channels(:default)
-
-    refute channel.verified?
-    assert_nil channel.verified_at
-    refute channel.verification_failed?
-    refute channel.verification_started?
-
-    channel.verification_started!
-
-    refute channel.verified?
-    assert_nil channel.verified_at
-    refute channel.verification_failed?
-    assert channel.verification_started?
-  end
-
   test "verification_failed! updates verification status" do
     channel = channels(:default)
 
     refute channel.verified?
     assert_nil channel.verified_at
     refute channel.verification_failed?
-    refute channel.verification_started?
 
-    channel.verification_failed!('something happened')
+    channel.verification_failed!('no_https')
 
     refute channel.verified?
     assert_nil channel.verified_at
     assert channel.verification_failed?
-    refute channel.verification_started?
-    assert_equal 'something happened', channel.verification_details
+    assert_equal 'no_https', channel.verification_details
   end
 
   test "verification_failed! updates verification status even with validation errors" do
@@ -143,84 +125,67 @@ class ChannelTest < ActiveSupport::TestCase
     refute channel.verified?
     assert_nil channel.verified_at
     refute channel.verification_failed?
-    refute channel.verification_started?
 
-    channel.verification_failed!('something happened')
+    channel.verification_failed!('token_not_found_dns')
 
     refute channel.verified?
     assert_nil channel.verified_at
     assert channel.verification_failed?
-    refute channel.verification_started?
-    assert_equal 'something happened', channel.verification_details
+    assert_equal 'token_not_found_dns', channel.verification_details
   end
 
   test "verification_succeeded! updates verification status" do
     channel = channels(:default)
 
-    channel.verification_started!
-
     refute channel.verified?
     refute channel.verified_at
     refute channel.verification_failed?
-    assert channel.verification_started?
 
     channel.verification_succeeded!(false)
 
     assert channel.verified?
     assert_not_nil channel.verified_at
     refute channel.verification_failed?
-    refute channel.verification_started?
   end
 
   test "verification_succeeded! for restricted channels fails" do
     channel = channels(:to_verify_restricted)
 
-    channel.verification_started!
-    assert_raise do
-      channel.verification_succeeded!(false)
-    end
-    assert_equal Channel::VERIFICATION_RESTRICTION_ERROR, \
-      channel.errors.messages[:verified][0]
+    channel.verification_succeeded!(false)
 
     channel.reload
+    assert channel.errors[:base].include?("requires manual admin approval")
     refute channel.verified?
     assert_nil channel.verified_at
     refute channel.verification_failed?
-    assert channel.verification_started?
   end
 
   test "verification_succeeded! for restricted channels with admin approval succeeds" do
     channel = channels(:to_verify_restricted)
 
-    channel.verification_started!
-    channel.verification_admin_approval = true
-    channel.verification_succeeded!(false)
+    channel.verification_succeeded!(true)
 
     channel.reload
     assert channel.verified?
     assert_not_nil channel.verified_at
     refute channel.verification_failed?
-    refute channel.verification_started?
   end
 
   test "verification_awaits_admin_approval! works" do
     channel = channels(:to_verify_restricted)
 
-    channel.verification_started!
     channel.verification_awaiting_admin_approval!
 
     channel.reload
     refute channel.verified?
     assert_nil channel.verified_at
     refute channel.verification_failed?
-    refute channel.verification_started?
     assert channel.verification_awaiting_admin_approval?
   end
 
   test 'reverse verification' do
     channel = channels(:default)
 
-    channel.verification_started!
     channel.verification_succeeded!(false)
 
     assert channel.verified?
@@ -233,7 +198,6 @@ class ChannelTest < ActiveSupport::TestCase
   test "verification_succeeded!() sets approved_by_admin flag" do
     channel = channels(:default)
 
-    channel.verification_started!
     channel.verification_succeeded!(true)
     assert channel.verification_status = "approved_by_admin"
   end

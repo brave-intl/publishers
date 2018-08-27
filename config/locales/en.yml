@@ -85,9 +85,31 @@ en:
       title: Frequently Asked Questions
   helpers:
     channels:
-      generic_verification_failure: Channel could not be verified!
       verification_in_progress: Verification in progress
-      verification_awaiting_admin_approval: Awaiting admin approval
+      verification_awaiting_admin_approval: Under review
+      verification_failure_what_happened: What happened
+      verification_failure: Your channel could not be verified!
+      verification_failure_explanation:
+        domain_not_found: "we could not find your domain."
+        connection_failed: |
+          we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
+        too_many_redirects: "we were redirected too many times to verify your domain. "
+        no_txt_records: "there are no TXT records on your domain's DNS. "
+        token_incorrect_dns: "the token in your TXT records is incorrect. "
+        token_not_found_dns: "we could not find the token in any of the TXT records. "
+        token_not_found_public_file: "we could not find the token in your public file. "
+        no_https: "HTTPS is not enabled. "
+        generic: "of an unknown reason. "
+      verification_failure_cta:
+        domain_not_found: "Please check if the domain is correct."
+        connection_failed: "Please make sure the file exists and is publicly available."
+        too_many_redirects: "Please reduce the number of redirects."
+        no_txt_records: "Please make sure you have entered the token in your DNS records:"
+        token_incorrect_dns: "Please make sure the token in your DNS entry is correct."
+        token_not_found_dns: "Please add this TXT entry to your DNS records:"
+        token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
+        no_https: "Please enabled HTTPS on your domain, or choose another verification method."
+        generic: "If this verification failure continues to occur, please reach us at %{support_email}."
     publisher:
       conversion_unavailable: "%{code} unavailable"
       no_deposit: No deposit made yet
@@ -553,17 +575,12 @@ en:
         heading: Edit DNS records
         subheading: (You need DNS access)
         button: I'll edit my DNS record
-      support_queue:
-        body_html: |
-          <p>If both of those options sound daunting to you, %{support_queue_link}</p>
-        link: join the support queue.
     verification_dns_record:
       heading: Add a new TXT record for %{brave_publisher_id}
       help: To verify ownership of your site, you'll need to add a new DNS record for
       help_2: using the account for your DNS host.
       instruction_1: |
         Please add the record on your root domain, not a subdomain.
-        The @ symbol is often used to indicate the root domain name/host/host record.
       instruction_2: Copy and paste the info below into the zone file for
       instruction_3: using your DNS host's control panel.
       record:
@@ -585,13 +602,6 @@ en:
       nojekyll_html: |
         It looks like you are using <strong>GitHub</strong>.
         As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
-    verification_support_queue:
-      heading: Thanks for waiting!
-      help_html: |
-        <p>We will be reaching out to each member in the order the requests are received.</p>
-        <p>You will receive an email when our next available support member can assist you. Please keep in mind
-        that this may take a few days due to our current backlog.</p>
-      review_options: I'd like to review my options
     verification_wordpress:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!
@@ -603,6 +613,11 @@ en:
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.
+    verification_failed_modal:
+      headline: Retry Verification
+      leadin: "Your website, %{domain}, was not verified because "
+      try_again: Retry Verification
+      close: Close
     verify:
       alert: Could not verify at this moment. Please check you've updated details correctly, wait a bit and try again.
       success: Channel verified!
