@@ -9,14 +9,22 @@ class SiteBanner < ApplicationRecord
       title: self.title,
       description: self.description,
       backgroundUrl: url_for(SiteBanner.last.background_image),
-      logoUrl: url_for(SiteBanner.last.logo)
+      logoUrl: url_for(SiteBanner.last.logo),
+      donationAmounts: self.donation_amounts
     }.to_json
   end
 
   def url_for(object)
     return nil if object.nil? || object.attachment.nil?
+
+    extension = if object.blob.content_type == "image/png"
+                  ".png"
+                elsif object.blob.content_type.in?(['image/jpg', 'image/jpeg'])
+                  ".jpeg"
+                end
+
     if Rails.env.development? || Rails.env.test?
-      "https://127.0.0.1:3000" + rails_blob_path(object, disposition: "attachment", only_path: true)
+      "https://0.0.0.0:3000" + rails_blob_path(object, only_path: true) + extension
     elsif Rails.env.staging?
       return "https://rewards-stg.s3.us-east-2.amazonaws.com/#{object.blob.key}"
     elsif Rails.env.production?

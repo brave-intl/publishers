@@ -17,21 +17,36 @@ class BraveRewardsPageForm extends React.Component {
       description: props.details.description || 'A brief description',
       backgroundImage: props.details.backgroundUrl,
       logo: props.details.logoUrl,
+      donationAmounts: props.details.donationAmounts || [1, 5, 10],
       appliedFade: false
     };
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleLogoImageChange = this.handleLogoImageChange.bind(this);
     this.handleBackgroundImageChange = this.handleBackgroundImageChange.bind(this);
+    this.handleDonationAmountsChange = this.handleDonationAmountsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  handleTitleChange(event) {
-    this.setState({title: event.target.value});
+  
+  isNormalInteger(str) {
+    return /^\+?(0|[1-9]\d*)$/.test(str);
   }
 
-  handleDescriptionChange(event) {
-    this.setState({description: event.target.value});
+  convertDonationAmounts(donationAmounts) {
+    if (donationAmounts == null) return null;
+
+    return donationAmounts.map(
+      amount => ({
+        'tokens': amount,
+        'converted': this.props.conversionRate * amount,
+        'selected': false
+      })
+    );
+  }
+
+  handleDonationAmountsChange(event) {
+    this.setState({
+      donationAmounts:
+        document.getElementById("donation-amounts-input").value.split(',').map(Number)
+    });
   }
 
   handleLogoImageChange(event) {
@@ -140,6 +155,42 @@ class BraveRewardsPageForm extends React.Component {
       this.setupBackgroundLabel();
       this.setupLogoLabel();
 
+      // Set h3 editable
+      document.getElementsByClassName("sc-gZMcBi")[0].setAttribute("contenteditable", true)
+
+      // Set p editable
+      document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
+
+      var hiddenDonationAmounts = document.createElement('input');
+      hiddenDonationAmounts.id = 'donation-amounts-input';
+      hiddenDonationAmounts.type = "hidden"
+      hiddenDonationAmounts.style.display = 'none';
+      hiddenDonationAmounts.onchange = this.handleDonationAmountsChange;
+      document.body.appendChild(hiddenDonationAmounts);
+
+      // Editable for tokens
+      for (let element of document.getElementsByClassName("sc-brqgnP")) {
+        element.setAttribute("contenteditable", true);
+        var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type == "contentList") {
+              return;
+            }
+            // TODO: (Albert Wang) Make sure the input are valid numbers
+            var donationAmounts = [];
+            for (let amountSpan of document.getElementsByClassName("sc-brqgnP")) {
+              donationAmounts.push(parseInt(amountSpan.textContent));
+            }
+            document.getElementById("donation-amounts-input").value = donationAmounts;
+            document.getElementById("donation-amounts-input").onchange();
+          });
+        });
+        // configuration of the observer:
+        var config = { characterData: true, attributes: false, childList: true, subtree: true };
+        // pass in the target node, as well as the observer options
+        observer.observe(element, config);
+      };
+
       // Hide X-mark
       document.getElementsByClassName("sc-bZQynM")[0].style = "display: none";
     }
@@ -171,12 +222,14 @@ class BraveRewardsPageForm extends React.Component {
     };
   }
 
+  /*
   setTextsFromDiv() {
     this.setState({
       title: document.getElementsByClassName("sc-gZMcBi")[0].innerText,
       description: document.getElementsByClassName("sc-gqjmRU")[0].innerText
     });
   }
+  */
 
   handleSubmit(event) {
     const url = '/publishers/' + this.props.publisher_id + "/site_banners";
@@ -185,6 +238,7 @@ class BraveRewardsPageForm extends React.Component {
 
     body.append('title', document.getElementsByClassName("sc-gZMcBi")[0].innerText);
     body.append('description', document.getElementsByClassName("sc-gqjmRU")[0].innerText);
+    body.append('donation_amounts', JSON.stringify(this.state.donationAmounts));
 
     fetch(url, {
       method: 'POST',
@@ -195,12 +249,43 @@ class BraveRewardsPageForm extends React.Component {
       },
       credentials: "same-origin",
       body: body
-    });
+    }).then (
+      function(response) {
+        function submitById(id, suffix) {
+          const url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_" + suffix;
+          var file = document.getElementById(id);
+          var reader = new FileReader();
 
-    this.submitById("background-image-select-input", "background_image");
-    this.submitById("logo-image-select-input", "logo");
-    ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
-    document.getElementsByClassName("modal-panel--close")[0].click();
+          // Don't upload if user didn't upload a new image
+          if (file.value == "" || file.value == null) {
+            return;
+          }
+          reader.readAsDataURL(file.files[0]);
+          reader.onloadend = function () {
+            const body = new FormData();
+            body.append('image', reader.result);
+            fetch(url, {
+              method: 'POST',
+              headers: {
+                'Accept': 'text/html',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
+              },
+              credentials: "same-origin",
+              body: body
+            });
+          };
+        }
+        if (response.status === 200) {
+          submitById("background-image-select-input", "background_image");
+          submitById("logo-image-select-input", "logo");
+        }
+        // TODO: (Albert Wang): Make sure the above code doesn't reach here until a response is received
+      }).then(
+        function(response) {
+          ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
+          document.getElementsByClassName("modal-panel--close")[0].click();
+        });
   }
 
   render() {
@@ -238,23 +323,7 @@ class BraveRewardsPageForm extends React.Component {
           logo={this.state.logo}
           title={this.state.title}
           currentAmount={5}
-          donationAmounts={[
-            {
-              "tokens": 1,
-              "converted": 0.3,
-              "selected": false
-            },
-            {
-              "tokens": 5,
-              "converted": 1.5,
-              "selected": false
-            },
-            {
-              "tokens": 10,
-              "converted": 3,
-              "selected": false
-            }
-          ]}
+          donationAmounts={this.convertDonationAmounts(this.state.donationAmounts)}
         ><p style={{'whiteSpace': "pre-line"}}>{this.state.description}</p></SiteBanner>
         <div>
           <input type="file" id="background-image-select-input" style={{display:"none"}} onChange={this.handleBackgroundImageChange}/>
@@ -294,7 +363,12 @@ class BraveRewardsPageForm extends React.Component {
         */
 
 export function renderBraveRewardsBannerDisplay(editMode) {
-  const braveRewardsPageForm = <BraveRewardsPageForm publisher_id={document.getElementById("publisher_id").value} editMode={editMode} details={JSON.parse(document.getElementById('site-banner-react-props').value)} />;
+  const braveRewardsPageForm = <BraveRewardsPageForm
+    publisher_id={document.getElementById("publisher_id").value}
+    editMode={editMode}
+    details={JSON.parse(document.getElementById('site-banner-react-props').value)}
+    conversionRate={document.getElementById("conversion-rate").value}
+  />;
 
   ReactDOM.render(
     braveRewardsPageForm,
@@ -317,13 +391,20 @@ export function renderBraveRewardsBannerDisplay(editMode) {
   // Hide unused close button
   document.getElementsByClassName("modal-panel--close")[0].style.visibility = 'hidden';
 
+  /*
   if (editMode) {
     // Set h3 editable
     document.getElementsByClassName("sc-gZMcBi")[0].setAttribute("contenteditable", true)
 
     // Set p editable
     document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
+
+    // Editable for tokens
+    for (let element of document.getElementsByClassName("sc-brqgnP")) {
+      element.setAttribute("contenteditable", true)
+    };
   }
+  */
 
   document.getElementById("instant-donation-dont-save-changes").onclick = function() {
     ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);

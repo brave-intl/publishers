@@ -5,12 +5,16 @@ class Publishers::SiteBannersController < ApplicationController
 
   def create
     site_banner = current_publisher.site_banner || SiteBanner.new
+    donation_amounts = JSON.parse(params[:donation_amounts])
     site_banner.update(
       publisher_id: current_publisher.id,
       title: params[:title],
+      donation_amounts: donation_amounts,
+      default_donation: donation_amounts[1],
+      social_links: {},
       description: params[:description]
     )
-    redirect_to(new_publisher_site_banner_path(current_publisher))
+    head :ok
   end
 
   def update_logo
