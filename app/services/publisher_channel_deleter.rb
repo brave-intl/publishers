@@ -1,37 +1,30 @@
-class PublisherChannelDeleter < BaseApiClient
-  attr_reader :publisher
-  attr_reader :channel_identifier
+class PublisherChannelDeleter < BaseService
 
-  def initialize(publisher:, channel_identifier:)
-    @publisher = publisher
-    @channel_identifier = channel_identifier
+  def initialize(channel:)
+    @channel = channel
+    @publisher = channel.publisher
   end
 
   def perform
-    return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
+    should_update_promo_server = @channel.promo_registration.present?
+    referral_code = should_update_promo_server ? @channel.promo_registration.referral_code : nil
 
-    # This raises when response is not 2xx.
-    response = connection.delete do |request|
-      request.headers["Authorization"] = api_authorization_header
-      request.headers["Content-Type"] = "application/json"
-      request.url("/v1/owners/#{URI.escape(@publisher.owner_identifier)}/#{URI.escape(channel_identifier)}")
+    if @channel.contested_by_channel
+      # Channel is being contested
+      Channels::ApproveChannelTransfer.new(channel: @channel, should_delete: false).perform    
+    elsif @channel.verification_pending
+      raise "Can't remove a channel that is contesting another a channel."
     end
 
-    response
-  end
+    success = @channel.destroy
 
-  def perform_offline
-    Rails.logger.info("PublisherChannelDeleter eyeshade offline; not deleting channel")
-    true
-  end
-
-  private
-
-  def api_base_uri
-    Rails.application.secrets[:api_eyeshade_base_uri]
-  end
-
-  def api_authorization_header
-    "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
+    # Update Eyeshade and Promo
+    if success && @channel.verified?
+       DeletePublisherChannelJob.perform_later(publisher_id: @publisher.id, 
+                                              channel_identifier: @channel.details.channel_identifier, 
+                                              should_update_promo_server: should_update_promo_server,
+                                              referral_code: referral_code)
+    end
+    success
   end
 end
