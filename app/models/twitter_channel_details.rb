@@ -1,10 +1,8 @@
-class TwitterChannelDetails < ApplicationRecord
+class TwitterChannelDetails < BaseChannelDetails
   has_paper_trail
 
-  has_one :channel, as: :details
-
   validate :twitter_channel_not_changed_once_initialized
-  validates :twitter_channel_id, presence: true, uniqueness: true
+  validates :twitter_channel_id, presence: true
   validates :thumbnail_url, presence: true
   validates :name, presence: true
   validates :screen_name, presence: true

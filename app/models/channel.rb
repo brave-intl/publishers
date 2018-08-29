@@ -1,6 +1,11 @@
 class Channel < ApplicationRecord
   has_paper_trail
 
+  YOUTUBE = "youtube".freeze
+  TWITCH = "twitch".freeze
+  TWITTER = "twitter".freeze
+  CONTEST_TIMEOUT = 1.week
+
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
@@ -18,6 +23,10 @@ class Channel < ApplicationRecord
 
   has_one :promo_registration, dependent: :destroy
 
+  has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
+
+  belongs_to :contested_by_channel, class_name: "Channel"
+
   accepts_nested_attributes_for :details
 
   validates :publisher, presence: true
@@ -34,13 +43,24 @@ class Channel < ApplicationRecord
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
 
+  validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
+
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
   before_save :clear_verified_at_if_necessary
 
+  before_destroy :preserve_contested_by_channels
+
   scope :site_channels, -> { joins(:site_channel_details) }
+  scope :other_verified_site_channels, -> (id:) { site_channels.where(verified: true).where.not(id: id) }
+
   scope :youtube_channels, -> { joins(:youtube_channel_details) }
+  scope :other_verified_youtube_channels, -> (id:) { youtube_channels.where(verified: true).where.not(id: id) }
+
   scope :twitch_channels, -> { joins(:twitch_channel_details) }
+  scope :other_verified_twitch_channels, -> (id:) { twitch_channels.where(verified: true).where.not(id: id) }
+
   scope :twitter_channels, -> { joins(:twitter_channel_details) }
+  scope :other_verified_twitter_channels, -> (id:) { twitter_channels.where(verified: true).where.not(id: id) }
 
   # Once the verification_method has been set it shows we have presented the publisher with the token. We need to
   # ensure this site_channel will be preserved so the publisher cna come back to it.
@@ -59,7 +79,11 @@ class Channel < ApplicationRecord
 
   scope :visible, -> {
     left_outer_joins(:site_channel_details).
-        where('channels.verified = true or NOT site_channel_details.verification_method IS NULL')
+        where('(channels.verified = true or channels.verification_pending) or NOT site_channel_details.verification_method IS NULL')
+  }
+
+  scope :contested_channels_ready_to_transfer, -> {
+    where.not(contested_by_channel_id: nil).where("contest_timesout_at < ?", Time.now)
   }
 
   scope :verified, -> { where(verified: true) }
@@ -77,14 +101,6 @@ class Channel < ApplicationRecord
     end
   }
 
-  #########################
-  ## Constants
-  #########################
-
-  YOUTUBE = "youtube".freeze
-  TWITCH = "twitch".freeze
-  TWITTER = "twitter".freeze
-
   def publication_title
     details.publication_title
   end
@@ -95,7 +111,7 @@ class Channel < ApplicationRecord
     end
   end
 
-  # NOTE This method is should only be used in referral promo logic. Use {channel}.details.channel_identifer for everything else.
+  # NOTE This method is should only be used in referral promo logic. Use {channel}.details.channel_identifier for everything else.
   # This will return the channel_identifier without the youtube#channel: or twitch#channel: prefix
   def channel_id
     channel_type = self.details_type
@@ -191,13 +207,54 @@ class Channel < ApplicationRecord
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
-
-    dupicate_unverified_channels = publisher.channels.visible_site_channels
+    duplicate_unverified_channels = publisher.channels.visible_site_channels
                                                      .where(site_channel_details: { brave_publisher_id: self.details.brave_publisher_id })
                                                      .where.not(id: id)
 
-    if dupicate_unverified_channels.any?
+    if duplicate_unverified_channels.any?
       errors.add(:brave_publisher_id, "must be unique")
+    end
+  end
+
+  def preserve_contested_by_channels
+    if contesting_channel || verification_pending
+      errors.add(:base, "contested_by_channel cannot be destroyed")
+    end
+  end
+  
+  def verified_duplicate_channels_must_be_contested
+    duplicate_verified_channels = case details_type
+      when "SiteChannelDetails"
+        Channel.other_verified_site_channels(id: self.id)
+            .where(site_channel_details: { brave_publisher_id: self.details.brave_publisher_id })
+      when "YoutubeChannelDetails"
+        Channel.other_verified_youtube_channels(id: self.id)
+            .where(youtube_channel_details: { youtube_channel_id: self.details.youtube_channel_id })
+      when "TwitchChannelDetails"
+        Channel.other_verified_twitch_channels(id: self.id)
+            .where(twitch_channel_details: { twitch_channel_id: self.details.twitch_channel_id })
+      when "TwitterChannelDetails"
+        Channel.other_verified_twitter_channels(id: self.id)
+            .where(twitter_channel_details: { twitter_channel_id: self.details.twitter_channel_id })
+    end
+    
+    if duplicate_verified_channels.any?
+      if duplicate_verified_channels.count > 1
+        errors.add(:base, "can only contest one channel")
+      end
+
+      contesting_channel = duplicate_verified_channels.first
+      if contesting_channel.contested_by_channel_id != self.id
+        errors.add(:base, "contesting channel does not match")
+      end
+
+      if contesting_channel.contest_token.nil?
+        errors.add(:base, "contesting channel does not have a token")
+      end
+
+      if contesting_channel.contest_timesout_at.nil?
+        errors.add(:base, "contesting channel does not have a timeout")
+      end
     end
   end
 end
