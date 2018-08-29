@@ -15,7 +15,7 @@ class SiteChannelVerifier < BaseService
 
   def perform
     return true if channel.verified?
-    return false if channel.verification_awaiting_admin_approval? && !has_admin_approval
+    return false if channel.verification_awaiting_admin_approval? && !has_admin_approval || channel.verification_pending?
 
     verification_result = verify_site_channel
 
@@ -24,6 +24,12 @@ class SiteChannelVerifier < BaseService
       return false
     elsif channel.needs_admin_approval? && !has_admin_approval
       channel.verification_awaiting_admin_approval!
+      SlackMessenger.new(message: "#{channel.details.brave_publisher_id} has been verified, but requires admin approval.").perform
+      return false
+    elsif site_already_verified?(channel.details.brave_publisher_id)
+      # Contest the channel
+      existing_channel = contested_channel(channel.details.brave_publisher_id)
+      Channels::ContestChannel.new(channel: existing_channel, contested_by: channel).perform
       return false
     else
       channel.verification_succeeded!(has_admin_approval)
@@ -35,9 +41,12 @@ class SiteChannelVerifier < BaseService
 
   private
 
-  def update_verified_on_channel
-    verified_channel.verification_succeeded!(has_admin_approval)
-    verified_channel_post_verify
+  def site_already_verified?(brave_publisher_id)
+    contested_channel(brave_publisher_id).present?
+  end
+
+  def contested_channel(brave_publisher_id)
+    SiteChannelDetails.where(brave_publisher_id: brave_publisher_id).joins(:channel).where(channels: {verified: true}).first
   end
 
   def verified_channel_post_verify

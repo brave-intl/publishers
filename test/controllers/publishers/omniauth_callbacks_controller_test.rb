@@ -103,7 +103,7 @@ module Publishers
       assert_equal "DIY", channel.details.title
     end
 
-    test "a publisher who adds a youtube channel taken by another will see custom dialog based on the taken channel" do
+    test "a publisher who adds a youtube channel taken by another will see the channel contention message" do
 
       publisher = publishers(:uphold_connected)
       request_login_email(publisher: publisher)
@@ -119,15 +119,15 @@ module Publishers
                           'User-Agent' => 'Faraday v0.9.2' }).
           to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
 
-      assert_difference("Channel.count", 0) do
+      assert_difference("Channel.count", 1) do
         get(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
       end
 
-      assert_select('div#channel_taken_modal') do |element|
-        assert_match("The DIY Channel", element.text)
+      assert_select('div.channel-status') do |element|
+        assert_match(I18n.t("shared.channel_contested"), element.text)
       end
     end
 
@@ -314,27 +314,6 @@ module Publishers
       assert_equal "twitch", channel.details.auth_provider
     end
 
-    test "a publisher who adds a twitch channel taken by another will see custom dialog based on the taken channel" do
-      publisher = publishers(:uphold_connected)
-      request_login_email(publisher: publisher)
-      url = publisher_url(publisher, token: publisher.reload.authentication_token)
-      get(url)
-      follow_redirect!
-
-      OmniAuth.config.mock_auth[:register_twitch_channel] = auth_hash("uid" => "323541525412313421")
-
-      assert_difference("Channel.count", 0) do
-        get(publisher_register_twitch_channel_omniauth_authorize_url)
-        follow_redirect!
-        assert_redirected_to home_publishers_path
-        follow_redirect!
-      end
-
-      assert_select('div#channel_taken_modal') do |element|
-        assert_match("TwTwTw", element.text)
-      end
-    end
-
     test "a publisher who adds a twitch channel taken by themselves will see .channel_already_registered" do
       publisher = publishers(:uphold_connected)
       verified_details = twitch_channel_details(:uphold_connected_twitch_details)
@@ -434,15 +413,15 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash("uid" => "abc124")
 
-      assert_difference("Channel.count", 0) do
+      assert_difference("Channel.count", 1) do
         get(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
       end
 
-      assert_select('div#channel_taken_modal') do |element|
-        assert_match("Twitter New", element.text)
+      assert_select('div.channel-status') do |element|
+        assert_match(I18n.t("shared.channel_contested"), element.text)
       end
     end
 
