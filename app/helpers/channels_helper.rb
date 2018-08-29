@@ -60,7 +60,7 @@ module ChannelsHelper
       'incomplete'
     end
   end
-
+  
   def channel_verification_details(channel)
     return if channel.verified? || channel.details_type != "SiteChannelDetails"
     case channel.verification_details
@@ -112,5 +112,13 @@ module ChannelsHelper
   def should_display_verification_token?(channel)
     return false if channel.verified? || channel.details_type != "SiteChannelDetails"
     ["no_txt_records", "token_incorrect_dns", "token_not_found_dns"].include?(channel.verification_details)
+  end
+
+  def transfer_path(channel)
+    token_transfer_url(channel, channel.contest_token)
+  end
+
+  def reject_transfer_path(channel)
+    token_reject_transfer_url(channel, channel.contest_token)
   end
 end
