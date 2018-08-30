@@ -245,7 +245,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
             - elsif channel.verification_pending?
               .channel-status.float-right
-                = t("shared.channel_contested")
+                = t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
             - elsif channel.verification_awaiting_admin_approval?
               .channel-status.float-right
                 = t("helpers.channels.verification_awaiting_admin_approval")
@@ -259,7 +259,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 h3.unverified = channel.publication_title
             - if channel.contested_by_channel
               .channel-contested
-                p = t "shared.channel_contested_by", verified_by_name: channel.contested_by_channel.publisher.name,
+                p = t "shared.channel_contested_by", time_until_transfer: time_until_transfer(channel.contested_by_channel),
                         verified_by_email: channel.contested_by_channel.publisher.email
                 a.reject_transfer href=token_reject_transfer_url(channel, channel.contest_token)
                   = t ".channel.reject_transfer"

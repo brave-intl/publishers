@@ -126,8 +126,8 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('div.channel-status') do |element|
-        assert_match(I18n.t("shared.channel_contested"), element.text)
+      assert_select('div.channel-status.float-right') do |element|
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)), element.text)
       end
     end
 
@@ -421,7 +421,8 @@ module Publishers
       end
 
       assert_select('div.channel-status') do |element|
-        assert_match(I18n.t("shared.channel_contested"), element.text)
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
+                    element.text)
       end
     end
 

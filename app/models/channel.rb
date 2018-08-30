@@ -4,7 +4,7 @@ class Channel < ApplicationRecord
   YOUTUBE = "youtube".freeze
   TWITCH = "twitch".freeze
   TWITTER = "twitter".freeze
-  CONTEST_TIMEOUT = 1.week
+  CONTEST_TIMEOUT = 10.days
 
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete

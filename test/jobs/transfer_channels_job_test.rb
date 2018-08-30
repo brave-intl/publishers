@@ -24,7 +24,7 @@ class TransferChannelsJobTest < ActiveJob::TestCase
 
     travel (Channel::CONTEST_TIMEOUT + 1.minute) do
       assert_enqueued_jobs(4) do
-        TransferChannelsJob.perform_now\
+        TransferChannelsJob.perform_now
       end
       
       contested_by_channel.reload

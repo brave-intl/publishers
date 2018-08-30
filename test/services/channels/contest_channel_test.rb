@@ -68,7 +68,7 @@ class ContestChannelTest < ActiveJob::TestCase
     assert_equal channel.contested_by_channel, contested_by_channel_one
     assert_equal contested_by_channel_one.contesting_channel, channel
     assert contested_by_channel_one.verification_pending
-    
+
     first_contest_token = channel.contest_token
 
     # contest channel from a different account

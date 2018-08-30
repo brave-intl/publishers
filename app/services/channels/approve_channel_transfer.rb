@@ -27,16 +27,16 @@ module Channels
         # Delete the channel from eyeshade and clean up the promo registration
         PublisherChannelDeleter.new(channel: @channel).perform if @should_delete
 
-        # Email the original owner 
-        PublisherMailer.channel_transfer_approved_primary(original_owner_email, channel_name).deliver_later
-        PublisherMailer.channel_transfer_approved_primary_internal(original_owner_email, channel_name).deliver_later
+        # Email the original owner
+        PublisherMailer.channel_transfer_approved_primary(@channel).deliver_later
+        PublisherMailer.channel_transfer_approved_primary_internal(@channel).deliver_later
 
         new_owner_email = contested_by.publisher.email
         channel_name = contested_by.publication_title
 
         # Email the new owner
-        PublisherMailer.channel_transfer_approved_secondary(new_owner_email, channel_name).deliver_later
-        PublisherMailer.channel_transfer_approved_secondary_internal(new_owner_email, channel_name).deliver_later
+        PublisherMailer.channel_transfer_approved_secondary(contested_by).deliver_later
+        PublisherMailer.channel_transfer_approved_secondary_internal(contested_by).deliver_later
 
         # Notify Slack
         SlackMessenger.new(message: "#{@channel.details.channel_identifier} has been successfully contested by #{@channel.publisher.owner_identifier}.").perform

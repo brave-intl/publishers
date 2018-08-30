@@ -2,6 +2,8 @@
 - content_for(:title) do
   h3= t ".title"
 
-.notice= t ".notice"
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher_name
 
-p= t ".intro"
+p= t ".intro", channel_name: @channel_name
+
+p= t("publisher_mailer.shared.signature")

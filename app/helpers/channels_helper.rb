@@ -1,4 +1,5 @@
 module ChannelsHelper
+  include ActionView::Helpers::DateHelper
 
   def current_channel
     @current_channel
@@ -112,5 +113,17 @@ module ChannelsHelper
   def should_display_verification_token?(channel)
     return false if channel.verified? || channel.details_type != "SiteChannelDetails"
     ["no_txt_records", "token_incorrect_dns", "token_not_found_dns"].include?(channel.verification_details)
+  end
+
+  def time_until_transfer(channel)
+    return unless channel.verification_pending? || channel.contest_token.present?
+    contest_timesout_at = channel.contest_timesout_at || channel.contesting_channel.contest_timesout_at
+    contest_already_timed_out = (contest_timesout_at - Time.now) < 0
+
+    if contest_already_timed_out
+      I18n.t("shared.time_until_transfer_fallback")
+    else
+      distance_of_time_in_words(Time.now, channel.contesting_channel.contest_timesout_at)
+    end
   end
 end

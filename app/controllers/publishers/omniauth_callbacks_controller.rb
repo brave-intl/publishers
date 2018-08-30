@@ -45,7 +45,7 @@ module Publishers
       if existing_channel
         Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
 
-        redirect_to home_publishers_path, notice: t("shared.channel_contested")
+        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
         return
       end
 
@@ -92,7 +92,7 @@ module Publishers
       if existing_channel
         Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
 
-        redirect_to home_publishers_path, notice: t("shared.channel_contested")
+        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
         return
       end
 
@@ -181,7 +181,7 @@ module Publishers
       if existing_channel
         Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
 
-        redirect_to home_publishers_path, notice: t("shared.channel_contested")
+        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
         return
       end
       

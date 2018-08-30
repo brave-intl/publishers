@@ -23,15 +23,16 @@ module Channels
         @contested_by.save!
       end
 
-      contested_by_email = @contested_by.publisher.email
       contested_by_channel_name = @contested_by.publication_title
+      contested_by_publisher_name = @contested_by.publisher.name
+      contested_by_publisher_email = @contested_by.publisher.email
 
       PublisherChannelDeleter.new(channel: @contested_by).perform if @should_delete
 
       PublisherMailer.channel_transfer_rejected_primary(@channel).deliver_later
-      PublisherMailer.channel_transfer_rejected_secondary(contested_by_email, contested_by_channel_name).deliver_later
+      PublisherMailer.channel_transfer_rejected_secondary(contested_by_channel_name, contested_by_publisher_name, contested_by_publisher_email).deliver_later
       PublisherMailer.channel_transfer_rejected_primary_internal(@channel).deliver_later
-      PublisherMailer.channel_transfer_rejected_secondary_internal(contested_by_email, contested_by_channel_name).deliver_later
+      PublisherMailer.channel_transfer_rejected_secondary_internal(contested_by_channel_name, contested_by_publisher_name, contested_by_publisher_email).deliver_later
       SlackMessenger.new(message: "#{@channel.publisher.owner_identifier} has rejected the contest for #{@channel.details.channel_identifier}.").perform
     end
 

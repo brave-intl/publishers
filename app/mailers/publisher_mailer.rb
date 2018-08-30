@@ -157,7 +157,8 @@ class PublisherMailer < ApplicationMailer
   end
 
   def channel_contested(channel)
-    @channel = channel
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
     @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
@@ -169,7 +170,8 @@ class PublisherMailer < ApplicationMailer
   end
 
   def channel_contested_internal(channel)
-    @channel = channel
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
     @transfer_url = "{redacted}"
@@ -182,9 +184,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def channel_transfer_approved_primary(email, channel_name)
-    @channel_name = channel_name
-    @email = email
+  def channel_transfer_approved_primary(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
 
     mail(
         to: @email,
@@ -192,9 +195,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def channel_transfer_approved_primary_internal(email, channel_name)
-    @channel_name = channel_name
-    @email = email
+  def channel_transfer_approved_primary_internal(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
 
     mail(
         to: INTERNAL_EMAIL,
@@ -204,9 +208,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def channel_transfer_approved_secondary(email, channel_name)
-    @channel_name = channel_name
-    @email = email
+  def channel_transfer_approved_secondary(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
 
     mail(
         to: @email,
@@ -214,9 +219,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def channel_transfer_approved_secondary_internal(email, channel_name)
-    @channel_name = channel_name
-    @email = email
+  def channel_transfer_approved_secondary_internal(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
 
     mail(
         to: INTERNAL_EMAIL,
@@ -227,7 +233,8 @@ class PublisherMailer < ApplicationMailer
   end
 
   def channel_transfer_rejected_primary(channel)
-    @channel = channel
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
     mail(
@@ -237,7 +244,8 @@ class PublisherMailer < ApplicationMailer
   end
 
   def channel_transfer_rejected_primary_internal(channel)
-    @channel = channel
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
     @email = channel.publisher.email
 
     mail(
@@ -248,19 +256,22 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def channel_transfer_rejected_secondary(email, channel_name)
+  def channel_transfer_rejected_secondary(channel_name, publisher_name, email)
+    @channel_name = channel_name
+    @publisher_name = publisher_name
+
     mail(
         to: email,
         subject: default_i18n_subject
     )
   end
 
-  def channel_transfer_rejected_secondary_internal(email, channel_name)
+  def channel_transfer_rejected_secondary_internal(channel_name, publisher_name, email)
     mail(
         to: INTERNAL_EMAIL,
         reply_to: email,
         subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
-        template_name: "channel_transfer_rejected_primary"
+        template_name: "channel_transfer_rejected_secondary"
     )
   end
 
