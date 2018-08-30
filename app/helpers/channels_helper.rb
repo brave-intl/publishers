@@ -113,12 +113,4 @@ module ChannelsHelper
     return false if channel.verified? || channel.details_type != "SiteChannelDetails"
     ["no_txt_records", "token_incorrect_dns", "token_not_found_dns"].include?(channel.verification_details)
   end
-
-  def transfer_path(channel)
-    token_transfer_url(channel, channel.contest_token)
-  end
-
-  def reject_transfer_path(channel)
-    token_reject_transfer_url(channel, channel.contest_token)
-  end
 end

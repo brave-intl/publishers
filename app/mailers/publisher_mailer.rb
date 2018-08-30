@@ -160,7 +160,7 @@ class PublisherMailer < ApplicationMailer
     @channel = channel
     @email = channel.publisher.email
 
-    @transfer_url = reject_transfer_path(@channel)
+    @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
 
     mail(
         to: @email,

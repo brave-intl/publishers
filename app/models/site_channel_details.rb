@@ -103,10 +103,6 @@ class SiteChannelDetails < BaseChannelDetails
 
   private
 
-  # def verified_publisher_id_exists?
-  # #   self.class.joins(:channel).where(brave_publisher_id: brave_publisher_id, "channels.verified": true).any?
-  # end
-
   def clear_brave_publisher_id_error
     self.brave_publisher_id_error_code = nil
   end

@@ -1,10 +1,6 @@
 noscript
   div.noscript-warning = t ".noscript"
 
-/ - if flash[:taken_channel_id]
-/   #js-open-modal-on-load
-/     = render partial: 'channel_taken_modal', locals: { channel_id: flash[:taken_channel_id] }
-
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
     current_publisher.uphold_verified? && \
     current_publisher.wallet.present? && current_publisher.wallet.authorized? && \
@@ -265,7 +261,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               .channel-contested
                 p = t "shared.channel_contested_by", verified_by_name: channel.contested_by_channel.publisher.name,
                         verified_by_email: channel.contested_by_channel.publisher.email
-                a.reject_transfer href=reject_transfer_path(channel)
+                a.reject_transfer href=token_reject_transfer_url(channel, channel.contest_token)
                   = t ".channel.reject_transfer"
             .clearfix
 

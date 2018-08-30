@@ -10,16 +10,18 @@ module Channels
     end
 
     def perform
-      # Remove contention from original verified channel
-      @channel.contested_by_channel_id = nil
-      @channel.contest_token = nil
-      @channel.contest_timesout_at = nil
-      @channel.save!
+      ActiveRecord::Base.transaction do      
+        # Remove contention from original verified channel
+        @channel.contested_by_channel_id = nil
+        @channel.contest_token = nil
+        @channel.contest_timesout_at = nil
+        @channel.save!
 
-      # Remove contention fields from contested_by channel
-      @contested_by.contesting_channel = nil
-      @contested_by.verification_pending = false
-      @contested_by.save!
+        # Remove contention fields from contested_by channel
+        @contested_by.contesting_channel = nil
+        @contested_by.verification_pending = false
+        @contested_by.save!
+      end
 
       contested_by_email = @contested_by.publisher.email
       contested_by_channel_name = @contested_by.publication_title

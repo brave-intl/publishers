@@ -40,12 +40,8 @@ class SiteChannelDomainSetter < BaseService
     # Throw a Addressable::URI:InvalidURIError if it's an invalid URI
     Addressable::URI.parse("http://" + channel_details.brave_publisher_id)
 
-    if site_already_verified?(channel_details)
-      # channel_details.brave_publisher_id_error_code = :taken
-    else
-      channel_details.brave_publisher_id_error_code = nil
-      channel_details.brave_publisher_id_unnormalized = nil
-    end
+    channel_details.brave_publisher_id_error_code = nil
+    channel_details.brave_publisher_id_unnormalized = nil
   rescue DomainExclusionError
     channel_details.brave_publisher_id_error_code = :exclusion_list_error
   rescue Addressable::URI::InvalidURIError
@@ -84,11 +80,5 @@ class SiteChannelDomainSetter < BaseService
   end
 
   class DomainExclusionError < RuntimeError
-  end
-
-  private
-
-  def site_already_verified?(channel_details)
-    SiteChannelDetails.joins(:channel).where(brave_publisher_id: channel_details.brave_publisher_id, "channels.verified": true).any?
   end
 end
