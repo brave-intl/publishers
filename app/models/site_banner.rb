@@ -11,7 +11,7 @@ class SiteBanner < ApplicationRecord
       backgroundUrl: url_for(SiteBanner.last.background_image),
       logoUrl: url_for(SiteBanner.last.logo),
       donationAmounts: self.donation_amounts
-    }.to_json
+    }
   end
 
   def url_for(object)
