@@ -169,6 +169,7 @@ group :development, :test do
   gem "pry-byebug", require: false
   gem "mocha"
   gem 'minitest-rails-capybara', '~> 3.0.1'
+  gem 'rubyzip'
   gem "capybara-selenium"
   gem "chromedriver-helper"
 end
