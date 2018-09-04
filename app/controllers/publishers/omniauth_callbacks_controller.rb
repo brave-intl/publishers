@@ -20,8 +20,7 @@ module Publishers
 
       existing_channel = Channel.joins(:youtube_channel_details).
           where("youtube_channel_details.youtube_channel_id": youtube_channel_data['id']).first
-
-      if existing_channel && existing_channel.publisher == current_publisher
+      if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered")
         return
       end
@@ -70,7 +69,7 @@ module Publishers
       existing_channel = Channel.joins(:twitch_channel_details).
           where("twitch_channel_details.twitch_channel_id": uid).first
 
-      if existing_channel && existing_channel.publisher == current_publisher
+      if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.display_name })
         return
       end
@@ -170,7 +169,7 @@ module Publishers
       existing_channel = Channel.joins(:twitter_channel_details).
           where("twitter_channel_details.twitter_channel_id": twitter_details_attrs[:twitter_channel_id]).first
 
-      if existing_channel && existing_channel.publisher == current_publisher
+      if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.screen_name })
         return
       end

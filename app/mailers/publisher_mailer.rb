@@ -157,10 +157,11 @@ class PublisherMailer < ApplicationMailer
   end
 
   def channel_contested(channel)
-    @channel_name = channel.publication_title
-    @publisher_name = channel.publisher.name
-    @email = channel.publisher.email
-
+    @channel = channel
+    @channel_name = @channel.publication_title
+    @publisher_name = @channel.publisher.name
+    @email = @channel.publisher.email
+    
     @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
 
     mail(
