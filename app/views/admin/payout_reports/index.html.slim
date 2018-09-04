@@ -17,8 +17,8 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
         td = link_to report.id, admin_payout_report_path(report.id)
         td = report.final ? "final" : "temp"
         td = report.num_payments
-        td = "#{report.amount} BAT"
-        td = "#{report.fees} BAT"
+        td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
+        td = "#{'%.2f' % (report.fees.to_d / 1E18)} BAT"
         td = link_to "download", download_admin_payout_report_path(report.id)
 
 table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
@@ -29,8 +29,8 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
   tbody
       tr.gradeX
         td = PayoutReport.total_payments
-        td = "#{PayoutReport.total_amount} BAT"
-        td = "#{PayoutReport.total_fees} BAT"
+        td = "#{'%.2f' % (PayoutReport.total_amount)} BAT"
+        td = "#{'%.2f' % (PayoutReport.total_fees)} BAT"
 
 hr
 
