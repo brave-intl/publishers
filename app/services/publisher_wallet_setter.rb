@@ -8,6 +8,7 @@ class PublisherWalletSetter < BaseApiClient
 
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
+    return false if publisher.uphold_disabled?
 
     if !publisher.uphold_access_parameters
       raise "Publisher #{publisher.id} is missing uphold_access_parameters."
@@ -24,7 +25,7 @@ class PublisherWalletSetter < BaseApiClient
       request.body =
           <<~BODY
           {
-            "provider": "uphold", 
+            "provider": "uphold",
             "parameters": #{JSON.dump(uphold_access_parameters)}
           }
       BODY
