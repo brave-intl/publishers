@@ -185,10 +185,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def channel_transfer_approved_primary(channel)
-    @channel_name = channel.publication_title
-    @publisher_name = channel.publisher.name
-    @email = channel.publisher.email
+  def channel_transfer_approved_primary(channel_name, publisher_name, email)
+    @channel_name = channel_name
+    @publisher_name = publisher_name
+    @email = email
 
     mail(
         to: @email,
@@ -196,10 +196,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def channel_transfer_approved_primary_internal(channel)
-    @channel_name = channel.publication_title
-    @publisher_name = channel.publisher.name
-    @email = channel.publisher.email
+  def channel_transfer_approved_primary_internal(channel_name, publisher_name, email)
+    @channel_name = channel_name
+    @publisher_name = publisher_name
+    @email = email
 
     mail(
         to: INTERNAL_EMAIL,

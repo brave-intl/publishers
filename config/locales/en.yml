@@ -217,7 +217,7 @@ en:
       subject: "Your request to transfer the channel has been approved"
       title: Channel transfer approved
       intro: |
-        Your request to transfer the channel %{channel_name}, to your publisher account has been approved. You can now
+        Your request to transfer the channel, %{channel_name}, to your publisher account has been approved. You can now
         collect funds contributed to this channel.
     channel_transfer_rejected_primary:
       subject: "You have cancelled the channel transfer"

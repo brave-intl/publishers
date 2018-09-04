@@ -22,14 +22,16 @@ module Channels
         @channel.contested_by_channel_id = nil
         @channel.contest_token = nil
         @channel.contest_timesout_at = nil
-        # @channel.save!
+        original_owner_email = @channel.publisher.email
+        original_owner_name = @channel.publisher.name
+        channel_name = @channel.publication_title
 
         # Delete the channel from eyeshade and clean up the promo registration
         PublisherChannelDeleter.new(channel: @channel).perform if @should_delete
 
         # Email the original owner
-        PublisherMailer.channel_transfer_approved_primary(@channel).deliver_later
-        PublisherMailer.channel_transfer_approved_primary_internal(@channel).deliver_later
+        PublisherMailer.channel_transfer_approved_primary(channel_name, original_owner_name, original_owner_email).deliver_later
+        PublisherMailer.channel_transfer_approved_primary_internal(channel_name, original_owner_name, original_owner_email).deliver_later
 
         new_owner_email = contested_by.publisher.email
         channel_name = contested_by.publication_title
