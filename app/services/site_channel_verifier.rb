@@ -15,7 +15,7 @@ class SiteChannelVerifier < BaseService
 
   def perform
     return true if channel.verified?
-    return false if channel.verification_awaiting_admin_approval? && !has_admin_approval || channel.verification_pending?
+    return false if (channel.verification_awaiting_admin_approval? && !has_admin_approval) || channel.verification_pending?
 
     verification_result = verify_site_channel
 
