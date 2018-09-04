@@ -32,16 +32,16 @@ class GeneratePayoutReportJob < ApplicationJob
 
         payouts.push({
           "publisher" => "#{channel_identifier(channel)}",
+          "name" => "#{channel.publication_title}",
           "altcurrency" => "BAT",
-          "probi" => probi,
-          "fees" => fee_probi,
+          "probi" => "#{probi}",
+          "fees" => "#{fee_probi}",
           "authority" => "GeneratePayoutReportJob",
           "transactionId" => "#{payout_report.id}",
           "owner" => "#{publisher.owner_identifier}",
           "type" => "contribution",
           "URL" => "#{channel.details.url}",
           "address" => "#{wallet.address}",
-          "currency" => "publisher.default_currency"
         })
       end
 
