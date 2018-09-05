@@ -15,6 +15,10 @@ class TwitchChannelDetails < ApplicationRecord
     "twitch#channel:#{name}"
   end
 
+  def author_identifier 
+    "twitch#author:#{name}"
+  end
+
   def authorizer_email
     email
   end

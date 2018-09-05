@@ -68,7 +68,7 @@ class GeneratePayoutReportJob < ApplicationJob
   # instead when twitch#author is used everywhere
   def channel_identifier(channel)
     if channel.details_type == "TwitchChannelDetails" && !Rails.env.test?
-      "twitch#author:#{channel.details.name}"
+      channel.details.author_identifier
     else
       channel.details.channel_identifier
     end

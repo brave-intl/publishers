@@ -28,12 +28,12 @@ class PublisherBalanceGetter < BaseApiClient
 
   private
   
-  # TODO: Do not use twitch_author_id method when all twitch#author is used everywhere
+  # TODO: Do not use details.author_identifier when all twitch#author is used everywhere 
   def channels_query_string
     return "" if publisher.channels.verified.count == 0
     publisher.channels.verified.map { |channel|
       if channel.details_type == "TwitchChannelDetails" && !Rails.env.test?
-        channel_id = twitch_author_id(channel)
+        channel_id = channel.details.author_identifier
       else
         channel_id = channel.details.channel_identifier
       end
@@ -44,10 +44,10 @@ class PublisherBalanceGetter < BaseApiClient
   # with no balance, so we must fill in these values
   def fill_in_missing_accounts(accounts)
     # Find all of the publisher's verified channel ids
-    # TODO: Remove twitch_author_id method when all twitch#author is used everywhere
+    # TODO: Remove details.author_identifier when all twitch#author is used everywhere
     verified_channel_ids = publisher.channels.verified.map do |channel|
       if channel.details_type == "TwitchChannelDetails" && !Rails.env.test?
-        twitch_author_id(channel)
+        channel.details.author_identifier
       else
         channel.details.channel_identifier
       end
@@ -85,13 +85,6 @@ class PublisherBalanceGetter < BaseApiClient
     end
 
     accounts
-  end
-
-  # TODO: Remove this method when all we use twitch#author everywhere
-  # everywhere in the codebase
-  def twitch_author_id(twitch_channel)
-    raise if twitch_channel.details_type != "TwitchChannelDetails"
-    "twitch#author:#{twitch_channel.details.name}"
   end
 
   def api_base_uri
