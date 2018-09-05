@@ -34,8 +34,8 @@ class PublisherWalletSetterTest < ActiveJob::TestCase
                body:
                    <<~BODY
                 {
-                  "provider": "uphold", 
-                  "parameters": {\"foo\":\"bar\",\"server\":\"https://uphold-api.example.com\"}
+                  "provider": "uphold",
+                  "parameters": {\"foo\":\"bar\",\"server\":\"https://api-sandbox.uphold.com\"}
                 }
           BODY
           ).
