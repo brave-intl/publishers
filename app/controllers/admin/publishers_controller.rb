@@ -96,7 +96,7 @@ class Admin::PublishersController < AdminController
 
   def update_params
     params.require(:publisher).permit(
-      :uphold_disabled
+      :excluded_from_payout
     )
   end
 end

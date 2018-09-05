@@ -20,7 +20,7 @@
           .db-value = @publisher.uphold_verified?
         .db-info-row
           .db-field = "Uphold widget enabled?"
-          .db-value = @publisher.uphold_disabled? ? "No" : "Yes"
+          .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
         .db-info-row
           .db-field = "Pending Payouts"
           .db-value = publisher_converted_balance(@publisher) || publisher_humanize_balance(@publisher, "BAT")
