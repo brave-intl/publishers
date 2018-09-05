@@ -147,6 +147,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
 
   test "uphold verified publisher with verified channel with address and balance is included in payout report" do
     Rails.application.secrets[:api_eyeshade_offline] = false
+    Rails.application.secrets[:fee_rate] = 0.05
 
     # Clear database
     publisher = publishers(:uphold_connected) # has >1 verified channel, is uphold connected
@@ -193,11 +194,9 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
 
     # Ensure data is correct
     assert_equal payout_report.num_payments, publisher.channels.count
-
-    assert_equal payout_report.amount, "60000000000000000000"
+    assert_equal payout_report.amount, (60 * BigDecimal('1e18') - ((60 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
     assert_equal payout_report.fee_rate, 0.05
-    
-    assert_equal payout_report.fees.to_d, payout_report.amount.to_d * payout_report.fee_rate
+    assert_equal payout_report.fees, (60 * BigDecimal('1e18') * payout_report.fee_rate).to_i.to_s
 
     contents = JSON.parse(payout_report.contents)
 

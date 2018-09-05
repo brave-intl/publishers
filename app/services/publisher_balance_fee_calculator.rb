@@ -16,7 +16,7 @@ class PublisherBalanceFeeCalculator < BaseApiClient
     else
       {
         fee: fee, 
-        balance_after_fee: probi
+        balance_after_fee: balance_after_fee
       }
     end
   end
