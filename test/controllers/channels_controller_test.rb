@@ -14,10 +14,8 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     assert_difference("publisher.channels.count", -1) do
       assert_difference("SiteChannelDetails.count", -1) do
-        assert_enqueued_jobs 1 do
-          delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
-          assert_response 204
-        end
+        delete channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" }
+        assert_response 204
       end
     end
   end

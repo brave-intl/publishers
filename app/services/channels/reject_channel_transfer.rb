@@ -27,7 +27,7 @@ module Channels
       contested_by_publisher_name = @contested_by.publisher.name
       contested_by_publisher_email = @contested_by.publisher.email
 
-      PublisherChannelDeleter.new(channel: @contested_by).perform if @should_delete
+      DeletePublisherChannelJob.perform_now(channel_id: @contested_by.id) if @should_delete
 
       PublisherMailer.channel_transfer_rejected_primary(@channel).deliver_later
       PublisherMailer.channel_transfer_rejected_secondary(contested_by_channel_name, contested_by_publisher_name, contested_by_publisher_email).deliver_later
