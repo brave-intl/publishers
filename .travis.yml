@@ -12,6 +12,8 @@ services:
 env:
   global:
     - RAILS_ENV=test
+before_install:
+  - export TZ=America/Los_Angeles
 install:
   - bundle install
   - chromedriver-update
