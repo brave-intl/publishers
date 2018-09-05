@@ -17,7 +17,6 @@ class PublisherWalletGetter < BaseApiClient
     end
 
     wallet_hash = JSON.parse(wallet_response.body)
-
     # TODO: Remove else condition when transaction table is stable
     if should_use_transaction_table?
       if publisher.channels.verified.present?
@@ -25,9 +24,8 @@ class PublisherWalletGetter < BaseApiClient
 
         # Override owner balance with transaction table value
         if wallet_hash.dig("contributions", "probi")
-          owner_balance = owner_balance_bat(accounts)
-          wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * BigDecimal.new('1.0e18')
-          wallet_hash["contributions"]["amount"] = owner_balance 
+          wallet_hash["contributions"]["probi"]  = total_balance_bat(accounts) * BigDecimal.new('1.0e18')
+          wallet_hash["contributions"]["amount"] = total_balance_bat(accounts) 
         end
 
         # Convert accounts into Eyeshade::Wallet format
@@ -95,9 +93,8 @@ class PublisherWalletGetter < BaseApiClient
 
       # Override owner balance with transaction table value
       if wallet_hash.dig("contributions", "probi")
-        owner_balance = owner_balance_bat(accounts)
-        wallet_hash["contributions"]["probi"] = owner_balance_bat(accounts).to_d * BigDecimal.new('1.0e18')
-        wallet_hash["contributions"]["amount"] = owner_balance 
+        wallet_hash["contributions"]["probi"] = total_balance_bat(accounts).to_d * BigDecimal.new('1.0e18')
+        wallet_hash["contributions"]["amount"] = total_balance_bat(accounts) 
       end
 
       # Convert accounts into Eyeshade::Wallet format
@@ -127,8 +124,6 @@ class PublisherWalletGetter < BaseApiClient
     channel_hash = {}
 
     accounts.each do |account|
-      next if account["account_type"] == "owner"
-
       channel_identifier = account["account_id"]
       channel_balance = account["balance"]
 
@@ -144,16 +139,8 @@ class PublisherWalletGetter < BaseApiClient
     channel_hash
   end
 
-  def owner_balance_bat(accounts)
-    owner_balance = nil
-
-    accounts.each do |account|
-      next unless account["account_type"] == "owner"
-      owner_balance = account["balance"]
-    end
-
-    raise if owner_balance == nil # Owner balance should always exist
-    owner_balance
+  def total_balance_bat(accounts)
+    accounts.map {|account| account["balance"].to_d }.reduce(0, :+)
   end
 
   def api_base_uri
