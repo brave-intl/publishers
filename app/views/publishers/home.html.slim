@@ -207,7 +207,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 .channel-status.float-right
                   .bat-channel
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+                      - if channel.details_type == "TwitchChannelDetails"
+                        = publisher_channel_balance(current_publisher, channel.details.author_identifier, "BAT")
+                      - else 
+                        = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")            
