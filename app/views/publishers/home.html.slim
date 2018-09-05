@@ -207,35 +207,49 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 .channel-status.float-right
                   .bat-channel
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+                      - if channel.details_type == "TwitchChannelDetails"
+                        = publisher_channel_balance(current_publisher, channel.details.author_identifier, "BAT")
+                      - else 
+                        = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
-                      = t(".channel_balance_period")
-            - elsif channel.verification_started? || channel.verification_failed?
+                      = t(".channel_balance_period")            
+              .channel-summary
+                h3= channel.publication_title
+                .channel-details
+                  .added-date
+                    = t ".channel.added", date: channel.created_at.to_date.iso8601
+            - elsif channel.verification_failed?
               .channel-status.float-right
-                = channel_verification_details(channel)
-                = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary")
+                .verification-failed
+                  .verification-failed--header
+                    = t("helpers.channels.verification_failure")
+                  .verification-failed--details
+                    // JS will break if the next two elements aren't siblings
+                    span.verification-failed--what-happened=t("helpers.channels.verification_failure_what_happened")
+                    span.verification-failed--explanation
+                      span.verification-failed-explanation--content
+                        = channel_verification_details(channel).upcase_first
+                    span.separator
+                      = ' | '
+                    a.remove-channel href="#" data-channel-id=(channel.id)
+                      = t ".channel.remove_verified"
+                    script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                      = render "publishers/remove_channel_modal", channel: channel
+                    = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+                = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
             - elsif channel.verification_awaiting_admin_approval?
               .channel-status.float-right
-                = channel_verification_details(channel)
+                = t("helpers.channels.verification_awaiting_admin_approval")
             - else
               .channel-status.float-right
                 = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
               .channel-progress.float-right
                 .one-more-step= t ".channel.one_more_step"
-            .channel-summary
-              h3= channel.publication_title
-              .channel-details
-                .added-date
-                  = t ".channel.added", date: channel.created_at.to_date.iso8601
-                - unless channel.verified || channel.verification_awaiting_admin_approval?
-                  .separator
-                    = '|'
-                  a.remove-channel href="#" data-channel-id=(channel.id)
-                    = t ".channel.remove_verified"
-                  script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-                    = render "publishers/remove_channel_modal", channel: channel
-                  = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+            - unless channel.verified
+              .channel-summary
+                h3.unverified = channel.publication_title
             .clearfix
 
     .row id="add_channel_placeholder"

@@ -89,7 +89,7 @@ to_verify_file_details:
 to_verify_support_details:
   brave_publisher_id: "to_verify_support.org"
   verification_token: "xxxx01860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
-  verification_method: "support_queue"
+  verification_method: 
 
 to_verify_wordpress_details:
   brave_publisher_id: "to_verify_wordpress.org"
@@ -123,3 +123,6 @@ medium_media_group_abandoned_3_details:
   verification_method: "wordpress"
   created_at: <%= Time.now - 1.hour %>
   updated_at: <%= Time.now - 1.hour %>
+
+suspended_details:
+  brave_publisher_id: "suspended.org"

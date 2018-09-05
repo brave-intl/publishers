@@ -329,7 +329,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
     ruby_http_client (3.3.0)
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     rufus-scheduler (3.5.1)
       fugit (~> 1.1, >= 1.1.4)
     safe_yaml (1.0.4)
@@ -478,6 +478,7 @@ DEPENDENCIES
   rotp (~> 3.3)
   rqrcode (~> 0.10)
   rubocop
+  rubyzip
   sass-rails (~> 5.0)
   sendgrid-ruby
   sentry-raven (~> 2.1)

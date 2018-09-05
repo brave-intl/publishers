@@ -1,11 +1,15 @@
 module Eyeshade
   class Balance
-    attr_reader :balance_json, :probi, :currency, :altcurrency, :amount, :rates
+    attr_reader :balance_json, :probi, :probi_before_fees, :fee, :currency, :altcurrency, :amount, :rates
 
     def initialize(balance_json:)
       @balance_json = balance_json
+      @probi_before_fees = balance_json['probi'] ? Integer(balance_json['probi']) : 0
 
-      @probi = balance_json['probi'] ? Integer(balance_json['probi']) : 0
+      balance_and_fee = PublisherBalanceFeeCalculator.new(probi: probi_before_fees).perform
+      @probi = balance_and_fee[:balance_after_fee]
+      @fee = balance_and_fee[:fee]
+
       @currency = balance_json['currency']
       @altcurrency = balance_json['altcurrency']
       @amount = balance_json['amount'] ? balance_json['amount'].to_f : 0.0

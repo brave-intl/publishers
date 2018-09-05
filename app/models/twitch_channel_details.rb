@@ -15,6 +15,10 @@ class TwitchChannelDetails < ApplicationRecord
     "twitch#channel:#{name}"
   end
 
+  def author_identifier 
+    "twitch#author:#{name}"
+  end
+
   def authorizer_email
     email
   end
@@ -27,6 +31,10 @@ class TwitchChannelDetails < ApplicationRecord
 
   def publication_title
     display_name
+  end
+
+  def url
+    "https://twitch.tv/#{name}"
   end
 
   private

@@ -95,22 +95,12 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = channels(:new_site)
     sign_in publisher
 
-    channel.verification_started!
-
-    get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
-    assert_response 200
-    assert_match(
-      '{"status":"started",' +
-       '"details":"Verification in progress"}',
-          response.body)
-
-    channel.verification_failed!('something happened')
-
+    channel.verification_failed!("no_txt_records")
     get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })
     assert_response 200
     assert_match(
       '{"status":"failed",' +
-        '"details":"something happened"}',
+        '"details":"There are no TXT records on your domain\'s DNS. ', # This is I18n.t("helpers.channels.verification_failure_explanation.no_txt_records")
       response.body)
 
     channel.verification_succeeded!(false)

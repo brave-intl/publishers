@@ -13,6 +13,7 @@ env:
   global:
     - RAILS_ENV=test
 install:
+  - export TZ="America/Los_Angeles"
   - bundle install
   - chromedriver-update
   - sudo apt-get update

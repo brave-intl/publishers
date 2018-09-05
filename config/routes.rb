@@ -62,7 +62,6 @@ Rails.application.routes.draw do
       get :verification_public_file
       get :verification_github
       get :verification_wordpress
-      get :verification_support_queue
     end
   end
 
@@ -80,7 +79,6 @@ Rails.application.routes.draw do
     resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
       resources :channels, only: %i(create), constraints: { channel_id: %r{[^\/]+} } do
         get "/", action: :show
-        post "notifications", action: :notify
       end
     end
     resources :tokens, only: %i(index)
@@ -102,6 +100,11 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
+    resources :payout_reports, only: %i(index show create) do
+      member do 
+        get :download
+      end
+    end
     resources :publishers do
       collection do
         patch :approve_channel

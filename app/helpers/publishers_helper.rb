@@ -218,8 +218,6 @@ module PublishersHelper
         verification_github_publishers_path
       when "wordpress"
         verification_wordpress_publishers_path
-      when "support_queue"
-        verification_support_queue_publishers_path
       else
         verification_choose_method_publishers_path
     end

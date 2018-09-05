@@ -42,8 +42,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in publishers(:global_media_group)
 
-    refute channel.verification_started?
-
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
     headers = {
       'Accept' => '*/*',
@@ -56,7 +54,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       with(headers: headers).
       to_return(status: 200, body: body, headers: {})
 
-    patch(verify_site_channel_path(channel.id))
+    patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
     assert channel.verified?
     assert_redirected_to home_publishers_path
@@ -67,8 +65,6 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     channel = channels(:global_inprocess)
 
     sign_in publishers(:global_media_group)
-
-    refute channel.verification_started?
 
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
     headers = {
@@ -82,7 +78,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       with(headers: headers).
       to_return(status: 404, body: nil, headers: {})
 
-    patch(verify_site_channel_path(channel.id))
+    patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
     refute channel.verified?
     assert_redirected_to verification_wordpress_site_channel_path(channel.id)

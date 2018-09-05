@@ -146,7 +146,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
       publisher = publishers(:uphold_connected_currency_unconfirmed)
       sign_in publisher
 
-      wallet = { "wallet" => { "authorized" => false } }.to_json
+      wallet = { "wallet" => { "authorized" => false }}.to_json
       stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: wallet, headers: {})

@@ -10,22 +10,6 @@ class Api::ChannelsController < Api::BaseController
 
   include PublishersHelper
 
-  def notify
-    if params[:type].blank?
-      return render(status: 400, json: { message: "parameter 'type' is required" })
-    end
-
-    PublisherNotifier.new(
-      notification_params: params[:params],
-      notification_type: params[:type],
-      publisher: @owner,
-      channel: @channel
-    ).perform
-    render(json: { message: "success" })
-  rescue PublisherNotifier::InvalidNotificationTypeError => error
-    render(json: { message: error.message }, status: 400)
-  end
-
   def show
     render(json: @channel.details, status: :ok)
   end

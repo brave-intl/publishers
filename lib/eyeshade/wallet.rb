@@ -3,6 +3,7 @@ require "eyeshade/balance"
 module Eyeshade
   class Wallet
     attr_reader :action,
+                :address,
                 :provider,
                 :scope,
                 :default_currency,
@@ -22,6 +23,7 @@ module Eyeshade
       @default_currency = details_json["defaultCurrency"]
       @available_currencies = details_json["availableCurrencies"] || []
       @possible_currencies = details_json["possibleCurrencies"] || []
+      @address = details_json["address"] || ""
 
       status_json = wallet_json["status"] || {}
       @action = status_json["action"]

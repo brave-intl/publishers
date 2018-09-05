@@ -29,6 +29,10 @@ class YoutubeChannelDetails < ApplicationRecord
     title
   end
 
+  def url
+    "https://youtube.com/channel/#{youtube_channel_id}"
+  end
+
   private
 
   # verification to ensure youtube_channel is not changed

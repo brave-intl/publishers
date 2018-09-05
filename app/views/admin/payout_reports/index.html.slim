@@ -1,0 +1,49 @@
+h1 Payout Reports
+hr
+
+table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+  tr
+    th Created
+    th ID
+    th Type
+    th # Payments
+    th Amount
+    th Fees
+    th Download
+  tbody
+    - @payout_reports.each do |report|
+      tr.gradeX
+        td = report.created_at.strftime("%B %d, %Y, %H:%M")
+        td = link_to report.id, admin_payout_report_path(report.id)
+        td = report.final ? "final" : "temp"
+        td = report.num_payments
+        td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
+        td = "#{'%.2f' % (report.fees.to_d / 1E18)} BAT"
+        td = link_to "download", download_admin_payout_report_path(report.id)
+
+table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+  tr
+    th Total # Payments 
+    th Total Amount
+    th Total Fees
+  tbody
+      tr.gradeX
+        td = PayoutReport.total_payments
+        td = "#{'%.2f' % (PayoutReport.total_amount)} BAT"
+        td = "#{'%.2f' % (PayoutReport.total_fees)} BAT"
+
+hr
+
+h3 Generate Payout Report
+= form_tag admin_payout_reports_path do
+  .form_group
+    = check_box_tag :should_send_notifications, true
+    = label_tag "Send notifications (email publishers who aren't verified with or are not connected to Uphold"
+  .form_group
+    = check_box_tag :final, true
+    = label_tag "Final (this report will be used for settlement)"
+  .actions
+    = submit_tag("Generate", class: "btn btn-primary")
+
+
+= will_paginate @payout_reports

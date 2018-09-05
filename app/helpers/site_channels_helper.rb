@@ -22,4 +22,8 @@ module SiteChannelsHelper
   def site_channel_verification_dns_record(channel)
     SiteChannelDnsRecordGenerator.new(channel: channel).perform
   end
+
+  def should_open_verification_failed_modal?(channel, current_method)
+    current_channel.verification_failed? && current_channel.details.verification_method == current_method
+  end
 end

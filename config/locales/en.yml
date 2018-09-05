@@ -85,9 +85,31 @@ en:
       title: Frequently Asked Questions
   helpers:
     channels:
-      generic_verification_failure: Channel could not be verified!
       verification_in_progress: Verification in progress
-      verification_awaiting_admin_approval: Awaiting admin approval
+      verification_awaiting_admin_approval: Under review
+      verification_failure_what_happened: What happened
+      verification_failure: Your channel could not be verified!
+      verification_failure_explanation:
+        domain_not_found: "we could not find your domain."
+        connection_failed: |
+          we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
+        too_many_redirects: "we were redirected too many times to verify your domain. "
+        no_txt_records: "there are no TXT records on your domain's DNS. "
+        token_incorrect_dns: "the token in your TXT records is incorrect. "
+        token_not_found_dns: "we could not find the token in any of the TXT records. "
+        token_not_found_public_file: "we could not find the token in your public file. "
+        no_https: "HTTPS is not enabled. "
+        generic: "of an unknown reason. "
+      verification_failure_cta:
+        domain_not_found: "Please check if the domain is correct."
+        connection_failed: "Please make sure the file exists and is publicly available."
+        too_many_redirects: "Please reduce the number of redirects."
+        no_txt_records: "Please make sure you have entered the token in your DNS records:"
+        token_incorrect_dns: "Please make sure the token in your DNS entry is correct."
+        token_not_found_dns: "Please add this TXT entry to your DNS records:"
+        token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
+        no_https: "Please enabled HTTPS on your domain, or choose another verification method."
+        generic: "If this verification failure continues to occur, please reach us at %{support_email}."
     publisher:
       conversion_unavailable: "%{code} unavailable"
       no_deposit: No deposit made yet
@@ -222,19 +244,12 @@ en:
       claim_funds:
         heading: Ready to claim your funds?
         body: To claim your funds, please visit the Publishers website to submit your payment information using the link below.
-    verified_no_wallet:
-      subject: Please create your new wallet to continue receiving funds
+    wallet_not_connected:
+      subject: Please Connect a Wallet To Continue Receiving Funds
       body_html: |
-        <p>Thanks for verifying your channel! We have a small task for you.</p>
-        <p>We need you to create a wallet with our partner, Uphold.</p>
-        <p>It will only take a couple clicks and you’ll be receiving funds from us as soon as it is completed.</p>
-        <p>Please visit <a href="%{url}">%{formatted_url}</a> to create your wallet.
-      button: Create My Wallet
-    verified_invalid_wallet:
-      subject: Reconnect To Uphold To Receive Your Funds
-      body_html: |
-        <p>We are unable to deposit your earnings into your wallet with Uphold because Brave Payments is no longer authorized on your Uphold account.</p>
-        <p>To receive your earnings, log in to Brave Payments and <strong>reconnect to your Uphold account</strong> on the dashboard. No action is required if this was intentional and you do not wish to receive your fans' contributions from Brave. </p>
+        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p> 
+        <p>Log in to Brave Payments to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>
+      button: Log In to Brave Payments 
     verify_email:
       subject: Brave Publisher email confirmation
       body_html: |
@@ -329,7 +344,7 @@ en:
     home:
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       title: Dashboard
-      balance_pending: CURRENT CONTRIBUTION BALANCE
+      balance_pending: PENDING PAYOUTS
       next_deposit_date: "Next Deposit Date: "
 
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
@@ -560,17 +575,12 @@ en:
         heading: Edit DNS records
         subheading: (You need DNS access)
         button: I'll edit my DNS record
-      support_queue:
-        body_html: |
-          <p>If both of those options sound daunting to you, %{support_queue_link}</p>
-        link: join the support queue.
     verification_dns_record:
       heading: Add a new TXT record for %{brave_publisher_id}
       help: To verify ownership of your site, you'll need to add a new DNS record for
       help_2: using the account for your DNS host.
       instruction_1: |
         Please add the record on your root domain, not a subdomain.
-        The @ symbol is often used to indicate the root domain name/host/host record.
       instruction_2: Copy and paste the info below into the zone file for
       instruction_3: using your DNS host's control panel.
       record:
@@ -592,13 +602,6 @@ en:
       nojekyll_html: |
         It looks like you are using <strong>GitHub</strong>.
         As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
-    verification_support_queue:
-      heading: Thanks for waiting!
-      help_html: |
-        <p>We will be reaching out to each member in the order the requests are received.</p>
-        <p>You will receive an email when our next available support member can assist you. Please keep in mind
-        that this may take a few days due to our current backlog.</p>
-      review_options: I'd like to review my options
     verification_wordpress:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!
@@ -610,6 +613,11 @@ en:
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.
+    verification_failed_modal:
+      headline: Retry Verification
+      leadin: "Your website, %{domain}, was not verified because "
+      try_again: Retry Verification
+      close: Close
     verify:
       alert: Could not verify at this moment. Please check you've updated details correctly, wait a bit and try again.
       success: Channel verified!

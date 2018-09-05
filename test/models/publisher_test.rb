@@ -188,28 +188,15 @@ class PublisherTest < ActiveSupport::TestCase
       publisher = publishers(:uphold_connected)
       assert publisher.uphold_verified
 
+      # stub wallet response
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
           with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: body, headers: {})
 
-      publisher.channels.each do |channel|
-        body = {
-          "amount": "9001.00",
-          "currency": "USD",
-          "altcurrency": "BAT",
-          "probi": "38077497398351695427000",
-          "rates": {
-            "BTC": 0.00005418424016883016,
-            "ETH": 0.000795331082073117,
-            "USD": 0.2363863335301452,
-            "EUR": 0.20187818378874756,
-            "GBP": 0.1799810085548496
-          }
-        }.to_json
-        stub_request(:get, /v2\/publishers\/#{URI.escape(channel.details.channel_identifier)}\/balance/).
-            with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-            to_return(status: 200, body: body, headers: {})
-      end
+      # stub balances response so all PublisherWalletGetter requests are stub'd
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: [].to_json, headers: {})
+
 
       publisher.wallet
       assert publisher.uphold_verified?
@@ -254,28 +241,14 @@ class PublisherTest < ActiveSupport::TestCase
       publisher = publishers(:uphold_connected)
       assert publisher.uphold_verified
 
+      # stub wallet response
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: body, headers: {})
 
-      publisher.channels.each do |channel|
-        body = {
-          "amount": "9001.00",
-          "currency": "USD",
-          "altcurrency": "BAT",
-          "probi": "38077497398351695427000",
-          "rates": {
-            "BTC": 0.00005418424016883016,
-            "ETH": 0.000795331082073117,
-            "USD": 0.2363863335301452,
-            "EUR": 0.20187818378874756,
-            "GBP": 0.1799810085548496
-          }
-        }.to_json
-        stub_request(:get, /v2\/publishers\/#{URI.escape(channel.details.channel_identifier)}\/balance/).
-          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-          to_return(status: 200, body: body, headers: {})
-      end
+      # stub balances response so all PublisherWalletGetter requests are stub'd
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: [].to_json, headers: {})
 
       publisher.wallet
       assert publisher.uphold_verified?
@@ -574,10 +547,16 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
-  test "suspended scope returns suspended publishers" do
+  test "suspended scope returns suspended publishers, not_suspended returns not suspended" do
     # ensure all suspended publishers are included in the scope
     suspended_publishers = Publisher.suspended
-    suspended_publishers.each {|publisher| assert publisher.last_status_update, PublisherStatusUpdate::SUSPENDED}
+    not_suspended_publishers = Publisher.not_suspended
+    suspended_publishers.each do |publisher|
+      assert publisher.last_status_update, PublisherStatusUpdate::SUSPENDED
+      assert not_suspended_publishers.exclude?(publisher)
+    end
+
+    not_suspended_publishers.each { |publisher| refute publisher.suspended? }
 
     # ensure a publisher that is unsuspended does not appear in scope
     publisher = publishers(:suspended)
@@ -585,5 +564,27 @@ class PublisherTest < ActiveSupport::TestCase
     status_update = PublisherStatusUpdate.new(status: "active", publisher: publisher)
     status_update.save!
     assert Publisher.suspended.exclude?(publisher)
+    assert Publisher.not_suspended.include?(publisher)
+
+    assert_equal Publisher.count, Publisher.suspended.count + Publisher.not_suspended.count
+  end
+
+  test "with_verified_channel scope only selects publishers with verified channels" do
+    publishers = Publisher.with_verified_channel
+
+    publishers.each do |publisher|
+      with_verified_channel = false # initialize to false
+
+      publisher.channels.each do |channel|
+        with_verified_channel = true if channel.verified?
+      end
+
+      assert with_verified_channel # should have been set to true by at least one channel
+    end
+  end
+
+  test "with_verified_channel does not select two of the same publisher" do
+    publishers = Publisher.with_verified_channel.select(:id)
+    assert_equal publishers.uniq.length, publishers.length
   end
 end
