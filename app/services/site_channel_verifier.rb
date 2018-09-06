@@ -18,7 +18,7 @@ class SiteChannelVerifier < BaseService
     return false if channel.verification_awaiting_admin_approval? && !has_admin_approval
 
     verification_result = verify_site_channel
-    
+
     if verification_result == false
       channel.verification_failed!(verification_details)
       return false
@@ -73,7 +73,7 @@ class SiteChannelVerifier < BaseService
 
   def verify_site_channel_dns
     require "dnsruby"
-    resolver = Dnsruby::Resolver.new
+    resolver = Dnsruby::Resolver.new({do_caching: false})
     message = resolver.query(channel.details.brave_publisher_id, "TXT")
     answer = message.answer
 
@@ -97,7 +97,7 @@ class SiteChannelVerifier < BaseService
         end
       end
     end
-    @verification_details = "token_not_found_dns"    
+    @verification_details = "token_not_found_dns"
     false
   rescue Dnsruby::NXDomain
     Rails.logger.debug("Dnsruby::NXDomain")
