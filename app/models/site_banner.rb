@@ -10,7 +10,8 @@ class SiteBanner < ApplicationRecord
       description: self.description,
       backgroundUrl: url_for(SiteBanner.last.background_image),
       logoUrl: url_for(SiteBanner.last.logo),
-      donationAmounts: self.donation_amounts
+      donationAmounts: self.donation_amounts,
+      socialLinks: self.social_links
     }
   end
 

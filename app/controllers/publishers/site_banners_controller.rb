@@ -11,7 +11,7 @@ class Publishers::SiteBannersController < ApplicationController
       title: params[:title],
       donation_amounts: donation_amounts,
       default_donation: donation_amounts[1],
-      social_links: {},
+      social_links: params[:social_links],
       description: params[:description]
     )
     head :ok
