@@ -105,11 +105,11 @@ class SiteChannelTest < ActiveSupport::TestCase
   end
 
   test "recent unverified site_channels ready to verify can be found" do
-    brave_publisher_ids = SiteChannelDetails.recent_ready_to_verify_site_channels(max_age: 12.weeks).pluck(:brave_publisher_id)
-
-    assert_equal 2, brave_publisher_ids.length
-    refute brave_publisher_ids.include?("stale.org")
-    assert brave_publisher_ids.include?("global3.org")
-    assert brave_publisher_ids.include?("global4.org")
+    sites = SiteChannelDetails.recent_ready_to_verify_site_channels(max_age: 6.weeks)
+    sites.each do |site|
+      refute site.channel.verified?
+      refute site.verification_method.nil?
+      assert site.updated_at > Time.now - 6.weeks # Updated within the last 6 weeks
+    end
   end
 end

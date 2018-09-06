@@ -37,8 +37,16 @@ class SiteChannelDetails < ApplicationRecord
   }
 
   scope :recent_ready_to_verify_site_channels, -> (max_age: 6.weeks) {
-    recent_unverified_site_channels(max_age: max_age).where("channels.verification_status": "started").
-        or(recent_unverified_site_channels(max_age: max_age).where("channels.verification_status": "failed"))
+    joins(:channel)
+        .where.not(
+          brave_publisher_id: SiteChannelDetails
+                              .joins(:channel)
+                              .select(:brave_publisher_id)
+                              .distinct
+                              .where("channels.verified": true)
+        )
+        .where.not(verification_method: nil)
+        .where("channels.updated_at": max_age.ago..Time.now)
   }
 
   # Channels with no verification_token will not be accessible once the user is no longer on the page, these
