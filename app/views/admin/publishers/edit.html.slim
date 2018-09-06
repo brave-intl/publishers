@@ -12,4 +12,4 @@
         = f.label "Uphold widget disabled"
         = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
       .form-group
-        = f.submit
+        = f.submit class: "btn btn-primary"
