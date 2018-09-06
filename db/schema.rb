@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_15_211735) do
+ActiveRecord::Schema.define(version: 2018_09_04_183644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 2018_08_15_211735) do
     t.text "role", default: "publisher"
     t.datetime "javascript_last_detected_at"
     t.datetime "default_currency_confirmed_at"
+    t.boolean "excluded_from_payout", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"

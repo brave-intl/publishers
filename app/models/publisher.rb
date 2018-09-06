@@ -268,7 +268,8 @@ class Publisher < ApplicationRecord
       wallet.present? &&
       wallet.authorized? &&
       wallet.scope &&
-      wallet.scope.include?("cards:write")
+      wallet.scope.include?("cards:write") &&
+      !excluded_from_payout
   end
 
   private

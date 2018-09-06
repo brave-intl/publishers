@@ -320,14 +320,16 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   let disconnectUpholdLink = document.querySelector('a.disconnect-uphold');
-  disconnectUpholdLink.addEventListener('click', function(event) {
-    let template = document.querySelector('[id="disconnect-uphold-js"]');
-    openModal(template.innerHTML, function() {
-      disconnectUphold();
-    }, function() {
-    });
-    event.preventDefault();
-  }, false);
+  if (disconnectUpholdLink) {
+    disconnectUpholdLink.addEventListener('click', function(event) {
+      let template = document.querySelector('[id="disconnect-uphold-js"]');
+      openModal(template.innerHTML, function() {
+        disconnectUphold();
+      }, function() {
+      });
+      event.preventDefault();
+    }, false);
+  }
 
   let publisherVisibleCheckbox = document.getElementById('publisher_visible');
   publisherVisibleCheckbox.addEventListener('click', function(event) {
@@ -335,10 +337,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }, false);
 
   let changeDefaultCurrencyLink = document.getElementById('change_default_currency');
-  changeDefaultCurrencyLink.addEventListener('click', function(event) {
-    openDefaultCurrencyModal();
-    event.preventDefault();
-  }, false);
+  if (changeDefaultCurrencyLink) {
+    changeDefaultCurrencyLink.addEventListener('click', function(event) {
+      openDefaultCurrencyModal();
+      event.preventDefault();
+    }, false);
+  }
 
   let showContact = document.getElementById('show_contact');
   let showContactName = document.getElementById('show_contact_name');
