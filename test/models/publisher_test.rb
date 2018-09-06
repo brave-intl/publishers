@@ -158,7 +158,7 @@ class PublisherTest < ActiveSupport::TestCase
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
-      
+
       body = {
         "contributions": {
           "amount": "9001.00",
@@ -326,7 +326,7 @@ class PublisherTest < ActiveSupport::TestCase
 
   test "test `has_stale_uphold_code` scopes to correct publishers" do
     publisher = publishers(:default)
-    
+
     # verify there are no publishers with stale codes to begin with
     assert_equal Publisher.has_stale_uphold_code.count, 0
 
@@ -339,7 +339,7 @@ class PublisherTest < ActiveSupport::TestCase
 
     # verify scope does not include publisher if uphold_code exists and within timeout
     publisher.uphold_code = "bar"
-    publisher.save    
+    publisher.save
     assert_equal Publisher.has_stale_uphold_code.count, 0
 
     # verify scope does not include publisher if uphold_code does not exist and within timeout
@@ -357,7 +357,7 @@ class PublisherTest < ActiveSupport::TestCase
 
   test "test `has_stale_access_params` scopes to correct publishers " do
     publisher = publishers(:default)
-    
+
     # verify there are no publishers with stale codes to begin with
     assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
 
@@ -370,7 +370,7 @@ class PublisherTest < ActiveSupport::TestCase
 
     # verify scope does not include publisher if uphold_access_params exists and within timeout
     publisher.uphold_access_parameters = "bar"
-    publisher.save    
+    publisher.save
     assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
 
     # verify scope does not include publisher if uphold_access_params does not exist and within timeout
@@ -422,7 +422,7 @@ class PublisherTest < ActiveSupport::TestCase
     publisher = publishers(:completed)
     site_channel_details = publisher.site_channel_details
 
-    assert_equal site_channel_details.first.brave_publisher_id, "completed.org" 
+    assert_equal site_channel_details.first.brave_publisher_id, "completed.org"
 
     publisher = publishers(:google_verified)
     youtube_channel_details = publisher.youtube_channel_details
@@ -539,6 +539,10 @@ class PublisherTest < ActiveSupport::TestCase
       publisher.reload
       publisher.verify_uphold
 
+      publisher.update(excluded_from_payout: true)
+      assert_not publisher.can_create_uphold_cards?
+
+      publisher.update(excluded_from_payout: false)
       assert publisher.uphold_verified?
       assert publisher.can_create_uphold_cards?
 
