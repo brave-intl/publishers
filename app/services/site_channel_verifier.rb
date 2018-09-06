@@ -28,7 +28,7 @@ class SiteChannelVerifier < BaseService
       return false
     elsif site_already_verified?(channel.details.brave_publisher_id)
       # Contest the channel
-      existing_channel = contested_channel(channel.details.brave_publisher_id)
+      existing_channel = contested_channel(channel.details.brave_publisher_id).channel
       Channels::ContestChannel.new(channel: existing_channel, contested_by: channel).perform
       return false
     else
