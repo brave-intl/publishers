@@ -11,8 +11,8 @@ class SiteBanner < ApplicationRecord
     {
       title: self.title,
       description: self.description,
-      backgroundUrl: url_for(SiteBanner.last.background_image),
-      logoUrl: url_for(SiteBanner.last.logo),
+      backgroundUrl: url_for(self.background_image),
+      logoUrl: url_for(self.logo),
       donationAmounts: self.donation_amounts,
       socialLinks: JSON.parse(self.social_links)
     }
