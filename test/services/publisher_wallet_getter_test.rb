@@ -76,7 +76,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       }
     ]
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
       to_return(status: 200, body: channel_balances_response.to_json)
 
     result = PublisherWalletGetter.new(publisher: publisher).perform
@@ -111,7 +111,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
       to_return(status: 200, body: wallet, headers: {})
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:94dba753-de7e-5424-99ba-db53953a7939&account=partially-completed-verified.org").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:94dba753-de7e-5424-99ba-db53953a7939&account=partially-completed-verified.org").
       to_return(status: 200, body: [].to_json)
 
     result = PublisherWalletGetter.new(publisher: publisher).perform
@@ -163,7 +163,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     ].to_json
 
     # stub balances response
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
       to_return(status: 200, body: balance_response)
       
     wallet = PublisherWalletGetter.new(publisher: publisher).perform
