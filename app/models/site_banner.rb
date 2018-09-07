@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'json'
+
 class SiteBanner < ApplicationRecord
   include Rails.application.routes.url_helpers
   has_one_attached :logo
@@ -11,7 +14,7 @@ class SiteBanner < ApplicationRecord
       backgroundUrl: url_for(SiteBanner.last.background_image),
       logoUrl: url_for(SiteBanner.last.logo),
       donationAmounts: self.donation_amounts,
-      socialLinks: self.social_links
+      socialLinks: JSON.parse(self.social_links)
     }
   end
 
