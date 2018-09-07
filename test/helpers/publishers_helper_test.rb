@@ -124,7 +124,7 @@ class PublishersHelperTest < ActionView::TestCase
     )
 
     assert_nil publisher.wallet
-    assert_equal "USD unavailable", publisher_humanize_balance(publisher, "USD")
+    assert_equal "Unavailable", publisher_humanize_balance(publisher, "USD")
   end
 
   test "uphold_status_class returns a css class that corresponds to a publisher's uphold_status" do

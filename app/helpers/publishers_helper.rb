@@ -25,12 +25,12 @@ module PublishersHelper
         publisher.wallet.contribution_balance
       '%.2f' % balance.convert_to(currency)
     else
-      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+      I18n.t("helpers.publisher.balance_unavailable")
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+    I18n.t("helpers.publisher.balance_unavailable")
   end
 
   def next_deposit_date(today = DateTime.now)
@@ -108,7 +108,7 @@ module PublishersHelper
     )
       '%.2f' % balance.convert_to(currency)
     else
-      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+      I18n.t("helpers.publisher.balance_unavailable")
     end
   rescue => e
     require "sentry-raven"
