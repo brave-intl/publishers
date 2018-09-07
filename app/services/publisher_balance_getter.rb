@@ -3,7 +3,7 @@ class PublisherBalanceGetter < BaseApiClient
   attr_reader :publisher
 
   def initialize(publisher:)
-    @publisher = publisher
+    @publisher = publisher 
   end
 
   def perform
@@ -20,6 +20,11 @@ class PublisherBalanceGetter < BaseApiClient
 
     complete_accounts = fill_in_missing_accounts(accounts)
     complete_accounts
+
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    :unavailable
   end
 
   def perform_offline

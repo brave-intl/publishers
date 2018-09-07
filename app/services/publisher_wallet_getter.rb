@@ -21,6 +21,7 @@ class PublisherWalletGetter < BaseApiClient
     if should_use_transaction_table?
       if publisher.channels.verified.present?
         accounts = PublisherBalanceGetter.new(publisher: publisher).perform
+        return if accounts == :unavailable
 
         # Override owner balance with transaction table value
         if wallet_hash.dig("contributions", "probi")
