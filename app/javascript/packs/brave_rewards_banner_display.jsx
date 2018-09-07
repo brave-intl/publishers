@@ -12,20 +12,27 @@ import locale from 'locale/en'
 class BraveRewardsPageForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      title: props.details.title || 'YOUR TITLE', 
+      title: props.details.title || 'YOUR TITLE',
       description: props.details.description || 'A brief description',
       backgroundImage: props.details.backgroundUrl,
       logo: props.details.logoUrl,
       donationAmounts: props.details.donationAmounts || [1, 5, 10],
+      socialLinks: props.details.socialLinks || {'twitter': '@', 'youtube': '@', 'twitch': '@'},
       appliedFade: false
     };
+
+    this.updateDescription = this.updateDescription.bind(this);
+    this.updateTwitch = this.updateTwitch.bind(this);
+    this.updateYoutube = this.updateYoutube.bind(this);
+    this.updateTwitter = this.updateTwitter.bind(this);
     this.handleLogoImageChange = this.handleLogoImageChange.bind(this);
     this.handleBackgroundImageChange = this.handleBackgroundImageChange.bind(this);
     this.handleDonationAmountsChange = this.handleDonationAmountsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
+
   isNormalInteger(str) {
     return /^\+?(0|[1-9]\d*)$/.test(str);
   }
@@ -159,7 +166,7 @@ class BraveRewardsPageForm extends React.Component {
       document.getElementsByClassName("sc-gZMcBi")[0].setAttribute("contenteditable", true)
 
       // Set p editable
-      document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
+      // document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
 
       var hiddenDonationAmounts = document.createElement('input');
       hiddenDonationAmounts.id = 'donation-amounts-input';
@@ -222,6 +229,28 @@ class BraveRewardsPageForm extends React.Component {
     };
   }
 
+  updateDescription(event) {
+    this.setState({description: event.target.value})
+  }
+
+  updateTwitch(event) {
+    let temp = this.state.socialLinks
+    temp.twitch = event.target.value
+    this.setState({socialLink : temp});
+  }
+
+  updateYoutube(event) {
+    let temp = this.state.socialLinks
+    temp.youtube = event.target.value
+    this.setState({socialLink : temp});
+  }
+
+  updateTwitter(event) {
+    let temp = this.state.socialLinks
+    temp.twitter = event.target.value
+    this.setState({socialLink : temp});
+  }
+
   /*
   setTextsFromDiv() {
     this.setState({
@@ -237,8 +266,9 @@ class BraveRewardsPageForm extends React.Component {
     const body = new FormData();
 
     body.append('title', document.getElementsByClassName("sc-gZMcBi")[0].innerText);
-    body.append('description', document.getElementsByClassName("sc-gqjmRU")[0].innerText);
+    body.append('description', this.state.description);
     body.append('donation_amounts', JSON.stringify(this.state.donationAmounts));
+    body.append('social_links', JSON.stringify(this.state.socialLinks));
 
     fetch(url, {
       method: 'POST',
@@ -294,7 +324,7 @@ class BraveRewardsPageForm extends React.Component {
     let topController;
 
     if (this.props.editMode) {
-      topController = 
+      topController =
                     <React.Fragment>
                       <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Don't Change</a>
                       <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-save-changes" href="#">Preview Banner</a>
@@ -324,7 +354,33 @@ class BraveRewardsPageForm extends React.Component {
           title={this.state.title}
           currentAmount={5}
           donationAmounts={this.convertDonationAmounts(this.state.donationAmounts)}
-        ><p style={{'whiteSpace': "pre-line"}}>{this.state.description}</p></SiteBanner>
+        >
+
+        <input style={{backgroundColor:'rgba(0, 0, 0, 0)', border:'none', outline:'none', color:'#686978', paddingLeft:'4px'}} className="social-link" type="text" readOnly={!this.props.editMode} onChange={this.updateDescription} value={this.state.description} />
+        <div style={{marginTop:'24px'}}>
+        {
+          // this.state.socialLinks.twitter !== undefined &&
+          <div>
+          <svg style={{display:'inline-block', marginBottom:'2px'}} width="16" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M16 1.538c-.586.26-1.221.44-1.885.519A3.307 3.307 0 0 0 15.56.239a6.54 6.54 0 0 1-2.09.796A3.283 3.283 0 0 0 7.88 4.03 9.318 9.318 0 0 1 1.115.6a3.259 3.259 0 0 0-.445 1.652c0 1.137.58 2.144 1.46 2.729a3.232 3.232 0 0 1-1.484-.41v.04a3.291 3.291 0 0 0 2.631 3.223 3.386 3.386 0 0 1-1.484.054 3.293 3.293 0 0 0 3.066 2.28A6.595 6.595 0 0 1 .781 11.57c-.264 0-.522-.015-.781-.044A9.287 9.287 0 0 0 5.033 13c6.035 0 9.336-5.001 9.336-9.337l-.01-.425A6.612 6.612 0 0 0 16 1.538z" fill="#1DA1F2" fillRule="evenodd"></path></svg>
+          <input readOnly={!this.props.editMode} style={{backgroundColor:'rgba(0, 0, 0, 0)', border:'none', outline:'none', color:'#686978', paddingLeft:'4px'}} className="social-link" type="text" onChange={this.updateTwitter} value={this.state.socialLinks.twitter} />
+          </div>
+        }
+        {
+          // this.state.socialLinks.youtube !== undefined &&
+          <div>
+          <svg style={{display:'inline-block', marginBottom:'2px'}} width="16" height="12" xmlns="http://www.w3.org/2000/svg"><g fill="none" fillRule="evenodd"><path fill="#FFF" d="M5 2l8 3-8 5z"></path><path d="M10.43 5.889L6.055 7.975a.176.176 0 0 1-.252-.158V3.513c0-.131.138-.216.255-.157l4.375 2.217a.176.176 0 0 1-.003.316zM12.677 0H3.323A3.323 3.323 0 0 0 0 3.323v4.676a3.323 3.323 0 0 0 3.323 3.323h9.354A3.323 3.323 0 0 0 16 7.999V3.323A3.323 3.323 0 0 0 12.677 0z" fill="#D9292A"></path></g></svg>
+          <input readOnly={!this.props.editMode} style={{backgroundColor:'rgba(0, 0, 0, 0)', border:'none', outline:'none', color:'#686978', paddingLeft:'4px'}} className="social-link" type="text" onChange={this.updateYoutube} value={this.state.socialLinks.youtube} />
+          </div>
+        }
+        {
+          // this.state.socialLinks.twitch !== undefined &&
+          <div>
+          <svg style={{display:'inline-block', marginBottom:'2px'}} width="13" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M5.281 7.31H6.5V3.657H5.281V7.31zm3.25 0H9.75V3.657H8.531V7.31zm3.25.63L9.75 10.03H6.5l-1.727 1.776V10.03H2.031V1.254h9.75V7.94zM.914 0L0 2.403v9.82h3.25V14h1.828l1.727-1.776h2.64L13 8.567V0H.914z" fill="#5A3D84" fillRule="evenodd"></path></svg>
+          <input readOnly={!this.props.editMode} style={{backgroundColor:'rgba(0, 0, 0, 0)', border:'none', outline:'none', color:'#686978', paddingLeft:'4px'}} className="social-link" type="text" onChange={this.updateTwitch} value={this.state.socialLinks.twitch} />
+          </div>
+        }
+        </div>
+        </SiteBanner>
         <div>
           <input type="file" id="background-image-select-input" style={{display:"none"}} onChange={this.handleBackgroundImageChange}/>
           <label htmlFor="background-image-select-input">Select a background image</label>
