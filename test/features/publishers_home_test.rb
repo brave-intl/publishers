@@ -174,7 +174,32 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
       refute publisher.wallet.present?
       assert_content page, publisher.name
-      assert_content page, "BAT unavailable"
+      assert_content page, "Unavailable"
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
+    end
+  end
+
+  test "dashboard can still load even when publisher's balance cannot be fetched from eyeshade" do
+    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
+      publisher = publishers(:uphold_connected)
+      sign_in publisher
+
+      wallet = { "wallet" => { "authorized" => false } }.to_json
+      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: wallet, headers: {})
+
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: "go away\nUser-agent: *\nDisallow:")
+
+      visit home_publishers_path
+
+      refute publisher.wallet.present?
+      assert_content page, publisher.name
+      assert_content page, "Unavailable"
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end

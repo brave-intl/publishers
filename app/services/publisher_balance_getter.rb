@@ -3,7 +3,7 @@ class PublisherBalanceGetter < BaseApiClient
   attr_reader :publisher
 
   def initialize(publisher:)
-    @publisher = publisher
+    @publisher = publisher 
   end
 
   def perform
@@ -13,13 +13,18 @@ class PublisherBalanceGetter < BaseApiClient
     accounts_response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.options.params_encoder = Faraday::FlatParamsEncoder
-      request.url("v1/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}")
+      request.url("v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}")
     end
 
     accounts = JSON.parse(accounts_response.body)
 
     complete_accounts = fill_in_missing_accounts(accounts)
     complete_accounts
+
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+    :unavailable
   end
 
   def perform_offline

@@ -21,9 +21,8 @@
         .db-info-row
           .db-field = "Uphold widget enabled?"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
-        .db-info-row
-          .db-field = "Pending Payouts"
-          .db-value = publisher_converted_balance(@publisher) || publisher_humanize_balance(@publisher, "BAT")
+          .db-field = "Pending Payouts BAT"
+          .db-value = "#{publisher_humanize_balance(@publisher, "BAT")} BAT, #{publisher_converted_balance(@publisher)}"
         .db-info-row
           .db-field = "Default currency:"
           .db-value = @publisher.default_currency
