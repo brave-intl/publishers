@@ -176,7 +176,7 @@ small_media_group:
 
 medium_media_group:
   email: "barney@medium.org"
-  name: "Small Media Group"
+  name: "Medium Media Group"
   phone: "4159008921"
   phone_normalized: "+14159008921"
   two_factor_prompted_at: "<%= 1.day.ago %>"
@@ -218,5 +218,17 @@ suspended:
 partially_completed:
   email: "partially_completed@example.com"
   name: "Perry"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+
+fraudulent_verifier:
+  email: "fraud@verifications.org"
+  name: "Frank the fraud"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  
+locked_out_verifier:
+  email: "locked_out@verifications.org"
+  name: "Logan the locked out"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"

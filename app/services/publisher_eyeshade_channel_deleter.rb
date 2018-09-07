@@ -1,4 +1,4 @@
-class PublisherChannelDeleter < BaseApiClient
+class PublisherEyeshadeChannelDeleter < BaseApiClient
   attr_reader :publisher
   attr_reader :channel_identifier
 
@@ -21,7 +21,7 @@ class PublisherChannelDeleter < BaseApiClient
   end
 
   def perform_offline
-    Rails.logger.info("PublisherChannelDeleter eyeshade offline; not deleting channel")
+    Rails.logger.info("PublisherEyeshadeChannelDeleter eyeshade offline; not deleting channel")
     true
   end
 

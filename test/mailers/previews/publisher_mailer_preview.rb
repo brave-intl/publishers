@@ -1,5 +1,5 @@
-# Preview all emails at http://localhost:3000/rails/mailers
-# Preview publisher_mailer emails at http://localhost:3000/rails/mailers/publisher_mailer
+# Preview all emails at https://localhost:3000/rails/mailers
+# Preview publisher_mailer emails at https://localhost:3000/rails/mailers/publisher_mailer
 class PublisherMailerPreview < ActionMailer::Preview
 
   def login_email
@@ -28,5 +28,55 @@ class PublisherMailerPreview < ActionMailer::Preview
 
   def verified_no_wallet_internal
     PublisherMailer.verified_no_wallet(Publisher.first, nil)
+  end
+
+  def verified_no_wallet_internal
+    PublisherMailer.verified_no_wallet(Publisher.first, nil)
+  end
+
+  def channel_contested
+    channel = Channel.where("contested_by_channel_id is not null").first
+    PublisherMailer.channel_contested(channel)
+  end
+
+  def channel_contested_internal
+    channel = Channel.where("contested_by_channel_id is not null").first
+    PublisherMailer.channel_contested_internal(channel)
+  end
+
+  def channel_transfer_approved_primary
+    PublisherMailer.channel_transfer_approved_primary("test@test.com", "My Channel")
+  end
+
+  def channel_transfer_approved_primary_internal
+    PublisherMailer.channel_transfer_approved_primary_internal("test@test.com", "My Channel")
+  end
+
+  def channel_transfer_approved_secondary
+    PublisherMailer.channel_transfer_approved_secondary("test@test.com", "My Channel")
+  end
+
+  def channel_transfer_approved_secondary_internal
+    PublisherMailer.channel_transfer_approved_secondary_internal("test@test.com", "My Channel")
+  end
+
+  def channel_transfer_rejected_primary
+    channel = Channel.where("contested_by_channel_id is not null").first
+    PublisherMailer.channel_transfer_rejected_primary(channel)
+  end
+
+  def channel_transfer_rejected_primary_internal
+    channel = Channel.where("contested_by_channel_id is not null").first
+    PublisherMailer.channel_transfer_rejected_primary_internal(channel)
+  end
+
+  def channel_transfer_rejected_secondary
+    channel = Channel.where("contested_by_channel_id is not null").first
+    PublisherMailer.channel_transfer_rejected_secondary("test@test.com", "My Channel")
+  end
+
+  def channel_transfer_rejected_secondary_internal
+    channel = Channel.where("contested_by_channel_id is not null").first
+    PublisherMailer.channel_transfer_rejected_secondary_internal("test@test.com", "My Channel")
   end
 end

@@ -26,6 +26,10 @@ en:
     app_description: Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!
     cancel: Cancel
     channel_created: Channel created.
+    channel_contested: Channel will be transferred from current owner in %{time_until_transfer}.
+    channel_transfer_rejected: Channel transfer rejected.
+    time_until_transfer_fallback: a short time
+    channel_contested_by: Channel has been verified by another publisher and will be transferred to their account in %{time_until_transfer} unless you reject.
     channel_not_found: Channel not found
     channel_removed: Channel removed.
     continue: Continue
@@ -94,7 +98,7 @@ en:
         connection_failed: |
           we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
         too_many_redirects: "we were redirected too many times to verify your domain. "
-        no_txt_records: "there are no TXT records on your domain's DNS. "
+        no_txt_records: "we could not find TXT records in your domain's DNS records. "
         token_incorrect_dns: "the token in your TXT records is incorrect. "
         token_not_found_dns: "we could not find the token in any of the TXT records. "
         token_not_found_public_file: "we could not find the token in your public file. "
@@ -193,6 +197,38 @@ en:
       signature_html: |
         <strong>The Brave Payments Team</strong>
       updated_email: New email
+    channel_contested:
+      subject: "Urgent: Channel transfer requested"
+      title: A request to transfer one of your channels has been made
+      notice: |
+        NOTE: This email contains a private access link. Anyone with it can manage private
+        publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
+      intro: |
+        Another publisher has verified your channel, %{channel_name}, and it will be transferred to their account in 10 days.
+        If you do not approve, use the link below to reject the transfer.
+      button: Reject Transfer
+    channel_transfer_approved_primary:
+      subject: "Your channel has been transferred to another publisher"
+      title: Channel transfer approved
+      intro: |
+        Your channel, %{channel_name} has been transferred to another publisher.  Please
+        reply to this email is you dissaprove of the transfer as soon as possible.
+    channel_transfer_approved_secondary:
+      subject: "Your request to transfer the channel has been approved"
+      title: Channel transfer approved
+      intro: |
+        Your request to transfer the channel, %{channel_name}, to your publisher account has been approved. You can now
+        collect funds contributed to this channel.
+    channel_transfer_rejected_primary:
+      subject: "You have cancelled the channel transfer"
+      title: Channel transfer cancelled
+      intro: "You have rejected the request to transfer your channel, %{channel_name} to another publisher."
+    channel_transfer_rejected_secondary:
+      subject: "Your request to transfer the channel has been denied"
+      title: Channel transfer cancelled
+      intro: |
+        Your request to transfer the channel, %{channel_name}, to your account has been denied by the current owner.
+        Please reply to this email if you require further assistance.
     confirm_email_change:
       subject: Confirm your Brave Publisher email change
       title: Confirm email change
@@ -263,6 +299,10 @@ en:
       intro: We've received a request to register a website with Brave Payments
       contact: Contact person
       private_access_link_help: Use this link to continue and manage publisher registration
+  channel_transfer:
+    transfer:
+      heading: Reject Transfer
+      reject: Reject
   publishers:
     shared:
       enter_email: Enter your email

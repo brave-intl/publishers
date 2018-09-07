@@ -1,10 +1,8 @@
-class TwitchChannelDetails < ApplicationRecord
+class TwitchChannelDetails < BaseChannelDetails
   has_paper_trail
 
-  has_one :channel, as: :details
-
   validate :twitch_channel_not_changed_once_initialized
-  validates :twitch_channel_id, presence: true, uniqueness: true
+  validates :twitch_channel_id, presence: true
   validates :thumbnail_url, presence: true
   validates :auth_user_id, presence: true
   validates :display_name, presence: true

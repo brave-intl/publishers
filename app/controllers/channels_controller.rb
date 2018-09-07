@@ -2,31 +2,14 @@ class ChannelsController < ApplicationController
   include ChannelsHelper
 
   before_action :authenticate_publisher!
+
   before_action :setup_current_channel,
                 except: %i(cancel_add)
+
   attr_reader :current_channel
 
   def destroy
-    return if current_channel.verified
-
-    channel_identifier = current_channel.details.channel_identifier
-    update_promo_server = current_channel.promo_registration.present?
-
-    if update_promo_server
-      referral_code = current_channel.promo_registration.referral_code
-    else
-      referral_code = nil
-    end
-
-    channel_verified = current_channel.verified?
-
-    success = current_channel.destroy
-    if success && channel_verified
-      DeletePublisherChannelJob.perform_later(publisher_id: current_publisher.id, 
-                                              channel_identifier: channel_identifier, 
-                                              update_promo_server: update_promo_server,
-                                              referral_code: referral_code)
-    end
+    success = DeletePublisherChannelJob.perform_now(channel_id: current_channel.id)
 
     respond_to do |format|
       format.json {

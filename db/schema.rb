@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2018_09_04_183644) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -238,8 +239,8 @@ ActiveRecord::Schema.define(version: 2018_09_04_183644) do
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "visible", default: true
-    t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
+    t.boolean "promo_enabled_2018q1", default: false
     t.string "promo_token_2018q1"
     t.jsonb "promo_stats_2018q1", default: {}, null: false
     t.datetime "promo_stats_updated_at_2018q1"
@@ -309,7 +310,7 @@ ActiveRecord::Schema.define(version: 2018_09_04_183644) do
     t.jsonb "stats"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id", unique: true
+    t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id"
   end
 
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

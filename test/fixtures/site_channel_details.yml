@@ -126,3 +126,10 @@ medium_media_group_abandoned_3_details:
 
 suspended_details:
   brave_publisher_id: "suspended.org"
+
+fraudulently_verified_site_details:
+  brave_publisher_id: "contested.com"
+
+locked_out_site_details:
+  brave_publisher_id: "contested.com"
+

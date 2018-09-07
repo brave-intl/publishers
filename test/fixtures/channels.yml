@@ -212,3 +212,13 @@ suspended:
   publisher: suspended
   details: suspended_details (SiteChannelDetails)
   verified: true
+
+fraudulently_verified_site:
+  publisher: fraudulent_verifier
+  details: fraudulently_verified_site_details (SiteChannelDetails)
+  verified: true
+
+locked_out_site:
+  publisher: locked_out_verifier
+  details: locked_out_site_details (SiteChannelDetails)
+  verified: false

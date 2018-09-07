@@ -123,7 +123,7 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
     assert_equal 'invalid_uri', channel_details.brave_publisher_id_error_code
   end
 
-  test "raises exception when domain is already taken by a verified publisher" do
+  test "does not raise an exception when domain is already taken by a verified publisher" do
     stub_request(:get, /v1\/publishers\/identity\?url=https:\/\/verified\.org/).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
       to_return(status: 200, body: "{\"protocol\":\"http:\",\"slashes\":true,\"auth\":null,\"host\":\"verified.org\",\"port\":null,\"hostname\":\"foo-bar.com\",\"hash\":null,\"search\":\"\",\"query\":{},\"pathname\":\"/\",\"path\":\"/\",\"href\":\"http://foo-bar.com/\",\"TLD\":\"com\",\"URL\":\"http://foo-bar.com\",\"SLD\":\"foo-bar.com\",\"RLD\":\"\",\"QLD\":\"\",\"publisher\":\"verified.org\"}", headers: {})
@@ -134,6 +134,6 @@ class SiteChannelDomainSetterTest < ActiveJob::TestCase
     channel_details.brave_publisher_id_unnormalized = existing_channel.details.brave_publisher_id
     SiteChannelDomainSetter.new(channel_details: channel_details).perform
 
-    assert_equal 'taken', channel_details.brave_publisher_id_error_code
+    assert_nil channel_details.brave_publisher_id_error_code
   end
 end
