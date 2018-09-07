@@ -13,7 +13,7 @@ class PublisherBalanceGetter < BaseApiClient
     accounts_response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.options.params_encoder = Faraday::FlatParamsEncoder
-      request.url("v1/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}")
+      request.url("v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}")
     end
 
     accounts = JSON.parse(accounts_response.body)
