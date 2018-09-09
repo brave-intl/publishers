@@ -1,12 +1,13 @@
 import Chart from 'chart.js';
 
 function createChart(id, title, dataSource) {
+  var wrapper = document.getElementById('wrapper');
+  var canvas = document.createElement('canvas');
+  canvas.setAttribute("width", "400");
+  canvas.setAttribute("height", "100");
+  wrapper.appendChild(canvas);
 
-}
-
-function loadDevicesGraph() {
-  var ctx = document.getElementById("piwikDevicesChart");
-  var devicesDetection = JSON.parse(document.getElementById("piwikDevicesDetection").value);
+  var devicesDetection = JSON.parse(document.getElementById(dataSource).value);
   var labels = [];
   var visits = [];
   for (let device of devicesDetection) {
@@ -14,12 +15,12 @@ function loadDevicesGraph() {
     visits.push(device.nb_visits);
   }
 
-  var myChart = new Chart(ctx, {
+  var myChart = new Chart(canvas, {
       type: 'bar',
       data: {
           labels: labels,
           datasets: [{
-              label: 'Device Visits (Past Week) (nb_visits)',
+              label: title,
               data: visits,
               backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
@@ -53,11 +54,10 @@ function loadDevicesGraph() {
 }
 
 function loadPiwikData() {
-  loadDevicesGraph();
+  createChart("piwikDevicesDetectionChart", "Device Visits (Past Week) (nb_visits)", "piwikDevicesDetection");
+  createChart("piwikEventsChart", "Events (Past Week) (nb_visits)", "piwikEvents");
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  if(document.getElementById("piwikDevicesChart")) {
-    loadPiwikData();
-  }
+  loadPiwikData();
 });
