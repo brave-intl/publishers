@@ -102,8 +102,17 @@ class Admin::PublishersController < AdminController
 
   private
 
+  def remove_prefix_if_necessary(query)
+    query = query.sub("publishers#uuid:", "")
+    query = query.sub("youtube#channel:", "")
+    query = query.sub("twitch#channel:", "")
+    query = query.sub("twitch#author:", "")
+    query = query.sub("twitter#channel:", "")
+  end
+
   # Returns an array of publisher ids that match the query
   def sql(query)
+    query = remove_prefix_if_necessary(query)
     %{SELECT publishers.id
       FROM   publishers
              INNER JOIN(SELECT channels.*
@@ -119,6 +128,7 @@ class Admin::PublishersController < AdminController
                                        ON youtube_channel_details.id =
                                           channels.details_id
                                           AND youtube_channel_details.title ILIKE '%#{query}%'
+                                          OR youtube_channel_details.youtube_channel_id ILIKE '%#{query}%'
                         UNION ALL
                         SELECT channels.*
                         FROM   channels
@@ -131,6 +141,7 @@ class Admin::PublishersController < AdminController
       SELECT publishers.id
       FROM publishers
       WHERE publishers.email ILIKE '%#{query}%'
-            OR publishers.name ILIKE '%#{query}%'}
+            OR publishers.name ILIKE '%#{query}%'
+            OR publishers.id::text = '#{query}'}
   end
 end
