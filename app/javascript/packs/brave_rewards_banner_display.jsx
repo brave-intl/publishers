@@ -70,11 +70,11 @@ class BraveRewardsPageForm extends React.Component {
 
   backgroundFade() {
     if(this.props.editMode){
-    let bgClass = document.getElementsByClassName('sc-EHOje')[0].classList[1];
-    let bgElement = document.getElementsByClassName('sc-EHOje ' + bgClass)[0];
-    let bgStyle = getComputedStyle(bgElement);
-    let bgUrl = bgStyle.background.match(/url\(([^)]+)\)/i)[1]
-    let bgFaded = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + bgUrl + ')';
+      let bgClass = document.getElementsByClassName('sc-EHOje')[0].classList[1];
+      let bgElement = document.getElementsByClassName('sc-EHOje ' + bgClass)[0];
+      let bgStyle = getComputedStyle(bgElement);
+      let bgUrl = bgStyle.background.match(/url\(([^)]+)\)/i)[1]
+      let bgFaded = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + bgUrl + ')';
 
     //Check for default image
     if(!bgUrl.includes('/rewards/siteBanner/assets/')){
