@@ -83,7 +83,7 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
 
   test "returned channels only appear once" do
     channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
-    
+
     returned_channel_ids = []
     channels.each do |channel|
       if returned_channel_ids.include?(channel.first)
