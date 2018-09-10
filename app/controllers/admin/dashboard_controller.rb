@@ -1,8 +1,7 @@
 class Admin::DashboardController < AdminController
   def index
-    site = Piwik::Site.load(6)
-    @events = site.events.getCategory(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
-    @devices_detection = site.devices_detection.getType(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
+    @site = Piwik::Site.load(6)
+    @seo_info = @site.seo_info
   end
 
   def fetch(type)

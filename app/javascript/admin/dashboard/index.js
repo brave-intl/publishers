@@ -42,20 +42,21 @@ function createChart(id, title, dataSource) {
           }]
       },
       options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero:true
+            }
+          }]
+        }
       }
   });
 }
 
 function loadPiwikData() {
-  createChart("piwikDevicesDetectionChart", "Device Visits (Past Week) (nb_visits)", "piwikDevicesDetection");
-  createChart("piwikEventsChart", "Events (Past Week) (nb_visits)", "piwikEvents");
+  createChart("piwikDevicesDetectionTypeChart", "Device Visits (Past Week) (nb_visits)", "piwikDevicesDetectionType");
+  createChart("piwikDevicesDetectionBrowserVersionsChart", "Browser Versions (Past Week)", "piwikDevicesDetectionBrowserVersions");
+  createChart("piwikEventsCategoryChart", "Events (Past Week) (nb_visits)", "piwikEventsCategory");
 }
 
 document.addEventListener('DOMContentLoaded', function() {
