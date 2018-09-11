@@ -251,15 +251,6 @@ class BraveRewardsPageForm extends React.Component {
     this.setState({socialLink : temp});
   }
 
-  /*
-  setTextsFromDiv() {
-    this.setState({
-      title: document.getElementsByClassName("sc-gZMcBi")[0].innerText,
-      description: document.getElementsByClassName("sc-gqjmRU")[0].innerText
-    });
-  }
-  */
-
   handleSubmit(event) {
     const url = '/publishers/' + this.props.publisher_id + "/site_banners";
     var request = new XMLHttpRequest();
@@ -390,34 +381,6 @@ class BraveRewardsPageForm extends React.Component {
   }
 }
 
-/*
-        <div id="controller_form">
-          <hr/>
-          <h4>PREVIEW</h4>
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Title:
-              <input type="title" value={this.state.value} onChange={this.handleTitleChange} />
-            </label>
-            <div>
-              Description:
-              <label>
-                <textarea type="description" value={this.state.description} onChange={this.handleDescriptionChange} />
-              </label>
-            </div>
-            <div>
-              <input type="file" id="background-image-select-input" style={{display:"none"}} onChange={this.handleBackgroundImageChange}/>
-              <label htmlFor="background-image-select-input">Select a background image</label>
-            </div>
-            <div>
-              <input type="file" id="logoSelect" style={{display:"none"}} onChange={this.handleLogoImageChange}/>
-              <label htmlFor="logoSelect">Select a logo</label>
-            </div>
-            <input type="submit" value="Submit"/>
-          </form>
-        </div>
-        */
-
 export function renderBraveRewardsBannerDisplay(editMode) {
   const braveRewardsPageForm = <BraveRewardsPageForm
     publisher_id={document.getElementById("publisher_id").value}
@@ -447,34 +410,8 @@ export function renderBraveRewardsBannerDisplay(editMode) {
   // Hide unused close button
   document.getElementsByClassName("modal-panel--close")[0].style.visibility = 'hidden';
 
-  /*
-  if (editMode) {
-    // Set h3 editable
-    document.getElementsByClassName("sc-gZMcBi")[0].setAttribute("contenteditable", true)
-
-    // Set p editable
-    document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
-
-    // Editable for tokens
-    for (let element of document.getElementsByClassName("sc-brqgnP")) {
-      element.setAttribute("contenteditable", true)
-    };
-  }
-  */
-
   document.getElementById("instant-donation-dont-save-changes").onclick = function() {
     ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
     document.getElementsByClassName("modal-panel--close")[0].click();
   }
 }
-
-/*
-  const braveRewardsPageForm = <BraveRewardsPageForm />;
-
-  ReactDOM.render(
-    braveRewardsPageForm,
-    document.body.appendChild(document.createElement("div"))
-  )
-
-  document.getElementById('site_banner').children[0].style.height = '50vh';
-*/
