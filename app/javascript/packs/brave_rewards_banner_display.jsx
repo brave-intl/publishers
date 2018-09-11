@@ -20,7 +20,6 @@ class BraveRewardsPageForm extends React.Component {
       logo: props.details.logoUrl,
       donationAmounts: props.details.donationAmounts || [1, 5, 10],
       socialLinks: props.details.socialLinks || {'twitter': '@', 'youtube': '@', 'twitch': '@'},
-      appliedFade: false
     };
 
     this.updateDescription = this.updateDescription.bind(this);
@@ -68,25 +67,24 @@ class BraveRewardsPageForm extends React.Component {
     }
   }
 
-  attemptToApplyFade() {
-    // Apply fade
-    if (this.state.backgroundImage == null || this.state.appliedFade) {
-      return;
-    }
-    return;
-    var divClass = document.getElementsByClassName("sc-EHOje")[0].classList[1]
-    document.querySelectorAll('[data-styled-components]').forEach(function(element) {
-      if (element.innerHTML.includes(divClass)) {
-        element.innerHTML = element.innerHTML.replace(/height:176px;background:url/g, "height:176px;background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url");
-      }
-    });
+  applyFade() {
+    if(this.props.editMode){
+      let bgClass = document.getElementsByClassName('sc-EHOje')[0].classList[1];
+      let bgElement = document.getElementsByClassName('sc-EHOje ' + bgClass)[0];
+      let bgStyle = getComputedStyle(bgElement);
+      let bgUrl = bgStyle.background.match(/url\(([^)]+)\)/i)[1];
+      let bgFaded = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + bgUrl + ')';
 
-    this.setState({appliedFade: true});
+      //Check for default image
+      if(!bgUrl.includes('/rewards/siteBanner/assets/')){
+        bgElement.style.backgroundImage = bgFaded
+      }
+    }
   }
 
   handleBackgroundImageChange(event) {
     this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
-    this.attemptToApplyFade();
+    this.applyFade();
   }
 
   setupBackgroundLabel() {
@@ -118,7 +116,6 @@ class BraveRewardsPageForm extends React.Component {
     callToActionDiv.appendChild(backgroundInput);
     callToActionDiv.appendChild(backgroundButton);
     callToActionDiv.appendChild(label);
-    this.attemptToApplyFade();
   }
 
   setupLogoLabel() {
@@ -158,6 +155,9 @@ class BraveRewardsPageForm extends React.Component {
   }
 
   componentDidMount() {
+
+    this.applyFade();
+
     if (this.props.editMode) {
       this.setupBackgroundLabel();
       this.setupLogoLabel();
