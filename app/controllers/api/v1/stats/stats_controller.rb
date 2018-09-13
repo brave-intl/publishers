@@ -1,4 +1,5 @@
-class Api::StatsController < Api::BaseController
+class Api::V1::Stats::StatsController < Api::BaseController
+
   def signups_per_day
     sql =
     """
@@ -120,4 +121,5 @@ class Api::StatsController < Api::BaseController
 
     new_result
   end
+
 end

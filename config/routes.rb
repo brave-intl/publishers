@@ -86,17 +86,24 @@ Rails.application.routes.draw do
     end
     resources :tokens, only: %i(index)
     resources :channels, constraints: { channel_id: %r{[^\/]+} }
-    namespace :stats do
-      get :signups_per_day
-      get :email_verified_signups_per_day
-      get :youtube_channels_by_view_count
-      get :twitch_channels_by_view_count
-      get :javascript_enabled_usage
-    end
+
+    # /api/v1/
     namespace :v1, defaults: { format: :json } do
+      # /api/v1/stats/
+      namespace :stats, defaults: { format: :json } do
+        get "channels", to: "channels#channels"
+        get "channels/:uuid", to: "channels#channels_uuid"
+        get :signups_per_day
+        get :email_verified_signups_per_day
+        get :youtube_channels_by_view_count
+        get :twitch_channels_by_view_count
+        get :javascript_enabled_usage
+      end
+      # /api/v1/public/
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
       end
+
     end
   end
 
@@ -104,7 +111,7 @@ Rails.application.routes.draw do
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
-      member do 
+      member do
         get :download
       end
     end
