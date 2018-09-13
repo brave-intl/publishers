@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     namespace :v1, defaults: { format: :json } do
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
+        get "verified_channels", controller: "channels"
       end
     end
   end
@@ -101,7 +102,7 @@ Rails.application.routes.draw do
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
-      member do 
+      member do
         get :download
       end
     end

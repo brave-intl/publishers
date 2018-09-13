@@ -1,5 +1,5 @@
 # Builds a list of distinct channels that are either verified, excluded or both for the Brave Browser.
-# 
+#
 # Each channel is an array:
 # [channel_identifier, verified, excluded]
 #
