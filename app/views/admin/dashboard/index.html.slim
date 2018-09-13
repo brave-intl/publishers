@@ -1,10 +1,1 @@
 . = "Contributions processed:  #{PayoutReport.total_amount}"
-. = "Global Alexa Rank: #{@seo_info.data.select{|d| d["label"] == "Alexa Rank" }[0]["rank"]}"
-
-hr
-
-= hidden_field_tag id="piwikEventsCategory", value=@site.events.getCategory(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
-= hidden_field_tag id="piwikDevicesDetectionType", value=@site.devices_detection.getType(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
-= hidden_field_tag id="piwikDevicesDetectionBrowserVersions", value=@site.devices_detection.getBrowserVersions(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
-
-/ canvas id="piwikDevicesChart" width="400" height="100"

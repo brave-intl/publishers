@@ -16,9 +16,6 @@ gem "api-pagination"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
 
-# Integration with Matomo Piwik
-gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
-
 gem "bootstrap", "~> 4.1.1"
 
 # browser details
