@@ -1,6 +1,5 @@
 import 'utils/request';
 import 'publishers/statements';
-import 'admin/dashboard/index';
 import Rails from 'rails-ujs';
 
 /*
