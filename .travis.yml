@@ -20,14 +20,13 @@ install:
   - sudo apt-get install google-chrome-stable
   - nvm install stable && nvm alias default stable
   - npm install -g npm@5.6.x
-  - npm install -g yarn
   - node --version
   - npm --version
   - google-chrome --version
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-  - yarn install
+  - npm install
   - rake db:setup
   - bundle exec rake assets:precompile
 script:
   - bin/rails test
-  - yarn test
+  - npm test
