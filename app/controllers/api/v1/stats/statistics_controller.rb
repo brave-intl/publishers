@@ -1,4 +1,4 @@
-class Api::V1::Stats::StatsController < Api::BaseController
+class Api::V1::Stats::StatisticsController < Api::BaseController
 
   def signups_per_day
     sql =

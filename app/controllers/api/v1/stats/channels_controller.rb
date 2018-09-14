@@ -1,48 +1,47 @@
 class Api::V1::Stats::ChannelsController < Api::BaseController
 
-def channels
-  channels = Channel.all.map { |channel| channel.id }
-  data = JSON.pretty_generate(channels)
+  def channels
 
-  render(json: data)
+    if params[:uuid] == nil
+      channels = Channel.all.map { |channel| channel.id }
+      data = JSON.pretty_generate(channels)
+      render(json: data)
+    else
+      channel = Channel.find_by_id(params[:uuid])
 
-end
+      case channel.details_type
+        when "SiteChannelDetails"
+          channel_details = SiteChannelDetails.find_by_id(channel.details_id)
+          channel_type = "website"
+          channel_name = channel_details.url
+        when "YoutubeChannelDetails"
+          channel_details = YoutubeChannelDetails.find_by_id(channel.details_id)
+          channel_type = "youtube"
+          channel_name = channel_details.name
+        when "TwitterChannelDetails"
+          channel_details = TwitterChannelDetails.find_by_id(channel.details_id)
+          channel_type = "twitter"
+          channel_name = channel_details.name
+        when "TwitchChannelDetails"
+          channel_details = TwitchChannelDetails.find_by_id(channel.details_id)
+          channel_type = "twitch"
+          channel_name = channel_details.name
+        end
 
-def channels_uuid
+        data = JSON.pretty_generate({
+          uuid: channel.id,
+          channel_id: channel_details.channel_identifier,
+          channel_type: channel_type,
+          name: channel_name,
+          stats: channel_details.stats,
+          url: channel_details.url,
+          owner_id: channel.publisher.owner_identifier,
+          created_at: channel.created_at,
+          verified: channel.verified
+          })
 
-  channel = Channel.find_by_id(params[:uuid])
+        render(json: data)
 
-  case channel.details_type
-  when "SiteChannelDetails"
-    channel_details = SiteChannelDetails.find_by_id(channel.details_id)
-    platform = "Site"
-    channel_id = channel_details.brave_publisher_id
-  when "YoutubeChannelDetails"
-    channel_details = YoutubeChannelDetails.find_by_id(channel.details_id)
-    platform = "Youtube"
-    channel_id = channel_details.youtube_channel_id
-  when "TwitterChannelDetails"
-    channel_details = TwitterChannelDetails.find_by_id(channel.details_id)
-    platform = "Twitter"
-    channel_id = channel_details.twitter_channel_id
-  when "TwitchChannelDetails"
-    channel_details = TwitchChannelDetails.find_by_id(channel.details_id)
-    platform = "Twitch"
-    channel_id = channel_details.twitch_channel_id
+    end
   end
-
-  data = JSON.pretty_generate({
-    uuid: channel.id,
-    platform: platform,
-    name: channel_details.name,
-    channel_id: channel_id,
-    stats: channel_details.stats,
-    publisher_id: channel.publisher_id,
-    created_at: channel.created_at,
-    verified: channel.verified
-  })
-
-  render(json: data)
-
-end
 end

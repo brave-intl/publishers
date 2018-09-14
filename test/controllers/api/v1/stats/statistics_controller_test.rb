@@ -1,12 +1,12 @@
 require "test_helper"
 require "shared/mailer_test_helper"
 
-class Api::StatsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::Stats::StatisticsControllerTest < ActionDispatch::IntegrationTest
   test "does signups per day and handles blanks" do
     publishers(:verified).update(created_at: 6.days.ago)
     publishers(:completed).update(created_at: 1.day.ago)
 
-    get "/api/stats/signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    get "/api/v1/stats/signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
     resp = JSON.parse(response.body)
@@ -21,7 +21,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
       [0.days.ago.to_date.to_s, 24]
     ]
 
-    get "/api/stats/email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    get "/api/v1/stats/email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
 
     assert_equal 200, response.status
     resp = JSON.parse(response.body)
@@ -37,14 +37,14 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "youtube_channels_by_view_count returns an array of four arrays" do
-    get "/api/stats/youtube_channels_by_view_count", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    get "/api/v1/stats/youtube_channels_by_view_count", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     result = JSON.parse(response.body)
     assert result.is_a?(Array)
     assert_equal result.length, 4
   end
 
   test "youtube_channels_by_view_count returns sorts channels into buckets by view count" do
-    get "/api/stats/youtube_channels_by_view_count", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    get "/api/v1/stats/youtube_channels_by_view_count", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     result = JSON.parse(response.body)
 
     # ensure all view counts are within bucket_one range
@@ -77,7 +77,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "twitch_channels_by_view_count returns sorts channels into buckets by view count" do
-    get "/api/stats/twitch_channels_by_view_count", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    get "/api/v1/stats/twitch_channels_by_view_count", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     result = JSON.parse(response.body)
 
     # ensure all view counts are within bucket_one range
@@ -111,7 +111,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
 
   test 'counts number of users with javascript enabled and disabled' do
     Publisher.update_all(last_sign_in_at: Time.now)
-    get "/api/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    get "/api/v1/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     assert_equal response.status, 200
     assert_equal response.body, {
       active_users_with_javascript_enabled: 0,
@@ -120,7 +120,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
 
     Publisher.joins("inner join channels on channels.publisher_id = publishers.id").last.update(javascript_last_detected_at: Time.now)
 
-    get "/api/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    get "/api/v1/stats/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     assert_equal response.status, 200
     assert_equal response.body, {
       active_users_with_javascript_enabled: 1,
