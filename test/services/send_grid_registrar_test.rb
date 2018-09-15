@@ -14,10 +14,6 @@ class SendGridRegistrarTest < ActiveJob::TestCase
 
   test "registers a new publisher with SendGrid and adds them to the Publisher List" do
     prev_sendgrid_api_offline = Rails.application.secrets[:sendgrid_api_offline]
-    p "*********************************"
-    p "Env: #{Rails.env}"
-    p "Env: #{Rails.application.secrets[:sendgrid_api_key].first(5)}"
-    p "*********************************"
     Rails.application.secrets[:sendgrid_api_offline] = false
 
     begin
