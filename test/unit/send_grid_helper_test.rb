@@ -4,7 +4,7 @@ require 'vcr'
 
 class SendGridHelperTest < ActiveSupport::TestCase
   before do
-    VCR.insert_cassette name
+    VCR.insert_cassette(name, record: :new_episodes)
   end
 
   after do
