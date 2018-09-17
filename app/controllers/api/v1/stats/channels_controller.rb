@@ -2,7 +2,7 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
 
   def channels
 
-    if(params[:uuid] == nil)
+    if params[:uuid].nil?
 
       channels = Channel.all.map { |channel| channel.id }
       data = JSON.pretty_generate(channels)
@@ -10,20 +10,20 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
 
     else
 
-      channel = Channel.find_by_id(params[:uuid])
+      begin
 
-      if(channel == nil)
+        channel = Channel.find(params[:uuid])
 
-        error_response = JSON.pretty_generate({
-          errors: [{
-            status: "404",
-            title: "Not Found",
-            detail: "Channel with uuid " + params[:uuid] + " not found"
-          }]
-        })
-        render(json: error_response)
-
-      else
+        rescue ActiveRecord::RecordNotFound
+          error_response = JSON.pretty_generate({
+            errors: [{
+              status: "404",
+              title: "Not Found",
+              detail: "Channel with uuid #{params[:uuid]} not found"
+              }]
+            })
+          render(json: error_response) and return
+        end
 
         case channel.details_type
 
@@ -59,7 +59,6 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
 
           render(json: data)
 
-      end
     end
   end
 end
