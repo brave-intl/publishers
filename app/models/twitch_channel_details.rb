@@ -10,7 +10,7 @@ class TwitchChannelDetails < BaseChannelDetails
   ## Begin methods to satisfy the Eyeshade integration
 
   def channel_identifier
-    "twitch#channel:#{name}"
+    "twitch#author:#{name}"
   end
 
   def author_identifier 
