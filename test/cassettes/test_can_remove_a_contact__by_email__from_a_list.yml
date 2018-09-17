@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: delete
-    uri: https://api.sendgrid.com/v3/contactdb/lists/3648346/recipients/YWxpY2VAY29tcGxldGVkLm9yZw==?list_id=3648346&recipient_id=YWxpY2VAY29tcGxldGVkLm9yZw==
+    uri: https://api.sendgrid.com/v3/contactdb/lists/3986776/recipients/YWxpY2VAY29tcGxldGVkLm9yZw==?list_id=3986776&recipient_id=YWxpY2VAY29tcGxldGVkLm9yZw==
     body:
       encoding: US-ASCII
       string: ''
