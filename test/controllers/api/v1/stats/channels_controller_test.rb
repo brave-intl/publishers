@@ -12,21 +12,23 @@ class Api::V1::Stats::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
   end
 
-  test "/api/v1/stats/channels/:uuid returns json representation of channel" do
+  test "/api/v1/stats/channels/:uuid returns json representation of channel, or 404 if not found" do
 
-    get "/api/v1/stats/channels/" + Channel.last.id, headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-    result = JSON.parse(response.body)
+    if(Channel.last != nil)
+      get "/api/v1/stats/channels/" + Channel.last.id, headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+      result = JSON.parse(response.body)
+        assert(result.key?("uuid"))
+        assert(result.key?("channel_id"))
+        assert(result.key?("channel_type"))
+        assert(result.key?("name"))
+        assert(result.key?("stats"))
+        assert(result.key?("url"))
+        assert(result.key?("owner_id"))
+        assert(result.key?("created_at"))
+        assert(result.key?("verified"))
 
-    assert(result.key?("uuid"))
-    assert(result.key?("channel_id"))
-    assert(result.key?("channel_type"))
-    assert(result.key?("name"))
-    assert(result.key?("stats"))
-    assert(result.key?("url"))
-    assert(result.key?("owner_id"))
-    assert(result.key?("created_at"))
-    assert(result.key?("verified"))
-
+    else get "/api/v1/stats/channels/invalid_uuid"
+      assert_equal(403, response.status)
+    end
   end
-
 end

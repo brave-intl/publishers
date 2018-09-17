@@ -2,7 +2,7 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
 
   def channels
 
-    if params[:uuid] == nil
+    if(params[:uuid] == nil)
 
       channels = Channel.all.map { |channel| channel.id }
       data = JSON.pretty_generate(channels)
