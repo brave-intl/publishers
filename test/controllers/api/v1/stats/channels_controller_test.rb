@@ -27,8 +27,9 @@ class Api::V1::Stats::ChannelsControllerTest < ActionDispatch::IntegrationTest
         assert(result.key?("created_at"))
         assert(result.key?("verified"))
 
-    else get "/api/v1/stats/channels/invalid_uuid"
-      assert_equal(403, response.status)
+    else get "/api/v1/stats/channels/invalid_uuid", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+      result = JSON.parse(response.body)
+      assert_equal(404, Integer(result["errors"][0]["status"]))
     end
   end
 end

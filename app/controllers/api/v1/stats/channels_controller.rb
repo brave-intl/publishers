@@ -13,10 +13,20 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
       channel = Channel.find_by_id(params[:uuid])
 
       if(channel == nil)
-        redirect_to "/404"
+
+        error_response = JSON.pretty_generate({
+          errors: [{
+            status: "404",
+            title: "Not Found",
+            detail: "Channel with uuid " + params[:uuid] + " not found"
+          }]
+        })
+        render(json: error_response)
+
       else
 
         case channel.details_type
+
           when "SiteChannelDetails"
             channel_details = SiteChannelDetails.find_by_id(channel.details_id)
             channel_type = "website"
