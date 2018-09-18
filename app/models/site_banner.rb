@@ -31,7 +31,7 @@ class SiteBanner < ApplicationRecord
       # (Albert Wang): I couldn't figure out how to play nicely with localhost
       "https://0.0.0.0:3000" + rails_blob_path(object, only_path: true) + extension
     else
-      "#{ENV["S3_REWARDS_PUBLIC_DOMAIN"]}/#{object.blob.key}"
+      "#{Rails.application.secrets[:s3_rewards_public_domain]}/#{object.blob.key}"
     end
   end
 end
