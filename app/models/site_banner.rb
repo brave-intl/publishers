@@ -28,11 +28,10 @@ class SiteBanner < ApplicationRecord
                 end
 
     if Rails.env.development? || Rails.env.test?
+      # (Albert Wang): I couldn't figure out how to play nicely with localhost
       "https://0.0.0.0:3000" + rails_blob_path(object, only_path: true) + extension
-    elsif Rails.env.staging?
-      return "https://rewards-stg.s3.us-east-2.amazonaws.com/#{object.blob.key}"
-    elsif Rails.env.production?
-      # TODO
+    else
+      "#{Rails.application.secrets[:s3_rewards_public_domain]}/#{object.blob.key}"
     end
   end
 end
