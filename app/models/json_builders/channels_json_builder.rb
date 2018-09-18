@@ -1,13 +1,18 @@
 # Builds a list of distinct channels that are either verified, excluded or both for the Brave Browser.
 #
 # Each channel is an array:
-# [channel_identifier, verified, excluded]
+# [
+#   channel_identifier (string),
+#   verified (boolean),
+#   excluded (boolean),
+#   site_banner details
+# ]
 #
 # ex.
 # [
-#   ["brave.com", true, false],
-#   ["google.com", false, true],
-#   ["us.gov", false, false]
+#   ["brave.com", true, false, {title: 'Hello', description: 'world'...}],
+#   ["google.com", false, true, {}],
+#   ["us.gov", false, false, {}]
 # ]
 
 class JsonBuilders::ChannelsJsonBuilder
