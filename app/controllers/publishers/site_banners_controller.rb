@@ -21,12 +21,23 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update_logo
+    if params[:image].length > MAX_IMAGE_SIZE
+      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
+      # alert[:error] = "File size too big!"
+      head :payload_too_large and return
+    end
     site_banner = current_publisher.site_banner
     update_image(site_banner.logo)
     head :ok
   end
 
   def update_background_image
+    if params[:image].length > MAX_IMAGE_SIZE
+      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
+      # alert[:error] = "File size too big!"
+      head :payload_too_large and return
+    end
+
     site_banner = current_publisher.site_banner
     update_image(site_banner.background_image)
     head :ok
@@ -35,11 +46,6 @@ class Publishers::SiteBannersController < ApplicationController
   private
 
   def update_image(attachment)
-    if params[:image].length > MAX_IMAGE_SIZE
-      alert[:error] = "File size too big!"
-      return
-    end
-
     data_url = params[:image].split(',')[0]
     if data_url.starts_with?("data:image/jpeg")
       content_type = "image/jpeg"
