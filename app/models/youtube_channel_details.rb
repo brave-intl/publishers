@@ -1,10 +1,8 @@
-class YoutubeChannelDetails < ApplicationRecord
+class YoutubeChannelDetails < BaseChannelDetails
   has_paper_trail
 
-  has_one :channel, as: :details
-
   validate :youtube_channel_not_changed_once_initialized
-  validates :youtube_channel_id, presence: true, uniqueness: true
+  validates :youtube_channel_id, presence: true
   validates :title, presence: true
   validates :thumbnail_url, presence: true
   validates :auth_user_id, presence: true

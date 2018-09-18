@@ -4,7 +4,7 @@ require 'vcr'
 
 class SendGridHelperTest < ActiveSupport::TestCase
   before do
-    VCR.insert_cassette name
+    VCR.insert_cassette(name, record: :new_episodes)
   end
 
   after do
@@ -59,7 +59,7 @@ class SendGridHelperTest < ActiveSupport::TestCase
   end
 
   test "can add a contact, by email, to a list" do
-    assert SendGrid::ApiHelper.add_contact_by_email_to_list(email: 'alice@completed.org', list_id: '3648346')
+    assert SendGrid::ApiHelper.add_contact_by_email_to_list(email: 'alice@completed.org', list_id: '3986776')
   end
 
   test "raises trying to add a contact, by email, to a missing list" do
@@ -70,7 +70,7 @@ class SendGridHelperTest < ActiveSupport::TestCase
   end
 
   test "can remove a contact, by email, from a list" do
-    assert SendGrid::ApiHelper.remove_contact_by_email_from_list(email: 'alice@completed.org', list_id: '3648346')
+    assert SendGrid::ApiHelper.remove_contact_by_email_from_list(email: 'alice@completed.org', list_id: '3986776')
   end
 
   test "raises trying to remove a contact, by email, to a missing list" do
@@ -85,6 +85,6 @@ class SendGridHelperTest < ActiveSupport::TestCase
     ids = SendGrid::ApiHelper.upsert_contacts(publishers: publishers)
 
     assert_equal 2, ids.length
-    assert SendGrid::ApiHelper.add_contacts_to_list(list_id: '3648346', contact_ids: ids)
+    assert SendGrid::ApiHelper.add_contacts_to_list(list_id: '3986776', contact_ids: ids)
   end
 end

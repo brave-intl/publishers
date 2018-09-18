@@ -1,10 +1,6 @@
 noscript
   div.noscript-warning = t ".noscript"
 
-- if flash[:taken_channel_id]
-  #js-open-modal-on-load
-    = render partial: 'channel_taken_modal', locals: { channel_id: flash[:taken_channel_id] }
-
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
     current_publisher.uphold_verified? && \
     current_publisher.wallet.present? && current_publisher.wallet.authorized? && \
@@ -221,6 +217,13 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 .channel-details
                   .added-date
                     = t ".channel.added", date: channel.created_at.to_date.iso8601
+                  span.separator
+                    = ' | '
+                  a.remove-channel href="#" data-channel-id=(channel.id)
+                    = t ".channel.remove_verified"
+                  script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                    = render "publishers/remove_channel_modal", channel: channel
+                  = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
             - elsif channel.verification_failed?
               .channel-status.float-right
                 .verification-failed
@@ -240,6 +243,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       = render "publishers/remove_channel_modal", channel: channel
                     = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
                 = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
+            - elsif channel.verification_pending?
+              .channel-status.float-right
+                = t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
             - elsif channel.verification_awaiting_admin_approval?
               .channel-status.float-right
                 = t("helpers.channels.verification_awaiting_admin_approval")
@@ -251,6 +257,12 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             - unless channel.verified
               .channel-summary
                 h3.unverified = channel.publication_title
+            - if channel.contested_by_channel
+              .channel-contested
+                p = t "shared.channel_contested_by", time_until_transfer: time_until_transfer(channel.contested_by_channel),
+                        verified_by_email: channel.contested_by_channel.publisher.email
+                a.reject_transfer href=token_reject_transfer_url(channel, channel.contest_token)
+                  = t ".channel.reject_transfer"
             .clearfix
 
     .row id="add_channel_placeholder"
@@ -280,20 +292,16 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           channelPromoInfoContainer.classList.remove('channel--promo-info-container-slideout');
         }
       }
-
       function openReferralLinkAnimation() {
         var channelPromoInfoContainer = this.parentNode;
-
         if (!channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
           channelPromoInfoContainer.classList.add('channel--promo-info-container-slideout');
         }
       }
-
       function copyButtonAnimation() {
         channelPromoInfoContainer = this.parentNode;
         var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
         var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
-
         for (var i = 0; i < mobileReferralLinkButtons.length; i++) {
           mobileReferralLinkButtons[i].children[0].innerText = 'Referral Link';
           desktopReferralLinkButtons[i].children[0].innerText = 'Referral Link';
@@ -302,7 +310,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
         var desktopReferralLinkButton = channelPromoInfoContainer.children[3].children[0];
         mobileReferralLinkButton.innerText = 'Copied!';
         desktopReferralLinkButton.innerText = 'Copied!';
-
         // Fade out 'copied!'
         setTimeout(function(){
           mobileReferralLinkButton.classList.add('fadedOut');
@@ -315,12 +322,10 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           }, 500);
         }, 1000);
       }
-
       var channelPromoInfoContainers = document.getElementsByClassName('channel--promo-info-container');
       var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
       var desktopCopyButtons = document.getElementsByClassName('referral-link-copy-button')
       var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
-
       for (var i = 0; i < channelPromoInfoContainers.length; i++) {
         desktopReferralLinkButtons[i].addEventListener('click', openReferralLinkAnimation, false);
         desktopCopyButtons[i].addEventListener('click', closeReferralLinkAnimation, false);
@@ -328,7 +333,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
         mobileReferralLinkButtons[i].addEventListener('click', copyButtonAnimation, false);
       }
     })();
-
 javascript:
   function javascriptDetected() {
     let options = {
@@ -345,7 +349,6 @@ javascript:
     }
     fetch('./javascript_detected', options);
   };
-
   document.addEventListener('DOMContentLoaded', function() {
     javascriptDetected();
   });

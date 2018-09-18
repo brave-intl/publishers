@@ -156,6 +156,126 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def channel_contested(channel)
+    @channel = channel
+    @channel_name = @channel.publication_title
+    @publisher_name = @channel.publisher.name
+    @email = @channel.publisher.email
+    
+    @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
+
+    mail(
+        to: @email,
+        subject: default_i18n_subject
+    )
+  end
+
+  def channel_contested_internal(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
+
+    @transfer_url = "{redacted}"
+
+    mail(
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_contested.subject")}",
+        template_name: "channel_contested"
+    )
+  end
+
+  def channel_transfer_approved_primary(channel_name, publisher_name, email)
+    @channel_name = channel_name
+    @publisher_name = publisher_name
+    @email = email
+
+    mail(
+        to: @email,
+        subject: default_i18n_subject
+    )
+  end
+
+  def channel_transfer_approved_primary_internal(channel_name, publisher_name, email)
+    @channel_name = channel_name
+    @publisher_name = publisher_name
+    @email = email
+
+    mail(
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_primary.subject")}",
+        template_name: "channel_transfer_approved_primary"
+    )
+  end
+
+  def channel_transfer_approved_secondary(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
+
+    mail(
+        to: @email,
+        subject: default_i18n_subject
+    )
+  end
+
+  def channel_transfer_approved_secondary_internal(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
+
+    mail(
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_approved_secondary.subject")}",
+        template_name: "channel_transfer_approved_secondary"
+    )
+  end
+
+  def channel_transfer_rejected_primary(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
+
+    mail(
+        to: @email,
+        subject: default_i18n_subject
+    )
+  end
+
+  def channel_transfer_rejected_primary_internal(channel)
+    @channel_name = channel.publication_title
+    @publisher_name = channel.publisher.name
+    @email = channel.publisher.email
+
+    mail(
+        to: INTERNAL_EMAIL,
+        reply_to: @email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
+        template_name: "channel_transfer_rejected_primary"
+    )
+  end
+
+  def channel_transfer_rejected_secondary(channel_name, publisher_name, email)
+    @channel_name = channel_name
+    @publisher_name = publisher_name
+
+    mail(
+        to: email,
+        subject: default_i18n_subject
+    )
+  end
+
+  def channel_transfer_rejected_secondary_internal(channel_name, publisher_name, email)
+    mail(
+        to: INTERNAL_EMAIL,
+        reply_to: email,
+        subject: "<Internal> #{t("publisher_mailer.channel_transfer_rejected_primary.subject")}",
+        template_name: "channel_transfer_rejected_secondary"
+    )
+  end
+
   def wallet_not_connected(publisher)
     @publisher = publisher
     @publisher_log_in_url = new_auth_token_publishers_url

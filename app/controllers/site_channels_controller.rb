@@ -102,6 +102,8 @@ class SiteChannelsController < ApplicationController
       redirect_to home_publishers_path, notice: t(".success")
     elsif current_channel.verification_awaiting_admin_approval?
       redirect_to home_publishers_path, notice: t(".awaiting_admin_approval")
+    elsif current_channel.verification_pending?
+      redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(current_channel))
     else
       redirect_to(site_last_verification_method_path(current_channel))
     end

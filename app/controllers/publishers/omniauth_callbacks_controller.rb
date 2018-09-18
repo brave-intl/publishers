@@ -20,18 +20,12 @@ module Publishers
 
       existing_channel = Channel.joins(:youtube_channel_details).
           where("youtube_channel_details.youtube_channel_id": youtube_channel_data['id']).first
-
-      if existing_channel
-        if existing_channel.publisher == current_publisher
-          redirect_to home_publishers_path, notice: t(".channel_already_registered")
-          return
-        else
-          redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
-          return
-        end
+      if existing_channel&.publisher == current_publisher
+        redirect_to home_publishers_path, notice: t(".channel_already_registered")
+        return
       end
 
-      @current_channel = Channel.new(publisher: current_publisher, verified: true)
+      @channel = Channel.new(publisher: current_publisher, verified: true)
 
       youtube_details_attrs = {
         youtube_channel_id: youtube_channel_data['id'],
@@ -45,10 +39,16 @@ module Publishers
         auth_email: oauth_response.dig('info', 'email')
       }
 
-      @current_channel.details = YoutubeChannelDetails.new(youtube_details_attrs)
+      @channel.details = YoutubeChannelDetails.new(youtube_details_attrs)
 
-      @current_channel.save!
+      if existing_channel
+        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
 
+        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
+        return
+      end
+
+      @channel.save!
       begin
         PublisherChannelSetter.new(publisher: current_publisher).perform
       rescue => e
@@ -69,17 +69,12 @@ module Publishers
       existing_channel = Channel.joins(:twitch_channel_details).
           where("twitch_channel_details.twitch_channel_id": uid).first
 
-      if existing_channel
-        if existing_channel.publisher == current_publisher
-          redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.display_name })
-          return
-        else
-          redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
-          return
-        end
+      if existing_channel&.publisher == current_publisher
+        redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.display_name })
+        return
       end
 
-      @current_channel = Channel.new(publisher: current_publisher, verified: true)
+      @channel = Channel.new(publisher: current_publisher, verified: true)
 
       twitch_details_attrs = {
         twitch_channel_id: uid,
@@ -91,10 +86,16 @@ module Publishers
         email: twitch_info.email
       }
 
-      @current_channel.details = TwitchChannelDetails.new(twitch_details_attrs)
+      @channel.details = TwitchChannelDetails.new(twitch_details_attrs)
 
-      @current_channel.save!
+      if existing_channel
+        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
 
+        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
+        return
+      end
+
+      @channel.save!
       begin
         PublisherChannelSetter.new(publisher: current_publisher).perform
       rescue => e
@@ -168,19 +169,22 @@ module Publishers
       existing_channel = Channel.joins(:twitter_channel_details).
           where("twitter_channel_details.twitter_channel_id": twitter_details_attrs[:twitter_channel_id]).first
 
-      if existing_channel
-        if existing_channel.publisher == current_publisher
-          redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.screen_name })
-          return
-        else
-          redirect_to home_publishers_path, flash: { taken_channel_id: existing_channel.id }
-          return
-        end
+      if existing_channel&.publisher == current_publisher
+        redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.screen_name })
+        return
       end
 
-      @current_channel = Channel.new(publisher: current_publisher, verified: true)
-      @current_channel.details = TwitterChannelDetails.new(twitter_details_attrs)      
-      @current_channel.save!
+      @channel = Channel.new(publisher: current_publisher, verified: true)
+      @channel.details = TwitterChannelDetails.new(twitter_details_attrs)      
+
+      if existing_channel
+        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
+
+        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
+        return
+      end
+      
+      @channel.save!
 
       begin
         PublisherChannelSetter.new(publisher: current_publisher).perform

@@ -87,7 +87,6 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     returned_channel_ids = []
     channels.each do |channel|
       if returned_channel_ids.include?(channel.first)
-        debugger
         assert false
       else
         returned_channel_ids.push(channel.first)
