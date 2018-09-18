@@ -1,4 +1,7 @@
 class Publishers::SiteBannersController < ApplicationController
+
+  MAX_IMAGE_SIZE = 700_000
+
   def new
     @site_banner = current_publisher.site_banner || SiteBanner.new
   end
@@ -32,6 +35,11 @@ class Publishers::SiteBannersController < ApplicationController
   private
 
   def update_image(attachment)
+    if params[:image].length > MAX_IMAGE_SIZE
+      alert[:error] = "File size too big!"
+      return
+    end
+
     data_url = params[:image].split(',')[0]
     if data_url.starts_with?("data:image/jpeg")
       content_type = "image/jpeg"
