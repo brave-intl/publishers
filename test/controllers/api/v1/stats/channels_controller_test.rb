@@ -1,5 +1,4 @@
 require "test_helper"
-require "shared/mailer_test_helper"
 
 class Api::V1::Stats::ChannelsControllerTest < ActionDispatch::IntegrationTest
   test "/api/v1/stats/channels returns list of all channel uuids" do
