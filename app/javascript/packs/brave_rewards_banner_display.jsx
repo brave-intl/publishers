@@ -84,7 +84,8 @@ class BraveRewardsPageForm extends React.Component {
 
   handleBackgroundImageChange(event) {
     this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
-    this.applyFade();
+    // (Albert Wang): TODO: We'll revisit this later
+    //    this.applyFade();
   }
 
   setupBackgroundLabel() {
@@ -156,7 +157,7 @@ class BraveRewardsPageForm extends React.Component {
 
   componentDidMount() {
 
-    this.applyFade();
+//    this.applyFade();
 
     if (this.props.editMode) {
       this.setupBackgroundLabel();
