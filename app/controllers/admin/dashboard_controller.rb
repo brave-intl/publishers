@@ -14,7 +14,9 @@ class Admin::DashboardController < AdminController
   def valid_type?(type)
     type.to_sym.in?([
       :events,
+      :visits,
       :devices_detection]
     )
   end
+
 end
