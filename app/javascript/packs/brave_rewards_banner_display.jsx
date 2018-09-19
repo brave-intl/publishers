@@ -260,7 +260,6 @@ class BraveRewardsPageForm extends React.Component {
 
   handleSubmit(event) {
     const url = '/publishers/' + this.props.publisher_id + "/site_banners";
-    var request = new XMLHttpRequest();
     const body = new FormData();
 
     body.append('title', this.state.title);
