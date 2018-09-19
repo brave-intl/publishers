@@ -31,16 +31,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_response :success
 
-    post(publisher_site_banners_path(publisher),
-      params: {
-        title: "Hello World",
-        description: "Lorem Ipsum",
-        donation_amounts: "[5, 10, 15]",
-      }
-    )
+    site_banner = site_banners(:completed)
 
     fake_data = "A" * Publishers::SiteBannersController::MAX_IMAGE_SIZE
-    post(update_logo_publisher_site_banners_path, params: {image: "data:image/jpeg;base64," + fake_data})
+    post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpeg;base64," + fake_data})
 
     publisher.reload
     assert_nil publisher.site_banner.logo.attachment
@@ -53,16 +47,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_response :success
 
-    post(publisher_site_banners_path(publisher),
-      params: {
-        title: "Hello World",
-        description: "Lorem Ipsum",
-        donation_amounts: "[5, 10, 15]",
-      }
-    )
+    site_banner = site_banners(:completed)
 
     fake_data = "A" * (Publishers::SiteBannersController::MAX_IMAGE_SIZE / 10)
-    post(update_logo_publisher_site_banners_path, params: {image: "data:image/jpeg;base64," + fake_data})
+    post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpeg;base64," + fake_data})
 
     publisher.reload
     assert_not_nil publisher.site_banner.logo
