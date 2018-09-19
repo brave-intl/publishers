@@ -14,7 +14,7 @@ class BraveRewardsPageForm extends React.Component {
     super(props);
 
     this.state = {
-      title: props.details.title || 'Your Title',
+      title: props.details.title || 'YOUR TITLE',
       description: props.details.description || 'A brief description',
       backgroundImage: props.details.backgroundUrl,
       logo: props.details.logoUrl,
@@ -22,7 +22,6 @@ class BraveRewardsPageForm extends React.Component {
       socialLinks: props.details.socialLinks || {'twitter': '@', 'youtube': '@', 'twitch': '@'},
     };
 
-    this.updateTitle = this.updateTitle.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
     this.updateTwitch = this.updateTwitch.bind(this);
     this.updateYoutube = this.updateYoutube.bind(this);
@@ -159,14 +158,13 @@ class BraveRewardsPageForm extends React.Component {
   componentDidMount() {
 
 //    this.applyFade();
-    document.getElementsByClassName("sc-gZMcBi")[0].remove();
 
     if (this.props.editMode) {
       this.setupBackgroundLabel();
       this.setupLogoLabel();
 
       // Set h3 editable
-
+      document.getElementsByClassName("sc-gZMcBi")[0].setAttribute("contenteditable", true)
 
       // Set p editable
       // document.getElementsByClassName("sc-gqjmRU")[0].setAttribute("contenteditable", true)
@@ -236,10 +234,6 @@ class BraveRewardsPageForm extends React.Component {
     this.setState({description: event.target.value})
   }
 
-  updateTitle(event) {
-    this.setState({title: event.target.value})
-  }
-
   updateTwitch(event) {
     let temp = this.state.socialLinks
     temp.twitch = event.target.value
@@ -263,7 +257,7 @@ class BraveRewardsPageForm extends React.Component {
     var request = new XMLHttpRequest();
     const body = new FormData();
 
-    body.append('title', this.state.title);
+    body.append('title', document.getElementsByClassName("sc-gZMcBi")[0].innerText);
     body.append('description', this.state.description);
     body.append('donation_amounts', JSON.stringify(this.state.donationAmounts));
     body.append('social_links', JSON.stringify(this.state.socialLinks));
@@ -354,11 +348,8 @@ class BraveRewardsPageForm extends React.Component {
           donationAmounts={this.convertDonationAmounts(this.state.donationAmounts)}
         >
 
-
-        <input style={{backgroundColor:'rgba(0, 0, 0, 0)', border: this.props.editMode === true? '1px solid LightGray': 'none', borderRadius:'4px', outline:'none', color:'#686978', fontSize:'32px', paddingLeft:'4px', width:'100%', resize:'none', marginTop:'16px'}} className="social-link" type="text" readOnly={!this.props.editMode} onChange={this.updateTitle} value={this.state.title} />
-        <textarea style={{backgroundColor:'rgba(0, 0, 0, 0)', border: this.props.editMode === true? '1px solid LightGray': 'none', borderRadius:'4px', outline:'none', color:'#686978', paddingLeft:'4px', height:'100px', width:'100%', resize:'none', marginTop:'16px'}} className="social-link" type="text" readOnly={!this.props.editMode} onChange={this.updateDescription} value={this.state.description} />
-
-        <div style={{marginTop:'16px'}}>
+        <input style={{backgroundColor:'rgba(0, 0, 0, 0)', border:'none', outline:'none', color:'#686978', paddingLeft:'4px'}} className="social-link" type="text" readOnly={!this.props.editMode} onChange={this.updateDescription} value={this.state.description} />
+        <div style={{marginTop:'24px'}}>
         {
           // this.state.socialLinks.twitter !== undefined &&
           <div>
