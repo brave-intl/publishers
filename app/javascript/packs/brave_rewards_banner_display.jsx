@@ -74,7 +74,7 @@ class BraveRewardsPageForm extends React.Component {
       let bgElement = document.getElementsByClassName('sc-EHOje ' + bgClass)[0];
       let bgStyle = getComputedStyle(bgElement);
       let bgUrl = bgStyle.background.match(/url\(([^)]+)\)/i)[1];
-      let bgFaded = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + bgUrl + ')';
+      let bgFaded = 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + this.state.backgroundImage + ')';
 
       //Check for default image
       if(!bgUrl.includes('/rewards/siteBanner/assets/')){
@@ -85,8 +85,8 @@ class BraveRewardsPageForm extends React.Component {
 
   handleBackgroundImageChange(event) {
     this.setState({backgroundImage: URL.createObjectURL(event.target.files[0])});
+    this.applyFade();
     // (Albert Wang): TODO: We'll revisit this later
-    //    this.applyFade();
   }
 
   setupBackgroundLabel() {
@@ -158,7 +158,7 @@ class BraveRewardsPageForm extends React.Component {
 
   componentDidMount() {
 
-//    this.applyFade();
+    this.applyFade();
     document.getElementsByClassName("sc-gZMcBi")[0].remove();
 
     if (this.props.editMode) {
