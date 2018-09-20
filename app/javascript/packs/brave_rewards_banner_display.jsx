@@ -27,6 +27,7 @@ class BraveRewardsPageForm extends React.Component {
     this.updateTwitch = this.updateTwitch.bind(this);
     this.updateYoutube = this.updateYoutube.bind(this);
     this.updateTwitter = this.updateTwitter.bind(this);
+    this.handlePreviewButton = this.handlePreviewButton.bind(this);
     this.handleLogoImageChange = this.handleLogoImageChange.bind(this);
     this.handleBackgroundImageChange = this.handleBackgroundImageChange.bind(this);
     this.handleDonationAmountsChange = this.handleDonationAmountsChange.bind(this);
@@ -47,6 +48,13 @@ class BraveRewardsPageForm extends React.Component {
         'selected': false
       })
     );
+  }
+
+  handlePreviewButton(){
+    ReactDOM.unmountComponentAtNode(document.getElementsByClassName("modal-panel--content")[0]);
+    document.getElementsByClassName("modal-panel--close")[0].click();
+    document.getElementById("instant-donation-button").click();
+    document.getElementById("preview-banner-button").click();
   }
 
   handleDonationAmountsChange(event) {
@@ -324,7 +332,7 @@ class BraveRewardsPageForm extends React.Component {
       topController =
                     <React.Fragment>
                       <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-dont-save-changes" href="#" style={{'color': '#808080'}}>Don't Change</a>
-                      <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-save-changes" href="#">Preview Banner</a>
+                      <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-link-primary" id="instant-donation-save-changes" href="#" onClick={this.handlePreviewButton}>Preview Banner</a>
                       <a data-js-confirm-with-modal="instant-donation-selection" className="btn btn-primary" id="instant-donation-save-changes" href="#" onClick={this.handleSubmit}>Save Change</a>
                     </React.Fragment>
     } else {
