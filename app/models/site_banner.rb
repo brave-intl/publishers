@@ -7,6 +7,14 @@ class SiteBanner < ApplicationRecord
   has_one_attached :background_image
   belongs_to :publisher
 
+  LOGO = "logo".freeze
+  LOGO_DIMENSIONS = "148x148".freeze
+  LOGO_UNIVERSAL_FILE_SIZE = 20_000
+
+  BACKGROUND = "background".freeze
+  BACKGROUND_DIMENSIONS = "900x176".freeze
+  BACKGROUND_UNIVERSAL_FILE_SIZE = 200_000
+
   def read_only_react_property
     {
       title: self.title,
