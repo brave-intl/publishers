@@ -70,6 +70,7 @@ class Publishers::SiteBannersController < ApplicationController
       return nil
     end
     filename = Time.now.to_s.gsub!(" ", "_").gsub!(":", "_") + current_publisher.id
+    p "#{filename} extension: #{extension} attachment_type: #{attachment_type}"
     original_image_path = save_temporary_image(
       filename: filename,
       extension: extension
