@@ -11,10 +11,8 @@ class PublishersController < ApplicationController
     :balance,
     :disconnect_uphold,
     :edit_payment_info,
-    :generate_statement,
     :home,
     :statement,
-    :statement_ready,
     :statements,
     :update,
     :uphold_status,
@@ -396,35 +394,7 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
-  def generate_statement
-    publisher = current_publisher
-    statement_period = params[:statement_period]
-    statement = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
-    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id, send_email: true)
-    render(json: {
-      id: statement.id,
-      date: statement_period_date(statement.created_at),
-      period: statement_period_description(statement.period.to_sym)
-    }, status: 200)
-  end
-
-  def statement_ready
-    statement = PublisherStatement.find(params[:id])
-    if statement && statement.contents
-      head 204
-    else
-      head 404
-    end
-  end
-
   def statement
-    statement = PublisherStatement.find(params[:id])
-
-    if statement
-      send_data statement.contents, filename: publisher_statement_filename(statement)
-    else
-      head 404
-    end
   end
 
   def uphold_status
@@ -519,6 +489,10 @@ class PublishersController < ApplicationController
   def publisher_create_auth_token_params
     params.require(:publisher).permit(:email, :brave_publisher_id)
   end
+
+  # def publisher_statement_params
+  #   params.require(:publisher).permit(:statement_period)
+  # end
 
   # If an active session is present require users to explicitly sign out
   def require_unauthenticated_publisher
