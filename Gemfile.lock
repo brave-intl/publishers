@@ -438,7 +438,9 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    wicked_pdf (1.1.0)
     will_paginate (3.1.6)
+    wkhtmltopdf-binary (0.12.4)
     xml-simple (1.1.5)
     xpath (3.1.0)
       nokogiri (~> 1.8)
@@ -514,7 +516,9 @@ DEPENDENCIES
   web-console
   webmock (~> 3.0)
   webpacker
+  wicked_pdf
   will_paginate
+  wkhtmltopdf-binary
   yt
 
 RUBY VERSION
