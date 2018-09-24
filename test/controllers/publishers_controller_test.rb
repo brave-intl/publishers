@@ -613,17 +613,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
-  # test "a publisher's statement can be generated via ajax" do
-  #   publisher = publishers(:uphold_connected)
-  #   sign_in publisher
-
-  #   assert_response 200
-  #   assert_match(
-  #     '{"id":"' + publisher_statement.id + '",' +
-  #       '"date":"' + publisher_statement.created_at.strftime('%b %e') + '",' +
-  #       '"period":"All dates"}',
-  #     response.body)
-  # end
+  test "a publisher's statement can be generated via ajax" do
+    publisher = publishers(:uphold_connected)
+    get statement_publishers_path
+    follow_redirect!
+    assert_equal response.status, 200
+  end
 
   test "a publisher's balance can be polled via ajax" do
     publisher = publishers(:uphold_connected)

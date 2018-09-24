@@ -395,8 +395,17 @@ class PublishersController < ApplicationController
   end
 
   def statement
-  end
+    statement_period = params[:statement_period]
+    @transactions = PublisherStatementGetter.new(publisher: current_publisher, statement_period: statement_period).perform
+    @statement_period = publisher_statement_period(@transactions)
+    statement_file_name = "BravePaymentsStatement-#{@statement_period}"
 
+    # statement made from the transactions in /views/layouts/statement.html and /views/publishers/statement.html
+    statement_string = render_to_string :layout => "statement"
+    pdf = WickedPdf.new.pdf_from_string(statement_string)
+    send_data pdf, filename: statement_file_name, type: "application/pdf"
+  end
+  
   def uphold_status
     publisher = current_publisher
     respond_to do |format|
