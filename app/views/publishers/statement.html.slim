@@ -1,0 +1,25 @@
+center.statement-contents
+  table
+    tr
+      th Date
+      th Description
+      th Channel
+      th Amount (BAT)
+      th Deposit
+    tbody
+      - deposit_sum = BigDecimal.new('0.0e18')
+      - @transactions.each do |transaction|
+        tr
+          td = transaction["created_at"].strftime("%m/%d/%y")
+          td = transaction["description"]
+          td = transaction["channel"]
+          td = transaction["amount"]
+          - if transaction["settlement_amount"]
+            td = transaction["settlement_amount"]
+            - deposit_sum += transaction["settlement_amount"].to_d
+      tr
+        td = ""
+        td = ""
+        td = ""
+        td = ""
+        td#total = deposit_sum.to_s

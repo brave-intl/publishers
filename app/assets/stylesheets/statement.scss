@@ -1,0 +1,54 @@
+.statement {  
+  .statement-header {
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+
+    img {
+      position: fixed;
+      padding-right: 820px;
+    }
+
+    #brave-logo {
+      height: 100px;
+    }
+    h1 {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px
+    }
+
+    h4 {
+      margin: 5px 0 5px 0px;
+    }
+
+    .statement-header-info {
+      text-align: center;
+      margin-left: -25px;
+
+      .statement-header-info-centered {
+        text-align: center;
+      }
+    }
+  }
+
+  .statement-contents {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+
+    th {
+      padding: 3px 7px 5px 7px;
+    }
+
+    td {
+      padding: 3px 7px 5px 7px;
+      text-align: right;
+    }
+
+    td#total {
+      border-top-style: solid;
+      border-width: 1px;        
+    }
+  }
+}
