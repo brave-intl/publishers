@@ -447,9 +447,8 @@ en:
       title: Statements
       description: Statements contain the details of deposit history.
       create_statement: Create Statement
-      created_at: Requested
-      period: Time range
-      status: Status
+      period: Period
+      download: Download
     suspended_error:
       heading_html: Due to suspicious activity,<br/> your account is suspended.
       body: Please contact support+publishers@basicattentiontoken.org if you believe that activities on your account are not aberrant or irregular.

@@ -21,7 +21,8 @@
         .db-info-row
           .db-field = "Uphold widget enabled?"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
-          .db-field = "Pending Payouts BAT"
+        .db-info-row
+          .db-field = "Pending Payouts"
           .db-value = "#{publisher_humanize_balance(@publisher, "BAT")} BAT, #{publisher_converted_balance(@publisher)}"
         .db-info-row
           .db-field = "Default currency:"
@@ -36,28 +37,34 @@
       #statement-section.split-row
         h3.admin-header = "Statements"
         .statement
-          = form_for(@publisher, url: generate_statement_admin_publishers_path, html: { id: "statement_generator" }, method: :patch) do |f|
-            .form-group
-              = hidden_field_tag(:id, @publisher.id)
-              = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
-              a#generate_statement href="#" class="btn btn-primary"
-                = "Generate statement"
-        .statements-table.rounded-box
-          .header
-            .created-at= t ".created_at"
-            .period= t ".period"
-            .status= t ".status"
-          .content#generated_statements
-            - @publisher.statements.each do |s|
-              .statement
-                .created-at= statement_period_date(s.created_at)
-                .period= statement_period_description(s.period.to_sym)
-                .status
-                  - if s.encrypted_contents?
-                    span= 'Ready'
-                    = link_to(t("shared.download"), statement_publishers_url(id: s.id), class: 'download')
-                  - else
-                    = t ".statements.delayed"
+          = link_to("this month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "this_month"))
+        .statement
+          = link_to("last month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "last_month"))
+        .statement
+          = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
+        / .statement
+        /   = form_for(@publisher, url: generate_statement_admin_publishers_path, html: { id: "statement_generator" }, method: :patch) do |f|
+        /     .form-group
+        /       = hidden_field_tag(:id, @publisher.id)
+        /       = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
+        /       a#generate_statement href="#" class="btn btn-primary"
+        /         = "Generate statement"
+        / .statements-table.rounded-box
+        /   .header
+        /     .created-at= t ".created_at"
+        /     .period= t ".period"
+        /     .status= t ".status"
+        /   .content#generated_statements
+        /     - @publisher.statements.each do |s|
+        /       .statement
+        /         .created-at= statement_period_date(s.created_at)
+        /         .period= statement_period_description(s.period.to_sym)
+        /         .status
+        /           - if s.encrypted_contents?
+        /             span= 'Ready'
+        /             = link_to(t("shared.download"), statement_publishers_url(id: s.id), class: 'download')
+        /           - else
+        /             = t ".statements.delayed"
   hr
     = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
   hr

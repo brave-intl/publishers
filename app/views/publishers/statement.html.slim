@@ -10,16 +10,9 @@ center.statement-contents
       - deposit_sum = BigDecimal.new('0.0e18')
       - @transactions.each do |transaction|
         tr
-          td = transaction["created_at"].strftime("%m/%d/%y")
-          td = transaction["description"]
+          td = transaction["created_at"].to_time.strftime("%m/%d/%y")
+          td = transaction["description"].capitalize
           td = transaction["channel"]
           td = transaction["amount"]
-          - if transaction["settlement_amount"]
-            td = transaction["settlement_amount"]
-            - deposit_sum += transaction["settlement_amount"].to_d
-      tr
-        td = ""
-        td = ""
-        td = ""
-        td = ""
-        td#total = deposit_sum.to_s
+          - if transaction["type"] == "contribution_settlement" || transaction["type"] == "referral_settlement"
+            td = "#{transaction["settlement_amount"]} #{transaction["settlement_currency"]}"
