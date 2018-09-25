@@ -19,13 +19,16 @@ noscript
         .header
           .period = t ".period"
           .download= t ".download"
-        .content#generated_statements
-          .statement
-            .period = t(".this_month")
-            .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "this_month"), format: :pdf)
-          .statement
-            .period = t(".last_month")
-            .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "last_month"), format: :pdf)
-          .statement
-            .period = t(".all")
-            .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "all"), format: :pdf)
+        - if @statement_has_content
+          .content#generated_statements
+            .statement
+              .period = t(".this_month")
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "this_month"), format: :pdf)
+            .statement
+              .period = t(".last_month")
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "last_month"), format: :pdf)
+            .statement
+              .period = t(".all")
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "all"), format: :pdf)
+        - else
+          .content.empty

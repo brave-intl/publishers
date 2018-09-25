@@ -42,7 +42,7 @@
 
       &:empty {
         &:after {
-          content: "You haven't requested a statement yet!";
+          content: "You don't have any statements yet!";
           display: block;
           padding-top: 130px;
           text-align: center;

@@ -383,6 +383,8 @@ class PublishersController < ApplicationController
   end
 
   def statements
+    statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
+    @statement_has_content = statement_contents.length > 0
   end
 
   def log_out
@@ -397,13 +399,18 @@ class PublishersController < ApplicationController
   def statement
     statement_period = params[:statement_period]
     @transactions = PublisherStatementGetter.new(publisher: current_publisher, statement_period: statement_period).perform
-    @statement_period = publisher_statement_period(@transactions)
-    statement_file_name = "BravePaymentsStatement-#{@statement_period}"
 
-    # statement made from the transactions in /views/layouts/statement.html and /views/publishers/statement.html
-    statement_string = render_to_string :layout => "statement"
-    pdf = WickedPdf.new.pdf_from_string(statement_string)
-    send_data pdf, filename: statement_file_name, type: "application/pdf"
+    if @transactions.length == 0
+      redirect_to statements_publishers_path, :flash => { :alert => t("publishers.statements.no_transactions") }
+    else 
+      @statement_period = publisher_statement_period(@transactions)
+      statement_file_name = "BravePaymentsStatement-#{@statement_period}"
+
+      # statement made from the transactions in /views/layouts/statement.html and /views/publishers/statement.html
+      statement_string = render_to_string :layout => "statement"
+      pdf = WickedPdf.new.pdf_from_string(statement_string)
+      send_data pdf, filename: statement_file_name, type: "application/pdf"
+    end
   end
   
   def uphold_status

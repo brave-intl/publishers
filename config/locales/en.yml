@@ -408,9 +408,6 @@ en:
         view_statements: View statements
         view_recent_statement: Your %{statement_link} is ready.
         unavailable: No statements available.
-        this_month: This month
-        last_month: Last month
-        all: All
       contact:
         heading: Contact
         edit: Edit Contact
@@ -450,6 +447,10 @@ en:
       title: Statements
       description: Statements contain the details of deposit history.
       create_statement: Create Statement
+      no_transactions: No transactions this period.
+      this_month: This month
+      last_month: Last month
+      all: All
       period: Period
       download: Download
     suspended_error:
