@@ -126,43 +126,4 @@ module ChannelsHelper
       distance_of_time_in_words(Time.now, channel.contesting_channel.contest_timesout_at)
     end
   end
-
-  def get_channel_from_channel_id(channel_id)
-    channel_id_split_on_prefix = channel_id.split(":", 2)
-    channel_is_site_channel = channel_id_split_on_prefix.length == 1 # hack to identify site channels
-
-    if channel_is_site_channel
-      channel_details_type_identifier = channel_id_split_on_prefix.first
-    else
-      prefix = channel_id_split_on_prefix.first
-      channel_details_type_identifier = channel_id_split_on_prefix.second
-    end
-
-    if channel_is_site_channel
-      SiteChannelDetails.where(brave_publisher_id: channel_details_type_identifier).
-                        joins(:channel).
-                        where('channels.verified = true').first.channel
-    else
-      case prefix
-        when "youtube#channel"
-          YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).
-                                joins(:channel).
-                                where('channels.verified = true').first.channel
-        when "twitch#channel"
-          TwitchChannelDetails.where(name: channel_details_type_identifier).
-                              joins(:channel).
-                              where('channels.verified = true').first.channel
-        when "twitch#author"
-          TwitchChannelDetails.where(name: channel_details_type_identifier).
-                              joins(:channel).
-                              where('channels.verified = true').first.channel
-        when "twitter#channel"
-          TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
-                               joins(:channel).
-                               where('channels.verified = true').first.channel
-        else 
-          raise "Unable to find channel for channel identifier #{channel_id}"
-      end
-    end
-  end
 end

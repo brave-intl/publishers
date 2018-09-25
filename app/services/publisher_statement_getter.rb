@@ -1,5 +1,4 @@
 class PublisherStatementGetter < BaseApiClient
-  include ChannelsHelper
   attr_reader :publisher
   attr_reader :statement_period
 
@@ -39,7 +38,7 @@ class PublisherStatementGetter < BaseApiClient
   def replace_channel_identifiers_with_channel_titles(transactions)
     transactions.map { |transaction|
       channel_identifier = transaction["channel"]
-      channel = get_channel_from_channel_id(channel_identifier)
+      channel = Channel.find_by_channel_identifier(channel_identifier)
       transaction["channel"] = channel.publication_title
       transaction
     }
