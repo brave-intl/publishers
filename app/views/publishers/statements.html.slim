@@ -23,12 +23,12 @@ noscript
           .content#generated_statements
             .statement
               .period = t(".this_month")
-              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "this_month"), format: :pdf)
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "this_month", :"data-piwik-action" => "DownloadThisMonthStatement", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "StatementFlow"), format: :pdf)
             .statement
               .period = t(".last_month")
-              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "last_month"), format: :pdf)
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "last_month", :"data-piwik-action" => "DownloadLastMonthStatement", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "StatementFlow"), format: :pdf)
             .statement
               .period = t(".all")
-              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "all"), format: :pdf)
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "all", :"data-piwik-action" => "DownloadAllStatement", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "StatementFlow"), format: :pdf)
         - else
           .content.empty
