@@ -499,10 +499,6 @@ class PublishersController < ApplicationController
     params.require(:publisher).permit(:email, :brave_publisher_id)
   end
 
-  # def publisher_statement_params
-  #   params.require(:publisher).permit(:statement_period)
-  # end
-
   # If an active session is present require users to explicitly sign out
   def require_unauthenticated_publisher
     return if !current_publisher

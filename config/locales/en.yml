@@ -408,6 +408,9 @@ en:
         view_statements: View statements
         view_recent_statement: Your %{statement_link} is ready.
         unavailable: No statements available.
+        this_month: This month
+        last_month: Last month
+        all: All
       contact:
         heading: Contact
         edit: Edit Contact
