@@ -70,11 +70,13 @@ class Publishers::SiteBannersController < ApplicationController
       return nil
     end
     filename = Time.now.to_s.gsub!(" ", "_").gsub!(":", "_") + current_publisher.id
-    p "#{filename} extension: #{extension} attachment_type: #{attachment_type}"
-    original_image_path = save_temporary_image(
-      filename: filename,
-      extension: extension
-    )
+
+    temp_file = Tempfile.new([filename, extension])
+    File.open(temp_file.path, 'wb') do |f|
+      f.write(Base64.decode64(params[:image].split(',')[1]))
+    end
+
+    original_image_path = temp_file.path
 
     resized_jpg_path = resize_to_dimensions_and_convert_to_jpg(
       source_image_path: original_image_path,

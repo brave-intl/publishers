@@ -1,20 +1,13 @@
 module ImageConversionHelper
-  LOOP_MAX = 15
-  def save_temporary_image(filename:, extension:)
-    temp_file = Tempfile.new([filename, extension])
-    File.open(temp_file.path, 'wb') do |f|
-      f.write(Base64.decode64(params[:image].split(',')[1]))
-    end
-    temp_file.path
-  end
+  LOOP_MAX = 50
 
   def resize_to_dimensions_and_convert_to_jpg(source_image_path:, attachment_type:, filename:)
     # Set dimensions
     mini_magick_image = MiniMagick::Image.open(source_image_path)
     if attachment_type == SiteBanner::LOGO
-      mini_magick_image.resize(SiteBanner::LOGO_DIMENSIONS)
+      mini_magick_image.resize(SiteBanner::LOGO_DIMENSIONS.join("x"))
     elsif attachment_type == SiteBanner::BACKGROUND
-      mini_magick_image.resize(SiteBanner::BACKGROUND_DIMENSIONS)
+      mini_magick_image.resize(SiteBanner::BACKGROUND_DIMENSIONS.join("x"))
     else
       LogException.perform(StandardError.new("Unknown attachment type:" + attachment_type), params: {})
       return nil
@@ -27,8 +20,6 @@ module ImageConversionHelper
     temp_file = Tempfile.new([new_filename, ".jpg"])
 
     mini_magick_image.write(temp_file)
-
-    File.delete(source_image_path)
 
     temp_file.path
   end
