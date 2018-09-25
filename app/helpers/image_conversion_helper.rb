@@ -1,7 +1,6 @@
 module ImageConversionHelper
   LOOP_MAX = 15
   def save_temporary_image(filename:, extension:)
-    p "saving temp file"
     temp_file = Tempfile.new([filename, extension])
     File.open(temp_file.path, 'wb') do |f|
       f.write(Base64.decode64(params[:image].split(',')[1]))
@@ -10,7 +9,6 @@ module ImageConversionHelper
   end
 
   def resize_to_dimensions_and_convert_to_jpg(source_image_path:, attachment_type:, filename:)
-    p "resizing"
     # Set dimensions
     mini_magick_image = MiniMagick::Image.open(source_image_path)
     if attachment_type == SiteBanner::LOGO
@@ -52,32 +50,35 @@ module ImageConversionHelper
 
     while iteration < LOOP_MAX
       current_file_size = File.open(source_image_path, 'r').size
-      p "#{attachment_type} Original file size: #{current_file_size}"
       break if current_file_size == target_file_size
-      MiniMagick::Tool::Mogrify.new do |convert|
+      MiniMagick::Tool::Convert.new do |convert|
+        convert << source_image_path
         convert.merge!(["-set", "comment", "A"])
         convert.merge!(["-quality", 100])
         convert << source_image_path
       end
 
+      current_file_size = File.open(source_image_path, 'r').size
+
       calculated_offset = target_file_size - current_file_size
-      p "#{attachment_type} Calculated offset: #{calculated_offset}"
 
       if calculated_offset < 0
         LogException.perform(StandardError.new("Exceeds expected attachment size for padding to occur"), params: {})
         break
       end
 
-      MiniMagick::Tool::Mogrify.new do |convert|
+      MiniMagick::Tool::Convert.new do |convert|
+        convert << source_image_path
         convert.merge!(["-set", "comment", "A" * (calculated_offset + 1)])
         convert.merge!(["-quality", 100])
         convert << source_image_path
       end
+
+      iteration += 1
     end
     current_file_size = File.open(source_image_path, 'r').size
 
     if current_file_size != target_file_size
-      p "#{attachment_type} Wrong file size"
       LogException.perform(StandardError.new("Exceeds expected attachment size for padding to occur"), params: {})
     end
 

@@ -13,7 +13,7 @@ class SiteBanner < ApplicationRecord
 
   BACKGROUND = "background".freeze
   BACKGROUND_DIMENSIONS = "900x176".freeze
-  BACKGROUND_UNIVERSAL_FILE_SIZE = 400_000
+  BACKGROUND_UNIVERSAL_FILE_SIZE = 60_000
 
   def read_only_react_property
     {
