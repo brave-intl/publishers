@@ -404,7 +404,7 @@ class PublishersController < ApplicationController
       redirect_to statements_publishers_path, :flash => { :alert => t("publishers.statements.no_transactions") }
     else 
       @statement_period = publisher_statement_period(@transactions)
-      statement_file_name = "BravePaymentsStatement-#{@statement_period}"
+      statement_file_name = publishers_statement_file_name(@statement_period)
 
       # statement made from the transactions in /views/layouts/statement.html and /views/publishers/statement.html
       statement_string = render_to_string :layout => "statement"

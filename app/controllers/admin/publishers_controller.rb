@@ -34,7 +34,7 @@ class Admin::PublishersController < AdminController
     statement_period = params[:statement_period]
     @transactions = PublisherStatementGetter.new(publisher: @publisher, statement_period: statement_period).perform
     @statement_period = publisher_statement_period(@transactions)
-    statement_file_name = "BravePaymentsStatemet-#{@statement_period}"
+    statement_file_name = publishers_statement_file_name(@statement_period)
 
     # statement made from the transactions in /views/layouts/statement.html and /views/publishers/statement.html
     statement_string = render_to_string layout: "statement", template: "publishers/statement"

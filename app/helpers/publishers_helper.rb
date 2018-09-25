@@ -267,6 +267,10 @@ module PublishersHelper
     statement_period = statement_begin_date == statement_end_date ? statement_begin_date : "#{statement_begin_date} - #{statement_end_date}"
     statement_period
   end
+
+  def publishers_statement_file_name(publisher_statement_period)
+    "#{t("publishers.statements.statement_file_name")}-#{publisher_statement_period}"
+  end
   
   def publisher_filtered_verification_token(publisher)
     if publisher.supports_https?
