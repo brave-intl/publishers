@@ -3,11 +3,11 @@ class Publishers::SiteBannersController < ApplicationController
   MAX_IMAGE_SIZE = 700_000
 
   def new
-    @site_banner = current_publisher.site_banner || SiteBanner.new
+    @site_banner = SiteBanner.find_by(publisher_id: current_publisher.id) || SiteBanner.new
   end
 
   def create
-    site_banner = current_publisher.site_banner || SiteBanner.new
+    site_banner = SiteBanner.find_by(publisher_id: current_publisher.id) || SiteBanner.new
     donation_amounts = JSON.parse(params[:donation_amounts])
     site_banner.update(
       publisher_id: current_publisher.id,
@@ -20,13 +20,21 @@ class Publishers::SiteBannersController < ApplicationController
     head :ok
   end
 
+  def fetch
+    site_banner = SiteBanner.find_by(publisher_id: current_publisher.id)
+    data = JSON.parse(site_banner.to_json)
+    data[:backgroundImage] = site_banner.read_only_react_property[:backgroundUrl]
+    data[:logoImage] = site_banner.read_only_react_property[:logoUrl]
+    render(json: data.to_json)
+  end
+
   def update_logo
     if params[:image].length > MAX_IMAGE_SIZE
       # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
       # alert[:error] = "File size too big!"
       head :payload_too_large and return
     end
-    site_banner = current_publisher.site_banner
+    site_banner = SiteBanner.find_by(publisher_id: current_publisher.id)
     update_image(site_banner.logo)
     head :ok
   end
@@ -38,7 +46,7 @@ class Publishers::SiteBannersController < ApplicationController
       head :payload_too_large and return
     end
 
-    site_banner = current_publisher.site_banner
+    site_banner = SiteBanner.find_by(publisher_id: current_publisher.id)
     update_image(site_banner.background_image)
     head :ok
   end

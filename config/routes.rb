@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     end
     resources :site_banners, only: %i(new create), controller: 'publishers/site_banners' do
       collection do
+        get :fetch
         post :update_logo
         post :update_background_image
       end

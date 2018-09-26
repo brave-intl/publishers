@@ -16,7 +16,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
   )
   = render partial: "choose_channel_button"
   - if current_publisher.in_brave_rewards_whitelist?
-    = link_to("+ #{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-selection" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+    = link_to("+ #{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
 
 
 = hidden_field_tag 'publisher_id', current_publisher.id
@@ -213,7 +213,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
                       - if channel.details_type == "TwitchChannelDetails"
                         = publisher_channel_balance(current_publisher, channel.details.author_identifier, "BAT")
-                      - else 
+                      - else
                         = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
 
                     span.bat-channel--currency= " BAT"
@@ -360,5 +360,5 @@ javascript:
     javascriptDetected();
   });
 
-script id="instant-donation-selection" type="text/html"
+script id="instant-donation-modal" type="text/html"
   = render "instant_donation_modal"

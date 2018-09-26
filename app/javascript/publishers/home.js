@@ -6,7 +6,7 @@ import fetch from '../utils/fetchPolyfill';
 import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
-import { renderBraveRewardsBannerDisplay } from '../packs/brave_rewards_banner_display';
+import { renderBraveRewardsBannerContainer } from '../packs/brave_rewards_banner_container';
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
         continue;
       } else {
-        hideVerificationFailureWhatHappened(e);        
+        hideVerificationFailureWhatHappened(e);
       }
     }
   })
@@ -403,16 +403,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }, false);
 
   instantDonationButton.addEventListener("click", function(event) {
-    document.getElementById("preview-banner-button").onclick = function() { 
-      document.getElementById("instant-donation-modal-selection").style.display = 'none';
-      document.getElementById("instant-donation-modal-preview").style.display = 'block';
-      renderBraveRewardsBannerDisplay(false);
-    };
-    document.getElementById("edit-banner-button").onclick = function() { 
-      document.getElementById("instant-donation-modal-selection").style.display = 'none';
-      document.getElementById("instant-donation-modal-edit").style.display = 'block';
-      renderBraveRewardsBannerDisplay(true);
-    };
+    document.getElementsByClassName('container')[0].style.padding = 0;
+    renderBraveRewardsBannerContainer();
   }, false);
 
   updateContactForm.addEventListener('submit', function(event) {

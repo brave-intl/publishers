@@ -1,17 +1,4 @@
-.col.col-center.col-xs-12.col-sm-12.col-md-12.col-lg-12
-  .modal id="instant-donation-modal" role="dialog" tabindex="-1"
-    .modal-dialog
-      .modal-header id="instant-donation-modal-selection"
-        center
-          = image_tag "icn-donation-jar@1x.png", id: 'icn-donation-jar'
-          h2.modal-title = t ".headline"
-          p = t ".intro"
-          a href="#" class="btn btn-link-primary js-deny" Skip for now
-          = link_to(t(".preview"), "#", class: 'btn btn-link-primary', id: "preview-banner-button")
-          = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "edit-banner-button")
-      .modal-header style="display: none;" id="instant-donation-modal-preview"
-        center
-          h4 TODO PREVIEW
-      .modal-header style="display: none;" id="instant-donation-modal-edit"
-        = hidden_field_tag 'publisher_id', current_publisher.id
-        = javascript_pack_tag("brave_rewards_banner_display")
+.instant-donation-container id="instant-donation-container"
+  .container id=current_publisher.id
+      .filler
+        .react-container id="react-container"
