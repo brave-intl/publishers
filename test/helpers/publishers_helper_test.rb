@@ -80,7 +80,7 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal "b8317d8a-78a4-48a6-9eeb-a2674c6455c4", publisher_id_from_owner_identifier("publishers#uuid:b8317d8a-78a4-48a6-9eeb-a2674c6455c4")
   end
 
-  test "publisher_humanize_balance should return a formatted & converted wallet balance" do
+  test "publisher_humanize_balance should return a formatted & converted wallet balance, last settlement balances do not apply fee" do
     class FakePublisher
       attr_reader :default_currency, :wallet
 
@@ -108,6 +108,12 @@ class PublishersHelperTest < ActionView::TestCase
           "EUR" => 0.20187818378874756,
           "GBP" => 0.1799810085548496
         },
+        "lastSettlement"=>
+          {"altcurrency"=>"BAT",
+           "currency"=>"USD",
+           "probi"=>"405520562799219044167",
+           "amount"=>"69.78",
+           "timestamp"=>1536361540000},
         "wallet" => {
           "provider" => "uphold",
           "authorized" => true,
@@ -118,6 +124,12 @@ class PublishersHelperTest < ActionView::TestCase
     )
     assert_not_nil publisher.wallet
     assert_equal "9001.00", publisher_humanize_balance(publisher, "USD")
+
+    # ensure last settlement balance does not have fee applied
+    assert_equal publisher_humanize_last_settlement(publisher, "BAT"), "405.52"
+
+    # ensure publisher_converted_last_settlement does not have fee applied
+    assert_equal publisher_converted_last_settlement(publisher), "~ 95.86 USD"
 
     publisher = FakePublisher.new(
       wallet_json: nil
