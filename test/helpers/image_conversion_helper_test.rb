@@ -5,7 +5,7 @@ class ImageConversionHelperTest < ActionView::TestCase
     temp_file_path = resize_to_dimensions_and_convert_to_jpg(
       source_image_path: source_image_path.to_s,
       attachment_type: SiteBanner::LOGO,
-      filename: "bat-logo")
+      filename: "bat_logo")
 
     mini_magick_image = MiniMagick::Image.open(temp_file_path)
     assert_operator SiteBanner::LOGO_DIMENSIONS.first, :>=, mini_magick_image.resolution.first
@@ -18,7 +18,7 @@ class ImageConversionHelperTest < ActionView::TestCase
     temp_file_path = resize_to_dimensions_and_convert_to_jpg(
       source_image_path: source_image_path.to_s,
       attachment_type: SiteBanner::LOGO,
-      filename: "bat-logo"
+      filename: "brave_lion_logo"
     )
 
     mini_magick_image = MiniMagick::Image.open(temp_file_path)
@@ -31,7 +31,29 @@ class ImageConversionHelperTest < ActionView::TestCase
     source_image_path = "./app/assets/images/brave-lion@3x.jpg"
     mini_magick_image = MiniMagick::Image.open(source_image_path)
     mini_magick_image.format "jpg"
-    temp_file = Tempfile.new(["brave-lion-copy", ".jpg"])
+    temp_file = Tempfile.new(["brave_lion_copy", ".jpg"])
+
+    mini_magick_image.write(temp_file)
+
+    temp_file_path = resize_to_dimensions_and_convert_to_jpg(
+      source_image_path: temp_file.path,
+      attachment_type: SiteBanner::LOGO,
+      filename: "brave_lion_logo"
+    )
+
+    add_padding_to_image(
+      source_image_path: temp_file_path,
+      attachment_type: SiteBanner::LOGO
+    )
+
+    assert_equal SiteBanner::LOGO_UNIVERSAL_FILE_SIZE, File.open(temp_file_path, 'r').size
+  end
+
+  test "adds padding to a background image for the correct file size" do
+    source_image_path = "./app/assets/images/san_francisco.jpg"
+    mini_magick_image = MiniMagick::Image.open(source_image_path)
+    mini_magick_image.format "jpg"
+    temp_file = Tempfile.new(["san_francisco_copy", ".jpg"])
 
     mini_magick_image.write(temp_file)
 
@@ -49,11 +71,7 @@ class ImageConversionHelperTest < ActionView::TestCase
     assert_equal SiteBanner::LOGO_UNIVERSAL_FILE_SIZE, File.open(temp_file_path, 'r').size
   end
 
-  test "adds padding to a background image for the correct file size" do
-
-  end
-
   test "generates a consistent filename for an image" do
-
+    assert_equal "8957c0ef46cdabe73f93ee92b9a43ccb7fa8c9c319212c1f01a67957cab3b6b9", generate_filename(source_image_path: "./app/assets/images/brave-lion@3x.jpg")
   end
 end
