@@ -981,4 +981,33 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
   end
+
+  test "fees aren't applied to last settlement balance" do
+    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
+      publisher = publishers(:completed)
+      sign_in publisher
+      wallet = {"lastSettlement"=>
+                {"altcurrency"=>"BAT",
+                 "currency"=>"USD",
+                 "probi"=>"405520562799219044167",
+                 "amount"=>"69.78",
+                 "timestamp"=>1536361540000},
+               }.to_json
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet, headers: {})
+
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
+      to_return(status: 200, body: [].to_json)
+
+    get home_publishers_path(publisher)
+
+    # ensure the last settlement balance does not have fees applied
+    assert_match "\"last_deposit_bat_amount\">405.52", response.body 
+
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
+    end
+  end
 end
