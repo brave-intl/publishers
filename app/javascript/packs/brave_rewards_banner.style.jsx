@@ -52,7 +52,7 @@
     width:'40px',
     right:'0',
     marginTop:'15px',
-    marginRight:'80px'
+    marginRight:'40px'
   }
 
   let bottomBar = {
@@ -93,7 +93,7 @@
     fontSize:'13px',
     float:'right',
     paddingTop:'11px',
-    marginRight:'80px'
+    marginRight:'40px'
   }
 
   let donationsButtonContainer = {

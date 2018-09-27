@@ -18,9 +18,9 @@ export default class BraveRewardsBanner extends React.Component {
       backgroundImageData: '',
       logoImage: null,
       logoImageData: '',
-      youtube: 'Youtube',
-      twitter: 'Twitter',
-      twitch: 'Twitch',
+      youtube: '',
+      twitter: '',
+      twitch: '',
       conversionRate: 0.2,
       donationAmounts: [1, 5, 10],
       mode: 'Edit',
@@ -370,7 +370,7 @@ export default class BraveRewardsBanner extends React.Component {
         <div className="brave-rewards-banner-bottom-bar" style={style.bottomBar}>
         <div className="brave-rewards-banner-content-donations-send"
         style={style.donationsCurrent}>
-        CURRENTLY DONATING 5 BAT MONTHLY
+        CURRENTLY DONATING BAT MONTHLY
         </div>
 
         <div className="brave-rewards-banner-content-donations-send"

@@ -404,7 +404,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   instantDonationButton.addEventListener("click", function(event) {
     document.getElementsByClassName('container')[0].style.padding = 0;
-    renderBraveRewardsBannerContainer();
+    document.getElementsByClassName('container')[0].style.width = '840px';
+    let headline = document.getElementsByClassName('translations')[0].getAttribute('headline')
+    let intro = document.getElementsByClassName('translations')[0].getAttribute('intro')
+    renderBraveRewardsBannerContainer(headline, intro);
   }, false);
 
   updateContactForm.addEventListener('submit', function(event) {
