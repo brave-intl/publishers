@@ -17,37 +17,21 @@ class PublisherWalletGetter < BaseApiClient
     end
 
     wallet_hash = JSON.parse(wallet_response.body)
-    # TODO: Remove else condition when transaction table is stable
-    if should_use_transaction_table?
-      if publisher.channels.verified.present?
-        accounts = PublisherBalanceGetter.new(publisher: publisher).perform
-        return if accounts == :unavailable
 
-        # Override owner balance with transaction table value
-        if wallet_hash.dig("contributions", "probi")
-          wallet_hash["contributions"]["probi"]  = total_balance_bat(accounts) * BigDecimal.new('1.0e18')
-          wallet_hash["contributions"]["amount"] = total_balance_bat(accounts) 
-        end
+    if publisher.channels.verified.present?
+      accounts = PublisherBalanceGetter.new(publisher: publisher).perform
+      return if accounts == :unavailable
 
-        # Convert accounts into Eyeshade::Wallet format
-        channel_hash = parse_accounts(accounts, wallet_hash)
-      else
-        channel_hash = {}
+      # Override owner balance with transaction table value
+      if wallet_hash.dig("contributions", "probi")
+        wallet_hash["contributions"]["probi"]  = total_balance_bat(accounts) * BigDecimal.new('1.0e18')
+        wallet_hash["contributions"]["amount"] = total_balance_bat(accounts) 
       end
+
+      # Convert accounts into Eyeshade::Wallet format
+      channel_hash = parse_accounts(accounts, wallet_hash)
     else
-      channel_responses = {}
-      publisher.channels.verified.each do |channel|
-        identifier =  channel.details.channel_identifier
-        channel_responses[identifier] = connection.get do |request|
-          request.headers["Authorization"] = api_authorization_header
-          request.url("/v2/publishers/#{URI.escape(identifier)}/balance")
-        end
-      end
-
       channel_hash = {}
-      channel_responses.each do |identifier, response|
-        channel_hash[identifier] = JSON.parse(response.body)
-      end
     end
 
     Eyeshade::Wallet.new(wallet_json: wallet_hash,channel_json: channel_hash)
@@ -118,10 +102,6 @@ class PublisherWalletGetter < BaseApiClient
   end
 
   private
-
-  def should_use_transaction_table?
-    Rails.application.secrets[:should_use_transaction_table]
-  end
 
   # Converts the account_balances returned in the PublisherBalanceGetter
   # into a format suitable for the Eyeshade::Wallet

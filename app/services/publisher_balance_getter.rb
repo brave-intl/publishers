@@ -33,30 +33,16 @@ class PublisherBalanceGetter < BaseApiClient
 
   private
   
-  # TODO: Do not use details.author_identifier when all twitch#author is used everywhere 
   def channels_query_string
     return "" if publisher.channels.verified.count == 0
-    publisher.channels.verified.map { |channel|
-      if channel.details_type == "TwitchChannelDetails" && !Rails.env.test?
-        channel_id = channel.details.author_identifier
-      else
-        channel_id = channel.details.channel_identifier
-      end
-      "&account=#{URI.escape(channel_id)}"}.reduce(:+)
+    publisher.channels.verified.map { |channel| "&account=#{URI.escape(channel.details.channel_identifier)}"}.reduce(:+)
   end
 
   # Eyeshade may return a 0 balance or an empty response for accounts (channel and owner)
   # with no balance, so we must fill in these values
   def fill_in_missing_accounts(accounts)
     # Find all of the publisher's verified channel ids
-    # TODO: Remove details.author_identifier when all twitch#author is used everywhere
-    verified_channel_ids = publisher.channels.verified.map do |channel|
-      if channel.details_type == "TwitchChannelDetails" && !Rails.env.test?
-        channel.details.author_identifier
-      else
-        channel.details.channel_identifier
-      end
-    end
+    verified_channel_ids = publisher.channels.verified.map { |channel| channel.details.channel_identifier }
 
     # Find which verified channel ids have been included in the response
     account_ids = accounts.map { |account| account["account_id"] }
