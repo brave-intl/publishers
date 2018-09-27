@@ -16,12 +16,8 @@ class DeletePublisherChannelJob < ApplicationJob
     success = @channel.destroy
 
     # Update Eyeshade and Promo
-    if success && @channel.verified?
-      PublisherEyeshadeChannelDeleter.new(publisher: publisher, channel_identifier: @channel.details.channel_identifier).perform
-
-      if should_update_promo_server
-        PromoChannelOwnerUpdater.new(referral_code: channel.promo_registration.referral_code).perform
-      end
+    if success && @channel.verified? && should_update_promo_server
+      PromoChannelOwnerUpdater.new(referral_code: channel.promo_registration.referral_code).perform
     end
 
     success
