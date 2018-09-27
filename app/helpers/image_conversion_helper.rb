@@ -30,7 +30,6 @@ module ImageConversionHelper
 =end
   def add_padding_to_image(source_image_path:, attachment_type:)
     # Add initial conversion to get file size
-    iteration = 0
     if attachment_type == SiteBanner::LOGO
       target_file_size = SiteBanner::LOGO_UNIVERSAL_FILE_SIZE
     elsif attachment_type == SiteBanner::BACKGROUND
@@ -39,38 +38,15 @@ module ImageConversionHelper
       LogException.perform(StandardError.new("Unknown attachment_type:" + attachment_type), params: {})
     end
 
-    while iteration < LOOP_MAX
-      current_file_size = File.open(source_image_path, 'r').size
-      break if current_file_size == target_file_size
-      MiniMagick::Tool::Convert.new do |convert|
-        convert << source_image_path
-        convert.merge!(["-set", "comment", "A"])
-        convert.merge!(["-quality", 100])
-        convert << source_image_path
-      end
+    file_size_after_one_byte = calc_image_size_after_pad_one_byte(source_image_path)
 
-      current_file_size = File.open(source_image_path, 'r').size
+    delta = target_file_size - file_size_after_one_byte
 
-      calculated_offset = target_file_size - current_file_size
-
-      if calculated_offset < 0
-        LogException.perform(StandardError.new("Exceeds expected attachment size for padding to occur"), params: {})
-        break
-      end
-
-      MiniMagick::Tool::Convert.new do |convert|
-        convert << source_image_path
-        convert.merge!(["-set", "comment", "A" * (calculated_offset + 1)])
-        convert.merge!(["-quality", 100])
-        convert << source_image_path
-      end
-
-      iteration += 1
-    end
-    current_file_size = File.open(source_image_path, 'r').size
-
-    if current_file_size != target_file_size
-      LogException.perform(StandardError.new("Exceeds expected attachment size for padding to occur"), params: {})
+    MiniMagick::Tool::Convert.new do |convert|
+      convert << source_image_path
+      convert.merge!(["-set", "comment", "a" * (delta + 1)])
+      convert.merge!(["-quality", 100])
+      convert << source_image_path
     end
 
     source_image_path
@@ -80,5 +56,27 @@ module ImageConversionHelper
     File.open(source_image_path, 'r') do |f|
       Digest::SHA256.hexdigest f.read
     end
+  end
+
+  private
+
+  def calc_image_size_after_pad_one_byte(source_image_path)
+    mini_magick_image = MiniMagick::Image.open(source_image_path)
+
+    new_filename = "_resized"
+
+    temp_file = Tempfile.new([new_filename, ".jpg"])
+
+    mini_magick_image.write(temp_file)
+
+    MiniMagick::Tool::Convert.new do |convert|
+      convert << temp_file.path
+      convert.merge!(["-set", "comment", "a"])
+      convert.merge!(["-quality", 100])
+      convert << temp_file.path
+    end
+
+    file_size_after = File.size(temp_file.path)
+    file_size_after
   end
 end
