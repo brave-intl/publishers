@@ -79,6 +79,12 @@ class PublisherWalletGetter < BaseApiClient
           "EUR" => 0.20187818378874756,
           "GBP" => 0.1799810085548496
         },
+        "lastSettlement"=>
+          {"altcurrency"=>"BAT",
+           "currency"=>"USD",
+           "probi"=>"405520562799219044167",
+           "amount"=>"69.78",
+           "timestamp"=>1536361540000},
         "wallet" => {
             "provider" => "uphold",
             "authorized" => true,
@@ -86,7 +92,8 @@ class PublisherWalletGetter < BaseApiClient
             "availableCurrencies" => [ "USD", "EUR", "BTC", "ETH", "BAT" ],
             "possibleCurrencies"=> ["AED", "ARS", "AUD", "BRL", "CAD", "CHF", "CNY", "DKK", "EUR", "GBP", "HKD", "ILS", "INR", "JPY", "KES", "MXN", "NOK", "NZD", "PHP", "PLN", "SEK", "SGD", "USD", "XAG", "XAU", "XPD", "XPT"],
             "scope"=> "cards:read user:read"
-        }
+        },
+
       }
 
     if publisher.channels.verified.any?

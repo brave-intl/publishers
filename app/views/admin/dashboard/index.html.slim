@@ -3,6 +3,7 @@
 
 hr
 
+= hidden_field_tag id="piwikVisitsSummary", value=@site.visits.getVisits(:idSite => 6, :period => :month, :date => :last12).result.to_json
 = hidden_field_tag id="piwikEventsCategory", value=@site.events.getCategory(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
 = hidden_field_tag id="piwikDevicesDetectionType", value=@site.devices_detection.getType(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
 = hidden_field_tag id="piwikDevicesDetectionBrowserVersions", value=@site.devices_detection.getBrowserVersions(idSite: 6, period: 'week', date: 1.week.ago.strftime("%Y-%m-%d")).data.to_json
