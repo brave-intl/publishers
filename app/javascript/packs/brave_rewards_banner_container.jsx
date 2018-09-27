@@ -66,10 +66,10 @@ export default class BraveRewardsBannerContainer extends React.Component {
     let rewardsBannerContainer
 
     if(this.state.isIntro){
-      rewardsBannerContainer = {height:'568px', width:'840px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}
+      rewardsBannerContainer = {height:'590px', width:'840px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}
     }
     else{
-      rewardsBannerContainer = {height:'568px', width:'840px'}
+      rewardsBannerContainer = {height:'590px', width:'840px'}
     }
 
     let modeButton;

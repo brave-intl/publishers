@@ -118,8 +118,10 @@ export default class BraveRewardsBanner extends React.Component {
 
   updateDonationAmounts(event, index){
     let temp = this.state.donationAmounts
-    temp[index] = event.target.value
-    this.setState({donationAmounts: temp})
+    if(/^(\s*|\d+)$/.test(event.target.value)){
+      temp[index] = event.target.value
+      this.setState({donationAmounts: temp})
+    }
   }
 
   handleBackgroundImageUpload(event) {
