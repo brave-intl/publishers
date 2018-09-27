@@ -193,20 +193,26 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     end
 
     # Ensure data is correct
-    assert_equal payout_report.num_payments, publisher.channels.count
-    assert_equal payout_report.amount, (60 * BigDecimal('1e18') - ((60 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
+    assert_equal payout_report.num_payments, publisher.channels.count + 1
+    assert_equal payout_report.amount, (80 * BigDecimal('1e18') - ((60 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
     assert_equal payout_report.fee_rate, 0.05
     assert_equal payout_report.fees, (60 * BigDecimal('1e18') * payout_report.fee_rate).to_i.to_s
 
     contents = JSON.parse(payout_report.contents)
 
+    assert_equal contents.length, payout_report.num_payments
+
     # Ensure JSON data is correct
     contents.each do |channel_payout|
       assert_equal channel_payout["address"], JSON.parse(wallet_response)["wallet"]["address"]
       assert_equal channel_payout["transactionId"], payout_report.id
-      assert_equal channel_payout["type"], "contribution"
       assert_equal channel_payout["owner"], "#{publisher.owner_identifier}"
       assert_equal channel_payout["altcurrency"], "BAT"
+      if channel_payout["type"] == "contribution"
+        assert_equal channel_payout["probi"], (20 * BigDecimal('1e18') - ((20 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
+      elsif channel_payout["type"] == "referral"
+        assert_equal channel_payout["probi"], (20 * BigDecimal('1e18')).to_i.to_s
+      end
     end
   end
 
