@@ -59,16 +59,32 @@ class ImageConversionHelperTest < ActionView::TestCase
 
     temp_file_path = resize_to_dimensions_and_convert_to_jpg(
       source_image_path: temp_file.path,
-      attachment_type: SiteBanner::LOGO,
+      attachment_type: SiteBanner::BACKGROUND,
       filename: "bat-logo"
     )
 
     add_padding_to_image(
       source_image_path: temp_file_path,
-      attachment_type: SiteBanner::LOGO
+      attachment_type: SiteBanner::BACKGROUND
     )
 
-    assert_equal SiteBanner::LOGO_UNIVERSAL_FILE_SIZE, File.open(temp_file_path, 'r').size
+    assert_equal SiteBanner::BACKGROUND_UNIVERSAL_FILE_SIZE, File.open(temp_file_path, 'r').size
+  end
+
+  test "raises exception when attempting to submit a pad an exceptionally large image" do
+    source_image_path = "./app/assets/images/san_francisco.jpg"
+    mini_magick_image = MiniMagick::Image.open(source_image_path)
+    mini_magick_image.format "jpg"
+    temp_file = Tempfile.new(["san_francisco_copy", ".jpg"])
+
+    mini_magick_image.write(temp_file)
+
+    assert_raise ImageConversionHelper::OutsidePaddingRangeError do
+      add_padding_to_image(
+        source_image_path: temp_file.path,
+        attachment_type: SiteBanner::LOGO
+      )
+    end
   end
 
   test "generates a consistent filename for an image" do

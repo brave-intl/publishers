@@ -84,10 +84,14 @@ class Publishers::SiteBannersController < ApplicationController
       filename: filename
     )
 
-    padded_resized_jpg_path = add_padding_to_image(
-      source_image_path: resized_jpg_path,
-      attachment_type: attachment_type,
-    )
+    begin
+      padded_resized_jpg_path = add_padding_to_image(
+        source_image_path: resized_jpg_path,
+        attachment_type: attachment_type,
+      )
+    rescue OutsidePaddingRangeError
+      LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: {publisher_id: current_publisher.id})
+    end
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
 

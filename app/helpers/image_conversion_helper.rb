@@ -38,9 +38,13 @@ module ImageConversionHelper
       LogException.perform(StandardError.new("Unknown attachment_type:" + attachment_type), params: {})
     end
 
-    file_size_after_one_byte = calc_image_size_after_pad_one_byte(source_image_path)
+    file_size_after_one_byte = calculate_image_size_after_pad_one_byte(source_image_path)
 
     delta = target_file_size - file_size_after_one_byte
+
+    if delta < 0
+      raise OutsidePaddingRangeError
+    end
 
     MiniMagick::Tool::Convert.new do |convert|
       convert << source_image_path
@@ -60,7 +64,7 @@ module ImageConversionHelper
 
   private
 
-  def calc_image_size_after_pad_one_byte(source_image_path)
+  def calculate_image_size_after_pad_one_byte(source_image_path)
     mini_magick_image = MiniMagick::Image.open(source_image_path)
 
     new_filename = "_resized"
@@ -76,7 +80,8 @@ module ImageConversionHelper
       convert << temp_file.path
     end
 
-    file_size_after = File.size(temp_file.path)
-    file_size_after
+    File.size(temp_file.path)
   end
+
+  class OutsidePaddingRangeError < RuntimeError; end
 end
