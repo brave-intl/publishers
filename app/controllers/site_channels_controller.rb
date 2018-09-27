@@ -44,14 +44,6 @@ class SiteChannelsController < ApplicationController
     SiteChannelDomainSetter.new(channel_details: @current_channel.details).perform
 
     if @current_channel.save
-      # once the channel has been saved send it to eyeshade
-      begin
-        PublisherChannelSetter.new(publisher: current_publisher).perform
-      rescue => e
-        require "sentry-raven"
-        Raven.capture_exception(e)
-      end
-
       redirect_to(channel_next_step_path(@current_channel), notice: t("shared.channel_created"))
     else
       if @current_channel.errors.details.has_key?(:brave_publisher_id)

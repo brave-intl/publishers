@@ -143,14 +143,6 @@ class PublishersController < ApplicationController
     update_sendgrid(publisher: @publisher)
 
     if @publisher.update(update_params)
-      # let eyeshade know about the new Publisher
-      begin
-        PublisherChannelSetter.new(publisher: @publisher).perform
-      rescue => e
-        require "sentry-raven"
-        Raven.capture_exception(e)
-      end
-
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
     else
