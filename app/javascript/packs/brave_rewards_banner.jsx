@@ -83,21 +83,17 @@ export default class BraveRewardsBanner extends React.Component {
         })
         .then(function(banner) {
 
-          // that.cropFetchedLogo(banner.logoImage, that);
-
           that.setState({
             title: banner.title,
             description: banner.description,
             backgroundImage: banner.backgroundImage,
-            logoImage: banner.logoImage,
-            logoImage: banner.logoImage,
             youtube: banner.social_links.youtube,
             twitter: banner.social_links.twitter,
             twitch: banner.social_links.twitch,
             donationAmounts: banner.donation_amounts,
           })
 
-          console.log(banner);
+          that.cropFetchedLogo(banner.logoImage, that);
         });
   }
 
@@ -138,47 +134,57 @@ export default class BraveRewardsBanner extends React.Component {
 
   handleLogoImageUpload(event) {
     let that = this;
-    this.setState({logoImageData: event.target});
     this.cropLogo(event, that);
   }
 
-  // cropFetchedLogo(logo, that){
-  //
-  //   let request = new XMLHttpRequest();
-  //     request.open('GET', logo, true);
-  //     request.setRequestHeader('Accept', 'text/html')
-  //     request.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-  //     request.setRequestHeader('X-CSRF-Token', document.head.querySelector("[name=csrf-token]").content)
-  //     request.responseType = 'blob';
-  //     request.onload = function() {
-  //       let reader = new FileReader();
-  //       reader.readAsDataURL(request.response);
-  //       reader.onload =  function(e){
-  //         let event;
-  //         event.target.files[0] = e;
-  //         that.cropLogo(event, that);
-  //               };
-  //           };
-  //           request.send();
-  // }
+  cropFetchedLogo(logo, that){
+
+    let img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 160;
+      canvas.height = 160;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      let url = canvas.toDataURL('image/png');
+      that.setState({logoImage: url});
+    }
+    img.src = logo
+  }
 
   cropLogo(event, that){
     if (event.target.files && event.target.files[0]) {
       var filerdr = new FileReader();
 
       filerdr.onload = function(e) {
-        var img = new Image();
+        var img160 = new Image();
+        var img480 = new Image();
 
-      img.onload = function() {
+      img480.onload = function() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 480;
+        canvas.height = 480;
+        ctx.drawImage(img480, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(function(blob){
+          let file = {};
+          file["files"] = [blob]
+          that.setState({logoImageData: file});
+        });
+      }
+
+      img160.onload = function() {
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
         canvas.width = 160;
         canvas.height = 160;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        var data = canvas.toDataURL('image/png');
-        that.setState({logoImage: data});
+        ctx.drawImage(img160, 0, 0, canvas.width, canvas.height);
+        let url = canvas.toDataURL('image/png');
+        that.setState({logoImage: url});
       }
-      img.src = e.target.result;
+
+      img160.src = e.target.result;
+      img480.src = e.target.result;
     }
     filerdr.readAsDataURL(event.target.files[0]);
   }
