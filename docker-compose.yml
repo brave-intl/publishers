@@ -22,6 +22,7 @@ services:
       - ADDRESS=0.0.0.0
       - API_EYESHADE_BASE_URI=http://eyeshade-web:3002/
       - API_EYESHADE_KEY=b7747761-0656-48a1-8cb9-7b1b0315d054
+      - DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL=true
       - DATABASE_URL=postgres://postgres@postgres/brave_publishers_dev
       - DATABASE_URL_TEST=postgres://postgres@postgres/brave_publishers_test
       - SENDGRID_SMTP_PORT=1025
