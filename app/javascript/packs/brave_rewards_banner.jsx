@@ -82,16 +82,21 @@ export default class BraveRewardsBanner extends React.Component {
           return response.json();
         })
         .then(function(banner) {
+
+          // that.cropFetchedLogo(banner.logoImage, that);
+
           that.setState({
             title: banner.title,
             description: banner.description,
             backgroundImage: banner.backgroundImage,
+            logoImage: banner.logoImage,
             logoImage: banner.logoImage,
             youtube: banner.social_links.youtube,
             twitter: banner.social_links.twitter,
             twitch: banner.social_links.twitch,
             donationAmounts: banner.donation_amounts,
           })
+
           console.log(banner);
         });
   }
@@ -132,10 +137,51 @@ export default class BraveRewardsBanner extends React.Component {
   }
 
   handleLogoImageUpload(event) {
-    if (!event.target.files[0]) {
-      return
+    let that = this;
+    this.setState({logoImageData: event.target});
+    this.cropLogo(event, that);
+  }
+
+  // cropFetchedLogo(logo, that){
+  //
+  //   let request = new XMLHttpRequest();
+  //     request.open('GET', logo, true);
+  //     request.setRequestHeader('Accept', 'text/html')
+  //     request.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+  //     request.setRequestHeader('X-CSRF-Token', document.head.querySelector("[name=csrf-token]").content)
+  //     request.responseType = 'blob';
+  //     request.onload = function() {
+  //       let reader = new FileReader();
+  //       reader.readAsDataURL(request.response);
+  //       reader.onload =  function(e){
+  //         let event;
+  //         event.target.files[0] = e;
+  //         that.cropLogo(event, that);
+  //               };
+  //           };
+  //           request.send();
+  // }
+
+  cropLogo(event, that){
+    if (event.target.files && event.target.files[0]) {
+      var filerdr = new FileReader();
+
+      filerdr.onload = function(e) {
+        var img = new Image();
+
+      img.onload = function() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 160;
+        canvas.height = 160;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var data = canvas.toDataURL('image/png');
+        that.setState({logoImage: data});
+      }
+      img.src = e.target.result;
     }
-    this.setState({logoImage: URL.createObjectURL(event.target.files[0]), logoImageData: event.target})
+    filerdr.readAsDataURL(event.target.files[0]);
+  }
   }
 
   handleSave(event) {
