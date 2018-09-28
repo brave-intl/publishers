@@ -11,22 +11,31 @@ class PublisherWalletGetter < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    wallet_response = connection.get do |request|
-      request.headers["Authorization"] = api_authorization_header
-      request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
-    end
+    # Eyeshade only creates an account for an owner when they connect to Uphold.
+    # Until then, the request to get the wallet information for the owner will 404.
+    # In that case we use an empty wallet, but still use balances from the balance getter.
+    begin
+      wallet_response = connection.get do |request|
+        request.headers["Authorization"] = api_authorization_header
+        request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
+      end
 
-    wallet_hash = JSON.parse(wallet_response.body)
+      wallet_hash = JSON.parse(wallet_response.body)
+    rescue Faraday::ResourceNotFound
+      wallet_hash = {}
+    end
 
     if publisher.channels.verified.present?
       accounts = PublisherBalanceGetter.new(publisher: publisher).perform
       return if accounts == :unavailable
 
-      # Override owner balance with transaction table value
-      if wallet_hash.dig("contributions", "probi")
-        wallet_hash["contributions"]["probi"]  = total_balance_bat(accounts) * BigDecimal.new('1.0e18')
-        wallet_hash["contributions"]["amount"] = total_balance_bat(accounts) 
-      end
+      # Always override owner balance with transaction table value
+      contributions = {
+        "probi" => total_balance_bat(accounts) * BigDecimal.new('1.0e18'),
+        "amount" => total_balance_bat(accounts) 
+      }
+
+      wallet_hash["contributions"] = contributions
 
       # Convert accounts into Eyeshade::Wallet format
       channel_hash = parse_accounts(accounts, wallet_hash)
