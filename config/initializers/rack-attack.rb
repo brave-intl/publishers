@@ -58,7 +58,7 @@ class Rack::Attack
     end
   end
 
-  throttle("created-auth-tokens/ip", limit: 5, period: 20.seconds) do |req|
+  throttle("created-auth-tokens/ip", limit: 10, period: 20.minutes) do |req|
     if req.path == "/publishers/log_in" && req.post?
       req.ip
     end
@@ -94,7 +94,7 @@ class Rack::Attack
     end
   end
 
-  # Throttle requests to public api, /api/public  
+  # Throttle requests to public api, /api/public
   throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
     req.ip if req.path.start_with?("/api/v1/public")
   end
