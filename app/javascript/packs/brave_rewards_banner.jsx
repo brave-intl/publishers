@@ -67,7 +67,7 @@ export default class BraveRewardsBanner extends React.Component {
 
   fetchSiteBanner(){
     let that = this
-    let id = document.getElementsByClassName('container')[0].id
+    let id = document.getElementById("publisher_id").value;
     let url = '/publishers/' + id + "/site_banners/fetch";
 
     fetch(url, {
@@ -138,18 +138,17 @@ export default class BraveRewardsBanner extends React.Component {
   }
 
   cropFetchedLogo(logo, that){
-
     let img = new Image();
+    img.src = logo;
     img.onload = function() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
       canvas.width = 160;
       canvas.height = 160;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      let url = canvas.toDataURL('image/png');
+      let url = canvas.toDataURL('image/jpeg', 1);
       that.setState({logoImage: url});
     }
-    img.src = logo
   }
 
   cropLogo(event, that){
@@ -179,7 +178,7 @@ export default class BraveRewardsBanner extends React.Component {
         canvas.width = 160;
         canvas.height = 160;
         ctx.drawImage(img160, 0, 0, canvas.width, canvas.height);
-        let url = canvas.toDataURL('image/png');
+        let url = canvas.toDataURL('image/jpeg', 1);
         that.setState({logoImage: url});
       }
 
@@ -192,8 +191,9 @@ export default class BraveRewardsBanner extends React.Component {
 
   handleSave(event) {
     let that = this
-    let id = document.getElementsByClassName('container')[0].id
-    let url = '/publishers/' + id + "/site_banners/";
+    let id = document.getElementById("publisher_id").value;
+    console.log(id);
+    let url = '/publishers/' + id + "/site_banners";
     let body = new FormData();
 
     body.append('title', this.state.title);
@@ -210,45 +210,44 @@ export default class BraveRewardsBanner extends React.Component {
           },
           credentials: "same-origin",
           body: body
-        }).then (
-          function(response) {
-            function submitById(id, suffix) {
+    }).then (
+      function(response) {
+        function submitById(id, suffix) {
 
-            const url = '/publishers/' + document.getElementsByClassName('container')[0].id + "/site_banners/update_" + suffix;
+        const url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_" + suffix;
 
-            let file
+        let file;
+        if(suffix === 'background_image'){ file = that.state.backgroundImageData }
+        else if(suffix === 'logo'){ file = that.state.logoImageData }
 
-            if(suffix === 'background_image'){ file = that.state.backgroundImageData }
-            else if(suffix === 'logo'){ file = that.state.logoImageData }
+        if (file === "" || file === null) { return; }
+          var reader = new FileReader();
+          reader.readAsDataURL(file.files[0]);
 
-            if (file === "" || file === null) { return; }
-              var reader = new FileReader();
-              reader.readAsDataURL(file.files[0]);
+          reader.onloadend = function () {
+            const body = new FormData();
+            body.append('image', reader.result);
+            fetch(url, {
+              method: 'POST',
+              headers: {
+                'Accept': 'text/html',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
+              },
+              credentials: "same-origin",
+              body: body
+            });
+          }
+        }
 
-              reader.onloadend = function () {
-                const body = new FormData();
-                body.append('image', reader.result);
-                fetch(url, {
-                  method: 'POST',
-                  headers: {
-                    'Accept': 'text/html',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
-                  },
-                  credentials: "same-origin",
-                  body: body
-                });
-              }
-            }
-
-            if (response.status === 200) {
-              submitById("background-image-select-input", "background_image");
-              submitById("logo-image-select-input", "logo");
-            }
-            }).then(
-              function(response) {
-                that.close();
-              });
+        if (response.status === 200) {
+          submitById("background-image-select-input", "background_image");
+          submitById("logo-image-select-input", "logo");
+        }
+      }).then(
+        function(response) {
+          that.close();
+        });
   }
 
   render() {
