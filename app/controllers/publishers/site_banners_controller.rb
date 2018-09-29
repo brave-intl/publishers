@@ -1,4 +1,5 @@
 class Publishers::SiteBannersController < ApplicationController
+  before_action :authenticate_publisher!
 
   MAX_IMAGE_SIZE = 700_000
 
@@ -20,24 +21,21 @@ class Publishers::SiteBannersController < ApplicationController
     head :ok
   end
 
+  def fetch
+    site_banner = current_publisher.site_banner
+    data = JSON.parse(site_banner.to_json)
+    data[:backgroundImage] = current_publisher.site_banner.read_only_react_property[:backgroundUrl]
+    data[:logoImage] = current_publisher.site_banner.read_only_react_property[:logoUrl]
+    render(json: data.to_json)
+  end
+
   def update_logo
-    if params[:image].length > MAX_IMAGE_SIZE
-      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
-      # alert[:error] = "File size too big!"
-      head :payload_too_large and return
-    end
     site_banner = current_publisher.site_banner
     update_image(site_banner.logo)
     head :ok
   end
 
   def update_background_image
-    if params[:image].length > MAX_IMAGE_SIZE
-      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
-      # alert[:error] = "File size too big!"
-      head :payload_too_large and return
-    end
-
     site_banner = current_publisher.site_banner
     update_image(site_banner.background_image)
     head :ok
