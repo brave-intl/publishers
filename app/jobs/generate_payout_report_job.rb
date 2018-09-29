@@ -19,6 +19,28 @@ class GeneratePayoutReportJob < ApplicationJob
       publisher_has_unsettled_balance = false
       wallet = publisher.wallet
 
+      probi = wallet.channel_balances[publisher.owner_identifier].probi_before_fees # probi = balance
+      if probi > 0
+        publisher_has_unsettled_balance = true
+
+        if publisher.uphold_verified? && !wallet.address.blank?
+          num_payments += 1
+          total_amount_probi += probi
+
+          payouts.push({
+            "name" => "#{publisher.name}",
+            "altcurrency" => "BAT",
+            "probi" => "#{probi}",
+            "fees" => "0",
+            "authority" => "GeneratePayoutReportJob",
+            "transactionId" => "#{payout_report.id}",
+            "owner" => "#{publisher.owner_identifier}",
+            "type" => "referral",
+            "address" => "#{wallet.address}",
+          })
+        end
+      end
+
       publisher.channels.verified.each do |channel|
         probi = wallet.channel_balances[channel_identifier(channel)].probi # probi = balance - fee
         next if probi <= 0

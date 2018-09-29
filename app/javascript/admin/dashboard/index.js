@@ -1,19 +1,52 @@
 import Chart from 'chart.js';
 
-function createChart(id, title, dataSource) {
+let colors = [
+  '255, 99, 132',
+  '54, 162, 235',
+  '255, 206, 86',
+  '75, 192, 192',
+  '153, 102, 255',
+  '255, 159, 64'
+]
+
+function createChart(id, title, type, dataSource) {
   var wrapper = document.getElementById('wrapper');
   var canvas = document.createElement('canvas');
   canvas.setAttribute("width", "400");
   canvas.setAttribute("height", "100");
   wrapper.appendChild(canvas);
 
-  var devicesDetection = JSON.parse(document.getElementById(dataSource).value);
+  var data = JSON.parse(document.getElementById(dataSource).value);
   var labels = [];
   var visits = [];
-  for (let device of devicesDetection) {
-    labels.push(device.label);
-    visits.push(device.nb_visits);
-  }
+  let backgroundColor = [];
+  let borderColor = [];
+
+  switch(type) {
+    case 'Visits':
+    for (let entry of data) {
+      labels.push(entry.date);
+      visits.push(entry.content);
+      }
+        break;
+    case 'Devices':
+    for (let entry of data) {
+      labels.push(entry.label);
+      visits.push(entry.nb_visits);
+    }
+        break;
+    case 'Events':
+    for (let entry of data) {
+      labels.push(entry.label);
+      visits.push(entry.nb_visits);
+    }
+      break;
+    }
+
+    for(let i = 0; i < data.length; i++){
+      backgroundColor.push('rgba(' + colors[i%5]+ ', 0.2)')
+      borderColor.push('rgba(' + colors[i%5] + ', 1)')
+    }
 
   var myChart = new Chart(canvas, {
       type: 'bar',
@@ -22,22 +55,8 @@ function createChart(id, title, dataSource) {
           datasets: [{
               label: title,
               data: visits,
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
               borderWidth: 1
           }]
       },
@@ -54,9 +73,10 @@ function createChart(id, title, dataSource) {
 }
 
 function loadPiwikData() {
-  createChart("piwikDevicesDetectionTypeChart", "Device Visits (Past Week) (nb_visits)", "piwikDevicesDetectionType");
-  createChart("piwikDevicesDetectionBrowserVersionsChart", "Browser Versions (Past Week)", "piwikDevicesDetectionBrowserVersions");
-  createChart("piwikEventsCategoryChart", "Events (Past Week) (nb_visits)", "piwikEventsCategory");
+  createChart("piwikDevicesDetectionTypeChart", "Device Visits (Past Week) (nb_visits)", 'Devices', "piwikDevicesDetectionType");
+  createChart("piwikDevicesDetectionBrowserVersionsChart", "Browser Versions (Past Week)", 'Devices', "piwikDevicesDetectionBrowserVersions");
+  createChart("piwikEventsCategoryChart", "Events (Past Week) (nb_visits)", 'Events', "piwikEventsCategory");
+  createChart("piwikVisitsSummaryChart", "Visits (Monthly)", 'Visits', "piwikVisitsSummary");
 }
 
 document.addEventListener('DOMContentLoaded', function() {

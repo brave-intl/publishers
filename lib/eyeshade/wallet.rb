@@ -39,7 +39,7 @@ module Eyeshade
       end
 
       if wallet_json["lastSettlement"]
-        @last_settlement_balance = Eyeshade::Balance.new(balance_json: wallet_json["lastSettlement"].merge({'rates' => @rates}))
+        @last_settlement_balance = Eyeshade::Balance.new(balance_json: wallet_json["lastSettlement"].merge({'rates' => @rates}), apply_fee: false)
         @last_settlement_date = Time.at(wallet_json["lastSettlement"]["timestamp"]/1000).to_datetime
       end
     end
