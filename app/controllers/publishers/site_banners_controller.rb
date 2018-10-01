@@ -2,7 +2,7 @@ class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
   before_action :authenticate_publisher!
 
-  MAX_IMAGE_SIZE = 10_00_000
+  MAX_IMAGE_SIZE = 10_000_000
 
   def new
     @site_banner = current_publisher.site_banner || SiteBanner.new

@@ -8,7 +8,7 @@ class SiteBanner < ApplicationRecord
   belongs_to :publisher
 
   LOGO = "logo".freeze
-  LOGO_DIMENSIONS = [420,420]
+  LOGO_DIMENSIONS = [480,480]
   LOGO_UNIVERSAL_FILE_SIZE = 30_000 # In bytes
 
   BACKGROUND = "background".freeze
