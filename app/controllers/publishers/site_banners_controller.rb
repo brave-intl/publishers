@@ -1,7 +1,7 @@
 class Publishers::SiteBannersController < ApplicationController
   before_action :authenticate_publisher!
 
-  MAX_IMAGE_SIZE = 700_000
+  MAX_IMAGE_SIZE = 10_00_000
 
   def new
     @site_banner = current_publisher.site_banner || SiteBanner.new
@@ -30,12 +30,22 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update_logo
+    if params[:image].length > MAX_IMAGE_SIZE
+      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
+      # alert[:error] = "File size too big!"
+      head :payload_too_large and return
+    end
     site_banner = current_publisher.site_banner
     update_image(site_banner.logo)
     head :ok
   end
 
   def update_background_image
+    if params[:image].length > MAX_IMAGE_SIZE
+      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
+      # alert[:error] = "File size too big!"
+      head :payload_too_large and return
+    end
     site_banner = current_publisher.site_banner
     update_image(site_banner.background_image)
     head :ok
