@@ -1,5 +1,5 @@
 module ImageConversionHelper
-  LOOP_MAX = 50
+  IMAGE_QUALITY = 75
 
   def resize_to_dimensions_and_convert_to_jpg(source_image_path:, attachment_type:, filename:)
     # Set dimensions
@@ -49,7 +49,7 @@ module ImageConversionHelper
     MiniMagick::Tool::Convert.new do |convert|
       convert << source_image_path
       convert.merge!(["-set", "comment", "a" * (delta + 1)])
-      convert.merge!(["-quality", 100])
+      convert.merge!(["-quality", IMAGE_QUALITY])
       convert << source_image_path
     end
 
@@ -76,7 +76,7 @@ module ImageConversionHelper
     MiniMagick::Tool::Convert.new do |convert|
       convert << temp_file.path
       convert.merge!(["-set", "comment", "a"])
-      convert.merge!(["-quality", 100])
+      convert.merge!(["-quality", IMAGE_QUALITY])
       convert << temp_file.path
     end
 

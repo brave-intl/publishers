@@ -90,6 +90,7 @@ class Publishers::SiteBannersController < ApplicationController
         attachment_type: attachment_type,
       )
     rescue OutsidePaddingRangeError
+      logger.error "Outside padding range"
       LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: {publisher_id: current_publisher.id})
     end
 
