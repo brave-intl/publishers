@@ -9,13 +9,24 @@
 # https://github.com/mileszs/wicked_pdf/blob/master/README.md
 
 WickedPdf.config = {
-  # Path to the wkhtmltopdf executable: This usually isn't needed if using
-  # one of the wkhtmltopdf-binary family of gems.
-  # exe_path: '/usr/local/bin/wkhtmltopdf',
-  #   or
-  # exe_path: Gem.bin_path('wkhtmltopdf-binary', 'wkhtmltopdf')
+  # We install the binary with heroku-buildpack-apt
+  # https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-apt (see Aptfile)
 
-  # Layout file to be used for all PDFs
-  # (but can be overridden in `render :pdf` calls)
-  # layout: 'pdf.html',
+  # exe_path: system('xvfb-run -a -s "-screen 0 640x480x16" /usr/bin/wkhtmltopdf "$@"')
+  # You need to specify atleast one input file, and exactly one output file
+
+  # exe_path: exec('xvfb-run -a -s "-screen 0 640x480x16" /usr/bin/wkhtmltopdf "$@"')
+  # You need to specify atleast one input file, and exactly one output file
+  
+  exe_path: '/usr/bin/wkhtmltopdf'
+  # RuntimeError: Failed to execute:
+  # ["/usr/bin/wkhtmltopdf", "-q", "file:////tmp/wicked_pdf20181002-21752-r9er7a.html", "/tmp/wicked_pdf_generated_file20181002-21752-1tue41i.pdf"]
+  # Error: PDF could not be generated!
+  #  Command Error: QXcbConnection: Could not connect to display 
+
+  # exe_path: Rails.root.join('bin/wkhtmltopdf-with-xvfb.sh').to_s #
+  # RuntimeError: wkhtmltopdf is not executable
+
+  # exe_path: exec(Rails.root.join('bin/wkhtmltopdf-with-xvfb.sh').to_s)
+  # Errno::EACCES: Permission denied - /home/travis/build/brave-intl/publishers/bin/wkhtmltopdf-with-xvfb.sh
 }
