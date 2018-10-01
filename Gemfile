@@ -52,6 +52,9 @@ gem "nokogiri", "~> 1.8.4"
 # Open Graph tag
 gem "meta-tags"
 
+# Image conversion library
+gem 'mini_magick'
+
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
 
