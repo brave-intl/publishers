@@ -136,40 +136,36 @@ class Channel < ApplicationRecord
   def self.find_by_channel_identifier(channel_identifier)
     channel_id_split_on_prefix = channel_identifier.split(":", 2)
     channel_is_site_channel = channel_id_split_on_prefix.length == 1 # hack to identify site channels
-
+    
     if channel_is_site_channel
       channel_details_type_identifier = channel_id_split_on_prefix.first
-    else
-      prefix = channel_id_split_on_prefix.first
-      channel_details_type_identifier = channel_id_split_on_prefix.second
-    end
-
-    if channel_is_site_channel
-      SiteChannelDetails.where(brave_publisher_id: channel_details_type_identifier).
+      return SiteChannelDetails.where(brave_publisher_id: channel_details_type_identifier).
                         joins(:channel).
                         where('channels.verified = true').first.channel
-    else
-      case prefix
-        when "youtube#channel"
-          YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).
-                                joins(:channel).
-                                where('channels.verified = true').first.channel
-        when "twitch#channel"
-          TwitchChannelDetails.where(name: channel_details_type_identifier).
+    end
+
+    prefix = channel_id_split_on_prefix.first
+    channel_details_type_identifier = channel_id_split_on_prefix.second
+    case prefix
+      when "youtube#channel"
+        YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).
                               joins(:channel).
                               where('channels.verified = true').first.channel
-        when "twitch#author"
-          TwitchChannelDetails.where(name: channel_details_type_identifier).
-                              joins(:channel).
-                              where('channels.verified = true').first.channel
-        when "twitter#channel"
-          TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
-                               joins(:channel).
-                               where('channels.verified = true').first.channel
-        else 
-          Rails.log.info("Unable to find channel for channel identifier #{channel_identifier}")
-          nil
-      end
+      when "twitch#channel"
+        TwitchChannelDetails.where(name: channel_details_type_identifier).
+                            joins(:channel).
+                            where('channels.verified = true').first.channel
+      when "twitch#author"
+        TwitchChannelDetails.where(name: channel_details_type_identifier).
+                            joins(:channel).
+                            where('channels.verified = true').first.channel
+      when "twitter#channel"
+        TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
+                             joins(:channel).
+                             where('channels.verified = true').first.channel
+      else 
+        Rails.log.info("Unable to find channel for channel identifier #{channel_identifier}")
+        nil
     end
   end
 
