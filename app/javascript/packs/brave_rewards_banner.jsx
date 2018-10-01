@@ -198,7 +198,6 @@ export default class BraveRewardsBanner extends React.Component {
   handleSave(event) {
     let that = this
     let id = document.getElementById("publisher_id").value;
-    console.log(id);
     let url = '/publishers/' + id + "/site_banners";
     let body = new FormData();
 
