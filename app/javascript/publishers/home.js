@@ -403,11 +403,16 @@ document.addEventListener('DOMContentLoaded', function() {
   }, false);
 
   instantDonationButton.addEventListener("click", function(event) {
-    document.getElementsByClassName('container')[0].style.padding = 0;
-    document.getElementsByClassName('container')[0].style.width = '840px';
-    let headline = document.getElementsByClassName('translations')[0].getAttribute('headline')
-    let intro = document.getElementsByClassName('translations')[0].getAttribute('intro')
-    renderBraveRewardsBannerContainer(headline, intro);
+
+    document.getElementById("open-banner-button").onclick = function() {
+      renderBraveRewardsBannerContainer();
+    };
+
+    document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {
+      document.getElementsByClassName("modal-panel")[0].style.maxWidth = '40rem';
+      document.getElementsByClassName("modal-panel")[0].style.padding = '2rem 2rem';
+      document.getElementsByClassName("modal-panel--content")[0].style.padding = '1rem 1rem 0 1rem';
+    };
   }, false);
 
   updateContactForm.addEventListener('submit', function(event) {

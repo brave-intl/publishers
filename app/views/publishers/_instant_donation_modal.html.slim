@@ -1,4 +1,11 @@
-.instant-donation-container id="instant-donation-container"
-  .container id=current_publisher.id
-    .translations headline=t(".headline") intro=t(".intro")
-        .react-container id="react-container"
+.modal id="rewards_banner_intro_modal" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-header id="instant-donation-modal-selection"
+      center
+        = image_tag "icn-donation-jar@1x.png", id: 'icn-donation-jar'
+        h2.modal-title = t ".headline"
+        p = t ".intro"
+        = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "open-banner-button")
+      center
+    .modal-header style="display: none;" id="rewards-banner-container"
+      = hidden_field_tag 'publisher_id', current_publisher.id

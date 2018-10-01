@@ -39,8 +39,11 @@ export default class BraveRewardsBanner extends React.Component {
      this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
-  componentDidMount(){
+  componentWillMount(){
     this.modalize();
+  }
+
+  componentDidMount(){
     this.fetchSiteBanner();
     document.getElementsByClassName('brave-rewards-banner-control-bar-save-button')[0].addEventListener("click", this.handleSave);
     window.addEventListener('resize', this.updateWindowDimensions);
@@ -62,6 +65,9 @@ export default class BraveRewardsBanner extends React.Component {
   }
 
   close(){
+    document.getElementsByClassName("modal-panel")[0].style.maxWidth = '40rem';
+    document.getElementsByClassName("modal-panel")[0].style.padding = '2rem 2rem';
+    document.getElementsByClassName("modal-panel--content")[0].style.padding = '1rem 1rem 0 1rem';
     document.getElementsByClassName("modal-panel--close js-deny")[0].click();
   }
 

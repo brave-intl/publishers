@@ -14,13 +14,13 @@ export default class BraveRewardsBannerContainer extends React.Component {
 
     this.state = {
       mode: 'Edit',
-      isIntro: true,
+      isIntro: false,
     }
 
     this.setMode = this.setMode.bind(this)
   }
 
-  componentDidMount(){
+  componentWillMount(){
     this.modalize();
   }
 
@@ -116,14 +116,9 @@ export default class BraveRewardsBannerContainer extends React.Component {
 
 export function renderBraveRewardsBannerContainer(headline, intro) {
 
-  let props = {
-    headline: headline,
-    intro: intro
-  }
-
   ReactDOM.render(
-    <BraveRewardsBannerContainer {...props}/>,
-    document.getElementById("react-container").parentElement.parentElement
+    <BraveRewardsBannerContainer/>,
+    document.getElementById("rewards-banner-container").parentElement.parentElement
   )
 }
 
