@@ -262,8 +262,8 @@ module PublishersHelper
 
   def publisher_statement_period(transactions)
     return "" if transactions.empty?
-    statement_begin_date = "#{transactions.first["created_at"].to_time.strftime("%d/%m/%y")}"
-    statement_end_date = "#{transactions.last["created_at"].to_time.strftime("%d/%m/%y")}"
+    statement_begin_date = "#{transactions.first["created_at"].to_time.strftime("%Y-%m-%d")}"
+    statement_end_date = "#{transactions.last["created_at"].to_time.strftime("%Y-%m-%d")}"
     statement_period = statement_begin_date == statement_end_date ? statement_begin_date : "#{statement_begin_date} - #{statement_end_date}"
     statement_period
   end

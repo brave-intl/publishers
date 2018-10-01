@@ -10,7 +10,7 @@ center.statement-contents
       - deposit_sum = BigDecimal.new('0.0e18')
       - @transactions.each do |transaction|
         tr
-          td = transaction["created_at"].to_time.strftime("%m/%d/%y")
+          td = transaction["created_at"].to_time.strftime("%Y-%m-%d")
           td = transaction["description"].capitalize
           td = transaction["channel"]
           td = transaction["amount"]
