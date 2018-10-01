@@ -404,6 +404,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   instantDonationButton.addEventListener("click", function(event) {
 
+    document.getElementById("intro-container").style.padding = '50px';
+    document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
+    document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
+
     document.getElementById("open-banner-button").onclick = function() {
       renderBraveRewardsBannerContainer();
     };
