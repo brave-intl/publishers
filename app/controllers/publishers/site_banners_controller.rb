@@ -23,11 +23,14 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def fetch
-    site_banner = current_publisher.site_banner
-    data = JSON.parse(site_banner.to_json)
-    data[:backgroundImage] = current_publisher.site_banner.read_only_react_property[:backgroundUrl]
-    data[:logoImage] = current_publisher.site_banner.read_only_react_property[:logoUrl]
-    render(json: data.to_json)
+    if current_publisher.site_banner.present?
+      data = current_publisher.site_banner.read_only_react_property
+      data[:backgroundImage] = data[:backgroundUrl]
+      data[:logoImage] = data[:logoUrl]
+      render(json: data.to_json)
+    else
+      render(json: {}.to_json)
+    end
   end
 
   def update_logo

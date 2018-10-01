@@ -88,15 +88,14 @@ export default class BraveRewardsBanner extends React.Component {
           return response.json();
         })
         .then(function(banner) {
-
           that.setState({
             title: banner.title,
             description: banner.description,
             backgroundImage: banner.backgroundImage,
-            youtube: banner.social_links.youtube,
-            twitter: banner.social_links.twitter,
-            twitch: banner.social_links.twitch,
-            donationAmounts: banner.donation_amounts,
+            youtube: banner.socialLinks.youtube,
+            twitter: banner.socialLinks.twitter,
+            twitch: banner.socialLinks.twitch,
+            donationAmounts: banner.donationAmounts,
           })
 
           that.cropFetchedLogo(banner.logoImage, that);
