@@ -18,13 +18,13 @@ WickedPdf.config = {
   # exe_path: exec('xvfb-run -a -s "-screen 0 640x480x16" /usr/bin/wkhtmltopdf "$@"')
   # You need to specify atleast one input file, and exactly one output file
   
-  exe_path: '/usr/bin/wkhtmltopdf'
+  #exe_path: '/usr/bin/wkhtmltopdf'
   # RuntimeError: Failed to execute:
   # ["/usr/bin/wkhtmltopdf", "-q", "file:////tmp/wicked_pdf20181002-21752-r9er7a.html", "/tmp/wicked_pdf_generated_file20181002-21752-1tue41i.pdf"]
   # Error: PDF could not be generated!
   #  Command Error: QXcbConnection: Could not connect to display 
 
-  # exe_path: Rails.root.join('bin/wkhtmltopdf-with-xvfb.sh').to_s #
+  exe_path: Rails.root.join('bin/wkhtmltopdf-with-xvfb.sh').to_s #
   # RuntimeError: wkhtmltopdf is not executable
 
   # exe_path: exec(Rails.root.join('bin/wkhtmltopdf-with-xvfb.sh').to_s)
