@@ -19,12 +19,10 @@ Rails.application.routes.draw do
       get :uphold_verified
       get :suspended_error
       get :statement
-      get :statement_ready
       get :statements
       get :uphold_status
       patch :verify
       patch :update
-      patch :generate_statement
       patch :complete_signup
       patch :disconnect_uphold
       get :choose_new_channel_type
@@ -111,8 +109,7 @@ Rails.application.routes.draw do
     resources :publishers do
       collection do
         patch :approve_channel
-        patch :generate_statement
-        get :statement_ready
+        get :statement
         post :create_note
       end
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
