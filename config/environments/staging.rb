@@ -1,5 +1,10 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  # Allow images from CDN
+  config.action_dispatch.default_headers = {
+    'Access-Control-Allow-Origin' => "*",
+    'Access-Control-Request-Method' => "GET"
+  }
 
   # Rate limiting
   config.middleware.use(Rack::Attack)
