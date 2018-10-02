@@ -5,9 +5,13 @@
         = image_tag "icn-donation-jar@1x.png", id: 'icn-donation-jar'
         h2.modal-title = t ".headline"
         p = t ".intro"
-        = hidden_field_tag 'preferred_currency', current_publisher.wallet.default_currency
-        = hidden_field_tag 'conversion_rate', current_publisher.wallet.rates[current_publisher.wallet.default_currency]
         = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "open-banner-button")
+        - if !current_publisher.wallet.default_currency.nil? && !current_publisher.wallet.default_currency.eql?('BAT')
+          = hidden_field_tag 'preferred_currency', current_publisher.wallet.default_currency
+          = hidden_field_tag 'conversion_rate', current_publisher.wallet.rates[current_publisher.wallet.default_currency]
+        - else
+          = hidden_field_tag 'preferred_currency', 'USD'
+          = hidden_field_tag 'conversion_rate', current_publisher.wallet.rates['USD']
       center
     .modal-header style="display: none;" id="rewards-banner-container"
       = hidden_field_tag 'publisher_id', current_publisher.id
