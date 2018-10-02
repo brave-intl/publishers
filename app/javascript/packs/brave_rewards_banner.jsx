@@ -21,7 +21,6 @@ export default class BraveRewardsBanner extends React.Component {
       youtube: '',
       twitter: '',
       twitch: '',
-      conversionRate: 0.2,
       donationAmounts: [1, 5, 10],
       mode: 'Edit',
       width: '1320'
@@ -385,7 +384,7 @@ export default class BraveRewardsBanner extends React.Component {
               }
               &nbsp;BAT
             </div>
-          <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>${(this.state.donationAmounts[0] * this.state.conversionRate).toFixed(2)} USD</div>
+          <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>{(this.state.donationAmounts[0] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</div>
           </div>
           <div style={style.donationsButtonContainer}>
             <div className="brave-rewards-banner-content-donations-button" style={style.donationButton}>
@@ -397,7 +396,7 @@ export default class BraveRewardsBanner extends React.Component {
               &nbsp;BAT
 
             </div>
-          <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>${(this.state.donationAmounts[1] * this.state.conversionRate).toFixed(2)} USD</div>
+          <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>{(this.state.donationAmounts[1] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</div>
           </div>
           <div style={style.donationsButtonContainer}>
             <div className="brave-rewards-banner-content-donations-button" style={style.donationButton}>
@@ -410,7 +409,7 @@ export default class BraveRewardsBanner extends React.Component {
               &nbsp;BAT
 
             </div>
-          <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>${(this.state.donationAmounts[2] * this.state.conversionRate).toFixed(2)} USD</div>
+          <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>{(this.state.donationAmounts[2] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</div>
           </div>
 
           <div className="brave-rewards-banner-content-donations-checkbox" style={{paddingTop:'5px', marginLeft:'35px'}}>

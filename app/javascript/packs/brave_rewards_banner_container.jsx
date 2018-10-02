@@ -14,7 +14,8 @@ export default class BraveRewardsBannerContainer extends React.Component {
 
     this.state = {
       mode: 'Edit',
-      isIntro: false,
+      preferredCurrency: this.props.preferredCurrency,
+      conversionRate: this.props.conversionRate,
     }
 
     this.setMode = this.setMode.bind(this)
@@ -114,10 +115,15 @@ export default class BraveRewardsBannerContainer extends React.Component {
   }
 }
 
-export function renderBraveRewardsBannerContainer(headline, intro) {
+export function renderBraveRewardsBannerContainer(preferredCurrency, conversionRate) {
+
+  let props = {
+    preferredCurrency: preferredCurrency,
+    conversionRate: conversionRate
+  }
 
   ReactDOM.render(
-    <BraveRewardsBannerContainer/>,
+    <BraveRewardsBannerContainer {...props}/>,
     document.getElementById("rewards-banner-container").parentElement.parentElement
   )
 }

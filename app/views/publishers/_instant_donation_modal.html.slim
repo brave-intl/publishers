@@ -5,6 +5,8 @@
         = image_tag "icn-donation-jar@1x.png", id: 'icn-donation-jar'
         h2.modal-title = t ".headline"
         p = t ".intro"
+        = hidden_field_tag 'preferred_currency', current_publisher.wallet.default_currency
+        = hidden_field_tag 'conversion_rate', current_publisher.wallet.rates[current_publisher.wallet.default_currency]
         = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "open-banner-button")
       center
     .modal-header style="display: none;" id="rewards-banner-container"
