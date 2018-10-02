@@ -151,7 +151,7 @@ export default class BraveRewardsBanner extends React.Component {
       canvas.width = 160;
       canvas.height = 160;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      let url = canvas.toDataURL('image/jpeg', 1);
+      let url = canvas.toDataURL('image/jpg', 1);
       that.setState({logoImage: url});
     }
   }
@@ -183,7 +183,7 @@ export default class BraveRewardsBanner extends React.Component {
         canvas.width = 160;
         canvas.height = 160;
         ctx.drawImage(img160, 0, 0, canvas.width, canvas.height);
-        let url = canvas.toDataURL('image/jpeg', 1);
+        let url = canvas.toDataURL('image/jpg', 1);
         that.setState({logoImage: url});
       }
 
