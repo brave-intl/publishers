@@ -145,6 +145,7 @@ export default class BraveRewardsBanner extends React.Component {
   cropFetchedLogo(logo, that){
     let img = new Image();
     img.src = logo;
+    img.crossOrigin = "Anonymous";
     img.onload = function() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
