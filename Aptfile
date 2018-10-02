@@ -1,3 +1,4 @@
 xvfb
 libfontconfig
+libxcomposite1
 wkhtmltopdf
