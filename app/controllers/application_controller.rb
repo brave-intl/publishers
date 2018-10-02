@@ -14,9 +14,10 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
-  before_action :cors_set_access_control_headers
+  after_action :cors_set_access_control_headers
 
   def cors_set_access_control_headers
+    p "setting access control headers"
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, PATCH, OPTIONS'
     headers['Access-Control-Request-Method'] = '*'
