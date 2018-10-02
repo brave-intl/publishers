@@ -1,4 +1,6 @@
 xvfb
 libfontconfig
 libxcomposite1
+libgl
+libpcre16
 wkhtmltopdf
