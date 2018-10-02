@@ -11,10 +11,8 @@ class PublishersController < ApplicationController
     :balance,
     :disconnect_uphold,
     :edit_payment_info,
-    :generate_statement,
     :home,
     :statement,
-    :statement_ready,
     :statements,
     :update,
     :uphold_status,
@@ -385,6 +383,8 @@ class PublishersController < ApplicationController
   end
 
   def statements
+    statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
+    @statement_has_content = statement_contents.length > 0
   end
 
   def log_out
@@ -396,37 +396,23 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
-  def generate_statement
-    publisher = current_publisher
-    statement_period = params[:statement_period]
-    statement = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
-    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id, send_email: true)
-    render(json: {
-      id: statement.id,
-      date: statement_period_date(statement.created_at),
-      period: statement_period_description(statement.period.to_sym)
-    }, status: 200)
-  end
-
-  def statement_ready
-    statement = PublisherStatement.find(params[:id])
-    if statement && statement.contents
-      head 204
-    else
-      head 404
-    end
-  end
-
   def statement
-    statement = PublisherStatement.find(params[:id])
+    statement_period = params[:statement_period]
+    @transactions = PublisherStatementGetter.new(publisher: current_publisher, statement_period: statement_period).perform
 
-    if statement
-      send_data statement.contents, filename: publisher_statement_filename(statement)
-    else
-      head 404
+    if @transactions.length == 0
+      redirect_to statements_publishers_path, :flash => { :alert => t("publishers.statements.no_transactions") }
+    else 
+      @statement_period = publisher_statement_period(@transactions)
+      statement_file_name = publishers_statement_file_name(@statement_period)
+
+      # statement made from the transactions in /views/layouts/statement.html and /views/publishers/statement.html
+      statement_string = render_to_string :layout => "statement"
+      pdf = WickedPdf.new.pdf_from_string(statement_string)
+      send_data pdf, filename: statement_file_name, type: "application/pdf"
     end
   end
-
+  
   def uphold_status
     publisher = current_publisher
     respond_to do |format|

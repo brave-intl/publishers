@@ -139,7 +139,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = t ".statements.heading"
           .dashboard-panel--content
             .statements-available
-              = link_to_most_recent_statement
+              = link_to(t(".statements.view_statements"), statements_publishers_path)
             .statements-unavailable
               = t ".statements.unavailable"
           .dashboard-panel--header#publishers_contact
