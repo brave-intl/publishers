@@ -409,7 +409,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
 
     document.getElementById("open-banner-button").onclick = function() {
-      renderBraveRewardsBannerContainer();
+      let preferredCurrency = document.getElementById("preferred_currency").value
+      let conversionRate = document.getElementById("conversion_rate").value
+      renderBraveRewardsBannerContainer(preferredCurrency, conversionRate);
     };
 
     document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {
