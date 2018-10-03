@@ -31,7 +31,7 @@ class SiteBanner < ApplicationRecord
 
     if Rails.env.development? || Rails.env.test?
       # (Albert Wang): I couldn't figure out how to play nicely with localhost
-      "https://localhost:3000" + rails_blob_path(object, only_path: true)
+      "https://0.0.0.0:3000" + rails_blob_path(object, only_path: true)
     else
       "#{Rails.application.secrets[:s3_rewards_public_domain]}/#{object.blob.key}"
     end
