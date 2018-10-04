@@ -23,8 +23,6 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def fetch
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers['Access-Control-Request-Method'] = "GET"
     if current_publisher.site_banner.present?
       data = current_publisher.site_banner.read_only_react_property
       data[:backgroundImage] = data[:backgroundUrl]
