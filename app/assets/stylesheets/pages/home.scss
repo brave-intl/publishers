@@ -1,3 +1,55 @@
+.camera-background {
+  background-size: 60px 47px;
+  width: 60px;
+  height: 47px;
+  background-image: url(asset-path("camera@2x.png"));
+  background-color: transparent;
+  border-style: none;
+}
+
+#icn-donation-jar {
+  margin-bottom: 30px;
+}
+
+.brave-rewards-banner {
+  &--background {
+    &-label {
+      display: block;
+      margin-left: -4px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    &-camera {
+      margin-left: 46%;
+      margin-top: -60px;
+    }
+  }
+  &--logo {
+    &-parent {
+      position: relative;
+    }
+
+    &-label {
+      display: block;
+      margin-left: -4px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    &-no-attachment {
+      margin-left: 30%;
+      position: absolute;
+    }
+
+    &-camera {
+      margin-left: 30%;
+      margin-top: 30%;
+      position: absolute;
+    }
+  }
+}
+
 .nav {
   display: block;
 

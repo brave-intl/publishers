@@ -204,5 +204,16 @@ class PublishersHomeTest < Capybara::Rails::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
   end
+
+  test "only see instant donation button when part of the whitelist" do
+    publisher = publishers(:completed)
+    sign_in publisher
+    visit home_publishers_path
+    refute_content page, "Instant Donation"
+
+    Rails.application.secrets[:brave_rewards_email_whitelist] = publisher.email
+    visit home_publishers_path
+    assert_content page, "Instant Donation"
+  end
 end
 
