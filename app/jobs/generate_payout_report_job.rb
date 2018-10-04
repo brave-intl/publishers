@@ -18,6 +18,7 @@ class GeneratePayoutReportJob < ApplicationJob
       i += 1 
       publisher_has_unsettled_balance = false
       wallet = publisher.wallet
+      next if wallet.nil?
 
       probi = wallet.channel_balances[publisher.owner_identifier].probi_before_fees # probi = balance
       if probi > 0
