@@ -197,13 +197,13 @@ class PublishersController < ApplicationController
     end
 
     respond_to do |format|
-      if success
-        format.json { head :no_content  }
-        format.html { redirect_to home_publishers_path }
-      else
-        format.json { render(json: { errors: publisher.errors }, status: 400) }
-        format.html { render(status: 400) }
-      end
+      format.json {
+        if success
+          head :no_content
+        else
+          render(json: { errors: publisher.errors }, status: 400)
+        end
+      }
     end
   end
 

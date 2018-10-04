@@ -6,7 +6,6 @@ import fetch from '../utils/fetchPolyfill';
 import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
-import { renderBraveRewardsBannerContainer } from '../packs/brave_rewards_banner_container';
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
@@ -377,12 +376,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
         continue;
       } else {
-        hideVerificationFailureWhatHappened(e);
+        hideVerificationFailureWhatHappened(e);        
       }
     }
   })
-
-  let instantDonationButton = document.getElementById("instant-donation-button");
 
   editContact.addEventListener('click', function(event) {
     updateContactName.value = showContactName.innerText;
@@ -400,23 +397,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateContactForm.classList.add('hidden');
     editContact.classList.remove('hidden');
     event.preventDefault();
-  }, false);
-
-  instantDonationButton.addEventListener("click", function(event) {
-
-    document.getElementById("intro-container").style.padding = '50px';
-    document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
-    document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
-
-    document.getElementById("open-banner-button").onclick = function() {
-      renderBraveRewardsBannerContainer();
-    };
-
-    document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {
-      document.getElementsByClassName("modal-panel")[0].style.maxWidth = '40rem';
-      document.getElementsByClassName("modal-panel")[0].style.padding = '2rem 2rem';
-      document.getElementsByClassName("modal-panel--content")[0].style.padding = '1rem 1rem 0 1rem';
-    };
   }, false);
 
   updateContactForm.addEventListener('submit', function(event) {
