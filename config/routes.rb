@@ -38,7 +38,15 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
     end
+    resources :site_banners, only: %i(new create), controller: 'publishers/site_banners' do
+      collection do
+        get :fetch
+        post :update_logo
+        post :update_background_image
+      end
+    end
   end
+
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
 
   resources :channels, only: %i(destroy) do

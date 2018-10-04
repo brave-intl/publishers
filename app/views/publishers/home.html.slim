@@ -5,7 +5,6 @@ noscript
     current_publisher.uphold_verified? && \
     current_publisher.wallet.present? && current_publisher.wallet.authorized? && \
     (current_publisher.default_currency_confirmed_at.nil? || !current_publisher.default_currency.present?)
-
 script type="text/html" id="confirm_default_currency_modal_wrapper"
   = render :partial => 'confirm_default_currency_modal'
 
@@ -16,6 +15,14 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     class: 'title' \
   )
   = render partial: "choose_channel_button"
+  - if current_publisher.in_brave_rewards_whitelist?
+    = link_to("+ #{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+
+
+= hidden_field_tag 'publisher_id', current_publisher.id
+= hidden_field_tag 'site-banner-react-props', (current_publisher&.site_banner&.read_only_react_property || {}).to_json
+/ TODO: (Albert Wang) Add conversion rate
+= hidden_field_tag 'conversion-rate', 0.3
 
 .dashboard
   #uphold_status { class=uphold_status_class(current_publisher)
@@ -206,7 +213,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
                       - if channel.details_type == "TwitchChannelDetails"
                         = publisher_channel_balance(current_publisher, channel.details.author_identifier, "BAT")
-                      - else 
+                      - else
                         = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
 
                     span.bat-channel--currency= " BAT"
@@ -352,3 +359,6 @@ javascript:
   document.addEventListener('DOMContentLoaded', function() {
     javascriptDetected();
   });
+
+script id="instant-donation-modal" type="text/html"
+  = render "instant_donation_modal"

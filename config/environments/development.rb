@@ -43,6 +43,9 @@ Rails.application.configure do
       address: Rails.application.secrets[:smtp_server_address] || "127.0.0.1"
   }
 
+  # Use S3 for storage
+  config.active_storage.service = :local
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
