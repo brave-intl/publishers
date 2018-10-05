@@ -1,7 +1,7 @@
 language: ruby
 cache: bundler
 bundler_args: "--jobs=3 --retry=3 --without production --without staging --binstubs"
-dist: trusty
+dist: xenial
 sudo: required
 addons:
   postgresql: '9.6'
@@ -20,6 +20,7 @@ install:
 - chromedriver-update
 - sudo apt-get update
 - sudo apt-get install google-chrome-stable
+- sudo apt-get install xvfb libfontconfig wkhtmltopdf
 - nvm install stable && nvm alias default stable
 - npm install -g npm@5.6.x
 - npm install -g yarn

@@ -311,4 +311,28 @@ class ChannelTest < ActionDispatch::IntegrationTest
                                                        verification_method: "dns")
     refute duplicate_channel.valid?
   end
+
+  test "find_by_channel_identifier finds youtube channels" do
+    channel = channels(:google_verified)
+    found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
+    assert_equal channel, found_channel
+  end
+
+  test "find_by_channel_identifier finds twitch channels" do
+    channel = channels(:twitch_verified)
+    found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
+    assert_equal channel, found_channel
+  end
+
+  test "find_by_channel_identifier finds twitter channels" do
+    channel = channels(:twitter_new)
+    found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
+    assert_equal channel, found_channel
+  end
+
+  test "find_by_channel_identifier finds site channels" do
+    channel = channels(:verified)
+    found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
+    assert_equal channel, found_channel
+  end
 end
