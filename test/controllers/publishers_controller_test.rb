@@ -613,22 +613,49 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
-  test "a publisher's statement can be generated via ajax" do
+  test "a publisher's statement can be downloaded as pdf" do
     publisher = publishers(:uphold_connected)
     sign_in publisher
 
-    patch(generate_statement_publishers_path,
-          params: { statement_period: 'all' },
-          headers: { 'HTTP_ACCEPT' => "application/json" })
+    get statement_publishers_path(publisher)
+    assert_equal response.status, 200
+    assert_equal response.header["Content-Type"], "application/pdf"
+  end
 
-    publisher_statement = PublisherStatement.order(created_at: :asc).last
+  test "no statements are displayed if there are no transactions" do
+    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
+      publisher = publishers(:uphold_connected)
+      sign_in publisher
 
-    assert_response 200
-    assert_match(
-      '{"id":"' + publisher_statement.id + '",' +
-        '"date":"' + publisher_statement.created_at.strftime('%b %e') + '",' +
-        '"period":"All dates"}',
-      response.body)
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions").
+        to_return(status: 200, body: [].to_json, headers: {})
+
+      get statements_publishers_path(publisher)
+
+      assert_match "content empty", response.body # This div displays the "No statements" message.
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
+    end    
+  end
+
+  test "flashes 'no transactions' message when attempting to download a statement with no contents" do
+    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    begin
+      Rails.application.secrets[:api_eyeshade_offline] = false
+      publisher = publishers(:uphold_connected)
+      sign_in publisher
+
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions").
+        to_return(status: 200, body: [].to_json, headers: {})
+
+      get statement_publishers_path(publisher)
+
+      assert_equal flash[:alert], I18n.t("publishers.statements.no_transactions")
+    ensure
+      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
+    end    
   end
 
   test "a publisher's balance can be polled via ajax" do

@@ -1,0 +1,18 @@
+center.statement-contents
+  table
+    tr
+      th Date
+      th Description
+      th Channel
+      th Amount (BAT)
+      th Deposit
+    tbody
+      - deposit_sum = BigDecimal.new('0.0e18')
+      - @transactions.each do |transaction|
+        tr
+          td = transaction["created_at"].to_time.strftime("%Y-%m-%d")
+          td = transaction["description"].capitalize
+          td = transaction["channel"]
+          td = transaction["amount"]
+          - if transaction["type"] == "contribution_settlement" || transaction["type"] == "referral_settlement"
+            td = "#{transaction["settlement_amount"]} #{transaction["settlement_currency"]}"

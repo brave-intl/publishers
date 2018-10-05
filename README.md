@@ -119,6 +119,11 @@ In order to test the rate limiting and captcha components you will need to setup
 [reCAPTCHA](https://www.google.com/recaptcha/intro/android.html). Instructions can be found at the
 [reCAPTCHA gem repo](https://github.com/ambethia/recaptcha#rails-installation). Add the api keys to your Env variables.
 
+### wkhtmltopdf Setup
+
+In order to generate the statement pdfs from html, you will need to install [wkhtmltopdf](https://wkhtmltopdf.org/) on your machine.
+The app will look for the binary in /usr/bin/wkhtmltopdf.
+
 ### Local Eyeshade Setup
 
 1. Follow the [setup instructions](https://github.com/brave-intl/bat-ledger) for bat-ledger
