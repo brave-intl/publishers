@@ -98,6 +98,7 @@ export default class BraveRewardsBanner extends React.Component {
           })
 
           that.cropFetchedLogo(banner.logoImage, that);
+          that.cropFetchedBackgroundImage(banner.backgroundImage, that)
         });
   }
 
@@ -130,15 +131,54 @@ export default class BraveRewardsBanner extends React.Component {
   }
 
   handleBackgroundImageUpload(event) {
-    if (!event.target.files[0]) {
-      return
-    }
-    this.setState({backgroundImage: URL.createObjectURL(event.target.files[0]), backgroundImageData: event.target})
+    let that = this;
+    this.cropBackgroundImage(event, that);
   }
 
   handleLogoImageUpload(event) {
     let that = this;
     this.cropLogo(event, that);
+  }
+
+  cropFetchedBackgroundImage(backgroundImage, that){
+    let img = new Image();
+    img.src = backgroundImage;
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 900;
+      canvas.height = 176;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      let url = canvas.toDataURL('image/jpeg', 1);
+      that.setState({backgroundImage: url});
+    }
+  }
+
+  cropBackgroundImage(event, that){
+    if (event.target.files && event.target.files[0]) {
+      var filerdr = new FileReader();
+
+      filerdr.onload = function(e) {
+        var img900 = new Image();
+
+      img900.onload = function() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 900;
+        canvas.height = 176;
+        ctx.drawImage(img900, 0, 0, canvas.width, canvas.height);
+        let url = canvas.toDataURL('image/jpeg', 1);
+        that.setState({backgroundImage: url});
+        canvas.toBlob(function(blob){
+          let file = {};
+          file["files"] = [blob]
+          that.setState({backgroundImageData: file});
+        });
+      }
+      img900.src = e.target.result;
+    }
+    filerdr.readAsDataURL(event.target.files[0]);
+  }
   }
 
   cropFetchedLogo(logo, that){
@@ -262,7 +302,6 @@ export default class BraveRewardsBanner extends React.Component {
     let logoLabel
     let backgroundImageLabel
     let backgroundImg
-    let donationsInput
     let explanatoryTitle
     let explanatoryDescription
     let socialLinkText
@@ -273,15 +312,12 @@ export default class BraveRewardsBanner extends React.Component {
       overflow:'hidden'
     }
 
-
-
     if(this.props.mode === 'Edit'){
       logoLabel = { height:'100%', width:'100%', borderRadius: '50%', border: '2px dotted white', cursor:'pointer'}
       backgroundImageLabel = {height:'100%', width:'100%', border: '2px dotted white', cursor:'pointer'}
 
       explanatoryTitle = {width:'100%', height:'50px', backgroundColor: 'rgba(0, 0, 0, 0)', border: '1px solid lightGray', borderRadius: '4px', marginTop: '15px', fontSize: '32px', color: '#686978'}
       explanatoryDescription = {width:'100%', height:'150px', resize: 'none', backgroundColor: 'rgba(0, 0, 0, 0)', border:'1px solid lightGray', borderRadius: '4px', marginTop: '25px', fontSize: '22px', color: '#686978'}
-      donationsInput = {backgroundColor: 'rgba(0, 0, 0, 0)', marginRight:'5px', border: '1px solid lightGray', borderRadius: '4px', color: 'white', height:'19px'}
       socialLinkText = {marginTop:'auto', marginBottom:'auto', borderBottom: '1px solid lightGray', borderTop: '1px solid rgba(0, 0, 0, 0)', borderLeft: '1px solid rgba(0, 0, 0, 0)', color: '#686978', width: '90px', fontSize: '15px', backgroundColor: 'rgba(0, 0, 0, 0)', borderRadius: '0px'}
 
       if(this.state.backgroundImage === null){
@@ -303,7 +339,6 @@ export default class BraveRewardsBanner extends React.Component {
 
       explanatoryTitle = {width:'100%', height:'50px', backgroundColor: 'rgba(0, 0, 0, 0)', border: '1px solid rgba(0, 0, 0, 0)', borderRadius: '4px', marginTop: '15px', fontSize: '32px', color: '#686978', userSelect:'none'}
       explanatoryDescription = {width:'100%', height:'150px', resize: 'none', backgroundColor: 'rgba(0, 0, 0, 0)', border:'1px solid rgba(0, 0, 0, 0)', borderRadius: '4px', marginTop: '25px', fontSize: '22px', color: '#686978', userSelect:'none'}
-      donationsInput = {backgroundColor: 'rgba(0, 0, 0, 0)', marginRight:'5px', border: '1px solid rgba(0, 0, 0, 0)', borderRadius: '4px', color: 'white'}
       socialLinkText = {marginTop:'auto', marginBottom:'auto', borderBottom: '1px solid rgba(0, 0, 0, 0)', borderTop: '1px solid rgba(0, 0, 0, 0)', borderLeft: '1px solid rgba(0, 0, 0, 0)', color: '#686978', width: '90px', fontSize: '15px', backgroundColor: 'rgba(0, 0, 0, 0)', borderRadius: '0px', userSelect: 'none'}
 
       if(this.state.backgroundImage === null){
@@ -326,7 +361,6 @@ export default class BraveRewardsBanner extends React.Component {
     style.backgroundImg = backgroundImg
     style.explanatoryTitle = explanatoryTitle
     style.explanatoryDescription = explanatoryDescription
-    style.donationsInput = donationsInput
     style.socialLinkText = socialLinkText
     style.rewardsBanner = rewardsBanner
 
@@ -376,38 +410,19 @@ export default class BraveRewardsBanner extends React.Component {
 
           <div style={style.donationsButtonContainer}>
             <div className="brave-rewards-banner-content-donations-button" style={style.donationButton}>
-
-              {
-                this.props.mode === 'Edit'?
-                <input style={style.donationsInput} onChange={(e) => this.updateDonationAmounts(e, 0)} value={this.state.donationAmounts[0]} className="brave-rewards-banner-content-explanatory-text-headline" maxLength="3" size="3" type='text'/>:
-                (this.state.donationAmounts[0])
-              }
-              &nbsp;BAT
+                <div style={style.donationsInput} className="brave-rewards-banner-content-explanatory-text-headline">{this.state.donationAmounts[0]} BAT</div>
             </div>
           <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>{(this.state.donationAmounts[0] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</div>
           </div>
           <div style={style.donationsButtonContainer}>
             <div className="brave-rewards-banner-content-donations-button" style={style.donationButton}>
-              {
-                this.props.mode === 'Edit'?
-                <input style={style.donationsInput} onChange={(e) => this.updateDonationAmounts(e, 1)} value={this.state.donationAmounts[1]} className="brave-rewards-banner-content-explanatory-text-headline" maxLength="3" size="3" type='text'/>:
-                (this.state.donationAmounts[1])
-              }
-              &nbsp;BAT
-
+                <div style={style.donationsInput} className="brave-rewards-banner-content-explanatory-text-headline">{this.state.donationAmounts[1]} BAT</div>
             </div>
           <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>{(this.state.donationAmounts[1] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</div>
           </div>
           <div style={style.donationsButtonContainer}>
             <div className="brave-rewards-banner-content-donations-button" style={style.donationButton}>
-
-              {
-                this.props.mode === 'Edit'?
-                <input style={style.donationsInput} onChange={(e) => this.updateDonationAmounts(e, 2)} value={this.state.donationAmounts[2]} className="brave-rewards-banner-content-explanatory-text-headline" maxLength="3" size="3" type='text'/>:
-                (this.state.donationAmounts[2])
-              }
-              &nbsp;BAT
-
+                <div style={style.donationsInput} className="brave-rewards-banner-content-explanatory-text-headline">{this.state.donationAmounts[2]} BAT</div>
             </div>
           <div className="brave-rewards-banner-content-donations-converted" style={style.donationsConverted}>{(this.state.donationAmounts[2] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</div>
           </div>
