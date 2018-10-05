@@ -6,7 +6,7 @@
         h2.modal-title = t ".headline"
         p = t ".intro"
         = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "open-banner-button")
-        - if current_publisher.wallet.default_currency.present? && !current_publisher.wallet.default_currency.eql?('BAT')
+        - if current_publisher&.wallet&.default_currency.present? && !current_publisher&.wallet&.default_currency.eql?('BAT')
           = hidden_field_tag 'preferred_currency', current_publisher.wallet.default_currency
           = hidden_field_tag 'conversion_rate', current_publisher.wallet.rates[current_publisher.wallet.default_currency]
         - else
