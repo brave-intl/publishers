@@ -377,7 +377,7 @@ class PublishersController < ApplicationController
     end
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
-    current_publisher.wallet
+    @wallet = current_publisher.wallet
 
     create_uphold_card_for_default_currency_if_needed
   end
@@ -402,7 +402,7 @@ class PublishersController < ApplicationController
 
     if @transactions.length == 0
       redirect_to statements_publishers_path, :flash => { :alert => t("publishers.statements.no_transactions") }
-    else 
+    else
       @statement_period = publisher_statement_period(@transactions)
       statement_file_name = publishers_statement_file_name(@statement_period)
 
@@ -412,7 +412,7 @@ class PublishersController < ApplicationController
       send_data pdf, filename: statement_file_name, type: "application/pdf"
     end
   end
-  
+
   def uphold_status
     publisher = current_publisher
     respond_to do |format|

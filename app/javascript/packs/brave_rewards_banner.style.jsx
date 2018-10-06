@@ -102,6 +102,13 @@
     marginBottom:'10px'
   }
 
+  let donationsInput = {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    marginRight:'5px',
+    border: '1px solid rgba(0, 0, 0, 0)',
+    borderRadius: '4px', color: 'white'
+  }
+
 
 export let styles = {
   bannerContent: bannerContent,
@@ -116,5 +123,6 @@ export let styles = {
   donationsCurrent: donationsCurrent,
   donationsSend: donationsSend,
   donationsConverted: donationsConverted,
-  donationsButtonContainer: donationsButtonContainer
+  donationsButtonContainer: donationsButtonContainer,
+  donationsInput: donationsInput,
 }

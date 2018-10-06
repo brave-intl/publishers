@@ -9,11 +9,11 @@ class SiteBanner < ApplicationRecord
 
   LOGO = "logo".freeze
   LOGO_DIMENSIONS = [480,480]
-  LOGO_UNIVERSAL_FILE_SIZE = 30_000 # In bytes
+  LOGO_UNIVERSAL_FILE_SIZE = 40_000 # In bytes
 
   BACKGROUND = "background".freeze
   BACKGROUND_DIMENSIONS = [900,176]
-  BACKGROUND_UNIVERSAL_FILE_SIZE = 60_000 # In bytes
+  BACKGROUND_UNIVERSAL_FILE_SIZE = 70_000 # In bytes
 
   def read_only_react_property
     {
