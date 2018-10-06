@@ -59,8 +59,8 @@ class Publishers::SiteBannersController < ApplicationController
 
   def update_image(attachment:, attachment_type:)
     data_url = params[:image].split(',')[0]
-    if data_url.starts_with?("data:image/jpeg")
-      content_type = "image/jpeg"
+    if data_url.starts_with?("data:image/jpeg") || data_url.starts_with?("data:image/jpg")
+      content_type = "image/jpg"
       extension = ".jpg"
     elsif data_url.starts_with?("data:image/png")
       content_type = "image/png"
@@ -90,10 +90,10 @@ class Publishers::SiteBannersController < ApplicationController
     begin
       padded_resized_jpg_path = add_padding_to_image(
         source_image_path: resized_jpg_path,
-        attachment_type: attachment_type,
+        attachment_type: attachment_type
       )
-    rescue OutsidePaddingRangeError
-      logger.error "Outside padding range"
+    rescue OutsidePaddingRangeError => e
+      logger.error "Outside padding range #{e.msg}"
       LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: {publisher_id: current_publisher.id})
     end
 

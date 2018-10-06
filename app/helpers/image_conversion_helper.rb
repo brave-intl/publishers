@@ -1,5 +1,5 @@
 module ImageConversionHelper
-  IMAGE_QUALITY = 75
+  IMAGE_QUALITY = 50
 
   def resize_to_dimensions_and_convert_to_jpg(source_image_path:, attachment_type:, filename:)
     # Set dimensions
@@ -43,7 +43,7 @@ module ImageConversionHelper
     delta = target_file_size - file_size_after_one_byte
 
     if delta < 0
-      raise OutsidePaddingRangeError
+      raise OutsidePaddingRangeError, "Expect minimum to be #{file_size_after_one_byte}"
     end
 
     MiniMagick::Tool::Convert.new do |convert|
