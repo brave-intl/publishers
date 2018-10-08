@@ -1,6 +1,13 @@
 Rails.application.configure do
     # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
+  # Allow images from CDN
+  config.action_dispatch.default_headers = {
+    'Access-Control-Allow-Origin' => "https://localhost:3000",
+    'Access-Control-Request-Method' => "GET",
+    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    'Access-Control-Allow-Methods' => 'GET'
+  }
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -42,6 +49,9 @@ Rails.application.configure do
       port: Rails.application.secrets[:smtp_server_port] || 1025,
       address: Rails.application.secrets[:smtp_server_address] || "127.0.0.1"
   }
+
+  # Use S3 for storage
+  config.active_storage.service = :local
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
