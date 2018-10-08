@@ -60,13 +60,10 @@ class Publishers::SiteBannersController < ApplicationController
   def update_image(attachment:, attachment_type:)
     data_url = params[:image].split(',')[0]
     if data_url.starts_with?("data:image/jpeg") || data_url.starts_with?("data:image/jpg")
-      content_type = "image/jpg"
       extension = ".jpg"
     elsif data_url.starts_with?("data:image/png")
-      content_type = "image/png"
       extension = ".png"
     elsif data_url.starts_with?("data:image/bmp")
-      content_type = "image/bmp"
       extension = ".bmp"
     else
       LogException.perform(StandardError.new("Unknown image format:" + data_url), params: {})
