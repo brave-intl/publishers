@@ -49,10 +49,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     site_banner = site_banners(:completed)
 
-    fake_data = "A" * (Publishers::SiteBannersController::MAX_IMAGE_SIZE / 10)
-    post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpg;base64," + fake_data})
+    source_image_path = "./app/assets/images/brave-lion@3x.jpg"
+    fake_data = Base64.encode64(open(source_image_path) { |io| io.read })
+    post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpeg;base64," + fake_data})
 
     publisher.reload
-    assert_not_nil publisher.site_banner.logo
+    assert_not_nil publisher.site_banner.logo.attachment
   end
 end
