@@ -613,13 +613,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 
-  test "a publisher's statement can be downloaded as pdf" do
+  test "a publisher's statement can be downloaded as html" do
     publisher = publishers(:uphold_connected)
     sign_in publisher
 
     get statement_publishers_path(publisher)
     assert_equal response.status, 200
-    assert_equal response.header["Content-Type"], "application/pdf"
+    assert_equal response.header["Content-Type"], "application/html"
   end
 
   test "no statements are displayed if there are no transactions" do

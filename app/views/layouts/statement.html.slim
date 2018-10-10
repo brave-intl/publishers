@@ -1,12 +1,21 @@
 html
   head
-    = wicked_pdf_stylesheet_link_tag 'pdfs/statement'
+    scss:
+      body {
+        font-family: "Arial";
+        td {
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+        table {
+          padding-top: 20px;
+        }
+      }
   body
-    .statement
-      .statement-header
-        = wicked_pdf_image_tag("brave-logo", id: "brave-logo")
-        .statement-header-info
+    center
+      .statement
+        .statement-header
           h1 = "Brave Payments Publisher Statement"
-          h4.statement-header-info-centered = current_publisher.name
-          h4.statement-header-info-centered= @statement_period
-      = yield
+          .= current_publisher.name
+          .= @statement_period
+        = yield
