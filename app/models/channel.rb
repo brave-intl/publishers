@@ -123,7 +123,7 @@ class Channel < ApplicationRecord
     when "TwitchChannelDetails"
       self.details.name
     when "TwitterChannelDetails"
-      self.details.twitch_channel_id
+      self.details.twitter_channel_id
     else
       nil
     end
