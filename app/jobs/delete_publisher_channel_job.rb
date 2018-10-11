@@ -13,7 +13,7 @@ class DeletePublisherChannelJob < ApplicationJob
       raise "Can't remove a channel that is contesting another a channel."
     end
 
-    success = @channel.destroy
+    success = @channel.destroy!
 
     # Update Eyeshade and Promo
     if success && @channel.verified?
