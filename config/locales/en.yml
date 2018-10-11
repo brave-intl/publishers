@@ -349,10 +349,10 @@ en:
         description: I own or manage a YouTube channel.
       twitch:
         heading: TWITCH CHANNEL
-        description: I'm the primary owner of a twitch channel.
+        description: I'm the primary owner of a Twitch channel.
       twitter:
         heading: TWITTER
-        description: I'm the primary owner of a twitter account.
+        description: I own a Twitter account.
     contact_info:
       heading: Contact Information
     create:
