@@ -405,11 +405,8 @@ class PublishersController < ApplicationController
     else
       @statement_period = publisher_statement_period(@transactions)
       statement_file_name = publishers_statement_file_name(@statement_period)
-
-      # statement made from the transactions in /views/layouts/statement.html and /views/publishers/statement.html
       statement_string = render_to_string :layout => "statement"
-      pdf = WickedPdf.new.pdf_from_string(statement_string)
-      send_data pdf, filename: statement_file_name, type: "application/pdf"
+      send_data statement_string, filename: statement_file_name, type: "application/html"
     end
   end
 

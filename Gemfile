@@ -129,9 +129,6 @@ gem 'webpacker'
 # pagination support for models
 gem "will_paginate"
 
-# html -> pdf convert for statements
-gem 'wicked_pdf'
-
 # YouTube API client
 gem 'yt'
 
