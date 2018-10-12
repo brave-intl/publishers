@@ -285,7 +285,6 @@ class Channel < ApplicationRecord
 
       contesting_channel = duplicate_verified_channels.first 
       if (contesting_channel.contested_by_channel_id != self.id) && (contesting_channel.contested_by_channel_id != nil)
-        debugger
         errors.add(:base, "contesting channel does not match")
       end
     end
