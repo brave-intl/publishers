@@ -19,10 +19,12 @@ Rails.application.routes.draw do
       get :uphold_verified
       get :suspended_error
       get :statement
+      get :statement_ready
       get :statements
       get :uphold_status
       patch :verify
       patch :update
+      patch :generate_statement
       patch :complete_signup
       patch :disconnect_uphold
       get :choose_new_channel_type
@@ -38,15 +40,7 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
     end
-    resources :site_banners, only: %i(new create), controller: 'publishers/site_banners' do
-      collection do
-        get :fetch
-        post :update_logo
-        post :update_background_image
-      end
-    end
   end
-
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
 
   resources :channels, only: %i(destroy) do
@@ -117,7 +111,8 @@ Rails.application.routes.draw do
     resources :publishers do
       collection do
         patch :approve_channel
-        get :statement
+        patch :generate_statement
+        get :statement_ready
         post :create_note
       end
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'

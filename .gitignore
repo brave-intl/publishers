@@ -17,9 +17,6 @@ dump.rdb
 yarn-error.log
 .DS_Store
 
-# Ignore assets stored in /storage
-/storage
-
 # Ignore Byebug command history file.
 .byebug_history
 /ssl/

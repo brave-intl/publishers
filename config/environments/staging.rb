@@ -1,12 +1,5 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  # Allow images from CDN
-  config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => "https://rewards-stg.bravesoftware.com",
-    'Access-Control-Request-Method' => "GET",
-    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods' => 'GET'
-  }
 
   # Rate limiting
   config.middleware.use(Rack::Attack)
@@ -84,9 +77,6 @@ Rails.application.configure do
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
-
-  # Use S3 for storage
-  config.active_storage.service = :amazon
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify

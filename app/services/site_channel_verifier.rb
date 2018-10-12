@@ -52,6 +52,15 @@ class SiteChannelVerifier < BaseService
   def verified_channel_post_verify
     MailerServices::VerificationDoneEmailer.new(verified_channel: channel).perform
     SlackMessenger.new(message: "*#{channel.publication_title}* verified by owner #{channel.publisher.owner_identifier}; id=#{channel.details.channel_identifier}").perform
+
+    # Let eyeshade know about the new Publisher
+    begin
+      PublisherChannelSetter.new(publisher: channel.publisher).perform
+    rescue => e
+      # TODO: Retry if it fails
+      require "sentry-raven"
+      Raven.capture_exception(e)
+    end
   end
 
   def verify_site_channel

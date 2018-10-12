@@ -81,6 +81,24 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "statements created by admin have created_by_admin flag" do
+    admin = publishers(:admin)
+    publisher = publishers(:uphold_connected)
+    sign_in admin
+
+    prev_total_publisher_statements = PublisherStatement.count
+    
+    patch generate_statement_admin_publishers_path(id: publisher.id, statement_period: :past_7_days)
+
+    # ensure a statement is created
+    assert PublisherStatement.count == prev_total_publisher_statements + 1
+
+    created_statement = PublisherStatement.order("created_at").last
+
+    # ensure it has the created by admin flag
+    assert created_statement.created_by_admin
+  end
+
   test "admins can approve channels waiting for admin approval" do
     admin = publishers(:admin)
     c = channels(:to_verify_restricted)

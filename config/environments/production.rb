@@ -2,14 +2,6 @@ Rails.application.configure do
     # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
 
-  # Allow images from CDN
-  config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => "https://rewards.bravesoftware.com",
-    'Access-Control-Request-Method' => "GET",
-    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods' => 'GET'
-  }
-
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Rate limiting
@@ -94,9 +86,6 @@ Rails.application.configure do
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
-
-  # Use S3 for storage
-  config.active_storage.service = :amazon
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
