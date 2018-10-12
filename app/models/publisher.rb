@@ -12,12 +12,12 @@ class Publisher < ApplicationRecord
 
   devise :timeoutable, :trackable, :omniauthable
 
-  has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
+  has_one :site_banner
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
@@ -270,6 +270,11 @@ class Publisher < ApplicationRecord
       wallet.scope &&
       wallet.scope.include?("cards:write") &&
       !excluded_from_payout
+  end
+
+  # (Albert Wang) We can remove this when beta is done
+  def in_brave_rewards_whitelist?
+    self.email.in?((Rails.application.secrets[:brave_rewards_email_whitelist] || "").split(","))
   end
 
   private
