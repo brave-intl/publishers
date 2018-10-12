@@ -23,14 +23,6 @@ class Api::ChannelsController < Api::BaseController
 
     channel.save!
 
-    # once the channel has been saved send it to eyeshade
-    begin
-      PublisherChannelSetter.new(publisher: @owner).perform
-    rescue => e
-      require "sentry-raven"
-      Raven.capture_exception(e)
-    end
-
     render(json: channel.details, status: :ok)
   end
 

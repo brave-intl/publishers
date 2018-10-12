@@ -1,6 +1,10 @@
 nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
   .container-fluid
     .menu-container
+      .nav.pull-left.float-left
+        = link_to(root_path) do
+          .brave-logo
+            = render "logo_wordmark_svg"
       .nav.pull-right.float-right
         = yield(:navbar_content_right)
         - if current_publisher
@@ -32,9 +36,3 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
                 log_out_publishers_path, \
                 class: 'btn btn-secondary btn-highlight btn-outline-primary user-solo-button' \
             )
-      .nav.pull-left.float-left
-        = link_to(root_path) do
-          .brave-logo
-            = render "logo_wordmark_svg"
-      .text-center
-        = yield(:navbar_content)

@@ -49,14 +49,6 @@ module Publishers
       end
 
       @channel.save!
-      begin
-        PublisherChannelSetter.new(publisher: current_publisher).perform
-      rescue => e
-        # ToDo: What do we do if call to eyeshade fails
-        require "sentry-raven"
-        Raven.capture_exception(e)
-      end
-
       redirect_to home_publishers_path, notice: t("shared.channel_created")
       return
     end
@@ -96,14 +88,6 @@ module Publishers
       end
 
       @channel.save!
-      begin
-        PublisherChannelSetter.new(publisher: current_publisher).perform
-      rescue => e
-        # ToDo: What do we do if call to eyeshade fails
-        require "sentry-raven"
-        Raven.capture_exception(e)
-      end
-
       redirect_to home_publishers_path, notice: t("shared.channel_created")
       return
     end
@@ -185,14 +169,6 @@ module Publishers
       end
       
       @channel.save!
-
-      begin
-        PublisherChannelSetter.new(publisher: current_publisher).perform
-      rescue => e
-        # ToDo: What do we do if call to eyeshade fails
-        require "sentry-raven"
-        Raven.capture_exception(e)
-      end
 
       redirect_to home_publishers_path, notice: t("shared.channel_created")
       return
