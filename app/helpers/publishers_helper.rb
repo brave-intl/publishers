@@ -260,18 +260,66 @@ module PublishersHelper
     PublisherDnsRecordGenerator.new(publisher: publisher).perform
   end
 
-  def publisher_statement_period(transactions)
-    return "" if transactions.empty?
-    statement_begin_date = "#{transactions.first["created_at"].to_time.strftime("%Y-%m-%d")}"
-    statement_end_date = "#{transactions.last["created_at"].to_time.strftime("%Y-%m-%d")}"
-    statement_period = statement_begin_date == statement_end_date ? statement_begin_date : "#{statement_begin_date} - #{statement_end_date}"
-    statement_period
+  def all_statement_periods
+    [:past_7_days,
+     :past_30_days,
+     :this_month,
+     :last_month,
+     :this_year,
+     :last_year,
+     :all]
   end
 
-  def publishers_statement_file_name(publisher_statement_period)
-    "#{t("publishers.statements.statement_file_name")}-#{publisher_statement_period}.html"
+  def unused_statement_periods
+    periods = all_statement_periods
+    current_publisher.statements.visible_statements.each do |s|
+      periods.delete(s.period.to_sym)
+    end
+    periods
   end
-  
+
+  def statement_periods_as_options(periods)
+    periods.collect do |period|
+      [statement_period_description(period), period]
+    end
+  end
+
+  def statement_period_description(period)
+    I18n.t("helpers.publisher.statement_periods.#{period}")
+  end
+
+  def statement_period_date(date)
+    date.strftime('%b %e')
+  end
+
+  def link_to_most_recent_statement
+    most_recent_statement = current_publisher.statements.order(created_at: :desc).first
+    if most_recent_statement.present?
+      statement_name = t("publishers.home.statements.statement_name",
+                         created_at: statement_period_date(most_recent_statement.created_at),
+                         period: statement_period_description(most_recent_statement.period))
+
+      t("publishers.home.statements.view_recent_statement",
+        statement_link: link_to(statement_name, statements_publishers_path)).html_safe
+    else
+      (t("publishers.statements.description") +
+        '<br/>' +
+        link_to(t(".statements.view_statements"), statements_publishers_path)).html_safe
+    end
+  end
+
+  def publisher_statement_filename(publisher_statement)
+    publisher_id = publisher_statement.publisher.name
+    date = publisher_statement.created_at.to_date.iso8601
+    period = publisher_statement.period.to_s.gsub('_', '-')
+
+    "#{publisher_id}-#{date}-#{period}.csv"
+  end
+
+  def link_to_publisher_statement(publisher_statement)
+    link_to(publisher_statement_filename(publisher_statement), statement_publishers_url(id: publisher_statement.id))
+  end
+
   def publisher_filtered_verification_token(publisher)
     if publisher.supports_https?
       publisher.verification_token

@@ -11,8 +11,10 @@ class PublishersController < ApplicationController
     :balance,
     :disconnect_uphold,
     :edit_payment_info,
+    :generate_statement,
     :home,
     :statement,
+    :statement_ready,
     :statements,
     :update,
     :uphold_status,
@@ -143,6 +145,14 @@ class PublishersController < ApplicationController
     update_sendgrid(publisher: @publisher)
 
     if @publisher.update(update_params)
+      # let eyeshade know about the new Publisher
+      begin
+        PublisherChannelSetter.new(publisher: @publisher).perform
+      rescue => e
+        require "sentry-raven"
+        Raven.capture_exception(e)
+      end
+
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
     else
@@ -189,13 +199,13 @@ class PublishersController < ApplicationController
     end
 
     respond_to do |format|
-      if success
-        format.json { head :no_content  }
-        format.html { redirect_to home_publishers_path }
-      else
-        format.json { render(json: { errors: publisher.errors }, status: 400) }
-        format.html { render(status: 400) }
-      end
+      format.json {
+        if success
+          head :no_content
+        else
+          render(json: { errors: publisher.errors }, status: 400)
+        end
+      }
     end
   end
 
@@ -369,14 +379,12 @@ class PublishersController < ApplicationController
     end
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
-    @wallet = current_publisher.wallet
+    current_publisher.wallet
 
     create_uphold_card_for_default_currency_if_needed
   end
 
   def statements
-    statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
-    @statement_has_content = statement_contents.length > 0
   end
 
   def log_out
@@ -388,17 +396,34 @@ class PublishersController < ApplicationController
   def choose_new_channel_type
   end
 
-  def statement
+  def generate_statement
+    publisher = current_publisher
     statement_period = params[:statement_period]
-    @transactions = PublisherStatementGetter.new(publisher: current_publisher, statement_period: statement_period).perform
+    statement = PublisherStatementGenerator.new(publisher: publisher, statement_period: statement_period.to_sym).perform
+    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id, send_email: true)
+    render(json: {
+      id: statement.id,
+      date: statement_period_date(statement.created_at),
+      period: statement_period_description(statement.period.to_sym)
+    }, status: 200)
+  end
 
-    if @transactions.length == 0
-      redirect_to statements_publishers_path, :flash => { :alert => t("publishers.statements.no_transactions") }
+  def statement_ready
+    statement = PublisherStatement.find(params[:id])
+    if statement && statement.contents
+      head 204
     else
-      @statement_period = publisher_statement_period(@transactions)
-      statement_file_name = publishers_statement_file_name(@statement_period)
-      statement_string = render_to_string :layout => "statement"
-      send_data statement_string, filename: statement_file_name, type: "application/html"
+      head 404
+    end
+  end
+
+  def statement
+    statement = PublisherStatement.find(params[:id])
+
+    if statement
+      send_data statement.contents, filename: publisher_statement_filename(statement)
+    else
+      head 404
     end
   end
 

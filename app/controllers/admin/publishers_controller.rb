@@ -30,14 +30,30 @@ class Admin::PublishersController < AdminController
     redirect_to admin_publisher_path(current_publisher)
   end
 
-  def statement
+  # generates a publisher statement for an admin
+  # does not send an email
+  def generate_statement
+    publisher = Publisher.find(params[:id])
     statement_period = params[:statement_period]
-    @transactions = PublisherStatementGetter.new(publisher: @publisher, statement_period: statement_period).perform
-    @statement_period = publisher_statement_period(@transactions)
-    statement_file_name = publishers_statement_file_name(@statement_period)
+    statement = PublisherStatementGenerator.new(publisher: publisher,
+                                                statement_period: statement_period.to_sym,
+                                                created_by_admin: true).perform
 
-    statement_string = render_to_string layout: "statement", template: "publishers/statement"
-    send_data statement_string, filename: statement_file_name, type: "application/html"
+    SyncPublisherStatementJob.perform_later(publisher_statement_id: statement.id, send_email: false)
+    render(json: {
+      id: statement.id,
+      date: statement_period_date(statement.created_at),
+      period: statement_period_description(statement.period.to_sym)
+    }, status: 200)
+  end
+
+  def statement_ready
+    statement = PublisherStatement.find(params[:id])
+    if statement && statement.contents
+      head 204
+    else
+      head 404
+    end
   end
 
   def create_note
@@ -67,7 +83,7 @@ class Admin::PublishersController < AdminController
 
   def get_publisher
     return unless params[:id].present? || params[:publisher_id].present?
-    @publisher = Publisher.find(params[:publisher_id] || params[:id])
+    @publisher = Publisher.find(params[:id] || params[:publisher_id])
   end
 
   def publisher_create_note_params

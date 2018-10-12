@@ -7,6 +7,7 @@
     }
   }
 
+
   #statement_generator {
     margin-top: 2.5rem;
 
@@ -42,7 +43,7 @@
 
       &:empty {
         &:after {
-          content: "You don't have any statements yet!";
+          content: "You haven't requested a statement yet!";
           display: block;
           padding-top: 130px;
           text-align: center;
@@ -60,17 +61,19 @@
       font-weight: 300;
       padding: 0.6rem 0;
 
-      .period, .download, {
+      .created-at, .period, .status {
         display: inline-block;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      .period {
-        width: 50%;
+      .created-at {
+        width: 28%;
       }
-      .download {
-        width: 50%;
-        text-align: right;
+      .period {
+        width: 32%;
+      }
+      .status {
+        width: 40%;
       }
     }
 
@@ -85,6 +88,16 @@
     .statement {
       font-weight: 300;
       border-bottom: 1px solid $lightGray;
+      .status {
+        .download {
+          float: right;
+          background-image: url(asset-path("download@1x.png"));
+          background-position: center left;
+          background-repeat: no-repeat;
+          background-size: 17px 21px;
+          padding-left: 25px;
+        }
+      }
     }
   }
 
