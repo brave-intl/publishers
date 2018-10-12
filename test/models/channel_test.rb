@@ -259,44 +259,6 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert contested_by_channel.valid?
   end
 
-  # TODO: Figure out what Larry wanted here
-  test "duplicate of a verified channel isn't valid if the original isn't contested sites" do
-    channel = channels(:verified)
-
-    contested_by_channel = Channel.new(publisher: publishers(:small_media_group), verified: true)
-    contested_by_channel.details = SiteChannelDetails.new(brave_publisher_id: "verified.org")
-
-    assert channel.valid?
-    refute contested_by_channel.valid?
-  end
-
-  test "duplicate of a verified channel isn't valid if the original isn't contested youtube" do
-    channel = channels(:youtube_new)
-
-    contested_by_channel = Channel.new(publisher: publishers(:small_media_group), verified: true)
-    contested_by_channel.details = YoutubeChannelDetails.new(youtube_channel_id: channel.details.youtube_channel_id,
-                                                             auth_user_id: channel.details.auth_user_id,
-                                                             auth_provider: channel.details.auth_provider,
-                                                             title: channel.details.title,
-                                                             thumbnail_url: channel.details.thumbnail_url)
-    assert channel.valid?
-    refute contested_by_channel.valid?
-  end
-
-  test "duplicate of a verified channel isn't valid if the original isn't contested twitch" do
-    channel = channels(:twitch_verified)
-    contested_by_channel = Channel.new(publisher: publishers(:small_media_group), verified: true)
-    contested_by_channel.details = TwitchChannelDetails.new(twitch_channel_id: "78032",
-                                                            auth_user_id: "abc123",
-                                                            auth_provider: "twitch",
-                                                            name: "twtwtw",
-                                                            display_name: "TwTwTw",
-                                                            thumbnail_url: "https://some_image_host.com/some_image.png")
-
-    assert channel.valid?
-    refute contested_by_channel.valid?
-  end
-
   test "publisher can't add a site channel if they already have an verified instance" do
     channel = channels(:verified)
     duplicate_channel = Channel.new(publisher: channel.publisher)

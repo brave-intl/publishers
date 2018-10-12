@@ -48,7 +48,7 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
     assert Channel.where(id: channel.id).empty?
   end
 
-   test "destroying a channel in contention approvals the contested by channel" do
+  test "destroying a channel in contention approvals the contested by channel" do
     channel = channels(:fraudulently_verified_site)
     contested_by_channel = channels(:locked_out_site)
     # contest channel

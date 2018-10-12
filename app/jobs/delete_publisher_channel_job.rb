@@ -1,23 +1,26 @@
 class DeletePublisherChannelJob < ApplicationJob
   queue_as :default
 
-  attr_reader :channel, :publisher
-
   def perform(channel_id:)
     @channel = Channel.find(channel_id)
-    publisher = @channel.publisher
+    raise "Can't remove a channel that is contesting another a channel." if @channel.verification_pending?
 
+    # If channel is being contested, approve the channel which will also delete
     if @channel.contested_by_channel.present?
-      Channels::ApproveChannelTransfer.new(channel: @channel, should_delete: false).perform
-    elsif @channel.verification_pending?
-      raise "Can't remove a channel that is contesting another a channel."
+      return Channels::ApproveChannelTransfer.new(channel: @channel).perform
     end
 
-    success = @channel.destroy
+    channel_is_verified = @channel.verified?
+
+    if should_update_promo_server
+      referral_code = @channel.promo_registration.referral_code
+    end
+
+    success = @channel.destroy!
 
     # Update Eyeshade and Promo
-    if success && @channel.verified? && should_update_promo_server
-      PromoChannelOwnerUpdater.new(referral_code: channel.promo_registration.referral_code).perform
+    if success && channel_is_verified && should_update_promo_server
+      PromoChannelOwnerUpdater.new(referral_code: referral_code).perform
     end
 
     success
@@ -26,6 +29,6 @@ class DeletePublisherChannelJob < ApplicationJob
   private
 
   def should_update_promo_server
-    channel.promo_registration.present?
+    @channel.promo_registration.present?
   end
 end

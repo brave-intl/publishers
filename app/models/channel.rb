@@ -283,17 +283,10 @@ class Channel < ApplicationRecord
         errors.add(:base, "can only contest one channel")
       end
 
-      contesting_channel = duplicate_verified_channels.first
-      if contesting_channel.contested_by_channel_id != self.id
+      contesting_channel = duplicate_verified_channels.first 
+      if (contesting_channel.contested_by_channel_id != self.id) && (contesting_channel.contested_by_channel_id != nil)
+        debugger
         errors.add(:base, "contesting channel does not match")
-      end
-
-      if contesting_channel.contest_token.nil?
-        errors.add(:base, "contesting channel does not have a token")
-      end
-
-      if contesting_channel.contest_timesout_at.nil?
-        errors.add(:base, "contesting channel does not have a timeout")
       end
     end
   end
