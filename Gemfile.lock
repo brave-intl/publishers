@@ -212,6 +212,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     mimemagic (0.3.2)
+    mini_magick (4.9.2)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -493,6 +494,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   lograge (~> 0.4)
   meta-tags
+  mini_magick
   minitest-rails-capybara (~> 3.0.1)
   mocha
   newrelic_rpm (~> 3.16)

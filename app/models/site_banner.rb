@@ -7,6 +7,14 @@ class SiteBanner < ApplicationRecord
   has_one_attached :background_image
   belongs_to :publisher
 
+  LOGO = "logo".freeze
+  LOGO_DIMENSIONS = [480,480]
+  LOGO_UNIVERSAL_FILE_SIZE = 30_000 # In bytes
+
+  BACKGROUND = "background".freeze
+  BACKGROUND_DIMENSIONS = [900,176]
+  BACKGROUND_UNIVERSAL_FILE_SIZE = 60_000 # In bytes
+
   def read_only_react_property
     {
       title: self.title,
@@ -21,15 +29,9 @@ class SiteBanner < ApplicationRecord
   def url_for(object)
     return nil if object.nil? || object.attachment.nil?
 
-    extension = if object.blob.content_type == "image/png"
-                  ".png"
-                elsif object.blob.content_type.in?(['image/jpg', 'image/jpeg'])
-                  ".jpeg"
-                end
-
     if Rails.env.development? || Rails.env.test?
       # (Albert Wang): I couldn't figure out how to play nicely with localhost
-      "https://localhost:3000" + rails_blob_path(object, only_path: true) + extension
+      "https://localhost:3000" + rails_blob_path(object, only_path: true)
     else
       "#{Rails.application.secrets[:s3_rewards_public_domain]}/#{object.blob.key}"
     end
