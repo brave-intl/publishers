@@ -105,18 +105,21 @@ export default class BannerEditor extends React.Component {
         .then(function(banner) {
           console.log(banner);
           console.log(typeof banner)
-
-          that.setState({
-            title: banner.title,
-            description: banner.description,
-            youtube: banner.socialLinks.youtube,
-            twitter: banner.socialLinks.twitter,
-            twitch: banner.socialLinks.twitch,
-            donationAmounts: banner.donationAmounts,
-          })
-
-          that.cropFetchedLogo(banner.logoImage, that);
-          that.cropFetchedBackgroundImage(banner.backgroundImage, that)
+          if(Object.keys(banner).length === 0 && banner.constructor === Object){
+            return;
+          }
+          else{
+            that.setState({
+              title: banner.title,
+              description: banner.description,
+              youtube: banner.socialLinks.youtube,
+              twitter: banner.socialLinks.twitter,
+              twitch: banner.socialLinks.twitch,
+              donationAmounts: banner.donationAmounts,
+            })
+            that.cropFetchedLogo(banner.logoImage, that);
+            that.cropFetchedBackgroundImage(banner.backgroundImage, that)
+          }
         });
   }
 
