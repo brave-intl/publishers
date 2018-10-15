@@ -226,7 +226,7 @@ export default class BannerEditor extends React.Component {
       canvas.width = 1200;
       canvas.height = 176;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      let url = canvas.toDataURL('image/jpeg', 1);
+      let url = canvas.toDataURL('image/jpg', 1);
       that.setState({backgroundImage: url});
     }
   }
@@ -258,7 +258,7 @@ export default class BannerEditor extends React.Component {
         canvas.width = 1200;
         canvas.height = 176;
         ctx.drawImage(img1200, 0, 0, canvas.width, canvas.height);
-        let url = canvas.toDataURL('image/jpeg', 1);
+        let url = canvas.toDataURL('image/jpg', 1);
         that.setState({backgroundImage: url});
       }
 
