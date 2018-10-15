@@ -103,6 +103,8 @@ export default class BannerEditor extends React.Component {
           return response.json();
         })
         .then(function(banner) {
+          console.log(banner);
+          console.log(typeof banner)
 
           that.setState({
             title: banner.title,
