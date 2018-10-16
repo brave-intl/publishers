@@ -6,7 +6,7 @@ import fetch from '../utils/fetchPolyfill';
 import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
-import { renderBraveRewardsBannerContainer } from '../packs/brave_rewards_banner_container';
+import { renderBannerEditor } from '../packs/banner_editor'
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("open-banner-button").onclick = function() {
       let preferredCurrency = document.getElementById("preferred_currency").value
       let conversionRate = document.getElementById("conversion_rate").value
-      renderBraveRewardsBannerContainer(preferredCurrency, conversionRate);
+      renderBannerEditor(preferredCurrency, conversionRate);
     };
 
     document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {

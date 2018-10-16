@@ -3,8 +3,11 @@
     .modal-header id="instant-donation-modal-selection"
       center id="intro-container"
         = image_tag "icn-donation-jar@1x.png", id: 'icn-donation-jar'
-        h2.modal-title = t ".headline"
-        p = t ".intro"
+        br
+        h4.banner-intro-headline = t ".headline"
+        h6.banner-intro-tagline = t ".tagline"
+        p.banner-intro-intro = t ".intro"
+
         = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "open-banner-button")
         - if wallet.present? && wallet&.default_currency.present? && wallet&.rates.present? && wallet&.default_currency.eql?('BAT')
           = hidden_field_tag 'preferred_currency', wallet.default_currency
