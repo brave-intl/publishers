@@ -285,9 +285,9 @@ en:
     wallet_not_connected:
       subject: Please Connect a Wallet To Continue Receiving Funds
       body_html: |
-        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p>
+        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p> 
         <p>Log in to Brave Payments to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>
-      button: Log In to Brave Payments
+      button: Log In to Brave Payments 
     verify_email:
       subject: Brave Publisher email confirmation
       body_html: |
@@ -478,12 +478,11 @@ en:
       redirecting: Redirecting to Uphold for authorization ...
       refreshing: Refreshing balances ...
     instant_donation_modal:
-      headline: Donation Banner
-      intro: Your fans using the Brave browser can now donate BAT directly to you through your very own donation banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the Donate Now button.
-      tagline: Customize the banner content with your own voice and image!
+      headline: Instant Donation
+      intro: Instant Donation allows your fans to donate BAT at a set amount at the time of browsing your properties through the brand banner. This brand banner comes up when the user clicks the BAT icon next to the URL bar. Customize this brand banner with your own voice and image!
       skip: Skip for now
       preview: Preview Banner
-      continue: Continue
+      continue: Continue 
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:

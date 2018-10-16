@@ -1,9 +1,8 @@
 
   let bannerContent = {
     display: 'grid',
-    gridTemplateColumns: '3fr 5fr 3fr',
-    backgroundColor: 'rgb(105, 111, 220',
-    height: '350px'
+    gridTemplateColumns: '3fr 5fr 4fr',
+    height: '262px'
   }
 
   let donationButton = {
@@ -19,8 +18,8 @@
 
   let socialLinks = {
     backgroundColor: 'rgb(233, 240, 255)',
-    paddingTop: '120px',
-    paddingLeft: '70px',
+    paddingTop: '100px',
+    paddingLeft:'40px'
   }
 
   let socialLink = {
@@ -35,14 +34,11 @@
   let imageInput = {
     opacity:'0',
     position:'absolute',
-    visibility:'hidden'
   }
 
   let explanatoryText = {
     backgroundColor: 'rgb(233, 240, 255)',
-    paddingTop:'30px',
-    paddingRight:'75px',
-    paddingLeft:'30px',
+    paddingRight:'30px'
   }
 
   let donations = {
