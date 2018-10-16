@@ -103,8 +103,6 @@ export default class BannerEditor extends React.Component {
           return response.json();
         })
         .then(function(banner) {
-          console.log(banner);
-          console.log(typeof banner)
           if(Object.keys(banner).length === 0 && banner.constructor === Object){
             return;
           }
@@ -367,7 +365,6 @@ export default class BannerEditor extends React.Component {
   handleSave(event) {
     let that = this
     let id = document.getElementById("publisher_id").value;
-    console.log(id);
     let url = '/publishers/' + id + "/site_banners";
     let body = new FormData();
 
