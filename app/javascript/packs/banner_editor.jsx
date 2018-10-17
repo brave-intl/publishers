@@ -221,8 +221,8 @@ export default class BannerEditor extends React.Component {
 
   cropFetchedBackgroundImage(backgroundImage, that){
     let img = new Image();
-    img.src = backgroundImage;
     img.crossOrigin = "Anonymous";
+    img.src = backgroundImage;
     img.onload = function() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
@@ -274,8 +274,8 @@ export default class BannerEditor extends React.Component {
 
   cropFetchedLogo(logo, that){
     let img = new Image();
-    img.src = logo;
     img.crossOrigin = "Anonymous";
+    img.src = logo;
     img.onload = function() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
