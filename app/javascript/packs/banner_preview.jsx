@@ -19,7 +19,7 @@ export default class BannerPreview extends React.Component {
   }
 
   componentDidMount(){
-    this.cleanup();
+    // this.cleanup();
   }
 
   prepareContainer(){
@@ -68,6 +68,7 @@ export default class BannerPreview extends React.Component {
         domain={""}
         title={this.props.title}
         currentDonation={0}
+        balance={25.0}
         currentAmount={0}
         bgImage={this.props.backgroundImage}
         logo={this.props.logoImage}
