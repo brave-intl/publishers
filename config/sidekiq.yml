@@ -24,9 +24,9 @@
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
   SyncPublisherPromoStatsJob:
-    cron: "0 */3 * * *"
-    description: "For Publishers who have enabled a promo, sync their referral stats with the promo server"
-    queue: transactional
+    cron: "15 3 * * *"
+    description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
+    queue: scheduler
   SyncChannelStatsJob:
     cron: "0 1 * * *"
     description: "Syncs the channel stats via youtube and twitch apis"
