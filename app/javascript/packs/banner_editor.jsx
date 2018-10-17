@@ -7,6 +7,9 @@ import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
 import BatsBackground from '../../assets/images/bg_bats.svg'
 import HeartsBackground from '../../assets/images/bg_hearts.svg'
 
+import { initLocale } from 'brave-ui'
+import locale from 'locale/en'
+
 import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon } from 'brave-ui/components/icons'
 import Checkbox from 'brave-ui/components/formControls/checkbox'
 import Toggle from 'brave-ui/components/formControls/toggle'
@@ -55,8 +58,7 @@ export default class BannerEditor extends React.Component {
 
   componentDidMount(){
     this.fetchSiteBanner();
-    this.cleanup();
-    // document.getElementsByClassName('brave-rewards-banner-control-bar-save-button')[0].addEventListener("click", this.handleSave);
+    // this.cleanup();
     window.addEventListener('resize', this.updateWindowDimensions);
   }
 
@@ -423,7 +425,7 @@ export default class BannerEditor extends React.Component {
   }
 
   render() {
-
+    initLocale(locale);
     let style = styles
 
     let rewardsBannerContainer = {width:'1200px'}
