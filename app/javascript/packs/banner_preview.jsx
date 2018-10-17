@@ -19,7 +19,7 @@ export default class BannerPreview extends React.Component {
   }
 
   componentDidMount(){
-    this.cleanup();
+    // this.cleanup();
   }
 
   prepareContainer(){
