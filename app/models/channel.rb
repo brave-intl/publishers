@@ -235,7 +235,7 @@ class Channel < ApplicationRecord
   def should_register_channel_for_promo
     promo_running = Rails.application.secrets[:active_promo_id].present?  # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = self.publisher.promo_enabled_2018q1?
-    promo_running && publisher_enabled_promo && saved_change_to_verified? && verified
+    promo_running && publisher_enabled_promo && saved_change_to_verified? && verified && (details_type != "TwitterChannelDetails")
   end
 
   def clear_verified_at_if_necessary
