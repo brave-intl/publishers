@@ -4,7 +4,7 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
       .nav.pull-left.float-left
         = link_to(root_path) do
           .brave-logo
-            = render "logo_wordmark_svg"
+            = image_tag 'bat_branding_creators.png', height: 30
       .nav.pull-right.float-right
         = yield(:navbar_content_right)
         - if current_publisher
