@@ -1,6 +1,5 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
-  before_action :authenticate_publisher!
 
   MAX_IMAGE_SIZE = 10_000_000
 
@@ -9,7 +8,7 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def create
-    head 401 unless current_publisher.in_brave_rewards_whitelist?
+    head 401 and return unless current_publisher.in_brave_rewards_whitelist?
     site_banner = current_publisher.site_banner || SiteBanner.new
     donation_amounts = JSON.parse(params[:donation_amounts])
     site_banner.update(
@@ -35,7 +34,7 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update_logo
-    head 401 unless current_publisher.in_brave_rewards_whitelist?
+    head 401 and return unless current_publisher.in_brave_rewards_whitelist?
     if params[:image].length > MAX_IMAGE_SIZE
       # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
       # alert[:error] = "File size too big!"
@@ -47,7 +46,7 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update_background_image
-    head 401 unless current_publisher.in_brave_rewards_whitelist?
+    head 401 and return unless current_publisher.in_brave_rewards_whitelist?
     if params[:image].length > MAX_IMAGE_SIZE
       # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
       # alert[:error] = "File size too big!"

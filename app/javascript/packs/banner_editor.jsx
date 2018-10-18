@@ -97,8 +97,7 @@ export default class BannerEditor extends React.Component {
       method: 'GET',
       headers: {
         'Accept': 'text/html',
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content
+        'X-Requested-With': 'XMLHttpRequest'
         },
         credentials: "same-origin",
         }).then(function(response) {
