@@ -124,7 +124,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
       }
     ].to_json
 
-    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
       to_return(status: 200, body: balance_response)
 
     payout_report = nil
@@ -172,7 +172,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
         "balance" => "20.00"
       },
       {
-        "account_id" => "twitch#channel:ucTw",
+        "account_id" => "twitch#author:ucTw",
         "account_type" => "channel",
         "balance" => "20.00"
       },      {
@@ -182,7 +182,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
       }
     ].to_json
 
-    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
       to_return(status: 200, body: balance_response)
 
     payout_report = nil
@@ -195,6 +195,7 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     # Ensure data is correct
     assert_equal payout_report.num_payments, publisher.channels.count + 1
     assert_equal payout_report.amount, (80 * BigDecimal('1e18') - ((60 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
+
     assert_equal payout_report.fee_rate, 0.05
     assert_equal payout_report.fees, (60 * BigDecimal('1e18') * payout_report.fee_rate).to_i.to_s
 

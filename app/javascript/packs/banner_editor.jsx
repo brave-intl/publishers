@@ -7,6 +7,9 @@ import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
 import BatsBackground from '../../assets/images/bg_bats.svg'
 import HeartsBackground from '../../assets/images/bg_hearts.svg'
 
+import { initLocale } from 'brave-ui'
+import locale from 'locale/en'
+
 import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon } from 'brave-ui/components/icons'
 import Checkbox from 'brave-ui/components/formControls/checkbox'
 import Toggle from 'brave-ui/components/formControls/toggle'
@@ -55,8 +58,7 @@ export default class BannerEditor extends React.Component {
 
   componentDidMount(){
     this.fetchSiteBanner();
-    this.cleanup();
-    // document.getElementsByClassName('brave-rewards-banner-control-bar-save-button')[0].addEventListener("click", this.handleSave);
+    // this.cleanup();
     window.addEventListener('resize', this.updateWindowDimensions);
   }
 
@@ -103,18 +105,21 @@ export default class BannerEditor extends React.Component {
           return response.json();
         })
         .then(function(banner) {
-
-          that.setState({
-            title: banner.title,
-            description: banner.description,
-            youtube: banner.social_links.youtube,
-            twitter: banner.social_links.twitter,
-            twitch: banner.social_links.twitch,
-            donationAmounts: banner.donation_amounts,
-          })
-
-          that.cropFetchedLogo(banner.logoImage, that);
-          that.cropFetchedBackgroundImage(banner.backgroundImage, that)
+          if(Object.keys(banner).length === 0 && banner.constructor === Object){
+            return;
+          }
+          else{
+            that.setState({
+              title: banner.title,
+              description: banner.description,
+              youtube: banner.socialLinks.youtube,
+              twitter: banner.socialLinks.twitter,
+              twitch: banner.socialLinks.twitch,
+              donationAmounts: banner.donationAmounts,
+            })
+            that.cropFetchedLogo(banner.logoImage, that);
+            that.cropFetchedBackgroundImage(banner.backgroundImage, that)
+          }
         });
   }
 
@@ -218,6 +223,7 @@ export default class BannerEditor extends React.Component {
 
   cropFetchedBackgroundImage(backgroundImage, that){
     let img = new Image();
+    img.crossOrigin = "Anonymous";
     img.src = backgroundImage;
     img.onload = function() {
       var canvas = document.createElement('canvas');
@@ -225,7 +231,7 @@ export default class BannerEditor extends React.Component {
       canvas.width = 1200;
       canvas.height = 176;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      let url = canvas.toDataURL('image/jpeg', 1);
+      let url = canvas.toDataURL('image/jpg', 1);
       that.setState({backgroundImage: url});
     }
   }
@@ -257,7 +263,7 @@ export default class BannerEditor extends React.Component {
         canvas.width = 1200;
         canvas.height = 176;
         ctx.drawImage(img1200, 0, 0, canvas.width, canvas.height);
-        let url = canvas.toDataURL('image/jpeg', 1);
+        let url = canvas.toDataURL('image/jpg', 1);
         that.setState({backgroundImage: url});
       }
 
@@ -270,6 +276,7 @@ export default class BannerEditor extends React.Component {
 
   cropFetchedLogo(logo, that){
     let img = new Image();
+    img.crossOrigin = "Anonymous";
     img.src = logo;
     img.onload = function() {
       var canvas = document.createElement('canvas');
@@ -360,7 +367,6 @@ export default class BannerEditor extends React.Component {
   handleSave(event) {
     let that = this
     let id = document.getElementById("publisher_id").value;
-    console.log(id);
     let url = '/publishers/' + id + "/site_banners";
     let body = new FormData();
 
@@ -419,7 +425,7 @@ export default class BannerEditor extends React.Component {
   }
 
   render() {
-
+    initLocale(locale);
     let style = styles
 
     let rewardsBannerContainer = {width:'1200px'}

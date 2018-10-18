@@ -12,7 +12,6 @@ class Publisher < ApplicationRecord
 
   devise :timeoutable, :trackable, :omniauthable
 
-  has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
   has_many :login_activities

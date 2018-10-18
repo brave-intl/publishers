@@ -18,6 +18,7 @@ class GeneratePayoutReportJob < ApplicationJob
       i += 1 
       publisher_has_unsettled_balance = false
       wallet = publisher.wallet
+      next if wallet.nil?
 
       probi = wallet.channel_balances[publisher.owner_identifier].probi_before_fees # probi = balance
       if probi > 0
@@ -42,21 +43,21 @@ class GeneratePayoutReportJob < ApplicationJob
       end
 
       publisher.channels.verified.each do |channel|
-        probi = wallet.channel_balances[channel_identifier(channel)].probi # probi = balance - fee
+        probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
         next if probi <= 0
 
         publisher_has_unsettled_balance = true
 
         next if !publisher.uphold_verified? || wallet.address.blank?
 
-        fee_probi = wallet.channel_balances[channel_identifier(channel)].fee # fee = balance - probi
+        fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
 
         num_payments += 1
         total_amount_probi += probi
         total_fee_probi += fee_probi
 
         payouts.push({
-          "publisher" => "#{channel_identifier(channel)}",
+          "publisher" => "#{channel.details.channel_identifier}",
           "name" => "#{channel.publication_title}",
           "altcurrency" => "BAT",
           "probi" => "#{probi}",
@@ -88,16 +89,6 @@ class GeneratePayoutReportJob < ApplicationJob
   end
 
   private
-
-  # TODO: Remove this method and use channel.details.channel_identifier
-  # instead when twitch#author is used everywhere
-  def channel_identifier(channel)
-    if channel.details_type == "TwitchChannelDetails" && !Rails.env.test?
-      channel.details.author_identifier
-    else
-      channel.details.channel_identifier
-    end
-  end
 
   def fee_rate
     raise if Rails.application.secrets[:fee_rate].blank?
