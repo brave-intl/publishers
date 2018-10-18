@@ -342,22 +342,22 @@ export default class BannerEditor extends React.Component {
     return <div>
       {
         this.state.youtube !== '' && <div style={{marginTop:'10px', marginBottom:'10px'}}>
-          <YoutubeColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline'}}/>
-          <p style={{display:'inline', paddingLeft:'5px'}}>{this.state.youtube}</p>
+          <YoutubeColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'10px'}}/>
+          <p style={{display:'inline-block', paddingLeft:'5px', maxWidth:'200px', margin:'auto', overflow:'hidden', whiteSpace:'nowrap', textOverflow:'ellipsis'}}>{this.state.youtube}</p>
           <p onClick={ () => this.handleLinkDelete('Youtube') } style={{display:'inline', paddingLeft:'5px', cursor:'pointer', fontSize:'.85rem', color:'#7d7bdc'}}>(X)</p>
         </div>
       }
       {
         this.state.twitter !== '' && <div style={{marginTop:'10px', marginBottom:'10px'}}>
-          <TwitterColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline'}}/>
-          <p style={{display:'inline', paddingLeft:'5px'}}>{this.state.twitter}</p>
+          <TwitterColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'10px'}}/>
+          <p style={{display:'inline-block', paddingLeft:'5px', maxWidth:'200px', margin:'auto', overflow:'hidden', whiteSpace:'nowrap', textOverflow:'ellipsis'}}>{this.state.twitter}</p>
           <p onClick={ () => this.handleLinkDelete('Twitter') } style={{display:'inline', paddingLeft:'5px', cursor:'pointer', fontSize:'.85rem', color:'#7d7bdc'}}>(X)</p>
         </div>
       }
       {
         this.state.twitch !== '' && <div style={{marginTop:'10px', marginBottom:'10px'}}>
-          <TwitchColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline'}}/>
-          <p style={{display:'inline', paddingLeft:'5px'}}>{this.state.twitch}</p>
+          <TwitchColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'10px'}}/>
+          <p style={{display:'inline-block', paddingLeft:'5px', maxWidth:'200px', margin:'auto', overflow:'hidden', whiteSpace:'nowrap', textOverflow:'ellipsis'}}>{this.state.twitch}</p>
           <p onClick={ () => this.handleLinkDelete('Twitch') } style={{display:'inline', paddingLeft:'5px', cursor:'pointer', fontSize:'.85rem', color:'#7d7bdc'}}>(X)</p>
         </div>
       }
@@ -479,6 +479,20 @@ export default class BannerEditor extends React.Component {
           userSelect: 'none'
         }
 
+        let saveButton = {
+          width: '150px',
+          backgroundColor: '#fc4145',
+          color: 'white',
+          textAlign: 'center',
+          borderRadius: '24px',
+          padding: '9px 10px',
+          fontSize: '14px',
+          marginLeft:'20px',
+          border: '1px solid #fc4145',
+          cursor: 'pointer',
+          userSelect: 'none'
+        }
+
         let socialLinksHeader = {
           color:'rgb(104, 105, 120)',
         }
@@ -531,10 +545,10 @@ export default class BannerEditor extends React.Component {
 
       <div className="brave-rewards-banner-control-bar" style={{height: '80px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor:'#E9E9F4', borderTopLeftRadius:'8px', borderTopRightRadius:'8px' }}>
         <img style={{height:'45px'}} src={DonationJar}></img>
-        <h5 style={{marginTop:'auto', marginBottom:'auto', paddingLeft:'20px', paddingTop:'7px'}}>Donation Banner</h5>
+        <h5 style={{marginTop:'auto', marginBottom:'auto', paddingLeft:'20px', paddingTop:'7px'}}>Tipping Banner</h5>
       </div>
       <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'40px'}}>
-        <div onClick={ () => this.handleSave() } className="brave-rewards-banner-control-bar-save-button" style={controlButton}>Save change</div>
+        <div onClick={ () => this.handleSave() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Save change</div>
         <div onClick={ () => this.handlePreview() } className="brave-rewards-banner-control-bar-save-button" id="edit-button" style={controlButton}>Preview</div>
         <p style={{marginTop:'auto', marginBottom:'auto', marginLeft:'auto', paddingRight:'20px'}}>Same banner content for all channels</p>
         <div style={{marginRight:'25px', paddingTop:'5px'}}>
@@ -566,7 +580,7 @@ export default class BannerEditor extends React.Component {
             <div>
               {this.renderLinkOption(this.state.linkOption)}
               <div className="banner-link-selection-toggle" style={{display:'inline', height:'25px', width:'50px', fontSize:'20px', margin:'auto', fontFamily:'Segoe UI Symbol', opacity:'0.5', padding:'7px', cursor:'pointer'}}>&#9662;</div>
-              <input onChange={ (e) => this.updateCurrentLink(e) } value={this.state.currentLink} className="banner-social-link-input" style={{display:'inline', backgroundColor: 'rgba(0, 0, 0, 0)', border: '1px solid lightGray', borderRadius: '4px', width:'150px', height:'35px', marginLeft:'15px'}}/>
+              <input onChange={ (e) => this.updateCurrentLink(e) } value={this.state.currentLink} maxLength={80} className="banner-social-link-input" style={{display:'inline', backgroundColor: 'rgba(0, 0, 0, 0)', border: '1px solid lightGray', borderRadius: '4px', width:'150px', height:'35px', marginLeft:'15px'}}/>
 
               {
                 this.state.linkSelection ? (
@@ -592,12 +606,12 @@ export default class BannerEditor extends React.Component {
           </div>
 
           <div className="brave-rewards-banner-content-explanatory-text" style={style.explanatoryText}>
-            <input style={style.explanatoryTitle} onChange={this.updateTitle} value={this.state.title} className="banner-headline" type='text'/>
-            <textarea style={style.explanatoryDescription} onChange={this.updateDescription} value={this.state.description} className="banner-description" type='text'/>
+            <input style={style.explanatoryTitle} onChange={this.updateTitle} placeholder={this.state.title} maxLength={21} className="banner-headline" type='text'/>
+            <textarea style={style.explanatoryDescription} onChange={this.updateDescription} placeholder={this.state.description} maxLength={250} className="banner-description" type='text'/>
           </div>
 
           <div className="brave-rewards-banner-content-donations" style={style.donations}>
-            <h6 style={donationHeader}>Set donation amount</h6>
+            <h6 style={donationHeader}>Set tipping amount</h6>
             <div style={donationRow}>
               <div style={donationButton}>
                 <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>

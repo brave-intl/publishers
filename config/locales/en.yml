@@ -37,7 +37,7 @@ en:
     download: Download
     existing_account: Already have an account?
     get_started: Get Started
-    instant_donation: Instant Donation
+    instant_donation: Tipping Banner
     invalid_totp: Invalid 6-digit code. Please try again.
     log_in: Log In
     remove: Remove
@@ -478,9 +478,9 @@ en:
       redirecting: Redirecting to Uphold for authorization ...
       refreshing: Refreshing balances ...
     instant_donation_modal:
-      headline: Donation Banner
-      intro: Your fans using the Brave browser can now donate BAT directly to you through your very own donation banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the Donate Now button.
-      tagline: Customize the banner content with your own voice and image!
+      headline: Tipping Banner
+      intro: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the Send Tip Now button.
+      tagline: Customize your banner with your own voice and image!
       skip: Skip for now
       preview: Preview Banner
       continue: Continue
