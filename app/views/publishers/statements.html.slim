@@ -15,25 +15,20 @@ noscript
     .single-panel--padded-content.text-left
       h3= t ".title"
       p= t ".description"
-      - if unused_statement_periods.length > 0
-        = form_for(current_publisher, url: generate_statement_publishers_path, html: { id: "statement_generator" }) do |f|
-          .form-group
-            = select_tag(:statement_period, options_for_select(statement_periods_as_options(unused_statement_periods), :past_30_days))
-            a.btn.btn-primary#generate_statement href="#"
-              = t ".create_statement"
       .statements-table
         .header
-          .created-at= t ".created_at"
-          .period= t ".period"
-          .status= t ".status"
-        .content#generated_statements
-          - current_publisher.statements.visible_statements.each do |s|
+          .period = t ".period"
+          .download= t ".download"
+        - if @statement_has_content
+          .content#generated_statements
             .statement
-              .created-at= statement_period_date(s.created_at)
-              .period= statement_period_description(s.period.to_sym)
-              .status
-                - if s.encrypted_contents?
-                  span= 'Ready'
-                  = link_to(t("shared.download"), statement_publishers_url(id: s.id), class: 'download', "data-piwik-action": "DownloadPublisherStatement", "data-piwik-name": "Clicked", "data-piwik-value": "Dashboard")
-                - else
-                  = t ".statements.delayed"
+              .period = t(".this_month")
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "this_month", :"data-piwik-action" => "DownloadThisMonthStatement", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "StatementFlow"), format: :pdf)
+            .statement
+              .period = t(".last_month")
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "last_month", :"data-piwik-action" => "DownloadLastMonthStatement", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "StatementFlow"), format: :pdf)
+            .statement
+              .period = t(".all")
+              .download = link_to(t(".download"), statement_publishers_path(current_publisher, statement_period: "all", :"data-piwik-action" => "DownloadAllStatement", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "StatementFlow"), format: :pdf)
+        - else
+          .content.empty

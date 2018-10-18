@@ -172,9 +172,8 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
       visit home_publishers_path
 
-      refute publisher.wallet.present?
+      assert publisher.wallet.present?
       assert_content page, publisher.name
-      assert_content page, "Unavailable"
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end

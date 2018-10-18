@@ -146,7 +146,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = t ".statements.heading"
           .dashboard-panel--content
             .statements-available
-              / = link_to_most_recent_statement
+              = link_to(t(".statements.view_statements"), statements_publishers_path)
             .statements-unavailable
               = t ".statements.unavailable"
           .dashboard-panel--header#publishers_contact
@@ -211,11 +211,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 .channel-status.float-right
                   .bat-channel
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      - if channel.details_type == "TwitchChannelDetails"
-                        = publisher_channel_balance(current_publisher, channel.details.author_identifier, "BAT")
-                      - else
-                        = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
-
+                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")
@@ -361,4 +357,4 @@ javascript:
   });
 
 script id="instant-donation-modal" type="text/html"
-  = render "instant_donation_modal"
+  = render "instant_donation_modal", wallet: @wallet
