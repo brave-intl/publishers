@@ -4,17 +4,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include PublishersHelper
 
-  before(:example) do
-    @prev_whitelist = Rails.application.secrets[:brave_rewards_email_whitelist]
-  end
-
-  after(:example) do
-    Rails.application.secrets[:brave_rewards_email_whitelist] = @prev_whitelist
-  end
-
   test "publisher not part of the whitelist can't upload" do
     publisher = publishers(:completed)
-    Rails.application.secrets[:brave_rewards_email_whitelist] = ""
     sign_in publisher
 
     get home_publishers_path
@@ -33,7 +24,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher saves a site banner and the data is consistent" do
     publisher = publishers(:completed)
-    Rails.application.secrets[:brave_rewards_email_whitelist] = publisher.email
     sign_in publisher
 
     get home_publishers_path
@@ -54,7 +44,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher cannot upload an excessively large file" do
     publisher = publishers(:completed)
-    Rails.application.secrets[:brave_rewards_email_whitelist] = publisher.email
     sign_in publisher
 
     get home_publishers_path
@@ -71,7 +60,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher can upload a normally sized file" do
     publisher = publishers(:completed)
-    Rails.application.secrets[:brave_rewards_email_whitelist] = publisher.email
     sign_in publisher
 
     get home_publishers_path
