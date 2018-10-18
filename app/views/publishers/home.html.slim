@@ -16,7 +16,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
   )
   = render partial: "choose_channel_button"
   - if current_publisher.in_brave_rewards_whitelist?
-    = link_to("+ #{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+    = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
 
 
 = hidden_field_tag 'publisher_id', current_publisher.id
@@ -214,7 +214,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
-                      = t(".channel_balance_period")            
+                      = t(".channel_balance_period")
               .channel-summary
                 h3= channel.publication_title
                 .channel-details

@@ -208,11 +208,10 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     publisher = publishers(:completed)
     sign_in publisher
     visit home_publishers_path
-    refute_content page, "Instant Donation"
+    refute_content page, "Tipping Banner"
 
     Rails.application.secrets[:brave_rewards_email_whitelist] = publisher.email
     visit home_publishers_path
-    assert_content page, "Instant Donation"
+    assert_content page, "Tipping Banner"
   end
 end
-
