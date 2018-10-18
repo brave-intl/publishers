@@ -5,11 +5,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include PublishersHelper
 
   before(:example) do
-    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
+    @prev_whitelist = Rails.application.secrets[:brave_rewards_email_whitelist]
   end
 
   after(:example) do
-    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
+    Rails.application.secrets[:brave_rewards_email_whitelist] = @prev_whitelist
   end
 
   test "publisher not part of the whitelist can't upload" do
