@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { renderBannerEditor } from '../packs/banner_editor'
+
 import SiteBanner from 'brave-ui/features/rewards/siteBanner'
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
@@ -51,7 +53,13 @@ export default class BannerPreview extends React.Component {
   }
 
   handleClose(){
-    document.getElementById("preview-container").remove();
+    let instantDonationButton = document.getElementById("instant-donation-button");
+    instantDonationButton.click();
+    renderBannerEditor(this.props.preferredCurrency, this.props.conversionRate);
+    setTimeout(function(){
+      document.getElementById("preview-container").remove();
+    }, 100)
+
   }
 
   cleanup(){
