@@ -1,8 +1,8 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
+  include ActionView::Helpers::SanitizeHelper
   protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_publisher!, only: [:create, :update_logo, :update_background]
-
 
   MAX_IMAGE_SIZE = 10_000_000
 
@@ -11,16 +11,15 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def create
-    head 401 and return unless current_publisher.in_brave_rewards_whitelist?
     site_banner = current_publisher.site_banner || SiteBanner.new
-    donation_amounts = JSON.parse(params[:donation_amounts])
+    donation_amounts = JSON.parse(sanitize(params[:donation_amounts]))
     site_banner.update(
       publisher_id: current_publisher.id,
-      title: params[:title],
+      title: sanitize(params[:title]),
       donation_amounts: donation_amounts,
       default_donation: donation_amounts.second,
-      social_links: params[:social_links].present? ? JSON.parse(params[:social_links]) : {},
-      description: params[:description]
+      social_links: params[:social_links].present? ? JSON.parse(sanitize(params[:social_links])) : {},
+      description: sanitize(params[:description])
     )
     head :ok
   end
@@ -37,7 +36,6 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update_logo
-    head 401 and return unless current_publisher.in_brave_rewards_whitelist?
     if params[:image].length > MAX_IMAGE_SIZE
       # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
       # alert[:error] = "File size too big!"
@@ -49,7 +47,6 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update_background_image
-    head 401 and return unless current_publisher.in_brave_rewards_whitelist?
     if params[:image].length > MAX_IMAGE_SIZE
       # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
       # alert[:error] = "File size too big!"
