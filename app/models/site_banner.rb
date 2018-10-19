@@ -20,6 +20,7 @@ class SiteBanner < ApplicationRecord
 
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
   validate :donation_amounts_in_scope
+  validate :social_links_validation
 
   #####################################################
   # Validations
@@ -30,6 +31,16 @@ class SiteBanner < ApplicationRecord
     errors.add(:base, "Must have #{NUMBER_OF_DONATION_AMOUNTS} donation amounts") if donation_amounts.count != NUMBER_OF_DONATION_AMOUNTS
     errors.add(:base, "A donation amount is zero or negative") if donation_amounts.select { |donation_amount| donation_amount <= 0}.count > 0
     errors.add(:base, "A donation amount is above a target threshold") if donation_amounts.select { |donation_amount| donation_amount >= MAX_DONATION_AMOUNT}.count > 0
+  end
+
+  def social_links_validation
+    return if errors.present? || social_links.nil?
+    if (social_links&.keys - ["twitch", "youtube", "twitter"]).present?
+      errors.add(:base, "Unacceptable additional social links")
+    end
+    errors.add(:base, "Invalid twitch link") unless social_links["twitch"].blank? || /^http(|s):\/\/twitch.tv\/[A-Za-z]*$/.match(social_links["twitch"])
+    errors.add(:base, "Invalid youtube user or channel link") unless social_links["youtube"].blank? || /^http(|s):\/\/youtube\.com\/(channel|user)\/[A-Za-z]*$/.match(social_links["youtube"])
+    errors.add(:base, "Invalid twitter user link") unless social_links["twitter"].blank? || /^http(|s):\/\/twitter\.com\/[A-Za-z]*$/.match(social_links["twitter"])
   end
 
   #####################################################
