@@ -10,7 +10,7 @@ import HeartsBackground from '../../assets/images/bg_hearts.svg'
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
 
-import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon } from 'brave-ui/components/icons'
+import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, LoaderIcon } from 'brave-ui/components/icons'
 import Checkbox from 'brave-ui/components/formControls/checkbox'
 import Toggle from 'brave-ui/components/formControls/toggle'
 
@@ -22,6 +22,7 @@ export default class BannerEditor extends React.Component {
     super(props);
 
     this.state = {
+      loading: true,
       title: 'Your title',
       description: 'Welcome to Brave Rewards banner',
       backgroundImage: null,
@@ -104,6 +105,11 @@ export default class BannerEditor extends React.Component {
           return response.json();
         })
         .then(function(banner) {
+
+          setTimeout(function(){
+            that.setState({loading:false})
+          }, 300)
+
           if(Object.keys(banner).length === 0 && banner.constructor === Object){
             return;
           }
@@ -326,6 +332,14 @@ export default class BannerEditor extends React.Component {
   }
   }
 
+  renderLoadingScreen(){
+    if(this.state.loading){
+      return <div style={{width:'100%', height:'606px', marginTop:'70px', position:'absolute', zIndex:'20000', backgroundColor:'rgba(233, 240, 255, 0.95)', borderRadius:'8px'}}>
+        <LoaderIcon style={{height:'150px', width:'150px', marginTop:'auto', marginBottom:'auto', position:'absolute', opacity:'.3', left:'500', right:'0', top:'0', bottom:'0'}}/>
+      </div>
+    }
+  }
+
   renderLinkOption(option){
     switch(option) {
       case 'Youtube':
@@ -541,6 +555,7 @@ export default class BannerEditor extends React.Component {
 
     return (
       <div onClick={ (e) => this.handleLinkSelection(e) } className="brave-rewards-banner-container" style={rewardsBannerContainer}>
+      {this.renderLoadingScreen()}
 
       <div className="brave-rewards-banner-control-bar" style={{height: '80px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor:'#E9E9F4', borderTopLeftRadius:'8px', borderTopRightRadius:'8px' }}>
         <img style={{height:'45px'}} src={DonationJar}></img>
@@ -556,7 +571,6 @@ export default class BannerEditor extends React.Component {
       </div>
 
       <div style={style.rewardsBanner} className="brave-rewards-banner">
-
         <div className="brave-rewards-banner-logo" style={style.logoImg}>
           <input type="file" id="logoImageInput" style={style.imageInput} onChange={this.handleLogoImageUpload}/>
           <label className="banner-logo-label" style={style.logoLabel} htmlFor="logoImageInput" >

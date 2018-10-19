@@ -5,8 +5,8 @@
         = image_tag "icn-donation-jar@1x.png", id: 'icn-donation-jar'
         br
         h4.banner-intro-headline = t ".headline"
-        h6.banner-intro-tagline = t ".tagline"
-        p.banner-intro-intro = t ".intro"
+        p.banner-intro-intro = t ".intro.html"
+        h5.banner-intro-tagline = t ".tagline"
 
         = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "open-banner-button")
         - if wallet.present? && wallet&.default_currency.present? && wallet&.rates.present? && wallet&.default_currency.eql?('BAT')
