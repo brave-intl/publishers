@@ -45,24 +45,36 @@ class SiteBannerTest < ActiveSupport::TestCase
       donation_amounts: [1, 5, 10]
     )
     site_banner.social_links = {"youku": "abcd"}
-    assert_not site_banner.save
+    site_banner.save
+    assert site_banner.social_links.blank?
 
     # Test for youtube
-    site_banner.social_links = {"youtube": "example.com"}
-    assert_not site_banner.save
+    site_banner.social_links = {"youtube": "http://example.com"}
+    site_banner.save
+    assert site_banner.social_links["youtube"].blank?
+
     site_banner.social_links = {"youtube": "https://youtube.com/user/DrDisRespect"}
-    assert site_banner.save
+    site_banner.save
+    assert site_banner.social_links["youtube"] == "https://youtube.com/user/DrDisRespect"
 
     # Test for twitch
-    site_banner.social_links = {"twitch": "http://twitch.com/shroud"}
-    assert_not site_banner.save
-    site_banner.social_links = {"twitch": "https://twitch.tv/shroud"}
-    assert site_banner.save
+    site_banner.social_links = {"twitch": "http://example.com"}
+    site_banner.save
+    assert site_banner.social_links["twitch"].blank?
+    ["https://twitch.tv/shroud", "https://www.twitch.tv/shroud"].each do |twitch_link|
+      site_banner.social_links = {"twitch": twitch_link}
+      site_banner.save
+      assert site_banner.social_links["twitch"] == twitch_link
+    end
 
-    # Test for twitch
+    # Test for twitter
     site_banner.social_links = {"twitter": "https://tw.tr/brave"}
-    assert_not site_banner.save
-    site_banner.social_links = {"twitter": "https://twitter.com/brave"}
-    assert site_banner.save
+    site_banner.save
+    assert site_banner.social_links["twitter"].blank?
+    ["https://twitter.com/brave", "https://www.twitter.com/brave"].each do |twitter_link|
+      site_banner.social_links = {"twitter": twitter_link}
+      site_banner.save
+      assert site_banner.social_links["twitter"] == twitter_link
+    end
   end
 end

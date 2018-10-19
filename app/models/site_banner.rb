@@ -20,7 +20,7 @@ class SiteBanner < ApplicationRecord
 
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
   validate :donation_amounts_in_scope
-  validate :social_links_validation
+  before_save :clear_invalid_social_links
 
   #####################################################
   # Validations
@@ -33,14 +33,23 @@ class SiteBanner < ApplicationRecord
     errors.add(:base, "A donation amount is above a target threshold") if donation_amounts.select { |donation_amount| donation_amount >= MAX_DONATION_AMOUNT}.count > 0
   end
 
-  def social_links_validation
+  # (Albert Wang) Until the front end can properly handle errors, let's not block save and only clear invalid domains
+  def clear_invalid_social_links
     return if errors.present? || social_links.nil?
-    if (social_links&.keys - ["twitch", "youtube", "twitter"]).present?
-      errors.add(:base, "Unacceptable additional social links")
+    require 'addressable'
+    self.social_links = self.social_links.select { |key,_| key.in?(["twitch", "youtube", "twitter"]) }
+
+    unless self.social_links["twitch"].blank? || Addressable::URI.parse(self.social_links["twitch"]).normalize.host.in?(["www.twitch.tv", "twitch.tv"])
+      self.social_links["twitch"] = ""
     end
-    errors.add(:base, "Invalid twitch link") unless social_links["twitch"].blank? || /^http(|s):\/\/twitch.tv\/[A-Za-z]*$/.match(social_links["twitch"])
-    errors.add(:base, "Invalid youtube user or channel link") unless social_links["youtube"].blank? || /^http(|s):\/\/youtube\.com\/(channel|user)\/[A-Za-z]*$/.match(social_links["youtube"])
-    errors.add(:base, "Invalid twitter user link") unless social_links["twitter"].blank? || /^http(|s):\/\/twitter\.com\/[A-Za-z]*$/.match(social_links["twitter"])
+
+    unless self.social_links["youtube"].blank? || Addressable::URI.parse(self.social_links["youtube"]).normalize.host.in?(["www.youtube.com", "youtube.com"])
+      self.social_links["youtube"] = ""
+    end
+
+    unless self.social_links["twitter"].blank? || Addressable::URI.parse(self.social_links["twitter"]).normalize.host.in?(["www.twitter.com", "twitter.com"])
+      self.social_links["twitter"] = ""
+    end
   end
 
   #####################################################
