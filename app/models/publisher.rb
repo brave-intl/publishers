@@ -272,11 +272,6 @@ class Publisher < ApplicationRecord
       !excluded_from_payout
   end
 
-  # (Albert Wang) We can remove this when beta is done
-  def in_brave_rewards_whitelist?
-    self.email.in?((Rails.application.secrets[:brave_rewards_email_whitelist] || "").split(","))
-  end
-
   private
 
   def set_created_status
