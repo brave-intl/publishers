@@ -6,6 +6,7 @@ import BannerPreview from '../packs/banner_preview.jsx'
 import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
 import BatsBackground from '../../assets/images/bg_bats.svg'
 import HeartsBackground from '../../assets/images/bg_hearts.svg'
+import Spinner from '../utils/spinner'
 
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
@@ -16,6 +17,7 @@ import Toggle from 'brave-ui/components/formControls/toggle'
 
 import {styles} from '../packs/brave_rewards_banner.style.jsx'
 import '../../assets/stylesheets/components/banner-editor.scss'
+import '../../assets/stylesheets/components/spinner.scss'
 
 export default class BannerEditor extends React.Component {
   constructor(props) {
@@ -55,10 +57,12 @@ export default class BannerEditor extends React.Component {
 
   componentWillMount(){
     this.modalize();
+
   }
 
   componentDidMount(){
     this.fetchSiteBanner();
+    this.setSpinner();
     // this.cleanup();
     window.addEventListener('resize', this.updateWindowDimensions);
   }
@@ -87,6 +91,10 @@ export default class BannerEditor extends React.Component {
 
   cleanup(){
     document.getElementsByClassName("sc-eilVRo gUSzmU")[0].remove();
+  }
+
+  setSpinner(){
+    Spinner.show('spinner', 'spinner-container');
   }
 
   fetchSiteBanner(){
@@ -334,8 +342,8 @@ export default class BannerEditor extends React.Component {
 
   renderLoadingScreen(){
     if(this.state.loading){
-      return <div style={{width:'100%', height:'606px', marginTop:'70px', position:'absolute', zIndex:'20000', backgroundColor:'rgba(233, 240, 255, 0.95)', borderRadius:'8px'}}>
-        <LoaderIcon style={{height:'150px', width:'150px', marginTop:'auto', marginBottom:'auto', position:'absolute', opacity:'.3', left:'500', right:'0', top:'0', bottom:'0'}}/>
+      return <div style={{width:'100%', height:'606px', marginTop:'70px', position:'absolute', zIndex:'20000', backgroundColor:'rgba(233, 240, 255, 1)', borderRadius:'8px'}}>
+        <div style={{width:'100%', marginTop:'auto', marginBottom:'auto', position:'absolute', left:'0', right:'0', top:'200px', bottom:'0'}} id="spinner-container"></div>
       </div>
     }
   }
