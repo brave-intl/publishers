@@ -493,11 +493,12 @@ export default class BannerEditor extends React.Component {
           borderRadius: '24px',
           padding: '9px 10px',
           fontSize: '14px',
-          marginLeft:'20px',
+          marginLeft:'auto',
           border: '1px solid #fc4145',
           color: '#fc4145',
           cursor: 'pointer',
-          userSelect: 'none'
+          userSelect: 'none',
+          display: 'inline-block'
         }
 
         let saveButton = {
@@ -509,9 +510,11 @@ export default class BannerEditor extends React.Component {
           padding: '9px 10px',
           fontSize: '14px',
           marginLeft:'20px',
+          marginRight: '25px',
           border: '1px solid #fc4145',
           cursor: 'pointer',
-          userSelect: 'none'
+          userSelect: 'none',
+          display: 'inline-block'
         }
 
         let socialLinksHeader = {
@@ -569,13 +572,13 @@ export default class BannerEditor extends React.Component {
         <img style={{height:'45px'}} src={DonationJar}></img>
         <h5 style={{marginTop:'auto', marginBottom:'auto', paddingLeft:'20px', paddingTop:'7px'}}>Tipping Banner</h5>
       </div>
-      <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'40px'}}>
-        <div onClick={ () => this.handleSave() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Save change</div>
-        <div onClick={ () => this.handlePreview() } className="brave-rewards-banner-control-bar-save-button" id="edit-button" style={controlButton}>Preview</div>
-        <p style={{marginTop:'auto', marginBottom:'auto', marginLeft:'auto', paddingRight:'20px'}}>Same banner content for all channels</p>
-        <div style={{marginRight:'25px', paddingTop:'5px'}}>
+      <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'60px'}}>
+        <p style={{marginTop:'auto', marginBottom:'auto'}}>Same banner content for all channels</p>
+        <div style={{marginLeft:'-70px', paddingTop:'5px'}}>
         <Toggle checked={true} disabled={false} type={'light'} size={'large'} onToggle={null}></Toggle>
-      </div>
+        </div>
+        <div onClick={ () => this.handlePreview() } className="brave-rewards-banner-control-bar-save-button" id="edit-button" style={controlButton}>Preview</div>
+        <div onClick={ () => this.handleSave() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Save change</div>
       </div>
 
       <div style={style.rewardsBanner} className="brave-rewards-banner">
@@ -632,7 +635,7 @@ export default class BannerEditor extends React.Component {
           </div>
 
           <div className="brave-rewards-banner-content-donations" style={style.donations}>
-            <h6 style={donationHeader}>Set tipping amount</h6>
+            <h6 style={donationHeader}>Set tipping amounts</h6>
             <div style={donationRow}>
               <div style={donationButton}>
                 <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
