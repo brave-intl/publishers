@@ -484,7 +484,7 @@ en:
       tagline: Customize your banner with your own voice and image!
       skip: Skip for now
       preview: Preview Banner
-      continue: Continue
+      customize: Customize
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:

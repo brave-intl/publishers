@@ -101,7 +101,9 @@ export default class BannerEditor extends React.Component {
     let that = this
     let id = document.getElementById("publisher_id").value;
     let url = '/publishers/' + id + "/site_banners/fetch";
-
+    if(that.props.viewMode === 'Loaded'){
+      that.setState({loading:false})
+    }
     fetch(url, {
       method: 'GET',
       headers: {
@@ -115,6 +117,9 @@ export default class BannerEditor extends React.Component {
         .then(function(banner) {
 
           setTimeout(function(){
+            if(that.props.viewMode === "Preview"){
+              that.handlePreview();
+            }
             that.setState({loading:false})
           }, 300)
 
@@ -577,7 +582,7 @@ export default class BannerEditor extends React.Component {
         <div style={{marginLeft:'-70px', paddingTop:'5px'}}>
         <Toggle checked={true} disabled={false} type={'light'} size={'large'} onToggle={null}></Toggle>
         </div>
-        <div onClick={ () => this.handlePreview() } className="brave-rewards-banner-control-bar-save-button" id="edit-button" style={controlButton}>Preview</div>
+        <div onClick={ () => this.handlePreview() } className="brave-rewards-banner-control-bar-save-button" id="preview-button" style={controlButton}>Preview</div>
         <div onClick={ () => this.handleSave() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Save change</div>
       </div>
 
@@ -669,11 +674,12 @@ export default class BannerEditor extends React.Component {
   }
 }
 
-export function renderBannerEditor(preferredCurrency, conversionRate) {
+export function renderBannerEditor(preferredCurrency, conversionRate, viewMode) {
 
   let props = {
     preferredCurrency: preferredCurrency,
-    conversionRate: conversionRate
+    conversionRate: conversionRate,
+    viewMode: viewMode
   }
 
   ReactDOM.render(

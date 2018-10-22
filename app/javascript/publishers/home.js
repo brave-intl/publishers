@@ -407,11 +407,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("intro-container").style.padding = '50px';
     document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
     document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
+    let preferredCurrency = document.getElementById("preferred_currency").value
+    let conversionRate = document.getElementById("conversion_rate").value
 
     document.getElementById("open-banner-button").onclick = function() {
-      let preferredCurrency = document.getElementById("preferred_currency").value
-      let conversionRate = document.getElementById("conversion_rate").value
-      renderBannerEditor(preferredCurrency, conversionRate);
+      renderBannerEditor(preferredCurrency, conversionRate, "Editor");
+    };
+
+    document.getElementById("open-preview-button").onclick = function() {
+      renderBannerEditor(preferredCurrency, conversionRate, "Preview");
     };
 
     document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {

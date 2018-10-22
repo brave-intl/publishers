@@ -13,8 +13,32 @@
 .banner-intro-tagline {
   padding-right: 30px;
   padding-left: 30px;
+  margin-bottom: 60px;
+}
+
+#open-preview-button {
+
 }
 
 #open-banner-button {
-  margin-top: 20px;
+  width: 150px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.preview-link {
+  color: #ff3f3f;
+  padding-right: 30px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.preview-link:hover {
+  color: #ff3f3f;
+  text-decoration: none;
+}
+
+.preview-link:visited {
+  color: #ff3f3f;
+  text-decoration: none;
 }
