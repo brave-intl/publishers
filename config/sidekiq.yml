@@ -27,6 +27,10 @@
     cron: "15 3 * * *"
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
     queue: scheduler
+  SyncAdminPromoStatsJob:
+    cron: "0 */12 * * *"
+    description: "Syncs referral stats for unattached codes every 12 hours."
+    queue: low
   SyncChannelStatsJob:
     cron: "0 1 * * *"
     description: "Syncs the channel stats via youtube and twitch apis"
