@@ -1,0 +1,77 @@
+.unattached-promo-registrations
+  h1 Referral Promo
+  
+  hr
+
+  = form_tag admin_unattached_promo_registrations_path, id: "create-referral-codes" do
+    = number_field_tag "number_of_codes_to_create", nil, placeholder: "1"
+    = submit_tag "Create referral codes", class: "btn btn-info"
+
+  = form_tag admin_promo_campaigns_path, id: "create-promo-campaign" do
+    = text_field_tag "campaign_name", nil, placeholder: "Campaign name"
+    = submit_tag "Create campaign", class: "btn btn-info"
+
+  hr
+
+  = form_tag admin_unattached_promo_registrations_path, method: :get, id: "filter-by-campaign"do
+    = select_tag :filter, options_for_select(@campaigns + ["Not assigned", "All codes"], @current_campaign)
+    = submit_tag "Filter by campaign", class: "btn btn-success"
+  = form_tag admin_unattached_promo_registrations_path, method: :patch, id: "unattached-referral-code-form" do
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th 
+        th Code
+        th Campaign
+        th Status
+        th Downloads
+        th Installs
+        th Confirmed
+      tbody
+        - @promo_registrations.each do |promo_registration| 
+          - promo_registration_aggregate_stats = promo_registration.aggregate_stats
+          tr
+            td = check_box_tag "referral_codes[]", "#{promo_registration.referral_code}", 1
+            td = promo_registration.referral_code
+            td = promo_registration.promo_campaign&.name
+            td = promo_registration.active ? "active" : "paused"
+            td = promo_registration_aggregate_stats["retrievals"] || 0
+            td = promo_registration_aggregate_stats["first_runs"] || 0
+            td = promo_registration_aggregate_stats["finalized"] || 0
+    .unattached-referral-code-form--submissions
+      .unattached-referral-code-form--submission
+        .unattached-referral-code-form--submission--element
+          . = label_tag "Campaign"
+          . = select_tag :promo_campaign_target, options_for_select(@campaigns)
+          = hidden_field_tag :filter, params[:filter]
+        .unattached-referral-code-form--submission--submit        
+          = submit_tag "Assign codes to campaign", id: "assign-to-campaign", class: "btn btn-primary"
+      .unattached-referral-code-form--submission
+        .unattached-referral-code-form--submission--element
+          . = label_tag "Referral code statuses"
+          . = select_tag :referral_code_status, options_for_select([["Active", "active"], ["Paused", "paused"]])
+          = hidden_field_tag :filter, params[:filter]
+        .unattached-referral-code-form--submission--submit
+          = submit_tag "Update code statuses", id: "update-referral-code-statuses", class: "btn btn-primary"
+      .unattached-referral-code-form--submission
+        .unattached-referral-code-form--submission--element
+          . = label_tag "Statement period start"
+          . = date_select :referral_code_statement_period, :start
+        .unattached-referral-code-form--submission--element
+          . = label_tag "Statement period end"
+          . = date_select :referral_code_statement_period, :end
+        .unattached-referral-code-form--submission--element
+          . = label_tag "Reporting interval"
+          . = select_tag :reporting_interval, options_for_select([["By day","by_day"], ["By week","by_week"], ["By month","by_month"], ["cumulative", "cumulative"]])
+        .unattached-referral-code-form--submission--element
+          . style="font-weight: bold" = label_tag = "Event types"
+          .
+            = label_tag = event_type_column_header("retrievals") + " "
+            = check_box_tag "event_types[]", "retrievals"
+          .
+            = label_tag = event_type_column_header("first_runs") + " "
+            = check_box_tag "event_types[]", "first_runs"
+          .
+            = label_tag = event_type_column_header("finalized") + " "
+            = check_box_tag "event_types[]", "finalized"
+        .unattached-referral-code-form--submission--submit
+          = submit_tag "Download statement", id: "download-referral-statements", class: "btn btn-primary", data: { disable_with: false }

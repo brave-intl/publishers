@@ -1,0 +1,22 @@
+.unattached-promo-registrations {
+  .btn {
+    margin: 0px 5px 5px 5px;
+  }
+  .unattached-referral-code-form--submissions {
+    display: flex;
+  }
+  .unattached-referral-code-form--submission {
+    flex: 1;
+  }
+
+  label {
+    font-weight: bold;
+  }
+  .unattached-referral-code-form--submission--element {
+    padding: 0px 0px 15px 0px;
+  }
+  .unattached-referral-code-form--submission--submit {
+    width: 100%;
+    text-align: center;
+  }
+}

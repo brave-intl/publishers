@@ -80,4 +80,45 @@ module PromosHelper
       raise
     end
   end
+
+  def reporting_interval_column_header(reporting_interval)
+    case reporting_interval
+    when "by_day"
+      "Day"
+    when "by_week"
+      "Week"
+    when "by_month"
+      "Month"
+    when "cumulative"
+      "cumulative"
+    else
+      raise
+    end
+  end
+
+  def event_type_column_header(event_type)
+    case event_type
+    when "retrievals"
+      "Downloads"
+    when "first_runs"
+      "Installs"
+    when "finalized"
+      "Confirmations"
+    else
+      raise
+    end
+  end
+
+  def coerce_date_to_start_or_end_of_reporting_interval(date, reporting_interval, start)
+    case reporting_interval
+    when "by_day", "cumulative"
+      date
+    when "by_week"
+      start ? date.at_beginning_of_week : date.at_end_of_week
+    when "by_month"
+      start ? date.at_beginning_of_month : date.at_end_of_month
+    else
+      raise
+    end
+  end
 end

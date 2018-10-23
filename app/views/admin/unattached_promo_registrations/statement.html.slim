@@ -1,0 +1,24 @@
+scss:
+  th {
+    padding: 10px;
+  }
+.promo-statement
+  .promo-statement--header
+    h2 style="margin-bottom: 5px;" = "Brave Referral Statement"
+    h4 style="margin-top: 5px" = "#{@start_date} - #{@end_date}"
+  .promo-statement--contents
+    - @statement_contents.each do |referral_code, events|
+      table style="text-align:center; margin-bottom: 15px;"
+        caption style="font-weight: bold;"= referral_code
+        tr
+          - if @reporting_interval != "cumulative"
+            th = reporting_interval_column_header(@reporting_interval)
+          - @event_types.each do |event_type|
+            th = event_type_column_header(event_type)
+        tbody
+          - events.each do |event|
+            tr
+              - if @reporting_interval != "cumulative"
+                td = event.first
+              - @event_types.each do |event_type|
+                td = event.second[event_type]
