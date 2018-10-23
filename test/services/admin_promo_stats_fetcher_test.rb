@@ -17,8 +17,8 @@ class AdminPromoStatsFetcherTest < ActiveJob::TestCase
     Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
 
     # create two registrations
-    PromoRegistration.create(promo_id: active_promo_id, referral_code: "ABC123", kind: "unattached")
-    PromoRegistration.create(promo_id: active_promo_id, referral_code: "DEF456", kind: "unattached")
+    PromoRegistration.create(promo_id: active_promo_id, referral_code: "ABC123", kind: PromoRegistration::UNATTACHED)
+    PromoRegistration.create(promo_id: active_promo_id, referral_code: "DEF456", kind: PromoRegistration::UNATTACHED)
 
     # stub the response body
     stubbed_response_body = [{
@@ -45,7 +45,7 @@ class AdminPromoStatsFetcherTest < ActiveJob::TestCase
     promo_registrations = PromoRegistration.where(referral_code: ["ABC123", "DEF456"])
     AdminPromoStatsFetcher.new(promo_registrations: promo_registrations).perform
 
-    assert_equal 2, PromoRegistration.find_by_referral_code("ABC123").aggregate_stats["first_runs"]
-    assert_equal 1, PromoRegistration.find_by_referral_code("DEF456").aggregate_stats["first_runs"]
+    assert_equal 2, PromoRegistration.find_by_referral_code("ABC123").aggregate_stats[PromoRegistration::FIRST_RUNS]
+    assert_equal 1, PromoRegistration.find_by_referral_code("DEF456").aggregate_stats[PromoRegistration::FIRST_RUNS]
   end
 end

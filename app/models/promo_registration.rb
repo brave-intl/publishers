@@ -5,10 +5,15 @@ class PromoRegistration < ApplicationRecord
   # a publisher, or be unattached.  Unattached codes
   # are created by admins.
 
+  # Constants
   CHANNEL = "channel".freeze
   OWNER = "owner".freeze
   UNATTACHED ="unattached".freeze
   KINDS = [CHANNEL, OWNER, UNATTACHED].freeze
+
+  RETRIEVALS = "retrievals" # Aliased as 'Downloads'
+  FIRST_RUNS = "first_runs" # Aliased as 'Installs'
+  FINALIZED = "finalized" # Aliased as 'Confirmed'
   
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
@@ -19,16 +24,16 @@ class PromoRegistration < ApplicationRecord
   validates :kind, inclusion: { in: KINDS, message: "%{value} is not a valid kind of promo registration." }
   validates :referral_code, presence: true, uniqueness: { scope: :promo_id }
 
-  scope :unattached, -> { where(kind: "unattached") }
+  scope :unattached, -> { where(kind: UNATTACHED) }
 
   def aggregate_stats
-    JSON.parse(stats).reduce({"retrievals" => 0,
-                              "first_runs" => 0,
-                              "finalized" => 0}) { |aggregate_stats, event|
-      aggregate_stats["retrievals"] += event["retrievals"]
-      aggregate_stats["first_runs"] += event["first_runs"]
-      aggregate_stats["finalized"] += event["finalized"]
-      aggregate_stats.slice("retrievals", "first_runs", "finalized")
+    JSON.parse(stats).reduce({RETRIEVALS => 0,
+                              FIRST_RUNS => 0,
+                              FINALIZED => 0}) { |aggregate_stats, event|
+      aggregate_stats[RETRIEVALS] += event[RETRIEVALS]
+      aggregate_stats[FIRST_RUNS] += event[FIRST_RUNS]
+      aggregate_stats[FINALIZED] += event[FINALIZED]
+      aggregate_stats.slice(RETRIEVALS, FIRST_RUNS, FINALIZED)
     }
   end
 end

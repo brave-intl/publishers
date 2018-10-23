@@ -98,11 +98,11 @@ module PromosHelper
 
   def event_type_column_header(event_type)
     case event_type
-    when "retrievals"
+    when PromoRegistration::RETRIEVALS
       "Downloads"
-    when "first_runs"
+    when PromoRegistration::FIRST_RUNS
       "Installs"
-    when "finalized"
+    when PromoRegistration::FINALIZED
       "Confirmations"
     else
       raise

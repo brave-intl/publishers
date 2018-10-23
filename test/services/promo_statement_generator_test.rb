@@ -34,7 +34,7 @@ class PromoStatementGeneratorTest < ActiveJob::TestCase
                                 end_date: "2018-10-22".to_date,
                                 reporting_interval: "by_day").perform
 
-    assert_equal statement["contents"], {"ABC123"=>{"2018-10-22".to_date=>{"retrievals"=>0, "first_runs"=>0, "finalized"=>0}}}
+    assert_equal statement["contents"], {"ABC123"=>{"2018-10-22".to_date=>{PromoRegistration::RETRIEVALS=>0, PromoRegistration::FIRST_RUNS=>0, PromoRegistration::FINALIZED=>0}}}
   end
 
   test "with no stats, generates an empty statement with cumulative reporting interval" do
@@ -44,7 +44,7 @@ class PromoStatementGeneratorTest < ActiveJob::TestCase
                                 end_date: "2018-10-22".to_date,
                                 reporting_interval: "cumulative").perform
 
-    assert_equal statement["contents"], {"ABC123"=>{"2018-10-22".to_date=>{"retrievals"=>0, "first_runs"=>0, "finalized"=>0}}}
+    assert_equal statement["contents"], {"ABC123"=>{"2018-10-22".to_date=>{PromoRegistration::RETRIEVALS=>0, PromoRegistration::FIRST_RUNS=>0, PromoRegistration::FINALIZED=>0}}}
   end
 
   test "generates a statement with a 'by day' reporting interval" do
@@ -57,14 +57,14 @@ class PromoStatementGeneratorTest < ActiveJob::TestCase
     assert_equal statement["contents"].count, 1
     assert_equal statement["contents"]["ABC123"].count, 59
 
-    checksums = {"retrievals" => 0, "first_runs" => 0, "finalized" => 0}
+    checksums = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
     statement["contents"]["ABC123"].each do |event|
-      checksums["retrievals"] += event.second["retrievals"]
-      checksums["first_runs"] += event.second["first_runs"]
-      checksums["finalized"] += event.second["finalized"]
+      checksums[PromoRegistration::RETRIEVALS] += event.second[PromoRegistration::RETRIEVALS]
+      checksums[PromoRegistration::FIRST_RUNS] += event.second[PromoRegistration::FIRST_RUNS]
+      checksums[PromoRegistration::FINALIZED] += event.second[PromoRegistration::FINALIZED]
     end
     
-    assert_equal checksums, {"retrievals" => 6, "first_runs" => 6, "finalized" => 6}
+    assert_equal checksums, {PromoRegistration::RETRIEVALS => 6, PromoRegistration::FIRST_RUNS => 6, PromoRegistration::FINALIZED => 6}
   end
 
   test "generates a statement with a 'by week' reporting interval" do
@@ -76,14 +76,14 @@ class PromoStatementGeneratorTest < ActiveJob::TestCase
 
     assert_equal statement["contents"].count, 1
     assert_equal statement["contents"]["ABC123"].count, 10
-    checksums = {"retrievals" => 0, "first_runs" => 0, "finalized" => 0}
+    checksums = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
     statement["contents"]["ABC123"].each do |event|
-      checksums["retrievals"] += event.second["retrievals"]
-      checksums["first_runs"] += event.second["first_runs"]
-      checksums["finalized"] += event.second["finalized"]
+      checksums[PromoRegistration::RETRIEVALS] += event.second[PromoRegistration::RETRIEVALS]
+      checksums[PromoRegistration::FIRST_RUNS] += event.second[PromoRegistration::FIRST_RUNS]
+      checksums[PromoRegistration::FINALIZED] += event.second[PromoRegistration::FINALIZED]
     end
 
-    assert_equal checksums, {"retrievals" => 6, "first_runs" => 6, "finalized" => 6}
+    assert_equal checksums, {PromoRegistration::RETRIEVALS => 6, PromoRegistration::FIRST_RUNS => 6, PromoRegistration::FINALIZED => 6}
   end
 
   test "generates a statement for two codes" do
@@ -99,13 +99,13 @@ class PromoStatementGeneratorTest < ActiveJob::TestCase
     assert_equal statement["contents"]["DEF456"].count, 10
 
     ["ABC123", "DEF456"].each do |code|
-      checksums = {"retrievals" => 0, "first_runs" => 0, "finalized" => 0}
+      checksums = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
       statement["contents"][code].each do |event|
-        checksums["retrievals"] += event.second["retrievals"]
-        checksums["first_runs"] += event.second["first_runs"]
-        checksums["finalized"] += event.second["finalized"]
+        checksums[PromoRegistration::RETRIEVALS] += event.second[PromoRegistration::RETRIEVALS]
+        checksums[PromoRegistration::FIRST_RUNS] += event.second[PromoRegistration::FIRST_RUNS]
+        checksums[PromoRegistration::FINALIZED] += event.second[PromoRegistration::FINALIZED]
       end
-      assert_equal checksums, {"retrievals" => 6, "first_runs" => 6, "finalized" => 6}
+      assert_equal checksums, {PromoRegistration::RETRIEVALS => 6, PromoRegistration::FIRST_RUNS => 6, PromoRegistration::FINALIZED => 6}
     end
   end
 end

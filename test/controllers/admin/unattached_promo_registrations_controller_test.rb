@@ -74,7 +74,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
 
     get(statement_admin_unattached_promo_registrations_path,
         params: { referral_codes: ["ABC123", "DEF456"],
-                  event_types: ["retrievals", "first_runs", "finalized"],
+                  event_types: [PromoRegistration::RETRIEVALS, PromoRegistration::FIRST_RUNS, PromoRegistration::FINALIZED],
                   referral_code_statement_period: {"start(1i)"=>"2017",
                                                   "start(2i)"=>"10",
                                                   "start(3i)"=>"22",

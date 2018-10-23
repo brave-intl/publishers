@@ -48,7 +48,7 @@
             span.icon= render "icon_help"
             span.tf-tooltip-content
               span.tf-tooltip-content-heading= "Confirmed"
-              span.tf-tooltip-content-content== "A confirmation is counted when a user downloads the browser and opens, then opens it again at least 30 days later."
+              span.tf-tooltip-content-content== "A confirmation is counted when a user downloads the browser and opens it, then opens it again at least 30 days later."
       tbody
         - @promo_registrations.each do |promo_registration| 
           - promo_registration_aggregate_stats = promo_registration.aggregate_stats
@@ -57,9 +57,9 @@
             td = promo_registration.referral_code
             td = promo_registration.promo_campaign&.name
             td = promo_registration.active ? "active" : "paused"
-            td = promo_registration_aggregate_stats["retrievals"] || 0
-            td = promo_registration_aggregate_stats["first_runs"] || 0
-            td = promo_registration_aggregate_stats["finalized"] || 0
+            td = promo_registration_aggregate_stats[PromoRegistration::RETRIEVALS] || 0
+            td = promo_registration_aggregate_stats[PromoRegistration::FIRST_RUNS] || 0
+            td = promo_registration_aggregate_stats[PromoRegistration::FINALIZED] || 0
     .unattached-referral-code-form--submissions
       .unattached-referral-code-form--submission
         .unattached-referral-code-form--submission--element
@@ -88,13 +88,13 @@
         .unattached-referral-code-form--submission--element
           . style="font-weight: bold" = label_tag = "Event types"
           .
-            = label_tag = event_type_column_header("retrievals") + " "
-            = check_box_tag "event_types[]", "retrievals"
+            = label_tag = event_type_column_header(PromoRegistration::RETRIEVALS) + " "
+            = check_box_tag "event_types[]", PromoRegistration::RETRIEVALS
           .
-            = label_tag = event_type_column_header("first_runs") + " "
-            = check_box_tag "event_types[]", "first_runs"
+            = label_tag = event_type_column_header(PromoRegistration::FIRST_RUNS) + " "
+            = check_box_tag "event_types[]", PromoRegistration::FIRST_RUNS
           .
-            = label_tag = event_type_column_header("finalized") + " "
-            = check_box_tag "event_types[]", "finalized"
+            = label_tag = event_type_column_header(PromoRegistration::FINALIZED) + " "
+            = check_box_tag "event_types[]", PromoRegistration::FINALIZED
         .unattached-referral-code-form--submission--submit
           = submit_tag "Download statement", id: "download-referral-statements", class: "btn btn-primary", data: { disable_with: false }
