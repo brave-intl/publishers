@@ -478,12 +478,13 @@ en:
       redirecting: Redirecting to Uphold for authorization ...
       refreshing: Refreshing balances ...
     instant_donation_modal:
-      headline: Tipping Banner
-      intro: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the Send Tip Now button.
+      headline: Customize Your Tipping Banner
+      intro:
+        html: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the <span style="color:#7d7bdc;">Send Tip Now</span> button.
       tagline: Customize your banner with your own voice and image!
       skip: Skip for now
       preview: Preview Banner
-      continue: Continue
+      customize: Customize
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:

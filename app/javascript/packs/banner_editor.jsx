@@ -6,22 +6,25 @@ import BannerPreview from '../packs/banner_preview.jsx'
 import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
 import BatsBackground from '../../assets/images/bg_bats.svg'
 import HeartsBackground from '../../assets/images/bg_hearts.svg'
+import Spinner from '../utils/spinner'
 
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
 
-import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon } from 'brave-ui/components/icons'
+import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, LoaderIcon } from 'brave-ui/components/icons'
 import Checkbox from 'brave-ui/components/formControls/checkbox'
 import Toggle from 'brave-ui/components/formControls/toggle'
 
 import {styles} from '../packs/brave_rewards_banner.style.jsx'
 import '../../assets/stylesheets/components/banner-editor.scss'
+import '../../assets/stylesheets/components/spinner.scss'
 
 export default class BannerEditor extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      loading: true,
       title: 'Your title',
       description: 'Welcome to Brave Rewards banner',
       backgroundImage: null,
@@ -54,10 +57,12 @@ export default class BannerEditor extends React.Component {
 
   componentWillMount(){
     this.modalize();
+
   }
 
   componentDidMount(){
     this.fetchSiteBanner();
+    this.setSpinner();
     // this.cleanup();
     window.addEventListener('resize', this.updateWindowDimensions);
   }
@@ -88,11 +93,14 @@ export default class BannerEditor extends React.Component {
     document.getElementsByClassName("sc-eilVRo gUSzmU")[0].remove();
   }
 
+  setSpinner(){
+    Spinner.show('spinner', 'spinner-container');
+  }
+
   fetchSiteBanner(){
     let that = this
     let id = document.getElementById("publisher_id").value;
     let url = '/publishers/' + id + "/site_banners/fetch";
-
     fetch(url, {
       method: 'GET',
       headers: {
@@ -119,6 +127,13 @@ export default class BannerEditor extends React.Component {
             that.cropFetchedLogo(banner.logoImage, that);
             that.cropFetchedBackgroundImage(banner.backgroundImage, that)
           }
+          
+          setTimeout(function(){
+            if(that.props.viewMode === "Preview"){
+              that.handlePreview();
+            }
+            that.setState({loading:false})
+          }, 500)
         });
   }
 
@@ -326,6 +341,14 @@ export default class BannerEditor extends React.Component {
   }
   }
 
+  renderLoadingScreen(){
+    if(this.state.loading){
+      return <div style={{width:'100%', height:'606px', marginTop:'70px', position:'absolute', zIndex:'20000', backgroundColor:'rgba(233, 240, 255, 1)', borderRadius:'8px'}}>
+        <div style={{width:'100%', marginTop:'auto', marginBottom:'auto', position:'absolute', left:'0', right:'0', top:'200px', bottom:'0'}} id="spinner-container"></div>
+      </div>
+    }
+  }
+
   renderLinkOption(option){
     switch(option) {
       case 'Youtube':
@@ -471,11 +494,12 @@ export default class BannerEditor extends React.Component {
           borderRadius: '24px',
           padding: '9px 10px',
           fontSize: '14px',
-          marginLeft:'20px',
+          marginLeft:'auto',
           border: '1px solid #fc4145',
           color: '#fc4145',
           cursor: 'pointer',
-          userSelect: 'none'
+          userSelect: 'none',
+          display: 'inline-block'
         }
 
         let saveButton = {
@@ -487,9 +511,11 @@ export default class BannerEditor extends React.Component {
           padding: '9px 10px',
           fontSize: '14px',
           marginLeft:'20px',
+          marginRight: '25px',
           border: '1px solid #fc4145',
           cursor: 'pointer',
-          userSelect: 'none'
+          userSelect: 'none',
+          display: 'inline-block'
         }
 
         let socialLinksHeader = {
@@ -541,22 +567,22 @@ export default class BannerEditor extends React.Component {
 
     return (
       <div onClick={ (e) => this.handleLinkSelection(e) } className="brave-rewards-banner-container" style={rewardsBannerContainer}>
+      {this.renderLoadingScreen()}
 
       <div className="brave-rewards-banner-control-bar" style={{height: '80px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor:'#E9E9F4', borderTopLeftRadius:'8px', borderTopRightRadius:'8px' }}>
         <img style={{height:'45px'}} src={DonationJar}></img>
         <h5 style={{marginTop:'auto', marginBottom:'auto', paddingLeft:'20px', paddingTop:'7px'}}>Tipping Banner</h5>
       </div>
-      <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'40px'}}>
-        <div onClick={ () => this.handleSave() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Save change</div>
-        <div onClick={ () => this.handlePreview() } className="brave-rewards-banner-control-bar-save-button" id="edit-button" style={controlButton}>Preview</div>
-        <p style={{marginTop:'auto', marginBottom:'auto', marginLeft:'auto', paddingRight:'20px'}}>Same banner content for all channels</p>
-        <div style={{marginRight:'25px', paddingTop:'5px'}}>
+      <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'60px'}}>
+        <p style={{marginTop:'auto', marginBottom:'auto'}}>Same banner content for all channels</p>
+        <div style={{marginLeft:'-70px', paddingTop:'5px'}}>
         <Toggle checked={true} disabled={false} type={'light'} size={'large'} onToggle={null}></Toggle>
-      </div>
+        </div>
+        <div onClick={ () => this.handlePreview() } className="brave-rewards-banner-control-bar-save-button" id="preview-button" style={controlButton}>Preview</div>
+        <div onClick={ () => this.handleSave() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Save change</div>
       </div>
 
       <div style={style.rewardsBanner} className="brave-rewards-banner">
-
         <div className="brave-rewards-banner-logo" style={style.logoImg}>
           <input type="file" id="logoImageInput" style={style.imageInput} onChange={this.handleLogoImageUpload}/>
           <label className="banner-logo-label" style={style.logoLabel} htmlFor="logoImageInput" >
@@ -610,7 +636,7 @@ export default class BannerEditor extends React.Component {
           </div>
 
           <div className="brave-rewards-banner-content-donations" style={style.donations}>
-            <h6 style={donationHeader}>Set tipping amount</h6>
+            <h6 style={donationHeader}>Set tipping amounts</h6>
             <div style={donationRow}>
               <div style={donationButton}>
                 <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
@@ -644,11 +670,12 @@ export default class BannerEditor extends React.Component {
   }
 }
 
-export function renderBannerEditor(preferredCurrency, conversionRate) {
+export function renderBannerEditor(preferredCurrency, conversionRate, viewMode) {
 
   let props = {
     preferredCurrency: preferredCurrency,
-    conversionRate: conversionRate
+    conversionRate: conversionRate,
+    viewMode: viewMode
   }
 
   ReactDOM.render(
