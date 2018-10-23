@@ -4,7 +4,11 @@ class SyncAdminPromoStatsJob < ApplicationJob
   queue_as :low
 
   def perform(promo_id: active_promo_id)
-    promo_registrations = PromoRegistration.where(kind: "unattached")
-    AdminPromoStatsFetcher.new(promo_registrations: promo_registrations).perform
+    promo_registrations = PromoRegistration.unattached
+    success = AdminPromoStatsFetcher.new(promo_registrations: promo_registrations).perform
+
+    if success
+      Rails.cache.write("unattached_promo_registration_stats_last_synced_at", Time.now)
+    end
   end
 end

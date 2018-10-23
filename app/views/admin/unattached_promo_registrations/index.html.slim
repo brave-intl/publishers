@@ -1,8 +1,6 @@
 .unattached-promo-registrations
   h1 Referral Promo
-
   hr
-
   = form_tag admin_unattached_promo_registrations_path, id: "create-referral-codes" do
     = label_tag "Create referral codes"
     .
@@ -20,6 +18,7 @@
   = form_tag admin_unattached_promo_registrations_path, method: :get, id: "filter-by-campaign"do
     = select_tag :filter, options_for_select(@campaigns + ["Not assigned", "All codes"], @current_campaign)
     = submit_tag "Filter by campaign", class: "btn btn-success"
+    = "Stats last refreshed #{distance_of_time_in_words (Time.now - Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at'))} ago. Stats in statements are always up-to-date."
   = form_tag admin_unattached_promo_registrations_path, method: :patch, id: "unattached-referral-code-form" do
     table.table.table-bordered.table-striped
       tr
