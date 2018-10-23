@@ -1,15 +1,19 @@
 .unattached-promo-registrations
   h1 Referral Promo
-  
+
   hr
 
   = form_tag admin_unattached_promo_registrations_path, id: "create-referral-codes" do
-    = number_field_tag "number_of_codes_to_create", nil, placeholder: "1"
-    = submit_tag "Create referral codes", class: "btn btn-info"
+    = label_tag "Create referral codes"
+    .
+      = number_field_tag "number_of_codes_to_create", nil, placeholder: "# codes"
+      = submit_tag "+ Referral codes", class: "btn btn-info"
 
   = form_tag admin_promo_campaigns_path, id: "create-promo-campaign" do
-    = text_field_tag "campaign_name", nil, placeholder: "Campaign name"
-    = submit_tag "Create campaign", class: "btn btn-info"
+    = label_tag "Initialize a campaign"
+    .
+      = text_field_tag "campaign_name", nil, placeholder: "Campaign name"
+      = submit_tag "+ Campaign", class: "btn btn-info"
 
   hr
 
@@ -17,15 +21,34 @@
     = select_tag :filter, options_for_select(@campaigns + ["Not assigned", "All codes"], @current_campaign)
     = submit_tag "Filter by campaign", class: "btn btn-success"
   = form_tag admin_unattached_promo_registrations_path, method: :patch, id: "unattached-referral-code-form" do
-    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+    table.table.table-bordered.table-striped
       tr
         th 
-        th Code
-        th Campaign
-        th Status
-        th Downloads
-        th Installs
-        th Confirmed
+        th = "Code"
+        th data-toggle="tooltip" data-placement="top" title="Tooltip"= "Campaign"
+        th
+          = "Status"
+          span.tf-tooltip
+            span.icon= render "icon_help"
+            span.tf-tooltip-content
+              span.tf-tooltip-content-heading= "Status"
+              span.tf-tooltip-content-content== "A code's stats will not be tracked or updated while it's status is 'paused.'"
+        th = "Downloads"
+        th 
+          = "Installs"
+          span.tf-tooltip
+            span.icon= render "icon_help"
+            span.tf-tooltip-content
+              span.tf-tooltip-content-heading= "Installs"
+              span.tf-tooltip-content-content== "An install is counted when a user downloads the browser and opens it the first time."
+
+        th
+          = "Confirmed"
+          span.tf-tooltip
+            span.icon= render "icon_help"
+            span.tf-tooltip-content
+              span.tf-tooltip-content-heading= "Confirmed"
+              span.tf-tooltip-content-content== "A confirmation is counted when a user downloads the browser and opens, then opens it again at least 30 days later."
       tbody
         - @promo_registrations.each do |promo_registration| 
           - promo_registration_aggregate_stats = promo_registration.aggregate_stats
