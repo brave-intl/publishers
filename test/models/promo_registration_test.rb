@@ -127,4 +127,13 @@ class PromoRegistrationTest < ActiveSupport::TestCase
     assert_equal promo_registration.aggregate_stats["first_runs"], 8
     assert_equal promo_registration.aggregate_stats["finalized"], 2   
   end
+
+  test "unattached scope returns only unattached promo registrations" do
+    promo_registration = PromoRegistration.create!(referral_code: "ABC123", promo_id: PROMO_ID, kind: "unattached")
+    channel = channels(:verified)
+    PromoRegistration.create!(referral_code: "DEF456", promo_id: PROMO_ID, kind: "channel", channel: channel)
+
+    assert_equal PromoRegistration.unattached.count, 1
+    assert_equal PromoRegistration.unattached.first, promo_registration
+  end
 end

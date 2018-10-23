@@ -21,7 +21,7 @@ class PromoRegistrarUnattached < BaseApiClient
     promo_registrations.each do |promo_registration|
       PromoRegistration.create!(referral_code: promo_registration["referral_code"],
                                 promo_id: active_promo_id,
-                                kind: "unattached")
+                                kind: PromoRegistration::UNATTACHED)
     end
   end
 
