@@ -124,7 +124,7 @@ Rails.application.routes.draw do
     end
     resources :unattached_promo_registrations, only: %i(index create) do
       collection do
-        get :statement
+        get :report
         patch :update_statuses
         patch :assign
       end

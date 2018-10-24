@@ -2,12 +2,12 @@ scss:
   th {
     padding: 10px;
   }
-.promo-statement
-  .promo-statement--header
+.promo-report
+  .promo-report--header
     h2 style="margin-bottom: 5px;" = "Brave Referral Statement"
     h4 style="margin-top: 5px" = "#{@start_date} - #{@end_date}"
-  .promo-statement--contents
-    - @statement_contents.each do |referral_code, events|
+  .promo-report--contents
+    - @report_contents.each do |referral_code, events|
       table style="text-align:center; margin-bottom: 15px;"
         caption style="font-weight: bold;"= referral_code
         tr

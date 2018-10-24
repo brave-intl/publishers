@@ -45,7 +45,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     refute promo_registration.reload.active
   end
 
-  test "#statement downloads a statement" do
+  test "#report downloads a report" do
     Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     admin = publishers(:admin)
     sign_in admin
@@ -72,10 +72,10 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(status: 200, body: stubbed_response_body)
 
-    get(statement_admin_unattached_promo_registrations_path,
+    get(report_admin_unattached_promo_registrations_path,
         params: { referral_codes: ["ABC123", "DEF456"],
                   event_types: [PromoRegistration::RETRIEVALS, PromoRegistration::FIRST_RUNS, PromoRegistration::FINALIZED],
-                  referral_code_statement_period: {"start(1i)"=>"2017",
+                  referral_code_report_period: {"start(1i)"=>"2017",
                                                   "start(2i)"=>"10",
                                                   "start(3i)"=>"22",
                                                   "end(1i)"=>"2018",

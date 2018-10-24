@@ -24,7 +24,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     redirect_to admin_unattached_promo_registrations_path, notice: "#{number} codes created."
   end
 
-  def statement
+  def report
     referral_codes = params[:referral_codes]
     @reporting_interval = params[:reporting_interval]
     @event_types = params[:event_types]
@@ -33,18 +33,18 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
                         alert: "Please check at least one of downloads, installs, or confirmations."
     end
     
-    statement_start_and_end_date = parse_statement_dates(params[:referral_code_statement_period], @reporting_interval)
-    statement_info = PromoStatementGenerator.new(referral_codes: referral_codes,
-                                                  start_date: statement_start_and_end_date[:start_date],
-                                                  end_date: statement_start_and_end_date[:end_date],
+    report_start_and_end_date = parse_report_dates(params[:referral_code_report_period], @reporting_interval)
+    report_info = PromoReportGenerator.new(referral_codes: referral_codes,
+                                                  start_date: report_start_and_end_date[:start_date],
+                                                  end_date: report_start_and_end_date[:end_date],
                                                   reporting_interval: @reporting_interval).perform
 
-    @start_date = statement_info["start_date"]
-    @end_date = statement_info["end_date"]
-    @statement_contents = statement_info["contents"]
+    @start_date = report_info["start_date"]
+    @end_date = report_info["end_date"]
+    @report_contents = report_info["contents"]
 
-    statement_string = render_to_string :layout => false
-    send_data statement_string, filename: "BraveReferralPromoStatement.html", type: "application/html"
+    report_string = render_to_string :layout => false
+    send_data report_string, filename: "BraveReferralPromoStatement.html", type: "application/html"
   end
 
   def update_statuses
@@ -67,13 +67,13 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
 
   private
 
-  def parse_statement_dates(statement_period, reporting_interval)
-    start_date = Date.new(statement_period["start(1i)"].to_i,
-                          statement_period["start(2i)"].to_i,
-                          statement_period["start(3i)"].to_i)
-    end_date = Date.new(statement_period["end(1i)"].to_i,
-                        statement_period["end(2i)"].to_i,
-                        statement_period["end(3i)"].to_i)
+  def parse_report_dates(report_period, reporting_interval)
+    start_date = Date.new(report_period["start(1i)"].to_i,
+                          report_period["start(2i)"].to_i,
+                          report_period["start(3i)"].to_i)
+    end_date = Date.new(report_period["end(1i)"].to_i,
+                        report_period["end(2i)"].to_i,
+                        report_period["end(3i)"].to_i)
     {
       start_date: start_date,
       end_date: end_date

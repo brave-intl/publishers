@@ -1,5 +1,5 @@
-# Creates a statement to be converted into tables and downloaded by admins
-class PromoStatementGenerator < BaseService
+# Creates a report to be converted into tables and downloaded by admins
+class PromoReportGenerator < BaseService
   include PromosHelper
 
   def initialize(referral_codes:, start_date:, end_date:, reporting_interval:)
@@ -15,45 +15,45 @@ class PromoStatementGenerator < BaseService
     AdminPromoStatsFetcher.new(promo_registrations: promo_registrations).perform
     promo_registrations.reload
 
-    # Build the statement contents
-    statement_contents = {}
+    # Build the report contents
+    report_contents = {}
     promo_registrations.each do |promo_registration|
       # Pull all statistics associated with a code
       events = JSON.parse(promo_registration.stats)
 
       # Select only those within date range supplied
-      events_within_statement_period = events.select { |event|
+      events_within_report_period = events.select { |event|
         (event["ymd"].to_date >= @start_date) && (event["ymd"].to_date <= @end_date)
       }
 
       if @reporting_interval == "cumulative"
         base_case = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, "finalized" => 0 }
-        cumulative_statement_contents = events_within_statement_period.reduce(base_case) { |aggregate_stats, event|
+        cumulative_report_contents = events_within_report_period.reduce(base_case) { |aggregate_stats, event|
           aggregate_stats[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
           aggregate_stats[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
           aggregate_stats[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
           aggregate_stats.slice(PromoRegistration::RETRIEVALS, PromoRegistration::FIRST_RUNS, PromoRegistration::FINALIZED)
         }
 
-        statement_contents_for_referral_code = {
-          @start_date => culmative_statement_contents
+        report_contents_for_referral_code = {
+          @start_date => cumulative_report_contents
         }
 
-        statement_contents["#{promo_registration.referral_code}"] = statement_contents_for_referral_code
+        report_contents["#{promo_registration.referral_code}"] = report_contents_for_referral_code
       else
-        statement_contents_for_referral_code = empty_statement_contents_for_referral_code(@start_date, @end_date, @reporting_interval)
-        events_within_statement_period.each do |event|
+        report_contents_for_referral_code = empty_report_contents_for_referral_code(@start_date, @end_date, @reporting_interval)
+        events_within_report_period.each do |event|
           interval_start_date = coerce_date_to_start_or_end_of_reporting_interval(event["ymd"].to_date, @reporting_interval, true)
-          existing_event = statement_contents_for_referral_code[interval_start_date]
+          existing_event = report_contents_for_referral_code[interval_start_date]
           existing_event[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
           existing_event[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
           existing_event[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
         end
-        statement_contents["#{promo_registration.referral_code}"] = statement_contents_for_referral_code
+        report_contents["#{promo_registration.referral_code}"] = report_contents_for_referral_code
       end
     end
     #
-    # Example statement_contents:
+    # Example report_contents:
     #
     # {"YYY999"=>
     #    {Sun, 01 Oct 2017=>{"retrievals"=>40, "first_runs"=>33, "finalized"=>3},
@@ -79,8 +79,8 @@ class PromoStatementGenerator < BaseService
     #  "AAD116"=>
     #   {Sun, 22 Oct 2017=>{"retrievals"=>0, "first_runs"=>11, "finalized"=>2}}}
 
-    statement_hash = {
-      "contents" => statement_contents,
+    report_hash = {
+      "contents" => report_contents,
       "start_date" => "#{@start_date}",
       "end_date" => "#{@end_date}"
    }
@@ -88,12 +88,12 @@ class PromoStatementGenerator < BaseService
 
   private
 
-  # Creates a statement_contents for a single referral code with all 0 values
-  def empty_statement_contents_for_referral_code(start_date, end_date, reporting_interval)
-    statement_contents_for_referral_code = {}
+  # Creates a report_contents for a single referral code with all 0 values
+  def empty_report_contents_for_referral_code(start_date, end_date, reporting_interval)
+    report_contents_for_referral_code = {}
     current_date = start_date
     while current_date <= end_date do 
-      statement_contents_for_referral_code[current_date] = {
+      report_contents_for_referral_code[current_date] = {
         PromoRegistration::RETRIEVALS => 0,
         PromoRegistration::FIRST_RUNS => 0,
         PromoRegistration::FINALIZED => 0
@@ -109,6 +109,6 @@ class PromoStatementGenerator < BaseService
         raise
       end
     end
-    statement_contents_for_referral_code
+    report_contents_for_referral_code
   end
 end
