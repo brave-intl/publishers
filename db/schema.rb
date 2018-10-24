@@ -206,7 +206,7 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.string "referral_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "kind", null: false
+    t.text "kind"
     t.jsonb "stats", default: "{}"
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
