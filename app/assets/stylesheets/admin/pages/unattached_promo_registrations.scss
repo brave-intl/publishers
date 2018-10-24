@@ -1,0 +1,146 @@
+
+.unattached-promo-registrations {
+
+  .row {
+    display: flex;
+  }
+
+  .panel {
+    background: aliceblue;
+    flex: 1;
+    border-width: 1px;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 20px 50px 20px 50px;
+
+    .panel--header {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .panel--sub-panel-header {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    &--color-offset {
+      background: white;      
+    }
+
+  .download-button {
+    padding-top: 10px;
+    text-align: center;
+  }
+  }
+  .panel--double {
+  }
+
+  .panel--single {
+  }
+
+  .flex-one {
+    flex: 1;
+  }
+
+  .flex-one {
+    flex: 2;
+  }
+
+  .flex-three {
+    flex: 3;
+  }
+
+  .align-self-center {
+    align-self: center;
+  }
+
+  .align-self-flex-end {
+    align-self: flex-end;
+  }
+
+  .btn {
+    margin: 0px 5px 5px 5px;
+  }
+  .unattached-referral-code-form--submissions {
+    display: flex;
+    width: 100%;
+  }
+  .unattached-referral-code-form--submission {
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .table {
+    text-align: center;
+    
+    tr {
+      td {
+        padding: 0;
+      }
+    }
+  }
+
+  span.tf-tooltip {
+    position: relative;
+    display: inline-block;
+    color: $link-color;
+
+    span.icon {
+      position: relative;
+      padding-left: 3px;
+    }
+
+    span.tf-tooltip-content {
+      display: none;
+      position: absolute;
+      z-index: 5;
+      left: 50%;
+      bottom: 100%;
+      width: 300px;
+      margin-left: -200px;
+      padding: 30px 40px;
+      background: white;
+      border: solid 1px $braveGray-8;
+      border-radius: 4px;
+      box-shadow: 0 0 10px 0 rgba(34,35,38,0.15);
+      color: $braveText-3;
+      font-size: 14px;
+      line-height: 22px;
+
+      &::after {
+        content: " ";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        margin-top: -5px;
+        margin-left: -5px;
+        background: white;
+        transform: rotate(45deg);
+        border: solid 1px $braveGray-8;
+        border-top-color: transparent;
+        border-left-color: transparent;
+      }
+
+      span.tf-tooltip-content-heading {
+        display: block;
+        font-family: $headings-font-family;
+        font-weight: $headings-font-weight;
+        color: $braveAccent-Dark;
+      }
+
+      span.tf-tooltip-content-content {
+        display: block;
+      }
+    }
+
+    &:hover {
+      span.tf-tooltip-content {
+        display: block;
+      }
+    }
+  }
+}

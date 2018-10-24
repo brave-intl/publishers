@@ -80,4 +80,45 @@ module PromosHelper
       raise
     end
   end
+
+  def reporting_interval_column_header(reporting_interval)
+    case reporting_interval
+    when PromoRegistration::DAILY
+      "Day"
+    when PromoRegistration::WEEKLY
+      "Week"
+    when PromoRegistration::MONTHLY
+      "Month"
+    when PromoRegistration::RUNNING_TOTAL
+      "Cumulative"
+    else
+      raise
+    end
+  end
+
+  def event_type_column_header(event_type)
+    case event_type
+    when PromoRegistration::RETRIEVALS
+      "Downloads"
+    when PromoRegistration::FIRST_RUNS
+      "Installs"
+    when PromoRegistration::FINALIZED
+      "Confirmations"
+    else
+      raise
+    end
+  end
+
+  def coerce_date_to_start_or_end_of_reporting_interval(date, reporting_interval, start)
+    case reporting_interval
+    when PromoRegistration::DAILY, PromoRegistration::RUNNING_TOTAL
+      date
+    when PromoRegistration::WEEKLY
+      start ? date.at_beginning_of_week : date.at_end_of_week
+    when PromoRegistration::MONTHLY
+      start ? date.at_beginning_of_month : date.at_end_of_month
+    else
+      raise
+    end
+  end
 end

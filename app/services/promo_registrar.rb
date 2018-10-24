@@ -14,7 +14,7 @@ class PromoRegistrar < BaseApiClient
       if should_register_channel?(channel)
         referral_code = register_channel(channel)
         if referral_code.present?
-          promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, referral_code: referral_code)
+          promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, kind: "channel", referral_code: referral_code)
           promo_registration.save!
         end
       end
