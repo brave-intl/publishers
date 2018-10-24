@@ -42,6 +42,22 @@
     flex: 1;
   }
 
+  .flex-one {
+    flex: 2;
+  }
+
+  .flex-three {
+    flex: 3;
+  }
+
+  .align-self-center {
+    align-self: center;
+  }
+
+  .align-self-flex-end {
+    align-self: flex-end;
+  }
+
   .btn {
     margin: 0px 5px 5px 5px;
   }

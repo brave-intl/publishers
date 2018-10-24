@@ -20,11 +20,11 @@
   .row
     .panel.panel--single
       .panel--header = "Manage"
+      span style="color: darkgrey; font-size: 14px;" = "Stats last refreshed #{distance_of_time_in_words (Time.now - Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at'))} ago. Stats in reports are always up-to-date."
       hr
       = form_tag admin_unattached_promo_registrations_path, method: :get, id: "filter-by-campaign"do
         = select_tag :filter, options_for_select(@campaigns + ["Not assigned", "All codes"], @current_campaign)
         = submit_tag "Filter by campaign", class: "btn btn-success"
-        = "Stats last refreshed #{distance_of_time_in_words (Time.now - Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at'))} ago. Stats in reports are always up-to-date."
       = form_tag admin_unattached_promo_registrations_path, method: :patch, id: "unattached-referral-code-form" do
         table.table
           tr
@@ -86,16 +86,16 @@
             .panel--sub-panel-header = "Report generation"
             hr
             .row
-              .flex-one
+              .flex-three.align-self-flex-center
                 . = label_tag "Report period start"
                 . = date_select :referral_code_report_period, :start
-              .flex-one
+              .flex-three.align-self-flex-center
                 . = label_tag "Report period end"
                 . = date_select :referral_code_report_period, :end
-              .flex-one
+              .flex-three.align-self-flex-center
                 . = label_tag "Reporting interval"
                 . = select_tag :reporting_interval, options_for_select([["Daily",PromoRegistration::DAILY], ["Weekly",PromoRegistration::WEEKLY], ["Monthly",PromoRegistration::MONTHLY], ["Running total", PromoRegistration::RUNNING_TOTAL]])
-              .flex-one
+              .flex-one.align-self-flex-center
                 . style="font-weight: bold" = label_tag = "Event types"
                 .
                   = check_box_tag "event_types[]", PromoRegistration::RETRIEVALS
@@ -106,5 +106,5 @@
                 .
                   = check_box_tag "event_types[]", PromoRegistration::FINALIZED
                   = label_tag = event_type_column_header(PromoRegistration::FINALIZED) + " "
-            .flex-one.download-button
-              = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }
+              .flex-one.align-self-flex-end
+                = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }
