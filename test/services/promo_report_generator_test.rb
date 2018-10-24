@@ -32,7 +32,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
     statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-10-22".to_date,
                                 end_date: "2018-10-22".to_date,
-                                reporting_interval: "by_day").perform
+                                reporting_interval: PromoRegistration::DAILY).perform
 
     assert_equal statement["contents"], {"ABC123"=>{"2018-10-22".to_date=>{PromoRegistration::RETRIEVALS=>0, PromoRegistration::FIRST_RUNS=>0, PromoRegistration::FINALIZED=>0}}}
   end
@@ -42,7 +42,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
     statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-10-22".to_date,
                                 end_date: "2018-10-22".to_date,
-                                reporting_interval: "cumulative").perform
+                                reporting_interval: PromoRegistration::RUNNING_TOTAL).perform
 
     assert_equal statement["contents"], {"ABC123"=>{"2018-10-22".to_date=>{PromoRegistration::RETRIEVALS=>0, PromoRegistration::FIRST_RUNS=>0, PromoRegistration::FINALIZED=>0}}}
   end
@@ -52,7 +52,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
     statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-9-01".to_date,
                                 end_date: "2018-10-29".to_date,
-                                reporting_interval: "by_day").perform
+                                reporting_interval: PromoRegistration::DAILY).perform
 
     assert_equal statement["contents"].count, 1
     assert_equal statement["contents"]["ABC123"].count, 59
@@ -72,7 +72,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
     statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-9-01".to_date,
                                 end_date: "2018-10-29".to_date,
-                                reporting_interval: "by_week").perform
+                                reporting_interval: PromoRegistration::WEEKLY).perform
 
     assert_equal statement["contents"].count, 1
     assert_equal statement["contents"]["ABC123"].count, 10
@@ -92,7 +92,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
     statement = PromoReportGenerator.new(referral_codes: ["ABC123", "DEF456"],
                                 start_date: "2018-9-01".to_date,
                                 end_date: "2018-10-29".to_date,
-                                reporting_interval: "by_week").perform
+                                reporting_interval: PromoRegistration::WEEKLY).perform
 
     assert_equal statement["contents"].count, 2
     assert_equal statement["contents"]["ABC123"].count, 10

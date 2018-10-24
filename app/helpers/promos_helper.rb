@@ -83,14 +83,14 @@ module PromosHelper
 
   def reporting_interval_column_header(reporting_interval)
     case reporting_interval
-    when "by_day"
+    when PromoRegistration::DAILY
       "Day"
-    when "by_week"
+    when PromoRegistration::WEEKLY
       "Week"
-    when "by_month"
+    when PromoRegistration::MONTHLY
       "Month"
-    when "cumulative"
-      "cumulative"
+    when PromoRegistration::RUNNING_TOTAL
+      "Cumulative"
     else
       raise
     end
@@ -111,11 +111,11 @@ module PromosHelper
 
   def coerce_date_to_start_or_end_of_reporting_interval(date, reporting_interval, start)
     case reporting_interval
-    when "by_day", "cumulative"
+    when PromoRegistration::DAILY, PromoRegistration::RUNNING_TOTAL
       date
-    when "by_week"
+    when PromoRegistration::WEEKLY
       start ? date.at_beginning_of_week : date.at_end_of_week
-    when "by_month"
+    when PromoRegistration::MONTHLY
       start ? date.at_beginning_of_month : date.at_end_of_month
     else
       raise

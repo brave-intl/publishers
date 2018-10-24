@@ -81,7 +81,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
                                                   "end(1i)"=>"2018",
                                                   "end(2i)"=>"10",
                                                   "end(3i)"=>"22"},
-                  reporting_interval: "by_week"
+                  reporting_interval: PromoRegistration::WEEKLY
 
                  })
 

@@ -26,9 +26,9 @@ class PromoReportGenerator < BaseService
         (event["ymd"].to_date >= @start_date) && (event["ymd"].to_date <= @end_date)
       }
 
-      if @reporting_interval == "cumulative"
-        base_case = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, "finalized" => 0 }
-        cumulative_report_contents = events_within_report_period.reduce(base_case) { |aggregate_stats, event|
+      if @reporting_interval == PromoRegistration::RUNNING_TOTAL
+        base_case = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0 }
+        running_total_report_contents = events_within_report_period.reduce(base_case) { |aggregate_stats, event|
           aggregate_stats[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
           aggregate_stats[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
           aggregate_stats[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
@@ -36,7 +36,7 @@ class PromoReportGenerator < BaseService
         }
 
         report_contents_for_referral_code = {
-          @start_date => cumulative_report_contents
+          @start_date => running_total_report_contents
         }
 
         report_contents["#{promo_registration.referral_code}"] = report_contents_for_referral_code
@@ -99,11 +99,11 @@ class PromoReportGenerator < BaseService
         PromoRegistration::FINALIZED => 0
       }
       case reporting_interval
-      when "by_day"
+      when PromoRegistration::DAILY
         current_date = current_date + 1.day
-      when "by_week"
+      when PromoRegistration::WEEKLY
         current_date = current_date + 1.week
-      when "by_month"
+      when PromoRegistration::MONTHLY
         current_date = current_date + 1.month
       else
         raise

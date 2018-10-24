@@ -94,7 +94,7 @@
                 . = date_select :referral_code_report_period, :end
               .flex-one
                 . = label_tag "Reporting interval"
-                . = select_tag :reporting_interval, options_for_select([["By day","by_day"], ["By week","by_week"], ["By month","by_month"], ["cumulative", "cumulative"]])
+                . = select_tag :reporting_interval, options_for_select([["Daily",PromoRegistration::DAILY], ["Weekly",PromoRegistration::WEEKLY], ["Monthly",PromoRegistration::MONTHLY], ["Running total", PromoRegistration::RUNNING_TOTAL]])
               .flex-one
                 . style="font-weight: bold" = label_tag = "Event types"
                 .

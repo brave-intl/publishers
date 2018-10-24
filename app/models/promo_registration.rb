@@ -14,6 +14,11 @@ class PromoRegistration < ApplicationRecord
   RETRIEVALS = "retrievals" # Aliased as 'Downloads'
   FIRST_RUNS = "first_runs" # Aliased as 'Installs'
   FINALIZED = "finalized" # Aliased as 'Confirmed'
+
+  DAILY = "daily"
+  WEEKLY = "weekly"
+  MONTHLY = "monthly"
+  RUNNING_TOTAL = "running_total"
   
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
