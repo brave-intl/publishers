@@ -1,23 +1,59 @@
+
 .unattached-promo-registrations {
+
+  .row {
+    display: flex;
+  }
+
+  .panel {
+    background: aliceblue;
+    flex: 1;
+    border-width: 1px;
+    border-radius: 15px;
+    margin: 15px;
+    padding: 20px 50px 20px 50px;
+
+    .panel--header {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .panel--sub-panel-header {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    &--color-offset {
+      background: white;      
+    }
+
+  .download-button {
+    padding-top: 10px;
+    text-align: center;
+  }
+  }
+  .panel--double {
+  }
+
+  .panel--single {
+  }
+
+  .flex-one {
+    flex: 1;
+  }
+
   .btn {
     margin: 0px 5px 5px 5px;
   }
   .unattached-referral-code-form--submissions {
     display: flex;
+    width: 100%;
   }
   .unattached-referral-code-form--submission {
-    flex: 1;
   }
 
   label {
     font-weight: bold;
-  }
-  .unattached-referral-code-form--submission--element {
-    padding: 0px 0px 15px 0px;
-  }
-  .unattached-referral-code-form--submission--submit {
-    width: 100%;
-    text-align: center;
   }
 
   .table {

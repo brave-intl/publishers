@@ -28,7 +28,7 @@ class PromoStatementGenerator < BaseService
 
       if @reporting_interval == "cumulative"
         base_case = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, "finalized" => 0 }
-        culmative_statement_contents = events_within_statement_period.reduce(base_case) { |aggregate_stats, event|
+        cumulative_statement_contents = events_within_statement_period.reduce(base_case) { |aggregate_stats, event|
           aggregate_stats[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
           aggregate_stats[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
           aggregate_stats[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
