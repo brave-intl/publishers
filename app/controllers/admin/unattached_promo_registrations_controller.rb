@@ -44,7 +44,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     @report_contents = report_info["contents"]
 
     report_string = render_to_string :layout => false
-    send_data report_string, filename: "BraveReferralPromoStatement.html", type: "application/html"
+    send_data report_string, filename: "BraveReferralPromoReport.html", type: "application/html"
   end
 
   def update_statuses
