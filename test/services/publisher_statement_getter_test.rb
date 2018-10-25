@@ -46,6 +46,10 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
       assert_nil transaction["channel"].match("twitch#channel")
       assert_nil transaction["channel"].match("twitch#author")
       assert_nil transaction["channel"].match("twitter#channel")
+
+      if transaction["description"] == "payout for referrals"
+        assert_equal transaction["channel"], "All"
+      end
     end
   end
 
