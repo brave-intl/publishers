@@ -35,7 +35,7 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
     assert_equal PublisherTransactionsGetter::OFFLINE_NUMBER_OF_SETTLEMENTS, number_of_unique_settlement_dates(statement_data)
   end
 
-  test "replaces channel identifiers with channel titles" do
+  test "replaces account identifiers with channel title if channel or 'All' if publisher" do
     Rails.application.secrets[:api_eyeshade_offline] = true
     publisher = publishers(:uphold_connected)
     statement_data = PublisherStatementGetter.new(publisher: publisher, statement_period: "this_month").perform

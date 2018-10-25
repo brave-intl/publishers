@@ -9,7 +9,7 @@ class PublisherStatementGetter < BaseApiClient
 
   def perform
     transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
-    transactions = replace_channel_identifiers_with_channel_titles(transactions)
+    transactions = replace_account_identifiers_with_titles(transactions)
     transactions = filter_transactions_by_period(transactions, @statement_period)
     transactions
   end
@@ -35,11 +35,15 @@ class PublisherStatementGetter < BaseApiClient
     end
   end
 
-  def replace_channel_identifiers_with_channel_titles(transactions)
+  def replace_account_identifiers_with_titles(transactions)
     transactions.map { |transaction|
-      channel_identifier = transaction["channel"]
-      channel = Channel.find_by_channel_identifier(channel_identifier)
-      transaction["channel"] = channel.publication_title
+      account_identifier = transaction["channel"]
+      if account_identifier.starts_with?(Publisher::OWNER_PREFIX)
+        transaction["channel"] = "All"
+      else
+        channel = Channel.find_by_channel_identifier(account_identifier)
+        transaction["channel"] = channel.publication_title
+      end
       transaction
     }
   end
