@@ -9,14 +9,14 @@
         hr
         .
           = number_field_tag "number_of_codes_to_create", nil, placeholder: "# of codes"
-          = submit_tag "Create", class: "btn btn-info"
+          = submit_tag "Create", class: "btn btn-info", style: "float:right;"
     .panel.panel--double
       = form_tag admin_promo_campaigns_path, id: "create-promo-campaign" do
         .panel--header = "Create campaigns"
         hr
         .
           = text_field_tag "campaign_name", nil, placeholder: "Campaign name"
-          = submit_tag "Create", class: "btn btn-info"
+          = submit_tag "Create", class: "btn btn-info", style: "float: right"
   .row
   .panel.panel--white.panel--table
     .panel--header = "Manage"
