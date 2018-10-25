@@ -20,8 +20,12 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
 
   def create
     number = create_params.to_i
-    PromoRegistrarUnattached.new(number: number).perform
-    redirect_to admin_unattached_promo_registrations_path, notice: "#{number} codes created."
+    if number > 50
+      redirect_to admin_unattached_promo_registrations_path, alert: "Can't create more than 50 codes at a time."
+    else
+      PromoRegistrarUnattached.new(number: number).perform
+      redirect_to admin_unattached_promo_registrations_path, notice: "#{number} codes created."
+    end
   end
 
   def report
