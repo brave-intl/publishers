@@ -20,7 +20,11 @@
   .row
   .panel.panel--white.panel--table
     .panel--header = "Manage"
-      span style="color: darkgrey; font-size: 14px;" = "Stats last refreshed #{distance_of_time_in_words (Time.now - Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at'))} ago. Stats in reports are always up-to-date."
+    . style="color: darkgrey; font-size: 14px; margin-bottom: 5px;"
+      - if Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at').nil?
+        = "Stats have not been refreshed."
+      - else 
+        = "Stats last refreshed #{distance_of_time_in_words(Time.now - Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at'))} ago. Stats in reports are always up-to-date."
     = form_tag admin_unattached_promo_registrations_path, method: :get, id: "filter-by-campaign" do
       = select_tag :filter, options_for_select(@campaigns + ["Not assigned", "All codes"], @current_campaign)
       = submit_tag "Filter by campaign", class: "btn btn-success"
