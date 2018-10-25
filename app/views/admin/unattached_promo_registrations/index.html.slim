@@ -102,12 +102,12 @@
               . style="font-weight: bold" = label_tag = "Event types"
               .
                 = check_box_tag "event_types[]", PromoRegistration::RETRIEVALS
-                = label_tag = event_type_column_header(PromoRegistration::RETRIEVALS) + " "
+                = label_tag = " " + event_type_column_header(PromoRegistration::RETRIEVALS)
               .
                 = check_box_tag "event_types[]", PromoRegistration::FIRST_RUNS
-                = label_tag = event_type_column_header(PromoRegistration::FIRST_RUNS) + " "
+                = label_tag = " " + event_type_column_header(PromoRegistration::FIRST_RUNS)
               .
                 = check_box_tag "event_types[]", PromoRegistration::FINALIZED
-                = label_tag = event_type_column_header(PromoRegistration::FINALIZED) + " "
+                = label_tag = " " + event_type_column_header(PromoRegistration::FINALIZED)
             .flex-one.align-self-flex-end
               = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }
