@@ -136,7 +136,7 @@ class Channel < ApplicationRecord
   def self.find_by_channel_identifier(channel_identifier)
     channel_id_split_on_prefix = channel_identifier.split(":", 2)
     channel_is_site_channel = channel_id_split_on_prefix.length == 1 # hack to identify site channels
-    
+
     if channel_is_site_channel
       channel_details_type_identifier = channel_id_split_on_prefix.first
       return SiteChannelDetails.where(brave_publisher_id: channel_details_type_identifier).
@@ -163,8 +163,8 @@ class Channel < ApplicationRecord
         TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
                              joins(:channel).
                              where('channels.verified = true').first.channel
-      else 
-        Rails.log.info("Unable to find channel for channel identifier #{channel_identifier}")
+      else
+        Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
         nil
     end
   end
@@ -261,7 +261,7 @@ class Channel < ApplicationRecord
       errors.add(:base, "contested_by_channel cannot be destroyed")
     end
   end
-  
+
   def verified_duplicate_channels_must_be_contested
     duplicate_verified_channels = case details_type
       when "SiteChannelDetails"
@@ -277,13 +277,13 @@ class Channel < ApplicationRecord
         Channel.other_verified_twitter_channels(id: self.id)
             .where(twitter_channel_details: { twitter_channel_id: self.details.twitter_channel_id })
     end
-    
+
     if duplicate_verified_channels.any?
       if duplicate_verified_channels.count > 1
         errors.add(:base, "can only contest one channel")
       end
 
-      contesting_channel = duplicate_verified_channels.first 
+      contesting_channel = duplicate_verified_channels.first
       if (contesting_channel.contested_by_channel_id != self.id) && (contesting_channel.contested_by_channel_id != nil)
         errors.add(:base, "contesting channel does not match")
       end
