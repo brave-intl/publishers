@@ -7,6 +7,10 @@
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
 }
 
+.editor-logo:hover {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
+
 .banner-headline:focus{
  box-shadow: 0 0 2pt 2pt #7d7bdc;
  outline: none;
@@ -36,4 +40,9 @@
 
 .banner-link-option:hover{
   background-color: rgb(241, 241, 249);
+}
+
+.brave-rewards-banner-container{
+  width: 1200px;
+  transition: width .75s;
 }
