@@ -112,6 +112,12 @@ export default class BannerEditor extends React.Component {
           return response.json();
         })
         .then(function(banner) {
+           setTimeout(function(){
+            if(that.props.viewMode === "Preview"){
+              that.handlePreview();
+            }
+            that.setState({loading:false})
+          }, 500)
           if(Object.keys(banner).length === 0 && banner.constructor === Object){
             return;
           }
@@ -127,13 +133,6 @@ export default class BannerEditor extends React.Component {
             that.cropFetchedLogo(banner.logoImage, that);
             that.cropFetchedBackgroundImage(banner.backgroundImage, that)
           }
-          
-          setTimeout(function(){
-            if(that.props.viewMode === "Preview"){
-              that.handlePreview();
-            }
-            that.setState({loading:false})
-          }, 500)
         });
   }
 
