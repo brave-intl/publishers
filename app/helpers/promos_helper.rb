@@ -24,6 +24,8 @@ module PromosHelper
     stats = publisher.promo_stats_2018q1
     if publisher.promo_stats_2018q1.blank?
       return 0
+    elsif stats["aggregate"]["downloads"].nil?
+      return 0
     else
       return stats["aggregate"]["downloads"]
     end
@@ -32,6 +34,8 @@ module PromosHelper
   def confirmed_referral_downloads(publisher)
     stats = publisher.promo_stats_2018q1
     if publisher.promo_stats_2018q1.blank?
+      return 0
+    elsif stats["aggregate"]["finalized"].nil?
       return 0
     else
       return stats["aggregate"]["finalized"]
