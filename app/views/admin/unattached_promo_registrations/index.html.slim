@@ -1,0 +1,113 @@
+.unattached-promo-registrations
+  .flex
+    h1 Referral Promo
+    hr
+  .flex
+    .panel.panel--double
+      = form_tag admin_unattached_promo_registrations_path, id: "create-referral-codes" do
+        .panel--header = "Create codes"
+        hr
+        .
+          = number_field_tag "number_of_codes_to_create", nil, placeholder: "# of codes"
+          = submit_tag "Create", class: "btn btn-info", style: "float:right;"
+    .panel.panel--double
+      = form_tag admin_promo_campaigns_path, id: "create-promo-campaign" do
+        .panel--header = "Create campaigns"
+        hr
+        .
+          = text_field_tag "campaign_name", nil, placeholder: "Campaign name"
+          = submit_tag "Create", class: "btn btn-info", style: "float: right"
+  .row
+  .panel.panel--white.panel--table
+    .panel--header = "Manage"
+    . style="color: darkgrey; font-size: 14px; margin-bottom: 5px;"
+      - if Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at').nil?
+        = "Stats have not been refreshed."
+      - else 
+        = "Stats last refreshed #{distance_of_time_in_words(Time.now - Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at'))} ago. Stats in reports are always up-to-date."
+    = form_tag admin_unattached_promo_registrations_path, method: :get, id: "filter-by-campaign" do
+      = select_tag :filter, options_for_select(@campaigns + ["Not assigned", "All codes"], @current_campaign)
+      = submit_tag "Filter by campaign", class: "btn btn-success"
+    = form_tag admin_unattached_promo_registrations_path, method: :patch, id: "unattached-referral-code-form" do
+      table.table
+        tr
+          th 
+          th = "Code"
+          th = "Campaign"
+          th
+            = "Status"
+            span.tf-tooltip
+              span.icon= render "icon_help"
+              span.tf-tooltip-content
+                span.tf-tooltip-content-heading= "Status"
+                span.tf-tooltip-content-content== "Downloads and installs will not be tracked when a code is 'paused'."
+          th = "Downloads"
+          th 
+            = "Installs"
+            span.tf-tooltip
+              span.icon= render "icon_help"
+              span.tf-tooltip-content
+                span.tf-tooltip-content-heading= "Installs"
+                span.tf-tooltip-content-content== "An install is counted when a user downloads the browser and opens it the first time."
+
+          th
+            = "Confirmed"
+            span.tf-tooltip
+              span.icon= render "icon_help"
+              span.tf-tooltip-content
+                span.tf-tooltip-content-heading= "Confirmed"
+                span.tf-tooltip-content-content== "A confirmation is counted when a user downloads the browser and opens it, then opens it again at least 30 days later."
+        tbody
+          - @promo_registrations.each do |promo_registration| 
+            - promo_registration_aggregate_stats = promo_registration.aggregate_stats
+            tr
+              td = check_box_tag "referral_codes[]", "#{promo_registration.referral_code}", 1
+              td = promo_registration.referral_code
+              td = promo_registration.promo_campaign&.name
+              td = promo_registration.active ? "active" : "paused"
+              td = promo_registration_aggregate_stats[PromoRegistration::RETRIEVALS] || 0
+              td = promo_registration_aggregate_stats[PromoRegistration::FIRST_RUNS] || 0
+              td = promo_registration_aggregate_stats[PromoRegistration::FINALIZED] || 0
+      .flex
+        .unattached-referral-code-form--submissions
+          .panel
+            .panel--sub-panel-header = "Assign codes to campaign"
+            hr
+            .flex.flex-one
+              .flex-one = select_tag :promo_campaign_target, options_for_select(@campaigns)
+              = hidden_field_tag :filter, params[:filter]
+              = submit_tag "Assign", id: "assign-to-campaign", class: "btn btn-primary"
+          .panel
+            .panel--sub-panel-header = "Update code statuses"
+            hr
+            .flex
+              .flex-one = select_tag :referral_code_status, options_for_select([["Active", "active"], ["Paused", "paused"]])
+              = hidden_field_tag :filter, params[:filter]
+              = submit_tag "Update", id: "update-referral-code-statuses", class: "btn btn-primary"
+      .flex
+        .panel
+          .panel--sub-panel-header = "Report generation"
+          hr
+          .flex
+            .flex-two.align-self-flex-center
+              . = label_tag "Report period start"
+              . = date_select :referral_code_report_period, :start
+            .flex-two.align-self-flex-center
+              . = label_tag "Report period end"
+              . = date_select :referral_code_report_period, :end
+            .flex-two.align-self-flex-center
+              . = label_tag "Reporting interval"
+              . = select_tag :reporting_interval, options_for_select([["Daily",PromoRegistration::DAILY], ["Weekly",PromoRegistration::WEEKLY], ["Monthly",PromoRegistration::MONTHLY], ["Running total", PromoRegistration::RUNNING_TOTAL]])
+            .flex-one.align-self-flex-center
+              . style="font-weight: bold" = label_tag = "Event types"
+              .
+                = check_box_tag "event_types[]", PromoRegistration::RETRIEVALS
+                = label_tag = " " + event_type_column_header(PromoRegistration::RETRIEVALS)
+              .
+                = check_box_tag "event_types[]", PromoRegistration::FIRST_RUNS
+                = label_tag = " " + event_type_column_header(PromoRegistration::FIRST_RUNS)
+              .
+                = check_box_tag "event_types[]", PromoRegistration::FINALIZED
+                = label_tag = " " + event_type_column_header(PromoRegistration::FINALIZED)
+            .flex-one.align-self-flex-end
+              = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }

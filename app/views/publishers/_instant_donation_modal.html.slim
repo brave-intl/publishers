@@ -5,10 +5,11 @@
         = image_tag "icn-donation-jar@1x.png", id: 'icn-donation-jar'
         br
         h4.banner-intro-headline = t ".headline"
-        h6.banner-intro-tagline = t ".tagline"
-        p.banner-intro-intro = t ".intro"
+        p.banner-intro-intro = t ".intro.html"
+        h5.banner-intro-tagline = t ".tagline"
 
-        = link_to(t(".continue"), "#", class: 'btn btn-primary', id: "open-banner-button")
+        = link_to(t(".preview"), "#", class: 'preview-link', id: "open-preview-button")
+        = link_to(t(".customize"), "#", class: 'btn btn-primary', id: "open-banner-button")
         - if wallet.present? && wallet&.default_currency.present? && wallet&.rates.present? && wallet&.default_currency.eql?('BAT')
           = hidden_field_tag 'preferred_currency', wallet.default_currency
           = hidden_field_tag 'conversion_rate', wallet.rates[wallet.default_currency]

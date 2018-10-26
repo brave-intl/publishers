@@ -32,7 +32,7 @@ class PromoMailerTest < ActionMailer::TestCase
     channel = publisher.channels.first
 
     referral_code = "BATS-321"
-    promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: "free-bats-2018q1", referral_code: referral_code)
+    promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: "free-bats-2018q1", kind: "channel", referral_code: referral_code)
     promo_registration.save!
     promo_enabled_channels = publisher.channels.joins(:promo_registration)
 
@@ -69,7 +69,7 @@ class PromoMailerTest < ActionMailer::TestCase
     channel = publisher.channels.first
 
     referral_code = "BATS-321"
-    promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: "free-bats-2018q1", referral_code: referral_code)
+    promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: "free-bats-2018q1", kind: "channel", referral_code: referral_code)
     promo_registration.save!
 
     email = PromoMailer.new_channel_registered_2018q1(publisher, channel)

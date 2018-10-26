@@ -122,7 +122,14 @@ Rails.application.routes.draw do
       end
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
-
+    resources :unattached_promo_registrations, only: %i(index create) do
+      collection do
+        get :report
+        patch :update_statuses
+        patch :assign
+      end
+    end
+    resources :promo_campaigns, only: %i(create)
     root to: "dashboard#index" # <--- Root route
   end
 
