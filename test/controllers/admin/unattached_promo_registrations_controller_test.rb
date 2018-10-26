@@ -107,4 +107,15 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     assert campaign.promo_registrations.include?(promo_registration_1)
     assert campaign.promo_registrations.include?(promo_registration_2)
   end
+
+  test "cannot #create more than 50 codes at a time" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    assert_difference -> { PromoRegistration.count }, 0 do
+      post(admin_unattached_promo_registrations_path, params: {number_of_codes_to_create: "51"})
+    end
+
+    assert_equal flash[:alert], "Can't create more than 50 codes at a time."
+  end
 end

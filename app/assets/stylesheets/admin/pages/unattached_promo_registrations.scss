@@ -1,7 +1,11 @@
 
 .unattached-promo-registrations {
 
-  .row {
+  hr {
+    margin: 5px 0px 10px 0px; 
+  }
+
+  .flex {
     display: flex;
   }
 
@@ -10,8 +14,12 @@
     flex: 1;
     border-width: 1px;
     border-radius: 15px;
-    margin: 15px;
+    margin: 10px;
     padding: 20px 50px 20px 50px;
+
+    &--white{
+      background: white;
+    }
 
     .panel--header {
       font-size: 20px;
@@ -22,32 +30,23 @@
       font-size: 18px;
       font-weight: bold;
     }
-
-    &--color-offset {
-      background: white;      
-    }
-
-  .download-button {
-    padding-top: 10px;
-    text-align: center;
-  }
-  }
-  .panel--double {
   }
 
   .panel--single {
+    margin: 20px;
+    border-radius: 0px;
+  }
+
+  .panel--table {
+    padding: 10px 25px 10px 25px;
   }
 
   .flex-one {
     flex: 1;
   }
 
-  .flex-one {
+  .flex-two {
     flex: 2;
-  }
-
-  .flex-three {
-    flex: 3;
   }
 
   .align-self-center {
@@ -61,22 +60,25 @@
   .btn {
     margin: 0px 5px 5px 5px;
   }
+  
   .unattached-referral-code-form--submissions {
     display: flex;
     width: 100%;
   }
-  .unattached-referral-code-form--submission {
-  }
 
-  label {
-    font-weight: bold;
-  }
-
-  .table {
+  table {
+    border: none;
     text-align: center;
-    
+    tbody {
+      border: none;
+    }
+    th {
+      border: none;
+    }
     tr {
+      border: none;
       td {
+        border: none;
         padding: 0;
       }
     }
