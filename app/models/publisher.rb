@@ -325,7 +325,7 @@ class Publisher < ApplicationRecord
       Rails.application.secrets[:attr_encrypted_key]
     end
 
-    def find_by_publisher_identifier(owner_identifier)
+    def find_by_owner_identifier(owner_identifier)
       Publisher.find(owner_identifier.split(OWNER_PREFIX)[1])
     end
   end
