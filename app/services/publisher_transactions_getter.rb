@@ -105,7 +105,7 @@ class PublisherTransactionsGetter < BaseApiClient
         transactions.push({
           "created_at" => "#{base_date}",
           "description" => "payout for referrals",
-          "channel" => "#{channel.details.channel_identifier}",
+          "channel" => "#{channel.publisher.owner_identifier}",
           "amount" => "#{referral_settlement_amount}",
           "settlement_currency" => publisher.default_currency,
           "settlement_amount" => "18.81",
