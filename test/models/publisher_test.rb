@@ -591,4 +591,9 @@ class PublisherTest < ActiveSupport::TestCase
     publishers = Publisher.with_verified_channel.select(:id)
     assert_equal publishers.uniq.length, publishers.length
   end
+
+  test "#find_by_owner_identifier finds by owner identifier" do
+    publisher = Publisher.first
+    assert_equal Publisher.find_by_owner_identifier(publisher.owner_identifier), publisher
+  end
 end
