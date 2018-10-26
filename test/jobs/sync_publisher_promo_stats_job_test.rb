@@ -21,13 +21,19 @@ class SyncPublisherPromoStatsJobTest < ActionDispatch::IntegrationTest
   end
 
   test "test updates stats for a single publisher" do
-    publisher = publishers(:completed)
-    enable_promo_for_publisher(publisher)
+    publisher_one = publishers(:completed)
+    publisher_two = publishers(:global_media_group)
 
-    SyncPublisherPromoStatsJob.new(publisher: publisher).perform_now
-    publisher.reload
+    enable_promo_for_publisher(publisher_one)
+    enable_promo_for_publisher(publisher_two)
 
-    assert_not_equal publisher.promo_stats_2018q1, {}
+    SyncPublisherPromoStatsJob.perform_now(publisher_id: publisher_one.id)
+
+    publisher_one.reload
+    publisher_two.reload
+
+    assert_not_equal publisher_one.promo_stats_2018q1, {}
+    assert_equal publisher_two.promo_stats_2018q1, {}
   end
 
   private
