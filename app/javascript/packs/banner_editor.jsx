@@ -5,7 +5,6 @@ import AvatarEditor from 'react-avatar-editor'
 import BannerPreview from '../packs/banner_preview.jsx'
 
 import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
-import Raleigh from '../../assets/images/Raleigh.png'
 import BatsBackground from '../../assets/images/bg_bats.svg'
 import HeartsBackground from '../../assets/images/bg_hearts.svg'
 import Spinner from '../utils/spinner'
