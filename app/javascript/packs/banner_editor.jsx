@@ -29,12 +29,9 @@ export default class BannerEditor extends React.Component {
       loading: true,
       title: 'Your title',
       description: 'Welcome to Brave Rewards banner',
-      backgroundImage: null,
-      backgroundImageData: '',
-      logoImage: null,
-      logoImageData: '',
       logo: {url: null, data: null},
-      logoScale: 1,
+      bannerImage: {url: null, data: null},
+      logoScale: 1.2,
       linkSelection: false,
       linkOption: 'Youtube',
       currentLink: '',
@@ -50,7 +47,6 @@ export default class BannerEditor extends React.Component {
       file: null,
       state: 'editor'
     }
-     this.handleBackgroundImageUpload = this.handleBackgroundImageUpload.bind(this);
      this.updateTitle = this.updateTitle.bind(this);
      this.updateDescription = this.updateDescription.bind(this)
      this.handleSave = this.handleSave.bind(this);
@@ -64,7 +60,6 @@ export default class BannerEditor extends React.Component {
 
   componentWillMount(){
     this.modalize();
-
   }
 
   componentDidMount(){
@@ -213,31 +208,15 @@ export default class BannerEditor extends React.Component {
     </div>)
       break;
       case 'editor-logo-added':
+      case 'editor-banner-image':
       return(
         <div>
-        <div className="brave-rewards-banner-control-bar" style={{height: '80px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor:'#E9E9F4', borderTopLeftRadius:'8px', borderTopRightRadius:'8px' }}>
-          <img style={{height:'45px'}} src={DonationJar}></img>
-          <h5 style={{marginTop:'auto', marginBottom:'auto', paddingLeft:'20px', paddingTop:'7px'}}>Tipping Banner</h5>
+        <div className="brave-rewards-banner-control-bar" style={{height: '80px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor:'#E9E9F4', borderTopLeftRadius:'8px', borderTopRightRadius:'8px'}}>
+          <h5 style={{marginTop:'auto', marginBottom:'auto', paddingTop:'7px'}}>Resize and position image</h5>
         </div>
-        <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor: 'rgb(233, 240, 255)'}}>
+        <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor: 'white', backgroundColor:'rgba(233, 240, 255)'}}>
           <div style={backButton} onClick={ (e) => this.setState({state: 'editor', loading: true}) }>Back</div>
           <div style={chooseOnlyButton} onClick={ () => this.handleDone() }>Apply</div>
-        </div>
-      </div>
-      )
-      case 'editor-logo-set':
-      case 'editor-logo-not-set':
-      return(
-        <div>
-        <div className="brave-rewards-banner-control-bar" style={{height: '80px', display:'flex', alignItems:'center', paddingLeft:'60px', backgroundColor:'#E9E9F4', borderTopLeftRadius:'8px', borderTopRightRadius:'8px' }}>
-          <img style={{height:'45px'}} src={DonationJar}></img>
-          <h5 style={{marginTop:'auto', marginBottom:'auto', paddingLeft:'20px', paddingTop:'7px'}}>Tipping Banner</h5>
-        </div>
-        <div className="brave-rewards-banner-control-bar" style={{height: '70px', display:'flex', alignItems:'center', paddingLeft:'60px'}}>
-          <div style={backButton} onClick={ (e) => this.setState({state: 'editor', loading: true}) }>Back</div>
-          <input type="file" id="logoImageInput" style={{display:'none'}} onChange={ (e) => this.handleAddLogo(e) }/>
-          <label style={chooseOnlyButton} htmlFor="logoImageInput" > Choose Image
-          </label>
         </div>
       </div>
       )
@@ -260,27 +239,52 @@ export default class BannerEditor extends React.Component {
           </div>
         </div>
       )
+      case 'editor-banner-image':
+      return(
+        <div>
+          {this.renderControlBar()}
+          <div style={{textAlign:'center', backgroundColor:'white', height:'526px', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px', paddingTop:'50px', backgroundColor:'rgba(233, 240, 255)'}}>
+          <AvatarEditor
+            ref={this.setLogoEditorRef}
+            image={this.state.tempBannerImage}
+            width={450}
+            height={88}
+            border={50}
+            borderRadius={0}
+            crossOrigin={'anonymous'}
+            color={[233, 240, 255, 0.6]} // RGBA
+            scale={this.state.logoScale}
+            style={{border: '0px solid white'}}
+            rotate={0}
+          />
+          <br/>
+          <input style={{width: '180px', textAlign:'center'}} onChange={ (e) => this.handleZoom(e) } type="range" value={this.state.logoScale} min={1} max={2} step={0.01}/>
+          {/* <img src={this.state.image480}></img> */}
+          </div>
+          {/* <div onClick={ () => this.abc() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Crop Image</div> */}
+        </div>
+      )
+      break;
       case 'editor-logo-added':
       return(
         <div>
           {this.renderControlBar()}
-          <div style={{textAlign:'center', backgroundColor:'rgb(233, 240, 255)', height:'526px', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px', paddingTop:'50px'}}>
+          <div style={{textAlign:'center', backgroundColor:'white', height:'526px', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px', paddingTop:'50px', backgroundColor:'rgba(233, 240, 255)'}}>
           <AvatarEditor
             ref={this.setLogoEditorRef}
             image={this.state.tempLogo}
             width={200}
             height={200}
-            border={0}
+            border={50}
             borderRadius={100}
             crossOrigin={'anonymous'}
             color={[233, 240, 255, 0.6]} // RGBA
             scale={this.state.logoScale}
-            style={{border: '7.5px solid white', borderRadius:'50%'}}
+            style={{border: '0px solid white'}}
             rotate={0}
           />
           <br/>
           <input style={{width: '180px', textAlign:'center'}} onChange={ (e) => this.handleZoom(e) } type="range" value={this.state.logoScale} min={1} max={2} step={0.01}/>
-          <p style={{padding:'40px'}}>Your fans will see your customized logo when your banner is opened; resize, move, and crop it to your preference. We recommend an image of at least 480x480 for your logo. </p>
           {/* <img src={this.state.image480}></img> */}
           </div>
           {/* <div onClick={ () => this.abc() } className="brave-rewards-banner-control-bar-save-button" style={saveButton}>Crop Image</div> */}
@@ -305,6 +309,7 @@ export default class BannerEditor extends React.Component {
 
     let that = this;
     let logo = this.state.logo;
+    let bannerImage = this.state.bannerImage;
     let img = this.editor.getImage();
 
     switch(this.state.state){
@@ -332,8 +337,28 @@ export default class BannerEditor extends React.Component {
           logo.data = file;
           that.setState({logo: logo, image480: genimg, loading: true, state: 'editor'})
         });
-
         break;
+        case 'editor-banner-image':
+          let bannerCanvas = document.createElement('canvas');
+          bannerCanvas.width = 1200;
+          bannerCanvas.height = 176;
+          var ctx = bannerCanvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, 1200, 176);
+          let bannerUrl = bannerCanvas.toDataURL('image/jpeg', 1);
+          bannerImage.url = bannerUrl
+
+          let bannerCanvas2 = document.createElement('canvas');
+          bannerCanvas2.width = 900;
+          bannerCanvas2.height = 176;
+          var ctx = bannerCanvas2.getContext('2d');
+          ctx.drawImage(img, 0, 0, 900, 176);
+          bannerCanvas2.toBlob(function(blob){
+            let file = {};
+            file["files"] = [blob]
+            bannerImage.data = file;
+            that.setState({bannerImage: bannerImage, loading: true, state: 'editor'})
+          });
+          break;
       case 'editor-logo-set':
         that.setState({state: 'editor', loading: true})
     }
@@ -343,6 +368,13 @@ export default class BannerEditor extends React.Component {
     let temp = URL.createObjectURL(event.target.files[0])
     this.setState({
       tempLogo: temp, loading:true, state:'editor-logo-added'
+    })
+  }
+
+  handleAddBannerImage(event){
+    let temp = URL.createObjectURL(event.target.files[0])
+    this.setState({
+      tempBannerImage: temp, loading:true, state:'editor-banner-image'
     })
   }
 
@@ -474,15 +506,11 @@ export default class BannerEditor extends React.Component {
     }
   }
 
-  handleBackgroundImageUpload(event) {
-    let that = this;
-    this.cropBackgroundImage(event, that);
-  }
-
-  cropFetchedBackgroundImage(backgroundImage, that){
+  cropFetchedBackgroundImage(image, that){
+    let bannerImage = this.state.bannerImage
     let img = new Image();
     img.crossOrigin = "Anonymous";
-    img.src = backgroundImage;
+    img.src = image;
     img.onload = function() {
       var canvas = document.createElement('canvas');
       var ctx = canvas.getContext('2d');
@@ -490,46 +518,9 @@ export default class BannerEditor extends React.Component {
       canvas.height = 176;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       let url = canvas.toDataURL('image/jpg', 1);
-      that.setState({backgroundImage: url});
+      bannerImage.url = url;
+      that.setState({bannerImage: bannerImage});
     }
-  }
-
-  cropBackgroundImage(event, that){
-    if (event.target.files && event.target.files[0]) {
-      var filerdr = new FileReader();
-
-      filerdr.onload = function(e) {
-        var img900 = new Image();
-        var img1200 = new Image();
-
-      img1200.onload = function() {
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
-        canvas.width = 900;
-        canvas.height = 176;
-        ctx.drawImage(img900, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(function(blob){
-          let file = {};
-          file["files"] = [blob]
-          that.setState({backgroundImageData: file});
-        });
-      }
-
-      img900.onload = function() {
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
-        canvas.width = 1200;
-        canvas.height = 176;
-        ctx.drawImage(img1200, 0, 0, canvas.width, canvas.height);
-        let url = canvas.toDataURL('image/jpg', 1);
-        that.setState({backgroundImage: url});
-      }
-
-      img900.src = e.target.result;
-      img1200.src = e.target.result;
-    }
-    filerdr.readAsDataURL(event.target.files[0]);
-  }
   }
 
   cropFetchedLogo(logox, that){
@@ -623,7 +614,7 @@ export default class BannerEditor extends React.Component {
         const url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_" + suffix;
 
         let file;
-        if(suffix === 'background_image'){ file = that.state.backgroundImageData }
+        if(suffix === 'background_image'){ file = that.state.bannerImage.data }
         else if(suffix === 'logo'){ file = that.state.logo.data }
 
         if (file === "" || file === null) { return; }
@@ -685,11 +676,11 @@ export default class BannerEditor extends React.Component {
 
       socialLinkText = {marginTop:'auto', marginBottom:'auto', borderBottom: '1px solid rgba(0, 0, 0, 0)', borderTop: '1px solid rgba(0, 0, 0, 0)', borderLeft: '1px solid rgba(0, 0, 0, 0)', color: '#686978', width: '90px', fontSize: '15px', backgroundColor: 'rgba(0, 0, 0, 0)', borderRadius: '0px', userSelect: 'none'}
 
-      if(this.state.backgroundImage === null){
+      if(this.state.bannerImage.url === null){
         backgroundImg = {height: '176px', background: `url(${BatsBackground}) left top no-repeat, url(${HeartsBackground}) right top no-repeat, rgb(158, 159, 171)`}
       }
       else{
-        backgroundImg = {height: '176px', background: `url(${this.state.backgroundImage})`}
+        backgroundImg = {height: '176px', background: `url(${this.state.bannerImage.url})`}
       }
       if(this.state.logo.url === null){
         logoImg = {position: 'absolute', top: '250px', left: '125px', borderRadius: '50%', width: '160px', height: '160px', border: '6px solid white', backgroundColor:'#FB542B'}
@@ -788,7 +779,7 @@ export default class BannerEditor extends React.Component {
       </div>
 
         <div className="brave-rewards-banner-background-image" style={style.backgroundImg}>
-        <input type="file" id="backgroundImageInput" style={style.imageInput} onChange={this.handleBackgroundImageUpload}  />
+        <input type="file" id="backgroundImageInput" style={style.imageInput} onChange={ (e) => this.handleAddBannerImage(e) }/>
         <label className="banner-background-image-label" style={style.backgroundImageLabel} htmlFor="backgroundImageInput"></label>
         </div>
 
@@ -889,6 +880,7 @@ export default class BannerEditor extends React.Component {
       case 'editor-logo-set':
       case 'editor-logo-not-set':
       case 'editor-logo-added':
+      case 'editor-banner-image':
         width = '600px'
         height = '676px'
         component = this.renderLogoState();
