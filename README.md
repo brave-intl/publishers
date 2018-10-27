@@ -172,6 +172,17 @@ On debian you can install it like:
 ```sh
 sudo apt-get install chromium
 ```
+And on mac with:
+
+```
+brew cask install chromium
+```
+
+We also use ImageMagick to process user uploaded images. If you don't have it already, you might get an error "You must have ImageMagick or GraphicsMagick installed".  You can install on mac with:
+
+```
+brew install imagemagick
+```
 
 ## Running locally with docker-compose
 

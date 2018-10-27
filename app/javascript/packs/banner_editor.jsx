@@ -394,7 +394,11 @@ export default class BannerEditor extends React.Component {
           return response.json();
         })
         .then(function(banner) {
+<<<<<<< HEAD
           setTimeout(function(){
+=======
+           setTimeout(function(){
+>>>>>>> 5bfe5e5eeaf468b31913bb4cde8cc961fc98d204
             if(that.props.viewMode === "Preview"){
               that.handlePreview();
             }
