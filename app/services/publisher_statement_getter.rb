@@ -1,28 +1,52 @@
 class PublisherStatementGetter < BaseApiClient
-  attr_reader :publisher_statement
+  attr_reader :publisher
+  attr_reader :statement_period
 
-  def initialize(publisher_statement:)
-    @publisher_statement = publisher_statement
+  def initialize(publisher:, statement_period:)
+    @publisher = publisher
+    @statement_period = statement_period
   end
 
   def perform
-    return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
-    response = connection.get do |request|
-      request.headers["Authorization"] = api_authorization_header
-      request.url(@publisher_statement.source_url)
-    end
-    response.body
-  rescue Faraday::Error => e
-    Rails.logger.warn("PublisherStatementGetter #perform error: #{e}")
-    nil
-  end
-
-  def perform_offline
-    Rails.logger.info("PublisherStatementGetter offline.")
-    'Fake offline data'
+    transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
+    transactions = replace_account_identifiers_with_titles(transactions)
+    transactions = filter_transactions_by_period(transactions, @statement_period)
+    transactions
   end
 
   private
+
+  def filter_transactions_by_period(transactions, period)
+    case period
+      when "all"
+        transactions
+      when "this_month"
+        cutoff = Time.now.utc.at_beginning_of_month
+        transactions.select { |transaction|
+          transaction["created_at"].to_time.at_beginning_of_month.utc == cutoff
+        }
+      when "last_month"
+        cutoff = (Time.now - 1.month).utc.at_beginning_of_month
+        transactions.select { |transaction|
+          transaction["created_at"].to_time.at_beginning_of_month.utc == cutoff
+        }
+      else
+        transactions
+    end
+  end
+
+  def replace_account_identifiers_with_titles(transactions)
+    transactions.map { |transaction|
+      account_identifier = transaction["channel"]
+      if account_identifier.starts_with?(Publisher::OWNER_PREFIX)
+        transaction["channel"] = "All"
+      else
+        channel = Channel.find_by_channel_identifier(account_identifier)
+        transaction["channel"] = channel.publication_title
+      end
+      transaction
+    }
+  end
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]

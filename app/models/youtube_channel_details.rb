@@ -7,10 +7,12 @@ class YoutubeChannelDetails < BaseChannelDetails
   validates :thumbnail_url, presence: true
   validates :auth_user_id, presence: true
 
+  YOUTUBE_PREFIX = "youtube#channel:"
+
   ## Begin methods to satisfy the Eyeshade integration
 
   def channel_identifier
-    "youtube#channel:#{youtube_channel_id}"
+    "#{YOUTUBE_PREFIX}#{youtube_channel_id}"
   end
 
   def authorizer_email

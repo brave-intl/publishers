@@ -16,7 +16,7 @@ class Admin::PayoutReportsController < AdminController
     contents = assign_authority(payout_report.contents)
 
     send_data contents,
-      filename: "contributions-#{payout_report.created_at.strftime("%FT%H-%M-%S")}",
+      filename: "payout-#{payout_report.created_at.strftime("%FT%H-%M-%S")}",
       type: :json
   end
 

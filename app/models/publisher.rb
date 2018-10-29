@@ -10,14 +10,16 @@ class Publisher < ApplicationRecord
   ROLES = [ADMIN, PUBLISHER]
   JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
+  OWNER_PREFIX = "publishers#uuid:"
+
   devise :timeoutable, :trackable, :omniauthable
 
-  has_many :statements, -> { order('created_at DESC') }, class_name: 'PublisherStatement'
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
+  has_one :site_banner
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
@@ -205,7 +207,7 @@ class Publisher < ApplicationRecord
   end
 
   def owner_identifier
-    "publishers#uuid:#{id}"
+    "#{OWNER_PREFIX}#{id}"
   end
 
   def promo_status(promo_running)
@@ -321,6 +323,10 @@ class Publisher < ApplicationRecord
   class << self
     def encryption_key
       Rails.application.secrets[:attr_encrypted_key]
+    end
+
+    def find_by_owner_identifier(owner_identifier)
+      Publisher.find(owner_identifier.split(OWNER_PREFIX)[1])
     end
   end
 end

@@ -16,6 +16,12 @@ gem "api-pagination"
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
 
+# Integration with Matomo Piwik
+gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
+
+# Use AWS gem for s3 uploads
+gem 'aws-sdk-s3', require: false
+
 gem "bootstrap", "~> 4.1.1"
 
 # browser details
@@ -45,6 +51,9 @@ gem "nokogiri", "~> 1.8.4"
 
 # Open Graph tag
 gem "meta-tags"
+
+# Image conversion library
+gem 'mini_magick'
 
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"

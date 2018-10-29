@@ -10,12 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_04_183644) do
+ActiveRecord::Schema.define(version: 2018_10_16_134245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id"
@@ -172,13 +193,25 @@ ActiveRecord::Schema.define(version: 2018_09_04_183644) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_promo_campaigns_on_name", unique: true
+  end
+
   create_table "promo_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "channel_id", null: false
+    t.uuid "channel_id"
     t.string "promo_id", null: false
     t.string "referral_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "kind"
+    t.jsonb "stats", default: "{}"
+    t.uuid "promo_campaign_id"
+    t.boolean "active", default: true, null: false
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
+    t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
   end
 
@@ -190,19 +223,6 @@ ActiveRecord::Schema.define(version: 2018_09_04_183644) do
     t.uuid "created_by_id", null: false
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id"
-  end
-
-  create_table "publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "publisher_id", null: false
-    t.string "period"
-    t.string "source_url"
-    t.text "encrypted_contents"
-    t.string "encrypted_contents_iv"
-    t.datetime "expires_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "created_by_admin", default: false
-    t.index ["publisher_id"], name: "index_publisher_statements_on_publisher_id"
   end
 
   create_table "publisher_status_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -260,6 +280,18 @@ ActiveRecord::Schema.define(version: 2018_09_04_183644) do
     t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "site_banners", force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.text "title", null: false
+    t.text "description", null: false
+    t.integer "donation_amounts", null: false, array: true
+    t.integer "default_donation", null: false
+    t.json "social_links"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
 
   create_table "site_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

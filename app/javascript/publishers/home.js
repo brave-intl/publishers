@@ -6,6 +6,7 @@ import fetch from '../utils/fetchPolyfill';
 import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
+import { renderBannerEditor } from '../packs/banner_editor'
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
@@ -376,10 +377,12 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
         continue;
       } else {
-        hideVerificationFailureWhatHappened(e);        
+        hideVerificationFailureWhatHappened(e);
       }
     }
   })
+
+  let instantDonationButton = document.getElementById("instant-donation-button");
 
   editContact.addEventListener('click', function(event) {
     updateContactName.value = showContactName.innerText;
@@ -397,6 +400,29 @@ document.addEventListener('DOMContentLoaded', function() {
     updateContactForm.classList.add('hidden');
     editContact.classList.remove('hidden');
     event.preventDefault();
+  }, false);
+
+  instantDonationButton.addEventListener("click", function(event) {
+
+    document.getElementById("intro-container").style.padding = '50px';
+    document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
+    document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
+    let preferredCurrency = document.getElementById("preferred_currency").value
+    let conversionRate = document.getElementById("conversion_rate").value
+
+    document.getElementById("open-banner-button").onclick = function() {
+      renderBannerEditor(preferredCurrency, conversionRate, "Editor");
+    };
+
+    document.getElementById("open-preview-button").onclick = function() {
+      renderBannerEditor(preferredCurrency, conversionRate, "Preview");
+    };
+
+    document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {
+      document.getElementsByClassName("modal-panel")[0].style.maxWidth = '40rem';
+      document.getElementsByClassName("modal-panel")[0].style.padding = '2rem 2rem';
+      document.getElementsByClassName("modal-panel--content")[0].style.padding = '1rem 1rem 0 1rem';
+    };
   }, false);
 
   updateContactForm.addEventListener('submit', function(event) {

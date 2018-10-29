@@ -37,6 +37,7 @@ en:
     download: Download
     existing_account: Already have an account?
     get_started: Get Started
+    instant_donation: Tipping Banner
     invalid_totp: Invalid 6-digit code. Please try again.
     log_in: Log In
     remove: Remove
@@ -284,9 +285,9 @@ en:
     wallet_not_connected:
       subject: Please Connect a Wallet To Continue Receiving Funds
       body_html: |
-        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p> 
+        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p>
         <p>Log in to Brave Payments to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>
-      button: Log In to Brave Payments 
+      button: Log In to Brave Payments
     verify_email:
       subject: Brave Publisher email confirmation
       body_html: |
@@ -348,10 +349,10 @@ en:
         description: I own or manage a YouTube channel.
       twitch:
         heading: TWITCH CHANNEL
-        description: I'm the primary owner of a twitch channel.
+        description: I'm the primary owner of a Twitch channel.
       twitter:
         heading: TWITTER
-        description: I'm the primary owner of a twitter account.
+        description: I own a Twitter account.
     contact_info:
       heading: Contact Information
     create:
@@ -447,9 +448,13 @@ en:
       title: Statements
       description: Statements contain the details of deposit history.
       create_statement: Create Statement
-      created_at: Requested
-      period: Time range
-      status: Status
+      no_transactions: No transactions this period.
+      this_month: This month
+      last_month: Last month
+      all: All
+      period: Period
+      download: Download
+      statement_file_name: BravePaymentsStatement
     suspended_error:
       heading_html: Due to suspicious activity,<br/> your account is suspended.
       body: Please contact support+publishers@basicattentiontoken.org if you believe that activities on your account are not aberrant or irregular.
@@ -472,6 +477,14 @@ en:
       saving: Saving ...
       redirecting: Redirecting to Uphold for authorization ...
       refreshing: Refreshing balances ...
+    instant_donation_modal:
+      headline: Customize Your Tipping Banner
+      intro:
+        html: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the <span style="color:#7d7bdc;">Send Tip Now</span> button.
+      tagline: Customize your banner with your own voice and image!
+      skip: Skip for now
+      preview: Preview Banner
+      customize: Customize
     uphold_verified:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:

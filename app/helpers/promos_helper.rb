@@ -24,6 +24,8 @@ module PromosHelper
     stats = publisher.promo_stats_2018q1
     if publisher.promo_stats_2018q1.blank?
       return 0
+    elsif stats["aggregate"]["downloads"].nil?
+      return 0
     else
       return stats["aggregate"]["downloads"]
     end
@@ -32,6 +34,8 @@ module PromosHelper
   def confirmed_referral_downloads(publisher)
     stats = publisher.promo_stats_2018q1
     if publisher.promo_stats_2018q1.blank?
+      return 0
+    elsif stats["aggregate"]["finalized"].nil?
       return 0
     else
       return stats["aggregate"]["finalized"]
@@ -76,6 +80,47 @@ module PromosHelper
       "#{channel.publication_title.upcase} #{t("promo.shared.on_twitter")}"
     when "SiteChannelDetails"
       "#{channel.publication_title.upcase}"
+    else
+      raise
+    end
+  end
+
+  def reporting_interval_column_header(reporting_interval)
+    case reporting_interval
+    when PromoRegistration::DAILY
+      "Day"
+    when PromoRegistration::WEEKLY
+      "Week"
+    when PromoRegistration::MONTHLY
+      "Month"
+    when PromoRegistration::RUNNING_TOTAL
+      "Cumulative"
+    else
+      raise
+    end
+  end
+
+  def event_type_column_header(event_type)
+    case event_type
+    when PromoRegistration::RETRIEVALS
+      "Downloads"
+    when PromoRegistration::FIRST_RUNS
+      "Installs"
+    when PromoRegistration::FINALIZED
+      "Confirmations"
+    else
+      raise
+    end
+  end
+
+  def coerce_date_to_start_or_end_of_reporting_interval(date, reporting_interval, start)
+    case reporting_interval
+    when PromoRegistration::DAILY, PromoRegistration::RUNNING_TOTAL
+      date
+    when PromoRegistration::WEEKLY
+      start ? date.at_beginning_of_week : date.at_end_of_week
+    when PromoRegistration::MONTHLY
+      start ? date.at_beginning_of_month : date.at_end_of_month
     else
       raise
     end

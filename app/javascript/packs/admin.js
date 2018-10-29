@@ -1,5 +1,6 @@
 import 'utils/request';
-import 'publishers/statements';
+import 'admin/dashboard/index';
+import 'admin/dashboard/unattached_promo_registration'
 import Rails from 'rails-ujs';
 
 /*

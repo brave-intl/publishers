@@ -5,7 +5,6 @@ noscript
     current_publisher.uphold_verified? && \
     current_publisher.wallet.present? && current_publisher.wallet.authorized? && \
     (current_publisher.default_currency_confirmed_at.nil? || !current_publisher.default_currency.present?)
-
 script type="text/html" id="confirm_default_currency_modal_wrapper"
   = render :partial => 'confirm_default_currency_modal'
 
@@ -16,6 +15,13 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     class: 'title' \
   )
   = render partial: "choose_channel_button"
+  = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+
+
+= hidden_field_tag 'publisher_id', current_publisher.id
+= hidden_field_tag 'site-banner-react-props', (current_publisher&.site_banner&.read_only_react_property || {}).to_json
+/ TODO: (Albert Wang) Add conversion rate
+= hidden_field_tag 'conversion-rate', 0.3
 
 .dashboard
   #uphold_status { class=uphold_status_class(current_publisher)
@@ -139,7 +145,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = t ".statements.heading"
           .dashboard-panel--content
             .statements-available
-              = link_to_most_recent_statement
+              = link_to(t(".statements.view_statements"), statements_publishers_path)
             .statements-unavailable
               = t ".statements.unavailable"
           .dashboard-panel--header#publishers_contact
@@ -204,26 +210,23 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 .channel-status.float-right
                   .bat-channel
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      - if channel.details_type == "TwitchChannelDetails"
-                        = publisher_channel_balance(current_publisher, channel.details.author_identifier, "BAT")
-                      - else 
-                        = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
-
+                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
-                      = t(".channel_balance_period")            
+                      = t(".channel_balance_period")
               .channel-summary
                 h3= channel.publication_title
                 .channel-details
                   .added-date
                     = t ".channel.added", date: channel.created_at.to_date.iso8601
-                  span.separator
-                    = ' | '
-                  a.remove-channel href="#" data-channel-id=(channel.id)
-                    = t ".channel.remove_verified"
-                  script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-                    = render "publishers/remove_channel_modal", channel: channel
-                  = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+                  / TODO Uncommment when promo is correctly updated of changes in channel owner
+                  / span.separator
+                  /   = ' | '
+                  / a.remove-channel href="#" data-channel-id=(channel.id)
+                  /   = t ".channel.remove_verified"
+                  / script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                  /   = render "publishers/remove_channel_modal", channel: channel
+                  / = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
             - elsif channel.verification_failed?
               .channel-status.float-right
                 .verification-failed
@@ -352,3 +355,6 @@ javascript:
   document.addEventListener('DOMContentLoaded', function() {
     javascriptDetected();
   });
+
+script id="instant-donation-modal" type="text/html"
+  = render "instant_donation_modal", wallet: @wallet

@@ -172,6 +172,17 @@ On debian you can install it like:
 ```sh
 sudo apt-get install chromium
 ```
+And on mac with:
+
+```
+brew cask install chromium
+```
+
+We also use ImageMagick to process user uploaded images. If you don't have it already, you might get an error "You must have ImageMagick or GraphicsMagick installed".  You can install on mac with:
+
+```
+brew install imagemagick
+```
 
 ## Running locally with docker-compose
 
@@ -206,7 +217,7 @@ RECAPTCHA_SECRET_KEY=my_recaptcha_secretkey
 RECAPTCHA_SITE_KEY=my_recaptcha_sitekey
 
 SENDGRID_API_KEY=SG.toke
-SENDGRID_PUBLISHERS_LIST_ID=3648346
+SENDGRID_PUBLISHERS_LIST_ID=3986776
 
 TWITCH_CLIENT_ID=twitch_client_id
 TWITCH_CLIENT_SECRET=my_twitch_secret
@@ -250,7 +261,7 @@ docker-compose up
 
 ### Create the databases
 ```sh
-docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
+docker-compose run app yarn install; docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
 ```
 
 ### Run Tests
