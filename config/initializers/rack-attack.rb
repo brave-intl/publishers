@@ -65,7 +65,7 @@ class Rack::Attack
   end
 
   # Throttle resend auth emails for a publisher
-  throttle("resend_auth_email/publisher_id", limit: 5, period: 5.minutes) do |req|
+  throttle("resend_auth_email/publisher_id", limit: 3, period: 20.minutes) do |req|
     if req.path == "/publishers/resend_auth_email" && req.post?
       req['publisher_id']
     end
