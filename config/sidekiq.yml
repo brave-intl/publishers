@@ -41,7 +41,7 @@
     queue: transactional
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
-    description: "Refreshes the redis cache for piwik information"
+    description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"
     queue: transactional
   Cache::EyeshadeStatsJob:
     cron: "50 2 * * *"
