@@ -2,7 +2,7 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
 
   def index
 
-      channels = Channel.all.map { |channel| channel.id }
+      channels = Channel.pluck(:id)
       data = channels.to_json
       render(status: 200, json: data)
 
@@ -10,54 +10,53 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
 
   def show
 
-      begin
+      channel = Channel.find(params[:channel_id])
 
-        channel = Channel.find(params[:uuid])
+      case channel.details_type
 
-        rescue ActiveRecord::RecordNotFound
-          error_response = {
-            errors: [{
-              status: "404",
-              title: "Not Found",
-              detail: "Channel with uuid #{params[:uuid]} not found"
-              }]
-            }
-          render(status: 404, json: error_response) and return
+        when "SiteChannelDetails"
+          channel_details = SiteChannelDetails.find_by_id(channel.details_id)
+          channel_type = "website"
+          channel_name = channel_details.url
+        when "YoutubeChannelDetails"
+          channel_details = YoutubeChannelDetails.find_by_id(channel.details_id)
+          channel_type = "youtube"
+          channel_name = channel_details.name
+        when "TwitterChannelDetails"
+          channel_details = TwitterChannelDetails.find_by_id(channel.details_id)
+          channel_type = "twitter"
+          channel_name = channel_details.name
+        when "TwitchChannelDetails"
+          channel_details = TwitchChannelDetails.find_by_id(channel.details_id)
+          channel_type = "twitch"
+          channel_name = channel_details.name
         end
 
-        case channel.details_type
+      data = {
+        channel_id: channel.id,
+        channel_identifier: channel_details.channel_identifier,
+        channel_type: channel_type,
+        name: channel_name,
+        stats: channel_details.stats,
+        url: channel_details.url,
+        owner_id: channel.publisher.owner_identifier,
+        created_at: channel.created_at,
+        verified: channel.verified
+      }
 
-          when "SiteChannelDetails"
-            channel_details = SiteChannelDetails.find_by_id(channel.details_id)
-            channel_type = "website"
-            channel_name = channel_details.url
-          when "YoutubeChannelDetails"
-            channel_details = YoutubeChannelDetails.find_by_id(channel.details_id)
-            channel_type = "youtube"
-            channel_name = channel_details.name
-          when "TwitterChannelDetails"
-            channel_details = TwitterChannelDetails.find_by_id(channel.details_id)
-            channel_type = "twitter"
-            channel_name = channel_details.name
-          when "TwitchChannelDetails"
-            channel_details = TwitchChannelDetails.find_by_id(channel.details_id)
-            channel_type = "twitch"
-            channel_name = channel_details.name
-          end
+      render(status: 200, json: data)
 
-          data = {
-            uuid: channel.id,
-            channel_id: channel_details.channel_identifier,
-            channel_type: channel_type,
-            name: channel_name,
-            stats: channel_details.stats,
-            url: channel_details.url,
-            owner_id: channel.publisher.owner_identifier,
-            created_at: channel.created_at,
-            verified: channel.verified
-            }
+      rescue ActiveRecord::RecordNotFound
+        error_response = {
+          errors: [{
+            status: "404",
+            title: "Not Found",
+            detail: "Channel with id #{params[:channel_id]} not found"
+            }]
+          }
 
-          render(status: 200, json: data)
+      render(status: 404, json: error_response) and return
 
   end
+
 end

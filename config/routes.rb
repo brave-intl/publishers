@@ -98,7 +98,7 @@ Rails.application.routes.draw do
       # /api/v1/stats/
       namespace :stats, defaults: { format: :json } do
         get '/channels', to: 'channels#index'
-        get '/channels/:uuid', to: 'channels#show'
+        get '/channels/:channel_id', to: 'channels#show'
         get "/signups_per_day", to: "statistics#signups_per_day"
         get "/email_verified_signups_per_day", to: "statistics#email_verified_signups_per_day"
         get "/youtube_channels_by_view_count", to: "statistics#youtube_channels_by_view_count"
