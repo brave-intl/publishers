@@ -43,12 +43,6 @@ class PromoRegistrarTest < ActiveJob::TestCase
     end
   end
 
-  test "registrar registers > 5 channels asynchronously" do
-    # create 5 verified channels
-    # TO DO: either create a fixture that has 5 channels of find a way
-    #        to generate an arbitrary number of valid channels
-  end
-
   test "registrar requests promo code for channel if encounters duplicate error" do
     publisher = publishers(:completed)
 
@@ -62,5 +56,8 @@ class PromoRegistrarTest < ActiveJob::TestCase
     assert_difference "PromoRegistration.count", 1 do
       PromoRegistrar.new(publisher: publisher).perform
     end
+  end
+
+  test "" do
   end
 end

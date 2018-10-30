@@ -5,17 +5,21 @@ class PromoRegistrar < BaseApiClient
   def initialize(publisher:, promo_id: active_promo_id)
     @publisher = publisher
     @promo_id = promo_id
+    @should_update_promo_server = false
   end
 
   def perform
     channels = @publisher.channels.where(verified: true)
-
     channels.each do |channel|
       if should_register_channel?(channel)
         referral_code = register_channel(channel)
         if referral_code.present?
           promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, kind: "channel", referral_code: referral_code)
-          promo_registration.save!
+          success = promo_registration.save!
+          if success && @should_update_promo_server
+            PromoChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform
+          end
+          @should_update_promo_server = false
         end
       end
     end
@@ -35,8 +39,14 @@ class PromoRegistrar < BaseApiClient
     if e.response[:status] == 409
       Rails.logger.warn("PromoRegistrar #register_channel returned 409, channel already registered.  Using PromoRegistrationGetter to get the referral_code.")
       Rails.logger.info("Attempted to register channel #{channel.details.channel_identifier}, but it already registered.  Saving referral code #{referral_code}.")
-      referral_code = PromoRegistrationGetter.new(publisher: @publisher, channel: channel).perform
-      referral_code
+      # Get the referral code
+      registration = PromoRegistrationGetter.new(publisher: @publisher, channel: channel).perform
+
+      if registration["owner_id"] != @publisher.id
+        @should_update_promo_server = true
+      end
+
+      registration["referral_code"]
     else
       require "sentry-raven"
       Rails.logger.error("PromoRegistrar #register_channel error: #{e}")
