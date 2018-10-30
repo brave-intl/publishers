@@ -1,7 +1,5 @@
 class Admin::DashboardController < AdminController
   def index
-    @site = Piwik::Site.load(6)
-    @seo_info = @site.seo_info
   end
 
   def fetch(type)
