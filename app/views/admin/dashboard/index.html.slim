@@ -1,9 +1,9 @@
 . = "Contributions processed:  #{PayoutReport.total_amount}"
-. = "Piwik data (updated daily) last updated:  #{Rails.cache.fetch(CachePiwikDataJob::PIWIK_CACHE_LAST_UPDATED)}"
-. = "Global Alexa Rank: #{Rails.cache.fetch(CachePiwikDataJob::SEO_INFO).select{|d| d["label"] == "Alexa Rank" }[0]["rank"]}"
+. = "Piwik data (updated daily) last updated:  #{Rails.cache.fetch(Cache::PiwikDataJob::PIWIK_CACHE_LAST_UPDATED)}"
+. = "Global Alexa Rank: #{Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO).select{|d| d["label"] == "Alexa Rank" }[0]["rank"]}"
 
 hr
-- [CachePiwikDataJob::PIWIK_VISITS_SUMMARY, CachePiwikDataJob::PIWIK_EVENTS_CATEGORY, CachePiwikDataJob::PIWIK_DEVICES_DETECTION_TYPE, CachePiwikDataJob::PIWIK_DEVICES_DETECTION_BROWSER_VERSIONS].each do |statistic_key|
+- [Cache::PiwikDataJob::PIWIK_VISITS_SUMMARY, Cache::PiwikDataJob::PIWIK_EVENTS_CATEGORY, Cache::PiwikDataJob::PIWIK_DEVICES_DETECTION_TYPE, Cache::PiwikDataJob::PIWIK_DEVICES_DETECTION_BROWSER_VERSIONS].each do |statistic_key|
   = hidden_field_tag id=statistic_key, value=Rails.cache.fetch(statistic_key)
 
 / canvas id="piwikDevicesChart" width="400" height="100"

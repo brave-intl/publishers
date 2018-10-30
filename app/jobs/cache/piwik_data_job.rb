@@ -1,4 +1,4 @@
-class CachePiwikDataJob < ApplicationJob
+class Cache::PiwikDataJob < ApplicationJob
   queue_as :transactional
 
   PIWIK_VISITS_SUMMARY = "piwikVisitsSummary".freeze
