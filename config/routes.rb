@@ -95,6 +95,7 @@ Rails.application.routes.draw do
     namespace :stats do
       get :signups_per_day
       get :email_verified_signups_per_day
+      get :channel_and_email_verified_signups_per_day
       get :youtube_channels_by_view_count
       get :twitch_channels_by_view_count
       get :javascript_enabled_usage
@@ -110,7 +111,7 @@ Rails.application.routes.draw do
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
-      member do 
+      member do
         get :download
       end
     end
