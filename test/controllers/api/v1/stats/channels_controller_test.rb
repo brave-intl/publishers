@@ -18,8 +18,6 @@ class Api::V1::Stats::ChannelsControllerTest < ActionDispatch::IntegrationTest
 
       result = JSON.parse(response.body)
 
-      puts channel.inspect
-
       assert_equal(result["channel_id"], channel.id);
       assert_equal(result["channel_identifier"], "stats.test");
       assert_equal(result["channel_type"], "website");

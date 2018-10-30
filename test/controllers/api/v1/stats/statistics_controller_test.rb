@@ -18,7 +18,7 @@ class Api::V1::Stats::StatisticsControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 1],
-      [0.days.ago.to_date.to_s, 24]
+      [0.days.ago.to_date.to_s, 25]
     ]
 
     get "/api/v1/stats/email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
@@ -32,7 +32,7 @@ class Api::V1::Stats::StatisticsControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 1],
-      [0.days.ago.to_date.to_s, 23]
+      [0.days.ago.to_date.to_s, 24]
     ]
   end
 
