@@ -5,21 +5,21 @@ class PromoRegistrar < BaseApiClient
   def initialize(publisher:, promo_id: active_promo_id)
     @publisher = publisher
     @promo_id = promo_id
-    @should_update_promo_server = false
   end
 
   def perform
     channels = @publisher.channels.where(verified: true)
     channels.each do |channel|
       if should_register_channel?(channel)
-        referral_code = register_channel(channel)
+        result = register_channel(channel)
+        referral_code = result[:referral_code]
+        should_update_promo_server = result[:should_update_promo_server]
         if referral_code.present?
           promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, kind: "channel", referral_code: referral_code)
           success = promo_registration.save!
-          if success && @should_update_promo_server
+          if success && should_update_promo_server
             PromoChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform
           end
-          @should_update_promo_server = false
         end
       end
     end
@@ -33,20 +33,28 @@ class PromoRegistrar < BaseApiClient
       request.body = request_body(channel)
       request.url("/api/1/promo/publishers")
     end
+    
     referral_code = JSON.parse(response.body)["referral_code"]
-    referral_code
+
+    {
+      referral_code: JSON.parse(response.body)["referral_code"],
+      should_update_promo_server: false
+    }
   rescue Faraday::Error => e
     if e.response[:status] == 409
       Rails.logger.warn("PromoRegistrar #register_channel returned 409, channel already registered.  Using PromoRegistrationGetter to get the referral_code.")
       Rails.logger.info("Attempted to register channel #{channel.details.channel_identifier}, but it already registered.  Saving referral code #{referral_code}.")
+      
       # Get the referral code
       registration = PromoRegistrationGetter.new(publisher: @publisher, channel: channel).perform
+      
+      # Look at the owner_id that Promo has assigned to the referral, and determine whether to update
+      should_update_promo_server = registration["owner_id"] != @publisher.id ? true : false
 
-      if registration["owner_id"] != @publisher.id
-        @should_update_promo_server = true
-      end
-
-      registration["referral_code"]
+      {
+        referral_code: registration["referral_code"],
+        should_update_promo_server: should_update_promo_server
+      }
     else
       require "sentry-raven"
       Rails.logger.error("PromoRegistrar #register_channel error: #{e}")
@@ -57,7 +65,10 @@ class PromoRegistrar < BaseApiClient
 
   def register_channel_offline
     Rails.logger.info("PromoRegistrar #register_channel offline.")
-    offline_referral_code
+    {
+      referral_code: offline_referral_code,
+      should_update_promo_server: false
+    }
   end
 
   private
