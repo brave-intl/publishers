@@ -197,7 +197,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -540,4 +540,4 @@ RUBY VERSION
    ruby 2.3.7p456
 
 BUNDLED WITH
-   1.16.2
+   1.16.6
