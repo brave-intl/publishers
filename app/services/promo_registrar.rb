@@ -33,8 +33,6 @@ class PromoRegistrar < BaseApiClient
       request.body = request_body(channel)
       request.url("/api/1/promo/publishers")
     end
-    
-    referral_code = JSON.parse(response.body)["referral_code"]
 
     {
       referral_code: JSON.parse(response.body)["referral_code"],
@@ -43,17 +41,13 @@ class PromoRegistrar < BaseApiClient
   rescue Faraday::Error => e
     if e.response[:status] == 409
       Rails.logger.warn("PromoRegistrar #register_channel returned 409, channel already registered.  Using PromoRegistrationGetter to get the referral_code.")
-      Rails.logger.info("Attempted to register channel #{channel.details.channel_identifier}, but it already registered.  Saving referral code #{referral_code}.")
       
       # Get the referral code
       registration = PromoRegistrationGetter.new(publisher: @publisher, channel: channel).perform
-      
-      # Look at the owner_id that Promo has assigned to the referral, and determine whether to update
-      should_update_promo_server = registration["owner_id"] != @publisher.id ? true : false
 
       {
         referral_code: registration["referral_code"],
-        should_update_promo_server: should_update_promo_server
+        should_update_promo_server: registration["owner_id"] != @publisher.id ? true : false
       }
     else
       require "sentry-raven"
