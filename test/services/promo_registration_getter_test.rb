@@ -12,15 +12,6 @@ class PromoRegistrationGetterTest < ActiveJob::TestCase
     end
   end
 
-  test "raises NoReferralCodeError when requesting referral_code for invalid promo_id " do
-    publisher = publishers(:completed)
-    channel = publisher.channels.first
-
-    assert_raise PromoRegistrationGetter::NoReferralCodeError do
-      PromoRegistrationGetter.new(publisher: publisher, channel: channel, promo_id: "invalid-promo-id").perform
-    end
-  end
-
   test "returns the promo code for a " do
     publisher = publishers(:completed)
     channel = publisher.channels.first
