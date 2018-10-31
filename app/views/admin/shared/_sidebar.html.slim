@@ -4,8 +4,11 @@ aside
       ul.sidebar-menu id="nav-accordion"
         li
           = link_to admin_root_path
-            span Dashboard
+            span Visitor Stats
         - if can? :access, :admin
+          li
+            = link_to admin_stats_contributions_path
+              span Top Publisher Contributions
           li
             = link_to admin_publishers_path
               span Publishers
