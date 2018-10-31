@@ -1,10 +1,9 @@
 class Api::V1::Stats::ChannelsController < Api::BaseController
-
   def index
 
       channels = Channel.pluck(:id)
       data = channels.to_json
-      render(status: 200, json: data)
+      render(status: 200, json: data) and return
 
   end
 
@@ -44,7 +43,7 @@ class Api::V1::Stats::ChannelsController < Api::BaseController
         verified: channel.verified
       }
 
-      render(status: 200, json: data)
+      render(status: 200, json: data) and return
 
       rescue ActiveRecord::RecordNotFound
         error_response = {
