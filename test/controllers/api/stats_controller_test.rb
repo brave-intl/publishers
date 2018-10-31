@@ -11,6 +11,7 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
     resp = JSON.parse(response.body)
 
+
     assert_equal resp, [
       [6.days.ago.to_date.to_s, 1],
       [5.days.ago.to_date.to_s, 0],
@@ -18,7 +19,10 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 1],
-      [0.days.ago.to_date.to_s, 24]
+      [0.days.ago.to_date.to_s, Publisher.where(created_at: Date.today.beginning_of_day..Date.today.end_of_day,
+                                                role: Publisher::PUBLISHER)
+                                         .count
+      ]
     ]
 
     get "/api/stats/email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
@@ -32,7 +36,30 @@ class Api::StatsControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 1],
-      [0.days.ago.to_date.to_s, 23]
+      [0.days.ago.to_date.to_s, Publisher.where(created_at: Date.today.beginning_of_day..Date.today.end_of_day,
+                                                role: Publisher::PUBLISHER)
+                                         .where.not(email: nil)
+                                         .count
+      ]
+    ]
+    get "/api/stats/channel_and_email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+
+    assert_equal 200, response.status
+    resp = JSON.parse(response.body)
+    assert_equal resp, [
+      [6.days.ago.to_date.to_s, 1],
+      [5.days.ago.to_date.to_s, 0],
+      [4.days.ago.to_date.to_s, 0],
+      [3.days.ago.to_date.to_s, 0],
+      [2.days.ago.to_date.to_s, 0],
+      [1.days.ago.to_date.to_s, 1],
+      [0.days.ago.to_date.to_s, Publisher.distinct.joins(:channels)
+                                         .where(created_at: Date.today.beginning_of_day..Date.today.end_of_day,
+                                                role: Publisher::PUBLISHER)
+                                         .where.not(email: nil)
+                                         .where(channels: { verified: true })
+                                         .count
+      ]
     ]
   end
 
