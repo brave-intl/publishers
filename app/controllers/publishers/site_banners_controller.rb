@@ -1,7 +1,6 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
   include ActionView::Helpers::SanitizeHelper
-  protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_publisher!, only: [:create, :update_logo, :update_background]
 
   MAX_IMAGE_SIZE = 10_000_000

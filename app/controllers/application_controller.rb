@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     )
   end
 
-  protect_from_forgery with: :exception
+  protect_from_forgery prepend: true, with: :exception
 
   before_action :set_locale
   before_action :set_paper_trail_whodunnit
