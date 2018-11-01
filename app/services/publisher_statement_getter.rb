@@ -21,14 +21,14 @@ class PublisherStatementGetter < BaseApiClient
       when "all"
         transactions
       when "this_month"
-        cutoff = Time.now.utc.at_beginning_of_month
+        cutoff = Date.today.beginning_of_month
         transactions.select { |transaction|
-          transaction["created_at"].to_time.at_beginning_of_month.utc == cutoff
+          transaction["created_at"].to_date.at_beginning_of_month == cutoff
         }
       when "last_month"
-        cutoff = (Time.now - 1.month).utc.at_beginning_of_month
+        cutoff = (Date.today - 1.month).at_beginning_of_month
         transactions.select { |transaction|
-          transaction["created_at"].to_time.at_beginning_of_month.utc == cutoff
+          transaction["created_at"].to_date.at_beginning_of_month == cutoff
         }
       else
         transactions
