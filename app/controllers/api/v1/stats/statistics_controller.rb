@@ -27,6 +27,25 @@ class Api::V1::Stats::StatisticsController < Api::BaseController
     render(json: fill_in_blank_dates(result).to_json, status: 200)
   end
 
+  def channel_and_email_verified_signups_per_day
+    sql =
+    """
+      select p.created_at::date, count(*)
+      from (
+        select distinct publishers.*
+        from publishers
+        inner join channels
+        on channels.publisher_id = publishers.id and channels.verified = true
+        where role = 'publisher'
+        and email is not null
+      ) as p
+      group by p.created_at::date
+      order by p.created_at::date
+    """
+    result = ActiveRecord::Base.connection.execute(sql).values
+    render(json: fill_in_blank_dates(result).to_json, status: 200)
+  end
+
   # Returns an array of buckets of site channel ids, where each bucket is defined by total channel views
   def twitch_channels_by_view_count
     # 0 - 1000 views

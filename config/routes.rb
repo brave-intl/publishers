@@ -129,6 +129,9 @@ Rails.application.routes.draw do
       end
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
+    namespace :stats do
+      resources :contributions, only: [:index]
+    end
     resources :unattached_promo_registrations, only: %i(index create) do
       collection do
         get :report

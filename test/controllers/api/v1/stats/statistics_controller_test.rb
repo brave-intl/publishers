@@ -11,6 +11,7 @@ class Api::V1::Stats::StatisticsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
     resp = JSON.parse(response.body)
 
+
     assert_equal resp, [
       [6.days.ago.to_date.to_s, 1],
       [5.days.ago.to_date.to_s, 0],
