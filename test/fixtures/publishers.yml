@@ -84,6 +84,14 @@ fake2:
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
+stats:
+  email: "test@stats.org"
+  name: "Stats Test"
+  phone: "4155551234"
+  phone_normalized: "+14155551234"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+
 uphold_connected:
   email: "alice@upholdconnected.org"
   name: "Alice the uphold_connected"
@@ -226,7 +234,7 @@ fraudulent_verifier:
   name: "Frank the fraud"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  
+
 locked_out_verifier:
   email: "locked_out@verifications.org"
   name: "Logan the locked out"
