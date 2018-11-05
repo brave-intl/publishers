@@ -10,11 +10,12 @@ class PublisherWalletGetter < BaseApiClient
 
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
-
-    # Eyeshade only creates an account for an owner when they connect to Uphold.
-    # Until then, the request to get the wallet information for the owner will 404.
-    # In that case we use an empty wallet, but still use balances from the balance getter.
+    
+    # Get wallet information
     begin
+      # Eyeshade only creates an account for an owner when they connect to Uphold.
+      # Until then, the request to get the wallet information for the owner will 404.
+      # In that case we use an empty wallet, but still use balances from the balance getter.
       wallet_response = connection.get do |request|
         request.headers["Authorization"] = api_authorization_header
         request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
@@ -25,6 +26,7 @@ class PublisherWalletGetter < BaseApiClient
       wallet_hash = {}
     end
 
+    # Get account balances
     if publisher.channels.verified.present?
       accounts = PublisherBalanceGetter.new(publisher: publisher).perform
       return if accounts == :unavailable
@@ -41,6 +43,12 @@ class PublisherWalletGetter < BaseApiClient
       channel_hash = parse_accounts(accounts, wallet_hash)
     else
       channel_hash = {}
+    end
+
+    # Get last settlement balance from transactions endpoint
+    last_settlement_balance = last_settlement_balance(PublisherTransactionsGetter.new(publisher: @publisher).perform)
+    unless last_settlement_balance.empty? || (last_settlement_balance["amount"].to_i == 0)
+      wallet_hash["lastSettlement"] = last_settlement_balance
     end
 
     Eyeshade::Wallet.new(wallet_json: wallet_hash,channel_json: channel_hash)
@@ -72,12 +80,12 @@ class PublisherWalletGetter < BaseApiClient
           "EUR" => 0.20187818378874756,
           "GBP" => 0.1799810085548496
         },
-        "lastSettlement"=>
-          {"altcurrency"=>"BAT",
-           "currency"=>"USD",
-           "probi"=>"405520562799219044167",
-           "amount"=>"69.78",
-           "timestamp"=>1536361540000},
+        "lastSettlement"=> last_settlement_balance(PublisherTransactionsGetter.new(publisher: @publisher).perform_offline),
+          # {"altcurrency"=>"BAT",
+          #  "currency"=>"USD",
+          #  "probi"=>"405520562799219044167",
+          #  "amount"=>"69.78",
+          #  "timestamp"=>1536361540000},
         "wallet" => {
             "provider" => "uphold",
             "authorized" => true,
@@ -86,7 +94,6 @@ class PublisherWalletGetter < BaseApiClient
             "possibleCurrencies"=> ["AED", "ARS", "AUD", "BRL", "CAD", "CHF", "CNY", "DKK", "EUR", "GBP", "HKD", "ILS", "INR", "JPY", "KES", "MXN", "NOK", "NZD", "PHP", "PLN", "SEK", "SGD", "USD", "XAG", "XAU", "XPD", "XPT"],
             "scope"=> "cards:read user:read"
         },
-
       }
 
     if publisher.channels.verified.any?
@@ -138,6 +145,36 @@ class PublisherWalletGetter < BaseApiClient
 
   def total_balance_bat(accounts)
     accounts.map {|account| account["balance"].to_d }.reduce(0, :+)
+  end
+
+  def last_settlement_balance(transactions)
+    return {} if transactions == []
+    last_settlement_date = transactions.reduce(Date.new(0)) { |last_settlement_date, transaction|
+      if transaction["created_at"].to_date > last_settlement_date && transaction["settlement_amount"].present?
+        last_settlement_date = transaction["created_at"].to_date
+      end
+      last_settlement_date
+    }
+
+    # Find all settlement transactions that occur within the same month as the last settlement timestamp
+    last_settlement_transactions = transactions.select { |transaction|
+      transaction["created_at"].to_date.at_beginning_of_month == last_settlement_date.at_beginning_of_month &&
+      transaction["settlement_amount"].present?
+    }
+
+    last_settlement_currency = last_settlement_transactions&.first["settlement_currency"] || nil
+
+    last_settlement_probi = last_settlement_transactions.map { |transaction|
+      transaction["settlement_amount"].to_d
+    }.reduce(:+).to_d
+    
+    {
+      "altcurrency" => "BAT",
+      "currency" => last_settlement_currency,
+      "probi" => (last_settlement_probi * BigDecimal.new('1.0e18')),
+      "amount" => last_settlement_probi,
+      "timestamp" => last_settlement_date.to_time.to_i
+    }
   end
 
   def api_base_uri

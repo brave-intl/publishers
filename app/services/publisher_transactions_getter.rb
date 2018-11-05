@@ -5,6 +5,8 @@ class PublisherTransactionsGetter < BaseApiClient
   attr_reader :publisher
 
   OFFLINE_NUMBER_OF_SETTLEMENTS = 4
+  OFFLINE_REFERRAL_SETTLEMENT_AMOUNT = "56.81"
+  OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT = "18.81"
 
   def initialize(publisher:)
     @publisher = publisher 
@@ -87,7 +89,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{contribution_settlement_amount}",
           "settlement_currency" => publisher.default_currency,
-          "settlement_amount" => "56.81",
+          "settlement_amount" => OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT,
           "type" => "contribution_settlement"
         })
 
@@ -108,7 +110,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "channel" => "#{channel.publisher.owner_identifier}",
           "amount" => "#{referral_settlement_amount}",
           "settlement_currency" => publisher.default_currency,
-          "settlement_amount" => "18.81",
+          "settlement_amount" => OFFLINE_REFERRAL_SETTLEMENT_AMOUNT,
           "type" => "referral_settlement"
         })
       end

@@ -35,9 +35,14 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       }
     }.to_json
 
+    # Stub wallet response
     stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
       with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
       to_return(status: 200, body: wallet, headers: {})
+
+    # Stub transactions response for last settlement balance
+    stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+      to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
 
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
@@ -79,6 +84,10 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
       to_return(status: 200, body: channel_balances_response.to_json)
 
+    # Stub transactions response for last settlement balance
+    stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+      to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
+
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
     assert result.kind_of?(Eyeshade::Wallet)
@@ -113,6 +122,10 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
     stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:94dba753-de7e-5424-99ba-db53953a7939&account=partially-completed-verified.org").
       to_return(status: 200, body: [].to_json)
+
+    # Stub transactions response for last settlement balance
+    stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+      to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
 
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
@@ -162,13 +175,51 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       }
     ].to_json
 
-    # stub balances response
+    # Stub balances response
     stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
       to_return(status: 200, body: balance_response)
-      
+
+    # Stub transactions response for last settlement balance
+    stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+      to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
+
     wallet = PublisherWalletGetter.new(publisher: publisher).perform
 
     assert_equal wallet.contribution_balance.amount, 80
     assert_equal wallet.contribution_balance.probi,  80 * BigDecimal.new('1.0e18')
+  end
+
+  test "last_settlement_balance has the most recent settlement date and correct amount" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:completed)
+
+    wallet = {
+      "wallet": {
+        "provider": "uphold",
+        "authorized": true,
+        "defaultCurrency": "USD",
+        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
+        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
+        "scope": ["cards:write"]
+      }
+    }.to_json
+
+    # Stub wallet response
+    stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+      to_return(status: 200, body: wallet, headers: {})
+
+    # Stub balances response
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
+      to_return(status: 200, body: [].to_json)
+
+    # Stub transactions response for last settlement balance
+    stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+      to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
+
+    wallet = PublisherWalletGetter.new(publisher: publisher).perform
+
+    assert_equal wallet.last_settlement_balance.amount, PublisherTransactionsGetter::OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT.to_d + PublisherTransactionsGetter::OFFLINE_REFERRAL_SETTLEMENT_AMOUNT.to_d
+    assert_equal wallet.last_settlement_date.at_beginning_of_month.to_date, Time.now.to_date.at_beginning_of_month
   end
 end

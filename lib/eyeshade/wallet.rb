@@ -38,9 +38,9 @@ module Eyeshade
         @channel_balances[identifier] = Eyeshade::Balance.new(balance_json: json)
       end
 
-      if wallet_json["lastSettlement"]
+      if wallet_json["lastSettlement"].present?
         @last_settlement_balance = Eyeshade::Balance.new(balance_json: wallet_json["lastSettlement"].merge({'rates' => @rates}), apply_fee: false)
-        @last_settlement_date = Time.at(wallet_json["lastSettlement"]["timestamp"]/1000).to_datetime
+        @last_settlement_date = Time.at(wallet_json["lastSettlement"]["timestamp"]).to_datetime
       end
     end
 

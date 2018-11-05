@@ -197,6 +197,9 @@ class PublisherTest < ActiveSupport::TestCase
       stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
         to_return(status: 200, body: [].to_json, headers: {})
 
+      # stub transactions response for last settlement balance
+      stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+        to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
 
       publisher.wallet
       assert publisher.uphold_verified?
@@ -249,6 +252,10 @@ class PublisherTest < ActiveSupport::TestCase
       # stub balances response so all PublisherWalletGetter requests are stub'd
       stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
         to_return(status: 200, body: [].to_json, headers: {})
+
+      # stub transactions response for last settlement balance
+      stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+        to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
 
       publisher.wallet
       assert publisher.uphold_verified?
@@ -535,6 +542,10 @@ class PublisherTest < ActiveSupport::TestCase
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 200, body: body, headers: {})
+
+      # Stub transactions response for last settlement balance
+      stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+        to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
 
       publisher.reload
       publisher.verify_uphold

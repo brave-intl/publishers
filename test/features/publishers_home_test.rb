@@ -170,6 +170,10 @@ class PublishersHomeTest < Capybara::Rails::TestCase
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
         to_return(status: 404, headers: {})
 
+      # Stub transactions response for last settlement balance
+      stub_request(:get, %r{v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions}).
+        to_return(status: 200, body: PublisherTransactionsGetter.new(publisher: publisher).perform_offline.to_json)
+
       visit home_publishers_path
 
       assert publisher.wallet.present?
