@@ -457,7 +457,7 @@ en:
       statement_file_name: BravePaymentsStatement
     suspended_error:
       heading_html: Due to suspicious activity,<br/> your account is suspended.
-      body: We try to keep the User Growth Pool fair for all parties. However, the User Growth Pool is a target for fraudsters, and we unfortunately need to distinguish between legitimate publishers who share Brave's egalitarian vision for the future and fraudsters who seek their own gain.<br/>While we're reviewing your information, please contact support+publishers@basicattentiontoken.org and include details about how you achieved user acquisition. 
+      body: We try to keep the BAT User Growth Pool (UGP) fair for all parties involved via publishers.basicattentiontoken.org. However, the UGP is constantly a target for a lot of unnatural gain and activities,<br/>and we, unfortunately, need to distinguish between natural and unnatural activities. While reviewing your activities, we noticed some unnatural activities on your account that we need to review with you. Your account will stay suspended while we review these activities with you. Please contact support+publishers@basicattentiontoken.org so we can get the conversation going.
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel
