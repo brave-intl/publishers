@@ -213,7 +213,7 @@ en:
       title: Channel transfer approved
       intro: |
         Your channel, %{channel_name} has been transferred to another publisher.  Please
-        reply to this email is you dissaprove of the transfer as soon as possible.
+        reply as soon as possible if you did not intend for this transfer.
     channel_transfer_approved_secondary:
       subject: "Your request to transfer the channel has been approved"
       title: Channel transfer approved
