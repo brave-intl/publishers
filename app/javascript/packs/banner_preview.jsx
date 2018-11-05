@@ -78,7 +78,7 @@ export default class BannerPreview extends React.Component {
         currentDonation={0}
         balance={25.0}
         currentAmount={0}
-        bgImage={this.props.bannerImage.url}
+        bgImage={this.props.cover.url}
         logo={this.props.logo.url}
         donationAmounts={
           [
