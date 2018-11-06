@@ -423,8 +423,6 @@ export default class BannerEditor extends React.Component {
 
   async save() {
     // Three POST requests make up the save: Content, Logo, and Cover.
-    let that = this;
-
     this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
 
     let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners";
@@ -475,10 +473,8 @@ export default class BannerEditor extends React.Component {
       let images = await fetch(cover_url, cover_options);
     }
 
-    Spinner.hide('save-spinner', 'save-container')
-    setTimeout(() => {
-      that.setState({saving: false});
-    }, 0)
+    document.getElementById('save-spinner').remove();
+    this.setState({saving: false});
 
   }
 
