@@ -149,12 +149,11 @@ class PublisherWalletGetter < BaseApiClient
 
   def last_settlement_balance(transactions)
     return {} if transactions == []
-    last_settlement_date = transactions.reduce(Date.new(0)) { |last_settlement_date, transaction|
-      if transaction["created_at"].to_date > last_settlement_date && transaction["settlement_amount"].present?
-        last_settlement_date = transaction["created_at"].to_date
-      end
-      last_settlement_date
-    }
+
+    # Find most recent settlement transaction
+    last_settlement_date = transactions.select { |transaction|
+      transaction["settlement_amount"].present?
+    }.last["created_at"].to_date # Eyeshade returns transactions ordered_by created_at
 
     # Find all settlement transactions that occur within the same month as the last settlement timestamp
     last_settlement_transactions = transactions.select { |transaction|

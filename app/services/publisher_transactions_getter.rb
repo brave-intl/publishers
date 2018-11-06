@@ -116,7 +116,9 @@ class PublisherTransactionsGetter < BaseApiClient
       end
       i += 1
     end
-    transactions
+    transactions.sort_by { |transaction|
+      transaction["created_at"].to_date
+    }
   end
 
   private
