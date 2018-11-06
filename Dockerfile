@@ -14,7 +14,6 @@ RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 RUN ln -sf /usr/bin/google-chrome /usr/bin/chrome
 
 RUN gem install bundler foreman mailcatcher
-RUN npm install -g yarn
 
 # Enabling app reloading based off of https://stackoverflow.com/questions/37699573/rails-app-in-docker-container-doesnt-reload-in-development
 # Sets the path where the app is going to be installed
@@ -45,4 +44,4 @@ RUN bundle install
 COPY . .
 RUN bundle install
 
-RUN yarn
+RUN npm install

@@ -19,17 +19,13 @@ These steps presume you are using OSX and [Homebrew](https://brew.sh/).
    - [bundler](http://bundler.io/)
    - [foreman](https://github.com/ddollar/foreman)
    - [mailcatcher](https://github.com/sj26/mailcatcher)
-6. [Yarn](https://yarnpkg.com/en/) for Node dependency management:
-   `brew install yarn --without-node`.
-   `--without-node` avoids installing Homebrew's version of Node, which is
-   desirable if you are using nvm for Node version management.
+6. [NPM] Node Package Manager: `brew install node`.
 7. Install project dependencies
   * Ruby deps: `bundle install --jobs=$(nproc)`
     - Possible error: Nokogiri, with libxml2. Try installing a system libxml2
       with `brew install libxml2` and then
       `bundle config build.nokogiri --use-system-libraries` then again
       `bundle install`.,.
-  * Node deps: `yarn --frozen-lockfile`
 8. (Optional) Get an `env.sh` file from another developer which contains development-mode
    bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
 9. Create and initialize the database:
