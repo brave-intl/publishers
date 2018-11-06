@@ -364,8 +364,7 @@ export const Logo = styled.div
   `}
 
   ${({ url }) => url === null && `
-    background-size: cover;
-    background-image: url(https://cdn.fashionmagazine.com/wp-content/uploads/2017/10/Screen-Shot-2017-10-13-at-12.56.07-PM-480x480-c-top.png);
+    background-color: #fb542b;
   `}
 `
 
