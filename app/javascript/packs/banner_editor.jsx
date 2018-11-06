@@ -329,10 +329,14 @@ export default class BannerEditor extends React.Component {
         dialogue =
         <div>
           <Opacity/>
-          <Dialogue save>
-            <Text dialogueHeader>Your banner will be updated in two hours</Text>
-            <Text dialogueSubtext>Your updated banner will be presented to Brave users in two hours.</Text>
-            <Button dialoguePrimary onClick={ () => this.setState({state: 'Editor'}) }>OK</Button>
+          <Dialogue id='save-container' save>
+            { this.state.saving === false &&
+              <div>
+                <Text dialogueHeader>Your banner will be updated in two hours</Text>
+                <Text dialogueSubtext>Your updated banner will be presented to Brave users in two hours.</Text>
+                <Button dialoguePrimary onClick={ () => this.setState({state: 'Editor'}) }>OK</Button>
+              </div>
+            }
           </Dialogue>
         </div>
         break;
@@ -419,8 +423,9 @@ export default class BannerEditor extends React.Component {
 
   async save() {
     // Three POST requests make up the save: Content, Logo, and Cover.
+    let that = this;
 
-    // this.setState({loading: true})
+    this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
 
     let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners";
 
@@ -470,7 +475,10 @@ export default class BannerEditor extends React.Component {
       let images = await fetch(cover_url, cover_options);
     }
 
-    this.setState({state: 'save'})
+    Spinner.hide('save-spinner', 'save-container')
+    setTimeout(() => {
+      that.setState({saving: false});
+    }, 0)
 
   }
 
@@ -495,7 +503,7 @@ export default class BannerEditor extends React.Component {
         {this.renderLoadingScreen()}
         {this.renderDialogue()}
 
-        <Navbar mode={'teste'} save={this.save} close={this.close} preview={ this.preview }/>
+        <Navbar save={this.save} close={this.close} preview={ this.preview }/>
 
         <Template>
           <Logo url={this.state.logo.url}>

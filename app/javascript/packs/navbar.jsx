@@ -15,7 +15,7 @@ export default class Navbar extends React.Component {
     return(
       <Container>
 
-        <BrandBar mode={this.props.mode}>
+        <BrandBar>
           <BrandImage src={DonationJar}/>
           <BrandText>Tipping Banner</BrandText>
           <ToggleText>Same banner content for all channels</ToggleText>
