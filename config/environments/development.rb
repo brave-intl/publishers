@@ -1,6 +1,4 @@
 Rails.application.configure do
-    # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = true
   # Allow images from CDN
   config.action_dispatch.default_headers = {
     'Access-Control-Allow-Origin' => "https://localhost:3000",
@@ -10,6 +8,7 @@ Rails.application.configure do
   }
 
   # Verifies that versions and hashed value of the package contents in the project's package.json
+  # (yachtcaptain23): Choosing NPM over yarn per security team request.
   config.webpacker.check_yarn_integrity = false
 
   # Settings specified here will take precedence over those in config/application.rb.

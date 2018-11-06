@@ -257,7 +257,7 @@ docker-compose up
 
 ### Create the databases
 ```sh
-docker-compose run app yarn install; docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
+docker-compose run app npm install; docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
 ```
 
 ### Run Tests
