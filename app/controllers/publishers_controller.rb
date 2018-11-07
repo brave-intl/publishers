@@ -365,7 +365,7 @@ class PublishersController < ApplicationController
   # Domain verified. See balance and submit payment info.
   def home
     if current_publisher.promo_stats_status == :update
-      SyncPublisherPromoStatsJob.perform_later(publisher: current_publisher)
+      SyncPublisherPromoStatsJob.perform_later(publisher_id: current_publisher.id)
     end
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
