@@ -97,13 +97,18 @@ Rails.application.routes.draw do
     namespace :v1, defaults: { format: :json } do
       # /api/v1/stats/
       namespace :stats, defaults: { format: :json } do
-        get '/channels', to: 'channels#index'
-        get '/channels/:channel_id', to: 'channels#show'
-        get "/signups_per_day", to: "statistics#signups_per_day"
-        get "/email_verified_signups_per_day", to: "statistics#email_verified_signups_per_day"
-        get "/youtube_channels_by_view_count", to: "statistics#youtube_channels_by_view_count"
-        get "/twitch_channels_by_view_count", to: "statistics#twitch_channels_by_view_count"
-        get "/javascript_enabled_usage", to: "statistics#javascript_enabled_usage"
+        namespace :channels, defaults: { format: :json } do
+          get :twitch_channels_by_view_count
+          get :youtube_channels_by_view_count
+        end
+        resources :channels, defaults: { format: :json }, only: %i(show)
+        namespace :publishers, defaults: { format: :json } do
+          get :signups_per_day
+          get :email_verified_signups_per_day
+          get :channel_and_email_verified_signups_per_day
+          get :channel_uphold_and_email_verified_signups_per_day
+          get :javascript_enabled_usage
+        end
       end
       # /api/v1/public/
       namespace :public, defaults: { format: :json } do
