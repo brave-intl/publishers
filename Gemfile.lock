@@ -299,7 +299,7 @@ GEM
     public_suffix (3.0.2)
     puma (3.10.0)
     raabro (1.1.6)
-    rack (2.0.5)
+    rack (2.0.6)
     rack-attack (5.4.0)
       rack (>= 1.0, < 3)
     rack-protection (2.0.3)
@@ -537,7 +537,7 @@ DEPENDENCIES
   yt
 
 RUBY VERSION
-   ruby 2.3.7p456
+   ruby 2.3.8p459
 
 BUNDLED WITH
-   1.16.6
+   1.17.1

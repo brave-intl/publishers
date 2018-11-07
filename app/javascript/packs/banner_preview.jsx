@@ -78,8 +78,8 @@ export default class BannerPreview extends React.Component {
         currentDonation={0}
         balance={25.0}
         currentAmount={0}
-        bgImage={this.props.backgroundImage}
-        logo={this.props.logoImage}
+        bgImage={this.props.cover.url}
+        logo={this.props.logo.url}
         donationAmounts={
           [
             { tokens: this.props.donationAmounts[0], converted: (this.props.donationAmounts[0] * this.props.conversionRate).toFixed(2), selected: false },

@@ -37,6 +37,10 @@ fake2_details:
   brave_publisher_id: "verified.org"
   verification_token: "23d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
 
+stats_details:
+  brave_publisher_id: "stats.test"
+  verification_token: "23d801860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
+
 uphold_connected_details:
   brave_publisher_id: "uphold_connected.org"
 
@@ -89,7 +93,7 @@ to_verify_file_details:
 to_verify_support_details:
   brave_publisher_id: "to_verify_support.org"
   verification_token: "xxxx01860b2185931ae4dbec06f7119712f928eaf39f0fe0c5a335e42b7eb1c6"
-  verification_method: 
+  verification_method:
 
 to_verify_wordpress_details:
   brave_publisher_id: "to_verify_wordpress.org"
@@ -132,4 +136,3 @@ fraudulently_verified_site_details:
 
 locked_out_site_details:
   brave_publisher_id: "contested.com"
-

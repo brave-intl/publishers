@@ -85,6 +85,11 @@ fake2:
   details: fake2_details (SiteChannelDetails)
   verified: false
 
+stats_test:
+  publisher: stats
+  details: stats_details (SiteChannelDetails)
+  verified: true
+
 uphold_connected:
   publisher: uphold_connected
   details: uphold_connected_details (SiteChannelDetails)

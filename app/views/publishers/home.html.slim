@@ -49,9 +49,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           .promo-panel
             - if current_publisher.promo_status(promo_running?) == :inactive
               .promo-panel-item.promo-panel-item-info
-                #promo-limited-time= t("promo.activate.limited_time_promo")
-                h3#promo-title= t("promo.activate.title")
-                #promo-referring-fans= t("promo.activate.for_referring_your_fans")
+                #promo-limited-time= t("promo.activate.sub_header_one")
+                h3#promo-header= t("promo.activate.header")
+                #promo-referring-fans= t("promo.activate.sub_header_two")
               .promo-panel-item.promo-panel-item-button
                 = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
                   = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
