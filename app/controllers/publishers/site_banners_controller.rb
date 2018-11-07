@@ -30,7 +30,7 @@ class Publishers::SiteBannersController < ApplicationController
       data[:logoImage] = data[:logoUrl]
       render(json: data.to_json)
     else
-      render(json: {}.to_json)
+      render(json: nil.to_json)
     end
   end
 
