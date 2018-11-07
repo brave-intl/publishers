@@ -92,17 +92,29 @@ Rails.application.routes.draw do
     end
     resources :tokens, only: %i(index)
     resources :channels, constraints: { channel_id: %r{[^\/]+} }
-    namespace :stats do
-      get :signups_per_day
-      get :email_verified_signups_per_day
-      get :youtube_channels_by_view_count
-      get :twitch_channels_by_view_count
-      get :javascript_enabled_usage
-    end
+
+    # /api/v1/
     namespace :v1, defaults: { format: :json } do
+      # /api/v1/stats/
+      namespace :stats, defaults: { format: :json } do
+        namespace :channels, defaults: { format: :json } do
+          get :twitch_channels_by_view_count
+          get :youtube_channels_by_view_count
+        end
+        resources :channels, defaults: { format: :json }, only: %i(show)
+        namespace :publishers, defaults: { format: :json } do
+          get :signups_per_day
+          get :email_verified_signups_per_day
+          get :channel_and_email_verified_signups_per_day
+          get :channel_uphold_and_email_verified_signups_per_day
+          get :javascript_enabled_usage
+        end
+      end
+      # /api/v1/public/
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
       end
+
     end
   end
 
@@ -110,7 +122,7 @@ Rails.application.routes.draw do
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
-      member do 
+      member do
         get :download
       end
     end
@@ -121,6 +133,9 @@ Rails.application.routes.draw do
         post :create_note
       end
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
+    end
+    namespace :stats do
+      resources :contributions, only: [:index]
     end
     resources :unattached_promo_registrations, only: %i(index create) do
       collection do

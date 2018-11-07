@@ -1,29 +1,55 @@
-class Api::StatsController < Api::BaseController
-  def signups_per_day
-    sql =
-    """
-      select created_at::date, count(*)
-      from publishers
-      where role = 'publisher'
-      group by created_at::date
-      order by created_at::date
-    """
-    result = ActiveRecord::Base.connection.execute(sql).values
-    render(json: fill_in_blank_dates(result).to_json, status: 200)
+class Api::V1::Stats::ChannelsController < Api::V1::StatsController
+  # (yachtcaptain23): This needs to be refactored to support the data listed in #show
+  def index
   end
 
-  def email_verified_signups_per_day
-    sql =
-    """
-      select created_at::date, count(*)
-      from publishers
-      where role = 'publisher'
-      and email is not null
-      group by created_at::date
-      order by created_at::date
-    """
-    result = ActiveRecord::Base.connection.execute(sql).values
-    render(json: fill_in_blank_dates(result).to_json, status: 200)
+  def show
+    channel = Channel.find(params[:id])
+
+    case channel.details_type
+
+      when "SiteChannelDetails"
+        channel_details = SiteChannelDetails.find_by_id(channel.details_id)
+        channel_type = "website"
+        channel_name = channel_details.url
+      when "YoutubeChannelDetails"
+        channel_details = YoutubeChannelDetails.find_by_id(channel.details_id)
+        channel_type = "youtube"
+        channel_name = channel_details.name
+      when "TwitterChannelDetails"
+        channel_details = TwitterChannelDetails.find_by_id(channel.details_id)
+        channel_type = "twitter"
+        channel_name = channel_details.name
+      when "TwitchChannelDetails"
+        channel_details = TwitchChannelDetails.find_by_id(channel.details_id)
+        channel_type = "twitch"
+        channel_name = channel_details.name
+      end
+
+    data = {
+      channel_id: channel.id,
+      channel_identifier: channel_details.channel_identifier,
+      channel_type: channel_type,
+      name: channel_name,
+      stats: channel_details.stats,
+      url: channel_details.url,
+      owner_id: channel.publisher.owner_identifier,
+      created_at: channel.created_at.strftime("%Y-%m-%d %H:%M"),
+      verified: channel.verified
+    }
+
+    render(status: 200, json: data) and return
+
+    rescue ActiveRecord::RecordNotFound
+      error_response = {
+        errors: [{
+          status: "404",
+          title: "Not Found",
+          detail: "Channel with id #{params[:channel_id]} not found"
+          }]
+        }
+
+    render(status: 404, json: error_response) and return
   end
 
   # Returns an array of buckets of site channel ids, where each bucket is defined by total channel views
@@ -67,57 +93,5 @@ class Api::StatsController < Api::BaseController
                                         select(:id).map {|details| details.id}
 
     render(json: [bucket_one, bucket_two, bucket_three, bucket_four].to_json, status: 200)
-  end
-
-  def javascript_enabled_usage
-
-    active_users_with_javascript_enabled = Publisher.
-      distinct.
-      joins("inner join channels on channels.publisher_id = publishers.id").
-      where.not(javascript_last_detected_at: nil).
-      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
-      count
-
-    active_users_with_javascript_disabled = Publisher.
-      distinct.
-      joins("inner join channels on channels.publisher_id = publishers.id").
-      where(javascript_last_detected_at: nil).
-      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
-      count
-
-    render(
-      json: {
-        active_users_with_javascript_enabled: active_users_with_javascript_enabled,
-        active_users_with_javascript_disabled: active_users_with_javascript_disabled,
-      },
-      status: 200
-    )
-  end
-
-  private
-
-  def fill_in_blank_dates(result)
-    new_result = [] # [['2018-06-01', count], ['2018-06-02, count]]
-    iterating_date = Date.parse(result[0][0])
-
-    result.each do |segment|
-      # segment is ['2018-06-01', count]
-      current_date = Date.parse(segment[0])
-      while iterating_date < current_date
-        new_result << [iterating_date.to_s, 0]
-        iterating_date = iterating_date.next_day
-      end
-      if iterating_date == current_date
-        new_result << segment
-        iterating_date = iterating_date.next_day
-      end
-    end
-
-    while iterating_date < Date.today
-      new_result << [iterating_date.to_s, 0]
-      iterating_date = iterating_date.next_day
-    end
-
-    new_result
   end
 end

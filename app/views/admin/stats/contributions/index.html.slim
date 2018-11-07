@@ -1,0 +1,14 @@
+div.panel-body
+  div.adv-table
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th Channel
+        th Earnings
+        th Publisher
+      tbody
+        - @result.each do |entry|
+          - publisher_id = entry['account_id'].split(":")[1]
+          tr.gradeX
+            td = entry['channel']
+            td = entry['earnings']
+            td = link_to publisher_id, admin_publisher_path(publisher_id)
