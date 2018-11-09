@@ -100,17 +100,26 @@ export const TextInput = styled.input
   padding: 10px;
   cursor: pointer;
 
-  &:hover{
-     box-shadow: 0 0 1px 1px #fc4145;
-     border: 1px solid rgba(0,0,0,0);
+
+  ${props => props.tip &&
+    `
+    width: 40px;
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+    margin-left: -1px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Poppins;
+    color: #F1F1F9
+
+    &:focus{
+      cursor: text;
+      outline: none;
+    }
+    `
   }
 
-  &:focus{
-    cursor: text;
-    box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0,0,0,0);
-    outline: none;
-  }
 
 
   ${props => props.link &&
@@ -119,6 +128,18 @@ export const TextInput = styled.input
     width: 175px;
     height: 40px;
     margin-left: 5px;
+
+    &:focus{
+      cursor: text;
+      box-shadow: 0 0 1px 1px #fc4145;
+      border: 1px solid rgba(0,0,0,0);
+      outline: none;
+    }
+
+    &:hover{
+       box-shadow: 0 0 1px 1px #fc4145;
+       border: 1px solid rgba(0,0,0,0);
+    }
     `
   }
 
@@ -129,6 +150,18 @@ export const TextInput = styled.input
     width: 100%;
     height: 50px;
     margin-top: 10px;
+
+    &:focus{
+      cursor: text;
+      box-shadow: 0 0 1px 1px #fc4145;
+      border: 1px solid rgba(0,0,0,0);
+      outline: none;
+    }
+
+    &:hover{
+       box-shadow: 0 0 1px 1px #fc4145;
+       border: 1px solid rgba(0,0,0,0);
+    }
     `
   }
 
@@ -229,7 +262,7 @@ ${props => props.convertedAmount && css
   display: inline-block;
   font-size: 14px;
   padding: 5px;
-  width: 80px;
+  width: 85px;
   font-weight: normal;
   font-family: Poppins;
   color: #F1F1F9
