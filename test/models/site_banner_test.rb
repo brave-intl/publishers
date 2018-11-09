@@ -29,7 +29,7 @@ class SiteBannerTest < ActiveSupport::TestCase
     assert_not site_banner.save
     site_banner.donation_amounts = [0, 1, 2]
     assert_not site_banner.save
-    site_banner.donation_amounts = [1, 10, 100]
+    site_banner.donation_amounts = [1, 10, 1000]
     assert_not site_banner.save
     site_banner.donation_amounts = [1, 5, 10]
     assert site_banner.save
