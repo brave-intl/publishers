@@ -5,8 +5,8 @@ class PublisherTransactionsGetter < BaseApiClient
   attr_reader :publisher
 
   OFFLINE_NUMBER_OF_SETTLEMENTS = 4
-  OFFLINE_REFERRAL_SETTLEMENT_AMOUNT = "56.81"
-  OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT = "18.81"
+  OFFLINE_REFERRAL_SETTLEMENT_AMOUNT = "18.81"
+  OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT = "56.81"
 
   def initialize(publisher:)
     @publisher = publisher 
