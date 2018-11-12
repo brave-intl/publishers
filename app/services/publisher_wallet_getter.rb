@@ -47,7 +47,7 @@ class PublisherWalletGetter < BaseApiClient
 
     # Get last settlement balance from transactions endpoint
     last_settlement_balance = last_settlement_balance(PublisherTransactionsGetter.new(publisher: @publisher).perform)
-    unless last_settlement_balance.empty? || (last_settlement_balance["amount"].to_i == 0)
+    unless last_settlement_balance.empty? || (last_settlement_balance["amount"].to_i.zero?)
       wallet_hash["lastSettlement"] = last_settlement_balance
     end
 
