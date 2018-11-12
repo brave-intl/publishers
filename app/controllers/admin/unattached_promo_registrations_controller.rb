@@ -5,9 +5,9 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     filter = params[:filter]
     case filter
     when "All codes", nil, ""
-      @promo_registrations = PromoRegistration.unattached.order("created_at DESC")
+      @promo_registrations = PromoRegistration.unattached_only.order("created_at DESC")
     when "Not assigned"
-      @promo_registrations = PromoRegistration.unattached.where(promo_campaign_id: nil).order("created_at DESC")
+      @promo_registrations = PromoRegistration.unattached_only.where(promo_campaign_id: nil).order("created_at DESC")
     else
       @promo_registrations = PromoRegistration.joins(:promo_campaign).
                                                unattached.

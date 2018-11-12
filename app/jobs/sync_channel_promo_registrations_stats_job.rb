@@ -4,7 +4,7 @@ class SyncChannelPromoRegistrationsStatsJob < ApplicationJob
   queue_as :scheduler
 
   def perform
-    promo_registrations = PromoRegistration.channel
+    promo_registrations = PromoRegistration.channels_only
     PromoRegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
   end
 end

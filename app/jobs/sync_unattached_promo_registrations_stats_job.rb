@@ -4,7 +4,7 @@ class SyncUnattachedPromoRegistrationsStatsJob < ApplicationJob
   queue_as :low
 
   def perform(promo_id: active_promo_id)
-    promo_registrations = PromoRegistration.unattached
+    promo_registrations = PromoRegistration.unattached_only
     success = PromoRegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
 
     if success
