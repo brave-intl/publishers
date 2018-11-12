@@ -7,7 +7,7 @@ class SiteChannelDomainSetter < BaseService
 
   def perform
     normalize_domain if channel_details.brave_publisher_id_unnormalized
-    inspect_host unless channel_details.brave_publisher_id_error_code
+    inspect_host #unless channel_details.brave_publisher_id_error_code
   end
 
   private
@@ -66,6 +66,62 @@ class SiteChannelDomainSetter < BaseService
 
   def inspect_host
     return unless channel_details.brave_publisher_id
+    # channel_details.brave_publisher_id  = 'expired.badssl.com/' 👍
+    # channel_details.brave_publisher_id  = "wrong.host.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "self-signed.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "untrusted-root.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "sha1-intermediate.badssl.com" 🚫
+    # channel_details.brave_publisher_id  = "rc4.badssl.com" 🚫
+    # channel_details.brave_publisher_id  = "rc4-md5.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "dh480.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "dh512.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "dh1024.badssl.com" 🚫
+    # channel_details.brave_publisher_id  = "superfish.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "edellroot.badssl.com" 👍
+    # channel_details.brave_publisher_id  = "dsdtestprovider.badssl.com"
+    # channel_details.brave_publisher_id  = "preact-cli.badssl.com"
+    # channel_details.brave_publisher_id  = "webpack-dev-server.badssl.com"
+    # channel_details.brave_publisher_id  = "null.badssl.com"
+    # channel_details.brave_publisher_id  = "revoked.badssl.com"
+    # channel_details.brave_publisher_id  = "invalid-expected-sct.badssl.com"
+    [
+      "tls-v1-2.badssl.com:1012",
+      "sha256.badssl.com",
+      "sha384.badssl.com",
+      "expired.badssl.com",
+      "wrong.host.badssl.com",
+      "self-signed.badssl.com",
+      "untrusted-root.badssl.com",
+      "sha1-intermediate.badssl.com",
+      "rc4.badssl.com",
+      "rc4-md5.badssl.com",
+      "dh480.badssl.com",
+      "dh512.badssl.com",
+      "dh1024.badssl.com",
+      "superfish.badssl.com",
+      "edellroot.badssl.com",
+      "dsdtestprovider.badssl.com",
+      "preact-cli.badssl.com",
+      "webpack-dev-server.badssl.com",
+      "null.badssl.com",
+      "revoked.badssl.com",
+      "invalid-expected-sct.badssl.com",
+      "sha512.badssl.com",
+      "rsa2048.badssl.com",
+      "ecc256.badssl.com",
+      "ecc384.badssl.com",
+    ].each do |x|
+      result = SiteChannelHostInspector.new(brave_publisher_id: x).perform
+
+      if result[:host_connection_verified]
+        Rails.logger.warn("#{x} 🚫")
+      else
+        Rails.logger.warn("#{x} 👍")
+      end
+
+    end
+
+    binding.pry
 
     result = SiteChannelHostInspector.new(brave_publisher_id: channel_details.brave_publisher_id).perform
     if result[:host_connection_verified]

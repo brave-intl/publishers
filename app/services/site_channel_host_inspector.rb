@@ -37,7 +37,7 @@ class SiteChannelHostInspector < BaseService
 
     { response: response, web_host: web_host }
   rescue => e
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
+    # Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
     { response: e }
   end
 
@@ -81,7 +81,7 @@ class SiteChannelHostInspector < BaseService
   end
 
   def failure_result(error_response)
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{error_response}")
+    # Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{error_response}")
     result  = { response: error_response, host_connection_verified: false, https: false }
     result[:https_error] = https_error_message(error_response)
     result

@@ -1,4 +1,4 @@
-require 'net/http'
+require 'net/https'
 
 module Publishers
   module Fetch
@@ -7,11 +7,19 @@ module Publishers
 
     # Based on Net::HTTP::get_response
     def get_response(uri, &block)
-      Net::HTTP.start(uri.hostname, uri.port,
-                      use_ssl: uri.scheme == "https",
-                      open_timeout: 8) do |http|
-        return http.request_get(uri, &block)
+      http = Net::HTTP.new(uri.hostname, uri.port)
+      http.open_timeout = 8
+
+      if uri.scheme == "https"
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
+        store = OpenSSL::X509::Store.new
+        store.add_file('/Users/cory/repos/publishers/cacert.pem')
+        # store.set_default_paths
+        http.cert_store = store
       end
+
+      http.request(Net::HTTP::Get.new(uri.request_uri))
     end
 
     # Fetch URI, following redirects per options
