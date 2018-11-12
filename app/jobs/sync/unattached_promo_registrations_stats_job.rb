@@ -1,5 +1,5 @@
 # Fetches and saves the referral stats for unattached codes
-class SyncUnattachedPromoRegistrationsStatsJob < ApplicationJob
+class Sync::UnattachedPromoRegistrationsStatsJob < ApplicationJob
   include PromosHelper
   queue_as :low
 

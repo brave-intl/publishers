@@ -1,5 +1,5 @@
 # Syncs the stats for all channels once a day
-class SyncChannelStatsJob < ApplicationJob
+class Sync::ChannelStatsJob < ApplicationJob
   queue_as :low
 
   def perform

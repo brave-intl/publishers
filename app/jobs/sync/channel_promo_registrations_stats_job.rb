@@ -1,5 +1,5 @@
 # Fetches and saves the referral stats for channel owned codes
-class SyncChannelPromoRegistrationsStatsJob < ApplicationJob
+class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
   include PromosHelper
   queue_as :scheduler
 
