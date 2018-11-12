@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class AdminPromoStatsFetcherTest < ActiveJob::TestCase
+class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
   include PromosHelper
 
   before(:example) do
@@ -43,7 +43,7 @@ class AdminPromoStatsFetcherTest < ActiveJob::TestCase
       .to_return(status: 200, body: stubbed_response_body)
 
     promo_registrations = PromoRegistration.where(referral_code: ["ABC123", "DEF456"])
-    AdminPromoStatsFetcher.new(promo_registrations: promo_registrations).perform
+    PromoRegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
 
     assert_equal 2, PromoRegistration.find_by_referral_code("ABC123").aggregate_stats[PromoRegistration::FIRST_RUNS]
     assert_equal 1, PromoRegistration.find_by_referral_code("DEF456").aggregate_stats[PromoRegistration::FIRST_RUNS]

@@ -1,5 +1,5 @@
 # Fetches and updates the stats for unattached codes
-class AdminPromoStatsFetcher < BaseApiClient
+class PromoRegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
 
   def initialize(promo_registrations:)
