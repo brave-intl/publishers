@@ -1,17 +1,13 @@
 class Eyeshade::ReferralTotals < Eyeshade::BaseApiClient
   def perform
-    if Rails.application.secrets[:api_eyeshade_offline]
-      result = perform_offline
-    else
-      begin
-        response = connection.get do |request|
-          request.headers["Authorization"] = api_authorization_header
-          request.url("/v1/accounts/earnings/referrals/total")
-        end
-        result = JSON.parse(response.body)
-      end
+    return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
+
+    response = connection.get do |request|
+      request.headers["Authorization"] = api_authorization_header
+      request.url("/v1/accounts/earnings/referrals/total")
     end
-    result
+
+    JSON.parse(response.body)
   end
 
   def perform_offline
