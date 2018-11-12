@@ -27,6 +27,10 @@
     cron: "15 3 * * *"
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
     queue: scheduler
+  SyncChannelPromoRegistrationsStatsJob:
+    cron: "15 3 * * *"
+    description: "Sync stats for channel owned referral codes with the promo server once a day."
+    queue: scheduler
   SyncUnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."

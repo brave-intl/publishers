@@ -1,4 +1,4 @@
-# Fetches and updates the stats for unattached codes
+# Fetches and updates the stats for all types of referral codes
 class PromoRegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
 
