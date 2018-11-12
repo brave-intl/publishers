@@ -30,6 +30,7 @@ class PromoRegistration < ApplicationRecord
   validates :referral_code, presence: true, uniqueness: { scope: :promo_id }
 
   scope :unattached, -> { where(kind: UNATTACHED) }
+  scope :channel, -> { where(kind: CHANNEL) }
 
   def aggregate_stats
     JSON.parse(stats).reduce({RETRIEVALS => 0,
