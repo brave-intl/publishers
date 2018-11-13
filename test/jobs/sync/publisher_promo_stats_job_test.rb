@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SyncPublisherPromoStatsJobTest < ActionDispatch::IntegrationTest
+class Sync::PublisherPromoStatsJobTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
   
@@ -11,7 +11,7 @@ class SyncPublisherPromoStatsJobTest < ActionDispatch::IntegrationTest
     enable_promo_for_publisher(publisher_one)
     enable_promo_for_publisher(publisher_two)
 
-    SyncPublisherPromoStatsJob.perform_now
+    Sync::PublisherPromoStatsJob.perform_now
 
     publisher_one.reload
     publisher_two.reload
@@ -27,7 +27,7 @@ class SyncPublisherPromoStatsJobTest < ActionDispatch::IntegrationTest
     enable_promo_for_publisher(publisher_one)
     enable_promo_for_publisher(publisher_two)
 
-    SyncPublisherPromoStatsJob.perform_now(publisher_id: publisher_one.id)
+    Sync::PublisherPromoStatsJob.perform_now(publisher_id: publisher_one.id)
 
     publisher_one.reload
     publisher_two.reload

@@ -29,7 +29,8 @@ class PromoRegistration < ApplicationRecord
   validates :kind, inclusion: { in: KINDS, message: "%{value} is not a valid kind of promo registration." }
   validates :referral_code, presence: true, uniqueness: { scope: :promo_id }
 
-  scope :unattached, -> { where(kind: UNATTACHED) }
+  scope :unattached_only, -> { where(kind: UNATTACHED) }
+  scope :channels_only, -> { where(kind: CHANNEL) }
 
   def aggregate_stats
     JSON.parse(stats).reduce({RETRIEVALS => 0,

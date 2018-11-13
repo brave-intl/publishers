@@ -1,5 +1,5 @@
-# Fetches and updates the stats for unattached codes
-class AdminPromoStatsFetcher < BaseApiClient
+# Fetches and updates the stats for all types of referral codes
+class PromoRegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
 
   def initialize(promo_registrations:)

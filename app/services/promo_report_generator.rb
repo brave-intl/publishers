@@ -12,7 +12,7 @@ class PromoReportGenerator < BaseService
   def perform
     # Fetch the most recent stats
     promo_registrations = PromoRegistration.where(referral_code: @referral_codes)
-    AdminPromoStatsFetcher.new(promo_registrations: promo_registrations).perform
+    PromoRegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
     promo_registrations.reload
 
     # Build the report contents

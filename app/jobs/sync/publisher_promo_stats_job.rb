@@ -1,5 +1,5 @@
 # Syncs promo enabled publishers referral statisitics every 10 minutes
-class SyncPublisherPromoStatsJob < ApplicationJob
+class Sync::PublisherPromoStatsJob < ApplicationJob
   include PromosHelper
   queue_as :transactional
 

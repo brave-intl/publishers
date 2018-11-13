@@ -23,15 +23,19 @@
   TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
-  SyncPublisherPromoStatsJob:
+  Sync::PublisherPromoStatsJob:
     cron: "15 3 * * *"
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
     queue: scheduler
-  SyncAdminPromoStatsJob:
+  Sync::ChannelPromoRegistrationsStatsJob:
+    cron: "15 3 * * *"
+    description: "Sync stats for channel owned referral codes with the promo server once a day."
+    queue: scheduler
+  Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
     queue: low
-  SyncChannelStatsJob:
+  Sync::ChannelStatsJob:
     cron: "0 1 * * *"
     description: "Syncs the channel stats via youtube and twitch apis"
     queue: low
