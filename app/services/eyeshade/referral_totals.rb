@@ -13,9 +13,9 @@ class Eyeshade::ReferralTotals < Eyeshade::BaseApiClient
   def perform_offline
     [
       {
-        "channel"=>"youtube#channel:UC0jeQ0Y8y6n-FWZNDIRO2Ug",
+        "channel"=>"youtube#channel:dadsgdfssfdsa",
         "earnings"=>"40.000000000000000000",
-        "account_id"=>"publishers#uuid:a064ed75-b185-4841-aefb-7a0ed61731b2"
+        "account_id"=>"publishers#uuid:5913990b-b988-5964-a6c4-3d197a59920f"
       }
     ]
   end
