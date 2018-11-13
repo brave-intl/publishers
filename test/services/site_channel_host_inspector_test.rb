@@ -31,16 +31,17 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     assert_nil result[:web_host]
   end
 
-#   test "sets https_error when there is an OpenSSL::SSL::SSLError exception" do
-#     stub_request(:get, "https://badsll.mystandardsite.com").
-#         to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
+  test "sets https_error when there is an OpenSSL::SSL::SSLError exception" do
+    stub_request(:get, "https://badsll.mystandardsite.com").
+        to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
 
-#     result = SiteChannelHostInspector.new(brave_publisher_id: "mystandardsite.com").perform
-#     assert result[:host_connection_verified]
-#     assert result[:https]
-#     assert_equal result[:https_error]  = 'SSL_connect returned=1 errno=0 state=error: certificate verify failed'
-#     assert_nil result[:web_host]
-#   end
+    result = SiteChannelHostInspector.new(brave_publisher_id: "badsll.mystandardsite.com").perform
+
+    refute result[:host_connection_verified]
+    refute result[:https]
+    assert_equal result[:https_error], 'SSL_connect returned=1 errno=0 state=error: certificate verify failed'
+    assert_nil result[:web_host]
+  end
 
   test "returns a nil web_host if site does not support a known method" do
     stub_request(:get, "https://mystandardsite.com").
