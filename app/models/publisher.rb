@@ -6,8 +6,9 @@ class Publisher < ApplicationRecord
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   PROMO_STATS_UPDATE_DELAY = 10.minutes
   ADMIN = "admin"
+  PARTNER = "partner"
   PUBLISHER = "publisher"
-  ROLES = [ADMIN, PUBLISHER]
+  ROLES = [ADMIN, PARTNER, PUBLISHER]
   JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
   OWNER_PREFIX = "publishers#uuid:"
@@ -71,6 +72,7 @@ class Publisher < ApplicationRecord
 
   scope :email_verified, -> { where.not(email: nil) }
   scope :not_admin, -> { where.not(role: ADMIN) }
+  scope :not_partner, -> { where.not(role: PARTNER) }
   scope :suspended, -> {
     joins(:status_updates)
     .where('publisher_status_updates.created_at =
@@ -242,6 +244,10 @@ class Publisher < ApplicationRecord
 
   def admin?
     role == ADMIN
+  end
+
+  def partner?
+    role == PARTNER
   end
 
   def publisher?

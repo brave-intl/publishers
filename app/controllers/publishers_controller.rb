@@ -204,7 +204,7 @@ class PublishersController < ApplicationController
   end
 
   def protect
-    return redirect_to admin_publishers_path unless current_publisher.publisher?
+    return redirect_to admin_publishers_path unless current_publisher.publisher? || current_publisher.partner?
   end
 
   # Records default currency preference
