@@ -16,7 +16,7 @@ class SiteBanner < ApplicationRecord
   BACKGROUND_UNIVERSAL_FILE_SIZE = 120_000 # In bytes
 
   NUMBER_OF_DONATION_AMOUNTS = 3
-  MAX_DONATION_AMOUNT = 999
+  MAX_DONATION_AMOUNT = 20
 
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
   validate :donation_amounts_in_scope
