@@ -7,7 +7,7 @@ class PublisherTransactionsGetter < BaseApiClient
   OFFLINE_NUMBER_OF_SETTLEMENTS = 4
 
   def initialize(publisher:)
-    @publisher = publisher 
+    @publisher = publisher
   end
 
   def perform
@@ -17,7 +17,7 @@ class PublisherTransactionsGetter < BaseApiClient
       request.headers["Authorization"] = api_authorization_header
       request.url("v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions")
     end
-    
+
     JSON.parse(response.body)
     # Example eyeshade response
     # [
@@ -50,9 +50,9 @@ class PublisherTransactionsGetter < BaseApiClient
   def perform_offline
     transactions = []
     i = 0
-    OFFLINE_NUMBER_OF_SETTLEMENTS.times do 
+    OFFLINE_NUMBER_OF_SETTLEMENTS.times do
       publisher.channels.verified.each do |channel|
-        base_date = i.month.ago.at_beginning_of_month.utc + 6.days
+        base_date = i.month.ago.at_beginning_of_month + 6.days
         contribution_amount = "294.617182149806375904"
         contribution_fees_amount = "-14.730859107490318795"
         contribution_settlement_amount = "-279.886323042316057109"
@@ -138,7 +138,7 @@ class PublisherTransactionsGetter < BaseApiClient
       }
     }.map { |settlement_for_month|
       settlement_for_month["date"] = settlement_for_month["date"].strftime("%d/%m")
-      settlement_for_month 
+      settlement_for_month
     }
     # Example return value
     #  {
