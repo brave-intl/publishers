@@ -12,7 +12,7 @@ module Publishers
 
       if uri.scheme == "https"
         http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
+        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
         store = OpenSSL::X509::Store.new
         store.set_default_paths
         http.cert_store = store

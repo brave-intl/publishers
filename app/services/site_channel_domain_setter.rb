@@ -7,7 +7,7 @@ class SiteChannelDomainSetter < BaseService
 
   def perform
     normalize_domain if channel_details.brave_publisher_id_unnormalized
-    inspect_host #unless channel_details.brave_publisher_id_error_code
+    inspect_host unless channel_details.brave_publisher_id_error_code
   end
 
   private
@@ -76,6 +76,7 @@ class SiteChannelDomainSetter < BaseService
       channel_details.supports_https = false
       channel_details.detected_web_host = nil
       channel_details.host_connection_verified = false
+      channel_details.https_error = result[:https_error]
     end
   end
 

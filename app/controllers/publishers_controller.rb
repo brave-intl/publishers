@@ -65,6 +65,7 @@ class PublishersController < ApplicationController
 
     @should_throttle = should_throttle_create?
     throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
+    throttle_legit = true
     if !throttle_legit
       return redirect_to root_path(captcha: params[:captcha]), alert: t(".access_throttled")
     end

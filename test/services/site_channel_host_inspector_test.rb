@@ -31,6 +31,17 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     assert_nil result[:web_host]
   end
 
+  test "sets https_error when there is an OpenSSL::SSL::SSLError exception" do
+    stub_request(:get, "https://badsll.mystandardsite.com").
+        to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
+
+    result = SiteChannelHostInspector.new(brave_publisher_id: "mystandardsite.com").perform
+    assert result[:host_connection_verified]
+    assert result[:https]
+    assert_equal result[:https_error]  = 'SSL_connect returned=1 errno=0 state=error: certificate verify failed'
+    assert_nil result[:web_host]
+  end
+
   test "returns a nil web_host if site does not support a known method" do
     stub_request(:get, "https://mystandardsite.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite hosted with apache</h1></body></html>", headers: {})
@@ -151,7 +162,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
 
   test "follows all redirects if follow_all_redirects is enabled" do
     stub_request(:get, "https://mywordpress.com").
-        to_return(status: 301, headers: { location: "https://mywordpress2.com/index.html"})
+       to_return(status: 301, headers: { location: "https://mywordpress2.com/index.html"})
 
     stub_request(:get, "https://mywordpress2.com/index.html").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
