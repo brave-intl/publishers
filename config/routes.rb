@@ -136,6 +136,7 @@ Rails.application.routes.draw do
     end
     namespace :stats do
       resources :contributions, only: [:index]
+      resources :referrals, only: [:index]
     end
     resources :unattached_promo_registrations, only: %i(index create) do
       collection do
