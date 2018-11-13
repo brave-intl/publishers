@@ -213,7 +213,7 @@ en:
       title: Channel transfer approved
       intro: |
         Your channel, %{channel_name} has been transferred to another publisher.  Please
-        reply to this email is you dissaprove of the transfer as soon as possible.
+        reply as soon as possible if you did not intend for this transfer.
     channel_transfer_approved_secondary:
       subject: "Your request to transfer the channel has been approved"
       title: Channel transfer approved
@@ -490,15 +490,14 @@ en:
   promo:
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
     activate:
-      title: "Free Tokens"
+      header: "Refer Your Fans"
       limited_time_offer: "Limited Time Offer"
-      limited_time_promo: "Limited Time Promo"
-      free_tokens: "Free Tokens"
-      for_referring_your_fans: "for Referring Your Fans!"
+      sub_header_one: "Referral Promo"
+      sub_header_two: "and Earn Tokens"      
       description: "Bring your fans to the Brave browser and grow your revenue!"
       referral_reward: "1 referral = about 5 USD in tokens"
       button: "Activate Promo"
-      button-dashboard: "Learn More"
+      button-dashboard: "Get Started"
     activated:
       title: "Congrats!"
       subtitle: "Your promo is activated."

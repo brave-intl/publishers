@@ -12,11 +12,11 @@ class SiteBanner < ApplicationRecord
   LOGO_UNIVERSAL_FILE_SIZE = 40_000 # In bytes
 
   BACKGROUND = "background".freeze
-  BACKGROUND_DIMENSIONS = [900,176]
-  BACKGROUND_UNIVERSAL_FILE_SIZE = 70_000 # In bytes
+  BACKGROUND_DIMENSIONS = [2700,528]
+  BACKGROUND_UNIVERSAL_FILE_SIZE = 120_000 # In bytes
 
   NUMBER_OF_DONATION_AMOUNTS = 3
-  MAX_DONATION_AMOUNT = 20
+  MAX_DONATION_AMOUNT = 999
 
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
   validate :donation_amounts_in_scope

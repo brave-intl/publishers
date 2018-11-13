@@ -30,7 +30,7 @@ class Publishers::SiteBannersController < ApplicationController
       data[:logoImage] = data[:logoUrl]
       render(json: data.to_json)
     else
-      render(json: {}.to_json)
+      render(json: nil.to_json)
     end
   end
 
@@ -91,7 +91,7 @@ class Publishers::SiteBannersController < ApplicationController
         attachment_type: attachment_type
       )
     rescue OutsidePaddingRangeError => e
-      logger.error "Outside padding range #{e.msg}"
+      logger.error "Outside padding range #{e.message}"
       LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: {publisher_id: current_publisher.id})
     end
 
