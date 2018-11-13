@@ -55,9 +55,6 @@ gem "meta-tags"
 # Image conversion library
 gem 'mini_magick'
 
-# Ruby/OpenSSL
-gem 'openssl'
-
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
 

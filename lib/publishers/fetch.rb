@@ -14,8 +14,7 @@ module Publishers
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_PEER | OpenSSL::SSL::VERIFY_FAIL_IF_NO_PEER_CERT
         store = OpenSSL::X509::Store.new
-        store.add_file('/Users/cory/repos/publishers/cacert.pem')
-        # store.set_default_paths
+        store.set_default_paths
         http.cert_store = store
       end
 

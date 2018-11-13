@@ -503,7 +503,7 @@ DEPENDENCIES
   omniauth-google-oauth2 (~> 0.5.2)
   omniauth-twitch
   omniauth-twitter
-  openssl
+  openssl (~> 2.1)
   paper_trail (~> 9.2.0)
   pg (~> 0.18)
   phony_rails (~> 0.14)
