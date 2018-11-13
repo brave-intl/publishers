@@ -1,4 +1,4 @@
-require 'net/https'
+require 'net/http'
 
 module Publishers
   module Fetch
@@ -6,7 +6,7 @@ module Publishers
     class ConnectionFailedError < StandardError; end
 
     # Based on Net::HTTP::get_response
-    def get_response(uri, &block)
+    def get_response(uri)
       http = Net::HTTP.new(uri.hostname, uri.port)
       http.open_timeout = 8
 
