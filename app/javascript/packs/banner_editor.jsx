@@ -41,12 +41,12 @@ export default class BannerEditor extends React.Component {
       youtube: '',
       twitter: '',
       twitch: '',
-      tipActive: [false, false, false],
       donationAmounts: [1, 5, 10],
       conversionRate: this.props.conversionRate,
       mode: 'Edit',
       view: 'editor-view',
       width: '1320',
+      file: null,
       state: 'editor'
     }
      this.updateTitle = this.updateTitle.bind(this);
@@ -543,55 +543,25 @@ export default class BannerEditor extends React.Component {
               <Text donations>Set tipping amounts</Text>
               <DonationWrapper>
                 <Button donation>
-                  {
-                    this.state.tipActive[0] === false ?
-                    <div onClick={(e) => {this.setState({tipActive: [true, false, false]}, () => {document.getElementById('tip0').focus()})}}>
-                      <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
-                      <Text donationAmount>{this.state.donationAmounts[0]}</Text>
-                      <Text BAT>BAT</Text>
-                    </div>
-                    :
-                    <div>
-                      <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
-                      <TextInput id="tip0" tip value={this.state.donationAmounts[0]} onBlur={(e) => {this.setState({tipActive: [false, false, false]})}} onChange={(e) => this.updateDonationAmounts(e, 0)} type='text' maxLength={3}/>
-                    </div>
-                  }
+                  <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
+                  <Text donationAmount>{this.state.donationAmounts[0]}</Text>
+                  <Text BAT>BAT</Text>
                 </Button>
                   <Text convertedAmount>{(this.state.donationAmounts[0] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</Text>
               </DonationWrapper>
               <DonationWrapper>
                 <Button donation>
-                  {
-                    this.state.tipActive[1] === false ?
-                    <div onClick={(e) => {this.setState({tipActive: [false, true, false]}, () => {document.getElementById('tip1').focus()})}}>
-                      <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
-                      <Text donationAmount>{this.state.donationAmounts[1]}</Text>
-                      <Text BAT>BAT</Text>
-                    </div>
-                    :
-                    <div>
-                      <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
-                      <TextInput id="tip1" tip value={this.state.donationAmounts[1]} onBlur={(e) => {this.setState({tipActive: [false, false, false]})}} onChange={(e) => this.updateDonationAmounts(e, 1)} type='text' maxLength={3}/>
-                    </div>
-                  }
+                  <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
+                  <Text donationAmount>{this.state.donationAmounts[1]}</Text>
+                  <Text BAT>BAT</Text>
                 </Button>
                   <Text convertedAmount>{(this.state.donationAmounts[1] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</Text>
               </DonationWrapper>
               <DonationWrapper>
                 <Button donation>
-                  {
-                    this.state.tipActive[2] === false ?
-                    <div onClick={(e) => {this.setState({tipActive: [false, false, true]}, () => {document.getElementById('tip2').focus()})}}>
-                      <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
-                      <Text donationAmount>{this.state.donationAmounts[2]}</Text>
-                      <Text BAT>BAT</Text>
-                    </div>
-                    :
-                    <div>
-                      <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
-                      <TextInput id="tip2" tip value={this.state.donationAmounts[2]} onBlur={(e) => {this.setState({tipActive: [false, false, false]})}} onChange={(e) => this.updateDonationAmounts(e, 2)} type='text' maxLength={3}/>
-                    </div>
-                  }
+                  <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
+                  <Text donationAmount>{this.state.donationAmounts[2]}</Text>
+                  <Text BAT>BAT</Text>
                 </Button>
                   <Text convertedAmount>{(this.state.donationAmounts[2] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</Text>
               </DonationWrapper>
