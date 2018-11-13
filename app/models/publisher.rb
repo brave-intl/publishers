@@ -71,7 +71,9 @@ class Publisher < ApplicationRecord
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
   scope :email_verified, -> { where.not(email: nil) }
+  scope :admin, -> { where(role: ADMIN) }
   scope :not_admin, -> { where.not(role: ADMIN) }
+  scope :partner, -> { where(role: PARTNER) }
   scope :not_partner, -> { where.not(role: PARTNER) }
   scope :suspended, -> {
     joins(:status_updates)
