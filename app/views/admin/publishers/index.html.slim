@@ -3,6 +3,7 @@ div.row
     section.panel
       header.panel-heading
         h4 Publishers
+        = link_to "Add a Partner", new_admin_partner_path
       = form_tag(admin_publishers_path, method: "get")
         = text_field_tag(:q)
         = submit_tag("Search")

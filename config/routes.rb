@@ -134,6 +134,9 @@ Rails.application.routes.draw do
       end
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
+
+    resource :partner, only: [:new, :create]
+
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]

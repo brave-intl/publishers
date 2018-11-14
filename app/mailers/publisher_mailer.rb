@@ -161,7 +161,7 @@ class PublisherMailer < ApplicationMailer
     @channel_name = @channel.publication_title
     @publisher_name = @channel.publisher.name
     @email = @channel.publisher.email
-    
+
     @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
 
     mail(

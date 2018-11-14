@@ -1,0 +1,6 @@
+h1 Invite a new Partner
+
+= form_with model: @partner, url: admin_partner_path do |f|
+  .form-group
+    = f.email_field :email, autofocus: true, class: "form-control", placeholder: "Enter Partner email", required: true
+  = submit_tag "Invite Partner", class: "btn btn-block btn-primary"
