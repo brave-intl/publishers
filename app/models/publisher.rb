@@ -5,9 +5,9 @@ class Publisher < ApplicationRecord
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   PROMO_STATS_UPDATE_DELAY = 10.minutes
-  ADMIN = "admin"
-  PARTNER = "partner"
-  PUBLISHER = "publisher"
+  ADMIN = "admin".freeze
+  PARTNER = "partner".freeze
+  PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
   JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
@@ -42,7 +42,7 @@ class Publisher < ApplicationRecord
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
   validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
-  validates :email, uniqueness: {case_sensitive: false}, allow_nil: true
+  validates :email, uniqueness: {case_sensitive: false}, allow_nil: true }
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
   validate :pending_email_must_be_a_change
   validate :pending_email_can_not_be_in_use

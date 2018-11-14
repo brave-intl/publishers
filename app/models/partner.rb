@@ -1,6 +1,7 @@
 class Partner < Publisher
   default_scope { where(role: PARTNER) }
   validates :created_by, presence: true
+  has_one :membership, dependent: :destroy, foreign_key: :user_id
 
   after_initialize :ensure_role
 

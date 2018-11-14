@@ -1,0 +1,7 @@
+default_partner:
+  email: "bob@builder.org"
+  name: "Bob the builder"
+
+small_partner:
+  email: "charlie@builder.org"
+  name: "Charlie the builder"

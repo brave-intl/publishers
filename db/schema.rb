@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 2018_11_28_143110) do
     t.datetime "updated_at", null: false
     t.string "verification_status"
     t.string "verification_details"
+    t.boolean "shown_verification_failed_modal", default: false
+    t.boolean "manual_verification_running", default: false
     t.datetime "verified_at"
     t.boolean "verification_pending", default: false, null: false
     t.uuid "contested_by_channel_id"
@@ -180,6 +182,21 @@ ActiveRecord::Schema.define(version: 2018_11_28_143110) do
     t.index ["publisher_id"], name: "index_login_activities_on_publisher_id"
   end
 
+  create_table "memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_memberships_on_organization_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "organizations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
@@ -193,10 +210,9 @@ ActiveRecord::Schema.define(version: 2018_11_28_143110) do
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
+    t.text "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_promo_campaigns_on_name", unique: true
   end
 
   create_table "promo_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -205,7 +221,7 @@ ActiveRecord::Schema.define(version: 2018_11_28_143110) do
     t.string "referral_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "kind"
+    t.text "kind", null: false
     t.jsonb "stats", default: "{}"
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
