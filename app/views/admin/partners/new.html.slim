@@ -1,3 +1,8 @@
+-if @partner.errors.any?
+  - @partner.errors[:base].each do |msg|
+    .notifications
+        .alert.alert-warning.flash= msg
+
 h1 Invite a new Partner
 
 = form_with model: @partner, url: admin_partner_path do |f|

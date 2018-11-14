@@ -1,4 +1,4 @@
-class Admin::PartnersController < Admin::AdminController
+class Admin::PartnersController < AdminController
   def new
     @partner = Partner.new
   end
@@ -10,8 +10,10 @@ class Admin::PartnersController < Admin::AdminController
     if @partner.valid?
       # send the email
       # tell the user they sent the email
-
-      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
+      MailerServices::PartnerLoginLinkEmailer.new(partner: @partner).perform
+      redirect_to admin_publisher_path(@partner.id), flash: { notice: 'Email sent' }
+    else
+      render 'new'
     end
     # it's invalid when the email is blank or already taken by a partner
 
@@ -28,12 +30,6 @@ class Admin::PartnersController < Admin::AdminController
     # else
     #   tell user it failed
     # end
-
-
-
-
-
-
   end
 
   def partner_params

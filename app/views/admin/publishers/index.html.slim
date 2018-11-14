@@ -1,9 +1,9 @@
 div.row
   div.col-sm-12
     section.panel
-      header.panel-heading
+      header.panel-heading.publisher-container
         h4 Publishers
-        = link_to "Add a Partner", new_admin_partner_path
+        = link_to "Add a Partner", new_admin_partner_path, class: "btn btn-primary btn-partner"
       = form_tag(admin_publishers_path, method: "get")
         = text_field_tag(:q)
         = submit_tag("Search")

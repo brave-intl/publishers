@@ -10,11 +10,11 @@ class Partner < Publisher
   end
 
   def not_a_partner
-    publisher = Publisher.by_email_case_insensitive(@partner.email).first
+    publisher = Publisher.by_email_case_insensitive(email).first
     return if publisher.nil?
 
     if publisher.partner?
-      return errors.add(:email, 'is already a partner')
+      return errors.add(:base, 'Email is already a partner')
     end
   end
 end

@@ -5,7 +5,7 @@ module MailerServices
     attr_reader :partner
 
     def initialize(partner:)
-      @Partner = partner
+      @partner = partner
     end
 
     # Returns true if everything worked;
@@ -15,10 +15,10 @@ module MailerServices
     end
 
     def send_email
-      return false if !Partner
+      return false if !partner
       # Updates the authentication_token and saves the Partner
       token = PartnerTokenGenerator.new(partner: partner).perform
-      PartnerMailer.login_email(partner).deliver_later
+      PublisherMailer.login_email(partner).deliver_later
     end
   end
 end

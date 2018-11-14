@@ -1,11 +1,5 @@
 #publisher
   #publisher-section
-    - if flash[:notice]
-      .alert.alert-success role="alert"
-        = flash[:notice]
-    - if flash[:alert]
-      .alert.alert-danger role="alert"
-        = flash[:alert]
     h2 = @publisher.name
     .rounded-box.split-row-container
       .split-row
