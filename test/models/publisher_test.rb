@@ -596,4 +596,24 @@ class PublisherTest < ActiveSupport::TestCase
     publisher = Publisher.first
     assert_equal Publisher.find_by_owner_identifier(publisher.owner_identifier), publisher
   end
+
+  test "admin and not_admin scope return collections with only admins and non-admins respectively" do
+    admin = publishers(:admin)
+    not_admin = publishers(:default)
+
+    assert_includes(Publisher.admin, admin)
+    assert_not_includes(Publisher.admin, not_admin)
+    assert_includes(Publisher.not_admin, not_admin)
+    assert_not_includes(Publisher.not_admin, admin)
+  end
+
+  test "partner and not_partner scope return collections with only partners and non-partners respectively" do
+    partner = publishers(:partner)
+    not_partner = publishers(:default)
+
+    assert_includes(Publisher.partner, partner)
+    assert_not_includes(Publisher.partner, not_partner)
+    assert_includes(Publisher.not_partner, not_partner)
+    assert_not_includes(Publisher.not_partner, partner)
+  end
 end
