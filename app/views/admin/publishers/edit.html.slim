@@ -10,7 +10,7 @@
     = form_for(@publisher, url: admin_publisher_path, method: :patch) do |f|
       .form_group
         = f.label :role
-        = select_tag(:role, options_for_select([['Partner', 'partner'], ['Publisher', 'publisher']]))
+        = select_tag 'publisher[role]', options_for_select(['publisher', 'partner'], @publisher.role), class: 'form-control form-group'
       .form-group
         label
           = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
