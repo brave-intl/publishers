@@ -3,6 +3,14 @@ require "test_helper"
 class SiteChannelVerificationTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
 
+  before do
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+  end
+
+  after do
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+  end
+
   test "Cancel and Choose Different Verification Method buttons only appear in appropriate places" do
     publisher = publishers(:default)
     sign_in publisher
@@ -32,7 +40,10 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
   end
 
   test "When bad ssl happens" do
+    # Have to set this to true even though we're stubbing out the request in order to get to the Fetch method
     Rails.application.secrets[:host_inspector_offline] = false
+    stub_request(:get, "https://self-signed.badssl.com").
+      to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
 
     publisher = publishers(:default)
     sign_in publisher
@@ -53,8 +64,6 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     refute_content "Cancel"
 
     assert_content "The following error was encountered: SSL_connect returned=1 errno=0 state=error: certificate verify failed"
-
-    Rails.application.secrets[:host_inspector_offline] = true
   end
 
   test "verification_failed modal appears after failed verification attempt for all methods" do
