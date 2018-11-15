@@ -15,9 +15,9 @@ module MailerServices
     end
 
     def send_email
-      return false if !partner
+      return false unless partner
       # Updates the authentication_token and saves the Partner
-      token = PublisherTokenGenerator.new(publisher: partner).perform
+      PublisherTokenGenerator.new(publisher: partner).perform
       PublisherMailer.login_partner_email(partner).deliver_later
     end
   end

@@ -36,7 +36,7 @@ class Admin::PublishersController < AdminController
 
     @publisher.update(role: Publisher::PARTNER)
     MailerServices::PartnerLoginLinkEmailer.new(partner: @publisher).perform
-    flash[:notice] = 'Successfully made partner'
+    flash[:notice] = "Successfully made partner"
     redirect_to admin_publisher_path(@publisher)
   end
 

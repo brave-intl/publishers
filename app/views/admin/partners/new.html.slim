@@ -1,11 +1,15 @@
--if @partner.errors.any?
+- if @partner.errors.any?
   - @partner.errors[:base].each do |msg|
     .notifications
-        .alert.alert-warning.flash= msg
+        .alert.alert-warning.flash = msg
 
 h1 Create a new Partner
 
 = form_with url: admin_partner_path, method: :post do |f|
   .form-group
-    = f.email_field :email, autofocus: true, class: "form-control", placeholder: "Enter Partner email", required: true
+    = f.email_field :email,
+        autofocus: true,
+        class: "form-control",
+        placeholder: "Enter Partner email",
+        required: true
   = submit_tag "Create Partner", class: "btn btn-block btn-primary"
