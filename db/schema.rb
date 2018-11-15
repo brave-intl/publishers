@@ -388,6 +388,5 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
   end
 
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
-  add_foreign_key "promo_registrations", "publishers"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
 end
