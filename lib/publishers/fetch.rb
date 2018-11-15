@@ -6,12 +6,19 @@ module Publishers
     class ConnectionFailedError < StandardError; end
 
     # Based on Net::HTTP::get_response
-    def get_response(uri, &block)
-      Net::HTTP.start(uri.hostname, uri.port,
-                      use_ssl: uri.scheme == "https",
-                      open_timeout: 8) do |http|
-        return http.request_get(uri, &block)
+    def get_response(uri)
+      http = Net::HTTP.new(uri.hostname, uri.port)
+      http.open_timeout = 8
+
+      if uri.scheme == "https"
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        store = OpenSSL::X509::Store.new
+        store.set_default_paths
+        http.cert_store = store
       end
+
+      http.request(Net::HTTP::Get.new(uri.request_uri))
     end
 
     # Fetch URI, following redirects per options
@@ -45,9 +52,10 @@ module Publishers
           else
             response.value
         end
-
+      rescue OpenSSL::SSL::SSLError, RedirectError, Errno::ECONNREFUSED, Net::OpenTimeout
+        raise
       rescue => e
-        raise ConnectionFailedError.new(e)
+        raise ConnectionFailedError.new(e.to_s)
       end
     end
   end

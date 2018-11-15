@@ -50,7 +50,7 @@ class SiteChannelDomainSetter < BaseService
 
   def normalize_from_ruleset(unnormalized_domain)
     # (Albert Wang) Store exceptions here e.g. keybase.pub
-    if PublicSuffix.domain(unnormalized_domain) == "keybase.pub"
+    if ["keybase.pub", "badssl.com"].include? PublicSuffix.domain(unnormalized_domain)
       Addressable::URI.parse("http://#{unnormalized_domain}").normalize.host
     else
       PublicSuffix.domain(unnormalized_domain)
@@ -76,6 +76,7 @@ class SiteChannelDomainSetter < BaseService
       channel_details.supports_https = false
       channel_details.detected_web_host = nil
       channel_details.host_connection_verified = false
+      channel_details.https_error = result[:https_error]
     end
   end
 
