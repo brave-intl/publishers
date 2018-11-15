@@ -4,21 +4,15 @@ Documentation:
   Enabled: false
 AllCops:
   Include:
-    - app/**/*
-    - test/**/*
     - config.ru
     - Gemfile
     - Rakefile
   Exclude:
     - bin/**/*
     - db/**/*
-Metrics/MethodLength:
-  Max: 15
 LineLength:
   Max: 120
 StringLiterals:
   EnforcedStyle: double_quotes
 Style/NegatedIf:
-  Enabled: false
-Style/FrozenStringLiteralComment:
   Enabled: false
