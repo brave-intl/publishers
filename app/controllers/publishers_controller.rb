@@ -204,7 +204,7 @@ class PublishersController < ApplicationController
   end
 
   def protect
-    return redirect_to admin_publishers_path unless current_publisher.publisher?
+    return redirect_to admin_publishers_path unless current_publisher.publisher? || current_publisher.partner?
   end
 
   # Records default currency preference
@@ -365,7 +365,7 @@ class PublishersController < ApplicationController
   # Domain verified. See balance and submit payment info.
   def home
     if current_publisher.promo_stats_status == :update
-      SyncPublisherPromoStatsJob.perform_later(publisher_id: current_publisher.id)
+      Sync::PublisherPromoStatsJob.perform_later(publisher_id: current_publisher.id)
     end
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?

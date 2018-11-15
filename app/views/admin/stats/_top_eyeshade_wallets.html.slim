@@ -1,0 +1,25 @@
+div.panel-body
+  div.adv-table
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th Channel
+        th Channel Stats
+        th Earnings
+        th Publisher
+        th Name
+        th Email
+      tbody
+        - @result.each do |entry|
+          - publisher_id = entry['account_id'].split(":")[1]
+          - publisher = @publishers.find { |publisher| publisher.id == publisher_id }
+          - channel_detail = @youtube_channel_details.find { |youtube_channel_detail| youtube_channel_detail.youtube_channel_id == entry['channel'].remove(YoutubeChannelDetails::YOUTUBE_PREFIX) }
+          tr.gradeX
+            - if entry['channel'].starts_with?(YoutubeChannelDetails::YOUTUBE_PREFIX)
+              td = link_to channel_detail&.title, "https://youtube.com/channel/" + entry['channel'].remove(YoutubeChannelDetails::YOUTUBE_PREFIX)
+            - else
+              td = entry['channel']
+            td = channel_detail&.stats
+            td = entry['earnings']
+            td = link_to publisher_id, admin_publisher_path(publisher_id)
+            td = publisher&.name
+            td = publisher&.email
