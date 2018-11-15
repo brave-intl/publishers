@@ -3,9 +3,9 @@
     .notifications
         .alert.alert-warning.flash= msg
 
-h1 Invite a new Partner
+h1 Create a new Partner
 
 = form_with url: admin_partner_path, method: :post do |f|
   .form-group
     = f.email_field :email, autofocus: true, class: "form-control", placeholder: "Enter Partner email", required: true
-  = submit_tag "Invite Partner", class: "btn btn-block btn-primary"
+  = submit_tag "Create Partner", class: "btn btn-block btn-primary"

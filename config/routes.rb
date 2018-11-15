@@ -132,6 +132,7 @@ Rails.application.routes.draw do
         get :statement
         post :create_note
       end
+      post :make_partner
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 

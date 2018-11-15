@@ -28,10 +28,15 @@ class Admin::PublishersController < AdminController
   def update
     @publisher.update(update_params)
 
-    if @publisher.saved_change_to_role? && @publisher.partner?
-      MailerServices::PartnerLoginLinkEmailer.new(partner: @publisher).perform
-    end
+    redirect_to admin_publisher_path(@publisher)
+  end
 
+  def make_partner
+    return unless @publisher.publisher?
+
+    @publisher.update(role: Publisher::PARTNER)
+    MailerServices::PartnerLoginLinkEmailer.new(partner: @publisher).perform
+    flash[:notice] = 'Successfully made partner'
     redirect_to admin_publisher_path(@publisher)
   end
 
@@ -85,7 +90,7 @@ class Admin::PublishersController < AdminController
 
   def update_params
     params.require(:publisher).permit(
-      :excluded_from_payout, :role
+      :excluded_from_payout
     )
   end
 

@@ -41,6 +41,11 @@
           = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
   hr
     = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
+    = link_to("Make partner",
+          admin_publisher_make_partner_path(@publisher),
+          method: :post,
+          class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
+    = csrf_meta_tag
   hr
 
   h3.admin-header = "Channels (#{@publisher.channels.count})"
