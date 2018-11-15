@@ -1,4 +1,4 @@
-require 'publishers/fetch'
+require "publishers/fetch"
 
 # Inspect a brave_publisher_id's host for web_host and HTTPS support
 class SiteChannelHostInspector < BaseService
@@ -18,8 +18,8 @@ class SiteChannelHostInspector < BaseService
     @require_https = require_https
   end
 
-  # ToDo: github pages can be hosted at custom domains. We should detect them, if possible.
-  # ToDo: perform better https test than just raising when the connection is refused?
+  # TODO: github pages can be hosted at custom domains. We should detect them, if possible.
+  # TODO: perform better https test than just raising when the connection is refused?
   def inspect_uri(uri)
     response = fetch(uri: uri,
                      follow_all_redirects: follow_all_redirects,
@@ -30,13 +30,11 @@ class SiteChannelHostInspector < BaseService
                    "github"
                  elsif response.body.include?("/wp-content/")
                    "wordpress"
-                 else
-                   nil
                  end
     end
 
     { response: response, web_host: web_host }
-  rescue Publishers::Fetch::RedirectError, Publishers::Fetch::ConnectionFailedError => e
+  rescue => e
     Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
     { response: e }
   end
@@ -47,23 +45,23 @@ class SiteChannelHostInspector < BaseService
     # test HTTPS first
     https_result = inspect_uri(URI("https://#{brave_publisher_id}"))
     if success_response?(https_result)
-      return response_result(https_result, true)
+      return response_result(inspect_result: https_result, https: true)
     end
 
     # test HTTPS for www subdomain next
     https_www_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
     if success_response?(https_www_result)
-      return response_result(https_www_result, true)
+      return response_result(inspect_result: https_www_result, https: true)
     elsif require_https
-      return failure_result(https_www_result)
+      return failure_result(https_result[:response])
     end
 
     # test HTTP last
     http_result = inspect_uri(URI("http://#{brave_publisher_id}"))
     if success_response?(http_result)
-      return response_result(http_result, false)
+      return response_result(inspect_result: http_result, https: false, https_error: https_result[:response])
     else
-      return failure_result(http_result)
+      return failure_result(https_result[:response])
     end
   end
 
@@ -73,19 +71,36 @@ class SiteChannelHostInspector < BaseService
     inspect_result[:response].is_a?(Net::HTTPSuccess)
   end
 
-  def response_result(inspect_result, https)
+  def response_result(inspect_result:, https:, https_error: nil)
     result = { host_connection_verified: true, https: https }
+    result[:https_error] = https_error_message(https_error)
     result[:web_host] = inspect_result[:web_host] if check_web_host
     result
   end
 
-  def failure_result(inspect_result)
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{inspect_result[:response]}")
-    { response: inspect_result[:response], host_connection_verified: false, https: false }
+  def failure_result(error_response)
+    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{error_response}")
+    result = { response: error_response, host_connection_verified: false, https: false }
+    result[:https_error] = https_error_message(error_response)
+    result
+  end
+
+  def https_error_message(error_response)
+    case error_response
+    when OpenSSL::SSL::SSLError
+      error_response.to_s
+    when RedirectError
+      nil
+    when Errno::ECONNREFUSED
+      nil
+    when Net::OpenTimeout
+      nil
+    end
+    # Any other errors will simply be nil 404 etc
   end
 
   def true?(obj)
-    ["true", "1"].include? obj.to_s
+    %w[true 1].include? obj.to_s
   end
 
   def perform_offline
@@ -94,6 +109,6 @@ class SiteChannelHostInspector < BaseService
     result[:host_connection_verified] = ENV["HOST_INSPECTOR_OFFLINE_VERIFIED"] ? true?(ENV["HOST_INSPECTOR_OFFLINE_VERIFIED"]) : true
     result[:https] = ENV["HOST_INSPECTOR_OFFLINE_HTTPS"] ? true?(ENV["HOST_INSPECTOR_OFFLINE_HTTPS"]) : true
     result[:web_host] = ENV["HOST_INSPECTOR_OFFLINE_WEB_HOST"]
-    return result
+    result
   end
 end

@@ -69,6 +69,11 @@ admin:
   role: "admin"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
+partner:
+  email: "partner@brave.com"
+  role: "partner"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+
 unprompted:
   email: "alice@unprompted.org"
   name: "Alice the Unprompted"
