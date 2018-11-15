@@ -56,6 +56,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
                   = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
             - elsif current_publisher.has_verified_channel?
+              - publisher_referral_totals = publisher_referral_totals(current_publisher)
               .promo-flex-col
                 .promo-flex-row.promo-flex-row-main
                   .promo-flex-col.promo-panel-title
@@ -67,12 +68,12 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     .promo-panel-header
                       =t("promo.dashboard.downloaded").upcase
                     .promo-panel-number
-                      = total_referral_downloads(current_publisher)
+                      = publisher_referral_totals[PromoRegistration::RETRIEVALS]
                   .promo-flex-col.promo-flex-col-confirmed
                     .promo-panel-header
                       =t("promo.dashboard.confirmed").upcase
                     .promo-panel-number
-                      = confirmed_referral_downloads(current_publisher)
+                      = publisher_referral_totals[PromoRegistration::FINALIZED]
                 .promo-flex-row.promo-flex-row-sub
                   =t("promo.dashboard.check_statement")
             - else
