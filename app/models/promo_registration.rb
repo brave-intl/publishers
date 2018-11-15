@@ -25,7 +25,7 @@ class PromoRegistration < ApplicationRecord
   belongs_to :publisher, dependent: :destroy
 
   validates :channel_id, presence: true, if: -> { kind == CHANNEL }
-  validates :publisher_id, presence: true, if: -> { kind != UNATTACHED }
+  validates :publisher_id, presence: true, unless: -> { kind == UNATTACHED }
   
   validates :promo_id, presence: true
   validates :kind, presence: true
