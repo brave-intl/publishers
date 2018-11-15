@@ -27,7 +27,12 @@ class Admin::PublishersController < AdminController
 
   def update
     @publisher.update(update_params)
-    redirect_to admin_publisher_path(current_publisher)
+
+    if @publisher.saved_change_to_role? && @publisher.partner?
+      MailerServices::PartnerLoginLinkEmailer.new(partner: @publisher).perform
+    end
+
+    redirect_to admin_publisher_path(@publisher)
   end
 
   def statement

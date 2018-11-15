@@ -245,6 +245,14 @@ en:
         Click the private access link below to log in to your account with
         <strong>Brave Payments</strong>. This link can only be used once.
       button: Log in to Brave Payments
+    login_partner_email:
+      salutation: Howdy %{name},
+      subject: You've been added as a partner on Brave Payments
+      body_html: |
+        You've been added as a partner on Brave Payments.
+        Click the private access link below to log in to your account with
+        <strong>Brave Payments</strong>. This link can only be used once.
+      button: Log in to Brave Payments
     notify_email_change:
       subject: Notification of Brave Publisher email change
       title: Notification of email change
@@ -493,7 +501,7 @@ en:
       header: "Refer Your Fans"
       limited_time_offer: "Limited Time Offer"
       sub_header_one: "Referral Promo"
-      sub_header_two: "and Earn Tokens"      
+      sub_header_two: "and Earn Tokens"
       description: "Bring your fans to the Brave browser and grow your revenue!"
       referral_reward: "1 referral = about 5 USD in tokens"
       button: "Activate Promo"
