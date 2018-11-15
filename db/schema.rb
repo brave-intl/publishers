@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_134245) do
+ActiveRecord::Schema.define(version: 2018_11_15_160802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -210,9 +210,11 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.jsonb "stats", default: "{}"
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
+    t.uuid "publisher_id"
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
+    t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
   end
 
   create_table "publisher_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -386,5 +388,6 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
   end
 
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
+  add_foreign_key "promo_registrations", "publishers"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
 end
