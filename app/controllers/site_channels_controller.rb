@@ -39,21 +39,17 @@ class SiteChannelsController < ApplicationController
   end
 
   def create
+    # Don't try to create the same channel if authorization fails the first time and the publisher tries re-adding the same channel
+    current_publisher.channels.each do |channel|
+      @current_channel = channel if channel.details.brave_publisher_id == channel_update_unverified_params[:brave_publisher_id_unnormalized]
+    end
+    redirect_to(channel_next_step_path(@current_channel), notice: t("shared.resuming_channel_verification")) and return if @current_channel
+
     @current_channel = Channel.new(publisher: current_publisher)
     @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params)
     SiteChannelDomainSetter.new(channel_details: @current_channel.details).perform
-
-    if @current_channel.save
-      redirect_to(channel_next_step_path(@current_channel), notice: t("shared.channel_created"))
-    else
-      if @current_channel.errors.details.has_key?(:brave_publisher_id)
-        flash[:warning] = t(".duplicate_channel", domain: @current_channel.details.brave_publisher_id)
-      end
-
-      @channel = @current_channel
-      flash.now[:warning_model_errors] = @channel.details
-      render :action => "new"
-    end
+    @current_channel.save
+    redirect_to(channel_next_step_path(@current_channel), notice: t("shared.channel_created"))
   end
 
   def update
@@ -102,6 +98,7 @@ class SiteChannelsController < ApplicationController
   end
 
   private
+
   def channel_update_unverified_params
     params.require(:channel).require(:details_attributes).permit(:brave_publisher_id_unnormalized)
   end
