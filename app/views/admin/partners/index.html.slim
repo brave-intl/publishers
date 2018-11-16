@@ -1,13 +1,15 @@
 div.row
   div.col-sm-12
     section.panel
-      header.panel-heading
-        h4 Publishers
-      = form_tag(admin_publishers_path, method: "get")
+      header.panel-heading.partner-container
+        h4 Partners
+        = link_to "Add a Partner", new_admin_partner_path, class: "btn btn-primary btn-partner"
+      = form_tag(admin_partners_path, method: "get")
         .input-group
             = text_field_tag(:q, params[:q], class:'form-control')
             .input-group-btn
                 = submit_tag("Search", class: 'btn btn-default')
+
         label
             = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
             = "Suspended"
@@ -19,12 +21,10 @@ div.row
               th ID
               th Name
               th Email
-              th Actions
             tbody
-              - @publishers.each do |publisher|
+              - @partners.each do |partner|
                 tr.gradeX
-                  td = link_to publisher.id, admin_publisher_path(publisher.id)
-                  td = publisher.name
-                  td = publisher.email
-                  td TODO
-          = will_paginate @publishers
+                  td = link_to partner.id, admin_publisher_path(partner.id)
+                  td = partner.name
+                  td = partner.email
+          = will_paginate @partners

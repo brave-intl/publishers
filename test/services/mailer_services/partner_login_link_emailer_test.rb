@@ -3,7 +3,7 @@ require "webmock/minitest"
 
 class PartnerLoginLinkEmailerTest < ActiveJob::TestCase
   test "sends one email and refreshes auth token" do
-    partner = publishers(:partner)
+    partner = publishers(:completed_partner)
 
     prev_auth_token = partner.authentication_token
     prev_auth_token_expires_at = partner.authentication_token_expires_at

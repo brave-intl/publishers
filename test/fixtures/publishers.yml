@@ -46,7 +46,7 @@ completed:
   visible: true
   default_currency_confirmed_at: "<%= DateTime.now %>"
 
-partner:
+completed_partner:
   email: "partner@completed.org"
   name: "Paul the Partner"
   phone: "4159001421"
@@ -58,11 +58,12 @@ partner:
     key: Publisher.encryption_key,
     iv: salt
   ) %>"
+  role: 'partner'
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  role: "partner"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   default_currency_confirmed_at: "<%= DateTime.now %>"
+
 
 admin:
   email: "hello@brave.com"

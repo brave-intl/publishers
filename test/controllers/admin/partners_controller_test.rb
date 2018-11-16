@@ -27,7 +27,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Make request
     assert_enqueued_emails(1) do
-      post admin_partner_path, params: { email: unverified_email }
+      post admin_partners_path, params: { email: unverified_email }
     end
 
     # We assert that only one account is created
@@ -50,7 +50,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Make request
     assert_enqueued_emails(1) do
-      post admin_partner_path, params: { email: unverified_email }
+      post admin_partners_path, params: { email: unverified_email }
     end
 
     # We assert that only one account is created
@@ -66,7 +66,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Make request
     assert_enqueued_emails(1) do
-      post admin_partner_path, params: { email: partner_email }
+      post admin_partners_path, params: { email: partner_email }
     end
 
     # We made it a partner
@@ -82,7 +82,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # Make request
     assert_enqueued_emails(0) do
-      post admin_partner_path, params: { email: partner_email }
+      post admin_partners_path, params: { email: partner_email }
     end
 
     assert_equal "Email is already a partner", flash[:alert]

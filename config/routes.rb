@@ -136,7 +136,7 @@ Rails.application.routes.draw do
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
-    resource :partner, only: [:new, :create]
+    resources :partners, only: [:index, :new, :create]
 
     namespace :stats do
       resources :contributions, only: [:index]

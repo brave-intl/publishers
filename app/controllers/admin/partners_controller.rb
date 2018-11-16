@@ -1,5 +1,21 @@
 module Admin
   class PartnersController < AdminController
+    include Search
+
+    def index
+      @partners = Partner
+
+      if params[:q].present?
+        # Returns an ActiveRecord::Relation of publishers for pagination
+        search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
+        @partners = Partner.where(search_sql, *[search_query] * 7).distinct
+      end
+
+      @partners = @partners.suspended if params[:suspended].present?
+
+      @partners = @partners.paginate(page: params[:page])
+    end
+
     def new
       @partner = Partner.new
     end
