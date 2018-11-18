@@ -84,7 +84,7 @@ Your tip is much appreciated and it encourages us to continue to improve our con
 
     if(current_publisher.site_banners.where(default: true).exists?)
       channel_mode = false
-      default_id = current_publisher.site_banners.where(default: true).first
+      default_id = current_publisher.site_banners.where(default: true).first.channel_id
       channels.each_with_index do |chan, index|
         if(default_id == chan["id"])
           channel_index = index
