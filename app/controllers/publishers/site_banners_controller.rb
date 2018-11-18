@@ -35,6 +35,20 @@ Your tip is much appreciated and it encourages us to continue to improve our con
   end
 
   def channels
+
+    # Handle edge case where user hasn't created any channels yet
+    if current_publisher.channels.length == 0
+      data = {}
+      data[:channels] = [{'id' => '00000000-0000-0000-0000-000000000000', 'name' => ' ', 'type' => 'website'}]
+      data[:channel_mode] = false
+      data[:channel_index] = 0
+      render(json: data.to_json) and return
+    end
+
+    if current_publisher.site_banners.where(channel_id: '00000000-0000-0000-0000-000000000000').exists?
+      current_publisher.site_banners.where(channel_id: '00000000-0000-0000-0000-000000000000').first.delete
+    end
+
     channels = []
 
     current_publisher.channels.each do |c|
@@ -48,11 +62,7 @@ Your tip is much appreciated and it encourages us to continue to improve our con
       when "YoutubeChannelDetails"
         channel_details = YoutubeChannelDetails.find_by_id(c.details_id)
         channel_type = "youtube"
-        channel_name = channel_details.name
-      when "TwitterChannelDetails"
-        channel_details = TwitterChannelDetails.find_by_id(c.details_id)
-        channel_type = "twitter"
-        channel_name = channel_details.name
+        channel_name = channel_details.auth_name
       when "TwitchChannelDetails"
         channel_details = TwitchChannelDetails.find_by_id(c.details_id)
         channel_type = "twitch"
@@ -67,7 +77,6 @@ Your tip is much appreciated and it encourages us to continue to improve our con
               }
 
     channels.push(channel)
-
     end
 
     channel_mode = true
@@ -75,7 +84,7 @@ Your tip is much appreciated and it encourages us to continue to improve our con
 
     if(current_publisher.site_banners.where(default: true).exists?)
       channel_mode = false
-      default_id = current_publisher.site_banners.where(default: true).first.channel_id
+      default_id = current_publisher.site_banners.where(default: true).first
       channels.each_with_index do |chan, index|
         if(default_id == chan["id"])
           channel_index = index

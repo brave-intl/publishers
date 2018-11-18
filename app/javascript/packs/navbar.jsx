@@ -41,7 +41,9 @@ export default class Navbar extends React.Component {
             :
             <CaratLeftIcon style={{height:'35px', width:'35px', marginBottom:'5px', color: '#C5C5D3', opacity:.3}}/>
           }
-            <VerifiedFillIcon style={{height:'25px', width:'25px', marginBottom:'5px', marginRight:'5px', color: '#58CD92'}}/>
+          {
+            this.props.channels[this.props.channelIndex].id !== '00000000-0000-0000-0000-000000000000' && <VerifiedFillIcon style={{height:'25px', width:'25px', marginBottom:'5px', marginRight:'5px', color: '#58CD92'}}/>
+          }
             <Text channel style={{display:'inline'}}>{this.props.channels[this.props.channelIndex].name}</Text>
           {
             this.props.channelIndex < this.props.channels.length-1 ?
