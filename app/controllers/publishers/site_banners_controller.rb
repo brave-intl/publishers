@@ -5,14 +5,95 @@ class Publishers::SiteBannersController < ApplicationController
 
   MAX_IMAGE_SIZE = 10_000_000
 
-  def new
-    @site_banner = current_publisher.site_banner || SiteBanner.new
+  #Fetch Banner by channel_id, if it does not exist create a template banner.
+  def fetch
+    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
+    if site_banner.present?
+      data = site_banner.read_only_react_property
+      data[:backgroundImage] = data[:backgroundUrl]
+      data[:logoImage] = data[:logoUrl]
+      render(json: data.to_json)
+    else
+      site_banner = SiteBanner.new
+      site_banner.update(
+        publisher_id: current_publisher.id,
+        channel_id: params[:channel_id],
+        title: 'Brave Rewards',
+        description:
+'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.
+
+Your tip is much appreciated and it encourages us to continue to improve our content.',
+        donation_amounts: [1, 5, 10],
+        default_donation: 5,
+        social_links: {'youtube': '', 'twitter': '', 'twitch': ''}
+      )
+      data = site_banner.read_only_react_property
+      data[:backgroundImage] = nil
+      data[:logoImage] = nil
+      render(json: data.to_json)
+    end
   end
 
-  def create
-    site_banner = current_publisher.site_banner || SiteBanner.new
+  def channels
+    channels = []
+
+    current_publisher.channels.each do |c|
+
+    case c.details_type
+
+      when "SiteChannelDetails"
+        channel_details = SiteChannelDetails.find_by_id(c.details_id)
+        channel_type = "website"
+        channel_name = channel_details.url
+      when "YoutubeChannelDetails"
+        channel_details = YoutubeChannelDetails.find_by_id(c.details_id)
+        channel_type = "youtube"
+        channel_name = channel_details.name
+      when "TwitterChannelDetails"
+        channel_details = TwitterChannelDetails.find_by_id(c.details_id)
+        channel_type = "twitter"
+        channel_name = channel_details.name
+      when "TwitchChannelDetails"
+        channel_details = TwitchChannelDetails.find_by_id(c.details_id)
+        channel_type = "twitch"
+        channel_name = channel_details.name
+
+    end
+
+    channel = {
+              'id' => c.id,
+              'name' => channel_name,
+              'type' => channel_type
+              }
+
+    channels.push(channel)
+
+    end
+
+    channel_mode = true
+    channel_index = 0
+
+    if(current_publisher.site_banners.where(default: true).exists?)
+      channel_mode = false
+      default_id = current_publisher.site_banners.where(default: true).first.channel_id
+      channels.each_with_index do |chan, index|
+        if(default_id == chan["id"])
+          channel_index = index
+        end
+      end
+    end
+    data = {}
+    data[:channels] = channels
+    data[:channel_mode] = channel_mode
+    data[:channel_index] = channel_index
+    render(json: data.to_json)
+  end
+
+  def save
+    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
     donation_amounts = JSON.parse(sanitize(params[:donation_amounts]))
     site_banner.update(
+      default: params[:default],
       publisher_id: current_publisher.id,
       title: sanitize(params[:title]),
       donation_amounts: donation_amounts,
@@ -23,24 +104,13 @@ class Publishers::SiteBannersController < ApplicationController
     head :ok
   end
 
-  def fetch
-    if current_publisher.site_banner.present?
-      data = current_publisher.site_banner.read_only_react_property
-      data[:backgroundImage] = data[:backgroundUrl]
-      data[:logoImage] = data[:logoUrl]
-      render(json: data.to_json)
-    else
-      render(json: nil.to_json)
-    end
-  end
-
   def update_logo
     if params[:image].length > MAX_IMAGE_SIZE
       # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
       # alert[:error] = "File size too big!"
       head :payload_too_large and return
     end
-    site_banner = current_publisher.site_banner
+    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
     update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
     head :ok
   end
@@ -51,7 +121,7 @@ class Publishers::SiteBannersController < ApplicationController
       # alert[:error] = "File size too big!"
       head :payload_too_large and return
     end
-    site_banner = current_publisher.site_banner
+    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
     update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
     head :ok
   end

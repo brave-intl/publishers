@@ -34,6 +34,9 @@ export default class BannerEditor extends React.Component {
       description: 'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.',
       logo: {url: null, data: null},
       cover: {url: null, data: null},
+      channels: this.props.channels,
+      channelIndex: this.props.channelIndex,
+      channelMode: this.props.channelMode,
       scale: 1,
       linkSelection: false,
       linkOption: 'Youtube',
@@ -51,8 +54,11 @@ export default class BannerEditor extends React.Component {
     }
      this.updateTitle = this.updateTitle.bind(this);
      this.preview = this.preview.bind(this);
-     this.updateDescription = this.updateDescription.bind(this)
+     this.updateDescription = this.updateDescription.bind(this);
      this.save = this.save.bind(this);
+     this.toggleChannelMode = this.toggleChannelMode.bind(this);
+     this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
+     this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
      this.updateYoutube = this.updateYoutube.bind(this);
      this.updateTwitter = this.updateTwitter.bind(this);
      this.updateTwitch = this.updateTwitch.bind(this);
@@ -95,6 +101,7 @@ export default class BannerEditor extends React.Component {
 
   cleanup(){
     document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'hidden'
+    document.getElementById("banner-toggle").style.cursor = "pointer"
   }
 
   preview(){
@@ -181,11 +188,12 @@ export default class BannerEditor extends React.Component {
 
     let that = this
 
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/fetch";
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/fetch?channel_id=" + this.props.channels[this.state.channelIndex].id;
+
     let options = {
       method: 'GET',
       credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content}
+      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
     }
 
     let response = await fetch(url, options);
@@ -204,7 +212,8 @@ export default class BannerEditor extends React.Component {
           donationAmounts: banner.donationAmounts,
           logo: {url: banner.logoImage, data: null},
           cover: {url: banner.backgroundImage, data: null},
-        }, () => that.setState({loading: false}));
+          loading: false
+        });
       }
 
       else{
@@ -340,6 +349,18 @@ export default class BannerEditor extends React.Component {
           </Dialogue>
         </div>
         break;
+      case 'same':
+        dialogue =
+        <div>
+          <Opacity/>
+          <Dialogue save>
+            <Text dialogueHeader>Use current banner for all channels?</Text>
+            <Text dialogueSubtext>By using one banner for all channels, you will lose any custom content defined for individual channels.</Text>
+            <Button onClick={ () => this.setState({state: 'Editor'}) } style={{margin:'10px', width:'120px'}} outline>Cancel</Button>
+            <Button onClick={ () => this.apply() } style={{margin:'10px', width:'120px'}} primary>Continue</Button>
+          </Dialogue>
+        </div>
+        break;
     }
     return dialogue;
 
@@ -425,13 +446,14 @@ export default class BannerEditor extends React.Component {
     // Three POST requests make up the save: Content, Logo, and Cover.
     this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
 
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners";
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/save?channel_id=" + this.props.channels[this.state.channelIndex].id;
 
     let body = new FormData();
     body.append('title', this.state.title);
     body.append('description', this.state.description);
     body.append('donation_amounts', JSON.stringify(this.state.donationAmounts));
     body.append('social_links', JSON.stringify({youtube: this.state.youtube, twitter: this.state.twitter, twitch: this.state.twitch}));
+    body.append('default', !this.state.channelMode);
 
     let options = {
       method: 'POST',
@@ -442,14 +464,14 @@ export default class BannerEditor extends React.Component {
 
     let content = await fetch(url, options)
 
-    let logo_url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_logo"
+    let logo_url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_logo?channel_id=" + this.props.channels[this.state.channelIndex].id
     let logo_options = {
       method: 'POST',
       credentials: "same-origin",
       headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
     }
 
-    let cover_url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_background_image"
+    let cover_url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_background_image?channel_id=" + this.props.channels[this.state.channelIndex].id
     let cover_options = {
       method: 'POST',
       credentials: "same-origin",
@@ -490,6 +512,35 @@ export default class BannerEditor extends React.Component {
       });
   }
 
+  incrementChannelIndex(){
+    let temp = this.state.channelIndex;
+    temp++;
+    this.setState({channelIndex: temp, loading: true},
+      () => {this.fetchBanner()}
+    )
+  }
+
+  decrementChannelIndex(){
+    let temp = this.state.channelIndex;
+    temp--;
+    this.setState({channelIndex: temp, loading: true},
+      () => {this.fetchBanner()}
+    )
+  }
+
+  toggleChannelMode(){
+    if(this.state.channelMode === true){
+      this.setState({channelMode: !this.state.channelMode, state: 'same'},
+      () => { this.save() }
+      )
+    }
+    else{
+      this.setState({channelMode: !this.state.channelMode},
+      () => { this.save() }
+      )
+    }
+  }
+
   render() {
 
     initLocale(locale);
@@ -499,7 +550,7 @@ export default class BannerEditor extends React.Component {
         {this.renderLoadingScreen()}
         {this.renderDialogue()}
 
-        <Navbar save={this.save} close={this.close} preview={ this.preview }/>
+        <Navbar channels={this.props.channels} channelIndex={this.state.channelIndex} channelMode={this.state.channelMode} incrementChannelIndex={this.incrementChannelIndex} decrementChannelIndex={this.decrementChannelIndex} toggleChannelMode={this.toggleChannelMode} save={this.save} close={this.close} preview={ this.preview }/>
 
         <Template>
           <Logo url={this.state.logo.url}>
@@ -574,11 +625,14 @@ export default class BannerEditor extends React.Component {
   }
 }
 
-export function renderBannerEditor(preferredCurrency, conversionRate, mode) {
+export function renderBannerEditor(preferredCurrency, conversionRate, channels, channelMode, channelIndex, mode) {
 
   let props = {
     preferredCurrency: preferredCurrency,
     conversionRate: conversionRate,
+    channels: channels,
+    channelMode: channelMode,
+    channelIndex: channelIndex,
     mode: mode
   }
 

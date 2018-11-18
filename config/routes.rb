@@ -38,9 +38,11 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
     end
-    resources :site_banners, only: %i(new create), controller: 'publishers/site_banners' do
+    resources :site_banners, controller: 'publishers/site_banners' do
       collection do
         get :fetch
+        get :channels
+        post :save
         post :update_logo
         post :update_background_image
       end

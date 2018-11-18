@@ -1,3 +1,4 @@
+
 .modal id="rewards_banner_intro_modal" role="dialog" tabindex="-1"
   .modal-dialog
     .modal-header id="instant-donation-modal-selection"
@@ -7,7 +8,6 @@
         h4.banner-intro-headline = t ".headline"
         p.banner-intro-intro = t ".intro.html"
         h5.banner-intro-tagline = t ".tagline"
-
         = link_to(t(".preview"), "#", class: 'preview-link', id: "open-preview-button")
         = link_to(t(".customize"), "#", class: 'btn btn-primary', id: "open-banner-button")
         - if wallet.present? && wallet&.default_currency.present? && wallet&.rates.present? && wallet&.default_currency.eql?('BAT')

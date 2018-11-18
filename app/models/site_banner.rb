@@ -58,6 +58,8 @@ class SiteBanner < ApplicationRecord
 
   def read_only_react_property
     {
+      default: self.default,
+      channel_id: self.channel_id,
       title: self.title,
       description: self.description,
       backgroundUrl: url_for(self.background_image),

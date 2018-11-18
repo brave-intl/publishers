@@ -2,6 +2,7 @@ import {
   fetchAfterDelay,
   submitForm
 } from '../utils/request';
+import 'babel-polyfill';
 import fetch from '../utils/fetchPolyfill';
 import flash from '../utils/flash';
 import { Wallet } from '../wallet';
@@ -402,7 +403,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
   }, false);
 
-  instantDonationButton.addEventListener("click", function(event) {
+  instantDonationButton.addEventListener("click", async function(event) {
 
     document.getElementById("intro-container").style.padding = '50px';
     document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
@@ -410,12 +411,27 @@ document.addEventListener('DOMContentLoaded', function() {
     let preferredCurrency = document.getElementById("preferred_currency").value
     let conversionRate = document.getElementById("conversion_rate").value
 
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/channels";
+
+    let options = {
+      method: 'GET',
+      credentials: "same-origin",
+      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
+    }
+
+    let response = await fetch(url, options);
+    let channels_data = await response.json();
+
+    let channels = channels_data.channels;
+    let channelMode = channels_data.channel_mode;
+    let channelIndex = channels_data.channel_index
+
     document.getElementById("open-banner-button").onclick = function() {
-      renderBannerEditor(preferredCurrency, conversionRate, "Editor");
+      renderBannerEditor(preferredCurrency, conversionRate, channels, channelMode, channelIndex, "Editor");
     };
 
     document.getElementById("open-preview-button").onclick = function() {
-      renderBannerEditor(preferredCurrency, conversionRate, "Preview");
+      renderBannerEditor(preferredCurrency, conversionRate, channels, channelMode, channelIndex, "Preview");
     };
 
     document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {

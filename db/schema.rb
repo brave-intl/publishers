@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_134245) do
+ActiveRecord::Schema.define(version: 2018_11_18_005740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -291,6 +291,8 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "channel_id"
+    t.boolean "default"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
 
