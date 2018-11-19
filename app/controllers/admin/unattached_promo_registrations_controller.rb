@@ -10,7 +10,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
       @promo_registrations = PromoRegistration.unattached_only.where(promo_campaign_id: nil).order("created_at DESC")
     else
       @promo_registrations = PromoRegistration.joins(:promo_campaign).
-                                               unattached.
+                                               unattached_only.
                                                where(promo_campaigns: {name: filter}).
                                                order("created_at DESC")
     end
