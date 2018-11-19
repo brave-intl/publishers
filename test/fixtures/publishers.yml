@@ -245,3 +245,7 @@ locked_out_verifier:
   name: "Logan the locked out"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
+
+promo_enabled:
+  email: "enabled@promo.org"
+  name: "peter promo"
