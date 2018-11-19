@@ -12,12 +12,7 @@ module PromosHelper
   end
 
   def offline_referral_code
-    referral_code = "BATS-#{rand(0..1000)}"
-    referral_code
-  end
-
-  def offline_promo_stats
-    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}, "aggregate"=> {"downloads"=> 200, "finalized"=> 30}}
+    "BATS-#{rand(0..1000)}"
   end
 
   def publisher_referral_totals(publisher)

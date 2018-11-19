@@ -4,7 +4,6 @@ class Publisher < ApplicationRecord
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
-  PROMO_STATS_UPDATE_DELAY = 10.minutes
   ADMIN = "admin"
   PARTNER = "partner"
   PUBLISHER = "publisher"
