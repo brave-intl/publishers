@@ -1,0 +1,12 @@
+site_promo_registration:
+  kind: channel
+  promo_id: 1
+  referral_code: PRO123
+  channel: promo_enabled_site
+  publisher: promo_enabled
+youtube_promo_registration:
+  kind: channel
+  promo_id: 1
+  referral_code: PRO456
+  channel: promo_enabled_youtube
+  publisher: promo_enabled

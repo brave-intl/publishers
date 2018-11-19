@@ -5,7 +5,8 @@ Rails.application.configure do
     'Access-Control-Allow-Origin' => "https://rewards-stg.bravesoftware.com",
     'Access-Control-Request-Method' => "GET",
     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods' => 'GET'
+    'Access-Control-Allow-Methods' => 'GET',
+    'X-Frame-Options' => 'deny'
   }
 
   # Rate limiting

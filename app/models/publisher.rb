@@ -20,6 +20,7 @@ class Publisher < ApplicationRecord
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
+  has_many :promo_registrations, dependent: :destroy
   has_one :site_banner
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
