@@ -113,6 +113,20 @@ Your tip is much appreciated and it encourages us to continue to improve our con
     head :ok
   end
 
+  def create
+   site_banner = current_publisher.site_banners || SiteBanner.new
+   donation_amounts = JSON.parse(params[:donation_amounts])
+   site_banner.update(
+     publisher_id: current_publisher.id,
+     title: params[:title],
+     donation_amounts: donation_amounts,
+     default_donation: donation_amounts.second,
+     social_links: params[:social_links].present? ? JSON.parse(params[:social_links]) : {},
+     description: params[:description]
+   )
+   head :ok
+ end
+
   def update_logo
     if params[:image].length > MAX_IMAGE_SIZE
       # (Albert Wang): We should consider supporting alerts. This might require a UI redesign

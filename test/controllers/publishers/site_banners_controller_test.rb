@@ -21,7 +21,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     publisher.reload
-    assert_equal publisher.site_banner, SiteBanner.last
+    assert_equal publisher.site_banners.last, SiteBanner.last
   end
 
   test "publisher cannot upload an excessively large file" do
@@ -37,7 +37,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpeg;base64," + fake_data})
 
     publisher.reload
-    assert_nil publisher.site_banner.logo.attachment
+    assert_nil publisher.site_banners.last.logo.attachment
   end
 
   test "publisher can upload a normally sized file" do
@@ -54,6 +54,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpeg;base64," + fake_data})
 
     publisher.reload
-    assert_not_nil publisher.site_banner.logo.attachment
+    assert_not_nil publisher.site_banners.last.logo.attachment
   end
 end
