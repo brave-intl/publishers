@@ -3,6 +3,14 @@ require "test_helper"
 class SiteChannelVerificationTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
 
+  before do
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+  end
+
+  after do
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+  end
+
   test "Cancel and Choose Different Verification Method buttons only appear in appropriate places" do
     publisher = publishers(:default)
     sign_in publisher
@@ -11,12 +19,12 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     assert_content "Cancel"
 
     fill_in "channel_details_attributes_brave_publisher_id_unnormalized", with: "example.com"
-    
+
     click_button("Continue")
     channel = publisher.channels.order("created_at").last
     assert_current_path verification_choose_method_site_channel_path(channel)
     assert_content "Cancel"
-    
+
     click_link "I'll use a trusted file"
     assert_current_path verification_public_file_site_channel_path(channel)
     assert_content "Choose Different Verification Method"
@@ -29,6 +37,33 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     visit verification_wordpress_site_channel_path(channel)
     assert_content "Choose Different Verification Method"
     refute_content "Cancel"
+  end
+
+  test "When bad ssl happens" do
+    # Have to set this to true even though we're stubbing out the request in order to get to the Fetch method
+    Rails.application.secrets[:host_inspector_offline] = false
+    stub_request(:get, "https://self-signed.badssl.com").
+      to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
+
+    publisher = publishers(:default)
+    sign_in publisher
+
+    visit new_site_channel_path
+    assert_content "Cancel"
+
+    fill_in "channel_details_attributes_brave_publisher_id_unnormalized", with: "https://self-signed.badssl.com/"
+
+    click_button("Continue")
+    channel = publisher.channels.order("created_at").last
+    assert_current_path verification_choose_method_site_channel_path(channel)
+    assert_content "Cancel"
+
+    click_link "I'll use a trusted file"
+    assert_current_path verification_public_file_site_channel_path(channel)
+    assert_content "Choose Different Verification Method"
+    refute_content "Cancel"
+
+    assert_content "The following error was encountered: SSL_connect returned=1 errno=0 state=error: certificate verify failed"
   end
 
   test "verification_failed modal appears after failed verification attempt for all methods" do

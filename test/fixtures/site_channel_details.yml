@@ -136,3 +136,6 @@ fraudulently_verified_site_details:
 
 locked_out_site_details:
   brave_publisher_id: "contested.com"
+
+promo_enabled_site_details:
+  brave_publisher_id: "promotion.org"

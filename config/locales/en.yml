@@ -600,6 +600,7 @@ en:
       no_https_alt: Your domain is NOT using HTTPS.
       no_https: Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing.
       button: Check for HTTPS
+      https_error_encountered: "The following error was encountered: "
     new:
       heading: Enter Domain Info
     progress:
