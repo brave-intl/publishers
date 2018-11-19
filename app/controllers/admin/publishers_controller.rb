@@ -13,7 +13,7 @@ class Admin::PublishersController < AdminController
 
     @publishers = @publishers.suspended if params[:suspended].present?
 
-    @publishers = @publishers.paginate(page: params[:page])
+    @publishers = @publishers.order(created_at: :desc).paginate(page: params[:page])
   end
 
   def show
@@ -34,6 +34,7 @@ class Admin::PublishersController < AdminController
   def make_partner
     return unless @publisher.publisher?
 
+    @publisher.created_by = current_user
     @publisher.update(role: Publisher::PARTNER)
     MailerServices::PartnerLoginLinkEmailer.new(partner: @publisher).perform
     flash[:notice] = "Successfully made partner"

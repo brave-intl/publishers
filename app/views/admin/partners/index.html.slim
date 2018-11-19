@@ -10,9 +10,13 @@ div.row
             .input-group-btn
                 = submit_tag("Search", class: 'btn btn-default')
 
-        label
-            = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
-            = "Suspended"
+        .partner-filters
+          label
+              = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
+              = "Suspended"
+          label
+              = check_box_tag('created_by_me', 1, params[:created_by_me].present?, class: 'checkbox')
+              = "Created by me"
       br
       div.panel-body
         div.adv-table

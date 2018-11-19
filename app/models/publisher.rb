@@ -28,6 +28,11 @@ class Publisher < ApplicationRecord
 
   belongs_to :youtube_channel
 
+  belongs_to :created_by, class_name: "Publisher"
+  has_many :created_users, class_name: "Publisher",
+                           foreign_key: "created_by_id"
+
+
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key

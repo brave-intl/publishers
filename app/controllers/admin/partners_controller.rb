@@ -12,8 +12,9 @@ module Admin
       end
 
       @partners = @partners.suspended if params[:suspended].present?
+      @partners = @partners.where(created_by: current_user) if params[:created_by_me].present?
 
-      @partners = @partners.paginate(page: params[:page])
+      @partners = @partners.order(created_at: :desc).paginate(page: params[:page])
     end
 
     def new
@@ -23,6 +24,7 @@ module Admin
     def create
       # Find any existing publishers so we don't create duplicate entries
       @partner = partner
+      @partner.created_by = current_user
 
       if @partner.persisted? && (@partner.partner? || @partner.admin?)
         flash.now[:alert] = "Email is already a partner"

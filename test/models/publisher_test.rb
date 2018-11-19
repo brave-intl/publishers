@@ -23,6 +23,19 @@ class PublisherTest < ActiveSupport::TestCase
     assert publisher.verified?
   end
 
+  test "Publisher is able to have created_by assigned" do
+    publisher = Publisher.new(email: 'new@new.com')
+    publisher.created_by = Publisher.first
+    assert publisher.save
+    assert Publisher.find_by(email: 'new@new.com').created_by
+  end
+
+  test "Publisher is able to have not have a created_by set" do
+    publisher = Publisher.new(email: 'jane@example.com')
+    assert publisher.valid?
+    assert publisher.save
+  end
+
   test "uphold_code is only valid without uphold_access_parameters and before uphold_verified" do
     publisher = publishers(:verified)
     publisher.uphold_code = "foo"

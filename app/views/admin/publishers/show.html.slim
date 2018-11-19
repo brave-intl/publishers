@@ -24,6 +24,10 @@
         .db-info-row
           .db-field = "Default currency:"
           .db-value = @publisher.default_currency
+        - if @publisher.created_by.present?
+          .db-info-row
+            .db-field = "Created By:"
+            .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
         - if @publisher.promo_enabled_2018q1
           .db-info-row
             .db-field = "Referral downloads:"

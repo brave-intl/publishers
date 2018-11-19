@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_134245) do
+ActiveRecord::Schema.define(version: 2018_11_19_213110) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -268,8 +267,10 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.datetime "default_currency_confirmed_at"
     t.datetime "javascript_last_detected_at"
     t.boolean "excluded_from_payout", default: false, null: false
+    t.uuid "created_by_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
+    t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
   end
 
@@ -305,8 +306,8 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "stats", default: "{}", null: false
     t.string "https_error"
+    t.jsonb "stats", default: "{}", null: false
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
