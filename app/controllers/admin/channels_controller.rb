@@ -1,7 +1,5 @@
 module Admin
   class ChannelsController < AdminController
-    include Search
-
     def index
       @channels = Channel
 
@@ -15,19 +13,30 @@ module Admin
                       .left_outer_joins(:twitch_channel_details)
 
         @channels =
-          @channels.where('publishers.email LIKE ?', search_query)
-          .or(@channels.where('publishers.name LIKE ?', search_query))
-          .or(@channels.where('site_channel_details.brave_publisher_id LIKE ?', search_query))
-          .or(@channels.where('twitch_channel_details.twitch_channel_id LIKE ?', search_query))
-          .or(@channels.where('twitch_channel_details.display_name LIKE ?', search_query))
-          .or(@channels.where('twitch_channel_details.email LIKE ?', search_query))
-          .or(@channels.where('youtube_channel_details.youtube_channel_id LIKE ?', search_query))
-          .or(@channels.where('youtube_channel_details.auth_email LIKE ?', search_query))
+          @channels.where("publishers.email LIKE ?", search_query)
+          .or(@channels.where("publishers.name LIKE ?", search_query))
+          .or(@channels.where("site_channel_details.brave_publisher_id LIKE ?", search_query))
+          .or(@channels.where("twitch_channel_details.twitch_channel_id LIKE ?", search_query))
+          .or(@channels.where("twitch_channel_details.display_name LIKE ?", search_query))
+          .or(@channels.where("twitch_channel_details.email LIKE ?", search_query))
+          .or(@channels.where("youtube_channel_details.youtube_channel_id LIKE ?", search_query))
+          .or(@channels.where("youtube_channel_details.auth_email LIKE ?", search_query))
       end
 
       @channels = @channels.verified if params[:verified].present?
 
       @channels = @channels.order(created_at: :desc).paginate(page: params[:page])
+    end
+
+    private
+
+    # TODO Remove when https://github.com/brave-intl/publishers/pull/1354 is merged
+    def remove_prefix_if_necessary(query)
+      query = query.sub("publishers#uuid:", "")
+      query = query.sub("youtube#channel:", "")
+      query = query.sub("twitch#channel:", "")
+      query = query.sub("twitch#author:", "")
+      query = query.sub("twitter#channel:", "")
     end
   end
 end

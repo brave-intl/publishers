@@ -27,7 +27,7 @@ div.row
               - @channels.each do |channel|
                 tr.gradeX
                   td = channel.id
-                  td = link_to channel.publisher.email, admin_publisher_path(channel.publisher.id)
+                  td = link_to channel.publisher&.email, admin_publisher_path(channel.publisher_id)
                   td = channel.details.channel_identifier
                   td = channel.verified
 
