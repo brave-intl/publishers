@@ -24,7 +24,6 @@ module Admin
     def create
       # Find any existing publishers so we don't create duplicate entries
       @partner = partner
-      @partner.created_by = current_user
 
       if @partner.persisted? && (@partner.partner? || @partner.admin?)
         flash.now[:alert] = "Email is already a partner"
@@ -32,6 +31,7 @@ module Admin
       else
         # Ensure publisher gets the right role
         @partner.role = Publisher::PARTNER
+        @partner.created_by = current_user
         @partner.save
         MailerServices::PartnerLoginLinkEmailer.new(partner: @partner).perform
         redirect_to admin_publisher_path(@partner.id), flash: { notice: "Email sent" }

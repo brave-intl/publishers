@@ -7,6 +7,10 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
 
+  after do
+    clear_enqueued_jobs
+  end
+
   test "admin can access partners" do
     admin = publishers(:admin)
     sign_in admin
@@ -76,9 +80,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   test "when the email is already a partner" do
     admin = publishers(:admin)
     sign_in admin
-    partner_email = 'partner@example.com'
-
-    Partner.find_or_create_by(email: partner_email)
+    partner_email = "partner@completed.org"
 
     # Make request
     assert_enqueued_emails(0) do
