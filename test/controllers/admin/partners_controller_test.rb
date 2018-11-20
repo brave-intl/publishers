@@ -1,9 +1,8 @@
-
 require 'test_helper'
 require "shared/mailer_test_helper"
 require "webmock/minitest"
 
-class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
+class Admin::PartnersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
 
