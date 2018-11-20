@@ -1,0 +1,34 @@
+div.row
+  div.col-sm-12
+    section.panel
+      header.panel-heading
+        h4 Channels
+      = form_tag(admin_channels_path, method: "get")
+        .input-group
+            = text_field_tag(:q, params[:q], class:'form-control')
+            .input-group-btn
+                = submit_tag("Search", class: 'btn btn-default')
+
+        label
+            = check_box_tag('verified', 1, params[:verified].present?, class: 'checkbox')
+            = "Verified"
+      / TODO add verify filter
+
+      br
+      div.panel-body
+        div.adv-table
+          table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+            tr
+              th ID
+              th Publisher
+              th Channel Identifier
+              th Verified
+            tbody
+              - @channels.each do |channel|
+                tr.gradeX
+                  td = channel.id
+                  td = link_to channel.publisher.email, admin_publisher_path(channel.publisher.id)
+                  td = channel.details.channel_identifier
+                  td = channel.verified
+
+          = will_paginate @channels

@@ -69,7 +69,7 @@
             hr
           .db-info-row
             .db-field = "Pending Payouts"
-            .db-value = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+            .db-value = publisher_channel_balance(@publisher, channel.details.channel_identifier, "BAT")
           - if channel.details.is_a?(SiteChannelDetails)
             .db-info-row
               .db-field = "Verified:"
