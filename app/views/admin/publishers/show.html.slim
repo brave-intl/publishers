@@ -19,6 +19,9 @@
           .db-field = "Uphold connected:"
           .db-value = @publisher.uphold_verified?
         .db-info-row
+          .db-field = "Uphold authorized:"
+          .db-value = @publisher.wallet.authorized?
+        .db-info-row
           .db-field = "Uphold widget enabled?"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
         .db-info-row
