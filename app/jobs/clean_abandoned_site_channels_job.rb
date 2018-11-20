@@ -9,7 +9,7 @@ class CleanAbandonedSiteChannelsJob < ApplicationJob
     channels = Channel.not_visible_site_channels
     n = 0
     channels.joins(:site_channel_details).each do |channel|
-      raise unless channel.details.verification_method.nil?
+      raise if channel.details.verification_method.present?
       channel.destroy
       n = n + 1
       Rails.logger.info("Cleaned abandoned site channel #{ channel.details.brave_publisher_id } for publisher #{ channel.publisher_id }.")
