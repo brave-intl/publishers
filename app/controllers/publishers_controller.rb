@@ -266,6 +266,7 @@ class PublishersController < ApplicationController
     @should_throttle = should_throttle_create_auth_token?
     throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
     if !throttle_legit
+      @publisher = Publisher.new
       render(:new_auth_token)
       return
     end
