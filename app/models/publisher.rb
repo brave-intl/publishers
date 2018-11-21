@@ -283,6 +283,10 @@ class Publisher < ApplicationRecord
       !excluded_from_payout
   end
 
+  def default_banner
+    return site_banners.find_by(default: true)
+  end
+
   private
 
   def set_created_status

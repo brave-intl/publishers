@@ -1,5 +1,16 @@
 default: &default
   publisher: default
+  default: true
+  channel_id: "00000000-0000-0000-0000-000000000001"
+  title: "Hello World"
+  description: "Lorem Ipsum"
+  donation_amounts: [1, 5, 10]
+  default_donation: 5
+
+second:
+  publisher: default
+  default: false
+  channel_id: "00000000-0000-0000-0000-000000000002"
   title: "Hello World"
   description: "Lorem Ipsum"
   donation_amounts: [1, 5, 10]

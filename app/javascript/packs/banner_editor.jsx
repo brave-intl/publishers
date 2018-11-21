@@ -513,31 +513,23 @@ export default class BannerEditor extends React.Component {
   }
 
   incrementChannelIndex(){
-    let temp = this.state.channelIndex;
-    temp++;
-    this.setState({channelIndex: temp, loading: true},
-      () => {this.fetchBanner()}
-    )
+    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex += 1), loading: true }},
+    () => {this.fetchBanner()})
   }
 
   decrementChannelIndex(){
-    let temp = this.state.channelIndex;
-    temp--;
-    this.setState({channelIndex: temp, loading: true},
-      () => {this.fetchBanner()}
-    )
+    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex -= 1), loading: true }},
+    () => {this.fetchBanner()})
   }
 
   toggleChannelMode(){
     if(this.state.channelMode === true){
       this.setState({channelMode: !this.state.channelMode, state: 'same'},
-      () => { this.save() }
-      )
+      () => { this.save() })
     }
     else{
       this.setState({channelMode: !this.state.channelMode},
-      () => { this.save() }
-      )
+      () => { this.save() })
     }
   }
 

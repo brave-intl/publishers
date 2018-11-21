@@ -5,28 +5,18 @@ class Publishers::SiteBannersController < ApplicationController
 
   MAX_IMAGE_SIZE = 10_000_000
 
-  #Fetch Banner by channel_id, if it does not exist create a template banner.
+  # Fetch Banner by channel_id, if it does not exist create a template banner.
   def fetch
-    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
-    if site_banner.present?
+
+    site_banner = current_publisher.site_banners.find_by(channel_id: params[:channel_id])
+
+    if site_banner
       data = site_banner.read_only_react_property
       data[:backgroundImage] = data[:backgroundUrl]
       data[:logoImage] = data[:logoUrl]
       render(json: data.to_json)
     else
-      site_banner = SiteBanner.new
-      site_banner.update(
-        publisher_id: current_publisher.id,
-        channel_id: params[:channel_id],
-        title: 'Brave Rewards',
-        description:
-'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.
-
-Your tip is much appreciated and it encourages us to continue to improve our content.',
-        donation_amounts: [1, 5, 10],
-        default_donation: 5,
-        social_links: {'youtube': '', 'twitter': '', 'twitch': ''}
-      )
+      site_banner = new(params[:channel_id])
       data = site_banner.read_only_react_property
       data[:backgroundImage] = nil
       data[:logoImage] = nil
@@ -37,69 +27,50 @@ Your tip is much appreciated and it encourages us to continue to improve our con
   def channels
 
     # Handle edge case where user hasn't created any channels yet
-    if current_publisher.channels.length == 0
+    if current_publisher.channels.length.zero?
       data = {}
-      data[:channels] = [{'id' => '00000000-0000-0000-0000-000000000000', 'name' => ' ', 'type' => 'website'}]
+      data[:channels] = [{"id" => "00000000-0000-0000-0000-000000000000", "name" => " ", "type" => "website"}]
       data[:channel_mode] = false
       data[:channel_index] = 0
-      render(json: data.to_json) and return
+      return render(json: data.to_json)
     end
 
-    if current_publisher.site_banners.where(channel_id: '00000000-0000-0000-0000-000000000000').exists?
-      current_publisher.site_banners.where(channel_id: '00000000-0000-0000-0000-000000000000').first.delete
+    if current_publisher.site_banners.find_by(channel_id: "00000000-0000-0000-0000-000000000000")
+      current_publisher.site_banners.find_by(channel_id: "00000000-0000-0000-0000-000000000000").delete
     end
 
     channels = []
 
     current_publisher.channels.each do |c|
 
-    case c.details_type
-
-      when "SiteChannelDetails"
-        channel_details = SiteChannelDetails.find_by_id(c.details_id)
-        channel_type = "website"
-        channel_name = channel_details.url
-      when "YoutubeChannelDetails"
-        channel_details = YoutubeChannelDetails.find_by_id(c.details_id)
-        channel_type = "youtube"
-        channel_name = channel_details.auth_name
-      when "TwitchChannelDetails"
-        channel_details = TwitchChannelDetails.find_by_id(c.details_id)
-        channel_type = "twitch"
-        channel_name = channel_details.name
-
-    end
-
     channel = {
-              'id' => c.id,
-              'name' => channel_name,
-              'type' => channel_type
+              "id" => c.id,
+              "name" => c.publication_title,
+              "type" => c.details_type
               }
 
     channels.push(channel)
     end
 
-    channel_mode = true
-    channel_index = 0
+    # If user set a default banner then channel mode is false
+    # If default banner, return index of the channel that was made default -> so the user can toggle back
+    default_banner = current_publisher.default_banner
 
-    if(current_publisher.site_banners.where(default: true).exists?)
-      channel_mode = false
-      default_id = current_publisher.site_banners.where(default: true).first.channel_id
-      channels.each_with_index do |chan, index|
-        if(default_id == chan["id"])
-          channel_index = index
-        end
-      end
+    if default_banner
+      default_id = default_banner.channel_id
+      channel_index = channels.index { |c| c["id"] == default_id }
     end
+
+
     data = {}
     data[:channels] = channels
-    data[:channel_mode] = channel_mode
-    data[:channel_index] = channel_index
+    data[:channel_mode] = default_banner.nil?
+    data[:channel_index] = channel_index || 0
     render(json: data.to_json)
   end
 
   def save
-    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
+    site_banner = current_publisher.site_banners.find_by(channel_id: params[:channel_id])
     donation_amounts = JSON.parse(sanitize(params[:donation_amounts]))
     site_banner.update(
       default: params[:default],
@@ -113,19 +84,22 @@ Your tip is much appreciated and it encourages us to continue to improve our con
     head :ok
   end
 
-  def create
-   site_banner = current_publisher.site_banners || SiteBanner.new
-   donation_amounts = JSON.parse(params[:donation_amounts])
-   site_banner.update(
-     publisher_id: current_publisher.id,
-     title: params[:title],
-     donation_amounts: donation_amounts,
-     default_donation: donation_amounts.second,
-     social_links: params[:social_links].present? ? JSON.parse(params[:social_links]) : {},
-     description: params[:description]
-   )
-   head :ok
- end
+  def new(channel_id)
+    site_banner = SiteBanner.new
+    headline = I18n.t 'banner.headline'
+    tagline = I18n.t 'banner.tagline'
+    site_banner.update(
+      publisher_id: current_publisher.id,
+      channel_id: channel_id,
+      default: false,
+      title: headline,
+      description: tagline,
+      donation_amounts: [1, 5, 10],
+      default_donation: 5,
+      social_links: {"youtube": "", "twitter": "", "twitch": ""}
+    )
+    return site_banner
+  end
 
   def update_logo
     if params[:image].length > MAX_IMAGE_SIZE
@@ -133,7 +107,7 @@ Your tip is much appreciated and it encourages us to continue to improve our con
       # alert[:error] = "File size too big!"
       head :payload_too_large and return
     end
-    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
+    site_banner = current_publisher.site_banners.find_by(channel_id: params[:channel_id])
     update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
     head :ok
   end
@@ -144,7 +118,7 @@ Your tip is much appreciated and it encourages us to continue to improve our con
       # alert[:error] = "File size too big!"
       head :payload_too_large and return
     end
-    site_banner = current_publisher.site_banners.where(channel_id: params[:channel_id]).first
+    site_banner = current_publisher.site_banners.find_by(channel_id: params[:channel_id])
     update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
     head :ok
   end

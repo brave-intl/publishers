@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_18_005740) do
+ActiveRecord::Schema.define(version: 2018_11_20_193230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -261,14 +261,14 @@ ActiveRecord::Schema.define(version: 2018_11_18_005740) do
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "visible", default: true
-    t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
+    t.boolean "promo_enabled_2018q1", default: false
     t.string "promo_token_2018q1"
     t.jsonb "promo_stats_2018q1", default: {}, null: false
     t.datetime "promo_stats_updated_at_2018q1"
     t.text "role", default: "publisher"
-    t.datetime "default_currency_confirmed_at"
     t.datetime "javascript_last_detected_at"
+    t.datetime "default_currency_confirmed_at"
     t.boolean "excluded_from_payout", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
@@ -293,8 +293,8 @@ ActiveRecord::Schema.define(version: 2018_11_18_005740) do
     t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "default", default: false, null: false
     t.uuid "channel_id"
-    t.boolean "default"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
 

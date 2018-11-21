@@ -21,6 +21,7 @@ class SiteBanner < ApplicationRecord
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
   validate :donation_amounts_in_scope
   before_save :clear_invalid_social_links
+  after_save :at_most_one_default
 
   #####################################################
   # Validations
@@ -31,6 +32,14 @@ class SiteBanner < ApplicationRecord
     errors.add(:base, "Must have #{NUMBER_OF_DONATION_AMOUNTS} donation amounts") if donation_amounts.count != NUMBER_OF_DONATION_AMOUNTS
     errors.add(:base, "A donation amount is zero or negative") if donation_amounts.select { |donation_amount| donation_amount <= 0}.count > 0
     errors.add(:base, "A donation amount is above a target threshold") if donation_amounts.select { |donation_amount| donation_amount >= MAX_DONATION_AMOUNT}.count > 0
+  end
+
+  # Validate user has at most 1 default banner
+  def at_most_one_default
+    default_banners = SiteBanner.where(publisher_id: publisher_id, default: true).pluck(:default)
+    if default_banners.length > 1
+      self.update(default: false);
+    end
   end
 
   # (Albert Wang) Until the front end can properly handle errors, let's not block save and only clear invalid domains
