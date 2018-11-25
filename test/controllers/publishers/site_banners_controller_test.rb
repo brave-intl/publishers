@@ -4,20 +4,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include PublishersHelper
 
-  test "Creating a new banner will return default values" do
+  test "User can create a new banner" do
       publisher = publishers(:default)
       sign_in publisher
 
-      # Fetch returns new banner if one doesn't exist yet.
-      get '/publishers/' + publisher.id + "/site_banners/fetch?channel_id=00000000-0000-0000-0000-000000000000", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-      new_banner = JSON.parse(response.body)
+      post '/publishers/' + publisher.id + "/site_banners?channel_id=00000000-0000-0000-0000-000000000000",
+      headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
+      params: {title: "Hello World", description: "Lorem Ipsum", donation_amounts: [5, 10, 15].to_json, default: true}
 
       assert_response :success
-      assert_equal("Brave Rewards", new_banner["title"])
-      assert_equal([1, 5, 10], new_banner["donationAmounts"])
-      assert_equal(false, new_banner["default"])
-      assert_equal("00000000-0000-0000-0000-000000000000", new_banner["channel_id"])
-      publisher.reload
   end
 
   test "Reading an existing banner will return existing values" do
@@ -57,11 +52,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_not(publisher.site_banners.find_by(channel_id: "00000000-0000-0000-0000-000000000002").default)
   end
 
-  test "GET on /channels returns ids, names, and types of user's chnanels" do
+  test "GET on /banner_editor_data returns ids, names, and types of user's chnanels" do
       publisher = publishers(:default)
       sign_in publisher
 
-      get '/publishers/' + publisher.id + "/site_banners/channels", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+      get "/publishers/banner_editor_data", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
       channels = JSON.parse(response.body)["channels"]
       assert_not_nil(channels[0]["id"])
       assert_not_nil(channels[0]["name"])

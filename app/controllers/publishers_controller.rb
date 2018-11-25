@@ -423,6 +423,43 @@ class PublishersController < ApplicationController
     end
   end
 
+  def banner_editor_data
+    # Handle edge case where user hasn't created channels yet.
+    no_channels_banner = current_publisher.site_banners.find_by(channel_id: "00000000-0000-0000-0000-000000000000")
+    if no_channels_banner && !current_publisher.channels.length.zero?
+      no_channels_banner.delete
+    end
+
+    channels = []
+    current_publisher.channels.each do |c|
+      channel = {
+                "id" => c.id,
+                "name" => c.publication_title,
+                "type" => c.details_type
+                }
+      channels.push(channel)
+    end
+    # Handle edge case where user hasn't created channels yet.
+    if current_publisher.channels.length.zero?
+      data = no_channels_banner_data
+      return render(json: data.to_json)
+    end
+
+    default_banner = current_publisher.default_banner
+
+    if default_banner
+      default_id = default_banner.channel_id
+      channel_index = channels.index { |c| c["id"] == default_id }
+    end
+
+    data = {}
+    data[:channels] = channels
+    data[:channel_mode] = default_banner.nil?
+    data[:channel_index] = channel_index || 0
+
+    render(json: data.to_json)
+  end
+
   private
 
   def create_uphold_card_for_default_currency_if_needed
@@ -553,5 +590,13 @@ class PublishersController < ApplicationController
 
   def update_sendgrid(publisher:, prior_email: nil)
     RegisterPublisherWithSendGridJob.perform_later(publisher.id, prior_email)
+  end
+
+  def no_channels_banner_data
+    return {
+      "channels": [{"id" => "00000000-0000-0000-0000-000000000000", "name" => " ", "type" => "SiteChannelDetails"}],
+      "channel_mode": false,
+      "channel_index": 0
+    }
   end
 end

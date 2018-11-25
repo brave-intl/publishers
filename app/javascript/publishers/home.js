@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let preferredCurrency = document.getElementById("preferred_currency").value
     let conversionRate = document.getElementById("conversion_rate").value
 
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/channels";
+    let url = '/publishers/banner_editor_data';
 
     let options = {
       method: 'GET',

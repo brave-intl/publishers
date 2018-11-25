@@ -7,66 +7,15 @@ class Publishers::SiteBannersController < ApplicationController
 
   # Fetch Banner by channel_id, if it does not exist create a template banner.
   def fetch
-
     site_banner = current_publisher.site_banners.find_by(channel_id: params[:channel_id])
-
     if site_banner
       data = site_banner.read_only_react_property
       data[:backgroundImage] = data[:backgroundUrl]
       data[:logoImage] = data[:logoUrl]
       render(json: data.to_json)
     else
-      site_banner = new(params[:channel_id])
-      data = site_banner.read_only_react_property
-      data[:backgroundImage] = nil
-      data[:logoImage] = nil
-      render(json: data.to_json)
+      render(json: nil.to_json)
     end
-  end
-
-  def channels
-
-    # Handle edge case where user hasn't created any channels yet
-    if current_publisher.channels.length.zero?
-      data = {}
-      data[:channels] = [{"id" => "00000000-0000-0000-0000-000000000000", "name" => " ", "type" => "website"}]
-      data[:channel_mode] = false
-      data[:channel_index] = 0
-      return render(json: data.to_json)
-    end
-
-    if current_publisher.site_banners.find_by(channel_id: "00000000-0000-0000-0000-000000000000")
-      current_publisher.site_banners.find_by(channel_id: "00000000-0000-0000-0000-000000000000").delete
-    end
-
-    channels = []
-
-    current_publisher.channels.each do |c|
-
-    channel = {
-              "id" => c.id,
-              "name" => c.publication_title,
-              "type" => c.details_type
-              }
-
-    channels.push(channel)
-    end
-
-    # If user set a default banner then channel mode is false
-    # If default banner, return index of the channel that was made default -> so the user can toggle back
-    default_banner = current_publisher.default_banner
-
-    if default_banner
-      default_id = default_banner.channel_id
-      channel_index = channels.index { |c| c["id"] == default_id }
-    end
-
-
-    data = {}
-    data[:channels] = channels
-    data[:channel_mode] = default_banner.nil?
-    data[:channel_index] = channel_index || 0
-    render(json: data.to_json)
   end
 
   def save
@@ -84,21 +33,19 @@ class Publishers::SiteBannersController < ApplicationController
     head :ok
   end
 
-  def new(channel_id)
-    site_banner = SiteBanner.new
-    headline = I18n.t 'banner.headline'
-    tagline = I18n.t 'banner.tagline'
-    site_banner.update(
+  def create
+    donation_amounts = JSON.parse(sanitize(params[:donation_amounts]))
+    site_banner = SiteBanner.create(
       publisher_id: current_publisher.id,
-      channel_id: channel_id,
-      default: false,
-      title: headline,
-      description: tagline,
-      donation_amounts: [1, 5, 10],
-      default_donation: 5,
-      social_links: {"youtube": "", "twitter": "", "twitch": ""}
+      channel_id: params[:channel_id],
+      title: sanitize(params[:title]),
+      description: sanitize(params[:description]),
+      donation_amounts: donation_amounts,
+      default_donation: donation_amounts.second,
+      social_links: params[:social_links].present? ? JSON.parse(sanitize(params[:social_links])) : {},
+      default: false
     )
-    return site_banner
+    head :ok
   end
 
   def update_logo

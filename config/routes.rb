@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get :statement
       get :statements
       get :uphold_status
+      get :banner_editor_data
       patch :verify
       patch :update
       patch :complete_signup

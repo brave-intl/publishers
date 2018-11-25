@@ -200,7 +200,7 @@ export default class BannerEditor extends React.Component {
     let banner = await response.json();
 
     //500ms timeout prevents quick flash when load times are fast.
-    setTimeout(() => {
+    setTimeout(async() => {
 
       if(banner){
         that.setState({
@@ -217,12 +217,32 @@ export default class BannerEditor extends React.Component {
       }
 
       else{
-        that.setState({loading: false})
+        let banner = await that.createBanner();
+        that.fetchBanner();
       }
       if(this.props.mode === 'Preview'){
         this.preview();
       }
     }, 500);
+  }
+
+  async createBanner(){
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners?channel_id=" + this.props.channels[this.state.channelIndex].id;
+
+    let body = new FormData();
+    body.append('title', 'Brave Rewards');
+    body.append('description', 'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.');
+    body.append('donation_amounts', JSON.stringify([1, 5, 10]));
+    body.append('social_links', JSON.stringify({youtube: '', twitter: '', twitch: ''}));
+
+    let options = {
+      method: 'POST',
+      credentials: "same-origin",
+      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
+      body: body
+    }
+
+    let created = await fetch(url, options)
   }
 
   handleLinkSelection(e){
