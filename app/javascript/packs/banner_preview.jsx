@@ -53,7 +53,7 @@ export default class BannerPreview extends React.Component {
   }
 
   handleClose(){
-    let instantDonationButton = document.getElementById("instant-donation-button");
+    let instantDonationButton = document.getElementById("tipping-banner-button");
     instantDonationButton.click();
     renderBannerEditor(this.props.preferredCurrency, this.props.conversionRate, "Editor");
     setTimeout(function(){

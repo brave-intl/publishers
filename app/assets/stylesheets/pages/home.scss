@@ -11,6 +11,23 @@
   margin-bottom: 30px;
 }
 
+.new-badge {
+  display: inline-block;
+  height: 17px;
+  width: 35px;
+  vertical-align: text-top;
+  margin-left: -40px;
+  margin-right: 20px;
+  background-color: #fb542b;
+  border-radius: 4px;
+  font-size: 10px;
+  padding-top: 2px;
+  font-family: poppins;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}
+
 .brave-rewards-banner {
   &--background {
     &-label {

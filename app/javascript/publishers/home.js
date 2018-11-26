@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   })
 
-  let instantDonationButton = document.getElementById("instant-donation-button");
+  let tippingBannerButton = document.getElementById("tipping-banner-button");
 
   editContact.addEventListener('click', function(event) {
     updateContactName.value = showContactName.innerText;
@@ -402,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
   }, false);
 
-  instantDonationButton.addEventListener("click", function(event) {
+  tippingBannerButton.addEventListener("click", function(event) {
 
     document.getElementById("intro-container").style.padding = '50px';
     document.getElementsByClassName("modal-panel")[0].style.padding = '0px';

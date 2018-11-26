@@ -37,9 +37,10 @@ en:
     download: Download
     existing_account: Already have an account?
     get_started: Get Started
-    instant_donation: Tipping Banner
+    tipping_banner: Tipping Banner
     invalid_totp: Invalid 6-digit code. Please try again.
     log_in: Log In
+    new: NEW
     remove: Remove
     terms_of_service: Terms of Service
     faqs: FAQs
@@ -479,7 +480,7 @@ en:
       saving: Saving ...
       redirecting: Redirecting to Uphold for authorization ...
       refreshing: Refreshing balances ...
-    instant_donation_modal:
+    tipping_banner_modal:
       headline: Customize Your Tipping Banner
       intro:
         html: Your fans using the Brave browser can now send you tips through your very own branded banner. This banner is presented when your fan opens the Brave Rewards panel from the URL bar and clicks the <span style="color:#7d7bdc;">Send Tip Now</span> button.

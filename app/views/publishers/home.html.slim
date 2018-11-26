@@ -15,7 +15,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     class: 'title' \
   )
   = render partial: "choose_channel_button"
-  = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+  = link_to("#{t "shared.tipping_banner"}", "#", data: { "js-confirm-with-modal": "tipping-banner-modal" }, class: 'btn btn-secondary btn-highlight', id: 'tipping-banner-button')
+  .new-badge = t "shared.new"
+
 
 
 = hidden_field_tag 'publisher_id', current_publisher.id
@@ -356,5 +358,5 @@ javascript:
     javascriptDetected();
   });
 
-script id="instant-donation-modal" type="text/html"
-  = render "instant_donation_modal", wallet: @wallet
+script id="tipping-banner-modal" type="text/html"
+  = render "tipping_banner_modal", wallet: @wallet
