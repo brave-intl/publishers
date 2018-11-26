@@ -58,6 +58,21 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal 3, publishers(:global_media_group).channels.verified.length
   end
 
+  test "search returns right results" do
+    channel = channels(:verified)
+
+    assert Channel.search("verified.org").map(&:id).include? channel.id
+
+    channel = channels(:twitch_verified)
+    assert Channel.search("twtwtw2").map(&:id).include? channel.id
+
+    channel = channels(:twitch_verified)
+    assert Channel.search("twtwtw2").map(&:id).include? channel.id
+
+    channel = channels(:global_yt1)
+    assert Channel.search("global%").map(&:id).include? channel.id
+  end
+
   # Maybe put this in a RegisterChannelForPromoJobTest?
   test "verifying a channel calls register_channel_for_promo (site)" do
     channel = channels(:default)
