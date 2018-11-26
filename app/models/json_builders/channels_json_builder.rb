@@ -44,9 +44,9 @@ class JsonBuilders::ChannelsJsonBuilder
         end
 
         if default_banner
-          channels.push([verified_channel.details.channel_identifier, true, excluded, default_banner])
+          channels.push([verified_channel.details.channel_identifier, true, excluded, default_banner.read_only_react_property])
         elsif channel_banner
-          channels.push([verified_channel.details.channel_identifier, true, excluded, channel_banner])
+          channels.push([verified_channel.details.channel_identifier, true, excluded, channel_banner.read_only_react_property])
         else
           channels.push([verified_channel.details.channel_identifier, true, excluded, {}])
         end
