@@ -5,7 +5,6 @@ class Publishers::SiteBannersController < ApplicationController
 
   MAX_IMAGE_SIZE = 10_000_000
 
-  # Fetch Banner by channel_id, if it does not exist create a template banner.
   def fetch
     site_banner = current_publisher.site_banners.find_by(channel_id: params[:channel_id])
     if site_banner
