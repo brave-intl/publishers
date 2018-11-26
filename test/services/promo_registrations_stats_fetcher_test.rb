@@ -58,12 +58,12 @@ class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
     assert_equal 1, PromoRegistration.find_by_referral_code("DEF456").aggregate_stats[PromoRegistration::FIRST_RUNS]
   end
 
-  test "makes the request in batches if > 1000 codes" do
+  test "makes the request in batches if > 100 codes" do
     Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
 
-    number_of_codes_needed = 2000 - PromoRegistration.count
+    number_of_codes_needed = PromoRegistrationsStatsFetcher::BATCH_SIZE * 2 - PromoRegistration.count
 
-    # Insert ~2000 referral codes
+    # Insert ~200 referral codes
     sql_values = ""
     number_of_codes_needed.times do
       sql_values += "('#{SecureRandom.hex(8)}', '#{active_promo_id}', '#{PromoRegistration::UNATTACHED}','#{Time.now}', '#{Time.now}'),"
@@ -73,46 +73,46 @@ class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
     sql = "INSERT into promo_registrations (referral_code, promo_id, kind, created_at, updated_at) values #{sql_values}"
     ActiveRecord::Base.connection.execute(sql)
 
-    assert_equal PromoRegistration.count, 2000
+    assert_equal PromoRegistration.count, 200
 
-    # stub response for first 1000
-    first_1000_ref_codes = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(1000).to_a.first
-    first_1000_ref_codes_query_string = query_string(first_1000_ref_codes)
-    first_1000_ref_codes_response = []
-    first_1000_ref_codes.each do |referral_code|
-      first_1000_ref_codes_response.push({"referral_code"=>"#{referral_code}",
+    # stub response for first 100
+    first_ref_code_batch = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(PromoRegistrationsStatsFetcher::BATCH_SIZE).to_a.first
+    first_ref_code_batch_query_string = query_string(first_ref_code_batch)
+    first_ref_code_batch_response = []
+    first_ref_code_batch.each do |referral_code|
+      first_ref_code_batch_response.push({"referral_code"=>"#{referral_code}",
                                           "ymd"=>"2018-04-29",
                                           "retrievals"=>1,
                                           "first_runs"=>0,
                                           "finalized"=>0})
     end
-    first_1000_ref_codes_response = first_1000_ref_codes_response.to_json
-    request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode#{first_1000_ref_codes_query_string}"
-    stub_request(:get, request_url).to_return(status: 200, body: first_1000_ref_codes_response)
+    first_ref_code_batch_response = first_ref_code_batch_response.to_json
+    request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode#{first_ref_code_batch_query_string}"
+    stub_request(:get, request_url).to_return(status: 200, body: first_ref_code_batch_response)
 
-    # stub response for second 1000
-    second_1000_ref_codes = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(1000).to_a.second
-    second_1000_ref_codes_query_string = query_string(second_1000_ref_codes)
-    second_1000_ref_codes_response = []
-    second_1000_ref_codes.each do |referral_code|
-      second_1000_ref_codes_response.push({"referral_code"=>"#{referral_code}",
+    # stub response for second 100
+    second_ref_codes_batch = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(PromoRegistrationsStatsFetcher::BATCH_SIZE).to_a.second
+    second_ref_codes_batch_query_string = query_string(second_ref_codes_batch)
+    second_ref_codes_batch_response = []
+    second_ref_codes_batch.each do |referral_code|
+      second_ref_codes_batch_response.push({"referral_code"=>"#{referral_code}",
                                           "ymd"=>"2018-04-29",
                                           "retrievals"=>3,
                                           "first_runs"=>0,
                                           "finalized"=>0})
     end
-    second_1000_ref_codes_response = second_1000_ref_codes_response.to_json
-    request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode#{second_1000_ref_codes_query_string}"
-    stub_request(:get, request_url).to_return(status: 200, body: second_1000_ref_codes_response)
+    second_ref_codes_batch_response = second_ref_codes_batch_response.to_json
+    request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode#{second_ref_codes_batch_query_string}"
+    stub_request(:get, request_url).to_return(status: 200, body: second_ref_codes_batch_response)
 
     # ensure two requests were made
     PromoRegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.all).perform
 
-    first_1000_ref_codes.each do |referral_code|
+    first_ref_code_batch.each do |referral_code|
       assert_equal PromoRegistration.find_by_referral_code(referral_code).aggregate_stats[PromoRegistration::RETRIEVALS], 1
     end
 
-    second_1000_ref_codes.each do |referral_code|
+    second_ref_codes_batch.each do |referral_code|
       assert_equal PromoRegistration.find_by_referral_code(referral_code).aggregate_stats[PromoRegistration::RETRIEVALS], 3
     end
   end
