@@ -42,7 +42,6 @@ Rails.application.routes.draw do
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do
         get :fetch
-        get :channels
         post :save
         post :update_logo
         post :update_background_image
