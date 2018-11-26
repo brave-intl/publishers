@@ -2,6 +2,8 @@
 class PromoRegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
 
+  BATCH_SIZE = 100
+
   def initialize(promo_registrations:)
     @referral_codes = promo_registrations.map { |promo_registration|
       promo_registration.referral_code
@@ -10,7 +12,7 @@ class PromoRegistrationsStatsFetcher < BaseApiClient
 
   def perform
     return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
-    @referral_codes.each_slice(1000).to_a.each do |referral_code_batch|
+    @referral_codes.each_slice(BATCH_SIZE).to_a.each do |referral_code_batch|
       query_string = query_string(referral_code_batch)
       response = connection.get do |request|
         request.options.params_encoder = Faraday::FlatParamsEncoder
