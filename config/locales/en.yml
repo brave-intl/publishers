@@ -245,6 +245,14 @@ en:
         Click the private access link below to log in to your account with
         <strong>Brave Payments</strong>. This link can only be used once.
       button: Log in to Brave Payments
+    login_partner_email:
+      salutation: Howdy %{name},
+      subject: You've been added as a partner on Brave Payments
+      body_html: |
+        You've been added as a partner on Brave Payments.
+        Click the private access link below to log in to your account with
+        <strong>Brave Payments</strong>. This link can only be used once.
+      button: Log in to Brave Payments
     notify_email_change:
       subject: Notification of Brave Publisher email change
       title: Notification of email change

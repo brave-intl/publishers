@@ -1,19 +1,19 @@
 class Admin::PublishersController < AdminController
   before_action :get_publisher
+  include Search
 
   def index
     @publishers = Publisher
 
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
-      @publishers = Publisher.where("publishers.id IN (#{sql(params[:q])})").distinct
+      search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
+      @publishers = Publisher.where(search_sql, search_query: search_query).distinct
     end
 
-    if params[:suspended].present?
-      @publishers = @publishers.suspended
-    end
+    @publishers = @publishers.suspended if params[:suspended].present?
 
-    @publishers = @publishers.paginate(page: params[:page])
+    @publishers = @publishers.order(created_at: :desc).paginate(page: params[:page])
   end
 
   def show
@@ -27,7 +27,18 @@ class Admin::PublishersController < AdminController
 
   def update
     @publisher.update(update_params)
-    redirect_to admin_publisher_path(current_publisher)
+
+    redirect_to admin_publisher_path(@publisher)
+  end
+
+  def make_partner
+    return unless @publisher.publisher?
+
+    @publisher.created_by = current_user
+    @publisher.update(role: Publisher::PARTNER)
+    MailerServices::PartnerLoginLinkEmailer.new(partner: @publisher).perform
+    flash[:notice] = "Successfully made partner"
+    redirect_to admin_publisher_path(@publisher)
   end
 
   def statement
@@ -82,50 +93,5 @@ class Admin::PublishersController < AdminController
     params.require(:publisher).permit(
       :excluded_from_payout
     )
-  end
-
-  private
-
-  def remove_prefix_if_necessary(query)
-    query = query.sub("publishers#uuid:", "")
-    query = query.sub("youtube#channel:", "")
-    query = query.sub("twitch#channel:", "")
-    query = query.sub("twitch#author:", "")
-    query = query.sub("twitter#channel:", "")
-  end
-
-  # Returns an array of publisher ids that match the query
-  def sql(query)
-    query = remove_prefix_if_necessary(query)
-    %{SELECT publishers.id
-      FROM   publishers
-             INNER JOIN(SELECT channels.*
-                        FROM   channels
-                               INNER JOIN site_channel_details
-                                       ON site_channel_details.id = channels.details_id
-                                          AND channels.details_type = 'SiteChannelDetails'
-                                          AND site_channel_details.brave_publisher_id ILIKE '%#{query}%'
-                        UNION ALL
-                        SELECT channels.*
-                        FROM   channels
-                               INNER JOIN youtube_channel_details
-                                       ON youtube_channel_details.id =
-                                          channels.details_id
-                                          AND youtube_channel_details.title ILIKE '%#{query}%'
-                                          OR youtube_channel_details.youtube_channel_id ILIKE '%#{query}%'
-                        UNION ALL
-                        SELECT channels.*
-                        FROM   channels
-                               INNER JOIN twitch_channel_details
-                                       ON twitch_channel_details.id = channels.details_id
-                                          AND twitch_channel_details.NAME ILIKE '%#{query}%')
-                                         c
-                     ON c.publisher_id = publishers.id
-      UNION ALL
-      SELECT publishers.id
-      FROM publishers
-      WHERE publishers.email ILIKE '%#{query}%'
-            OR publishers.name ILIKE '%#{query}%'
-            OR publishers.id::text = '#{query}'}
   end
 end

@@ -133,8 +133,12 @@ Rails.application.routes.draw do
         get :statement
         post :create_note
       end
+      post :make_partner
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
+
+    resources :partners, only: [:index, :new, :create]
+
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
