@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PromoRegistrationTest < ActiveSupport::TestCase
+class PotentialPaymentTest < ActiveSupport::TestCase
   test "can only pay a channel once for a given payout report" do
     potential_payment = potential_payments(:site)
     potential_payment_copy = potential_payment.dup
