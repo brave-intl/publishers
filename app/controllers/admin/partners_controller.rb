@@ -8,7 +8,7 @@ module Admin
       if params[:q].present?
         # Returns an ActiveRecord::Relation of publishers for pagination
         search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
-        @partners = Partner.where(search_sql, *[search_query] * 7).distinct
+        @partners = Partner.where(search_sql, search_query: search_query).distinct
       end
 
       @partners = @partners.suspended if params[:suspended].present?
@@ -27,7 +27,7 @@ module Admin
 
       if @partner.persisted? && (@partner.partner? || @partner.admin?)
         flash.now[:alert] = "Email is already a partner"
-        render "new"
+        render :new
       else
         # Ensure publisher gets the right role
         @partner.role = Publisher::PARTNER

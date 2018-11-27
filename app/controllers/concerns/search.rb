@@ -22,29 +22,29 @@ module Search
                                 INNER JOIN site_channel_details
                                         ON site_channel_details.id = channels.details_id
                                             AND channels.details_type = 'SiteChannelDetails'
-                                            AND site_channel_details.brave_publisher_id ILIKE ?
+                                            AND site_channel_details.brave_publisher_id ILIKE :search_query
                           UNION ALL
                           SELECT channels.*
                           FROM   channels
                                 INNER JOIN youtube_channel_details
                                         ON youtube_channel_details.id =
                                             channels.details_id
-                                            AND youtube_channel_details.title ILIKE ?
-                                            OR youtube_channel_details.youtube_channel_id ILIKE ?
+                                            AND youtube_channel_details.title ILIKE :search_query
+                                            OR youtube_channel_details.youtube_channel_id ILIKE :search_query
                           UNION ALL
                           SELECT channels.*
                           FROM   channels
                                 INNER JOIN twitch_channel_details
                                         ON twitch_channel_details.id = channels.details_id
-                                            AND twitch_channel_details.NAME ILIKE ?)
+                                            AND twitch_channel_details.NAME ILIKE :search_query)
                                           c
                       ON c.publisher_id = publishers.id
         UNION ALL
         SELECT publishers.id
         FROM publishers
-        WHERE publishers.email ILIKE ?
-              OR publishers.name ILIKE ?
-              OR publishers.id::text = ?
+        WHERE publishers.email ILIKE :search_query
+              OR publishers.name ILIKE :search_query
+              OR publishers.id::text = :search_query
       )
     }
   end
