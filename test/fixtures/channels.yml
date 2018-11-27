@@ -234,6 +234,16 @@ promo_enabled_site:
   verified: true
 
 promo_enabled_youtube:
-  publisher: promo_enable
+  publisher: promo_enabled
   details: promo_enabled_youtube_details (YoutubeChannelDetails)
   verified: true
+
+potentially_paid_site:
+  publisher: potentially_paid
+  verified: true
+  details: potentially_paid_site_details (SiteChannelDetails)
+
+potentially_paid_youtube:
+  publisher: potentially_paid
+  verified: true
+  details: potentially_paid_youtube_details (YoutubeChannelDetails)

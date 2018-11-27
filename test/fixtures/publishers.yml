@@ -268,3 +268,6 @@ locked_out_verifier:
 promo_enabled:
   email: "enabled@promo.org"
   name: "peter promo"
+
+potentially_paid:
+  email: "priscilla@potentiallypaid.org"

@@ -4,6 +4,8 @@ class PayoutReport < ApplicationRecord
   
   attr_encrypted :contents, key: :encryption_key, marshal: true
 
+  has_many :potential_payments
+
   scope :final, -> {
     where(final: true)
   }
@@ -12,15 +14,36 @@ class PayoutReport < ApplicationRecord
     Rails.application.secrets[:attr_encrypted_key]
   end
 
-  def self.total_amount
-    PayoutReport.sum { |payout_report| payout_report.amount.to_i } / 1E18
+  def amount
+    PotentialPayment.where(payout_report_id: id).sum { |potential_payment| potential_payment.amount.to_i }
   end
 
-  def self.total_fees
-    PayoutReport.sum { |payout_report| payout_report.fees.to_i } / 1E18
+  def fees
+    PotentialPayment.where(payout_report_id: id).sum { |potential_payment| potential_payment.fees.to_i }
   end
 
-  def self.total_payments
-    PayoutReport.sum(:num_payments)
+  def num_payments
+    PotentialPayment.where(payout_report_id: id).count
+  end
+
+  # Updates the JSON summary of the report downloaded by admins
+  def update_report_contents
+    payout_report_json = JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
+    self.contents = payout_report_json.to_json
+    save!
+  end
+
+  class << self
+    def total_amount
+      PayoutReport.sum { |payout_report| payout_report.amount }
+    end
+
+    def total_fees
+      PayoutReport.sum { |payout_report| payout_report.fees }
+    end
+
+    def total_payments
+      PayoutReport.sum { |payout_report| payout_report.num_payments }
+    end
   end
 end

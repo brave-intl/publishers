@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2018_11_28_143110) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -183,13 +182,25 @@ ActiveRecord::Schema.define(version: 2018_11_28_143110) do
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
-    t.string "amount"
-    t.string "fees"
-    t.integer "num_payments"
     t.text "encrypted_contents"
     t.string "encrypted_contents_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do | t|
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.uuid "channel_id"
+    t.string "kind", null: false
+    t.string "name", null: false
+    t.string "address", null: false
+    t.string "amount", null: false
+    t.string "fees", null: false
+    t.string "url"
+    t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
+    t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
+    t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
