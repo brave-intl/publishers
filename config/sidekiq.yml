@@ -51,8 +51,8 @@
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
     queue: transactional
-  GeneratePayoutReportJob:
+  EnqueuePublishersForPayoutJob:
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"
-    queue: low
+    queue: scheduler
 :verbose: true
