@@ -458,8 +458,13 @@ en:
       download: Download
       statement_file_name: BravePaymentsStatement
     suspended_error:
-      heading_html: Due to suspicious activity,<br/> your account is suspended.
-      body: Please contact support+publishers@basicattentiontoken.org if you believe that activities on your account are not aberrant or irregular.
+      heading_html: Your Account Is Under Review
+      body: >
+        We noticed some unusual activity on your account. We've suspended access while we take a closer look.
+        <br/><br/>
+        We know that this is inconvenient and we're sorry about that. But we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
+        <br/><br/>
+        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a> where a real human will read and reply to your message — normally within 48 hours.
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel
