@@ -119,6 +119,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :channels, only: [:index]
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
