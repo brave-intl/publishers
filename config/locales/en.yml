@@ -456,11 +456,13 @@ en:
       download: Download
       statement_file_name: BravePaymentsStatement
     suspended_error:
-      heading_html: Due to suspicious activity,<br/> your account is suspended.
+      heading_html: Your Account Is Under Review
       body: >
-        We try to keep the BAT User Growth Pool (UGP) fair for all parties involved via publishers.basicattentiontoken.org. However, the UGP is constantly a target for a lot of unnatural gain and activities, and we, unfortunately, need to distinguish between natural and unnatural activities.
+        We noticed some unusual activity on your account. We've suspended access while we take a closer look.
         <br/><br/>
-        While reviewing your activities, we noticed some unnatural activities on your account that we need to review with you. Your account will stay suspended while we review these activities with you. Please contact support+publishers@basicattentiontoken.org so we can get the conversation going.
+        We know that this is inconvenient and we're sorry about that. But we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
+        <br/><br/>
+        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at support+publishers@basicattentiontoken.org where a real human will read and reply to your message — normally within 48 hours.
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel
