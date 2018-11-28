@@ -23,8 +23,13 @@ class SiteChannelsController < ApplicationController
                          verification_github
                          verification_wordpress
                          download_verification_file)
-  before_action :update_site_verification_method,
-                only: %i(verify)
+  before_action :update_site_verification_method,   
+                only: %i(verification_dns_record
+                         verification_public_file
+                         verification_support_queue
+                         verification_github
+                         verification_wordpress)
+
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 only: %i(create)
 
@@ -132,14 +137,14 @@ class SiteChannelsController < ApplicationController
   end
 
   def update_site_verification_method
-    case params[:verification_method]
-      when "dns_record"
+    case params[:action]
+      when "verification_dns_record"
         current_channel.details.verification_method = "dns_record"
-      when "public_file"
+      when "verification_public_file"
         current_channel.details.verification_method = "public_file"
-      when "github"
+      when "verification_github"
         current_channel.details.verification_method = "github"
-      when "wordpress"
+      when "verification_wordpress"
         current_channel.details.verification_method = "wordpress"
       else
         raise "unknown action"
