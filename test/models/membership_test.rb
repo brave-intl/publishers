@@ -13,5 +13,8 @@ class MembershipTest < ActiveSupport::TestCase
 
     assert_equal small_partner.membership.organization, organization
     assert_equal organization.memberships.count, 2
+
+    Membership.create(organization: organization, member: small_partner)
+    assert_equal organization.memberships.count, 2
   end
 end

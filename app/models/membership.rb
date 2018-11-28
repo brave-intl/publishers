@@ -7,4 +7,8 @@ class Membership < ActiveRecord::Base
 
   validates_presence_of :organization_id
   validates_presence_of :user_id
+
+  # (Albert Wang) Honestly haven't thought this through as to whether or not an user could be part of different organizations.
+  # I think we might allow 1 org for advertising, 1 org for publishing.
+  validates_uniqueness_of :user_id, scope: :organization_id
 end
