@@ -1,5 +1,5 @@
 # Fetches and updates the stats for all types of referral codes
-class PromoRegistrationsStatsFetcher < BaseApiClient
+class Promo::RegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
 
   BATCH_SIZE = 100
