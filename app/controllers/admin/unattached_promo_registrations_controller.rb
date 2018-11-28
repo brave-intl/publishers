@@ -60,13 +60,23 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
                 notice: "#{referral_codes.count} codes updated to '#{referral_code_status}' status."
   end
 
-  def assign
+  def assign_campaign
     referral_codes = params[:referral_codes]
     promo_campaign_target = PromoCampaign.where(name: params[:promo_campaign_target]).first
     promo_registrations = PromoRegistration.where(referral_code: referral_codes)
     promo_registrations.update_all(promo_campaign_id: promo_campaign_target.id)
     redirect_to admin_unattached_promo_registrations_path(filter: params[:promo_campaign_target]),
                 notice: "Assigned #{referral_codes.count} codes to campaign '#{params[:promo_campaign_target]}'."
+  end
+
+  def assign_installer_type
+    referral_codes = params[:referral_codes]
+    installer_type = params[:installer_type]
+    promo_registrations = PromoRegistration.where(referral_code: referral_codes)
+    Promo::RegistrationInstallerTypeSetter.new(promo_registrations: promo_registrations,
+                                               installer_type: installer_type).perform
+    redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
+                notice: "Assigned #{referral_codes.count} installer type to '#{installer_type}'."
   end
 
   private

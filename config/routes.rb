@@ -147,7 +147,8 @@ Rails.application.routes.draw do
       collection do
         get :report
         patch :update_statuses
-        patch :assign
+        patch :assign_campaign
+        put :assign_installer_type
       end
     end
     resources :promo_campaigns, only: %i(create)
