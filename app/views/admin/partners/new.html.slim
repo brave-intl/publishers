@@ -3,7 +3,7 @@
     .notifications
         .alert.alert-warning.flash = msg
 
-h1 Create a new Partner
+h1 Create a new Partner and Organization
 
 = form_with url: admin_partners_path, method: :post do |f|
   .form-group
@@ -12,4 +12,8 @@ h1 Create a new Partner
         class: "form-control",
         placeholder: "Enter Partner email",
         required: true
-  = submit_tag "Create Partner", class: "btn btn-block btn-primary"
+    = f.text_field :organization_name,
+        class: "form-control",
+        placeholder: "Enter Organization Name",
+        required: true
+  = submit_tag "Create Partner and Organization", class: "btn btn-block btn-primary"
