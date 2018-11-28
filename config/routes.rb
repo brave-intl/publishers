@@ -137,6 +137,7 @@ Rails.application.routes.draw do
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
+    resources :organizations, only: [:index, :show]
     resources :partners, only: [:index, :new, :create]
 
     namespace :stats do
