@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_134245) do
+ActiveRecord::Schema.define(version: 2018_11_19_213110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -210,9 +210,11 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.jsonb "stats", default: "{}"
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
+    t.uuid "publisher_id"
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
+    t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
   end
 
   create_table "publisher_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -259,25 +261,27 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "visible", default: true
-    t.datetime "agreed_to_tos"
     t.boolean "promo_enabled_2018q1", default: false
+    t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
     t.jsonb "promo_stats_2018q1", default: {}, null: false
     t.datetime "promo_stats_updated_at_2018q1"
     t.text "role", default: "publisher"
-    t.datetime "javascript_last_detected_at"
     t.datetime "default_currency_confirmed_at"
+    t.datetime "javascript_last_detected_at"
     t.boolean "excluded_from_payout", default: false, null: false
+    t.uuid "created_by_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
+    t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -305,6 +309,7 @@ ActiveRecord::Schema.define(version: 2018_10_16_134245) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
   end
 

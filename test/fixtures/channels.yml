@@ -227,3 +227,13 @@ locked_out_site:
   publisher: locked_out_verifier
   details: locked_out_site_details (SiteChannelDetails)
   verified: false
+
+promo_enabled_site:
+  publisher: promo_enabled
+  details: promo_enabled_site_details (SiteChannelDetails)
+  verified: true
+
+promo_enabled_youtube:
+  publisher: promo_enable
+  details: promo_enabled_youtube_details (YoutubeChannelDetails)
+  verified: true

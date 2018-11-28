@@ -4,11 +4,13 @@ div.row
       header.panel-heading
         h4 Publishers
       = form_tag(admin_publishers_path, method: "get")
-        = text_field_tag(:q)
-        = submit_tag("Search")
-        .filters
-          = label_tag('Suspended')
-          = check_box_tag('suspended', 1, params[:suspended].present?)
+        .input-group
+            = text_field_tag(:q, params[:q], class:'form-control')
+            .input-group-btn
+                = submit_tag("Search", class: 'btn btn-default')
+        label
+            = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
+            = "Suspended"
       br
       div.panel-body
         div.adv-table

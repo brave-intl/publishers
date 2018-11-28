@@ -20,26 +20,13 @@ module PromosHelper
     {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}, "aggregate"=> {"downloads"=> 200, "finalized"=> 30}}
   end
 
-  def total_referral_downloads(publisher)
-    stats = publisher.promo_stats_2018q1
-    if publisher.promo_stats_2018q1.blank?
-      return 0
-    elsif stats["aggregate"]["downloads"].nil?
-      return 0
-    else
-      return stats["aggregate"]["downloads"]
-    end
-  end
+  def publisher_referral_totals(publisher)
+    aggregate_stats = PromoRegistration.aggregate_stats(publisher.promo_registrations)
 
-  def confirmed_referral_downloads(publisher)
-    stats = publisher.promo_stats_2018q1
-    if publisher.promo_stats_2018q1.blank?
-      return 0
-    elsif stats["aggregate"]["finalized"].nil?
-      return 0
-    else
-      return stats["aggregate"]["finalized"]
-    end
+    {
+      PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
+      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED]
+    }
   end
 
   def referral_url(referral_code)

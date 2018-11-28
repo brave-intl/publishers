@@ -245,6 +245,14 @@ en:
         Click the private access link below to log in to your account with
         <strong>Brave Payments</strong>. This link can only be used once.
       button: Log in to Brave Payments
+    login_partner_email:
+      salutation: Howdy %{name},
+      subject: You've been added as a partner on Brave Payments
+      body_html: |
+        You've been added as a partner on Brave Payments.
+        Click the private access link below to log in to your account with
+        <strong>Brave Payments</strong>. This link can only be used once.
+      button: Log in to Brave Payments
     notify_email_change:
       subject: Notification of Brave Publisher email change
       title: Notification of email change
@@ -360,6 +368,8 @@ en:
       invalid_email: There was an unexpected error creating your account. Please make sure you have provided a full email address.
       email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
       access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
+    create_auth_token:
+      access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
     emailed_auth_token:
       missing_email: We seem to be missing some info. Please make sure you provided an email address.
       unfound_alert_html: |
@@ -456,8 +466,13 @@ en:
       download: Download
       statement_file_name: BravePaymentsStatement
     suspended_error:
-      heading_html: Due to suspicious activity,<br/> your account is suspended.
-      body: Please contact support+publishers@basicattentiontoken.org if you believe that activities on your account are not aberrant or irregular.
+      heading_html: Your Account Is Under Review
+      body: >
+        We noticed some unusual activity on your account. We've suspended access while we take a closer look.
+        <br/><br/>
+        We know that this is inconvenient and we're sorry about that. But we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
+        <br/><br/>
+        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a> where a real human will read and reply to your message — normally within 48 hours.
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel
@@ -493,7 +508,7 @@ en:
       header: "Refer Your Fans"
       limited_time_offer: "Limited Time Offer"
       sub_header_one: "Referral Promo"
-      sub_header_two: "and Earn Tokens"      
+      sub_header_two: "and Earn Tokens"
       description: "Bring your fans to the Brave browser and grow your revenue!"
       referral_reward: "1 referral = about 5 USD in tokens"
       button: "Activate Promo"
@@ -600,6 +615,7 @@ en:
       no_https_alt: Your domain is NOT using HTTPS.
       no_https: Uh oh! Your domain is NOT using HTTPS. You will need to fix that before continuing.
       button: Check for HTTPS
+      https_error_encountered: "The following error was encountered: "
     new:
       heading: Enter Domain Info
     progress:

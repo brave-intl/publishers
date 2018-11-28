@@ -31,6 +31,18 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     assert_nil result[:web_host]
   end
 
+  test "sets https_error when there is an OpenSSL::SSL::SSLError exception" do
+    stub_request(:get, "https://badsll.mystandardsite.com").
+        to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
+
+    result = SiteChannelHostInspector.new(brave_publisher_id: "badsll.mystandardsite.com").perform
+
+    refute result[:host_connection_verified]
+    refute result[:https]
+    assert_equal result[:https_error], 'SSL_connect returned=1 errno=0 state=error: certificate verify failed'
+    assert_nil result[:web_host]
+  end
+
   test "returns a nil web_host if site does not support a known method" do
     stub_request(:get, "https://mystandardsite.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite hosted with apache</h1></body></html>", headers: {})
@@ -90,7 +102,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
+    assert result[:response].is_a?(Errno::ECONNREFUSED)
   end
 
   test "connection to site fails when https fails and http is require_https is true" do
@@ -103,7 +115,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
+    assert result[:response].is_a?(Errno::ECONNREFUSED)
   end
 
   test "follows local redirects" do
@@ -145,13 +157,13 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
-    assert result[:response].is_a?(Publishers::Fetch::ConnectionFailedError)
+    assert result[:response].is_a?(Publishers::Fetch::RedirectError)
     assert_equal "non local redirects prohibited", result[:response].to_s
   end
 
   test "follows all redirects if follow_all_redirects is enabled" do
     stub_request(:get, "https://mywordpress.com").
-        to_return(status: 301, headers: { location: "https://mywordpress2.com/index.html"})
+       to_return(status: 301, headers: { location: "https://mywordpress2.com/index.html"})
 
     stub_request(:get, "https://mywordpress2.com/index.html").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})

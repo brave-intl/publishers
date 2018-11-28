@@ -32,7 +32,7 @@ class PublisherWalletGetter < BaseApiClient
       # Always override owner balance with transaction table value
       contributions = {
         "probi" => total_balance_bat(accounts) * BigDecimal.new('1.0e18'),
-        "amount" => total_balance_bat(accounts) 
+        "amount" => total_balance_bat(accounts)
       }
 
       wallet_hash["contributions"] = contributions
@@ -95,7 +95,7 @@ class PublisherWalletGetter < BaseApiClient
       # Override owner balance with transaction table value
       if wallet_hash.dig("contributions", "probi")
         wallet_hash["contributions"]["probi"] = total_balance_bat(accounts).to_d * BigDecimal.new('1.0e18')
-        wallet_hash["contributions"]["amount"] = total_balance_bat(accounts) 
+        wallet_hash["contributions"]["amount"] = total_balance_bat(accounts)
       end
 
       # Convert accounts into Eyeshade::Wallet format

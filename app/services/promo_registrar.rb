@@ -15,7 +15,11 @@ class PromoRegistrar < BaseApiClient
         referral_code = result[:referral_code]
         should_update_promo_server = result[:should_update_promo_server]
         if referral_code.present?
-          promo_registration = PromoRegistration.new(channel_id: channel.id, promo_id: @promo_id, kind: "channel", referral_code: referral_code)
+          promo_registration = PromoRegistration.new(channel_id: channel.id,
+                                                     promo_id: @promo_id,
+                                                     kind: PromoRegistration::CHANNEL,
+                                                     publisher_id: @publisher.id,
+                                                     referral_code: referral_code)
           success = promo_registration.save!
           if success && should_update_promo_server
             PromoChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform

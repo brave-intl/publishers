@@ -23,7 +23,7 @@ class PromoRegistrarUnattachedTest < ActiveJob::TestCase
     # verify one more promo registration was created
     assert_equal 1, (current_promo_registration_count - prev_promo_registration_count)
 
-    created_promo_registration = PromoRegistration.order("created_at").first
+    created_promo_registration = PromoRegistration.order("created_at").last
 
     # verify the new promo registration is created correctly
     assert_equal created_promo_registration.referral_code, "NDF915"

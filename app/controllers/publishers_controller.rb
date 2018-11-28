@@ -266,8 +266,7 @@ class PublishersController < ApplicationController
     @should_throttle = should_throttle_create_auth_token?
     throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
     if !throttle_legit
-      render(:new_auth_token)
-      return
+      return redirect_to :new_auth_token_publishers, alert: t(".access_throttled")
     end
 
     @publisher = Publisher.where(email: @publisher_email).take
@@ -364,9 +363,6 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
-    if current_publisher.promo_stats_status == :update
-      Sync::PublisherPromoStatsJob.perform_later(publisher_id: current_publisher.id)
-    end
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     @wallet = current_publisher.wallet
