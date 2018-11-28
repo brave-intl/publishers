@@ -511,7 +511,7 @@ DEPENDENCIES
   public_suffix (~> 3.0.2)
   puma (= 3.10)
   rack-attack (~> 5.0)
-  rails (~> 5.2.0)
+  rails (~> 5.2.1)
   rails-controller-testing
   railties (~> 5.2.0)
   recaptcha (~> 3.3)
