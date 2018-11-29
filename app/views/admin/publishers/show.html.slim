@@ -34,10 +34,10 @@
         - if @publisher.promo_enabled_2018q1
           .db-info-row
             .db-field = "Referral downloads:"
-            .db-value = total_referral_downloads(@publisher)
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
           .db-info-row
             .db-field = "Referral confirmations:"
-            .db-value = confirmed_referral_downloads(@publisher)
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
       #statement-section.split-row
         h3.admin-header = "Statements"
         .statement
