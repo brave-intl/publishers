@@ -271,7 +271,7 @@ module PublishersHelper
   def publishers_statement_file_name(publisher_statement_period)
     "#{t("publishers.statements.statement_file_name")}-#{publisher_statement_period}.html"
   end
-  
+
   def publisher_filtered_verification_token(publisher)
     if publisher.supports_https?
       publisher.verification_token

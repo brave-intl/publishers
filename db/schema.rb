@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2018_11_27_174413) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -271,8 +273,10 @@ ActiveRecord::Schema.define(version: 2018_11_27_174413) do
     t.boolean "excluded_from_payout", default: false, null: false
     t.uuid "default_banner"
     t.boolean "default_banner_mode", default: false, null: false
+    t.uuid "created_by_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
+    t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
   end
 

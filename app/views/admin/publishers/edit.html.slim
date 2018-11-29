@@ -9,7 +9,8 @@
     h2 = @publisher.name
     = form_for(@publisher, url: admin_publisher_path, method: :patch) do |f|
       .form-group
-        = f.label "Uphold widget disabled"
-        = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
+        label
+          = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
+          = " Uphold widget disabled"
       .form-group
         = f.submit class: "btn btn-primary"
