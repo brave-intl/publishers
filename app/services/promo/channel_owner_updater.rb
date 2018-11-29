@@ -1,5 +1,5 @@
 # Updates the promo server when a channel has been deleted or moved owners
-class PromoChannelOwnerUpdater < BaseApiClient
+class Promo::ChannelOwnerUpdater < BaseApiClient
   include PromosHelper
 
   def initialize(publisher_id: "removed", referral_code:)

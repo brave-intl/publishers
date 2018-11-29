@@ -20,7 +20,7 @@ class DeletePublisherChannelJob < ApplicationJob
 
     # Update Eyeshade and Promo
     if success && channel_is_verified && should_update_promo_server
-      PromoChannelOwnerUpdater.new(referral_code: referral_code).perform
+      Promo::ChannelOwnerUpdater.new(referral_code: referral_code).perform
     end
 
     success

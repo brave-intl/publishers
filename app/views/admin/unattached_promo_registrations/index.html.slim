@@ -34,6 +34,7 @@
           th 
           th = "Code"
           th = "Campaign"
+          th = "Installer Type"
           th
             = "Status"
             span.tf-tooltip
@@ -64,6 +65,7 @@
               td = check_box_tag "referral_codes[]", "#{promo_registration.referral_code}", 1
               td = promo_registration.referral_code
               td = promo_registration.promo_campaign&.name
+              td = promo_registration.installer_type.nil? ? PromoRegistration::STANDARD : promo_registration.installer_type
               td = promo_registration.active ? "active" : "paused"
               td = promo_registration_aggregate_stats[PromoRegistration::RETRIEVALS] || 0
               td = promo_registration_aggregate_stats[PromoRegistration::FIRST_RUNS] || 0
@@ -77,6 +79,13 @@
               .flex-one = select_tag :promo_campaign_target, options_for_select(@campaigns)
               = hidden_field_tag :filter, params[:filter]
               = submit_tag "Assign", id: "assign-to-campaign", class: "btn btn-primary"
+          .panel
+            .panel--sub-panel-header = "Assign installer type to codes"
+            hr
+            .flex.flex-one
+              .flex-one = select_tag :installer_type, options_for_select([["Mobile", PromoRegistration::MOBILE], ["Silent", PromoRegistration::SILENT], ["Standard", PromoRegistration::STANDARD]])
+              = hidden_field_tag :filter, params[:filter]
+              = submit_tag "Assign", id: "assign-installer-type", class: "btn btn-primary"
           .panel
             .panel--sub-panel-header = "Update code statuses"
             hr

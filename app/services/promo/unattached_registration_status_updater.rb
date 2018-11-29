@@ -1,5 +1,5 @@
 # Tells the promo server to pause or unpause tracking for a list of referral codes
-class PromoUnattachedStatusUpdater < BaseApiClient
+class Promo::UnattachedRegistrationStatusUpdater < BaseApiClient
   include PromosHelper
   STATUSES = ["active", "paused"].freeze
 

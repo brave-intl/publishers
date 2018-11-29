@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_19_213110) do
+ActiveRecord::Schema.define(version: 2018_11_28_143110) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -211,6 +210,7 @@ ActiveRecord::Schema.define(version: 2018_11_19_213110) do
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
     t.uuid "publisher_id"
+    t.string "installer_type"
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true

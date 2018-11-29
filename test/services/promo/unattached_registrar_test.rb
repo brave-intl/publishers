@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class PromoRegistrarUnattachedTest < ActiveJob::TestCase
+class Promo::UnattachedRegistrarTest < ActiveJob::TestCase
   before(:example) do
     @prev_promo_api_uri = Rails.application.secrets[:api_promo_base_uri]
   end
@@ -16,7 +16,7 @@ class PromoRegistrarUnattachedTest < ActiveJob::TestCase
 
     stub_request(:put, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/referral_code/unattached?number=1")
       .to_return(status: 200, body: [{"referral_code":"NDF915","ts":"2018-10-12T20:06:50.125Z","type":"unattached","owner_id":"","channel_id":"","status":"active"}].to_json)
-    PromoRegistrarUnattached.new(number: 1).perform
+    Promo::UnattachedRegistrar.new(number: 1).perform
 
     current_promo_registration_count = PromoRegistration.count
 
@@ -32,7 +32,7 @@ class PromoRegistrarUnattachedTest < ActiveJob::TestCase
   end
 
   test "returns nil if number is <= 0" do
-    result = PromoRegistrarUnattached.new(number: 0).perform
+    result = Promo::UnattachedRegistrar.new(number: 0).perform
     assert_nil result
   end
 end

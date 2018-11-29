@@ -87,7 +87,7 @@ gem "rack-attack", "~> 5.0"
 
 gem 'railties', "~> 5.2.0"
 
-gem "rails", "~> 5.2.1"
+gem "rails", "~> 5.2.2.rc1"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
