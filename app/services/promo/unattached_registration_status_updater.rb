@@ -14,7 +14,7 @@ class Promo::UnattachedRegistrationStatusUpdater < BaseApiClient
 
   def perform
     return if @referral_codes.count <= 0
-    return true if perform_promo_offline?
+    return perform_offline if perform_promo_offline?
     response = connection.patch do |request|
       request.options.params_encoder = Faraday::FlatParamsEncoder
       request.headers["Authorization"] = api_authorization_header
@@ -23,11 +23,13 @@ class Promo::UnattachedRegistrationStatusUpdater < BaseApiClient
       request.body = {status: @status}.to_json
     end
 
-    if response.status == 200
-      @status == "active" ? @promo_registrations.update_all(active: true) : @promo_registrations.update_all(active: false)
-    end
+    @status == "active" ? @promo_registrations.update_all(active: true) : @promo_registrations.update_all(active: false)
 
     response
+  end
+
+  def perform_offline
+    @status == "active" ? @promo_registrations.update_all(active: true) : @promo_registrations.update_all(active: false)
   end
 
   private
