@@ -21,7 +21,7 @@ class Promo::RegistrationInstallerTypeSetter < BaseApiClient
   end
 
   def perform_offline
-    true
+    @promo_registrations.update_all(installer_type: @installer_type)
   end
 
   private
