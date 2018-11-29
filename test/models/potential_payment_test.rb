@@ -26,4 +26,10 @@ class PotentialPaymentTest < ActiveSupport::TestCase
       e[:error] == "Publisher #{potential_payment_copy.publisher_id} already included in the payout report #{potential_payment_copy.payout_report_id}."
     }
   end
+
+  test "channel_id is not present if the kind is referral" do
+    potential_payment = potential_payments(:publisher)
+    potential_payment.channel_id = channels(:verified).id
+    refute potential_payment.valid?
+  end
 end
