@@ -423,40 +423,19 @@ class PublishersController < ApplicationController
     end
   end
 
-  def banner_editor_data
-    # Handle edge case where user hasn't created channels yet.
-    no_channels_banner = current_publisher.site_banners.find_by(channel_id: "00000000-0000-0000-0000-000000000000")
-    if no_channels_banner && !current_publisher.channels.length.zero?
-      no_channels_banner.delete
+  def get_banner_data
+    create_banners();
+    default_banner_mode = current_publisher.default_banner_mode
+    default_banner = {"id" => current_publisher.default_banner, "name" => "Default", "type" => "Default"}
+    channel_banners = []
+    current_publisher.site_banners.where.not(id: current_publisher.default_banner).each do |c|
+      channel = current_publisher.channels.find_by(id: c.channel_id)
+      if channel
+        channel_banner = {"id" => c.id, "name" => channel.publication_title, "type" => channel.details_type}
+        channel_banners.push(channel_banner)
+      end
     end
-
-    channels = []
-    current_publisher.channels.each do |c|
-      channel = {
-                "id" => c.id,
-                "name" => c.publication_title,
-                "type" => c.details_type
-                }
-      channels.push(channel)
-    end
-    # Handle edge case where user hasn't created channels yet.
-    if current_publisher.channels.length.zero?
-      data = no_channels_banner_data
-      return render(json: data.to_json)
-    end
-
-    default_banner = current_publisher.default_banner
-
-    if default_banner
-      default_id = default_banner.channel_id
-      channel_index = channels.index { |c| c["id"] == default_id }
-    end
-
-    data = {}
-    data[:channels] = channels
-    data[:channel_mode] = default_banner.nil?
-    data[:channel_index] = channel_index || 0
-
+    data = {"default_banner_mode" => default_banner_mode, "default_banner" => default_banner, "channel_banners" => channel_banners}
     render(json: data.to_json)
   end
 
@@ -466,8 +445,19 @@ class PublishersController < ApplicationController
     if current_publisher.can_create_uphold_cards? &&
       current_publisher.default_currency_confirmed_at.present? &&
       current_publisher.wallet.available_currencies.exclude?(current_publisher.default_currency)
-
       CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
+    end
+  end
+
+  def create_banners
+    if current_publisher.default_banner.nil?
+      default_banner = SiteBanner.create_banner(current_publisher.id, nil)
+      current_publisher.update!(default_banner: default_banner.id)
+    end
+    current_publisher.channels.each do |channel|
+      if current_publisher.site_banners.find_by(channel_id: channel.id).nil?
+        SiteBanner.create_banner(current_publisher.id, channel.id)
+      end
     end
   end
 
@@ -590,13 +580,5 @@ class PublishersController < ApplicationController
 
   def update_sendgrid(publisher:, prior_email: nil)
     RegisterPublisherWithSendGridJob.perform_later(publisher.id, prior_email)
-  end
-
-  def no_channels_banner_data
-    return {
-      "channels": [{"id" => "00000000-0000-0000-0000-000000000000", "name" => " ", "type" => "SiteChannelDetails"}],
-      "channel_mode": false,
-      "channel_index": 0
-    }
   end
 end

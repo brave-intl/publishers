@@ -25,6 +25,8 @@ class Channel < ApplicationRecord
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
+  has_one :site_banner
+
   belongs_to :contested_by_channel, class_name: "Channel"
 
   accepts_nested_attributes_for :details

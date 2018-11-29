@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       get :statement
       get :statements
       get :uphold_status
-      get :banner_editor_data
+      get :get_banner_data
       patch :verify
       patch :update
       patch :complete_signup
@@ -41,10 +41,7 @@ Rails.application.routes.draw do
     end
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do
-        get :fetch
-        post :save
-        post :update_logo
-        post :update_background_image
+        post :set_default_banner_mode
       end
     end
   end

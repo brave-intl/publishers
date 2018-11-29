@@ -35,15 +35,16 @@ class JsonBuilders::ChannelsJsonBuilder
           excluded = false
         end
 
-        # Add banners - if default exists add to all channels, else add per channel
+        # Add banners - if default_banner_mode=true use default_banner for all channels, else add channel_banner
         publisher = Publisher.find_by(id: verified_channel.publisher_id)
 
         if publisher
-          default_banner = publisher.default_banner
+          default_banner_mode = publisher.default_banner_mode
+          default_banner = publisher.site_banners.find_by(id: publisher.default_banner)
           channel_banner = publisher.site_banners.find_by(channel_id: verified_channel.id)
         end
 
-        if default_banner
+        if default_banner_mode
           channels.push([verified_channel.details.channel_identifier, true, excluded, default_banner.read_only_react_property])
         elsif channel_banner
           channels.push([verified_channel.details.channel_identifier, true, excluded, channel_banner.read_only_react_property])

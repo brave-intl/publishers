@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_20_193230) do
+ActiveRecord::Schema.define(version: 2018_11_27_174413) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -261,15 +260,17 @@ ActiveRecord::Schema.define(version: 2018_11_20_193230) do
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "visible", default: true
-    t.datetime "agreed_to_tos"
     t.boolean "promo_enabled_2018q1", default: false
+    t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
     t.jsonb "promo_stats_2018q1", default: {}, null: false
     t.datetime "promo_stats_updated_at_2018q1"
     t.text "role", default: "publisher"
-    t.datetime "javascript_last_detected_at"
     t.datetime "default_currency_confirmed_at"
+    t.datetime "javascript_last_detected_at"
     t.boolean "excluded_from_payout", default: false, null: false
+    t.uuid "default_banner"
+    t.boolean "default_banner_mode", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
@@ -284,7 +285,7 @@ ActiveRecord::Schema.define(version: 2018_11_20_193230) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "site_banners", force: :cascade do |t|
+  create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
     t.text "title", null: false
     t.text "description", null: false
@@ -293,7 +294,6 @@ ActiveRecord::Schema.define(version: 2018_11_20_193230) do
     t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "default", default: false, null: false
     t.uuid "channel_id"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
@@ -309,8 +309,8 @@ ActiveRecord::Schema.define(version: 2018_11_20_193230) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "stats", default: "{}", null: false
     t.string "https_error"
+    t.jsonb "stats", default: "{}", null: false
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
