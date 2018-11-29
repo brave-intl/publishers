@@ -91,7 +91,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     assert_match "ABC123", response.body
   end
 
-  test "#assign assigns codes to a campaign" do
+  test "#assign_campaign assigns codes to a campaign" do
     admin = publishers(:admin)
     sign_in admin
 
@@ -99,13 +99,30 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     promo_registration_2 = PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: active_promo_id)
     PromoCampaign.create!(name: "October 2018")
 
-    patch(assign_admin_unattached_promo_registrations_path, params: {referral_codes: ["ABC123", "DEF456"], promo_campaign_target: "October 2018"})
+    patch(assign_campaign_admin_unattached_promo_registrations_path, params: {referral_codes: ["ABC123", "DEF456"], promo_campaign_target: "October 2018"})
 
     campaign = PromoCampaign.where(name: "October 2018").first
     
     assert_equal campaign.promo_registrations.count, 2
     assert campaign.promo_registrations.include?(promo_registration_1)
     assert campaign.promo_registrations.include?(promo_registration_2)
+  end
+
+  test "#assign_installer_type assigns installer type to codes" do
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194" # Turn on external requests
+    admin = publishers(:admin)
+    sign_in admin
+
+    promo_registration_1 = PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: active_promo_id)
+    promo_registration_2 = PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: active_promo_id)
+
+    stub_request(:put, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/referral/installerType").
+      to_return(status: 200)
+
+    put(assign_installer_type_admin_unattached_promo_registrations_path, params: {referral_codes: ["ABC123", "DEF456"], installer_type: PromoRegistration::MOBILE})
+
+    assert_equal promo_registration_1.reload.installer_type, PromoRegistration::MOBILE
+    assert_equal promo_registration_2.reload.installer_type, PromoRegistration::MOBILE
   end
 
   test "cannot #create more than 50 codes at a time" do
@@ -118,4 +135,5 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
 
     assert_equal flash[:alert], "Can't create more than 50 codes at a time."
   end
+
 end

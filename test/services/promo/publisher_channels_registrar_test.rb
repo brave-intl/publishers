@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class PromoRegistrarTest < ActiveJob::TestCase
+class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
   include PromosHelper
 
   before(:example) do
@@ -16,7 +16,7 @@ class PromoRegistrarTest < ActiveJob::TestCase
     publisher = publishers(:completed) # has one verified channel
 
     assert_difference "PromoRegistration.count", 1 do
-      PromoRegistrar.new(publisher: publisher).perform
+      Promo::PublisherChannelsRegistrar.new(publisher: publisher).perform
     end
   end
 
@@ -24,7 +24,7 @@ class PromoRegistrarTest < ActiveJob::TestCase
     publisher = publishers(:default) # has two unverified channels
 
     assert_no_difference "PromoRegistration.count" do
-      PromoRegistrar.new(publisher: publisher).perform
+      Promo::PublisherChannelsRegistrar.new(publisher: publisher).perform
     end
   end
 
@@ -32,7 +32,7 @@ class PromoRegistrarTest < ActiveJob::TestCase
     publisher = publishers(:completed)
     channel = publisher.channels.first
 
-    registrar = PromoRegistrar.new(publisher: publisher)
+    registrar = Promo::PublisherChannelsRegistrar.new(publisher: publisher)
 
     # verify we make the call once
     make_first_api_call = registrar.instance_eval { should_register_channel?(channel) }
@@ -69,7 +69,7 @@ class PromoRegistrarTest < ActiveJob::TestCase
       .to_return(status: 200, body: [].to_json)
 
     assert_difference "PromoRegistration.count", 1 do
-      PromoRegistrar.new(publisher: publisher).perform
+      Promo::PublisherChannelsRegistrar.new(publisher: publisher).perform
     end
 
     assert_equal PromoRegistration.order("created_at").last.referral_code, "COM001"

@@ -1,5 +1,5 @@
 # Creates a report to be converted into tables and downloaded by admins
-class PromoReportGenerator < BaseService
+class Promo::RegistrationStatsReportGenerator < BaseService
   include PromosHelper
 
   def initialize(referral_codes:, start_date:, end_date:, reporting_interval:)
@@ -12,7 +12,7 @@ class PromoReportGenerator < BaseService
   def perform
     # Fetch the most recent stats
     promo_registrations = PromoRegistration.where(referral_code: @referral_codes)
-    PromoRegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
+    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
     promo_registrations.reload
 
     # Build the report contents

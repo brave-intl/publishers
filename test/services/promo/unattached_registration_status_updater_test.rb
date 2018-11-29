@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class PromoUnattachedStatusUpdaterTest < ActiveJob::TestCase
+class Promo::UnattachedRegistrationStatusUpdaterTest < ActiveJob::TestCase
   include PromosHelper
 
   before(:example) do
@@ -25,7 +25,7 @@ class PromoUnattachedStatusUpdaterTest < ActiveJob::TestCase
     stub_request(:patch, request_url)
       .with(body: request_body)
       .to_return(status: 200)
-    response = PromoUnattachedStatusUpdater.new(promo_registrations: PromoRegistration.all, status: "paused").perform
+    response = Promo::UnattachedRegistrationStatusUpdater.new(promo_registrations: PromoRegistration.all, status: "paused").perform
     assert_equal response.status, 200 
   end
 end

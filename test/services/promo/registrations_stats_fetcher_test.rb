@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
+class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
   include PromosHelper
 
   before(:example) do
@@ -52,7 +52,7 @@ class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
       .to_return(status: 200, body: stubbed_response_body)
 
     promo_registrations = PromoRegistration.where(referral_code: ["ABC123", "DEF456"])
-    PromoRegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
+    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
 
     assert_equal 2, PromoRegistration.find_by_referral_code("ABC123").aggregate_stats[PromoRegistration::FIRST_RUNS]
     assert_equal 1, PromoRegistration.find_by_referral_code("DEF456").aggregate_stats[PromoRegistration::FIRST_RUNS]
@@ -61,7 +61,7 @@ class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
   test "makes the request in batches if > 100 codes" do
     Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
 
-    number_of_codes_needed = PromoRegistrationsStatsFetcher::BATCH_SIZE * 2 - PromoRegistration.count
+    number_of_codes_needed = Promo::RegistrationsStatsFetcher::BATCH_SIZE * 2 - PromoRegistration.count
 
     # Insert ~200 referral codes
     sql_values = ""
@@ -76,7 +76,7 @@ class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
     assert_equal PromoRegistration.count, 200
 
     # stub response for first 100
-    first_ref_code_batch = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(PromoRegistrationsStatsFetcher::BATCH_SIZE).to_a.first
+    first_ref_code_batch = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(Promo::RegistrationsStatsFetcher::BATCH_SIZE).to_a.first
     first_ref_code_batch_query_string = query_string(first_ref_code_batch)
     first_ref_code_batch_response = []
     first_ref_code_batch.each do |referral_code|
@@ -91,7 +91,7 @@ class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
     stub_request(:get, request_url).to_return(status: 200, body: first_ref_code_batch_response)
 
     # stub response for second 100
-    second_ref_codes_batch = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(PromoRegistrationsStatsFetcher::BATCH_SIZE).to_a.second
+    second_ref_codes_batch = PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(Promo::RegistrationsStatsFetcher::BATCH_SIZE).to_a.second
     second_ref_codes_batch_query_string = query_string(second_ref_codes_batch)
     second_ref_codes_batch_response = []
     second_ref_codes_batch.each do |referral_code|
@@ -106,7 +106,7 @@ class PromoRegistrationsStatsFetcherTest < ActiveJob::TestCase
     stub_request(:get, request_url).to_return(status: 200, body: second_ref_codes_batch_response)
 
     # ensure two requests were made
-    PromoRegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.all).perform
+    Promo::RegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.all).perform
 
     first_ref_code_batch.each do |referral_code|
       assert_equal PromoRegistration.find_by_referral_code(referral_code).aggregate_stats[PromoRegistration::RETRIEVALS], 1

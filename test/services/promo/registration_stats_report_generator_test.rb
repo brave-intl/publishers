@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PromoReportGeneratorTest < ActiveJob::TestCase
+class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
 
   STATS = [{"ymd"=>"2018-09-01",
             "retrievals"=>1,
@@ -29,7 +29,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
 
   test "with no stats, generates an empty statement by day" do
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
-    statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
+    statement = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-10-22".to_date,
                                 end_date: "2018-10-22".to_date,
                                 reporting_interval: PromoRegistration::DAILY).perform
@@ -39,7 +39,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
 
   test "with no stats, generates an empty statement with cumulative reporting interval" do
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
-    statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
+    statement = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-10-22".to_date,
                                 end_date: "2018-10-22".to_date,
                                 reporting_interval: PromoRegistration::RUNNING_TOTAL).perform
@@ -49,7 +49,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
 
   test "generates a statement with a 'by day' reporting interval" do
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1", stats: STATS)
-    statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
+    statement = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-9-01".to_date,
                                 end_date: "2018-10-29".to_date,
                                 reporting_interval: PromoRegistration::DAILY).perform
@@ -69,7 +69,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
 
   test "generates a statement with a 'by week' reporting interval" do
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1", stats: STATS)
-    statement = PromoReportGenerator.new(referral_codes: ["ABC123"],
+    statement = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123"],
                                 start_date: "2018-9-01".to_date,
                                 end_date: "2018-10-29".to_date,
                                 reporting_interval: PromoRegistration::WEEKLY).perform
@@ -89,7 +89,7 @@ class PromoReportGeneratorTest < ActiveJob::TestCase
   test "generates a statement for two codes" do
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1", stats: STATS)
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1", stats: STATS)
-    statement = PromoReportGenerator.new(referral_codes: ["ABC123", "DEF456"],
+    statement = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123", "DEF456"],
                                 start_date: "2018-9-01".to_date,
                                 end_date: "2018-10-29".to_date,
                                 reporting_interval: PromoRegistration::WEEKLY).perform

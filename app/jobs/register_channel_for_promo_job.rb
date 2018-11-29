@@ -4,7 +4,7 @@ class RegisterChannelForPromoJob < ApplicationJob
   queue_as :default
 
   def perform(channel:)
-    if PromoRegistrar.new(publisher: channel.publisher).perform
+    if Promo::PublisherChannelsRegistrar.new(publisher: channel.publisher).perform
       PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_later
     else
       Rails.logger.warn("Failed to register newly verified channel #{channel} with promo server")
