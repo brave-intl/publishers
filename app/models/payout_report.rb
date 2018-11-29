@@ -15,15 +15,15 @@ class PayoutReport < ApplicationRecord
   end
 
   def amount
-    PotentialPayment.where(payout_report_id: id).sum { |potential_payment| potential_payment.amount.to_i }
+    potential_payments.sum { |potential_payment| potential_payment.amount.to_i }
   end
 
   def fees
-    PotentialPayment.where(payout_report_id: id).sum { |potential_payment| potential_payment.fees.to_i }
+    potential_payments.sum { |potential_payment| potential_payment.fees.to_i }
   end
 
   def num_payments
-    PotentialPayment.where(payout_report_id: id).count
+    potential_payments.count
   end
 
   # Updates the JSON summary of the report downloaded by admins

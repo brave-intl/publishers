@@ -13,7 +13,7 @@ class PayoutReportPublisherIncluder < BaseService
     return if wallet.nil?
 
     probi = wallet.channel_balances[@publisher.owner_identifier].probi_before_fees # probi = balance
-    if probi > 0
+    if probi.positive?
       publisher_has_unsettled_balance = true
 
       if @publisher.uphold_verified? && wallet.address.present?
@@ -29,7 +29,7 @@ class PayoutReportPublisherIncluder < BaseService
 
     @publisher.channels.verified.each do |channel|
       probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
-      next if probi <= 0 || !@publisher.uphold_verified? || wallet.address.blank?
+      next unless probi.positive? && @publisher.uphold_verified? && wallet.address.present?
 
       publisher_has_unsettled_balance = true
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
