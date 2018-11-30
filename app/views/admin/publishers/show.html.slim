@@ -1,11 +1,5 @@
 #publisher
   #publisher-section
-    - if flash[:notice]
-      .alert.alert-success role="alert"
-        = flash[:notice]
-    - if flash[:alert]
-      .alert.alert-danger role="alert"
-        = flash[:alert]
     h2 = @publisher.name
     .rounded-box.split-row-container
       .split-row
@@ -13,11 +7,17 @@
           .db-field = "Email:"
           .db-value = @publisher.email
         .db-info-row
+          .db-field = "Role:"
+          .db-value = @publisher.role
+        .db-info-row
           .db-field = "Status:"
           .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
         .db-info-row
-          .db-field = "Uphold connected:"
+          .db-field = "Uphold verified:"
           .db-value = @publisher.uphold_verified?
+        .db-info-row
+          .db-field = "Uphold authorized:"
+          .db-value = @publisher.wallet.authorized?
         .db-info-row
           .db-field = "Uphold widget enabled?"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
@@ -27,6 +27,10 @@
         .db-info-row
           .db-field = "Default currency:"
           .db-value = @publisher.default_currency
+        - if @publisher.created_by.present?
+          .db-info-row
+            .db-field = "Created By:"
+            .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
         - if @publisher.promo_enabled_2018q1
           .db-info-row
             .db-field = "Referral downloads:"
@@ -44,6 +48,11 @@
           = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
   hr
     = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
+    = link_to("Make partner",
+          admin_publisher_make_partner_path(@publisher),
+          method: :post,
+          class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
+    = csrf_meta_tag
   hr
 
   h3.admin-header = "Channels (#{@publisher.channels.count})"
@@ -66,7 +75,7 @@
             hr
           .db-info-row
             .db-field = "Pending Payouts"
-            .db-value = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+            .db-value = publisher_channel_balance(@publisher, channel.details.channel_identifier, "BAT")
           - if channel.details.is_a?(SiteChannelDetails)
             .db-info-row
               .db-field = "Verified:"

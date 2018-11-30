@@ -15,6 +15,18 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+    # Best practice is to use the MailerServices::PartnerLoginLinkEmailer service
+    def login_partner_email(partner)
+      @partner = partner
+      @private_reauth_url = publisher_private_reauth_url(publisher: @partner)
+      # We should send the email out to people who have previously registered
+      # but not verified their account
+      mail(
+        to: @partner.email || @partner.pending_email,
+        subject: default_i18n_subject
+      )
+    end
+
   # Best practice is to use the MailerServices::VerificationDoneEmailer service
   def verification_done(channel)
     @channel = channel
@@ -161,7 +173,7 @@ class PublisherMailer < ApplicationMailer
     @channel_name = @channel.publication_title
     @publisher_name = @channel.publisher.name
     @email = @channel.publisher.email
-    
+
     @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
 
     mail(

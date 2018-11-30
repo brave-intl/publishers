@@ -29,6 +29,11 @@ class Publisher < ApplicationRecord
 
   belongs_to :youtube_channel
 
+  belongs_to :created_by, class_name: "Publisher"
+  has_many :created_users, class_name: "Publisher",
+                           foreign_key: "created_by_id"
+
+
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
@@ -44,6 +49,8 @@ class Publisher < ApplicationRecord
 
   # validates :name, presence: true, if: -> { brave_publisher_id.present? }
   validates :phone_normalized, phony_plausible: true
+
+  validates_inclusion_of :role, in: ROLES
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
@@ -62,6 +69,7 @@ class Publisher < ApplicationRecord
   before_destroy :dont_destroy_publishers_with_channels
 
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
+  scope :by_pending_email_case_insensitive, -> (email_to_find) { where('lower(publishers.pending_email) = :email_to_find', email_to_find: email_to_find.downcase) }
 
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }

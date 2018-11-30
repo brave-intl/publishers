@@ -24,7 +24,7 @@ module PromosHelper
     aggregate_stats = PromoRegistration.aggregate_stats(publisher.promo_registrations)
 
     {
-      PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
+      PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
       PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED]
     }
   end

@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :channels, only: [:index]
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
@@ -131,8 +132,12 @@ Rails.application.routes.draw do
         get :statement
         post :create_note
       end
+      post :make_partner
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
+
+    resources :partners, only: [:index, :new, :create]
+
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]

@@ -3,6 +3,7 @@ require "webmock/minitest"
 
 class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ActionMailer::TestHelper
 
   def stub_verification_public_file(channel, body: nil, status: 200)
     url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
@@ -24,6 +25,31 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_raises(CanCan::AccessDenied) {
       get admin_publishers_path
     }
+  end
+
+  test "regular users cannot make partner" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    assert_raises(CanCan::AccessDenied) {
+      post admin_publisher_make_partner_path(publisher.id)
+    }
+  end
+
+  test "admin can make publisher a parnter" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    publisher = Publisher.where(role: Publisher::PUBLISHER).first
+
+    # Make request
+    assert_enqueued_emails(1) do
+      post admin_publisher_make_partner_path(publisher.id)
+    end
+
+    publisher.reload
+
+    assert publisher.partner?
   end
 
   test "admin can access" do
