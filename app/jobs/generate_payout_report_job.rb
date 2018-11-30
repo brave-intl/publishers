@@ -15,7 +15,7 @@ class GeneratePayoutReportJob < ApplicationJob
 
     publishers.find_each do |publisher|
       Rails.logger.info("Completed #{i} of #{publishers.count} publishers for payout report.") if i % 500 == 0
-      i += 1 
+      i += 1
       publisher_has_unsettled_balance = false
       wallet = publisher.wallet
       next if wallet.nil?

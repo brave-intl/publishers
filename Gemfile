@@ -159,6 +159,9 @@ group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
 
+  # Create a temporary table-backed ActiveRecord model
+  gem 'temping'
+
   # API recording and playback
   gem "vcr"
 
@@ -174,6 +177,7 @@ end
 
 group :development, :test do
   gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
   gem "byebug"
   gem "pry-byebug", require: false
   gem "mocha"

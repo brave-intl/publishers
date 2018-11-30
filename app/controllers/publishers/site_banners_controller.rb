@@ -40,8 +40,9 @@ class Publishers::SiteBannersController < ApplicationController
       # alert[:error] = "File size too big!"
       head :payload_too_large and return
     end
-    site_banner = current_publisher.site_banner
-    update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
+    current_publisher.site_banner.upload_public_logo(
+      image_properties(attachment_type: SiteBanner::LOGO)
+    )
     head :ok
   end
 
@@ -51,14 +52,15 @@ class Publishers::SiteBannersController < ApplicationController
       # alert[:error] = "File size too big!"
       head :payload_too_large and return
     end
-    site_banner = current_publisher.site_banner
-    update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
+    current_publisher.site_banner.upload_public_background_image(
+      image_properties(attachment_type: SiteBanner::BACKGROUND)
+    )
     head :ok
   end
 
   private
 
-  def update_image(attachment:, attachment_type:)
+  def image_properties(attachment_type:)
     data_url = params[:image].split(',')[0]
     if data_url.starts_with?("data:image/jpeg") || data_url.starts_with?("data:image/jpg")
       extension = ".jpg"
@@ -97,10 +99,10 @@ class Publishers::SiteBannersController < ApplicationController
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
 
-    attachment.attach(
+    {
       io: open(padded_resized_jpg_path),
       filename: new_filename + ".jpg",
       content_type: "image/jpg"
-    )
+    }
   end
 end
