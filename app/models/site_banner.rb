@@ -22,10 +22,6 @@ class SiteBanner < ApplicationRecord
   validate :donation_amounts_in_scope
   before_save :clear_invalid_social_links
 
-  #####################################################
-  # Validations
-  #####################################################
-
   def donation_amounts_in_scope
     return if errors.present? # Don't bother checking against donation amounts if donation amounts are nil
     errors.add(:base, "Must have #{NUMBER_OF_DONATION_AMOUNTS} donation amounts") if donation_amounts.count != NUMBER_OF_DONATION_AMOUNTS
@@ -55,21 +51,6 @@ class SiteBanner < ApplicationRecord
   #####################################################
   # Methods
   #####################################################
-
-  def self.create_banner(publisher_id, channel_id)
-    headline = I18n.t 'banner.headline'
-    tagline = I18n.t 'banner.tagline'
-    site_banner = SiteBanner.create(
-      publisher_id: publisher_id,
-      channel_id: channel_id,
-      title: headline,
-      description: tagline,
-      donation_amounts: [1, 5, 10],
-      default_donation: 5,
-      social_links: {youtube: '', twitter: '', twitch: ''}
-    )
-    return site_banner
-  end
 
   def read_only_react_property
     {

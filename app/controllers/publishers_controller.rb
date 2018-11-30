@@ -424,7 +424,6 @@ class PublishersController < ApplicationController
   end
 
   def get_banner_data
-    create_banners();
     default_banner_mode = current_publisher.default_banner_mode
     default_banner = {"id" => current_publisher.default_banner, "name" => "Default", "type" => "Default"}
     channel_banners = []
@@ -446,18 +445,6 @@ class PublishersController < ApplicationController
       current_publisher.default_currency_confirmed_at.present? &&
       current_publisher.wallet.available_currencies.exclude?(current_publisher.default_currency)
       CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
-    end
-  end
-
-  def create_banners
-    if current_publisher.default_banner.nil?
-      default_banner = SiteBanner.create_banner(current_publisher.id, nil)
-      current_publisher.update!(default_banner: default_banner.id)
-    end
-    current_publisher.channels.each do |channel|
-      if current_publisher.site_banners.find_by(channel_id: channel.id).nil?
-        SiteBanner.create_banner(current_publisher.id, channel.id)
-      end
     end
   end
 

@@ -476,9 +476,6 @@ export default class BannerEditor extends React.Component {
       url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.channelBanners[this.state.channelIndex].id;
     }
 
-    console.log("url" + url);
-    console.log("$$$$$$$$$$$$$$$")
-
     let body = new FormData();
     body.append('title', this.state.title);
     body.append('description', this.state.description);

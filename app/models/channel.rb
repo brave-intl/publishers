@@ -48,6 +48,7 @@ class Channel < ApplicationRecord
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
+  after_save :set_channel_banner, if: -> { SiteBanner.find_by(channel_id: self.id).nil? }
   before_save :clear_verified_at_if_necessary
 
   before_destroy :preserve_contested_by_channels
@@ -246,6 +247,20 @@ class Channel < ApplicationRecord
 
   def register_channel_for_promo
     RegisterChannelForPromoJob.new.perform(channel: self)
+  end
+
+  def set_channel_banner
+    headline = I18n.t 'banner.headline'
+    tagline = I18n.t 'banner.tagline'
+    channel_banner = SiteBanner.create(
+      publisher_id: self.publisher_id,
+        channel_id: self.id,
+        title: headline,
+        description: tagline,
+        donation_amounts: [1, 5, 10],
+        default_donation: 5,
+        social_links: {youtube: '', twitter: '', twitch: ''}
+      )
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
