@@ -169,8 +169,6 @@ class Channel < ApplicationRecord
         Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
         nil
     end
-  rescue NoMethodError => e
-    nil
   end
 
   def promo_enabled?
