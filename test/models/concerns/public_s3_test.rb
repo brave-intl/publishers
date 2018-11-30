@@ -2,25 +2,15 @@ require "test_helper"
 require 'active_storage/service/s3_service'
 
 class PublicS3Test < ActiveSupport::TestCase
-  class DummyClass< ActiveRecord::Base
+  class DummyClass < ActiveRecord::Base
     include PublicS3
 
     has_one_public_s3 :test_file
   end
 
-  class MockService
-    def upload(a, b, c) ; end
-    def url_expires_in ; end
-    def url(a, b)
-      'mock'
-    end
-  end
-
   setup do
     Temping.create :dummy_class
     @dummy = DummyClass.new
-    # Mock out the service so we don't actually call it
-    @dummy.instance_variable_set(:@service, MockService.new)
   end
 
   teardown do
