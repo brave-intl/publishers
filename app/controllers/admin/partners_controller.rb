@@ -30,7 +30,7 @@ module Admin
         flash.now[:alert] = "Email is already a partner"
         render :new
       elsif @organization.persisted?
-        flash.now[:alert] = "The organization '#{params[:organization_name]}' already exists. Please have a partner of the organization add the user you want or ask Engineering team for assistance"
+        flash.now[:alert] = "The organization '#{organization.name}' already exists. Please have a partner of the organization add the user you want or ask Engineering team for assistance"
         render :new
       else
         # Ensure publisher gets the right role
@@ -59,7 +59,7 @@ module Admin
     end
 
     def organization
-      Organization.find_by(name: params[:organization_name]) || Organization.new(name: params[:organization_name])
+      Organization.find_or_initialize_by(name: params[:organization_name])
     end
 
     def email_params
