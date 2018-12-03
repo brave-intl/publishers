@@ -32,4 +32,13 @@ class PotentialPaymentTest < ActiveSupport::TestCase
     potential_payment.channel_id = channels(:verified).id
     refute potential_payment.valid?
   end
+
+  test "potential payments are not deleted when their channel or publisher is destroyed" do
+     publisher = publishers(:potentially_paid)
+     publisher.channels.each {|c| c.destroy!}
+     publisher.destroy!
+
+     potential_payment = potential_payments(:publisher).reload
+     assert_equal PotentialPayment.count, 3
+   end
 end
