@@ -3,6 +3,7 @@ namespace :database_updates do
     PayoutReport.all.each do |payout_report|
       next if PotentialPayment.where(payout_report_id: payout_report.id).any? # For idempotence
       potential_payments = JSON.parse(payout_report.contents)
+      next if potential_payments.empty?
       potential_payments.each do |potential_payment|
         begin
           if potential_payment["type"] == "referral"
