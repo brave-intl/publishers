@@ -20,7 +20,7 @@ class Promo::UnattachedRegistrationStatusUpdaterTest < ActiveJob::TestCase
     PromoRegistration.create(promo_id: active_promo_id, referral_code: "NIC123", kind: "unattached")
     PromoRegistration.create(promo_id: active_promo_id, referral_code: "NIC456", kind: "unattached")
 
-    request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/referral?referral_code=ABC123&referral_code=DEF456"
+    request_url = "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/referral?referral_code=NIC123&referral_code=NIC456"
     request_body = {status: "paused"}.to_json
     stub_request(:patch, request_url)
       .with(body: request_body)
