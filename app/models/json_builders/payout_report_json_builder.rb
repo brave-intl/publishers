@@ -29,6 +29,7 @@ class JsonBuilders::PayoutReportJsonBuilder
           "transactionId" => "#{potential_payment.payout_report_id}",
           "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
           "type" => PotentialPayment::CONTRIBUTION,
+          "URL" => "#{Channel.find(potential_payment.channel_id).details.url}",
           "address" => "#{potential_payment.address}"
         })
       end
