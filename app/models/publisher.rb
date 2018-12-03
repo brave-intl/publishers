@@ -26,6 +26,7 @@ class Publisher < ApplicationRecord
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
+  has_many :potential_payments
 
   belongs_to :youtube_channel
 
