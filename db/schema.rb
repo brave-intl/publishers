@@ -188,7 +188,9 @@ ActiveRecord::Schema.define(version: 2018_11_28_143110) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do | t|
+  create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "payout_report_id", null: false
     t.uuid "publisher_id", null: false
     t.uuid "channel_id"
