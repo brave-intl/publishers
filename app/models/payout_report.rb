@@ -1,6 +1,8 @@
 class PayoutReport < ApplicationRecord
   has_paper_trail
   self.per_page = 8
+
+  LEGACY_PAYOUT_REPORT_TRANSITION_DATE = "2018-12-01 09:14:58 -0800"
   
   attr_encrypted :contents, key: :encryption_key, marshal: true
 
@@ -28,6 +30,8 @@ class PayoutReport < ApplicationRecord
 
   # Updates the JSON summary of the report downloaded by admins
   def update_report_contents
+    # Do not update json contents for legacy reports
+    return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
     payout_report_json = JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
     self.contents = payout_report_json.to_json
     save!
