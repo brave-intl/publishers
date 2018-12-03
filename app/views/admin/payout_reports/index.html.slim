@@ -29,8 +29,8 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
   tbody
       tr.gradeX
         td = PayoutReport.total_payments
-        td = "#{'%.2f' % (PayoutReport.total_amount)} BAT"
-        td = "#{'%.2f' % (PayoutReport.total_fees)} BAT"
+        td = "#{'%.2f' % (PayoutReport.total_amount / 1E18)  } BAT"
+        td = "#{'%.2f' % (PayoutReport.total_fees / 1E18) } BAT"
 
 hr
 
