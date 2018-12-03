@@ -1,7 +1,7 @@
 h1 Payout Reports
 hr
 
-table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+table.display.table.table-bordered.table-striped
   tr
     th Created
     th ID
@@ -11,7 +11,7 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
     th Fees
     th Download
   tbody
-    - @payout_reports.where.not(amount: nil).each do |report| 
+    - @payout_reports.each do |report| 
       tr.gradeX
         td = report.created_at.strftime("%B %d, %Y, %H:%M")
         td = link_to report.id, admin_payout_report_path(report.id)
@@ -29,18 +29,18 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
   tbody
       tr.gradeX
         td = PayoutReport.total_payments
-        td = "#{'%.2f' % (PayoutReport.total_amount)} BAT"
-        td = "#{'%.2f' % (PayoutReport.total_fees)} BAT"
+        td = "#{'%.2f' % (PayoutReport.total_amount / 1E18)  } BAT"
+        td = "#{'%.2f' % (PayoutReport.total_fees / 1E18) } BAT"
 
 hr
 
 h3 Generate Payout Report
 = form_tag admin_payout_reports_path do
   .form_group
-    = check_box_tag :should_send_notifications, true
-    = label_tag "Send notifications (email publishers who aren't verified with or are not connected to Uphold"
+    = check_box_tag :should_send_notifications
+    = label_tag "Send notifications (email publishers who aren't verified with or are not connected to Uphold)"
   .form_group
-    = check_box_tag :final, true
+    = check_box_tag :final
     = label_tag "Final (this report will be used for settlement)"
   .actions
     = submit_tag("Generate", class: "btn btn-primary")

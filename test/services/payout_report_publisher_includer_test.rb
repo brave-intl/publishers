@@ -1,13 +1,14 @@
 require "test_helper"
+require "webmock/minitest"
 
-class GeneratePayoutReportJobTest < ActiveJob::TestCase
+class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
   before do
+    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     @prev_fee_rate = Rails.application.secrets[:fee_rate]
-    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
   end
 
   after do
-    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
     Rails.application.secrets[:fee_rate] = @prev_fee_rate
   end
 
@@ -19,28 +20,11 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     end
   end
 
-  test "generates a payout report" do
-    assert_difference 'PayoutReport.count', 1 do
-      GeneratePayoutReportJob.perform_now
-    end
-  end
-
-  test "publishers without verified channels are not included in the report" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-
-    # Clear database
-    publisher = publishers(:created) # has no verified channels
-    delete_publishers_except([publisher.id])
-
-    payout_report = GeneratePayoutReportJob.perform_now
-
-    assert_equal payout_report.num_payments, 0
-    assert_equal payout_report.amount, "0"
-    assert_equal JSON.parse(payout_report.contents), []
-  end
-
   test "publisher with verified channel that is not uphold verified is not included in the report" do
     Rails.application.secrets[:api_eyeshade_offline] = false
+
+    payout_report = PayoutReport.create()
+    prev_num_potential_payments = PotentialPayment.count
 
     # Clear database
     publisher = publishers(:youtube_initial) # has verified channel, is not uphold connected
@@ -69,11 +53,10 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:2fcb973c-7f7c-5351-809f-0eed1de17a77&account=youtube%23channel:").
       to_return(status: 200, body: balance_response)
 
-    payout_report = nil
-
-    # Delier the email
-    perform_enqueued_jobs do 
-      payout_report = GeneratePayoutReportJob.perform_now
+    perform_enqueued_jobs do
+      PayoutReportPublisherIncluder.new(payout_report: payout_report,
+                                        publisher: publisher,
+                                        should_send_notifications: true).perform
     end
 
     email = ActionMailer::Base.deliveries.last
@@ -81,14 +64,16 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     # Ensure the correct email is sent
     assert_equal email.subject, I18n.t('publisher_mailer.wallet_not_connected.subject')
 
-    # Ensure empty payout
-    assert_equal payout_report.num_payments, 0
-    assert_equal payout_report.amount, "0"
-    assert_equal JSON.parse(payout_report.contents), []
+    # Ensure empty payout & payments
+    assert_equal PotentialPayment.count, prev_num_potential_payments
+    assert_equal payout_report.amount, 0
   end
 
   test "uphold verified publisher with verified channel with no address supplied is not included in the report, and is sent email" do
     Rails.application.secrets[:api_eyeshade_offline] = false
+
+    payout_report = PayoutReport.create()
+    prev_num_potential_payments = PotentialPayment.count
 
     # Clear database
     publisher = publishers(:uphold_connected) # has >1 verified channel, is uphold connected
@@ -127,11 +112,11 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
       to_return(status: 200, body: balance_response)
 
-    payout_report = nil
-
     # Deliver the email
     perform_enqueued_jobs do 
-      payout_report = GeneratePayoutReportJob.perform_now
+      PayoutReportPublisherIncluder.new(payout_report: payout_report,
+                                        publisher: publisher,
+                                        should_send_notifications: true).perform
     end
 
     email = ActionMailer::Base.deliveries.last
@@ -139,15 +124,18 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     # Ensure the correct email is sent
     assert_equal email.subject, I18n.t('publisher_mailer.wallet_not_connected.subject')
 
-    # Ensure empty payout
+    # Ensure payout is empty and no potential payment was created
+    assert_equal PotentialPayment.count, prev_num_potential_payments
+
     assert_equal payout_report.num_payments, 0
-    assert_equal payout_report.amount, "0"
-    assert_equal JSON.parse(payout_report.contents), []
+    assert_equal payout_report.amount, 0
   end
 
   test "uphold verified publisher with verified channel with address and balance is included in payout report" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     Rails.application.secrets[:fee_rate] = 0.05
+
+    payout_report = PayoutReport.create(fee_rate: 0.05)
 
     # Clear database
     publisher = publishers(:uphold_connected) # has >1 verified channel, is uphold connected
@@ -185,59 +173,36 @@ class GeneratePayoutReportJobTest < ActiveJob::TestCase
     stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
       to_return(status: 200, body: balance_response)
 
-    payout_report = nil
-
     # Ensure no emails sent
-    assert_enqueued_jobs(1) do 
-      payout_report = GeneratePayoutReportJob.perform_now
+    assert_enqueued_jobs(1) do
+      PayoutReportPublisherIncluder.new(payout_report: payout_report,
+                                        publisher: publisher,
+                                        should_send_notifications: true).perform
     end
 
     # Ensure data is correct
     assert_equal payout_report.num_payments, publisher.channels.count + 1
-    assert_equal payout_report.amount, (80 * BigDecimal('1e18') - ((60 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
+    assert_equal payout_report.amount, (80 * BigDecimal('1e18') - ((60 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i
+    assert_equal payout_report.fees, (60 * BigDecimal('1e18') * payout_report.fee_rate).to_i
 
-    assert_equal payout_report.fee_rate, 0.05
-    assert_equal payout_report.fees, (60 * BigDecimal('1e18') * payout_report.fee_rate).to_i.to_s
-
-    contents = JSON.parse(payout_report.contents)
-
-    assert_equal contents.length, payout_report.num_payments
-
-    # Ensure JSON data is correct
-    contents.each do |channel_payout|
-      assert_equal channel_payout["address"], JSON.parse(wallet_response)["wallet"]["address"]
-      assert_equal channel_payout["transactionId"], payout_report.id
-      assert_equal channel_payout["owner"], "#{publisher.owner_identifier}"
-      assert_equal channel_payout["altcurrency"], "BAT"
-      if channel_payout["type"] == "contribution"
-        assert_equal channel_payout["probi"], (20 * BigDecimal('1e18') - ((20 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
-      elsif channel_payout["type"] == "referral"
-        assert_equal channel_payout["probi"], (20 * BigDecimal('1e18')).to_i.to_s
+    # Ensure individual potential payment data is correct
+    PotentialPayment.where(payout_report_id: payout_report.id).each do |potential_payment|
+      assert_equal potential_payment.address, JSON.parse(wallet_response)["wallet"]["address"]
+      assert_equal potential_payment.publisher_id, "#{publisher.id}"
+      if potential_payment.kind == PotentialPayment::CONTRIBUTION
+        assert_equal potential_payment.amount, (20 * BigDecimal('1e18') - ((20 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
+      elsif potential_payment.kind == PotentialPayment::REFERRAL
+        assert_equal potential_payment.amount, (20 * BigDecimal('1e18')).to_i.to_s
       end
     end
-  end
 
-  test "raises error if fee rate not set" do
-    Rails.application.secrets[:fee_rate] = nil
+    # Run the includer again with same parameters and ensure no extra potential payments
+    # were created (idempotence)
 
-    assert_raises do    
-      assert_no_difference -> { PayoutReport.count } do
-        GeneratePayoutReportJob.perform_now
-      end
+    assert_difference -> { PotentialPayment.count }, 0 do 
+      PayoutReportPublisherIncluder.new(payout_report: payout_report,
+                                        publisher: publisher,
+                                        should_send_notifications: true).perform
     end
-  end
-
-  test "suspended publisher with balance is not included in payout report" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:suspended)
-    delete_publishers_except([publisher])
-
-    payout_report = nil
-
-    perform_enqueued_jobs do 
-      payout_report = GeneratePayoutReportJob.perform_now
-    end
-
-    assert_equal payout_report.num_payments, 0
   end
 end

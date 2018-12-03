@@ -1,5 +1,5 @@
 ---
-:concurrency: 2
+:concurrency: 5
 :timeout: 8
 :max_retries: 3
 :queues:
@@ -51,8 +51,8 @@
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
     queue: transactional
-  GeneratePayoutReportJob:
+  EnqueuePublishersForPayoutJob:
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"
-    queue: low
+    queue: scheduler
 :verbose: true

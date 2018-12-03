@@ -1,0 +1,28 @@
+site:
+  payout_report: one
+  publisher: potentially_paid
+  channel: potentially_paid_site
+  kind: "<%= PotentialPayment::CONTRIBUTION %>"
+  name: site
+  address: bc29c05c-e6aa-450c-8ea2-7d598666fac0
+  amount: 90000000000
+  fees: 4500000000
+  url: "potentiallypaid.org"
+youtube:
+  payout_report: one
+  publisher: potentially_paid
+  channel: potentially_paid_youtube
+  kind: "<%= PotentialPayment::CONTRIBUTION %>"
+  name: youtube
+  address: bc29c05c-e6aa-450c-8ea2-7d598666fac0
+  amount: 90000000000
+  fees: 4500000000
+  url: ".org"
+publisher:
+  payout_report: one
+  publisher: potentially_paid
+  kind: "<%= PotentialPayment::REFERRAL %>"
+  name: publisher
+  address: bc29c05c-e6aa-450c-8ea2-7d598666fac0
+  amount: 90000000000
+  fees: 4500000000
