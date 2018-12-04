@@ -18,7 +18,7 @@ class Admin::PayoutReportsController < AdminController
   end
 
   def refresh
-    UpdatePayoutReportContentsJob.perform_later(payout_report_ids: params[:id])
+    UpdatePayoutReportContentsJob.perform_later(payout_report_ids: [params[:id]])
     redirect_to admin_payout_reports_path, flash: { notice: "Refreshing report JSON.  Please try downloading in a couple minutes." }
   end
 
