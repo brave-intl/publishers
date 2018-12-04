@@ -107,30 +107,26 @@ class SiteChannelVerifier < BaseService
 
   def verify_site_channel_public_file
     generator = SiteChannelVerificationFileGenerator.new(site_channel: channel)
-    uri = URI("https://#{channel.details.brave_publisher_id}/.well-known/#{generator.filename}")
-    response = fetch(uri: uri)
-    if response.code == "200"
-      token_match = /#{channel.details.verification_token}/.match(response.body)
-      if token_match
+
+    host_inspector = SiteChannelHostInspector.new(
+      brave_publisher_id: generator.url,
+      response_body: true,
+      require_https: true
+    ).perform
+
+    if host_inspector[:https]
+      token_match = /#{channel.details.verification_token}/.match(host_inspector[:response_body])
+      if token_match.present?
         Rails.logger.debug("verify_site_channel_public_file: Token Found")
-        true
+        return true
       else
         Rails.logger.debug("verify_site_channel_public_file: Token Mismatch")
         @verification_details = "token_not_found_public_file"
-        false
+        return false
       end
-    else
-      Rails.logger.debug("verify_site_channel_public_file: Not Net::HTTPSuccess")
-      @verification_details = "no_https"
-      false
     end
-  rescue Publishers::Fetch::RedirectError => e
-    Rails.logger.debug("verify_site_channel_public_file: #{e.message}")
-    @verification_details = "too_many_redirects"
-    false
-  rescue Publishers::Fetch::ConnectionFailedError => e
-    Rails.logger.debug("verify_site_channel_public_file: #{e.message}")
-    @verification_details = "connection_failed"
+
+    @verification_details = host_inspector[:verification_details]
     false
   end
 

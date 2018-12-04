@@ -4,18 +4,19 @@ require "publishers/fetch"
 class SiteChannelHostInspector < BaseService
   include Publishers::Fetch
 
-  attr_reader :brave_publisher_id, :follow_local_redirects, :follow_all_redirects, :require_https, :check_web_host
+  attr_reader :brave_publisher_id, :follow_local_redirects, :follow_all_redirects, :require_https
 
   def initialize(brave_publisher_id:,
-                 check_web_host: true,
                  follow_local_redirects: true,
                  follow_all_redirects: false,
-                 require_https: false)
+                 require_https: false,
+                 response_body: false
+                 )
     @brave_publisher_id = brave_publisher_id
-    @check_web_host = check_web_host
     @follow_local_redirects = follow_local_redirects
     @follow_all_redirects = follow_all_redirects
     @require_https = require_https
+    @response_body = response_body
   end
 
   # TODO: github pages can be hosted at custom domains. We should detect them, if possible.
@@ -25,15 +26,7 @@ class SiteChannelHostInspector < BaseService
                      follow_all_redirects: follow_all_redirects,
                      follow_local_redirects: follow_local_redirects)
 
-    if check_web_host
-      web_host = if brave_publisher_id.include?(".github.io")
-                   "github"
-                 elsif response.body.include?("/wp-content/")
-                   "wordpress"
-                 end
-    end
-
-    { response: response, web_host: web_host }
+    { response: response }
   rescue => e
     Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
     { response: e }
@@ -74,7 +67,8 @@ class SiteChannelHostInspector < BaseService
   def response_result(inspect_result:, https:, https_error: nil)
     result = { host_connection_verified: true, https: https }
     result[:https_error] = https_error_message(https_error)
-    result[:web_host] = inspect_result[:web_host] if check_web_host
+    result[:web_host] = web_host(response: inspect_result[:response])
+    result[:response_body] = inspect_result[:response].body if @response_body
     result
   end
 
@@ -82,7 +76,30 @@ class SiteChannelHostInspector < BaseService
     Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{error_response}")
     result = { response: error_response, host_connection_verified: false, https: false }
     result[:https_error] = https_error_message(error_response)
+    result[:web_host] = web_host(response: error_response)
+    result[:verification_details] = verification_details(error_response)
     result
+  end
+
+  def verification_details(error_response)
+    case error_response
+    when RedirectError
+      "too_many_redirects"
+    when Net::OpenTimeout
+      "timeout"
+    when NotFoundError
+      "domain_not_found"
+    else
+      "no_https"
+    end
+  end
+
+  def web_host(response: nil)
+    if brave_publisher_id.include?(".github.io")
+      "github"
+    elsif (response.try(:body) || "").include?("/wp-content/")
+      "wordpress"
+    end
   end
 
   def https_error_message(error_response)
@@ -96,7 +113,6 @@ class SiteChannelHostInspector < BaseService
     when Net::OpenTimeout
       nil
     end
-    # Any other errors will simply be nil 404 etc
   end
 
   def true?(obj)

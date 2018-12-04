@@ -82,18 +82,13 @@ class SiteChannelDetails < BaseChannelDetails
     end
   end
 
-  def inspect_brave_publisher_id
-    require "faraday"
+  def inspect_host
+    return unless brave_publisher_id
+
     result = SiteChannelHostInspector.new(brave_publisher_id: self.brave_publisher_id).perform
-    if result[:host_connection_verified]
-      self.supports_https = result[:https]
-      self.detected_web_host = result[:web_host]
-      self.host_connection_verified = true
-    else
-      self.supports_https = false
-      self.detected_web_host = nil
-      self.host_connection_verified = false
-    end
+    self.supports_https = result[:https].present?
+    self.detected_web_host = result[:web_host]
+    self.host_connection_verified = result[:host_connection_verified]
     self.https_error = result[:https_error]
   end
 

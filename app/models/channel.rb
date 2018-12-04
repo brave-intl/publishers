@@ -40,7 +40,7 @@ class Channel < ApplicationRecord
   validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
 
   validates :verification_details, inclusion: {
-    in: %w(domain_not_found connection_failed too_many_redirects no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
+    in: %w(domain_not_found connection_failed too_many_redirects timeout no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
   }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
