@@ -125,6 +125,7 @@ Rails.application.routes.draw do
     resources :payout_reports, only: %i(index show create) do
       member do
         get :download
+        patch :refresh
       end
     end
     resources :publishers do

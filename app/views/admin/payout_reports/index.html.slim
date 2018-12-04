@@ -9,6 +9,7 @@ table.display.table.table-bordered.table-striped
     th # Payments
     th Amount
     th Fees
+    th Refresh JSON
     th Download
   tbody
     - @payout_reports.each do |report| 
@@ -19,7 +20,9 @@ table.display.table.table-bordered.table-striped
         td = report.num_payments
         td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
         td = "#{'%.2f' % (report.fees.to_d / 1E18)} BAT"
-        td = link_to "download", download_admin_payout_report_path(report.id)
+        td = form_tag refresh_admin_payout_report_path(report.id), method: :patch do
+             = submit_tag "refresh", class: "btn btn-info"
+        td = link_to "download", download_admin_payout_report_path(report.id), class: "btn btn-primary"
 
 table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
   tr
