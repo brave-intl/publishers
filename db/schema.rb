@@ -317,7 +317,7 @@ ActiveRecord::Schema.define(version: 2018_12_04_022249) do
   end
 
   create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.bigint "legacy_id", default: -> { "nextval('site_banners_id_seq'::regclass)" }, null: false
+    t.bigint "legacy_id"
     t.uuid "publisher_id", null: false
     t.text "title", null: false
     t.text "description", null: false
