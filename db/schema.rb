@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2018_12_04_022249) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"

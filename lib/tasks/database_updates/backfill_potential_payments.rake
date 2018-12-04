@@ -1,14 +1,15 @@
 namespace :database_updates do
   task backfill_potential_payments: [:environment] do
     PayoutReport.all.each do |payout_report|
-      next if PotentialPayment.where(payout_report_id: payout_report.id).any? # For idempotence
+      # Do not backfill for payout reports created using the new method
+      next if payout_report.created_at > PayoutReport::LEGACY_PAYOUT_REPORT_TRANSITION_DATE 
       potential_payments = JSON.parse(payout_report.contents)
       next if potential_payments.empty?
       potential_payments.each do |potential_payment|
         begin
           if potential_payment["type"] == "referral"
             # Payment to owner for referrals
-            PotentialPayment.create!(publisher_id: potential_payment["owner"].split(Publisher::OWNER_PREFIX)[1],
+            PotentialPayment.create(publisher_id: potential_payment["owner"].split(Publisher::OWNER_PREFIX)[1],
                                     kind: potential_payment["type"],
                                     name: potential_payment["name"],
                                     address: potential_payment["address"],
@@ -17,7 +18,7 @@ namespace :database_updates do
                                     payout_report_id: payout_report.id)
           else
             # Payment for channel contributions
-            PotentialPayment.create!(publisher_id: potential_payment["owner"].split(Publisher::OWNER_PREFIX)[1],
+            PotentialPayment.create(publisher_id: potential_payment["owner"].split(Publisher::OWNER_PREFIX)[1],
                                     channel_id: Channel.find_by_channel_identifier(potential_payment["publisher"]).id,
                                     kind: potential_payment["type"],
                                     name: potential_payment["name"],

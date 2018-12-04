@@ -55,4 +55,8 @@
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"
     queue: scheduler
+  UpdatePayoutReportContentsJob:
+    cron: "0 3 1 * *"
+    description: "Refreshes the json version of the report that's built from the potential payments table on the first of every month."
+    queue: scheduler
 :verbose: true
