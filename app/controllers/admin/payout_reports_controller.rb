@@ -17,6 +17,11 @@ class Admin::PayoutReportsController < AdminController
       type: :json
   end
 
+  def refresh
+    UpdatePayoutReportContentsJob.perform_later(payout_report_ids: params[:id])
+    redirect_to admin_payout_reports_path, flash: { notice: "Refreshing report JSON.  Please try downloading in a couple minutes." }
+  end
+
   def create
     EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?,
                                                 should_send_notifications: params[:should_send_notifications].present?)
