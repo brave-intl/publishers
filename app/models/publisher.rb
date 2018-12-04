@@ -5,9 +5,9 @@ class Publisher < ApplicationRecord
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   PROMO_STATS_UPDATE_DELAY = 10.minutes
-  ADMIN = "admin"
-  PARTNER = "partner"
-  PUBLISHER = "publisher"
+  ADMIN = "admin".freeze
+  PARTNER = "partner".freeze
+  PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
   JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
