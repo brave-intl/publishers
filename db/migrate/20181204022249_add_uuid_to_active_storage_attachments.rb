@@ -1,6 +1,6 @@
 class AddUuidToActiveStorageAttachments < ActiveRecord::Migration[5.2]
   def change
-     add_column :active_storage_attachments, :uuid, :uuid, null: false
+     add_column :active_storage_attachments, :uuid, :uuid
      change_table :active_storage_attachments do |t|
        t.rename :record_id, :legacy_record_id
        t.rename :uuid, :record_id
