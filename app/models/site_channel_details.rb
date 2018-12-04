@@ -45,15 +45,6 @@ class SiteChannelDetails < BaseChannelDetails
         .where("channels.updated_at": max_age.ago..Time.now)
   }
 
-  # Channels with no verification_token will not be accessible once the user is no longer on the page, these
-  # are considered abandoned. If we wait a day we can be reasonable sure the users session will have timed out.
-  scope :abandoned, -> {
-    joins(:channel)
-        .where(verification_token: nil)
-        .where("channels.verified": [false, nil])
-        .where("site_channel_details.updated_at < :updated_at", updated_at: Time.now - 1.day)
-  }
-
   def initialized?
     brave_publisher_id.present? || brave_publisher_id_unnormalized.present?
   end
