@@ -5,7 +5,6 @@ class BackfillPotentialPaymentsTest < ActiveJob::TestCase
     prev_num_potential_payments = PotentialPayment.count
     completed = publishers(:completed)
     uphold_connected = publishers(:uphold_connected)
-
     old_payout_contents = [{"name"=>completed.name,
                             "altcurrency"=>"BAT",
                             "probi"=>"39136205383556598598",
@@ -26,8 +25,9 @@ class BackfillPotentialPaymentsTest < ActiveJob::TestCase
                             "type"=>"contribution",
                             "URL"=>"#{uphold_connected.channels.first.details.url}",
                             "address"=>"f290b714-a587-4bfc-8821-028469709669"}]
-    
-    PayoutReport.create(final: true, contents: old_payout_contents.to_json)
+
+    payout_report_created_at = PayoutReport::LEGACY_PAYOUT_REPORT_TRANSITION_DATE.to_time - 1.minute
+    PayoutReport.create(created_at: payout_report_created_at, final: true, contents: old_payout_contents.to_json)
 
     Rake::Task["database_updates:backfill_potential_payments"].invoke
     assert_equal PotentialPayment.count, prev_num_potential_payments + 2
