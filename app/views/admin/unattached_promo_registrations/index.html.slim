@@ -103,7 +103,7 @@
               . = date_select :referral_code_report_period, :start
             .flex-two.align-self-flex-center
               . = label_tag "Report period end"
-              . = date_select :referral_code_report_period, :end, default: 1.day.from_now
+              . = date_select :referral_code_report_period, :end, default: Time.now.utc.to_date
             .flex-two.align-self-flex-center
               . = label_tag "Reporting interval"
               . = select_tag :reporting_interval, options_for_select([["Daily",PromoRegistration::DAILY], ["Weekly",PromoRegistration::WEEKLY], ["Monthly",PromoRegistration::MONTHLY], ["Running total", PromoRegistration::RUNNING_TOTAL]])
