@@ -53,7 +53,7 @@ module Publishers
           else
             response.value
         end
-      rescue OpenSSL::SSL::SSLError, RedirectError, Errno::ECONNREFUSED, Net::OpenTimeout => ex
+      rescue OpenSSL::SSL::SSLError, RedirectError, Errno::ECONNREFUSED, Net::OpenTimeout
         raise
       rescue => e
         raise NotFoundError.new(e.to_s) if response.code.to_i == 404

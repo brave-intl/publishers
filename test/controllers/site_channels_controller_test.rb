@@ -8,6 +8,14 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   include MailerTestHelper
   include PublishersHelper
 
+  before do
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+  end
+
+  after do
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+  end
+
   test "should create channel for logged in publisher" do
     prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin
@@ -37,6 +45,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "verify can verify the channel and redirect to the dashboard" do
+    Rails.application.secrets[:host_inspector_offline] = false
     publisher = publishers(:global_media_group)
     channel = channels(:global_inprocess)
 
