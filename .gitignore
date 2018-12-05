@@ -29,4 +29,3 @@ yarn-error.log
 /node_modules
 .env
 docker-compose.override.yml
-coverage

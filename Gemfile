@@ -181,7 +181,6 @@ group :development, :test do
   gem 'rubyzip'
   gem "capybara-selenium"
   gem "chromedriver-helper"
-  gem 'simplecov', require: false, group: :test
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
