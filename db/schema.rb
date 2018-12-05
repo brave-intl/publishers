@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_180923) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: false
+    t.boolean "verified", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
