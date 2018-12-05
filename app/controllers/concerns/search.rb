@@ -7,6 +7,8 @@ module Search
     query = query.sub("twitch#channel:", "")
     query = query.sub("twitch#author:", "")
     query = query.sub("twitter#channel:", "")
+    query = query.sub("https://", "")
+    query = query.sub("www.", "")
   end
 
 
