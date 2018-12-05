@@ -9,6 +9,10 @@
         .db-info-row
           .db-field = "Role:"
           .db-value = @publisher.role
+        - if @publisher.partner?
+          .db-info-row
+            .db-field = "Organization:"
+            .db-value = @publisher&.becomes(Partner).organization
         .db-info-row
           .db-field = "Status:"
           .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
@@ -49,8 +53,7 @@
   hr
     = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
     = link_to("Make partner",
-          admin_publisher_make_partner_path(@publisher),
-          method: :post,
+          edit_admin_partner_path(@publisher),
           class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
     = csrf_meta_tag
   hr

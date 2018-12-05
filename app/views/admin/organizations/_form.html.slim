@@ -1,0 +1,29 @@
+- if @organization.errors.any?
+  - @organization.errors.full_messages.each do |msg|
+    .alert.alert-warning.flash=msg
+= form_with model: [:admin, @organization] do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name,
+        autofocus: true,
+        class: "form-control",
+        placeholder: "Organization Name",
+        required: true
+  .form-group
+    label
+      strong Permissions
+    br
+    label
+      = check_box_tag('referral', 1, params[:uphold].present?, class: 'checkbox')
+      = " Referral Codes"
+    br
+    label
+      = check_box_tag('billing', 1, params[:statement].present?, class: 'checkbox')
+      = " Offline billing statement"
+    br
+    label
+      = check_box_tag('invoice', 1, params[:invoice].present?, class: 'checkbox')
+      = " Offline invoice"
+
+  = submit_tag "Save", class: "btn btn-block btn-primary"
+

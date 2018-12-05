@@ -151,7 +151,7 @@ class Publisher < ApplicationRecord
   end
 
   def to_s
-    name
+    name || email
   end
 
   def prepare_uphold_state_token

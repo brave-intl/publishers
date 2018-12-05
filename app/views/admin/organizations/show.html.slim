@@ -3,7 +3,32 @@ div.row
     section.panel
       header.panel-heading.organization-container
         h4 Organization: #{@organization.name}
+        = link_to "Add Partner", new_admin_partner_path(organization: @organization.name), class: "btn add-partner btn-primary"
+        = link_to "Edit Organization", edit_admin_organization_path(@organization), class: "btn btn-primary"
       br
+      section.panel
+        h5 Permissions
+        = boolean_to_image(@organization.permissions.upload_offline_invoice)
+        = " upload_offline_invoice "
+        br
+        = boolean_to_image(@organization.permissions.upload_offline_billing)
+        = " upload_offline_billing "
+        br
+        = boolean_to_image(@organization.permissions.upload_referral_codes)
+        = " upload_referral_codes "
+
+      / table.display.table.table-bordered
+      /   tr
+      /     td= boolean_to_image(@organization.permissions.upload_offline_invoice)
+      /     td = "upload_offline_invoice "
+      /   tr
+      /     td= boolean_to_image(@organization.permissions.upload_offline_billing)
+      /     td= "upload_offline_billing "
+      /   tr
+      /     td= boolean_to_image(@organization.permissions.upload_referral_codes)
+      /     td= "upload_referral_codes "
+      br
+      h5 Partners
       div.panel-body
         div.adv-table
           table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
