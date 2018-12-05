@@ -8,10 +8,6 @@ namespace :database_updates do
       attachments.each do |attachment|
         attachment.update!(record_id: banner.id)
       end
-      publisher = Publisher.find_by(id: banner.publisher_id)
-      if publisher
-        publisher.update!(default_banner: banner.id)
-      end
     end
   end
 end
