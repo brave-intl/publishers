@@ -38,7 +38,7 @@ module Admin
         @partner.organization = organization
         @partner.save
         MailerServices::PartnerLoginLinkEmailer.new(partner: @partner).perform
-        redirect_to admin_publisher_path(@partner.id), flash: { notice: "Email sent" }
+        redirect_to admin_organization_path(@organization.id), flash: { notice: "Email sent" }
       end
     end
 
