@@ -173,6 +173,8 @@ group :production do
 end
 
 group :development, :test do
+  gem "better_errors"
+  gem "binding_of_caller"
   gem "pry"
   gem "byebug"
   gem "pry-byebug", require: false
