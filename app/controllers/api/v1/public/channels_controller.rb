@@ -7,4 +7,15 @@ class Api::V1::Public::ChannelsController < Api::V1::Public::BaseController
     end
     render(json: channels_json, status: 200)
   end
+
+  def totals
+    render(
+      json: {
+        all_channels: Channel.verified.count,
+        twitch_only: Channel.verified.twitch_channels.count,
+        youtube_only:  Channel.verified.youtube_channels.count
+      },
+      status: 200
+    )
+  end
 end
