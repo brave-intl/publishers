@@ -33,5 +33,6 @@ class RenameRecreatePublishers < ActiveRecord::Migration[5.0]
       t.index :pending_email
       t.index :created_at
     end
+    change_column_default :legacy_publishers, :verified, false
   end
 end
