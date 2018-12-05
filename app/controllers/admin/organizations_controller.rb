@@ -6,6 +6,7 @@ module Admin
 
     def new
       @organization = Organization.new
+      @organization.permissions = OrganizationPermission.new
     end
 
     def create
@@ -39,9 +40,9 @@ module Admin
     end
 
     def permissions(organization_permissions)
-      organization_permissions.upload_offline_billing = params[:billing] == "1"
-      organization_permissions.upload_offline_invoice = params[:invoice] == "1"
-      organization_permissions.upload_referral_codes = params[:referral] == "1"
+      organization_permissions.uphold_wallet = params[:uphold] == "1"
+      organization_permissions.referral_codes = params[:referral_codes] == "1"
+      organization_permissions.offline_reporting = params[:offline_reporting] == "1"
 
       organization_permissions
     end

@@ -27,8 +27,7 @@ module Admin
       @organization = organization
 
       if @partner.persisted? && (@partner.partner? || @partner.admin?)
-        flash.now[:alert] = "Email is already a partner"
-        render :new
+        redirect_to new_admin_partner_path(organization: organization_name), flash: { alert: "Email is already a partner"}
       elsif @organization.blank?
         flash.now[:alert] = "The organization specified does not exist"
         render :new
@@ -77,7 +76,7 @@ module Admin
                  .or(Publisher.by_email_case_insensitive(email_params))
                  .first
 
-      existing_publisher || Partner.new(email: email_params)
+      existing_publisher&.becomes(Partner) || Partner.new(email: email_params)
     end
 
     def organization

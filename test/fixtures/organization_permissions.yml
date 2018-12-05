@@ -1,0 +1,7 @@
+default_permission:
+  id: 1
+  organization_id: 'bde27753-2327-40dc-a1f8-06d3339f08cf'
+  uphold_wallet: true
+  offline_reporting: true
+  referral_codes: true
+

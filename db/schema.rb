@@ -191,9 +191,9 @@ ActiveRecord::Schema.define(version: 2018_12_04_201916) do
 
   create_table "organization_permissions", force: :cascade do |t|
     t.uuid "organization_id"
-    t.boolean "upload_offline_billing"
-    t.boolean "upload_offline_invoice"
-    t.boolean "upload_referral_codes"
+    t.boolean "uphold_wallet"
+    t.boolean "offline_reporting"
+    t.boolean "referral_codes"
   end
 
   create_table "organizations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

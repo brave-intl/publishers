@@ -1,5 +1,6 @@
 class Organization < ActiveRecord::Base
   has_many :memberships
+  has_many :members, through: :memberships
   has_one :organization_permission
 
   alias_attribute :permissions, :organization_permission

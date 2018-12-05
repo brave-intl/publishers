@@ -8,25 +8,15 @@ div.row
       br
       section.panel
         h5 Permissions
-        = boolean_to_image(@organization.permissions.upload_offline_invoice)
-        = " upload_offline_invoice "
+        = boolean_to_image(@organization.permissions.uphold_wallet)
+        = " Uphold wallet"
         br
-        = boolean_to_image(@organization.permissions.upload_offline_billing)
-        = " upload_offline_billing "
+        = boolean_to_image(@organization.permissions.referral_codes)
+        = " Referral code creation"
         br
-        = boolean_to_image(@organization.permissions.upload_referral_codes)
+        = boolean_to_image(@organization.permissions.offline_reporting)
         = " upload_referral_codes "
 
-      / table.display.table.table-bordered
-      /   tr
-      /     td= boolean_to_image(@organization.permissions.upload_offline_invoice)
-      /     td = "upload_offline_invoice "
-      /   tr
-      /     td= boolean_to_image(@organization.permissions.upload_offline_billing)
-      /     td= "upload_offline_billing "
-      /   tr
-      /     td= boolean_to_image(@organization.permissions.upload_referral_codes)
-      /     td= "upload_referral_codes "
       br
       h5 Partners
       div.panel-body
@@ -35,8 +25,10 @@ div.row
             tr
               th ID
               th Email
+              th Status
             tbody
-              - @organization.memberships.joins(:member).each do |membership|
+              - @organization.members.each do |member|
                 tr.gradeX
-                  td = link_to membership.user_id, admin_publisher_path(membership.user_id)
-                  td = membership.member.email
+                  td = link_to member.id, admin_publisher_path(member.id)
+                  td = member.email
+                  td = member.last_status_update.status

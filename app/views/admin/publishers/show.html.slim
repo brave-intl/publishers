@@ -10,9 +10,10 @@
           .db-field = "Role:"
           .db-value = @publisher.role
         - if @publisher.partner?
+          - partner = @publisher.becomes(Partner)
           .db-info-row
             .db-field = "Organization:"
-            .db-value = @publisher&.becomes(Partner).organization
+            .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
           .db-field = "Status:"
           .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")

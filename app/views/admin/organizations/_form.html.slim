@@ -14,16 +14,16 @@
       strong Permissions
     br
     label
-      = check_box_tag('referral', 1, params[:uphold].present?, class: 'checkbox')
-      = " Referral Codes"
+      = check_box_tag('uphold', 1, @organization.permissions.uphold_wallet, class: 'checkbox')
+      = " Uphold wallet"
     br
     label
-      = check_box_tag('billing', 1, params[:statement].present?, class: 'checkbox')
-      = " Offline billing statement"
+      = check_box_tag('referral_codes', 1, @organization.permissions.referral_codes, class: 'checkbox')
+      = " Referral code creation"
     br
     label
-      = check_box_tag('invoice', 1, params[:invoice].present?, class: 'checkbox')
-      = " Offline invoice"
+      = check_box_tag('offline_reporting', 1, @organization.permissions.offline_reporting, class: 'checkbox')
+      = " Offline reporting and billing"
 
   = submit_tag "Save", class: "btn btn-block btn-primary"
 

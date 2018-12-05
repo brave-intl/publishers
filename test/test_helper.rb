@@ -6,11 +6,14 @@ require "minitest/rails/capybara"
 require "webmock/minitest"
 require "chromedriver/helper"
 require 'sidekiq/testing'
+require 'simplecov'
 
 # https://github.com/rails/rails/issues/31324
 if ActionPack::VERSION::STRING >= "5.2.0"
   Minitest::Rails::TestUnit = Rails::TestUnit
 end
+
+SimpleCov.start 'rails'
 
 Sidekiq::Testing.fake!
 
