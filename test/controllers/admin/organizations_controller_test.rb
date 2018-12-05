@@ -9,7 +9,6 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
     admin = publishers(:admin)
     sign_in admin
 
-    # not created until invoked :)
     @org_name = "Cory's Great Organization"
     @org_id = "bde27753-2327-40dc-a1f8-06d3339f08cf"
   end

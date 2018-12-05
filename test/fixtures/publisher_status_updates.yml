@@ -21,3 +21,7 @@ onboarding:
 suspended:
   publisher: suspended
   status: "suspended"
+
+suspended_partner:
+  publisher: suspended_partner
+  status: "suspended"
