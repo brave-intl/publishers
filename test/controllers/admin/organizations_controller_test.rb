@@ -1,17 +1,21 @@
-require 'test_helper'
+require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
 
-class Admin::PartnersControllerTest < ActionDispatch::IntegrationTest
+class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   before do
     admin = publishers(:admin)
     sign_in admin
+
+    # not created until invoked :)
+    @org_name = "Cory's Great Organization"
+    @org_id = "bde27753-2327-40dc-a1f8-06d3339f08cf"
   end
 
-  describe 'index' do
-    it 'assigns @organizations' do
+  describe "index" do
+    it "assigns @organizations" do
       get admin_organizations_path
       assert controller.instance_variable_get("@organizations")
     end
@@ -25,50 +29,103 @@ class Admin::PartnersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  describe 'create' do
+  describe "show" do
+    it "assigns @organization" do
+      get admin_organization_path(@org_id)
+      assert controller.instance_variable_get("@organization")
+      assert controller.instance_variable_get("@organization").permissions
+    end
+  end
+
+  describe "create" do
     let(:organization_params) do
       {
-        organization: { name: 'org' },
-        uphold: '1',
-        referral_codes: '1',
-        offline_reporting: '1'
+        organization: { name: @org_name },
+        uphold: "1",
+        referral_codes: "1",
+        offline_reporting: "1"
       }
     end
 
     let(:subject) { post admin_organizations_path, params: organization_params }
 
-    describe 'when organization is valid' do
+    describe "when organization is valid" do
       before do
         subject
       end
 
-      it 'assigns organizations' do
+      it "assigns organizations" do
         organization = controller.instance_variable_get("@organization")
         assert organization
       end
 
-      it 'assigns permissions correctly' do
+      it "assigns permissions correctly" do
         organization = controller.instance_variable_get("@organization")
         assert organization.permissions.uphold_wallet
         assert organization.permissions.referral_codes
         assert organization.permissions.offline_reporting
       end
 
-      it 'redirects to organization when saved' do
+      it "redirects to organization when saved" do
         organization = controller.instance_variable_get("@organization")
         assert_redirected_to admin_organization_path(organization.id)
       end
     end
 
-    describe 'when test is invalid' do
-      let(:organization_params) { { organization: { name: '' } } }
-
-      before do
+    describe "when test is invalid" do
+      it "renders new if invalid" do
+        @org_name = ""
         subject
+        assert_template :new
+      end
+    end
+  end
+
+  describe "edit" do
+    it "assigns @organization" do
+      get edit_admin_organization_path(@org_id)
+      assert controller.instance_variable_get("@organization")
+      assert controller.instance_variable_get("@organization").permissions
+    end
+  end
+
+  describe "update" do
+    let(:organization_params) do
+      {
+        organization: { name: @org_name },
+        uphold: "1",
+        referral_codes: "1",
+        offline_reporting: "1"
+      }
+    end
+
+    let(:subject) do
+      patch admin_organization_path(@org_id), params: organization_params
+    end
+
+    describe "when organization is valid" do
+      it "updates the organization" do
+        assert_equal Organization.find(@org_id).name, "The Guardian"
+
+        @org_name = "Updated Name"
+        subject
+        assert_equal Organization.find(@org_id).name, "Updated Name"
       end
 
-      it 'renders new if invalid' do
-        assert_template :new
+      it "sets the permissions correctly" do
+        refute Organization.find(@org_id).permissions.offline_reporting
+
+        subject
+
+        assert Organization.find(@org_id).permissions.offline_reporting
+      end
+    end
+
+    describe "when organization is invalid" do
+      it "renders the edit page" do
+        @org_name = ""
+        subject
+        assert_template :edit
       end
     end
   end
