@@ -7,7 +7,7 @@ amazon:
 
 local:
   service: Disk
-  root: <%= Rails.root.join("storage") %>
+  root: <%= Rails.root.join("private_storage") %>
 
 test:
   service: Disk

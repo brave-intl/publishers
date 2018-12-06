@@ -5,7 +5,13 @@ module PublicS3
 
   included do
     def public_s3_service
-      @service ||= Publishers::Service::PublicS3Service.new
+      @service ||=
+        case Rails.application.config.active_storage.public_service
+        when :amazon
+          Publishers::Service::PublicS3Service.new
+        when :local
+          ActiveStorage::Service::DiskService.new(root: Rails.root.join("storage"))
+        end
     end
 
     # This specifies the relation between a single attachment and the model
@@ -76,13 +82,20 @@ module PublicS3
 
         def public_#{name}_url
           return if #{name}.attachment.blank?
-          if Rails.application.config.active_storage.service == :amazon
-            #{name}.blob.service = public_s3_service
-          end
 
           # ActiveStorage::Current.host = Rails.application.secrets[:s3_rewards_public_domain]
           if Rails.env.development? || Rails.env.test?
-            #{name}.service_url
+            ActiveStorage::Current.host = 'https://localhost:3000'
+            filename = ActiveStorage::Filename.wrap(#{name}.blob.filename)
+
+            # Supports both DiskService and the PublicS3 Service
+            public_s3_service.url(
+              #{name}.blob.key,
+              expires_in: public_s3_service.url_expires_in,
+              filename: filename,
+              content_type: #{name}.blob.content_type,
+              disposition: #{name}.blob.send(:forcibly_serve_as_binary?) ? :attachment : :inline
+            )
           else
             url = Rails.application.secrets[:s3_rewards_public_domain]
             url += "/" + #{name}.blob.key
