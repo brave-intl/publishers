@@ -106,6 +106,15 @@ class Channel < ApplicationRecord
     end
   }
 
+  def self.statistical_totals
+    {
+      all_channels: Channel.verified.count,
+      twitch: Channel.verified.twitch_channels.count,
+      youtube:  Channel.verified.youtube_channels.count,
+      site:  Channel.verified.site_channels.count
+    }
+  end
+
   def publication_title
     details.publication_title
   end
