@@ -40,9 +40,9 @@ module Admin
     end
 
     def permissions(organization_permissions)
-      organization_permissions.uphold_wallet = params[:uphold] == "1"
-      organization_permissions.referral_codes = params[:referral_codes] == "1"
-      organization_permissions.offline_reporting = params[:offline_reporting] == "1"
+      organization_permissions.uphold_wallet = params[:uphold].present?
+      organization_permissions.referral_codes = params[:referral_codes].present?
+      organization_permissions.offline_reporting = params[:offline_reporting].present?
 
       organization_permissions
     end
