@@ -300,7 +300,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_180923) do
     t.datetime "javascript_last_detected_at"
     t.boolean "excluded_from_payout", default: false, null: false
     t.uuid "created_by_id"
-    t.uuid "default_site_banner"
+    t.uuid "default_site_banner_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
