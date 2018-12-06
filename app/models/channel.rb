@@ -69,6 +69,9 @@ class Channel < ApplicationRecord
   scope :visible_site_channels, -> {
     site_channels.where('channels.verified = true or NOT site_channel_details.verification_method IS NULL')
   }
+  scope :not_visible_site_channels, -> {
+    site_channels.where(verified: [false, nil]).where(site_channel_details: {verification_method: nil})
+  }
   scope :visible_youtube_channels, -> {
     youtube_channels.where.not('youtube_channel_details.youtube_channel_id': nil)
   }
@@ -102,6 +105,15 @@ class Channel < ApplicationRecord
         visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
     end
   }
+
+  def self.statistical_totals
+    {
+      all_channels: Channel.verified.count,
+      twitch: Channel.verified.twitch_channels.count,
+      youtube:  Channel.verified.youtube_channels.count,
+      site:  Channel.verified.site_channels.count
+    }
+  end
 
   def publication_title
     details.publication_title

@@ -113,8 +113,13 @@ Rails.application.routes.draw do
       # /api/v1/public/
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
+        namespace :channels, defaults: { format: :json } do
+          get "totals"
+        end
+        namespace :publishers, defaults: { format: :json } do
+          get "totals"
+        end
       end
-
     end
   end
 
@@ -125,6 +130,7 @@ Rails.application.routes.draw do
     resources :payout_reports, only: %i(index show create) do
       member do
         get :download
+        patch :refresh
       end
     end
     resources :publishers do
@@ -137,6 +143,7 @@ Rails.application.routes.draw do
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
+    resources :organizations, only: [:index, :show]
     resources :partners, only: [:index, :new, :create]
 
     namespace :stats do

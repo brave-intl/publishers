@@ -25,10 +25,12 @@ div.row
               th ID
               th Name
               th Email
+              th Organization
             tbody
               - @partners.each do |partner|
                 tr.gradeX
                   td = link_to partner.id, admin_publisher_path(partner.id)
                   td = partner.name
                   td = partner.email
+                  td = partner&.membership&.organization&.name
           = will_paginate @partners

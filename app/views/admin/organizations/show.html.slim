@@ -1,0 +1,17 @@
+div.row
+  div.col-sm-12
+    section.panel
+      header.panel-heading.organization-container
+        h4 Organization: #{@organization.name}
+      br
+      div.panel-body
+        div.adv-table
+          table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+            tr
+              th ID
+              th Email
+            tbody
+              - @organization.memberships.joins(:member).each do |membership|
+                tr.gradeX
+                  td = link_to membership.user_id, admin_publisher_path(membership.user_id)
+                  td = membership.member.email

@@ -166,4 +166,14 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test "#refresh refreshes report contents" do
+    admin = publishers(:admin)
+    sign_in admin
+    payout_report = payout_reports(:one)
+
+    assert_enqueued_with(job: UpdatePayoutReportContentsJob) do
+      patch refresh_admin_payout_report_path(payout_report.id)
+    end
+  end
 end

@@ -24,15 +24,21 @@ module Admin
     def create
       # Find any existing publishers so we don't create duplicate entries
       @partner = partner
+      @organization = organization
 
       if @partner.persisted? && (@partner.partner? || @partner.admin?)
         flash.now[:alert] = "Email is already a partner"
+        render :new
+      elsif @organization.persisted?
+        flash.now[:alert] = "The organization '#{organization.name}' already exists. Please have a partner of the organization add the user you want or ask Engineering team for assistance"
         render :new
       else
         # Ensure publisher gets the right role
         @partner.role = Publisher::PARTNER
         @partner.created_by = current_user
         @partner.save
+        @organization.save
+        Membership.create(member: @partner, organization: @organization)
         MailerServices::PartnerLoginLinkEmailer.new(partner: @partner).perform
         redirect_to admin_publisher_path(@partner.id), flash: { notice: "Email sent" }
       end
@@ -52,8 +58,16 @@ module Admin
       existing_publisher || Partner.new(email: email_params)
     end
 
+    def organization
+      Organization.find_or_initialize_by(name: params[:organization_name])
+    end
+
     def email_params
       params.require(:email)
+    end
+
+    def organization_name
+      params.require(:organization_name)
     end
   end
 end
