@@ -10,7 +10,7 @@ namespace :database_updates do
       end
       publisher = Publisher.find_by(id: banner.publisher_id)
       if publisher
-        publisher.update!(default_banner: banner.id)
+        publisher.update!(default_site_banner: banner.id)
       end
     end
   end
