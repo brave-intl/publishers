@@ -112,8 +112,7 @@ Rails.application.routes.draw do
       end
       # /api/v1/public/
       namespace :public, defaults: { format: :json } do
-        get "channels", controller: "channels"
-        namespace :channels, defaults: { format: :json } do
+        resources :channels, only: [:index] do
           get "totals"
         end
         namespace :publishers, defaults: { format: :json } do
