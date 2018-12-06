@@ -12,8 +12,9 @@ class Api::V1::Public::ChannelsController < Api::V1::Public::BaseController
     render(
       json: {
         all_channels: Channel.verified.count,
-        twitch_only: Channel.verified.twitch_channels.count,
-        youtube_only:  Channel.verified.youtube_channels.count
+        twitch: Channel.verified.twitch_channels.count,
+        youtube:  Channel.verified.youtube_channels.count,
+        site:  Channel.verified.site_channels.count
       },
       status: 200
     )
