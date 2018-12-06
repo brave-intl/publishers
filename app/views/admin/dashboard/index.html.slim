@@ -16,10 +16,10 @@ div.row
                 td = Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO).select{|d| d["label"] == "Alexa Rank" }[0]["rank"]
               tr
                 td Total # of verified publishers with channels
-                td = Publisher.statistical_tools.map { |scope, amount| "#{scope}=#{amount}"}.join("<br/>").html_safe
+                td = Publisher.statistical_totals.map { |scope, amount| "#{scope}=#{amount}"}.join("<br/>").html_safe
               tr
                 td Totals for verified channels
-                td = Channel.statistical_tools.map { |channel_type, amount| "#{channel_type}=#{amount}"}.join("<br/>").html_safe
+                td = Channel.statistical_totals.map { |channel_type, amount| "#{channel_type}=#{amount}"}.join("<br/>").html_safe
 
 hr
 - [Cache::PiwikDataJob::PIWIK_VISITS_SUMMARY, Cache::PiwikDataJob::PIWIK_EVENTS_CATEGORY, Cache::PiwikDataJob::PIWIK_DEVICES_DETECTION_TYPE, Cache::PiwikDataJob::PIWIK_DEVICES_DETECTION_BROWSER_VERSIONS].each do |statistic_key|

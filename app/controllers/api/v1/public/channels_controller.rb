@@ -9,6 +9,6 @@ class Api::V1::Public::ChannelsController < Api::V1::Public::BaseController
   end
 
   def totals
-    render(json: Channel.statistical_tools, status: 200)
+    render(json: Channel.statistical_totals, status: 200)
   end
 end

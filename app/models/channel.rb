@@ -107,7 +107,7 @@ class Channel < ApplicationRecord
   }
 
   class << self
-    def statistical_tools
+    def statistical_totals
       {
         all_channels: Channel.verified.count,
         twitch: Channel.verified.twitch_channels.count,
