@@ -110,8 +110,7 @@ class SiteChannelVerifier < BaseService
 
     host_inspector = SiteChannelHostInspector.new(
       brave_publisher_id: generator.url,
-      response_body: true,
-      require_https: true
+      response_body: true
     ).perform
 
     if host_inspector[:https]

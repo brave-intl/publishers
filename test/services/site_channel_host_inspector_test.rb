@@ -34,6 +34,8 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
   test "sets https_error when there is an OpenSSL::SSL::SSLError exception" do
     stub_request(:get, "https://badsll.mystandardsite.com").
         to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
+    stub_request(:get, "https://www.badsll.mystandardsite.com").
+        to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
 
     result = SiteChannelHostInspector.new(brave_publisher_id: "badsll.mystandardsite.com").perform
 

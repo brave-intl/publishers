@@ -45,8 +45,8 @@ class SiteChannelHostInspector < BaseService
     https_www_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
     if success_response?(https_www_result)
       return response_result(inspect_result: https_www_result, https: true)
-    elsif require_https
-      return failure_result(https_result[:response])
+    elsif require_https || https_www_result[:response].is_a?(NotFoundError)
+      return failure_result(https_www_result[:response])
     end
 
     # test HTTP last
@@ -54,6 +54,7 @@ class SiteChannelHostInspector < BaseService
     if success_response?(http_result)
       return response_result(inspect_result: http_result, https: false, https_error: https_result[:response])
     else
+      # We want to pass in the https result so that the error gets properly shown to the suer
       return failure_result(https_result[:response])
     end
   end
@@ -88,7 +89,11 @@ class SiteChannelHostInspector < BaseService
     when Net::OpenTimeout
       "timeout"
     when NotFoundError
-      "domain_not_found"
+      if brave_publisher_id.include? '.well-known'
+        "connection_failed"
+      else
+        "domain_not_found"
+      end
     else
       "no_https"
     end

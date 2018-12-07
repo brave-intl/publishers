@@ -56,7 +56,8 @@ module Publishers
       rescue OpenSSL::SSL::SSLError, RedirectError, Errno::ECONNREFUSED, Net::OpenTimeout
         raise
       rescue => e
-        raise NotFoundError.new(e.to_s) if response.code.to_i == 404
+        # Handle recursion
+        raise NotFoundError.new(e.to_s) if response&.code.to_i == 404 || e.is_a?(SocketError) || e.is_a?(NotFoundError)
         raise ConnectionFailedError.new(e.to_s)
       end
     end
