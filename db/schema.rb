@@ -180,16 +180,45 @@ ActiveRecord::Schema.define(version: 2018_11_28_143110) do
     t.index ["publisher_id"], name: "index_login_activities_on_publisher_id"
   end
 
+  create_table "memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_memberships_on_organization_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "organizations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
-    t.string "amount"
-    t.string "fees"
-    t.integer "num_payments"
     t.text "encrypted_contents"
     t.string "encrypted_contents_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.uuid "channel_id"
+    t.string "kind", null: false
+    t.string "name", null: false
+    t.string "address", null: false
+    t.string "amount", null: false
+    t.string "fees", null: false
+    t.string "url"
+    t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
+    t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
+    t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

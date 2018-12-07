@@ -67,3 +67,11 @@ promo_enabled_youtube_details:
   youtube_channel_id: "promo123"
   title: "Promo"
   thumbnail_url: "https://some_image_host.com/some_image.png"
+
+potentially_paid_youtube_details:
+  auth_user_id: "potentiallypaid123456"
+  auth_email: "youtube_potentially_paid@pages.plusgoogle.com"
+  auth_provider: "google_oauth2"
+  youtube_channel_id: "potentially_paid123"
+  title: "Pay me"
+  thumbnail_url: "https://some_image_host.com/some_image.png"

@@ -6,15 +6,13 @@ class CleanAbandonedSiteChannelsJob < ApplicationJob
     # and the publisher's session has expired. This ensures the channel will not be visible to them again and can
     # be safely deleted.
 
-    channel_details = SiteChannelDetails.abandoned
+    channels = Channel.not_visible_site_channels
     n = 0
-    channel_details.each do |details|
-      raise unless details.verification_token.nil?
-
-      details.channel.destroy
+    channels.joins(:site_channel_details).each do |channel|
+      raise if channel.details.verification_method.present?
+      channel.destroy
       n = n + 1
-
-      Rails.logger.info("Cleaned abandoned site channel #{ details.brave_publisher_id } for #{ details.channel.publisher_id }.")
+      Rails.logger.info("Cleaned abandoned site channel #{ channel.details.brave_publisher_id } for publisher #{ channel.publisher_id }.")
     end
     Rails.logger.info("CleanAbandonedSiteChannelsJob cleared #{n} abandoned site channels.")
   end

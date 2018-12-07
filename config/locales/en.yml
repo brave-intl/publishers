@@ -291,7 +291,7 @@ en:
         heading: Ready to claim your funds?
         body: To claim your funds, please visit the Publishers website to submit your payment information using the link below.
     wallet_not_connected:
-      subject: Please Connect a Wallet To Continue Receiving Funds
+      subject: Please Connect a Wallet To Claim Your Funds
       body_html: |
         <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p>
         <p>Log in to Brave Payments to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>

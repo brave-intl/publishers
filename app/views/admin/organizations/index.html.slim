@@ -1,0 +1,18 @@
+div.row
+  div.col-sm-12
+    section.panel
+      header.panel-heading.organization-container
+        h4 Organizations
+      br
+      div.panel-body
+        div.adv-table
+          table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+            tr
+              th ID
+              th Name
+            tbody
+              - @organizations.each do |organization|
+                tr.gradeX
+                  td = link_to organization.id, admin_organization_path(organization.id)
+                  td = organization.name
+          = will_paginate @organizations

@@ -52,7 +52,7 @@ script type="text/html" id="verification_failed_modal_wrapper" data-open-verific
           = form_for( \
             current_channel.details, \
             method: :patch, \
-            url: verify_site_channel_path(current_channel, verification_method: "dns_record"), \
+            url: verify_site_channel_path(current_channel), \
           ) do |f|
             = f.submit( \
               t(".button"), \

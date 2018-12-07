@@ -1,5 +1,5 @@
 ---
-:concurrency: 2
+:concurrency: 5
 :timeout: 8
 :max_retries: 3
 :queues:
@@ -28,8 +28,8 @@
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
     queue: scheduler
   Sync::ChannelPromoRegistrationsStatsJob:
-    cron: "0 */8 * * *"
-    description: "Sync stats for channel owned referral codes with the promo server every 8 hours."
+    cron: "30 * * * *"
+    description: "Sync stats for channel owned referral codes with the promo server every hour."
     queue: scheduler
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
@@ -51,8 +51,12 @@
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
     queue: transactional
-  GeneratePayoutReportJob:
+  EnqueuePublishersForPayoutJob:
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"
-    queue: low
+    queue: scheduler
+  UpdatePayoutReportContentsJob:
+    cron: "0 3 1 * *"
+    description: "Refreshes the json version of the report that's built from the potential payments table on the first of every month."
+    queue: scheduler
 :verbose: true
