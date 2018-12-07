@@ -11,6 +11,10 @@ module Search
     query = query.sub("www.", "")
   end
 
+  def find_channel
+    en
+  end
+
 
   # Returns an array of publisher ids that match the query
   def search_sql
