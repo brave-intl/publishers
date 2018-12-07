@@ -1,21 +1,22 @@
 require "publishers/fetch"
 
-# Inspect a brave_publisher_id's host for web_host and HTTPS support
+# Inspect a url's host for web_host and HTTPS support
 class SiteChannelHostInspector < BaseService
   include Publishers::Fetch
 
-  attr_reader :brave_publisher_id, :follow_local_redirects, :follow_all_redirects, :require_https, :check_web_host
+  attr_reader :url, :follow_local_redirects, :follow_all_redirects, :require_https
 
-  def initialize(brave_publisher_id:,
-                 check_web_host: true,
+  def initialize(url:,
                  follow_local_redirects: true,
                  follow_all_redirects: false,
-                 require_https: false)
-    @brave_publisher_id = brave_publisher_id
-    @check_web_host = check_web_host
+                 require_https: false,
+                 response_body: false
+                 )
+    @url = url
     @follow_local_redirects = follow_local_redirects
     @follow_all_redirects = follow_all_redirects
     @require_https = require_https
+    @response_body = response_body
   end
 
   # TODO: github pages can be hosted at custom domains. We should detect them, if possible.
@@ -25,17 +26,9 @@ class SiteChannelHostInspector < BaseService
                      follow_all_redirects: follow_all_redirects,
                      follow_local_redirects: follow_local_redirects)
 
-    if check_web_host
-      web_host = if brave_publisher_id.include?(".github.io")
-                   "github"
-                 elsif response.body.include?("/wp-content/")
-                   "wordpress"
-                 end
-    end
-
-    { response: response, web_host: web_host }
+    { response: response }
   rescue => e
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
+    Rails.logger.warn("PublisherHostInspector #{url} #inspect_uri error: #{e}")
     { response: e }
   end
 
@@ -43,24 +36,25 @@ class SiteChannelHostInspector < BaseService
     return perform_offline if Rails.application.secrets[:host_inspector_offline]
 
     # test HTTPS first
-    https_result = inspect_uri(URI("https://#{brave_publisher_id}"))
+    https_result = inspect_uri(URI("https://#{url}"))
     if success_response?(https_result)
       return response_result(inspect_result: https_result, https: true)
     end
 
     # test HTTPS for www subdomain next
-    https_www_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
+    https_www_result = inspect_uri(URI("https://www.#{url}"))
     if success_response?(https_www_result)
       return response_result(inspect_result: https_www_result, https: true)
-    elsif require_https
-      return failure_result(https_result[:response])
+    elsif require_https || https_www_result[:response].is_a?(NotFoundError)
+      return failure_result(https_www_result[:response])
     end
 
     # test HTTP last
-    http_result = inspect_uri(URI("http://#{brave_publisher_id}"))
+    http_result = inspect_uri(URI("http://#{url}"))
     if success_response?(http_result)
       return response_result(inspect_result: http_result, https: false, https_error: https_result[:response])
     else
+      # We want to pass in the https result so that the error gets properly shown to the suer
       return failure_result(https_result[:response])
     end
   end
@@ -74,15 +68,43 @@ class SiteChannelHostInspector < BaseService
   def response_result(inspect_result:, https:, https_error: nil)
     result = { host_connection_verified: true, https: https }
     result[:https_error] = https_error_message(https_error)
-    result[:web_host] = inspect_result[:web_host] if check_web_host
+    result[:web_host] = web_host(response: inspect_result[:response])
+    result[:response_body] = inspect_result[:response].body if @response_body
     result
   end
 
   def failure_result(error_response)
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{error_response}")
+    Rails.logger.warn("PublisherHostInspector #{url} #perform failure: #{error_response}")
     result = { response: error_response, host_connection_verified: false, https: false }
     result[:https_error] = https_error_message(error_response)
+    result[:web_host] = web_host(response: error_response)
+    result[:verification_details] = verification_details(error_response)
     result
+  end
+
+  def verification_details(error_response)
+    case error_response
+    when RedirectError
+      "too_many_redirects"
+    when Net::OpenTimeout
+      "timeout"
+    when NotFoundError
+      if url.include? '.well-known'
+        "connection_failed"
+      else
+        "domain_not_found"
+      end
+    else
+      "no_https"
+    end
+  end
+
+  def web_host(response: nil)
+    if url.include?(".github.io")
+      "github"
+    elsif (response.try(:body) || "").include?("/wp-content/")
+      "wordpress"
+    end
   end
 
   def https_error_message(error_response)
@@ -96,7 +118,6 @@ class SiteChannelHostInspector < BaseService
     when Net::OpenTimeout
       nil
     end
-    # Any other errors will simply be nil 404 etc
   end
 
   def true?(obj)

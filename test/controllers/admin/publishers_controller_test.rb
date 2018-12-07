@@ -18,6 +18,14 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       to_return(status: status, body: body, headers: {})
   end
 
+  before do
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+  end
+
+  after do
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+  end
+
   test "regular users cannot access" do
     publisher = publishers(:completed)
     sign_in publisher
@@ -82,6 +90,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "admins can approve channels waiting for admin approval" do
+    Rails.application.secrets[:host_inspector_offline] = false
     admin = publishers(:admin)
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)
