@@ -193,8 +193,10 @@ ${props => props.links && css
 
 ${props => props.donations && css
   `
+  font-size: 17px;
   color: white;
-  padding-left: 70px;
+  padding-left: 42px;
+  margin-bottom: 8px;
   `
 }
 

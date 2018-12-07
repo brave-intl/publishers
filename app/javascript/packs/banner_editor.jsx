@@ -17,6 +17,7 @@ import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
 
 import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, LoaderIcon } from 'brave-ui/components/icons'
+import Select from 'brave-ui/components/formControls/select'
 import Checkbox from 'brave-ui/components/formControls/checkbox'
 import Toggle from 'brave-ui/components/formControls/toggle'
 
@@ -95,6 +96,7 @@ export default class BannerEditor extends React.Component {
 
   cleanup(){
     document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'hidden'
+    document.getElementById("bat-select").childNodes[0].childNodes[0].style.color = 'white'
   }
 
   preview(){
@@ -421,6 +423,46 @@ export default class BannerEditor extends React.Component {
       }
   }
 
+  tipToOption(){
+    switch(this.state.donationAmounts.join(',')){
+      case '1,5,10':
+        return 0
+        break;
+      case '5,10,20':
+        return 1
+        break;
+      case '10,20,50':
+        return 2
+        break;
+      case '20,50,100':
+        return 3
+        break;
+      case '50,100,500':
+        return 4
+        break;
+    }
+  }
+
+  handleTipSelection(key, child){
+    switch(key){
+      case '0':
+        this.setState({donationAmounts: [1, 5, 10]})
+        break;
+      case '1':
+        this.setState({donationAmounts: [5, 10, 20]})
+        break;
+      case '2':
+        this.setState({donationAmounts: [10, 20, 50]})
+        break;
+      case '3':
+        this.setState({donationAmounts: [20, 50, 100]})
+        break;
+      case '4':
+        this.setState({donationAmounts: [50, 100, 500]})
+        break;
+    }
+  }
+
   async save() {
     // Three POST requests make up the save: Content, Logo, and Cover.
     this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
@@ -540,7 +582,16 @@ export default class BannerEditor extends React.Component {
             </ExplanatoryText>
 
             <Donations>
-              <Text donations>Set tipping amounts</Text>
+              <Text donations>Set tip amount options</Text>
+              <div style={{width: '75%', margin:'auto', paddingBottom: '20px' }}>
+                <Select id="bat-select" value={this.tipToOption()} type={'light'} title={'Limit Sites to'} disabled={false} floating={false} onChange={(key, child) => this.handleTipSelection(key, child)}>
+                  <div data-value='0'>1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT</div>
+                  <div data-value='1'>5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT</div>
+                  <div data-value='2'>10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT</div>
+                  <div data-value='3'>20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT</div>
+                  <div data-value='4'>50 BAT &nbsp; | &nbsp; 100 BAT &nbsp; | &nbsp; 500 BAT</div>
+                </Select>
+              </div>
               <DonationWrapper>
                 <Button donation>
                   <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
