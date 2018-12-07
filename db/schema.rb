@@ -194,7 +194,7 @@ ActiveRecord::Schema.define(version: 2018_12_04_201916) do
     t.boolean "uphold_wallet", default: false, null: false
     t.boolean "offline_reporting", default: false, null: false
     t.boolean "referral_codes", default: false, null: false
-    t.index ["organization_id"], name: "index_organization_permissions_on_organization_id"
+    t.index ["organization_id"], name: "index_organization_permissions_on_organization_id", unique: true
   end
 
   create_table "organizations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

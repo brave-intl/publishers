@@ -6,7 +6,7 @@ class CreateOrganizationPermissions < ActiveRecord::Migration[5.2]
       t.boolean :offline_reporting, default: false, null: false
       t.boolean :referral_codes, default: false, null: false
 
-      t.index :organization_id
+      t.index :organization_id, unique: true
     end
   end
 end
