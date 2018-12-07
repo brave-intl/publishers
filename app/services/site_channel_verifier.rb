@@ -109,7 +109,7 @@ class SiteChannelVerifier < BaseService
     generator = SiteChannelVerificationFileGenerator.new(site_channel: channel)
 
     host_inspector = SiteChannelHostInspector.new(
-      brave_publisher_id: generator.url,
+      url: generator.url,
       response_body: true
     ).perform
 

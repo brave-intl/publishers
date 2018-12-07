@@ -1,18 +1,18 @@
 require "publishers/fetch"
 
-# Inspect a brave_publisher_id's host for web_host and HTTPS support
+# Inspect a url's host for web_host and HTTPS support
 class SiteChannelHostInspector < BaseService
   include Publishers::Fetch
 
-  attr_reader :brave_publisher_id, :follow_local_redirects, :follow_all_redirects, :require_https
+  attr_reader :url, :follow_local_redirects, :follow_all_redirects, :require_https
 
-  def initialize(brave_publisher_id:,
+  def initialize(url:,
                  follow_local_redirects: true,
                  follow_all_redirects: false,
                  require_https: false,
                  response_body: false
                  )
-    @brave_publisher_id = brave_publisher_id
+    @url = url
     @follow_local_redirects = follow_local_redirects
     @follow_all_redirects = follow_all_redirects
     @require_https = require_https
@@ -28,7 +28,7 @@ class SiteChannelHostInspector < BaseService
 
     { response: response }
   rescue => e
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #inspect_uri error: #{e}")
+    Rails.logger.warn("PublisherHostInspector #{url} #inspect_uri error: #{e}")
     { response: e }
   end
 
@@ -36,13 +36,13 @@ class SiteChannelHostInspector < BaseService
     return perform_offline if Rails.application.secrets[:host_inspector_offline]
 
     # test HTTPS first
-    https_result = inspect_uri(URI("https://#{brave_publisher_id}"))
+    https_result = inspect_uri(URI("https://#{url}"))
     if success_response?(https_result)
       return response_result(inspect_result: https_result, https: true)
     end
 
     # test HTTPS for www subdomain next
-    https_www_result = inspect_uri(URI("https://www.#{brave_publisher_id}"))
+    https_www_result = inspect_uri(URI("https://www.#{url}"))
     if success_response?(https_www_result)
       return response_result(inspect_result: https_www_result, https: true)
     elsif require_https || https_www_result[:response].is_a?(NotFoundError)
@@ -50,7 +50,7 @@ class SiteChannelHostInspector < BaseService
     end
 
     # test HTTP last
-    http_result = inspect_uri(URI("http://#{brave_publisher_id}"))
+    http_result = inspect_uri(URI("http://#{url}"))
     if success_response?(http_result)
       return response_result(inspect_result: http_result, https: false, https_error: https_result[:response])
     else
@@ -74,7 +74,7 @@ class SiteChannelHostInspector < BaseService
   end
 
   def failure_result(error_response)
-    Rails.logger.warn("PublisherHostInspector #{brave_publisher_id} #perform failure: #{error_response}")
+    Rails.logger.warn("PublisherHostInspector #{url} #perform failure: #{error_response}")
     result = { response: error_response, host_connection_verified: false, https: false }
     result[:https_error] = https_error_message(error_response)
     result[:web_host] = web_host(response: error_response)
@@ -89,7 +89,7 @@ class SiteChannelHostInspector < BaseService
     when Net::OpenTimeout
       "timeout"
     when NotFoundError
-      if brave_publisher_id.include? '.well-known'
+      if url.include? '.well-known'
         "connection_failed"
       else
         "domain_not_found"
@@ -100,7 +100,7 @@ class SiteChannelHostInspector < BaseService
   end
 
   def web_host(response: nil)
-    if brave_publisher_id.include?(".github.io")
+    if url.include?(".github.io")
       "github"
     elsif (response.try(:body) || "").include?("/wp-content/")
       "wordpress"

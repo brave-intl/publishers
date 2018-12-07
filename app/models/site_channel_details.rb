@@ -85,7 +85,7 @@ class SiteChannelDetails < BaseChannelDetails
   def inspect_host
     return unless brave_publisher_id
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: self.brave_publisher_id).perform
+    result = SiteChannelHostInspector.new(url: self.brave_publisher_id).perform
     self.supports_https = result[:https].present?
     self.detected_web_host = result[:web_host]
     self.host_connection_verified = result[:host_connection_verified]
