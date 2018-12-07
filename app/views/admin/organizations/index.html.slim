@@ -3,6 +3,7 @@ div.row
     section.panel
       header.panel-heading.organization-container
         h4 Organizations
+        = link_to "New Organization", new_admin_organization_path, class: "btn btn-primary"
       br
       div.panel-body
         div.adv-table
@@ -10,9 +11,11 @@ div.row
             tr
               th ID
               th Name
+              th Members
             tbody
               - @organizations.each do |organization|
                 tr.gradeX
                   td = link_to organization.id, admin_organization_path(organization.id)
                   td = organization.name
+                  td = organization.memberships.length
           = will_paginate @organizations

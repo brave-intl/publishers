@@ -27,31 +27,6 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     }
   end
 
-  test "regular users cannot make partner" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    assert_raises(CanCan::AccessDenied) {
-      post admin_publisher_make_partner_path(publisher.id)
-    }
-  end
-
-  test "admin can make publisher a parnter" do
-    admin = publishers(:admin)
-    sign_in admin
-
-    publisher = Publisher.where(role: Publisher::PUBLISHER).first
-
-    # Make request
-    assert_enqueued_emails(1) do
-      post admin_publisher_make_partner_path(publisher.id)
-    end
-
-    publisher.reload
-
-    assert publisher.partner?
-  end
-
   test "admin can access" do
     admin = publishers(:admin)
     sign_in admin
