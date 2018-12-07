@@ -1,8 +1,9 @@
 ---
-:concurrency: 5
+:concurrency: 1
 :timeout: 8
 :max_retries: 3
 :queues:
+  - heavy
   - mailers
   - transactional
   - scheduler
@@ -39,6 +40,10 @@
     cron: "0 1 * * *"
     description: "Syncs the channel stats via youtube and twitch apis"
     queue: low
+  CacheBrowserChannelsJsonJob:
+    cron: "0 */2 * * *"
+    description: "Refreshes the redis cache for browser channel json"
+    queue: heavy
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
     description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"
