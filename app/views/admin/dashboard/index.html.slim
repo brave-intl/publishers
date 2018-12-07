@@ -1,6 +1,25 @@
-. = "Contributions processed:  #{PayoutReport.total_amount}"
-. = "Piwik data (updated daily) last updated:  #{Rails.cache.fetch(Cache::PiwikDataJob::PIWIK_CACHE_LAST_UPDATED)}"
-. = "Global Alexa Rank: #{Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO).select{|d| d["label"] == "Alexa Rank" }[0]["rank"]}"
+div.row
+  div.col-sm-12
+    section.panel
+      div.panel-body
+        div.adv-table
+          table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+            tbody
+              tr
+                td Contributions processed
+                td = PayoutReport.total_amount
+              tr
+                td Piwik data (updated daily) last updated
+                td = Rails.cache.fetch(Cache::PiwikDataJob::PIWIK_CACHE_LAST_UPDATED)
+              tr
+                td publishers.basicattentiontoken.org Global Alexa Rank
+                td = Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO).select{|d| d["label"] == "Alexa Rank" }[0]["rank"]
+              tr
+                td Total # of verified publishers with channels
+                td = sanitize Publisher.statistical_totals.map { |scope, amount| "#{scope}=#{amount}"}.join("<br/>").html_safe
+              tr
+                td Totals for verified channels
+                td = sanitize Channel.statistical_totals.map { |channel_type, amount| "#{channel_type}=#{amount}"}.join("<br/>").html_safe
 
 hr
 - [Cache::PiwikDataJob::PIWIK_VISITS_SUMMARY, Cache::PiwikDataJob::PIWIK_EVENTS_CATEGORY, Cache::PiwikDataJob::PIWIK_DEVICES_DETECTION_TYPE, Cache::PiwikDataJob::PIWIK_DEVICES_DETECTION_BROWSER_VERSIONS].each do |statistic_key|

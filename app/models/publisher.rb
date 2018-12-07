@@ -116,6 +116,14 @@ class Publisher < ApplicationRecord
     joins(:channels).where('channels.verified = true').distinct
   }
 
+  def self.statistical_totals
+    {
+      email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
+      email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).distinct(:id).count,
+      email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.distinct(:id).count,
+    }
+  end
+
   # API call to eyeshade
   def wallet
     return @_wallet if @_wallet
