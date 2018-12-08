@@ -221,22 +221,27 @@ class Channel < ApplicationRecord
   def self.search(query)
     query = query.downcase
 
-    channel = Channel
+    base_channel = Channel
               .joins(:publisher)
               .left_outer_joins(:site_channel_details)
               .left_outer_joins(:youtube_channel_details)
               .left_outer_joins(:twitch_channel_details)
 
+    channel = base_channel
+    query.split(' ').each do |q|
+      channel = channel
+        .where("lower(publishers.email) LIKE ?", q)
+        .or(base_channel.where("lower(publishers.name) LIKE ?", q))
+        .or(base_channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.display_name) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.email) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.title) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.auth_email) LIKE ?", q))
+    end
+
     channel
-      .where("lower(publishers.email) LIKE ?", query)
-      .or(channel.where("lower(publishers.name) LIKE ?", query))
-      .or(channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", query))
-      .or(channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", query))
-      .or(channel.where("lower(twitch_channel_details.display_name) LIKE ?", query))
-      .or(channel.where("lower(twitch_channel_details.email) LIKE ?", query))
-      .or(channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", query))
-      .or(channel.where("lower(youtube_channel_details.title) LIKE ?", query))
-      .or(channel.where("lower(youtube_channel_details.auth_email) LIKE ?", query))
   end
 
   def verification_failed?
