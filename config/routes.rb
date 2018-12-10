@@ -113,8 +113,13 @@ Rails.application.routes.draw do
       # /api/v1/public/
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
+        namespace :channels, defaults: { format: :json } do
+          get "totals"
+        end
+        namespace :publishers, defaults: { format: :json } do
+          get "totals"
+        end
       end
-
     end
   end
 
@@ -134,12 +139,11 @@ Rails.application.routes.draw do
         get :statement
         post :create_note
       end
-      post :make_partner
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
-    resources :organizations, only: [:index, :show]
-    resources :partners, only: [:index, :new, :create]
+    resources :organizations, except: [:destroy]
+    resources :partners, except: [:destroy]
 
     namespace :stats do
       resources :contributions, only: [:index]

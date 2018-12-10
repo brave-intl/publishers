@@ -9,6 +9,14 @@ class SearchTest < ActionDispatch::IntegrationTest
 
   let(:controller) { Foo.new }
 
+  before do
+    @prev_youtube= Rails.application.secrets[:youtube_api_key]
+  end
+
+  after do
+    Rails.application.secrets[:youtube_api_key] = @prev_youtube
+  end
+
   describe 'extract_video_id' do
     it 'extracts youtube.com' do
       video_id = controller.send(:extract_video_id, 'youtube.com/watch?v=kLiLOkzLetE')
@@ -66,6 +74,44 @@ class SearchTest < ActionDispatch::IntegrationTest
     end
   end
 
+  describe 'extract_channel' do
+    it 'extracts channel id' do
+      channel_id = controller.send(:extract_channel, 'youtube.com/channel/UCFNTTISby1c_H-rm5Ww5rZg')
+      assert_equal 'UCFNTTISby1c_H-rm5Ww5rZg', channel_id
+    end
+
+    it 'extracts channel id with parameters' do
+      channel_id = controller.send(:extract_channel, 'youtube.com/channel/UCFNTTISby1c_H-rm5Ww5rZg&with_params')
+      assert_equal 'UCFNTTISby1c_H-rm5Ww5rZg', channel_id
+    end
+  end
+
   describe 'extract_channel_from_user' do
+    it 'extracts channel from username' do
+      Rails.application.secrets[:youtube_api_key] = nil
+      channel_id = controller.send(:extract_channel_from_user, 'youtube.com/user/BartBaKer')
+      assert_equal 'channel_id', channel_id
+    end
+
+    it 'extracts channel id with parameters' do
+      Rails.application.secrets[:youtube_api_key] = nil
+      channel_id = controller.send(:extract_channel_from_user, 'youtube.com/user/BartBaKer/videos')
+      assert_equal 'channel_id', channel_id
+    end
+
+    describe 'extract channel from user mock' do
+      let(:user) { 'not found' }
+
+      before do
+        stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?part=id&forUsername=#{user}&key=key")
+          .to_return(status: 200, body: '{ "items": [] }')
+      end
+
+      it 'returns empty string when user is not found' do
+        Rails.application.secrets[:youtube_api_key] = 'key'
+        channel_id = controller.send(:extract_channel_from_user, "youtube.com/user/#{user}/videos")
+        assert_equal channel_id, ''
+      end
+    end
   end
 end

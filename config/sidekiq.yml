@@ -28,8 +28,8 @@
     description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
     queue: scheduler
   Sync::ChannelPromoRegistrationsStatsJob:
-    cron: "0 */8 * * *"
-    description: "Sync stats for channel owned referral codes with the promo server every 8 hours."
+    cron: "30 * * * *"
+    description: "Sync stats for channel owned referral codes with the promo server every hour."
     queue: scheduler
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"

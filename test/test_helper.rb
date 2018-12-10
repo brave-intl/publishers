@@ -1,4 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
+require 'simplecov'
+SimpleCov.start 'rails'
+
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "selenium/webdriver"
@@ -11,6 +14,7 @@ require 'sidekiq/testing'
 if ActionPack::VERSION::STRING >= "5.2.0"
   Minitest::Rails::TestUnit = Rails::TestUnit
 end
+
 
 Sidekiq::Testing.fake!
 
