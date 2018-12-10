@@ -27,18 +27,39 @@ module Admin
       @organization = organization
 
       if @partner.persisted? && (@partner.partner? || @partner.admin?)
-        flash.now[:alert] = "Email is already a partner"
-        render :new
-      elsif @organization.persisted?
-        flash.now[:alert] = "The organization '#{organization.name}' already exists. Please have a partner of the organization add the user you want or ask Engineering team for assistance"
+        redirect_to new_admin_partner_path(organization: organization_name), flash: { alert: "Email is already a partner"}
+      elsif @organization.blank?
+        flash.now[:alert] = "The organization specified does not exist"
         render :new
       else
         # Ensure publisher gets the right role
         @partner.role = Publisher::PARTNER
         @partner.created_by = current_user
+        @partner.organization = organization
         @partner.save
-        @organization.save
-        Membership.create(member: @partner, organization: @organization)
+        MailerServices::PartnerLoginLinkEmailer.new(partner: @partner).perform
+        redirect_to admin_organization_path(@organization.id), flash: { notice: "Email sent" }
+      end
+    end
+
+    def edit
+      @partner = Publisher.find(params[:id])
+    end
+
+    def update
+      # Find any existing publishers so we don't create duplicate entries
+      @partner = Publisher.find(params[:id]).becomes(Partner)
+      @organization = organization
+
+      if @organization.blank?
+        flash.now[:alert] = "The organization specified does not exist"
+        render :edit
+      else
+        # Ensure publisher gets the right role
+        @partner.role = Publisher::PARTNER
+        @partner.created_by = current_user
+        @partner.organization = organization
+        @partner.save
         MailerServices::PartnerLoginLinkEmailer.new(partner: @partner).perform
         redirect_to admin_publisher_path(@partner.id), flash: { notice: "Email sent" }
       end
@@ -55,11 +76,11 @@ module Admin
                  .or(Publisher.by_email_case_insensitive(email_params))
                  .first
 
-      existing_publisher || Partner.new(email: email_params)
+      existing_publisher&.becomes(Partner) || Partner.new(email: email_params)
     end
 
     def organization
-      Organization.find_or_initialize_by(name: params[:organization_name])
+      Organization.find_by(name: params[:organization_name])
     end
 
     def email_params

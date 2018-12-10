@@ -16,7 +16,9 @@ script type="text/html" id="verification_failed_modal_wrapper" data-open-verific
       .col-small-centered.text-left
 
         .site-channels--https-check
-          = render :partial => 'https_check', :locals => { current_channel: current_channel }
+          = image_tag("x.png", alt: t(".no_https_alt"), class: "https-check-icon", width: 12, height: 12)
+          = t ".root_repository_info"
+          p= t(".root_repository_instructions_html", domain: current_channel.details.brave_publisher_id)
 
         div class=(current_channel.details.supports_https? ? "instructions" : "instructions dimmed")
           ol.site-channels--body-list

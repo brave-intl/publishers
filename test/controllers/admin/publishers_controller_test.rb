@@ -18,6 +18,14 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       to_return(status: status, body: body, headers: {})
   end
 
+  before do
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+  end
+
+  after do
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+  end
+
   test "regular users cannot access" do
     publisher = publishers(:completed)
     sign_in publisher
@@ -25,31 +33,6 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_raises(CanCan::AccessDenied) {
       get admin_publishers_path
     }
-  end
-
-  test "regular users cannot make partner" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    assert_raises(CanCan::AccessDenied) {
-      post admin_publisher_make_partner_path(publisher.id)
-    }
-  end
-
-  test "admin can make publisher a parnter" do
-    admin = publishers(:admin)
-    sign_in admin
-
-    publisher = Publisher.where(role: Publisher::PUBLISHER).first
-
-    # Make request
-    assert_enqueued_emails(1) do
-      post admin_publisher_make_partner_path(publisher.id)
-    end
-
-    publisher.reload
-
-    assert publisher.partner?
   end
 
   test "admin can access" do
@@ -107,6 +90,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "admins can approve channels waiting for admin approval" do
+    Rails.application.secrets[:host_inspector_offline] = false
     admin = publishers(:admin)
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)

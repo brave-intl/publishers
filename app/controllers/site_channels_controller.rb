@@ -86,7 +86,7 @@ class SiteChannelsController < ApplicationController
   # TODO: Rate limit
   def check_for_https
     @channel = current_channel
-    @channel.details.inspect_brave_publisher_id
+    @channel.details.inspect_host
     @channel.save!
     flash[:notice] = t(".alert")
     redirect_to(site_last_verification_method_path(@channel))
