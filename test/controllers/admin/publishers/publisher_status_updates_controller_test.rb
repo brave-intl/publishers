@@ -12,7 +12,7 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
 
   describe 'index' do
     it 'assigns @publisher and @publisher_status_updates' do
-      get admin_publisher_publisher_status_updates_path(publishers(:uphold_connected))
+      get admin_publisher_publisher_status_updates_path(publishers(:notes))
 
       assert controller.instance_variable_get("@publishers")
       assert controller.instance_variable_get("@publisher_status_updates")
