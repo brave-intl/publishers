@@ -16,7 +16,7 @@
             .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
           .db-field = "Status:"
-          .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
+          .db-value = publisher_status(@publisher)
         .db-info-row
           .db-field = "Uphold verified:"
           .db-value = @publisher.uphold_verified?
@@ -110,6 +110,8 @@
             = note.created_by.name
           .note-created-at
             = note.created_at.strftime("%B %d, %Y")
+          .note-created-at
+            = note.publisher_status
         hr
         .note-content
           = note.note

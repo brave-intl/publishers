@@ -24,4 +24,14 @@ class PublisherNoteTest < ActiveSupport::TestCase
     # ensure the note was destroyed
     assert PublisherNote.all.exclude? note
   end
+
+  describe 'publisher status' do
+    it 'is active when note is created after account' do
+      assert_equal publisher_notes(:default).publisher_status.to_s, 'active'
+    end
+
+    it 'is suspended when note is created after publisher is suspended' do
+      assert_equal publisher_notes(:comment_after_suspended).publisher_status.to_s, 'suspended'
+    end
+  end
 end
