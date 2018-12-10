@@ -14,9 +14,8 @@ class SiteChannelVerificationFileGenerator < BaseService
     "brave-payments-verification.txt"
   end
 
-  # NOTE: Tell user http:// is acceptable but https:// is preferred
-  def generate_url
-    "https://#{site_channel.details.brave_publisher_id}/.well-known/#{filename}"
+  def url
+    "#{site_channel.details.brave_publisher_id}/.well-known/#{filename}"
   end
 
   def generate_file_content

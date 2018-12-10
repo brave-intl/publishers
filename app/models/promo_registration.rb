@@ -19,6 +19,11 @@ class PromoRegistration < ApplicationRecord
   WEEKLY = "weekly"
   MONTHLY = "monthly"
   RUNNING_TOTAL = "running_total"
+
+  # Installer types
+  SILENT = "silent"
+  MOBILE = "mobile"
+  STANDARD = "standard"
   
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign

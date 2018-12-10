@@ -99,6 +99,7 @@ en:
         connection_failed: |
           we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
         too_many_redirects: "we were redirected too many times to verify your domain. "
+        timeout: "the connection timed out before your website responded. "
         no_txt_records: "we could not find TXT records in your domain's DNS records. "
         token_incorrect_dns: "the token in your TXT records is incorrect. "
         token_not_found_dns: "we could not find the token in any of the TXT records. "
@@ -113,7 +114,8 @@ en:
         token_incorrect_dns: "Please make sure the token in your DNS entry is correct."
         token_not_found_dns: "Please add this TXT entry to your DNS records:"
         token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
-        no_https: "Please enabled HTTPS on your domain, or choose another verification method."
+        timeout: "If this verification failure continues to occur, please reach us at %{support_email}."
+        no_https: "Please enable HTTPS on your domain, or choose another verification method."
         generic: "If this verification failure continues to occur, please reach us at %{support_email}."
     publisher:
       balance_unavailable: "Unavailable"
@@ -291,7 +293,7 @@ en:
         heading: Ready to claim your funds?
         body: To claim your funds, please visit the Publishers website to submit your payment information using the link below.
     wallet_not_connected:
-      subject: Please Connect a Wallet To Continue Receiving Funds
+      subject: Please Connect a Wallet To Claim Your Funds
       body_html: |
         <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p>
         <p>Log in to Brave Payments to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>
@@ -671,6 +673,12 @@ en:
           If you don't see yours listed below, try searching for "add TXT record" in your DNS account support area.
         contact: Contact Brave Support
     verification_github:
+      root_repository_info:
+        It looks like you don't have a root repository set up for your Github account.
+      root_repository_instructions_html: |
+        In order for us to verify your site you must first have a repository available for access on <strong>%{domain}</strong>.
+        For more information please read the following
+        <a href='https://guides.github.com/features/pages/'>Github Guide</a>.
       nojekyll_html: |
         It looks like you are using <strong>GitHub</strong>.
         As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.

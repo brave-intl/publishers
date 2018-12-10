@@ -18,7 +18,7 @@ class PromoRegistrationsController < ApplicationController
         RegisterPublisherForPromoJob.perform_later(publisher: @publisher)
         redirect_to home_publishers_path, notice: t("promo.activated.please_wait")
       else
-        PromoRegistrar.new(publisher: @publisher).perform
+        Promo::PublisherChannelsRegistrar.new(publisher: @publisher).perform
         @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
         PromoMailer.promo_activated_2018q1_verified(@publisher, @promo_enabled_channels).deliver
       end

@@ -9,6 +9,11 @@
         .db-info-row
           .db-field = "Role:"
           .db-value = @publisher.role
+        - if @publisher.partner?
+          - partner = @publisher.becomes(Partner)
+          .db-info-row
+            .db-field = "Organization:"
+            .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
           .db-field = "Status:"
           .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
@@ -34,10 +39,10 @@
         - if @publisher.promo_enabled_2018q1
           .db-info-row
             .db-field = "Referral downloads:"
-            .db-value = total_referral_downloads(@publisher)
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
           .db-info-row
             .db-field = "Referral confirmations:"
-            .db-value = confirmed_referral_downloads(@publisher)
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
       #statement-section.split-row
         h3.admin-header = "Statements"
         .statement
@@ -49,8 +54,7 @@
   hr
     = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
     = link_to("Make partner",
-          admin_publisher_make_partner_path(@publisher),
-          method: :post,
+          edit_admin_partner_path(@publisher),
           class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
     = csrf_meta_tag
   hr

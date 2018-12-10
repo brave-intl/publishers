@@ -22,7 +22,7 @@ module Channels
 
         contested_by.verified = true
         contested_by.verification_pending = false
-        contested_by.save! # Automatically initiates the PromoRegistrar
+        contested_by.save! # Automatically initiates the Promo::PublisherChannelsRegistrar
 
         # Email the original owner
         PublisherMailer.channel_transfer_approved_primary(channel_name, original_owner_name, original_owner_email).deliver_later

@@ -5,9 +5,9 @@ class Publisher < ApplicationRecord
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   PROMO_STATS_UPDATE_DELAY = 10.minutes
-  ADMIN = "admin"
-  PARTNER = "partner"
-  PUBLISHER = "publisher"
+  ADMIN = "admin".freeze
+  PARTNER = "partner".freeze
+  PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
   JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
@@ -26,6 +26,7 @@ class Publisher < ApplicationRecord
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
+  has_many :potential_payments
 
   belongs_to :youtube_channel
 
@@ -116,6 +117,14 @@ class Publisher < ApplicationRecord
     joins(:channels).where('channels.verified = true').distinct
   }
 
+  def self.statistical_totals
+    {
+      email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
+      email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).distinct(:id).count,
+      email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.distinct(:id).count,
+    }
+  end
+
   # API call to eyeshade
   def wallet
     return @_wallet if @_wallet
@@ -151,7 +160,7 @@ class Publisher < ApplicationRecord
   end
 
   def to_s
-    name
+    name || email
   end
 
   def prepare_uphold_state_token

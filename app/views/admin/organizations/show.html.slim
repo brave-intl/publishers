@@ -1,0 +1,34 @@
+div.row
+  div.col-sm-12
+    section.panel
+      header.panel-heading.organization-container
+        h4 Organization: #{@organization.name}
+        = link_to "Add Partner", new_admin_partner_path(organization: @organization.name), class: "btn add-partner btn-primary"
+        = link_to "Edit Organization", edit_admin_organization_path(@organization), class: "btn btn-primary"
+      br
+      section.panel
+        h5 Permissions
+        = boolean_to_image(@organization.permissions.uphold_wallet)
+        = " Uphold wallet"
+        br
+        = boolean_to_image(@organization.permissions.referral_codes)
+        = " Referral code creation"
+        br
+        = boolean_to_image(@organization.permissions.offline_reporting)
+        = " Offline reporting and billing"
+
+      br
+      h5 Partners
+      div.panel-body
+        div.adv-table
+          table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+            tr
+              th ID
+              th Email
+              th Status
+            tbody
+              - @organization.members.each do |member|
+                tr.gradeX
+                  td = link_to member.id, admin_publisher_path(member.id)
+                  td = member.email
+                  td = member.last_status_update.status

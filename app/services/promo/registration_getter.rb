@@ -1,5 +1,5 @@
 # Gets the referral code associated with a channel_id
-class PromoRegistrationGetter < BaseApiClient
+class Promo::RegistrationGetter < BaseApiClient
   include PromosHelper
 
   def initialize(publisher:, channel:, promo_id: active_promo_id)
@@ -24,7 +24,7 @@ class PromoRegistrationGetter < BaseApiClient
   end
 
   def perform_offline
-    Rails.logger.info("PromoRegistrationGetter offline.")
+    Rails.logger.info("Promo::RegistrationGetter offline.")
     {}.to_json
   end
 

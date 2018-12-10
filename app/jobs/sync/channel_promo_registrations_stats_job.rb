@@ -5,6 +5,6 @@ class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
 
   def perform
     promo_registrations = PromoRegistration.channels_only
-    PromoRegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
+    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
   end
 end

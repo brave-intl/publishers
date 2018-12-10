@@ -1,5 +1,5 @@
 # Registers infinity codes for a Brave admin
-class PromoRegistrarUnattached < BaseApiClient
+class Promo::UnattachedRegistrar < BaseApiClient
   include PromosHelper
 
   def initialize(number:, promo_id: active_promo_id, campaign: nil)
@@ -10,7 +10,7 @@ class PromoRegistrarUnattached < BaseApiClient
 
   def perform
     return if @number <= 0
-    return register_unattached_offline if perform_promo_offline?
+    return perform_offline if perform_promo_offline?
     response = connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
@@ -25,9 +25,12 @@ class PromoRegistrarUnattached < BaseApiClient
     end
   end
 
-  def register_unattached_offline
-    Rails.logger.info("PromoRegistrar #register_channel offline.")
-    offline_referral_code
+  def perform_offline
+    @number.times do
+      PromoRegistration.create!(referral_code: offline_referral_code,
+                                promo_id: active_promo_id,
+                                kind: PromoRegistration::UNATTACHED)
+    end
   end
 
   private

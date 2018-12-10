@@ -25,7 +25,7 @@ class Channel < ApplicationRecord
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
-  has_one :site_banner
+  has_many :potential_payments
 
   belongs_to :contested_by_channel, class_name: "Channel"
 
@@ -40,7 +40,7 @@ class Channel < ApplicationRecord
   validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
 
   validates :verification_details, inclusion: {
-    in: %w(domain_not_found connection_failed too_many_redirects no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
+    in: %w(domain_not_found connection_failed too_many_redirects timeout no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
   }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
@@ -69,6 +69,9 @@ class Channel < ApplicationRecord
   # ensure this site_channel will be preserved so the publisher cna come back to it.
   scope :visible_site_channels, -> {
     site_channels.where('channels.verified = true or NOT site_channel_details.verification_method IS NULL')
+  }
+  scope :not_visible_site_channels, -> {
+    site_channels.where(verified: [false, nil]).where(site_channel_details: {verification_method: nil})
   }
   scope :visible_youtube_channels, -> {
     youtube_channels.where.not('youtube_channel_details.youtube_channel_id': nil)
@@ -103,6 +106,15 @@ class Channel < ApplicationRecord
         visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
     end
   }
+
+  def self.statistical_totals
+    {
+      all_channels: Channel.verified.count,
+      twitch: Channel.verified.twitch_channels.count,
+      youtube:  Channel.verified.youtube_channels.count,
+      site:  Channel.verified.site_channels.count
+    }
+  end
 
   def publication_title
     details.publication_title

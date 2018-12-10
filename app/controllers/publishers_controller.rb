@@ -457,6 +457,7 @@ class PublishersController < ApplicationController
     return if publisher_id.blank? || token.blank?
 
     publisher = Publisher.find(publisher_id)
+
     publisher_created_through_youtube_auth = publisher_created_through_youtube_auth?(publisher)
     if publisher_created_through_youtube_auth
       session[:publisher_created_through_youtube_auth] = publisher_created_through_youtube_auth

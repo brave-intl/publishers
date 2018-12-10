@@ -24,6 +24,8 @@ common: &default_settings
   # Logging level for log/newrelic_agent.log
   log_level: info
 
+  attributes.include: job.sidekiq.args.*
+
   # Don't log sensitive things to New Relic
 #  high_security: true
 

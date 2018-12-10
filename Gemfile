@@ -87,7 +87,7 @@ gem "rack-attack", "~> 5.0"
 
 gem 'railties', "~> 5.2.0"
 
-gem "rails", "~> 5.2.1"
+gem "rails", "~> 5.2.2.rc1"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -138,6 +138,8 @@ group :development, :staging do
 end
 
 group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
   # Vulnerabilities
   gem "bundler-audit", require: false
 
@@ -181,6 +183,7 @@ group :development, :test do
   gem 'rubyzip'
   gem "capybara-selenium"
   gem "chromedriver-helper"
+  gem 'simplecov', require: false, group: :test
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

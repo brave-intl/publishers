@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2018_11_27_174413) do
-
+ActiveRecord::Schema.define(version: 2018_12_05_180923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,11 +19,11 @@ ActiveRecord::Schema.define(version: 2018_11_27_174413) do
   create_table "active_storage_attachments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.uuid "record_id", null: false
-    t.uuid "blob_id", null: false
+    t.bigint "legacy_record_id"
+    t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
+    t.uuid "record_id"
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -97,7 +95,7 @@ ActiveRecord::Schema.define(version: 2018_11_27_174413) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: false
+    t.boolean "verified", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -182,16 +180,53 @@ ActiveRecord::Schema.define(version: 2018_11_27_174413) do
     t.index ["publisher_id"], name: "index_login_activities_on_publisher_id"
   end
 
+  create_table "memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_memberships_on_organization_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "organization_permissions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "organization_id"
+    t.boolean "uphold_wallet", default: false, null: false
+    t.boolean "offline_reporting", default: false, null: false
+    t.boolean "referral_codes", default: false, null: false
+    t.index ["organization_id"], name: "index_organization_permissions_on_organization_id", unique: true
+  end
+
+  create_table "organizations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
-    t.string "amount"
-    t.string "fees"
-    t.integer "num_payments"
     t.text "encrypted_contents"
     t.string "encrypted_contents_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.uuid "channel_id"
+    t.string "kind", null: false
+    t.string "name", null: false
+    t.string "address", null: false
+    t.string "amount", null: false
+    t.string "fees", null: false
+    t.string "url"
+    t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
+    t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
+    t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -212,6 +247,7 @@ ActiveRecord::Schema.define(version: 2018_11_27_174413) do
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
     t.uuid "publisher_id"
+    t.string "installer_type"
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
@@ -274,6 +310,7 @@ ActiveRecord::Schema.define(version: 2018_11_27_174413) do
     t.uuid "default_banner"
     t.boolean "default_banner_mode", default: false, null: false
     t.uuid "created_by_id"
+    t.uuid "default_site_banner_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
@@ -290,6 +327,7 @@ ActiveRecord::Schema.define(version: 2018_11_27_174413) do
   end
 
   create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.bigint "legacy_id"
     t.uuid "publisher_id", null: false
     t.text "title", null: false
     t.text "description", null: false

@@ -19,11 +19,11 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "#create launches GeneratePayoutReportJob for admin" do
+  test "#create launches EnqueuePublishersForPayoutJob for admin" do
     admin = publishers(:admin)
     sign_in admin
 
-    assert_enqueued_with(job: GeneratePayoutReportJob) do
+    assert_enqueued_with(job: EnqueuePublishersForPayoutJob) do
       post admin_payout_reports_path
     end
   end
@@ -113,11 +113,8 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       post admin_payout_reports_path(final: true, should_send_notifications: true)
     end
 
-    # Ensure the authority is GeneratePayoutReportJob
-    payout_report = PayoutReport.all.order(created_at: :desc).first
-    JSON.parse(payout_report.contents).each { |channel| assert_equal channel["authority"], "GeneratePayoutReportJob"}
-
     # Ensure authority is the admin's email when the file is downloaded
+    payout_report = PayoutReport.all.order(created_at: :desc).first
     get download_admin_payout_report_path(payout_report)
     JSON.parse(response.body).each { |channel| assert_equal channel["authority"], admin.email}
   end
@@ -167,6 +164,16 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
           post admin_payout_reports_path(final: true, should_send_notifications: true)
         end
       end
+    end
+  end
+
+  test "#refresh refreshes report contents" do
+    admin = publishers(:admin)
+    sign_in admin
+    payout_report = payout_reports(:one)
+
+    assert_enqueued_with(job: UpdatePayoutReportContentsJob) do
+      patch refresh_admin_payout_report_path(payout_report.id)
     end
   end
 end
