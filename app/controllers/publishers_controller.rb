@@ -426,6 +426,9 @@ class PublishersController < ApplicationController
     default_site_banner_mode = current_publisher.default_site_banner_mode
     default_site_banner = {"id" => current_publisher.default_site_banner_id, "name" => "Default", "type" => "Default"}
     channel_banners = current_publisher.channels.map { |channel| {id: channel.id, name: channel.publication_title, type: channel.details_type} }
+    channel_banners.each do |channel_banner|
+      channel_banner[:id] = current_publisher.site_banners.find_by(channel_id: channel_banner[:id]).id
+    end
     data = {"default_site_banner_mode" => default_site_banner_mode, "default_site_banner" => default_site_banner, "channel_banners" => channel_banners}
     render(json: data.to_json)
   end
