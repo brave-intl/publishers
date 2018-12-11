@@ -144,7 +144,7 @@ a.logo span {
       margin: 30px 0px;
     }
 
-    #publisher-section {      
+    #publisher-section {
     }
 
     #statement-section {
@@ -172,7 +172,7 @@ a.logo span {
       }
       #generate_statement {
         margin-left: 10px;
-      }      
+      }
     }
 
     #channels-section {
@@ -207,7 +207,7 @@ a.logo span {
 
           }
         }
-      }      
+      }
     }
     #notes-section {
       .note {
@@ -222,6 +222,9 @@ a.logo span {
           .note-created-at {
             flex: 1;
           }
+          .note-status {
+            flex: 1;
+          }
         }
         .note-content {
         }
@@ -233,5 +236,5 @@ a.logo span {
         }
       }
     }
-  }  
+  }
 }
