@@ -9,7 +9,7 @@ class Publishers::SiteBannersController < ApplicationController
     if params[:default]
       site_banner = current_publisher.default_site_banner
     else
-      site_banner = current_publisher.site_banners.find_by(id: params[:id])
+      site_banner = current_publisher.site_banners.find_by(channel_id: params[:id])
     end
     if site_banner
       data = site_banner.read_only_react_property
@@ -25,7 +25,7 @@ class Publishers::SiteBannersController < ApplicationController
     if params[:default]
       site_banner = current_publisher.default_site_banner
     else
-      site_banner = current_publisher.site_banners.find_by(id: params[:id])
+      site_banner = current_publisher.site_banners.find_by(channel_id: params[:id])
     end
     site_banner.update(
       publisher_id: current_publisher.id,
