@@ -28,7 +28,7 @@ install:
   - google-chrome --version
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost
     &
-  - yarn install
+  - yarn install --frozen-lockfile
   - rake db:setup
   - bundle exec rake assets:precompile
 script:
