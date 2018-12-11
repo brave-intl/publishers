@@ -76,7 +76,37 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       sign_in admin
     end
 
-    it 'filters correctly ' do
+    it 'searches referral codes' do
+      get admin_publishers_path, params: { q: "PRO123" }
+
+      publishers = controller.instance_variable_get("@publishers")
+      assert_equal publishers.count, 1
+      assert_equal publishers.first, publishers(:promo_enabled)
+    end
+
+    it 'only shows suspended when suspended filter is on' do
+      get admin_publishers_path, params: { suspended: "1" }
+
+      publishers = controller.instance_variable_get("@publishers")
+
+      publishers.each do |p|
+        assert_equal p.last_status_update.status, "suspended"
+      end
+    end
+
+    it 'filters correctly on name' do
+      get admin_publishers_path, params: { q: "#{publishers(:completed).name}" }
+
+      publishers = controller.instance_variable_get("@publishers")
+      assert_equal publishers.count, 1
+      assert_equal publishers.first, publishers(:completed)
+    end
+
+    it 'returns no results when not found' do
+      get admin_publishers_path, params: { q: "404 not found" }
+
+      publishers = controller.instance_variable_get("@publishers")
+      assert_equal publishers.count, 0
     end
   end
 

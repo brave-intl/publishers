@@ -13,8 +13,7 @@ class Admin::PublishersController < AdminController
 
     @publishers = @publishers.suspended if params[:suspended].present?
 
-    @publishers = @publishers.order(created_at: :desc)
-    @publishers = @publishers.paginate(page: params[:page])
+    @publishers = @publishers.order(created_at: :desc).paginate(page: params[:page])
   end
 
   def show
