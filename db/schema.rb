@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_180923) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "active_storage_attachments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "legacy_record_id"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_180923) do
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
   end
 
-  create_table "active_storage_blobs", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "active_storage_blobs", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -307,9 +307,8 @@ ActiveRecord::Schema.define(version: 2018_12_05_180923) do
     t.datetime "default_currency_confirmed_at"
     t.datetime "javascript_last_detected_at"
     t.boolean "excluded_from_payout", default: false, null: false
-    t.uuid "default_banner"
-    t.boolean "default_banner_mode", default: false, null: false
     t.uuid "created_by_id"
+    t.boolean "default_site_banner_mode", default: false, null: false
     t.uuid "default_site_banner_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"

@@ -422,18 +422,11 @@ class PublishersController < ApplicationController
     end
   end
 
-  def get_banner_data
-    default_banner_mode = current_publisher.default_banner_mode
-    default_banner = {"id" => current_publisher.default_banner, "name" => "Default", "type" => "Default"}
-    channel_banners = []
-    current_publisher.site_banners.where.not(id: current_publisher.default_banner).each do |c|
-      channel = current_publisher.channels.find_by(id: c.channel_id)
-      if channel
-        channel_banner = {"id" => c.id, "name" => channel.publication_title, "type" => channel.details_type}
-        channel_banners.push(channel_banner)
-      end
-    end
-    data = {"default_banner_mode" => default_banner_mode, "default_banner" => default_banner, "channel_banners" => channel_banners}
+  def get_site_banner_data
+    default_site_banner_mode = current_publisher.default_site_banner_mode
+    default_site_banner = {"id" => current_publisher.default_site_banner_id, "name" => "Default", "type" => "Default"}
+    channel_banners = current_publisher.channels.map { |channel| {id: channel.id, name: channel.publication_title, type: channel.details_type} }
+    data = {"default_site_banner_mode" => default_site_banner_mode, "default_site_banner" => default_site_banner, "channel_banners" => channel_banners}
     render(json: data.to_json)
   end
 

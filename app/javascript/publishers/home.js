@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let preferredCurrency = document.getElementById("preferred_currency").value
     let conversionRate = document.getElementById("conversion_rate").value
 
-    let url = '/publishers/get_banner_data';
+    let url = '/publishers/get_site_banner_data';
 
     let options = {
       method: 'GET',
@@ -422,17 +422,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let response = await fetch(url, options);
     let bannerEditorData = await response.json();
 
-    let defaultBannerMode = bannerEditorData.default_banner_mode;
-    let defaultBanner = bannerEditorData.default_banner;
+    let defaultSiteBannerMode = bannerEditorData.default_site_banner_mode;
+    let defaultSiteBanner = bannerEditorData.default_site_banner;
     let channelBanners = bannerEditorData.channel_banners;
     console.log(bannerEditorData);
 
     document.getElementById("open-banner-button").onclick = function() {
-      renderBannerEditor(preferredCurrency, conversionRate, defaultBannerMode, defaultBanner, channelBanners, "Editor");
+      renderBannerEditor(preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, "Editor");
     };
 
     document.getElementById("open-preview-button").onclick = function() {
-      renderBannerEditor(preferredCurrency, conversionRate, defaultBannerMode, defaultBanner, channelBanners, "Preview");
+      renderBannerEditor(preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, "Preview");
     };
 
     document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {

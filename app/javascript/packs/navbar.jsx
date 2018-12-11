@@ -17,8 +17,6 @@ export default class Navbar extends React.Component {
     }
   }
 
-
-
   render(){
     initLocale(locale);
 
@@ -32,16 +30,16 @@ export default class Navbar extends React.Component {
           <ToggleWrapper>
           {
             this.props.channelBanners.length > 0 ?
-            <Toggle id='banner-toggle' checked={this.props.defaultBannerMode} disabled={false} type={'light'} size={'large'} onToggle={this.props.toggleDefaultBannerMode}></Toggle>
+            <Toggle id='banner-toggle' checked={this.props.defaultSiteBannerMode} disabled={false} type={'light'} size={'large'} onToggle={this.props.toggleDefaultSiteBannerMode}></Toggle>
             :
-            <Toggle id='banner-toggle' checked={this.props.defaultBannerMode} disabled={false} type={'light'} size={'large'}></Toggle>
+            <Toggle id='banner-toggle' checked={this.props.defaultSiteBannerMode} disabled={false} type={'light'} size={'large'}></Toggle>
           }
           </ToggleWrapper>
         </BrandBar>
 
         <ControlBar>
 
-          <Channels active={!this.props.defaultBannerMode}>
+          <Channels active={!this.props.defaultSiteBannerMode}>
             {
               this.props.channelIndex > 0 ?
               <CaratLeftIcon onClick={this.props.decrementChannelIndex} style={{height:'35px', width:'35px', marginBottom:'5px', color: '#fb542b', cursor:'pointer'}}/>

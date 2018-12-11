@@ -7,7 +7,7 @@ class Publishers::SiteBannersController < ApplicationController
 
   def show
     if params[:default]
-      site_banner = current_publisher.site_banners.find_by(id: current_publisher.default_banner)
+      site_banner = current_publisher.default_site_banner
     else
       site_banner = current_publisher.site_banners.find_by(id: params[:id])
     end
@@ -23,7 +23,7 @@ class Publishers::SiteBannersController < ApplicationController
 
   def update
     if params[:default]
-      site_banner = current_publisher.site_banners.find_by(id: current_publisher.default_banner)
+      site_banner = current_publisher.default_site_banner
     else
       site_banner = current_publisher.site_banners.find_by(id: params[:id])
     end
@@ -44,8 +44,8 @@ class Publishers::SiteBannersController < ApplicationController
     head :ok
   end
 
-  def set_default_banner_mode
-    current_publisher.update(default_banner_mode: params[:dbm])
+  def set_default_site_banner_mode
+    current_publisher.update(default_site_banner_mode: params[:dbm])
   end
 
   private

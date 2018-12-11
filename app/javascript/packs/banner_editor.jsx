@@ -28,12 +28,12 @@ export default class BannerEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    let defaultBannerMode;
+    let defaultSiteBannerMode;
     if(this.props.channelBanners.length === 0){
-      defaultBannerMode = true;
+      defaultSiteBannerMode = true;
     }
     else{
-      defaultBannerMode = this.props.defaultBannerMode
+      defaultSiteBannerMode = this.props.defaultSiteBannerMode
     }
 
     this.state = {
@@ -44,8 +44,8 @@ export default class BannerEditor extends React.Component {
       cover: {url: null, data: null},
       channelIndex: 0,
       channelBanners: this.props.channelBanners,
-      defaultBanner: this.props.defaultBanner,
-      defaultBannerMode: defaultBannerMode,
+      defaultSiteBanner: this.props.defaultSiteBanner,
+      defaultSiteBannerMode: defaultSiteBannerMode,
       scale: 1,
       linkSelection: false,
       linkOption: 'Youtube',
@@ -65,7 +65,7 @@ export default class BannerEditor extends React.Component {
      this.preview = this.preview.bind(this);
      this.updateDescription = this.updateDescription.bind(this);
      this.save = this.save.bind(this);
-     this.toggleDefaultBannerMode = this.toggleDefaultBannerMode.bind(this);
+     this.toggleDefaultSiteBannerMode = this.toggleDefaultSiteBannerMode.bind(this);
      this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
      this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
      this.updateYoutube = this.updateYoutube.bind(this);
@@ -198,8 +198,8 @@ export default class BannerEditor extends React.Component {
     let that = this
     let url;
 
-    if(this.state.defaultBannerMode){
-      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.defaultBanner.id + "?default=" + this.state.defaultBannerMode
+    if(this.state.defaultSiteBannerMode){
+      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.defaultSiteBanner.id + "?default=" + this.state.defaultSiteBannerMode
     }
     else{
       url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.channelBanners[this.state.channelIndex].id;
@@ -374,8 +374,8 @@ export default class BannerEditor extends React.Component {
             <div style={{marginTop: '40px', textAlign: 'center'}}>
             <Button onClick={ () => this.setState({state: 'Editor'}) } style={{margin:'10px', width:'120px'}} outline>Cancel</Button>
             <Button onClick={ async() => {
-              let toggle = await this.setDefaultBannerMode(true);
-              this.setState({defaultBannerMode: !this.state.defaultBannerMode, state: 'Editor', loading: true},
+              let toggle = await this.setDefaultSiteBannerMode(true);
+              this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, state: 'Editor', loading: true},
               () => { this.fetchBanner() });
             }}
             style={{margin:'10px', width:'120px'}} primary>Continue</Button>
@@ -469,8 +469,8 @@ export default class BannerEditor extends React.Component {
     this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
 
     let url;
-    if(this.state.defaultBannerMode){
-      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.defaultBanner.id + "?default=" + this.state.defaultBannerMode
+    if(this.state.defaultSiteBannerMode){
+      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.defaultSiteBanner.id + "?default=" + this.state.defaultSiteBannerMode
     }
     else{
       url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.channelBanners[this.state.channelIndex].id;
@@ -524,10 +524,10 @@ export default class BannerEditor extends React.Component {
     () => {this.fetchBanner()})
   }
 
-  async toggleDefaultBannerMode(){
-    if(this.state.defaultBannerMode === true){
-      let toggle = await this.setDefaultBannerMode(false)
-      this.setState({defaultBannerMode: !this.state.defaultBannerMode, loading: true},
+  async toggleDefaultSiteBannerMode(){
+    if(this.state.defaultSiteBannerMode === true){
+      let toggle = await this.setDefaultSiteBannerMode(false)
+      this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, loading: true},
       () => { this.fetchBanner() })
     }
     else{
@@ -535,8 +535,8 @@ export default class BannerEditor extends React.Component {
     }
   }
 
-  async setDefaultBannerMode(value){
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/set_default_banner_mode?dbm=" + value
+  async setDefaultSiteBannerMode(value){
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/set_default_site_banner_mode?dbm=" + value
     let options = {
       method: 'POST',
       credentials: "same-origin",
@@ -554,7 +554,7 @@ export default class BannerEditor extends React.Component {
         {this.renderLoadingScreen()}
         {this.renderDialogue()}
 
-        <Navbar defaultBanner={this.props.defaultBanner} channelBanners={this.props.channelBanners} channelIndex={this.state.channelIndex} defaultBannerMode={this.state.defaultBannerMode} incrementChannelIndex={this.incrementChannelIndex} decrementChannelIndex={this.decrementChannelIndex} toggleDefaultBannerMode={this.toggleDefaultBannerMode} save={this.save} close={this.close} preview={ this.preview }/>
+        <Navbar defaultSiteBanner={this.props.defaultSiteBanner} channelBanners={this.props.channelBanners} channelIndex={this.state.channelIndex} defaultSiteBannerMode={this.state.defaultSiteBannerMode} incrementChannelIndex={this.incrementChannelIndex} decrementChannelIndex={this.decrementChannelIndex} toggleDefaultSiteBannerMode={this.toggleDefaultSiteBannerMode} save={this.save} close={this.close} preview={ this.preview }/>
 
         <Template>
           <Logo url={this.state.logo.url}>
@@ -629,13 +629,13 @@ export default class BannerEditor extends React.Component {
   }
 }
 
-export function renderBannerEditor(preferredCurrency, conversionRate, defaultBannerMode, defaultBanner, channelBanners, mode) {
+export function renderBannerEditor(preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, mode) {
 
   let props = {
     preferredCurrency: preferredCurrency,
     conversionRate: conversionRate,
-    defaultBannerMode: defaultBannerMode,
-    defaultBanner: defaultBanner,
+    defaultSiteBannerMode: defaultSiteBannerMode,
+    defaultSiteBanner: defaultSiteBanner,
     channelBanners: channelBanners,
     mode: mode
   }
