@@ -69,6 +69,17 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  describe 'search' do
+    before do
+      admin = publishers(:admin)
+      publisher = publishers(:completed)
+      sign_in admin
+    end
+
+    it 'filters correctly ' do
+    end
+  end
+
   test "raises error unless admin has u2f enabled" do
     admin = publishers(:admin)
     admin.u2f_registrations.each { |r| r.destroy } # remove all u2f registrations
