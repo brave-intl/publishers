@@ -15,6 +15,7 @@ if ActionPack::VERSION::STRING >= "5.2.0"
   Minitest::Rails::TestUnit = Rails::TestUnit
 end
 
+
 Sidekiq::Testing.fake!
 
 WebMock.allow_net_connect!

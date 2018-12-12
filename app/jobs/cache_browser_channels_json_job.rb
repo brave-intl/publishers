@@ -1,5 +1,5 @@
 class CacheBrowserChannelsJsonJob < ApplicationJob
-  queue_as :transactional
+  queue_as :heavy
 
   def perform
     channels_json = JsonBuilders::ChannelsJsonBuilder.new.build

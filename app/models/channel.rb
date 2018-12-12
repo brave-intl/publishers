@@ -40,7 +40,7 @@ class Channel < ApplicationRecord
   validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
 
   validates :verification_details, inclusion: {
-    in: %w(domain_not_found connection_failed too_many_redirects no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
+    in: %w(domain_not_found connection_failed too_many_redirects timeout no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
   }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
@@ -230,22 +230,27 @@ class Channel < ApplicationRecord
   def self.search(query)
     query = query.downcase
 
-    channel = Channel
+    base_channel = Channel
               .joins(:publisher)
               .left_outer_joins(:site_channel_details)
               .left_outer_joins(:youtube_channel_details)
               .left_outer_joins(:twitch_channel_details)
 
+    channel = base_channel
+    query.split(' ').each do |q|
+      channel = channel
+        .where("lower(publishers.email) LIKE ?", q)
+        .or(base_channel.where("lower(publishers.name) LIKE ?", q))
+        .or(base_channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.display_name) LIKE ?", q))
+        .or(base_channel.where("lower(twitch_channel_details.email) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.title) LIKE ?", q))
+        .or(base_channel.where("lower(youtube_channel_details.auth_email) LIKE ?", q))
+    end
+
     channel
-      .where("lower(publishers.email) LIKE ?", query)
-      .or(channel.where("lower(publishers.name) LIKE ?", query))
-      .or(channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", query))
-      .or(channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", query))
-      .or(channel.where("lower(twitch_channel_details.display_name) LIKE ?", query))
-      .or(channel.where("lower(twitch_channel_details.email) LIKE ?", query))
-      .or(channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", query))
-      .or(channel.where("lower(youtube_channel_details.title) LIKE ?", query))
-      .or(channel.where("lower(youtube_channel_details.auth_email) LIKE ?", query))
   end
 
   def verification_failed?

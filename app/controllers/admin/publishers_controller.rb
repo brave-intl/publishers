@@ -8,7 +8,7 @@ class Admin::PublishersController < AdminController
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
       search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
-      @publishers = Publisher.where(search_sql, search_query: search_query).distinct
+      @publishers = Publisher.where(search_sql, search_query: search_query)
     end
 
     @publishers = @publishers.suspended if params[:suspended].present?
@@ -28,16 +28,6 @@ class Admin::PublishersController < AdminController
   def update
     @publisher.update(update_params)
 
-    redirect_to admin_publisher_path(@publisher)
-  end
-
-  def make_partner
-    return unless @publisher.publisher?
-
-    @publisher.created_by = current_user
-    @publisher.update(role: Publisher::PARTNER)
-    MailerServices::PartnerLoginLinkEmailer.new(partner: @publisher).perform
-    flash[:notice] = "Successfully made partner"
     redirect_to admin_publisher_path(@publisher)
   end
 

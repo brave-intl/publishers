@@ -3,17 +3,14 @@
     .notifications
         .alert.alert-warning.flash = msg
 
-h1 Add a new partner
+h1 Make partner
 
-= form_with url: admin_partners_path, method: :post do |f|
+= form_with model: [:admin, @partner], url: admin_partner_path(@partner) do |f|
   .form-group
     label
-      = "Email"
-    = f.email_field :email,
-        autofocus: true,
-        class: "form-control",
-        placeholder: "Enter Partner email",
-        required: true
+      strong= "Email"
+      br
+      = @partner.email
   .form-group
     label
       = "Organization"
@@ -22,4 +19,4 @@ h1 Add a new partner
         class: "form-control",
         placeholder: "Enter Organization Name",
         required: true
-  = submit_tag "Create Partner", class: "btn btn-block btn-primary"
+  = submit_tag "Make Partner", class: "btn btn-block btn-primary"
