@@ -57,8 +57,6 @@ export default class BannerEditor extends React.Component {
       conversionRate: this.props.conversionRate,
       mode: 'Edit',
       view: 'editor-view',
-      width: '1320',
-      file: null,
       state: 'editor'
     }
      this.updateTitle = this.updateTitle.bind(this);
@@ -88,9 +86,6 @@ export default class BannerEditor extends React.Component {
   updateWindowDimensions() {
     if(window.innerWidth < 991){
       this.close();
-    }
-    else{
-      this.setState({ width: 1320});
     }
 }
 
@@ -196,14 +191,8 @@ export default class BannerEditor extends React.Component {
   async fetchBanner(){
 
     let that = this
-    let url;
-
-    if(this.state.defaultSiteBannerMode){
-      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.defaultSiteBanner.id + "?default=" + this.state.defaultSiteBannerMode
-    }
-    else{
-      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.channelBanners[this.state.channelIndex].id;
-    }
+    let url = "/publishers/" + document.getElementById("publisher_id").value + "/site_banners/"
+    this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id
 
     let options = {
       method: 'GET',
@@ -465,16 +454,10 @@ export default class BannerEditor extends React.Component {
   }
 
   async save() {
-    // Three POST requests make up the save: Content, Logo, and Cover.
     this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
 
-    let url;
-    if(this.state.defaultSiteBannerMode){
-      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.defaultSiteBanner.id + "?default=" + this.state.defaultSiteBannerMode
-    }
-    else{
-      url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/" + this.props.channelBanners[this.state.channelIndex].id;
-    }
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/"
+    this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id;
 
     let body = new FormData();
     body.append('title', this.state.title);

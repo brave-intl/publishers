@@ -77,7 +77,7 @@ class Publisher < ApplicationRecord
   after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
 
   after_save :set_promo_stats_updated_at_2018q1, if: -> { saved_change_to_promo_stats_2018q1? }
-  after_save :set_default_site_banner_id, if: -> { self.default_site_banner_id.nil? }
+  after_save :create_default_site_banner, if: -> { self.default_site_banner_id.nil? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -333,18 +333,10 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def set_default_site_banner_id
+  def create_default_site_banner
     headline = I18n.t 'banner.headline'
     tagline = I18n.t 'banner.tagline'
-    default_site_banner = SiteBanner.create(
-      publisher_id: self.id,
-      channel_id: nil,
-      title: headline,
-      description: tagline,
-      donation_amounts: [1, 5, 10],
-      default_donation: 5,
-      social_links: {youtube: '', twitter: '', twitch: ''}
-    )
+    default_site_banner = SiteBanner.create(publisher_id: self.id, channel_id: nil, title: headline, description: tagline, donation_amounts: [1, 5, 10], default_donation: 5, social_links: {youtube: '', twitter: '', twitch: ''})
     self.update(default_site_banner_id: default_site_banner.id)
   end
 

@@ -6,11 +6,6 @@ class Publishers::SiteBannersController < ApplicationController
   MAX_IMAGE_SIZE = 10_000_000
 
   def show
-    if params[:default]
-      site_banner = current_publisher.default_site_banner
-    else
-      site_banner = current_publisher.site_banners.find_by(id: params[:id])
-    end
     if site_banner
       data = site_banner.read_only_react_property
       data[:backgroundImage] = data[:backgroundUrl]
@@ -22,24 +17,14 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update
-    if params[:default]
-      site_banner = current_publisher.default_site_banner
-    else
-      site_banner = current_publisher.site_banners.find_by(id: params[:id])
-    end
-    site_banner.update(
-      publisher_id: current_publisher.id,
-      title: sanitize(params[:title]),
-      description: sanitize(params[:description]),
-      donation_amounts: JSON.parse(sanitize(params[:donation_amounts])),
-      default_donation: JSON.parse(sanitize(params[:donation_amounts])).second,
-      social_links: params[:social_links].present? ? JSON.parse(sanitize(params[:social_links])) : {}
-    )
-    if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
-      update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
-    end
-    if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
-      update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
+    if site_banner
+      site_banner.update(publisher_id: current_publisher.id, title: sanitize(params[:title]), description: sanitize(params[:description]), donation_amounts: JSON.parse(sanitize(params[:donation_amounts])), default_donation: JSON.parse(sanitize(params[:donation_amounts])).second, social_links: params[:social_links].present? ? JSON.parse(sanitize(params[:social_links])) : {})
+      if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
+        update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
+      end
+      if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
+        update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
+      end
     end
     head :ok
   end
@@ -50,8 +35,11 @@ class Publishers::SiteBannersController < ApplicationController
 
   private
 
-  def update_image(attachment:, attachment_type:)
+  def site_banner
+    @site_banner ||= current_publisher.site_banners.find_by(id: params[:id])
+  end
 
+  def update_image(attachment:, attachment_type:)
     if attachment_type === SiteBanner::LOGO
       data_url = params[:logo].split(',')[0]
     elsif attachment_type === SiteBanner::BACKGROUND
