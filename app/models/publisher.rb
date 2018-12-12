@@ -150,6 +150,21 @@ class Publisher < ApplicationRecord
     email.present?
   end
 
+  # Public: Show history of publisher's notes and statuses sorted by the created time
+  #
+  # Returns an array of PublisherNote and PublisherStatusUpdate
+  def history
+    # Create hash with created_at time as the key
+    # Then we can merge and sort by the key to get history
+    notes = self.notes.map { |n| { n.created_at => n} }
+    status = self.status_updates.map { |s| { s.created_at => s } }
+
+    combined = notes + status
+    combined = combined.sort { |x, y| x.keys.first <=> y.keys.first}.reverse
+
+    combined.map { |c| c.values.first }
+  end
+
   def suspended?
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
   end

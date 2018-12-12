@@ -103,15 +103,9 @@
         = f.text_area(:note, id: "create-note-content")
         = f.hidden_field(:publisher, :value => @publisher.id)
         = f.submit("Add note", class: 'btn btn-primary')
-    - @publisher.notes.order(created_at: :desc).each do |note|
-      .note.rounded-box
-        .note-header
-          .note-created-by
-            = note.created_by.name
-          .note-created-at
-            = note.created_at.strftime("%B %d, %Y")
-          .note-status
-            = note.publisher_status
-        hr
-        .note-content
-          = note.note
+    - @publisher.history.each do |h|
+      - if h.is_a?(PublisherNote)
+        = render partial: 'note', locals: { note: h }
+      - elsif h.is_a?(PublisherStatusUpdate)
+        = render partial: 'status', locals: { note: h }
+

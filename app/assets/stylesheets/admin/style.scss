@@ -216,17 +216,9 @@ a.logo span {
         }
         .note-header {
           display: flex;
-          .note-created-by{
+          .box {
             flex: 1;
           }
-          .note-created-at {
-            flex: 1;
-          }
-          .note-status {
-            flex: 1;
-          }
-        }
-        .note-content {
         }
       }
       #create-note {
