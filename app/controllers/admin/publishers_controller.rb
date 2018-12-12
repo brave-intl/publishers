@@ -8,7 +8,7 @@ class Admin::PublishersController < AdminController
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
       search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
-      @publishers = Publisher.where(search_sql, search_query: search_query).distinct
+      @publishers = Publisher.where(search_sql, search_query: search_query)
     end
 
     @publishers = @publishers.suspended if params[:suspended].present?
