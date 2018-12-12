@@ -34,24 +34,13 @@ class JsonBuilders::ChannelsJsonBuilder
         else
           excluded = false
         end
-
-        # Add banners - if default_site_banner_mode=true use default_site_banner for all channels, else add channel_banner
-        publisher = Publisher.find_by(id: verified_channel.publisher_id)
-
-        if publisher
-          default_site_banner_mode = publisher.default_site_banner_mode
-          default_site_banner = publisher.site_banners.find_by(id: publisher.default_site_banner_id)
-          channel_banner = publisher.site_banners.find_by(channel_id: verified_channel.id)
-        end
-
-        if default_site_banner_mode
-          channels.push([verified_channel.details.channel_identifier, true, excluded, default_site_banner.read_only_react_property])
-        elsif channel_banner
-          channels.push([verified_channel.details.channel_identifier, true, excluded, channel_banner.read_only_react_property])
+        if verified_channel.publisher.default_site_banner_mode
+          channels.push([verified_channel.details.channel_identifier, true, excluded, verified_channel.publisher.default_site_banner.read_only_react_property])
+        elsif verified_channel.site_banner
+          channels.push([verified_channel.details.channel_identifier, true, excluded, verified_channel.site_banner.read_only_react_property])
         else
           channels.push([verified_channel.details.channel_identifier, true, excluded, {}])
         end
-
       end
     end
 
@@ -59,7 +48,6 @@ class JsonBuilders::ChannelsJsonBuilder
       next if @excluded_verified_channel_ids.include?(excluded_channel_id)
       channels.push([excluded_channel_id, false, true, {}])
     end
-
     channels.to_json
   end
 end
