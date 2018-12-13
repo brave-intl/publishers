@@ -275,15 +275,13 @@ class Publisher < ApplicationRecord
     role == PUBLISHER
   end
 
-  def default_site_banner
-    self.site_banners.find_by(id: self.default_site_banner_id)
+  def create_default_site_banner
+    default_site_banner = SiteBanner.new_helper(self.id, nil)
+    self.update(default_site_banner_id: default_site_banner.id)
   end
 
-  def create_default_site_banner
-    headline = I18n.t 'banner.headline'
-    tagline = I18n.t 'banner.tagline'
-    default_site_banner = SiteBanner.create(publisher_id: self.id, channel_id: nil, title: headline, description: tagline, donation_amounts: [1, 5, 10], default_donation: 5, social_links: {youtube: '', twitter: '', twitch: ''})
-    self.update(default_site_banner_id: default_site_banner.id)
+  def default_site_banner
+    self.site_banners.find_by(id: self.default_site_banner_id)
   end
 
   def inferred_status

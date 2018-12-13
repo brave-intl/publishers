@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'json'
+include ActionView::Helpers::SanitizeHelper
 
 class SiteBanner < ApplicationRecord
   include Rails.application.routes.url_helpers
@@ -51,6 +52,30 @@ class SiteBanner < ApplicationRecord
   #####################################################
   # Methods
   #####################################################
+
+  def self.new_helper(publisher_id, channel_id)
+    headline = I18n.t 'banner.headline'
+    tagline = I18n.t 'banner.tagline'
+    SiteBanner.create(
+      publisher_id: publisher_id,
+      channel_id: channel_id,
+      title: headline,
+      description: tagline,
+      donation_amounts: [1, 5, 10],
+      default_donation: 5,
+      social_links: {youtube: '', twitter: '', twitch: ''}
+    )
+  end
+
+  def update_helper(title, description, donation_amounts, social_links)
+    self.update(
+      title: sanitize(title),
+      description: sanitize(description),
+      donation_amounts: JSON.parse(sanitize(donation_amounts)),
+      default_donation: JSON.parse(sanitize(donation_amounts)).second,
+      social_links: social_links.present? ? JSON.parse(sanitize(social_links)) : {}
+    )
+  end
 
   def read_only_react_property
     {

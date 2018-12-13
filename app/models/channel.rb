@@ -274,9 +274,7 @@ class Channel < ApplicationRecord
   end
 
   def create_channel_site_banner
-    headline = I18n.t 'banner.headline'
-    tagline = I18n.t 'banner.tagline'
-    channel_banner = SiteBanner.create(publisher_id: self.publisher_id, channel_id: self.id, title: headline, description: tagline, donation_amounts: [1, 5, 10], default_donation: 5, social_links: {youtube: '', twitter: '', twitch: ''})
+    SiteBanner.new_helper(self.publisher.id, self.id)
   end
 
   private

@@ -1,6 +1,5 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
-  include ActionView::Helpers::SanitizeHelper
   before_action :authenticate_publisher!, only: [:create, :update_logo, :update_background]
 
   MAX_IMAGE_SIZE = 10_000_000
@@ -18,7 +17,7 @@ class Publishers::SiteBannersController < ApplicationController
 
   def update
     if site_banner
-      site_banner.update(publisher_id: current_publisher.id, title: sanitize(params[:title]), description: sanitize(params[:description]), donation_amounts: JSON.parse(sanitize(params[:donation_amounts])), default_donation: JSON.parse(sanitize(params[:donation_amounts])).second, social_links: params[:social_links].present? ? JSON.parse(sanitize(params[:social_links])) : {})
+      site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
       if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
         update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
       end
