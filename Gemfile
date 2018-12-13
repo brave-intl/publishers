@@ -124,7 +124,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker'
+gem 'webpacker', "~> 3.5"
 
 # pagination support for models
 gem "will_paginate"
