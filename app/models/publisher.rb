@@ -279,6 +279,13 @@ class Publisher < ApplicationRecord
     self.site_banners.find_by(id: self.default_site_banner_id)
   end
 
+  def create_default_site_banner
+    headline = I18n.t 'banner.headline'
+    tagline = I18n.t 'banner.tagline'
+    default_site_banner = SiteBanner.create(publisher_id: self.id, channel_id: nil, title: headline, description: tagline, donation_amounts: [1, 5, 10], default_donation: 5, social_links: {youtube: '', twitter: '', twitch: ''})
+    self.update(default_site_banner_id: default_site_banner.id)
+  end
+
   def inferred_status
     return last_status_update.status if last_status_update.present?
     if verified?
@@ -331,13 +338,6 @@ class Publisher < ApplicationRecord
       errors.add(:base, "cannot delete publisher while channels exist")
       throw :abort
     end
-  end
-
-  def create_default_site_banner
-    headline = I18n.t 'banner.headline'
-    tagline = I18n.t 'banner.tagline'
-    default_site_banner = SiteBanner.create(publisher_id: self.id, channel_id: nil, title: headline, description: tagline, donation_amounts: [1, 5, 10], default_donation: 5, social_links: {youtube: '', twitter: '', twitch: ''})
-    self.update(default_site_banner_id: default_site_banner.id)
   end
 
   def build_default_channel

@@ -273,6 +273,12 @@ class Channel < ApplicationRecord
     Rails.cache.set("last_updated_channel_timestamp", Time.now.to_i << 32)
   end
 
+  def create_channel_site_banner
+    headline = I18n.t 'banner.headline'
+    tagline = I18n.t 'banner.tagline'
+    channel_banner = SiteBanner.create(publisher_id: self.publisher_id, channel_id: self.id, title: headline, description: tagline, donation_amounts: [1, 5, 10], default_donation: 5, social_links: {youtube: '', twitter: '', twitch: ''})
+  end
+
   private
 
   def should_register_channel_for_promo
@@ -287,12 +293,6 @@ class Channel < ApplicationRecord
 
   def register_channel_for_promo
     RegisterChannelForPromoJob.new.perform(channel: self)
-  end
-
-  def create_channel_site_banner
-    headline = I18n.t 'banner.headline'
-    tagline = I18n.t 'banner.tagline'
-    channel_banner = SiteBanner.create(publisher_id: self.publisher_id, channel_id: self.id, title: headline, description: tagline, donation_amounts: [1, 5, 10], default_donation: 5, social_links: {youtube: '', twitter: '', twitch: ''})
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
