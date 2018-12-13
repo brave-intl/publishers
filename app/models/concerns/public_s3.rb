@@ -84,7 +84,7 @@ module PublicS3
           return if #{name}.attachment.blank?
 
           # ActiveStorage::Current.host = Rails.application.secrets[:s3_rewards_public_domain]
-          if Rails.env.development? || Rails.env.test?
+          if Rails.application.config.active_storage.public_service == :local
             ActiveStorage::Current.host = 'https://localhost:3000'
             filename = ActiveStorage::Filename.wrap(#{name}.blob.filename)
 
