@@ -103,7 +103,7 @@ module PublicS3
         end
 
         def #{name}_purge_later
-          PublicPurgeJob.perform_later(self, "#{name}")
+          PublicPurgeJob.perform_later(object: self, name: "#{name}")
         end
 
         # Deletes from the public_s3_service immediately
