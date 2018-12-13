@@ -190,13 +190,11 @@ brew install imagemagick
 
 ### Javascript
 
-We use jest for our test framework. You can run the tests by running
+We use jest for our javascript testing framework. You can run the tests through the following command.
 
 ```sh
 yarn test
 ```
-
-
 
 ## Running locally with docker-compose
 
