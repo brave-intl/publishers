@@ -50,7 +50,6 @@ class Channel < ApplicationRecord
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
-  after_save :create_channel_site_banner, if: -> { self.site_banner.nil? }
   before_save :clear_verified_at_if_necessary
 
   before_destroy :preserve_contested_by_channels
@@ -271,10 +270,6 @@ class Channel < ApplicationRecord
   def update_last_verification_timestamp
     # Used for caching on the api/public/channels#timestamp
     Rails.cache.set("last_updated_channel_timestamp", Time.now.to_i << 32)
-  end
-
-  def create_channel_site_banner
-    SiteBanner.new_helper(self.publisher.id, self.id)
   end
 
   private

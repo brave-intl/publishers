@@ -77,7 +77,6 @@ class Publisher < ApplicationRecord
   after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
 
   after_save :set_promo_stats_updated_at_2018q1, if: -> { saved_change_to_promo_stats_2018q1? }
-  after_save :create_default_site_banner, if: -> { self.default_site_banner_id.nil? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -273,11 +272,6 @@ class Publisher < ApplicationRecord
 
   def publisher?
     role == PUBLISHER
-  end
-
-  def create_default_site_banner
-    default_site_banner = SiteBanner.new_helper(self.id, nil)
-    self.update(default_site_banner_id: default_site_banner.id)
   end
 
   def default_site_banner
