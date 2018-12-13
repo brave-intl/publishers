@@ -59,6 +59,8 @@ module PublicS3
         # uploads to the correct bucket. Otherwise it will use the default configured in the config/storage.yml
         def upload_public_#{name}(file)
           blob = ActiveStorage::Blob.new.tap do |blob|
+            Rails.logger.info("ActiveStorage::Blob.new.tap c'mon")
+            Rails.logger.info(blob)
             blob.filename     = file[:filename]
             blob.content_type = file[:content_type]
             # This ensures that the blob is uploaded to the correct S3 service
@@ -66,6 +68,8 @@ module PublicS3
             # Prevents the AnalyzeJob from running
             blob.metadata = { analyzed: true }
 
+            Rails.logger.info("Attempting to upload file, next line has blob")
+            Rails.logger.info(blob)
             blob.upload file[:io]
           end
           blob.save
