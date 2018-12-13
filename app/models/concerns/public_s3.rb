@@ -11,6 +11,8 @@ module PublicS3
           Publishers::Service::PublicS3Service.new
         when :local
           ActiveStorage::Service::DiskService.new(root: Rails.root.join("storage"))
+        else # Staging does not have an environment file
+          Publishers::Service::PublicS3Service.new
         end
     end
 
