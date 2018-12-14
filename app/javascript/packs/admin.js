@@ -2,6 +2,7 @@ import 'utils/request';
 import 'admin/dashboard/index';
 import 'admin/dashboard/unattached_promo_registration'
 import Rails from 'rails-ujs';
+import FontAwesome from './fontawesome-all'
 
 /*
  * Override the default way Rails picks an href for a data-method link. This
@@ -30,3 +31,11 @@ Rails.href = function Rails_href_override(element) {
 };
 
 Rails.start();
+
+
+// Only load font awesome if it's on the admin page
+if(window.location.href.indexOf("admin") >= 0) {
+  // https://github.com/FortAwesome/Font-Awesome/issues/11924
+  FontAwesome.dom.watch({observeMutationsRoot: document})
+  document.addEventListener('turbolinks:load', () => FontAwesome.dom.i2svg())
+}
