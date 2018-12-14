@@ -97,6 +97,7 @@ export default class BannerEditor extends React.Component {
   cleanup(){
     document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'hidden'
     document.getElementById("bat-select").childNodes[0].childNodes[0].style.color = 'white'
+    document.getElementById("bat-select").style.cursor = 'pointer'
   }
 
   preview(){
@@ -585,11 +586,31 @@ export default class BannerEditor extends React.Component {
               <Text donations>Set tip amount options</Text>
               <div style={{width: '75%', margin:'auto', paddingBottom: '20px' }}>
                 <Select id="bat-select" value={this.tipToOption()} type={'light'} title={'Limit Sites to'} disabled={false} floating={false} onChange={(key, child) => this.handleTipSelection(key, child)}>
-                  <div data-value='0'>1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT</div>
-                  <div data-value='1'>5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT</div>
-                  <div data-value='2'>10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT</div>
-                  <div data-value='3'>20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT</div>
-                  <div data-value='4'>50 BAT &nbsp; | &nbsp; 100 BAT &nbsp; | &nbsp; 500 BAT</div>
+                  <div data-value='0'>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>1</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>5</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>10</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT</div></div>
+                  </div>
+                  <div data-value='1'>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>5</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>10</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>20</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT</div></div>
+                  </div>
+                  <div data-value='2'>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>10</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>20</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>50</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT</div></div>
+                  </div>
+                  <div data-value='3'>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>20</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>50</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>100</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT</div></div>
+                  </div>
+                  <div data-value='4'>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>50</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>100</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT,</div></div>
+                  <div style={{display: 'inline-block', width:'60px'}}><div style={{display:'inline-block', width:'25px', textAlign: 'right'}}>500</div><div style={{display:'inline-block', width:'35px', marginLeft:'6px', marginRight:'6px'}}>BAT</div></div>
+                  </div>
                 </Select>
               </div>
               <DonationWrapper>

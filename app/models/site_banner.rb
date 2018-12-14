@@ -27,10 +27,12 @@ class SiteBanner < ApplicationRecord
   #####################################################
 
   def donation_amounts_in_scope
+    amounts_literal = donation_amounts.join(',')
     return if errors.present? # Don't bother checking against donation amounts if donation amounts are nil
     errors.add(:base, "Must have #{NUMBER_OF_DONATION_AMOUNTS} donation amounts") if donation_amounts.count != NUMBER_OF_DONATION_AMOUNTS
     errors.add(:base, "A donation amount is zero or negative") if donation_amounts.select { |donation_amount| donation_amount <= 0}.count > 0
     errors.add(:base, "A donation amount is above a target threshold") if donation_amounts.select { |donation_amount| donation_amount >= MAX_DONATION_AMOUNT}.count > 0
+    errors.add(:base, "Must be an approved tip preset") if !(amounts_literal == '1,5,10' || amounts_literal == '5,10,20' || amounts_literal == '10,20,50' || amounts_literal == '20,50,100' || amounts_literal == '50,100,500')
   end
 
   # (Albert Wang) Until the front end can properly handle errors, let's not block save and only clear invalid domains

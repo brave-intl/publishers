@@ -231,7 +231,7 @@ ${props => props.convertedAmount && css
   display: inline-block;
   font-size: 14px;
   padding: 5px;
-  width: 80px;
+  width: 100px;
   font-weight: normal;
   font-family: Poppins;
   color: #F1F1F9
