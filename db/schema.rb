@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_180923) do
+ActiveRecord::Schema.define(version: 2018_12_14_002051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -309,6 +309,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_180923) do
     t.boolean "excluded_from_payout", default: false, null: false
     t.uuid "created_by_id"
     t.uuid "default_site_banner_id"
+    t.boolean "default_site_banner_mode", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
@@ -334,6 +335,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_180923) do
     t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "channel_id"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
 
