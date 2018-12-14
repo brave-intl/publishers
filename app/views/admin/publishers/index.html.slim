@@ -20,11 +20,17 @@ div.row
               th Name
               th Email
               th Status
+              th Number of verified channels
+              th Account creation time
+              th Last signed in at
             tbody
-              - @publishers.each do |publisher|
+              - @publishers.left_joins(:channels).each do |publisher|
                 tr.gradeX
                   td = link_to publisher.id, admin_publisher_path(publisher.id)
                   td = publisher.name
                   td = publisher.email
                   td = publisher_status(publisher)
+                  td = publisher.channels.verified.count
+                  td = publisher.created_at
+                  td = publisher.last_sign_in_at
           = will_paginate @publishers
