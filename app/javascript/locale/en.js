@@ -5,6 +5,7 @@ const locale = {
   sendDonation: 'Send my donation',
   tokens: 'tokens',
   walletBalance: 'wallet balance',
+  off: ' '
 };
 
 export default locale;

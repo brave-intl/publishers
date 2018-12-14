@@ -21,7 +21,7 @@ class Publisher < ApplicationRecord
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
-  has_one :site_banner
+  has_many :site_banners
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
@@ -272,6 +272,10 @@ class Publisher < ApplicationRecord
 
   def publisher?
     role == PUBLISHER
+  end
+
+  def default_site_banner
+    self.site_banners.find_by(id: self.default_site_banner_id)
   end
 
   def inferred_status
