@@ -3,8 +3,6 @@ class Admin::PublishersController < AdminController
   include Search
 
   def index
-    @publishers = Publisher
-
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
       search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
@@ -13,7 +11,13 @@ class Admin::PublishersController < AdminController
 
     @publishers = @publishers.suspended if params[:suspended].present?
 
-    @publishers = @publishers.order(created_at: :desc).paginate(page: params[:page])
+    @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
+      Publisher.advanced_sort(sort_column.to_sym, sort_direction)
+    else
+      Publisher.order("#{sort_column} #{sort_direction}")
+    end
+
+    @publishers = @publishers.paginate(page: params[:page])
   end
 
   def show
@@ -83,5 +87,9 @@ class Admin::PublishersController < AdminController
     params.require(:publisher).permit(
       :excluded_from_payout
     )
+  end
+
+  def sortable_columns
+    [:last_sign_in_at, :created_at, Publisher::VERIFIED_CHANNEL_COUNT]
   end
 end

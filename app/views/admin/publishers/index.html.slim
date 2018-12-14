@@ -20,9 +20,9 @@ div.row
               th Name
               th Email
               th Status
-              th Number of verified channels
-              th Account creation time
-              th Last signed in at
+              th = sort_link(Publisher::VERIFIED_CHANNEL_COUNT, "Number of verified channels")
+              th = sort_link(:created_at, "Account creation time")
+              th = sort_link(:last_sign_in_at, "Last sign in at")
             tbody
               - @publishers.left_joins(:channels).each do |publisher|
                 tr.gradeX
