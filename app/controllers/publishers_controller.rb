@@ -448,7 +448,7 @@ class PublishersController < ApplicationController
     end
     current_publisher.channels.each do |channel|
       if channel.site_banner.nil?
-        SiteBanner.new_helper(current_publisher.id, channel.id)
+        channel.site_banner = SiteBanner.new_helper(current_publisher.id, channel.id)
       end
     end
   end
