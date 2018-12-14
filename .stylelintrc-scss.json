@@ -8,7 +8,9 @@
   ],
   "rules": {
     "property-no-vendor-prefix": [true, {
-      "ignoreProperties": ["background-clip", "padding-start", "padding-end", "animation", "transition", "transform"]
-    }]
+      "ignoreProperties": ["background-clip", "padding-start", "padding-end", "animation", "transition", "transform", "appearance"]
+    }],
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": null
   }
 }
