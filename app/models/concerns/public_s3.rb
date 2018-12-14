@@ -104,8 +104,8 @@ module PublicS3
           end
         end
 
+        # Not going to actually purge because we don't want to delete attachments
         def #{name}_purge_later
-          PublicPurgeJob.perform_later(object: self, name: "#{name}")
         end
 
         # Deletes from the public_s3_service immediately
