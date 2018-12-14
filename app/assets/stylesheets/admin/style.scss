@@ -54,7 +54,6 @@
       a {
         display:block;
         font-size:14px;
-        padding-bottom:13px;
         padding:13px 0 13px 25px;
         color:#aeb2b7;
         outline:none;
@@ -144,7 +143,7 @@ a.logo span {
       margin: 30px 0px;
     }
 
-    #publisher-section {      
+    #publisher-section {
     }
 
     #statement-section {
@@ -172,7 +171,7 @@ a.logo span {
       }
       #generate_statement {
         margin-left: 10px;
-      }      
+      }
     }
 
     #channels-section {
@@ -207,7 +206,7 @@ a.logo span {
 
           }
         }
-      }      
+      }
     }
     #notes-section {
       .note {
@@ -223,8 +222,6 @@ a.logo span {
             flex: 1;
           }
         }
-        .note-content {
-        }
       }
       #create-note {
         #create-note-content {
@@ -233,5 +230,5 @@ a.logo span {
         }
       }
     }
-  }  
+  }
 }
