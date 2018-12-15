@@ -1,4 +1,4 @@
-<% salt = ROTP::Base32.random_base32 %>
+<% salt = SecureRandom.random_bytes(12) %>
 
 # Just registered.
 default: &default

@@ -352,7 +352,9 @@ class Publisher < ApplicationRecord
 
   class << self
     def encryption_key
-      Rails.application.secrets[:attr_encrypted_key]
+      # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
+      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
     end
 
     def find_by_owner_identifier(owner_identifier)
