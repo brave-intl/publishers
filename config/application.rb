@@ -34,5 +34,10 @@ module Publishers
 
     config.time_zone = "Pacific Time (US & Canada)"
     config.active_record.default_timezone = :local
+
+    # Let's ensure that our generators make a UUID as default
+    config.generators do |generator|
+      generator.orm :active_record, primary_key_type: :uuid
+    end
   end
 end

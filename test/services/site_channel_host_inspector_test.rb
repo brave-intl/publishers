@@ -14,7 +14,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://mysite.github.io").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mysite.github.io").perform
+    result = SiteChannelHostInspector.new(url: "mysite.github.io").perform
     assert result[:host_connection_verified]
     assert_equal 'github', result[:web_host]
     assert result[:https]
@@ -24,7 +24,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://mysite.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mysite.com").perform
+    result = SiteChannelHostInspector.new(url: "mysite.com").perform
     assert result[:https]
     assert result[:host_connection_verified]
     # ToDo: detect github pages sites with custom name
@@ -34,8 +34,10 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
   test "sets https_error when there is an OpenSSL::SSL::SSLError exception" do
     stub_request(:get, "https://badsll.mystandardsite.com").
         to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
+    stub_request(:get, "https://www.badsll.mystandardsite.com").
+        to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "badsll.mystandardsite.com").perform
+    result = SiteChannelHostInspector.new(url: "badsll.mystandardsite.com").perform
 
     refute result[:host_connection_verified]
     refute result[:https]
@@ -47,7 +49,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://mystandardsite.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite hosted with apache</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mystandardsite.com").perform
+    result = SiteChannelHostInspector.new(url: "mystandardsite.com").perform
     assert result[:host_connection_verified]
     assert result[:https]
     assert_nil result[:web_host]
@@ -57,7 +59,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://mywordpress.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mywordpress.com").perform
+    result = SiteChannelHostInspector.new(url: "mywordpress.com").perform
     assert result[:host_connection_verified]
     assert result[:https]
     assert_equal 'wordpress', result[:web_host]
@@ -69,7 +71,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://www.wwwonly.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "wwwonly.com").perform
+    result = SiteChannelHostInspector.new(url: "wwwonly.com").perform
     assert result[:host_connection_verified]
     assert result[:https]
   end
@@ -83,7 +85,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "http://banhttps.com").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "banhttps.com").perform
+    result = SiteChannelHostInspector.new(url: "banhttps.com").perform
     assert result[:host_connection_verified]
     refute result[:https]
     assert_equal 'wordpress', result[:web_host]
@@ -98,7 +100,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "http://mywordpressisdown.com").
         to_raise(Errno::ECONNREFUSED.new)
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mywordpressisdown.com").perform
+    result = SiteChannelHostInspector.new(url: "mywordpressisdown.com").perform
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
@@ -111,7 +113,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://www.mywordpressisdown.com").
         to_raise(Errno::ECONNREFUSED.new)
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mywordpressisdown.com", require_https: true).perform
+    result = SiteChannelHostInspector.new(url: "mywordpressisdown.com", require_https: true).perform
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
@@ -125,7 +127,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://mywordpress.com/index.html").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mywordpress.com").perform
+    result = SiteChannelHostInspector.new(url: "mywordpress.com").perform
     assert result[:host_connection_verified]
     assert result[:https]
     assert_equal 'wordpress', result[:web_host]
@@ -138,7 +140,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://www.mywordpress.com/").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mywordpress.com").perform
+    result = SiteChannelHostInspector.new(url: "mywordpress.com").perform
     assert result[:host_connection_verified]
     assert result[:https]
     assert_equal 'wordpress', result[:web_host]
@@ -153,7 +155,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://mywordpress2.com/index.html").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mywordpress.com", require_https: true).perform
+    result = SiteChannelHostInspector.new(url: "mywordpress.com", require_https: true).perform
     refute result[:host_connection_verified]
     refute result[:https]
     assert_nil result[:web_host]
@@ -168,7 +170,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://mywordpress2.com/index.html").
         to_return(status: 200, body: "<html><body><h1>Welcome to mysite made with /wp-content/</h1></body></html>", headers: {})
 
-    result = SiteChannelHostInspector.new(brave_publisher_id: "mywordpress.com", follow_all_redirects: true).perform
+    result = SiteChannelHostInspector.new(url: "mywordpress.com", follow_all_redirects: true).perform
     assert result[:host_connection_verified]
     assert result[:https]
     assert_equal 'wordpress', result[:web_host]

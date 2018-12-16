@@ -7,7 +7,7 @@ class SiteChannelDomainSetter < BaseService
 
   def perform
     normalize_domain if channel_details.brave_publisher_id_unnormalized
-    inspect_host unless channel_details.brave_publisher_id_error_code
+    channel_details.inspect_host unless channel_details.brave_publisher_id_error_code
   end
 
   private
@@ -33,12 +33,13 @@ class SiteChannelDomainSetter < BaseService
      => "hello.blogspot.com"
 =end
     channel_details.brave_publisher_id = normalize_from_ruleset(channel_details.brave_publisher_id_unnormalized)
+
+    # Throw a Addressable::URI:InvalidURIError if it's an invalid URI
+    Addressable::URI.parse("http://#{channel_details.brave_publisher_id}")
+
     unless DomainName(channel_details.brave_publisher_id).canonical_tld?
       raise DomainExclusionError.new("Non-canonical TLD for #{channel_details.brave_publisher_id}")
     end
-
-    # Throw a Addressable::URI:InvalidURIError if it's an invalid URI
-    Addressable::URI.parse("http://" + channel_details.brave_publisher_id)
 
     channel_details.brave_publisher_id_error_code = nil
     channel_details.brave_publisher_id_unnormalized = nil
@@ -62,22 +63,6 @@ class SiteChannelDomainSetter < BaseService
       channel_details.brave_publisher_id_unnormalized.prepend("http://")
     end
     channel_details.brave_publisher_id_unnormalized = Addressable::URI.parse(channel_details.brave_publisher_id_unnormalized).normalize.host
-  end
-
-  def inspect_host
-    return unless channel_details.brave_publisher_id
-
-    result = SiteChannelHostInspector.new(brave_publisher_id: channel_details.brave_publisher_id).perform
-    if result[:host_connection_verified]
-      channel_details.supports_https = result[:https]
-      channel_details.detected_web_host = result[:web_host]
-      channel_details.host_connection_verified = true
-    else
-      channel_details.supports_https = false
-      channel_details.detected_web_host = nil
-      channel_details.host_connection_verified = false
-      channel_details.https_error = result[:https_error]
-    end
   end
 
   class DomainExclusionError < RuntimeError

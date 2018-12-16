@@ -4,56 +4,61 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include PublishersHelper
 
-  test "publisher saves a site banner and the data is consistent" do
-    publisher = publishers(:completed)
-    sign_in publisher
+  test "Show method retrieves a site_banner by uuid" do
+      publisher = publishers(:default)
+      sign_in publisher
+      get '/publishers/' + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+      site_banner = JSON.parse(response.body)
+      assert_equal("Hello World", site_banner["title"])
+      assert_equal("Lorem Ipsum", site_banner["description"])
+      assert_equal([1, 5, 10], site_banner["donationAmounts"])
+  end
 
-    get home_publishers_path
-    assert_response :success
+  test "Show method returns nil if site_banner not found" do
+      publisher = publishers(:default)
+      sign_in publisher
+      get '/publishers/' + publisher.id + "/site_banners/wrong-id", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+      site_banner = JSON.parse(response.body)
+      assert_nil(site_banner)
+  end
 
-    post(publisher_site_banners_path(publisher),
-      params: {
-        title: "Hello World",
-        description: "Lorem Ipsum",
-        donation_amounts: "[5, 10, 15]",
-      }
-    )
+  test "Updating a banner with valid data will return 200" do
+      publisher = publishers(:default)
+      sign_in publisher
 
-    assert_response :success
-    publisher.reload
-    assert_equal publisher.site_banner, SiteBanner.last
+      put '/publishers/' + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000",
+      headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
+      params: {title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json}
+
+      assert_response :success
   end
 
   test "publisher cannot upload an excessively large file" do
-    publisher = publishers(:completed)
+    publisher = publishers(:default)
+    site_banner = site_banners(:default)
     sign_in publisher
-
-    get home_publishers_path
-    assert_response :success
-
-    site_banner = site_banners(:completed)
 
     fake_data = "A" * Publishers::SiteBannersController::MAX_IMAGE_SIZE
-    post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpeg;base64," + fake_data})
+    put '/publishers/' + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000",
+    headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
+    params: {logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json}
 
     publisher.reload
-    assert_nil publisher.site_banner.logo.attachment
+    assert_nil site_banner.logo.attachment
   end
 
-  test "publisher can upload a normally sized file" do
-    publisher = publishers(:completed)
+  test "publisher cannot upload a normally sized file" do
+    publisher = publishers(:default)
+    site_banner = site_banners(:default)
     sign_in publisher
-
-    get home_publishers_path
-    assert_response :success
-
-    site_banner = site_banners(:completed)
 
     source_image_path = "./app/assets/images/brave-lion@3x.jpg"
     fake_data = Base64.encode64(open(source_image_path) { |io| io.read })
-    post(update_logo_publisher_site_banners_path(publisher.id), params: {image: "data:image/jpeg;base64," + fake_data})
+    put '/publishers/' + publisher.id + "/site_banners/00000000-0000-0000-0000-000000000000",
+    headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" },
+    params: {logo: "data:image/jpeg;base64," + fake_data, title: "Hello Update", description: "Updated Desc", donation_amounts: [5, 10, 15].to_json}
 
     publisher.reload
-    assert_not_nil publisher.site_banner.logo.attachment
+    assert_not_nil site_banner.logo.attachment
   end
 end

@@ -1,7 +1,7 @@
 # Fetches and saves the referral stats for channel owned codes
 class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
   include PromosHelper
-  queue_as :scheduler
+  queue_as :heavy
 
   def perform
     promo_registrations = PromoRegistration.channels_only

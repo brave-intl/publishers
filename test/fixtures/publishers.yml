@@ -6,6 +6,7 @@ default: &default
   name: "Alice the Pyramid"
   phone: "4159001420"
   phone_normalized: "+14159001420"
+  default_site_banner_id: "00000000-0000-0000-0000-000000000000"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
@@ -15,6 +16,8 @@ verified:
   name: "Alice the Verified"
   phone: "4159001421"
   phone_normalized: "+14159001421"
+  default_site_banner_mode: true
+  default_site_banner_id: "00000000-0000-0000-0000-000000000005"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
@@ -62,8 +65,27 @@ completed_partner:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  created_by: admin
   default_currency_confirmed_at: "<%= DateTime.now %>"
 
+suspended_partner:
+  email: "suspended_partner@completed.org"
+  name: "Suspended"
+  phone: "4159001421"
+  phone_normalized: "+14159001421"
+  authentication_token_expires_at: "<%= DateTime.now + PublisherTokenGenerator::TOKEN_TTL %>"
+  encrypted_authentication_token_iv: "<%= Base64.encode64(salt) %>"
+  encrypted_authentication_token: "<%= Publisher.encrypt_authentication_token(
+    "authentication_token",
+    key: Publisher.encryption_key,
+    iv: salt
+  ) %>"
+  role: 'partner'
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  created_by: admin
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  default_currency_confirmed_at: "<%= DateTime.now %>"
 
 admin:
   email: "hello@brave.com"

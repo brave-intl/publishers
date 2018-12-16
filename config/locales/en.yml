@@ -99,6 +99,7 @@ en:
         connection_failed: |
           we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
         too_many_redirects: "we were redirected too many times to verify your domain. "
+        timeout: "the connection timed out before your website responded. "
         no_txt_records: "we could not find TXT records in your domain's DNS records. "
         token_incorrect_dns: "the token in your TXT records is incorrect. "
         token_not_found_dns: "we could not find the token in any of the TXT records. "
@@ -113,7 +114,8 @@ en:
         token_incorrect_dns: "Please make sure the token in your DNS entry is correct."
         token_not_found_dns: "Please add this TXT entry to your DNS records:"
         token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
-        no_https: "Please enabled HTTPS on your domain, or choose another verification method."
+        timeout: "If this verification failure continues to occur, please reach us at %{support_email}."
+        no_https: "Please enable HTTPS on your domain, or choose another verification method."
         generic: "If this verification failure continues to occur, please reach us at %{support_email}."
     publisher:
       balance_unavailable: "Unavailable"
@@ -584,6 +586,9 @@ en:
     new_channel_registered_2018q1:
       subject: "Your Referral Promo is Active!"
       body_one: "Congrats! You are set to receive 10 BAT for every new user you bring to Brave.  Use the referral links we created for your channel, and get your fans to support you!"
+  banner:
+    headline: "Brave Rewards"
+    tagline: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content."
   recaptcha:
     errors:
       recaptcha_unreachable: reCAPTCHA server timeout; please try again.
@@ -668,6 +673,12 @@ en:
           If you don't see yours listed below, try searching for "add TXT record" in your DNS account support area.
         contact: Contact Brave Support
     verification_github:
+      root_repository_info:
+        It looks like you don't have a root repository set up for your Github account.
+      root_repository_instructions_html: |
+        In order for us to verify your site you must first have a repository available for access on <strong>%{domain}</strong>.
+        For more information please read the following
+        <a href='https://guides.github.com/features/pages/'>Github Guide</a>.
       nojekyll_html: |
         It looks like you are using <strong>GitHub</strong>.
         As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.

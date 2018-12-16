@@ -20,6 +20,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
       to_return(status: status, body: body, headers: {})
   end
 
+  before do
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+  end
+
+  after do
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
+  end
+
   def assert_verification(channel)
     refute channel.verified?
     verifier = SiteChannelVerifier.new(channel: channel)
@@ -39,12 +47,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "file method verifies with public file at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_file)
     stub_verification_public_file(c)
     assert_verification(c)
   end
 
   test "file method verifies with abridged public file with correct token at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_file)
     stub_verification_public_file(c, body: c.details.verification_token)
     assert_verification(c)
@@ -65,12 +75,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "github method verifies with public file at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_github)
     stub_verification_public_file(c)
     assert_verification(c)
   end
 
   test "wordpress method verifies with public file at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_wordpress)
     stub_verification_public_file(c)
     assert_verification(c)
@@ -133,6 +145,8 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "restricted site channels do not verify" do
+    # Mocking out with stub_verification_public_file
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)
     refute c.verified?
@@ -144,6 +158,8 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "restricted site channels await admin approval" do
+    # Mocking out with stub_verification_public_file
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)
     refute c.verification_awaiting_admin_approval?
@@ -155,6 +171,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "restricted site channels verify with admin approval" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)
     refute c.verification_awaiting_admin_approval?

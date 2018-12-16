@@ -1,0 +1,63 @@
+---
+:concurrency: 1
+:timeout: 8
+:max_retries: 3
+:queues:
+  - heavy
+  - mailers
+  - transactional
+  - scheduler
+  - default
+  - low
+:schedule:
+  EnqueueSiteChannelVerifications:
+    cron: "42 * * * *"
+    decription: "For Site Channels created within the past week, enqueue jobs to verify the domain of each unique brave_publisher_id."
+    queue: scheduler
+  CleanStaleUpholdDataJob:
+    cron: "0 4 * * *"
+    description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
+    queue: scheduler
+  CleanAbandonedSiteChannelsJob:
+    cron: "0 3 * * *"
+    description: "Remove abandoned site channels."
+  TransferChannelsJob:
+    cron: "0 8 * * *"
+    description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
+  Sync::PublisherPromoStatsJob:
+    cron: "15 3 * * *"
+    description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
+    queue: scheduler
+  Sync::ChannelPromoRegistrationsStatsJob:
+    cron: "30 * * * *"
+    description: "Sync stats for channel owned referral codes with the promo server every hour."
+    queue: heavy
+  Sync::UnattachedPromoRegistrationsStatsJob:
+    cron: "0 */12 * * *"
+    description: "Syncs referral stats for unattached codes every 12 hours."
+    queue: low
+  Sync::ChannelStatsJob:
+    cron: "0 1 * * *"
+    description: "Syncs the channel stats via youtube and twitch apis"
+    queue: low
+  CacheBrowserChannelsJsonJob:
+    cron: "0 */2 * * *"
+    description: "Refreshes the redis cache for browser channel json"
+    queue: heavy
+  Cache::PiwikDataJob:
+    cron: "45 2 * * *"
+    description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"
+    queue: transactional
+  Cache::EyeshadeStatsJob:
+    cron: "50 2 * * *"
+    description: "Refreshes the redis cache for eyeshade stats information"
+    queue: transactional
+  EnqueuePublishersForPayoutJob:
+    cron: "0 0 1 * *"
+    description: "Generates the list of unsettled transactions on the first of every month"
+    queue: scheduler
+  UpdatePayoutReportContentsJob:
+    cron: "0 3 1 * *"
+    description: "Refreshes the json version of the report that's built from the potential payments table on the first of every month."
+    queue: scheduler
+:verbose: true

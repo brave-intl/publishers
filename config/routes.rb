@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get :statement
       get :statements
       get :uphold_status
+      get :get_site_banner_data
       patch :verify
       patch :update
       patch :complete_signup
@@ -38,11 +39,9 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
     end
-    resources :site_banners, only: %i(new create), controller: 'publishers/site_banners' do
+    resources :site_banners, controller: 'publishers/site_banners' do
       collection do
-        get :fetch
-        post :update_logo
-        post :update_background_image
+        post :set_default_site_banner_mode
       end
     end
   end
@@ -139,12 +138,11 @@ Rails.application.routes.draw do
         get :statement
         post :create_note
       end
-      post :make_partner
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
-    resources :organizations, only: [:index, :show]
-    resources :partners, only: [:index, :new, :create]
+    resources :organizations, except: [:destroy]
+    resources :partners, except: [:destroy]
 
     namespace :stats do
       resources :contributions, only: [:index]

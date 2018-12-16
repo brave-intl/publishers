@@ -6,7 +6,7 @@ module ChannelsHelper
   end
 
   def site_last_verification_method_path(channel)
-    case channel.details.verification_method
+    case channel.details.verification_method || channel.details.detected_web_host
       when "dns_record"
         verification_dns_record_site_channel_path(channel)
       when "public_file"
@@ -61,7 +61,7 @@ module ChannelsHelper
       'incomplete'
     end
   end
-  
+
   def channel_verification_details(channel)
     return if channel.verified? || channel.details_type != "SiteChannelDetails"
     case channel.verification_details
