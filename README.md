@@ -161,6 +161,25 @@ Some variables are set automagically with Heroku addons:
 
 A few variables are not configured in secrets.yml: currently none
 
+## Linting
+
+For Ruby we use [rubocop](https://github.com/rubocop-hq/rubocop) to standardize our project.
+
+To run simply open the project and run in the terminal
+
+```sh
+rubocop
+```
+
+For Typescript/Stylesheets we use [tslint](https://palantir.github.io/tslint/) and [stylelint](https://github.com/stylelint/stylelint) respectively.
+
+To run simply open the project and run in the terminal
+
+```sh
+yarn lint
+```
+
+
 ## Testing
 
 ### Ruby
