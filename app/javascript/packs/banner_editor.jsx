@@ -48,6 +48,7 @@ export default class BannerEditor extends React.Component {
       twitch: '',
       donationAmounts: [1, 5, 10],
       conversionRate: this.props.conversionRate,
+      preferredCurrency: 'USD',
       mode: 'Edit',
       view: 'editor-view',
       state: 'editor'
@@ -100,6 +101,7 @@ export default class BannerEditor extends React.Component {
     document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'hidden'
     document.getElementById("bat-select").childNodes[0].childNodes[0].style.color = 'white'
     document.getElementById("bat-select").style.cursor = 'pointer'
+    document.getElementById("banner-toggle").style.cursor = "pointer"
   }
 
   preview(){
