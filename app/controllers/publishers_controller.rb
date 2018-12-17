@@ -422,14 +422,34 @@ class PublishersController < ApplicationController
     end
   end
 
+  def get_site_banner_data
+    create_site_banners()
+    default_site_banner_mode = current_publisher.default_site_banner_mode
+    default_site_banner = {:id => current_publisher.default_site_banner_id, :name => "Default", :type => "Default"}
+    channel_banners = current_publisher.channels.map { |channel| {id: channel.site_banner.id, name: channel.publication_title, type: channel.details_type} }
+    data = {default_site_banner_mode: default_site_banner_mode, default_site_banner: default_site_banner, channel_banners: channel_banners}
+    render(json: data.to_json)
+  end
+
   private
 
   def create_uphold_card_for_default_currency_if_needed
     if current_publisher.can_create_uphold_cards? &&
       current_publisher.default_currency_confirmed_at.present? &&
       current_publisher.wallet.available_currencies.exclude?(current_publisher.default_currency)
-
       CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
+    end
+  end
+
+  def create_site_banners
+    if current_publisher.default_site_banner_id.nil?
+      default_site_banner = SiteBanner.new_helper(current_publisher.id, nil)
+      current_publisher.update(default_site_banner_id: default_site_banner.id)
+    end
+    current_publisher.channels.each do |channel|
+      if channel.site_banner.nil?
+        channel.site_banner = SiteBanner.new_helper(current_publisher.id, channel.id)
+      end
     end
   end
 

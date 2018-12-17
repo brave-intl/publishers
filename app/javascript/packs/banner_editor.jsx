@@ -28,12 +28,24 @@ export default class BannerEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    let defaultSiteBannerMode;
+    if(this.props.channelBanners.length === 0){
+      defaultSiteBannerMode = true;
+    }
+    else{
+      defaultSiteBannerMode = this.props.defaultSiteBannerMode
+    }
+
     this.state = {
       loading: true,
       title: 'Brave Rewards',
       description: 'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.',
       logo: {url: null, data: null},
       cover: {url: null, data: null},
+      channelIndex: 0,
+      channelBanners: this.props.channelBanners,
+      defaultSiteBanner: this.props.defaultSiteBanner,
+      defaultSiteBannerMode: defaultSiteBannerMode,
       scale: 1,
       linkSelection: false,
       linkOption: 'Youtube',
@@ -45,14 +57,15 @@ export default class BannerEditor extends React.Component {
       conversionRate: this.props.conversionRate,
       mode: 'Edit',
       view: 'editor-view',
-      width: '1320',
-      file: null,
       state: 'editor'
     }
      this.updateTitle = this.updateTitle.bind(this);
      this.preview = this.preview.bind(this);
-     this.updateDescription = this.updateDescription.bind(this)
+     this.updateDescription = this.updateDescription.bind(this);
      this.save = this.save.bind(this);
+     this.toggleDefaultSiteBannerMode = this.toggleDefaultSiteBannerMode.bind(this);
+     this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
+     this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
      this.updateYoutube = this.updateYoutube.bind(this);
      this.updateTwitter = this.updateTwitter.bind(this);
      this.updateTwitch = this.updateTwitch.bind(this);
@@ -74,9 +87,6 @@ export default class BannerEditor extends React.Component {
     if(window.innerWidth < 991){
       this.close();
     }
-    else{
-      this.setState({ width: 1320});
-    }
 }
 
   modalize(){
@@ -95,6 +105,7 @@ export default class BannerEditor extends React.Component {
 
   cleanup(){
     document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'hidden'
+    document.getElementById("banner-toggle").style.cursor = "pointer"
   }
 
   preview(){
@@ -180,19 +191,20 @@ export default class BannerEditor extends React.Component {
   async fetchBanner(){
 
     let that = this
+    let url = "/publishers/" + document.getElementById("publisher_id").value + "/site_banners/"
+    this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id
 
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/fetch";
     let options = {
       method: 'GET',
       credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content}
+      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
     }
 
     let response = await fetch(url, options);
     let banner = await response.json();
 
     //500ms timeout prevents quick flash when load times are fast.
-    setTimeout(() => {
+    setTimeout(async() => {
 
       if(banner){
         that.setState({
@@ -204,7 +216,8 @@ export default class BannerEditor extends React.Component {
           donationAmounts: banner.donationAmounts,
           logo: {url: banner.logoImage, data: null},
           cover: {url: banner.backgroundImage, data: null},
-        }, () => that.setState({loading: false}));
+          loading: false
+        });
       }
 
       else{
@@ -340,6 +353,25 @@ export default class BannerEditor extends React.Component {
           </Dialogue>
         </div>
         break;
+      case 'same':
+        dialogue =
+        <div>
+          <Opacity/>
+          <Dialogue save>
+            <Text dialogueHeader>Use one banner for all channels?</Text>
+            <Text dialogueSubtext>Your customized banner will be displayed on all of your channels.</Text>
+            <div style={{marginTop: '40px', textAlign: 'center'}}>
+            <Button onClick={ () => this.setState({state: 'Editor'}) } style={{margin:'10px', width:'120px'}} outline>Cancel</Button>
+            <Button onClick={ async() => {
+              let toggle = await this.setDefaultSiteBannerMode(true);
+              this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, state: 'Editor', loading: true},
+              () => { this.fetchBanner() });
+            }}
+            style={{margin:'10px', width:'120px'}} primary>Continue</Button>
+            </div>
+          </Dialogue>
+        </div>
+        break;
     }
     return dialogue;
 
@@ -422,10 +454,10 @@ export default class BannerEditor extends React.Component {
   }
 
   async save() {
-    // Three POST requests make up the save: Content, Logo, and Cover.
     this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
 
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners";
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/"
+    this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id;
 
     let body = new FormData();
     body.append('title', this.state.title);
@@ -433,45 +465,23 @@ export default class BannerEditor extends React.Component {
     body.append('donation_amounts', JSON.stringify(this.state.donationAmounts));
     body.append('social_links', JSON.stringify({youtube: this.state.youtube, twitter: this.state.twitter, twitch: this.state.twitch}));
 
+    if(this.state.logo.data){
+      let logo = await this.readData(this.state.logo.data);
+      body.append('logo', logo);
+    }
+    if(this.state.cover.data){
+      let cover = await this.readData(this.state.cover.data);
+      body.append('cover', cover);
+    }
+
     let options = {
-      method: 'POST',
+      method: 'PUT',
       credentials: "same-origin",
       headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
       body: body
     }
 
-    let content = await fetch(url, options)
-
-    let logo_url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_logo"
-    let logo_options = {
-      method: 'POST',
-      credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
-    }
-
-    let cover_url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/update_background_image"
-    let cover_options = {
-      method: 'POST',
-      credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
-    }
-
-
-    if(this.state.logo.data && this.state.cover.data) {
-
-      logo_options.body = await this.readData(this.state.logo.data);
-      cover_options.body = await this.readData(this.state.cover.data);
-      let [logo_save, cover_save] = await Promise.all([fetch(logo_url, logo_options), fetch(cover_url, cover_options)]);
-
-    }
-    else if(this.state.logo.data && this.state.cover.data === null) {
-      logo_options.body = await this.readData(this.state.logo.data);
-      let images = await fetch(logo_url, logo_options);
-    }
-    else if(this.state.cover.data && this.state.logo.data === null) {
-      cover_options.body = await this.readData(this.state.cover.data);
-      let images = await fetch(cover_url, cover_options);
-    }
+    let save = await fetch(url, options)
 
     document.getElementById('save-spinner').remove();
     this.setState({saving: false});
@@ -481,13 +491,41 @@ export default class BannerEditor extends React.Component {
   readData(file) {
     let reader = new FileReader();
     reader.readAsDataURL(file.files[0])
-
     return new Promise(resolve =>
       reader.onloadend = function () {
-        const body = new FormData();
-        body.append('image', reader.result);
-        resolve(body);
+        resolve(reader.result);
       });
+  }
+
+  incrementChannelIndex(){
+    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex += 1), loading: true }},
+    () => {this.fetchBanner()})
+  }
+
+  decrementChannelIndex(){
+    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex -= 1), loading: true }},
+    () => {this.fetchBanner()})
+  }
+
+  async toggleDefaultSiteBannerMode(){
+    if(this.state.defaultSiteBannerMode === true){
+      let toggle = await this.setDefaultSiteBannerMode(false)
+      this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, loading: true},
+      () => { this.fetchBanner() })
+    }
+    else{
+      this.setState({state: 'same'});
+    }
+  }
+
+  async setDefaultSiteBannerMode(value){
+    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/set_default_site_banner_mode?dbm=" + value
+    let options = {
+      method: 'POST',
+      credentials: "same-origin",
+      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content}
+    }
+    let response = await fetch(url, options);
   }
 
   render() {
@@ -499,7 +537,7 @@ export default class BannerEditor extends React.Component {
         {this.renderLoadingScreen()}
         {this.renderDialogue()}
 
-        <Navbar save={this.save} close={this.close} preview={ this.preview }/>
+        <Navbar defaultSiteBanner={this.props.defaultSiteBanner} channelBanners={this.props.channelBanners} channelIndex={this.state.channelIndex} defaultSiteBannerMode={this.state.defaultSiteBannerMode} incrementChannelIndex={this.incrementChannelIndex} decrementChannelIndex={this.decrementChannelIndex} toggleDefaultSiteBannerMode={this.toggleDefaultSiteBannerMode} save={this.save} close={this.close} preview={ this.preview }/>
 
         <Template>
           <Logo url={this.state.logo.url}>
@@ -540,7 +578,7 @@ export default class BannerEditor extends React.Component {
             </ExplanatoryText>
 
             <Donations>
-              <Text donations>Set tipping amounts</Text>
+              <Text donations>Tip amounts</Text>
               <DonationWrapper>
                 <Button donation>
                   <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
@@ -574,11 +612,14 @@ export default class BannerEditor extends React.Component {
   }
 }
 
-export function renderBannerEditor(preferredCurrency, conversionRate, mode) {
+export function renderBannerEditor(preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, mode) {
 
   let props = {
     preferredCurrency: preferredCurrency,
     conversionRate: conversionRate,
+    defaultSiteBannerMode: defaultSiteBannerMode,
+    defaultSiteBanner: defaultSiteBanner,
+    channelBanners: channelBanners,
     mode: mode
   }
 

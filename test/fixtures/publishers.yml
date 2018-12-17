@@ -6,6 +6,7 @@ default: &default
   name: "Alice the Pyramid"
   phone: "4159001420"
   phone_normalized: "+14159001420"
+  default_site_banner_id: "00000000-0000-0000-0000-000000000000"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
@@ -15,6 +16,8 @@ verified:
   name: "Alice the Verified"
   phone: "4159001421"
   phone_normalized: "+14159001421"
+  default_site_banner_mode: true
+  default_site_banner_id: "00000000-0000-0000-0000-000000000005"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
