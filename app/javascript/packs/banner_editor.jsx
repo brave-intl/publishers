@@ -28,14 +28,6 @@ export default class BannerEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    let defaultSiteBannerMode;
-    if(this.props.channelBanners.length === 0){
-      defaultSiteBannerMode = true;
-    }
-    else{
-      defaultSiteBannerMode = this.props.defaultSiteBannerMode
-    }
-
     this.state = {
       loading: true,
       title: 'Brave Rewards',
@@ -45,7 +37,7 @@ export default class BannerEditor extends React.Component {
       channelIndex: 0,
       channelBanners: this.props.channelBanners,
       defaultSiteBanner: this.props.defaultSiteBanner,
-      defaultSiteBannerMode: defaultSiteBannerMode,
+      defaultSiteBannerMode: this.props.defaultSiteBannerMode,
       scale: 1,
       linkSelection: false,
       linkOption: 'Youtube',
