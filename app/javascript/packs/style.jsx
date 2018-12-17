@@ -203,8 +203,10 @@ ${props => props.links && css
 
 ${props => props.donations && css
   `
+  font-size: 17px;
   color: white;
-  padding-left: 70px;
+  padding-left: 42px;
+  margin-bottom: 8px;
   `
 }
 
@@ -239,7 +241,7 @@ ${props => props.convertedAmount && css
   display: inline-block;
   font-size: 14px;
   padding: 5px;
-  width: 80px;
+  width: 100px;
   font-weight: normal;
   font-family: Poppins;
   color: #F1F1F9
