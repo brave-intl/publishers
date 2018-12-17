@@ -39,7 +39,7 @@
       font-size: 11px;
       @include media-breakpoint-down(sm){
         padding: 20px 30px 0px 30px;
-      }    
+      }
     }
   }
 
@@ -67,9 +67,5 @@
       border-left: solid;
       border-width: 1px;
     }
-  }
-
-  .footer--promo-divider {
-
   }
 }
