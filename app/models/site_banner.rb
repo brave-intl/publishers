@@ -25,10 +25,7 @@ class SiteBanner < ApplicationRecord
   before_save :clear_invalid_social_links
 
   def donation_amounts_in_scope
-    return if errors.present? # Don't bother checking against donation amounts if donation amounts are nil
-    errors.add(:base, "Must have #{NUMBER_OF_DONATION_AMOUNTS} donation amounts") if donation_amounts.count != NUMBER_OF_DONATION_AMOUNTS
-    errors.add(:base, "A donation amount is zero or negative") if donation_amounts.select { |donation_amount| donation_amount <= 0}.count > 0
-    errors.add(:base, "A donation amount is above a target threshold") if donation_amounts.select { |donation_amount| donation_amount >= MAX_DONATION_AMOUNT}.count > 0
+    return if errors.present?
     errors.add(:base, "Must be an approved tip preset") unless DONATION_AMOUNT_PRESETS.include? donation_amounts.join(',')
   end
 
