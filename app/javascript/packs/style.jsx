@@ -9,7 +9,7 @@ export const Container = styled.div
 
 export const Dialogue = styled.div
 `
-  position: absolute
+  position: absolute;
   background-color: white;
   border-radius: 8px;
   left: 50%;
@@ -48,6 +48,16 @@ export const Dialogue = styled.div
     `
   }
 `;
+
+export const Channels = styled.div
+`
+  margin-top: 7px;
+
+  ${({ active }) => active === false && `
+    opacity: .3;
+    pointer-events: none;
+  `}
+`
 
 export const Opacity = styled.div
 `
@@ -139,7 +149,7 @@ export const TextArea = styled.textarea
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid lightGray;
   border-radius: 8px;
-  color: #686978
+  color: #686978;
   width: 100%;
   height: 200px;
   margin-top: 10px;
@@ -193,8 +203,10 @@ ${props => props.links && css
 
 ${props => props.donations && css
   `
+  font-size: 17px;
   color: white;
-  padding-left: 70px;
+  padding-left: 42px;
+  margin-bottom: 8px;
   `
 }
 
@@ -229,7 +241,7 @@ ${props => props.convertedAmount && css
   display: inline-block;
   font-size: 14px;
   padding: 5px;
-  width: 80px;
+  width: 100px;
   font-weight: normal;
   font-family: Poppins;
   color: #F1F1F9
@@ -261,6 +273,15 @@ ${props => props.dialogueSubtext && css
   font-size: 15px;
   font-weight: normal;
   color: rgb(104, 105, 120);
+  `
+}
+
+${props => props.channel && css
+  `
+  font-size: 1.25rem;
+  margin-bottom: 0px;
+  user-select: none;
+
   `
 }
 `;
@@ -402,15 +423,17 @@ export const BrandText = styled.h5
   padding-left: 20px;
   margin-top: 8.5px;
   margin-bottom: 0px;
+  user-select: none;
 `;
 
 export const ToggleText = styled.p
 `
   margin-bottom: 0px;
-  margin-top: 1px;
+  margin-top: 3.25px;
   margin-left: auto;
-  margin-right: -50px;
+  margin-right: 10px;
   font-weight: bold;
+  user-select: none;
 
 `;
 

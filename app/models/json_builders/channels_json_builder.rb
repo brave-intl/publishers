@@ -26,7 +26,7 @@ class JsonBuilders::ChannelsJsonBuilder
   def build
     channels = []
 
-  [Channel.left_joins(publisher: :site_banner).verified.site_channels, Channel.left_joins(publisher: :site_banner).youtube_channels, Channel.left_joins(publisher: :site_banner).twitch_channels, Channel.left_joins(publisher: :site_banner).twitter_channels].each do |verified_channels|
+  [Channel.verified.site_channels, Channel.youtube_channels, Channel.twitch_channels, Channel.twitter_channels].each do |verified_channels|
       verified_channels.find_each do |verified_channel|
         if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
           excluded = true
@@ -34,7 +34,13 @@ class JsonBuilders::ChannelsJsonBuilder
         else
           excluded = false
         end
-        channels.push([verified_channel.details.channel_identifier, true, excluded, verified_channel.publisher&.site_banner&.read_only_react_property || {}])
+        if verified_channel.publisher.default_site_banner_mode && verified_channel.publisher.default_site_banner_id
+          channels.push([verified_channel.details.channel_identifier, true, excluded, verified_channel.publisher.default_site_banner.read_only_react_property])
+        elsif verified_channel.site_banner
+          channels.push([verified_channel.details.channel_identifier, true, excluded, verified_channel.site_banner.read_only_react_property])
+        else
+          channels.push([verified_channel.details.channel_identifier, true, excluded, {}])
+        end
       end
     end
 
@@ -42,7 +48,6 @@ class JsonBuilders::ChannelsJsonBuilder
       next if @excluded_verified_channel_ids.include?(excluded_channel_id)
       channels.push([excluded_channel_id, false, true, {}])
     end
-
     channels.to_json
   end
 end

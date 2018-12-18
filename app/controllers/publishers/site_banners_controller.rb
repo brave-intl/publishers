@@ -1,31 +1,12 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
-  include ActionView::Helpers::SanitizeHelper
   before_action :authenticate_publisher!, only: [:create, :update_logo, :update_background]
 
   MAX_IMAGE_SIZE = 10_000_000
 
-  def new
-    @site_banner = current_publisher.site_banner || SiteBanner.new
-  end
-
-  def create
-    site_banner = current_publisher.site_banner || SiteBanner.new
-    donation_amounts = JSON.parse(sanitize(params[:donation_amounts]))
-    site_banner.update(
-      publisher_id: current_publisher.id,
-      title: sanitize(params[:title]),
-      donation_amounts: donation_amounts,
-      default_donation: donation_amounts.second,
-      social_links: params[:social_links].present? ? JSON.parse(sanitize(params[:social_links])) : {},
-      description: sanitize(params[:description])
-    )
-    head :ok
-  end
-
-  def fetch
-    if current_publisher.site_banner.present?
-      data = current_publisher.site_banner.read_only_react_property
+  def show
+    if site_banner
+      data = site_banner.read_only_react_property
       data[:backgroundImage] = data[:backgroundUrl]
       data[:logoImage] = data[:logoUrl]
       render(json: data.to_json)
@@ -34,32 +15,35 @@ class Publishers::SiteBannersController < ApplicationController
     end
   end
 
-  def update_logo
-    if params[:image].length > MAX_IMAGE_SIZE
-      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
-      # alert[:error] = "File size too big!"
-      head :payload_too_large and return
+  def update
+    if site_banner
+      site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
+      if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
+        update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
+      end
+      if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
+        update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
+      end
     end
-    site_banner = current_publisher.site_banner
-    update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
     head :ok
   end
 
-  def update_background_image
-    if params[:image].length > MAX_IMAGE_SIZE
-      # (Albert Wang): We should consider supporting alerts. This might require a UI redesign
-      # alert[:error] = "File size too big!"
-      head :payload_too_large and return
-    end
-    site_banner = current_publisher.site_banner
-    update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
-    head :ok
+  def set_default_site_banner_mode
+    current_publisher.update(default_site_banner_mode: params[:dbm])
   end
 
   private
 
+  def site_banner
+    @site_banner ||= current_publisher.site_banners.find_by(id: params[:id])
+  end
+
   def update_image(attachment:, attachment_type:)
-    data_url = params[:image].split(',')[0]
+    if attachment_type === SiteBanner::LOGO
+      data_url = params[:logo].split(',')[0]
+    elsif attachment_type === SiteBanner::BACKGROUND
+      data_url = params[:cover].split(',')[0]
+    end
     if data_url.starts_with?("data:image/jpeg") || data_url.starts_with?("data:image/jpg")
       extension = ".jpg"
     elsif data_url.starts_with?("data:image/png")
@@ -74,7 +58,11 @@ class Publishers::SiteBannersController < ApplicationController
 
     temp_file = Tempfile.new([filename, extension])
     File.open(temp_file.path, 'wb') do |f|
-      f.write(Base64.decode64(params[:image].split(',')[1]))
+      if attachment_type === SiteBanner::LOGO
+        f.write(Base64.decode64(params[:logo].split(',')[1]))
+      elsif attachment_type === SiteBanner::BACKGROUND
+        f.write(Base64.decode64(params[:cover].split(',')[1]))
+      end
     end
 
     original_image_path = temp_file.path
