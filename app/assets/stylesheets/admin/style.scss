@@ -212,10 +212,7 @@ a.logo span {
         }
         .note-header {
           display: flex;
-          .note-created-by{
-            flex: 1;
-          }
-          .note-created-at {
+          .box {
             flex: 1;
           }
         }

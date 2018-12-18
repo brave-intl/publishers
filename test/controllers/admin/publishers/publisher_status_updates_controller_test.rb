@@ -1,9 +1,23 @@
 require 'test_helper'
 require "webmock/minitest"
 
-class Admin::Publishers::PublisherStatusUpdateControllerTest < ActionDispatch::IntegrationTest
+class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
+
+  before do
+    admin = publishers(:admin)
+    sign_in admin
+  end
+
+  describe 'index' do
+    it 'assigns @publisher and @publisher_status_updates' do
+      get admin_publisher_publisher_status_updates_path(publishers(:notes))
+
+      assert controller.instance_variable_get("@publisher")
+      assert controller.instance_variable_get("@publisher_status_updates")
+    end
+  end
 
   test 'updates the status of the publisher' do
     admin = publishers(:admin)
@@ -36,7 +50,7 @@ class Admin::Publishers::PublisherStatusUpdateControllerTest < ActionDispatch::I
     sign_in admin
     publisher = publishers(:uphold_connected)
 
-    assert_enqueued_jobs(1) do    
+    assert_enqueued_jobs(1) do
       post(
         admin_publisher_publisher_status_updates_path(
           publisher_id: publisher.id,
@@ -53,7 +67,7 @@ class Admin::Publishers::PublisherStatusUpdateControllerTest < ActionDispatch::I
     admin = publishers(:admin)
     sign_in admin
     publisher = publishers(:uphold_connected)
-    assert_enqueued_jobs(0) do    
+    assert_enqueued_jobs(0) do
       post(
         admin_publisher_publisher_status_updates_path(
           publisher_id: publisher.id,
