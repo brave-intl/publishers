@@ -55,7 +55,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
 
   def group_events_by_country(events)
     events = events.group_by do |event|
-      event["country"]
+      event[PromoRegistration::COUNTRY]
     end
   end
 
@@ -127,7 +127,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
         blank_events.push({
           "referral_code" => referral_code,
           "ymd" => current_date.strftime("%Y-%m-%d"),
-          "country" => "N/A",
+          PromoRegistration::COUNTRY => "N/A",
           PromoRegistration::RETRIEVALS => 0,
           PromoRegistration::FIRST_RUNS => 0,
           PromoRegistration::FINALIZED => 0,

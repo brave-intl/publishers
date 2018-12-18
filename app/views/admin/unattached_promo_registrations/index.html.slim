@@ -119,7 +119,7 @@
                 = check_box_tag "event_types[]", PromoRegistration::FINALIZED, checked: true
                 = label_tag = " " + event_type_column_header(PromoRegistration::FINALIZED)
             .flex-one.align-self-flex-center
-              . style="font-weight: bold" = label_tag = "Breakdown by country"
-              . = check_box_tag "geo", true, checked: false
+              . style="font-weight: bold" = label_tag = "Break down by country"
+              . = check_box_tag "geo"
             .flex-one.align-self-flex-end
               = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }

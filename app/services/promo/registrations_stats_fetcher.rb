@@ -33,7 +33,22 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   end
 
   def perform_offline
-    true
+    stats = []
+    @referral_codes.each do |referral_code|
+      ((1.month.ago.to_date)..(Time.now.to_date)).each do |day|
+        event = {
+          "referral_code" => "#{referral_code}",
+          PromoRegistration::RETRIEVALS => 1,
+          PromoRegistration::FIRST_RUNS => 1,
+          PromoRegistration::FINALIZED => 1,
+          "ymd" => "#{day}",
+        }
+        PromoRegistration.find_by_referral_code(referral_code).update(stats: [event].to_json)
+        stats.push(event)
+      end
+    end
+
+    stats
   end
 
   private

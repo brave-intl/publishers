@@ -24,7 +24,26 @@ class Promo::RegistrationsGeoStatsFetcher < BaseApiClient
   end
 
   def perform_offline
-    true
+    geo_stats = []
+    @referral_codes.each do |referral_code|
+      ((1.month.ago.to_date)..(Time.now.to_date)).each do |day|
+        usa_event = {
+          "referral_code" => "#{referral_code}",
+          PromoRegistration::COUNTRY => "United States",
+          PromoRegistration::RETRIEVALS => 1,
+          PromoRegistration::FIRST_RUNS => 1,
+          PromoRegistration::FINALIZED => 1,
+          "ymd" => "#{day}",
+        }
+
+        mexico_event = usa_event.dup
+        mexico_event[PromoRegistration::COUNTRY] = "Mexico"
+        geo_stats.push(usa_event)
+        geo_stats.push(mexico_event)
+      end
+    end
+
+    geo_stats
   end
 
   private
