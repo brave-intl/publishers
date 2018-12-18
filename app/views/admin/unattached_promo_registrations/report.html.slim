@@ -13,12 +13,24 @@ scss:
         tr
           - if @reporting_interval != PromoRegistration::RUNNING_TOTAL
             th = reporting_interval_column_header(@reporting_interval)
+          - if @geo
+            th = "Country"
           - @event_types.each do |event_type|
             th = event_type_column_header(event_type)
         tbody
-          - events.each do |event|
-            tr
-              - if @reporting_interval != PromoRegistration::RUNNING_TOTAL
-                td = event.first
-              - @event_types.each do |event_type|
-                td = event.second[event_type]
+          - if @geo
+            - events.each do |date, events|
+              - events.each do |country, event|
+                tr
+                  - if @reporting_interval != PromoRegistration::RUNNING_TOTAL
+                    td = date
+                  td = country
+                  - @event_types.each do |event_type|
+                    td = event[event_type]
+          - else
+            - events.each do |date, event|
+              tr
+                - if @reporting_interval != PromoRegistration::RUNNING_TOTAL
+                  td = date
+                - @event_types.each do |event_type|
+                  td = event[event_type]

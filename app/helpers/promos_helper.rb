@@ -94,7 +94,7 @@ module PromosHelper
     when PromoRegistration::FIRST_RUNS
       "Installs"
     when PromoRegistration::FINALIZED
-      "Confirmations"
+      "Confirms"
     else
       raise
     end

@@ -57,7 +57,7 @@
               span.icon= render "icon_help"
               span.tf-tooltip-content
                 span.tf-tooltip-content-heading= "Confirmed"
-                span.tf-tooltip-content-content== "A confirmation is counted when a user downloads the browser and opens it, then opens it again at least 30 days later."
+                span.tf-tooltip-content-content== "A confirmation is counted when a user downloads the browser and uses in minimally for a month."
         tbody
           - @promo_registrations.each do |promo_registration| 
             - promo_registration_aggregate_stats = promo_registration.aggregate_stats
@@ -118,5 +118,8 @@
               .
                 = check_box_tag "event_types[]", PromoRegistration::FINALIZED, checked: true
                 = label_tag = " " + event_type_column_header(PromoRegistration::FINALIZED)
+            .flex-one.align-self-flex-center
+              . style="font-weight: bold" = label_tag = "Breakdown by country"
+              . = check_box_tag "geo", true, checked: false
             .flex-one.align-self-flex-end
               = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }
