@@ -133,6 +133,7 @@ class Publisher < ApplicationRecord
     case column
     when VERIFIED_CHANNEL_COUNT
       Publisher.
+        where(role: Publisher::PUBLISHER).
         left_joins(:channels).
         where(channels: {verified: true}).
         group(:id).
