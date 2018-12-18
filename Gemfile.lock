@@ -506,7 +506,7 @@ DEPENDENCIES
   domain_name
   email_validator (~> 1.6)
   faraday (~> 0.9.2)
-  font-awesome-rails
+  font-awesome-rails (~> 4.7.0.4)
   i18n-tasks (~> 0.9.12)
   jbuilder (~> 2.7.0)
   listen (~> 3.0.5)
