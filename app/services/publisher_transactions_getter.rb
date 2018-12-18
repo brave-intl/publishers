@@ -26,14 +26,14 @@ class PublisherTransactionsGetter < BaseApiClient
     #     "description": "contributions in March",
     #     "channel": "diracdeltas.github.io",
     #     "amount": "294.617182149806375904",
-    #     "type": "contribution"
+    #     "transaction_type": "contribution"
     #   },
     #   {
     #     "created_at": "2018-04-08T00:23:10.000Z",
     #     "description": "settlement fees for contributions",
     #     "channel": "diracdeltas.github.io",
     #     "amount": "-14.730859107490318795",
-    #     "type": "fee"
+    #     "transaction_type": "fee"
     #   },
     #   {
     #     "created_at": "2018-04-08T00:33:09.000Z",
@@ -42,7 +42,7 @@ class PublisherTransactionsGetter < BaseApiClient
     #     "amount": "-94.617182149806375904",
     #     "settlement_currency": "USD",
     #     "settlement_amount": "18.81",
-    #     "type": "referral_settlement"
+    #     "transaction_type": "referral_settlement"
     #   }
     # ]
   end
@@ -67,7 +67,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{contribution_amount}",
           "settlement_currency" => publisher.default_currency,
-          "type" => "contribution"
+          "transaction_type" => "contribution"
         })
 
         # Contribution fees out
@@ -77,7 +77,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{contribution_fees_amount}",
           "settlement_currency" => publisher.default_currency,
-          "type" => "fee"
+          "transaction_type" => "fee"
         })
 
         # Contribution settlement out
@@ -88,7 +88,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "amount" => "#{contribution_settlement_amount}",
           "settlement_currency" => publisher.default_currency,
           "settlement_amount" => "56.81",
-          "type" => "contribution_settlement"
+          "transaction_type" => "contribution_settlement"
         })
 
         # Referrals in
@@ -98,7 +98,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{referral_amount}",
           "settlement_currency" => publisher.default_currency,
-          "type" => "referral"
+          "transaction_type" => "referral"
         })
 
         # Referal settlement out
@@ -109,7 +109,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "amount" => "#{referral_settlement_amount}",
           "settlement_currency" => publisher.default_currency,
           "settlement_amount" => "18.81",
-          "type" => "referral_settlement"
+          "transaction_type" => "referral_settlement"
         })
       end
       i += 1
