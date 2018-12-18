@@ -341,8 +341,8 @@ export default class BannerEditor extends React.Component {
           <Dialogue id='save-container' save>
             { this.state.saving === false &&
               <div>
-                <Text dialogueHeader>Your banner will be updated in two hours</Text>
-                <Text dialogueSubtext>Your updated banner will be presented to Brave users in two hours.</Text>
+                <Text dialogueHeader>Your banner will be updated within one day</Text>
+                <Text dialogueSubtext>Your updated banner will be presented to Brave users within 24 hours.</Text>
                 <Button dialoguePrimary onClick={ () => this.setState({state: 'Editor'}) }>OK</Button>
               </div>
             }
