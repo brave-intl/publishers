@@ -3,20 +3,19 @@ class Admin::PublishersController < AdminController
   include Search
 
   def index
+    @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
+                    Publisher.advanced_sort(sort_column.to_sym, sort_direction)
+                  else
+                    Publisher.order("#{sort_column} #{sort_direction}")
+                  end
+
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
       search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
-      @publishers = Publisher.where(search_sql, search_query: search_query)
+      @publishers = @publishers.where(search_sql, search_query: search_query)
     end
 
     @publishers = @publishers.suspended if params[:suspended].present?
-
-    @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
-      Publisher.advanced_sort(sort_column.to_sym, sort_direction)
-    else
-      Publisher.order("#{sort_column} #{sort_direction}")
-    end
-
     @publishers = @publishers.paginate(page: params[:page])
   end
 

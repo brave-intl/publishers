@@ -45,7 +45,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "admin filters appropriately on name & email" do
     admin = publishers(:admin)
-    publisher = publishers(:completed)
+    publisher = Publisher.order(created_at: :asc).first
     sign_in admin
 
     get admin_publishers_path
