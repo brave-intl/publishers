@@ -9,6 +9,10 @@ class Publisher < ApplicationRecord
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
+
+  VERIFIED_CHANNEL_COUNT = :verified_channel_count
+  ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT]
+
   JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
   OWNER_PREFIX = "publishers#uuid:"
@@ -122,6 +126,20 @@ class Publisher < ApplicationRecord
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).distinct(:id).count,
       email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.distinct(:id).count,
     }
+  end
+
+  def self.advanced_sort(column, sort_direction)
+    # Please update ADVANCED_SORTABLE_COLUMNS
+    case column
+    when VERIFIED_CHANNEL_COUNT
+      Publisher.
+        where(role: Publisher::PUBLISHER).
+        left_joins(:channels).
+        where(channels: {verified: true}).
+        group(:id).
+        select("publishers.*", "count(channels.id) channels_count").
+        order("channels_count #{sort_direction}")
+    end
   end
 
   # API call to eyeshade
