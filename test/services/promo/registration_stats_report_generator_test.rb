@@ -120,7 +120,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          is_geo: false).perform
 
     expected = [
-      ["Referral code", "Date", "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-12-01", "6", "6", "6"],
       ["DEF456", "2018-12-01", "6", "6", "6"]
     ]
@@ -141,7 +141,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
                                                          is_geo: false).perform
     expected = [
-      ["Referral code", "Date", "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-11-28", "5", "5", "5"],
       ["DEF456", "2018-11-28", "5", "5", "5"],
     ]
@@ -163,7 +163,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          reporting_interval: PromoRegistration::MONTHLY,
                                                          is_geo: false).perform
     expected = [
-      ["Referral code", "Month", "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-11-01", "5", "5", "5"],
       ["ABC123", "2018-12-01", "1", "1", "1"],
       ["DEF456", "2018-11-01", "5", "5", "5"],
@@ -188,7 +188,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          is_geo: false).perform
 
     expected = [
-      ["Referral code", "Week", "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-10-29", "1", "1", "1"],
       ["ABC123", "2018-11-05", "1", "1", "1"],
       ["DEF456", "2018-10-29", "1", "1", "1"],
@@ -238,7 +238,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
 
 
     expected = [
-      ["Referral code", "Country", "Date", "Downloads", "First opens", "30 Days"],
+      ["Referral code", "Country", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
       ["ABC123", "United States", "2018-12-01", "6", "6", "6"],
       ["ABC123", "Mexico", "2018-12-01", "6", "6", "6"],
       ["DEF456", "United States", "2018-12-01", "6", "6", "6"],
@@ -263,7 +263,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          is_geo: true).perform
 
     expected = [
-      ["Referral code", "Country", "Week", "Downloads", "First opens", "30 Days"],
+      ["Referral code", "Country", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
       ["ABC123", "United States", "2018-10-29", "1", "1", "1",],
       ["ABC123", "United States", "2018-11-05", "1", "1", "1",],
       ["ABC123", "United States", "2018-11-12", "1", "1", "1",],

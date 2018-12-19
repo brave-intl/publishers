@@ -92,9 +92,9 @@ module PromosHelper
     when PromoRegistration::RETRIEVALS
       "Downloads"
     when PromoRegistration::FIRST_RUNS
-      "First Opens"
+      "First opens"
     when PromoRegistration::FINALIZED
-      "30 Days"
+      "30 days"
     else
       raise
     end
