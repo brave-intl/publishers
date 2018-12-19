@@ -6,6 +6,13 @@ class Channel < ApplicationRecord
   TWITTER = "twitter".freeze
   CONTEST_TIMEOUT = 10.days
 
+  YOUTUBE_VIEW_COUNT = :youtube_view_count
+  TWITCH_VIEW_COUNT = :twitch_view_count
+  FOLLOWER_COUNT = :follower_count
+  VIDEO_COUNT = :video_count
+  SUBSCRIBER_COUNT = :subscriber_count
+  ADVANCED_SORTABLE_COLUMNS = [YOUTUBE_VIEW_COUNT, TWITCH_VIEW_COUNT, VIDEO_COUNT, SUBSCRIBER_COUNT, FOLLOWER_COUNT]
+
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
@@ -270,6 +277,22 @@ class Channel < ApplicationRecord
   def update_last_verification_timestamp
     # Used for caching on the api/public/channels#timestamp
     Rails.cache.set("last_updated_channel_timestamp", Time.now.to_i << 32)
+  end
+
+  def self.advanced_sort(column, sort_direction)
+    # Please update ADVANCED_SORTABLE_COLUMNS
+    case column
+    when YOUTUBE_VIEW_COUNT
+      Channel.youtube_channels.order(Arel.sql("stats->'view_count' #{sort_direction} NULLS LAST"))
+    when TWITCH_VIEW_COUNT
+      Channel.twitch_channels.order(Arel.sql("stats->'view_count' #{sort_direction} NULLS LAST"))
+    when FOLLOWER_COUNT
+      Channel.twitch_channels.order(Arel.sql("stats->'followers_count' #{sort_direction} NULLS LAST"))
+    when VIDEO_COUNT
+      Channel.youtube_channels.order(Arel.sql("stats->'video_count' #{sort_direction} NULLS LAST"))
+    when SUBSCRIBER_COUNT
+      Channel.youtube_channels.order(Arel.sql("stats->'subscriber_count' #{sort_direction} NULLS LAST"))
+    end
   end
 
   private

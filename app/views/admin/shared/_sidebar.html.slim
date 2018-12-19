@@ -21,6 +21,13 @@ aside
           li
             = link_to admin_channels_path
               span Channels
+            ul.sub-menu
+              = link_to admin_channels_path(type: 'website')
+                span Websites
+              = link_to admin_channels_path(type: 'twitch')
+                span Twitch
+              = link_to admin_channels_path(type: 'youtube')
+                span Youtube
           li
             = link_to admin_publishers_path
               span Publishers
