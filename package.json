@@ -1,37 +1,79 @@
 {
   "scripts": {
     "start": "NODE_ENV=test karma start",
-    "test": "NODE_ENV=test karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "yarn run lint-scss && yarn run lint-js-css && yarn run lint-ts",
     "lint-scss": "stylelint --config '.stylelintrc-scss.json' 'app/**/*.{ts,tsx,scss}' --syntax scss",
     "lint-js-css": "stylelint --config '.stylelintrc-jsx.json' 'app/**/*.{ts,tsx}'",
-    "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'"
+    "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'",
+    "test": "jest"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true,
+        "tsConfig": "tsconfig-jest.json",
+        "isolatedModules": true
+      }
+    },
+    "resetMocks": true,
+    "resetModules": true,
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "src/**/*.tsx",
+      "!src/**/index.ts"
+    ],
+    "testMatch": [
+      "<rootDir>/app/javascript/**/*.test.tsx"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/app/javascript/testSetup.js",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/.testconfig/fileMocks.ts",
+      "\\.(css)$": "identity-obj-proxy"
+    },
+    "preset": "ts-jest/presets/js-with-babel"
   },
   "dependencies": {
     "@rails/webpacker": "3.5",
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
-    "babel-plugin-styled-components": "^1.8.0",
-    "babel-preset-react": "^6.24.1",
     "brave-ui": "^0.30.8",
     "chart.js": "^2.7.2",
     "clipboard": "^2.0.1",
     "prop-types": "^15.6.2",
-    "rails-ujs": "^5.1.4",
+    "rails-ujs": "^5.2.2",
     "react": "^16.4.1",
     "react-avatar-editor": "^11.0.4",
     "react-dom": "^16.4.1",
     "styled-components": "^4.0.3",
+    "babel-core": "^6.26.3",
+    "babel-plugin-styled-components": "^1.8.0",
     "ts-loader": "^5.3.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "typescript": "^3.1.6"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "babel-jest": "^23.6.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
     "hoek": "^6.0.1",
-    "karma": "^3.1.1",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-qunit": "^2.1.0",
-    "karma-webpack": "^3.0.0",
-    "qunit": "^2.6.1",
+    "jest": "^23.6.0",
+    "jest-styled-components": "^5.0.1",
+    "ts-jest": "^23.10.4",
     "stylelint": "^9.4.0",
     "stylelint-config-recommended-scss": "^3.2.0",
     "stylelint-config-styled-components": "^0.1.1",

@@ -11,4 +11,8 @@ class PublisherStatusUpdate < ApplicationRecord
   validates :status, presence: true, :inclusion => { in: ALL_STATUSES }
 
   validates :publisher_id, presence: true
+
+  def to_s
+    status
+  end
 end

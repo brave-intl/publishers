@@ -19,12 +19,12 @@ div.row
               th ID
               th Name
               th Email
-              th Actions
+              th Status
             tbody
               - @publishers.each do |publisher|
                 tr.gradeX
                   td = link_to publisher.id, admin_publisher_path(publisher.id)
                   td = publisher.name
                   td = publisher.email
-                  td TODO
+                  td = publisher_status(publisher)
           = will_paginate @publishers

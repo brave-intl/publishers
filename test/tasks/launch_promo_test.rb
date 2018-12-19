@@ -21,6 +21,7 @@ class LaunchPromoTest < ActiveJob::TestCase
     publisher_one = publishers(:completed).dup
     publisher_two = publishers(:verified).dup
 
+    PublisherNote.destroy_all
     Publisher.delete_all
 
     publisher_one.save!

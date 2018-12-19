@@ -25,6 +25,7 @@ class Api::OwnersControllerTest < ActionDispatch::IntegrationTest
 
   test "can paginate owners and set page size and number" do
     # Delete any records after the 9th
+    PublisherNote.destroy_all
     Publisher.where(id: Publisher.order("created_at desc").offset(9).pluck(:id)).delete_all
 
     get "/api/owners/?per_page=5&page=2", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }

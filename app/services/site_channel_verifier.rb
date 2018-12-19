@@ -103,6 +103,9 @@ class SiteChannelVerifier < BaseService
     Rails.logger.debug("Dnsruby::NXDomain")
     @verification_details = "domain_not_found"
     return false
+  rescue Dnsruby::ServFail
+    @verification_details = "domain_not_found"
+    false
   end
 
   def verify_site_channel_public_file
