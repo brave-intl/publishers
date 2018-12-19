@@ -39,18 +39,15 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     end
     
     report_start_and_end_date = parse_report_dates(params[:referral_code_report_period], @reporting_interval)
-    report_info = Promo::RegistrationStatsReportGenerator.new(referral_codes: referral_codes,
+    report_csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: referral_codes,
                                                               start_date: report_start_and_end_date[:start_date],
                                                               end_date: report_start_and_end_date[:end_date],
                                                               reporting_interval: @reporting_interval,
                                                               is_geo: @is_geo).perform
 
-    @start_date = report_info["start_date"]
-    @end_date = report_info["end_date"]
-    @report_contents = report_info["contents"]
-
-    report_string = render_to_string :layout => false
-    send_data report_string, filename: "BraveReferralPromoReport.html", type: "application/html"
+    respond_to do |format|
+      format.csv { send_data report_csv, filename: "brave_referral_report.csv"}
+    end
   end
 
   def update_statuses

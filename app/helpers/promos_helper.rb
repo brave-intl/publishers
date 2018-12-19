@@ -81,7 +81,7 @@ module PromosHelper
     when PromoRegistration::MONTHLY
       "Month"
     when PromoRegistration::RUNNING_TOTAL
-      "Cumulative"
+      "Date"
     else
       raise
     end

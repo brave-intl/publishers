@@ -1,3 +1,5 @@
+require "csv"
+
 # Creates a report to be converted into tables and downloaded by admins
 class Promo::RegistrationStatsReportGenerator < BaseService
   include PromosHelper
@@ -10,58 +12,87 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     @is_geo = is_geo
   end
 
-  def perform
-    report_contents = {}
 
+  def perform
     events = fetch_stats
     events = select_events_within_report_range(events)
     events = fill_in_events_with_no_activity(@referral_codes, events)
     events_by_referral_codes = group_events_by_referral_code(events)
 
-    events_by_referral_codes.each do |referral_code, events|
-      events = order_events_by_date(events)
-      events_by_referral_code_for_interval = group_events_by_date(events)
+    csv_file = CSV.generate do |csv|
+      if @is_geo
+        column_headers = ["Referral code", "Country", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"]
+        csv << column_headers
+        events_by_referral_codes.each do |referral_code, events_for_referral_code|
+          events_for_referral_code_by_country = group_events_by_country(events_for_referral_code)        
+          events_for_referral_code_by_country.each do |country, events_for_referral_code_for_country|
+            events_for_referral_code_for_country_by_interval = group_events_by_date(events_for_referral_code_for_country)
+            events_for_referral_code_for_country_by_interval.each do |date, events_for_referral_code_for_country_for_interval|
 
-      # Sum the events per interval, or per interval per country if @is_geo
-      per_interval_totals = {}
-      events_by_referral_code_for_interval.each do |date, events|
-        if @is_geo
-          events_by_referral_code_for_interval_by_country = group_events_by_country(events)
+              combined = combine_events(events_for_referral_code_for_country_for_interval, referral_code, country, date)
 
-          per_country_totals = {}
-          events_by_referral_code_for_interval_by_country.each do |country, events|
-            per_country_totals[country] = sum_totals(events)
+              csv << [
+                combined["referral_code"],
+                combined[PromoRegistration::COUNTRY],
+                combined["ymd"], combined[PromoRegistration::RETRIEVALS],
+                combined[PromoRegistration::FIRST_RUNS],
+                combined[PromoRegistration::FINALIZED]
+              ]
+            end
           end
-
-          # If there are any events for any country other than N/A, remove the blank country data
-          per_country_totals.delete("N/A") if per_country_totals.keys.count > 1
-          per_interval_totals[date] = per_country_totals            
-        else
-          per_interval_totals[date] = sum_totals(events)
+        end
+      else
+        column_headers = ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"]
+        csv << column_headers
+        events_by_referral_codes.each do |referral_code, events_for_referral_code|
+          events_for_referral_code_by_interval = group_events_by_date(events_for_referral_code)
+          events_for_referral_code_by_interval.each do |date, events_for_referral_code_for_interval|
+            combined = combine_events(events_for_referral_code_for_interval, referral_code, nil, date)
+            csv << [
+              combined["referral_code"],
+              combined["ymd"], combined[PromoRegistration::RETRIEVALS],
+              combined[PromoRegistration::FIRST_RUNS],
+              combined[PromoRegistration::FINALIZED]
+            ]
+          end
         end
       end
-      report_contents[referral_code] = per_interval_totals
     end
-
-    {
-      "contents" => report_contents,
-      "start_date" => "#{@start_date}",
-      "end_date" => "#{@end_date}"
-    }
   end
 
   private
 
-  def group_events_by_country(events)
-     events.group_by do |event|
-      event[PromoRegistration::COUNTRY]
+  def combine_events(events, referral_code, country, date)
+    if @is_geo
+      combined = {
+        "referral_code"=>referral_code,
+        "ymd"=>date.to_s,
+        "retrievals"=>0,
+        "first_runs"=>0,
+        "finalized"=>0,
+        "country"=> country
+      }
+    else
+      combined = {
+        "referral_code"=>referral_code,
+        "ymd"=>date.to_s,
+        "retrievals"=>0,
+        "first_runs"=>0,
+        "finalized"=>0,
+      }
     end
+    events.each do |event|
+      combined[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
+      combined[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
+      combined[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
+    end
+    combined
   end
 
-  def order_events_by_date(events)
-    events.sort_by do |event|
-      event["ymd"].to_date
-    end
+  def group_events_by_country(events)
+     events.group_by { |event|
+      event[PromoRegistration::COUNTRY]
+    }
   end
 
   def group_events_by_referral_code(events)
@@ -103,36 +134,35 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     events_by_interval
   end
 
-  def sum_totals(events)
-    totals = {
-      PromoRegistration::RETRIEVALS => 0,
-      PromoRegistration::FIRST_RUNS => 0,
-      PromoRegistration::FINALIZED => 0
-    }
-
-    events.each do |event|
-      totals[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
-      totals[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
-      totals[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
-    end
-    totals
-  end
-
   def fill_in_events_with_no_activity(referral_codes, events)
-    blank_events = []
+    events_with_no_activity = []
+    countries = events.map { |event| event[PromoRegistration::COUNTRY] }.uniq
+
     (@start_date..@end_date).each do |day|
       referral_codes.each do |referral_code|
-        blank_events.push({
-          "referral_code" => referral_code,
-          "ymd" => day.strftime("%Y-%m-%d"),
-          PromoRegistration::COUNTRY => "N/A",
-          PromoRegistration::RETRIEVALS => 0,
-          PromoRegistration::FIRST_RUNS => 0,
-          PromoRegistration::FINALIZED => 0,
-        })
+        if @is_geo
+          countries.each do |country|
+            events_with_no_activity.push({
+              "referral_code" => referral_code,
+              "ymd" => day.strftime("%Y-%m-%d"),
+              PromoRegistration::COUNTRY => country,
+              PromoRegistration::RETRIEVALS => 0,
+              PromoRegistration::FIRST_RUNS => 0,
+              PromoRegistration::FINALIZED => 0,
+            })
+          end
+        else
+          events_with_no_activity.push({
+            "referral_code" => referral_code,
+            "ymd" => day.strftime("%Y-%m-%d"),
+            PromoRegistration::RETRIEVALS => 0,
+            PromoRegistration::FIRST_RUNS => 0,
+            PromoRegistration::FINALIZED => 0,
+          })
+        end
       end
     end
 
-    events + blank_events
+    events + events_with_no_activity
   end
 end

@@ -113,33 +113,19 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(body: STATS.to_json)
 
-    report = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
+    csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-12-01".to_date,
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
                                                          is_geo: false).perform
-    expected_report = {
-      "contents" => {
-        "ABC123" => {
-          "2018-12-01".to_date => {
-            "retrievals" => 6,
-            "first_runs" => 6,
-            "finalized" => 6
-          }
-        },
-        "DEF456" => {
-          "2018-12-01".to_date => {
-            "retrievals" => 6,
-            "first_runs" => 6,
-            "finalized" => 6
-          }
-        }
-      },
-      "start_date" => "2018-11-01",
-      "end_date" => "2018-12-01"
-    }
 
-    assert_equal expected_report, report
+    expected = [
+      ["Referral code", "Date", "Downloads", "First opens", "30 Days"],
+      ["ABC123", "2018-12-01", "6", "6", "6"],
+      ["DEF456", "2018-12-01", "6", "6", "6"]
+    ]
+
+    assert_equal CSV.parse(csv), expected
   end
 
   test "generates report for running total without geo information (2)" do # earlier end_date
@@ -149,33 +135,19 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
 
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(body: STATS.to_json)
-    report = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
+    csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-28".to_date,
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
                                                          is_geo: false).perform
-    expected_report = {
-      "contents" => {
-        "ABC123" => {
-          "2018-11-28".to_date => {
-            "retrievals" => 5,
-            "first_runs" => 5,
-            "finalized" => 5
-          }
-        },
-        "DEF456" => {
-          "2018-11-28".to_date => {
-            "retrievals" => 5,
-            "first_runs" => 5,
-            "finalized" => 5
-          }
-        }
-      },
-      "start_date" => "2018-11-01",
-      "end_date" => "2018-11-28"
-    }
+    expected = [
+      ["Referral code", "Date", "Downloads", "First opens", "30 Days"],
+      ["ABC123", "2018-11-28", "5", "5", "5"],
+      ["DEF456", "2018-11-28", "5", "5", "5"],
+    ]
 
-    assert_equal expected_report, report  end
+    assert_equal expected, CSV.parse(csv)
+  end
 
   test "generates report for monthly without geo information" do
     Rails.application.secrets[:api_promo_base_uri] = "http://localhost:8194"
@@ -185,43 +157,20 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(body: STATS.to_json)
 
-    report = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
+    csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-12-01".to_date,
                                                          reporting_interval: PromoRegistration::MONTHLY,
                                                          is_geo: false).perform
-    expected_report = {
-      "contents" => {
-        "ABC123" => {
-          "2018-11-01".to_date => {
-            "retrievals" => 5,
-            "first_runs" => 5,
-            "finalized" => 5
-          },
-          "2018-12-01".to_date => {
-            "retrievals" => 1,
-            "first_runs" => 1,
-            "finalized" => 1
-          }
-        },
-        "DEF456" => {
-          "2018-11-01".to_date => {
-            "retrievals" => 5,
-            "first_runs" => 5,
-            "finalized" => 5
-          },
-          "2018-12-01".to_date => {
-            "retrievals" => 1,
-            "first_runs" => 1,
-            "finalized" => 1
-          }
-        }
-      },
-      "start_date" => "2018-11-01",
-      "end_date" => "2018-12-31"
-    }
+    expected = [
+      ["Referral code", "Month", "Downloads", "First opens", "30 Days"],
+      ["ABC123", "2018-11-01", "5", "5", "5"],
+      ["ABC123", "2018-12-01", "1", "1", "1"],
+      ["DEF456", "2018-11-01", "5", "5", "5"],
+      ["DEF456", "2018-12-01", "1", "1", "1"]
+    ]
 
-    assert_equal expected_report, report
+    assert_equal expected, CSV.parse(csv)
   end
 
   test "generates report for weekly without geo information" do
@@ -232,43 +181,21 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(body: STATS.to_json)
 
-    report = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
+    csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-07".to_date,
                                                          reporting_interval: PromoRegistration::WEEKLY,
                                                          is_geo: false).perform
 
-    expected_report = {
-      "contents"=> {
-        "ABC123"=>
-        {
-          "2018-10-29".to_date => {
-            "retrievals"=>1,
-            "first_runs"=>1,
-            "finalized"=>1
-          },
-          "2018-11-05".to_date => {
-             "retrievals"=>1,
-             "first_runs"=>1,
-             "finalized"=>1
-           }
-         },
-         "DEF456"=> {
-          "2018-10-29".to_date => {
-            "retrievals"=>1,
-            "first_runs"=>1,
-            "finalized"=>1
-          },
-         "2018-11-05".to_date => {
-            "retrievals"=>1,
-            "first_runs"=>1,
-             "finalized"=>1
-          }
-        }
-      },
-     "start_date"=>"2018-10-29",
-     "end_date"=>"2018-11-11"
-    }
+    expected = [
+      ["Referral code", "Week", "Downloads", "First opens", "30 Days"],
+      ["ABC123", "2018-10-29", "1", "1", "1"],
+      ["ABC123", "2018-11-05", "1", "1", "1"],
+      ["DEF456", "2018-10-29", "1", "1", "1"],
+      ["DEF456", "2018-11-05", "1", "1", "1"],
+    ]
+
+    assert_equal expected, CSV.parse(csv)
   end
 
   test "generates report for daily without geo information" do
@@ -279,32 +206,20 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(body: STATS.to_json)
 
-    report = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
+    csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-02".to_date,
                                                          reporting_interval: PromoRegistration::DAILY,
                                                          is_geo: false).perform
+    expected = [
+      ["Referral code", "Day", "Downloads", "First opens", "30 Days"],
+      ["ABC123", "2018-11-01", "1", "1", "1"],
+      ["ABC123", "2018-11-02", "0", "0", "0"],
+      ["DEF456", "2018-11-01", "1", "1", "1"],
+      ["DEF456", "2018-11-02", "0", "0", "0"],
+    ]
 
-    expected_contents = {
-      "contents" => {
-        "ABC123" => {
-          "2018-11-01"=> {
-            "retrievals"=>1,
-            "first_runs"=>1,
-            "finalized"=>1
-          }
-        },
-        "DEF456" => {
-          "2018-11-01" => {
-             "retrievals"=>1,
-             "first_runs"=>1,
-             "finalized"=>1
-           },
-         },
-       },
-     "start_date"=>"2018-11-01",
-     "end_date"=>"2018-11-02"
-   }
+    assert_equal expected, CSV.parse(csv)
   end
 
   test "generates report for running total with geo information" do
@@ -315,47 +230,22 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/geoStatsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(body: GEO_STATS.to_json)
 
-    report = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
+    csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-12-01".to_date,
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
                                                          is_geo: true).perform
-    expected_report = {
-      "contents" => {
-        "ABC123" => { 
-          "2018-12-01".to_date => {
-            "United States" => {
-              "retrievals"=>6,
-              "first_runs"=>6,
-              "finalized"=>6
-            },
-            "Mexico"=> {
-              "retrievals"=>6,
-              "first_runs"=>6,
-              "finalized"=>6
-            }
-          }
-        },
-        "DEF456" => {
-          "2018-12-01".to_date => {
-            "United States" => {
-              "retrievals"=>6,
-              "first_runs"=>6,
-              "finalized"=>6
-            },
-            "Mexico" => {
-              "retrievals"=>6,
-              "first_runs"=>6,
-              "finalized"=>6
-            }
-          }
-        }
-      },
-      "start_date"=>"2018-11-01",
-      "end_date"=>"2018-12-01"
-    }
-        
-    assert_equal expected_report, report
+
+
+    expected = [
+      ["Referral code", "Country", "Date", "Downloads", "First opens", "30 Days"],
+      ["ABC123", "United States", "2018-12-01", "6", "6", "6"],
+      ["ABC123", "Mexico", "2018-12-01", "6", "6", "6"],
+      ["DEF456", "United States", "2018-12-01", "6", "6", "6"],
+      ["DEF456", "Mexico", "2018-12-01", "6", "6", "6"]
+    ]
+
+    assert_equal expected, CSV.parse(csv)
   end
 
   test "generates report for weekly with geo information" do
@@ -366,36 +256,28 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
     stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/geoStatsByReferralCode?referral_code=ABC123&referral_code=DEF456").
       to_return(body: GEO_STATS.to_json)
 
-    report = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
+    csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-14".to_date,
                                                          reporting_interval: PromoRegistration::WEEKLY,
                                                          is_geo: true).perform
-    expected_report = {
-      "contents"=>{"ABC123"=>
-        {"2018-10-29".to_date=>
-          {"United States"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1},
-           "Mexico"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1}},
-         "2018-11-05".to_date=>
-          {"United States"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1},
-           "Mexico"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1}},
-         "2018-11-12".to_date=>
-          {"United States"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1},
-           "Mexico"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1}}},
-       "DEF456"=>
-        {"2018-10-29".to_date=>
-          {"United States"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1},
-           "Mexico"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1}},
-         "2018-11-05".to_date=>
-          {"United States"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1},
-           "Mexico"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1}},
-         "2018-11-12".to_date=>
-          {"United States"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1},
-           "Mexico"=>{"retrievals"=>1, "first_runs"=>1, "finalized"=>1}}}},
-      "start_date"=>"2018-10-29",
-      "end_date"=>"2018-11-18"
-    }
 
-    assert_equal expected_report, report
+    expected = [
+      ["Referral code", "Country", "Week", "Downloads", "First opens", "30 Days"],
+      ["ABC123", "United States", "2018-10-29", "1", "1", "1",],
+      ["ABC123", "United States", "2018-11-05", "1", "1", "1",],
+      ["ABC123", "United States", "2018-11-12", "1", "1", "1",],
+      ["ABC123", "Mexico", "2018-10-29", "1", "1", "1",],
+      ["ABC123", "Mexico", "2018-11-05", "1", "1", "1",],
+      ["ABC123", "Mexico", "2018-11-12", "1", "1", "1",],
+      ["DEF456", "United States", "2018-10-29", "1", "1", "1",],
+      ["DEF456", "United States", "2018-11-05", "1", "1", "1",],
+      ["DEF456", "United States", "2018-11-12", "1", "1", "1",],
+      ["DEF456", "Mexico", "2018-10-29", "1", "1", "1",],
+      ["DEF456", "Mexico", "2018-11-05", "1", "1", "1",],
+      ["DEF456", "Mexico", "2018-11-12", "1", "1", "1",],
+    ]
+
+    assert_equal expected, CSV.parse(csv)
   end
 end

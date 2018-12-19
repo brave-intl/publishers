@@ -41,23 +41,23 @@
               span.icon= render "icon_help"
               span.tf-tooltip-content
                 span.tf-tooltip-content-heading= "Status"
-                span.tf-tooltip-content-content== "Downloads and installs will not be tracked when a code is 'paused'."
-          th = "Downloads"
+                span.tf-tooltip-content-content== "#{event_type_column_header(PromoRegistration::RETRIEVALS)} and #{event_type_column_header(PromoRegistration::FIRST_RUNS)} will not be tracked when a code is 'paused'."
+          th = event_type_column_header(PromoRegistration::RETRIEVALS)
           th 
-            = "Installs"
+            = event_type_column_header(PromoRegistration::FIRST_RUNS)
             span.tf-tooltip
               span.icon= render "icon_help"
               span.tf-tooltip-content
-                span.tf-tooltip-content-heading= "Installs"
-                span.tf-tooltip-content-content== "An install is counted when a user downloads the browser and opens it the first time."
+                span.tf-tooltip-content-heading= event_type_column_header(PromoRegistration::FIRST_RUNS)
+                span.tf-tooltip-content-content== "A #{event_type_column_header(PromoRegistration::FIRST_RUNS)} is counted when a user downloads the browser and opens it the first time."
 
           th
-            = "Confirmed"
+            = event_type_column_header(PromoRegistration::FINALIZED)
             span.tf-tooltip
               span.icon= render "icon_help"
               span.tf-tooltip-content
-                span.tf-tooltip-content-heading= "Confirmed"
-                span.tf-tooltip-content-content== "A confirmation is counted when a user downloads the browser and uses in minimally for a month."
+                span.tf-tooltip-content-heading= event_type_column_header(PromoRegistration::FINALIZED)
+                span.tf-tooltip-content-content== "A #{event_type_column_header(PromoRegistration::FIRST_RUNS)} is counted when a user downloads the browser and uses in minimally for a month."
         tbody
           - @promo_registrations.each do |promo_registration| 
             - promo_registration_aggregate_stats = promo_registration.aggregate_stats
