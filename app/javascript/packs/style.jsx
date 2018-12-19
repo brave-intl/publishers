@@ -288,8 +288,8 @@ ${props => props.channel && css
 
 export const Links = styled.div
 `
-  padding-left: 120px;
-  padding-top: 120px;
+  padding-left: 80px;
+  padding-top: 80px;
 `;
 
 export const Caret = styled.div
@@ -335,6 +335,7 @@ export const Delete = styled.p
 `
   display: inline;
   padding-left: 5px;
+  padding-right: 5px;
   cursor:pointer;
   font-size: .85rem;
   color: #7d7bdc;

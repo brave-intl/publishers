@@ -84,7 +84,6 @@ export default class BannerEditor extends React.Component {
 }
 
   modalize(){
-    document.getElementsByClassName("modal-container")[0].style.overflow = 'scroll';
     document.getElementsByClassName("modal-panel")[0].style.maxWidth = 'none';
     document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
     document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
@@ -94,6 +93,7 @@ export default class BannerEditor extends React.Component {
     document.getElementsByClassName("modal-panel")[0].style.maxWidth = '40rem';
     document.getElementsByClassName("modal-panel")[0].style.padding = '2rem 2rem';
     document.getElementsByClassName("modal-panel--content")[0].style.padding = '1rem 1rem 0 1rem';
+    document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'visible'
     document.getElementsByClassName("modal-panel--close js-deny")[0].click();
   }
 
@@ -404,8 +404,7 @@ export default class BannerEditor extends React.Component {
         this.state.youtube !== '' &&
         <Link>
           <YoutubeColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel>{this.state.youtube}
-            <Delete onClick={ () => this.handleLinkDelete('Youtube') }>(X)</Delete>
+          <Channel><Delete onClick={ () => this.handleLinkDelete('Youtube') }>(X)</Delete>{this.state.youtube}
           </Channel>
         </Link>
       }
@@ -413,8 +412,7 @@ export default class BannerEditor extends React.Component {
         this.state.twitter !== '' &&
         <Link>
           <TwitterColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel>{this.state.twitter}
-            <Delete onClick={ () => this.handleLinkDelete('Twitter') }>(X)</Delete>
+          <Channel><Delete onClick={ () => this.handleLinkDelete('Twitter') }>(X)</Delete>{this.state.twitter}
           </Channel>
         </Link>
       }
@@ -422,8 +420,7 @@ export default class BannerEditor extends React.Component {
         this.state.twitch !== '' &&
         <Link>
           <TwitchColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel>{this.state.twitch}
-            <Delete onClick={ () => this.handleLinkDelete('Twitch') }>(X)</Delete>
+          <Channel><Delete onClick={ () => this.handleLinkDelete('Twitch') }>(X)</Delete>{this.state.twitch}
           </Channel>
         </Link>
       }
