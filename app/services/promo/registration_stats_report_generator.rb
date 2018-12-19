@@ -2,12 +2,12 @@
 class Promo::RegistrationStatsReportGenerator < BaseService
   include PromosHelper
 
-  def initialize(referral_codes:, start_date:, end_date:, reporting_interval:, geo:)
+  def initialize(referral_codes:, start_date:, end_date:, reporting_interval:, is_geo:)
     @referral_codes = referral_codes
     @start_date = coerce_date_to_start_or_end_of_reporting_interval(start_date, reporting_interval, true)
     @end_date = coerce_date_to_start_or_end_of_reporting_interval(end_date, reporting_interval, false)
     @reporting_interval = reporting_interval
-    @geo = geo
+    @is_geo = is_geo
   end
 
   def perform
@@ -16,17 +16,16 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     events = fetch_stats
     events = select_events_within_report_range(events)
     events = fill_in_events_with_no_activity(@referral_codes, events)
-
     events_by_referral_codes = group_events_by_referral_code(events)
 
     events_by_referral_codes.each do |referral_code, events|
       events = order_events_by_date(events)
       events_by_referral_code_for_interval = group_events_by_date(events)
 
-      # Sum the events per interval, or per interval per country if @geo
+      # Sum the events per interval, or per interval per country if @is_geo
       per_interval_totals = {}
       events_by_referral_code_for_interval.each do |date, events|
-        if @geo
+        if @is_geo
           events_by_referral_code_for_interval_by_country = group_events_by_country(events)
 
           per_country_totals = {}
@@ -54,7 +53,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   private
 
   def group_events_by_country(events)
-    events = events.group_by do |event|
+     events.group_by do |event|
       event[PromoRegistration::COUNTRY]
     end
   end
@@ -66,13 +65,13 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   end
 
   def group_events_by_referral_code(events)
-    events_by_referral_codes = events.group_by do |event|
+    events.group_by do |event|
       event["referral_code"]
     end
   end
 
   def fetch_stats
-    if @geo
+    if @is_geo
       events = Promo::RegistrationsGeoStatsFetcher.new(promo_registrations: PromoRegistration.where(referral_code: @referral_codes)).perform
     else
       events = Promo::RegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.where(referral_code: @referral_codes)).perform
@@ -121,19 +120,17 @@ class Promo::RegistrationStatsReportGenerator < BaseService
 
   def fill_in_events_with_no_activity(referral_codes, events)
     blank_events = []
-    current_date = @start_date
-    while current_date <= @end_date
+    (@start_date..@end_date).each do |day|
       referral_codes.each do |referral_code|
         blank_events.push({
           "referral_code" => referral_code,
-          "ymd" => current_date.strftime("%Y-%m-%d"),
+          "ymd" => day.strftime("%Y-%m-%d"),
           PromoRegistration::COUNTRY => "N/A",
           PromoRegistration::RETRIEVALS => 0,
           PromoRegistration::FIRST_RUNS => 0,
           PromoRegistration::FINALIZED => 0,
         })
       end
-      current_date = current_date + 1.day
     end
 
     events + blank_events

@@ -32,7 +32,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     referral_codes = params[:referral_codes]
     @reporting_interval = params[:reporting_interval]
     @event_types = params[:event_types]
-    @geo = params[:geo].present?
+    @is_geo = params[:geo].present?
     if @event_types.nil?
       return redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
                         alert: "Please check at least one of downloads, installs, or confirmations."
@@ -43,7 +43,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
                                                               start_date: report_start_and_end_date[:start_date],
                                                               end_date: report_start_and_end_date[:end_date],
                                                               reporting_interval: @reporting_interval,
-                                                              geo: @geo).perform
+                                                              is_geo: @is_geo).perform
 
     @start_date = report_info["start_date"]
     @end_date = report_info["end_date"]

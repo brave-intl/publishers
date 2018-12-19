@@ -117,7 +117,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-12-01".to_date,
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
-                                                         geo: false).perform
+                                                         is_geo: false).perform
     expected_report = {
       "contents" => {
         "ABC123" => {
@@ -153,7 +153,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-28".to_date,
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
-                                                         geo: false).perform
+                                                         is_geo: false).perform
     expected_report = {
       "contents" => {
         "ABC123" => {
@@ -189,7 +189,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-12-01".to_date,
                                                          reporting_interval: PromoRegistration::MONTHLY,
-                                                         geo: false).perform
+                                                         is_geo: false).perform
     expected_report = {
       "contents" => {
         "ABC123" => {
@@ -236,7 +236,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-07".to_date,
                                                          reporting_interval: PromoRegistration::WEEKLY,
-                                                         geo: false).perform
+                                                         is_geo: false).perform
 
     expected_report = {
       "contents"=> {
@@ -283,7 +283,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-02".to_date,
                                                          reporting_interval: PromoRegistration::DAILY,
-                                                         geo: false).perform
+                                                         is_geo: false).perform
 
     expected_contents = {
       "contents" => {
@@ -319,7 +319,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-12-01".to_date,
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
-                                                         geo: true).perform
+                                                         is_geo: true).perform
     expected_report = {
       "contents" => {
         "ABC123" => { 
@@ -370,7 +370,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          start_date: "2018-11-01".to_date,
                                                          end_date: "2018-11-14".to_date,
                                                          reporting_interval: PromoRegistration::WEEKLY,
-                                                         geo: true).perform
+                                                         is_geo: true).perform
     expected_report = {
       "contents"=>{"ABC123"=>
         {"2018-10-29".to_date=>

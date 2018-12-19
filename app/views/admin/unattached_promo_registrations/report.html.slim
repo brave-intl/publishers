@@ -13,12 +13,12 @@ scss:
         tr
           - if @reporting_interval != PromoRegistration::RUNNING_TOTAL
             th = reporting_interval_column_header(@reporting_interval)
-          - if @geo
+          - if @is_geo
             th = "Country"
           - @event_types.each do |event_type|
             th = event_type_column_header(event_type)
         tbody
-          - if @geo
+          - if @is_geo
             - events.each do |date, events|
               - events.each do |country, event|
                 tr
