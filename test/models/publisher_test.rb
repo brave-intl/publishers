@@ -666,4 +666,17 @@ class PublisherTest < ActiveSupport::TestCase
     assert_includes(Publisher.not_partner, not_partner)
     assert_not_includes(Publisher.not_partner, partner)
   end
+
+  test "publisher channel_count" do
+    result = Publisher.advanced_sort(Publisher::VERIFIED_CHANNEL_COUNT, "asc")
+    assert_equal(
+      Channel.
+      where(verified: true).
+      joins(:publisher).
+      where(publishers: {role: Publisher::PUBLISHER}).
+      pluck(:publisher_id).
+      uniq.
+      count, result.length
+    )
+  end
 end
