@@ -32,5 +32,5 @@ div.row
                   td = publisher_status(publisher)
                   td = publisher.channels.verified.count
                   td = publisher.created_at
-                  td = publisher.last_sign_in_at
+                  td = distance_of_time_in_words(publisher.last_sign_in_at, Time.now) if publisher.last_sign_in_at.present?
           = will_paginate @publishers
