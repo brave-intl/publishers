@@ -1,0 +1,8 @@
+.note.rounded-box
+  .note-header
+    .box
+      = "Status change"
+    .box
+      = note.created_at.strftime("%B %d, %Y %k:%M %Z")
+  hr
+    = note.status

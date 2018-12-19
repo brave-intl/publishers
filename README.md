@@ -139,6 +139,8 @@ To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
 4. To test email, run a local mail server at localhost:25
 `mailcatcher`
 
+5. To view the emails sent to your inbox you can the inbox at http://localhost:1080
+
 ## Development
 
 ### Config
@@ -180,6 +182,8 @@ yarn lint
 
 ## Testing
 
+### Ruby
+
 ```sh
 bin/rake test
 ```
@@ -201,6 +205,14 @@ We also use ImageMagick to process user uploaded images. If you don't have it al
 
 ```
 brew install imagemagick
+```
+
+### Javascript
+
+We use jest for our javascript testing framework. You can run the tests through the following command.
+
+```sh
+yarn test
 ```
 
 ## Running locally with docker-compose
@@ -249,11 +261,11 @@ UPHOLD_SCOPE=cards:read,user:read,transactions:transfer:others
 
 ```
 
-If you wish to make modifications to the compose files you can place a file named `docker-compose.override.yml` at the 
-top of the repo. For example you can expose ports on your system for the databases with this 
+If you wish to make modifications to the compose files you can place a file named `docker-compose.override.yml` at the
+top of the repo. For example you can expose ports on your system for the databases with this
 `docker-compose.override.yml`:
 
-```
+```yaml
 version: "2.1"
 
 services:
@@ -293,7 +305,7 @@ docker-compose run app rake test
 Other one off commands can be run as above, but replacing `rake test`. Note this spawns a new container.
 
 ### Debugging
-Debugging with byebug and pry can be done by attaching to the running process. First get the container 
+Debugging with byebug and pry can be done by attaching to the running process. First get the container
 id with `docker ps`
 
 ```sh
@@ -313,5 +325,5 @@ docker attach 234f116cd942
 To connect with a bash shell on a running container use:
 ```sh
 docker exec -i -t 234f116cd942 /bin/bash
-root@234f116cd942:/var/www# 
+root@234f116cd942:/var/www#
 ```

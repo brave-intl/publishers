@@ -9,6 +9,10 @@ class Publisher < ApplicationRecord
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
+
+  VERIFIED_CHANNEL_COUNT = :verified_channel_count
+  ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT]
+
   JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
 
   OWNER_PREFIX = "publishers#uuid:"
@@ -124,6 +128,20 @@ class Publisher < ApplicationRecord
     }
   end
 
+  def self.advanced_sort(column, sort_direction)
+    # Please update ADVANCED_SORTABLE_COLUMNS
+    case column
+    when VERIFIED_CHANNEL_COUNT
+      Publisher.
+        where(role: Publisher::PUBLISHER).
+        left_joins(:channels).
+        where(channels: {verified: true}).
+        group(:id).
+        select("publishers.*", "count(channels.id) channels_count").
+        order("channels_count #{sort_direction}")
+    end
+  end
+
   # API call to eyeshade
   def wallet
     return @_wallet if @_wallet
@@ -148,6 +166,21 @@ class Publisher < ApplicationRecord
 
   def email_verified?
     email.present?
+  end
+
+  # Public: Show history of publisher's notes and statuses sorted by the created time
+  #
+  # Returns an array of PublisherNote and PublisherStatusUpdate
+  def history
+    # Create hash with created_at time as the key
+    # Then we can merge and sort by the key to get history
+    notes = self.notes.map { |n| { n.created_at => n} }
+    status = self.status_updates.map { |s| { s.created_at => s } }
+
+    combined = notes + status
+    combined = combined.sort { |x, y| x.keys.first <=> y.keys.first}.reverse
+
+    combined.map { |c| c.values.first }
   end
 
   def suspended?

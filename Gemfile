@@ -40,6 +40,8 @@ gem "email_validator", "~> 1.6"
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
+gem "font-awesome-rails", "~> 4.7.0.4"
+
 # For building complex JSON objects
 gem 'jbuilder', '~> 2.7.0'
 

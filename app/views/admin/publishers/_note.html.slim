@@ -1,0 +1,8 @@
+.note.rounded-box
+  .note-header
+    .box
+      = note.created_by.name
+    .box
+      = note.created_at.strftime("%B %d, %Y %k:%M %Z")
+  hr
+    = note.note
