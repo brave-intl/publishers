@@ -2,7 +2,7 @@ div.row
   div.col-sm-12
     section.panel
       header.panel-heading
-        h4 Channels
+        h4= "#{params[:type]&.titlecase} Channels"
       = form_tag(admin_channels_path, method: "get")
         .input-group
             = text_field_tag(:q, params[:q], class:'form-control')
