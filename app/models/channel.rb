@@ -283,15 +283,15 @@ class Channel < ApplicationRecord
     # Please update ADVANCED_SORTABLE_COLUMNS
     case column
     when YOUTUBE_VIEW_COUNT
-      Channel.youtube_channels.order(Arel.sql("stats->'view_count' #{sort_direction} NULLS LAST"))
+      Channel.youtube_channels.order(sanitize_sql_for_order("stats->'view_count' #{sort_direction} NULLS LAST"))
     when TWITCH_VIEW_COUNT
-      Channel.twitch_channels.order(Arel.sql("stats->'view_count' #{sort_direction} NULLS LAST"))
+      Channel.twitch_channels.order(sanitize_sql_for_order("stats->'view_count' #{sort_direction} NULLS LAST"))
     when FOLLOWER_COUNT
-      Channel.twitch_channels.order(Arel.sql("stats->'followers_count' #{sort_direction} NULLS LAST"))
+      Channel.twitch_channels.order(sanitize_sql_for_order("stats->'followers_count' #{sort_direction} NULLS LAST"))
     when VIDEO_COUNT
-      Channel.youtube_channels.order(Arel.sql("stats->'video_count' #{sort_direction} NULLS LAST"))
+      Channel.youtube_channels.order(sanitize_sql_for_order("stats->'video_count' #{sort_direction} NULLS LAST"))
     when SUBSCRIBER_COUNT
-      Channel.youtube_channels.order(Arel.sql("stats->'subscriber_count' #{sort_direction} NULLS LAST"))
+      Channel.youtube_channels.order(sanitize_sql_for_order("stats->'subscriber_count' #{sort_direction} NULLS LAST"))
     end
   end
 

@@ -1,12 +1,13 @@
 module Admin
   class ChannelsController < AdminController
     include Search
+    include ActiveRecord::Sanitization::ClassMethods
 
     def index
       @channels = if sort_column&.to_sym&.in? Channel::ADVANCED_SORTABLE_COLUMNS
         Channel.advanced_sort(sort_column.to_sym, sort_direction)
       else
-        Channel.order("#{sort_column} #{sort_direction}")
+        Channel.order(("#{sort_column} #{sort_direction}"))
       end
 
       if params[:q].present?
@@ -26,7 +27,7 @@ module Admin
           @channels = @channels.twitch_channels
       end
 
-      @channels = @channels.group(:id).paginate(page: params[:page])
+      @channels = @channels.paginate(page: params[:page])
     end
 
     private
