@@ -34,10 +34,10 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
             .bat
-              span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
+              span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
               span.bat-code= " BAT"
             .converted#converted_amount
-              = publisher_converted_balance(current_publisher)
+              = publisher_converted_overall_balance(current_publisher)
             .next_deposit_date
               span = t ".next_deposit_date"
               span= next_deposit_date
@@ -122,18 +122,18 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   span= ")"
               .last-deposit-date.field
                 label= t ".uphold.last_deposit_date"
-                .value.deposit-date#last_deposit_date= publisher_humanize_last_settlement_date(current_publisher)
+                .value.deposit-date#last_deposit_date=publisher_last_settlement_date(current_publisher)
             .dashboard-panel--content#last_settlement class=last_settlement_class(current_publisher)
               .last-deposit
                 = t ".uphold.last_deposit"
                 .amounts
                   .bat
-                    - last_deposit_balance = publisher_humanize_last_settlement(current_publisher, "BAT")
+                    - last_deposit_balance = publisher_last_settlement_bat_balance(current_publisher)
                     span.bat-amount#last_deposit_bat_amount= last_deposit_balance
                     - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
                       span.bat-code= " BAT"
                   .converted#last_deposit_converted_amount
-                    = publisher_converted_last_settlement(current_publisher)
+                    = publisher_converted_last_settlement_balance(current_publisher)
                 = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
                         id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                         :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
@@ -208,7 +208,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 .channel-status.float-right
                   .bat-channel
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+                      = publisher_channel_bat_balance(current_publisher, channel.details.channel_identifier)
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")
