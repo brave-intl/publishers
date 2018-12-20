@@ -2,6 +2,8 @@ require "test_helper"
 require "webmock/minitest"
 
 class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
+  include EyeshadeHelper
+
   before do
     @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     @prev_fee_rate = Rails.application.secrets[:fee_rate]
@@ -31,14 +33,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     publisher = publishers(:youtube_initial) # has verified channel, is not uphold connected
     delete_publishers_except([publisher.id])
 
-    # Stub /wallet reponse
-    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
-
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-      to_return(status: 200, body: wallet_response, headers: {})
-
-    # Stub /balances response
-    balance_response = [
+    wallet = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}
+    balances = [
       {
         "account_id" => "publishers#uuid:2fcb973c-7f7c-5351-809f-0eed1de17a77",
         "account_type" => "owner",
@@ -49,10 +45,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         "account_type" => "channel",
         "balance" => "500.00"
       }
-    ].to_json
+    ]
 
-    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:2fcb973c-7f7c-5351-809f-0eed1de17a77&account=youtube%23channel:").
-      to_return(status: 200, body: balance_response)
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
 
     perform_enqueued_jobs do
       PayoutReportPublisherIncluder.new(payout_report: payout_report,
@@ -81,14 +76,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     delete_publishers_except([publisher.id])
 
-    # Stub disconnected /wallet response
-    wallet_response = {}.to_json
-
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-      to_return(status: 200, body: wallet_response, headers: {})
-
-    # Stub /balances response
-    balance_response = [
+    balances = [
       {
         "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
         "account_type" => "owner",
@@ -108,10 +96,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         "account_type" => "channel",
         "balance" => "20.00"
       }
-    ].to_json
+    ]
 
-    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
-      to_return(status: 200, body: balance_response)
+    stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balances)
 
     # Deliver the email
     perform_enqueued_jobs do
@@ -142,14 +129,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     publisher = publishers(:uphold_connected) # has >1 verified channel, is uphold connected
     delete_publishers_except([publisher.id])
 
-    # Stub disconnected /wallet response
-    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
-
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-      to_return(status: 200, body: wallet_response, headers: {})
-
-    # Stub /balances response
-    balance_response = [
+    wallet = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}
+    balances = [
       {
         "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
         "account_type" => "owner",
@@ -169,10 +150,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         "account_type" => "channel",
         "balance" => "20.00"
       }
-    ].to_json
+    ]
 
-    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
-      to_return(status: 200, body: balance_response)
+    stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balances, wallet: wallet)
 
     # Ensure no emails sent
     assert_enqueued_jobs(1) do
@@ -188,7 +168,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     # Ensure individual potential payment data is correct
     PotentialPayment.where(payout_report_id: payout_report.id).each do |potential_payment|
-      assert_equal potential_payment.address, JSON.parse(wallet_response)["wallet"]["address"]
+      assert_equal potential_payment.address, wallet["wallet"]["address"]
       assert_equal potential_payment.publisher_id, "#{publisher.id}"
       if potential_payment.kind == PotentialPayment::CONTRIBUTION
         assert_equal potential_payment.amount, (20 * BigDecimal('1e18') - ((20 * BigDecimal.new('1e18')) * payout_report.fee_rate)).to_i.to_s
