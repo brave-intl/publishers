@@ -17,13 +17,14 @@ module Eyeshade
     def calculate_last_settlement(transactions)
       return {} if transactions == []
        # Find most recent settlement transaction
-      last_settlement_date = transactions.select { |transaction|
+      last_settlement_time = transactions.select { |transaction|
         transaction["settlement_amount"].present?
-      }.last["created_at"].to_date # Eyeshade returns transactions ordered_by created_at
+      }.last["created_at"].to_time # Eyeshade returns transactions ordered_by created_at
+
 
        # Find all settlement transactions that occur within the same month as the last settlement timestamp
       last_settlement_transactions = transactions.select { |transaction|
-        transaction["created_at"].to_date.at_beginning_of_month == last_settlement_date.at_beginning_of_month &&
+        transaction["created_at"].to_time.at_beginning_of_month == last_settlement_time.at_beginning_of_month &&
         transaction["settlement_amount"].present?
       }
 
@@ -32,8 +33,8 @@ module Eyeshade
       last_settlement_bat = last_settlement_transactions.map { |transaction|
         transaction["settlement_amount"].to_d
       }.reduce(:+)
-
-      {"amount_bat" => last_settlement_bat, "timestamp" => last_settlement_date.to_time.to_i, "currency" => last_settlement_currency}
+      
+      {"amount_bat" => last_settlement_bat, "timestamp" => last_settlement_time.to_i, "currency" => last_settlement_currency}
     end
   end
 end
