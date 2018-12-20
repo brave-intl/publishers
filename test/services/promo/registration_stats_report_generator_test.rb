@@ -1,6 +1,8 @@
 require "test_helper"
 
 class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
+  include PromosHelper
+
   before do
     @prev_promo_base_uri = Rails.application.secrets[:api_promo_base_uri]
   end
@@ -120,7 +122,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          is_geo: false).perform
 
     expected = [
-      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(PromoRegistration::RUNNING_TOTAL), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-12-01", "6", "6", "6"],
       ["DEF456", "2018-12-01", "6", "6", "6"]
     ]
@@ -141,7 +143,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          reporting_interval: PromoRegistration::RUNNING_TOTAL,
                                                          is_geo: false).perform
     expected = [
-      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(PromoRegistration::RUNNING_TOTAL), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-11-28", "5", "5", "5"],
       ["DEF456", "2018-11-28", "5", "5", "5"],
     ]
@@ -163,7 +165,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          reporting_interval: PromoRegistration::MONTHLY,
                                                          is_geo: false).perform
     expected = [
-      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(PromoRegistration::MONTHLY), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-11-01", "5", "5", "5"],
       ["ABC123", "2018-12-01", "1", "1", "1"],
       ["DEF456", "2018-11-01", "5", "5", "5"],
@@ -188,7 +190,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          is_geo: false).perform
 
     expected = [
-      ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(PromoRegistration::WEEKLY), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-10-29", "1", "1", "1"],
       ["ABC123", "2018-11-05", "1", "1", "1"],
       ["DEF456", "2018-10-29", "1", "1", "1"],
@@ -212,7 +214,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          reporting_interval: PromoRegistration::DAILY,
                                                          is_geo: false).perform
     expected = [
-      ["Referral code", "Day", "Downloads", "First opens", "30 Days"],
+      ["Referral code", reporting_interval_column_header(PromoRegistration::DAILY), "Downloads", "First opens", "30 Days"],
       ["ABC123", "2018-11-01", "1", "1", "1"],
       ["ABC123", "2018-11-02", "0", "0", "0"],
       ["DEF456", "2018-11-01", "1", "1", "1"],
@@ -238,7 +240,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
 
 
     expected = [
-      ["Referral code", "Country", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
+      ["Referral code", "Country", reporting_interval_column_header(PromoRegistration::RUNNING_TOTAL), "Downloads", "First opens", "30 Days"],
       ["ABC123", "United States", "2018-12-01", "6", "6", "6"],
       ["ABC123", "Mexico", "2018-12-01", "6", "6", "6"],
       ["DEF456", "United States", "2018-12-01", "6", "6", "6"],
@@ -263,7 +265,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                                                          is_geo: true).perform
 
     expected = [
-      ["Referral code", "Country", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"],
+      ["Referral code", "Country", reporting_interval_column_header(PromoRegistration::WEEKLY), "Downloads", "First opens", "30 Days"],
       ["ABC123", "United States", "2018-10-29", "1", "1", "1",],
       ["ABC123", "United States", "2018-11-05", "1", "1", "1",],
       ["ABC123", "United States", "2018-11-12", "1", "1", "1",],

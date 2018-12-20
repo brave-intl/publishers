@@ -83,7 +83,7 @@ module PromosHelper
     when PromoRegistration::RUNNING_TOTAL
       "Date"
     else
-      raise
+      raise "Invalid reporting interval #{reporting_interval}"
     end
   end
 
