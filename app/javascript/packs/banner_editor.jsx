@@ -191,47 +191,45 @@ export default class BannerEditor extends React.Component {
       that.setState({loading: false})
     }
     else{
+      let url = "/publishers/" + document.getElementById("publisher_id").value + "/site_banners/"
+      this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id
 
+      let options = {
+        method: 'GET',
+        credentials: "same-origin",
+        headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
+      }
 
-    let url = "/publishers/" + document.getElementById("publisher_id").value + "/site_banners/"
-    this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id
+      let response = await fetch(url, options);
+      if (response.status >= 400){location.reload();}
+      let banner = await response.json();
 
-    let options = {
-      method: 'GET',
-      credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
+      //500ms timeout prevents quick flash when load times are fast.
+      setTimeout(async() => {
+
+        if(banner){
+          that.setState({
+            title: banner.title,
+            description: banner.description,
+            youtube: banner.socialLinks.youtube,
+            twitter: banner.socialLinks.twitter,
+            twitch: banner.socialLinks.twitch,
+            donationAmounts: banner.donationAmounts,
+            logo: {url: banner.logoImage, data: null},
+            cover: {url: banner.backgroundImage, data: null},
+            loading: false,
+            fetch: false
+          });
+        }
+
+        else{
+          that.setState({loading: false})
+        }
+        if(this.props.mode === 'Preview'){
+          this.preview();
+        }
+      }, 500);
     }
-
-    let response = await fetch(url, options);
-    if (response.status >= 400){location.reload();}
-    let banner = await response.json();
-
-    //500ms timeout prevents quick flash when load times are fast.
-    setTimeout(async() => {
-
-      if(banner){
-        that.setState({
-          title: banner.title,
-          description: banner.description,
-          youtube: banner.socialLinks.youtube,
-          twitter: banner.socialLinks.twitter,
-          twitch: banner.socialLinks.twitch,
-          donationAmounts: banner.donationAmounts,
-          logo: {url: banner.logoImage, data: null},
-          cover: {url: banner.backgroundImage, data: null},
-          loading: false,
-          fetch: false
-        });
-      }
-
-      else{
-        that.setState({loading: false})
-      }
-      if(this.props.mode === 'Preview'){
-        this.preview();
-      }
-    }, 500);
-  }
   }
 
   handleLinkSelection(e){
@@ -350,8 +348,8 @@ export default class BannerEditor extends React.Component {
           <Dialogue id='save-container' save>
             { this.state.saving === false &&
               <div>
-                <Text dialogueHeader>Your banner will be updated within one day</Text>
-                <Text dialogueSubtext>Your updated banner will be presented to Brave users within 24 hours.</Text>
+                <Text dialogueHeader>Your banner will be updated within 24 hours</Text>
+                <Text dialogueSubtext>Please note, for V0.58 of the Brave Browser, the custom tip amounts for the banner will show up as 1, 5, 10 BAT.</Text>
                 <Button dialoguePrimary onClick={ () => this.setState({state: 'Editor'}) }>OK</Button>
               </div>
             }
