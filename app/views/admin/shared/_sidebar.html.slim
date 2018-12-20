@@ -23,7 +23,7 @@ aside
               = fa_icon "chevron-down"
             = link_to admin_channels_path
               span Channels
-            ul.sub-menu style="#{current_page?(controller: 'channels') ? "" : "display:none"} "
+            ul.sub-menu style="#{params[:controller] == 'admin/channels' ? "" : "display:none"} "
               = link_to admin_channels_path(type: 'website')
                 span Websites
               = link_to admin_channels_path(type: 'twitch')

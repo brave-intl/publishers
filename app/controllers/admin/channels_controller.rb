@@ -26,7 +26,7 @@ module Admin
           @channels = @channels.twitch_channels
       end
 
-      @channels = @channels.paginate(page: params[:page])
+      @channels = @channels.group(:id).paginate(page: params[:page])
     end
 
     private
