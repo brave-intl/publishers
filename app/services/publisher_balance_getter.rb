@@ -28,7 +28,8 @@ class PublisherBalanceGetter < BaseApiClient
   end
 
   def perform_offline
-    fill_in_missing_accounts([])
+    accounts = fill_in_missing_accounts([])
+    accounts.each { |account| account["balance"] = "294.617182149806375904"}
   end
 
   private

@@ -20,30 +20,21 @@ class PublisherWalletGetter < BaseApiClient
         request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
       end
 
-      wallet_hash = JSON.parse(wallet_response.body)
+      wallet_info = JSON.parse(wallet_response.body)
     rescue Faraday::ResourceNotFound
-      wallet_hash = {}
+      wallet_info = {}
     end
 
     if publisher.channels.verified.present?
       accounts = PublisherBalanceGetter.new(publisher: publisher).perform
       return if accounts == :unavailable
-
-      # Always override owner balance with transaction table value
-      contributions = {
-        "probi" => total_balance_bat(accounts) * BigDecimal.new('1.0e18'),
-        "amount" => total_balance_bat(accounts)
-      }
-
-      wallet_hash["contributions"] = contributions
-
-      # Convert accounts into Eyeshade::Wallet format
-      channel_hash = parse_accounts(accounts, wallet_hash)
     else
-      channel_hash = {}
+      accounts = []
     end
 
-    Eyeshade::Wallet.new(wallet_json: wallet_hash,channel_json: channel_hash)
+    Eyeshade::Wallet.new(wallet_info: wallet_info,
+                         accounts: accounts,
+                         transactions: PublisherTransactionsGetter.new(publisher: @publisher).perform)
 
   rescue Faraday::Error => e
     Rails.logger.warn("PublisherWalletGetter #perform error: #{e}")
@@ -53,7 +44,7 @@ class PublisherWalletGetter < BaseApiClient
   def perform_offline
     Rails.logger.info("PublisherWalletGetter returning offline stub balance.")
 
-    wallet_hash = {
+    wallet_info = {
         "status" => {
             "provider" => "uphold",
             # "action" => "re-authorize"
@@ -61,7 +52,7 @@ class PublisherWalletGetter < BaseApiClient
         },
         "contributions" => {
           "amount" => "9001.00",
-          "currency" => "USD",
+          "currency" => @publisher.default_currency,
           "altcurrency" => "BAT",
           "probi" => "38077497398351695427000"
         },
@@ -72,6 +63,7 @@ class PublisherWalletGetter < BaseApiClient
           "EUR" => 0.20187818378874756,
           "GBP" => 0.1799810085548496
         },
+        # lastSettlement will be ignored in favor of using eyeshade's /transactions endpoint
         "lastSettlement"=>
           {"altcurrency"=>"BAT",
            "currency"=>"USD",
@@ -81,64 +73,27 @@ class PublisherWalletGetter < BaseApiClient
         "wallet" => {
             "provider" => "uphold",
             "authorized" => true,
-            "defaultCurrency" => "USD",
+            "defaultCurrency" => @publisher.default_currency,
             "availableCurrencies" => [ "USD", "EUR", "BTC", "ETH", "BAT" ],
             "possibleCurrencies"=> ["AED", "ARS", "AUD", "BRL", "CAD", "CHF", "CNY", "DKK", "EUR", "GBP", "HKD", "ILS", "INR", "JPY", "KES", "MXN", "NOK", "NZD", "PHP", "PLN", "SEK", "SGD", "USD", "XAG", "XAU", "XPD", "XPT"],
             "scope"=> "cards:read user:read"
         },
-
       }
 
     if publisher.channels.verified.any?
       accounts = PublisherBalanceGetter.new(publisher: publisher).perform
-
-      # Override owner balance with transaction table value
-      if wallet_hash.dig("contributions", "probi")
-        wallet_hash["contributions"]["probi"] = total_balance_bat(accounts).to_d * BigDecimal.new('1.0e18')
-        wallet_hash["contributions"]["amount"] = total_balance_bat(accounts)
-      end
-
-      # Convert accounts into Eyeshade::Wallet format
-      channel_hash = parse_accounts(accounts, wallet_hash)
     else
-      channel_hash = {}
+      accounts = {}
     end
 
     Eyeshade::Wallet.new(
-      wallet_json: wallet_hash,
-      channel_json: channel_hash
+      wallet_info: wallet_info,
+      accounts: accounts,
+      transactions: PublisherTransactionsGetter.new(publisher: @publisher).perform
     )
   end
 
   private
-
-  # Converts the account_balances returned in the PublisherBalanceGetter
-  # into a format suitable for the Eyeshade::Wallet
-  def parse_accounts(accounts, wallet_hash)
-    rates = wallet_hash["rates"]
-    currency = wallet_hash.dig("contributions", "currency") || publisher.default_currency
-
-    channel_hash = {}
-
-    accounts.each do |account|
-      channel_identifier = account["account_id"]
-      channel_balance = account["balance"]
-
-      channel_hash[channel_identifier] = {
-        "rates" => rates,
-        "altcurrency" => "BAT",
-        "probi" => channel_balance.to_d * BigDecimal.new('1.0e18'),
-        "amount" => channel_balance,
-        "currency" => currency
-      }
-    end
-
-    channel_hash
-  end
-
-  def total_balance_bat(accounts)
-    accounts.map {|account| account["balance"].to_d }.reduce(0, :+)
-  end
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]
