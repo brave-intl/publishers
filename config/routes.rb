@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       get :expired_auth_token
       get :log_out
       get :email_verified
-      get :balance
+      get :wallet
       get :uphold_verified
       get :suspended_error
       get :statement
