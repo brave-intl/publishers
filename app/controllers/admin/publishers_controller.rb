@@ -16,7 +16,7 @@ class Admin::PublishersController < AdminController
     end
 
     @publishers = @publishers.suspended if params[:suspended].present?
-    @publishers = @publishers.paginate(page: params[:page])
+    @publishers = @publishers.group(:id).paginate(page: params[:page])
   end
 
   def show
