@@ -8,7 +8,8 @@ require "selenium/webdriver"
 require "minitest/rails/capybara"
 require "webmock/minitest"
 require "chromedriver/helper"
-require 'sidekiq/testing'
+require "sidekiq/testing"
+require "test_helpers/eyeshade_helper"
 
 # https://github.com/rails/rails/issues/31324
 if ActionPack::VERSION::STRING >= "5.2.0"
@@ -109,6 +110,7 @@ module ActionDispatch
     end
   end
 end
+
 
 # Load rake tasks here so it only happens one time. If tasks are loaded again they will run once for each time loaded.
 require 'rake'
