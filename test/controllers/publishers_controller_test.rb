@@ -7,6 +7,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
   include MailerTestHelper
   include PublishersHelper
+  include EyeshadeHelper
+
+  before do
+    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+  end
+
+  after do
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
+  end
 
   SIGNUP_PARAMS = {
     email: "alice@example.com"
@@ -557,52 +566,47 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "no statements are displayed if there are no transactions" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:uphold_connected)
+    sign_in publisher
 
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions").
-        to_return(status: 200, body: [].to_json, headers: {})
+    stub_all_eyeshade_wallet_responses(publisher: publisher)
 
-      get statements_publishers_path(publisher)
+    get statements_publishers_path(publisher)
 
+<<<<<<< HEAD
       assert_match "content empty", response.body # This div displays the "No statements" message.
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
+=======
+    assert_match "content empty", response.body # This div displays the "No statements" message.
+>>>>>>> Refactor Eyeshade::Wallet and Eyeshade::Balance classes
   end
 
   test "flashes 'no transactions' message when attempting to download a statement with no contents" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected)
-      sign_in publisher
-
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions").
-        to_return(status: 200, body: [].to_json, headers: {})
-
-      get statement_publishers_path(publisher)
-
-      assert_equal flash[:alert], I18n.t("publishers.statements.no_transactions")
-    ensure
-      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end
-  end
-
-  test "a publisher's balance can be polled via ajax" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
     sign_in publisher
 
-    get balance_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
+    stub_all_eyeshade_wallet_responses(publisher: publisher)
+
+    get statement_publishers_path(publisher)
+
+    assert_equal flash[:alert], I18n.t("publishers.statements.no_transactions")
+  end
+
+  test "a publisher's wallet can be polled via ajax" do
+    publisher = publishers(:uphold_connected)
+    sign_in publisher
+
+    get wallet_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
     assert_response 200
 
     wallet_response = JSON.parse(response.body)
 
-    assert wallet_response["channelBalances"].present?
+    assert wallet_response["channel_balances"].present?
   end
 
   test "a publisher's uphold status can be polled via ajax" do
@@ -716,61 +720,54 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "#confirm_default_currency redirects publisher w/o cards:write to uphold if confirmed a not available currency" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected_currency_unconfirmed)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    sign_in publisher
 
-      confirm_default_currency_params = {
-        publisher: {
-          default_currency: "BAT"
-        }
+    confirm_default_currency_params = {
+      publisher: {
+        default_currency: "BAT"
       }
+    }
 
-      wallet = { "wallet" => { "defaultCurrency" => "USD",
-                               "authorized" => false,
-                               "availableCurrencies" => [],
-                               "possibleCurrencies" => ["BAT"],
-                               "scope" => "cards:read, user:read" },
-                 "rates" => {},
-                 "contributions" => { "currency" => "USD"}
-      }.to_json
+    wallet = { "wallet" => { "defaultCurrency" => "USD",
+                             "authorized" => false,
+                             "availableCurrencies" => [],
+                             "possibleCurrencies" => ["BAT"],
+                             "scope" => "cards:read, user:read" },
+               "rates" => {},
+               "contributions" => { "currency" => "USD"}
+    }
 
-      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-        to_return(status: 200, body: wallet, headers: {})
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
-      patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
+    patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
 
-      assert_response 200
-      assert_equal(
-        { action: 'redirect',
-          status: 'Redirecting to Uphold for authorization ...',
-          redirectURL: uphold_authorization_endpoint(publisher),
-          timeout: 3000 }.to_json,
-        response.body)
+    assert_response 200
+    assert_equal(
+      { action: 'redirect',
+        status: 'Redirecting to Uphold for authorization ...',
+        redirectURL: uphold_authorization_endpoint(publisher),
+        timeout: 3000 }.to_json,
+      response.body)
 
-      # assert_redirected_to uphold_authorization_endpoint(publisher)
-      assert publisher.default_currency_confirmed_at.present?
-      assert publisher.default_currency == "BAT"
-    ensure
-      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end
+    # assert_redirected_to uphold_authorization_endpoint(publisher)
+    assert publisher.default_currency_confirmed_at.present?
+    assert publisher.default_currency == "BAT"
   end
 
   test "#confirm_default_currency sets new default currency, initiates CreateUpholdCardsJob if not currency in available currency" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected_currency_unconfirmed)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    sign_in publisher
 
-      confirm_default_currency_params = {
-        publisher: {
-          default_currency: "BAT"
-        }
+    confirm_default_currency_params = {
+      publisher: {
+        default_currency: "BAT"
       }
+    }
 
+<<<<<<< HEAD
       # Mock the eyeshade wallet response to include cards:write scope
       wallet = { "wallet" => { "defaultCurrency" => "USD",
                                "authorized" => true,
@@ -799,21 +796,45 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
+=======
+    # Mock the eyeshade wallet response to include cards:write scope
+    wallet = { "wallet" => { "defaultCurrency" => "USD",
+                             "authorized" => true,
+                             "availableCurrencies" => [],
+                             "possibleCurrencies" => ["BAT"],
+                             "scope" => "cards:read, cards:write, user:read"},
+               "rates" => {},
+               "contributions" => { "currency" => "USD"}
+    }
+
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+
+    patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
+
+    assert_response 200
+    assert_equal(
+      { action: 'refresh',
+        status: 'Refreshing balances ...',
+        timeout: 2000 }.to_json,
+      response.body)
+
+    assert publisher.default_currency_confirmed_at.present?
+    assert publisher.default_currency == "BAT"
+>>>>>>> Refactor Eyeshade::Wallet and Eyeshade::Balance classes
   end
 
   test "#confirm_default_currency creates BTC & BAT card, sets new default currency to BTC" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected_currency_unconfirmed)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    sign_in publisher
 
-      confirm_default_currency_params = {
-        publisher: {
-          default_currency: "BTC"
-        }
+    confirm_default_currency_params = {
+      publisher: {
+        default_currency: "BTC"
       }
+    }
 
+<<<<<<< HEAD
       # Mock the eyeshade wallet response to include cards:write scope
       wallet = { "wallet" => { "defaultCurrency" => "USD",
                                "authorized" => true,
@@ -842,21 +863,45 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
+=======
+    # Mock the eyeshade wallet response to include cards:write scope
+    wallet = { "wallet" => { "defaultCurrency" => "USD",
+                             "authorized" => true,
+                             "availableCurrencies" => [],
+                             "possibleCurrencies" => ["BAT", "BTC"],
+                             "scope" => "cards:read, cards:write, user:read" },
+               "rates" => {},
+               "contributions" => { "currency" => "USD"}
+    }
+
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+
+    patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
+
+    assert_response 200
+    assert_equal(
+      { action: 'refresh',
+        status: 'Refreshing balances ...',
+        timeout: 2000 }.to_json,
+      response.body)
+
+    assert publisher.default_currency_confirmed_at.present?
+    assert publisher.default_currency == "BTC"
+>>>>>>> Refactor Eyeshade::Wallet and Eyeshade::Balance classes
   end
 
   test "#confirm_default_currency does not create new card after new publisher confirms available default currency" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected_currency_unconfirmed)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    sign_in publisher
 
-      confirm_default_currency_params = {
-        publisher: {
-          default_currency: "BAT"
-        }
+    confirm_default_currency_params = {
+      publisher: {
+        default_currency: "BAT"
       }
+    }
 
+<<<<<<< HEAD
       # Mock the eyeshade wallet response to include cards:write scope
       wallet = { "wallet" => { "defaultCurrency" => "BAT",
                                "authorized" => true,
@@ -884,21 +929,44 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
+=======
+    # Mock the eyeshade wallet response to include cards:write scope
+    wallet = { "wallet" => { "defaultCurrency" => "BAT",
+                             "authorized" => true,
+                             "availableCurrencies" => ["BAT"],
+                             "possibleCurrencies" => ["BAT"],
+                             "scope" => "cards:read, cards:write, user:read" },
+               "rates" => {},
+               "contributions" => { "currency" => "USD"}
+    }
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)\
+
+    patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
+
+    assert_response 200
+    assert_equal(
+      { action: 'refresh',
+        status: 'Refreshing balances ...',
+        timeout: 2000 }.to_json,
+      response.body)
+
+    assert publisher.default_currency_confirmed_at.present?
+    assert publisher.default_currency == "BAT"
+>>>>>>> Refactor Eyeshade::Wallet and Eyeshade::Balance classes
   end
 
   test "after an existing publisher confirms default currency and gets cards:write scope, #home will create the cards" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected_currency_unconfirmed)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    sign_in publisher
 
-      confirm_default_currency_params = {
-        publisher: {
-          default_currency: "BAT"
-        }
+    confirm_default_currency_params = {
+      publisher: {
+        default_currency: "BAT"
       }
+    }
 
+<<<<<<< HEAD
       wallet = { "wallet" => { "defaultCurrency" => "USD",
                                "authorized" => false,
                                "availableCurrencies" => [],
@@ -969,6 +1037,53 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
+=======
+    wallet = { "wallet" => { "defaultCurrency" => "USD",
+                             "authorized" => false,
+                             "availableCurrencies" => [],
+                             "possibleCurrencies" => ["BAT"],
+                             "scope" => "cards:read, user:read" },
+               "rates" => {},
+               "contributions" => { "currency" => "USD"}
+    }
+
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+
+    patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
+
+    assert_response 200
+    assert_equal(
+      { action: 'redirect',
+        status: 'Redirecting to Uphold for authorization ...',
+        redirectURL: uphold_authorization_endpoint(publisher),
+        timeout: 3000 }.to_json,
+      response.body)
+
+    assert publisher.default_currency_confirmed_at.present?
+    assert publisher.default_currency == "BAT"
+
+    wallet = { "wallet" => { "defaultCurrency" => "BAT",
+                             "authorized" => true,
+                             "availableCurrencies" => [],  # BAT will not be available
+                             "possibleCurrencies" => ["BAT"],
+                             "scope" => "cards:read, cards:write, user:read" },
+               "rates" => {},
+               "contributions" => { "currency" => "USD"}
+    }
+
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+
+    get home_publishers_path
+  end
+
+  test "#balance returns the wallet as json" do
+    publisher = publishers(:completed)
+    sign_in publisher
+
+    stub_all_eyeshade_wallet_responses(publisher: publisher)
+    get wallet_publishers_path
+    assert_equal publisher.wallet.to_json, response.body
+>>>>>>> Refactor Eyeshade::Wallet and Eyeshade::Balance classes
   end
 
   describe 'publisher integration with uphold' do

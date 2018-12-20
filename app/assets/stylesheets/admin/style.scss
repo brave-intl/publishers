@@ -127,10 +127,7 @@ a.logo span {
     }
 
     .rounded-box {
-      border-width: 1px;
-      border-style: solid;
-      border-color: lightgray;
-      border-radius: 5px;
+      border-style: none;
       padding: 20px;
       margin: 10px 0px;
     }
@@ -189,11 +186,8 @@ a.logo span {
 
     #channels-section {
       .channel {
-        border-width: 1px;
         display: flex;
-        border-style: solid;
-        border-color: lightgray;
-        border-radius: 5px;
+        border-style: none;
         padding: 20px;
         margin: 10px;
         .channel-link {

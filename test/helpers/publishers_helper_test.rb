@@ -8,39 +8,40 @@ class PublishersHelperTest < ActionView::TestCase
   #                    link_to_brave_publisher_id(publisher)
   # end
 
-  test "publisher_converted_balance should return nothing for unset publisher currency" do
+  test "publisher_converted_overall_balance should return nothing for unset publisher currency" do
     publisher = publishers(:default)
     publisher.default_currency = nil
     publisher.save
-    assert_dom_equal %{}, publisher_converted_balance(publisher)
+    assert_dom_equal %{}, publisher_converted_overall_balance(publisher)
   end
 
   test "publisher_converted_balance should return nothing for BAT publisher currency" do
     publisher = publishers(:default)
     publisher.default_currency = "BAT"
     publisher.save
-    assert_dom_equal %{}, publisher_converted_balance(publisher)
+    assert_dom_equal %{}, publisher_converted_overall_balance(publisher)
   end
 
   test "publisher_converted_balance should return something for set publisher currency" do
     publisher = publishers(:default)
     publisher.default_currency = "USD"
     publisher.save
-    assert_dom_equal %{~ 9001.00 USD}, publisher_converted_balance(publisher)
+
+    assert_dom_equal %{~ 0.00 USD}, publisher_converted_overall_balance(publisher) # 0 balance because this publisher has no channels
   end
 
   test "publisher_converted_balance should return `CURRENCY unavailable` when no wallet is set" do
     class FakePublisher
       attr_reader :default_currency, :wallet
 
-      def initialize(wallet_json:)
-        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json, channel_json: {}) if wallet_json
+      def initialize(wallet_info:)
+        @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: [], transactions: []) if wallet_info
         @default_currency = 'USD'
       end
     end
 
     publisher = FakePublisher.new(
-      wallet_json: {
+      wallet_info: {
         "status" => {
           "provider" => "uphold"
         },
@@ -65,15 +66,16 @@ class PublishersHelperTest < ActionView::TestCase
         }
       }
     )
+
     assert_not_nil publisher.wallet
-    assert_dom_equal %{~ 9001.00 USD}, publisher_converted_balance(publisher)
+    assert_dom_equal %{~ 0.00 USD}, publisher_converted_overall_balance(publisher)
 
     publisher = FakePublisher.new(
-      wallet_json: nil
+      wallet_info: nil
     )
 
     assert_nil publisher.wallet
-    assert_equal "USD unavailable", publisher_converted_balance(publisher)
+    assert_equal "USD unavailable", publisher_converted_overall_balance(publisher)
   end
 
   test "can extract the uuid from an owner_identifier" do
@@ -84,14 +86,14 @@ class PublishersHelperTest < ActionView::TestCase
     class FakePublisher
       attr_reader :default_currency, :wallet
 
-      def initialize(wallet_json:)
-        @wallet = Eyeshade::Wallet.new(wallet_json: wallet_json, channel_json: {}) if wallet_json
+      def initialize(wallet_info:, accounts:, transactions:)
+        @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions ) if wallet_info
         @default_currency = 'USD'
       end
     end
 
     publisher = FakePublisher.new(
-      wallet_json: {
+      wallet_info: {
         "status" => {
           "provider" => "uphold"
         },
@@ -120,23 +122,44 @@ class PublishersHelperTest < ActionView::TestCase
           "defaultCurrency" => 'USD',
           "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
-      }
+      },
+      accounts: [
+        {
+          "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
+          "account_type" => "owner",
+          "balance" => "58.217204799751874334"
+        }
+      ],
+      transactions:[
+        {
+          "created_at" => "2018-11-07 00:00:00 -0800",
+          "description"=>"payout for referrals",
+          "channel"=>"publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
+          "amount"=>"-94.617182149806375904",
+          "settlement_currency"=>"ETH",
+          "settlement_amount"=>"18.81",
+          "type"=>"referral_settlement"
+        }
+      ]
     )
     assert_not_nil publisher.wallet
-    assert_equal "9001.00", publisher_humanize_balance(publisher, "USD")
+    assert_equal "~ 13.76 USD", publisher_converted_overall_balance(publisher)
+    assert_equal "58.22", publisher_overall_bat_balance(publisher)
 
     # ensure last settlement balance does not have fee applied
-    assert_equal publisher_humanize_last_settlement(publisher, "BAT"), "405.52"
+    assert_equal publisher_last_settlement_bat_balance(publisher), "18.81"
 
     # ensure publisher_converted_last_settlement does not have fee applied
-    assert_equal publisher_converted_last_settlement(publisher), "~ 95.86 USD"
+    assert_equal publisher_converted_last_settlement_balance(publisher), "~ 0.01 ETH"
 
     publisher = FakePublisher.new(
-      wallet_json: nil
+      wallet_info: nil,
+      accounts: [],
+      transactions: []
     )
 
     assert_nil publisher.wallet
-    assert_equal "Unavailable", publisher_humanize_balance(publisher, "USD")
+    assert_equal "USD unavailable", publisher_converted_overall_balance(publisher)
   end
 
   test "uphold_status_class returns a css class that corresponds to a publisher's uphold_status" do

@@ -1,53 +1,52 @@
-require "eyeshade/balance"
+require 'eyeshade/base_balance'
+require "eyeshade/overall_balance"
+require "eyeshade/channel_balance"
+require "eyeshade/referral_balance"
+require "eyeshade/last_settlement_balance"
 
 module Eyeshade
   class Wallet
     attr_reader :action,
+                :rates,
                 :address,
                 :provider,
                 :scope,
                 :default_currency,
                 :available_currencies,
                 :possible_currencies,
-                :contribution_balance,
                 :channel_balances,
                 :rates,
                 :status,
+                :referral_balance,
+                :overall_balance,
                 :last_settlement_balance,
                 :last_settlement_date,
                 :uphold_id,
                 :uphold_account_status
 
-    def initialize(wallet_json:, channel_json:)
-      details_json = wallet_json["wallet"] || {}
-      @authorized = details_json["authorized"]
-      @provider = details_json["provider"]
-      @scope = details_json["scope"]
-      @default_currency = details_json["defaultCurrency"]
-      @available_currencies = details_json["availableCurrencies"] || []
-      @possible_currencies = details_json["possibleCurrencies"] || []
-      @address = details_json["address"] || ""
-      @is_member = details_json["isMember"] || false
-      @uphold_id = details_json["id"]
-      @uphold_account_status = details_json["status"] || nil
-
-      status_json = wallet_json["status"] || {}
-      @action = status_json["action"]
-
-      balance_json = wallet_json["contributions"] || {}
-      @rates = balance_json["rates"] = wallet_json["rates"] || {}
-
-      @contribution_balance = Eyeshade::Balance.new(balance_json: balance_json)
-
+    def initialize(wallet_info:, accounts: [], transactions: [])
+      # Wallet information
+      @rates = wallet_info["rates"] || {}
+      @authorized = wallet_info.dig("wallet", "authorized")
+      @provider = wallet_info.dig("wallet", "provider") # Wallet provider e.g. Uphold
+      @scope = wallet_info.dig("wallet", "scope") # Permissions e.g. cards:read, cards:write
+      @default_currency = wallet_info.dig("wallet", "defaultCurrency")
+      @available_currencies = wallet_info.dig("wallet", "availableCurrencies") || []
+      @possible_currencies = wallet_info.dig("wallet", "possibleCurrencies") || []
+      @address = wallet_info.dig("wallet", "address") || ""
+      @is_member = wallet_info.dig("wallet", "isMember") || false
+      @uphold_id = wallet_info.dig("wallet", "id")
+      @uphold_account_status = wallet_info.dig("wallet", "status")
+      @action = wallet_info.dig("status","action")
       @channel_balances = {}
-      channel_json.each do |identifier, json|
-        @channel_balances[identifier] = Eyeshade::Balance.new(balance_json: json)
+      accounts.select { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.each do |account|
+        @channel_balances[account["account_id"]] = Eyeshade::ChannelBalance.new(rates, @default_currency, account)
       end
 
-      if wallet_json["lastSettlement"]
-        @last_settlement_balance = Eyeshade::Balance.new(balance_json: wallet_json["lastSettlement"].merge({'rates' => @rates}), apply_fee: false)
-        @last_settlement_date = Time.at(wallet_json["lastSettlement"]["timestamp"]/1000).to_datetime
-      end
+      @referral_balance = Eyeshade::ReferralBalance.new(rates, @default_currency, accounts)
+      @overall_balance = Eyeshade::OverallBalance.new(rates, @default_currency, accounts)
+
+      @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates, @default_currency, transactions)
     end
 
     def authorized?

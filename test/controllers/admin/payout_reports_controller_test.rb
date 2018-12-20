@@ -4,6 +4,7 @@ require "webmock/minitest"
 class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
+  include EyeshadeHelper
 
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
@@ -77,14 +78,9 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     delete_publishers_except([admin.id, publisher.id])
     sign_in admin
 
-    # Stub disconnected /wallet response
-    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
 
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-      to_return(status: 200, body: wallet_response, headers: {})
-
-    # Stub /balances response
-    balance_response = [
+    wallet = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}
+    balances = [
       {
         "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
         "account_type" => "owner",
@@ -104,10 +100,9 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
         "account_type" => "channel",
         "balance" => "20.00"
       }
-    ].to_json
+    ]
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
-      to_return(status: 200, body: balance_response)
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
 
     # Create the non blank payout report
     perform_enqueued_jobs do
@@ -128,14 +123,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     delete_publishers_except([admin.id, publisher.id])
     sign_in admin
 
-    # Stub disconnected /wallet response
-    wallet_response = {}.to_json
-
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-      to_return(status: 200, body: wallet_response, headers: {})
-
-    # Stub /balances response
-    balance_response = [
+    balances = [
       {
         "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
         "account_type" => "owner",
@@ -155,10 +143,9 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
         "account_type" => "channel",
         "balance" => "20.00"
       }
-    ].to_json
+    ]
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
-      to_return(status: 200, body: balance_response)
+    stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balances)
 
     assert_difference("PayoutReport.count", 1) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do

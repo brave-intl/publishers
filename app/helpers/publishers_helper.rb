@@ -19,11 +19,18 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
-  def publisher_humanize_balance(publisher, currency)
-    if balance = publisher.wallet &&
-        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.contribution_balance
-      '%.2f' % balance.convert_to(currency)
+
+  def next_deposit_date(today = DateTime.now)
+    if today.day > 8
+      today = today + 1.month
+    end
+    today.strftime("%B 8th")
+  end
+
+  def publisher_overall_bat_balance(publisher)
+    overall_balance = publisher.wallet&.overall_balance
+    if overall_balance&.amount_bat.present?
+       '%.2f' % overall_balance.amount_bat
     else
       I18n.t("helpers.publisher.balance_unavailable")
     end
@@ -33,64 +40,64 @@ module PublishersHelper
     I18n.t("helpers.publisher.balance_unavailable")
   end
 
-  def next_deposit_date(today = DateTime.now)
-    if today.day > 8
-      today = today + 1.month
+  def publisher_converted_overall_balance(publisher)
+    return if publisher.default_currency == "BAT" || publisher.default_currency.blank?
+    overall_balance = publisher.wallet&.overall_balance
+    if overall_balance&.amount_default_currency.present?
+      I18n.t("helpers.publisher.balance_pending_approximate",
+             amount: '%.2f' % overall_balance.amount_default_currency,
+             code: overall_balance.default_currency)
+    else
+      I18n.t("helpers.publisher.conversion_unavailable", code: publisher.default_currency)
     end
-    today.strftime("%B 8th")
   end
 
-  def publisher_converted_balance(publisher)
-    currency = publisher.default_currency
-    return if currency == "BAT" || currency.blank?
-    if balance = publisher.wallet &&
-        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.contribution_balance
-      converted_amount = '%.2f' % balance.convert_to(currency)
-      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
+  def publisher_channel_bat_balance(publisher, channel_identifier)
+    channel_balance = publisher.wallet&.channel_balances.dig(channel_identifier)
+    if channel_balance&.amount_bat.present?
+      '%.2f' % balance.amount_bat
     else
-      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+      I18n.t("helpers.publisher.balance_unavailable")
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+    I18n.t("helpers.publisher.balance_unavailable")
   end
-
-  def publisher_humanize_last_settlement(publisher, currency)
-    if balance = publisher.wallet &&
-        publisher.wallet.last_settlement_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.last_settlement_balance
-      '%.2f' % balance.convert_to(currency)
+  
+  def publisher_last_settlement_bat_balance(publisher)
+    last_settlement_balance = publisher.wallet&.last_settlement_balance
+    if last_settlement_balance&.amount_bat.present?
+      '%.2f' % last_settlement_balance.amount_bat
     else
       I18n.t("helpers.publisher.no_deposit")
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+    I18n.t("helpers.publisher.balance_unavailable")
   end
 
-  def publisher_converted_last_settlement(publisher)
-    currency = publisher.default_currency
-    return if currency == "BAT" || currency.blank?
-    if balance = publisher.wallet &&
-        publisher.wallet.last_settlement_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.last_settlement_balance
-      converted_amount = '%.2f' % balance.convert_to(currency)
-      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
+  def publisher_converted_last_settlement_balance(publisher)
+    last_settlement_balance = publisher.wallet&.last_settlement_balance
+
+    if last_settlement_balance&.amount_settlement_currency.present?
+      settlement_currency = last_settlement_balance.settlement_currency
+      return if settlement_currency == "BAT"
+      I18n.t("helpers.publisher.balance_pending_approximate",
+             amount: '%.2f' % last_settlement_balance.amount_settlement_currency,
+             code: settlement_currency)
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+    I18n.t("helpers.publisher.conversion_unavailable", code: settlement_currency)
   end
 
-  def publisher_humanize_last_settlement_date(publisher)
-    if settlement_date = publisher.wallet &&
-        publisher.wallet.last_settlement_date.is_a?(Date) &&
-        publisher.wallet.last_settlement_date
-      settlement_date.strftime("%B %d, %Y")
+  def publisher_last_settlement_date(publisher)
+    last_settlement_balance = publisher.wallet&.last_settlement_balance
+    if last_settlement_balance&.settlement_timestamp.present?
+      Time.at(settlement_timestamp).to_datetime.strftime("%B %d, %Y")
     else
       I18n.t("helpers.publisher.no_deposit")
     end
@@ -98,22 +105,6 @@ module PublishersHelper
     require "sentry-raven"
     Raven.capture_exception(e)
     I18n.t("helpers.publisher.no_deposit")
-  end
-
-  def publisher_channel_balance(publisher, channel_identifier, currency)
-    if balance = (
-        publisher.wallet &&
-        publisher.wallet.channel_balances &&
-        publisher.wallet.channel_balances[channel_identifier]
-    )
-      '%.2f' % balance.convert_to(currency)
-    else
-      I18n.t("helpers.publisher.balance_unavailable")
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
   end
 
   def publisher_uri(publisher)
@@ -175,7 +166,10 @@ module PublishersHelper
   end
 
   def last_settlement_class(publisher)
-    if publisher.wallet.present? && publisher.wallet.last_settlement_date
+    if publisher.wallet.present? &&
+       publisher.wallet.last_settlement_balance &&
+       publisher.wallet.last_settlement_balance.amount_bat.present?
+
       'settlement-made'
     else
       'no-settlement-made'

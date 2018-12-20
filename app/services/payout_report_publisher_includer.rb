@@ -13,8 +13,8 @@ class PayoutReportPublisherIncluder < BaseService
     # If the wallet has been blocked from uphold's terms of service. In this state users are unable to login or access uphold.
     return if wallet.nil? || wallet.blocked?
 
-    probi = wallet.channel_balances[@publisher.owner_identifier].probi_before_fees # probi = balance
-    if probi.positive?
+    probi = wallet.referral_balance.amount_probi # probi = balance
+    if probi.to_i.positive?
       publisher_has_unsettled_balance = true
 
       if create_payment?
@@ -29,10 +29,11 @@ class PayoutReportPublisherIncluder < BaseService
     end
 
     @publisher.channels.verified.each do |channel|
-      probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
-      publisher_has_unsettled_balance = probi.positive? ? true : publisher_has_unsettled_balance
+      probi = wallet.channel_balances[channel.details.channel_identifier].amount_probi # probi = balance - fee
+      next unless probi.to_i.positive? && @publisher.uphold_verified? && wallet.address.present?
 
-      next unless probi.positive? && create_payment?
+      publisher_has_unsettled_balance = true
+      fee_probi = wallet.channel_balances[channel.details.channel_identifier].fees_probi # fee = balance - probi
 
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
       PotentialPayment.create(payout_report_id: @payout_report.id,
