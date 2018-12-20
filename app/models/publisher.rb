@@ -138,7 +138,7 @@ class Publisher < ApplicationRecord
         where(channels: {verified: true}).
         group(:id).
         select("publishers.*", "count(channels.id) channels_count").
-        order("channels_count #{sort_direction}")
+        order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
   end
 

@@ -19,6 +19,7 @@ google_verified_details:
   stats:
     :view_count: 504
     :video_count: 4
+    :subscriber_count: 4
 
 global_yt1_details:
   auth_user_id: "global_yt1_details_abc123"
@@ -30,6 +31,7 @@ global_yt1_details:
   stats:
     :view_count: 10301
     :video_count: 34
+    :subscriber_count: 34
 
 global_yt2_details:
   auth_user_id: "global_yt2_details_abc123"
@@ -40,6 +42,7 @@ global_yt2_details:
   stats:
     :view_count: 100403
     :video_count: 50
+    :subscriber_count: 50
 
 joe_yt1_details:
   auth_user_id: "joe123456"
@@ -51,6 +54,7 @@ joe_yt1_details:
   stats:
     :view_count: 1004
     :video_count: 9
+    :subscriber_count: 9
 
 lockedout_yt1_details:
   auth_user_id: "joe987654321"
