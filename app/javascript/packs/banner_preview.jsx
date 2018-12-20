@@ -53,9 +53,10 @@ export default class BannerPreview extends React.Component {
   }
 
   handleClose(){
+    let values = {title: this.props.title, description: this.props.description, logo: this.props.logo, cover: this.props.cover, youtube: this.props.youtube, twitter: this.props.twitter, twitch: this.props.twitch, donationAmounts: this.props.donationAmounts, channelIndex: this.props.channelIndex}
     let instantDonationButton = document.getElementById("instant-donation-button");
     instantDonationButton.click();
-    renderBannerEditor(this.props.preferredCurrency, this.props.conversionRate, this.props.defaultSiteBannerMode, this.props.defaultSiteBanner, this.props.channelBanners, "Editor");
+    renderBannerEditor(values, this.props.preferredCurrency, this.props.conversionRate, this.props.defaultSiteBannerMode, this.props.defaultSiteBanner, this.props.channelBanners, "Editor-From-Preview");
     setTimeout(function(){
       document.getElementById("preview-container").remove();
     }, 100)
@@ -78,6 +79,7 @@ export default class BannerPreview extends React.Component {
         currentDonation={0}
         balance={25.0}
         currentAmount={0}
+        onClose={() => this.handleClose()}
         bgImage={this.props.cover.url}
         logo={this.props.logo.url}
         donationAmounts={
@@ -91,13 +93,6 @@ export default class BannerPreview extends React.Component {
       >
         <p>{this.props.description}</p>
       </SiteBanner>
-      <div onClick={ () => this.handleClose() } style={
-      {
-          top:'10%', transform: 'translate(-50%, -10%)', left:'50%', backgroundColor:'rgba(0,0,0,0)', zIndex:'10000',
-          position:'relative', borderRadius:'24px', padding: '9px 10px', fontSize: '14px',
-          border: '1px solid white', color: 'white', width:'250px', textAlign:'center', cursor:'pointer'
-      }
-    }>CLOSE PREVIEW</div>
       </div>
     )
     }
