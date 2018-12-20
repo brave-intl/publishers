@@ -1,10 +1,10 @@
-require "eyeshade/balance"
-
 # Retrieves a list of transactions for an owner account
 class PublisherTransactionsGetter < BaseApiClient
   attr_reader :publisher
 
-  OFFLINE_NUMBER_OF_SETTLEMENTS = 4
+  OFFLINE_NUMBER_OF_SETTLEMENTS = 2
+  OFFLINE_REFERRAL_SETTLEMENT_AMOUNT = "18.81"
+  OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT = "56.81"
 
   def initialize(publisher:)
     @publisher = publisher
@@ -66,8 +66,9 @@ class PublisherTransactionsGetter < BaseApiClient
           "description" => "contributions in month x",
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{contribution_amount}",
-          "settlement_currency" => publisher.default_currency,
-          "transaction_type" => "contribution"
+          "transaction_type" => "contribution",
+          "settlement_currency" => "ETH",
+          "type" => "contribution"
         })
 
         # Contribution fees out
@@ -76,8 +77,8 @@ class PublisherTransactionsGetter < BaseApiClient
           "description" => "settlement fees for contributions",
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{contribution_fees_amount}",
-          "settlement_currency" => publisher.default_currency,
-          "transaction_type" => "fee"
+          "transaction_type" => "fee",
+          "settlement_currency" => "ETH",
         })
 
         # Contribution settlement out
@@ -86,9 +87,9 @@ class PublisherTransactionsGetter < BaseApiClient
           "description" => "payout for contributions",
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{contribution_settlement_amount}",
-          "settlement_currency" => publisher.default_currency,
-          "settlement_amount" => "56.81",
-          "transaction_type" => "contribution_settlement"
+          "transaction_type" => "contribution_settlement",
+          "settlement_currency" => "ETH",
+          "settlement_amount" => OFFLINE_CONTRIBUTION_SETTLEMENT_AMOUNT,
         })
 
         # Referrals in
@@ -97,8 +98,8 @@ class PublisherTransactionsGetter < BaseApiClient
           "description" => "referrals in month x",
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{referral_amount}",
-          "settlement_currency" => publisher.default_currency,
-          "transaction_type" => "referral"
+          "transaction_type" => "referral",
+          "settlement_currency" => "ETH",
         })
 
         # Referal settlement out
@@ -107,54 +108,19 @@ class PublisherTransactionsGetter < BaseApiClient
           "description" => "payout for referrals",
           "channel" => "#{channel.publisher.owner_identifier}",
           "amount" => "#{referral_settlement_amount}",
-          "settlement_currency" => publisher.default_currency,
-          "settlement_amount" => "18.81",
-          "transaction_type" => "referral_settlement"
+          "transaction_type" => "referral_settlement",
+          "settlement_currency" => "ETH",
+          "settlement_amount" => OFFLINE_REFERRAL_SETTLEMENT_AMOUNT,
         })
       end
       i += 1
     end
-    transactions
+    transactions.sort_by { |transaction|
+      transaction["created_at"].to_date
+    }
   end
 
   private
-
-  # TODO: Use this method to convert transactions reponse into data
-  #       format suitable for dashboard charts.
-  def sort_transactions_into_monthly_settlements(transactions)
-    transactions.group_by { |transaction|
-      transaction["created_at"].to_time.at_beginning_of_month
-    }.map { |transactions_in_month|
-      transactions_in_month.second.reduce({"date" => "#{Time.new(0)}"}) { |transactions_settled, transaction|
-        if transaction["created_at"] > transactions_settled["date"]
-          transactions_settled["date"] = transaction["created_at"]
-        end
-        if transactions_settled[transaction["channel"]].present?
-          transactions_settled[transaction["channel"]] += transaction["amount"].to_d
-        else
-          transactions_settled[transaction["channel"]] = transaction["amount"].to_d
-        end
-        transactions_settled
-      }
-    }.map { |settlement_for_month|
-      settlement_for_month["date"] = settlement_for_month["date"].strftime("%d/%m")
-      settlement_for_month
-    }
-    # Example return value
-    #  {
-    #    date: '7/30',
-    #    'youtube#channel:UCtsfHRe2WQnkNH5WYJWL-Yw': 63,
-    #    'amazingblog.com': 200,
-    #    'Amazon.com': 50
-    #  },
-    #  {
-    #    date: '8/30',
-    #    'youtube#channel:UCtsfHRe2WQnkNH5WYJWL-Yw': 150,
-    #    'amazingblog.com': 100,
-    #    'Amazon.com': 350
-    #  }
-    # ]
-  end
 
   def api_base_uri
     Rails.application.secrets[:api_eyeshade_base_uri]
