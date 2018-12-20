@@ -1,6 +1,6 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
-  before_action :authenticate_publisher!, only: [:create, :update_logo, :update_background]
+  before_action :authenticate_publisher!
 
   MAX_IMAGE_SIZE = 10_000_000
 

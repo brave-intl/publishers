@@ -7,6 +7,7 @@
   z-index: 1;
 }
 
+
 /*sidebar navigation*/
 #sidebar {
   display:block;
@@ -32,6 +33,10 @@
     .sub li a {
       padding-left:46px;
     }
+  }
+
+  #sidebar-toggle {
+    padding: 14px 20px 15px 25px;
   }
 
   ul.sidebar-menu,ul.sidebar-menu li ul.sub {

@@ -1,0 +1,28 @@
+.pagination {
+  padding: 3px;
+  margin: 3px;
+}
+.pagination a {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #DFDFE8;
+  text-decoration: none;
+  color: #131525;
+}
+.pagination a:hover, .pagination a:active {
+  border: 1px solid #131525;
+}
+.pagination em.current {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #DFDFE8;
+  font-weight: bold;
+  font-style: normal;
+  color: #FB542B;
+}
+.pagination span.disabled {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #eee;
+  color: #ddd;
+}

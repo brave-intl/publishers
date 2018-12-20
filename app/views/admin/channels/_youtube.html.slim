@@ -1,0 +1,19 @@
+table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+  tr
+    th ID
+    th Title
+    th Publisher
+    th = sort_link(:youtube_view_count, "View Count")
+    th = sort_link(:video_count, "Video Count")
+    th = sort_link(:subscriber_count, "Subscriber Count")
+    th Channel Identifier
+  tbody
+    - channels.each do |channel|
+      tr.gradeX
+        td = channel.id
+        td = link_to channel.details.title, channel.details.url
+        td = link_to channel.publisher&.email, admin_publisher_path(channel.publisher_id)
+        td = channel.details.stats["view_count"]
+        td = channel.details.stats["video_count"]
+        td = channel.details.stats["subscriber_count"]
+        td = channel.details.channel_identifier.split(':').second
