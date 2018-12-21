@@ -28,9 +28,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
           events_for_referral_code_by_country.each do |country, events_for_referral_code_for_country|
             events_for_referral_code_for_country_by_interval = group_events_by_date(events_for_referral_code_for_country)
             events_for_referral_code_for_country_by_interval.each do |date, events_for_referral_code_for_country_for_interval|
-
               combined = combine_events(events_for_referral_code_for_country_for_interval, referral_code, country, date)
-
               csv << [
                 combined["referral_code"],
                 combined[PromoRegistration::COUNTRY],

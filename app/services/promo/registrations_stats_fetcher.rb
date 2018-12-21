@@ -35,7 +35,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   def perform_offline
     stats = []
     @referral_codes.each do |referral_code|
-      ((1.month.ago.to_date)..(Time.now.to_date)).each do |day|
+      ((1.month.ago.utc.to_date)..(Time.now.utc.to_date)).each do |day|
         event = {
           "referral_code" => "#{referral_code}",
           PromoRegistration::RETRIEVALS => 1,
