@@ -148,9 +148,9 @@ Rails.application.routes.draw do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
     end
-    resources :unattached_promo_registrations, only: %i(index create) do
+    resources :unattached_promo_registrations, only: %i(index create)do
       collection do
-        get :report
+        get :report, defaults: { format: :csv }
         patch :update_statuses
         patch :assign_campaign
         put :assign_installer_type

@@ -1,114 +1,169 @@
+require "csv"
+
 # Creates a report to be converted into tables and downloaded by admins
 class Promo::RegistrationStatsReportGenerator < BaseService
   include PromosHelper
 
-  def initialize(referral_codes:, start_date:, end_date:, reporting_interval:)
+  def initialize(referral_codes:, start_date:, end_date:, reporting_interval:, is_geo:)
     @referral_codes = referral_codes
     @start_date = coerce_date_to_start_or_end_of_reporting_interval(start_date, reporting_interval, true)
     @end_date = coerce_date_to_start_or_end_of_reporting_interval(end_date, reporting_interval, false)
     @reporting_interval = reporting_interval
+    @is_geo = is_geo
   end
 
+
   def perform
-    # Fetch the most recent stats
-    promo_registrations = PromoRegistration.where(referral_code: @referral_codes)
-    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
-    promo_registrations.reload
+    events = fetch_stats
+    events = select_events_within_report_range(events)
+    events = fill_in_events_with_no_activity(@referral_codes, events)
+    events_by_referral_codes = group_events_by_referral_code(events)
 
-    # Build the report contents
-    report_contents = {}
-    promo_registrations.each do |promo_registration|
-      # Pull all statistics associated with a code
-      events = JSON.parse(promo_registration.stats)
-
-      # Select only those within date range supplied
-      events_within_report_period = events.select { |event|
-        (event["ymd"].to_date >= @start_date) && (event["ymd"].to_date <= @end_date)
-      }
-
-      if @reporting_interval == PromoRegistration::RUNNING_TOTAL
-        base_case = {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0 }
-        running_total_report_contents = events_within_report_period.reduce(base_case) { |aggregate_stats, event|
-          aggregate_stats[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
-          aggregate_stats[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
-          aggregate_stats[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
-          aggregate_stats.slice(PromoRegistration::RETRIEVALS, PromoRegistration::FIRST_RUNS, PromoRegistration::FINALIZED)
-        }
-
-        report_contents_for_referral_code = {
-          @start_date => running_total_report_contents
-        }
-
-        report_contents["#{promo_registration.referral_code}"] = report_contents_for_referral_code
-      else
-        report_contents_for_referral_code = empty_report_contents_for_referral_code(@start_date, @end_date, @reporting_interval)
-        events_within_report_period.each do |event|
-          interval_start_date = coerce_date_to_start_or_end_of_reporting_interval(event["ymd"].to_date, @reporting_interval, true)
-          existing_event = report_contents_for_referral_code[interval_start_date]
-          existing_event[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
-          existing_event[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
-          existing_event[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
+    csv_file = CSV.generate do |csv|
+      if @is_geo
+        column_headers = ["Referral code",
+                          "Country",
+                          reporting_interval_column_header(@reporting_interval),
+                          event_type_column_header(PromoRegistration::RETRIEVALS),
+                          event_type_column_header(PromoRegistration::FIRST_RUNS),
+                          event_type_column_header(PromoRegistration::FINALIZED)]
+        csv << column_headers
+        events_by_referral_codes.each do |referral_code, events_for_referral_code|
+          events_for_referral_code_by_country = group_events_by_country(events_for_referral_code)        
+          events_for_referral_code_by_country.each do |country, events_for_referral_code_for_country|
+            events_for_referral_code_for_country_by_interval = group_events_by_date(events_for_referral_code_for_country)
+            events_for_referral_code_for_country_by_interval.each do |date, events_for_referral_code_for_country_for_interval|
+              combined = combine_events(events_for_referral_code_for_country_for_interval, referral_code, country, date)
+              csv << [
+                combined["referral_code"],
+                combined[PromoRegistration::COUNTRY],
+                combined["ymd"], combined[PromoRegistration::RETRIEVALS],
+                combined[PromoRegistration::FIRST_RUNS],
+                combined[PromoRegistration::FINALIZED]
+              ]
+            end
+          end
         end
-        report_contents["#{promo_registration.referral_code}"] = report_contents_for_referral_code
+      else
+        column_headers = ["Referral code",
+                          reporting_interval_column_header(@reporting_interval),
+                          event_type_column_header(PromoRegistration::RETRIEVALS),
+                          event_type_column_header(PromoRegistration::FIRST_RUNS),
+                          event_type_column_header(PromoRegistration::FINALIZED)]
+        csv << column_headers
+        events_by_referral_codes.each do |referral_code, events_for_referral_code|
+          events_for_referral_code_by_interval = group_events_by_date(events_for_referral_code)
+          events_for_referral_code_by_interval.each do |date, events_for_referral_code_for_interval|
+            combined = combine_events(events_for_referral_code_for_interval, referral_code, nil, date)
+            csv << [
+              combined["referral_code"],
+              combined["ymd"], combined[PromoRegistration::RETRIEVALS],
+              combined[PromoRegistration::FIRST_RUNS],
+              combined[PromoRegistration::FINALIZED]
+            ]
+          end
+        end
       end
     end
-    #
-    # Example report_contents:
-    #
-    # {"YYY999"=>
-    #    {Sun, 01 Oct 2017=>{"retrievals"=>40, "first_runs"=>33, "finalized"=>3},
-    #     Wed, 01 Nov 2017=>{"retrievals"=>45, "first_runs"=>30, "finalized"=>3},
-    #     Fri, 01 Dec 2017=>{"retrievals"=>30, "first_runs"=>19, "finalized"=>4},
-    #     Mon, 01 Jan 2018=>{"retrievals"=>34, "first_runs"=>20, "finalized"=>6},
-    #     Thu, 01 Feb 2018=>{"retrievals"=>25, "first_runs"=>19, "finalized"=>5}},
-    # "ZZZ000"=>
-    #    {Sun, 01 Oct 2017=>{"retrievals"=>4, "first_runs"=>2, "finalized"=>0},
-    #     Wed, 01 Nov 2017=>{"retrievals"=>3, "first_runs"=>1, "finalized"=>0},
-    #     Fri, 01 Dec 2017=>{"retrievals"=>2, "first_runs"=>0, "finalized"=>0},
-    #     Mon, 01 Jan 2018=>{"retrievals"=>1, "first_runs"=>0, "finalized"=>1},
-    #     Thu, 01 Feb 2018=>{"retrievals"=>2, "first_runs"=>2, "finalized"=>1}}
-    # 
-    # The dates indicate the the start date of a reporting interval.
-    # In this case the reporting interval is 'by_month'.
-    #
-    # If the reporting interval is 'cumulative', then there is only one reporting interval,
-    # the beginning on the period start_date. e.g:
-    #
-    # {"XEN116"=>
-    #   {Sun, 22 Oct 2017=>{"retrievals"=>0, "first_runs"=>1679, "finalized"=>43}},
-    #  "AAD116"=>
-    #   {Sun, 22 Oct 2017=>{"retrievals"=>0, "first_runs"=>11, "finalized"=>2}}}
-
-    report_hash = {
-      "contents" => report_contents,
-      "start_date" => "#{@start_date}",
-      "end_date" => "#{@end_date}"
-   }
   end
 
   private
 
-  # Creates a report_contents for a single referral code with all 0 values
-  def empty_report_contents_for_referral_code(start_date, end_date, reporting_interval)
-    report_contents_for_referral_code = {}
-    current_date = start_date
-    while current_date <= end_date do 
-      report_contents_for_referral_code[current_date] = {
-        PromoRegistration::RETRIEVALS => 0,
-        PromoRegistration::FIRST_RUNS => 0,
-        PromoRegistration::FINALIZED => 0
-      }
-      case reporting_interval
+  def combine_events(events, referral_code, country, date)
+    combined = {
+      "referral_code"=>referral_code,
+      "ymd"=>date.to_s,
+      "retrievals"=>0,
+      "first_runs"=>0,
+      "finalized"=>0,
+    }
+
+    if @is_geo
+      combined["country"] = country
+    end
+
+    events.each do |event|
+      combined[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
+      combined[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
+      combined[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
+    end
+    combined
+  end
+
+  def group_events_by_country(events)
+     events.group_by { |event|
+      event[PromoRegistration::COUNTRY]
+    }
+  end
+
+  def group_events_by_referral_code(events)
+    events.group_by do |event|
+      event["referral_code"]
+    end
+  end
+
+  def fetch_stats
+    if @is_geo
+      events = Promo::RegistrationsGeoStatsFetcher.new(promo_registrations: PromoRegistration.where(referral_code: @referral_codes)).perform
+    else
+      events = Promo::RegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.where(referral_code: @referral_codes)).perform
+    end
+  end
+
+  def select_events_within_report_range(events)
+    events.select do |event|
+      (event["ymd"].to_date >= @start_date) && (event["ymd"].to_date <= @end_date)
+    end
+  end
+
+  def group_events_by_date(events)
+    events_by_interval = events.group_by do |event|
+      case @reporting_interval
       when PromoRegistration::DAILY
-        current_date = current_date + 1.day
+        event["ymd"].to_date
       when PromoRegistration::WEEKLY
-        current_date = current_date + 1.week
+        event["ymd"].to_date.at_beginning_of_week
       when PromoRegistration::MONTHLY
-        current_date = current_date + 1.month
-      else
-        raise
+        event["ymd"].to_date.at_beginning_of_month
+      when PromoRegistration::RUNNING_TOTAL
+        @end_date
+      else 
+        raise "Invalid reporting interval #{@reporting_interval}."
       end
     end
-    report_contents_for_referral_code
+
+    events_by_interval
+  end
+
+  def fill_in_events_with_no_activity(referral_codes, events)
+    events_with_no_activity = []
+    countries = events.map { |event| event[PromoRegistration::COUNTRY] }.uniq
+
+    (@start_date..@end_date).each do |day|
+      referral_codes.each do |referral_code|
+        if @is_geo
+          countries.each do |country|
+            events_with_no_activity.push({
+              "referral_code" => referral_code,
+              "ymd" => day.strftime("%Y-%m-%d"),
+              PromoRegistration::COUNTRY => country,
+              PromoRegistration::RETRIEVALS => 0,
+              PromoRegistration::FIRST_RUNS => 0,
+              PromoRegistration::FINALIZED => 0,
+            })
+          end
+        else
+          events_with_no_activity.push({
+            "referral_code" => referral_code,
+            "ymd" => day.strftime("%Y-%m-%d"),
+            PromoRegistration::RETRIEVALS => 0,
+            PromoRegistration::FIRST_RUNS => 0,
+            PromoRegistration::FINALIZED => 0,
+          })
+        end
+      end
+    end
+
+    events + events_with_no_activity
   end
 end

@@ -86,7 +86,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
                  })
 
     assert_equal response.status, 200
-    assert_equal response.header["Content-Type"], "application/html"
+    assert_equal response.header["Content-Type"], "text/csv"
     assert_match "DEF456", response.body
     assert_match "ABC123", response.body
   end

@@ -1,5 +1,5 @@
-# Fetches and updates the stats for all types of referral codes
-class Promo::RegistrationsStatsFetcher < BaseApiClient
+# Fetches and does not save geo stats for a list of referral_codes
+class Promo::RegistrationsGeoStatsFetcher < BaseApiClient
   include PromosHelper
   BATCH_SIZE = 100
 
@@ -9,46 +9,41 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
 
   def perform
     return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
-    stats = []
+    geo_stats = []
     @referral_codes.each_slice(BATCH_SIZE).to_a.each do |referral_code_batch|
       query_string = query_string(referral_code_batch)
       response = connection.get do |request|
         request.options.params_encoder = Faraday::FlatParamsEncoder
         request.headers["Authorization"] = api_authorization_header
         request.headers["Content-Type"] = "application/json"
-        request.url("/api/2/promo/statsByReferralCode#{query_string}")
-      end
-      referral_code_events_by_date = JSON.parse(response.body)
-      referral_code_batch.each do |referral_code|
-        promo_registration = PromoRegistration.find_by_referral_code(referral_code)
-        promo_registration.stats = referral_code_events_by_date.select {|referral_code_event_date|
-          referral_code_event_date["referral_code"] == referral_code
-        }.to_json
-        promo_registration.save!
-      end
-      stats = stats + referral_code_events_by_date
+        request.url("/api/2/promo/geoStatsByReferralCode#{query_string}")
+      end      
+      geo_stats = geo_stats + JSON.parse(response.body)
     end
-
-    stats
+    geo_stats
   end
 
   def perform_offline
-    stats = []
+    geo_stats = []
     @referral_codes.each do |referral_code|
       ((1.month.ago.utc.to_date)..(Time.now.utc.to_date)).each do |day|
-        event = {
+        usa_event = {
           "referral_code" => "#{referral_code}",
+          PromoRegistration::COUNTRY => "United States",
           PromoRegistration::RETRIEVALS => 1,
           PromoRegistration::FIRST_RUNS => 1,
           PromoRegistration::FINALIZED => 1,
           "ymd" => "#{day}",
         }
-        PromoRegistration.find_by_referral_code(referral_code).update(stats: [event].to_json)
-        stats.push(event)
+
+        mexico_event = usa_event.dup
+        mexico_event[PromoRegistration::COUNTRY] = "Mexico"
+        geo_stats.push(usa_event)
+        geo_stats.push(mexico_event)
       end
     end
 
-    stats
+    geo_stats
   end
 
   private

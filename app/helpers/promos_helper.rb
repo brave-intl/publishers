@@ -81,9 +81,9 @@ module PromosHelper
     when PromoRegistration::MONTHLY
       "Month"
     when PromoRegistration::RUNNING_TOTAL
-      "Cumulative"
+      "Date"
     else
-      raise
+      raise "Invalid reporting interval #{reporting_interval}"
     end
   end
 
@@ -92,9 +92,9 @@ module PromosHelper
     when PromoRegistration::RETRIEVALS
       "Downloads"
     when PromoRegistration::FIRST_RUNS
-      "Installs"
+      "First opens"
     when PromoRegistration::FINALIZED
-      "Confirmations"
+      "30 days"
     else
       raise
     end
