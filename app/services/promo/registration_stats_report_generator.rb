@@ -21,7 +21,12 @@ class Promo::RegistrationStatsReportGenerator < BaseService
 
     csv_file = CSV.generate do |csv|
       if @is_geo
-        column_headers = ["Referral code", "Country", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"]
+        column_headers = ["Referral code",
+                          "Country",
+                          reporting_interval_column_header(@reporting_interval),
+                          event_type_column_header(PromoRegistration::RETRIEVALS),
+                          event_type_column_header(PromoRegistration::FIRST_RUNS),
+                          event_type_column_header(PromoRegistration::FINALIZED)]
         csv << column_headers
         events_by_referral_codes.each do |referral_code, events_for_referral_code|
           events_for_referral_code_by_country = group_events_by_country(events_for_referral_code)        
@@ -40,7 +45,11 @@ class Promo::RegistrationStatsReportGenerator < BaseService
           end
         end
       else
-        column_headers = ["Referral code", reporting_interval_column_header(@reporting_interval), "Downloads", "First opens", "30 Days"]
+        column_headers = ["Referral code",
+                          reporting_interval_column_header(@reporting_interval),
+                          event_type_column_header(PromoRegistration::RETRIEVALS),
+                          event_type_column_header(PromoRegistration::FIRST_RUNS),
+                          event_type_column_header(PromoRegistration::FINALIZED)]
         csv << column_headers
         events_by_referral_codes.each do |referral_code, events_for_referral_code|
           events_for_referral_code_by_interval = group_events_by_date(events_for_referral_code)
@@ -61,24 +70,18 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   private
 
   def combine_events(events, referral_code, country, date)
+    combined = {
+      "referral_code"=>referral_code,
+      "ymd"=>date.to_s,
+      "retrievals"=>0,
+      "first_runs"=>0,
+      "finalized"=>0,
+    }
+
     if @is_geo
-      combined = {
-        "referral_code"=>referral_code,
-        "ymd"=>date.to_s,
-        "retrievals"=>0,
-        "first_runs"=>0,
-        "finalized"=>0,
-        "country"=> country
-      }
-    else
-      combined = {
-        "referral_code"=>referral_code,
-        "ymd"=>date.to_s,
-        "retrievals"=>0,
-        "first_runs"=>0,
-        "finalized"=>0,
-      }
+      combined["country"] = country
     end
+
     events.each do |event|
       combined[PromoRegistration::RETRIEVALS] += event[PromoRegistration::RETRIEVALS]
       combined[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
