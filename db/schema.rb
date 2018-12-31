@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_14_002051) do
+ActiveRecord::Schema.define(version: 2018_12_31_154124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -404,14 +404,13 @@ ActiveRecord::Schema.define(version: 2018_12_14_002051) do
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
   end
 
-  create_table "versions", id: :serial, force: :cascade do |t|
+  create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
-    t.integer "item_id", null: false
+    t.uuid "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
     t.datetime "created_at"
-    t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
