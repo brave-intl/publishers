@@ -37,7 +37,8 @@ class Promo::RegistrationStatsReportGenerator < BaseService
               csv << [
                 combined["referral_code"],
                 combined[PromoRegistration::COUNTRY],
-                combined["ymd"], combined[PromoRegistration::RETRIEVALS],
+                combined["ymd"],
+                combined[PromoRegistration::RETRIEVALS],
                 combined[PromoRegistration::FIRST_RUNS],
                 combined[PromoRegistration::FINALIZED]
               ]
@@ -57,7 +58,8 @@ class Promo::RegistrationStatsReportGenerator < BaseService
             combined = combine_events(events_for_referral_code_for_interval, referral_code, nil, date)
             csv << [
               combined["referral_code"],
-              combined["ymd"], combined[PromoRegistration::RETRIEVALS],
+              combined["ymd"],
+              combined[PromoRegistration::RETRIEVALS],
               combined[PromoRegistration::FIRST_RUNS],
               combined[PromoRegistration::FINALIZED]
             ]
@@ -87,19 +89,24 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       combined[PromoRegistration::FIRST_RUNS] += event[PromoRegistration::FIRST_RUNS]
       combined[PromoRegistration::FINALIZED] += event[PromoRegistration::FINALIZED]
     end
+
     combined
   end
 
   def group_events_by_country(events)
-     events.group_by { |event|
+    events.sort_by { |event|
+      event["country"]
+    }.group_by { |event|
       event[PromoRegistration::COUNTRY]
     }
   end
 
   def group_events_by_referral_code(events)
-    events.group_by do |event|
+    events.sort_by { |event| 
       event["referral_code"]
-    end
+    }.group_by { |event|
+      event["referral_code"]
+    }
   end
 
   def fetch_stats
@@ -117,6 +124,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   end
 
   def group_events_by_date(events)
+    events = events.sort_by { |event| event["ymd"].to_date }
     events_by_interval = events.group_by do |event|
       case @reporting_interval
       when PromoRegistration::DAILY
@@ -163,7 +171,6 @@ class Promo::RegistrationStatsReportGenerator < BaseService
         end
       end
     end
-
     events + events_with_no_activity
   end
 end
