@@ -10,21 +10,29 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
   def perform
     channels = @publisher.channels.where(verified: true)
     channels.each do |channel|
-      if should_register_channel?(channel)
-        result = register_channel(channel)
-        referral_code = result[:referral_code]
-        should_update_promo_server = result[:should_update_promo_server]
+      next unless should_register_channel?(channel)
+
+      result = register_channel(channel)
+      referral_code = result[:referral_code]
+      should_update_promo_server = result[:should_update_promo_server]
+
+      begin
         if referral_code.present?
           promo_registration = PromoRegistration.new(channel_id: channel.id,
                                                      promo_id: @promo_id,
                                                      kind: PromoRegistration::CHANNEL,
                                                      publisher_id: @publisher.id,
                                                      referral_code: referral_code)
+
           success = promo_registration.save!
           if success && should_update_promo_server
             Promo::ChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform
           end
         end
+      rescue ActiveRecord::RecordInvalid => e
+        require "sentry-raven"
+        Rails.logger.error("PublisherChannelsRegistrar perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
+        Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
       end
     end
   end
@@ -45,7 +53,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
   rescue Faraday::Error => e
     if e.response[:status] == 409
       Rails.logger.warn("Promo::PublisherChannelsRegistrar #register_channel returned 409, channel already registered.  Using Promo::RegistrationGetter to get the referral_code.")
-      
+
       # Get the referral code
       registration = Promo::RegistrationGetter.new(publisher: @publisher, channel: channel).perform
 
@@ -98,7 +106,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
     {
       "owner_id": @publisher.id,
       "promo": @promo_id,
-      "channel": channel.channel_id, 
+      "channel": channel.channel_id,
       "title": channel.publication_title,
       "channel_type": "youtube",
       "thumbnail_url": channel.details.thumbnail_url,
@@ -110,7 +118,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
     {
       "owner_id": @publisher.id,
       "promo": @promo_id,
-      "channel": channel.channel_id, 
+      "channel": channel.channel_id,
       "title": channel.publication_title,
       "channel_type": "twitch",
       "thumbnail_url": channel.details.thumbnail_url,
@@ -122,7 +130,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
     {
       "owner_id": @publisher.id,
       "promo": @promo_id,
-      "channel": channel.channel_id, 
+      "channel": channel.channel_id,
       "title": channel.publication_title,
       "channel_type": "twitter",
       "thumbnail_url": channel.details.thumbnail_url,
@@ -134,7 +142,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
     {
       "owner_id": @publisher.id,
       "promo": @promo_id,
-      "channel": channel.channel_id, 
+      "channel": channel.channel_id,
       "title": channel.publication_title,
       "channel_type": "website",
     }.to_json
