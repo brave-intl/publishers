@@ -95,7 +95,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
 
   def group_events_by_country(events)
     events.sort_by { |event|
-      event["country"]
+      event[PromoRegistration::COUNTRY] || ""
     }.group_by { |event|
       event[PromoRegistration::COUNTRY]
     }
