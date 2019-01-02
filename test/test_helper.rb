@@ -110,6 +110,19 @@ module ActionDispatch
   end
 end
 
+module Publishers
+  module Service
+    class PublicS3Service
+      def upload(a, b, c) ; end
+      def url_expires_in ; end
+      def url(a, b)
+        'mock'
+      end
+    end
+  end
+end
+
+
 # Load rake tasks here so it only happens one time. If tasks are loaded again they will run once for each time loaded.
 require 'rake'
 Publishers::Application.load_tasks

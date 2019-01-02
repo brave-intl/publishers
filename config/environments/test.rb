@@ -41,6 +41,8 @@ Rails.application.configure do
   # Testing environment for file uploads
   config.active_storage.service = :test
 
+  config.active_storage.public_service = :local
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 

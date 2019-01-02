@@ -4,8 +4,11 @@ include ActionView::Helpers::SanitizeHelper
 
 class SiteBanner < ApplicationRecord
   include Rails.application.routes.url_helpers
-  has_one_attached :logo
-  has_one_attached :background_image
+  include PublicS3
+
+  has_one_public_s3 :logo
+
+  has_one_public_s3 :background_image
   belongs_to :publisher
 
   LOGO = "logo".freeze
@@ -81,21 +84,10 @@ class SiteBanner < ApplicationRecord
       channel_id: self.channel_id,
       title: self.title,
       description: self.description,
-      backgroundUrl: url_for(self.background_image),
-      logoUrl: url_for(self.logo),
+      backgroundUrl: self.public_background_image_url,
+      logoUrl: self.public_logo_url,
       donationAmounts: self.donation_amounts,
       socialLinks: self.social_links
     }
-  end
-
-  def url_for(object)
-    return nil if object.nil? || object.attachment.nil?
-
-    if Rails.env.development? || Rails.env.test?
-      # (Albert Wang): I couldn't figure out how to play nicely with localhost
-      "https://0.0.0.0:3000" + rails_blob_path(object, only_path: true)
-    else
-      "#{Rails.application.secrets[:s3_rewards_public_domain]}/#{object.blob.key}"
-    end
   end
 end

@@ -304,6 +304,9 @@ GEM
     pry-byebug (3.6.0)
       byebug (~> 10.0)
       pry (~> 0.10)
+    pry-stack_explorer (0.4.9.3)
+      binding_of_caller (>= 0.7)
+      pry (>= 0.9.11)
     public_suffix (3.0.2)
     puma (3.10.0)
     raabro (1.1.6)
@@ -435,6 +438,9 @@ GEM
       dalli
       msgpack
       redis
+    temping (3.10.0)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     temple (0.8.0)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
@@ -524,6 +530,7 @@ DEPENDENCIES
   premailer-rails (~> 1.9.4)
   pry
   pry-byebug
+  pry-stack_explorer (~> 0.4.9.3)
   public_suffix (~> 3.0.2)
   puma (= 3.10)
   rack-attack (~> 5.0)
@@ -544,6 +551,7 @@ DEPENDENCIES
   simplecov
   sinatra (~> 2.0.2)
   slim-rails (~> 3.1)
+  temping
   tzinfo-data
   u2f (~> 1.0)
   vcr
