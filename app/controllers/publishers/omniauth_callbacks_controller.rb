@@ -41,12 +41,7 @@ module Publishers
 
       @channel.details = YoutubeChannelDetails.new(youtube_details_attrs)
 
-      if existing_channel
-        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
-
-        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
-        return
-      end
+      contest_channel(existing_channel) and return if existing_channel
 
       @channel.save!
       redirect_to home_publishers_path, notice: t("shared.channel_created")
@@ -80,16 +75,11 @@ module Publishers
 
       @channel.details = TwitchChannelDetails.new(twitch_details_attrs)
 
-      if existing_channel
-        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
-
-        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
-        return
-      end
+      contest_channel(existing_channel) and return if existing_channel
 
       @channel.save!
+
       redirect_to home_publishers_path, notice: t("shared.channel_created")
-      return
     end
 
     def youtube_login
@@ -159,15 +149,10 @@ module Publishers
       end
 
       @channel = Channel.new(publisher: current_publisher, verified: true)
-      @channel.details = TwitterChannelDetails.new(twitter_details_attrs)      
+      @channel.details = TwitterChannelDetails.new(twitter_details_attrs)
 
-      if existing_channel
-        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
+      contest_channel(existing_channel) and return if existing_channel
 
-        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
-        return
-      end
-      
       @channel.save!
 
       redirect_to home_publishers_path, notice: t("shared.channel_created")
@@ -175,6 +160,17 @@ module Publishers
     end
 
     private
+
+    def contest_channel(existing_channel)
+      begin
+        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
+
+        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
+      rescue RuntimeError
+        SlackMessenger.new(message: "Publisher #{current_publisher.id} could not contest Channel #{@channel.id}")
+        redirect_to home_publishers_path, notice: t("shared.channel_could_not_be_contested")
+      end
+    end
 
     def require_publisher
       return if current_publisher

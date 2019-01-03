@@ -27,6 +27,7 @@ en:
     cancel: Cancel
     channel_created: Channel created.
     channel_contested: Channel will be transferred from current owner in %{time_until_transfer}.
+    channel_could_not_be_contested: Channel could not be contested. If you think this is in error, please email us at support+publishers@basicattentiontoken.org
     channel_transfer_rejected: Channel transfer rejected.
     time_until_transfer_fallback: a short time
     channel_contested_by: Channel has been verified by another publisher and will be transferred to their account in %{time_until_transfer} unless you reject.
