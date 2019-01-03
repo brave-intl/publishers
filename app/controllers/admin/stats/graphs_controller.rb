@@ -1,12 +1,28 @@
 module Admin
   module Stats
     class GraphsController < AdminController
-      def index
-        # TODO Write partition statements using postgres window functions
-        @youtube_stats = YoutubeChannelDetails.group("date_trunc('day', created_at)").count.to_a
-        @youtube_stats = @youtube_stats.sort_by { |a| a[0] }
+      START_DATE = '2018-05-01'.freeze
 
-        @youtube_stats = @youtube_stats.map { |x| { label: x[0].strftime('%y-%m-%d'), value: x[1] } }
+      def index
+        @publisher_stats = []
+
+        current_date = START_DATE.to_date
+        while current_date < Date.today
+          current_date = current_date.beginning_of_month
+          count = Publisher
+            .email_verified
+            .joins(:channels)
+            .where(
+              'channels.verified = true AND (verified_at <= ? OR verified_at IS NULL)',
+              current_date
+            ).distinct.count
+
+
+          @publisher_stats << { label: current_date.strftime('%y-%m-%d'), value: count }
+
+          current_date = current_date.next_month
+        end
+
       end
     end
   end

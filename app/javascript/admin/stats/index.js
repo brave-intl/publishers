@@ -84,9 +84,6 @@ function createChart(id, title, type, dataSource) {
           }
         }],
         yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
         }]
       }
     }
@@ -94,7 +91,7 @@ function createChart(id, title, type, dataSource) {
 }
 
 function yeah() {
-  createChart("piwikDevicesDetectionTypeChart", "Device Visits (Past Week) (nb_visits)", 'Devices', "my_data");
+  createChart("piwikDevicesDetectionTypeChart", "Publishers email and channel verified", 'Devices', "my_data");
 }
 
 document.addEventListener('DOMContentLoaded', function () {
