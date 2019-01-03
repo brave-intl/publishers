@@ -9,7 +9,7 @@ default: &default
 
 development:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/publishers_production" %>
+  url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
 
 test:
   <<: *default

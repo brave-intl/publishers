@@ -2,6 +2,13 @@
 :concurrency: 1
 :timeout: 8
 :max_retries: 3
+:queues:
+  - heavy
+  - mailers
+  - transactional
+  - scheduler
+  - default
+  - low
 :schedule:
   EnqueueSiteChannelVerifications:
     cron: "42 * * * *"
