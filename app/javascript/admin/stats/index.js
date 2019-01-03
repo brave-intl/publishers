@@ -9,91 +9,75 @@ let colors = [
   '255, 159, 64'
 ]
 
-function createChart(id, title, type, dataSource) {
-  var wrapper = document.getElementById('wrapper');
+function createChart() {
+  var wrapper = document.getElementById('publisherStats');
   var canvas = document.createElement('canvas');
   canvas.setAttribute("width", "400");
   canvas.setAttribute("height", "100");
   wrapper.appendChild(canvas);
-  console.log('yo fuckin know it')
 
-  var data = JSON.parse(document.getElementById(dataSource).value);
-  var labels = [];
-  var visits = [];
-  let backgroundColor = [];
-  let borderColor = [];
+  var allPublishers = JSON.parse(document.getElementById('all_publishers').value);
+  var emailVerified = JSON.parse(document.getElementById('email_verified').value);
+  var emailVerifiedWithChannel = JSON.parse(document.getElementById('email_verified_with_channel').value);
+  var emailVerifiedWithVerifiedChannel = JSON.parse(document.getElementById('email_verified_with_verified_channel').value);
 
-  console.log(data)
-    for (let entry of data) {
-      console.log(entry)
-      labels.push(entry.label);
-      visits.push(entry.value);
-    }
-
-  // switch (type) {
-  //   case 'Visits':
-  //     for (let entry of data) {
-  //       labels.push(entry.date);
-  //       visits.push(entry.content);
-  //     }
-  //     break;
-  //   case 'Devices':
-  //     for (let entry of data) {
-  //       labels.push(entry.label);
-  //       visits.push(entry.nb_visits);
-  //     }
-  //     break;
-  //   case 'Events':
-  //     for (let entry of data) {
-  //       labels.push(entry.label);
-  //       visits.push(entry.nb_visits);
-  //     }
-  //     break;
-  // }
-
-
-  for (let i = 0; i < data.length; i++) {
-    backgroundColor.push('rgba(' + colors[i % 5] + ', 0.2)')
-    borderColor.push('rgba(' + colors[i % 5] + ', 1)')
-  }
-
-  var myChart = new Chart(canvas, {
-    type: 'line',
+  new Chart(canvas, {
+    type: 'bar',
     data: {
-      labels: labels,
-      datasets: [{
-        label: title,
-        data: visits,
-        backgroundColor: backgroundColor,
-        borderColor: borderColor,
-        borderWidth: 1
-      }]
+      labels: allPublishers.map(x => x.label),
+      datasets: [
+        {
+          label: 'All publishers',
+          data: allPublishers.map(x => x.value),
+          backgroundColor: '#F88469',
+        },
+        {
+          label: 'Email Verified',
+          data: emailVerified.map(x => x.value),
+          backgroundColor: '#7B82E1',
+        },
+        {
+          label: 'Email Verified with Channel',
+          data: emailVerifiedWithChannel.map(x => x.value),
+          backgroundColor: '#66C3FC',
+        },
+        {
+          label: 'Email Verified with Verified Channel',
+          data: emailVerifiedWithVerifiedChannel.map(x => x.value),
+          backgroundColor: '#96DFBA',
+        },
+      ]
     },
     options: {
       scales: {
         xAxes: [{
+          offset: true,
           type: 'time',
           time: {
             parser: 'YYYY-MM-DD',
-            // round: 'day'
-            tooltipFormat: 'll'
+            tooltipFormat: 'll',
+            displayFormats: {
+              'day': 'YYYY-MM-DD'
+            }
           },
+          categoryPercentage: 0.5,
           scaleLabel: {
             display: true,
             labelString: 'Date'
           }
         }],
         yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
         }]
       }
     }
   });
 }
 
-function yeah() {
-  createChart("piwikDevicesDetectionTypeChart", "Publishers email and channel verified", 'Devices', "my_data");
-}
-
 document.addEventListener('DOMContentLoaded', function () {
-  yeah();
+  if (window.location.href.indexOf('publisher_statistics') !== -1) {
+    createChart();
+  }
 });
