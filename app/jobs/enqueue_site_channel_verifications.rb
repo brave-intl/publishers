@@ -7,7 +7,7 @@ class EnqueueSiteChannelVerifications < ApplicationJob
   def perform
     n = 0
     recent_unverified_site_channels_ids.each do |id|
-      # VerifySiteChannel.perform_later(channel_id: id)
+      VerifySiteChannel.perform_later(channel_id: id)
       n += 1
     end
     Rails.logger.info("EnqueueSiteChannelVerifications enqueued VerifySiteChannels #{n} times.")
