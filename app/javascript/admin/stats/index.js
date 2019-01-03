@@ -18,8 +18,8 @@ function createChart() {
 
   var allPublishers = JSON.parse(document.getElementById('all_publishers').value);
   var emailVerified = JSON.parse(document.getElementById('email_verified').value);
-  var emailVerifiedWithChannel = JSON.parse(document.getElementById('email_verified_with_channel').value);
-  var emailVerifiedWithVerifiedChannel = JSON.parse(document.getElementById('email_verified_with_verified_channel').value);
+  var emailVerifiedWithChannel = JSON.parse(document.getElementById('email_verified_with_a_channel').value);
+  var emailVerifiedWithVerifiedChannel = JSON.parse(document.getElementById('email_verified_with_a_verified_channel').value);
 
   new Chart(canvas, {
     type: 'bar',

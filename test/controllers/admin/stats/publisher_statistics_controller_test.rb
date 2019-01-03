@@ -2,7 +2,7 @@ require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
 
-class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
+class Admin::PublisherStatsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   before do
@@ -23,12 +23,12 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
       assert controller.instance_variable_get("@email_verified")
     end
 
-    it 'assigns @email_verified_with_channel' do
-      assert controller.instance_variable_get("@email_verified_with_channel")
+    it 'assigns @email_verified_with_a_channel' do
+      assert controller.instance_variable_get("@email_verified_with_a_channel")
     end
 
-    it 'assigns @email_verified_with_verified_channel' do
-      assert controller.instance_variable_get("@email_verified_with_channel")
+    it 'assigns @email_verified_with_a_verified_channel' do
+      assert controller.instance_variable_get("@email_verified_with_a_channel")
     end
 
     describe 'when user requests CSV' do

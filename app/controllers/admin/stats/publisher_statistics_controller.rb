@@ -8,8 +8,8 @@ module Admin
       def index
         @all_publishers = stats[:all_publishers]
         @email_verified = stats[:email_verified]
-        @email_verified_with_channel = stats[:email_verified_with_channel]
-        @email_verified_with_verified_channel = stats[:email_verified_with_verified_channel]
+        @email_verified_with_a_channel = stats[:email_verified_with_a_channel]
+        @email_verified_with_a_verified_channel = stats[:email_verified_with_a_verified_channel]
 
         respond_to do |format|
           format.html {}
@@ -17,7 +17,7 @@ module Admin
             report_csv = CSV.generate do |csv|
               csv << ["Month", "All Publishers", "Email Verified", "Email Verified With Channel", "Email Verified With Verified Channel"]
               @all_publishers.each_with_index do |x, i|
-                csv << [x[:label], @all_publishers[i][:value], @email_verified[i][:value], @email_verified_with_channel[i][:value], @email_verified_with_verified_channel[i][:value]]
+                csv << [x[:label], @all_publishers[i][:value], @email_verified[i][:value], @email_verified_with_a_channel[i][:value], @email_verified_with_a_verified_channel[i][:value]]
               end
             end
 
@@ -31,8 +31,8 @@ module Admin
       def stats
         all_publishers = []
         email_verified = []
-        email_verified_with_channel = []
-        email_verified_with_verified_channel = []
+        email_verified_with_a_channel = []
+        email_verified_with_a_verified_channel = []
 
         current_date = START_DATE.to_date
         while current_date < Date.today
@@ -48,8 +48,8 @@ module Admin
 
           all_publishers << { label: current_date.strftime("%Y-%m-%d"), value: all_pub_count }
           email_verified << { label: current_date.strftime("%Y-%m-%d"), value: verified_email }
-          email_verified_with_channel << { label: current_date.strftime("%Y-%m-%d"), value: verified_with_channel }
-          email_verified_with_verified_channel << { label: current_date.strftime("%Y-%m-%d"), value: verified_with_verified_channel_count }
+          email_verified_with_a_channel << { label: current_date.strftime("%Y-%m-%d"), value: verified_with_channel }
+          email_verified_with_a_verified_channel << { label: current_date.strftime("%Y-%m-%d"), value: verified_with_verified_channel_count }
 
           current_date = current_date.next_month
         end
@@ -57,8 +57,8 @@ module Admin
         {
           all_publishers: all_publishers,
           email_verified: email_verified,
-          email_verified_with_channel: email_verified_with_channel,
-          email_verified_with_verified_channel: email_verified_with_verified_channel
+          email_verified_with_a_channel: email_verified_with_a_channel,
+          email_verified_with_a_verified_channel: email_verified_with_a_verified_channel
         }
       end
     end
