@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom'
 
 import {
   StyledWrapper,
+  StyledContainer,
+  StyledText,
+  StyledButton
 } from './style'
 
 
-export default class ReferralsCard extends React.Component {
+export default class ReferralsNav extends React.Component {
 
   constructor(props) {
     super(props);
@@ -25,7 +28,10 @@ export default class ReferralsCard extends React.Component {
   render() {
     return (
       <StyledWrapper>
-        ABC
+        <StyledContainer>
+            <StyledText header>Referrals</StyledText>
+            <StyledButton>Create Code</StyledButton>
+        </StyledContainer>
       </StyledWrapper>
     )
     }

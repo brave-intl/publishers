@@ -6,4 +6,5 @@
   background: #eaedef;
   background: $braveGradient-LegacyPink;
   min-height: calc(100vh - #{$braveNavbarHeight});
+  overflow: auto;
 }

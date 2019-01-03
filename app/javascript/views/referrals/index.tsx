@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
 import {
   StyledWrapper,
@@ -7,9 +7,9 @@ import {
   StyledGrid,
 } from './style'
 
-import ReferralsNav from './referralsNav/index.jsx'
+import ReferralsNav from './referralsNav/index.tsx'
 import ReferralsHeader from './referralsHeader/index.tsx'
-import ReferralsCard from './referralsCard/index.jsx'
+import ReferralsCard from './referralsCard/index.tsx'
 
 
 export default class Referrals extends React.Component {
