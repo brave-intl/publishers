@@ -125,6 +125,7 @@ module Publishers
     end
 
     def register_twitter_channel
+      redirect_to home_publishers_path and return
       oauth_response = request.env['omniauth.auth']
       twitter_details_attrs = {
         auth_provider: oauth_response.provider,

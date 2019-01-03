@@ -177,7 +177,11 @@ group :production do
 end
 
 group :development, :test do
+  # Create a temporary table-backed ActiveRecord model
+  gem 'temping'
+
   gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
   gem "byebug"
   gem "pry-byebug", require: false
   gem "mocha"
