@@ -6,13 +6,13 @@ module PublicS3
   included do
     def public_s3_service
       @service ||=
-        case Rails.application.config.active_storage.public_service
+        case Rails.application.config.active_storage.service
         when :amazon
           Publishers::Service::PublicS3Service.new
         when :local
           ActiveStorage::Service::DiskService.new(root: Rails.root.join("storage"))
-        else # Staging does not have an environment file
-          Publishers::Service::PublicS3Service.new
+        when :test
+          ActiveStorage::Service::DiskService.new(root: Rails.root.join("tmp/storage"))
         end
     end
 
@@ -86,7 +86,7 @@ module PublicS3
           return if #{name}.attachment.blank?
 
           # ActiveStorage::Current.host = Rails.application.secrets[:s3_rewards_public_domain]
-          if Rails.application.config.active_storage.public_service == :local
+          if Rails.application.config.active_storage.service == :local || Rails.application.config.active_storage.service == :test
             ActiveStorage::Current.host = 'https://localhost:3000'
             filename = ActiveStorage::Filename.wrap(#{name}.blob.filename)
 
