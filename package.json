@@ -94,5 +94,8 @@
     "sugarss": "^2.0.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "3.1.14"
+  },
+  "resolutions": {
+    "babel-core": "7.0.0-bridge.0"
   }
 }
