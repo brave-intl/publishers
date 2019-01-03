@@ -33,5 +33,7 @@ install:
   - bundle exec rake assets:precompile
 script:
   - yarn audit
+  - yarn lint
   - bin/rails test
   - yarn test
+  - bundle exec brakeman

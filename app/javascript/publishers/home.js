@@ -420,19 +420,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     let response = await fetch(url, options);
+    if (response.status >= 400){location.reload();}
     let bannerEditorData = await response.json();
+
 
     let defaultSiteBannerMode = bannerEditorData.default_site_banner_mode;
     let defaultSiteBanner = bannerEditorData.default_site_banner;
     let channelBanners = bannerEditorData.channel_banners;
-    console.log(bannerEditorData);
 
     document.getElementById("open-banner-button").onclick = function() {
-      renderBannerEditor(preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, "Editor");
+      renderBannerEditor({}, preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, "Editor");
     };
 
     document.getElementById("open-preview-button").onclick = function() {
-      renderBannerEditor(preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, "Preview");
+      renderBannerEditor({}, preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, "Preview");
     };
 
     document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {

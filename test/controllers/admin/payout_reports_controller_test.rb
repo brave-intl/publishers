@@ -14,6 +14,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def delete_publishers_except(publisher_ids)
+    PublisherNote.destroy_all
     Publisher.all.each do |publisher|
       publisher.delete unless publisher_ids.include?(publisher.id)
     end

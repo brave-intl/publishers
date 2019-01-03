@@ -45,7 +45,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "admin filters appropriately on name & email" do
     admin = publishers(:admin)
-    publisher = publishers(:completed)
+    publisher = Publisher.order(created_at: :asc).first
     sign_in admin
 
     get admin_publishers_path
@@ -80,7 +80,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       get admin_publishers_path, params: { q: "PRO123" }
 
       publishers = controller.instance_variable_get("@publishers")
-      assert_equal publishers.count, 1
+      assert_equal publishers.length, 1
       assert_equal publishers.first, publishers(:promo_enabled)
     end
 
@@ -98,7 +98,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       get admin_publishers_path, params: { q: "#{publishers(:completed).name}" }
 
       publishers = controller.instance_variable_get("@publishers")
-      assert_equal publishers.count, 1
+      assert_equal publishers.length, 1
       assert_equal publishers.first, publishers(:completed)
     end
 
@@ -106,7 +106,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
       get admin_publishers_path, params: { q: "404 not found" }
 
       publishers = controller.instance_variable_get("@publishers")
-      assert_equal publishers.count, 0
+      assert_equal publishers.length, 0
     end
   end
 

@@ -7,6 +7,7 @@
   z-index: 1;
 }
 
+
 /*sidebar navigation*/
 #sidebar {
   display:block;
@@ -34,6 +35,10 @@
     }
   }
 
+  #sidebar-toggle {
+    padding: 14px 20px 15px 25px;
+  }
+
   ul.sidebar-menu,ul.sidebar-menu li ul.sub {
     margin:-2px 0 0;
     padding:0;
@@ -54,7 +59,6 @@
       a {
         display:block;
         font-size:14px;
-        padding-bottom:13px;
         padding:13px 0 13px 25px;
         color:#aeb2b7;
         outline:none;
@@ -144,9 +148,6 @@ a.logo span {
       margin: 30px 0px;
     }
 
-    #publisher-section {      
-    }
-
     #statement-section {
       .statements-table {
         max-width: 450px;
@@ -172,7 +173,7 @@ a.logo span {
       }
       #generate_statement {
         margin-left: 10px;
-      }      
+      }
     }
 
     #channels-section {
@@ -207,7 +208,7 @@ a.logo span {
 
           }
         }
-      }      
+      }
     }
     #notes-section {
       .note {
@@ -216,14 +217,9 @@ a.logo span {
         }
         .note-header {
           display: flex;
-          .note-created-by{
+          .box {
             flex: 1;
           }
-          .note-created-at {
-            flex: 1;
-          }
-        }
-        .note-content {
         }
       }
       #create-note {
@@ -233,5 +229,5 @@ a.logo span {
         }
       }
     }
-  }  
+  }
 }

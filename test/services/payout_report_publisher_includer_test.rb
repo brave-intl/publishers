@@ -15,6 +15,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
   api_eyeshade_base_uri = Rails.application.secrets[:api_eyeshade_base_uri]
 
   def delete_publishers_except(publisher_ids)
+    PublisherNote.destroy_all
     Publisher.all.each do |publisher|
       publisher.delete unless publisher_ids.include?(publisher.id)
     end
@@ -113,7 +114,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       to_return(status: 200, body: balance_response)
 
     # Deliver the email
-    perform_enqueued_jobs do 
+    perform_enqueued_jobs do
       PayoutReportPublisherIncluder.new(payout_report: payout_report,
                                         publisher: publisher,
                                         should_send_notifications: true).perform
@@ -199,7 +200,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     # Run the includer again with same parameters and ensure no extra potential payments
     # were created (idempotence)
 
-    assert_difference -> { PotentialPayment.count }, 0 do 
+    assert_difference -> { PotentialPayment.count }, 0 do
       PayoutReportPublisherIncluder.new(payout_report: payout_report,
                                         publisher: publisher,
                                         should_send_notifications: true).perform

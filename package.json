@@ -1,7 +1,48 @@
 {
   "scripts": {
     "start": "NODE_ENV=test karma start",
-    "test": "NODE_ENV=test karma start --single-run --browsers ChromeHeadless karma.conf.js"
+    "lint": "yarn run lint-scss && yarn run lint-js-css && yarn run lint-ts",
+    "lint-scss": "stylelint --config '.stylelintrc-scss.json' 'app/**/*.{ts,tsx,scss}' --syntax scss",
+    "lint-js-css": "stylelint --config '.stylelintrc-jsx.json' 'app/**/*.{ts,tsx}'",
+    "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'",
+    "test": "jest"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true,
+        "tsConfig": "tsconfig-jest.json",
+        "isolatedModules": true
+      }
+    },
+    "resetMocks": true,
+    "resetModules": true,
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "src/**/*.tsx",
+      "!src/**/index.ts"
+    ],
+    "testMatch": [
+      "<rootDir>/app/javascript/**/*.test.tsx"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/app/javascript/testSetup.js",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/.testconfig/fileMocks.ts",
+      "\\.(css)$": "identity-obj-proxy"
+    },
+    "preset": "ts-jest/presets/js-with-babel"
   },
   "dependencies": {
     "@babel/preset-react": "^7.0.0",

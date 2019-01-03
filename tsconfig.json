@@ -10,8 +10,11 @@
     "target": "es5",
     "jsx": "react"
   },
+  "include": [
+    "app/javascript/**/*"
+  ],
   "exclude": [
-    "**/*.spec.ts",
+    "**/*.test.tsx",
     "node_modules",
     "vendor",
     "public"

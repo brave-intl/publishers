@@ -17,6 +17,7 @@ import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
 
 import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, LoaderIcon } from 'brave-ui/components/icons'
+import Select from 'brave-ui/components/formControls/select'
 import Checkbox from 'brave-ui/components/formControls/checkbox'
 import Toggle from 'brave-ui/components/formControls/toggle'
 
@@ -30,11 +31,11 @@ export default class BannerEditor extends React.Component {
 
     this.state = {
       loading: true,
-      title: 'Brave Rewards',
-      description: 'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.',
-      logo: {url: null, data: null},
-      cover: {url: null, data: null},
-      channelIndex: 0,
+      title: this.props.values.title || 'Brave Rewards',
+      description: this.props.values.description || 'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.',
+      logo: this.props.values.logo || {url: null, data: null},
+      cover: this.props.values.cover || {url: null, data: null},
+      channelIndex: this.props.values.channelIndex || 0,
       channelBanners: this.props.channelBanners,
       defaultSiteBanner: this.props.defaultSiteBanner,
       defaultSiteBannerMode: this.props.defaultSiteBannerMode,
@@ -42,11 +43,12 @@ export default class BannerEditor extends React.Component {
       linkSelection: false,
       linkOption: 'Youtube',
       currentLink: '',
-      youtube: '',
-      twitter: '',
-      twitch: '',
-      donationAmounts: [1, 5, 10],
+      youtube: this.props.values.youtube || '',
+      twitter: this.props.values.twitter || '',
+      twitch: this.props.values.twitch || '',
+      donationAmounts: this.props.values.donationAmounts || [1, 5, 10],
       conversionRate: this.props.conversionRate,
+      preferredCurrency: 'USD',
       mode: 'Edit',
       view: 'editor-view',
       state: 'editor'
@@ -82,7 +84,6 @@ export default class BannerEditor extends React.Component {
 }
 
   modalize(){
-    document.getElementsByClassName("modal-container")[0].style.overflow = 'scroll';
     document.getElementsByClassName("modal-panel")[0].style.maxWidth = 'none';
     document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
     document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
@@ -92,11 +93,14 @@ export default class BannerEditor extends React.Component {
     document.getElementsByClassName("modal-panel")[0].style.maxWidth = '40rem';
     document.getElementsByClassName("modal-panel")[0].style.padding = '2rem 2rem';
     document.getElementsByClassName("modal-panel--content")[0].style.padding = '1rem 1rem 0 1rem';
+    document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'visible'
     document.getElementsByClassName("modal-panel--close js-deny")[0].click();
   }
 
   cleanup(){
     document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'hidden'
+    document.getElementById("bat-select").childNodes[0].childNodes[0].style.color = 'white'
+    document.getElementById("bat-select").style.cursor = 'pointer'
     document.getElementById("banner-toggle").style.cursor = "pointer"
   }
 
@@ -183,42 +187,50 @@ export default class BannerEditor extends React.Component {
   async fetchBanner(){
 
     let that = this
-    let url = "/publishers/" + document.getElementById("publisher_id").value + "/site_banners/"
-    this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id
 
-    let options = {
-      method: 'GET',
-      credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
+    if(this.props.mode === 'Editor-From-Preview' && !this.state.fetch){
+      that.setState({loading: false})
     }
+    else{
+      let url = "/publishers/" + document.getElementById("publisher_id").value + "/site_banners/"
+      this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id
 
-    let response = await fetch(url, options);
-    let banner = await response.json();
-
-    //500ms timeout prevents quick flash when load times are fast.
-    setTimeout(async() => {
-
-      if(banner){
-        that.setState({
-          title: banner.title,
-          description: banner.description,
-          youtube: banner.socialLinks.youtube,
-          twitter: banner.socialLinks.twitter,
-          twitch: banner.socialLinks.twitch,
-          donationAmounts: banner.donationAmounts,
-          logo: {url: banner.logoImage, data: null},
-          cover: {url: banner.backgroundImage, data: null},
-          loading: false
-        });
+      let options = {
+        method: 'GET',
+        credentials: "same-origin",
+        headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
       }
 
-      else{
-        that.setState({loading: false})
-      }
-      if(this.props.mode === 'Preview'){
-        this.preview();
-      }
-    }, 500);
+      let response = await fetch(url, options);
+      if (response.status >= 400){location.reload();}
+      let banner = await response.json();
+
+      //500ms timeout prevents quick flash when load times are fast.
+      setTimeout(async() => {
+
+        if(banner){
+          that.setState({
+            title: banner.title,
+            description: banner.description,
+            youtube: banner.socialLinks.youtube,
+            twitter: banner.socialLinks.twitter,
+            twitch: banner.socialLinks.twitch,
+            donationAmounts: banner.donationAmounts,
+            logo: {url: banner.logoImage, data: null},
+            cover: {url: banner.backgroundImage, data: null},
+            loading: false,
+            fetch: false
+          });
+        }
+
+        else{
+          that.setState({loading: false})
+        }
+        if(this.props.mode === 'Preview'){
+          this.preview();
+        }
+      }, 500);
+    }
   }
 
   handleLinkSelection(e){
@@ -337,8 +349,8 @@ export default class BannerEditor extends React.Component {
           <Dialogue id='save-container' save>
             { this.state.saving === false &&
               <div>
-                <Text dialogueHeader>Your banner will be updated in two hours</Text>
-                <Text dialogueSubtext>Your updated banner will be presented to Brave users in two hours.</Text>
+                <Text dialogueHeader>Your banner will be updated within 24 hours</Text>
+                <Text dialogueSubtext>Please note, for V0.58 of the Brave Browser, the custom tip amounts for the banner will show up as 1, 5, 10 BAT.</Text>
                 <Button dialoguePrimary onClick={ () => this.setState({state: 'Editor'}) }>OK</Button>
               </div>
             }
@@ -400,8 +412,7 @@ export default class BannerEditor extends React.Component {
         this.state.youtube !== '' &&
         <Link>
           <YoutubeColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel>{this.state.youtube}
-            <Delete onClick={ () => this.handleLinkDelete('Youtube') }>(X)</Delete>
+          <Channel><Delete onClick={ () => this.handleLinkDelete('Youtube') }>(X)</Delete>{this.state.youtube}
           </Channel>
         </Link>
       }
@@ -409,8 +420,7 @@ export default class BannerEditor extends React.Component {
         this.state.twitter !== '' &&
         <Link>
           <TwitterColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel>{this.state.twitter}
-            <Delete onClick={ () => this.handleLinkDelete('Twitter') }>(X)</Delete>
+          <Channel><Delete onClick={ () => this.handleLinkDelete('Twitter') }>(X)</Delete>{this.state.twitter}
           </Channel>
         </Link>
       }
@@ -418,8 +428,7 @@ export default class BannerEditor extends React.Component {
         this.state.twitch !== '' &&
         <Link>
           <TwitchColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel>{this.state.twitch}
-            <Delete onClick={ () => this.handleLinkDelete('Twitch') }>(X)</Delete>
+          <Channel><Delete onClick={ () => this.handleLinkDelete('Twitch') }>(X)</Delete>{this.state.twitch}
           </Channel>
         </Link>
       }
@@ -443,6 +452,46 @@ export default class BannerEditor extends React.Component {
           </div>
         )
       }
+  }
+
+  tipToOption(){
+    switch(this.state.donationAmounts.join(',')){
+      case '1,5,10':
+        return 0
+        break;
+      case '5,10,20':
+        return 1
+        break;
+      case '10,20,50':
+        return 2
+        break;
+      case '20,50,100':
+        return 3
+        break;
+      case '50,100,500':
+        return 4
+        break;
+    }
+  }
+
+  handleTipSelection(key, child){
+    switch(key){
+      case '0':
+        this.setState({donationAmounts: [1, 5, 10]})
+        break;
+      case '1':
+        this.setState({donationAmounts: [5, 10, 20]})
+        break;
+      case '2':
+        this.setState({donationAmounts: [10, 20, 50]})
+        break;
+      case '3':
+        this.setState({donationAmounts: [20, 50, 100]})
+        break;
+      case '4':
+        this.setState({donationAmounts: [50, 100, 500]})
+        break;
+    }
   }
 
   async save() {
@@ -474,6 +523,7 @@ export default class BannerEditor extends React.Component {
     }
 
     let save = await fetch(url, options)
+    if (save.status >= 400){location.reload();}
 
     document.getElementById('save-spinner').remove();
     this.setState({saving: false});
@@ -490,23 +540,23 @@ export default class BannerEditor extends React.Component {
   }
 
   incrementChannelIndex(){
-    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex += 1), loading: true }},
+    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex += 1), loading: true, fetch: true }},
     () => {this.fetchBanner()})
   }
 
   decrementChannelIndex(){
-    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex -= 1), loading: true }},
+    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex -= 1), loading: true, fetch: true }},
     () => {this.fetchBanner()})
   }
 
   async toggleDefaultSiteBannerMode(){
     if(this.state.defaultSiteBannerMode === true){
       let toggle = await this.setDefaultSiteBannerMode(false)
-      this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, loading: true},
+      this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, loading: true, fetch: true},
       () => { this.fetchBanner() })
     }
     else{
-      this.setState({state: 'same'});
+      this.setState({state: 'same', fetch: true});
     }
   }
 
@@ -518,6 +568,7 @@ export default class BannerEditor extends React.Component {
       headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content}
     }
     let response = await fetch(url, options);
+    if (response.status >= 400){location.reload();}
   }
 
   render() {
@@ -570,7 +621,16 @@ export default class BannerEditor extends React.Component {
             </ExplanatoryText>
 
             <Donations>
-              <Text donations>Tip amounts</Text>
+              <Text donations>Set tip amount options</Text>
+              <div style={{width: '75%', margin:'auto', paddingBottom: '20px' }}>
+                <Select id="bat-select" value={this.tipToOption()} type={'light'} title={'Limit Sites to'} disabled={false} floating={false} onChange={(key, child) => this.handleTipSelection(key, child)}>
+                  <div data-value='0'>1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT</div>
+                  <div data-value='1'>5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT</div>
+                  <div data-value='2'>10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT</div>
+                  <div data-value='3'>20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT</div>
+                  <div data-value='4'>50 BAT &nbsp; | &nbsp; 100 BAT &nbsp; | &nbsp; 500 BAT</div>
+                </Select>
+              </div>
               <DonationWrapper>
                 <Button donation>
                   <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
@@ -604,9 +664,10 @@ export default class BannerEditor extends React.Component {
   }
 }
 
-export function renderBannerEditor(preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, mode) {
+export function renderBannerEditor(values, preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, mode) {
 
   let props = {
+    values: values,
     preferredCurrency: preferredCurrency,
     conversionRate: conversionRate,
     defaultSiteBannerMode: defaultSiteBannerMode,

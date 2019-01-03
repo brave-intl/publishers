@@ -19,12 +19,18 @@ div.row
               th ID
               th Name
               th Email
-              th Actions
+              th Status
+              th = sort_link(Publisher::VERIFIED_CHANNEL_COUNT, "Number of verified channels")
+              th = sort_link(:created_at, "Account creation time")
+              th = sort_link(:last_sign_in_at, "Last sign in at")
             tbody
-              - @publishers.each do |publisher|
+              - @publishers.left_joins(:channels).each do |publisher|
                 tr.gradeX
                   td = link_to publisher.id, admin_publisher_path(publisher.id)
                   td = publisher.name
                   td = publisher.email
-                  td TODO
+                  td = publisher_status(publisher)
+                  td = publisher.channels.verified.count
+                  td = publisher.created_at
+                  td = distance_of_time_in_words(publisher.last_sign_in_at, Time.now) if publisher.last_sign_in_at.present?
           = will_paginate @publishers

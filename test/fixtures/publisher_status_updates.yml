@@ -6,6 +6,16 @@ verified:
   publisher: verified
   status: "active"
 
+verified_notes:
+  publisher: notes
+  status: "active"
+  created_at: "2018-12-01"
+
+verified_notes_to_suspended:
+  publisher: notes
+  status: "suspended"
+  created_at: "2018-12-03"
+
 completed:
   publisher: completed
   status: "active"

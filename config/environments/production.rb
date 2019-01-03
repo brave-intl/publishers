@@ -99,6 +99,8 @@ Rails.application.configure do
   # Use S3 for storage
   config.active_storage.service = :amazon
 
+  config.active_storage.public_service = :amazon
+
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
