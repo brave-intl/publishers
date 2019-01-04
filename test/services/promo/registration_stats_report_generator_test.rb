@@ -4,11 +4,11 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   include PromosHelper
 
   before do
-    @prev_promo_base_uri = Rails.application.secrets[:api_promo_base_uri]
+    @prev_offline = Rails.application.secrets[:api_promo_base_uri]
   end
 
   after do
-    Rails.application.secrets[:api_promo_base_uri] = @promo_base_uri
+    Rails.application.secrets[:api_promo_base_uri] = @prev_offline
   end
 
   STATS = [

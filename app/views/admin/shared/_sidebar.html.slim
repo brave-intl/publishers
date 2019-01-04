@@ -7,6 +7,9 @@ aside
             span Visitor Stats
         - if can? :access, :admin
           li
+            = link_to admin_stats_publisher_statistics_path
+              span Publisher Stats
+          li
             = link_to admin_stats_contributions_path
               span Top Publisher Contributions
           li
