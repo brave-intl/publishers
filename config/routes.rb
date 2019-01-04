@@ -115,9 +115,6 @@ Rails.application.routes.draw do
         namespace :channels, defaults: { format: :json } do
           get "totals"
         end
-        namespace :publishers, defaults: { format: :json } do
-          get "totals"
-        end
       end
     end
   end
