@@ -1,7 +1,7 @@
 # Fetches and updates the stats for all types of referral codes
 class Promo::RegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
-  BATCH_SIZE = 100
+  BATCH_SIZE = 50
 
   def initialize(promo_registrations:)
     @referral_codes = promo_registrations.map { |promo_registration| promo_registration.referral_code }
