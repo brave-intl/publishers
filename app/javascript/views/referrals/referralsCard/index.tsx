@@ -1,15 +1,15 @@
 import * as React from 'react'
 
 import {
-  StyledWrapper,
-  StyledGrid,
-  StyledTitleWrapper,
-  StyledStatsWrapper,
-  StyledTotalWrapper,
-  StyledIconWrapper,
-  StyledTextWrapper,
-  StyledContentWrapper,
-  StyledText
+  Wrapper,
+  Grid,
+  TitleWrapper,
+  StatsWrapper,
+  TotalWrapper,
+  IconWrapper,
+  TextWrapper,
+  ContentWrapper,
+  Text
 } from './style'
 
 import { CheckCircleIcon, CaratRightIcon } from 'brave-ui/components/icons'
@@ -18,53 +18,53 @@ export default class ReferralsCard extends React.Component {
 
   render () {
     return (
-      <StyledWrapper>
-        <StyledGrid>
+      <Wrapper>
+        <Grid>
 
-        <StyledTitleWrapper>
-          <StyledIconWrapper check>
+        <TitleWrapper>
+          <IconWrapper check>
             <CheckCircleIcon/>
-          </StyledIconWrapper>
-          <StyledContentWrapper>
-            <StyledTextWrapper>
-              <StyledText title>Campaign Name</StyledText>
-            </StyledTextWrapper>
-            <StyledTextWrapper created>
-              <StyledText created>Created</StyledText>
-              <StyledText date>Jan 20, 2018</StyledText>
-            </StyledTextWrapper>
-          </StyledContentWrapper>
-        </StyledTitleWrapper>
+          </IconWrapper>
+          <ContentWrapper>
+            <TextWrapper>
+              <Text title>Campaign Name</Text>
+            </TextWrapper>
+            <TextWrapper created>
+              <Text created>Created</Text>
+              <Text date>Jan 20, 2018</Text>
+            </TextWrapper>
+          </ContentWrapper>
+        </TitleWrapper>
 
-        <StyledStatsWrapper>
-          <StyledTextWrapper stats>
-            <StyledText header>DOWNLOADS</StyledText>
-            <StyledText stat>99999</StyledText>
-          </StyledTextWrapper>
-          <StyledTextWrapper stats>
-            <StyledText header>INSTALLS</StyledText>
-            <StyledText stat>99999</StyledText>
-          </StyledTextWrapper>
-          <StyledTextWrapper stats>
-            <StyledText header>30-DAY USE</StyledText>
-            <StyledText use>99999</StyledText>
-          </StyledTextWrapper>
-        </StyledStatsWrapper>
+        <StatsWrapper>
+          <TextWrapper stats>
+            <Text header>DOWNLOADS</Text>
+            <Text stat>99999</Text>
+          </TextWrapper>
+          <TextWrapper stats>
+            <Text header>INSTALLS</Text>
+            <Text stat>99999</Text>
+          </TextWrapper>
+          <TextWrapper stats>
+            <Text header>30-DAY USE</Text>
+            <Text use>99999</Text>
+          </TextWrapper>
+        </StatsWrapper>
 
-        <StyledTotalWrapper>
-          <StyledTextWrapper total>
-            <StyledText total>Total Number of Codes</StyledText>
-          </StyledTextWrapper>
-          <StyledTextWrapper total>
-            <StyledText codes>999</StyledText>
-          </StyledTextWrapper>
-          <StyledIconWrapper carat>
+        <TotalWrapper>
+          <TextWrapper total>
+            <Text total>Total Number of Codes</Text>
+          </TextWrapper>
+          <TextWrapper total>
+            <Text codes>999</Text>
+          </TextWrapper>
+          <IconWrapper carat>
             <CaratRightIcon/>
-          </StyledIconWrapper>
-        </StyledTotalWrapper>
+          </IconWrapper>
+        </TotalWrapper>
 
-        </StyledGrid>
-      </StyledWrapper>
+        </Grid>
+      </Wrapper>
     )
   }
 }

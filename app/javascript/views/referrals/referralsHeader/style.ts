@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div
+export const Wrapper = styled.div
 `
   border-radius: 6px;
   background-color: white;
@@ -8,7 +8,7 @@ export const StyledWrapper = styled.div
   padding: 30px;
 `
 
-export const StyledContentWrapper = styled.div
+export const ContentWrapper = styled.div
 `
   display: flex;
   justify-content: space-between;
@@ -22,7 +22,7 @@ export const StyledContentWrapper = styled.div
   }
 `
 
-export const StyledTextWrapper = styled.div
+export const TextWrapper = styled.div
 `
   padding: 10px;
   ${props => props.earnings &&
@@ -33,7 +33,7 @@ export const StyledTextWrapper = styled.div
   }
 `
 
-export const StyledBox = styled.div
+export const Box = styled.div
 `
   padding-bottom: 6px;
   padding-left: 6px;
@@ -47,7 +47,7 @@ export const StyledBox = styled.div
   align-items: center;
 `
 
-export const StyledText = styled.div
+export const Text = styled.div
 `
   font-family: Poppins, sans-serif;
 

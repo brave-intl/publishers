@@ -1,9 +1,9 @@
 import * as React from 'react'
 
 import {
-  StyledWrapper,
-  StyledContainer,
-  StyledGrid
+  Wrapper,
+  Container,
+  Grid
 } from './style.ts'
 
 import ReferralsNav from './referralsNav/index.tsx'
@@ -14,18 +14,18 @@ export default class Referrals extends React.Component {
 
   render () {
     return (
-      <StyledWrapper>
+      <Wrapper>
         <ReferralsNav/>
-        <StyledContainer>
+        <Container>
           <ReferralsHeader/>
-          <StyledGrid>
+          <Grid>
             <ReferralsCard/>
             <ReferralsCard/>
             <ReferralsCard/>
             <ReferralsCard/>
-          </StyledGrid>
-        </StyledContainer>
-      </StyledWrapper>
+          </Grid>
+        </Container>
+      </Wrapper>
     )
   }
 }

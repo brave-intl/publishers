@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div
+export const Wrapper = styled.div
 `
   background-color: #A0A1B2;
   margin-top: -2rem;
@@ -9,7 +9,7 @@ export const StyledWrapper = styled.div
   width: 100%;
 `
 
-export const StyledContainer = styled.div
+export const Container = styled.div
 `
   display: flex;
   width: 1200px;
@@ -18,7 +18,7 @@ export const StyledContainer = styled.div
   margin-right: auto;
 `
 
-export const StyledText = styled.div
+export const Text = styled.div
 `
   font-family: Poppins, sans-serif;
 
@@ -34,7 +34,7 @@ export const StyledText = styled.div
   }
 `
 
-export const StyledButton = styled.div
+export const Button = styled.div
 `
   font-family: Poppins, sans-serif;
   width: 150px;

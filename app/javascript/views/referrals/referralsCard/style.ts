@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const StyledWrapper = styled.div
+export const Wrapper = styled.div
 `
   border-radius: 6px;
   background-color: white;
@@ -8,15 +8,15 @@ export const StyledWrapper = styled.div
   padding: 30px;
 `
 
-export const StyledGrid = styled.div``
+export const Grid = styled.div``
 
-export const StyledTitleWrapper = styled.div
+export const TitleWrapper = styled.div
 `
   display: flex;
   margin-bottom: 30px;
 `
 
-export const StyledStatsWrapper = styled.div
+export const StatsWrapper = styled.div
 `
   display: flex;
   margin-top: 20px;
@@ -24,7 +24,7 @@ export const StyledStatsWrapper = styled.div
   justify-content: space-between;
 `
 
-export const StyledTotalWrapper = styled.div
+export const TotalWrapper = styled.div
 `
   display: flex;
   justify-content: space-between;
@@ -41,7 +41,7 @@ export const StyledTotalWrapper = styled.div
   border-bottom-left-radius: 6px;
 `
 
-export const StyledIconWrapper = styled.div
+export const IconWrapper = styled.div
 `
     ${props => props.check &&
       `
@@ -61,7 +61,7 @@ export const StyledIconWrapper = styled.div
     }
 `
 
-export const StyledTextWrapper = styled.div
+export const TextWrapper = styled.div
 `
     ${props => props.created &&
       `
@@ -87,15 +87,15 @@ export const StyledTextWrapper = styled.div
     }
 `
 
-export const StyledContentWrapper = styled.div
+export const ContentWrapper = styled.div
 `
   padding: 10px;
 
 `
 
-export const StyledImage = styled.div
+export const Image = styled.div
 
-export const StyledText = styled.div
+export const Text = styled.div
 `
   font-family: Poppins, sans-serif;
 
