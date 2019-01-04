@@ -6,9 +6,9 @@ import {
   StyledTextWrapper,
   StyledText,
   StyledBox
-} from './style'
+} from './style.ts'
 
-export default class ReferralsCard extends React.Component {
+export default class ReferralsHeader extends React.Component {
 
   render () {
     return (

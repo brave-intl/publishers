@@ -4,7 +4,7 @@ import {
   StyledWrapper,
   StyledContainer,
   StyledGrid
-} from './style'
+} from './style.ts'
 
 import ReferralsNav from './referralsNav/index.tsx'
 import ReferralsHeader from './referralsHeader/index.tsx'

@@ -8,7 +8,7 @@ export const StyledWrapper = styled.div
   padding: 30px;
 `
 
-export const StyledGrid = styled.div
+export const StyledGrid = styled.div``
 
 export const StyledTitleWrapper = styled.div
 `

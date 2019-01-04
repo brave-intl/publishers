@@ -5,7 +5,7 @@ import {
   StyledContainer,
   StyledText,
   StyledButton
-} from './style'
+} from './style.ts'
 
 export default class ReferralsNav extends React.Component {
 
