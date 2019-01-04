@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 
 import {
   StyledWrapper,
@@ -9,24 +8,9 @@ import {
   StyledBox
 } from './style'
 
-
 export default class ReferralsCard extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
-
-  componentWillMount(){
-  }
-
-  componentDidMount(){
-  }
-
-
-
-  render() {
+  render () {
     return (
       <StyledWrapper>
         <StyledContentWrapper>
@@ -65,5 +49,5 @@ export default class ReferralsCard extends React.Component {
         </StyledContentWrapper>
       </StyledWrapper>
     )
-    }
+  }
 }

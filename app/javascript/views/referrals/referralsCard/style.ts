@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components'
 
 export const StyledWrapper = styled.div
 `
@@ -6,12 +6,9 @@ export const StyledWrapper = styled.div
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
   padding: 30px;
-`;
-
-export const StyledGrid = styled.div
 `
 
-`;
+export const StyledGrid = styled.div
 
 export const StyledTitleWrapper = styled.div
 `
@@ -43,7 +40,6 @@ export const StyledTotalWrapper = styled.div
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
 `
-
 
 export const StyledIconWrapper = styled.div
 `
@@ -98,12 +94,10 @@ export const StyledContentWrapper = styled.div
 `
 
 export const StyledImage = styled.div
-`
-`
 
 export const StyledText = styled.div
 `
-  font-family: poppins;
+  font-family: Poppins, sans-serif;
 
     ${props => props.title &&
       `
@@ -159,4 +153,4 @@ export const StyledText = styled.div
       `
     }
 
-`;
+`

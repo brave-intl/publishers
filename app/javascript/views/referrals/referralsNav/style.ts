@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components'
 
 export const StyledWrapper = styled.div
 `
@@ -7,7 +7,7 @@ export const StyledWrapper = styled.div
   margin-bottom: 30px;
   height: 80px;
   width: 100%;
-`;
+`
 
 export const StyledContainer = styled.div
 `
@@ -16,11 +16,11 @@ export const StyledContainer = styled.div
   height: 100%;
   margin-left: auto;
   margin-right: auto;
-`;
+`
 
 export const StyledText = styled.div
 `
-  font-family: 'Poppins';
+  font-family: Poppins, sans-serif;
 
   ${props => props.header &&
     `
@@ -32,11 +32,11 @@ export const StyledText = styled.div
       padding-left: 7px;
     `
   }
-`;
+`
 
 export const StyledButton = styled.div
 `
-  font-family: 'Poppins';
+  font-family: Poppins, sans-serif;
   width: 150px;
   color: white;
   text-align: center;
@@ -53,4 +53,4 @@ export const StyledButton = styled.div
   cursor: pointer;
   user-select: none;
   display: inline-block;
-`;
+`

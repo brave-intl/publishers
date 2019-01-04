@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components'
 
 export const StyledWrapper = styled.div
 `
@@ -6,7 +6,7 @@ export const StyledWrapper = styled.div
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
   padding: 30px;
-`;
+`
 
 export const StyledContentWrapper = styled.div
 `
@@ -20,7 +20,7 @@ export const StyledContentWrapper = styled.div
       justify-content: flex-end;
     `
   }
-`;
+`
 
 export const StyledTextWrapper = styled.div
 `
@@ -31,7 +31,7 @@ export const StyledTextWrapper = styled.div
       display: flex;
     `
   }
-`;
+`
 
 export const StyledBox = styled.div
 `
@@ -45,11 +45,11 @@ export const StyledBox = styled.div
   background-color: #F1F1F9;
   display: flex;
   align-items: center;
-`;
+`
 
 export const StyledText = styled.div
 `
-  font-family: poppins;
+  font-family: Poppins, sans-serif;
 
   ${props => props.box &&
     `
@@ -88,4 +88,4 @@ export const StyledText = styled.div
       color: #392DD1;
     `
   }
-`;
+`

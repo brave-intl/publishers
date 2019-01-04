@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 
 import {
   StyledWrapper,
@@ -10,29 +9,14 @@ import {
   StyledIconWrapper,
   StyledTextWrapper,
   StyledContentWrapper,
-  StyledImage,
-  StyledText,
+  StyledText
 } from './style'
 
 import { CheckCircleIcon, CaratRightIcon } from 'brave-ui/components/icons'
 
 export default class ReferralsCard extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
-
-  componentWillMount(){
-  }
-
-  componentDidMount(){
-  }
-
-
-
-  render() {
+  render () {
     return (
       <StyledWrapper>
         <StyledGrid>
@@ -82,5 +66,5 @@ export default class ReferralsCard extends React.Component {
         </StyledGrid>
       </StyledWrapper>
     )
-    }
+  }
 }

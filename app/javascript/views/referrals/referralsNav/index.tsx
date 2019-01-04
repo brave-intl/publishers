@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 
 import {
   StyledWrapper,
@@ -8,24 +7,9 @@ import {
   StyledButton
 } from './style'
 
-
 export default class ReferralsNav extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
-
-  componentWillMount(){
-  }
-
-  componentDidMount(){
-  }
-
-
-
-  render() {
+  render () {
     return (
       <StyledWrapper>
         <StyledContainer>
@@ -34,5 +18,5 @@ export default class ReferralsNav extends React.Component {
         </StyledContainer>
       </StyledWrapper>
     )
-    }
+  }
 }
