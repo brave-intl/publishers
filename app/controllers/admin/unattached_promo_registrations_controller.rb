@@ -32,23 +32,22 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     referral_codes = params[:referral_codes]
     @reporting_interval = params[:reporting_interval]
     @event_types = params[:event_types]
+    @is_geo = params[:geo].present?
     if @event_types.nil?
       return redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
                         alert: "Please check at least one of downloads, installs, or confirmations."
     end
     
     report_start_and_end_date = parse_report_dates(params[:referral_code_report_period], @reporting_interval)
-    report_info = Promo::RegistrationStatsReportGenerator.new(referral_codes: referral_codes,
-                                                  start_date: report_start_and_end_date[:start_date],
-                                                  end_date: report_start_and_end_date[:end_date],
-                                                  reporting_interval: @reporting_interval).perform
+    report_csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: referral_codes,
+                                                              start_date: report_start_and_end_date[:start_date],
+                                                              end_date: report_start_and_end_date[:end_date],
+                                                              reporting_interval: @reporting_interval,
+                                                              is_geo: @is_geo).perform
 
-    @start_date = report_info["start_date"]
-    @end_date = report_info["end_date"]
-    @report_contents = report_info["contents"]
-
-    report_string = render_to_string :layout => false
-    send_data report_string, filename: "BraveReferralPromoReport.html", type: "application/html"
+    respond_to do |format|
+      format.csv { send_data report_csv, filename: "brave_referral_report.csv"}
+    end
   end
 
   def update_statuses
@@ -76,7 +75,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     Promo::RegistrationInstallerTypeSetter.new(promo_registrations: promo_registrations,
                                                installer_type: installer_type).perform
     redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
-                notice: "Assigned #{referral_codes.count} installer type to '#{installer_type}'."
+                notice: "Assigned installer type '#{installer_type}' to #{referral_codes.count} codes."
   end
 
   private

@@ -40,6 +40,8 @@ gem "email_validator", "~> 1.6"
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
+gem "font-awesome-rails", "~> 4.7.0.4"
+
 # For building complex JSON objects
 gem 'jbuilder', '~> 2.7.0'
 
@@ -175,7 +177,11 @@ group :production do
 end
 
 group :development, :test do
+  # Create a temporary table-backed ActiveRecord model
+  gem 'temping'
+
   gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
   gem "byebug"
   gem "pry-byebug", require: false
   gem "mocha"

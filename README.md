@@ -144,6 +144,8 @@ To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
 4. To test email, run a local mail server at localhost:25
 `mailcatcher`
 
+5. To view the emails sent to your inbox you can the inbox at http://localhost:1080
+
 ## Development
 
 ### Config
@@ -185,6 +187,8 @@ yarn lint
 
 ## Testing
 
+### Ruby
+
 ```sh
 bin/rake test
 ```
@@ -206,6 +210,14 @@ We also use ImageMagick to process user uploaded images. If you don't have it al
 
 ```
 brew install imagemagick
+```
+
+### Javascript
+
+We use jest for our javascript testing framework. You can run the tests through the following command.
+
+```sh
+yarn test
 ```
 
 ## Running locally with docker-compose
@@ -258,7 +270,7 @@ If you wish to make modifications to the compose files you can place a file name
 top of the repo. For example you can expose ports on your system for the databases with this
 `docker-compose.override.yml`:
 
-```
+```yaml
 version: "2.1"
 
 services:

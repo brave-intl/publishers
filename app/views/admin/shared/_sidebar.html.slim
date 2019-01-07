@@ -7,6 +7,9 @@ aside
             span Visitor Stats
         - if can? :access, :admin
           li
+            = link_to admin_stats_publisher_statistics_path
+              span Publisher Stats
+          li
             = link_to admin_stats_contributions_path
               span Top Publisher Contributions
           li
@@ -19,8 +22,17 @@ aside
             = link_to admin_partners_path
               span Partners
           li
+            a href='#'  id="sidebar-toggle" class="pull-right"
+              = fa_icon "chevron-down"
             = link_to admin_channels_path
               span Channels
+            ul.sub-menu style="#{params[:controller] == 'admin/channels' ? "" : "display:none"} "
+              = link_to admin_channels_path(type: 'website')
+                span Websites
+              = link_to admin_channels_path(type: 'twitch')
+                span Twitch
+              = link_to admin_channels_path(type: 'youtube')
+                span Youtube
           li
             = link_to admin_publishers_path
               span Publishers

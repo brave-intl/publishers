@@ -115,9 +115,6 @@ Rails.application.routes.draw do
         namespace :channels, defaults: { format: :json } do
           get "totals"
         end
-        namespace :publishers, defaults: { format: :json } do
-          get "totals"
-        end
       end
     end
   end
@@ -147,10 +144,11 @@ Rails.application.routes.draw do
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
+      resources :publisher_statistics, only: [:index]
     end
-    resources :unattached_promo_registrations, only: %i(index create) do
+    resources :unattached_promo_registrations, only: %i(index create)do
       collection do
-        get :report
+        get :report, defaults: { format: :csv }
         patch :update_statuses
         patch :assign_campaign
         put :assign_installer_type

@@ -15,6 +15,7 @@ twitch_verified_details:
   thumbnail_url: "https://some_image_host.com/some_image.png"
   stats:
     :view_count: 400
+    :followers_count: 400
 
 uphold_connected_twitch_details:
   auth_user_id: "abc124"
@@ -25,3 +26,4 @@ uphold_connected_twitch_details:
   thumbnail_url: "https://some_image_host.com/some_image.png"
   stats:
     :view_count: 40000
+    :followers_count: 40000

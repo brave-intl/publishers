@@ -1,0 +1,18 @@
+# Just registered.
+default: &default
+  publisher: notes
+  note: "Should be active"
+  created_at: "2018-12-02"
+  created_by: default
+
+comment_after_suspended: &comment_after_suspended
+  publisher: notes
+  note: "Should be suspended"
+  created_at: "2018-12-04"
+  created_by: default
+
+note:
+  publisher: just_notes
+  note: "Should be suspended"
+  created_at: "2018-12-04"
+  created_by: default

@@ -1,0 +1,20 @@
+table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+  tr
+    th ID
+    th Publisher
+    th Channel Identifier
+    th Verified
+    th Verification Method
+  tbody
+    - channels.each do |channel|
+      tr.gradeX
+        td = channel.id
+        td = link_to channel.publisher&.email, admin_publisher_path(channel.publisher_id)
+        td = channel.details.channel_identifier
+        td
+          - if channel.verified
+            = fa_icon 'check'
+          - else
+            = fa_icon 'times', class: 'text-danger'
+          = " #{channel.verified}"
+        td = channel.details.verification_method

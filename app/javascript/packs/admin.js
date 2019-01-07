@@ -1,5 +1,6 @@
 import 'utils/request';
 import 'admin/dashboard/index';
+import 'admin/stats/index';
 import 'admin/dashboard/unattached_promo_registration'
 import Rails from 'rails-ujs';
 
@@ -30,3 +31,27 @@ Rails.href = function Rails_href_override(element) {
 };
 
 Rails.start();
+
+
+document.addEventListener('click', function (event) {
+  // If the clicked element doesn't have the right selector, bail
+  if (event.target.matches('#sidebar-toggle, #sidebar-toggle *, i')) {
+    document.activeElement.blur();
+    event.preventDefault();
+
+    let icon = document.querySelector('#sidebar-toggle > .fa')
+
+    // Toggle the menu
+    let element = document.querySelector('.sub-menu')
+    if(element.style.display === 'none') {
+      icon.classList.remove("fa-chevron-down");
+      icon.classList.add("fa-chevron-up");
+      element.style.display = '';
+    } else {
+      icon.classList.remove("fa-chevron-up");
+      icon.classList.add("fa-chevron-down");
+      element.style.display = 'none';
+    }
+  }
+}, false);
+

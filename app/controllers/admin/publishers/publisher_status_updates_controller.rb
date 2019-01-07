@@ -12,7 +12,7 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
     if params[:publisher_status] == "suspended" && params[:send_email].present?
       PublisherMailer.suspend_publisher(@publisher).deliver_later
     end
-    
+
     flash[:notice] = "Updated publisher's status to #{@publisher.inferred_status}"
     redirect_to admin_publisher_path(id: @publisher.id)
   end
