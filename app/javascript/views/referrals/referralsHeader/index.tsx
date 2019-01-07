@@ -45,9 +45,9 @@ export default class ReferralsHeader extends React.Component {
           </TextWrapper>
         </ContentWrapper>
         <ContentWrapper box>
-        <Box>
-        <Text box>January 2019</Text>
-        </Box>
+          <Box>
+            <Text box>January 2019</Text>
+          </Box>
         </ContentWrapper>
       </Wrapper>
     )

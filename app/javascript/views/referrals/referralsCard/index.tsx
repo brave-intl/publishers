@@ -27,7 +27,7 @@ export default class ReferralsCard extends React.Component {
           </IconWrapper>
           <ContentWrapper>
             <TextWrapper>
-              <Text title>Campaign Name</Text>
+              <Text title>{locale.campaignName}</Text>
             </TextWrapper>
             <TextWrapper created>
               <Text created>{locale.created}</Text>

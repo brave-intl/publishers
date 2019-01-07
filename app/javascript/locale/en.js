@@ -18,7 +18,8 @@ const locale = {
   estimatedEarnings: 'ESTIMATED EARNINGS',
   bat: 'BAT',
   created: 'Created',
-  totalNumber: 'Total Number of Codes'
+  totalNumber: 'Total Number of Codes',
+  campaignName: 'Campaign Name'
 };
 
 export default locale;
