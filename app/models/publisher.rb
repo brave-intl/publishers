@@ -338,8 +338,8 @@ class Publisher < ApplicationRecord
   end
 
   # Remove when new dashboard is finished
-  def in_new_dashboard_whitelist?
-    self.email.in?((Rails.application.secrets[:new_dashboard_email_whitelist] || "").split(","))
+  def in_new_ui_whitelist?
+    self.email.in?((Rails.application.secrets[:new_ui_email_whitelist] || "").split(","))
   end
 
   private

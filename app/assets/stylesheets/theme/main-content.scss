@@ -1,5 +1,6 @@
 .main-content {
   position: relative;
+  min-width: 1200px;
   z-index: 0;
   padding-top: $spacer*2;
   padding-bottom: $spacer*2;
@@ -7,4 +8,8 @@
   background: $braveGradient-LegacyPink;
   min-height: calc(100vh - #{$braveNavbarHeight});
   overflow: auto;
+
+  @media (max-width: 768px) {
+    min-width: initial;
+  }
 }

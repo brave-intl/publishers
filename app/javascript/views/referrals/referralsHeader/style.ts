@@ -35,10 +35,7 @@ export const TextWrapper = styled.div
 
 export const Box = styled.div
 `
-  padding-bottom: 6px;
-  padding-left: 6px;
-  padding-right: 9px;
-  padding-top: 8px;
+  padding: 8px 9px 6px 6px;
   margin-right: 16px;
   border-radius: 6px;
   width: 145px;

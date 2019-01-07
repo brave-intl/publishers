@@ -16,6 +16,11 @@ export const Container = styled.div
   height: 100%;
   margin-left: auto;
   margin-right: auto;
+  justify-content: flex-end;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 export const Text = styled.div
@@ -45,12 +50,8 @@ export const Button = styled.div
   margin-top: auto;
   margin-bottom: auto;
   margin-left: auto;
-  padding-top: 11px;
-  padding-bottom: 8px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 11px 12px 8px 12px;
   font-size: 15px;
   cursor: pointer;
   user-select: none;
-  display: inline-block;
 `

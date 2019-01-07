@@ -371,7 +371,7 @@ class PublishersController < ApplicationController
   end
 
   def referrals
-    redirect_to("/publishers/home") and return unless current_publisher.in_new_dashboard_whitelist?
+    redirect_to("/publishers/home") and return unless current_publisher.in_new_ui_whitelist?
   end
 
   def statements

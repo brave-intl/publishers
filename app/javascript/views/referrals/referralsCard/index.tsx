@@ -3,9 +3,7 @@ import * as React from 'react'
 import {
   Wrapper,
   Grid,
-  TitleWrapper,
-  StatsWrapper,
-  TotalWrapper,
+  Row,
   IconWrapper,
   TextWrapper,
   ContentWrapper,
@@ -14,6 +12,8 @@ import {
 
 import { CheckCircleIcon, CaratRightIcon } from 'brave-ui/components/icons'
 
+import locale from 'locale/en'
+
 export default class ReferralsCard extends React.Component {
 
   render () {
@@ -21,7 +21,7 @@ export default class ReferralsCard extends React.Component {
       <Wrapper>
         <Grid>
 
-        <TitleWrapper>
+        <Row title>
           <IconWrapper check>
             <CheckCircleIcon/>
           </IconWrapper>
@@ -30,30 +30,30 @@ export default class ReferralsCard extends React.Component {
               <Text title>Campaign Name</Text>
             </TextWrapper>
             <TextWrapper created>
-              <Text created>Created</Text>
+              <Text created>{locale.created}</Text>
               <Text date>Jan 20, 2018</Text>
             </TextWrapper>
           </ContentWrapper>
-        </TitleWrapper>
+        </Row>
 
-        <StatsWrapper>
+        <Row stats>
           <TextWrapper stats>
-            <Text header>DOWNLOADS</Text>
+            <Text header>{locale.downloads}</Text>
             <Text stat>99999</Text>
           </TextWrapper>
           <TextWrapper stats>
-            <Text header>INSTALLS</Text>
+            <Text header>{locale.installs}</Text>
             <Text stat>99999</Text>
           </TextWrapper>
           <TextWrapper stats>
-            <Text header>30-DAY USE</Text>
+            <Text header>{locale.thirtyDay}</Text>
             <Text use>99999</Text>
           </TextWrapper>
-        </StatsWrapper>
+        </Row>
 
-        <TotalWrapper>
+        <Row total>
           <TextWrapper total>
-            <Text total>Total Number of Codes</Text>
+            <Text total>{locale.totalNumber}</Text>
           </TextWrapper>
           <TextWrapper total>
             <Text codes>999</Text>
@@ -61,7 +61,7 @@ export default class ReferralsCard extends React.Component {
           <IconWrapper carat>
             <CaratRightIcon/>
           </IconWrapper>
-        </TotalWrapper>
+        </Row>
 
         </Grid>
       </Wrapper>

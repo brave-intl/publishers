@@ -8,6 +8,8 @@ import {
   Box
 } from './style.ts'
 
+import locale from 'locale/en'
+
 export default class ReferralsHeader extends React.Component {
 
   render () {
@@ -15,30 +17,30 @@ export default class ReferralsHeader extends React.Component {
       <Wrapper>
         <ContentWrapper>
           <TextWrapper>
-            <Text header>CAMPAIGNS</Text>
+            <Text header>{locale.campaigns}</Text>
             <Text stat>9</Text>
           </TextWrapper>
           <TextWrapper>
-            <Text header>REFERRAL CODES</Text>
+            <Text header>{locale.referralCodes}</Text>
             <Text stat blue>499</Text>
           </TextWrapper>
           <TextWrapper>
-            <Text header>DOWNLOADS</Text>
+            <Text header>{locale.downloads}</Text>
             <Text stat>9999</Text>
           </TextWrapper>
           <TextWrapper>
-            <Text header>INSTALLS</Text>
+            <Text header>{locale.installs}</Text>
             <Text stat>999</Text>
           </TextWrapper>
           <TextWrapper>
-            <Text header>30-DAY USE</Text>
+            <Text header>{locale.thirtyDay}</Text>
             <Text stat purple>999</Text>
           </TextWrapper>
           <TextWrapper>
-            <Text header>ESTIMATED EARNINGS</Text>
+            <Text header>{locale.thirtyDay}</Text>
             <TextWrapper earnings>
               <Text stat purple>999</Text>
-              <Text bat purple>BAT</Text>
+              <Text bat purple>{locale.bat}</Text>
             </TextWrapper>
           </TextWrapper>
         </ContentWrapper>

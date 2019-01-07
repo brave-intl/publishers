@@ -7,14 +7,16 @@ import {
   Button
 } from './style.ts'
 
+import locale from 'locale/en'
+
 export default class ReferralsNav extends React.Component {
 
   render () {
     return (
       <Wrapper>
         <Container>
-            <Text header>Referrals</Text>
-            <Button>Create Code</Button>
+            <Text header>{locale.referrals}</Text>
+            <Button>{locale.createCode}</Button>
         </Container>
       </Wrapper>
     )

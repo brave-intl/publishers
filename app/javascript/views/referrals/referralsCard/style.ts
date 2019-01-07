@@ -10,35 +10,38 @@ export const Wrapper = styled.div
 
 export const Grid = styled.div``
 
-export const TitleWrapper = styled.div
+export const Row = styled.div
 `
   display: flex;
-  margin-bottom: 30px;
-`
 
-export const StatsWrapper = styled.div
-`
-  display: flex;
-  margin-top: 20px;
-  padding-bottom: 15px;
-  justify-content: space-between;
-`
 
-export const TotalWrapper = styled.div
-`
-  display: flex;
-  justify-content: space-between;
-  grid-column-gap: 10px;
-  background-color: #F1F1F9;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-left: -30px;
-  margin-right: -30px;
-  margin-bottom: -30px;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
+  ${props => props.title &&
+    `
+      margin-bottom: 30px;
+    `
+  }
+
+  ${props => props.stats &&
+    `
+      margin-top: 20px;
+      padding-bottom: 15px;
+      justify-content: space-between;
+    `
+  }
+
+  ${props => props.total &&
+    `
+      justify-content: space-between;
+      grid-column-gap: 10px;
+      background-color: #F1F1F9;
+      padding: 10px 30px;
+      margin-left: -30px;
+      margin-right: -30px;
+      margin-bottom: -30px;
+      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+    `
+  }
 `
 
 export const IconWrapper = styled.div
