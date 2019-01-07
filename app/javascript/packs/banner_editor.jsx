@@ -467,9 +467,6 @@ export default class BannerEditor extends React.Component {
       case '20,50,100':
         return 3
         break;
-      case '50,100,500':
-        return 4
-        break;
     }
   }
 
@@ -486,9 +483,6 @@ export default class BannerEditor extends React.Component {
         break;
       case '3':
         this.setState({donationAmounts: [20, 50, 100]})
-        break;
-      case '4':
-        this.setState({donationAmounts: [50, 100, 500]})
         break;
     }
   }
@@ -627,7 +621,6 @@ export default class BannerEditor extends React.Component {
                   <div data-value='1'>5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT</div>
                   <div data-value='2'>10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT</div>
                   <div data-value='3'>20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT</div>
-                  <div data-value='4'>50 BAT &nbsp; | &nbsp; 100 BAT &nbsp; | &nbsp; 500 BAT</div>
                 </Select>
               </div>
               <DonationWrapper>
