@@ -107,6 +107,7 @@ Rails.application.routes.draw do
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
+          get :totals
         end
       end
       # /api/v1/public/
