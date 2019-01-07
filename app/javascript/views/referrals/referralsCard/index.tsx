@@ -12,7 +12,7 @@ import {
 
 import { CheckCircleIcon, CaratRightIcon } from 'brave-ui/components/icons'
 
-import locale from 'locale/en'
+import locale from '../../../locale/en.js'
 
 export default class ReferralsCard extends React.Component {
 

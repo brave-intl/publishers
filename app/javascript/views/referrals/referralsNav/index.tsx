@@ -7,7 +7,7 @@ import {
   Button
 } from './style.ts'
 
-import locale from 'locale/en'
+import locale from '../../../locale/en.js'
 
 export default class ReferralsNav extends React.Component {
 

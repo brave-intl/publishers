@@ -10,7 +10,7 @@ import ReferralsNav from './referralsNav/index.tsx'
 import ReferralsHeader from './referralsHeader/index.tsx'
 import ReferralsCard from './referralsCard/index.tsx'
 
-import locale from 'locale/en'
+import locale from '../../locale/en.js'
 
 export default class Referrals extends React.Component {
 
