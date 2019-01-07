@@ -8,7 +8,7 @@ App for [publishers.brave.com](https://publishers.brave.com).
 
 These steps presume you are using OSX and [Homebrew](https://brew.sh/).
 
-1. Ruby 2.3.8. For a Ruby version manager try
+1. Ruby 2.4.5. For a Ruby version manager try
    [rbenv](https://github.com/rbenv/rbenv).
 2. Node 6.12.3 (active LTS at writing) or greater. For a Node version manager
    try [nvm](https://github.com/creationix/nvm#installation).
@@ -59,6 +59,11 @@ bundle exec rake ssl:generate
 When you first visit the application in a browser you may need to add an
 exception to trust this self-signed certificate. Sometimes this is under an
 "advanced" or "proceed" link.
+
+Note:
+If you're seeing `SSL error, peer: 127.0.0.1, peer cert: , #<Puma::MiniSSL::SSLError: OpenSSL error: error:141F7065:SSL routines:final_key_share:no suitable key share - 337604709>`
+
+Please try changing your Gemfile to use the fixes documented in https://github.com/puma/puma/issues/1670
 
 ### Google API Setup
 
