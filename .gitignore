@@ -30,3 +30,6 @@ yarn-error.log
 .env
 docker-compose.override.yml
 coverage
+
+# Ignore compiled TypeScript files
+/app/javascript/views/**/*.jsx

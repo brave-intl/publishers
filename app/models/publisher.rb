@@ -338,6 +338,11 @@ class Publisher < ApplicationRecord
       !excluded_from_payout
   end
 
+  # Remove when new dashboard is finished
+  def in_new_ui_whitelist?
+    self.email.in?((Rails.application.secrets[:new_ui_email_whitelist] || "").split(","))
+  end
+
   private
 
   def set_created_status
