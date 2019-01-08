@@ -14,6 +14,8 @@ class PromoRegistration < ApplicationRecord
   FIRST_RUNS = "first_runs" # Aliased as 'Installs'
   FINALIZED = "finalized" # Aliased as 'Confirmed'
 
+  COUNTRY = "country"
+
   # Reporting intervals
   DAILY = "daily"
   WEEKLY = "weekly"
@@ -24,6 +26,7 @@ class PromoRegistration < ApplicationRecord
   SILENT = "silent"
   MOBILE = "mobile"
   STANDARD = "standard"
+
   
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign

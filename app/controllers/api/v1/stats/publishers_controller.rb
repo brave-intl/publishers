@@ -65,6 +65,10 @@ class Api::V1::Stats::PublishersController < Api::V1::StatsController
     render(json: fill_in_blank_dates(result).to_json, status: 200)
   end
 
+  def totals
+    render(json: Publisher.statistical_totals, status: 200)
+  end
+
   def javascript_enabled_usage
     active_users_with_javascript_enabled = Publisher.
       distinct.

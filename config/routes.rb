@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
       get :home
+      get :referrals
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
@@ -107,15 +108,13 @@ Rails.application.routes.draw do
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
+          get :totals
         end
       end
       # /api/v1/public/
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
         namespace :channels, defaults: { format: :json } do
-          get "totals"
-        end
-        namespace :publishers, defaults: { format: :json } do
           get "totals"
         end
       end
@@ -147,10 +146,11 @@ Rails.application.routes.draw do
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
+      resources :publisher_statistics, only: [:index]
     end
-    resources :unattached_promo_registrations, only: %i(index create) do
+    resources :unattached_promo_registrations, only: %i(index create)do
       collection do
-        get :report
+        get :report, defaults: { format: :csv }
         patch :update_statuses
         patch :assign_campaign
         put :assign_installer_type

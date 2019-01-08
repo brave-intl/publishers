@@ -1,6 +1,6 @@
 class Publishers::SiteBannersController < ApplicationController
   include ImageConversionHelper
-  before_action :authenticate_publisher!, only: [:create, :update_logo, :update_background]
+  before_action :authenticate_publisher!
 
   MAX_IMAGE_SIZE = 10_000_000
 
@@ -19,10 +19,15 @@ class Publishers::SiteBannersController < ApplicationController
     if site_banner
       site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
       if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
-        update_image(attachment: site_banner.logo, attachment_type: SiteBanner::LOGO)
+        site_banner.upload_public_logo(
+          image_properties(attachment_type: SiteBanner::LOGO)
+        )
       end
+
       if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
-        update_image(attachment: site_banner.background_image, attachment_type: SiteBanner::BACKGROUND)
+        site_banner.upload_public_background_image(
+          image_properties(attachment_type: SiteBanner::BACKGROUND)
+        )
       end
     end
     head :ok
@@ -38,7 +43,7 @@ class Publishers::SiteBannersController < ApplicationController
     @site_banner ||= current_publisher.site_banners.find_by(id: params[:id])
   end
 
-  def update_image(attachment:, attachment_type:)
+  def image_properties(attachment_type:)
     if attachment_type === SiteBanner::LOGO
       data_url = params[:logo].split(',')[0]
     elsif attachment_type === SiteBanner::BACKGROUND
@@ -85,10 +90,10 @@ class Publishers::SiteBannersController < ApplicationController
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
 
-    attachment.attach(
+    {
       io: open(padded_resized_jpg_path),
       filename: new_filename + ".jpg",
       content_type: "image/jpg"
-    )
+    }
   end
 end

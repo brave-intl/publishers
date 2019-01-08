@@ -1,12 +1,13 @@
 class Admin::PublishersController < AdminController
   before_action :get_publisher
   include Search
+  include ActiveRecord::Sanitization::ClassMethods
 
   def index
     @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
                     Publisher.advanced_sort(sort_column.to_sym, sort_direction)
                   else
-                    Publisher.order("#{sort_column} #{sort_direction}")
+                    Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction}"))
                   end
 
     if params[:q].present?

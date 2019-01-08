@@ -1,9 +1,9 @@
 amazon:
   service: S3
-  access_key_id: <%= ENV['S3_REWARDS_ACCESS_KEY_ID'] %>
-  secret_access_key: <%= ENV['S3_REWARDS_SECRET_ACCESS_KEY'] %>
-  region: <%= ENV['S3_REWARDS_BUCKET_REGION'] %>
-  bucket: <%= ENV['S3_REWARDS_BUCKET_NAME'] %>
+  access_key_id: <%= ENV['S3_PUBLISHERS_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['S3_PUBLISHERS_SECRET_ACCESS_KEY'] %>
+  region: <%= ENV['S3_PUBLISHERS_BUCKET_REGION'] %>
+  bucket: <%= ENV['S3_PUBLISHERS_BUCKET_NAME'] %>
 
 local:
   service: Disk

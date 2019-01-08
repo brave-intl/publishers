@@ -122,6 +122,7 @@ class Publisher < ApplicationRecord
 
   def self.statistical_totals
     {
+      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
       email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).distinct(:id).count,
       email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.distinct(:id).count,
@@ -138,7 +139,7 @@ class Publisher < ApplicationRecord
         where(channels: {verified: true}).
         group(:id).
         select("publishers.*", "count(channels.id) channels_count").
-        order("channels_count #{sort_direction}")
+        order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
   end
 
@@ -337,6 +338,11 @@ class Publisher < ApplicationRecord
       !excluded_from_payout
   end
 
+  # Remove when new dashboard is finished
+  def in_new_ui_whitelist?
+    self.email.in?((Rails.application.secrets[:new_ui_email_whitelist] || "").split(","))
+  end
+
   private
 
   def set_created_status
@@ -385,7 +391,9 @@ class Publisher < ApplicationRecord
 
   class << self
     def encryption_key
-      Rails.application.secrets[:attr_encrypted_key]
+      # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
+      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
     end
 
     def find_by_owner_identifier(owner_identifier)

@@ -95,4 +95,11 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
       active_users_with_javascript_disabled: Publisher.distinct.joins("inner join channels on channels.publisher_id = publishers.id").count - 1
     }.to_json
   end
+
+  test "totals endpoint has content" do
+    # (Albert Wang): TODO, move this to private API
+    get api_v1_stats_publishers_totals_path, headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    assert JSON.parse(response.body)
+    assert_response 200
+  end
 end
