@@ -1,4 +1,4 @@
-FROM ruby:2.3.8
+FROM ruby:2.4.5
 
 # Install node
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -

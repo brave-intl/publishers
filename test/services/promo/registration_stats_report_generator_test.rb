@@ -4,11 +4,11 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   include PromosHelper
 
   before do
-    @prev_promo_base_uri = Rails.application.secrets[:api_promo_base_uri]
+    @prev_offline = Rails.application.secrets[:api_promo_base_uri]
   end
 
   after do
-    Rails.application.secrets[:api_promo_base_uri] = @promo_base_uri
+    Rails.application.secrets[:api_promo_base_uri] = @prev_offline
   end
 
   STATS = [
@@ -265,10 +265,10 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
         event_type_column_header(PromoRegistration::RETRIEVALS),
                           event_type_column_header(PromoRegistration::FIRST_RUNS),
                           event_type_column_header(PromoRegistration::FINALIZED)],
-      ["ABC123", "United States", "2018-12-01", "6", "6", "6"],
       ["ABC123", "Mexico", "2018-12-01", "6", "6", "6"],
+      ["ABC123", "United States", "2018-12-01", "6", "6", "6"],
+      ["DEF456", "Mexico", "2018-12-01", "6", "6", "6"],
       ["DEF456", "United States", "2018-12-01", "6", "6", "6"],
-      ["DEF456", "Mexico", "2018-12-01", "6", "6", "6"]
     ]
 
     assert_equal expected, CSV.parse(csv)
@@ -294,18 +294,18 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
         event_type_column_header(PromoRegistration::RETRIEVALS),
                           event_type_column_header(PromoRegistration::FIRST_RUNS),
                           event_type_column_header(PromoRegistration::FINALIZED)],
-      ["ABC123", "United States", "2018-10-29", "1", "1", "1",],
-      ["ABC123", "United States", "2018-11-05", "1", "1", "1",],
-      ["ABC123", "United States", "2018-11-12", "1", "1", "1",],
       ["ABC123", "Mexico", "2018-10-29", "1", "1", "1",],
       ["ABC123", "Mexico", "2018-11-05", "1", "1", "1",],
       ["ABC123", "Mexico", "2018-11-12", "1", "1", "1",],
-      ["DEF456", "United States", "2018-10-29", "1", "1", "1",],
-      ["DEF456", "United States", "2018-11-05", "1", "1", "1",],
-      ["DEF456", "United States", "2018-11-12", "1", "1", "1",],
+      ["ABC123", "United States", "2018-10-29", "1", "1", "1",],
+      ["ABC123", "United States", "2018-11-05", "1", "1", "1",],
+      ["ABC123", "United States", "2018-11-12", "1", "1", "1",],
       ["DEF456", "Mexico", "2018-10-29", "1", "1", "1",],
       ["DEF456", "Mexico", "2018-11-05", "1", "1", "1",],
       ["DEF456", "Mexico", "2018-11-12", "1", "1", "1",],
+      ["DEF456", "United States", "2018-10-29", "1", "1", "1",],
+      ["DEF456", "United States", "2018-11-05", "1", "1", "1",],
+      ["DEF456", "United States", "2018-11-12", "1", "1", "1",],
     ]
 
     assert_equal expected, CSV.parse(csv)

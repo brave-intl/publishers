@@ -3,7 +3,7 @@ class PayoutReport < ApplicationRecord
   self.per_page = 8
 
   LEGACY_PAYOUT_REPORT_TRANSITION_DATE = "2018-12-01 09:14:58 -0800"
-  
+
   attr_encrypted :contents, key: :encryption_key, marshal: true
 
   has_many :potential_payments
@@ -13,7 +13,9 @@ class PayoutReport < ApplicationRecord
   }
 
   def encryption_key
-    Rails.application.secrets[:attr_encrypted_key]
+    # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
+    # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+    Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
   end
 
   def amount

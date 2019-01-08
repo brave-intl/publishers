@@ -182,4 +182,35 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     assert c.verification_details.nil?
     assert c.verification_status, "approved_by_admin"
   end
+
+  test "successfully start contesting a channel with a publisher" do
+    Rails.application.secrets[:host_inspector_offline] = false
+    duplicate_channel = channels(:verified)
+    channel = channels(:to_verify_file)
+    channel.details.brave_publisher_id = duplicate_channel.details.brave_publisher_id
+    channel.details.save(validate: false)
+    stub_verification_public_file(channel)
+    refute channel.verified?
+    SiteChannelVerifier.new(channel: channel).perform
+    channel.reload
+    refute channel.verified?
+    duplicate_channel.reload
+    assert_equal duplicate_channel.contested_by_channel_id, channel.id
+  end
+
+  test "don't contest a channel with a suspended publisher" do
+    Rails.application.secrets[:host_inspector_offline] = false
+    duplicate_channel = channels(:verified)
+    duplicate_channel.publisher.status_updates.create(status: PublisherStatusUpdate::SUSPENDED)
+    channel = channels(:to_verify_file)
+    channel.details.brave_publisher_id = duplicate_channel.details.brave_publisher_id
+    channel.details.save(validate: false)
+    stub_verification_public_file(channel)
+    refute channel.verified?
+    SiteChannelVerifier.new(channel: channel).perform
+    channel.reload
+    refute channel.verified?
+    duplicate_channel.reload
+    assert_nil duplicate_channel.contested_by_channel_id
+  end
 end
