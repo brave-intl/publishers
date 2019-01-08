@@ -1,0 +1,9 @@
+h1= "Publisher Stats"
+#publisherStats
+
+= link_to "Download as CSV", admin_stats_publisher_statistics_path(format: 'csv')
+
+= hidden_field_tag id="all_publishers", value=@all_publishers.to_json
+= hidden_field_tag id="email_verified", value=@email_verified.to_json
+= hidden_field_tag id="email_verified_with_a_channel", value=@email_verified_with_a_channel.to_json
+= hidden_field_tag id="email_verified_with_a_verified_channel", value=@email_verified_with_a_verified_channel.to_json

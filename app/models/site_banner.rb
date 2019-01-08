@@ -20,7 +20,7 @@ class SiteBanner < ApplicationRecord
   BACKGROUND_UNIVERSAL_FILE_SIZE = 120_000 # In bytes
 
   NUMBER_OF_DONATION_AMOUNTS = 3
-  DONATION_AMOUNT_PRESETS = ['1,5,10', '5,10,20', '10,20,50', '20,50,100', '50,100,500']
+  DONATION_AMOUNT_PRESETS = ['1,5,10', '5,10,20', '10,20,50', '20,50,100']
   MAX_DONATION_AMOUNT = 999
 
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher

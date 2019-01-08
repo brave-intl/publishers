@@ -122,6 +122,7 @@ class Publisher < ApplicationRecord
 
   def self.statistical_totals
     {
+      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
       email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).distinct(:id).count,
       email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.distinct(:id).count,
@@ -390,7 +391,9 @@ class Publisher < ApplicationRecord
 
   class << self
     def encryption_key
-      Rails.application.secrets[:attr_encrypted_key]
+      # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
+      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
     end
 
     def find_by_owner_identifier(owner_identifier)

@@ -564,7 +564,7 @@ DEPENDENCIES
   yt
 
 RUBY VERSION
-   ruby 2.3.8p459
+   ruby 2.4.5p335
 
 BUNDLED WITH
-   1.17.1
+   1.17.2

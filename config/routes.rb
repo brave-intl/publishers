@@ -108,15 +108,13 @@ Rails.application.routes.draw do
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
+          get :totals
         end
       end
       # /api/v1/public/
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
         namespace :channels, defaults: { format: :json } do
-          get "totals"
-        end
-        namespace :publishers, defaults: { format: :json } do
           get "totals"
         end
       end
@@ -148,6 +146,7 @@ Rails.application.routes.draw do
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
+      resources :publisher_statistics, only: [:index]
     end
     resources :unattached_promo_registrations, only: %i(index create)do
       collection do
