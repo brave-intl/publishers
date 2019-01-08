@@ -22,7 +22,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -37,7 +37,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       # ensure request to create BAT card was made
       assert_requested :post,
         "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        body: '{"currency":"BAT","label":"Brave Payments"}',
+        body: '{"currency":"BAT","label":"Brave Rewards"}',
         times: 1
 
       # ensure only one request to update eyeshade default currency was made
@@ -67,7 +67,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
 
@@ -83,7 +83,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       # ensure request to create BAT card was not made
       assert_requested :post,
         "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        body: '{"currency":"BAT","label":"Brave Payments"}',
+        body: '{"currency":"BAT","label":"Brave Rewards"}',
         times: 0
 
       # ensure only one request to update eyeshade default currency was made
@@ -95,7 +95,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       assert_requested :patch,
         "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
         body: '{
-  "defaultCurrency": "BAT" 
+  "defaultCurrency": "BAT"
 }
 '
     ensure
@@ -120,7 +120,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
@@ -134,13 +134,13 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       # ensure request to create BAT card was made
       assert_requested :post,
         "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        body: '{"currency":"BAT","label":"Brave Payments"}',
+        body: '{"currency":"BAT","label":"Brave Rewards"}',
         times: 1
 
       # ensure request to create LOL card was made
       assert_requested :post,
         "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-        body: '{"currency":"LOL","label":"Brave Payments"}',
+        body: '{"currency":"LOL","label":"Brave Rewards"}',
         times: 1
 
       # ensure only one request to update eyeshade default currency was made
@@ -170,7 +170,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).

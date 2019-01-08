@@ -109,7 +109,7 @@ Setup a twitch API project:
 
 * Apply for a developer account at [developer.twitter.com](https://developer.twitter.com/)
 * Select "Create an App"
-* Give the app a name like "Brave Payments Dev"
+* Give the app a name like "Brave Rewards Dev"
 * Make sure "Enable Sign in with Twitter" is checked
 * Set the callback url to `https://localhost:3000/publishers/auth/register_twitter_channel/callback`.  If it does not allow you to set `localhost`, use a place holder for now, and later add the correct callback url through apps.twitter.com instead.
 * Fill in the remaining information and hit "Create"
