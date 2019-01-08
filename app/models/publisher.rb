@@ -122,6 +122,7 @@ class Publisher < ApplicationRecord
 
   def self.statistical_totals
     {
+      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
       email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).distinct(:id).count,
       email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.distinct(:id).count,
@@ -335,6 +336,11 @@ class Publisher < ApplicationRecord
       wallet.scope &&
       wallet.scope.include?("cards:write") &&
       !excluded_from_payout
+  end
+
+  # Remove when new dashboard is finished
+  def in_new_ui_whitelist?
+    self.email.in?((Rails.application.secrets[:new_ui_email_whitelist] || "").split(","))
   end
 
   private

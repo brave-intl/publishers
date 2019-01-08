@@ -28,6 +28,7 @@ import '../../assets/stylesheets/components/slider.scss'
 export default class BannerEditor extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       loading: true,
       title: this.props.values.title || 'Brave Rewards',
