@@ -99,7 +99,7 @@ en:
       verification_failure_explanation:
         domain_not_found: "we could not find your domain."
         connection_failed: |
-          we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
+          we could not find the public file at https://%{domain}/.well-known/brave-rewards-verification.txt.
         too_many_redirects: "we were redirected too many times to verify your domain. "
         timeout: "the connection timed out before your website responded. "
         no_txt_records: "we could not find TXT records in your domain's DNS records. "
@@ -115,7 +115,7 @@ en:
         no_txt_records: "Please make sure you have entered the token in your DNS records:"
         token_incorrect_dns: "Please make sure the token in your DNS entry is correct."
         token_not_found_dns: "Please add this TXT entry to your DNS records:"
-        token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
+        token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-rewards-verification.txt."
         timeout: "If this verification failure continues to occur, please reach us at %{support_email}."
         no_https: "Please enable HTTPS on your domain, or choose another verification method."
         generic: "If this verification failure continues to occur, please reach us at %{support_email}."
@@ -688,10 +688,10 @@ en:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!
       install_plugin_html: |
-        <p><strong><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a></strong>
+        <p><strong><a href="https://wordpress.org/plugins/brave-rewards-verification/" class="download-link">Install the plugin</a></strong>
         that makes the entire process a snap.</p>
-        <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-payments-verification/">
-        https://wordpress.org/plugins/brave-payments-verification/</a>)</p>
+        <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-rewards-verification/">
+        https://wordpress.org/plugins/brave-rewards-verification/</a>)</p>
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.

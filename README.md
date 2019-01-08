@@ -14,6 +14,8 @@ These steps presume you are using OSX and [Homebrew](https://brew.sh/).
    try [nvm](https://github.com/creationix/nvm#installation).
 3. Postgresql 9.5+: `brew install postgresql` (start with
    `brew services start postgresql`)
+   If you get the error `psql: FATAL: role “postgres” does not exist`. You'll need to create the
+   `/usr/local/opt/postgres/bin/createuser -s postgres`
 4. Redis: `brew install redis`
 5. Install Ruby gems with `gem install bundler foreman mailcatcher`.
    - [bundler](http://bundler.io/)

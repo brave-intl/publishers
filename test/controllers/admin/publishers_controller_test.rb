@@ -6,7 +6,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
 
   def stub_verification_public_file(channel, body: nil, status: 200)
-    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
+    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
     headers = {
       'Accept' => '*/*',
       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
