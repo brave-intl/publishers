@@ -6,21 +6,18 @@ export const Wrapper = styled.div
   margin-top: -2rem;
   margin-bottom: 30px;
   height: 80px;
-  width: 100%;
 `
 
 export const Container = styled.div
 `
-  display: flex;
-  width: 1200px;
   height: 100%;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  justify-content: flex-end;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  padding-left: 30px;
+  padding-right: 30px;
 `
 
 export const Text = styled.div
@@ -29,12 +26,12 @@ export const Text = styled.div
 
   ${props => props.header &&
     `
-      margin-top: auto;
-      margin-bottom: auto;
       font-size: 28px;
       color: white;
       padding-top: 4px;
       padding-left: 7px;
+      margin-top: auto;
+      margin-bottom: auto;
     `
   }
 `
@@ -49,7 +46,6 @@ export const Button = styled.div
   border: 1px solid white;
   margin-top: auto;
   margin-bottom: auto;
-  margin-left: auto;
   padding: 11px 12px 8px 12px;
   font-size: 15px;
   cursor: pointer;

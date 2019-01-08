@@ -1,19 +1,14 @@
 import styled from 'styled-components'
 
-export const Wrapper = styled.div
-`
-  width: 100%;
-`
+export const Wrapper = styled.div``
 
 export const Container = styled.div
 `
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  padding-left: 30px;
+  padding-right: 30px;
 `
 
 export const Grid = styled.div
