@@ -4,7 +4,7 @@ import Referrals from '../views/referrals/index.tsx'
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Referrals name="React" />,
+    <Referrals/>,
     document.body.appendChild(document.getElementsByClassName('main-content')[0]),
   )
 })
