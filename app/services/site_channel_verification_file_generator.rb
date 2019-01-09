@@ -19,7 +19,7 @@ class SiteChannelVerificationFileGenerator < BaseService
   end
 
   def legacy_url
-    "#{site_channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
+    "#{site_channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
   end
 
   def generate_file_content
