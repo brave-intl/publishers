@@ -2,7 +2,7 @@
 
 ## :wrench: Setup
 
-Follow these steps to setup the App for [publishers.brave.com](https://publishers.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
+Follow these steps to setup the App for [publishers.basicattentiontoken.org](https://publishers.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
 
 1. Install __Ruby 2.4.5__. For a Ruby version manager try
    [rbenv](https://github.com/rbenv/rbenv). Follow the `Installation` section instructions. Once installed run `rbenv install 2.4.5`. Be sure to restart your terminal before continuing.
@@ -28,7 +28,7 @@ Follow these steps to setup the App for [publishers.brave.com](https://publisher
       `bundle install`.,.
 	- __Node__ dependencies: `yarn --frozen-lockfile`
 8. (Optional) Get an `env.sh` file from another developer which contains development-mode bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
-9. Install __Rails__: `sudo gem install rails` Be sure to restart your terminal before continuing.
+9. Install __Rails__: `gem install rails` Be sure to restart your terminal before continuing.
 10. Setup SSL as described below.
 
 ### HTTPS Setup
@@ -61,9 +61,8 @@ Please try changing your Gemfile to use the fixes documented in https://github.c
 
 ### Run
 
-1. Start __Postgres__: `brew services start postgresql`
-2. Start __Redis__: `redis-server`
-3. Create and initialize the database:
+1. Start __Postgres__ and __Redis__: `brew services start redis postgresql`
+2. Create and initialize the database:
 ```
 rails db:create RAILS_ENV=development
 rails db:migrate RAILS_ENV=development
@@ -71,13 +70,13 @@ rails db:migrate RAILS_ENV=development
 
 __Note__: If you receive a `fatal-role` error, try running `/usr/local/opt/postgres/bin/createuser -s postgres` due to being installed from `homebrew`. Further documentation is [here.](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist)
 
-4. Run Rails server and async worker: `foreman start -f Procfile.dev`
+3. Run Rails server and async worker: `foreman start -f Procfile.dev`
 
-5. Visit https://localhost:3000
+4. Visit https://localhost:3000
 
-6. To test email, run a local mail server with: `mailcatcher`
+5. To test email, run a local mail server with: `mailcatcher`
 
-7. To view the emails sent to your inbox visit: http://localhost:1080
+6. To view the emails sent to your inbox visit: http://localhost:1080
 
 ## API Setups
 
