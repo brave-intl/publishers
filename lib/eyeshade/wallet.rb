@@ -24,6 +24,7 @@ module Eyeshade
       @available_currencies = details_json["availableCurrencies"] || []
       @possible_currencies = details_json["possibleCurrencies"] || []
       @address = details_json["address"] || ""
+      @is_member = details_json["isMember"] || false
 
       status_json = wallet_json["status"] || {}
       @action = status_json["action"]
@@ -46,6 +47,14 @@ module Eyeshade
 
     def authorized?
       @authorized == true
+    end
+
+    def is_a_member?
+      @is_member
+    end
+
+    def not_a_member?
+      !is_a_member?
     end
 
     def currency_is_possible_but_not_available?(currency)

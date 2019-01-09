@@ -1,0 +1,11 @@
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name
+
+== t ".body"
+
+p= t "publisher_mailer.shared.signature"
+
+hr
+
+p.hint
+  span.attribute= "#{t("publisher_mailer.shared.contact_help")}: "
+  = mail_to(Rails.application.secrets[:support_email])

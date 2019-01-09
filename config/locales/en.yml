@@ -285,6 +285,14 @@ en:
       subject: Brave Publisher Uphold account changed
       title: Publisher Uphold account changed
       body: This message confirms that you've updated your Uphold account through the Brave Payments website.
+    uphold_kyc_incomplete:
+      subject: Please update your Uphold account details
+      title: Publisher Uphold account changed
+      body_html: |
+        <p>
+          It looks like your Uphold account registration is incomplete. In order for us to send your funds you must be
+          <a href="https://support.uphold.com/hc/en-us/articles/202887565-What-are-the-benefits-of-becoming-a-verified-member-of-Uphold-">a verified member</a>.
+        </p>
     verification_done:
       subject: "%{publication_title} Publisher website verified"
       title: Verification complete
