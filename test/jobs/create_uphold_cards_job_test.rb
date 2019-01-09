@@ -22,7 +22,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"}
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -67,7 +67,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"}
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
 
@@ -95,7 +95,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       assert_requested :patch,
         "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
         body: '{
-  "defaultCurrency": "BAT"
+  "defaultCurrency": "BAT" 
 }
 '
     ensure
@@ -120,7 +120,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"}
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
@@ -170,7 +170,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"}
+                 "contributions" => { "currency" => "USD"} 
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
