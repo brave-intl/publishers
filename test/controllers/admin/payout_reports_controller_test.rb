@@ -116,6 +116,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     # Ensure authority is the admin's email when the file is downloaded
     payout_report = PayoutReport.all.order(created_at: :desc).first
+    payout_report.update_report_contents
     get download_admin_payout_report_path(payout_report)
     JSON.parse(response.body).each { |channel| assert_equal channel["authority"], admin.email}
   end
