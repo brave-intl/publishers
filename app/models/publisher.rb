@@ -1,5 +1,5 @@
 class Publisher < ApplicationRecord
-  has_paper_trail
+  has_paper_trail only: [:name, :email, :pending_email, :phone_normalized, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
