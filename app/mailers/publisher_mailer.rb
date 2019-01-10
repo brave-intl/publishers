@@ -129,6 +129,14 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def uphold_kyc_incomplete(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject
+    )
+  end
+
   def statement_ready(publisher_statement)
     @publisher_statement = publisher_statement
     @publisher = publisher_statement.publisher
@@ -306,6 +314,7 @@ class PublisherMailer < ApplicationMailer
       )
     end
   end
+
 
   private
 
