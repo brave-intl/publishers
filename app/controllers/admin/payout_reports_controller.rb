@@ -10,7 +10,6 @@ class Admin::PayoutReportsController < AdminController
 
   def download    
     @payout_report = PayoutReport.find(params[:id])
-    @payout_report.update_report_contents
     contents = assign_authority(@payout_report.contents)
     send_data contents,
       filename: "payout-#{@payout_report.created_at.strftime("%FT%H-%M-%S")}",
