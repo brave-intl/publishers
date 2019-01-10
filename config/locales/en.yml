@@ -73,9 +73,6 @@ en:
               invalid_uri: Invalid domain URI
     models:
       publisher: Publisher
-  announcement_mailer:
-    multi_chan:
-      subject: "BAT Publishers: Multi-property support now live!"
   application:
 
     nav:
