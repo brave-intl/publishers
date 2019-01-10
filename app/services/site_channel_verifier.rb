@@ -115,10 +115,11 @@ class SiteChannelVerifier < BaseService
   def verify_site_channel_public_file
     generator = SiteChannelVerificationFileGenerator.new(site_channel: channel)
 
-    host_inspector = SiteChannelHostInspector.new(
-      url: generator.url,
-      response_body: true
-    ).perform
+    host_inspector = SiteChannelHostInspector.new(url: generator.url, response_body: true).perform
+
+    if host_inspector[:response].is_a?(Publishers::Fetch::NotFoundError)
+      host_inspector = SiteChannelHostInspector.new(url: generator.legacy_url, response_body: true).perform
+    end
 
     if host_inspector[:https]
       token_match = /#{channel.details.verification_token}/.match(host_inspector[:response_body])

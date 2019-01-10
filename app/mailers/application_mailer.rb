@@ -20,7 +20,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def add_images
-    add_image("mailer/brave-payments.png")
+    add_image("mailer/brave-rewards.png")
     add_image("mailer/logo-medium.png")
     add_image("mailer/logo-reddit.png")
     add_image("mailer/logo-rocketchat.png")
