@@ -1,40 +1,34 @@
-App for [publishers.brave.com](https://publishers.brave.com).
-
 [![Build Status](https://travis-ci.org/brave-intl/publishers.svg?branch=master)](https://travis-ci.org/brave-intl/publishers)
 
-## Quick start
+## :wrench: Setup
 
-### Setup
+Follow these steps to setup the App for [publishers.basicattentiontoken.org](https://publishers.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
 
-These steps presume you are using OSX and [Homebrew](https://brew.sh/).
-
-1. Ruby 2.3.8. For a Ruby version manager try
-   [rbenv](https://github.com/rbenv/rbenv).
-2. Node 6.12.3 (active LTS at writing) or greater. For a Node version manager
-   try [nvm](https://github.com/creationix/nvm#installation).
-3. Postgresql 9.5+: `brew install postgresql` (start with
-   `brew services start postgresql`)
-4. Redis: `brew install redis`
-5. Install Ruby gems with `gem install bundler foreman mailcatcher`.
+1. Install __Ruby 2.4.5__. For a Ruby version manager try
+   [rbenv](https://github.com/rbenv/rbenv). Follow the `Installation` section instructions. Once installed run `rbenv install 2.4.5`. Be sure to restart your terminal before continuing.
+2. Install __Node 6.12.3__ or greater: `brew install node`
+3. Install __Postgresql 9.5+__: `brew install postgresql`
+   
+	If you get the error `psql: FATAL: role “postgres” does not exist`. You'll need to create the `/usr/local/opt/postgres/bin/createuser -s postgres`
+4. Install __Redis__: `brew install redis`
+5. Install __Ruby__ gems: `gem install bundler foreman mailcatcher`.
    - [bundler](http://bundler.io/)
    - [foreman](https://github.com/ddollar/foreman)
    - [mailcatcher](https://github.com/sj26/mailcatcher)
-6. [Yarn](https://yarnpkg.com/en/) for Node dependency management:
-   `brew install yarn --without-node`.
-   `--without-node` avoids installing Homebrew's version of Node, which is
+6. Install __[Yarn](https://yarnpkg.com/en/)__ for Node dependency management:
+   `brew install yarn --without-node`
+   
+	__Note:__ `--without-node` avoids installing Homebrew's version of Node, which is
    desirable if you are using nvm for Node version management.
 7. Install project dependencies
-  * Ruby deps: `bundle install --jobs=$(nproc)`
-    - Possible error: Nokogiri, with libxml2. Try installing a system libxml2
+	- __Ruby__ dependencies: `bundle install`
+		- Possible error: Nokogiri, with libxml2. Try installing a system libxml2
       with `brew install libxml2` and then
       `bundle config build.nokogiri --use-system-libraries` then again
       `bundle install`.,.
-  * Node deps: `yarn --frozen-lockfile`
-8. (Optional) Get an `env.sh` file from another developer which contains development-mode
-   bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
-9. Create and initialize the database:
-  - `rails db:create RAILS_ENV=development`
-  - `rails db:migrate RAILS_ENV=development`
+	- __Node__ dependencies: `yarn --frozen-lockfile`
+8. (Optional) Get an `env.sh` file from another developer which contains development-mode bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
+9. Install __Rails__: `gem install rails` Be sure to restart your terminal before continuing.
 10. Setup SSL as described below.
 
 ### HTTPS Setup
@@ -59,6 +53,32 @@ bundle exec rake ssl:generate
 When you first visit the application in a browser you may need to add an
 exception to trust this self-signed certificate. Sometimes this is under an
 "advanced" or "proceed" link.
+
+Note:
+If you're seeing `SSL error, peer: 127.0.0.1, peer cert: , #<Puma::MiniSSL::SSLError: OpenSSL error: error:141F7065:SSL routines:final_key_share:no suitable key share - 337604709>`
+
+Please try changing your Gemfile to use the fixes documented in https://github.com/puma/puma/issues/1670
+
+### Run
+
+1. Start __Postgres__ and __Redis__: `brew services start redis postgresql`
+2. Create and initialize the database:
+```
+rails db:create RAILS_ENV=development
+rails db:migrate RAILS_ENV=development
+```
+
+__Note__: If you receive a `fatal-role` error, try running `/usr/local/opt/postgres/bin/createuser -s postgres` due to being installed from `homebrew`. Further documentation is [here.](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist)
+
+3. Run Rails server and async worker: `foreman start -f Procfile.dev`
+
+4. Visit https://localhost:3000
+
+5. To test email, run a local mail server with: `mailcatcher`
+
+6. To view the emails sent to your inbox visit: http://localhost:1080
+
+## API Setups
 
 ### Google API Setup
 
@@ -126,20 +146,6 @@ In order to test the rate limiting and captcha components you will need to setup
 3. Add `export API_EYESHADE_KEY="00000000-0000-4000-0000-000000000000"` to your secrets script
 
 To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
-
-### Run
-
-1. Start Postgres and redis.
-
-2. Run Rails server and async worker
-`foreman start -f Procfile.dev`
-
-3. Visit https://localhost:3000
-
-4. To test email, run a local mail server at localhost:25
-`mailcatcher`
-
-5. To view the emails sent to your inbox you can the inbox at http://localhost:1080
 
 ## Development
 

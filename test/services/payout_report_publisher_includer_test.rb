@@ -70,6 +70,56 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     assert_equal payout_report.amount, 0
   end
 
+  test "publisher with verified channel that is uphold verified but not a member is not included in the report" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+
+    payout_report = PayoutReport.create()
+    prev_num_potential_payments = PotentialPayment.count
+
+    # Clear database
+    publisher = publishers(:uphold_connected) # has >1 verified channel, is uphold connected
+
+    delete_publishers_except([publisher.id])
+
+    # Stub /wallet reponse
+    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2", "isMember": false}}.to_json
+
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    # Stub /balances response
+    balance_response = [
+      {
+        "account_id" => publisher.owner_identifier,
+        "account_type" => "owner",
+        "balance" => "500.00"
+      },
+      {
+        "account_id" => "youtube#channel:",
+        "account_type" => "channel",
+        "balance" => "500.00"
+      }
+    ].to_json
+
+    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}}&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
+      to_return(status: 200, body: balance_response)
+
+    perform_enqueued_jobs do
+      PayoutReportPublisherIncluder.new(payout_report: payout_report,
+                                        publisher: publisher,
+                                        should_send_notifications: true).perform
+    end
+
+    email = ActionMailer::Base.deliveries.last
+
+    # Ensure the correct email is sent
+    assert_equal email.subject, I18n.t('publisher_mailer.uphold_kyc_incomplete.subject')
+
+    # Ensure empty payout & payments
+    assert_equal PotentialPayment.count, prev_num_potential_payments
+    assert_equal payout_report.amount, 0
+  end
+
   test "uphold verified publisher with verified channel with no address supplied is not included in the report, and is sent email" do
     Rails.application.secrets[:api_eyeshade_offline] = false
 
@@ -143,7 +193,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     delete_publishers_except([publisher.id])
 
     # Stub disconnected /wallet response
-    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
+    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2", "isMember": true}}.to_json
 
     stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
       to_return(status: 200, body: wallet_response, headers: {})
@@ -201,6 +251,56 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     # were created (idempotence)
 
     assert_difference -> { PotentialPayment.count }, 0 do
+      PayoutReportPublisherIncluder.new(payout_report: payout_report,
+                                        publisher: publisher,
+                                        should_send_notifications: true).perform
+    end
+  end
+
+  test "publisher with only a contribution balance but no wallet address receives an email" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    Rails.application.secrets[:fee_rate] = 0.05
+
+    payout_report = PayoutReport.create(fee_rate: 0.05)
+
+    # Clear database
+    publisher = publishers(:uphold_connected) # has >1 verified channel, is uphold connected
+    delete_publishers_except([publisher.id])
+
+    # Stub disconnected /wallet response
+    wallet_response = {"wallet" => {"address" => ""}}.to_json
+
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    # Stub /balances response
+    balance_response = [
+      {
+        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+        "account_type" => "owner",
+        "balance" => "0.00"
+      },
+      {
+        "account_id" => "uphold_connected.org",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "twitch#author:ucTw",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },      {
+        "account_id" => "twitter#channel:def456",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      }
+    ].to_json
+
+    stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23author:ucTw&account=twitter%23channel:def456").
+      to_return(status: 200, body: balance_response)
+
+    # Ensure is emails sent
+    assert_enqueued_jobs(2) do
       PayoutReportPublisherIncluder.new(payout_report: payout_report,
                                         publisher: publisher,
                                         should_send_notifications: true).perform

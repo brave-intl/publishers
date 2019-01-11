@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
       get :home
+      get :referrals
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
@@ -107,6 +108,7 @@ Rails.application.routes.draw do
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
+          get :totals
         end
       end
       # /api/v1/public/

@@ -126,7 +126,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', "~> 3.5"
+gem 'webpacker', '~> 4.0.0.rc.2'
 
 # pagination support for models
 gem "will_paginate"
@@ -195,4 +195,4 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-ruby "2.3.8"
+ruby "2.4.5"

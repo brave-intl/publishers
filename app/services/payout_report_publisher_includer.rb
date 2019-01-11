@@ -16,7 +16,7 @@ class PayoutReportPublisherIncluder < BaseService
     if probi.positive?
       publisher_has_unsettled_balance = true
 
-      if @publisher.uphold_verified? && wallet.address.present?
+      if create_payment?
         PotentialPayment.create(payout_report_id: @payout_report.id,
                                 name: @publisher.name,
                                 amount: "#{probi}",
@@ -29,11 +29,11 @@ class PayoutReportPublisherIncluder < BaseService
 
     @publisher.channels.verified.each do |channel|
       probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
-      next unless probi.positive? && @publisher.uphold_verified? && wallet.address.present?
+      publisher_has_unsettled_balance = probi.positive? ? true : publisher_has_unsettled_balance
 
-      publisher_has_unsettled_balance = true
+      next unless probi.positive? && create_payment?
+
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
-
       PotentialPayment.create(payout_report_id: @payout_report.id,
                               name: "#{channel.publication_title}",
                               amount: "#{probi}",
@@ -51,7 +51,16 @@ class PayoutReportPublisherIncluder < BaseService
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are disconnected from Uphold.")
         PublisherMailer.wallet_not_connected(@publisher).deliver_later
       end
+
+      if @publisher.uphold_verified? && wallet.address.present? && wallet.not_a_member?
+        Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
+        PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later
+      end
     end
+  end
+
+  def create_payment?
+    @publisher.uphold_verified? && @publisher.wallet.address.present? && @publisher.wallet.is_a_member?
   end
 end
 
