@@ -16,6 +16,11 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     end
     @current_campaign = params[:filter] || "All codes"
     @campaigns = PromoCampaign.all.map {|campaign| campaign.name}
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @promo_registrations }
+    end
   end
 
   def create
@@ -37,7 +42,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
       return redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
                         alert: "Please check at least one of downloads, installs, or confirmations."
     end
-    
+
     report_start_and_end_date = parse_report_dates(params[:referral_code_report_period], @reporting_interval)
     report_csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: referral_codes,
                                                               start_date: report_start_and_end_date[:start_date],
