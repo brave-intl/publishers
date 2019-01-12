@@ -87,3 +87,18 @@ $gray50: rgba(116, 116, 130, 0.5);
 $black10: rgba(0, 0, 0, 0.1);
 $black25: rgba(0, 0, 0, 0.25);
 $black50: rgba(0, 0, 0, 0.5);
+
+// Mailer Colors
+
+$primaryGrey: #2a2b33;
+$primaryGreyLighten50: lighten( $primaryGrey, 50% );
+$primaryGreyLighten75: lighten( $primaryGrey, 75% );
+
+$primaryAccent: #4C54D2;
+$primaryAccentDarken10: darken( $primaryAccent, 10% );
+$primaryAccentLighten30: lighten( $primaryAccent, 30% );
+
+$strokeGrey: #D6D6D6; 
+
+$twitterPrimary: #38A1F3;
+$facebookPrimary: #3b5998;
