@@ -60,7 +60,11 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def create_payment?
-    @publisher.uphold_verified? && @publisher.wallet.address.present? && @publisher.wallet.is_a_member?
+    @publisher.uphold_verified? && @publisher.wallet.address.present? && @publisher.wallet.is_a_member? && !should_only_notify?
+  end
+
+  def should_only_notify?
+    @payout_report.nil?
   end
 end
 
