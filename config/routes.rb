@@ -126,6 +126,9 @@ Rails.application.routes.draw do
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
+      collection do
+        post :notify
+      end
       member do
         get :download
         patch :refresh
