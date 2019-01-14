@@ -18,11 +18,15 @@
           .db-field = "Status:"
           .db-value = publisher_status(@publisher)
         .db-info-row
-          .db-field = "Uphold verified:"
+          .db-field = "Uphold once connected:"
           .db-value = @publisher.uphold_verified?
         .db-info-row
           .db-field = "Uphold authorized:"
           .db-value = @publisher.wallet.authorized?
+        - if @publisher.wallet.status.present?
+          .db-info-row
+            .db-field = "Uphold status:"
+            .db-value = @publisher.wallet.status
         .db-info-row
           .db-field = "Uphold widget enabled?"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"

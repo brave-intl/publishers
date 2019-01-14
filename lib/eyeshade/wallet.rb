@@ -12,6 +12,7 @@ module Eyeshade
                 :contribution_balance,
                 :channel_balances,
                 :rates,
+                :status,
                 :last_settlement_balance,
                 :last_settlement_date
 
@@ -25,6 +26,7 @@ module Eyeshade
       @possible_currencies = details_json["possibleCurrencies"] || []
       @address = details_json["address"] || ""
       @is_member = details_json["isMember"] || false
+      @status  = details_json["status"]
 
       status_json = wallet_json["status"] || {}
       @action = status_json["action"]
@@ -47,6 +49,10 @@ module Eyeshade
 
     def authorized?
       @authorized == true
+    end
+
+    def blocked? 
+      @status == 'blocked'
     end
 
     def is_a_member?
