@@ -696,10 +696,10 @@ en:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!
       install_plugin_html: |
-        <p><strong><a href="https://wordpress.org/plugins/brave-rewards-verification/" class="download-link">Install the plugin</a></strong>
+        <p><strong><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a></strong>
         that makes the entire process a snap.</p>
-        <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-rewards-verification/">
-        https://wordpress.org/plugins/brave-rewards-verification/</a>)</p>
+        <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-payments-verification/">
+        https://wordpress.org/plugins/brave-payments-verification/</a>)</p>
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.
