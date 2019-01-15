@@ -53,6 +53,12 @@ class PayoutReportPublisherIncluder < BaseService
         PublisherMailer.wallet_not_connected(@publisher).deliver_later
       end
 
+      # eyeshade omits the wallet address if the status is not ok
+      # means that the transaction limits have been exceeded 
+      if wallet.is_a_member? && wallet.address.blank?
+        PublisherMailer.uphold_member_restricted(@publisher).deliver_later
+      end
+
       if @publisher.uphold_verified? && wallet.not_a_member?
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
         PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later

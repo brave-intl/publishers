@@ -56,7 +56,7 @@ module Eyeshade
     end
 
     def is_a_member?
-      @is_member
+      @status.present? && @is_member
     end
 
     def not_a_member?
