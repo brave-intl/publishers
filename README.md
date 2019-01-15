@@ -301,6 +301,48 @@ docker-compose up
 docker-compose run app yarn install; docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
 ```
 
+### Adding balances to Eyeshade
+
+By default when you create a channel it will not have a balance on Eyeshade, the accounting server.  To test wallet code with non nil balances, you must manually enter the transactions into the Eyeshade postgres database.
+
+First, get the channel identifier you'd like to add a balance to in the rails console:
+```
+docker-compose run app rails console
+irb(main):001:0> Channel.first.details.channel_identifier
+=> "youtube#channel:UCOo92t8m-tWKomw256q7mxw"
+```
+
+Next connect to the eyeshade-postgres container.  Run `docker ps` to list the containers.  You'll need to container id for the `eyeshade-postgres` image:
+```
+CONTAINER ID  IMAGE          COMMAND                 CREATED         STATUS        PORTS                    NAMES
+83dc8edd53fc  postgres:10.4  "docker-entrypoint.s…"  34 minutes ago  Up 7 minutes  0.0.0.0:33134->5432/tcp  eyeshade-postgres
+```
+
+Then run
+```
+docker exec -it 83dc8edd53fc psql -U postgres
+```
+to start psql.
+
+Connect to the eyeshade database
+```
+postgres=# \c eyeshade
+You are now connected to database "eyeshade" as user "postgres".
+```
+
+Then insert a transaction with the channel identifier being the destination.  The source of the transaction does not matter.
+```
+insert into transactions (id, transaction_type, from_account_type, from_account, to_account_type, to_account, amount) values('9f5c9445-1f1c-471a-8cfb-b7d879d21033', 'contribution', 'uphold', '6b0e4562-ddaa-4191-9d2d-74d822247560 ', 'channel', 'youtube#channel:UCOo92t8m-tWKgmw256q7mxw', 500.00);
+```
+
+Lastly, we must refresh the account balances which are derived from summing across all the transactions.
+
+```
+eyeshade=# refresh materialized view account_balances;
+```
+
+The new balance should be reflected on the dashboard.
+
 ### Run Tests
 
 Tests can be run on the container with
