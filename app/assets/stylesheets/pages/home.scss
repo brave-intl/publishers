@@ -522,6 +522,7 @@
         display: none;
       }
     }
+    &.uphold-restricted,
     &.uphold-reauthorization-needed,
     &.uphold-incomplete,
     &.uphold-unconnected {
@@ -550,6 +551,21 @@
         display: none;
       }
     }
+    &.uphold-restricted {
+      .status-summary .action .connect-uphold,
+      .reconnect-instructions {
+        display: none;
+      }
+      .status-summary,
+      #reconnect_to_uphold {
+        display: none;
+      }
+      .status-summary,
+      #go_to_uphold {
+/* (Albert Wang): We add lot's of crazy complexity by disabling HTML elements */
+        display: inline !important;
+      }
+    }
     &.uphold-incomplete {
       .status-summary,
       #reconnect_to_uphold {
@@ -562,6 +578,8 @@
     }
     // Status summary label
     &.uphold-complete,
+    &.uphold-restricted,
+    &.uphold-blocked,
     &.uphold-processing {
       .status-summary .text {
         color: darken(#2aeaa1, 10%);

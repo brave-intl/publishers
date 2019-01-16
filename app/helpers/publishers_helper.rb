@@ -138,6 +138,8 @@ module PublishersHelper
     case publisher.uphold_status
     when :unconnected
       I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
+    when Publisher::UpholdAccountState::RESTRICTED
+      publisher.wallet.is_a_member? ? "Visit Uphold's Support page" : "Go to uphold.com"
     else
       I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
     end
@@ -165,6 +167,10 @@ module PublishersHelper
       'uphold-reauthorization-needed'
     when :incomplete
       'uphold-incomplete'
+    when Publisher::UpholdAccountState::RESTRICTED
+      'uphold-' + Publisher::UpholdAccountState::RESTRICTED.to_s
+    when Publisher::UpholdAccountState::BLOCKED
+      'uphold-' + Publisher::UpholdAccountState::BLOCKED.to_s
     else
       'uphold-unconnected'
     end
@@ -180,7 +186,7 @@ module PublishersHelper
 
   def uphold_status_summary(publisher)
     case publisher.uphold_status
-    when :verified
+    when :verified, Publisher::UpholdAccountState::RESTRICTED, Publisher::UpholdAccountState::BLOCKED
       I18n.t("helpers.publisher.uphold_status_summary.connected")
     when :code_acquired, :access_parameters_acquired
       I18n.t("helpers.publisher.uphold_status_summary.connecting")
@@ -205,6 +211,8 @@ module PublishersHelper
       I18n.t("helpers.publisher.uphold_status_description.incomplete")
     when :unconnected
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
+    when Publisher::UpholdAccountState::RESTRICTED
+      publisher.wallet.is_a_member? ? "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance" : "To receive your contribution balance, you'll need to fully verify your identity on Uphold."
     end
   end
 

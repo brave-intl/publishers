@@ -109,6 +109,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               .status-description
                 = uphold_status_description(current_publisher).html_safe
               = link_to(uphold_authorization_description(current_publisher),
+                        "https://uphold.com/dashboard",
+                        id: "go_to_uphold", class: "btn btn-primary", :"data-piwik-action" => "GoToUpholdHomeClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard", style: "display:none")
+              = link_to(uphold_authorization_description(current_publisher),
                         uphold_authorization_endpoint(current_publisher),
                         id: "reconnect_to_uphold", class: "btn btn-primary", :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
               .reconnect-instructions

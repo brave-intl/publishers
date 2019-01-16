@@ -10,6 +10,19 @@ class Publisher < ApplicationRecord
   PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
 
+  class UpholdAccountState
+    REAUTHORIZATION_NEEDED      = :reauthorization_needed
+    INCOMPLETE                  = :incomplete
+    VERIFIED                    = :verified
+    ACCESS_PARAMETERS_ACQUIRED  = :access_parameters_acquired
+    CODE_ACQUIRED               = :code_acquired
+    UNCONNECTED                 = :unconnected
+    # (Albert Wang): Consider adding refactoring all of the above states as they
+    # aren't valid states: https://uphold.com/en/developer/api/documentation/#user-object
+    RESTRICTED      = :restricted
+    BLOCKED         = :blocked
+  end
+
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
   ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT]
 
@@ -255,9 +268,17 @@ class Publisher < ApplicationRecord
       :access_parameters_acquired
     elsif self.uphold_code.present?
       :code_acquired
+    elsif self.wallet.status == UpholdAccountState::RESTRICTED || self.not_kycd_by_uphold?
+      UpholdAccountState::RESTRICTED
+    elsif self.wallet.status == UpholdAccountState::BLOCKED
+      UpholdAccountState::BLOCKED
     else
       :unconnected
     end
+  end
+
+  def not_kycd_by_uphold?
+    self&.wallet&.not_a_member?
   end
 
   def uphold_processing?
