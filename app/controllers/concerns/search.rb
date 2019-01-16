@@ -51,6 +51,7 @@ module Search
         WHERE publishers.email ILIKE :search_query
               OR publishers.name ILIKE :search_query
               OR publishers.id::text = :search_query
+              OR publishers.uphold_id::text = :search_query
       )
     }
   end

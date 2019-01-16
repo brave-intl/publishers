@@ -157,7 +157,13 @@ class Publisher < ApplicationRecord
       if self.default_currency.present? && self.default_currency != @_wallet.default_currency
         UploadDefaultCurrencyJob.perform_later(publisher_id: self.id)
       end
+
+      if @_wallet.uphold_id.present? && @_wallet.uphold_id != self.uphold_id
+        self.uphold_id = wallet.uphold_id
+        save!
+      end
     end
+
     @_wallet
   end
 

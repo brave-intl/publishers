@@ -27,6 +27,10 @@
           .db-info-row
             .db-field = "Uphold status:"
             .db-value = @publisher.wallet.status
+        -if @publisher.uphold_id.present?
+          .db-info-row
+            .db-field = "Uphold id:"
+            .db-value = link_to @publisher.uphold_id, admin_publishers_path(q: @publisher.uphold_id)
         .db-info-row
           .db-field = "Uphold widget enabled?"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
