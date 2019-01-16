@@ -268,9 +268,9 @@ class Publisher < ApplicationRecord
       :access_parameters_acquired
     elsif self.uphold_code.present?
       :code_acquired
-    elsif self.wallet.status == UpholdAccountState::RESTRICTED || self.not_kycd_by_uphold?
+    elsif self&.wallet&.uphold_account_status == UpholdAccountState::RESTRICTED || (self.wallet.present? && self.uphold_verified? && self.wallet.not_a_member?)
       UpholdAccountState::RESTRICTED
-    elsif self.wallet.status == UpholdAccountState::BLOCKED
+    elsif self&.wallet&.uphold_account_status == UpholdAccountState::BLOCKED
       UpholdAccountState::BLOCKED
     else
       :unconnected
@@ -278,7 +278,6 @@ class Publisher < ApplicationRecord
   end
 
   def not_kycd_by_uphold?
-    self&.wallet&.not_a_member?
   end
 
   def uphold_processing?
