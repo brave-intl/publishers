@@ -1,10 +1,10 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import Referrals from '../views/referrals/index'
+import Payments from '../views/payments/index.tsx'
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Referrals/>,
+    <Payments/>,
     document.body.appendChild(document.getElementsByClassName('main-content')[0]),
   )
 })

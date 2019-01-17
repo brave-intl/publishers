@@ -9,6 +9,7 @@ const locale = {
   addFunds: 'add funds',
   off: ' ',
   referrals: 'Referrals',
+  payments: 'Payments',
   createCode: 'Create Code',
   campaigns: 'CAMPAIGNS',
   referralCodes: 'REFERRAL CODES',

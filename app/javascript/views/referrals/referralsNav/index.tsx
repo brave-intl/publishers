@@ -5,7 +5,7 @@ import {
   Container,
   Text,
   Button
-} from './style.ts'
+} from './style'
 
 import locale from '../../../locale/en.js'
 
