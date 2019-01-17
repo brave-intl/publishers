@@ -139,7 +139,7 @@ module PublishersHelper
     when :unconnected
       I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
     when Publisher::UpholdAccountState::RESTRICTED
-      publisher.wallet.is_a_member? ? "Visit Uphold's Support page" : "Go to uphold.com"
+      publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
     else
       I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
     end
@@ -212,7 +212,7 @@ module PublishersHelper
     when :unconnected
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
     when Publisher::UpholdAccountState::RESTRICTED
-      publisher.wallet.is_a_member? ? "Your transaction level is currently flagged by uphold. Please contact Uphold for assistance" : "To receive your contribution balance, you'll need to fully verify your identity on Uphold."
+      publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_status_description.restricted_member") : I18n.t("helpers.publisher.uphold_status_description.non_member")
     end
   end
 

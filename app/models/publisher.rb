@@ -277,9 +277,6 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def not_kycd_by_uphold?
-  end
-
   def uphold_processing?
     self.uphold_access_parameters.present? || self.uphold_code.present?
   end
