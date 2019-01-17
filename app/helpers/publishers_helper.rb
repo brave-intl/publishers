@@ -159,7 +159,9 @@ module PublishersHelper
 
   def uphold_status_class(publisher)
     case publisher.uphold_status
-    when :verified
+    when :verified, Publisher::UpholdAccountState::BLOCKED
+      # (Albert Wang): We notify Brave when we detect a login of someone with a blocked
+      # Uphold account
       'uphold-complete'
     when :code_acquired, :access_parameters_acquired
       'uphold-processing'
@@ -169,8 +171,6 @@ module PublishersHelper
       'uphold-incomplete'
     when Publisher::UpholdAccountState::RESTRICTED
       'uphold-' + Publisher::UpholdAccountState::RESTRICTED.to_s
-    when Publisher::UpholdAccountState::BLOCKED
-      'uphold-' + Publisher::UpholdAccountState::BLOCKED.to_s
     else
       'uphold-unconnected'
     end
