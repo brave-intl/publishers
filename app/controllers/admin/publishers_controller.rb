@@ -96,6 +96,7 @@ class Admin::PublishersController < AdminController
   end
 
   def is_a_uuid?(uuid)
+    # https://stackoverflow.com/questions/47508829/validate-uuid-string-in-ruby-rails
     uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
     uuid_regex.match?(uuid.to_s.downcase)
   end
