@@ -163,7 +163,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("PayoutReport.count", 1) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do
         perform_enqueued_jobs do
-          post admin_payout_reports_path(final: true, should_send_notifications: true) 
+          post admin_payout_reports_path(final: true, should_send_notifications: true)
         end
       end
     end
