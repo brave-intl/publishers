@@ -88,7 +88,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     total_eligible_installs_for_referral_code = events_for_referral_code.select { |event_for_referral_code|
       (Time.now.utc.to_date - 1.month) >= event_for_referral_code["ymd"].to_date
     }.sum { |event_for_referral_code|
-      event_for_referral_code[PromoRegistration::RETRIEVALS]
+      event_for_referral_code[PromoRegistration::FIRST_RUNS]
     } || 0.0
 
     total_30_days_for_referral_code = events_for_referral_code.sum {|event_for_referral_code| event_for_referral_code[PromoRegistration::FINALIZED]} || 0 
