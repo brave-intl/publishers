@@ -111,7 +111,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     # Create the non blank payout report
     perform_enqueued_jobs do
-      post admin_payout_reports_path(final: true, should_send_notifications: true)
+      post admin_payout_reports_path(final: true)
     end
 
     # Ensure authority is the admin's email when the file is downloaded
@@ -161,7 +161,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       to_return(status: 200, body: balance_response)
 
     assert_difference("PayoutReport.count", 1) do
-      assert_difference("ActionMailer::Base.deliveries.count", 1) do
+      assert_difference("ActionMailer::Base.deliveries.count", 0) do
         perform_enqueued_jobs do
           post admin_payout_reports_path(final: true, should_send_notifications: true)
         end
@@ -176,6 +176,54 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     assert_enqueued_with(job: UpdatePayoutReportContentsJob) do
       patch refresh_admin_payout_report_path(payout_report.id)
+    end
+  end
+
+  test "#notify sends emails to" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    admin = publishers(:admin)
+    publisher = publishers(:uphold_connected)
+    delete_publishers_except([admin.id, publisher.id])
+    sign_in admin
+
+    # Stub disconnected /wallet response
+    wallet_response = {}.to_json
+
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    # Stub /balances response
+    balance_response = [
+      {
+        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+        "account_type" => "owner",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "uphold_connected.org",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "twitch#channel:ucTw",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },      {
+        "account_id" => "twitter#channel:def456",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      }
+    ].to_json
+
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+      to_return(status: 200, body: balance_response)
+
+    assert_difference("PayoutReport.count", 0) do # Ensure no payout report is created
+      assert_difference("ActionMailer::Base.deliveries.count", 1) do # ensure notification is sent
+        perform_enqueued_jobs do
+          post notify_admin_payout_reports_path
+        end
+      end
     end
   end
 end

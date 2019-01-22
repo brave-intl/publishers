@@ -293,6 +293,15 @@ en:
         </p>
         <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will still be held safely in your account. We’re sorry for the inconvenience and delays this may cause. Thank you for being a Brave Creator and bearing with us as we improve the integrity of the payout system. Learn more about this new requirement <a href="https://support.uphold.com/hc/en-us/articles/202887565-What-are-the-benefits-of-becoming-a-verified-member-of-Uphold-">here</a>.</p>
         <p>Thank you,</p>
+    uphold_member_restricted:
+      subject: Please check Uphold Account
+      body_html: |
+        <p>Thank you for being a Brave creator.</p>
+        <p>
+          We've noticed that your Uphold account is not able to receive funds. Please check your Uphold account status to ensure that there are no actionable items and that you are within the transaction limit guidelines.
+        </p>
+        <p>In the meantime, your earnings will still be held safely in your account. We’re sorry for the inconvenience and delays this may cause.</p>
+        <p>Thank you,</p>
     verification_done:
       subject: "%{publication_title} Publisher website verified"
       title: Verification complete
@@ -696,10 +705,10 @@ en:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!
       install_plugin_html: |
-        <p><strong><a href="https://wordpress.org/plugins/brave-rewards-verification/" class="download-link">Install the plugin</a></strong>
+        <p><strong><a href="https://wordpress.org/plugins/brave-payments-verification/" class="download-link">Install the plugin</a></strong>
         that makes the entire process a snap.</p>
-        <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-rewards-verification/">
-        https://wordpress.org/plugins/brave-rewards-verification/</a>)</p>
+        <p class="note-text">(Plugin location: <a href="https://wordpress.org/plugins/brave-payments-verification/">
+        https://wordpress.org/plugins/brave-payments-verification/</a>)</p>
       verification_token: Copy the verification code below into the plugin.
       wordpress_token: "Verification code:"
       verify: Once the code is pasted in, click verify.

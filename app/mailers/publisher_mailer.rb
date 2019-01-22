@@ -137,6 +137,14 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def uphold_member_restricted(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject
+    )
+  end
+
   def statement_ready(publisher_statement)
     @publisher_statement = publisher_statement
     @publisher = publisher_statement.publisher
