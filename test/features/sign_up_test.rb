@@ -6,9 +6,9 @@ class SignUpTest < Capybara::Rails::TestCase
 
   test "can navigate to sign up from landing page" do
     visit root_path
-    assert_content page, "Brave Payments"
+    assert_content page, "Brave Rewards"
     click_link("Get Started")
-    assert_content page, "Join Brave Payments"
+    assert_content page, "Join Brave Rewards"
   end
 
   test "new users are prompted to finish setting up their account and 2FA" do
@@ -34,7 +34,7 @@ class SignUpTest < Capybara::Rails::TestCase
     assert Publisher.where(email: email).count == 0  # ensure we don't send log in link
 
     visit sign_up_publishers_path
-    assert_content page, "Join Brave Payments"
+    assert_content page, "Join Brave Rewards"
     fill_in "email", with: email
 
     click_button("Get Started")

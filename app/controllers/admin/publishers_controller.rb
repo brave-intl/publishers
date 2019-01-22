@@ -7,12 +7,14 @@ class Admin::PublishersController < AdminController
     @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
                     Publisher.advanced_sort(sort_column.to_sym, sort_direction)
                   else
-                    Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction}"))
+                    Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
                   end
 
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
-      search_query = "%#{remove_prefix_if_necessary(params[:q])}%"
+      search_query = remove_prefix_if_necessary(params[:q])
+      search_query = "%#{search_query}%" unless is_a_uuid?(search_query)
+
       @publishers = @publishers.where(search_sql, search_query: search_query)
     end
 
@@ -91,5 +93,11 @@ class Admin::PublishersController < AdminController
 
   def sortable_columns
     [:last_sign_in_at, :created_at, Publisher::VERIFIED_CHANNEL_COUNT]
+  end
+
+  def is_a_uuid?(uuid)
+    # https://stackoverflow.com/questions/47508829/validate-uuid-string-in-ruby-rails
+    uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    uuid_regex.match?(uuid.to_s.downcase)
   end
 end

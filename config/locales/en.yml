@@ -22,7 +22,7 @@
 en:
   shared:
     add_channel: Add Channel
-    app_title: Brave Payments
+    app_title: Brave Rewards
     app_description: Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!
     cancel: Cancel
     channel_created: Channel created.
@@ -73,9 +73,6 @@ en:
               invalid_uri: Invalid domain URI
     models:
       publisher: Publisher
-  announcement_mailer:
-    multi_chan:
-      subject: "BAT Publishers: Multi-property support now live!"
   application:
 
     nav:
@@ -99,7 +96,7 @@ en:
       verification_failure_explanation:
         domain_not_found: "we could not find your domain."
         connection_failed: |
-          we could not find the public file at https://%{domain}/.well-known/brave-payments-verification.txt.
+          we could not find the public file at https://%{domain}/.well-known/brave-rewards-verification.txt.
         too_many_redirects: "we were redirected too many times to verify your domain. "
         timeout: "the connection timed out before your website responded. "
         no_txt_records: "we could not find TXT records in your domain's DNS records. "
@@ -115,7 +112,7 @@ en:
         no_txt_records: "Please make sure you have entered the token in your DNS records:"
         token_incorrect_dns: "Please make sure the token in your DNS entry is correct."
         token_not_found_dns: "Please add this TXT entry to your DNS records:"
-        token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-payments-verification.txt."
+        token_not_found_public_file_html: "Please make sure the verification token is present in the public file %{domain}/.well-known/brave-rewards-verification.txt."
         timeout: "If this verification failure continues to occur, please reach us at %{support_email}."
         no_https: "Please enable HTTPS on your domain, or choose another verification method."
         generic: "If this verification failure continues to occur, please reach us at %{support_email}."
@@ -148,7 +145,7 @@ en:
         reconnect_to_uphold: Reconnect to Uphold
       uphold_status:
         balance_sending: Contribution balance is transferred to your Uphold wallet monthly.
-        connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Payments.
+        connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Rewards.
         processing: |
           Your Uphold wallet is being connected to your account.
           If this takes more than a few minutes, please reconnect with Uphold.
@@ -163,10 +160,10 @@ en:
         connection_problems: Connection problems
         incomplete: Registration incomplete
       uphold_status_description:
-        connecting: Brave Payments is connecting to your Uphold account.
+        connecting: Brave Rewards is connecting to your Uphold account.
         reauthorization_needed: We are having trouble communicating with Uphold.
-        unconnected: You need to connect to your Uphold account to receive contributions from Brave Payments.
-        verified: Your Uphold wallet is ready to receive Brave Payments.
+        unconnected: You need to connect to your Uphold account to receive contributions from Brave Rewards.
+        verified: Your Uphold wallet is ready to receive Brave Rewards.
         incomplete: |
           <p>Your Uphold account registration is incomplete.</p>
           <p><strong>Please check your email for verification
@@ -198,9 +195,9 @@ en:
         Anyone with it can manage private publisher info, including payment information.
         Before forwarding this email, ensure you trust the recipient.
       salutation: Hi %{name},
-      signature: The Brave Payments Team
+      signature: The Brave Rewards Team
       signature_html: |
-        <strong>The Brave Payments Team</strong>
+        <strong>The Brave Rewards Team</strong>
       updated_email: New email
     channel_contested:
       subject: "Urgent: Channel transfer requested"
@@ -240,27 +237,27 @@ en:
       notice: |
         NOTE: This email contains a private access link. Anyone with it can manage private
         publisher info, including payment information. Before forwarding this email, ensure you trust the recipient.
-      intro: "We've received a request to update your email address with Brave Payments:"
+      intro: "We've received a request to update your email address with Brave Rewards:"
       confirmation_link: Confirm your email change
       confirmation_link_help: Use this link to confirm that you would like to proceed with this change
     login_email:
-      subject: Log In to Brave Payments
+      subject: Log In to Brave Rewards
       body_html: |
         Click the private access link below to log in to your account with
-        <strong>Brave Payments</strong>. This link can only be used once.
-      button: Log in to Brave Payments
+        <strong>Brave Rewards</strong>. This link can only be used once.
+      button: Log in to Brave Rewards
     login_partner_email:
       salutation: Howdy %{name},
-      subject: You've been added as a partner on Brave Payments
+      subject: You've been added as a partner on Brave Rewards
       body_html: |
-        You've been added as a partner on Brave Payments.
+        You've been added as a partner on Brave Rewards.
         Click the private access link below to log in to your account with
-        <strong>Brave Payments</strong>. This link can only be used once.
-      button: Log in to Brave Payments
+        <strong>Brave Rewards</strong>. This link can only be used once.
+      button: Log in to Brave Rewards
     notify_email_change:
       subject: Notification of Brave Publisher email change
       title: Notification of email change
-      intro: We're notifying you of an update made to your email address with Brave Payments
+      intro: We're notifying you of an update made to your email address with Brave Rewards
       change_ok: If you made this change, check your new email account for a link to confirm it.
       contact_support: If you did not make this change yourself, please contact support ASAP
     statement_ready:
@@ -271,7 +268,7 @@ en:
       subject: Suspicious Activity on Your Account
       intro: Thank you for being a Brave publisher.
       body_html: In the past few months, we have noticed some unusual or suspicious contributions to your Publishers account.  As a result, we have frozen payment to your account.<br/><br/>Suspicious contributions include (but are not limited to) unreasonably large contributions for small channels, and/or contributions that solely originate from the user growth pool. Any contributions that seem out of the ordinary get flagged as suspicious leading to frozen accounts immediately.<br/><br/>If you feel this is in error, please reply and provide further details or explain the various contributions made to your account.
-      closing_html: Thank you.<br/>The Brave Payments Team
+      closing_html: Thank you.<br/>The Brave Rewards Team
       contact_support: If you did not make this change yourself, please contact support ASAP
     unverified_domain_reached_threshold:
       subject: Money is waiting for %{publication_title}, verify your site with Brave to claim your funds!
@@ -285,6 +282,26 @@ en:
       subject: Brave Publisher Uphold account changed
       title: Publisher Uphold account changed
       body: This message confirms that you've updated your Uphold account through the Brave Payments website.
+    uphold_kyc_incomplete:
+      subject: Please verify your Uphold identity
+      body_html: |
+        <p>Thank you for being a Brave creator.</p>
+        <p>
+          To improve the security of Brave Rewards and protect against fraud, we now require that creators verify their identity with Uphold. To continue receiving BAT from Brave Rewards,
+          <a href="https://uphold.com/dashboard/membership"> verify your identity</a>
+          now.
+        </p>
+        <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will still be held safely in your account. We’re sorry for the inconvenience and delays this may cause. Thank you for being a Brave Creator and bearing with us as we improve the integrity of the payout system. Learn more about this new requirement <a href="https://support.uphold.com/hc/en-us/articles/202887565-What-are-the-benefits-of-becoming-a-verified-member-of-Uphold-">here</a>.</p>
+        <p>Thank you,</p>
+    uphold_member_restricted:
+      subject: Please check Uphold Account
+      body_html: |
+        <p>Thank you for being a Brave creator.</p>
+        <p>
+          We've noticed that your Uphold account is not able to receive funds. Please check your Uphold account status to ensure that there are no actionable items and that you are within the transaction limit guidelines.
+        </p>
+        <p>In the meantime, your earnings will still be held safely in your account. We’re sorry for the inconvenience and delays this may cause.</p>
+        <p>Thank you,</p>
     verification_done:
       subject: "%{publication_title} Publisher website verified"
       title: Verification complete
@@ -297,19 +314,19 @@ en:
     wallet_not_connected:
       subject: Please Connect a Wallet To Claim Your Funds
       body_html: |
-        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Payments account.</p>
-        <p>Log in to Brave Payments to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>
-      button: Log In to Brave Payments
+        <p>Your earning from Brave users’ contributions for this month is ready to be deposited! All you need to do is connect a walllet to your Brave Rewards account.</p>
+        <p>Log in to Brave Rewards to check your fans’ contribution total and connect your wallet from your dashboard to receive the earning (currently, this wallet service is provided by Uphold).</p>
+      button: Log In to Brave Rewards
     verify_email:
       subject: Brave Publisher email confirmation
       body_html: |
-        Click the private access link below to create your account with <strong>Brave Payments</strong>.
+        Click the private access link below to create your account with <strong>Brave Rewards</strong>.
         This link can only be used once.
       button: Verify Email
     welcome:
       subject: Brave Publisher registration
       title: Publisher registration
-      intro: We've received a request to register a website with Brave Payments
+      intro: We've received a request to register a website with Brave Rewards
       contact: Contact person
       private_access_link_help: Use this link to continue and manage publisher registration
   channel_transfer:
@@ -334,7 +351,7 @@ en:
     change_email_confirm:
       login_email_changed: Great!
       login_email_verified_html: |
-        <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Payments.
+        <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Rewards.
     channel_taken_modal:
       default_registerer: A channel manager
       noscript_with_registration_html: |
@@ -443,7 +460,7 @@ en:
       youtube_login:
         channel_not_eligable_for_youtube_login: Channel is not able to use Youtube login. Please use your email address.
       require_publisher:
-        log_in_and_retry: Please log in to Brave Payments and retry the operation
+        log_in_and_retry: Please log in to Brave Rewards and retry the operation
       register_twitch_channel:
         channel_already_registered: You have already claimed the Twitch account %{channel_title}. If you would like to claim a second account, please sign out of Twitch and try again.
       register_twitter_channel:
@@ -457,7 +474,7 @@ en:
     resend_auth_email:
       done: The access email has been resent.
     sign_up:
-      heading: Join Brave Payments
+      heading: Join Brave Rewards
     statements:
       title: Statements
       description: Statements contain the details of deposit history.
@@ -557,7 +574,7 @@ en:
       referral_links: "Share the link to increase referrals"
       referral_link: "Referral Link"
       copy: "Copy"
-      brave_payments_tm: "Brave Payments™"
+      brave_rewards_tm: "Brave Rewards"
       on_youtube: "on YouTube"
       on_twitch: "on Twitch"
       on_twitter: "on Twitter"
@@ -707,14 +724,14 @@ en:
   static:
     index:
       welcome: Welcome to
-      header: Brave Payments
+      header: Brave Rewards
       body_html: |
         <p class="leadin">Do you run a web site or are you a <strong>YouTube</strong> creator interested in monetizing
           your content? Verify your site and unlock your contributions!</p>
-        <p>Brave Payments lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
+        <p>Brave Rewards lets Brave users contribute tokens to you. Simply follow the steps to register with us. A lot
           of fans may have already filled your wallet!</p>
       new:
-        header: New to Brave Payments?
+        header: New to Brave Rewards?
         body: Start verification by entering your email.
       login:
         body: Log in to your dashboard.

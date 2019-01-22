@@ -13,11 +13,11 @@ module UpholdServices
         request.headers["Content-Type"] = "application/json"
         request.body = {
           "currency": @currency_code,
-          "label": "Brave Payments"
+          "label": "Brave Rewards"
         }.to_json
         request.url("/v3/owners/#{URI.escape(@publisher.owner_identifier)}/wallet/card")
       end
-      
+
       response
     rescue Faraday::Error => e
       Rails.logger.error("UpholdServices::CardCreationService #perform error: #{e}")

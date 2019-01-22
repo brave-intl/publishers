@@ -637,7 +637,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_match "content empty", response.body # This div displays the "No statements" message.
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end    
+    end
   end
 
   test "flashes 'no transactions' message when attempting to download a statement with no contents" do
@@ -655,7 +655,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_equal flash[:alert], I18n.t("publishers.statements.no_transactions")
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end    
+    end
   end
 
   test "a publisher's balance can be polled via ajax" do
@@ -680,7 +680,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_equal '{"uphold_status":"unconnected",' +
                   '"uphold_status_summary":"Not connected",' +
-                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Payments.",' +
+                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Rewards.",' +
                   '"uphold_status_class":"uphold-unconnected"}',
                  response.body
   end
@@ -801,7 +801,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -845,7 +845,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, cards:write, user:read"},
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -888,7 +888,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT", "BTC"],
                                "scope" => "cards:read, cards:write, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -931,7 +931,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, cards:write, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -972,7 +972,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -997,7 +997,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, cards:write, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -1031,7 +1031,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path(publisher)
 
     # ensure the last settlement balance does not have fees applied
-    assert_match "\"last_deposit_bat_amount\">405.52", response.body 
+    assert_match "\"last_deposit_bat_amount\">405.52", response.body
 
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline

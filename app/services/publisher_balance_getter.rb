@@ -3,7 +3,7 @@ class PublisherBalanceGetter < BaseApiClient
   attr_reader :publisher
 
   def initialize(publisher:)
-    @publisher = publisher 
+    @publisher = publisher
   end
 
   def perform
@@ -32,7 +32,7 @@ class PublisherBalanceGetter < BaseApiClient
   end
 
   private
-  
+
   def channels_query_string
     return "" if publisher.channels.verified.count == 0
     publisher.channels.verified.map { |channel| "&account=#{URI.escape(channel.details.channel_identifier)}"}.reduce(:+)

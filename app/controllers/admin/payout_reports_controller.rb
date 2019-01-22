@@ -10,7 +10,6 @@ class Admin::PayoutReportsController < AdminController
 
   def download    
     @payout_report = PayoutReport.find(params[:id])
-    @payout_report.update_report_contents
     contents = assign_authority(@payout_report.contents)
     send_data contents,
       filename: "payout-#{@payout_report.created_at.strftime("%FT%H-%M-%S")}",
@@ -23,10 +22,13 @@ class Admin::PayoutReportsController < AdminController
   end
 
   def create
-    EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?,
-                                                should_send_notifications: params[:should_send_notifications].present?)
-    
+    EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?)
     redirect_to admin_payout_reports_path, flash: { notice: "Your payout report is being generated, check back soon." }
+  end
+
+  def notify
+    EnqueuePublishersForPayoutNotificationJob.perform_later
+    redirect_to admin_payout_reports_path, flash: { notice: "Sending notifications to publishers with disconnected wallets." }
   end
 
   private
