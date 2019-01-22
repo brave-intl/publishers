@@ -9,6 +9,10 @@ export const Wrapper = styled.div
   height: 100vh;
   width: 100%;
   z-index: 1;
+
+  ${({ open }) => open === false && `
+    visibility: hidden;
+  `}
 `
 
 export const Container = styled.div

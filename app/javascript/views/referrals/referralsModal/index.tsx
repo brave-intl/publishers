@@ -17,51 +17,17 @@ import locale from '../../../locale/en.js'
 export default class ReferralsModal extends React.Component {
 
    handleCreate = (e) => {
-    let url = '/admin/unattached_promo_registrations?number_of_codes_to_create=5'
-
-    let options = {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
-    }
-    // let response = await fetch(url, options)
-    // let parsed = await response.json()
-
-    fetch(url, options)
-      .then(function(response) {
-        console.log(response)
-        return response.json();
-      })
-      .then(function(myJson) {
-        console.log(JSON.stringify(myJson));
-      });
+//
   }
 
   handleCancel = (e) => {
-   let url = '/admin/unattached_promo_registrations'
-
-   let options = {
-     method: 'GET',
-     credentials: 'same-origin',
-     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
-   }
-   // let response = await fetch(url, options)
-   // let parsed = await response.json()
-
-   fetch(url, options)
-     .then(function(response) {
-       console.log(response)
-       return response.json();
-     })
-     .then(function(myJson) {
-       console.log(JSON.stringify(myJson));
-     });
+//
  }
 
 
   render () {
     return (
-      <Wrapper>
+      <Wrapper open={this.props.modalOpen}>
         <Container>
             <Text heading>Create Referral Code</Text>
             <Break/>

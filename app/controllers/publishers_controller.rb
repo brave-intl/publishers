@@ -435,6 +435,10 @@ class PublishersController < ApplicationController
     render(json: data.to_json)
   end
 
+  def referrals
+    render "referrals"
+  end
+
   private
 
   def create_uphold_card_for_default_currency_if_needed

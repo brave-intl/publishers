@@ -5,8 +5,6 @@ Rails.application.routes.draw do
       put :javascript_detected
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
-      get :home
-      get :referrals
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
@@ -39,6 +37,10 @@ Rails.application.routes.draw do
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
+      resources :referral_codes, controller: 'publishers/referral_codes'
+      # UI
+      get :home
+      get :referrals
     end
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do

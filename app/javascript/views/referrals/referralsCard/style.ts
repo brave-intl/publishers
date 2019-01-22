@@ -5,7 +5,7 @@ export const Wrapper = styled.div
   border-radius: 6px;
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
-  padding: 30px;
+  padding: 28px;
 `
 
 export const Grid = styled.div``
@@ -35,9 +35,9 @@ export const Row = styled.div
       grid-column-gap: 10px;
       background-color: #F1F1F9;
       padding: 10px 30px;
-      margin-left: -30px;
-      margin-right: -30px;
-      margin-bottom: -30px;
+      margin-left: -28px;
+      margin-right: -28px;
+      margin-bottom: -28px;
       border-bottom-right-radius: 6px;
       border-bottom-left-radius: 6px;
     `
@@ -60,6 +60,7 @@ export const IconWrapper = styled.div
         width: 40px;
         height: 40px;
         padding-top: 4.5px;
+        cursor: pointer;
       `
     }
 `
@@ -105,7 +106,7 @@ export const Text = styled.div
     ${props => props.title &&
       `
           font-weight: bold;
-          font-size: 22px;
+          font-size: 18px;
       `
     }
     ${props => props.created &&

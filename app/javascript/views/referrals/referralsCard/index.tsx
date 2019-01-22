@@ -27,7 +27,7 @@ export default class ReferralsCard extends React.Component {
           </IconWrapper>
           <ContentWrapper>
             <TextWrapper>
-              <Text title>{locale.campaignName}</Text>
+              <Text title>{this.props.campaign}</Text>
             </TextWrapper>
             <TextWrapper created>
               <Text created>{locale.created}</Text>
@@ -59,7 +59,7 @@ export default class ReferralsCard extends React.Component {
             <Text codes>999</Text>
           </TextWrapper>
           <IconWrapper carat>
-            <CaratRightIcon/>
+            <CaratRightIcon onClick={() => { this.props.changeMode('single', this.props.index) }}/>
           </IconWrapper>
         </Row>
 

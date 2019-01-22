@@ -16,10 +16,12 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     end
     @current_campaign = params[:filter] || "All codes"
     @campaigns = PromoCampaign.all.map {|campaign| campaign.name}
+    @campaigns_with_id = PromoCampaign.all.map {|campaign| [campaign.name, campaign.id]}
 
     respond_to do |format|
+      data = {promo_registrations: @promo_registrations,campaigns: @campaigns_with_id}
       format.html
-      format.json { render json: @promo_registrations }
+      format.json {render json: data}
     end
   end
 
