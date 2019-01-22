@@ -93,8 +93,8 @@ class Promo::RegistrationStatsReportGenerator < BaseService
 
     total_30_days_for_referral_code = events_for_referral_code.sum {|event_for_referral_code| event_for_referral_code[PromoRegistration::FINALIZED]} || 0 
 
-    install_to_download_ratio = total_installs_for_referral_code.to_f / total_downloads_for_referral_code.to_f
-    install_to_30_days_ratio = total_30_days_for_referral_code.to_f / total_eligible_installs_for_referral_code.to_f
+    install_to_download_ratio = (total_installs_for_referral_code.to_f / total_downloads_for_referral_code.to_f).round(2)
+    install_to_30_days_ratio = (total_30_days_for_referral_code.to_f / total_eligible_installs_for_referral_code.to_f).round(2)
 
     if @is_geo
       [
