@@ -11,6 +11,6 @@ export const Card = styled.div`
 
 export const Text = styled.span`
   font-family: Poppins, sans-serif;
-  font-size: 30px;
-  color: #1f1f1f;
+  font-size: 28px;
+  color: #4b4c5c;
 `;

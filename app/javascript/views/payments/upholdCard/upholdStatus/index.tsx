@@ -24,7 +24,7 @@ export class UpholdStatus extends React.Component<IUpholdStatusProps> {
         statusText = (
           <React.Fragment>
             <span>locale.payments.connected</span>
-            <a href="">{locale.payments.disconnect}</a>
+            <a href="">{locale.payments.account.disconnect}</a>
           </React.Fragment>
         );
         break;
@@ -32,8 +32,8 @@ export class UpholdStatus extends React.Component<IUpholdStatusProps> {
       default: {
         statusText = (
           <React.Fragment>
-            <NotConnected>{locale.payments.notConnected}</NotConnected>
-            <a href="">{locale.payments.connect}</a>
+            <NotConnected>{locale.payments.account.notConnected}</NotConnected>
+            <a href="">{locale.payments.account.connect}</a>
           </React.Fragment>
         );
         break;

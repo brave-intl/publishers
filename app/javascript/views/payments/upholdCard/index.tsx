@@ -42,13 +42,13 @@ export default class UpholdCard extends React.Component<
     return (
       <Card>
         <section>
-          <Header>{locale.payments.title}</Header>
+          <Header>{locale.payments.account.title}</Header>
           <div>{this.props.name}</div>
           <UpholdStatus status={this.props.walletStatus} />
         </section>
 
         <section>
-          <Header>{locale.payments.lastDeposit}</Header>
+          <Header>{locale.payments.account.lastDeposit}</Header>
           <div>
             <Text>{this.props.lastDeposit}</Text>
             <Subheader> {this.props.currency}</Subheader>
@@ -58,19 +58,19 @@ export default class UpholdCard extends React.Component<
         <section>
           <div>
             <a href="#">
-              {locale.payments.changeAccount}
+              {locale.payments.account.changeAccount}
               {caretRight}
             </a>
           </div>
           <div>
             <a href="#">
-              {locale.payments.changeDepositCurrency}
+              {locale.payments.account.changeDepositCurrency}
               {caretRight}
             </a>
           </div>
           <div>
             <a href="#">
-              {locale.payments.manageFunds}
+              {locale.payments.account.manageFunds}
               {caretRight}
             </a>
           </div>
