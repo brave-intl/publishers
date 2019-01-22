@@ -272,7 +272,7 @@ class Publisher < ApplicationRecord
       UpholdAccountState::RESTRICTED
     elsif self&.wallet&.uphold_account_status == UpholdAccountState::BLOCKED
       # Notify on Slack that there's someone suspect
-      SlackMessenger.new(message: "Publisher #{self.id} is blocked by Uphold and has just logged in. !channel").perform
+      SlackMessenger.new(message: "Publisher #{self.id} is blocked by Uphold and has just logged in. <!channel>").perform
       UpholdAccountState::VERIFIED
     else
       :unconnected
