@@ -12,13 +12,13 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     @is_geo = is_geo
   end
 
-
   def perform
     events = fetch_stats
     events = select_events_within_report_range(events)
     events = fill_in_events_with_no_activity(@referral_codes, events)
     events_by_referral_codes = group_events_by_referral_code(events)
 
+    ratios = []
     csv_file = CSV.generate do |csv|
       if @is_geo
         column_headers = ["Referral code",
@@ -43,6 +43,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
                 combined[PromoRegistration::FINALIZED]
               ]
             end
+            ratios = ratios.append(calculate_ratios(referral_code, country, events_for_referral_code_for_country))
           end
         end
       else
@@ -64,12 +65,65 @@ class Promo::RegistrationStatsReportGenerator < BaseService
               combined[PromoRegistration::FINALIZED]
             ]
           end
+          ratios = ratios.append(calculate_ratios(referral_code, nil, events_for_referral_code))
         end
+      end
+
+      csv = add_ratios_column_headers(csv)
+      ratios.each do |ratio|
+        csv << ratio
       end
     end
   end
 
   private
+
+  def calculate_ratios(referral_code, country, events_for_referral_code)
+    total_downloads_for_referral_code = events_for_referral_code.sum {|event_for_referral_code| event_for_referral_code[PromoRegistration::RETRIEVALS]} || 0
+    total_installs_for_referral_code = events_for_referral_code.sum {|event_for_referral_code| event_for_referral_code[PromoRegistration::FIRST_RUNS]} || 0
+
+    # An install is eligible when at least 30 days have passed
+    # We don't want to report 30 days / install ratio, if 30 days
+    # haven't passed since install time
+    total_eligible_installs_for_referral_code = events_for_referral_code.select { |event_for_referral_code|
+      (Time.now.utc.to_date - 1.month) >= event_for_referral_code["ymd"].to_date
+    }.sum { |event_for_referral_code|
+      event_for_referral_code[PromoRegistration::RETRIEVALS]
+    } || 0.0
+
+    total_30_days_for_referral_code = events_for_referral_code.sum {|event_for_referral_code| event_for_referral_code[PromoRegistration::FINALIZED]} || 0 
+
+    install_to_download_ratio = total_installs_for_referral_code.to_f / total_downloads_for_referral_code.to_f
+    install_to_30_days_ratio = total_30_days_for_referral_code.to_f / total_eligible_installs_for_referral_code.to_f
+
+    if @is_geo
+      [
+        referral_code,
+        country,
+        total_downloads_for_referral_code,
+        total_installs_for_referral_code,
+        total_eligible_installs_for_referral_code,
+        total_30_days_for_referral_code,
+        install_to_download_ratio,
+        install_to_30_days_ratio
+      ]
+    else
+      [
+        referral_code,
+        total_downloads_for_referral_code,
+        total_installs_for_referral_code,
+        total_eligible_installs_for_referral_code,
+        total_30_days_for_referral_code,
+        install_to_download_ratio,
+        install_to_30_days_ratio
+      ]
+    end
+  end
+
+  def add_ratios_column_headers(csv)
+    csv << []
+    csv << ratios_column_header(@is_geo)
+  end
 
   def combine_events(events, referral_code, country, date)
     combined = {
