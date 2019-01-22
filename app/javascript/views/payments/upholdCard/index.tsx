@@ -1,26 +1,81 @@
-import * as React from 'react'
+import * as React from "react";
 
-interface UpholdCardProps {
+import { CaratRightIcon } from "brave-ui/components/icons";
+import locale from "../../../locale/en";
+import { Header, Subheader } from "../../style";
+import { Card, Text } from "./style";
+import { UpholdStatus, WalletStatus } from "./upholdStatus";
+
+interface IUpholdCardProps {
   name: string;
-  isConnected: boolean;
+  walletStatus: WalletStatus;
+  lastDeposit: string;
+  currency: string;
 }
-interface MyState {
-  count: number // like this
+interface IUpholdCardState {
+  isLoading: boolean; // like this
 }
 
-import locale from '../../../locale/en.js'
+export default class UpholdCard extends React.Component<
+  IUpholdCardProps,
+  IUpholdCardState
+> {
+  public static defaultProps = {
+    currency: "euro",
+    lastDeposit: "999.99",
+    walletStatus: WalletStatus.Unconnected
+  };
 
-export default class UpholdCard extends React.Component<UpholdCardProps, MyState> {
-  static defaultProps = { isConnected: true };
+  public render() {
+    const caretRight = (
+      <CaratRightIcon
+        style={{
+          color: "#00bcd6",
+          cursor: "pointer",
+          height: "25px",
+          marginBottom: "3px",
+          width: "25px"
+        }}
+      />
+    );
 
-  render () {
     return (
-      <div>
-        <div>Name: {this.props.name}</div>
-        <div>isConnected: {this.props.isConnected.toString()}</div>
+      <Card>
+        <section>
+          <Header>{locale.payments.title}</Header>
+          <div>{this.props.name}</div>
+          <UpholdStatus status={this.props.walletStatus} />
+        </section>
 
+        <section>
+          <Header>{locale.payments.lastDeposit}</Header>
+          <div>
+            <Text>{this.props.lastDeposit}</Text>
+            <Subheader> {this.props.currency}</Subheader>
+          </div>
+        </section>
 
-      </div>
-    )
+        <section>
+          <div>
+            <a href="#">
+              {locale.payments.changeAccount}
+              {caretRight}
+            </a>
+          </div>
+          <div>
+            <a href="#">
+              {locale.payments.changeDepositCurrency}
+              {caretRight}
+            </a>
+          </div>
+          <div>
+            <a href="#">
+              {locale.payments.manageFunds}
+              {caretRight}
+            </a>
+          </div>
+        </section>
+      </Card>
+    );
   }
 }

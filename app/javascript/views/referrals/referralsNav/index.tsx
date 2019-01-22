@@ -1,24 +1,18 @@
-import * as React from 'react'
+import * as React from "react";
 
-import {
-  Wrapper,
-  Container,
-  Text,
-  Button
-} from './style'
+import { Wrapper, Container, Text, Button } from "./style";
 
-import locale from '../../../locale/en.js'
+import locale from "../../../locale/en";
 
 export default class ReferralsNav extends React.Component {
-
-  render () {
+  render() {
     return (
       <Wrapper>
         <Container>
-            <Text header>{locale.referrals}</Text>
-            <Button>{locale.createCode}</Button>
+          <Text header>{locale.referrals}</Text>
+          <Button>{locale.createCode}</Button>
         </Container>
       </Wrapper>
-    )
+    );
   }
 }

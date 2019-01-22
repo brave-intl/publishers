@@ -1,31 +1,26 @@
-import * as React from 'react'
+import * as React from "react";
 
-import {
-  Wrapper,
-  Container,
-  Grid
-} from '../style'
+import { Wrapper, Container, Grid } from "../style";
 
-import ReferralsNav from './referralsNav/index'
-import ReferralsHeader from './referralsHeader/index'
-import ReferralsCard from './referralsCard/index'
+import ReferralsNav from "./referralsNav/index";
+import ReferralsHeader from "./referralsHeader/index";
+import ReferralsCard from "./referralsCard/index";
 
 export default class Referrals extends React.Component {
-
-  render () {
+  render() {
     return (
       <Wrapper>
-        <ReferralsNav/>
+        <ReferralsNav />
         <Container>
-          <ReferralsHeader/>
+          <ReferralsHeader />
           <Grid>
-            <ReferralsCard/>
-            <ReferralsCard/>
-            <ReferralsCard/>
-            <ReferralsCard/>
+            <ReferralsCard />
+            <ReferralsCard />
+            <ReferralsCard />
+            <ReferralsCard />
           </Grid>
         </Container>
       </Wrapper>
-    )
+    );
   }
 }

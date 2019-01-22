@@ -1,23 +1,18 @@
-import * as React from 'react'
+import * as React from "react";
 
-import {
-  Wrapper,
-  Container,
-  Grid
-} from '../style'
-import UpholdCard from './upholdCard';
+import { Wrapper, Container, Grid } from "../style";
+import UpholdCard from "./upholdCard";
 
 export default class Referrals extends React.Component {
-
-  render () {
+  public render() {
     return (
       <Wrapper>
         <Container>
           <Grid>
-            <UpholdCard name="dofus" />
+            <UpholdCard name="AliceBlogette" />
           </Grid>
         </Container>
       </Wrapper>
-    )
+    );
   }
 }

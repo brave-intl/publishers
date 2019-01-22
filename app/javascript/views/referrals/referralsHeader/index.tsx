@@ -6,9 +6,9 @@ import {
   TextWrapper,
   Text,
   Box
-} from './style.ts'
+} from './style'
 
-import locale from '../../../locale/en.js'
+import locale from '../../../locale/en'
 
 export default class ReferralsHeader extends React.Component {
 
