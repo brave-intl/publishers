@@ -33,3 +33,4 @@ class ApplicationMailer < ActionMailer::Base
   def require_premailer
     require "premailer/rails"
   end
+end
