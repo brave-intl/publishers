@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
       resources :referral_codes, controller: 'publishers/referral_codes'
+      resources :promo_campaigns, controller: 'publishers/promo_campaigns'
       # UI
       get :home
       get :referrals
