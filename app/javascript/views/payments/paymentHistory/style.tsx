@@ -33,3 +33,10 @@ export const Cell = styled.td`
   text-align: left;
   height: 42px;
 `;
+
+export const Link = styled.a`
+  color: #4c54d2;
+  font-weight: 900;
+  font-size: 14px;
+  margin-right: 15px;
+`;

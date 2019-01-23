@@ -20,7 +20,7 @@ export default {
       connect: "Connect",
       connected: "Connected",
       description: "Payments",
-      disconnect: "(Unconnect)",
+      disconnect: "Disconnect",
       lastDeposit: "LAST DEPOSIT",
       manageFunds: "Manage Funds",
       notConnected: "Not connected",

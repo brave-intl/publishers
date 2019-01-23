@@ -14,7 +14,7 @@ export const StatusIcon = styled.i`
   ${(props: IStatusIconProps) =>
     props.active
       ? `
-      background: #14cd87;
+      background: #07C806;
       `
       : `
       background: #d1d1da;
@@ -25,4 +25,8 @@ export const NotConnected = styled.span`
   color: #fc4145;
   font-weight: bold;
   margin-right: 1em;
+`;
+
+export const Link = styled.a`
+  margin-left: 15px;
 `;

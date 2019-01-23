@@ -3,11 +3,11 @@ import * as React from "react";
 import { Container, Wrapper } from "../style";
 import { Card, Layout, Row } from "./style";
 
-import PaymentHistory from "./paymentHistory";
-import PaymentOverview from "./paymentOverview";
-import UpholdCard from "./upholdCard";
+import PaymentHistory from "./paymentHistory/PaymentHistory";
+import PaymentOverview from "./paymentOverview/PaymentOverview";
+import UpholdCard from "./upholdCard/UpholdCard";
 
-export default class Referrals extends React.Component {
+export default class Payments extends React.Component {
   public render() {
     return (
       <Wrapper>

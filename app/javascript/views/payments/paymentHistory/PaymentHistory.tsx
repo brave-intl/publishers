@@ -1,8 +1,10 @@
 import * as React from "react";
 
 import locale from "../../../locale/en";
+import downloadIcon from "./downloadIcon.png";
+
 import { Header, Subheader } from "../../style";
-import { Table, TableHeader, Cell } from "./style";
+import { Cell, Table, Link, TableHeader } from "./style";
 
 export default class PaymentHistory extends React.Component {
   public render() {
@@ -35,8 +37,16 @@ export default class PaymentHistory extends React.Component {
               <Cell>99999.9</Cell>
               <Cell>999.9 EURO</Cell>
               <Cell>
-                <a href="#">View</a>
-                <a href="#">Download</a>
+                <Link href="#">View</Link>
+                <Link href="#">
+                  <img
+                    src={downloadIcon}
+                    style={{ marginRight: "5px" }}
+                    width={22}
+                    height={19}
+                  />
+                  Download
+                </Link>
               </Cell>
             </tr>
           </tbody>

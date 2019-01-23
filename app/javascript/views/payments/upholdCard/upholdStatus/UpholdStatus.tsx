@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import locale from "../../../../locale/en";
-import { NotConnected, StatusIcon } from "./style";
+import { NotConnected, Link, StatusIcon } from "./style";
 
 export enum WalletStatus {
   ReauthorizationNeeded,
@@ -23,8 +23,8 @@ export class UpholdStatus extends React.Component<IUpholdStatusProps> {
       case WalletStatus.Verified: {
         statusText = (
           <React.Fragment>
-            <span>locale.payments.connected</span>
-            <a href="">{locale.payments.account.disconnect}</a>
+            <span>{locale.payments.account.connected}</span>
+            <Link href="">{locale.payments.account.disconnect}</Link>
           </React.Fragment>
         );
         break;
@@ -33,7 +33,7 @@ export class UpholdStatus extends React.Component<IUpholdStatusProps> {
         statusText = (
           <React.Fragment>
             <NotConnected>{locale.payments.account.notConnected}</NotConnected>
-            <a href="">{locale.payments.account.connect}</a>
+            <Link href="">{locale.payments.account.connect}</Link>
           </React.Fragment>
         );
         break;

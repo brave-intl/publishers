@@ -3,8 +3,8 @@ import * as React from "react";
 import { CaratRightIcon } from "brave-ui/components/icons";
 import locale from "../../../locale/en";
 import { Header, Subheader } from "../../style";
-import { Wrapper, Text } from "./style";
-import { UpholdStatus, WalletStatus } from "./upholdStatus";
+import { Text, Wrapper } from "./style";
+import { UpholdStatus, WalletStatus } from "./upholdStatus/UpholdStatus";
 
 interface IUpholdCardProps {
   name: string;
@@ -23,7 +23,7 @@ export default class UpholdCard extends React.Component<
   public static defaultProps = {
     currency: "euro",
     lastDeposit: "999.99",
-    walletStatus: WalletStatus.Unconnected
+    walletStatus: WalletStatus.ReauthorizationNeeded
   };
 
   public render() {
