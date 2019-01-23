@@ -256,11 +256,13 @@ class Publisher < ApplicationRecord
       SlackMessenger.new(message: "Publisher #{self.id} is blocked by Uphold and has just logged in. <!channel>").perform
     end
 
-    if self&.wallet&.uphold_account_status == UpholdAccountState::RESTRICTED || (self.wallet.present? && self.uphold_verified? && self.wallet.not_a_member?)
+    if self&.wallet&.uphold_account_status == UpholdAccountState::RESTRICTED
       UpholdAccountState::RESTRICTED
     elsif self.uphold_verified?
       if self.uphold_reauthorization_needed?
         :reauthorization_needed
+      elsif self&.wallet&.not_a_member?
+        UpholdAccountState::RESTRICTED
       else
         :verified
       end
