@@ -1,5 +1,8 @@
-p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name || name_from_email(@publisher.email)
-
-p= t "publisher_mailer.suspend_publisher.body_html"
-
-.notice= t "shared.support_note_html"
+/ Sent as soon as a publisher fills out the first step.
+p= "Hi #{@publisher.name}"
+p= t ".intro"
+p= t ".body_html"
+p= t ".closing_html"
+p
+  span.attribute= "#{t(".contact_support")}:"
+  = mail_to(Rails.application.secrets[:support_email])

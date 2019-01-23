@@ -25,7 +25,7 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
 
     click_link("Disable it for now")
 
-    assert_content page, "Set up" # TOTP setup is available
+    assert_content page, "Set Up" # TOTP setup is available
   end
 
   test "Disabling U2F prompts for confirmation" do

@@ -6,6 +6,10 @@ p.salutation= t "publisher_mailer.shared.salutation", name: @publisher_name
 
 p= t ".intro", channel_name: @channel_name
 
-div.btn-container= link_to(t(".button"), @transfer_url, class: "btn-primary btn-login")
+div.center= link_to(t(".button"), @transfer_url, class: "btn-primary btn-login")
 
-.notice= t "shared.support_note_html"
+p= t("publisher_mailer.shared.signature")
+
+hr
+
+.notice= t ".notice"

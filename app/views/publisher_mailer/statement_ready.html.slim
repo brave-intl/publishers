@@ -1,13 +1,12 @@
 / Sent as soon as a publisher fills out the first step.
 - content_for(:title) do
-  h3= t ".title"
+  h3= t ".subject"
 
 p= t ".body"
 
-/ ToDo:
-/p
-/  strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
-/  = link_to_brave_publisher_id(@publisher)
+p= link_to_publisher_statement(@publisher_statement)
+
+p= t ".expiration_note"
 
 p.hint
   span.attribute= "#{t("publisher_mailer.shared.contact_help")}: "
