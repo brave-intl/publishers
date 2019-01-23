@@ -1,10 +1,11 @@
 import * as React from "react";
 
 import { Container, Wrapper } from "../style";
-import { Layout, Row } from "./style";
+import { Card, Layout, Row } from "./style";
+
+import PaymentHistory from "./paymentHistory";
 import PaymentOverview from "./paymentOverview";
 import UpholdCard from "./upholdCard";
-import PaymentHistory from "./paymentHistory";
 
 export default class Referrals extends React.Component {
   public render() {
@@ -13,10 +14,16 @@ export default class Referrals extends React.Component {
         <Container>
           <Layout>
             <Row>
-              <PaymentOverview />
-              <UpholdCard name="AliceBlogette" />
+              <Card>
+                <PaymentOverview />
+              </Card>
+              <Card>
+                <UpholdCard name="AliceBlogette" />
+              </Card>
             </Row>
-            <PaymentHistory />
+            <Card>
+              <PaymentHistory />
+            </Card>
           </Layout>
         </Container>
       </Wrapper>

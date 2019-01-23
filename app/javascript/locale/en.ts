@@ -27,7 +27,7 @@ export default {
       title: "DEPOSIT ACCOUNT"
     },
     history: {
-      confirmedEarning: "CONFIRMED EARNING",
+      confirmedEarning: "CONFIRMED EARNING (BAT)",
       depositAccount: "DEPOSIT ACCOUNT",
       earningPeriod: "EARNING PERIOD",
       paymentDate: "PAYMENT DATE",

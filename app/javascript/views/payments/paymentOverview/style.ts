@@ -16,14 +16,6 @@ export const Button = styled.div`
   letter-spacing: 0.39px;
 `;
 
-export const Card = styled.div`
-  border-radius: 6px;
-  display: grid;
-  background-color: white;
-  box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
-  padding: 30px;
-`;
-
 export const Text = styled.span`
   font-family: Poppins, sans-serif;
   font-size: 28px;

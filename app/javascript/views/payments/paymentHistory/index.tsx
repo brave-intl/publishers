@@ -2,13 +2,46 @@ import * as React from "react";
 
 import locale from "../../../locale/en";
 import { Header, Subheader } from "../../style";
+import { Table, TableHeader, Cell } from "./style";
 
 export default class PaymentHistory extends React.Component {
   public render() {
     return (
-      <Card>
+      <div>
         <Header>{locale.payments.history.title}</Header>
-      </Card>
+
+        <Table>
+          <thead>
+            <tr>
+              <TableHeader>{locale.payments.history.earningPeriod}</TableHeader>
+              <TableHeader>{locale.payments.history.paymentDate}</TableHeader>
+              <TableHeader>
+                {locale.payments.history.depositAccount}
+              </TableHeader>
+              <TableHeader>
+                {locale.payments.history.confirmedEarning}
+              </TableHeader>
+              <TableHeader>
+                {locale.payments.history.totalDeposited}
+              </TableHeader>
+              <TableHeader>{locale.payments.history.statement}</TableHeader>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <Cell>Nov 1- Nov 30, 2018</Cell>
+              <Cell>Dec 8th, 2018</Cell>
+              <Cell>Uphold @ aliceblogette</Cell>
+              <Cell>99999.9</Cell>
+              <Cell>999.9 EURO</Cell>
+              <Cell>
+                <a href="#">View</a>
+                <a href="#">Download</a>
+              </Cell>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
     );
   }
 }

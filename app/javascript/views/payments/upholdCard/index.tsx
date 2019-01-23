@@ -3,7 +3,7 @@ import * as React from "react";
 import { CaratRightIcon } from "brave-ui/components/icons";
 import locale from "../../../locale/en";
 import { Header, Subheader } from "../../style";
-import { Card, Text } from "./style";
+import { Wrapper, Text } from "./style";
 import { UpholdStatus, WalletStatus } from "./upholdStatus";
 
 interface IUpholdCardProps {
@@ -40,7 +40,7 @@ export default class UpholdCard extends React.Component<
     );
 
     return (
-      <Card>
+      <Wrapper>
         <section>
           <Header>{locale.payments.account.title}</Header>
           <div>{this.props.name}</div>
@@ -75,7 +75,7 @@ export default class UpholdCard extends React.Component<
             </a>
           </div>
         </section>
-      </Card>
+      </Wrapper>
     );
   }
 }
