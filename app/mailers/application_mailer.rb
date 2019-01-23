@@ -33,4 +33,21 @@ class ApplicationMailer < ActionMailer::Base
   def require_premailer
     require "premailer/rails"
   end
+
+  # TODO Find a better way to do this
+  def should_add_share_images?
+    if (@_action_name == "new_channel_registered_2018q1") || (@_action_name == "promo_activated_2018q1_verified")
+      return true
+    else
+      return false
+    end
+  end
+
+  def should_add_ad_banners?
+    if @_action_name == "promo_activated_2018q1_verified"
+      return true
+    else
+      return false
+    end
+  end
 end
