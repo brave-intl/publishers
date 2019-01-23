@@ -167,8 +167,6 @@ module PublishersHelper
       'uphold-processing'
     when :reauthorization_needed
       'uphold-reauthorization-needed'
-    when :incomplete
-      'uphold-incomplete'
     when Publisher::UpholdAccountState::RESTRICTED
       'uphold-' + Publisher::UpholdAccountState::RESTRICTED.to_s
     else
@@ -192,8 +190,6 @@ module PublishersHelper
       I18n.t("helpers.publisher.uphold_status_summary.connecting")
     when :reauthorization_needed
       I18n.t("helpers.publisher.uphold_status_summary.connection_problems")
-    when :incomplete
-      I18n.t("helpers.publisher.uphold_status_summary.incomplete")
     else
       I18n.t("helpers.publisher.uphold_status_summary.unconnected")
     end
@@ -207,8 +203,6 @@ module PublishersHelper
       I18n.t("helpers.publisher.uphold_status_description.connecting")
     when :reauthorization_needed
       I18n.t("helpers.publisher.uphold_status_description.reauthorization_needed")
-    when :incomplete
-      I18n.t("helpers.publisher.uphold_status_description.incomplete")
     when :unconnected
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
     when Publisher::UpholdAccountState::RESTRICTED

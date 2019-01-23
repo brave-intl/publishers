@@ -12,7 +12,6 @@ class Publisher < ApplicationRecord
 
   class UpholdAccountState
     REAUTHORIZATION_NEEDED      = :reauthorization_needed
-    INCOMPLETE                  = :incomplete
     VERIFIED                    = :verified
     ACCESS_PARAMETERS_ACQUIRED  = :access_parameters_acquired
     CODE_ACQUIRED               = :code_acquired
@@ -251,10 +250,6 @@ class Publisher < ApplicationRecord
       ['re-authorize', 'authorize'].include?(self.wallet.action)
   end
 
-  def uphold_incomplete?
-    self.uphold_verified? && self.wallet.present? && !self.wallet.authorized?
-  end
-
   def uphold_status
     if self&.wallet&.uphold_account_status == UpholdAccountState::BLOCKED
       # Notify on Slack that there's someone suspect
@@ -266,8 +261,6 @@ class Publisher < ApplicationRecord
     elsif self.uphold_verified?
       if self.uphold_reauthorization_needed?
         :reauthorization_needed
-      elsif self.uphold_incomplete?
-        :incomplete
       else
         :verified
       end

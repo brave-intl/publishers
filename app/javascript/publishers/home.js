@@ -218,7 +218,7 @@ function checkUpholdStatus() {
         if (checkUpholdStatusInterval != null &&
             (timedOut ||
              body.uphold_status === 'verified' ||
-             body.uphold_status === 'incomplete')) {
+             body.uphold_status === 'restricted')) {
 
           clearInterval(checkUpholdStatusInterval);
           checkUpholdStatusInterval = null;
