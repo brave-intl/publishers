@@ -1,11 +1,7 @@
 p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name
 
-== t ".body_html"
+p= t "publisher_mailer.uphold_kyc_incomplete.body_html"
 
-p= t "publisher_mailer.shared.signature"
+div.btn-container= link_to(t(".button"), "https://uphold.com/dashboard/membership", class: "btn-primary btn-login")
 
-hr
-
-p.hint
-  span.attribute= "#{t("publisher_mailer.shared.contact_help")}: "
-  = mail_to(Rails.application.secrets[:support_email])
+.notice= t "shared.support_note_html"
