@@ -43,7 +43,7 @@
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
     queue: transactional
-  EnqueuePublishersForPayoutNotification:
+  EnqueuePublishersForPayoutNotificationJob:
     cron: "0 0 23 * *"
     description: "Notifies publishers their wallet is disconnected on the 23rd of every month."
     queue: scheduler
