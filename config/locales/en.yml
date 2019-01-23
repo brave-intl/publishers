@@ -256,7 +256,7 @@ en:
     notify_email_change:
       subject: Notification of Brave Rewards email change
       title: Notification of email change
-      intro: This email confirms an update made to your email address with Brave Rewards.If you made this change, check your new email account for a link to confirm it.
+      intro: This email confirms an update made to your email address with Brave Rewards. If you made this change, check your new email account for a link to confirm it.
       contact_support_html: If you did not intend for this to happen, please reach out to the Brave Rewards team at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
     suspend_publisher:
       subject: Your Brave Rewards account has been temporarily frozen
