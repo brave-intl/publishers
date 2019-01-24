@@ -12,15 +12,17 @@ import {
   Text
 } from './style.ts'
 
+import Select from 'brave-ui/components/formControls/select'
+
 import locale from '../../../locale/en.js'
 
 export default class ReferralsModal extends React.Component {
 
   async handleCreate = (e) => {
-    let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/promo_campaigns'
+    let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/referral_codes'
 
     let body = new FormData()
-    body.append('name', 'test_campaign')
+    body.append('number', 2)
 
     let options = {
       method: 'POST',
@@ -39,11 +41,11 @@ export default class ReferralsModal extends React.Component {
 
      // let response = await fetch(url, options)
      // let data = await response.json()
-    // this.setState({ campaigns: data })
+     // this.setState({ campaigns: data })
   }
 
   handleCancel = (e) => {
-    let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/promo_campaigns'
+    let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/referral_codes'
 
     let body = new FormData()
     body.append('name', 'test_campaign')
@@ -80,13 +82,13 @@ export default class ReferralsModal extends React.Component {
             <Text description>{this.props.maxCodes}</Text>
             </ContentWrapper>
             <Break/>
-            <Text subtext>Campaign name for these referrals (optional)</Text>
-            <Input name/>
-            <Break/>
-            <Text subtext>Set campaign color</Text>
-            <Break/>
-            <Text subtext>Description (Optional)</Text>
-            <TextArea/>
+            <Text subtext>Select a campaign (Optional)</Text>
+            <Select type={'light'} title={'Limit Sites to'} disabled={false} floating={false}>
+              <div data-value='0'>1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT</div>
+              <div data-value='1'>5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT</div>
+              <div data-value='2'>10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT</div>
+              <div data-value='3'>20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT</div>
+            </Select>
             <Break/>
             <ContentWrapper buttons>
               <Button secondary onClick={ (e) => this.handleCancel(e) }>Cancel</Button>

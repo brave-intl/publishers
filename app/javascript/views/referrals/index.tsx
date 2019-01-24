@@ -20,6 +20,7 @@ export default class Referrals extends React.Component {
       mode: 'grid',
       index: null,
       campaigns: [],
+      referral_codes: [],
       modalOpen: false
     }
     this.openModal = this.openModal.bind(this)
@@ -27,11 +28,13 @@ export default class Referrals extends React.Component {
   }
 
   componentDidMount () {
-    // this.fetchReferralsData()
+    this.fetchData()
   }
 
-  async fetchReferralsData () {
-    let url = '/publishers/promo_campaigns'
+  async fetchData () {
+    // add publisher id
+    let promoCampaignsUrl = '/publishers/c1a84225-471a-4f82-8691-ab62eac7ab46/promo_campaigns'
+    let promoRegistrationsUrl = '/publishers/c1a84225-471a-4f82-8691-ab62eac7ab46/referral_codes'
 
     let options = {
       method: 'GET',
@@ -39,9 +42,12 @@ export default class Referrals extends React.Component {
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
     }
 
-    let response = await fetch(url, options)
-    let data = await response.json()
-    this.setState({ campaigns: data })
+    let promoCampaignsResponse = await fetch(promoCampaignsUrl, options)
+    let promoCampaignsData = await promoCampaignsResponse.json()
+    let promoRegistrationsResponse = await fetch(promoRegistrationsUrl, options)
+    let promoRegistrationsData = await promoRegistrationsResponse.json()
+    this.setState({ campaigns: promoCampaignsData, referralCodes: promoRegistrationsData },
+    () => console.log(this.state.referralCodes))
   }
 
   openModal () {

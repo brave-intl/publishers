@@ -22,7 +22,7 @@ export const Container = styled.div
   top: 25%;
   transform: translateY(-25%);
   width: 700px;
-  height: 900px;
+  height: 600px;
   background-color: white;
   border-radius: 6px;
   padding: 80px 120px;
