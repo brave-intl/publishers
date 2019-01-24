@@ -18,6 +18,7 @@ body {
   margin: 0 auto;
   color: $primaryGrey;
   background-color: $primaryGreyLighten75;
+  display: table;
 }
 
 p {
@@ -65,18 +66,16 @@ p {
     margin: 0;
   }
   .btn-container {
-    display: table;
     margin: 0 auto;
     padding: 12px 0;
     .btn-primary {
-      display: table;
-      text-align: center;
-      text-decoration: none;
-      padding: 12px 24px 8px;
-      border-radius: 30px;
-      height: 30px;
-      background: $primaryAccent;
-      color: #fff;
+      color: #FFFFFF;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 30px;
+        height: 30px;
+        background-color: $primaryAccent;
+        padding: 12px 24px;
     }
   }
   .promo--referral-link-container {
@@ -88,6 +87,7 @@ p {
       font-weight: 600;
       font-size: 18px;
       padding: 18px 0 12px;
+      text-decoration: none;
     }
     .promo--referral-link {
       padding: 16px 0;
@@ -98,20 +98,21 @@ p {
       text-align: center;
     }
     .promo-share-container {
-      margin: 18px auto 0;
+      margin: 24px auto 0;
       display: table;
+      border-spacing: 12px;
       .promo--share-button {
         padding: 12px 32px;
-        display: inline-table;
-        margin: 0 12px;
+        height: 28px;
         color: white;
         border-radius: 50px;
-      }
-      .twitter {
-        background-color: $twitterPrimary;
-      }
-      .facebook {
-        background-color: $facebookPrimary;
+        display: table-cell;
+        &.twitter {
+          background-color: $twitterPrimary;
+        }
+        &.facebook {
+          background-color: $facebookPrimary;
+        }
       }
     }
 
@@ -123,7 +124,6 @@ p {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   background: $primaryAccent;
-  display: table;
   padding: 30px 0 24px;
   width: 100%;
   & .social {
