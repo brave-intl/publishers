@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import { Wrapper, Container, Text, Button } from "./style";
+import { Button, Container, Text, Wrapper } from "./style";
 
 import locale from "../../../locale/en";
 
 export default class ReferralsNav extends React.Component {
-  render() {
+  public render() {
     return (
       <Wrapper>
         <Container>

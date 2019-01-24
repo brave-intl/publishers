@@ -22,7 +22,7 @@ export default class PaymentOverview extends React.Component<
   IPaymentOverviewProps
 > {
   public static defaultProps = {
-    active: true,
+    active: false,
     confirmationDate: "Jan 31, 2018",
     defaultCurrency: "BAT",
     paymentTotal: "999.9"

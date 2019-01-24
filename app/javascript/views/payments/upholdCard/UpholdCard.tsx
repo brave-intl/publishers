@@ -21,9 +21,9 @@ export default class UpholdCard extends React.Component<
   IUpholdCardState
 > {
   public static defaultProps = {
-    currency: "euro",
+    currency: "EURO",
     lastDeposit: "999.99",
-    walletStatus: WalletStatus.ReauthorizationNeeded
+    walletStatus: WalletStatus.Verified
   };
 
   public render() {

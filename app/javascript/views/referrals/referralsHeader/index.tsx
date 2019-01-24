@@ -1,18 +1,11 @@
-import * as React from 'react'
+import * as React from "react";
 
-import {
-  Wrapper,
-  ContentWrapper,
-  TextWrapper,
-  Text,
-  Box
-} from './style'
+import { Box, ContentWrapper, Text, TextWrapper, Wrapper } from "./style";
 
-import locale from '../../../locale/en'
+import locale from "../../../locale/en";
 
 export default class ReferralsHeader extends React.Component {
-
-  render () {
+  public render() {
     return (
       <Wrapper>
         <ContentWrapper>
@@ -22,7 +15,9 @@ export default class ReferralsHeader extends React.Component {
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.referralCodes}</Text>
-            <Text stat blue>499</Text>
+            <Text stat blue>
+              499
+            </Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.downloads}</Text>
@@ -34,13 +29,19 @@ export default class ReferralsHeader extends React.Component {
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.thirtyDay}</Text>
-            <Text stat purple>999</Text>
+            <Text stat purple>
+              999
+            </Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.thirtyDay}</Text>
             <TextWrapper earnings>
-              <Text stat purple>999</Text>
-              <Text bat purple>{locale.bat}</Text>
+              <Text stat purple>
+                999
+              </Text>
+              <Text bat purple>
+                {locale.bat}
+              </Text>
             </TextWrapper>
           </TextWrapper>
         </ContentWrapper>
@@ -50,6 +51,6 @@ export default class ReferralsHeader extends React.Component {
           </Box>
         </ContentWrapper>
       </Wrapper>
-    )
+    );
   }
 }
