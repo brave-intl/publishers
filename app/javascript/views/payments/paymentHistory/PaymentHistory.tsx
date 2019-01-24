@@ -4,7 +4,7 @@ import locale from "../../../locale/en";
 import downloadIcon from "./downloadIcon.png";
 
 import { Header, Subheader } from "../../style";
-import { Cell, Table, Link, TableHeader } from "./style";
+import { Cell, Link, Table, TableHeader } from "./style";
 
 export default class PaymentHistory extends React.Component {
   public render() {

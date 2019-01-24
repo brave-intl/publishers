@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { bool } from "prop-types";
 
 export const Wrapper = styled.div`
   border-radius: 6px;

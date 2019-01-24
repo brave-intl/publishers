@@ -36,6 +36,7 @@ export default {
       totalDeposited: "TOTAL DEPOSITED"
     },
     overview: {
+      confirmationMessage: "To be confirmed and posted on {date}",
       nextPaymentDate: "NEXT PAYMENT DATE",
       paymentTotal: "PAYMENT TOTAL",
       uploadInvoice: "Uphold Invoice",

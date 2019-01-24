@@ -1,21 +1,21 @@
 import * as React from "react";
 
 import {
-  Wrapper,
-  Grid,
-  Row,
-  IconWrapper,
-  TextWrapper,
   ContentWrapper,
-  Text
+  Grid,
+  IconWrapper,
+  Row,
+  Text,
+  TextWrapper,
+  Wrapper
 } from "./style";
 
-import { CheckCircleIcon, CaratRightIcon } from "brave-ui/components/icons";
+import { CaratRightIcon, CheckCircleIcon } from "brave-ui/components/icons";
 
 import locale from "../../../locale/en";
 
 export default class ReferralsCard extends React.Component {
-  render() {
+  public render() {
     return (
       <Wrapper>
         <Grid>

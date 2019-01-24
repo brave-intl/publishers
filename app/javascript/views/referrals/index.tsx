@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import { Wrapper, Container, Grid } from "../style";
+import { Container, Grid, Wrapper } from "../style";
 
-import ReferralsNav from "./referralsNav/index";
-import ReferralsHeader from "./referralsHeader/index";
 import ReferralsCard from "./referralsCard/index";
+import ReferralsHeader from "./referralsHeader/index";
+import ReferralsNav from "./referralsNav/index";
 
 export default class Referrals extends React.Component {
-  render() {
+  public render() {
     return (
       <Wrapper>
         <ReferralsNav />

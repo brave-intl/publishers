@@ -13,7 +13,6 @@ export const TableHeader = styled.th`
   line-height: 2.33;
   border-bottom: 2px solid #dedfe4;
   border-top: 2px solid #dedfe4;
-  color: #4b4c5c;
   padding: 9px 0;
 
   font-weight: bold;
