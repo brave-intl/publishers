@@ -8,7 +8,7 @@ export const Button = styled.div`
   text-align: center;
   vertical-align: middle;
   border-radius: 20px;
-  padding: 8px 24px;
+  padding: 10px 24px;
   font-size: 12px;
   user-select: none;
 
