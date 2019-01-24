@@ -19,156 +19,196 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     assert result.kind_of?(Eyeshade::Wallet)
   end
 
-  test "when online returns a wallet" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-
-    publisher = publishers(:google_verified)
-    publisher.channels.delete_all
-    wallet = {
-      "wallet": {
-        "provider": "uphold",
-        "authorized": true,
-        "defaultCurrency": "USD",
-        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
-        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-        "scope": ["cards:write"]
+  describe "when online" do
+    before do
+      Rails.application.secrets[:api_eyeshade_offline] = false
+    end
+    let(:eyeshade_response) {
+      {
+        "wallet": {
+          "provider": "uphold",
+          "authorized": true,
+          "isMember": true,
+          "status": "ok",
+          "defaultCurrency": "USD",
+          "availableCurrencies": [ "EUR", "BTC", "ETH" ],
+          "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
+          "scope": ["cards:write"]
+        },
+        "rates": {
+          "BTC": 3.138e-05,
+          "XAU": 0.00019228366919698587
+        },
+        "contributions": {
+          "amount": "5.71",
+          "currency": "USD",
+          "altcurrency": "BAT",
+          "probi": "24881568585439183646"
+        },
+        "status": {
+          "provider": "uphold"
+        }
       }
-    }.to_json
+    }
 
-    stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 200, body: wallet, headers: {})
+    describe "uphold states" do
+      test "verified if authorized and isMember" do
+        eyeshade_response[:wallet][:authorized] = true
+        eyeshade_response[:wallet][:isMember] = true
+        eyeshade_response[:wallet][:status] = "ok"
+        publisher = publishers(:uphold_connected)
+        publisher.channels.delete_all
+        stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+          to_return(status: 200, body: eyeshade_response.to_json, headers: {})
+        PublisherWalletGetter.new(publisher: publisher).perform
+        assert_equal Publisher::UpholdAccountState::VERIFIED, publisher.uphold_status
+      end
 
-    result = PublisherWalletGetter.new(publisher: publisher).perform
+      test "not a member yet ok" do
+        eyeshade_response[:wallet][:authorized] = true
+        eyeshade_response[:wallet][:isMember] = false
+        eyeshade_response[:wallet][:status] = "ok"
+        publisher = publishers(:uphold_connected)
+        publisher.channels.delete_all
+        stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+          to_return(status: 200, body: eyeshade_response.to_json, headers: {})
+        assert_equal Publisher::UpholdAccountState::RESTRICTED, publisher.uphold_status
+      end
 
-    assert result.kind_of?(Eyeshade::Wallet)
-    assert_equal "USD", result.default_currency
-  end
+      test "unconnected" do
+        eyeshade_response.delete(:wallet)
+        publisher = publishers(:verified)
+        publisher.channels.delete_all
+        stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+          to_return(status: 200, body: eyeshade_response.to_json, headers: {})
+        assert_equal Publisher::UpholdAccountState::UNCONNECTED, publisher.uphold_status
+      end
 
-  test "when online returns a wallet with channel data" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
+      test "has an action" do
+        publisher = publishers(:uphold_connected)
+        publisher.channels.delete_all
+        ["re-authorize", "authorize"].each do |action|
+          eyeshade_response[:status][:action] = action
+          stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+            with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+            to_return(status: 200, body: eyeshade_response.to_json, headers: {})
+          PublisherWalletGetter.new(publisher: publisher).perform
+          assert_equal Publisher::UpholdAccountState::REAUTHORIZATION_NEEDED, publisher.uphold_status
+        end
+      end
 
-    publisher = publishers(:completed)
-    wallet = {
-      "wallet": {
-        "provider": "uphold",
-        "authorized": true,
-        "defaultCurrency": "USD",
-        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
-        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-        "scope": ["cards:write"]
-      }
-    }.to_json
+      test "blocked by uphold" do
+      end
+    end
 
-    stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 200, body: wallet, headers: {})
+    test "when online returns a wallet" do
+      publisher = publishers(:google_verified)
+      publisher.channels.delete_all
 
-    # stub balance respose
-    channel_balances_response = [
-      {
-        "account_id" => "completed.org",
-        "balance" => "25.00"
-      },
-      {
-        "account_id" => "youtube#channeldef456",
-        "balance" => "10014"
-      }
-    ]
+      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: eyeshade_response.to_json, headers: {})
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
-      to_return(status: 200, body: channel_balances_response.to_json)
+      result = PublisherWalletGetter.new(publisher: publisher).perform
 
-    result = PublisherWalletGetter.new(publisher: publisher).perform
+      assert result.kind_of?(Eyeshade::Wallet)
+      assert_equal "USD", result.default_currency
+    end
 
-    assert result.kind_of?(Eyeshade::Wallet)
-    assert_equal "USD", result.default_currency
+    test "when online returns a wallet with channel data" do
+      publisher = publishers(:completed)
 
-    assert_equal(
-      25.0,
-      result.channel_balances["completed.org"].BAT
-    )
-  end
+      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: eyeshade_response.to_json, headers: {})
 
-  test "when online only returns channel balances for verified channels and owner" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
+      # stub balance respose
+      channel_balances_response = [
+        {
+          "account_id" => "completed.org",
+          "balance" => "25.00"
+        },
+        {
+          "account_id" => "youtube#channeldef456",
+          "balance" => "10014"
+        }
+      ]
 
-    # Has one verified, and one unverified channel
-    publisher = publishers(:partially_completed)
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
+        to_return(status: 200, body: channel_balances_response.to_json)
 
-    wallet = {
-      "wallet": {
-        "provider": "uphold",
-        "authorized": true,
-        "defaultCurrency": "USD",
-        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
-        "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
-        "scope": ["cards:write"]
-      }
-    }.to_json
+      result = PublisherWalletGetter.new(publisher: publisher).perform
 
-    stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 200, body: wallet, headers: {})
+      assert result.kind_of?(Eyeshade::Wallet)
+      assert_equal "USD", result.default_currency
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:94dba753-de7e-5424-99ba-db53953a7939&account=partially-completed-verified.org").
-      to_return(status: 200, body: [].to_json)
+      assert_equal(
+        25.0,
+        result.channel_balances["completed.org"].BAT
+      )
+    end
 
-    result = PublisherWalletGetter.new(publisher: publisher).perform
+    test "when online only returns channel balances for verified channels and owner" do
+      # Has one verified, and one unverified channel
+      publisher = publishers(:partially_completed)
 
-    # Ensure the wallet getter only returns channel balance for the verified channel and owner
-    assert result.channel_balances.count == 2 
-  end
+      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: eyeshade_response.to_json, headers: {})
 
-  test "overall balance is sum of channel and owner accounts" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:94dba753-de7e-5424-99ba-db53953a7939&account=partially-completed-verified.org").
+        to_return(status: 200, body: [].to_json)
 
-    # Stub /wallet response 
-    wallet = {"rates"=>
-      {"BTC"=>3.138e-05,
-       "XAU"=>0.00019228366919698587},
-     "contributions"=>
-      {"amount"=>"5.71",
-       "currency"=>"USD",
-       "altcurrency"=>"BAT",
-       "probi"=>"24881568585439183646"}}.to_json
+      result = PublisherWalletGetter.new(publisher: publisher).perform
 
-    stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 200, body: wallet, headers: {})
+      # Ensure the wallet getter only returns channel balance for the verified channel and owner
+      assert result.channel_balances.count == 2
+    end
 
-    # Stub /balances response 
-    balance_response = [
-      {
-        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-        "account_type" => "owner",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "uphold_connected.org",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "twitch#channel:ucTw",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      },
-      {
-        "account_id" => "twitter#channel:def456",
-        "account_type" => "channel",
-        "balance" => "20.00"
-      }
-    ].to_json
+    test "overall balance is sum of channel and owner accounts" do
+      publisher = publishers(:uphold_connected)
 
-    # stub balances response
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
-      to_return(status: 200, body: balance_response)
-      
-    wallet = PublisherWalletGetter.new(publisher: publisher).perform
+      # Stub /wallet response
 
-    assert_equal wallet.contribution_balance.amount, 80
-    assert_equal wallet.contribution_balance.probi,  80 * BigDecimal.new('1.0e18')
+      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
+        to_return(status: 200, body: eyeshade_response.to_json, headers: {})
+
+      # Stub /balances response
+      balance_response = [
+        {
+          "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+          "account_type" => "owner",
+          "balance" => "20.00"
+        },
+        {
+          "account_id" => "uphold_connected.org",
+          "account_type" => "channel",
+          "balance" => "20.00"
+        },
+        {
+          "account_id" => "twitch#channel:ucTw",
+          "account_type" => "channel",
+          "balance" => "20.00"
+        },
+        {
+          "account_id" => "twitter#channel:def456",
+          "account_type" => "channel",
+          "balance" => "20.00"
+        }
+      ].to_json
+
+      # stub balances response
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+        to_return(status: 200, body: balance_response)
+
+      wallet = PublisherWalletGetter.new(publisher: publisher).perform
+
+      assert_equal wallet.contribution_balance.amount, 80
+      assert_equal wallet.contribution_balance.probi,  80 * BigDecimal.new('1.0e18')
+    end
   end
 end

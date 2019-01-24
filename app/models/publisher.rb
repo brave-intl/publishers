@@ -260,18 +260,18 @@ class Publisher < ApplicationRecord
       UpholdAccountState::RESTRICTED
     elsif self.uphold_verified?
       if self.uphold_reauthorization_needed?
-        :reauthorization_needed
+        UpholdAccountState::REAUTHORIZATION_NEEDED
       elsif self&.wallet&.not_a_member?
         UpholdAccountState::RESTRICTED
       else
-        :verified
+        UpholdAccountState::VERIFIED
       end
     elsif self.uphold_access_parameters.present?
       :access_parameters_acquired
     elsif self.uphold_code.present?
       :code_acquired
     else
-      :unconnected
+      UpholdAccountState::UNCONNECTED
     end
   end
 
