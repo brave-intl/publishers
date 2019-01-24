@@ -25,6 +25,8 @@ services:
       - BAT_RATIOS_TOKEN
       - BAT_REDDIT_URL
       - BAT_ROCKETCHAT_URL
+      - BRAVE_WEBSITE_URL
+      - BAT_WEBSITE_URL
       - BAT_TWITTER_URL
       - FEE_RATE
       - DATABASE_URL

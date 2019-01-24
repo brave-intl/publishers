@@ -6,8 +6,7 @@ Rails.application.configure do
     'Access-Control-Allow-Origin' => "https://localhost:3000",
     'Access-Control-Request-Method' => "GET",
     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods' => 'GET',
-    'X-Frame-Options' => 'deny'
+    'Access-Control-Allow-Methods' => 'GET'
   }
 
   # Settings specified here will take precedence over those in config/application.rb.
