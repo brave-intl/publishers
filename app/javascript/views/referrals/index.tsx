@@ -31,7 +31,7 @@ export default class Referrals extends React.Component {
   }
 
   async fetchReferralsData () {
-    let url = '/publishers/referrals/campaigns'
+    let url = '/publishers/promo_campaigns'
 
     let options = {
       method: 'GET',

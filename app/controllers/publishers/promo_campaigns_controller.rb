@@ -1,6 +1,5 @@
-class Publishers::PromoCampignsController < ApplicationController
+class Publishers::PromoCampaignsController < ApplicationController
   before_action :authenticate_publisher!
-
   def index
     data = []
     PromoCampaign.all.where(publisher_id: current_publisher.id).each do |promo_campaign|
@@ -64,6 +63,6 @@ class Publishers::PromoCampignsController < ApplicationController
       name: params[:name],
       publisher_id: current_publisher.id
     )
+    render(status: 200)
   end
-
 end

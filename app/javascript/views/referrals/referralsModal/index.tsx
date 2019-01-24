@@ -16,14 +16,52 @@ import locale from '../../../locale/en.js'
 
 export default class ReferralsModal extends React.Component {
 
-   handleCreate = (e) => {
-//
+  async handleCreate = (e) => {
+    let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/promo_campaigns'
+
+    let body = new FormData()
+    body.append('name', 'test_campaign')
+
+    let options = {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
+      body: body
+    }
+
+    fetch(url, options)
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (myJson) {
+      console.log(JSON.stringify(myJson))
+    })
+
+     // let response = await fetch(url, options)
+     // let data = await response.json()
+    // this.setState({ campaigns: data })
   }
 
   handleCancel = (e) => {
-//
- }
+    let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/promo_campaigns'
 
+    let body = new FormData()
+    body.append('name', 'test_campaign')
+
+    let options = {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
+    }
+
+    fetch(url, options)
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (myJson) {
+      console.log(JSON.stringify(myJson))
+    })
+  }
 
   render () {
     return (
