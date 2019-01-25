@@ -21,49 +21,16 @@ class ApplicationMailer < ActionMailer::Base
 
   def add_images
     add_image("mailer/brave-rewards.png")
-    add_image("mailer/logo-medium.png")
-    add_image("mailer/logo-reddit.png")
-    add_image("mailer/logo-rocketchat.png")
-    add_image("mailer/logo-twitter.png")
-    add_image("mailer/footer-top-pattern.png")
-    add_image("mailer/logo-bat.png")
+    add_image("mailer/social_bat.png")
+    add_image("mailer/social_reddit.png")
+    add_image("mailer/social_brave.png")
+    add_image("mailer/social_twitter.png")
 
-    if self.class == PromoMailer
-      add_image("mailer/header-pattern-promo.png")
-      if should_add_share_images?
-        add_image("icn-twitter.png")
-        add_image("icn-fb.png")
-      end
-      if should_add_ad_banners?
-        add_image("mailer/switch_banner_1.png")
-        add_image("mailer/switch_banner_2.png")
-      end
-    elsif self.class == PublisherMailer
-      add_image("mailer/header-pattern.png")
-    elsif self.class == InternalMailer
-    else
-      raise "Invalid mailer class; can't run #add_images."
-    end
+    raise "Invalid mailer class; can't run #add_images." unless self.class == InternalMailer || self.class == PromoMailer || self.class == PublisherMailer
+    
   end
 
   def require_premailer
     require "premailer/rails"
-  end
-
-  # TODO Find a better way to do this
-  def should_add_share_images?
-    if (@_action_name == "new_channel_registered_2018q1") || (@_action_name == "promo_activated_2018q1_verified")
-      return true
-    else
-      return false
-    end
-  end
-
-  def should_add_ad_banners?
-    if @_action_name == "promo_activated_2018q1_verified"
-      return true
-    else
-      return false
-    end
   end
 end
