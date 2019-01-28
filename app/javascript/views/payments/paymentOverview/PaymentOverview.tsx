@@ -9,7 +9,7 @@ import {
   PaymentTotal,
   Text,
   Wrapper
-} from "./style";
+} from "./paymentOverviewStyle";
 
 interface IPaymentOverviewProps {
   active: boolean;

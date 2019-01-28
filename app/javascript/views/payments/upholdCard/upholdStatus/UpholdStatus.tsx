@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import locale from "../../../../locale/en";
-import { Link, NotConnected, StatusIcon } from "./style";
+import { Link, NotConnected, StatusIcon } from "./upholdStatusStyle";
 
 export enum WalletStatus {
   ReauthorizationNeeded,

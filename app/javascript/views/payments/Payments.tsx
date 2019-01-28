@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Container, Wrapper } from "../style";
-import { Card, Layout, Row } from "./style";
+import { Card, Layout, Row } from "./paymentsStyle";
 
 import PaymentHistory from "./paymentHistory/PaymentHistory";
 import PaymentOverview from "./paymentOverview/PaymentOverview";
