@@ -66,6 +66,7 @@ export const Text = styled.div`
   ${(props: IText) =>
     props.header &&
     `
+      text-transform: uppercase;
       font-weight: bold;
       font-size: 15px;
       opacity: .5;

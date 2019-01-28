@@ -19,6 +19,7 @@ export const Grid = styled.div`
 
 export const Header = styled.header`
   font-family: Poppins, sans-serif;
+  text-transform: uppercase;
   font-weight: bold;
   font-size: 15px;
   color: grey;

@@ -1,10 +1,11 @@
 import * as React from "react";
 
 import { CaratRightIcon } from "brave-ui/components/icons";
-import locale from "../../../locale/en";
 import { Header, Subheader } from "../../style";
 import { Text, Wrapper } from "./style";
 import { UpholdStatus, WalletStatus } from "./upholdStatus/UpholdStatus";
+
+import locale from "../../../locale/en";
 
 interface IUpholdCardProps {
   name: string;

@@ -1,7 +1,8 @@
 import * as React from "react";
 
+import { DownloadIcon } from "brave-ui/components/icons";
+
 import locale from "../../../locale/en";
-import downloadIcon from "./downloadIcon.png";
 
 import { Header, Subheader } from "../../style";
 import { Cell, Link, Table, TableHeader } from "./style";
@@ -39,12 +40,7 @@ export default class PaymentHistory extends React.Component {
               <Cell>
                 <Link href="#">View</Link>
                 <Link href="#">
-                  <img
-                    src={downloadIcon}
-                    style={{ marginRight: "5px" }}
-                    width={22}
-                    height={19}
-                  />
+                  <DownloadIcon style={{ width: "32px" }} />
                   Download
                 </Link>
               </Cell>
