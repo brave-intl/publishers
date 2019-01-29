@@ -54,7 +54,7 @@
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
     "babel-polyfill": "^6.26.0",
     "babel-preset-react": "^6.24.1",
-    "brave-ui": "^0.30.8",
+    "brave-ui": "^0.37.0",
     "chart.js": "^2.7.2",
     "clipboard": "^2.0.1",
     "prop-types": "^15.6.2",
