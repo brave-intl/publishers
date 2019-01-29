@@ -220,15 +220,29 @@ function checkUpholdStatus() {
              body.uphold_status === 'verified' ||
              body.uphold_status === 'restricted')) {
 
+          hideReconnectButton();
+
           clearInterval(checkUpholdStatusInterval);
           checkUpholdStatusInterval = null;
 
           if (body.uphold_status === 'verified') {
             refreshBalance();
+          } else if (body.uphold_status === 'restricted') {
+            showUpholdSupportButton();
           }
         }
       }
     });
+}
+
+function hideReconnectButton() {
+  document.getElementById('reconnect_to_uphold').style.display = 'none';
+}
+
+function showUpholdSupportButton() {
+  let upholdSupportButton = document.getElementById('go_to_uphold');
+  upholdSupportButton.text = "Go to Uphold";
+  upholdSupportButton.style.display = 'inline !important';
 }
 
 function disconnectUphold() {
