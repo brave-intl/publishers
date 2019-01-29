@@ -99,9 +99,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
           assert_equal Publisher::UpholdAccountState::REAUTHORIZATION_NEEDED, publisher.uphold_status
         end
       end
-
-      test "blocked by uphold" do
-      end
     end
 
     test "when online returns a wallet" do
