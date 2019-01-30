@@ -26,6 +26,13 @@ export default {
       notConnected: "Not connected",
       title: "Deposit Account"
     },
+    header: {
+      navigation: {
+        invoices: "Invoices",
+        reports: "Reports"
+      },
+      title: "Payments"
+    },
     history: {
       confirmedEarning: "Confirmed Earning (BAT)",
       depositAccount: "Deposit Account",
