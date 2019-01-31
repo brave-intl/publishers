@@ -1,13 +1,18 @@
-import * as React from "react";
+import * as React from "react"
 
-import { Box, ContentWrapper, Text, TextWrapper, Wrapper } from "./style";
+import { Box, ContentWrapper, Text, TextWrapper, Wrapper } from "./style"
 
-import locale from "../../../locale/en";
+import locale from "../../../locale/en"
 
 export default class ReferralsHeader extends React.Component {
   public render() {
     return (
       <Wrapper>
+        <ContentWrapper box>
+          <Box>
+            <Text box>January 2019</Text>
+          </Box>
+        </ContentWrapper>
         <ContentWrapper>
           <TextWrapper>
             <Text header>{locale.campaigns}</Text>
@@ -45,12 +50,7 @@ export default class ReferralsHeader extends React.Component {
             </TextWrapper>
           </TextWrapper>
         </ContentWrapper>
-        <ContentWrapper box>
-          <Box>
-            <Text box>January 2019</Text>
-          </Box>
-        </ContentWrapper>
       </Wrapper>
-    );
+    )
   }
 }

@@ -1,29 +1,29 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const Wrapper = styled.div`
   border-radius: 6px;
   background-color: white;
-  box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
-  padding: 30px;
-`;
+  padding: 24px 20px;
+`
 
-export const Grid = styled.div``;
+export const Grid = styled.div``
 
 interface IRowProps {
-  title?: boolean;
-  stats?: boolean;
-  total?: boolean;
-  check?: boolean;
-  carat?: boolean;
+  title?: boolean
+  stats?: boolean
+  total?: boolean
+  check?: boolean
+  carat?: boolean
 }
 export const Row = styled.div`
   display: flex;
+  align-items: center;
 
 
   ${props =>
     props.title &&
     `
-      margin-bottom: 30px;
+      margin-bottom: 24px;
     `}
 
   ${(props: IRowProps) =>
@@ -37,46 +37,41 @@ export const Row = styled.div`
   ${(props: IRowProps) =>
     props.total &&
     `
-      justify-content: space-between;
-      grid-column-gap: 10px;
       background-color: #F1F1F9;
-      padding: 10px 30px;
-      margin-left: -30px;
-      margin-right: -30px;
-      margin-bottom: -30px;
+      padding: 12px 24px;
+      margin-left: -20px;
+      margin-right: -20px;
+      margin-bottom: -24px;
       border-bottom-right-radius: 6px;
       border-bottom-left-radius: 6px;
     `}
-`;
+`
 
 interface IIconWrapperProps {
-  check?: boolean;
-  carat?: boolean;
+  check?: boolean
+  carat?: boolean
 }
 export const IconWrapper = styled.div`
   ${(props: IIconWrapperProps) =>
     props.check &&
     `
-        margin-left: 10px;
-        margin-top: 6px;
-        margin-bottom: 10px;
-        width: 60px;
-        height: 60px;
+        width: 52px;
+        height: 52px;
       `}
   ${(props: IIconWrapperProps) =>
     props.carat &&
     `
-        width: 40px;
-        height: 40px;
-        padding-top: 4.5px;
+        width: 32px;
+        height: 32px;
+        margin-left: auto;
       `}
-`;
+`
 
 interface ITextWrapper {
-  created?: boolean;
-  carat?: boolean;
-  stats?: boolean;
-  total?: boolean;
+  created?: boolean
+  carat?: boolean
+  stats?: boolean
+  total?: boolean
 }
 export const TextWrapper = styled.div`
     ${(props: ITextWrapper) =>
@@ -101,23 +96,23 @@ export const TextWrapper = styled.div`
       `
         padding: 10px;
       `}
-`;
+`
 
 export const ContentWrapper = styled.div`
   padding: 10px;
-`;
+`
 
-export const Image = styled.div;
+export const Image = styled.div
 
 interface ITextProps {
-  title?: boolean;
-  created?: boolean;
-  date?: boolean;
-  header?: boolean;
-  stat?: boolean;
-  use?: boolean;
-  total?: boolean;
-  codes?: boolean;
+  title?: boolean
+  created?: boolean
+  date?: boolean
+  header?: boolean
+  stat?: boolean
+  use?: boolean
+  total?: boolean
+  codes?: boolean
 }
 export const Text = styled.div`
   font-family: Poppins, sans-serif;
@@ -176,4 +171,4 @@ export const Text = styled.div`
         font-size: 18px;
         display: inline-block;
       `}
-`;
+`
