@@ -4,6 +4,9 @@ export default {
   bat: "BAT",
   campaignName: "Campaign Name",
   campaigns: "Campaigns",
+  common: {
+    unexpectedError: "An unexpected error has occurred. Please try again later."
+  },
   createCode: "Create Code",
   created: "Created",
   donationAmount: "Donation amount",
@@ -48,6 +51,13 @@ export default {
       paymentTotal: "Payment Total",
       uploadInvoice: "Uphold Invoice",
       uploadReport: "Upload Report"
+    },
+    reports: {
+      createdAt: "File name",
+      fileName: "File name",
+      title: "Reports",
+      upload: "Upload Report",
+      uploadedBy: "Uploaded By"
     }
   },
   referralCodes: "Referral Codes",

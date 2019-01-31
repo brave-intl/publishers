@@ -4,8 +4,8 @@ import { DownloadIcon } from "brave-ui/components/icons";
 
 import locale from "../../../locale/en";
 
-import { Header, Subheader } from "../../style";
-import { Cell, Link, Table, TableHeader } from "./paymentHistoryStyle";
+import { Cell, Header, Table, TableHeader } from "../../style";
+import { Link } from "./paymentHistoryStyle";
 
 export default class PaymentHistory extends React.Component {
   public render() {

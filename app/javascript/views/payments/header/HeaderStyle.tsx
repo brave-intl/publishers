@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   background-color: #a0a1b2;
-  margin-top: -2rem; // This is from .main-content div
+  margin-top: -2rem;
   margin-bottom: 30px;
   height: 80px;
 `;
@@ -31,6 +31,10 @@ export const HeaderLink = styled.a`
     text-decoration: none;
   }
 `;
+
+interface ILinkProps {
+  active?: boolean;
+}
 export const Link = styled.a`
   font-family: Poppins, sans-serif;
   font-size: 15px;
@@ -40,6 +44,12 @@ export const Link = styled.a`
   &:hover {
     color: white;
   }
+
+  ${(props: ILinkProps) =>
+    props.active &&
+    `
+    text-decoration: underline;
+  `}
 `;
 
 export const HeaderText = styled.h1`

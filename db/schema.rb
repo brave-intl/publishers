@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_14_002051) do
+ActiveRecord::Schema.define(version: 2019_01_31_170022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -314,6 +314,13 @@ ActiveRecord::Schema.define(version: 2018_12_14_002051) do
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
+  end
+
+  create_table "reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "partner_id"
+    t.uuid "uploaded_by"
+    t.bigint "amount_bat"
+    t.index ["partner_id"], name: "index_reports_on_partner_id"
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|

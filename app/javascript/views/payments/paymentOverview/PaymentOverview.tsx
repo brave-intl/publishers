@@ -3,18 +3,19 @@ import * as React from "react";
 import locale from "../../../locale/en";
 import { Header, Subheader } from "../../style";
 import {
-  Button,
+  OverviewButton,
   ButtonGroup,
   InactiveText,
+  Input,
   PaymentTotal,
   Text,
   Wrapper
 } from "./paymentOverviewStyle";
 
 interface IPaymentOverviewProps {
-  active: boolean;
   confirmationDate: string;
   paymentTotal: string;
+  inactive: boolean;
   defaultCurrency: string;
 }
 
@@ -22,10 +23,14 @@ export default class PaymentOverview extends React.Component<
   IPaymentOverviewProps
 > {
   public static defaultProps = {
-    active: false,
     confirmationDate: "Jan 31, 2018",
     defaultCurrency: "BAT",
+    inactive: false,
     paymentTotal: "999.9"
+  };
+
+  public uploadFile = file => {
+    console.log(file);
   };
 
   public render() {
@@ -34,7 +39,7 @@ export default class PaymentOverview extends React.Component<
       this.props.confirmationDate
     );
 
-    const paymentTotal = this.props.active ? (
+    const paymentTotal = this.props.inactive ? (
       <React.Fragment>
         <Text>{this.props.paymentTotal}</Text>
         <Subheader> {this.props.defaultCurrency}</Subheader>
@@ -55,12 +60,18 @@ export default class PaymentOverview extends React.Component<
           <PaymentTotal>{paymentTotal}</PaymentTotal>
 
           <ButtonGroup>
-            <Button active={this.props.active}>
-              {locale.payments.overview.uploadInvoice}
-            </Button>
-            <Button active={this.props.active}>
-              {locale.payments.overview.uploadReport}
-            </Button>
+            <label>
+              <OverviewButton inactive={this.props.inactive}>
+                {locale.payments.overview.uploadInvoice}
+              </OverviewButton>
+              <input type="file" id="upload" style={{ display: "none" }} />
+            </label>
+            <label>
+              <OverviewButton inactive={this.props.inactive}>
+                {locale.payments.overview.uploadReport}
+              </OverviewButton>
+              <Input type="file" id="upload" onChange={this.uploadFile} />
+            </label>
           </ButtonGroup>
         </section>
       </Wrapper>

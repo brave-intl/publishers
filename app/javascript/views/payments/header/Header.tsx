@@ -23,10 +23,17 @@ export default class Header extends React.Component {
             </HeaderLink>
           </HeaderText>
           <Navigation>
-            <Link href={Routes.payments.invoice.path}>
+            {/* TODO add isSelected to props */}
+            <Link
+              active={this.isActive(Routes.payments.invoice.path)}
+              href={Routes.payments.invoice.path}
+            >
               {locale.payments.header.navigation.invoices}
             </Link>
-            <Link href={Routes.payments.reports.path}>
+            <Link
+              active={this.isActive(Routes.payments.reports.path)}
+              href={Routes.payments.reports.path}
+            >
               {locale.payments.header.navigation.reports}
             </Link>
           </Navigation>
@@ -34,4 +41,8 @@ export default class Header extends React.Component {
       </Wrapper>
     );
   }
+
+  private isActive = path => {
+    return window.location.href.indexOf(path) !== -1;
+  };
 }

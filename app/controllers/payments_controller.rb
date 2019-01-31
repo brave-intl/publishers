@@ -1,7 +1,7 @@
 class PaymentsController < ApplicationController
   before_action :filter_users
 
-  def index
+  def show
   end
 
   private

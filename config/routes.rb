@@ -39,7 +39,11 @@ Rails.application.routes.draw do
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
-      resources :payments
+
+      resource :payments, only: [:show] do
+        resources :invoices
+        resources :reports
+      end
     end
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do
