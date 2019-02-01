@@ -25,8 +25,8 @@ export default class Header extends React.Component {
           <Navigation>
             {/* TODO add isSelected to props */}
             <Link
-              active={this.isActive(Routes.payments.invoice.path)}
-              href={Routes.payments.invoice.path}
+              active={this.isActive(Routes.payments.invoices.path)}
+              href={Routes.payments.invoices.path}
             >
               {locale.payments.header.navigation.invoices}
             </Link>

@@ -45,6 +45,13 @@ export default {
       title: "Payment History",
       totalDeposited: "Total Deposited"
     },
+    invoices: {
+      createdAt: "Created At",
+      fileName: "File name",
+      title: "Invoices",
+      upload: "Upload Invoice",
+      uploadedBy: "Uploaded By"
+    },
     overview: {
       confirmationMessage: "To be confirmed and posted on {date}",
       nextPaymentDate: "Next Payment Date",
@@ -53,6 +60,7 @@ export default {
       uploadReport: "Upload Report"
     },
     reports: {
+      amountBAT: "Amount BAT",
       createdAt: "Created At",
       fileName: "File name",
       title: "Reports",

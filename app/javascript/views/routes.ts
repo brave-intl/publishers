@@ -2,7 +2,7 @@
 export default {
   payments: {
     path: "/publishers/payments",
-    invoice: {
+    invoices: {
       path: "/publishers/payments/invoices"
     },
     reports: {

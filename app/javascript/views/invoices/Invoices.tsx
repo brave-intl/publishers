@@ -1,38 +1,46 @@
 import * as React from "react";
 
-import { Card, Cell, Container, Table, TableHeader, Wrapper } from "../style";
+import {
+  Button,
+  Card,
+  Cell,
+  Container,
+  Table,
+  TableHeader,
+  Wrapper
+} from "../style";
 
 import PaymentsHeader from "../payments/header/Header";
 import routes from "../routes";
-import { FlexWrapper, LoadingIcon, ReportHeader } from "./ReportsStyle";
+import { FlexWrapper, Header, LoadingIcon } from "./InvoicesStyle";
 
 import locale from "../../locale/en";
 import UploadDialog from "./uploadDialog/UploadDialog";
 
-interface IReport {
+interface IInvoice {
   id: string;
   filename: string;
   file_url: string;
   uploaded_by_user: string;
   created_at: string;
 }
-interface IReportsProps {
-  reports: IReport[];
+interface IInvoicesProps {
+  invoices: IInvoice[];
 }
 
-interface IReportsState {
+interface IInvoicesState {
   showUpload: boolean;
   isLoading: boolean;
-  reports: IReport[];
+  invoices: IInvoice[];
 }
 
-export default class Reports extends React.Component<
-  IReportsProps,
-  IReportsState
+export default class Invoices extends React.Component<
+  IInvoicesProps,
+  IInvoicesState
 > {
-  public readonly state: IReportsState = {
+  public readonly state: IInvoicesState = {
+    invoices: this.props.invoices,
     isLoading: false,
-    reports: this.props.reports,
     showUpload: false
   };
   constructor(props) {
@@ -46,7 +54,7 @@ export default class Reports extends React.Component<
 
   public async reloadTable() {
     this.setLoading(true);
-    const result = await fetch(routes.payments.reports.path, {
+    const result = await fetch(routes.payments.invoices.path, {
       headers: {
         Accept: "application/json",
         "X-CSRF-Token": document.head
@@ -57,7 +65,7 @@ export default class Reports extends React.Component<
       method: "GET"
     }).then(response => {
       response.json().then(json => {
-        this.setState({ reports: json.reports });
+        this.setState({ invoices: json.invoices });
       });
     });
 
@@ -71,30 +79,30 @@ export default class Reports extends React.Component<
         <Container>
           <Card>
             <FlexWrapper>
-              <ReportHeader>{locale.payments.reports.title}</ReportHeader>
+              <Header>{locale.payments.invoices.title}</Header>
               <UploadDialog
-                route={routes.payments.reports.path}
-                text={locale.payments.reports.upload}
+                route={routes.payments.invoices.path}
+                text={locale.payments.invoices.upload}
                 afterSave={this.reloadTable}
                 setLoading={this.setLoading}
               />
               <LoadingIcon isLoading={this.state.isLoading} />
             </FlexWrapper>
 
-            {/* <Button onClick={this.reloadTable}>reload</Button> */}
             <Table>
               <thead>
                 <tr>
-                  <TableHeader>{locale.payments.reports.fileName}</TableHeader>
-                  <TableHeader>{locale.payments.reports.amountBAT}</TableHeader>
-                  <TableHeader>{locale.payments.reports.createdAt}</TableHeader>
+                  <TableHeader>{locale.payments.invoices.fileName}</TableHeader>
                   <TableHeader>
-                    {locale.payments.reports.uploadedBy}
+                    {locale.payments.invoices.createdAt}
+                  </TableHeader>
+                  <TableHeader>
+                    {locale.payments.invoices.uploadedBy}
                   </TableHeader>
                 </tr>
               </thead>
               <tbody>
-                {this.state.reports.map(report => (
+                {this.state.invoices.map(report => (
                   <tr key={report.id}>
                     <Cell>
                       <a href={report.file_url}>{report.filename}</a>

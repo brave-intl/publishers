@@ -12,8 +12,9 @@ class Report < ActiveRecord::Base
     {
       id: self.id,
       filename: self.file.filename,
+      file_url: Rails.application.routes.url_helpers.rails_blob_path(self.file, disposition: "attachment", only_path: true),
       uploaded_by_user: self.uploaded_by.name,
-      created_at: self.created_at
+      created_at: self.created_at.strftime("%b %d, %Y")
     }
   end
 end
