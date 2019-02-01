@@ -15,17 +15,17 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-    # Best practice is to use the MailerServices::PartnerLoginLinkEmailer service
-    def login_partner_email(partner)
-      @partner = partner
-      @private_reauth_url = publisher_private_reauth_url(publisher: @partner)
-      # We should send the email out to people who have previously registered
-      # but not verified their account
-      mail(
-        to: @partner.email || @partner.pending_email,
-        subject: default_i18n_subject
-      )
-    end
+  # Best practice is to use the MailerServices::PartnerLoginLinkEmailer service
+  def login_partner_email(partner)
+    @partner = partner
+    @private_reauth_url = publisher_private_reauth_url(publisher: @partner)
+    # We should send the email out to people who have previously registered
+    # but not verified their account
+    mail(
+      to: @partner.email || @partner.pending_email,
+      subject: default_i18n_subject
+    )
+  end
 
   # Best practice is to use the MailerServices::VerificationDoneEmailer service
   def verification_done(channel)
@@ -162,28 +162,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def unverified_domain_reached_threshold(domain, email)
-    @domain = domain
-    @email = email
-    @home_url = root_url
-    mail(
-      to: @email,
-      subject: default_i18n_subject(publication_title: @domain)
-    )
-  end
-
-  def unverified_domain_reached_threshold_internal(domain, email)
-    @domain = domain
-    @email = email
-    @home_url = root_url
-    mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @email,
-      subject: "<Internal> #{t("publisher_mailer.unverified_domain_reached_threshold.subject", publication_title: @domain)}",
-      template_name: "unverified_domain_reached_threshold"
-    )
-  end
-
   def channel_contested(channel)
     @channel = channel
     @channel_name = @channel.publication_title
@@ -194,7 +172,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel.publication_title)
     )
   end
 
@@ -220,7 +198,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -244,7 +222,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -268,7 +246,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -291,7 +269,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 

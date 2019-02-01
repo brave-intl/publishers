@@ -1,82 +1,83 @@
 # Preview all emails at https://localhost:3000/rails/mailers
-# Preview publisher_mailer emails at https://localhost:3000/rails/mailers/publisher_mailer
+
 class PublisherMailerPreview < ActionMailer::Preview
 
   def login_email
-    PublisherMailer.login_email(Publisher.first, true)
+    PublisherTokenGenerator.new(publisher: Publisher.first).perform
+    PublisherMailer.login_email(Publisher.first)
+  end
+
+  def login_partner_email
+    PublisherTokenGenerator.new(publisher: Publisher.first).perform
+    PublisherMailer.login_email(Publisher.first)
   end
 
   def verify_email
-    PublisherMailer.verify_email(Publisher.first, true)
+    publisher = Publisher.first
+    publisher&.pending_email = 'test@brave.com'
+    PublisherTokenGenerator.new(publisher: Publisher.first).perform
+    PublisherMailer.verify_email(publisher)
   end
 
   def verification_done
-    PublisherMailer.verification_done(Channel.first, true)
-  end
-
-  def verification_done_internal
-    PublisherMailer.verification_done_internal(Channel.first)
+    PublisherTokenGenerator.new(publisher: Publisher.first).perform
+    PublisherMailer.verification_done(Channel.first)
   end
 
   def uphold_account_changed
     PublisherMailer.uphold_account_changed(Publisher.first)
   end
 
-  def verified_no_wallet
-    PublisherMailer.verified_no_wallet(Publisher.first, nil)
+  def wallet_not_connected
+    PublisherMailer.wallet_not_connected(Publisher.first)
   end
 
-  def verified_no_wallet_internal
-    PublisherMailer.verified_no_wallet(Publisher.first, nil)
+  def uphold_kyc_incomplete
+    PublisherMailer.uphold_kyc_incomplete(Publisher.first)
   end
 
-  def verified_no_wallet_internal
-    PublisherMailer.verified_no_wallet(Publisher.first, nil)
+  def uphold_member_restricted
+    PublisherMailer.uphold_member_restricted(Publisher.first)
   end
 
   def channel_contested
-    channel = Channel.where("contested_by_channel_id is not null").first
+    channel = Channel.first
+    channel.contest_token = ''
     PublisherMailer.channel_contested(channel)
   end
 
-  def channel_contested_internal
-    channel = Channel.where("contested_by_channel_id is not null").first
-    PublisherMailer.channel_contested_internal(channel)
-  end
-
   def channel_transfer_approved_primary
-    PublisherMailer.channel_transfer_approved_primary("test@test.com", "My Channel")
-  end
-
-  def channel_transfer_approved_primary_internal
-    PublisherMailer.channel_transfer_approved_primary_internal("test@test.com", "My Channel")
+    PublisherMailer.channel_transfer_approved_primary("My Channel", "Test", "test@test.com")
   end
 
   def channel_transfer_approved_secondary
-    PublisherMailer.channel_transfer_approved_secondary("test@test.com", "My Channel")
-  end
-
-  def channel_transfer_approved_secondary_internal
-    PublisherMailer.channel_transfer_approved_secondary_internal("test@test.com", "My Channel")
+    PublisherMailer.channel_transfer_approved_secondary(Channel.first)
   end
 
   def channel_transfer_rejected_primary
-    channel = Channel.where("contested_by_channel_id is not null").first
-    PublisherMailer.channel_transfer_rejected_primary(channel)
-  end
-
-  def channel_transfer_rejected_primary_internal
-    channel = Channel.where("contested_by_channel_id is not null").first
-    PublisherMailer.channel_transfer_rejected_primary_internal(channel)
+    PublisherMailer.channel_transfer_rejected_primary(Channel.first)
   end
 
   def channel_transfer_rejected_secondary
     channel = Channel.where("contested_by_channel_id is not null").first
-    PublisherMailer.channel_transfer_rejected_secondary("test@test.com", "My Channel")
+    PublisherMailer.channel_transfer_rejected_secondary("My Channel", "test", "test@test.com")
   end
 
-  def channel_transfer_rejected_secondary_internal
-    channel = Channel.where("contested_by_channel_id is not null").first
-    PublisherMailer.channel_transfer_rejected_secondary_internal("test@test.com", "My Channel")
+  def suspend_publisher
+    PublisherMailer.suspend_publisher(Publisher.first)
   end
+
+  def notify_email_change
+    publisher = Publisher.first
+    publisher.pending_email = 'pending@brave.com'
+    PublisherMailer.notify_email_change(publisher)
+  end
+
+  def confirm_email_change
+    publisher = Publisher.first
+    publisher.pending_email = 'pending@brave.com'
+    PublisherTokenGenerator.new(publisher: Publisher.first).perform
+    PublisherMailer.confirm_email_change(publisher)
+  end
+
 end

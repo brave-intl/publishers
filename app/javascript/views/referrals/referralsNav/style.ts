@@ -1,15 +1,13 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-export const Wrapper = styled.div
-`
-  background-color: #A0A1B2;
+export const Wrapper = styled.div`
+  background-color: #a0a1b2;
   margin-top: -2rem;
   margin-bottom: 30px;
   height: 80px;
-`
+`;
 
-export const Container = styled.div
-`
+export const Container = styled.div`
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -18,13 +16,16 @@ export const Container = styled.div
   margin-right: auto;
   padding-left: 30px;
   padding-right: 30px;
-`
+`;
 
-export const Text = styled.div
-`
+interface INavTextProps {
+  header?: boolean;
+}
+export const Text = styled.div`
   font-family: Poppins, sans-serif;
 
-  ${props => props.header &&
+  ${(props: INavTextProps) =>
+    props.header &&
     `
       font-size: 28px;
       color: white;
@@ -32,12 +33,10 @@ export const Text = styled.div
       padding-left: 7px;
       margin-top: auto;
       margin-bottom: auto;
-    `
-  }
-`
+    `}
+`;
 
-export const Button = styled.div
-`
+export const Button = styled.div`
   font-family: Poppins, sans-serif;
   width: 150px;
   color: white;
@@ -50,4 +49,4 @@ export const Button = styled.div
   font-size: 15px;
   cursor: pointer;
   user-select: none;
-`
+`;
