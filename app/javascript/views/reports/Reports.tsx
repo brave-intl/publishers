@@ -20,7 +20,7 @@ import UploadDialog from "./uploadDialog/UploadDialog";
 interface IReport {
   id: string;
   filename: string;
-  upload_by: string;
+  uploaded_by_user: string;
   created_at: string;
 }
 interface IReportsProps {
@@ -88,7 +88,7 @@ export default class Reports extends React.Component<
               <LoadingIcon isLoading={this.state.isLoading} />
             </FlexWrapper>
 
-            <Button onClick={this.reloadTable}>reload</Button>
+            {/* <Button onClick={this.reloadTable}>reload</Button> */}
             <Table>
               <thead>
                 <tr>
@@ -100,15 +100,13 @@ export default class Reports extends React.Component<
                 </tr>
               </thead>
               <tbody>
-                {this.state.reports.map(report => {
-                  return (
-                    <tr key={report.id}>
-                      <Cell>{report.filename}</Cell>
-                      <Cell>{report.upload_by}</Cell>
-                      <Cell>{report.created_at}</Cell>
-                    </tr>
-                  );
-                })}
+                {this.state.reports.map(report => (
+                  <tr key={report.id}>
+                    <Cell>{report.filename}</Cell>
+                    <Cell>{report.created_at}</Cell>
+                    <Cell>{report.uploaded_by_user}</Cell>
+                  </tr>
+                ))}
               </tbody>
             </Table>
           </Card>
