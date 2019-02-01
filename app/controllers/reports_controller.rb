@@ -15,7 +15,11 @@ class ReportsController < ApplicationController
   end
 
   def create
-    report = Report.new(partner: current_publisher.becomes(Partner), uploaded_by: current_publisher)
+    report = Report.new(
+      partner: current_publisher.becomes(Partner),
+      uploaded_by: current_publisher,
+      amount_bat: params[:amount_bat]
+    )
     report.save
     report.file.attach(params[:file])
     report.save

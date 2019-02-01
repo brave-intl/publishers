@@ -1,17 +1,16 @@
 import styled from "styled-components";
-import { checkPropTypes } from "prop-types";
 
 interface IModalProps {
   open: boolean;
 }
 
 export const ModalDiv = styled.div`
-  position: absolute;
-  top: -80px;
-  left: 0px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   height: 100vh;
   width: 100%;
-  z-index: 9001;
 
   ${(props: Partial<IModalProps>) =>
     props.open === false &&
@@ -22,9 +21,10 @@ export const ModalDiv = styled.div`
 
 export const Background = styled.div`
   background-color: rgba(64, 64, 64, 0.7);
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  position: absolute;
+  position: fixed;
+  z-index: 9000;
 `;
 
 enum ModalSize {
@@ -45,21 +45,27 @@ export const Container = styled.div`
   background-color: white;
   border-radius: 6px;
   padding: 50px;
+  z-index: 9001;
+`;
+
+export const ExtraSmallContainer = styled(Container)`
+  width: 33%;
+  min-width: 30rem;
 `;
 
 export const SmallContainer = styled(Container)`
-  width: 30%;
-  min-width: 25rem;
+  width: 46%;
+  min-width: 30rem;
 `;
 
 export const MediumContainer = styled(Container)`
-  width: 60%;
-  min-width: 25rem;
+  width: 66%;
+  min-width: 30rem;
 `;
 
 export const LargeContainer = styled(Container)`
   width: 90%;
-  min-width: 30rem;
+  min-width: 35rem;
 `;
 
 export const CloseIcon = styled.div`

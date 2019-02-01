@@ -5,13 +5,15 @@ import {
   Background,
   CloseIcon,
   Container,
-  ModalDiv,
-  SmallContainer,
+  ExtraSmallContainer,
+  LargeContainer,
   MediumContainer,
-  LargeContainer
+  ModalDiv,
+  SmallContainer
 } from "./ModalStyle";
 
 export enum ModalSize {
+  ExtraSmall,
   Small,
   Medium,
   Large,
@@ -27,6 +29,23 @@ interface IModalProps {
 export default class Modal extends React.Component<IModalProps> {
   public static defaultProps = { size: ModalSize.Auto };
 
+  public componentDidUpdate() {
+    // Hide the scrollbar
+    if (this.props.show) {
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", this.escFunction, false);
+    } else {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", this.escFunction, false);
+    }
+  }
+
+  public escFunction = event => {
+    if (event.keyCode === 27) {
+      this.props.handleClose();
+    }
+  };
+
   public render() {
     const childElements = (
       <React.Fragment>
@@ -39,6 +58,10 @@ export default class Modal extends React.Component<IModalProps> {
 
     let container = <Container>{childElements}</Container>;
     switch (this.props.size) {
+      case ModalSize.ExtraSmall: {
+        container = <ExtraSmallContainer>{childElements}</ExtraSmallContainer>;
+        break;
+      }
       case ModalSize.Small: {
         container = <SmallContainer>{childElements}</SmallContainer>;
         break;
@@ -56,7 +79,6 @@ export default class Modal extends React.Component<IModalProps> {
     return (
       <ModalDiv open={this.props.show}>
         <Background onClick={this.props.handleClose} />
-
         {container}
       </ModalDiv>
     );

@@ -1,15 +1,25 @@
 import * as React from "react";
 
-import { Card, Cell, Container, Table, TableHeader, Wrapper } from "../style";
+import Modal, { ModalSize } from "../../components/Modal";
+import {
+  Button,
+  Card,
+  Cell,
+  Container,
+  Table,
+  TableHeader,
+  Wrapper
+} from "../style";
 
 import PaymentsHeader from "../payments/header/Header";
 import routes from "../routes";
 import { FlexWrapper, LoadingIcon, ReportHeader } from "./ReportsStyle";
 
 import locale from "../../locale/en";
-import UploadDialog from "./uploadDialog/UploadDialog";
+import ReportDialog from "./reportDialog/ReportDialog";
 
 interface IReport {
+  amount_bat: string;
   id: string;
   filename: string;
   file_url: string;
@@ -21,9 +31,10 @@ interface IReportsProps {
 }
 
 interface IReportsState {
-  showUpload: boolean;
   isLoading: boolean;
   reports: IReport[];
+  showModal: boolean;
+  showUpload: boolean;
 }
 
 export default class Reports extends React.Component<
@@ -33,6 +44,7 @@ export default class Reports extends React.Component<
   public readonly state: IReportsState = {
     isLoading: false,
     reports: this.props.reports,
+    showModal: false,
     showUpload: false
   };
   constructor(props) {
@@ -64,6 +76,10 @@ export default class Reports extends React.Component<
     this.setLoading(false);
   }
 
+  public triggerModal = () => {
+    this.setState({ showModal: !this.state.showModal });
+  };
+
   public render() {
     return (
       <Wrapper>
@@ -72,12 +88,23 @@ export default class Reports extends React.Component<
           <Card>
             <FlexWrapper>
               <ReportHeader>{locale.payments.reports.title}</ReportHeader>
-              <UploadDialog
-                route={routes.payments.reports.path}
-                text={locale.payments.reports.upload}
-                afterSave={this.reloadTable}
-                setLoading={this.setLoading}
-              />
+              <Button onClick={this.triggerModal}>
+                {locale.payments.reports.upload.button}
+              </Button>
+
+              <Modal
+                handleClose={this.triggerModal}
+                show={this.state.showModal}
+                size={ModalSize.Small}
+              >
+                <ReportDialog
+                  route={routes.payments.reports.path}
+                  afterSave={this.reloadTable}
+                  setLoading={this.setLoading}
+                  closeModal={this.triggerModal}
+                />
+              </Modal>
+
               <LoadingIcon isLoading={this.state.isLoading} />
             </FlexWrapper>
 
@@ -99,7 +126,7 @@ export default class Reports extends React.Component<
                     <Cell>
                       <a href={report.file_url}>{report.filename}</a>
                     </Cell>
-                    <Cell>--</Cell>
+                    <Cell>{report.amount_bat}</Cell>
                     <Cell>{report.created_at}</Cell>
                     <Cell>{report.uploaded_by_user}</Cell>
                   </tr>

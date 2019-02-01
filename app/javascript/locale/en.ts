@@ -64,7 +64,13 @@ export default {
       createdAt: "Created At",
       fileName: "File name",
       title: "Reports",
-      upload: "Upload Report",
+      upload: {
+        amountBAT: "BAT Payout Amount",
+        button: "Upload Report",
+        description:
+          "Submitting a report provides a paper trail for any potential disputes regarding referral code statistics, payout amount, or miscellaneous financial data. When uploading a report please specify the amount BAT that you were expecting to be paid out.",
+        title: "Submit a Report"
+      },
       uploadedBy: "Uploaded By"
     }
   },
