@@ -146,6 +146,8 @@ en:
       uphold_authorization_description:
         connect_to_uphold: Connect to Uphold
         reconnect_to_uphold: Reconnect to Uphold
+        visit_uphold_support: Visit Uphold's Support Page
+        visit_uphold_dashboard: Visit Uphold's Dashboard
       uphold_status:
         balance_sending: Contribution balance is transferred to your Uphold wallet monthly.
         connect_to_uphold: You need to create a wallet with Uphold to receive contributions from Brave Rewards.
@@ -161,16 +163,13 @@ en:
         connecting: Connecting
         unconnected: Not connected
         connection_problems: Connection problems
-        incomplete: Registration incomplete
       uphold_status_description:
         connecting: Brave Rewards is connecting to your Uphold account.
         reauthorization_needed: We are having trouble communicating with Uphold.
         unconnected: You need to connect to your Uphold account to receive contributions from Brave Rewards.
+        restricted_member: Your transaction level is currently flagged by uphold. Please contact Uphold for assistance.
+        non_member: To receive your contribution balance, you'll need to fully verify your identity on Uphold.
         verified: Your Uphold wallet is ready to receive Brave Rewards.
-        incomplete: |
-          <p>Your Uphold account registration is incomplete.</p>
-          <p><strong>Please check your email for verification
-          instructions from Uphold and finish the registration process.</strong></p>
   layouts:
     mailer:
       brave: Brave Website
