@@ -1,29 +1,59 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import AvatarEditor from 'react-avatar-editor'
+import React from "react";
+import ReactDOM from "react-dom";
+import AvatarEditor from "react-avatar-editor";
 
-import 'babel-polyfill';
+import "babel-polyfill";
 
-import BannerPreview from '../packs/banner_preview.jsx'
-import Navbar from '../packs/navbar.jsx'
+import BannerPreview from "../packs/banner_preview.jsx";
+import Navbar from "../packs/navbar.jsx";
 
-import styled from 'styled-components'
-import { Editor, Template, Content, Links, ExplanatoryText, Donations, Logo, Cover, Input, Label, Text, Caret, LinkInputWrapper, TextInput, DropdownToggle, Channel, Delete, Link, TextArea, DonationWrapper, Button, Opacity, Dialogue } from '../packs/style.jsx'
+import styled from "styled-components";
+import {
+  Editor,
+  Template,
+  Content,
+  Links,
+  ExplanatoryText,
+  Donations,
+  Logo,
+  Cover,
+  Input,
+  Label,
+  Text,
+  Caret,
+  LinkInputWrapper,
+  TextInput,
+  DropdownToggle,
+  Channel,
+  Delete,
+  Link,
+  TextArea,
+  DonationWrapper,
+  Button,
+  Opacity,
+  Dialogue
+} from "../packs/style.jsx";
 
-import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
-import Spinner from '../utils/spinner'
+import DonationJar from "../../assets/images/icn-donation-jar@1x.png";
+import Spinner from "../utils/spinner";
 
-import { initLocale } from 'brave-ui'
-import locale from 'locale/en'
+import { initLocale } from "brave-ui";
+import locale from "locale/en";
 
-import { BatColorIcon, YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, LoaderIcon } from 'brave-ui/components/icons'
-import Select from 'brave-ui/components/formControls/select'
-import Checkbox from 'brave-ui/components/formControls/checkbox'
-import Toggle from 'brave-ui/components/formControls/toggle'
+import {
+  BatColorIcon,
+  YoutubeColorIcon,
+  TwitterColorIcon,
+  TwitchColorIcon,
+  LoaderIcon
+} from "brave-ui/components/icons";
+import Select from "brave-ui/components/formControls/select";
+import Checkbox from "brave-ui/components/formControls/checkbox";
+import Toggle from "brave-ui/components/formControls/toggle";
 
-import '../../assets/stylesheets/components/banner-editor.scss'
-import '../../assets/stylesheets/components/spinner.scss'
-import '../../assets/stylesheets/components/slider.scss'
+import "../../assets/stylesheets/components/banner-editor.scss";
+import "../../assets/stylesheets/components/spinner.scss";
+import "../../assets/stylesheets/components/slider.scss";
 
 export default class BannerEditor extends React.Component {
   constructor(props) {
@@ -31,184 +61,203 @@ export default class BannerEditor extends React.Component {
 
     this.state = {
       loading: true,
-      title: this.props.values.title || 'Brave Rewards',
-      description: this.props.values.description || 'Thanks for stopping by. We joined Brave\'s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.',
-      logo: this.props.values.logo || {url: null, data: null},
-      cover: this.props.values.cover || {url: null, data: null},
+      title: this.props.values.title || "Brave Rewards",
+      description:
+        this.props.values.description ||
+        "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.",
+      logo: this.props.values.logo || { url: null, data: null },
+      cover: this.props.values.cover || { url: null, data: null },
       channelIndex: this.props.values.channelIndex || 0,
       channelBanners: this.props.channelBanners,
       defaultSiteBanner: this.props.defaultSiteBanner,
       defaultSiteBannerMode: this.props.defaultSiteBannerMode,
       scale: 1,
       linkSelection: false,
-      linkOption: 'Youtube',
-      currentLink: '',
-      youtube: this.props.values.youtube || '',
-      twitter: this.props.values.twitter || '',
-      twitch: this.props.values.twitch || '',
+      linkOption: "Youtube",
+      currentLink: "",
+      youtube: this.props.values.youtube || "",
+      twitter: this.props.values.twitter || "",
+      twitch: this.props.values.twitch || "",
       donationAmounts: this.props.values.donationAmounts || [1, 5, 10],
       conversionRate: this.props.conversionRate,
-      preferredCurrency: 'USD',
-      mode: 'Edit',
-      view: 'editor-view',
-      state: 'editor'
-    }
-     this.updateTitle = this.updateTitle.bind(this);
-     this.preview = this.preview.bind(this);
-     this.updateDescription = this.updateDescription.bind(this);
-     this.save = this.save.bind(this);
-     this.toggleDefaultSiteBannerMode = this.toggleDefaultSiteBannerMode.bind(this);
-     this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
-     this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
-     this.updateYoutube = this.updateYoutube.bind(this);
-     this.updateTwitter = this.updateTwitter.bind(this);
-     this.updateTwitch = this.updateTwitch.bind(this);
-     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+      preferredCurrency: "USD",
+      mode: "Edit",
+      view: "editor-view",
+      state: "editor"
+    };
+    this.updateTitle = this.updateTitle.bind(this);
+    this.preview = this.preview.bind(this);
+    this.updateDescription = this.updateDescription.bind(this);
+    this.save = this.save.bind(this);
+    this.toggleDefaultSiteBannerMode = this.toggleDefaultSiteBannerMode.bind(
+      this
+    );
+    this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
+    this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
+    this.updateYoutube = this.updateYoutube.bind(this);
+    this.updateTwitter = this.updateTwitter.bind(this);
+    this.updateTwitch = this.updateTwitch.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.modalize();
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchBanner();
     this.setSpinner();
     this.cleanup();
-    window.addEventListener('resize', this.updateWindowDimensions);
+    window.addEventListener("resize", this.updateWindowDimensions);
   }
 
   updateWindowDimensions() {
-    if(window.innerWidth < 991){
+    if (window.innerWidth < 991) {
       this.close();
     }
-}
-
-  modalize(){
-    document.getElementsByClassName("modal-panel")[0].style.maxWidth = 'none';
-    document.getElementsByClassName("modal-panel")[0].style.padding = '0px';
-    document.getElementsByClassName("modal-panel--content")[0].style.padding = '0px';
   }
 
-  close(){
-    document.getElementsByClassName("modal-panel")[0].style.maxWidth = '40rem';
-    document.getElementsByClassName("modal-panel")[0].style.padding = '2rem 2rem';
-    document.getElementsByClassName("modal-panel--content")[0].style.padding = '1rem 1rem 0 1rem';
-    document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'visible'
+  modalize() {
+    document.getElementsByClassName("modal-panel")[0].style.maxWidth = "none";
+    document.getElementsByClassName("modal-panel")[0].style.padding = "0px";
+    document.getElementsByClassName("modal-panel--content")[0].style.padding =
+      "0px";
+  }
+
+  close() {
+    document.getElementsByClassName("modal-panel")[0].style.maxWidth = "40rem";
+    document.getElementsByClassName("modal-panel")[0].style.padding =
+      "2rem 2rem";
+    document.getElementsByClassName("modal-panel--content")[0].style.padding =
+      "1rem 1rem 0 1rem";
+    document.getElementsByClassName(
+      "modal-panel--close js-deny"
+    )[0].style.visibility = "visible";
     document.getElementsByClassName("modal-panel--close js-deny")[0].click();
   }
 
-  cleanup(){
-    document.getElementsByClassName("modal-panel--close js-deny")[0].style.visibility = 'hidden'
-    document.getElementById("bat-select").childNodes[0].childNodes[0].style.color = 'white'
-    document.getElementById("bat-select").style.cursor = 'pointer'
-    document.getElementById("banner-toggle").style.cursor = "pointer"
+  cleanup() {
+    document.getElementsByClassName(
+      "modal-panel--close js-deny"
+    )[0].style.visibility = "hidden";
+    document.getElementById(
+      "bat-select"
+    ).childNodes[0].childNodes[0].style.color = "white";
+    document.getElementById("bat-select").style.cursor = "pointer";
+    document.getElementById("banner-toggle").style.cursor = "pointer";
   }
 
-  preview(){
-
+  preview() {
     let div = document.createElement("div");
     div.id = "preview-container";
     let PreviewContainer = document.body.appendChild(div);
 
-    ReactDOM.render(
-      <BannerPreview {...this.state}/>,
-      PreviewContainer
-    )
+    ReactDOM.render(<BannerPreview {...this.state} />, PreviewContainer);
     this.close();
   }
 
-  setSpinner(){
-    Spinner.show('spinner', 'spinner-container');
+  setSpinner() {
+    Spinner.show("spinner", "spinner-container");
   }
 
-  setEditorRef = (editor) => this.editor = editor
+  setEditorRef = editor => (this.editor = editor);
 
-  handleZoom(e){
-    this.setState({scale: e.target.value})
+  handleZoom(e) {
+    this.setState({ scale: e.target.value });
   }
 
-  apply(){
-
+  apply() {
     let that = this;
     let logo = this.state.logo;
     let cover = this.state.cover;
     let img = this.editor.getImage();
 
-    switch(this.state.state){
-      case 'logo':
-
-        let logoCanvas = document.createElement('canvas');
-        logoCanvas.width = 480; logoCanvas.height = 480;
-        var ctx = logoCanvas.getContext('2d');
+    switch (this.state.state) {
+      case "logo":
+        let logoCanvas = document.createElement("canvas");
+        logoCanvas.width = 480;
+        logoCanvas.height = 480;
+        var ctx = logoCanvas.getContext("2d");
         ctx.drawImage(img, 0, 0, 480, 480);
-        logo.url = logoCanvas.toDataURL('image/jpeg', 1);
+        logo.url = logoCanvas.toDataURL("image/jpeg", 1);
 
         //Generate data to save
-        logoCanvas.toBlob(function(blob){
+        logoCanvas.toBlob(function(blob) {
           let file = {};
-          file["files"] = [blob]
+          file["files"] = [blob];
           logo.data = file;
-          that.setState({logo: logo, scale: 1, state: 'editor'})
+          that.setState({ logo: logo, scale: 1, state: "editor" });
         });
         break;
-      case 'cover':
-
-        let coverCanvas = document.createElement('canvas');
-        coverCanvas.width = 2700; coverCanvas.height = 528;
-        var ctx = coverCanvas.getContext('2d');
+      case "cover":
+        let coverCanvas = document.createElement("canvas");
+        coverCanvas.width = 2700;
+        coverCanvas.height = 528;
+        var ctx = coverCanvas.getContext("2d");
         ctx.drawImage(img, 0, 0, 2700, 528);
-        cover.url = coverCanvas.toDataURL('image/jpeg', 1);
+        cover.url = coverCanvas.toDataURL("image/jpeg", 1);
 
         //Generate data to save
-        coverCanvas.toBlob(function(blob){
+        coverCanvas.toBlob(function(blob) {
           let file = {};
-          file["files"] = [blob]
+          file["files"] = [blob];
           cover.data = file;
-          that.setState({cover: cover, scale: 1, state: 'editor'})
+          that.setState({ cover: cover, scale: 1, state: "editor" });
         });
         break;
     }
   }
 
-  addLogo(event){
-    let temp = URL.createObjectURL(event.target.files[0])
+  addLogo(event) {
+    let temp = URL.createObjectURL(event.target.files[0]);
     this.setState({
-      tempLogo: temp, state:'logo'
-    })
+      tempLogo: temp,
+      state: "logo"
+    });
   }
 
-  addCover(event){
-    let temp = URL.createObjectURL(event.target.files[0])
+  addCover(event) {
+    let temp = URL.createObjectURL(event.target.files[0]);
     this.setState({
-      tempCover: temp, state:'cover'
-    })
+      tempCover: temp,
+      state: "cover"
+    });
   }
 
-  async fetchBanner(){
+  async fetchBanner() {
+    let that = this;
 
-    let that = this
-
-    if(this.props.mode === 'Editor-From-Preview' && !this.state.fetch){
-      that.setState({loading: false})
-    }
-    else{
-      let url = "/publishers/" + document.getElementById("publisher_id").value + "/site_banners/"
-      this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id
+    if (this.props.mode === "Editor-From-Preview" && !this.state.fetch) {
+      that.setState({ loading: false });
+    } else {
+      let url =
+        "/publishers/" +
+        document.getElementById("publisher_id").value +
+        "/site_banners/";
+      this.state.defaultSiteBannerMode
+        ? (url += this.props.defaultSiteBanner.id)
+        : (url += this.props.channelBanners[this.state.channelIndex].id);
 
       let options = {
-        method: 'GET',
+        method: "GET",
         credentials: "same-origin",
-        headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
-      }
+        headers: {
+          Accept: "text/html",
+          "X-Requested-With": "XMLHttpRequest",
+          "X-CSRF-Token": document.head.querySelector("[name=csrf-token]")
+            .content
+        }
+      };
 
       let response = await fetch(url, options);
-      if (response.status >= 400){location.reload();}
+      if (response.status >= 400) {
+        location.reload();
+      }
       let banner = await response.json();
 
       //500ms timeout prevents quick flash when load times are fast.
-      setTimeout(async() => {
-
-        if(banner){
+      setTimeout(async () => {
+        if (banner) {
           that.setState({
             title: banner.title,
             description: banner.description,
@@ -216,375 +265,672 @@ export default class BannerEditor extends React.Component {
             twitter: banner.socialLinks.twitter,
             twitch: banner.socialLinks.twitch,
             donationAmounts: banner.donationAmounts,
-            logo: {url: banner.logoImage, data: null},
-            cover: {url: banner.backgroundImage, data: null},
+            logo: { url: banner.logoImage, data: null },
+            cover: { url: banner.backgroundImage, data: null },
             loading: false,
             fetch: false
           });
+        } else {
+          that.setState({ loading: false });
         }
-
-        else{
-          that.setState({loading: false})
-        }
-        if(this.props.mode === 'Preview'){
+        if (this.props.mode === "Preview") {
           this.preview();
         }
       }, 500);
     }
   }
 
-  handleLinkSelection(e){
+  handleLinkSelection(e) {
     let toggle = document.getElementById("toggle");
-      if(e.target === toggle){
-        this.setState({linkSelection: !this.state.linkSelection})
-      }
-      else{
-        this.setState({linkSelection: false})
-      }
-  }
-
-  addLink(){
-    switch(this.state.linkOption){
-      case 'Youtube':
-        this.setState({youtube: this.state.currentLink})
-        break;
-      case 'Twitter':
-        this.setState({twitter: this.state.currentLink})
-        break;
-      case 'Twitch':
-        this.setState({twitch: this.state.currentLink})
-        break;
-    }
-    this.setState({currentLink: ''})
-  }
-
-  handleLinkDelete(option){
-    switch(option){
-      case 'Youtube':
-        this.setState({youtube: ''})
-        break;
-      case 'Twitter':
-        this.setState({twitter: ''})
-        break;
-      case 'Twitch':
-        this.setState({twitch: ''})
-        break;
+    if (e.target === toggle) {
+      this.setState({ linkSelection: !this.state.linkSelection });
+    } else {
+      this.setState({ linkSelection: false });
     }
   }
 
-  handleLinkOption(value){
-    this.setState({linkOption: value})
+  addLink() {
+    switch (this.state.linkOption) {
+      case "Youtube":
+        this.setState({ youtube: this.state.currentLink });
+        break;
+      case "Twitter":
+        this.setState({ twitter: this.state.currentLink });
+        break;
+      case "Twitch":
+        this.setState({ twitch: this.state.currentLink });
+        break;
+    }
+    this.setState({ currentLink: "" });
   }
 
-  updateCurrentLink(event){
-    this.setState({currentLink: event.target.value})
-  }
-
-  updateTitle(event){
-     this.setState({title: event.target.value})
-  }
-
-  updateDescription(event){
-     this.setState({description: event.target.value})
-  }
-
-  updateYoutube(event){
-     this.setState({youtube: event.target.value})
-  }
-
-  updateTwitter(event){
-     this.setState({twitter: event.target.value})
-  }
-
-  updateTwitch(event){
-     this.setState({twitch: event.target.value})
-  }
-
-  updateDonationAmounts(event, index){
-    let temp = this.state.donationAmounts
-    if(/^(\s*|\d+)$/.test(event.target.value)){
-      temp[index] = event.target.value
-      this.setState({donationAmounts: temp})
+  handleLinkDelete(option) {
+    switch (option) {
+      case "Youtube":
+        this.setState({ youtube: "" });
+        break;
+      case "Twitter":
+        this.setState({ twitter: "" });
+        break;
+      case "Twitch":
+        this.setState({ twitch: "" });
+        break;
     }
   }
 
-  renderDialogue(){
+  handleLinkOption(value) {
+    this.setState({ linkOption: value });
+  }
+
+  updateCurrentLink(event) {
+    this.setState({ currentLink: event.target.value });
+  }
+
+  updateTitle(event) {
+    this.setState({ title: event.target.value });
+  }
+
+  updateDescription(event) {
+    this.setState({ description: event.target.value });
+  }
+
+  updateYoutube(event) {
+    this.setState({ youtube: event.target.value });
+  }
+
+  updateTwitter(event) {
+    this.setState({ twitter: event.target.value });
+  }
+
+  updateTwitch(event) {
+    this.setState({ twitch: event.target.value });
+  }
+
+  updateDonationAmounts(event, index) {
+    let temp = this.state.donationAmounts;
+    if (/^(\s*|\d+)$/.test(event.target.value)) {
+      temp[index] = event.target.value;
+      this.setState({ donationAmounts: temp });
+    }
+  }
+
+  renderDialogue() {
     let dialogue;
 
-    switch(this.state.state){
-      case 'logo':
-        dialogue =
-        <div>
-          <Opacity/>
-          <Dialogue logo>
-            <Text dialogueHeader>Resize and position your logo</Text>
-            <AvatarEditor ref={this.setEditorRef} image={this.state.tempLogo} width={180} height={180} border={20} borderRadius={160} color={[230, 236, 240, 0.6]} scale={this.state.scale} style={{marginTop: '20px', cursor: 'move'}}/>
-            <br/>
-            <input style={{width: '120px', textAlign:'center', marginTop: '30px', marginBottom: '40px'}} onChange={ (e) => this.handleZoom(e) } type="range" value={this.state.scale} min={1} max={2} step={0.01}/>
-            <br/>
-            <Button onClick={ () => this.setState({state: 'Editor'}) } style={{margin:'10px', width:'120px'}} outline>Cancel</Button>
-            <Button onClick={ () => this.apply() } style={{margin:'10px', width:'120px'}} primary>Apply</Button>
-          </Dialogue>
-        </div>
+    switch (this.state.state) {
+      case "logo":
+        dialogue = (
+          <div>
+            <Opacity />
+            <Dialogue logo>
+              <Text dialogueHeader>Resize and position your logo</Text>
+              <AvatarEditor
+                ref={this.setEditorRef}
+                image={this.state.tempLogo}
+                width={180}
+                height={180}
+                border={20}
+                borderRadius={160}
+                color={[230, 236, 240, 0.6]}
+                scale={this.state.scale}
+                style={{ marginTop: "20px", cursor: "move" }}
+              />
+              <br />
+              <input
+                style={{
+                  width: "120px",
+                  textAlign: "center",
+                  marginTop: "30px",
+                  marginBottom: "40px"
+                }}
+                onChange={e => this.handleZoom(e)}
+                type="range"
+                value={this.state.scale}
+                min={1}
+                max={2}
+                step={0.01}
+              />
+              <br />
+              <Button
+                onClick={() => this.setState({ state: "Editor" })}
+                style={{ margin: "10px", width: "120px" }}
+                outline
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => this.apply()}
+                style={{ margin: "10px", width: "120px" }}
+                primary
+              >
+                Apply
+              </Button>
+            </Dialogue>
+          </div>
+        );
         break;
-      case 'cover':
-        dialogue =
-        <div>
-          <Opacity/>
-          <Dialogue cover>
-            <Text dialogueHeader>Resize and position your cover image</Text>
-            <AvatarEditor ref={this.setEditorRef} image={this.state.tempCover} width={450} height={88} border={20} color={[230, 236, 240, 0.6]} scale={this.state.scale} style={{marginTop: '20px', cursor: 'move'}}/>
-            <br/>
-            <input style={{width: '120px', textAlign:'center', marginTop: '30px', marginBottom: '40px'}} onChange={ (e) => this.handleZoom(e) } type="range" value={this.state.scale} min={1} max={2} step={0.01}/>
-            <br/>
-            <Button onClick={ () => this.setState({state: 'Editor'}) } style={{margin:'10px', width:'120px'}} outline>Cancel</Button>
-            <Button onClick={ () => this.apply() } style={{margin:'10px', width:'120px'}} primary>Apply</Button>
-          </Dialogue>
-        </div>
+      case "cover":
+        dialogue = (
+          <div>
+            <Opacity />
+            <Dialogue cover>
+              <Text dialogueHeader>Resize and position your cover image</Text>
+              <AvatarEditor
+                ref={this.setEditorRef}
+                image={this.state.tempCover}
+                width={450}
+                height={88}
+                border={20}
+                color={[230, 236, 240, 0.6]}
+                scale={this.state.scale}
+                style={{ marginTop: "20px", cursor: "move" }}
+              />
+              <br />
+              <input
+                style={{
+                  width: "120px",
+                  textAlign: "center",
+                  marginTop: "30px",
+                  marginBottom: "40px"
+                }}
+                onChange={e => this.handleZoom(e)}
+                type="range"
+                value={this.state.scale}
+                min={1}
+                max={2}
+                step={0.01}
+              />
+              <br />
+              <Button
+                onClick={() => this.setState({ state: "Editor" })}
+                style={{ margin: "10px", width: "120px" }}
+                outline
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => this.apply()}
+                style={{ margin: "10px", width: "120px" }}
+                primary
+              >
+                Apply
+              </Button>
+            </Dialogue>
+          </div>
+        );
         break;
-      case 'save':
-        dialogue =
-        <div>
-          <Opacity/>
-          <Dialogue id='save-container' save>
-            { this.state.saving === false &&
-              <div>
-                <Text dialogueHeader>Your banner will be updated within 24 hours</Text>
-                <Text dialogueSubtext>Please note, for V0.58 of the Brave Browser, the custom tip amounts for the banner will show up as 1, 5, 10 BAT.</Text>
-                <Button dialoguePrimary onClick={ () => this.setState({state: 'Editor'}) }>OK</Button>
+      case "save":
+        dialogue = (
+          <div>
+            <Opacity />
+            <Dialogue id="save-container" save>
+              {this.state.saving === false && (
+                <div>
+                  <Text dialogueHeader>
+                    Your banner will be updated within 24 hours
+                  </Text>
+                  <Text dialogueSubtext>
+                    Please note, for V0.58 of the Brave Browser, the custom tip
+                    amounts for the banner will show up as 1, 5, 10 BAT.
+                  </Text>
+                  <Button
+                    dialoguePrimary
+                    onClick={() => this.setState({ state: "Editor" })}
+                  >
+                    OK
+                  </Button>
+                </div>
+              )}
+            </Dialogue>
+          </div>
+        );
+        break;
+      case "same":
+        dialogue = (
+          <div>
+            <Opacity />
+            <Dialogue save>
+              <Text dialogueHeader>Use one banner for all channels?</Text>
+              <Text dialogueSubtext>
+                Your customized banner will be displayed on all of your
+                channels.
+              </Text>
+              <div style={{ marginTop: "40px", textAlign: "center" }}>
+                <Button
+                  onClick={() => this.setState({ state: "Editor" })}
+                  style={{ margin: "10px", width: "120px" }}
+                  outline
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={async () => {
+                    let toggle = await this.setDefaultSiteBannerMode(true);
+                    this.setState(
+                      {
+                        defaultSiteBannerMode: !this.state
+                          .defaultSiteBannerMode,
+                        state: "Editor",
+                        loading: true
+                      },
+                      () => {
+                        this.fetchBanner();
+                      }
+                    );
+                  }}
+                  style={{ margin: "10px", width: "120px" }}
+                  primary
+                >
+                  Continue
+                </Button>
               </div>
-            }
-          </Dialogue>
-        </div>
-        break;
-      case 'same':
-        dialogue =
-        <div>
-          <Opacity/>
-          <Dialogue save>
-            <Text dialogueHeader>Use one banner for all channels?</Text>
-            <Text dialogueSubtext>Your customized banner will be displayed on all of your channels.</Text>
-            <div style={{marginTop: '40px', textAlign: 'center'}}>
-            <Button onClick={ () => this.setState({state: 'Editor'}) } style={{margin:'10px', width:'120px'}} outline>Cancel</Button>
-            <Button onClick={ async() => {
-              let toggle = await this.setDefaultSiteBannerMode(true);
-              this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, state: 'Editor', loading: true},
-              () => { this.fetchBanner() });
-            }}
-            style={{margin:'10px', width:'120px'}} primary>Continue</Button>
-            </div>
-          </Dialogue>
-        </div>
+            </Dialogue>
+          </div>
+        );
         break;
     }
     return dialogue;
-
   }
 
-  renderLinkInput(){
-    return (this.state.youtube === '' || this.state.twitter === '' || this.state.twitch === '')
+  renderLinkInput() {
+    return (
+      this.state.youtube === "" ||
+      this.state.twitter === "" ||
+      this.state.twitch === ""
+    );
   }
 
-  renderLoadingScreen(){
-    let visibility = 'hidden';
-    if(this.state.loading === true){
-      visibility = 'visible';
+  renderLoadingScreen() {
+    let visibility = "hidden";
+    if (this.state.loading === true) {
+      visibility = "visible";
     }
-      return <div style={{width:'100%', height:'744px', position:'absolute', zIndex:'20000', backgroundColor:'rgba(233, 240, 255, 1)', borderRadius: '8px', visibility: visibility}}>
-        <div style={{width:'100%', marginTop:'auto', marginBottom:'auto', position:'absolute', left:'0', right:'0', top:'300px', bottom:'0'}} id="spinner-container"></div>
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "744px",
+          position: "absolute",
+          zIndex: "20000",
+          backgroundColor: "rgba(233, 240, 255, 1)",
+          borderRadius: "8px",
+          visibility: visibility
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            marginTop: "auto",
+            marginBottom: "auto",
+            position: "absolute",
+            left: "0",
+            right: "0",
+            top: "300px",
+            bottom: "0"
+          }}
+          id="spinner-container"
+        />
       </div>
+    );
   }
 
-  renderIcon(option){
-    switch(option) {
-      case 'Youtube':
-        return <YoutubeColorIcon style={{height:'30px', width:'30px', display:'inline', marginBottom:'4px', cursor:'pointer'}}/>
-      case 'Twitter':
-        return <TwitterColorIcon style={{height:'30px', width:'30px', display:'inline', marginBottom:'4px', cursor:'pointer'}}/>
-      case 'Twitch':
-        return <TwitchColorIcon style={{height:'30px', width:'30px', display:'inline', marginBottom:'4px', cursor:'pointer'}}/>
-    }
-  }
-
-  renderLinks(){
-    return <div>
-      {
-        this.state.youtube !== '' &&
-        <Link>
-          <YoutubeColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel><Delete onClick={ () => this.handleLinkDelete('Youtube') }>(X)</Delete>{this.state.youtube}
-          </Channel>
-        </Link>
-      }
-      {
-        this.state.twitter !== '' &&
-        <Link>
-          <TwitterColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel><Delete onClick={ () => this.handleLinkDelete('Twitter') }>(X)</Delete>{this.state.twitter}
-          </Channel>
-        </Link>
-      }
-      {
-        this.state.twitch !== '' &&
-        <Link>
-          <TwitchColorIcon className="banner-link-option" style={{height:'25px', width:'25px', display:'inline-block', marginBottom:'12px'}}/>
-          <Channel><Delete onClick={ () => this.handleLinkDelete('Twitch') }>(X)</Delete>{this.state.twitch}
-          </Channel>
-        </Link>
-      }
-    </div>
-  }
-
-  renderDropdown(){
-
-      if(this.state.linkSelection){
+  renderIcon(option) {
+    switch (option) {
+      case "Youtube":
         return (
-          <div style={{position:'absolute', backgroundColor:'white', height:'100px', width:'55px', borderRadius:'4px', marginLeft:'11px', paddingTop:'5px', marginTop:'5px', border: '1px solid lightGray', boxShadow: '0 3px 4px rgba(0,0,0,0.16), 0 3px 4px rgba(0,0,0,0.23)'}}>
-            <div onClick={ () => this.handleLinkOption('Youtube') } className="banner-link-option" style={{textAlign:'center', margin:'2px', cursor:'pointer'}}>
-              <YoutubeColorIcon style={{height:'25px', width:'25px', margin:'auto'}}/>
-            </div>
-            <div onClick={ () => this.handleLinkOption('Twitter') } className="banner-link-option" style={{textAlign:'center', margin:'2px', cursor:'pointer'}}>
-              <TwitterColorIcon style={{height:'25px', width:'25px', margin:'auto'}}/>
-            </div>
-            <div onClick={ () => this.handleLinkOption('Twitch') } className="banner-link-option" style={{textAlign:'center', margin:'2px', cursor:'pointer'}}>
-              <TwitchColorIcon style={{height:'25px', width:'25px', margin:'auto'}}/>
-            </div>
-          </div>
-        )
-      }
+          <YoutubeColorIcon
+            style={{
+              height: "30px",
+              width: "30px",
+              display: "inline",
+              marginBottom: "4px",
+              cursor: "pointer"
+            }}
+          />
+        );
+      case "Twitter":
+        return (
+          <TwitterColorIcon
+            style={{
+              height: "30px",
+              width: "30px",
+              display: "inline",
+              marginBottom: "4px",
+              cursor: "pointer"
+            }}
+          />
+        );
+      case "Twitch":
+        return (
+          <TwitchColorIcon
+            style={{
+              height: "30px",
+              width: "30px",
+              display: "inline",
+              marginBottom: "4px",
+              cursor: "pointer"
+            }}
+          />
+        );
+    }
   }
 
-  tipToOption(){
-    switch(this.state.donationAmounts.join(',')){
-      case '1,5,10':
-        return 0
+  renderLinks() {
+    return (
+      <div>
+        {this.state.youtube !== "" && (
+          <Link>
+            <YoutubeColorIcon
+              className="banner-link-option"
+              style={{
+                height: "25px",
+                width: "25px",
+                display: "inline-block",
+                marginBottom: "12px"
+              }}
+            />
+            <Channel>
+              <Delete onClick={() => this.handleLinkDelete("Youtube")}>
+                (X)
+              </Delete>
+              {this.state.youtube}
+            </Channel>
+          </Link>
+        )}
+        {this.state.twitter !== "" && (
+          <Link>
+            <TwitterColorIcon
+              className="banner-link-option"
+              style={{
+                height: "25px",
+                width: "25px",
+                display: "inline-block",
+                marginBottom: "12px"
+              }}
+            />
+            <Channel>
+              <Delete onClick={() => this.handleLinkDelete("Twitter")}>
+                (X)
+              </Delete>
+              {this.state.twitter}
+            </Channel>
+          </Link>
+        )}
+        {this.state.twitch !== "" && (
+          <Link>
+            <TwitchColorIcon
+              className="banner-link-option"
+              style={{
+                height: "25px",
+                width: "25px",
+                display: "inline-block",
+                marginBottom: "12px"
+              }}
+            />
+            <Channel>
+              <Delete onClick={() => this.handleLinkDelete("Twitch")}>
+                (X)
+              </Delete>
+              {this.state.twitch}
+            </Channel>
+          </Link>
+        )}
+      </div>
+    );
+  }
+
+  renderDropdown() {
+    if (this.state.linkSelection) {
+      return (
+        <div
+          style={{
+            position: "absolute",
+            backgroundColor: "white",
+            height: "100px",
+            width: "55px",
+            borderRadius: "4px",
+            marginLeft: "11px",
+            paddingTop: "5px",
+            marginTop: "5px",
+            border: "1px solid lightGray",
+            boxShadow: "0 3px 4px rgba(0,0,0,0.16), 0 3px 4px rgba(0,0,0,0.23)"
+          }}
+        >
+          <div
+            onClick={() => this.handleLinkOption("Youtube")}
+            className="banner-link-option"
+            style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
+          >
+            <YoutubeColorIcon
+              style={{ height: "25px", width: "25px", margin: "auto" }}
+            />
+          </div>
+          <div
+            onClick={() => this.handleLinkOption("Twitter")}
+            className="banner-link-option"
+            style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
+          >
+            <TwitterColorIcon
+              style={{ height: "25px", width: "25px", margin: "auto" }}
+            />
+          </div>
+          <div
+            onClick={() => this.handleLinkOption("Twitch")}
+            className="banner-link-option"
+            style={{ textAlign: "center", margin: "2px", cursor: "pointer" }}
+          >
+            <TwitchColorIcon
+              style={{ height: "25px", width: "25px", margin: "auto" }}
+            />
+          </div>
+        </div>
+      );
+    }
+  }
+
+  tipToOption() {
+    switch (this.state.donationAmounts.join(",")) {
+      case "1,5,10":
+        return 0;
         break;
-      case '5,10,20':
-        return 1
+      case "5,10,20":
+        return 1;
         break;
-      case '10,20,50':
-        return 2
+      case "10,20,50":
+        return 2;
         break;
-      case '20,50,100':
-        return 3
+      case "20,50,100":
+        return 3;
         break;
     }
   }
 
-  handleTipSelection(key, child){
-    switch(key){
-      case '0':
-        this.setState({donationAmounts: [1, 5, 10]})
+  handleTipSelection(key, child) {
+    switch (key) {
+      case "0":
+        this.setState({ donationAmounts: [1, 5, 10] });
         break;
-      case '1':
-        this.setState({donationAmounts: [5, 10, 20]})
+      case "1":
+        this.setState({ donationAmounts: [5, 10, 20] });
         break;
-      case '2':
-        this.setState({donationAmounts: [10, 20, 50]})
+      case "2":
+        this.setState({ donationAmounts: [10, 20, 50] });
         break;
-      case '3':
-        this.setState({donationAmounts: [20, 50, 100]})
+      case "3":
+        this.setState({ donationAmounts: [20, 50, 100] });
         break;
     }
   }
 
   async save() {
-    this.setState({state: 'save', saving: 'true'}, () => Spinner.show('save-spinner', 'save-container'))
+    this.setState({ state: "save", saving: "true" }, () =>
+      Spinner.show("save-spinner", "save-container")
+    );
 
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/"
-    this.state.defaultSiteBannerMode ? url += this.props.defaultSiteBanner.id : url += this.props.channelBanners[this.state.channelIndex].id;
+    let url =
+      "/publishers/" +
+      document.getElementById("publisher_id").value +
+      "/site_banners/";
+    this.state.defaultSiteBannerMode
+      ? (url += this.props.defaultSiteBanner.id)
+      : (url += this.props.channelBanners[this.state.channelIndex].id);
 
     let body = new FormData();
-    body.append('title', this.state.title);
-    body.append('description', this.state.description);
-    body.append('donation_amounts', JSON.stringify(this.state.donationAmounts));
-    body.append('social_links', JSON.stringify({youtube: this.state.youtube, twitter: this.state.twitter, twitch: this.state.twitch}));
+    body.append("title", this.state.title);
+    body.append("description", this.state.description);
+    body.append("donation_amounts", JSON.stringify(this.state.donationAmounts));
+    body.append(
+      "social_links",
+      JSON.stringify({
+        youtube: this.state.youtube,
+        twitter: this.state.twitter,
+        twitch: this.state.twitch
+      })
+    );
 
-    if(this.state.logo.data){
+    if (this.state.logo.data) {
       let logo = await this.readData(this.state.logo.data);
-      body.append('logo', logo);
+      body.append("logo", logo);
     }
-    if(this.state.cover.data){
+    if (this.state.cover.data) {
       let cover = await this.readData(this.state.cover.data);
-      body.append('cover', cover);
+      body.append("cover", cover);
     }
 
     let options = {
-      method: 'PUT',
+      method: "PUT",
       credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
+      headers: {
+        Accept: "text/html",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]").content
+      },
       body: body
+    };
+
+    let save = await fetch(url, options);
+    if (save.status >= 400) {
+      location.reload();
     }
 
-    let save = await fetch(url, options)
-    if (save.status >= 400){location.reload();}
-
-    document.getElementById('save-spinner').remove();
-    this.setState({saving: false});
-
+    document.getElementById("save-spinner").remove();
+    this.setState({ saving: false });
   }
 
   readData(file) {
     let reader = new FileReader();
-    reader.readAsDataURL(file.files[0])
-    return new Promise(resolve =>
-      reader.onloadend = function () {
-        resolve(reader.result);
-      });
+    reader.readAsDataURL(file.files[0]);
+    return new Promise(
+      resolve =>
+        (reader.onloadend = function() {
+          resolve(reader.result);
+        })
+    );
   }
 
-  incrementChannelIndex(){
-    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex += 1), loading: true, fetch: true }},
-    () => {this.fetchBanner()})
+  incrementChannelIndex() {
+    this.setState(
+      prevState => {
+        return {
+          channelIndex: (prevState.channelIndex += 1),
+          loading: true,
+          fetch: true
+        };
+      },
+      () => {
+        this.fetchBanner();
+      }
+    );
   }
 
-  decrementChannelIndex(){
-    this.setState((prevState) => { return { channelIndex: (prevState.channelIndex -= 1), loading: true, fetch: true }},
-    () => {this.fetchBanner()})
+  decrementChannelIndex() {
+    this.setState(
+      prevState => {
+        return {
+          channelIndex: (prevState.channelIndex -= 1),
+          loading: true,
+          fetch: true
+        };
+      },
+      () => {
+        this.fetchBanner();
+      }
+    );
   }
 
-  async toggleDefaultSiteBannerMode(){
-    if(this.state.defaultSiteBannerMode === true){
-      let toggle = await this.setDefaultSiteBannerMode(false)
-      this.setState({defaultSiteBannerMode: !this.state.defaultSiteBannerMode, loading: true, fetch: true},
-      () => { this.fetchBanner() })
+  async toggleDefaultSiteBannerMode() {
+    if (this.state.defaultSiteBannerMode === true) {
+      let toggle = await this.setDefaultSiteBannerMode(false);
+      this.setState(
+        {
+          defaultSiteBannerMode: !this.state.defaultSiteBannerMode,
+          loading: true,
+          fetch: true
+        },
+        () => {
+          this.fetchBanner();
+        }
+      );
+    } else {
+      this.setState({ state: "same", fetch: true });
     }
-    else{
-      this.setState({state: 'same', fetch: true});
-    }
   }
 
-  async setDefaultSiteBannerMode(value){
-    let url = '/publishers/' + document.getElementById("publisher_id").value + "/site_banners/set_default_site_banner_mode?dbm=" + value
+  async setDefaultSiteBannerMode(value) {
+    let url =
+      "/publishers/" +
+      document.getElementById("publisher_id").value +
+      "/site_banners/set_default_site_banner_mode?dbm=" +
+      value;
     let options = {
-      method: 'POST',
+      method: "POST",
       credentials: "same-origin",
-      headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content}
-    }
+      headers: {
+        Accept: "text/html",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]").content
+      }
+    };
     let response = await fetch(url, options);
-    if (response.status >= 400){location.reload();}
+    if (response.status >= 400) {
+      location.reload();
+    }
   }
 
   render() {
-
     initLocale(locale);
 
     return (
-      <Editor onClick={ (e) => this.handleLinkSelection(e) }>
+      <Editor onClick={e => this.handleLinkSelection(e)}>
         {this.renderLoadingScreen()}
         {this.renderDialogue()}
 
-        <Navbar defaultSiteBanner={this.props.defaultSiteBanner} channelBanners={this.props.channelBanners} channelIndex={this.state.channelIndex} defaultSiteBannerMode={this.state.defaultSiteBannerMode} incrementChannelIndex={this.incrementChannelIndex} decrementChannelIndex={this.decrementChannelIndex} toggleDefaultSiteBannerMode={this.toggleDefaultSiteBannerMode} save={this.save} close={this.close} preview={ this.preview }/>
+        <Navbar
+          defaultSiteBanner={this.props.defaultSiteBanner}
+          channelBanners={this.props.channelBanners}
+          channelIndex={this.state.channelIndex}
+          defaultSiteBannerMode={this.state.defaultSiteBannerMode}
+          incrementChannelIndex={this.incrementChannelIndex}
+          decrementChannelIndex={this.decrementChannelIndex}
+          toggleDefaultSiteBannerMode={this.toggleDefaultSiteBannerMode}
+          save={this.save}
+          close={this.close}
+          preview={this.preview}
+        />
 
         <Template>
           <Logo url={this.state.logo.url}>
-            <Input type="file" id="logoInput" onChange={ (e) => this.addLogo(e) }/>
-            <Label logo htmlFor="logoInput"/>
+            <Input type="file" id="logoInput" onChange={e => this.addLogo(e)} />
+            <Label logo htmlFor="logoInput" />
           </Logo>
 
           <Cover url={this.state.cover.url}>
-            <Input type="file" id="backgroundInput" onChange={ (e) => this.addCover(e) }/>
-            <Label htmlFor="backgroundInput"/>
+            <Input
+              type="file"
+              id="backgroundInput"
+              onChange={e => this.addCover(e)}
+            />
+            <Label htmlFor="backgroundInput" />
           </Cover>
 
           <Content>
@@ -593,72 +939,150 @@ export default class BannerEditor extends React.Component {
 
               {this.renderLinks()}
 
-              {
-                this.renderLinkInput() &&
-                 <LinkInputWrapper>
-                   <DropdownToggle>
-                     {this.renderIcon(this.state.linkOption)}
-                     <Caret onClick={ (e) => this.toggleDropdown(e) }  id='toggle'>&#9662;</Caret>
+              {this.renderLinkInput() && (
+                <LinkInputWrapper>
+                  <DropdownToggle>
+                    {this.renderIcon(this.state.linkOption)}
+                    <Caret onClick={e => this.toggleDropdown(e)} id="toggle">
+                      &#9662;
+                    </Caret>
                   </DropdownToggle>
-                  <TextInput link onChange={ (e) => this.updateCurrentLink(e) } value={this.state.currentLink} maxLength={80}/>
-                    {this.renderDropdown()}
-                  <Text add onClick={ () => this.addLink() }>+ Add Link</Text>
-
-                 </LinkInputWrapper>
-              }
-
+                  <TextInput
+                    link
+                    onChange={e => this.updateCurrentLink(e)}
+                    value={this.state.currentLink}
+                    maxLength={80}
+                  />
+                  {this.renderDropdown()}
+                  <Text add onClick={() => this.addLink()}>
+                    + Add Link
+                  </Text>
+                </LinkInputWrapper>
+              )}
             </Links>
 
             <ExplanatoryText>
-              <TextInput headline onChange={this.updateTitle} value={this.state.title} maxLength={21} type='text'/>
-              <TextArea description onChange={this.updateDescription} value={this.state.description} maxLength={330} type='text'/>
+              <TextInput
+                headline
+                onChange={this.updateTitle}
+                value={this.state.title}
+                maxLength={21}
+                type="text"
+              />
+              <TextArea
+                description
+                onChange={this.updateDescription}
+                value={this.state.description}
+                maxLength={330}
+                type="text"
+              />
             </ExplanatoryText>
 
             <Donations>
               <Text donations>Set tip amount options</Text>
-              <div style={{width: '75%', margin:'auto', paddingBottom: '20px' }}>
-                <Select id="bat-select" value={this.tipToOption()} type={'light'} title={'Limit Sites to'} disabled={false} floating={false} onChange={(key, child) => this.handleTipSelection(key, child)}>
-                  <div data-value='0'>1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT</div>
-                  <div data-value='1'>5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT</div>
-                  <div data-value='2'>10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT</div>
-                  <div data-value='3'>20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT</div>
+              <div
+                style={{ width: "75%", margin: "auto", paddingBottom: "20px" }}
+              >
+                <Select
+                  id="bat-select"
+                  value={this.tipToOption()}
+                  type={"light"}
+                  title={"Limit Sites to"}
+                  disabled={false}
+                  floating={false}
+                  onChange={(key, child) => this.handleTipSelection(key, child)}
+                >
+                  <div data-value="0">
+                    1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT
+                  </div>
+                  <div data-value="1">
+                    5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT
+                  </div>
+                  <div data-value="2">
+                    10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT
+                  </div>
+                  <div data-value="3">
+                    20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT
+                  </div>
                 </Select>
               </div>
               <DonationWrapper>
                 <Button donation>
-                  <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
+                  <BatColorIcon
+                    style={{
+                      display: "inline",
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "10px"
+                    }}
+                  />
                   <Text donationAmount>{this.state.donationAmounts[0]}</Text>
                   <Text BAT>BAT</Text>
                 </Button>
-                  <Text convertedAmount>{(this.state.donationAmounts[0] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</Text>
+                <Text convertedAmount>
+                  {(
+                    this.state.donationAmounts[0] * this.props.conversionRate
+                  ).toFixed(2)}{" "}
+                  {this.props.preferredCurrency}
+                </Text>
               </DonationWrapper>
               <DonationWrapper>
                 <Button donation>
-                  <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
+                  <BatColorIcon
+                    style={{
+                      display: "inline",
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "10px"
+                    }}
+                  />
                   <Text donationAmount>{this.state.donationAmounts[1]}</Text>
                   <Text BAT>BAT</Text>
                 </Button>
-                  <Text convertedAmount>{(this.state.donationAmounts[1] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</Text>
+                <Text convertedAmount>
+                  {(
+                    this.state.donationAmounts[1] * this.props.conversionRate
+                  ).toFixed(2)}{" "}
+                  {this.props.preferredCurrency}
+                </Text>
               </DonationWrapper>
               <DonationWrapper>
                 <Button donation>
-                  <BatColorIcon style={{display:'inline', height:'25px', width:'25px', marginRight:'10px'}}/>
+                  <BatColorIcon
+                    style={{
+                      display: "inline",
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "10px"
+                    }}
+                  />
                   <Text donationAmount>{this.state.donationAmounts[2]}</Text>
                   <Text BAT>BAT</Text>
                 </Button>
-                  <Text convertedAmount>{(this.state.donationAmounts[2] * this.props.conversionRate).toFixed(2)} {this.props.preferredCurrency}</Text>
+                <Text convertedAmount>
+                  {(
+                    this.state.donationAmounts[2] * this.props.conversionRate
+                  ).toFixed(2)}{" "}
+                  {this.props.preferredCurrency}
+                </Text>
               </DonationWrapper>
             </Donations>
           </Content>
-
         </Template>
       </Editor>
-    )
+    );
   }
 }
 
-export function renderBannerEditor(values, preferredCurrency, conversionRate, defaultSiteBannerMode, defaultSiteBanner, channelBanners, mode) {
-
+export function renderBannerEditor(
+  values,
+  preferredCurrency,
+  conversionRate,
+  defaultSiteBannerMode,
+  defaultSiteBanner,
+  channelBanners,
+  mode
+) {
   let props = {
     values: values,
     preferredCurrency: preferredCurrency,
@@ -667,10 +1091,11 @@ export function renderBannerEditor(values, preferredCurrency, conversionRate, de
     defaultSiteBanner: defaultSiteBanner,
     channelBanners: channelBanners,
     mode: mode
-  }
+  };
 
   ReactDOM.render(
-    <BannerEditor {...props}/>,
-    document.getElementById("rewards-banner-container").parentElement.parentElement
-  )
+    <BannerEditor {...props} />,
+    document.getElementById("rewards-banner-container").parentElement
+      .parentElement
+  );
 }

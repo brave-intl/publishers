@@ -4,6 +4,9 @@ export default {
   bat: "BAT",
   campaignName: "Campaign Name",
   campaigns: "Campaigns",
+  common: {
+    unexpectedError: "An unexpected error has occurred. Please try again later."
+  },
   createCode: "Create Code",
   created: "Created",
   donationAmount: "Donation amount",
@@ -26,6 +29,13 @@ export default {
       notConnected: "Not connected",
       title: "Deposit Account"
     },
+    header: {
+      navigation: {
+        invoices: "Invoices",
+        reports: "Reports"
+      },
+      title: "Payments"
+    },
     history: {
       confirmedEarning: "Confirmed Earning (BAT)",
       depositAccount: "Deposit Account",
@@ -41,6 +51,13 @@ export default {
       paymentTotal: "Payment Total",
       uploadInvoice: "Uphold Invoice",
       uploadReport: "Upload Report"
+    },
+    reports: {
+      createdAt: "Created At",
+      fileName: "File name",
+      title: "Reports",
+      upload: "Upload Report",
+      uploadedBy: "Uploaded By"
     }
   },
   referralCodes: "Referral Codes",

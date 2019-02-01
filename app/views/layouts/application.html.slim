@@ -116,7 +116,7 @@ html
                         strong.error= "#{flash[name].class.human_attribute_name(attribute)}:"
                         span= " #{message}"
 
-      .main-content
+      .main-content#main-content
         = content_for?(:content) ? yield(:content) : yield
 
       = render("footer")
