@@ -1,50 +1,12 @@
 class Publishers::PromoCampaignsController < ApplicationController
   before_action :authenticate_publisher!
   def index
-    data = []
-    PromoCampaign.all.where(publisher_id: current_publisher.id).each do |promo_campaign|
-      promo_registrations = []
-      promo_campaign_promo_registrations = PromoRegistration.joins(:promo_campaign).
-                                                             where(promo_campaigns: {id: promo_campaign.id})
-      promo_campaign_promo_registrations.each do |promo_registration|
-        promo_registrations.push(
-          {
-            "promo_registration_id": promo_registration.id,
-            "referral_code": promo_registration.referral_code
-          }
-        )
-      end
-
-      data.push(
-        {
-          "promo_campaign_id": promo_campaign.id,
-          "name": promo_campaign.name,
-          "promo_registrations": promo_registrations
-        }
-      )
-    end
+    data = current_publisher.promo_campaigns
     render(status: 200, json: data)
   end
 
   def show
-    promo_campaign = PromoCampaign.find_by(id: params[:id], publisher_id: current_publisher.id)
-    promo_registrations = []
-    promo_campaign_promo_registrations = PromoRegistration.joins(:promo_campaign).
-                                                           where(promo_campaigns: {id: promo_campaign.id})
-    promo_campaign_promo_registrations.each do |promo_registration|
-      promo_registrations.push(
-        {
-          "promo_registration_id": promo_registration.id,
-          "referral_code": promo_registration.referral_code
-        }
-      )
-    end
-
-    data = {
-      "promo_campaign_id": promo_campaign.id,
-      "name": promo_campaign.name,
-      "promo_registrations": promo_registrations
-    }
+    data = current_publisher.promo_campaigns.find(params[:promo_campaign_id])
     render(status: 200, json: data) and return
 
     rescue ActiveRecord::RecordNotFound
@@ -59,10 +21,10 @@ class Publishers::PromoCampaignsController < ApplicationController
   end
 
   def create
-    PromoCampaign.create(
-      name: params[:name],
-      publisher_id: current_publisher.id
+    promo_campaign = PromoCampaign.create(
+        name: params[:name],
+        publisher_id: current_publisher.id
     )
-    render(status: 200)
+    render(status: 200, json: promo_campaign)
   end
 end

@@ -16,7 +16,7 @@ export default class ReferralsNav extends React.Component {
       <Wrapper>
         <Container>
             <Text header>{locale.referrals}</Text>
-            <Button onClick={this.props.openModal}>{locale.createCode}</Button>
+            <Button onClick={() => {this.props.openModal('Create')}}>{locale.createCode}</Button>
         </Container>
       </Wrapper>
     )

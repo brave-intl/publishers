@@ -21,11 +21,11 @@ export const Container = styled.div
   margin: auto;
   top: 25%;
   transform: translateY(-25%);
-  width: 700px;
-  height: 600px;
+  width: 600px;
+  height: 250px;
   background-color: white;
   border-radius: 6px;
-  padding: 80px 120px;
+  padding: 50px;
 `
 
 export const ContentWrapper = styled.div
@@ -40,7 +40,7 @@ export const ContentWrapper = styled.div
   }
   ${props => props.buttons &&
     `
-      justify-content: flex-end;
+      justify-content: center;
     `
   }
 `
@@ -103,15 +103,17 @@ export const Input = styled.input
 
   ${props => props.codes &&
     `
-      margin-left: 18px;
-      margin-right: 18px;
       width: 80px;
+      ::-webkit-inner-spin-button {
+        opacity: 1;
+      }
     `
   }
 
   ${props => props.name &&
     `
-      width: 480px;
+      height: 40px;
+      width: 100%;
     `
   }
 `
@@ -129,7 +131,6 @@ export const TextArea = styled.textarea
 export const Text = styled.div
 `
   font-family: Poppins, sans-serif;
-
   ${props => props.heading &&
     `
       font-size: 26px;
@@ -152,6 +153,6 @@ export const Text = styled.div
 
 export const Break = styled.div
 `
-margin-top: 30px;
-margin-bottom: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 `

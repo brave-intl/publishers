@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       put :javascript_detected
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
+      get :home
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
       get :statements
       get :uphold_status
       get :get_site_banner_data
+      get :referrals
       patch :verify
       patch :update
       patch :complete_signup
@@ -37,12 +39,20 @@ Rails.application.routes.draw do
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
-      # UI
-      get :home
-      get :referrals
     end
+    resources :referrals, controller: 'publishers/referrals' do
+      collection do
+        post :create_codes
+        get :move_codes
+        get :delete_codes
+        get :create_campaign
+      end
+    end
+    # TODO: refactor referral_codes to promo_registrations
     resources :referral_codes, controller: 'publishers/referral_codes'
-    resources :promo_campaigns, controller: 'publishers/promo_campaigns'
+    resources :promo_campaigns, controller: 'publishers/promo_campaigns' do
+      resources :promo_registrations, controller: 'publishers/promo_campaigns/promo_registrations'
+    end
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do
         post :set_default_site_banner_mode

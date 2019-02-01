@@ -1,10 +1,12 @@
+
 # Registers infinity codes for a Publisher
 class Promo::OwnerRegistrar < BaseApiClient
   include PromosHelper
 
-  def initialize(number:, publisher_id:, promo_id: active_promo_id)
+  def initialize(number:, publisher_id:, promo_campaign_id:, promo_id: active_promo_id)
     @number = number
     @publisher_id = publisher_id
+    @promo_campaign_id = promo_campaign_id
     @promo_id = promo_id
   end
 
@@ -22,6 +24,7 @@ class Promo::OwnerRegistrar < BaseApiClient
       PromoRegistration.create!(referral_code: promo_registration["referral_code"],
                                 publisher_id: @publisher_id,
                                 promo_id: active_promo_id,
+                                promo_campaign_id: @promo_campaign_id,
                                 kind: PromoRegistration::OWNER)
     end
   end
@@ -31,6 +34,7 @@ class Promo::OwnerRegistrar < BaseApiClient
       PromoRegistration.create!(referral_code: offline_referral_code,
                                 publisher_id: @publisher_id,
                                 promo_id: active_promo_id,
+                                promo_campaign_id: @promo_campaign_id,
                                 kind: PromoRegistration::OWNER)
     end
   end
