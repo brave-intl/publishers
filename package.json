@@ -5,6 +5,7 @@
     "lint-scss": "stylelint --config '.stylelintrc-scss.json' 'app/**/*.scss' --syntax scss",
     "lint-js-css": "stylelint --config '.stylelintrc-jsx.json' 'app/**/*.{ts,tsx}'",
     "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'",
+    "prettier": "prettier --check 'app/javascript/**/*.{ts,tsx}'",
     "test": "jest"
   },
   "jest": {
@@ -84,7 +85,7 @@
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
-    "prettier": "1.15.3",
+    "prettier": "1.16.3",
     "stylelint": "^9.4.0",
     "stylelint-config-recommended-scss": "^3.2.0",
     "stylelint-config-styled-components": "^0.1.1",
