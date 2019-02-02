@@ -107,7 +107,6 @@ export default class Invoices extends React.Component<
                     <Cell>
                       <a href={report.file_url}>{report.filename}</a>
                     </Cell>
-                    <Cell>--</Cell>
                     <Cell>{report.created_at}</Cell>
                     <Cell>{report.uploaded_by_user}</Cell>
                   </tr>

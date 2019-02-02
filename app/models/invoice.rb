@@ -1,4 +1,4 @@
-class Report < ActiveRecord::Base
+class Invoice < ActiveRecord::Base
   belongs_to :partner
   belongs_to :uploaded_by, class_name: "Publisher"
 
@@ -7,8 +7,6 @@ class Report < ActiveRecord::Base
   def as_json(options={})
     {
       id: self.id,
-      amount_bat: self.amount_bat,
-      approved: self.approved,
       filename: self.file.filename,
       file_url: Rails.application.routes.url_helpers.rails_blob_path(self.file, disposition: "attachment", only_path: true),
       uploaded_by_user: self.uploaded_by.name,

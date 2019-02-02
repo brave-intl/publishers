@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_31_170022) do
+ActiveRecord::Schema.define(version: 2019_02_02_003918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,15 @@ ActiveRecord::Schema.define(version: 2019_01_31_170022) do
     t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id"
     t.index ["question"], name: "index_faqs_on_question", unique: true
     t.index ["rank"], name: "index_faqs_on_rank"
+  end
+
+  create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "partner_id"
+    t.uuid "uploaded_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["partner_id"], name: "index_invoices_on_partner_id"
+    t.index ["uploaded_by_id"], name: "index_invoices_on_uploaded_by_id"
   end
 
   create_table "legacy_publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -323,6 +332,9 @@ ActiveRecord::Schema.define(version: 2019_01_31_170022) do
     t.bigint "amount_bat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "approved"
+    t.uuid "approved_by_id"
+    t.index ["approved_by_id"], name: "index_reports_on_approved_by_id"
     t.index ["partner_id"], name: "index_reports_on_partner_id"
     t.index ["uploaded_by_id"], name: "index_reports_on_uploaded_by_id"
   end
@@ -443,6 +455,8 @@ ActiveRecord::Schema.define(version: 2019_01_31_170022) do
   end
 
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
+  add_foreign_key "invoices", "publishers", column: "uploaded_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
+  add_foreign_key "reports", "publishers", column: "approved_by_id"
   add_foreign_key "reports", "publishers", column: "uploaded_by_id"
 end

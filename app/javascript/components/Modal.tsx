@@ -76,6 +76,11 @@ export default class Modal extends React.Component<IModalProps> {
       }
     }
 
+    // Effectively reseting the view due to how React reconcilliation works
+    if (!this.props.show) {
+      container = <React.Fragment />;
+    }
+
     return (
       <ModalDiv open={this.props.show}>
         <Background onClick={this.props.handleClose} />

@@ -4,9 +4,12 @@ class CreateReports < ActiveRecord::Migration[5.2]
       t.uuid :partner_id
       t.references :uploaded_by, index: true, foreign_key: { to_table: :publishers }, type: :uuid
 
-      t.bigint :amount_bat
+      t.string :amount_bat
       t.datetime :created_at, null: false
       t.datetime :updated_at, null: false
+
+      t.boolean :approved
+      t.references :approved_by, index: true, foreign_key: { to_table: :publishers }, type: :uuid
 
       t.index :partner_id
     end

@@ -102,6 +102,7 @@ export default class UploadDialog extends React.Component<
     }
     this.props.setLoading(false);
   }
+
   public render() {
     return (
       <div>

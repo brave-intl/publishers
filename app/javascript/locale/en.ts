@@ -61,14 +61,18 @@ export default {
     },
     reports: {
       amountBAT: "Amount BAT",
+      approved: "Approved",
       createdAt: "Created At",
+      denied: "Denied",
       fileName: "File name",
+      pending: "Pending",
+      status: "Status",
       title: "Reports",
       upload: {
         amountBAT: "BAT Payout Amount",
         button: "Upload Report",
         description:
-          "Submitting a report provides a paper trail for any potential disputes regarding referral code statistics, payout amount, or miscellaneous financial data. When uploading a report please specify the amount BAT that you were expecting to be paid out.",
+          "Submitting a report provides a paper trail for any potential disputes regarding referral code statistics, payout amount, or miscellaneous financial data. Please specify the amount BAT that you are expecting to be paid out.",
         title: "Submit a Report"
       },
       uploadedBy: "Uploaded By"

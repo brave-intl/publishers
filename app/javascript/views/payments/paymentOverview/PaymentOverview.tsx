@@ -3,14 +3,20 @@ import * as React from "react";
 import locale from "../../../locale/en";
 import { Header, Subheader } from "../../style";
 import {
-  OverviewButton,
   ButtonGroup,
   InactiveText,
   Input,
+  OverviewButton,
   PaymentTotal,
   Text,
   Wrapper
 } from "./paymentOverviewStyle";
+
+import Modal, { ModalSize } from "../../../components/Modal";
+import UploadDialog from "../../invoices/uploadDialog/UploadDialog";
+import ReportDialog from "../../reports/reportDialog/ReportDialog";
+
+import routes from "../../routes";
 
 interface IPaymentOverviewProps {
   confirmationDate: string;
@@ -19,8 +25,14 @@ interface IPaymentOverviewProps {
   defaultCurrency: string;
 }
 
+interface IPaymentOverviewState {
+  isLoading: boolean;
+  showModal: boolean;
+  showUpload: boolean;
+}
 export default class PaymentOverview extends React.Component<
-  IPaymentOverviewProps
+  IPaymentOverviewProps,
+  IPaymentOverviewState
 > {
   public static defaultProps = {
     confirmationDate: "Jan 31, 2018",
@@ -28,9 +40,10 @@ export default class PaymentOverview extends React.Component<
     inactive: false,
     paymentTotal: "999.9"
   };
-
-  public uploadFile = file => {
-    console.log(file);
+  public readonly state: IPaymentOverviewState = {
+    isLoading: false,
+    showModal: false,
+    showUpload: false
   };
 
   public render() {
@@ -60,21 +73,49 @@ export default class PaymentOverview extends React.Component<
           <PaymentTotal>{paymentTotal}</PaymentTotal>
 
           <ButtonGroup>
-            <label>
-              <OverviewButton inactive={this.props.inactive}>
-                {locale.payments.overview.uploadInvoice}
-              </OverviewButton>
-              <input type="file" id="upload" style={{ display: "none" }} />
-            </label>
-            <label>
-              <OverviewButton inactive={this.props.inactive}>
-                {locale.payments.overview.uploadReport}
-              </OverviewButton>
-              <Input type="file" id="upload" onChange={this.uploadFile} />
-            </label>
+            <UploadDialog
+              route={routes.payments.invoices.path}
+              text={locale.payments.invoices.upload}
+              afterSave={this.navigateToInvoice}
+              setLoading={this.setLoading}
+            />
+            <OverviewButton
+              inactive={this.props.inactive}
+              onClick={this.triggerModal}
+            >
+              {locale.payments.overview.uploadReport}
+            </OverviewButton>
           </ButtonGroup>
+
+          <Modal
+            handleClose={this.triggerModal}
+            show={this.state.showModal}
+            size={ModalSize.Small}
+          >
+            <ReportDialog
+              route={routes.payments.reports.path}
+              afterSave={this.navigateToReports}
+              setLoading={this.setLoading}
+              closeModal={this.triggerModal}
+            />
+          </Modal>
         </section>
       </Wrapper>
     );
   }
+  private navigateToInvoice = () => {
+    window.location.href = routes.payments.invoices.path;
+  };
+
+  private navigateToReports = () => {
+    window.location.href = routes.payments.reports.path;
+  };
+
+  private setLoading = () => {
+    this.setState({ isLoading: true });
+  };
+
+  private triggerModal = () => {
+    this.setState({ showModal: !this.state.showModal });
+  };
 }

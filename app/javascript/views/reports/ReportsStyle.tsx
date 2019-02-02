@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-import { LoaderIcon } from "brave-ui/components/icons";
+import {
+  CheckCircleIcon,
+  CloseCircleIcon,
+  PaperAirplaneIcon,
+  LoaderIcon
+} from "brave-ui/components/icons";
 
 export const FlexWrapper = styled.div`
   display: flex;
@@ -38,4 +43,28 @@ export const LoadingIcon = styled(LoaderIcon)`
       : ` display: none;`}
 
   margin: auto 0 auto 1rem;
+`;
+
+export const Approved = styled(CheckCircleIcon)`
+  width: 20px;
+  margin-right: 0.5rem;
+`;
+export const Pending = styled(PaperAirplaneIcon)`
+  width: 20px;
+  margin-right: 0.5rem;
+  g {
+    fill: #686978;
+  }
+`;
+export const Denied = styled(CloseCircleIcon)`
+  width: 20px;
+  margin-right: 0.5rem;
+`;
+
+export const Status = styled.span`
+  @media (max-width: 768px) {
+    span {
+      display: none;
+    }
+  }
 `;

@@ -13,12 +13,21 @@ import {
 
 import PaymentsHeader from "../payments/header/Header";
 import routes from "../routes";
-import { FlexWrapper, LoadingIcon, ReportHeader } from "./ReportsStyle";
+import {
+  Approved,
+  Denied,
+  FlexWrapper,
+  LoadingIcon,
+  Pending,
+  ReportHeader,
+  Status
+} from "./ReportsStyle";
 
 import locale from "../../locale/en";
 import ReportDialog from "./reportDialog/ReportDialog";
 
 interface IReport {
+  approved?: boolean;
   amount_bat: string;
   id: string;
   filename: string;
@@ -47,6 +56,7 @@ export default class Reports extends React.Component<
     showModal: false,
     showUpload: false
   };
+
   constructor(props) {
     super(props);
     this.reloadTable = this.reloadTable.bind(this);
@@ -80,6 +90,31 @@ export default class Reports extends React.Component<
     this.setState({ showModal: !this.state.showModal });
   };
 
+  public reportStatus = report => {
+    let status = (
+      <Status>
+        <Pending />
+        <span>{locale.payments.reports.pending}</span>
+      </Status>
+    );
+
+    if (report.approved === true) {
+      status = (
+        <Status>
+          <Approved />
+          <span>{locale.payments.reports.approved}</span>
+        </Status>
+      );
+    } else if (report.approved === false) {
+      status = (
+        <Status>
+          <Denied />
+          <span>{locale.payments.reports.denied}</span>
+        </Status>
+      );
+    }
+    return status;
+  };
   public render() {
     return (
       <Wrapper>
@@ -118,6 +153,7 @@ export default class Reports extends React.Component<
                   <TableHeader>
                     {locale.payments.reports.uploadedBy}
                   </TableHeader>
+                  <TableHeader>{locale.payments.reports.status}</TableHeader>
                 </tr>
               </thead>
               <tbody>
@@ -129,6 +165,7 @@ export default class Reports extends React.Component<
                     <Cell>{report.amount_bat}</Cell>
                     <Cell>{report.created_at}</Cell>
                     <Cell>{report.uploaded_by_user}</Cell>
+                    <Cell>{this.reportStatus(report)}</Cell>
                   </tr>
                 ))}
               </tbody>
