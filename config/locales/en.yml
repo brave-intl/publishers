@@ -746,6 +746,8 @@ en:
           browsers (like Brave) have an incomplete implementation of this
           protocol. Please use a current release of Google Chrome or Opera.
           (IMPLEMENTATION_INCOMPLETE)
+      lost_account:
+        body: Lost your 2FA? Visit our Help Center to handle this
   two_factor_registrations:
     index:
       heading: Two-factor Authentication
