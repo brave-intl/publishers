@@ -2,16 +2,29 @@ import * as React from 'react'
 
 import {
   Wrapper
-} from './ReferralsModalStyle.ts'
+} from './ReferralsModalStyle'
 
-import ReferralsCreate from './referralsCreate/ReferralsCreate.tsx'
-import ReferralsAdd from './referralsAdd/ReferralsAdd.tsx'
-import ReferralsMove from './referralsMove/ReferralsMove.tsx'
-import ReferralsDelete from './referralsDelete/ReferralsDelete.tsx'
+import ReferralsCreate from './referralsCreate/ReferralsCreate'
+import ReferralsAdd from './referralsAdd/ReferralsAdd'
+import ReferralsMove from './referralsMove/ReferralsMove'
+import ReferralsDelete from './referralsDelete/ReferralsDelete'
 
 import locale from '../../../locale/en.js'
 
-export default class ReferralsModal extends React.Component {
+interface IReferralsModalProps {
+  openModal: any;
+  closeModal: any;
+  modalOpen: any;
+  modalType: any;
+  campaigns: any;
+  maxCodes: any;
+  campaignToAddCodesTo: any;
+  codeToBeDeleted: any;
+  codesToBeMoved: any;
+  refresh: any;
+}
+
+export default class ReferralsModal extends React.Component<IReferralsModalProps> {
 
   constructor (props) {
     super(props)
@@ -46,7 +59,7 @@ function ReferralsModalType (props) {
       return <ReferralsAdd closeModal={props.closeModal} campaignToAddCodesTo={props.campaignToAddCodesTo} refresh={props.refresh}/>
       break
     case 'Move':
-      return <ReferralsMove closeModal={props.closeModal} codesToBeMoved={props.codesToBeMoved} campaigns={props.campaigns}/>
+      return <ReferralsMove closeModal={props.closeModal} codesToBeMoved={props.codesToBeMoved} campaigns={props.campaigns} refresh={props.refresh}/>
       break
     case 'Delete':
       return <ReferralsDelete closeModal={props.closeModal} codeToBeDeleted={props.codeToBeDeleted} refresh={props.refresh}/>

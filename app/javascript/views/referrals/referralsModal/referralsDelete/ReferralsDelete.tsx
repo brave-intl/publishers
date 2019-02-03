@@ -3,20 +3,26 @@ import * as React from 'react'
 import {
   Wrapper,
   Container,
-  TextWrapper,
   ContentWrapper,
   TextArea,
   Button,
   Break,
   Input,
   Text
-} from './ReferralsDeleteStyle.ts'
+} from './ReferralsDeleteStyle'
 
 import Select from 'brave-ui/components/formControls/select'
 
-import locale from '../../../locale/en.js'
+interface IReferralsModalProps {
+  closeModal: any;
+  codeToBeDeleted: any;
+  refresh: any;
+}
 
-export default class ReferralsDelete extends React.Component {
+interface IReferralsModalState {
+}
+
+export default class ReferralsDelete extends React.Component<IReferralsModalProps, IReferralsModalState> {
 
   constructor (props) {
     super(props)
@@ -31,7 +37,7 @@ export default class ReferralsDelete extends React.Component {
   render () {
     return (
         <Container>
-            <Text heading>Delete Referral Code? {this.props.codeToBeDeleted}</Text>
+            <Text heading>Delete Referral Code?</Text>
             <Break/>
             <ContentWrapper buttons>
               <Button secondary onClick={ () => {this.props.closeModal()} }>Cancel</Button>
@@ -46,8 +52,7 @@ async function deleteReferralCode (code, refresh, closeModal) {
   let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/referrals/delete_codes?id=' + code
   let options = {
     method: 'GET',
-    credentials: 'same-origin',
-    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
+    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
   }
   let response = await fetch(url, options)
   refresh()

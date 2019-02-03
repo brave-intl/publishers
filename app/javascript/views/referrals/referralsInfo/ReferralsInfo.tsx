@@ -7,11 +7,24 @@ import {
   Content,
   Button,
   Text
-} from './ReferralsInfoStyle.ts'
+} from './ReferralsInfoStyle'
 
 import { CheckCircleIcon, CaratLeftIcon } from 'brave-ui/components/icons'
 
-export default class ReferralsInfo extends React.Component {
+interface IReferralsInfoProps {
+  openModal: any;
+  campaign: any;
+  changeMode: any;
+  openAddModal: any;
+  openDeleteModal: any;
+  openMoveModal: any;
+}
+
+interface IReferralsInfoState {
+  date: any;
+}
+
+export default class ReferralsInfo extends React.Component<IReferralsInfoProps, IReferralsInfoState> {
 
   constructor (props) {
     super(props)
@@ -23,8 +36,8 @@ export default class ReferralsInfo extends React.Component {
   componentDidMount () {
     var options = { year: 'numeric', month: 'long', day: 'numeric' }
     let date = new Date(this.props.campaign.created_at)
-    date = date.toLocaleDateString("en-US", options)
-    this.setState({date: date})
+    let formattedDate = date.toLocaleDateString("en-US", options)
+    this.setState({date: formattedDate})
   }
 
   render () {

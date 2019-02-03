@@ -1,6 +1,5 @@
 class Publishers::ReferralsController < ApplicationController
   include PromosHelper
-  before_action :authenticate_publisher!
   def index
     data = {}
     unassigned_codes = current_publisher.promo_registrations.where(promo_campaign_id: nil)

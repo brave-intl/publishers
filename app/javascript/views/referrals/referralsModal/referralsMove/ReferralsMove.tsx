@@ -3,25 +3,41 @@ import * as React from 'react'
 import {
   Wrapper,
   Container,
-  TextWrapper,
   ContentWrapper,
   TextArea,
   Button,
   Break,
   Input,
   Text
-} from './ReferralsMoveStyle.ts'
+} from './ReferralsMoveStyle'
 
-import Select from 'brave-ui/components/formControls/select'
+import Checkbox from 'brave-ui/components/formControls/checkbox'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
 
-import locale from '../../../locale/en.js'
+interface IReferralsModalProps {
+  closeModal: any;
+  codesToBeMoved: any;
+  refresh: any;
+  campaigns: any;
+}
 
-export default class ReferralsMove extends React.Component {
+interface IReferralsModalState {
+  selectedCodes: any;
+  selectedCampaign: any;
+  campaignValue: any;
+  codesValue: any;
+}
+
+
+export default class ReferralsMove extends React.Component<IReferralsModalProps, IReferralsModalState> {
 
   constructor (props) {
     super(props)
     this.state = {
+      selectedCodes: [],
+      selectedCampaign: null,
+      campaignValue: null,
+      codesValue: null
     }
   }
 
@@ -29,15 +45,22 @@ export default class ReferralsMove extends React.Component {
     let newCampaign = null
 
     if (this.state.campaignValue) {
-      newCampaign = await createCampaign(this.state.campaignValue)
     }
-    console.log(newCampaign.id)
     createReferralCode(this.state.codesValue, newCampaign.id)
-    this.props.openModal(false)
+    // this.props.openModal(false)
   }
 
   handleCampaignValue = (e) => {
     this.setState({ campaignValue: e.target.value })
+  }
+
+  handleCodeSelect = (e, id) => {
+    // alert('selected!' + id + ' ' + e.target.checked)
+    let temp = this.state.selectedCodes
+  }
+
+  handleCampaignSelect = (e) => {
+
   }
 
   render () {
@@ -77,19 +100,14 @@ export default class ReferralsMove extends React.Component {
     return (
         <Container>
             <Text heading>Move Referral Codes</Text>
+            {/* <CodesList referralCodes={this.props.codesToBeMoved} handleCodeSelect={this.handleCodeSelect}/> */}
             <Break/>
-            <Text subtext>Number of referral codes needed</Text>
-            <ContentWrapper codes>
-              <Input type="number" value={this.state.codesValue} onChange={this.handleNumberOfCodes} codes/>
-            </ContentWrapper>
-            <Text subtext>Description</Text>
-            <Input value={this.state.campaignValue} onChange={this.handleCampaignValue} name/>
+            <CampaignDropdown campaigns={this.props.campaigns}/>
             <Break/>
             <ContentWrapper buttons>
               <Button secondary onClick={() => {this.props.closeModal()}}>Cancel</Button>
-              <Button solid onClick={ (e) => this.handleCreate(e) }>Create</Button>
+              <Button solid onClick={ (e) => this.handleCreate(e) }>Move</Button>
             </ContentWrapper>
-            <Table header={header} rows={rows}>abc</Table>
             {/* <CampaignDropdown campaigns={this.props.campaigns} referralCodes={this.props.codesToBeMoved}/> */}
         </Container>
     )
@@ -113,10 +131,32 @@ function CampaignSelect (props) {
   )
 }
 
-function CodesList (props) {
-  let header = [{ content: 'Referral Code' }, { content: 'Description' }]
-  let rows = []
-  return (<Table header={header} rows={rows}>Loading...</Table>)
+// function CodesList (props) {
+//   let header = [{ content: 'Referral Code' }, { content: 'Description' }]
+//   let rows = []
+//   const onChange
+//   props.referralCodes.forEach(function(code, index){
+//     rows.push(
+//       {"content": [{
+//         "content": (<div key={index}><input onChange={(e) => {props.handleCodeSelect(e, code.id)}} type="checkbox"/>{code.referral_code}</div>), 
+//         "content": {"content": code.referral_code}
+//         }]    
+//       )}
+//     })
+//   return (<div style={{maxHeight:'250px', overflowY:'scroll'}}><Table header={header} rows={rows}>Loading...</Table></div>)
+//   }
+
+function CampaignDropdown (props) {
+  let campaigns = props.campaigns
+  let dropdownOptions = props.campaigns.map(
+    (campaign, index) => <option key={index} value={campaign.name}>{campaign.name}</option>
+  )
+  return (
+    <select style={{width:'100%'}}>
+    <option value="" disabled selected>Select a Campaign</option>
+    {dropdownOptions}
+    </select>
+  )
 }
 
 // function CampaignDropdown (props) {
@@ -147,8 +187,7 @@ async function createReferralCode (numberOfCodes, campaignID) {
   body.append('promo_campaign_id', campaignID)
   let options = {
     method: 'POST',
-    credentials: 'same-origin',
-    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
+    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest'},
     body: body
   }
   let response = await fetch(url, options)

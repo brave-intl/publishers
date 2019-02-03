@@ -4,15 +4,32 @@ import {
   Wrapper,
   Container,
   Grid
-} from './ReferralsStyle.ts'
+} from './ReferralsStyle'
 
-import ReferralsNav from './referralsNav/index.tsx'
-import ReferralsModal from './referralsModal/ReferralsModal.tsx'
-import ReferralsHeader from './referralsHeader/index.tsx'
-import ReferralsCard from './referralsCard/index.tsx'
-import ReferralsInfo from './referralsInfo/ReferralsInfo.tsx'
+import ReferralsNav from './referralsNav/index'
+import ReferralsModal from './referralsModal/ReferralsModal'
+import ReferralsHeader from './referralsHeader/index'
+import ReferralsCard from './referralsCard/index'
+import ReferralsInfo from './referralsInfo/ReferralsInfo'
+import { any } from 'prop-types';
 
-export default class Referrals extends React.Component {
+interface IReferralsProps {
+  modalType: any;
+}
+
+interface IReferralsState {
+  modalType: any;
+  campaigns: any;
+  campaignToAddCodesTo: any;
+  codeToBeDeleted: any;
+  codesToBeMoved: any;
+  mode: any;
+  index: any;
+  unassigned_codes: any;
+  modalOpen: any;
+}
+
+export default class Referrals extends React.Component<IReferralsProps, IReferralsState> {
 
   constructor (props) {
     super(props)
@@ -44,8 +61,7 @@ export default class Referrals extends React.Component {
     let url = '/publishers/c1a84225-471a-4f82-8691-ab62eac7ab46/referrals'
     let options = {
       method: 'GET',
-      credentials: 'same-origin',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content }
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest'}
     }
     let response = await fetch(url, options)
     let data = await response.json()
