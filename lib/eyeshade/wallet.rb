@@ -15,7 +15,8 @@ module Eyeshade
                 :status,
                 :last_settlement_balance,
                 :last_settlement_date,
-                :uphold_id
+                :uphold_id,
+                :uphold_account_status
 
     def initialize(wallet_json:, channel_json:)
       details_json = wallet_json["wallet"] || {}
@@ -27,8 +28,8 @@ module Eyeshade
       @possible_currencies = details_json["possibleCurrencies"] || []
       @address = details_json["address"] || ""
       @is_member = details_json["isMember"] || false
-      @status  = details_json["status"]
       @uphold_id = details_json["id"]
+      @uphold_account_status = details_json["status"] || nil
 
       status_json = wallet_json["status"] || {}
       @action = status_json["action"]
@@ -54,11 +55,11 @@ module Eyeshade
     end
 
     def blocked?
-      @status == 'blocked'
+      @uphold_account_status == 'blocked'
     end
 
     def is_a_member?
-      @status.present? && @is_member
+      @uphold_account_status.present? && @is_member
     end
 
     def not_a_member?

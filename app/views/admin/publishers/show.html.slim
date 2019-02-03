@@ -23,10 +23,10 @@
         .db-info-row
           .db-field = "Uphold authorized:"
           .db-value = @publisher.wallet.authorized?
-        - if @publisher.wallet.status.present?
+        - if @publisher.wallet.uphold_account_status.present?
           .db-info-row
             .db-field = "Uphold status:"
-            .db-value = @publisher.wallet.status
+            .db-value = @publisher.wallet.uphold_account_status
         -if @publisher.uphold_id.present?
           .db-info-row
             .db-field = "Uphold id:"

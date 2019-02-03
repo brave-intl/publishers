@@ -100,6 +100,14 @@ module PromosHelper
     end
   end
 
+  def ratios_column_header(is_geo)
+    if is_geo
+      ["Referral code", "Country",  "Downloads", "Installs", "Eligible Installs", "30 days", "Installs / Downloads", "30 days / Eligible Installs"]
+    else
+      ["Referral code", "Downloads", "Installs", "Eligible Installs", "30 days",  "Installs / Downloads", "30 days / Eligible Installs"]
+    end
+  end
+
   def coerce_date_to_start_or_end_of_reporting_interval(date, reporting_interval, start)
     case reporting_interval
     when PromoRegistration::DAILY, PromoRegistration::RUNNING_TOTAL

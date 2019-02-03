@@ -221,7 +221,7 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
-  test "uphold_status reflects incomplete Uphold registrations" do
+  test "uphold_status reflects restricted Uphold registrations" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
@@ -265,8 +265,7 @@ class PublisherTest < ActiveSupport::TestCase
 
       publisher.wallet
       assert publisher.uphold_verified?
-      assert publisher.uphold_incomplete?
-      assert_equal :incomplete, publisher.uphold_status
+      assert_equal Publisher::UpholdAccountState::RESTRICTED, publisher.uphold_status
 
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline

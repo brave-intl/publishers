@@ -161,8 +161,11 @@ class PublishersHelperTest < ActionView::TestCase
     publisher.uphold_status = :unconnected
     assert_equal "uphold-unconnected", uphold_status_class(publisher)
 
-    publisher.uphold_status = :incomplete
-    assert_equal "uphold-incomplete", uphold_status_class(publisher)
+    publisher.uphold_status = Publisher::UpholdAccountState::RESTRICTED
+    assert_equal "uphold-" + Publisher::UpholdAccountState::RESTRICTED.to_s, uphold_status_class(publisher)
+
+    publisher.uphold_status = Publisher::UpholdAccountState::BLOCKED
+    assert_equal "uphold-complete", uphold_status_class(publisher)
   end
 
   test "next settlement date is current month if <= 8th, otherwise next month" do

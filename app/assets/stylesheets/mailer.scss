@@ -1,237 +1,153 @@
-body, .header, .content, .footer {
-  color: hsla(0, 0%, 30%, 1);
-  font-family: Arial, Helvetica, sans-serif;
+@import 'colors';
+body,
+.header,
+.content,
+.footer {
+  color: $primaryGrey;
+  font-family: Arial, sans-serif;
   a {
-    color: #ff5000;
-    &:hover, &:focus {
-      color: #b33800;
-    }
+    color: $primaryAccent;
+    text-decoration: none;
   }
 }
 
 body {
   font-size: 16px;
-  font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.8;
   width: 600px;
   margin: 0 auto;
-  color: #434447;
+  color: $primaryGrey;
+  background-color: $primaryGreyLighten75;
+  display: table;
+}
+
+p {
+  margin: 24px 0;
+}
+
+.email {
+  padding: 8px 0 24px;
 }
 
 .main {
-  margin-top: 50px;
+  margin-top: 32px;
   background: white;
-  background-repeat: no-repeat;
-  background-position: top right;
   border-radius: 8px;
-  border: 1px solid #eff2f5;
+  border: 1px solid $strokeGrey;
 }
 
 .header {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  padding: 72px 50px 58px 50px;
-  background-color: transparent;
-  background-position: top right;
-  background-repeat: no-repeat;
-
+  padding: 48px 32px;
   .brand {
-    width: 268px;
-    height: 31px;
+    margin: 0 auto;
+    display: table;
   }
 }
 
 .content {
-  background: transparent;
-  padding: 10px 50px 34px 50px;
-
+  padding: 0 40px;
   .attribute {
-    display: inline-block;
-    margin-right: 5px;
-  }
-  .email, .name {
-    margin-right: 10px
-  }
-  .email, .phone {
-    color: hsla(0, 0%, 60%, 1);
+    margin-right: 8px;
   }
   .notice {
-    border-bottom: 1px solid #818589;
-    margin: 10px 0;
-    padding-bottom: 10px;
-  }
-  .header-help {
-    margin-top: 0;
-  }
-  .hint {
-    color: #818589;
-    font-size: 12px;
-    font-weight: 300;
-
+    border-top: 1px solid $strokeGrey;
+    padding: 24px 0 32px;
+    margin: 28px 0 0;
+    color: $primaryGreyLighten50;
+    font-size: 14px;
     a {
       text-decoration: none;
-      color: #818589;
-      &:hover, &:focus {
-        color: #48494b;
+      color: $primaryAccent;
+    }
+  }
+  .salutation {
+    margin: 0;
+  }
+  .btn-container {
+    margin: 0 auto;
+    padding: 12px 0;
+    display: table;
+    .btn-primary {
+      color: #FFFFFF;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 30px;
+        height: 30px;
+        background-color: $primaryAccent;
+        padding: 12px 24px;
+    }
+  }
+  .promo--referral-link-container {
+    display: table;
+    width: 100%;
+    padding: 0 0 18px;
+    .promo--referral-title {
+      text-align: center;
+      font-weight: 600;
+      font-size: 18px;
+      padding: 18px 0 12px;
+      text-decoration: none;
+    }
+    .promo--referral-link {
+      padding: 16px 0;
+      background-color: $primaryGreyLighten75;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 22px;
+      text-align: center;
+    }
+    .promo-share-container {
+      margin: 24px auto 0;
+      display: table;
+      border-spacing: 12px;
+      .promo--share-button {
+        padding: 12px 32px;
+        height: 28px;
+        color: white;
+        border-radius: 50px;
+        display: table-cell;
+        &.twitter {
+          background-color: $twitterPrimary;
+        }
+        &.facebook {
+          background-color: $facebookPrimary;
+        }
       }
     }
+
+  
   }
-  .strong-line {
-    font-weight: bold;
-    text-decoration: underline;
-  }
-  .valign-mid {
-    vertical-align: middle;
-  }
-
-  .salutation {
-    font-weight: 600;
-  }
-
-  .center {
-    text-align: center;
-  }
-
-  .btn-primary {
-    display: inline-block;
-    margin-bottom: 0;
-    text-align: center;
-    text-decoration: none;
-    padding: 12px 24px 8px;
-    border-radius: 30px;
-    height: 30px;
-    letter-spacing: 0.02em;
-    background: #ff3f3f;
-    color: #fff;
-  }
-
-  .btn-login {
-    margin: 30px 0;
-  }
-
-  .promo--referral-link-container {
-    width: 230px;
-    display: initial;
-    .promo--referral-link {
-      display: table-cell;
-      vertical-align: middle;
-      width: inherit;
-      height: 40px;
-      padding-left: 8px;
-      background: #edf3f9;
-      border: solid;
-      border-color: #cddeec;
-      border-width: 1px;
-      font-size: 16px;
-      border-radius: 4px 0px 0px 4px;
-    }
-  }
-
-  .promo--item-label {
-    padding-right: 10px;
-    font-weight: 600;
-    color: #00BCD6; // $bravePromo-LightBlue;
-
-    &-link-name {
-      display: block;
-    }
-  }
-
-  .promo--share-button {
-    height: 30px;
-    width: 90px;
-    float: right;
-    margin: 0px 5px 0px 5px;
-    background-repeat: no-repeat;
-    display: block;
-    border-radius: 20px;
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 1px;
-    margin-bottom: 25px;
-
-    &-twitter {
-      background-color: #1DA1F2; // $bravePromo-TwitterBlue:
-      background-position: 15px;
-      padding: 12px 0px 0px 25px;
-    }
-
-    &-facebook {
-      background-color: #3B5998; // $bravePromo-FacebookBlue:
-      background-position: 15px;
-      padding: 12px 0px 0px 15px;
-    }
-  }
-
-  #promo--ad-banner {
-    color: #00BCD6; // $bravePromo-LightBlue;
-    font-weight: 600;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-  #promo--ad-banner-message {
-    margin-bottom: 20px;
-  }
-
-  #promo-ad-banner-download-site {
-    margin-left: 146px;
-  }
-
-  #promo-ad-banner-download-youtube {
-    margin-left: 160px;
-  }
-
-  .promo--ad-banner-container {
-    .promo--ad-banner-site {
-      margin-right: 15px;
-      float: left;
-    }
-
-    .promo--ad-banner-youtube {
-      float: left;
-    }
-
-    .promo--download-link a {
-      float: right;
-    }
-  }
-}
-
-.promo--clear {
-  clear: both;
 }
 
 .footer {
-  padding: 32px 60px;
-  background-color: #ff3f3f;
-  background-position: top;
-  background-repeat: no-repeat;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  .bat {
-    float: right;
-    height: 52px;
-    width: 200px;
-    padding-top: 15px;
-    background-position: right;
-    background-repeat: no-repeat;
-    a {
-      display: block;
-      font-size: 12px;
-      color: #ffffff;
-      text-decoration: none;
-      margin-bottom: 6px;
+  background: $primaryAccent;
+  padding: 30px 0 24px;
+  width: 100%;
+  & .social {
+    display: table;
+    margin: 0 auto;
+  }
+  & p {
+    color: $primaryAccentLighten30;
+    font-size: 12px;
+    text-align: center;
+    max-width: 360px;
+    margin: 12px auto;
+  }
+  & a {
+    color: white;
+    &.social-icon {
+      margin: 0 12px;
+      float: left;
     }
   }
-  .social {
-    clear: right;
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      margin-right: 32px;
-    }
+
+  .social-icon img {
+    height: 24px;
+    width: 24px;
   }
 }
