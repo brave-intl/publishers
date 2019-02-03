@@ -479,6 +479,7 @@ en:
     confirm_default_currency_modal:
       headline: Confirm your preferred deposit currency
       leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
+      fee_disclaimer_html: Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a href="https://uphold.com/en/pricing">Check fees</a>
       confirm: Confirm
       saving: Saving ...
       redirecting: Redirecting to Uphold for authorization ...
