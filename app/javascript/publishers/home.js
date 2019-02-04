@@ -11,7 +11,8 @@ import { renderBannerEditor } from '../packs/banner_editor'
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
-const SELECT_CURRENCY = '-- Select currency --';
+const SELECT_CURRENCY = '---';
+const BASIC_ATTENTION_TOKEN = 'BAT'
 const UNAVAILABLE = 'unavailable';
 
 function showPendingContactEmail(pendingEmail) {
@@ -110,7 +111,12 @@ function populateCurrencySelect(select, possibleCurrencies, selectedCurrency) {
     let option = document.createElement('option');
     option.value = currency;
     option.innerHTML = currency;
-    option.selected = (currency === selectedCurrency);
+    if ((!selectedCurrency || selectedCurrency.length === 0) && currency === BASIC_ATTENTION_TOKEN) {
+      option.selected = true;
+    }
+    else {
+      option.selected = (currency === selectedCurrency);
+    }
     select.appendChild(option);
   });
 }
