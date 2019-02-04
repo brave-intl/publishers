@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const data = JSON.parse(
     document.getElementById("reactData").getAttribute("data-react")
   );
-  console.log(data);
 
   ReactDOM.render(
     <Invoices {...data} />,

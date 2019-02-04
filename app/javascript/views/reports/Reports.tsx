@@ -13,15 +13,7 @@ import {
 
 import PaymentsHeader from "../payments/header/Header";
 import routes from "../routes";
-import {
-  Approved,
-  Denied,
-  FlexWrapper,
-  LoadingIcon,
-  Pending,
-  ReportHeader,
-  Status
-} from "./ReportsStyle";
+import { FlexWrapper, LoadingIcon, ReportHeader, Status } from "./ReportsStyle";
 
 import locale from "../../locale/en";
 import ReportDialog from "./reportDialog/ReportDialog";
@@ -93,26 +85,18 @@ export default class Reports extends React.Component<
   public reportStatus = report => {
     let status = (
       <Status>
-        <Pending />
-        <span>{locale.payments.reports.pending}</span>
+        <span>{locale.payments.reports.unpaid}</span>
       </Status>
     );
 
-    if (report.approved === true) {
+    if (report.paid === true) {
       status = (
         <Status>
-          <Approved />
-          <span>{locale.payments.reports.approved}</span>
-        </Status>
-      );
-    } else if (report.approved === false) {
-      status = (
-        <Status>
-          <Denied />
-          <span>{locale.payments.reports.denied}</span>
+          <span>{locale.payments.reports.paid}</span>
         </Status>
       );
     }
+
     return status;
   };
   public render() {

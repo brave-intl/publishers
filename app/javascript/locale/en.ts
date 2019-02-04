@@ -61,13 +61,13 @@ export default {
     },
     reports: {
       amountBAT: "Amount BAT",
-      approved: "Approved",
       createdAt: "Created At",
       denied: "Denied",
       fileName: "File name",
-      pending: "Pending",
+      paid: "Paid",
       status: "Status",
       title: "Reports",
+      unpaid: "Pending",
       upload: {
         amountBAT: "BAT Payout Amount",
         button: "Upload Report",

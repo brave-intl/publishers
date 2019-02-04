@@ -329,12 +329,12 @@ ActiveRecord::Schema.define(version: 2019_02_02_003918) do
   create_table "reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "partner_id"
     t.uuid "uploaded_by_id"
-    t.bigint "amount_bat"
+    t.string "amount_bat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "approved"
-    t.uuid "approved_by_id"
-    t.index ["approved_by_id"], name: "index_reports_on_approved_by_id"
+    t.boolean "paid", default: false
+    t.uuid "paid_by_id"
+    t.index ["paid_by_id"], name: "index_reports_on_paid_by_id"
     t.index ["partner_id"], name: "index_reports_on_partner_id"
     t.index ["uploaded_by_id"], name: "index_reports_on_uploaded_by_id"
   end
@@ -457,6 +457,6 @@ ActiveRecord::Schema.define(version: 2019_02_02_003918) do
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
   add_foreign_key "invoices", "publishers", column: "uploaded_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
-  add_foreign_key "reports", "publishers", column: "approved_by_id"
+  add_foreign_key "reports", "publishers", column: "paid_by_id"
   add_foreign_key "reports", "publishers", column: "uploaded_by_id"
 end
