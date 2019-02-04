@@ -10,6 +10,6 @@ class PaymentsController < ApplicationController
   #
   # Returns nil
   def filter_users
-    raise unless current_user.in_new_ui_whitelist?
+    raise unless current_user&.in_new_ui_whitelist?
   end
 end
