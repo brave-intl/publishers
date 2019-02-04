@@ -97,13 +97,12 @@ function getPossibleCurrencies() {
 
 function populateCurrencySelect(select, possibleCurrencies, selectedCurrency) {
   select.innerHTML = '';
-
   possibleCurrencies.forEach(currency => {
     let option = document.createElement('option');
     option.value = currency;
     option.innerHTML = currency;
     if((!selectedCurrency || selectedCurrency.length === 0) && currency === DEFAULT_CURRENCY){
-      option.selected = true
+      option.selected = true;
     }
     else{
       option.selected = (currency === selectedCurrency);
