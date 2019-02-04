@@ -95,7 +95,6 @@ export default class PaymentOverview extends React.Component<
             <ReportDialog
               route={routes.payments.reports.path}
               afterSave={this.navigateToReports}
-              setLoading={this.setLoading}
               closeModal={this.triggerModal}
             />
           </Modal>

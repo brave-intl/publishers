@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { LoaderIcon } from "brave-ui/components/icons";
+
 export const FlexWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -52,4 +54,20 @@ export const PrimaryButton = styled.div`
       : `
       background: #9D9DB4;
       `}
+`;
+
+interface ILoadingIconProps {
+  isLoading?: boolean;
+}
+export const LoadingIcon = styled(LoaderIcon)`
+  width: 32px;
+
+  ${(props: ILoadingIconProps) =>
+    props.isLoading
+      ? `
+      display: inline-block;
+    `
+      : ` display: none;`}
+
+  margin: auto 1rem auto;
 `;

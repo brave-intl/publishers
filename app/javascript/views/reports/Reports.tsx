@@ -119,7 +119,6 @@ export default class Reports extends React.Component<
                 <ReportDialog
                   route={routes.payments.reports.path}
                   afterSave={this.reloadTable}
-                  setLoading={this.setLoading}
                   closeModal={this.triggerModal}
                 />
               </Modal>

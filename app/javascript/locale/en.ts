@@ -67,7 +67,7 @@ export default {
       paid: "Paid",
       status: "Status",
       title: "Reports",
-      unpaid: "Pending",
+      unpaid: "Unpaid",
       upload: {
         amountBAT: "BAT Payout Amount",
         button: "Upload Report",

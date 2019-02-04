@@ -11,6 +11,7 @@ import {
   FormElement,
   Header,
   Label,
+  LoadingIcon,
   PrimaryButton
 } from "./ReportDialogStyle";
 
@@ -18,12 +19,12 @@ interface IReportDialogState {
   file: any;
   amountBAT: string;
   errorText: string;
+  isLoading: boolean;
   isValid: boolean;
 }
 
 interface IUploadDialogProps {
   route: string;
-  setLoading: any;
   closeModal: () => void;
   afterSave: () => void;
 }
@@ -36,6 +37,7 @@ export default class UploadDialog extends React.Component<
     amountBAT: "",
     errorText: "",
     file: undefined,
+    isLoading: false,
     isValid: false
   };
 
@@ -45,11 +47,16 @@ export default class UploadDialog extends React.Component<
   }
 
   public componentDidUpdate() {
-    if (this.state.file && this.state.amountBAT && !this.state.isValid) {
+    if (
+      this.state.file &&
+      this.state.amountBAT &&
+      !this.state.isValid &&
+      !this.state.isLoading
+    ) {
       this.setState({ isValid: true });
     } else if (
       this.state.isValid &&
-      (!this.state.file || !this.state.amountBAT)
+      (!this.state.file || !this.state.amountBAT || this.state.isLoading)
     ) {
       this.setState({ isValid: false });
     }
@@ -70,7 +77,7 @@ export default class UploadDialog extends React.Component<
   };
 
   public async upload() {
-    this.props.setLoading(false);
+    this.setState({ isLoading: true });
 
     const data = new FormData();
     data.append("amount_bat", this.state.amountBAT);
@@ -100,7 +107,7 @@ export default class UploadDialog extends React.Component<
         this.setState({ errorText: result.body.toString() });
       }
     }
-    this.props.setLoading(false);
+    this.setState({ isLoading: false });
   }
 
   public render() {
@@ -127,6 +134,7 @@ export default class UploadDialog extends React.Component<
         )}
 
         <FlexWrapper>
+          <LoadingIcon isLoading={this.state.isLoading} />
           <PrimaryButton onClick={this.submitForm} enabled={this.state.isValid}>
             {locale.payments.reports.upload.button}
           </PrimaryButton>
