@@ -126,7 +126,7 @@ export default class Reports extends React.Component<
               <LoadingIcon isLoading={this.state.isLoading} />
             </FlexWrapper>
 
-            {/* <Button onClick={this.reloadTable}>reload</Button> */}
+            <Button onClick={this.reloadTable}>reload</Button>
             <Table>
               <thead>
                 <tr>

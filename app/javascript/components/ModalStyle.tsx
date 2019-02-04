@@ -11,6 +11,7 @@ export const ModalDiv = styled.div`
   transform: translate(-50%, -50%);
   height: 100vh;
   width: 100%;
+  z-index: 1;
 
   ${(props: Partial<IModalProps>) =>
     props.open === false &&
@@ -24,7 +25,7 @@ export const Background = styled.div`
   height: 100%;
   width: 100%;
   position: fixed;
-  z-index: 9000;
+  z-index: 1;
 `;
 
 enum ModalSize {
@@ -45,7 +46,7 @@ export const Container = styled.div`
   background-color: white;
   border-radius: 6px;
   padding: 50px;
-  z-index: 9001;
+  z-index: 2;
 `;
 
 export const ExtraSmallContainer = styled(Container)`

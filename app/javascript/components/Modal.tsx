@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import { CloseStrokeIcon } from "brave-ui/components/icons";
 import {
@@ -26,16 +27,30 @@ interface IModalProps {
   handleClose: () => void;
   children?: any;
 }
+
 export default class Modal extends React.Component<IModalProps> {
   public static defaultProps = { size: ModalSize.Auto };
+  public el: Element;
+  public modalRoot = document.getElementById("modal-root");
+
+  constructor(props) {
+    super(props);
+    this.el = document.createElement("div");
+  }
+
+  public componentDidMount() {
+    this.modalRoot.appendChild(this.el);
+  }
+
+  public componentWillUnmount() {
+    this.modalRoot.removeChild(this.el);
+  }
 
   public componentDidUpdate() {
-    // Hide the scrollbar
+    // Allow users to press escape to close modal
     if (this.props.show) {
-      document.body.style.overflow = "hidden";
       document.addEventListener("keydown", this.escFunction, false);
     } else {
-      document.body.style.overflow = "";
       document.removeEventListener("keydown", this.escFunction, false);
     }
   }
@@ -82,10 +97,15 @@ export default class Modal extends React.Component<IModalProps> {
     }
 
     return (
-      <ModalDiv open={this.props.show}>
-        <Background onClick={this.props.handleClose} />
-        {container}
-      </ModalDiv>
+      // Creating a portal to handle the z-index issue.
+      // https://reactjs.org/docs/portals.html
+      ReactDOM.createPortal(
+        <ModalDiv open={this.props.show}>
+          <Background onClick={this.props.handleClose} />
+          {container}
+        </ModalDiv>,
+        this.el
+      )
     );
   }
 }

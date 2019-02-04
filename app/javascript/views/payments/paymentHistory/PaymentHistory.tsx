@@ -14,22 +14,16 @@ export default class PaymentHistory extends React.Component {
         <Header>{locale.payments.history.title}</Header>
 
         <Table>
-          <thead>
-            <tr>
-              <TableHeader>{locale.payments.history.earningPeriod}</TableHeader>
-              <TableHeader>{locale.payments.history.paymentDate}</TableHeader>
-              <TableHeader>
-                {locale.payments.history.depositAccount}
-              </TableHeader>
-              <TableHeader>
-                {locale.payments.history.confirmedEarning}
-              </TableHeader>
-              <TableHeader>
-                {locale.payments.history.totalDeposited}
-              </TableHeader>
-              <TableHeader>{locale.payments.history.statement}</TableHeader>
-            </tr>
-          </thead>
+          <tr>
+            <TableHeader>{locale.payments.history.earningPeriod}</TableHeader>
+            <TableHeader>{locale.payments.history.paymentDate}</TableHeader>
+            <TableHeader>{locale.payments.history.depositAccount}</TableHeader>
+            <TableHeader>
+              {locale.payments.history.confirmedEarning}
+            </TableHeader>
+            <TableHeader>{locale.payments.history.totalDeposited}</TableHeader>
+            <TableHeader>{locale.payments.history.statement}</TableHeader>
+          </tr>
           <tbody>
             <tr>
               <Cell>Nov 1- Nov 30, 2018</Cell>
