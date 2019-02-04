@@ -11,7 +11,8 @@ import { renderBannerEditor } from '../packs/banner_editor'
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
-const SELECT_CURRENCY = '-- Select currency --';
+const SELECT_CURRENCY = '---';
+const BASIC_ATTENTION_TOKEN = 'BAT'
 const UNAVAILABLE = 'unavailable';
 
 function showPendingContactEmail(pendingEmail) {
@@ -110,7 +111,12 @@ function populateCurrencySelect(select, possibleCurrencies, selectedCurrency) {
     let option = document.createElement('option');
     option.value = currency;
     option.innerHTML = currency;
-    option.selected = (currency === selectedCurrency);
+    if ((!selectedCurrency || selectedCurrency.length === 0) && currency === BASIC_ATTENTION_TOKEN) {
+      option.selected = true;
+    }
+    else {
+      option.selected = (currency === selectedCurrency);
+    }
     select.appendChild(option);
   });
 }
@@ -218,17 +224,31 @@ function checkUpholdStatus() {
         if (checkUpholdStatusInterval != null &&
             (timedOut ||
              body.uphold_status === 'verified' ||
-             body.uphold_status === 'incomplete')) {
+             body.uphold_status === 'restricted')) {
+
+          hideReconnectButton();
 
           clearInterval(checkUpholdStatusInterval);
           checkUpholdStatusInterval = null;
 
           if (body.uphold_status === 'verified') {
             refreshBalance();
+          } else if (body.uphold_status === 'restricted') {
+            showUpholdSupportButton();
           }
         }
       }
     });
+}
+
+function hideReconnectButton() {
+  document.getElementById('reconnect_to_uphold').style.display = 'none';
+}
+
+function showUpholdSupportButton() {
+  let upholdSupportButton = document.getElementById('go_to_uphold');
+  upholdSupportButton.text = "Go to Uphold";
+  upholdSupportButton.style.display = 'inline !important';
 }
 
 function disconnectUphold() {
