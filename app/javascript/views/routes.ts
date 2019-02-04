@@ -1,12 +1,12 @@
 /* tslint:disable:object-literal-sort-keys */
 export default {
   payments: {
-    path: "/publishers/payments",
+    path: "/partners/payments",
     invoices: {
-      path: "/publishers/payments/invoices"
+      path: "/partners/payments/invoices"
     },
     reports: {
-      path: "/publishers/payments/reports"
+      path: "/partners/payments/reports"
     }
   }
 };
