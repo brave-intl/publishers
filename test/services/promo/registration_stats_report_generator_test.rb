@@ -128,7 +128,11 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                           event_type_column_header(PromoRegistration::FIRST_RUNS),
                           event_type_column_header(PromoRegistration::FINALIZED)],
       ["ABC123", "2018-12-01", "6", "6", "6"],
-      ["DEF456", "2018-12-01", "6", "6", "6"]
+      ["DEF456", "2018-12-01", "6", "6", "6"],
+      [],
+      ratios_column_header(false),
+      ["ABC123", "6", "6", "6", "6", "1.0", "1.0"],
+      ["DEF456", "6", "6", "6", "6", "1.0", "1.0"]
     ]
 
     assert_equal CSV.parse(csv), expected
@@ -154,6 +158,10 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
                           event_type_column_header(PromoRegistration::FINALIZED)],
       ["ABC123", "2018-11-28", "5", "5", "5"],
       ["DEF456", "2018-11-28", "5", "5", "5"],
+      [],
+      ratios_column_header(false),
+      ["ABC123", "5", "5", "5", "5", "1.0", "1.0"],
+      ["DEF456", "5", "5", "5", "5", "1.0", "1.0"]
     ]
 
     assert_equal expected, CSV.parse(csv)
@@ -181,7 +189,11 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
       ["ABC123", "2018-11-01", "5", "5", "5"],
       ["ABC123", "2018-12-01", "1", "1", "1"],
       ["DEF456", "2018-11-01", "5", "5", "5"],
-      ["DEF456", "2018-12-01", "1", "1", "1"]
+      ["DEF456", "2018-12-01", "1", "1", "1"],
+      [],
+      ratios_column_header(false),
+      ["ABC123", "6", "6", "6", "6", "1.0", "1.0"],
+      ["DEF456", "6", "6", "6", "6", "1.0", "1.0"]
     ]
 
     assert_equal expected, CSV.parse(csv)
@@ -211,6 +223,10 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
       ["ABC123", "2018-11-05", "1", "1", "1"],
       ["DEF456", "2018-10-29", "1", "1", "1"],
       ["DEF456", "2018-11-05", "1", "1", "1"],
+      [],
+      ratios_column_header(false),
+      ["ABC123", "2", "2", "2", "2", "1.0", "1.0"],
+      ["DEF456", "2", "2", "2", "2", "1.0", "1.0"]
     ]
 
     assert_equal expected, CSV.parse(csv)
@@ -239,6 +255,10 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
       ["ABC123", "2018-11-02", "0", "0", "0"],
       ["DEF456", "2018-11-01", "1", "1", "1"],
       ["DEF456", "2018-11-02", "0", "0", "0"],
+      [],
+      ratios_column_header(false),
+      ["ABC123", "1", "1", "1", "1", "1.0", "1.0"],
+      ["DEF456", "1", "1", "1", "1", "1.0", "1.0"]
     ]
 
     assert_equal expected, CSV.parse(csv)
@@ -269,6 +289,12 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
       ["ABC123", "United States", "2018-12-01", "6", "6", "6"],
       ["DEF456", "Mexico", "2018-12-01", "6", "6", "6"],
       ["DEF456", "United States", "2018-12-01", "6", "6", "6"],
+      [],
+      ratios_column_header(true),
+      ["ABC123", "Mexico", "6", "6", "6", "6", "1.0", "1.0"],
+      ["ABC123", "United States", "6", "6", "6", "6", "1.0", "1.0"],
+      ["DEF456", "Mexico", "6", "6", "6", "6", "1.0", "1.0"],
+      ["DEF456", "United States", "6", "6", "6", "6", "1.0", "1.0"]
     ]
 
     assert_equal expected, CSV.parse(csv)
@@ -306,6 +332,12 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
       ["DEF456", "United States", "2018-10-29", "1", "1", "1",],
       ["DEF456", "United States", "2018-11-05", "1", "1", "1",],
       ["DEF456", "United States", "2018-11-12", "1", "1", "1",],
+      [],
+      ratios_column_header(true),
+      ["ABC123", "Mexico", "3", "3", "3", "3", "1.0", "1.0"],
+      ["ABC123", "United States", "3", "3", "3", "3", "1.0", "1.0"],
+      ["DEF456", "Mexico", "3", "3", "3", "3", "1.0", "1.0"],
+      ["DEF456", "United States", "3", "3", "3", "3", "1.0", "1.0"]
     ]
 
     assert_equal expected, CSV.parse(csv)

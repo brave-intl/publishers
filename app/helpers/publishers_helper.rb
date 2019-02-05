@@ -138,6 +138,8 @@ module PublishersHelper
     case publisher.uphold_status
     when :unconnected
       I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
+    when Publisher::UpholdAccountState::RESTRICTED
+      publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
     else
       I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
     end
@@ -157,14 +159,16 @@ module PublishersHelper
 
   def uphold_status_class(publisher)
     case publisher.uphold_status
-    when :verified
+    when :verified, Publisher::UpholdAccountState::BLOCKED
+      # (Albert Wang): We notify Brave when we detect a login of someone with a blocked
+      # Uphold account
       'uphold-complete'
     when :code_acquired, :access_parameters_acquired
       'uphold-processing'
     when :reauthorization_needed
       'uphold-reauthorization-needed'
-    when :incomplete
-      'uphold-incomplete'
+    when Publisher::UpholdAccountState::RESTRICTED
+      'uphold-' + Publisher::UpholdAccountState::RESTRICTED.to_s
     else
       'uphold-unconnected'
     end
@@ -180,14 +184,12 @@ module PublishersHelper
 
   def uphold_status_summary(publisher)
     case publisher.uphold_status
-    when :verified
+    when :verified, Publisher::UpholdAccountState::RESTRICTED, Publisher::UpholdAccountState::BLOCKED
       I18n.t("helpers.publisher.uphold_status_summary.connected")
     when :code_acquired, :access_parameters_acquired
       I18n.t("helpers.publisher.uphold_status_summary.connecting")
     when :reauthorization_needed
       I18n.t("helpers.publisher.uphold_status_summary.connection_problems")
-    when :incomplete
-      I18n.t("helpers.publisher.uphold_status_summary.incomplete")
     else
       I18n.t("helpers.publisher.uphold_status_summary.unconnected")
     end
@@ -201,10 +203,10 @@ module PublishersHelper
       I18n.t("helpers.publisher.uphold_status_description.connecting")
     when :reauthorization_needed
       I18n.t("helpers.publisher.uphold_status_description.reauthorization_needed")
-    when :incomplete
-      I18n.t("helpers.publisher.uphold_status_description.incomplete")
     when :unconnected
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
+    when Publisher::UpholdAccountState::RESTRICTED
+      publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_status_description.restricted_member") : I18n.t("helpers.publisher.uphold_status_description.non_member")
     end
   end
 

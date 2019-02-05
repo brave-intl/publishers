@@ -1,35 +1,41 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-export const Wrapper = styled.div
-`
+export const Wrapper = styled.div`
   border-radius: 6px;
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
-  padding: 28px;
-`
+  padding: 30px;
+`;
 
-export const Grid = styled.div``
+export const Grid = styled.div``;
 
-export const Row = styled.div
-`
+interface IRowProps {
+  title?: boolean;
+  stats?: boolean;
+  total?: boolean;
+  check?: boolean;
+  carat?: boolean;
+}
+export const Row = styled.div`
   display: flex;
 
 
-  ${props => props.title &&
+  ${props =>
+    props.title &&
     `
       margin-bottom: 30px;
-    `
-  }
+    `}
 
-  ${props => props.stats &&
+  ${(props: IRowProps) =>
+    props.stats &&
     `
       margin-top: 20px;
       padding-bottom: 15px;
       justify-content: space-between;
-    `
-  }
+    `}
 
-  ${props => props.total &&
+  ${(props: IRowProps) =>
+    props.total &&
     `
       justify-content: space-between;
       grid-column-gap: 10px;
@@ -40,23 +46,26 @@ export const Row = styled.div
       margin-bottom: -28px;
       border-bottom-right-radius: 6px;
       border-bottom-left-radius: 6px;
-    `
-  }
-`
+    `}
+`;
 
-export const IconWrapper = styled.div
-`
-    ${props => props.check &&
-      `
+interface IIconWrapperProps {
+  check?: boolean;
+  carat?: boolean;
+}
+export const IconWrapper = styled.div`
+  ${(props: IIconWrapperProps) =>
+    props.check &&
+    `
         margin-left: 10px;
         margin-top: 6px;
         margin-bottom: 10px;
         width: 60px;
         height: 60px;
-      `
-    }
-    ${props => props.carat &&
-      `
+      `}
+  ${(props: IIconWrapperProps) =>
+    props.carat &&
+    `
         width: 40px;
         height: 40px;
         padding-top: 4.5px;
@@ -65,96 +74,108 @@ export const IconWrapper = styled.div
     }
 `
 
-export const TextWrapper = styled.div
-`
-    ${props => props.created &&
+interface ITextWrapper {
+  created?: boolean;
+  carat?: boolean;
+  stats?: boolean;
+  total?: boolean;
+}
+export const TextWrapper = styled.div`
+    ${(props: ITextWrapper) =>
+      props.created &&
       `
         display: flex;
-      `
-    }
-    ${props => props.carat &&
+      `}
+    ${props =>
+      props.carat &&
       `
         width: 40px;
         height: 40px;
         display: inline-block;
-      `
-    }
-    ${props => props.stats &&
-      `
-        padding: 10px;
-      `
-    }
-    ${props => props.total &&
+      `}
+    ${props =>
+      props.stats &&
       `
         padding: 10px;
+      `}
+    ${props =>
+      props.total &&
       `
-    }
-`
+        padding: 10px;
+      `}
+`;
 
-export const ContentWrapper = styled.div
-`
+export const ContentWrapper = styled.div`
   padding: 10px;
+`;
 
-`
+export const Image = styled.div;
 
-export const Image = styled.div
-
-export const Text = styled.div
-`
+interface ITextProps {
+  title?: boolean;
+  created?: boolean;
+  date?: boolean;
+  header?: boolean;
+  stat?: boolean;
+  use?: boolean;
+  total?: boolean;
+  codes?: boolean;
+}
+export const Text = styled.div`
   font-family: Poppins, sans-serif;
 
-    ${props => props.title &&
+    ${(props: ITextProps) =>
+      props.title &&
       `
           font-weight: bold;
-          font-size: 18px;
-      `
-    }
-    ${props => props.created &&
+          font-size: 22px;
+      `}
+    ${(props: ITextProps) =>
+      props.created &&
       `
         font-weight: bold;
         font-size: 14px;
         padding-right: 10px;
-      `
-    }
-    ${props => props.date &&
+      `}
+    ${(props: ITextProps) =>
+      props.date &&
       `
         font-size: 14px;
+      `}
+    ${(props: ITextProps) =>
+      props.header &&
       `
-    }
-    ${props => props.header &&
-      `
+        text-transform: uppercase;
         font-weight: bold;
         font-size: 15px;
         opacity: .5;
-      `
-    }
-    ${props => props.stat &&
+      `}
+    ${(props: ITextProps) =>
+      props.stat &&
       `
         font-weight: bold;
         font-size: 20px;
-      `
-    }
-    ${props => props.use &&
+      `}
+    ${(props: ITextProps) =>
+      props.use &&
       `
         font-weight: bold;
         font-size: 20px;
         color: #4C54D2;
-      `
-    }
-    ${props => props.total &&
+      `}
+    ${(props: ITextProps) =>
+      props.total &&
       `
         font-weight: bold;
         font-size: 16px;
         opacity: .7;
         display: inline-block;
-      `
-    }
-    ${props => props.codes &&
+      `}
+    ${(props: ITextProps) =>
+      props.codes &&
       `
         font-weight: bold;
         font-size: 18px;
         display: inline-block;
-      `
-    }
-
-`
+      `}
+`;

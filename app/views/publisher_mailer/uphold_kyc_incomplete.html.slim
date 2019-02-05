@@ -1,0 +1,7 @@
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name
+
+p= t "publisher_mailer.uphold_kyc_incomplete.body_html"
+
+div.btn-container= link_to(t(".button"), "https://uphold.com/dashboard/membership", class: "btn-primary btn-login")
+
+.notice= t "shared.support_note_html"

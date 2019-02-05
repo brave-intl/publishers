@@ -10,13 +10,14 @@ class PayoutReportPublisherIncluder < BaseService
     publisher_has_unsettled_balance = false
 
     wallet = @publisher.wallet
-    return if wallet.nil?
+    # If the wallet has been blocked from uphold's terms of service. In this state users are unable to login or access uphold.
+    return if wallet.nil? || wallet.blocked?
 
     probi = wallet.channel_balances[@publisher.owner_identifier].probi_before_fees # probi = balance
     if probi.positive?
       publisher_has_unsettled_balance = true
 
-      if @publisher.uphold_verified? && wallet.address.present?
+      if create_payment?
         PotentialPayment.create(payout_report_id: @payout_report.id,
                                 name: @publisher.name,
                                 amount: "#{probi}",
@@ -30,7 +31,9 @@ class PayoutReportPublisherIncluder < BaseService
     @publisher.channels.verified.each do |channel|
       probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
       publisher_has_unsettled_balance = probi.positive? ? true : publisher_has_unsettled_balance
-      next unless probi.positive? && @publisher.uphold_verified? && wallet.address.present?
+
+      next unless probi.positive? && create_payment?
+
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
       PotentialPayment.create(payout_report_id: @payout_report.id,
                               name: "#{channel.publication_title}",
@@ -45,11 +48,31 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Notify publishers that have money waiting, but will not will not receive funds
     if publisher_has_unsettled_balance && @should_send_notifications
-      if !@publisher.uphold_verified? || wallet.address.blank?
+      if !@publisher.uphold_verified? || wallet.uphold_account_status.nil?
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are disconnected from Uphold.")
         PublisherMailer.wallet_not_connected(@publisher).deliver_later
       end
+
+      # eyeshade omits the wallet address if the status is not ok
+      # means that the transaction limits have been exceeded
+      if wallet.is_a_member? && wallet.address.blank?
+        PublisherMailer.uphold_member_restricted(@publisher).deliver_later
+      end
+
+      # The wallet's uphold account status has to exist because otherwise their wallet is just not connected
+      if @publisher.uphold_verified? && wallet.uphold_account_status.present? && wallet.not_a_member?
+        Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
+        PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later
+      end
     end
+  end
+
+  def create_payment?
+    @publisher.uphold_verified? && @publisher.wallet.authorized? && @publisher.wallet.is_a_member? && !should_only_notify?
+  end
+
+  def should_only_notify?
+    @payout_report.nil?
   end
 end
 

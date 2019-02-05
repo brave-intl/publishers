@@ -441,72 +441,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify pending email is removed after confirmation
     assert_nil(publisher.pending_email)
   end
-
-  test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    # skip 2FA prompt
-    publisher.two_factor_prompted_at = 1.day.ago
-    publisher.save!
-
-    # verify that the state token has not yet been set
-    assert_nil(publisher.uphold_state_token)
-
-    # move right to `dashboard`
-    url = home_publishers_url
-    get(url)
-
-    # verify that a state token has been set
-    publisher.reload
-    assert_not_nil(publisher.uphold_state_token)
-
-    # assert that the state token is included in the uphold authorization url
-    endpoint = Rails.application.secrets[:uphold_authorization_endpoint]
-                   .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
-                   .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-                   .gsub('<STATE>', publisher.uphold_state_token)
-
-    assert_select "a[href='#{endpoint}']", text: "Connect", count: 1
-    assert_select "a[href='#{endpoint}']", text: "Connect to Uphold", count: 1
-  end
-
-  test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
-    begin
-      publisher = publishers(:completed)
-      sign_in publisher
-
-      uphold_state_token = SecureRandom.hex(64)
-      publisher.uphold_state_token = uphold_state_token
-
-      publisher.save!
-
-      uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
-
-      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-          .with(body: "code=#{uphold_code}&grant_type=authorization_code")
-          .to_timeout
-
-      url = uphold_verified_publishers_path
-      get(url, params: { code: uphold_code, state: uphold_state_token })
-      assert(200, response.status)
-      publisher.reload
-
-      # verify that the uphold_state_token has been cleared
-      assert_nil(publisher.uphold_state_token)
-
-      # verify that the uphold_code has been set
-      assert_not_nil(publisher.uphold_code)
-      assert_equal('ebb18043eb2e106fccb9d13d82bec119d8cd016c', publisher.uphold_code)
-
-      # verify that the uphold_access_parameters has not been set
-      assert_nil(publisher.uphold_access_parameters)
-
-      # verify that the finished_header was not displayed
-      refute_match(I18n.t('publishers.finished_header'), response.body)
-    end
-  end
-
   test "after redirection back from uphold and uphold_api is online, a publisher's code is nil and uphold_access_parameters is set" do
     begin
       publisher = publishers(:completed)
@@ -637,7 +571,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_match "content empty", response.body # This div displays the "No statements" message.
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end    
+    end
   end
 
   test "flashes 'no transactions' message when attempting to download a statement with no contents" do
@@ -655,7 +589,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_equal flash[:alert], I18n.t("publishers.statements.no_transactions")
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end    
+    end
   end
 
   test "a publisher's balance can be polled via ajax" do
@@ -680,7 +614,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_equal '{"uphold_status":"unconnected",' +
                   '"uphold_status_summary":"Not connected",' +
-                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Payments.",' +
+                  '"uphold_status_description":"You need to connect to your Uphold account to receive contributions from Brave Rewards.",' +
                   '"uphold_status_class":"uphold-unconnected"}',
                  response.body
   end
@@ -736,19 +670,18 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     perform_enqueued_jobs do
       post(publishers_path, params: SIGNUP_PARAMS)
-      publisher = Publisher.order(created_at: :asc).last
+      publisher = Publisher.find_by(pending_email: SIGNUP_PARAMS[:email])
+      assert_equal "created", publisher.last_status_update.status
 
-      assert publisher.last_status_update.status == "created"
-
-      email = ActionMailer::Base.deliveries.find do |message|
+      ActionMailer::Base.deliveries.find do |message|
         message.to.first == SIGNUP_PARAMS[:email]
       end
       url = publisher_url(publisher, token: publisher.authentication_token)
     end
-
-    # Verify email address
     get url
-    assert publisher.last_status_update.status == "onboarding"
+    publisher.reload
+    # Verify email address
+    assert_equal "onboarding", publisher.last_status_update.status
 
     # Agree to TOS
     perform_enqueued_jobs do
@@ -801,7 +734,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -845,7 +778,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, cards:write, user:read"},
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -888,7 +821,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT", "BTC"],
                                "scope" => "cards:read, cards:write, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -931,7 +864,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, cards:write, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -972,7 +905,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -997,7 +930,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
                                "possibleCurrencies" => ["BAT"],
                                "scope" => "cards:read, cards:write, user:read" },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -1031,10 +964,75 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path(publisher)
 
     # ensure the last settlement balance does not have fees applied
-    assert_match "\"last_deposit_bat_amount\">405.52", response.body 
+    assert_match "\"last_deposit_bat_amount\">405.52", response.body
 
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
   end
+
+  describe 'publisher integration with uphold' do
+    let(:publisher) { publishers(:completed) }
+    before(:example) do
+      sign_in publisher
+
+      # skip 2FA prompt
+      publisher.two_factor_prompted_at = 1.day.ago
+      publisher.save!
+    end
+
+    test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
+      # verify that the state token has not yet been set
+      assert_nil(publisher.uphold_state_token)
+
+      # move right to `dashboard`
+      url = home_publishers_url
+      get(url)
+
+      # verify that a state token has been set
+      publisher.reload
+      assert_not_nil(publisher.uphold_state_token)
+
+      # assert that the state token is included in the uphold authorization url
+      endpoint = Rails.application.secrets[:uphold_authorization_endpoint]
+                     .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
+                     .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
+                     .gsub('<STATE>', publisher.uphold_state_token)
+
+      assert_select "a[href='#{endpoint}']", text: "Connect", count: 1
+      assert_select "a[href='#{endpoint}']", text: "Connect to Uphold", count: 1
+    end
+
+    test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
+      uphold_state_token = SecureRandom.hex(64)
+      publisher.uphold_state_token = uphold_state_token
+
+      publisher.save!
+
+      uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
+
+      stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
+          .with(body: "code=#{uphold_code}&grant_type=authorization_code")
+          .to_timeout
+
+      url = uphold_verified_publishers_path
+      get(url, params: { code: uphold_code, state: uphold_state_token })
+      assert(200, response.status)
+      publisher.reload
+
+      # verify that the uphold_state_token has been cleared
+      assert_nil(publisher.uphold_state_token)
+
+      # verify that the uphold_code has been set
+      assert_not_nil(publisher.uphold_code)
+      assert_equal('ebb18043eb2e106fccb9d13d82bec119d8cd016c', publisher.uphold_code)
+
+      # verify that the uphold_access_parameters has not been set
+      assert_nil(publisher.uphold_access_parameters)
+
+      # verify that the finished_header was not displayed
+      refute_match(I18n.t('publishers.finished_header'), response.body)
+    end
+  end
+
 end

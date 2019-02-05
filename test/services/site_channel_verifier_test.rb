@@ -8,7 +8,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   VERIFICATION_TOKEN = "6d660f14752f460b59dc62907bfe3ae1cb4727ae0645de74493d99bcf63ddb94"
 
   def stub_verification_public_file(channel, body: nil, status: 200)
-    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
+    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
     headers = {
       'Accept' => '*/*',
       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',

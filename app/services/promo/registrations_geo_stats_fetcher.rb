@@ -1,7 +1,7 @@
 # Fetches and does not save geo stats for a list of referral_codes
 class Promo::RegistrationsGeoStatsFetcher < BaseApiClient
   include PromosHelper
-  BATCH_SIZE = 100
+  BATCH_SIZE = 50
 
   def initialize(promo_registrations:)
     @referral_codes = promo_registrations.map { |promo_registration| promo_registration.referral_code }
@@ -17,7 +17,7 @@ class Promo::RegistrationsGeoStatsFetcher < BaseApiClient
         request.headers["Authorization"] = api_authorization_header
         request.headers["Content-Type"] = "application/json"
         request.url("/api/2/promo/geoStatsByReferralCode#{query_string}")
-      end      
+      end
       geo_stats = geo_stats + JSON.parse(response.body)
     end
     geo_stats

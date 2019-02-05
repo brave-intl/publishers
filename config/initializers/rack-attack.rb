@@ -94,9 +94,15 @@ class Rack::Attack
     end
   end
 
-  # Throttle requests to public api, /api/public
-  throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
-    req.ip if req.path.start_with?("/api/v1/public")
+  if Rails.env.production?
+    # Throttle requests to public api, /api/public
+    throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
+      req.ip if req.path.start_with?("/api/v1/public")
+    end
+  else
+    throttle("public-api-request/ip", limit: 60, period: 1.hour) do |req|
+      req.ip if req.path.start_with?("/api/v1/public")
+    end
   end
 
   ### Custom Throttle Response ###

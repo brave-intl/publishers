@@ -1,18 +1,12 @@
-import * as React from 'react'
+import * as React from "react";
 
-import {
-  Wrapper,
-  ContentWrapper,
-  TextWrapper,
-  Text,
-  Box
-} from './ReferralsHeaderStyle'
 
-import locale from '../../../locale/en'
+import { Box, ContentWrapper, Text, TextWrapper, Wrapper } from "./ReferralsHeaderStyle";
+
+import locale from "../../../locale/en";
 
 export default class ReferralsHeader extends React.Component {
-
-  render () {
+  public render() {
     return (
       <Wrapper>
         <ContentWrapper>
@@ -39,8 +33,12 @@ export default class ReferralsHeader extends React.Component {
           <TextWrapper>
             <Text header>Estimated Earnings</Text>
             <TextWrapper earnings>
-              <Text stat purple>999</Text>
-              <Text bat purple>{locale.bat}</Text>
+              <Text stat purple>
+                999
+              </Text>
+              <Text bat purple>
+                {locale.bat}
+              </Text>
             </TextWrapper>
           </TextWrapper>
         </ContentWrapper>
@@ -50,6 +48,6 @@ export default class ReferralsHeader extends React.Component {
           </Box>
         </ContentWrapper>
       </Wrapper>
-    )
+    );
   }
 }

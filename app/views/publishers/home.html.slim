@@ -15,11 +15,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     class: 'title' \
   )
   - if current_publisher.in_new_ui_whitelist?
-     = link_to( \
-        t("shared.referrals"), \
-        referrals_publishers_path, \
-        class: 'title' \
-        )
+    = link_to(t("shared.referrals"), referrals_publishers_path, class: 'title')
+    = link_to(t("shared.payments"), payments_path, class: 'title' )
+
   = render partial: "choose_channel_button"
   = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
 
@@ -108,6 +106,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             .dashboard-panel--content#uphold_connect
               .status-description
                 = uphold_status_description(current_publisher).html_safe
+              = link_to(uphold_authorization_description(current_publisher),
+                        uphold_dashboard_url,
+                        id: "go_to_uphold", class: "btn btn-primary", :"data-piwik-action" => "GoToUpholdHomeClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard", style: "display:none")
               = link_to(uphold_authorization_description(current_publisher),
                         uphold_authorization_endpoint(current_publisher),
                         id: "reconnect_to_uphold", class: "btn btn-primary", :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")

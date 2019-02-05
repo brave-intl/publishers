@@ -23,7 +23,7 @@ class PromoMailerTest < ActionMailer::TestCase
 
     promo_token = publisher.promo_token_2018q1
     expected_promo_auth_url = promo_registrations_url(promo_token: promo_token, host: "www.example.com")
-    
+
     assert_email_body_matches(matcher: expected_promo_auth_url, email: email)
   end
 
@@ -51,7 +51,7 @@ class PromoMailerTest < ActionMailer::TestCase
     assert_equal [publisher.email], email.to
 
     referral_link = https_referral_url(referral_code)
-    
+
     assert_email_body_matches(matcher: referral_link, email: email)
   end
 
@@ -78,8 +78,8 @@ class PromoMailerTest < ActionMailer::TestCase
                                                kind: "channel",
                                                publisher_id: publisher.id,
                                                referral_code: referral_code)
-    promo_registration.save!
 
+    promo_registration.save!
     email = PromoMailer.new_channel_registered_2018q1(publisher, channel)
 
     assert_emails 1 do
@@ -87,6 +87,6 @@ class PromoMailerTest < ActionMailer::TestCase
     end
 
     referral_link = https_referral_url(referral_code)
-    
+
     assert_email_body_matches(matcher: referral_link, email: email)  end
 end

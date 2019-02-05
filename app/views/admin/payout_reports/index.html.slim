@@ -39,14 +39,11 @@ hr
 
 h3 Generate Payout Report
 = form_tag admin_payout_reports_path do
-  .form_group
-    = check_box_tag :should_send_notifications
-    = label_tag "Send notifications (email publishers who aren't verified with or are not connected to Uphold)"
-  .form_group
     = check_box_tag :final
     = label_tag "Final (this report will be used for settlement)"
-  .actions
     = submit_tag("Generate", class: "btn btn-primary")
 
-
+= form_tag notify_admin_payout_reports_path do
+    = label_tag "Send notifications to publishers"
+    = submit_tag("Notify publishers", class: "btn btn-primary")
 = will_paginate @payout_reports
