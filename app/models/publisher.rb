@@ -346,6 +346,8 @@ class Publisher < ApplicationRecord
 
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
+    # for testing purposes :)
+    return true if self.email == "partner@brave.com" 
     self.email.in?((Rails.application.secrets[:new_ui_email_whitelist] || "").split(","))
   end
 
