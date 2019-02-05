@@ -48,6 +48,7 @@ export default {
     invoices: {
       createdAt: "Created At",
       fileName: "File name",
+      noResults: "No invoices have been uploaded.",
       title: "Invoices",
       upload: "Upload Invoice",
       uploadedBy: "Uploaded By"
@@ -64,6 +65,7 @@ export default {
       createdAt: "Created At",
       denied: "Denied",
       fileName: "File name",
+      noResults: "No reports have been uploaded.",
       paid: "Paid",
       status: "Status",
       title: "Reports",

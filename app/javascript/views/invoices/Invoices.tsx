@@ -73,6 +73,18 @@ export default class Invoices extends React.Component<
   }
 
   public render() {
+    let noResults;
+
+    if (this.state.invoices.length === 0) {
+      noResults = (
+        <tr>
+          <td colSpan={5} align="center">
+            {locale.payments.invoices.noResults}
+          </td>
+        </tr>
+      );
+    }
+
     return (
       <Wrapper>
         <PaymentsHeader />
@@ -102,6 +114,7 @@ export default class Invoices extends React.Component<
                 </tr>
               </thead>
               <tbody>
+                {noResults}
                 {this.state.invoices.map(report => (
                   <tr key={report.id}>
                     <Cell>

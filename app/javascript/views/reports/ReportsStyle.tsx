@@ -4,6 +4,7 @@ import { LoaderIcon } from "brave-ui/components/icons";
 
 export const FlexWrapper = styled.div`
   display: flex;
+  margin-bottom: 15px;
 `;
 
 export const Text = styled.span`

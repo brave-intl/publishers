@@ -100,6 +100,18 @@ export default class Reports extends React.Component<
     return status;
   };
   public render() {
+    let noResults;
+
+    if (this.state.reports.length === 0) {
+      noResults = (
+        <tr>
+          <td colSpan={5} align="center">
+            {locale.payments.reports.noResults}
+          </td>
+        </tr>
+      );
+    }
+
     return (
       <Wrapper>
         <PaymentsHeader />
@@ -126,7 +138,6 @@ export default class Reports extends React.Component<
               <LoadingIcon isLoading={this.state.isLoading} />
             </FlexWrapper>
 
-            <Button onClick={this.reloadTable}>reload</Button>
             <Table>
               <thead>
                 <tr>
@@ -140,6 +151,7 @@ export default class Reports extends React.Component<
                 </tr>
               </thead>
               <tbody>
+                {noResults}
                 {this.state.reports.map(report => (
                   <tr key={report.id}>
                     <Cell>
