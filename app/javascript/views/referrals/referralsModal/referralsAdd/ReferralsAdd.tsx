@@ -3,7 +3,6 @@ import * as React from 'react'
 import {
   Wrapper,
   Container,
-  TextWrapper,
   ContentWrapper,
   TextArea,
   Button,
@@ -72,14 +71,14 @@ export default class ReferralsAdd extends React.Component<IReferralsModalProps, 
 }
 
 async function createReferralCode (numberOfCodes, campaignID, refresh, closeModal) {
-  let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/referrals/create_codes'
+  let url = '/partners/referrals/create_codes'
+
   let body = new FormData()
   body.append('number', numberOfCodes)
   body.append('promo_campaign_id', campaignID)
   let options = {
     method: 'POST',
-    credentials: 'same-origin',
-    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector('[name=csrf-token]').content },
+    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").getAttribute("content") },
     body: body
   }
   let response = await fetch(url, options)

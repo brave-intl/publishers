@@ -6,7 +6,7 @@ import {
   TextWrapper,
   Text,
   Box
-} from './style'
+} from './ReferralsHeaderStyle'
 
 import locale from '../../../locale/en'
 
@@ -18,23 +18,23 @@ export default class ReferralsHeader extends React.Component {
         <ContentWrapper>
           <TextWrapper>
             <Text header>{locale.campaigns}</Text>
-            <Text stat>9</Text>
+            <Text stat>5</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.referralCodes}</Text>
-            <Text stat blue>18</Text>
+            <Text stat blue>12</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.downloads}</Text>
-            <Text stat>18</Text>
+            <Text stat>12</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.installs}</Text>
-            <Text stat>18</Text>
+            <Text stat>12</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.thirtyDay}</Text>
-            <Text stat purple>18</Text>
+            <Text stat purple>12</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>Estimated Earnings</Text>

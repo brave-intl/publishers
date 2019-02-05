@@ -43,9 +43,9 @@ Rails.application.routes.draw do
     resources :referrals, controller: 'publishers/referrals' do
       collection do
         post :create_codes
-        get :move_codes
+        post :move_codes
         get :delete_codes
-        get :create_campaign
+        post :create_campaign
       end
     end
     # TODO: refactor referral_codes to promo_registrations
@@ -59,6 +59,18 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  namespace :partners do
+    resources :referrals do
+      collection do
+        post :create_codes
+        post :move_codes
+        get :delete_codes
+        post :create_campaign
+      end
+    end
+  end
+
 
   devise_for :publishers, only: :omniauth_callbacks, controllers: { omniauth_callbacks: "publishers/omniauth_callbacks" }
 

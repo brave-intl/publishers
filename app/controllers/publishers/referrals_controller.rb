@@ -32,11 +32,11 @@ class Publishers::ReferralsController < ApplicationController
   end
 
   def move_codes
-    Promo::OwnerRegistrar.new(
-      number: params[:number].to_i,
-      publisher_id: current_publisher.id,
-      promo_campaign_id: params[:promo_campaign_id]).perform
-    Promo::RegistrationsStatsFetcher.new(promo_registrations: current_publisher.promo_registrations).perform
+    data = JSON.parse(params[:codes])
+    data.each do |code|
+      promo_registration = current_publisher.promo_registrations.find(code)
+      promo_registration.update(promo_campaign_id: params[:campaign])
+    end
   end
 
   def delete_codes

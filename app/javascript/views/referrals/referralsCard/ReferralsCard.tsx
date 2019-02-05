@@ -8,7 +8,7 @@ import {
   TextWrapper,
   ContentWrapper,
   Text
-} from './style'
+} from './ReferralsCardStyle'
 
 import { CheckCircleIcon, CaratRightIcon } from 'brave-ui/components/icons'
 

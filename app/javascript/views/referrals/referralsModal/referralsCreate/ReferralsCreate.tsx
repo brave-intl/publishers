@@ -127,12 +127,12 @@ function CampaignInput (props) {
 }
 
 async function createCampaign (name) {
-  let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/promo_campaigns'
+  let url = '/partners/referrals/create_campaign'
   let body = new FormData()
   body.append('name', name)
   let options = {
     method: 'POST',
-    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").getAttribute("content") },
     body: body
   }
   let response = await fetch(url, options)
@@ -141,13 +141,13 @@ async function createCampaign (name) {
 }
 
 async function createReferralCode (numberOfCodes, campaignID) {
-  let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/referral_codes'
+  let url = '/partners/referrals/create_codes'
   let body = new FormData()
   body.append('number', numberOfCodes)
   body.append('promo_campaign_id', campaignID)
   let options = {
     method: 'POST',
-    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest'},
+    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").getAttribute("content") },
     body: body
   }
   let response = await fetch(url, options)

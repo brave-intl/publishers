@@ -6,10 +6,10 @@ import {
   Grid
 } from './ReferralsStyle'
 
-import ReferralsNav from './referralsNav/index'
+import ReferralsNav from './referralsNav/ReferralsNav'
 import ReferralsModal from './referralsModal/ReferralsModal'
-import ReferralsHeader from './referralsHeader/index'
-import ReferralsCard from './referralsCard/index'
+import ReferralsHeader from './referralsHeader/ReferralsHeader'
+import ReferralsCard from './referralsCard/ReferralsCard'
 import ReferralsInfo from './referralsInfo/ReferralsInfo'
 import { any } from 'prop-types';
 
@@ -27,6 +27,7 @@ interface IReferralsState {
   index: any;
   unassigned_codes: any;
   modalOpen: any;
+  publisherID: any;
 }
 
 export default class Referrals extends React.Component<IReferralsProps, IReferralsState> {
@@ -42,7 +43,8 @@ export default class Referrals extends React.Component<IReferralsProps, IReferra
       modalType: 'Create',
       campaignToAddCodesTo: null,
       codeToBeDeleted: null,
-      codesToBeMoved: null
+      codesToBeMoved: null,
+      publisherID: null,
     }
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -58,7 +60,7 @@ export default class Referrals extends React.Component<IReferralsProps, IReferra
 
   async fetchData () {
     // add publisher id
-    let url = '/publishers/c1a84225-471a-4f82-8691-ab62eac7ab46/referrals'
+    let url = '/partners/referrals'
     let options = {
       method: 'GET',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest'}

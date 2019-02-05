@@ -5,7 +5,7 @@ import {
   Container,
   Text,
   Button
-} from './style'
+} from './ReferralsNavStyle'
 
 import locale from "../../../locale/en";
 
@@ -19,7 +19,7 @@ export default class ReferralsNav extends React.Component<IReferralsNavProps> {
     return (
       <Wrapper>
         <Container>
-            <Text>{locale.referrals}</Text>
+            <Text header>{locale.referrals}</Text>
             <Button onClick={() => {this.props.openModal('Create')}}>{locale.createCode}</Button>
         </Container>
       </Wrapper>

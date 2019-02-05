@@ -49,7 +49,7 @@ export default class ReferralsDelete extends React.Component<IReferralsModalProp
 }
 
 async function deleteReferralCode (code, refresh, closeModal) {
-  let url = '/publishers/' + 'c1a84225-471a-4f82-8691-ab62eac7ab46' + '/referrals/delete_codes?id=' + code
+  let url = '/partners/referrals/delete_codes?id=' + code
   let options = {
     method: 'GET',
     headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
