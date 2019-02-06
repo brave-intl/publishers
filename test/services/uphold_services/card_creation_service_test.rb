@@ -31,7 +31,7 @@ class CardCreationServiceTest < ActiveJob::TestCase
                          'Content-Type'=>'application/json', 'User-Agent'=>'Faraday v0.9.2'},
                body: {
                 "currency": "BAT",
-                "label": "Brave Payments"
+                "label": "Brave Rewards"
                }.to_json
           ).
           to_return(status: 200, headers: {})

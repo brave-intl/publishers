@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint-react", "tslint-config-standard"],
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
     "exclude": [
       "package/"
@@ -7,6 +7,7 @@
   },
   "rules": {
     "jsx-no-multiline-js": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "no-submodule-imports": false
   }
 }

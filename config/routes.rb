@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
+      resources :payments
     end
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do
@@ -102,6 +103,7 @@ Rails.application.routes.draw do
           get :youtube_channels_by_view_count
         end
         resources :channels, defaults: { format: :json }, only: %i(show)
+        resources :promo_campaigns, defaults: { format: :json }, only: %i(index show)
         namespace :publishers, defaults: { format: :json } do
           get :signups_per_day
           get :email_verified_signups_per_day
@@ -126,6 +128,9 @@ Rails.application.routes.draw do
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
+      collection do
+        post :notify
+      end
       member do
         get :download
         patch :refresh

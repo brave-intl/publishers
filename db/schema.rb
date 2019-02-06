@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_31_173814) do
+ActiveRecord::Schema.define(version: 2019_01_16_001651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -321,6 +321,7 @@ ActiveRecord::Schema.define(version: 2018_12_31_173814) do
     t.uuid "created_by_id"
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
+    t.uuid "uphold_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
