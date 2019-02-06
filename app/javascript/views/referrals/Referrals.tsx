@@ -60,7 +60,7 @@ export default class Referrals extends React.Component<IReferralsProps, IReferra
 
   async fetchData () {
     // add publisher id
-    let url = '/partners/referrals'
+    let url = '/partners/referrals/data'
     let options = {
       method: 'GET',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest'}

@@ -41,19 +41,6 @@ Rails.application.routes.draw do
       resources :promo_registrations, only: %i(index create)
       resources :payments
     end
-    resources :referrals, controller: 'publishers/referrals' do
-      collection do
-        post :create_codes
-        post :move_codes
-        get :delete_codes
-        post :create_campaign
-      end
-    end
-    # TODO: refactor referral_codes to promo_registrations
-    resources :referral_codes, controller: 'publishers/referral_codes'
-    resources :promo_campaigns, controller: 'publishers/promo_campaigns' do
-      resources :promo_registrations, controller: 'publishers/promo_campaigns/promo_registrations'
-    end
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do
         post :set_default_site_banner_mode
@@ -64,6 +51,7 @@ Rails.application.routes.draw do
   namespace :partners do
     resources :referrals do
       collection do
+        get :data
         post :create_codes
         post :move_codes
         get :delete_codes
