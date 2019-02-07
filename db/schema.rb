@@ -160,6 +160,17 @@ ActiveRecord::Schema.define(version: 2019_01_16_001651) do
     t.index ["publisher_id"], name: "index_legacy_u2f_registrations_on_publisher_id"
   end
 
+  create_table "legacy_versions", id: :serial, force: :cascade do |t|
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.text "object_changes"
+    t.index ["item_type", "item_id"], name: "index_legacy_versions_on_item_type_and_item_id"
+  end
+
   create_table "legacy_youtube_channels", id: :string, force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -405,14 +416,14 @@ ActiveRecord::Schema.define(version: 2019_01_16_001651) do
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
   end
 
-  create_table "versions", id: :serial, force: :cascade do |t|
+  create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "item_type", null: false
-    t.integer "item_id", null: false
+    t.uuid "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
     t.text "object_changes"
+    t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
