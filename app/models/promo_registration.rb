@@ -27,14 +27,14 @@ class PromoRegistration < ApplicationRecord
   MOBILE = "mobile"
   STANDARD = "standard"
 
-  
+
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
-  belongs_to :publisher, dependent: :destroy
+  belongs_to :publisher
 
   validates :channel_id, presence: true, if: -> { kind == CHANNEL }
   validates :publisher_id, presence: true, unless: -> { kind == UNATTACHED }
-  
+
   validates :promo_id, presence: true
   validates :kind, presence: true
   validates :kind, inclusion: { in: KINDS, message: "%{value} is not a valid kind of promo registration." }
