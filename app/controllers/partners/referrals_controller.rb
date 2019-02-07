@@ -2,10 +2,6 @@ module Partners
     class ReferralsController < ApplicationController
     include PromosHelper
 
-    def index
-        render "referrals"
-    end
-
     def data
         data = {}
         unassigned_codes = current_publisher.promo_registrations.where(promo_campaign_id: nil)

@@ -1,15 +1,10 @@
-import * as React from 'react'
+import * as React from "react";
 
-import {
-  Wrapper
-} from './ReferralsModalStyle'
+import { Wrapper } from "./ReferralsModalStyle";
 
-import ReferralsCreate from './referralsCreate/ReferralsCreate'
-import ReferralsAdd from './referralsAdd/ReferralsAdd'
-import ReferralsMove from './referralsMove/ReferralsMove'
-import ReferralsDelete from './referralsDelete/ReferralsDelete'
+import ReferralsCreate from "./referralsCreate/ReferralsCreate";
 
-import locale from '../../../locale/en.js'
+import locale from "../../../locale/en.js";
 
 interface IReferralsModalProps {
   openModal: any;
@@ -24,15 +19,15 @@ interface IReferralsModalProps {
   refresh: any;
 }
 
-export default class ReferralsModal extends React.Component<IReferralsModalProps> {
-
-  constructor (props) {
-    super(props)
-    this.state = {
-    }
+export default class ReferralsModal extends React.Component<
+  IReferralsModalProps
+> {
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
 
-  render () {
+  render() {
     return (
       <Wrapper open={this.props.modalOpen}>
         <ReferralsModalType
@@ -46,23 +41,14 @@ export default class ReferralsModal extends React.Component<IReferralsModalProps
           refresh={this.props.refresh}
         />
       </Wrapper>
-    )
+    );
   }
 }
 
-function ReferralsModalType (props) {
+function ReferralsModalType(props) {
   switch (props.modalType) {
-    case 'Create':
-      return <ReferralsCreate closeModal={props.closeModal}/>
-      break
-    case 'Add':
-      return <ReferralsAdd closeModal={props.closeModal} campaignToAddCodesTo={props.campaignToAddCodesTo} refresh={props.refresh}/>
-      break
-    case 'Move':
-      return <ReferralsMove closeModal={props.closeModal} codesToBeMoved={props.codesToBeMoved} campaigns={props.campaigns} refresh={props.refresh}/>
-      break
-    case 'Delete':
-      return <ReferralsDelete closeModal={props.closeModal} codeToBeDeleted={props.codeToBeDeleted} refresh={props.refresh}/>
-      break
+    case "Create":
+      return <ReferralsCreate closeModal={props.closeModal} />;
+      break;
   }
 }

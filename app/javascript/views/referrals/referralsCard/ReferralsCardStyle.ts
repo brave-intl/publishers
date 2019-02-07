@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   border-radius: 6px;
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
-  padding: 30px;
+  padding: 28px;
 `;
 
 export const Grid = styled.div``;
@@ -23,7 +23,7 @@ export const Row = styled.div`
   ${props =>
     props.title &&
     `
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     `}
 
   ${(props: IRowProps) =>
@@ -40,7 +40,7 @@ export const Row = styled.div`
       justify-content: space-between;
       grid-column-gap: 10px;
       background-color: #F1F1F9;
-      padding: 10px 30px;
+      padding: 10px 28px;
       margin-left: -28px;
       margin-right: -28px;
       margin-bottom: -28px;
@@ -70,9 +70,8 @@ export const IconWrapper = styled.div`
         height: 40px;
         padding-top: 4.5px;
         cursor: pointer;
-      `
-    }
-`
+      `}
+`;
 
 interface ITextWrapper {
   created?: boolean;
