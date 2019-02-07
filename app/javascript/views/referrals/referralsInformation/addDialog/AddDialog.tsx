@@ -9,6 +9,7 @@ type IAddDialogState = Readonly<typeof initialState>;
 
 interface IAddDialogProps {
   closeModal: () => void;
+  afterSave: () => void;
   campaign: any;
 }
 
@@ -32,7 +33,8 @@ export default class AddDialog extends React.Component<
             addCode(
               1,
               this.props.campaign.promo_campaign_id,
-              this.props.closeModal
+              this.props.closeModal,
+              this.props.afterSave
             )
           }
           enabled={true}
@@ -44,7 +46,7 @@ export default class AddDialog extends React.Component<
   }
 }
 
-async function addCode(numberOfCodes, campaignID, closeModal) {
+async function addCode(numberOfCodes, campaignID, closeModal, afterSave) {
   let url = "/partners/referrals/create_codes";
 
   let body = new FormData();
@@ -62,6 +64,7 @@ async function addCode(numberOfCodes, campaignID, closeModal) {
     body: body
   };
   let response = await fetch(url, options);
+  afterSave();
   closeModal();
   return response;
 }

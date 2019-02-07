@@ -52,6 +52,7 @@ export default class ReferralsInformation extends React.Component<
       currentCampaign: { name: "load", promo_registrations: [] },
       codeToDelete: null
     };
+    this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
@@ -159,6 +160,7 @@ export default class ReferralsInformation extends React.Component<
           <DeleteDialog
             closeModal={this.triggerDeleteModal}
             codeID={this.state.codeToDelete}
+            afterSave={this.fetchData}
           />
         </Modal>
         <Modal
@@ -169,6 +171,7 @@ export default class ReferralsInformation extends React.Component<
           <AddDialog
             closeModal={this.triggerAddModal}
             campaign={this.state.currentCampaign}
+            afterSave={this.fetchData}
           />
         </Modal>
         <Modal
@@ -180,6 +183,7 @@ export default class ReferralsInformation extends React.Component<
             closeModal={this.triggerMoveModal}
             campaigns={this.state.campaigns}
             referralCodes={this.state.currentCampaign.promo_registrations}
+            afterSave={this.fetchData}
           />
         </Modal>
       </Container>

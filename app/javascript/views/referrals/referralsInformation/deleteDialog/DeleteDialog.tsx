@@ -9,6 +9,7 @@ type IDeleteDialogState = Readonly<typeof initialState>;
 
 interface IDeleteDialogProps {
   closeModal: any;
+  afterSave: () => void;
   codeID: any;
 }
 
@@ -29,7 +30,13 @@ export default class DeleteDialog extends React.Component<
         <br />
         <PrimaryButton
           enabled={true}
-          onClick={() => deleteCode(this.props.codeID, this.props.closeModal)}
+          onClick={() =>
+            deleteCode(
+              this.props.codeID,
+              this.props.closeModal,
+              this.props.afterSave
+            )
+          }
         >
           Delete
         </PrimaryButton>
@@ -38,7 +45,7 @@ export default class DeleteDialog extends React.Component<
   }
 }
 
-async function deleteCode(codeID, closeModal) {
+async function deleteCode(codeID, closeModal, afterSave) {
   const url = "/partners/referrals/delete_codes?id=" + codeID;
   const options = {
     method: "GET",
@@ -48,6 +55,7 @@ async function deleteCode(codeID, closeModal) {
     }
   };
   let response = await fetch(url, options);
+  afterSave();
   closeModal();
   return response;
 }

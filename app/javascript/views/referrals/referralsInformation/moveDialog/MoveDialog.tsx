@@ -11,6 +11,7 @@ const initialState = { isLoading: false, errorText: "" };
 
 interface IMoveDialogProps {
   closeModal: any;
+  afterSave: () => void;
   referralCodes: any;
   campaigns: any;
 }
@@ -73,7 +74,8 @@ export default class MoveDialog extends React.Component<
             moveCodes(
               this.state.selectedCodes,
               this.state.selectedCampaign,
-              this.props.closeModal
+              this.props.closeModal,
+              this.props.afterSave
             )
           }
         >
@@ -84,7 +86,12 @@ export default class MoveDialog extends React.Component<
   }
 }
 
-async function moveCodes(selectedCodes, selectedCampaign, closeModal) {
+async function moveCodes(
+  selectedCodes,
+  selectedCampaign,
+  closeModal,
+  afterSave
+) {
   let url = "/partners/referrals/move_codes";
   let body = new FormData();
   body.append("codes", JSON.stringify(selectedCodes));
@@ -101,6 +108,7 @@ async function moveCodes(selectedCodes, selectedCampaign, closeModal) {
     body: body
   };
   let response = await fetch(url, options);
+  afterSave();
   closeModal();
   return;
 }

@@ -3,11 +3,8 @@ import * as React from "react";
 import { Wrapper, Container, Grid } from "./ReferralsStyle";
 
 import ReferralsNav from "./referralsNav/ReferralsNav";
-import ReferralsModal from "./referralsModal/ReferralsModal";
 import ReferralsHeader from "./referralsHeader/ReferralsHeader";
 import ReferralsCard from "./referralsCard/ReferralsCard";
-import ReferralsInfo from "./referralsInfo/ReferralsInfo";
-import { any } from "prop-types";
 
 interface IReferralsProps {
   modalType: any;
@@ -47,7 +44,7 @@ export default class Referrals extends React.Component<
     this.openAddModal = this.openAddModal.bind(this);
     this.openDeleteModal = this.openDeleteModal.bind(this);
     this.openMoveModal = this.openMoveModal.bind(this);
-    this.refresh = this.refresh.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +52,6 @@ export default class Referrals extends React.Component<
   }
 
   async fetchData() {
-    // add publisher id
     let url = "/partners/referrals/data";
     let options = {
       method: "GET",
@@ -118,19 +114,7 @@ export default class Referrals extends React.Component<
   render() {
     return (
       <Wrapper>
-        <ReferralsNav openModal={this.openModal} />
-        <ReferralsModal
-          openModal={this.openModal}
-          modalOpen={this.state.modalOpen}
-          closeModal={this.closeModal}
-          modalType={this.state.modalType}
-          campaigns={this.state.campaigns}
-          maxCodes={400}
-          campaignToAddCodesTo={this.state.campaignToAddCodesTo}
-          codeToBeDeleted={this.state.codeToBeDeleted}
-          codesToBeMoved={this.state.codesToBeMoved}
-          refresh={this.refresh}
-        />
+        <ReferralsNav openModal={this.openModal} fetchData={this.fetchData} />
         <ReferralsContent
           openModal={this.openModal}
           campaigns={this.state.campaigns}
@@ -143,10 +127,6 @@ export default class Referrals extends React.Component<
     );
   }
 }
-
-// function processData (promoCampaignsData, promoRegistrationsData) {
-//
-// }
 
 function ReferralsContent(props) {
   return (
