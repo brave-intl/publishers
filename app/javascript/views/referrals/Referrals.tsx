@@ -118,6 +118,7 @@ export default class Referrals extends React.Component<
         <ReferralsContent
           openModal={this.openModal}
           campaigns={this.state.campaigns}
+          unassignedCodes={this.state.unassigned_codes}
           index={this.state.index}
           openAddModal={this.openAddModal}
           openDeleteModal={this.openDeleteModal}
@@ -131,7 +132,10 @@ export default class Referrals extends React.Component<
 function ReferralsContent(props) {
   return (
     <Container>
-      <ReferralsHeader />
+      <ReferralsHeader
+        campaigns={props.campaigns}
+        unassignedCodes={props.unassignedCodes}
+      />
       <ReferralsCardMap
         campaigns={props.campaigns}
         changeMode={props.changeMode}

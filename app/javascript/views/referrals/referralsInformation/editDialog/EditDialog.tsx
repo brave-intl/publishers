@@ -2,52 +2,51 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, PrimaryButton, Label, Input } from "./AddDialogStyle";
+import { Header, PrimaryButton, Label, Input } from "./EditDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 
-interface IAddDialogProps {
+interface IEditDialogProps {
   closeModal: () => void;
   afterSave: () => void;
   campaign: any;
 }
 
-interface IAddDialogState {
-  description: any;
+interface IEditDialogState {
+  campaignName: any;
 }
 
-export default class AddDialog extends React.Component<
-  IAddDialogProps,
-  IAddDialogState
+export default class EditDialog extends React.Component<
+  IEditDialogProps,
+  IEditDialogState
 > {
   constructor(props) {
     super(props);
     this.state = {
-      description: null
+      campaignName: null
     };
   }
 
-  handleDescription = e => {
-    this.setState({ description: e.target.value });
+  handlecampaignName = e => {
+    this.setState({ campaignName: e.target.value });
   };
 
   public render() {
     return (
       <div>
-        <Header>Add referral code?</Header>
+        <Header>Edit Campaign?</Header>
         <br />
-        <Label>Enter Description</Label>
+        <Label>Enter new campaign name</Label>
         <Input
-          value={this.state.description}
-          onChange={this.handleDescription}
+          value={this.state.campaignName}
+          onChange={this.handlecampaignName}
         />
         <br />
         <br />
         <PrimaryButton
           onClick={() =>
-            addCode(
-              1,
-              this.state.description,
+            EditCode(
+              this.state.campaignName,
               this.props.campaign.promo_campaign_id,
               this.props.closeModal,
               this.props.afterSave
@@ -55,25 +54,18 @@ export default class AddDialog extends React.Component<
           }
           enabled={true}
         >
-          Add
+          Edit
         </PrimaryButton>
       </div>
     );
   }
 }
 
-async function addCode(
-  numberOfCodes,
-  description,
-  campaignID,
-  closeModal,
-  afterSave
-) {
-  let url = "/partners/referrals/create_codes";
+async function EditCode(campaignName, campaignID, closeModal, afterSave) {
+  let url = "/partners/referrals/update_campaign";
 
   let body = new FormData();
-  body.append("number", numberOfCodes);
-  body.append("description", description);
+  body.append("campaignName", campaignName);
   body.append("promo_campaign_id", campaignID);
   let options = {
     method: "POST",

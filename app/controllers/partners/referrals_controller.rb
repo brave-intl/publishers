@@ -29,6 +29,7 @@ module Partners
         Promo::OwnerRegistrar.new(
         number: params[:number].to_i,
         publisher_id: current_publisher.id,
+        description: params[:description], 
         promo_campaign_id: params[:promo_campaign_id]).perform
         Promo::RegistrationsStatsFetcher.new(promo_registrations: current_publisher.promo_registrations).perform
     end

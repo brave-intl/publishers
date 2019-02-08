@@ -3,10 +3,11 @@
 class Promo::OwnerRegistrar < BaseApiClient
   include PromosHelper
 
-  def initialize(number:, publisher_id:, promo_campaign_id:, promo_id: active_promo_id)
+  def initialize(number:, publisher_id:, promo_campaign_id:, description:, promo_id: active_promo_id)
     @number = number
     @publisher_id = publisher_id
     @promo_campaign_id = promo_campaign_id
+    @description = description
     @promo_id = promo_id
   end
 
@@ -25,6 +26,7 @@ class Promo::OwnerRegistrar < BaseApiClient
                                 publisher_id: @publisher_id,
                                 promo_id: active_promo_id,
                                 promo_campaign_id: @promo_campaign_id,
+                                description: @description,
                                 kind: PromoRegistration::OWNER)
     end
   end
@@ -35,6 +37,7 @@ class Promo::OwnerRegistrar < BaseApiClient
                                 publisher_id: @publisher_id,
                                 promo_id: active_promo_id,
                                 promo_campaign_id: @promo_campaign_id,
+                                description: @description,
                                 kind: PromoRegistration::OWNER)
     end
   end

@@ -1,53 +1,103 @@
 import * as React from "react";
 
-
-import { Box, ContentWrapper, Text, TextWrapper, Wrapper } from "./ReferralsHeaderStyle";
+import {
+  Box,
+  ContentWrapper,
+  Text,
+  TextWrapper,
+  Wrapper
+} from "./ReferralsHeaderStyle";
 
 import locale from "../../../locale/en";
 
-export default class ReferralsHeader extends React.Component {
+interface IReferralsHeaderProps {
+  unassignedCodes: any;
+  campaigns: any;
+}
+
+export default class ReferralsHeader extends React.Component<
+  IReferralsHeaderProps
+> {
   public render() {
     return (
       <Wrapper>
         <ContentWrapper>
           <TextWrapper>
             <Text header>{locale.campaigns}</Text>
-            <Text stat>5</Text>
+            <Text stat>{this.props.campaigns.length}</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.referralCodes}</Text>
-            <Text stat blue>12</Text>
+            <Text stat blue>
+              {countReferralCodes(
+                this.props.campaigns,
+                this.props.unassignedCodes
+              )}
+            </Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.downloads}</Text>
-            <Text stat>12</Text>
+            <Text stat>
+              {countDownloads(this.props.campaigns, this.props.unassignedCodes)}
+            </Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.installs}</Text>
-            <Text stat>12</Text>
+            <Text stat>
+              {countInstalls(this.props.campaigns, this.props.unassignedCodes)}
+            </Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.thirtyDay}</Text>
-            <Text stat purple>12</Text>
+            <Text stat purple>
+              {countThirtyDayUse(
+                this.props.campaigns,
+                this.props.unassignedCodes
+              )}
+            </Text>
           </TextWrapper>
-          <TextWrapper>
-            <Text header>Estimated Earnings</Text>
-            <TextWrapper earnings>
-              <Text stat purple>
-                999
-              </Text>
-              <Text bat purple>
-                {locale.bat}
-              </Text>
-            </TextWrapper>
-          </TextWrapper>
-        </ContentWrapper>
-        <ContentWrapper box>
-          <Box>
-            <Text box>January 2019</Text>
-          </Box>
         </ContentWrapper>
       </Wrapper>
     );
   }
+}
+
+function countReferralCodes(campaigns, unassignedCodes) {
+  let referralCodes = 0;
+  campaigns.forEach(function(campaign) {
+    campaign.promo_registrations.forEach(function(referralCode) {
+      referralCodes++;
+    });
+  });
+  return referralCodes;
+}
+
+function countDownloads(campaigns, unassignedCodes) {
+  let downloads = 0;
+  campaigns.forEach(function(campaign) {
+    campaign.promo_registrations.forEach(function(referralCode) {
+      downloads += JSON.parse(referralCode.stats)[0].retrievals;
+    });
+  });
+  return downloads;
+}
+
+function countInstalls(campaigns, unassignedCodes) {
+  let installs = 0;
+  campaigns.forEach(function(campaign) {
+    campaign.promo_registrations.forEach(function(referralCode) {
+      installs += JSON.parse(referralCode.stats)[0].first_runs;
+    });
+  });
+  return installs;
+}
+
+function countThirtyDayUse(campaigns, unassignedCodes) {
+  let thirtyDay = 0;
+  campaigns.forEach(function(campaign) {
+    campaign.promo_registrations.forEach(function(referralCode) {
+      thirtyDay += JSON.parse(referralCode.stats)[0].finalized;
+    });
+  });
+  return thirtyDay;
 }

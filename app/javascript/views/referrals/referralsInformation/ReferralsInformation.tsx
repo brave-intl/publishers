@@ -58,10 +58,6 @@ export default class ReferralsInformation extends React.Component<
   componentDidMount() {
     this.fetchData();
     // alert(window.location.pathname.split("/").pop())
-    // var options = { year: 'numeric', month: 'long', day: 'numeric' }
-    // let date = new Date(this.props.campaign.created_at)
-    // let formattedDate = date.toLocaleDateString("en-US", options)
-    // this.setState({date: formattedDate})
   }
 
   componentDidUpdate() {
@@ -121,16 +117,14 @@ export default class ReferralsInformation extends React.Component<
               )}
             </Text>
           </Content>
-          <Content>
-            <Text header>Estimated Earnings</Text>
-            <Text h2>tbd</Text>
-          </Content>
         </Row>
         <Row lineBreak />
         <Row>
           <Content created>
             <Text h4>Created</Text>
-            {/* <Text style={{ paddingLeft: '8px' }} p>{this.state.date}</Text> */}
+            <Text style={{ paddingLeft: "8px" }} p>
+              {processDate(this.state.currentCampaign.created_at)}
+            </Text>
           </Content>
         </Row>
         <Row>
@@ -233,6 +227,12 @@ function processThirtyDayUse(referralCodes) {
   return thirtyDayUse;
 }
 
+function processDate(created) {
+  let options = { year: "numeric", month: "long", day: "numeric" };
+  let date = new Date(created);
+  return date.toLocaleDateString("en-US", options);
+}
+
 function findCurrentCampaign(campaigns) {
   let currentCampaign;
   campaigns.forEach(function(campaign, index) {
@@ -264,7 +264,7 @@ function ReferralsTable(props) {
           content: <div key={index}>{referralCode.referral_code}</div>
         },
         {
-          content: <div key={index}>A description</div>
+          content: <div key={index}>{referralCode.description}</div>
         },
         {
           content: (
