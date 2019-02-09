@@ -66,7 +66,7 @@ class Api::V1::Stats::PublishersController < Api::V1::StatsController
   end
 
   def totals
-    render(json: Publisher.statistical_totals, status: 200)
+    render(json: Publisher.statistical_totals(since_date: params[:date]), status: 200)
   end
 
   def javascript_enabled_usage
