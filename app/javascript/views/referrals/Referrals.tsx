@@ -52,7 +52,7 @@ export default class Referrals extends React.Component<
   }
 
   async fetchData() {
-    let url = "/partners/referrals/data";
+    let url = "/partners/referrals/";
     let options = {
       method: "GET",
       headers: {

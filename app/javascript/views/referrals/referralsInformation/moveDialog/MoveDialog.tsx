@@ -92,12 +92,12 @@ async function moveCodes(
   closeModal,
   afterSave
 ) {
-  let url = "/partners/referrals/move_codes";
+  let url =
+    "/partners/referrals/promo_registrations/" + selectedCodes.join(",");
   let body = new FormData();
-  body.append("codes", JSON.stringify(selectedCodes));
   body.append("campaign", selectedCampaign);
   let options = {
-    method: "POST",
+    method: "PUT",
     headers: {
       Accept: "application/json",
       "X-Requested-With": "XMLHttpRequest",

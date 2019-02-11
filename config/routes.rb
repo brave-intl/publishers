@@ -50,12 +50,8 @@ Rails.application.routes.draw do
   namespace :partners do
     resources :referrals do
       collection do
-        get :data
-        post :create_codes
-        post :move_codes
-        get :delete_codes
-        post :create_campaign
-        post :delete_campaign
+        resources :promo_registrations
+        resources :promo_campaigns
       end
     end
   end

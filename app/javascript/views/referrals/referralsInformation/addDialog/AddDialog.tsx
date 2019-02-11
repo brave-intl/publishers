@@ -83,7 +83,7 @@ async function addCode(
   closeModal,
   afterSave
 ) {
-  let url = "/partners/referrals/create_codes";
+  let url = "/partners/referrals/promo_registrations";
 
   let body = new FormData();
   body.append("number", numberOfCodes);

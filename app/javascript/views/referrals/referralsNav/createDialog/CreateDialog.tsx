@@ -96,7 +96,7 @@ export default class CreateDialog extends React.Component<
 }
 
 async function createCampaign(name) {
-  let url = "/partners/referrals/create_campaign";
+  let url = "/partners/referrals/promo_campaigns/";
   let body = new FormData();
   body.append("name", name);
   let options = {
@@ -122,7 +122,7 @@ async function createReferralCode(
   afterSave,
   closeModal
 ) {
-  let url = "/partners/referrals/create_codes";
+  let url = "/partners/referrals/promo_registrations";
   let body = new FormData();
   body.append("number", numberOfCodes);
   body.append("description", description);
