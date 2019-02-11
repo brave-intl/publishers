@@ -1,5 +1,5 @@
 class Publisher < ApplicationRecord
-  has_paper_trail
+  has_paper_trail only: [:name, :email, :pending_email, :phone_normalized, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
@@ -9,6 +9,18 @@ class Publisher < ApplicationRecord
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
+
+  class UpholdAccountState
+    REAUTHORIZATION_NEEDED      = :reauthorization_needed
+    VERIFIED                    = :verified
+    ACCESS_PARAMETERS_ACQUIRED  = :access_parameters_acquired
+    CODE_ACQUIRED               = :code_acquired
+    UNCONNECTED                 = :unconnected
+    # (Albert Wang): Consider adding refactoring all of the above states as they
+    # aren't valid states: https://uphold.com/en/developer/api/documentation/#user-object
+    RESTRICTED      = :restricted
+    BLOCKED         = :blocked
+  end
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
   ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT]
@@ -238,25 +250,28 @@ class Publisher < ApplicationRecord
       ['re-authorize', 'authorize'].include?(self.wallet.action)
   end
 
-  def uphold_incomplete?
-    self.uphold_verified? && self.wallet.present? && !self.wallet.authorized?
-  end
-
   def uphold_status
-    if self.uphold_verified?
+    if self&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::BLOCKED
+      # Notify on Slack that there's someone suspect
+      SlackMessenger.new(message: "Publisher #{self.id} is blocked by Uphold and has just logged in. <!channel>").perform
+    end
+
+    if self&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::RESTRICTED
+      UpholdAccountState::RESTRICTED
+    elsif self.uphold_verified?
       if self.uphold_reauthorization_needed?
-        :reauthorization_needed
-      elsif self.uphold_incomplete?
-        :incomplete
+        UpholdAccountState::REAUTHORIZATION_NEEDED
+      elsif self&.wallet&.not_a_member?
+        UpholdAccountState::RESTRICTED
       else
-        :verified
+        UpholdAccountState::VERIFIED
       end
     elsif self.uphold_access_parameters.present?
       :access_parameters_acquired
     elsif self.uphold_code.present?
       :code_acquired
     else
-      :unconnected
+      UpholdAccountState::UNCONNECTED
     end
   end
 

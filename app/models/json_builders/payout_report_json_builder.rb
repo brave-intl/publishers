@@ -19,22 +19,25 @@ class JsonBuilders::PayoutReportJsonBuilder
           "address" => "#{potential_payment.address}"
         })
       else
-        contents.push({
-          "publisher" => "#{Channel.find(potential_payment.channel_id).details.channel_identifier}",
-          "name" => "#{potential_payment.name}",
-          "altcurrency" => "BAT",
-          "probi" => "#{potential_payment.amount}",
-          "fees" => "#{potential_payment.fees}",
-          "authority" => "",
-          "transactionId" => "#{potential_payment.payout_report_id}",
-          "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
-          "type" => PotentialPayment::CONTRIBUTION,
-          "URL" => "#{Channel.find(potential_payment.channel_id).details.url}",
-          "address" => "#{potential_payment.address}"
-        })
+        channel = Channel.find_by(id: potential_payment.channel_id)
+        if channel.present?
+          contents.push({
+            "publisher" => "#{channel.details.channel_identifier}",
+            "name" => "#{potential_payment.name}",
+            "altcurrency" => "BAT",
+            "probi" => "#{potential_payment.amount}",
+            "fees" => "#{potential_payment.fees}",
+            "authority" => "",
+            "transactionId" => "#{potential_payment.payout_report_id}",
+            "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
+            "type" => PotentialPayment::CONTRIBUTION,
+            "URL" => "#{Channel.find(potential_payment.channel_id).details.url}",
+            "address" => "#{potential_payment.address}"
+          })
+        end
       end
     end
-    
+
     contents
   end
 end

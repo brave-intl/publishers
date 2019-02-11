@@ -2,13 +2,8 @@
 - content_for(:title) do
   h3= t ".title"
 
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name || name_from_email(@publisher.email)
+
 p= t ".body"
 
-/ ToDo:
-/p
-/  strong.attribute= "#{Publisher.human_attribute_name("brave_publisher_id")}:"
-/  = link_to_brave_publisher_id(@publisher)
-
-p.hint
-  span.attribute= "#{t("publisher_mailer.shared.contact_help")}: "
-  = mail_to(Rails.application.secrets[:support_email])
+.notice= t "shared.support_note_html"

@@ -1,10 +1,12 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import Referrals from '../views/referrals/index.tsx'
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import Referrals from "../views/referrals";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
-    <Referrals/>,
-    document.body.appendChild(document.getElementsByClassName('main-content')[0]),
-  )
-})
+    <Referrals />,
+    document.body.appendChild(
+      document.getElementsByClassName("main-content")[0]
+    )
+  );
+});
