@@ -55,6 +55,7 @@ Rails.application.routes.draw do
         post :move_codes
         get :delete_codes
         post :create_campaign
+        post :delete_campaign
       end
     end
   end

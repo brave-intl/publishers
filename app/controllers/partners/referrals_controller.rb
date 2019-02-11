@@ -54,5 +54,15 @@ module Partners
         )
         render(status: 200, json: promo_campaign)
     end
+
+    def delete_campaign
+        data = JSON.parse(params[:codes])
+        data.each do |code|
+            promo_registration = current_publisher.promo_registrations.find(code)
+            promo_registration.destroy
+        end
+        campaign = current_publisher.promo_campaigns.find(params[:campaign])
+        campaign.destroy
+    end
     end
 end

@@ -11,7 +11,8 @@ interface ICreateDialogProps {
 
 interface ICreateDialogState {
   campaign: any;
-  numberOfCodes: any;
+  number: any;
+  description: any;
 }
 
 export default class CreateDialog extends React.Component<
@@ -21,7 +22,8 @@ export default class CreateDialog extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      numberOfCodes: 1,
+      number: 1,
+      description: null,
       campaign: null
     };
   }
@@ -30,17 +32,35 @@ export default class CreateDialog extends React.Component<
     this.setState({ campaign: e.target.value });
   };
 
+  handleNumber = e => {
+    this.setState({ number: e.target.value });
+  };
+
+  handleDescription = e => {
+    this.setState({ description: e.target.value });
+  };
+
   handleCreate = async e => {
     let newCampaign = null;
 
     if (this.state.campaign) {
       newCampaign = await createCampaign(this.state.campaign);
-      createReferralCode(1, newCampaign.id);
+      createReferralCode(
+        this.state.number,
+        this.state.description,
+        newCampaign.id,
+        this.props.afterSave,
+        this.props.closeModal
+      );
     } else {
-      createReferralCode(1, null);
+      createReferralCode(
+        this.state.number,
+        this.state.description,
+        null,
+        this.props.afterSave,
+        this.props.closeModal
+      );
     }
-    this.props.afterSave();
-    this.props.closeModal();
   };
 
   public render() {
@@ -48,19 +68,24 @@ export default class CreateDialog extends React.Component<
       <div>
         <Header>Create referral code?</Header>
         <br />
-        <Label>Campaign Name </Label>
+        <br />
+        <Label>Number of Codes</Label>
+        <Input value={this.state.number} onChange={this.handleNumber} />
+        <br />
+        <br />
+        <Label>Description</Label>
+        <Input
+          value={this.state.description}
+          onChange={this.handleDescription}
+        />
+        <br />
+        <br />
+        <Label>Campaign</Label>
         <Input
           value={this.state.campaign}
           onChange={this.handleCampaignValue}
         />
         <br />
-        <br />
-        {/* <Label>Description </Label>
-        <Input
-          value={this.state.campaign}
-          onChange={this.handleCampaignValue}
-        />
-        <br /> */}
         <br />
         <PrimaryButton enabled={true} onClick={this.handleCreate}>
           Create
@@ -90,10 +115,17 @@ async function createCampaign(name) {
   return data;
 }
 
-async function createReferralCode(numberOfCodes, campaignID) {
+async function createReferralCode(
+  numberOfCodes,
+  description,
+  campaignID,
+  afterSave,
+  closeModal
+) {
   let url = "/partners/referrals/create_codes";
   let body = new FormData();
   body.append("number", numberOfCodes);
+  body.append("description", description);
   body.append("promo_campaign_id", campaignID);
   let options = {
     method: "POST",
@@ -107,6 +139,6 @@ async function createReferralCode(numberOfCodes, campaignID) {
     body: body
   };
   let response = await fetch(url, options);
-  let data = await response.json();
-  return data;
+  afterSave();
+  closeModal();
 }

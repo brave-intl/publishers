@@ -14,6 +14,7 @@ interface IAddDialogProps {
 
 interface IAddDialogState {
   description: any;
+  number: any;
 }
 
 export default class AddDialog extends React.Component<
@@ -23,7 +24,8 @@ export default class AddDialog extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      description: null
+      description: null,
+      number: 1
     };
   }
 
@@ -31,10 +33,22 @@ export default class AddDialog extends React.Component<
     this.setState({ description: e.target.value });
   };
 
+  handleNumber = e => {
+    this.setState({ number: e.target.value });
+  };
+
   public render() {
     return (
       <div>
         <Header>Add referral code?</Header>
+        <br />
+        <Label>Number of Codes</Label>
+        <Input
+          value={this.state.number}
+          onChange={this.handleNumber}
+          type="number"
+        />
+        <br />
         <br />
         <Label>Enter Description</Label>
         <Input
@@ -46,7 +60,7 @@ export default class AddDialog extends React.Component<
         <PrimaryButton
           onClick={() =>
             addCode(
-              1,
+              this.state.number,
               this.state.description,
               this.props.campaign.promo_campaign_id,
               this.props.closeModal,

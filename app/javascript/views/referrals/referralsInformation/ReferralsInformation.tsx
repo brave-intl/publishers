@@ -12,18 +12,14 @@ import {
 import Modal, { ModalSize } from "../../../components/modal/Modal";
 import AddDialog from "./addDialog/AddDialog";
 import DeleteDialog from "./deleteDialog/DeleteDialog";
+import DeleteCampaignDialog from "./deleteCampaignDialog/DeleteCampaignDialog";
 import MoveDialog from "./moveDialog/MoveDialog";
 
 import Table from "brave-ui/components/dataTables/table";
+import { CloseStrokeIcon } from "brave-ui/components/icons";
 import { CheckCircleIcon } from "brave-ui/components/icons";
 
-interface IReferralsInfoProps {
-  openModal: any;
-  campaign: any;
-  openAddModal: any;
-  openDeleteModal: any;
-  openMoveModal: any;
-}
+interface IReferralsInfoProps {}
 
 interface IReferralsInfoState {
   date: any;
@@ -33,6 +29,7 @@ interface IReferralsInfoState {
   showAddModal: boolean;
   showMoveModal: boolean;
   showDeleteModal: boolean;
+  showDeleteCampaignModal: boolean;
   codeToDelete: any;
 }
 
@@ -49,6 +46,7 @@ export default class ReferralsInformation extends React.Component<
       showDeleteModal: false,
       showAddModal: false,
       showMoveModal: false,
+      showDeleteCampaignModal: false,
       currentCampaign: { name: "load", promo_registrations: [] },
       codeToDelete: null
     };
@@ -77,7 +75,6 @@ export default class ReferralsInformation extends React.Component<
     };
     let response = await fetch(url, options);
     let data = await response.json();
-    console.log(data.campaigns);
     let currentCampaign = findCurrentCampaign(data.campaigns);
     this.setState({
       unassigned_codes: data.unassigned_codes,
@@ -116,6 +113,13 @@ export default class ReferralsInformation extends React.Component<
                 this.state.currentCampaign.promo_registrations
               )}
             </Text>
+          </Content>
+          <Content
+            style={{ cursor: "pointer" }}
+            onClick={this.triggerDeleteCampaignModal}
+            closeIcon
+          >
+            <CloseStrokeIcon />
           </Content>
         </Row>
         <Row lineBreak />
@@ -180,6 +184,18 @@ export default class ReferralsInformation extends React.Component<
             afterSave={this.fetchData}
           />
         </Modal>
+        <Modal
+          handleClose={this.triggerDeleteCampaignModal}
+          show={this.state.showDeleteCampaignModal}
+          size={ModalSize.ExtraSmall}
+        >
+          <DeleteCampaignDialog
+            closeModal={this.triggerDeleteCampaignModal}
+            campaign={this.state.currentCampaign}
+            referralCodes={this.state.currentCampaign.promo_registrations}
+            afterSave={redirectToReferrals}
+          />
+        </Modal>
       </Container>
     );
   }
@@ -194,6 +210,12 @@ export default class ReferralsInformation extends React.Component<
 
   private triggerDeleteModal = () => {
     this.setState({ showDeleteModal: !this.state.showDeleteModal });
+  };
+
+  private triggerDeleteCampaignModal = () => {
+    this.setState({
+      showDeleteCampaignModal: !this.state.showDeleteCampaignModal
+    });
   };
 
   private setCodeToDelete = codeID => {
@@ -243,6 +265,10 @@ function findCurrentCampaign(campaigns) {
     }
   });
   return currentCampaign;
+}
+
+function redirectToReferrals() {
+  window.location.replace("/partners/referrals");
 }
 
 function ReferralsTable(props) {
