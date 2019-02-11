@@ -81,6 +81,7 @@ en:
     nav:
       security: Security
       log_out: Log Out
+      help: Help
       faqs: FAQs
   errors:
     shared:

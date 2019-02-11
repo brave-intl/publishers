@@ -27,6 +27,7 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
                       = t ".security"
                   - if show_faq_link?
                     li= link_to t(".faqs"), faqs_path
+                  li= link_to t(".help"), "https://support.brave.com/hc/en-us/"
                   li= link_to t(".log_out"), log_out_publishers_path
           - else
             / btn-secondary and btn-highlight are legacy, can be dropped once
