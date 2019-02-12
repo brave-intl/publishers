@@ -1,0 +1,38 @@
+nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
+  .container-fluid#partner
+    .partner-menu-container
+      .nav.pull-left.float-left
+        = link_to(root_path) do
+          .brave-logo
+            = image_tag 'logo_br_creators.png', height: 30
+      .nav.pull-right.float-right
+        = yield(:navbar_content_right)
+        - if current_publisher
+          - if show_nav_menu?(current_publisher)
+            .user-menu
+              input.user-menu-trigger type="checkbox"
+              .user-avatar= render "avatar_svg"
+              span.js-current-user-name= current_publisher.name
+              .user-lock= render two_factor_enabled?(current_publisher) ? "locked_svg" : "unlocked_svg"
+              .user-arrow= render "arrow_svg"
+              .user-dropdown
+                = link_to home_publishers_path, class: "user-info" do
+                  .user-avatar= render "avatar_svg"
+                  .user-name.js-user-name-dropdown= current_publisher.name
+                  .user-email= current_publisher.email
+                ul.user-links
+                  li= link_to two_factor_registrations_path do
+                    span.user-links-lock
+                      .user-links-lock-icon= render two_factor_enabled?(current_publisher) ? "locked_svg" : "unlocked_svg"
+                      = t ".security"
+                  - if show_faq_link?
+                    li= link_to t(".faqs"), faqs_path
+                  li= link_to t(".log_out"), log_out_publishers_path
+          - else
+            / btn-secondary and btn-highlight are legacy, can be dropped once
+            / bootstrap v3 is removed.
+            = link_to( \
+                t(".log_out"), \
+                log_out_publishers_path, \
+                class: 'btn btn-secondary btn-highlight btn-outline-primary user-solo-button' \
+            )

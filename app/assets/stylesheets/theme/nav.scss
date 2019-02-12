@@ -1,10 +1,20 @@
 .navbar {
   height: $braveNavbarHeight;
+  z-index: 1;
 }
 
 .menu-container {
   width: 100%;
   height: 50px;
+}
+
+#partner {
+  display: block !important;
+}
+
+.partner-menu-container {
+  max-width: 1140px;
+  margin: auto;
 }
 
 .brave-logo {
@@ -90,7 +100,7 @@
     top: 100%;
     background: white;
     border-radius: 4px;
-    box-shadow: 2px 2px 0 0 rgba(47,48,50,0.15);
+    box-shadow: 2px 2px 0 0 rgba(47, 48, 50, 0.15);
 
     .user-info {
       display: block;
