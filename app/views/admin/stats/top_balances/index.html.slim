@@ -1,0 +1,17 @@
+div.panel-body
+  div.adv-table
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th Account ID
+        th Account Type
+        th Balance
+      tbody
+        - @result.each do |entry|
+          tr.gradeX
+            - if entry["account_type"] == Eyeshade::TopBalances::OWNER
+              - publisher_id =  entry["account_id"].split(":")[1]
+              td = link_to publisher_id, admin_publisher_path(publisher_id)
+            - else
+              td = entry["account_id"]
+            td = entry["account_type"]
+            td = entry["balance"].to_f.round(2)
