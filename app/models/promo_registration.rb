@@ -27,14 +27,14 @@ class PromoRegistration < ApplicationRecord
   MOBILE = "mobile"
   STANDARD = "standard"
 
-  
+
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
   belongs_to :publisher, dependent: :destroy
 
   validates :channel_id, presence: true, if: -> { kind == CHANNEL }
   validates :publisher_id, presence: true, unless: -> { kind == UNATTACHED }
-  
+
   validates :promo_id, presence: true
   validates :kind, presence: true
   validates :kind, inclusion: { in: KINDS, message: "%{value} is not a valid kind of promo registration." }
@@ -54,6 +54,24 @@ class PromoRegistration < ApplicationRecord
       aggregate_stats[FINALIZED] += event[FINALIZED]
       aggregate_stats.slice(RETRIEVALS, FIRST_RUNS, FINALIZED)
     }
+  end
+
+  # the stats are currently organized by platform.
+  def stats_by_date
+    compressed_stats = {}
+    JSON.parse(stats).each do |stat|
+      unless compressed_stats.has_key?(stat['ymd'])
+        compressed_stats[stat['ymd']] = {}
+        compressed_stats[stat['ymd']]['retrievals'] = 0
+        compressed_stats[stat['ymd']]['first_runs'] = 0
+        compressed_stats[stat['ymd']]['finalized'] = 0
+        compressed_stats[stat['ymd']]['ymd'] = stat['ymd']
+      end
+      compressed_stats[stat['ymd']]['retrievals'] += stat['retrievals']
+      compressed_stats[stat['ymd']]['first_runs'] += stat['first_runs']
+      compressed_stats[stat['ymd']]['finalized'] += stat['finalized']
+    end
+    compressed_stats.values
   end
 
   class << self

@@ -10,31 +10,43 @@ let colors = [
   '255, 159, 64'
 ]
 
-function createLabels() {
-  var startingDate = new Date(document.getElementById('all-channels-referral-stats-starting-month').value);
-  var endDate = new Date();
+function createLabels(startingDate) {
   var loop = new Date(startingDate);
-
   var dates_array = [];
 
-  while (loop <= endDate) {
-    dates_array.push(loop.getFullYear() + '-' + (loop.getMonth() + 1) + '-' + loop.getDay());
-    if (loop.getMonth() == 11) {
-      loop.setYear(loop.getFullYear() + 1);
-    }
+  while (loop <= new Date()) {
+    dates_array.push(loop.getFullYear() + '-' + (loop.getMonth() + 1) + '-' + loop.getDate());
     loop.setDate(loop.getDate() + 1);
   }
 
   return dates_array;
 }
 
+// Max of the chart is 80% of the suggested max to be used by Chartjs
+function getSuggestedMax(data) {
+  var currentMax = 0;
+  Object.keys(data).forEach(function (key) {
+    var value = data[key];
+    currentMax = value.retrievals > currentMax ? value.retrievals : currentMax;
+    currentMax = value.first_runs > currentMax ? value.first_runs : currentMax;
+    currentMax = value.finalized > currentMax ? value.finalized : currentMax;
+  });
+  return (currentMax * 10 / 8)
+}
+
 function createCharts() {
+  var data;
   JSON.parse(document.getElementById('referrals-hidden-tags').value).forEach(function (element) {
-    createChart(JSON.parse(document.getElementById(element).value, "EPL566"));
+    data = JSON.parse(document.getElementById(element).value);
+    createChart(
+      data,
+      element.replace(/-/g, " "),
+      getSuggestedMax(data)
+    );
   });
 }
 
-function createChart(data, title) {
+function createChart(data, title, suggestedMax) {
   var wrapper = document.getElementById('channel-referrals-stats-chart');
   var canvas = document.createElement('canvas');
   canvas.setAttribute("width", "400");
@@ -44,7 +56,7 @@ function createChart(data, title) {
   new Chart(canvas, {
     type: 'line',
     data: {
-      labels: createLabels(),
+      labels: createLabels(data[0]['ymd']),
       datasets: [
         {
           label: 'Retrievals',
@@ -68,8 +80,17 @@ function createChart(data, title) {
         mode: 'x'
       },
       title: {
+        fontFamily: 'Poppins',
+        fontSize: 18,
         display: true,
-        text: 'EPL566'
+        text: title.toUpperCase()
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            suggestedMax: suggestedMax
+          }
+        }]
       }
     }
   });
