@@ -23,6 +23,14 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
 
 = hidden_field_tag 'publisher_id', current_publisher.id
+- if current_publisher.promo_registrations.present?
+  = hidden_field_tag 'all-channels-referral-stats-starting-month', current_publisher.promo_registrations.order(created_at: :asc).first.created_at.strftime("%Y-%m-%d")
+  - referrals_hidden_tags = []
+  - current_publisher.promo_registrations.each do |promo_registration|
+    - hidden_tag_name = 'referral-stat-' + promo_registration.referral_code
+    = hidden_field_tag hidden_tag_name, promo_registration.stats
+    - referrals_hidden_tags << hidden_tag_name
+  = hidden_field_tag 'referrals-hidden-tags', referrals_hidden_tags.to_json
 
 .dashboard
   #uphold_status { class=uphold_status_class(current_publisher)
@@ -186,6 +194,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = form_for(current_publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
               = f.check_box(:visible, class: "form-check-input")
               = f.label(:visible, class: "form-check-label", for: "publisher_visible")
+
+    - if current_publisher.promo_registrations.present?
+      = render "publishers/referral_charts"
 
     - current_publisher.channels.visible.each do |channel|
       .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
