@@ -57,6 +57,24 @@ class PromoRegistration < ApplicationRecord
     }
   end
 
+  # the stats are currently organized by platform.
+  def stats_by_date
+    compressed_stats = {}
+    JSON.parse(stats).each do |stat|
+      unless compressed_stats.has_key?(stat['ymd'])
+        compressed_stats[stat['ymd']] = {}
+        compressed_stats[stat['ymd']]['retrievals'] = 0
+        compressed_stats[stat['ymd']]['first_runs'] = 0
+        compressed_stats[stat['ymd']]['finalized'] = 0
+        compressed_stats[stat['ymd']]['ymd'] = stat['ymd']
+      end
+      compressed_stats[stat['ymd']]['retrievals'] += stat['retrievals']
+      compressed_stats[stat['ymd']]['first_runs'] += stat['first_runs']
+      compressed_stats[stat['ymd']]['finalized'] += stat['finalized']
+    end
+    compressed_stats.values
+  end
+
   class << self
     # Returns the aggregate totals for each event type given a
     # ActiveRecord::Association of PromoRegistrations
