@@ -37,6 +37,17 @@ export default class MoveDialog extends React.Component<
     };
   }
 
+  isValidForm = () => {
+    if (
+      this.state.selectedCodes.length > 0 &&
+      this.state.selectedCampaign !== null
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   handleCampaignSelect = e => {
     this.setState({ selectedCampaign: e.target.value });
   };
@@ -69,19 +80,23 @@ export default class MoveDialog extends React.Component<
         />
         <br />
         <br />
-        <PrimaryButton
-          enabled={true}
-          onClick={() =>
-            moveCodes(
-              this.state.selectedCodes,
-              this.state.selectedCampaign,
-              this.props.closeModal,
-              this.props.afterSave
-            )
-          }
-        >
-          Move
-        </PrimaryButton>
+        {this.isValidForm() === true ? (
+          <PrimaryButton
+            enabled={true}
+            onClick={() =>
+              moveCodes(
+                this.state.selectedCodes,
+                this.state.selectedCampaign,
+                this.props.closeModal,
+                this.props.afterSave
+              )
+            }
+          >
+            Move
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton enabled={false}>Move</PrimaryButton>
+        )}
       </div>
     );
   }

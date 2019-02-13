@@ -283,6 +283,17 @@ function processDate(created) {
   return date.toLocaleDateString("en-US", options);
 }
 
+function copyLink(referral_code){
+  //javscript magick for copying to clipboard
+  const el = document.createElement('textarea');
+  el.value = "https://brave.com/" + referral_code;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  alert("Copied! " + el.value)
+}
+
 function findCurrentCampaign(campaigns) {
   let currentCampaign;
   campaigns.forEach(function(campaign, index) {
@@ -371,7 +382,7 @@ function ReferralsTable(props) {
           }
         },
         {
-          content: <div key={index}>{referralCode.description}</div>,
+          content: <div key={index}>{referralCode.description === "null" ? "" : referralCode.description}</div>,
           customStyle: {
             "font-size": "15px",
             "text-align": "center",
@@ -414,16 +425,25 @@ function ReferralsTable(props) {
         },
         {
           content: (
+            <div style={{display: 'flex', justifyContent: 'space-around'}}>
             <div
               key={index}
               style={{ cursor: "pointer", userSelect: "none" }}
-              onClick={() => {
-                props.setCodeToDelete(referralCode.id);
-                props.triggerDeleteModal();
-              }}
+              onClick={() => {copyLink(referralCode.referral_code)}}
             >
-              Delete
+              Copy Link
             </div>
+            <div
+            key={index}
+            style={{ cursor: "pointer", userSelect: "none" }}
+            onClick={() => {
+              props.setCodeToDelete(referralCode.id);
+              props.triggerDeleteModal();
+            }}
+          >
+            Delete
+          </div>
+          </div>
           ),
           customStyle: {
             "font-size": "15px",

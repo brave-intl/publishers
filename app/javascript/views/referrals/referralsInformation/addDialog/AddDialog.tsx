@@ -37,6 +37,14 @@ export default class AddDialog extends React.Component<
     this.setState({ number: e.target.value });
   };
 
+  isValidForm = () => {
+    if (this.state.number > 0 && this.state.number < 500) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   public render() {
     return (
       <div>
@@ -62,20 +70,24 @@ export default class AddDialog extends React.Component<
         <br />
         <br />
         <br />
-        <PrimaryButton
-          onClick={() =>
-            addCode(
-              this.state.number,
-              this.state.description,
-              this.props.campaign.promo_campaign_id,
-              this.props.closeModal,
-              this.props.afterSave
-            )
-          }
-          enabled={true}
-        >
-          Add
-        </PrimaryButton>
+        {this.isValidForm() === true ? (
+          <PrimaryButton
+            onClick={() =>
+              addCode(
+                this.state.number,
+                this.state.description,
+                this.props.campaign.promo_campaign_id,
+                this.props.closeModal,
+                this.props.afterSave
+              )
+            }
+            enabled={true}
+          >
+            Add
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton enabled={false}>Add</PrimaryButton>
+        )}
       </div>
     );
   }

@@ -63,6 +63,17 @@ export default class CreateDialog extends React.Component<
     }
   };
 
+  isValidForm = () => {
+    if (
+      this.state.campaign &&
+      (this.state.number > 0 && this.state.number < 500)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   public render() {
     return (
       <div>
@@ -98,9 +109,13 @@ export default class CreateDialog extends React.Component<
         <br />
         <br />
         <br />
-        <PrimaryButton enabled={true} onClick={this.handleCreate}>
-          Create
-        </PrimaryButton>
+        {this.isValidForm() === true ? (
+          <PrimaryButton enabled={true} onClick={this.handleCreate}>
+            Create
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton enabled={false}>Create</PrimaryButton>
+        )}
       </div>
     );
   }

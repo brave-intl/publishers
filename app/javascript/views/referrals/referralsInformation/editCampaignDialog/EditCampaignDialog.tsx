@@ -31,6 +31,14 @@ export default class EditCampaignDialog extends React.Component<
     this.setState({ name: e.target.value });
   };
 
+  isValidForm = () => {
+    if (this.state.name) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   public render() {
     return (
       <div>
@@ -46,19 +54,23 @@ export default class EditCampaignDialog extends React.Component<
         <br />
         <br />
         <br />
-        <PrimaryButton
-          onClick={() =>
-            EditCampaign(
-              this.state.name,
-              this.props.campaign.promo_campaign_id,
-              this.props.closeModal,
-              this.props.afterSave
-            )
-          }
-          enabled={true}
-        >
-          Change
-        </PrimaryButton>
+        {this.isValidForm() === true ? (
+          <PrimaryButton
+            onClick={() =>
+              EditCampaign(
+                this.state.name,
+                this.props.campaign.promo_campaign_id,
+                this.props.closeModal,
+                this.props.afterSave
+              )
+            }
+            enabled={true}
+          >
+            Change
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton enabled={false}>Change</PrimaryButton>
+        )}
       </div>
     );
   }
