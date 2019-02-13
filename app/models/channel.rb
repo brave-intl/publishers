@@ -296,6 +296,10 @@ class Channel < ApplicationRecord
     end
   end
 
+  def type_display
+    self.details_type.split("ChannelDetails").join
+  end
+
   private
 
   def should_register_channel_for_promo
