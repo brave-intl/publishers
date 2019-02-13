@@ -15,13 +15,19 @@
             .db-field = "Organization:"
             .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
-          .db-field = "Status:"
+          .db-field = "Publisher Status:"
           .db-value = publisher_status(@publisher)
+        .db-info-row
+          .db-field = "Eyeshade wallet address:"
+          .db-value = @publisher.wallet.address
+        .db-info-row
+          .db-field = "Eyeshade wallet is a member:"
+          .db-value = @publisher.wallet.is_a_member?
         .db-info-row
           .db-field = "Uphold once connected:"
           .db-value = @publisher.uphold_verified?
         .db-info-row
-          .db-field = "Uphold authorized:"
+          .db-field = "Uphold authorized: (Possibly Deprecated?)"
           .db-value = @publisher.wallet.authorized?
         - if @publisher.wallet.uphold_account_status.present?
           .db-info-row
