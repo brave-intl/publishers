@@ -22,14 +22,14 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
      # stub balances response
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
         to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
@@ -67,7 +67,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
 
@@ -75,7 +75,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
         to_return(status: 200, body: wallet, headers: {})
 
      # stub balances response
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
         to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
@@ -94,10 +94,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
       # ensure request to update eyeshade default currency was made
       assert_requested :patch,
         "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
-        body: '{
-  "defaultCurrency": "BAT" 
-}
-'
+        body: {defaultCurrency: "BAT"}
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end
@@ -120,13 +117,13 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
      # stub balances response
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
         to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
@@ -170,14 +167,14 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                                "scope" => "cards:read, cards:write, user:read",
                              },
                  "rates" => {},
-                 "contributions" => { "currency" => "USD"} 
+                 "contributions" => { "currency" => "USD"}
       }.to_json
 
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
         to_return(status: 200, body: wallet, headers: {})
 
      # stub balances response
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
         to_return(status: 200, body: [].to_json)
 
       CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
