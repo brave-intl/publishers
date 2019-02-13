@@ -97,7 +97,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
         .to_return(status: 200, body: wallet_response.to_json, headers: {})
-      stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}")
+      stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
         .to_return(status: 200, body: balance_response.to_json)
     end
 
@@ -145,7 +145,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
           .to_return(status: 200, body: wallet_response.to_json, headers: {})
 
-        stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}")
+        stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
           .to_return(status: 200, body: balance_response.to_json)
 
         subject
@@ -203,7 +203,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
             @payout_report = PayoutReport.create(fee_rate: 0.05)
 
             account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}")
+            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
               .to_return(status: 200, body: balance_response.to_json)
           end
 
@@ -413,7 +413,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
             Rails.application.secrets[:fee_rate] = 0.05
             @payout_report = PayoutReport.create(fee_rate: 0.05)
 
-            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?")
+            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?pending=true")
               .to_return(status: 200, body: balance_response.to_json)
 
             subject
@@ -461,7 +461,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
             Rails.application.secrets[:fee_rate] = 0.05
             @payout_report = PayoutReport.create(fee_rate: 0.05)
             account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}")
+            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
               .to_return(status: 200, body: balance_response.to_json)
           end
 
