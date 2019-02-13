@@ -15,8 +15,8 @@ class Api::V1::Stats::ReferralCodesController < Api::V1::StatsController
             "channel_type": channel.type_display,
             "channel_name": channel.publication_title,
             "channel_identifier": channel.details.channel_identifier,
-            "channel_stats": channel.details.stats,
             "channel_url": channel.details.url,
+            "channel_stats": channel.details.stats,
             "publisher_id": channel.publisher_id,
             "verified": channel.verified
         }
