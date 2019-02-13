@@ -43,7 +43,9 @@ export default class AddDialog extends React.Component<
         <Header>Add referral code?</Header>
         <br />
         <Label>Number of Codes</Label>
+        <br />
         <Input
+          style={{ width: "25%" }}
           value={this.state.number}
           onChange={this.handleNumber}
           type="number"
@@ -52,9 +54,12 @@ export default class AddDialog extends React.Component<
         <br />
         <Label>Enter Description</Label>
         <Input
+          style={{ width: "100%" }}
           value={this.state.description}
           onChange={this.handleDescription}
+          placeholder={"Say something about these codes"}
         />
+        <br />
         <br />
         <br />
         <PrimaryButton

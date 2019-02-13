@@ -31,8 +31,9 @@ export default class DeleteCampaignDialog extends React.Component<
         <br />
         <Label>
           Please note, this action will delete all referral codes belonging to{" "}
-          {this.props.campaign.name}.
+          {this.props.campaign.name}. This action cannot be undone.
         </Label>
+        <br />
         <br />
         <br />
         <PrimaryButton

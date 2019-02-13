@@ -8,7 +8,6 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   end
 
   def perform
-    puts 'helo'
     return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
     stats = []
     @referral_codes.each_slice(BATCH_SIZE).to_a.each do |referral_code_batch|

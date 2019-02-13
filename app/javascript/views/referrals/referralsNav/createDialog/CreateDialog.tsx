@@ -66,25 +66,36 @@ export default class CreateDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Create referral code?</Header>
+        <Header>Create Campaign?</Header>
         <br />
         <br />
         <Label>Number of Codes</Label>
-        <Input value={this.state.number} onChange={this.handleNumber} />
         <br />
-        <br />
-        <Label>Description</Label>
         <Input
-          value={this.state.description}
-          onChange={this.handleDescription}
+          style={{ width: "25%" }}
+          value={this.state.number}
+          onChange={this.handleNumber}
+          type="number"
         />
         <br />
         <br />
         <Label>Campaign</Label>
         <Input
+          style={{ width: "100%" }}
           value={this.state.campaign}
           onChange={this.handleCampaignValue}
+          placeholder={"Name this campaign"}
         />
+        <br />
+        <br />
+        <Label>Description</Label>
+        <Input
+          style={{ width: "100%" }}
+          value={this.state.description}
+          onChange={this.handleDescription}
+          placeholder={"Say something about these codes"}
+        />
+        <br />
         <br />
         <br />
         <PrimaryButton enabled={true} onClick={this.handleCreate}>

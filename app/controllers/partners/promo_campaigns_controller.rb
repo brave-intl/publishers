@@ -8,6 +8,11 @@ module Partners
         render(status: 200, json: promo_campaign)
     end
 
+    def update
+        promo_campaign = current_publisher.promo_campaigns.find(params[:id])
+        promo_campaign.update(name: params[:name])
+    end
+
     def destroy
         data = JSON.parse(params[:codes])
         data.each do |code|

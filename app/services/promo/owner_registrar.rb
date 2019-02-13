@@ -29,17 +29,20 @@ class Promo::OwnerRegistrar < BaseApiClient
                                 description: @description,
                                 kind: PromoRegistration::OWNER)
     end
+    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
   end
 
   def perform_offline
+    promo_registrations = []
     @number.times do
-      PromoRegistration.create!(referral_code: offline_referral_code,
-                                publisher_id: @publisher_id,
-                                promo_id: active_promo_id,
-                                promo_campaign_id: @promo_campaign_id,
-                                description: @description,
-                                kind: PromoRegistration::OWNER)
+      promo_registrations.push(PromoRegistration.create!(referral_code: offline_referral_code,
+                                                              publisher_id: @publisher_id,
+                                                              promo_id: active_promo_id,
+                                                              promo_campaign_id: @promo_campaign_id,
+                                                              description: @description,
+                                                              kind: PromoRegistration::OWNER))                                                    
     end
+    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
   end
 
   private

@@ -17,7 +17,7 @@ html
       = javascript_pack_tag('application')
 
     - content_for(:navbar_content_right) do
-      - if current_publisher.partner?
+      - if current_publisher && current_publisher.partner?
         = link_to(t("shared.dashboard"), home_publishers_path, class: 'title')
         = link_to(t("shared.referrals"), partners_referrals_path, class: 'title')
         = link_to(t("shared.payments"), payments_path, class: 'title' )
@@ -37,7 +37,7 @@ html
     #main
       - if content_for?(:nav)
         = yield(:nav)
-      - elsif current_publisher.partner?
+      - elsif current_publisher && current_publisher.partner?
         = render("partner_nav")
       - else
         = render("nav")

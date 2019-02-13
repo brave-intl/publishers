@@ -2,7 +2,7 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, PrimaryButton } from "./DeleteDialogStyle";
+import { Header, Label, PrimaryButton } from "./DeleteDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 type IDeleteDialogState = Readonly<typeof initialState>;
@@ -27,6 +27,9 @@ export default class DeleteDialog extends React.Component<
     return (
       <div>
         <Header>Delete referral code?</Header>
+        <br />
+        <Label>Please note, this action cannot be undone.</Label>
+        <br />
         <br />
         <PrimaryButton
           enabled={true}

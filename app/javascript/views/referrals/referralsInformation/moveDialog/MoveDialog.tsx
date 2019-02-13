@@ -68,6 +68,7 @@ export default class MoveDialog extends React.Component<
           handleCampaignSelect={this.handleCampaignSelect}
         />
         <br />
+        <br />
         <PrimaryButton
           enabled={true}
           onClick={() =>
@@ -114,7 +115,25 @@ async function moveCodes(
 }
 
 function CodesList(props) {
-  let header = [{ content: "Referral Code" }, { content: "Description" }];
+  let header = [
+    {
+      content: "Referral Code",
+      customStyle: {
+        "font-size": "15px",
+        opacity: ".7",
+        "margin-left": "24px",
+        padding: "10px"
+      }
+    },
+    {
+      content: "Description",
+      customStyle: {
+        "font-size": "15px",
+        opacity: ".7",
+        padding: "10px"
+      }
+    }
+  ];
   let rows = [];
   props.referralCodes.forEach(function(code, index) {
     let content = {
@@ -128,21 +147,31 @@ function CodesList(props) {
                 }}
                 type="checkbox"
               />
+              &nbsp;
               {code.referral_code}
             </div>
-          )
+          ),
+          customStyle: {
+            "font-size": "15px",
+            "margin-left": "24px",
+            padding: "10px"
+          }
         },
         {
-          content: <div key={index}>{code.referral_code}</div>
+          content: <div key={index}>{code.referral_code}</div>,
+          customStyle: {
+            "font-size": "15px",
+            padding: "10px"
+          }
         }
       ]
     };
     rows.push(content);
   });
   return (
-    <div style={{ maxHeight: "250px", overflowY: "scroll" }}>
+    <div style={{ maxHeight: "260px", overflowY: "scroll" }}>
       <Table header={header} rows={rows}>
-        Loading...
+        &nbsp;
       </Table>
     </div>
   );

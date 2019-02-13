@@ -6,6 +6,8 @@ export const FlexWrapper = styled.div`
 
 export const Label = styled.label`
   margin: 0;
+  font-size: 16px;
+  padding-bottom: 8px;
 `;
 
 export const Input = styled.input`

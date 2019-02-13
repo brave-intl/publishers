@@ -6,19 +6,22 @@ export const FlexWrapper = styled.div`
 
 export const Label = styled.label`
   margin: 0;
+  width: 150px;
+  font-size: 16px;
+  padding-bottom: 8px;
 `;
 
 export const Header = styled.header`
   font-size: 24px;
   color: #434351;
   font-weight: 600;
-  margin-bottom: 1rem;
 `;
 
 export const Input = styled.input`
   height: 40px;
   border: none;
   border: 1px solid #ccc;
+  padding: 8px;
   border-radius: 4px;
   ::-webkit-inner-spin-button {
     opacity: 1;

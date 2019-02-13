@@ -13,11 +13,13 @@ import Modal, { ModalSize } from "../../../components/modal/Modal";
 import AddDialog from "./addDialog/AddDialog";
 import DeleteDialog from "./deleteDialog/DeleteDialog";
 import DeleteCampaignDialog from "./deleteCampaignDialog/DeleteCampaignDialog";
+import EditCampaignDialog from "./editCampaignDialog/EditCampaignDialog";
 import MoveDialog from "./moveDialog/MoveDialog";
 
 import Table from "brave-ui/components/dataTables/table";
 import { CloseStrokeIcon } from "brave-ui/components/icons";
 import { CheckCircleIcon } from "brave-ui/components/icons";
+import { SettingsAdvancedIcon } from "brave-ui/components/icons";
 
 interface IReferralsInfoProps {}
 
@@ -30,6 +32,7 @@ interface IReferralsInfoState {
   showMoveModal: boolean;
   showDeleteModal: boolean;
   showDeleteCampaignModal: boolean;
+  showEditCampaignModal: boolean;
   codeToDelete: any;
 }
 
@@ -47,6 +50,7 @@ export default class ReferralsInformation extends React.Component<
       showAddModal: false,
       showMoveModal: false,
       showDeleteCampaignModal: false,
+      showEditCampaignModal: false,
       currentCampaign: { name: "load", promo_registrations: [] },
       codeToDelete: null
     };
@@ -114,12 +118,19 @@ export default class ReferralsInformation extends React.Component<
               )}
             </Text>
           </Content>
-          <Content
-            style={{ cursor: "pointer" }}
-            onClick={this.triggerDeleteCampaignModal}
-            closeIcon
-          >
-            <CloseStrokeIcon />
+          <Content closeIcon>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={this.triggerDeleteCampaignModal}
+            >
+              <CloseStrokeIcon />
+            </div>
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={this.triggerEditCampaignModal}
+            >
+              <SettingsAdvancedIcon />
+            </div>
           </Content>
         </Row>
         <Row lineBreak />
@@ -142,8 +153,10 @@ export default class ReferralsInformation extends React.Component<
         <Row buttons>
           <Content buttons>
             <Button onClick={this.triggerAddModal}>Add Codes</Button>
-            <Button onClick={this.triggerMoveModal}>Move Codes</Button>
+            <Button style={{marginLeft: "8px"}} onClick={this.triggerMoveModal}>Move Codes</Button>
           </Content>
+          <br />
+          <br />
         </Row>
         <ReferralsTable
           referralCodes={this.state.currentCampaign.promo_registrations}
@@ -196,6 +209,17 @@ export default class ReferralsInformation extends React.Component<
             afterSave={redirectToReferrals}
           />
         </Modal>
+        <Modal
+          handleClose={this.triggerEditCampaignModal}
+          show={this.state.showEditCampaignModal}
+          size={ModalSize.ExtraSmall}
+        >
+          <EditCampaignDialog
+            closeModal={this.triggerEditCampaignModal}
+            campaign={this.state.currentCampaign}
+            afterSave={this.fetchData}
+          />
+        </Modal>
       </Container>
     );
   }
@@ -210,6 +234,10 @@ export default class ReferralsInformation extends React.Component<
 
   private triggerDeleteModal = () => {
     this.setState({ showDeleteModal: !this.state.showDeleteModal });
+  };
+
+  private triggerEditCampaignModal = () => {
+    this.setState({ showEditCampaignModal: !this.state.showEditCampaignModal });
   };
 
   private triggerDeleteCampaignModal = () => {
@@ -273,12 +301,60 @@ function redirectToReferrals() {
 
 function ReferralsTable(props) {
   let header = [
-    { content: "Referral Code" },
-    { content: "Description" },
-    { content: "Downloads" },
-    { content: "Installs" },
-    { content: "30-Day-Use" },
-    { content: "Actions" }
+    {
+      content: "Referral Code",
+      customStyle: {
+        "font-size": "15px",
+        "text-align": "center",
+        "opacity": ".7"
+        padding: "20px"
+      }
+    },
+    {
+      content: "Description",
+      customStyle: {
+        "font-size": "15px",
+        "text-align": "center",
+        "opacity": ".7"
+        padding: "20px"
+      }
+    },
+    {
+      content: "Downloads",
+      customStyle: {
+        "font-size": "15px",
+        "text-align": "center",
+        "opacity": ".7"
+        padding: "20px"
+      }
+    },
+    {
+      content: "Installs",
+      customStyle: {
+        "font-size": "15px",
+        "text-align": "center",
+        "opacity": ".7"
+        padding: "20px"
+      }
+    },
+    {
+      content: "30-Day-Use",
+      customStyle: {
+        "font-size": "15px",
+        "text-align": "center",
+        "opacity": ".7"
+        padding: "20px"
+      }
+    },
+    {
+      content: "Actions",
+      customStyle: {
+        "font-size": "15px",
+        "text-align": "center",
+        "opacity": ".7"
+        padding: "20px"
+      }
+    }
   ];
 
   let rows = [];
@@ -287,29 +363,54 @@ function ReferralsTable(props) {
     let content = {
       content: [
         {
-          content: <div key={index}>{referralCode.referral_code}</div>
+          content: <div key={index}>{referralCode.referral_code}</div>,
+          customStyle: {
+            "font-size": "15px",
+            "text-align": "center",
+            padding: "24px"
+          }
         },
         {
-          content: <div key={index}>{referralCode.description}</div>
+          content: <div key={index}>{referralCode.description}</div>,
+          customStyle: {
+            "font-size": "15px",
+            "text-align": "center",
+            padding: "24px"
+          }
         },
         {
           content: (
             <div key={index}>
               {JSON.parse(referralCode.stats)[0].retrievals}
             </div>
-          )
+          ),
+          customStyle: {
+            "font-size": "15px",
+            "text-align": "center",
+            padding: "24px"
+          }
         },
         {
           content: (
             <div key={index}>
               {JSON.parse(referralCode.stats)[0].first_runs}
             </div>
-          )
+          ),
+          customStyle: {
+            "font-size": "15px",
+            "text-align": "center",
+            padding: "24px"
+          }
         },
         {
           content: (
             <div key={index}>{JSON.parse(referralCode.stats)[0].finalized}</div>
-          )
+          ),
+          customStyle: {
+            "font-size": "15px",
+            "text-align": "center",
+            padding: "24px"
+          }
         },
         {
           content: (
@@ -323,7 +424,12 @@ function ReferralsTable(props) {
             >
               Delete
             </div>
-          )
+          ),
+          customStyle: {
+            "font-size": "15px",
+            "text-align": "center",
+            padding: "24px"
+          }
         }
       ]
     };
@@ -332,7 +438,7 @@ function ReferralsTable(props) {
   return (
     <div>
       <Table header={header} rows={rows}>
-        Loading...
+        &nbsp;
       </Table>
     </div>
   );
