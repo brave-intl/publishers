@@ -59,7 +59,9 @@ class PromoRegistration < ApplicationRecord
   # the stats are currently organized by platform.
   def stats_by_date
     compressed_stats = {}
+    starting_date = nil
     JSON.parse(stats).each do |stat|
+      starting_date ||= stat['ymd'] if starting_date.nil?
       unless compressed_stats.has_key?(stat['ymd'])
         compressed_stats[stat['ymd']] = {}
         compressed_stats[stat['ymd']]['retrievals'] = 0
@@ -71,7 +73,21 @@ class PromoRegistration < ApplicationRecord
       compressed_stats[stat['ymd']]['first_runs'] += stat['first_runs']
       compressed_stats[stat['ymd']]['finalized'] += stat['finalized']
     end
-    compressed_stats.values
+
+    rolling_date = Date.parse(starting_date)
+    while rolling_date < Date.today
+      formatted_date = rolling_date.strftime("%Y-%m-%d")
+      unless compressed_stats.has_key?(formatted_date)
+        compressed_stats[formatted_date] = {}
+        compressed_stats[formatted_date]['retrievals'] = 0
+        compressed_stats[formatted_date]['first_runs'] = 0
+        compressed_stats[formatted_date]['finalized'] = 0
+        compressed_stats[formatted_date]['ymd'] = formatted_date
+      end
+      rolling_date = rolling_date.tomorrow
+    end
+
+    compressed_stats.values.sort_by! { |h| h['ymd'] }
   end
 
   class << self

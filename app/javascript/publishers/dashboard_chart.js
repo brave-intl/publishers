@@ -50,8 +50,10 @@ function createChart(data, title, suggestedMax) {
   var wrapper = document.getElementById('channel-referrals-stats-chart');
   var canvas = document.createElement('canvas');
   canvas.setAttribute("width", "400");
-  canvas.setAttribute("height", "100");
+  canvas.setAttribute("height", "300");
   wrapper.appendChild(canvas);
+
+  Chart.defaults.global.defaultFontFamily = 'Poppins';
 
   new Chart(canvas, {
     type: 'line',
@@ -80,7 +82,6 @@ function createChart(data, title, suggestedMax) {
         mode: 'x'
       },
       title: {
-        fontFamily: 'Poppins',
         fontSize: 18,
         display: true,
         text: title.toUpperCase()
