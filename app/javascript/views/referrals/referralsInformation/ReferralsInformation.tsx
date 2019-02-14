@@ -425,7 +425,7 @@ function ReferralsTable(props) {
         },
         {
           content: (
-            <div style={{display: 'flex', justifyContent: 'space-around'}}>
+            <div key={index} style={{display: 'flex', justifyContent: 'space-around'}}>
             <div
               key={index}
               style={{ cursor: "pointer", userSelect: "none" }}

@@ -13,23 +13,24 @@ module Partners
 
     private
     def prepare_json
+        membership = Membership.find_by(user_id: current_publisher.id)
+        organization = Organization.find(membership.organization_id)
+        partner_ids = Membership.where(organization_id: organization.id).map { |membership| membership.user_id}
         data = {}
-        unassigned_codes = current_publisher.promo_registrations.where(promo_campaign_id: nil)
         campaigns = []
-    
-        current_publisher.promo_campaigns.each do |promo_campaign|
-        promo_registrations = current_publisher.promo_registrations.where(promo_campaign_id: promo_campaign.id)
-        campaigns.push(
-        {
-            "promo_campaign_id": promo_campaign.id,
-            "name": promo_campaign.name,
-            "created_at": promo_campaign.created_at,
-            "promo_registrations": promo_registrations
-        }
-        )
+        partner_ids.each do |partner_id|
+          partner = Publisher.find(partner_id)
+          partner.promo_campaigns.each do |promo_campaign|
+            promo_registrations = partner.promo_registrations.where(promo_campaign_id: promo_campaign.id)
+            campaigns.push(
+            {
+                "promo_campaign_id": promo_campaign.id,
+                "name": promo_campaign.name,
+                "created_at": promo_campaign.created_at,
+                "promo_registrations": promo_registrations
+            })
+          end
         end
-    
-        data[:unassigned_codes] = unassigned_codes
         data[:campaigns] = campaigns  
         return data
     end
