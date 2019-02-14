@@ -40,6 +40,8 @@ class PromoRegistration < ApplicationRecord
   validates :kind, inclusion: { in: KINDS, message: "%{value} is not a valid kind of promo registration." }
   validates :referral_code, presence: true, uniqueness: { scope: :promo_id }
 
+  validates_associated :publisher
+
   scope :owner_only, -> { where(kind: OWNER) }
   scope :unattached_only, -> { where(kind: UNATTACHED) }
   scope :channels_only, -> { where(kind: CHANNEL) }

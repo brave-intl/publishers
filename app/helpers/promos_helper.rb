@@ -12,7 +12,7 @@ module PromosHelper
   end
 
   def offline_referral_code
-    referral_code = "BATS-#{rand(0..1000)}"
+    referral_code = "BATS-#{rand(0..10000)}"
     referral_code
   end
 
