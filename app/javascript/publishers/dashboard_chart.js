@@ -11,7 +11,8 @@ let colors = [
 ]
 
 function createLabels(startingDate) {
-  var loop = new Date(startingDate);
+  // https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off
+  var loop = new Date(startingDate.replace(/-/g, '\/'));
   var dates_array = [];
 
   while (loop <= new Date()) {
@@ -31,7 +32,7 @@ function getSuggestedMax(data) {
     currentMax = value.first_runs > currentMax ? value.first_runs : currentMax;
     currentMax = value.finalized > currentMax ? value.finalized : currentMax;
   });
-  return (currentMax * 10 / 8)
+  return (currentMax * 100 / 95)
 }
 
 function createCharts() {
