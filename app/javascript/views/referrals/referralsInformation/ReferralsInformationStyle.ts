@@ -12,42 +12,27 @@ export const Container = styled.div`
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
 `;
-
+interface IRowProps {
+  campaign?: boolean;
+  buttons?: boolean;
+  lineBreak?: boolean;
+}
 export const Row = styled.div`
   display: flex;
 
-  ${props =>
+  ${(props: IRowProps) =>
     props.campaign &&
     `
       justify-content: space-between;
     `}
-  ${props =>
-    props.buttons &&
-    `
+    ${(props: IRowProps) =>
+      props.buttons &&
+      `
       justify-content: flex-end;
     `}
-  ${props =>
-    props.tableHead &&
-    `
-      justify-content: space-between;
-      padding-top: 24px;
-      padding-bottom: 24px;
-      border-top: 3px solid #efefef;
-      border-bottom: 3px solid #efefef;
-
-    `}
-  ${props =>
-    props.tableRow &&
-    `
-      justify-content: space-between;
-      padding-top: 24px;
-      padding-bottom: 24px;
-      border-bottom: 3px solid #efefef;
-
-    `}
-  ${props =>
-    props.lineBreak &&
-    `
+    ${(props: IRowProps) =>
+      props.lineBreak &&
+      `
       border-top: 2px solid #efefef;
       margin-top: 24px;
       margin-left: -40px;
@@ -71,9 +56,18 @@ export const Button = styled.div`
   user-select: none;
 `;
 
+interface IContentProps {
+  back?: boolean;
+  campaignIcon?: boolean;
+  closeIcon?: boolean;
+  created?: boolean;
+  total?: boolean;
+  tableHeader?: boolean;
+  buttons?: boolean;
+}
 export const Content = styled.div`
 
-${props =>
+${(props: IContentProps) =>
   props.back &&
   `
     width: 50px;
@@ -82,47 +76,41 @@ ${props =>
     margin-top:6px;
   `}
 
-${props =>
-  props.campaignIcon &&
-  `
+  ${(props: IContentProps) =>
+    props.campaignIcon &&
+    `
     margin-top: 6px;
     width: 50px;
     height: 50px
   `}
 
-${props =>
-  props.closeIcon &&
-  `
+  ${(props: IContentProps) =>
+    props.closeIcon &&
+    `
     width: 30px;
     height: 30px
     margin-top: -20px;
     margin-right: -10px;
   `}
 
-${props =>
-  props.created &&
-  `
+  ${(props: IContentProps) =>
+    props.created &&
+    `
     padding-top: 12px;
     display: flex;
     ::nth-child(1) {
         color: red;
     }
   `}
-${props =>
-  props.total &&
-  `
+  ${(props: IContentProps) =>
+    props.total &&
+    `
     padding-top: 8px;
     display: flex;
   `}
-${props =>
-  props.tableHeader &&
-  `
-    width: 150px;
-    text-align: center;
-  `}
-${props =>
-  props.buttons &&
-  `
+  ${(props: IContentProps) =>
+    props.buttons &&
+    `
     display: flex;
     padding-bottom: 12px;
     &:first-child {
@@ -131,10 +119,16 @@ ${props =>
   `}
 `;
 
+interface ITextProps {
+  header?: boolean;
+  h2?: boolean;
+  h4?: boolean;
+  p?: boolean;
+}
 export const Text = styled.div`
   font-family: Poppins, sans-serif;
 
-  ${props =>
+  ${(props: ITextProps) =>
     props.header &&
     `
       font-weight: bold;
@@ -142,23 +136,23 @@ export const Text = styled.div`
       opacity: .5;
     `}
 
-  ${props =>
-    props.h2 &&
-    `
+    ${(props: ITextProps) =>
+      props.h2 &&
+      `
       font-weight: bold;
       font-size: 26px;
     `}
 
-  ${props =>
-    props.h4 &&
-    `
+    ${(props: ITextProps) =>
+      props.h4 &&
+      `
       font-weight: bold;
       font-size: 18px;
     `}
 
-  ${props =>
-    props.p &&
-    `
+    ${(props: ITextProps) =>
+      props.p &&
+      `
       font-size: 18px;
     `}
 `;

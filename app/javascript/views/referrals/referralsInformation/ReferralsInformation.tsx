@@ -153,7 +153,12 @@ export default class ReferralsInformation extends React.Component<
         <Row buttons>
           <Content buttons>
             <Button onClick={this.triggerAddModal}>Add Codes</Button>
-            <Button style={{marginLeft: "8px"}} onClick={this.triggerMoveModal}>Move Codes</Button>
+            <Button
+              style={{ marginLeft: "8px" }}
+              onClick={this.triggerMoveModal}
+            >
+              Move Codes
+            </Button>
           </Content>
           <br />
           <br />
@@ -283,15 +288,15 @@ function processDate(created) {
   return date.toLocaleDateString("en-US", options);
 }
 
-function copyLink(referral_code){
+function copyLink(referral_code) {
   //javscript magick for copying to clipboard
-  const el = document.createElement('textarea');
+  const el = document.createElement("textarea");
   el.value = "https://brave.com/" + referral_code;
   document.body.appendChild(el);
   el.select();
-  document.execCommand('copy');
+  document.execCommand("copy");
   document.body.removeChild(el);
-  alert("Copied! " + el.value)
+  alert("Copied! " + el.value);
 }
 
 function findCurrentCampaign(campaigns) {
@@ -317,7 +322,7 @@ function ReferralsTable(props) {
       customStyle: {
         "font-size": "15px",
         "text-align": "center",
-        "opacity": ".7"
+        opacity: ".7",
         padding: "20px"
       }
     },
@@ -326,7 +331,7 @@ function ReferralsTable(props) {
       customStyle: {
         "font-size": "15px",
         "text-align": "center",
-        "opacity": ".7"
+        opacity: ".7",
         padding: "20px"
       }
     },
@@ -335,7 +340,7 @@ function ReferralsTable(props) {
       customStyle: {
         "font-size": "15px",
         "text-align": "center",
-        "opacity": ".7"
+        opacity: ".7",
         padding: "20px"
       }
     },
@@ -344,7 +349,7 @@ function ReferralsTable(props) {
       customStyle: {
         "font-size": "15px",
         "text-align": "center",
-        "opacity": ".7"
+        opacity: ".7",
         padding: "20px"
       }
     },
@@ -353,7 +358,7 @@ function ReferralsTable(props) {
       customStyle: {
         "font-size": "15px",
         "text-align": "center",
-        "opacity": ".7"
+        opacity: ".7",
         padding: "20px"
       }
     },
@@ -362,7 +367,7 @@ function ReferralsTable(props) {
       customStyle: {
         "font-size": "15px",
         "text-align": "center",
-        "opacity": ".7"
+        opacity: ".7",
         padding: "20px"
       }
     }
@@ -382,7 +387,13 @@ function ReferralsTable(props) {
           }
         },
         {
-          content: <div key={index}>{referralCode.description === "null" ? "" : referralCode.description}</div>,
+          content: (
+            <div key={index}>
+              {referralCode.description === "null"
+                ? ""
+                : referralCode.description}
+            </div>
+          ),
           customStyle: {
             "font-size": "15px",
             "text-align": "center",
@@ -425,25 +436,30 @@ function ReferralsTable(props) {
         },
         {
           content: (
-            <div key={index} style={{display: 'flex', justifyContent: 'space-around'}}>
             <div
               key={index}
-              style={{ cursor: "pointer", userSelect: "none" }}
-              onClick={() => {copyLink(referralCode.referral_code)}}
+              style={{ display: "flex", justifyContent: "space-around" }}
             >
-              Copy Link
+              <div
+                key={index}
+                style={{ cursor: "pointer", userSelect: "none" }}
+                onClick={() => {
+                  copyLink(referralCode.referral_code);
+                }}
+              >
+                Copy Link
+              </div>
+              <div
+                key={index}
+                style={{ cursor: "pointer", userSelect: "none" }}
+                onClick={() => {
+                  props.setCodeToDelete(referralCode.id);
+                  props.triggerDeleteModal();
+                }}
+              >
+                Delete
+              </div>
             </div>
-            <div
-            key={index}
-            style={{ cursor: "pointer", userSelect: "none" }}
-            onClick={() => {
-              props.setCodeToDelete(referralCode.id);
-              props.triggerDeleteModal();
-            }}
-          >
-            Delete
-          </div>
-          </div>
           ),
           customStyle: {
             "font-size": "15px",

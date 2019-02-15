@@ -9,6 +9,7 @@ import locale from "../../../locale/en";
 
 interface IReferralsNavProps {
   openModal: (type: any) => void;
+  fetchData: any;
 }
 
 interface IReferralsNavState {

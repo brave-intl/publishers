@@ -27,13 +27,13 @@ export default class ReferralsCard extends React.Component<
     return (
       <Wrapper>
         <Grid>
-          <Row title>
+          <Row>
             <IconWrapper check>
               <CheckCircleIcon />
             </IconWrapper>
             <ContentWrapper>
               <TextWrapper>
-                <Text title>{this.props.campaign.name}</Text>
+                <Text>{this.props.campaign.name}</Text>
               </TextWrapper>
               <TextWrapper created>
                 <Text created>{locale.created}</Text>
