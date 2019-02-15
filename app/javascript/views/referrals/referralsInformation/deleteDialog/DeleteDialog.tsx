@@ -51,16 +51,16 @@ export default class DeleteDialog extends React.Component<
 async function deleteCode(codeID, closeModal, afterSave) {
   const url = "/partners/referrals/promo_registrations/" + codeID;
   const options = {
-    method: "DELETE",
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
-    }
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
+    },
+    method: "DELETE"
   };
-  let response = await fetch(url, options);
+  const response = await fetch(url, options);
   afterSave();
   closeModal();
   return response;

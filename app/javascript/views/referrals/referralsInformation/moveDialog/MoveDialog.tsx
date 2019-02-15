@@ -2,10 +2,8 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, PrimaryButton } from "./MoveDialogStyle";
-
-import Checkbox from "brave-ui/components/formControls/checkbox";
 import Table from "brave-ui/components/dataTables/table";
+import { Header, PrimaryButton } from "./MoveDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 
@@ -30,14 +28,14 @@ export default class MoveDialog extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      selectedCodes: [],
-      selectedCampaign: null,
       campaignValue: null,
-      codesValue: null
+      codesValue: null,
+      selectedCampaign: null,
+      selectedCodes: []
     };
   }
 
-  isValidForm = () => {
+  public isValidForm = () => {
     if (
       this.state.selectedCodes.length > 0 &&
       this.state.selectedCampaign !== null
@@ -48,16 +46,16 @@ export default class MoveDialog extends React.Component<
     }
   };
 
-  handleCampaignSelect = e => {
+  public handleCampaignSelect = e => {
     this.setState({ selectedCampaign: e.target.value });
   };
-  handleCodeSelect = (e, id) => {
-    let temp = this.state.selectedCodes;
+  public handleCodeSelect = (e, id) => {
+    const temp = this.state.selectedCodes;
     if (e.target.checked) {
       temp.push(id);
       this.setState({ selectedCodes: temp });
     } else {
-      let index = temp.indexOf(id);
+      const index = temp.indexOf(id);
       if (index > -1) {
         temp.splice(index, 1);
       }
@@ -108,35 +106,35 @@ async function moveCodes(
   closeModal,
   afterSave
 ) {
-  let url =
+  const url =
     "/partners/referrals/promo_registrations/" + selectedCodes.join(",");
-  let body = new FormData();
+  const body = new FormData();
   body.append("campaign", selectedCampaign);
-  let options = {
-    method: "PUT",
+  const options = {
+    body,
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
     },
-    body: body
+    method: "PUT"
   };
-  let response = await fetch(url, options);
+  const response = await fetch(url, options);
   afterSave();
   closeModal();
   return;
 }
 
 function CodesList(props) {
-  let header = [
+  const header = [
     {
       content: "Referral Code",
       customStyle: {
         "font-size": "15px",
-        opacity: ".7",
         "margin-left": "24px",
+        opacity: ".7",
         padding: "10px"
       }
     },
@@ -149,9 +147,9 @@ function CodesList(props) {
       }
     }
   ];
-  let rows = [];
-  props.referralCodes.forEach(function(code, index) {
-    let content = {
+  const rows = [];
+  props.referralCodes.forEach((code, index) => {
+    const content = {
       content: [
         {
           content: (
@@ -193,8 +191,8 @@ function CodesList(props) {
 }
 
 function CampaignDropdown(props) {
-  let campaigns = props.campaigns;
-  let dropdownOptions = props.campaigns.map((campaign, index) => (
+  const campaigns = props.campaigns;
+  const dropdownOptions = props.campaigns.map((campaign, index) => (
     <option key={index} value={campaign.promo_campaign_id}>
       {campaign.name}
     </option>

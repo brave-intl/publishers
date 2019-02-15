@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Wrapper, Container, Text, Button } from "./ReferralsNavStyle";
+import { Button, Container, Text, Wrapper } from "./ReferralsNavStyle";
 
 import Modal, { ModalSize } from "../../../components/modal/Modal";
 import CreateDialog from "./createDialog/CreateDialog";
@@ -27,11 +27,11 @@ export default class ReferralsNav extends React.Component<
     };
   }
 
-  render() {
+  public render() {
     return (
       <Wrapper>
         <Container>
-          <Text header>{locale.referrals}</Text>
+          <Text header>{locale.referrals.referrals}</Text>
           <Button
             onClick={() => {
               this.triggerCreateModal();

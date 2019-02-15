@@ -47,7 +47,7 @@ export const Button = styled.div`
   color: black;
   text-align: center;
   border-radius: 26px;
-  border: 1px solid #00000050
+  border: 1px solid #00000050;
   margin-top: auto;
   margin-bottom: auto;
   padding: 11px 12px 8px 12px;

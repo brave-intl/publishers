@@ -2,7 +2,7 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, Label, Input, PrimaryButton } from "./CreateDialogStyle";
+import { Header, Input, Label, PrimaryButton } from "./CreateDialogStyle";
 
 interface ICreateDialogProps {
   closeModal: () => void;
@@ -22,25 +22,25 @@ export default class CreateDialog extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      number: 1,
+      campaign: null,
       description: null,
-      campaign: null
+      number: 1
     };
   }
 
-  handleCampaignValue = e => {
+  public handleCampaignValue = e => {
     this.setState({ campaign: e.target.value });
   };
 
-  handleNumber = e => {
+  public handleNumber = e => {
     this.setState({ number: e.target.value });
   };
 
-  handleDescription = e => {
+  public handleDescription = e => {
     this.setState({ description: e.target.value });
   };
 
-  handleCreate = async e => {
+  public handleCreate = async e => {
     let newCampaign = null;
 
     if (this.state.campaign) {
@@ -63,7 +63,7 @@ export default class CreateDialog extends React.Component<
     }
   };
 
-  isValidForm = () => {
+  public isValidForm = () => {
     if (
       this.state.campaign &&
       (this.state.number > 0 && this.state.number < 500)
@@ -122,22 +122,22 @@ export default class CreateDialog extends React.Component<
 }
 
 async function createCampaign(name) {
-  let url = "/partners/referrals/promo_campaigns/";
-  let body = new FormData();
+  const url = "/partners/referrals/promo_campaigns/";
+  const body = new FormData();
   body.append("name", name);
-  let options = {
-    method: "POST",
+  const options = {
+    body,
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
     },
-    body: body
+    method: "POST"
   };
-  let response = await fetch(url, options);
-  let data = await response.json();
+  const response = await fetch(url, options);
+  const data = await response.json();
   return data;
 }
 
@@ -148,23 +148,23 @@ async function createReferralCode(
   afterSave,
   closeModal
 ) {
-  let url = "/partners/referrals/promo_registrations";
-  let body = new FormData();
+  const url = "/partners/referrals/promo_registrations";
+  const body = new FormData();
   body.append("number", numberOfCodes);
   body.append("description", description);
   body.append("promo_campaign_id", campaignID);
-  let options = {
-    method: "POST",
+  const options = {
+    body,
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
     },
-    body: body
+    method: "POST"
   };
-  let response = await fetch(url, options);
+  const response = await fetch(url, options);
   afterSave();
   closeModal();
 }

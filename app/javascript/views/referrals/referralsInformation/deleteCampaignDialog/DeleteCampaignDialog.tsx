@@ -57,24 +57,24 @@ export default class DeleteCampaignDialog extends React.Component<
 async function DeleteCampaign(campaign, referralCodes, closeModal, afterSave) {
   const url =
     "/partners/referrals/promo_campaigns/" + campaign.promo_campaign_id;
-  let body = new FormData();
-  let codes = [];
-  referralCodes.forEach(function(code) {
+  const body = new FormData();
+  const codes = [];
+  referralCodes.forEach(code => {
     codes.push(code.id);
   });
   body.append("codes", JSON.stringify(codes));
-  let options = {
-    method: "DELETE",
+  const options = {
+    body,
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
     },
-    body: body
+    method: "DELETE"
   };
-  let response = await fetch(url, options);
+  const response = await fetch(url, options);
   afterSave();
   closeModal();
   return response;

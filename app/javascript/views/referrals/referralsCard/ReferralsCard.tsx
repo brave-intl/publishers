@@ -1,16 +1,16 @@
 import * as React from "react";
 
 import {
-  Wrapper,
-  Grid,
-  Row,
-  IconWrapper,
-  TextWrapper,
   ContentWrapper,
-  Text
+  Grid,
+  IconWrapper,
+  Row,
+  Text,
+  TextWrapper,
+  Wrapper
 } from "./ReferralsCardStyle";
 
-import { CheckCircleIcon, CaratRightIcon } from "brave-ui/components/icons";
+import { CaratRightIcon, CheckCircleIcon } from "brave-ui/components/icons";
 
 import locale from "../../../locale/en";
 
@@ -23,7 +23,7 @@ interface IReferralsCardProps {
 export default class ReferralsCard extends React.Component<
   IReferralsCardProps
 > {
-  render() {
+  public render() {
     return (
       <Wrapper>
         <Grid>
@@ -36,7 +36,7 @@ export default class ReferralsCard extends React.Component<
                 <Text>{this.props.campaign.name}</Text>
               </TextWrapper>
               <TextWrapper created>
-                <Text created>{locale.created}</Text>
+                <Text created>{locale.referrals.created}</Text>
                 <Text date>
                   {processCreatedAt(this.props.campaign.created_at)}
                 </Text>
@@ -46,19 +46,19 @@ export default class ReferralsCard extends React.Component<
 
           <Row stats>
             <TextWrapper stats>
-              <Text header>{locale.downloads}</Text>
+              <Text header>{locale.referrals.downloads}</Text>
               <Text stat>
                 {processDownloads(this.props.campaign.promo_registrations)}
               </Text>
             </TextWrapper>
             <TextWrapper stats>
-              <Text header>{locale.installs}</Text>
+              <Text header>{locale.referrals.installs}</Text>
               <Text stat>
                 {processInstalls(this.props.campaign.promo_registrations)}
               </Text>
             </TextWrapper>
             <TextWrapper stats>
-              <Text header>{locale.thirtyDay}</Text>
+              <Text header>{locale.referrals.thirtyDay}</Text>
               <Text use>
                 {processThirtyDayUse(this.props.campaign.promo_registrations)}
               </Text>
@@ -67,7 +67,7 @@ export default class ReferralsCard extends React.Component<
 
           <Row total>
             <TextWrapper total>
-              <Text total>{locale.totalNumber}</Text>
+              <Text total>{locale.referrals.totalNumber}</Text>
             </TextWrapper>
             <TextWrapper total>
               <Text codes>
@@ -76,11 +76,9 @@ export default class ReferralsCard extends React.Component<
             </TextWrapper>
             <IconWrapper carat>
               <CaratRightIcon
-                onClick={() => {
-                  window.location.href =
-                    "/partners/referrals/" +
-                    this.props.campaign.promo_campaign_id;
-                }}
+                onClick={redirectToReferralsInformation(
+                  this.props.campaign.promo_campaign_id
+                )}
               />
             </IconWrapper>
           </Row>
@@ -90,15 +88,21 @@ export default class ReferralsCard extends React.Component<
   }
 }
 
+function redirectToReferralsInformation(campaign) {
+  return () => {
+    window.location.href = "/partners/referrals/" + campaign;
+  };
+}
+
 function processCreatedAt(createdAt) {
-  let options = { year: "numeric", month: "long", day: "numeric" };
-  let date = new Date(createdAt);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const date = new Date(createdAt);
   return date.toLocaleDateString("en-US", options);
 }
 
 function processDownloads(referralCodes) {
   let downloads = 0;
-  referralCodes.forEach(function(code) {
+  referralCodes.forEach(code => {
     downloads += JSON.parse(code.stats)[0].retrievals;
   });
   return downloads;
@@ -106,7 +110,7 @@ function processDownloads(referralCodes) {
 
 function processInstalls(referralCodes) {
   let installs = 0;
-  referralCodes.forEach(function(code) {
+  referralCodes.forEach(code => {
     installs += JSON.parse(code.stats)[0].first_runs;
   });
   return installs;
@@ -114,7 +118,7 @@ function processInstalls(referralCodes) {
 
 function processThirtyDayUse(referralCodes) {
   let thirtyDayUse = 0;
-  referralCodes.forEach(function(code) {
+  referralCodes.forEach(code => {
     thirtyDayUse += JSON.parse(code.stats)[0].finalized;
   });
   return thirtyDayUse;

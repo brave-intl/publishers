@@ -1,27 +1,29 @@
 import * as React from "react";
 
 import {
-  Wrapper,
-  Container,
-  Row,
-  Content,
   Button,
-  Text
+  Container,
+  Content,
+  Row,
+  Text,
+  Wrapper
 } from "./ReferralsInformationStyle";
 
 import Modal, { ModalSize } from "../../../components/modal/Modal";
 import AddDialog from "./addDialog/AddDialog";
-import DeleteDialog from "./deleteDialog/DeleteDialog";
 import DeleteCampaignDialog from "./deleteCampaignDialog/DeleteCampaignDialog";
+import DeleteDialog from "./deleteDialog/DeleteDialog";
+
 import EditCampaignDialog from "./editCampaignDialog/EditCampaignDialog";
 import MoveDialog from "./moveDialog/MoveDialog";
 
 import Table from "brave-ui/components/dataTables/table";
-import { CloseStrokeIcon } from "brave-ui/components/icons";
-import { CheckCircleIcon } from "brave-ui/components/icons";
-import { SettingsAdvancedIcon } from "brave-ui/components/icons";
 
-interface IReferralsInfoProps {}
+import {
+  CheckCircleIcon,
+  CloseStrokeIcon,
+  SettingsAdvancedIcon
+} from "brave-ui/components/icons";
 
 interface IReferralsInfoState {
   date: any;
@@ -37,57 +39,57 @@ interface IReferralsInfoState {
 }
 
 export default class ReferralsInformation extends React.Component<
-  IReferralsInfoProps,
+  {},
   IReferralsInfoState
 > {
   constructor(props) {
     super(props);
     this.state = {
-      date: "",
-      unassigned_codes: [],
       campaigns: [],
-      showDeleteModal: false,
-      showAddModal: false,
-      showMoveModal: false,
-      showDeleteCampaignModal: false,
-      showEditCampaignModal: false,
+      codeToDelete: null,
       currentCampaign: { name: "load", promo_registrations: [] },
-      codeToDelete: null
+      date: "",
+      showAddModal: false,
+      showDeleteCampaignModal: false,
+      showDeleteModal: false,
+      showEditCampaignModal: false,
+      showMoveModal: false,
+      unassigned_codes: []
     };
     this.fetchData = this.fetchData.bind(this);
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this.fetchData();
     // alert(window.location.pathname.split("/").pop())
   }
 
-  componentDidUpdate() {
+  public componentDidUpdate() {
     // this.fetchData();
   }
 
-  async fetchData() {
+  public async fetchData() {
     // add publisher id
-    let url = "/partners/referrals/";
-    let options = {
-      method: "GET",
+    const url = "/partners/referrals/";
+    const options = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest"
-      }
+      },
+      method: "GET"
     };
-    let response = await fetch(url, options);
-    let data = await response.json();
-    let currentCampaign = findCurrentCampaign(data.campaigns);
+    const response = await fetch(url, options);
+    const data = await response.json();
+    const currentCampaign = findCurrentCampaign(data.campaigns);
     this.setState({
-      unassigned_codes: data.unassigned_codes,
       campaigns: data.campaigns,
-      currentCampaign: currentCampaign
+      currentCampaign,
+      unassigned_codes: data.unassigned_codes
     });
   }
 
-  render() {
+  public render() {
     return (
       <Container>
         <Row campaign>
@@ -260,7 +262,7 @@ export default class ReferralsInformation extends React.Component<
 
 function processDownloads(referralCodes) {
   let downloads = 0;
-  referralCodes.forEach(function(code) {
+  referralCodes.forEach(code => {
     downloads += JSON.parse(code.stats)[0].retrievals;
   });
   return downloads;
@@ -268,7 +270,7 @@ function processDownloads(referralCodes) {
 
 function processInstalls(referralCodes) {
   let installs = 0;
-  referralCodes.forEach(function(code) {
+  referralCodes.forEach(code => {
     installs += JSON.parse(code.stats)[0].first_runs;
   });
   return installs;
@@ -276,22 +278,22 @@ function processInstalls(referralCodes) {
 
 function processThirtyDayUse(referralCodes) {
   let thirtyDayUse = 0;
-  referralCodes.forEach(function(code) {
+  referralCodes.forEach(code => {
     thirtyDayUse += JSON.parse(code.stats)[0].finalized;
   });
   return thirtyDayUse;
 }
 
 function processDate(created) {
-  let options = { year: "numeric", month: "long", day: "numeric" };
-  let date = new Date(created);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const date = new Date(created);
   return date.toLocaleDateString("en-US", options);
 }
 
-function copyLink(referral_code) {
-  //javscript magick for copying to clipboard
+function copyLink(referralCode) {
+  // javscript magick for copying to clipboard
   const el = document.createElement("textarea");
-  el.value = "https://brave.com/" + referral_code;
+  el.value = "https://brave.com/" + referralCode;
   document.body.appendChild(el);
   el.select();
   document.execCommand("copy");
@@ -301,7 +303,7 @@ function copyLink(referral_code) {
 
 function findCurrentCampaign(campaigns) {
   let currentCampaign;
-  campaigns.forEach(function(campaign, index) {
+  campaigns.forEach((campaign, index) => {
     if (
       campaign.promo_campaign_id === window.location.pathname.split("/").pop()
     ) {
@@ -316,74 +318,74 @@ function redirectToReferrals() {
 }
 
 function ReferralsTable(props) {
-  let header = [
+  const header = [
     {
       content: "Referral Code",
       customStyle: {
         "font-size": "15px",
-        "text-align": "center",
         opacity: ".7",
-        padding: "20px"
+        padding: "20px",
+        "text-align": "center"
       }
     },
     {
       content: "Description",
       customStyle: {
         "font-size": "15px",
-        "text-align": "center",
         opacity: ".7",
-        padding: "20px"
+        padding: "20px",
+        "text-align": "center"
       }
     },
     {
       content: "Downloads",
       customStyle: {
         "font-size": "15px",
-        "text-align": "center",
         opacity: ".7",
-        padding: "20px"
+        padding: "20px",
+        "text-align": "center"
       }
     },
     {
       content: "Installs",
       customStyle: {
         "font-size": "15px",
-        "text-align": "center",
         opacity: ".7",
-        padding: "20px"
+        padding: "20px",
+        "text-align": "center"
       }
     },
     {
       content: "30-Day-Use",
       customStyle: {
         "font-size": "15px",
-        "text-align": "center",
         opacity: ".7",
-        padding: "20px"
+        padding: "20px",
+        "text-align": "center"
       }
     },
     {
       content: "Actions",
       customStyle: {
         "font-size": "15px",
-        "text-align": "center",
         opacity: ".7",
-        padding: "20px"
+        padding: "20px",
+        "text-align": "center"
       }
     }
   ];
 
-  let rows = [];
+  const rows = [];
 
-  props.referralCodes.forEach(function(referralCode, index) {
-    let content = {
+  props.referralCodes.forEach((referralCode, index) => {
+    const content = {
       content: [
         {
           content: <div key={index}>{referralCode.referral_code}</div>,
           customStyle: {
             "font-size": "15px",
-            "text-align": "center",
-            padding: "24px"
+            padding: "24px",
+            "text-align": "center"
           }
         },
         {
@@ -396,8 +398,8 @@ function ReferralsTable(props) {
           ),
           customStyle: {
             "font-size": "15px",
-            "text-align": "center",
-            padding: "24px"
+            padding: "24px",
+            "text-align": "center"
           }
         },
         {
@@ -408,8 +410,8 @@ function ReferralsTable(props) {
           ),
           customStyle: {
             "font-size": "15px",
-            "text-align": "center",
-            padding: "24px"
+            padding: "24px",
+            "text-align": "center"
           }
         },
         {
@@ -420,8 +422,8 @@ function ReferralsTable(props) {
           ),
           customStyle: {
             "font-size": "15px",
-            "text-align": "center",
-            padding: "24px"
+            padding: "24px",
+            "text-align": "center"
           }
         },
         {
@@ -430,8 +432,8 @@ function ReferralsTable(props) {
           ),
           customStyle: {
             "font-size": "15px",
-            "text-align": "center",
-            padding: "24px"
+            padding: "24px",
+            "text-align": "center"
           }
         },
         {
@@ -463,8 +465,8 @@ function ReferralsTable(props) {
           ),
           customStyle: {
             "font-size": "15px",
-            "text-align": "center",
-            padding: "24px"
+            padding: "24px",
+            "text-align": "center"
           }
         }
       ]

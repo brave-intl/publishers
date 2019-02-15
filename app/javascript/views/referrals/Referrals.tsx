@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { Wrapper, Container, Grid } from "./ReferralsStyle";
+import { Container, Grid, Wrapper } from "./ReferralsStyle";
 
-import ReferralsNav from "./referralsNav/ReferralsNav";
-import ReferralsHeader from "./referralsHeader/ReferralsHeader";
 import ReferralsCard from "./referralsCard/ReferralsCard";
+import ReferralsHeader from "./referralsHeader/ReferralsHeader";
+import ReferralsNav from "./referralsNav/ReferralsNav";
 
 interface IReferralsProps {
   modalType: any;
@@ -29,15 +29,15 @@ export default class Referrals extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      index: null,
-      unassigned_codes: [],
-      campaigns: [],
-      modalOpen: false,
-      modalType: "Create",
       campaignToAddCodesTo: null,
+      campaigns: [],
       codeToBeDeleted: null,
       codesToBeMoved: null,
-      publisherID: null
+      index: null,
+      modalOpen: false,
+      modalType: "Create",
+      publisherID: null,
+      unassigned_codes: []
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -47,71 +47,70 @@ export default class Referrals extends React.Component<
     this.fetchData = this.fetchData.bind(this);
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this.fetchData();
   }
 
-  async fetchData() {
-    let url = "/partners/referrals/";
-    let options = {
-      method: "GET",
+  public async fetchData() {
+    const url = "/partners/referrals/";
+    const options = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest"
-      }
+      },
+      method: "GET"
     };
-    let response = await fetch(url, options);
-    let data = await response.json();
+    const response = await fetch(url, options);
+    const data = await response.json();
     this.setState({
-      unassigned_codes: data.unassigned_codes,
-      campaigns: data.campaigns
+      campaigns: data.campaigns,
+      unassigned_codes: data.unassigned_codes
     });
   }
 
-  openModal(type) {
+  public openModal(type) {
     this.setState({
       modalOpen: true,
       modalType: type
     });
   }
 
-  openAddModal(campaign) {
+  public openAddModal(campaign) {
     this.setState({
+      campaignToAddCodesTo: campaign,
       modalOpen: true,
-      modalType: "Add",
-      campaignToAddCodesTo: campaign
+      modalType: "Add"
     });
   }
 
-  openDeleteModal(code) {
+  public openDeleteModal(code) {
     this.setState({
+      codeToBeDeleted: code,
       modalOpen: true,
-      modalType: "Delete",
-      codeToBeDeleted: code
+      modalType: "Delete"
     });
   }
 
-  openMoveModal(codes) {
+  public openMoveModal(codes) {
     this.setState({
+      codesToBeMoved: codes,
       modalOpen: true,
-      modalType: "Move",
-      codesToBeMoved: codes
+      modalType: "Move"
     });
   }
 
-  closeModal() {
+  public closeModal() {
     this.setState({
       modalOpen: false
     });
   }
 
-  refresh() {
-    console.log("refreshing");
+  public refresh() {
     this.fetchData();
   }
 
-  render() {
+  public render() {
     return (
       <Wrapper>
         <ReferralsNav openModal={this.openModal} fetchData={this.fetchData} />

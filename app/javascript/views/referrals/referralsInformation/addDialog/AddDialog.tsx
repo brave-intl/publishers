@@ -2,7 +2,7 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, PrimaryButton, Label, Input } from "./AddDialogStyle";
+import { Header, Input, Label, PrimaryButton } from "./AddDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 
@@ -29,15 +29,15 @@ export default class AddDialog extends React.Component<
     };
   }
 
-  handleDescription = e => {
+  public handleDescription = e => {
     this.setState({ description: e.target.value });
   };
 
-  handleNumber = e => {
+  public handleNumber = e => {
     this.setState({ number: e.target.value });
   };
 
-  isValidForm = () => {
+  public isValidForm = () => {
     if (this.state.number > 0 && this.state.number < 500) {
       return true;
     } else {
@@ -100,24 +100,24 @@ async function addCode(
   closeModal,
   afterSave
 ) {
-  let url = "/partners/referrals/promo_registrations";
+  const url = "/partners/referrals/promo_registrations";
 
-  let body = new FormData();
+  const body = new FormData();
   body.append("number", numberOfCodes);
   body.append("description", description);
   body.append("promo_campaign_id", campaignID);
-  let options = {
-    method: "POST",
+  const options = {
+    body,
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
     },
-    body: body
+    method: "POST"
   };
-  let response = await fetch(url, options);
+  const response = await fetch(url, options);
   afterSave();
   closeModal();
   return response;

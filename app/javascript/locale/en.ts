@@ -44,7 +44,14 @@ export default {
     }
   },
   referralCodes: "Referral Codes",
-  referrals: "Referrals",
+  referrals: {
+    created: "Created",
+    downloads: "Downloads",
+    installs: "Installs",
+    referrals: "Referrals",
+    thirtyDay: "30-Day Use",
+    totalNumber: "Total Number of Codes"
+  },
   sendDonation: "Send my donation",
   thirtyDay: "30-Day Use",
   tokens: "tokens",

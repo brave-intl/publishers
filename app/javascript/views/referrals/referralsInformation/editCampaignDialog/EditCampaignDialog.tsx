@@ -2,7 +2,7 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, PrimaryButton, Label, Input } from "./EditCampaignDialogStyle";
+import { Header, Input, Label, PrimaryButton } from "./EditCampaignDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 
@@ -27,11 +27,11 @@ export default class EditCampaignDialog extends React.Component<
     };
   }
 
-  handleName = e => {
+  public handleName = e => {
     this.setState({ name: e.target.value });
   };
 
-  isValidForm = () => {
+  public isValidForm = () => {
     if (this.state.name) {
       return true;
     } else {
@@ -77,22 +77,22 @@ export default class EditCampaignDialog extends React.Component<
 }
 
 async function EditCampaign(name, campaignID, closeModal, afterSave) {
-  let url = "/partners/referrals/promo_campaigns/" + campaignID;
+  const url = "/partners/referrals/promo_campaigns/" + campaignID;
 
-  let body = new FormData();
+  const body = new FormData();
   body.append("name", name);
-  let options = {
-    method: "PUT",
+  const options = {
+    body,
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
     },
-    body: body
+    method: "PUT"
   };
-  let response = await fetch(url, options);
+  const response = await fetch(url, options);
   afterSave();
   closeModal();
   return response;

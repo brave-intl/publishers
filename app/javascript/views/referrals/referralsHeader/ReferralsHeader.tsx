@@ -64,8 +64,8 @@ export default class ReferralsHeader extends React.Component<
 
 function countReferralCodes(campaigns, unassignedCodes) {
   let referralCodes = 0;
-  campaigns.forEach(function(campaign) {
-    campaign.promo_registrations.forEach(function(referralCode) {
+  campaigns.forEach(campaign => {
+    campaign.promo_registrations.forEach(referralCode => {
       referralCodes++;
     });
   });
@@ -74,8 +74,8 @@ function countReferralCodes(campaigns, unassignedCodes) {
 
 function countDownloads(campaigns, unassignedCodes) {
   let downloads = 0;
-  campaigns.forEach(function(campaign) {
-    campaign.promo_registrations.forEach(function(referralCode) {
+  campaigns.forEach(campaign => {
+    campaign.promo_registrations.forEach(referralCode => {
       downloads += JSON.parse(referralCode.stats)[0].retrievals;
     });
   });
@@ -84,8 +84,8 @@ function countDownloads(campaigns, unassignedCodes) {
 
 function countInstalls(campaigns, unassignedCodes) {
   let installs = 0;
-  campaigns.forEach(function(campaign) {
-    campaign.promo_registrations.forEach(function(referralCode) {
+  campaigns.forEach(campaign => {
+    campaign.promo_registrations.forEach(referralCode => {
       installs += JSON.parse(referralCode.stats)[0].first_runs;
     });
   });
@@ -94,8 +94,8 @@ function countInstalls(campaigns, unassignedCodes) {
 
 function countThirtyDayUse(campaigns, unassignedCodes) {
   let thirtyDay = 0;
-  campaigns.forEach(function(campaign) {
-    campaign.promo_registrations.forEach(function(referralCode) {
+  campaigns.forEach(campaign => {
+    campaign.promo_registrations.forEach(referralCode => {
       thirtyDay += JSON.parse(referralCode.stats)[0].finalized;
     });
   });

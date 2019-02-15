@@ -2,7 +2,7 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, PrimaryButton, Label, Input } from "./EditDialogStyle";
+import { Header, Input, Label, PrimaryButton } from "./EditDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 
@@ -27,7 +27,7 @@ export default class EditDialog extends React.Component<
     };
   }
 
-  handlecampaignName = e => {
+  public handlecampaignName = e => {
     this.setState({ campaignName: e.target.value });
   };
 
@@ -62,23 +62,23 @@ export default class EditDialog extends React.Component<
 }
 
 async function EditCode(campaignName, campaignID, closeModal, afterSave) {
-  let url = "/partners/referrals/update_campaign";
+  const url = "/partners/referrals/update_campaign";
 
-  let body = new FormData();
+  const body = new FormData();
   body.append("campaignName", campaignName);
   body.append("promo_campaign_id", campaignID);
-  let options = {
-    method: "POST",
+  const options = {
+    body,
     headers: {
       Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
       "X-CSRF-Token": document.head
         .querySelector("[name=csrf-token]")
-        .getAttribute("content")
+        .getAttribute("content"),
+      "X-Requested-With": "XMLHttpRequest"
     },
-    body: body
+    method: "POST"
   };
-  let response = await fetch(url, options);
+  const response = await fetch(url, options);
   afterSave();
   closeModal();
   return response;
