@@ -17,7 +17,7 @@ module EyeshadeHelper
       channels_query_string = publisher.channels.verified.map { |channel| "&account=#{URI.escape(channel.details.channel_identifier)}"}.reduce(:+)
     end
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}?pending=true").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}&pending=true").
       to_return(status: 200, body: balances.to_json)
   end
 

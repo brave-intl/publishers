@@ -273,31 +273,6 @@ class PublisherTest < ActiveSupport::TestCase
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
     end
-
-  test "uphold_status reflects incomplete Uphold registrations" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-
-    wallet = {
-      "status": {
-        "provider": "uphold"
-      },
-      "wallet": {
-        "provider": "uphold",
-        "authorized": false,
-        "defaultCurrency": 'USD',
-        "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
-      }
-    }
-
-    publisher = publishers(:uphold_connected)
-    assert publisher.uphold_verified
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
-
-    publisher.wallet
-    assert publisher.uphold_verified?
-    assert publisher.uphold_incomplete?
-    assert_equal :incomplete, publisher.uphold_status
   end
 
   test "a publisher must have a valid pending email address if it does not have an email address" do
@@ -627,9 +602,7 @@ class PublisherTest < ActiveSupport::TestCase
   end
 
   test "with_verified_channel scope only selects publishers with verified channels" do
-    publishers = Publisher.with_verified_channel
-
-    publishers.each do |publisher|
+    Publisher.with_verified_channel.each do |publisher|
       with_verified_channel = false # initialize to false
 
       publisher.channels.each do |channel|

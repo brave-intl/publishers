@@ -30,12 +30,10 @@ class PayoutReportPublisherIncluder < BaseService
 
     @publisher.channels.verified.each do |channel|
       probi = wallet.channel_balances[channel.details.channel_identifier].amount_probi # probi = balance - fee
-      next unless probi.to_i.positive? && @publisher.uphold_verified? && wallet.address.present?
+      next unless probi.to_i.positive? && create_payment?
 
       publisher_has_unsettled_balance = true
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fees_probi # fee = balance - probi
-
-      fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
       PotentialPayment.create(payout_report_id: @payout_report.id,
                               name: "#{channel.publication_title}",
                               amount: "#{probi}",
