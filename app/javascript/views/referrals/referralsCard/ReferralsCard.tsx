@@ -16,8 +16,6 @@ import locale from "../../../locale/en";
 
 interface IReferralsCardProps {
   campaign: any;
-  changeMode: any;
-  index: any;
 }
 
 export default class ReferralsCard extends React.Component<

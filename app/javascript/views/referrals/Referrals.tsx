@@ -55,7 +55,9 @@ export default class Referrals extends React.Component<{}, IReferralsState> {
 
 function ReferralsCardMap(props) {
   const referralsCardMap = props.campaigns.map((campaign, index) => (
-    <ReferralsCard key={index} campaign={campaign} />
+    <div key={index}>
+      <ReferralsCard campaign={campaign} />
+    </div>
   ));
   return <Grid>{referralsCardMap}</Grid>;
 }
