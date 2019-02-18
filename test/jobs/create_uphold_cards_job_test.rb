@@ -24,6 +24,8 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     # stub wallet response
     wallet = { "wallet" => { "defaultCurrency" => "USD",
                              "authorized" => true,
+                             "isMember" => true,
+                             "status" => "ok",
                              "availableCurrencies" => "",
                              "possibleCurrencies" => "BAT",
                              "scope" => "cards:read, cards:write, user:read",
@@ -38,7 +40,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     # ensure request to create BAT card was made
     assert_requested :post,
       "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-      body: '{"currency":"BAT","label":"Brave Payments"}',
+      body: '{"currency":"BAT","label":"Brave Rewards"}',
       times: 1
 
     # ensure only one request to update eyeshade default currency was made
@@ -56,6 +58,8 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
 
     wallet = { "wallet" => { "defaultCurrency" => "USD",
                              "authorized" => true,
+                             "isMember" => true,
+                             "status" => "ok",
                              "availableCurrencies" => "BAT",
                              "possibleCurrencies" => "BAT",
                              "scope" => "cards:read, cards:write, user:read",
@@ -71,7 +75,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     # ensure request to create BAT card was not made
     assert_requested :post,
       "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-      body: '{"currency":"BAT","label":"Brave Payments"}',
+      body: '{"currency":"BAT","label":"Brave Rewards"}',
       times: 0
 
     # ensure only one request to update eyeshade default currency was made
@@ -106,13 +110,13 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     # ensure request to create BAT card was made
     assert_requested :post,
       "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-      body: '{"currency":"BAT","label":"Brave Payments"}',
+      body: '{"currency":"BAT","label":"Brave Rewards"}',
       times: 1
 
     # ensure request to create LOL card was made
     assert_requested :post,
       "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-      body: '{"currency":"LOL","label":"Brave Payments"}',
+      body: '{"currency":"LOL","label":"Brave Rewards"}',
       times: 1
 
     # ensure only one request to update eyeshade default currency was made
