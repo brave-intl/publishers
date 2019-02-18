@@ -45,6 +45,7 @@ export default {
   },
   referralCodes: "Referral Codes",
   referrals: {
+    createCampaign: "Create Campaign",
     created: "Created",
     downloads: "Downloads",
     installs: "Installs",

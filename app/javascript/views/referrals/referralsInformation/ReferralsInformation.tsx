@@ -10,6 +10,7 @@ import {
 } from "./ReferralsInformationStyle";
 
 import Modal, { ModalSize } from "../../../components/modal/Modal";
+
 import AddDialog from "./addDialog/AddDialog";
 import DeleteCampaignDialog from "./deleteCampaignDialog/DeleteCampaignDialog";
 import DeleteDialog from "./deleteDialog/DeleteDialog";

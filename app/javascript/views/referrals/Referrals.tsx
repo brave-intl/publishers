@@ -6,44 +6,16 @@ import ReferralsCard from "./referralsCard/ReferralsCard";
 import ReferralsHeader from "./referralsHeader/ReferralsHeader";
 import ReferralsNav from "./referralsNav/ReferralsNav";
 
-interface IReferralsProps {
-  modalType: any;
-}
-
 interface IReferralsState {
-  modalType: any;
   campaigns: any;
-  campaignToAddCodesTo: any;
-  codeToBeDeleted: any;
-  codesToBeMoved: any;
-  index: any;
-  unassigned_codes: any;
-  modalOpen: any;
-  publisherID: any;
 }
 
-export default class Referrals extends React.Component<
-  IReferralsProps,
-  IReferralsState
-> {
+export default class Referrals extends React.Component<{}, IReferralsState> {
   constructor(props) {
     super(props);
     this.state = {
-      campaignToAddCodesTo: null,
-      campaigns: [],
-      codeToBeDeleted: null,
-      codesToBeMoved: null,
-      index: null,
-      modalOpen: false,
-      modalType: "Create",
-      publisherID: null,
-      unassigned_codes: []
+      campaigns: []
     };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.openAddModal = this.openAddModal.bind(this);
-    this.openDeleteModal = this.openDeleteModal.bind(this);
-    this.openMoveModal = this.openMoveModal.bind(this);
     this.fetchData = this.fetchData.bind(this);
   }
 
@@ -64,93 +36,26 @@ export default class Referrals extends React.Component<
     const response = await fetch(url, options);
     const data = await response.json();
     this.setState({
-      campaigns: data.campaigns,
-      unassigned_codes: data.unassigned_codes
+      campaigns: data.campaigns
     });
-  }
-
-  public openModal(type) {
-    this.setState({
-      modalOpen: true,
-      modalType: type
-    });
-  }
-
-  public openAddModal(campaign) {
-    this.setState({
-      campaignToAddCodesTo: campaign,
-      modalOpen: true,
-      modalType: "Add"
-    });
-  }
-
-  public openDeleteModal(code) {
-    this.setState({
-      codeToBeDeleted: code,
-      modalOpen: true,
-      modalType: "Delete"
-    });
-  }
-
-  public openMoveModal(codes) {
-    this.setState({
-      codesToBeMoved: codes,
-      modalOpen: true,
-      modalType: "Move"
-    });
-  }
-
-  public closeModal() {
-    this.setState({
-      modalOpen: false
-    });
-  }
-
-  public refresh() {
-    this.fetchData();
   }
 
   public render() {
     return (
       <Wrapper>
-        <ReferralsNav openModal={this.openModal} fetchData={this.fetchData} />
-        <ReferralsContent
-          openModal={this.openModal}
-          campaigns={this.state.campaigns}
-          unassignedCodes={this.state.unassigned_codes}
-          index={this.state.index}
-          openAddModal={this.openAddModal}
-          openDeleteModal={this.openDeleteModal}
-          openMoveModal={this.openMoveModal}
-        />
+        <ReferralsNav fetchData={this.fetchData} />
+        <Container>
+          <ReferralsHeader campaigns={this.state.campaigns} />
+          <ReferralsCardMap campaigns={this.state.campaigns} />
+        </Container>
       </Wrapper>
     );
   }
 }
 
-function ReferralsContent(props) {
-  return (
-    <Container>
-      <ReferralsHeader
-        campaigns={props.campaigns}
-        unassignedCodes={props.unassignedCodes}
-      />
-      <ReferralsCardMap
-        campaigns={props.campaigns}
-        changeMode={props.changeMode}
-      />
-    </Container>
-  );
-}
-
 function ReferralsCardMap(props) {
   const referralsCardMap = props.campaigns.map((campaign, index) => (
-    <ReferralsCard
-      key={index}
-      campaign={campaign}
-      changeMode={props.changeMode}
-      index={index}
-    />
+    <ReferralsCard key={index} campaign={campaign} />
   ));
   return <Grid>{referralsCardMap}</Grid>;
 }

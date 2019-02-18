@@ -11,7 +11,6 @@ import {
 import locale from "../../../locale/en";
 
 interface IReferralsHeaderProps {
-  unassignedCodes: any;
   campaigns: any;
 }
 
@@ -29,31 +28,21 @@ export default class ReferralsHeader extends React.Component<
           <TextWrapper>
             <Text header>{locale.referralCodes}</Text>
             <Text stat blue>
-              {countReferralCodes(
-                this.props.campaigns,
-                this.props.unassignedCodes
-              )}
+              {countReferralCodes(this.props.campaigns)}
             </Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.downloads}</Text>
-            <Text stat>
-              {countDownloads(this.props.campaigns, this.props.unassignedCodes)}
-            </Text>
+            <Text stat>{countDownloads(this.props.campaigns)}</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.installs}</Text>
-            <Text stat>
-              {countInstalls(this.props.campaigns, this.props.unassignedCodes)}
-            </Text>
+            <Text stat>{countInstalls(this.props.campaigns)}</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.thirtyDay}</Text>
             <Text stat purple>
-              {countThirtyDayUse(
-                this.props.campaigns,
-                this.props.unassignedCodes
-              )}
+              {countThirtyDayUse(this.props.campaigns)}
             </Text>
           </TextWrapper>
         </ContentWrapper>
@@ -62,7 +51,7 @@ export default class ReferralsHeader extends React.Component<
   }
 }
 
-function countReferralCodes(campaigns, unassignedCodes) {
+function countReferralCodes(campaigns) {
   let referralCodes = 0;
   campaigns.forEach(campaign => {
     campaign.promo_registrations.forEach(referralCode => {
@@ -72,7 +61,7 @@ function countReferralCodes(campaigns, unassignedCodes) {
   return referralCodes;
 }
 
-function countDownloads(campaigns, unassignedCodes) {
+function countDownloads(campaigns) {
   let downloads = 0;
   campaigns.forEach(campaign => {
     campaign.promo_registrations.forEach(referralCode => {
@@ -82,7 +71,7 @@ function countDownloads(campaigns, unassignedCodes) {
   return downloads;
 }
 
-function countInstalls(campaigns, unassignedCodes) {
+function countInstalls(campaigns) {
   let installs = 0;
   campaigns.forEach(campaign => {
     campaign.promo_registrations.forEach(referralCode => {
@@ -92,7 +81,7 @@ function countInstalls(campaigns, unassignedCodes) {
   return installs;
 }
 
-function countThirtyDayUse(campaigns, unassignedCodes) {
+function countThirtyDayUse(campaigns) {
   let thirtyDay = 0;
   campaigns.forEach(campaign => {
     campaign.promo_registrations.forEach(referralCode => {

@@ -8,7 +8,6 @@ import CreateDialog from "./createDialog/CreateDialog";
 import locale from "../../../locale/en";
 
 interface IReferralsNavProps {
-  openModal: (type: any) => void;
   fetchData: any;
 }
 
@@ -37,7 +36,7 @@ export default class ReferralsNav extends React.Component<
               this.triggerCreateModal();
             }}
           >
-            {locale.createCode}
+            {locale.referrals.createCampaign}
           </Button>
           <Modal
             handleClose={this.triggerCreateModal}
