@@ -113,6 +113,7 @@ Rails.application.routes.draw do
         end
         resources :channels, defaults: { format: :json }, only: %i(show)
         resources :promo_campaigns, defaults: { format: :json }, only: %i(index show)
+        resources :referral_codes, defaults: { format: :json }, only: %i(index show)
         namespace :publishers, defaults: { format: :json } do
           get :signups_per_day
           get :email_verified_signups_per_day
@@ -160,6 +161,7 @@ Rails.application.routes.draw do
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
+      resources :top_balances, only: [:index]
       resources :publisher_statistics, only: [:index]
     end
     resources :unattached_promo_registrations, only: %i(index create)do

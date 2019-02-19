@@ -301,6 +301,22 @@ docker-compose up
 docker-compose run app yarn install; docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
 ```
 
+### Adding balances to Eyeshade
+
+By default when you create a channel it will not have a balance on Eyeshade, the accounting server.  To test wallet code with non nil balances, you must add them first.
+
+To add a contribution to a channel account:
+```
+rake docker:add_contribution_balance_to_account['youtube#channel:UCOo92t8m-tWKgmw276q7mxw', 200] # Adds 200 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
+```
+
+To add add a referral balance to an owner account:
+```
+rake docker:add_referral_balance_to_account['publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7', 400] # Adds 400 BAT to publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7 
+```
+
+The new balance should be reflected on the dashboard.
+
 ### Run Tests
 
 Tests can be run on the container with

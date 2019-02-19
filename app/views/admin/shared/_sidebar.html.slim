@@ -16,13 +16,27 @@ aside
             = link_to admin_stats_referrals_path
               span Top Publisher Referrals
           li
+            = link_to admin_stats_top_balances_path
+              span Top Channel Balances
+          li
+            a href='#' class="sidebar-toggle pull-right"
+              = fa_icon "chevron-down"
+            p Top Balances
+            ul.sub-menu style="#{params[:controller] == 'admin/stats/top_balances' ? "" : "display:none"} "
+              = link_to admin_stats_top_balances_path(type: Eyeshade::TopBalances::CHANNEL)
+                span Channel
+              = link_to admin_stats_top_balances_path(type: Eyeshade::TopBalances::OWNER)
+                span Owner
+              = link_to admin_stats_top_balances_path(type: Eyeshade::TopBalances::UPHOLD)
+                span Uphold
+          li
             = link_to admin_organizations_path
               span Organizations
           li
             = link_to admin_partners_path
               span Partners
           li
-            a href='#'  id="sidebar-toggle" class="pull-right"
+            a href='#' class="sidebar-toggle pull-right"
               = fa_icon "chevron-down"
             = link_to admin_channels_path
               span Channels

@@ -67,7 +67,7 @@ gem "omniauth-twitch"
 gem "omniauth-twitter"
 
 # Model record auditing
-gem "paper_trail", "~> 9.2.0"
+gem "paper_trail", "~> 10.1.0"
 
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
