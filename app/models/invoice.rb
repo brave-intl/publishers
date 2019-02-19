@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Invoice < ActiveRecord::Base
   class ReadOnlyError < StandardError; end
 
@@ -20,36 +22,36 @@ class Invoice < ActiveRecord::Base
   validates :partner_id, :date, presence: true
   validates :status, inclusion: { in: STATUS_FIELDS }
 
-  validates :date, uniqueness: { scope: :partner_id, message: 'should be unique per partner' }
+  validates :date, uniqueness: { scope: :partner_id }
 
   def human_date
-    if self.date.utc.day == 1
-      self.date.utc.strftime("%B %Y")
+    if date.utc.day == 1
+      date.utc.strftime("%B %Y")
     else
-      self.date.utc.strftime("%B %d, %Y")
+      date.utc.strftime("%B %d, %Y")
     end
   end
 
   def in_progress?
-    self.status == IN_PROGRESS
+    status == IN_PROGRESS
   end
 
   def pending?
-    self.status == PENDING
+    status == PENDING
   end
 
-  def as_json(options={})
+  def as_json(_options = {})
     {
-      id: self.id,
-      amount: self.amount,
-      status: self.status.titleize,
+      id: id,
+      amount: amount,
+      status: status.titleize,
       date: human_date,
-      url: Rails.application.routes.url_helpers.partners_payments_invoice_path(self.date.in_time_zone('UTC').strftime(URL_DATE_FORMAT)),
-      files: self.invoice_files.where(archived: false).as_json.compact,
-      paid: self.paid,
-      payment_date: self.payment_date,
-      finalized_amount: self.finalized_amount,
-      created_at: self.created_at.strftime("%b %d, %Y")
+      url: Rails.application.routes.url_helpers.partners_payments_invoice_path(date.in_time_zone("UTC").strftime(URL_DATE_FORMAT)),
+      files: invoice_files.where(archived: false).as_json.compact,
+      paid: paid,
+      payment_date: payment_date,
+      finalized_amount: finalized_amount,
+      created_at: created_at.strftime("%b %d, %Y")
     }
   end
 end

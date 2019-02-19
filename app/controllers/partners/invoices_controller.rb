@@ -4,12 +4,12 @@ module Partners
 
     def index
       @invoices = Invoice
-        .where(partner: current_publisher)
-        .order(created_at: :desc)
+                  .where(partner: current_publisher)
+                  .order(created_at: :desc)
 
       @invoices = { invoices: @invoices }.to_json
 
-      render json: @invoices 
+      render json: @invoices
     end
 
     def show
@@ -35,11 +35,11 @@ module Partners
       date = DateTime.strptime(params[:id], Invoice::URL_DATE_FORMAT).utc
 
       @invoice = Invoice
-        .includes(:invoice_files)
-        .find_by(partner: current_publisher, date: date)
+                 .includes(:invoice_files)
+                 .find_by(partner: current_publisher, date: date)
     end
 
-    #Internal: only allow partners to access this UI
+    # Internal: only allow partners to access this UI
     #
     # Returns nil
     def filter_users

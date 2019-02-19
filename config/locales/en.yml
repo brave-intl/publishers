@@ -65,6 +65,9 @@ en:
         name: Name Security Key
     errors:
       models:
+        invoice:
+          attributes:
+            date:  "should be unique per partner"
         site_channel_details:
           attributes:
             brave_publisher_id:
