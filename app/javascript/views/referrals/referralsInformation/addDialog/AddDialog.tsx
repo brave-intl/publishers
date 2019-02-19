@@ -60,12 +60,12 @@ export default class AddDialog extends React.Component<
         />
         <br />
         <br />
-        <Label>Enter Description</Label>
+        <Label>{locale.referrals.enterDescription}</Label>
         <Input
           style={{ width: "100%" }}
           value={this.state.description}
           onChange={this.handleDescription}
-          placeholder={"Say something about these codes"}
+          placeholder={locale.referrals.referralCodePlaceholder}
         />
         <br />
         <br />
@@ -83,10 +83,10 @@ export default class AddDialog extends React.Component<
             }
             enabled={true}
           >
-            Add
+            {locale.add}
           </PrimaryButton>
         ) : (
-          <PrimaryButton enabled={false}>Add</PrimaryButton>
+          <PrimaryButton enabled={false}>{locale.add}</PrimaryButton>
         )}
       </div>
     );

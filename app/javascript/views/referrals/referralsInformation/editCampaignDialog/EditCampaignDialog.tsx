@@ -44,12 +44,12 @@ export default class EditCampaignDialog extends React.Component<
       <div>
         <Header>{locale.referrals.editCampaign}</Header>
         <br />
-        <Label>{locale.referrals.enterCampaign}</Label>
+        <Label>{locale.campaign}</Label>
         <Input
           style={{ width: "100%" }}
           value={this.state.name}
           onChange={this.handleName}
-          placeholder={"Name this campaign"}
+          placeholder={locale.referrals.enterCampaign}
         />
         <br />
         <br />

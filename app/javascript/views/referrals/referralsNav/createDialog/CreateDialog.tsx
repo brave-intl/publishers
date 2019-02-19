@@ -95,16 +95,16 @@ export default class CreateDialog extends React.Component<
           style={{ width: "100%" }}
           value={this.state.campaign}
           onChange={this.handleCampaignValue}
-          placeholder={"Name this campaign"}
+          placeholder={locale.referrals.campaignPlaceholder}
         />
         <br />
         <br />
-        <Label>{locale.description}</Label>
+        <Label>{locale.referrals.enterDescription}</Label>
         <Input
           style={{ width: "100%" }}
           value={this.state.description}
           onChange={this.handleDescription}
-          placeholder={"Say something about these codes"}
+          placeholder={locale.referrals.referralCodePlaceholder}
         />
         <br />
         <br />
