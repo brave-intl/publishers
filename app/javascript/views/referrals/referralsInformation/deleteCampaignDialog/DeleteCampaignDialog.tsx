@@ -27,12 +27,9 @@ export default class DeleteCampaignDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Delete Campaign?</Header>
+        <Header>{locale.referrals.deleteCampaign}</Header>
         <br />
-        <Label>
-          Please note, this action will delete all referral codes belonging to{" "}
-          {this.props.campaign.name}. This action cannot be undone.
-        </Label>
+        <Label>{locale.referrals.deleteCampaignNotice}</Label>
         <br />
         <br />
         <br />
@@ -47,7 +44,7 @@ export default class DeleteCampaignDialog extends React.Component<
             )
           }
         >
-          Delete
+          {locale.delete}
         </PrimaryButton>
       </div>
     );

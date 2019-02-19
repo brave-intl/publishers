@@ -48,9 +48,9 @@ export default class AddDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Add referral code?</Header>
+        <Header>{locale.referrals.addReferralCodes}</Header>
         <br />
-        <Label>Number of Codes</Label>
+        <Label>{locale.referrals.numberOfCodes}</Label>
         <br />
         <Input
           style={{ width: "25%" }}

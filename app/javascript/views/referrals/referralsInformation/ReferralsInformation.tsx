@@ -5,11 +5,11 @@ import {
   Container,
   Content,
   Row,
-  Text,
-  Wrapper
+  Text
 } from "./ReferralsInformationStyle";
 
 import Modal, { ModalSize } from "../../../components/modal/Modal";
+import locale from "../../../locale/en";
 
 import AddDialog from "./addDialog/AddDialog";
 import DeleteCampaignDialog from "./deleteCampaignDialog/DeleteCampaignDialog";
@@ -27,8 +27,6 @@ import {
 } from "brave-ui/components/icons";
 
 interface IReferralsInfoState {
-  date: any;
-  unassigned_codes: any;
   campaigns: any;
   currentCampaign: any;
   showAddModal: boolean;
@@ -48,29 +46,21 @@ export default class ReferralsInformation extends React.Component<
     this.state = {
       campaigns: [],
       codeToDelete: null,
-      currentCampaign: { name: "load", promo_registrations: [] },
-      date: "",
+      currentCampaign: { name: "fetching...", promo_registrations: [] },
       showAddModal: false,
       showDeleteCampaignModal: false,
       showDeleteModal: false,
       showEditCampaignModal: false,
-      showMoveModal: false,
-      unassigned_codes: []
+      showMoveModal: false
     };
     this.fetchData = this.fetchData.bind(this);
   }
 
   public componentDidMount() {
     this.fetchData();
-    // alert(window.location.pathname.split("/").pop())
-  }
-
-  public componentDidUpdate() {
-    // this.fetchData();
   }
 
   public async fetchData() {
-    // add publisher id
     const url = "/partners/referrals/";
     const options = {
       headers: {
@@ -85,8 +75,7 @@ export default class ReferralsInformation extends React.Component<
     const currentCampaign = findCurrentCampaign(data.campaigns);
     this.setState({
       campaigns: data.campaigns,
-      currentCampaign,
-      unassigned_codes: data.unassigned_codes
+      currentCampaign
     });
   }
 
@@ -98,23 +87,23 @@ export default class ReferralsInformation extends React.Component<
             <CheckCircleIcon />
           </Content>
           <Content>
-            <Text header>Campaign</Text>
+            <Text header>{locale.campaigns}</Text>
             <Text h2>{this.state.currentCampaign.name}</Text>
           </Content>
           <Content>
-            <Text header>Downloads</Text>
+            <Text header>{locale.downloads}</Text>
             <Text h2>
               {processDownloads(this.state.currentCampaign.promo_registrations)}
             </Text>
           </Content>
           <Content>
-            <Text header>Installs</Text>
+            <Text header>{locale.installs}</Text>
             <Text h2>
               {processInstalls(this.state.currentCampaign.promo_registrations)}
             </Text>
           </Content>
           <Content>
-            <Text header>30-Day-Use</Text>
+            <Text header>{locale.thirtyDay}</Text>
             <Text h2>
               {processThirtyDayUse(
                 this.state.currentCampaign.promo_registrations
@@ -139,7 +128,7 @@ export default class ReferralsInformation extends React.Component<
         <Row lineBreak />
         <Row>
           <Content created>
-            <Text h4>Created</Text>
+            <Text h4>{locale.created}</Text>
             <Text style={{ paddingLeft: "8px" }} p>
               {processDate(this.state.currentCampaign.created_at)}
             </Text>
@@ -147,7 +136,7 @@ export default class ReferralsInformation extends React.Component<
         </Row>
         <Row>
           <Content total>
-            <Text h4>Total Referral Codes</Text>
+            <Text h4>{locale.referrals.totalReferralCodes}</Text>
             <Text style={{ paddingLeft: "8px" }} p>
               {this.state.currentCampaign.promo_registrations.length}
             </Text>
@@ -155,12 +144,14 @@ export default class ReferralsInformation extends React.Component<
         </Row>
         <Row buttons>
           <Content buttons>
-            <Button onClick={this.triggerAddModal}>Add Codes</Button>
+            <Button onClick={this.triggerAddModal}>
+              {locale.referrals.addCodes}
+            </Button>
             <Button
               style={{ marginLeft: "8px" }}
               onClick={this.triggerMoveModal}
             >
-              Move Codes
+              {locale.referrals.moveCodes}
             </Button>
           </Content>
           <br />
@@ -321,7 +312,7 @@ function redirectToReferrals() {
 function ReferralsTable(props) {
   const header = [
     {
-      content: "Referral Code",
+      content: locale.referralCode,
       customStyle: {
         "font-size": "15px",
         opacity: ".7",
@@ -330,7 +321,7 @@ function ReferralsTable(props) {
       }
     },
     {
-      content: "Description",
+      content: locale.description,
       customStyle: {
         "font-size": "15px",
         opacity: ".7",
@@ -339,7 +330,7 @@ function ReferralsTable(props) {
       }
     },
     {
-      content: "Downloads",
+      content: locale.downloads,
       customStyle: {
         "font-size": "15px",
         opacity: ".7",
@@ -348,7 +339,7 @@ function ReferralsTable(props) {
       }
     },
     {
-      content: "Installs",
+      content: locale.installs,
       customStyle: {
         "font-size": "15px",
         opacity: ".7",
@@ -357,7 +348,7 @@ function ReferralsTable(props) {
       }
     },
     {
-      content: "30-Day-Use",
+      content: locale.thirtyDay,
       customStyle: {
         "font-size": "15px",
         opacity: ".7",
@@ -366,7 +357,7 @@ function ReferralsTable(props) {
       }
     },
     {
-      content: "Actions",
+      content: locale.actions,
       customStyle: {
         "font-size": "15px",
         opacity: ".7",
@@ -450,7 +441,7 @@ function ReferralsTable(props) {
                   copyLink(referralCode.referral_code);
                 }}
               >
-                Copy Link
+                {locale.copyLink}
               </div>
               <div
                 key={index}
@@ -460,7 +451,7 @@ function ReferralsTable(props) {
                   props.triggerDeleteModal();
                 }}
               >
-                Delete
+                {locale.delete}
               </div>
             </div>
           ),

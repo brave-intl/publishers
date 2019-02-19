@@ -1,13 +1,23 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  border-radius: 6px;
-  background-color: white;
-  box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
-  padding: 28px;
+export const FlexWrapper = styled.div`
+  display: flex;
 `;
 
-export const Grid = styled.div``;
+export const HeaderRow = styled.div`
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 16px;
+`;
+
+export const Logo = styled.div`
+  height: 50px;
+  width: 50px;
+`;
+
+export const SubHead = styled.div`
+  display: flex;
+`;
 
 interface IRowProps {
   title?: boolean;
@@ -37,9 +47,9 @@ export const Row = styled.div`
   ${(props: IRowProps) =>
     props.total &&
     `
+      background-color: #f8f8f8;
       justify-content: space-between;
       grid-column-gap: 10px;
-      background-color: #F1F1F9;
       padding: 10px 28px;
       margin-left: -28px;
       margin-right: -28px;
@@ -111,7 +121,6 @@ export const ContentWrapper = styled.div`
 export const Image = styled.div;
 
 interface ITextProps {
-  title?: boolean;
   created?: boolean;
   date?: boolean;
   header?: boolean;
@@ -123,12 +132,6 @@ interface ITextProps {
 export const Text = styled.div`
   font-family: Poppins, sans-serif;
 
-    ${(props: ITextProps) =>
-      props.title &&
-      `
-          font-weight: bold;
-          font-size: 22px;
-      `}
     ${(props: ITextProps) =>
       props.created &&
       `
@@ -153,13 +156,13 @@ export const Text = styled.div`
       props.stat &&
       `
         font-weight: bold;
-        font-size: 20px;
+        font-size: 22px;
       `}
     ${(props: ITextProps) =>
       props.use &&
       `
         font-weight: bold;
-        font-size: 20px;
+        font-size: 22px;
         color: #4C54D2;
       `}
     ${(props: ITextProps) =>

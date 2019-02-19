@@ -26,9 +26,9 @@ export default class DeleteDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Delete referral code?</Header>
+        <Header>{locale.referrals.deleteCode}</Header>
         <br />
-        <Label>Please note, this action cannot be undone.</Label>
+        <Label>{locale.referrals.deleteNotice}</Label>
         <br />
         <br />
         <PrimaryButton
@@ -41,7 +41,7 @@ export default class DeleteDialog extends React.Component<
             )
           }
         >
-          Delete
+          {locale.delete}
         </PrimaryButton>
       </div>
     );

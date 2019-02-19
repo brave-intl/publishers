@@ -1,14 +1,17 @@
 import * as React from "react";
 
 import {
-  ContentWrapper,
-  Grid,
+  FlexWrapper,
+  HeaderRow,
   IconWrapper,
+  Logo,
   Row,
   Text,
-  TextWrapper,
-  Wrapper
+  TextWrapper
 } from "./ReferralsCardStyle";
+
+import Card from "../../../components/card/Card";
+import { H2 } from "../../../components/text/Text";
 
 import { CaratRightIcon, CheckCircleIcon } from "brave-ui/components/icons";
 
@@ -23,65 +26,62 @@ export default class ReferralsCard extends React.Component<
 > {
   public render() {
     return (
-      <Wrapper>
-        <Grid>
-          <Row>
-            <IconWrapper check>
-              <CheckCircleIcon />
-            </IconWrapper>
-            <ContentWrapper>
-              <TextWrapper>
-                <Text>{this.props.campaign.name}</Text>
-              </TextWrapper>
-              <TextWrapper created>
-                <Text created>{locale.referrals.created}</Text>
-                <Text date>
-                  {processCreatedAt(this.props.campaign.created_at)}
-                </Text>
-              </TextWrapper>
-            </ContentWrapper>
-          </Row>
+      <Card>
+        <FlexWrapper>
+          <Logo>
+            <CheckCircleIcon />
+          </Logo>
+          <HeaderRow>
+            <H2 bold={true}>{this.props.campaign.name}</H2>
+            <div>
+              {locale.referrals.created}{" "}
+              {formatCreatedAt(this.props.campaign.created_at)}
+            </div>
+          </HeaderRow>
+        </FlexWrapper>
 
-          <Row stats>
-            <TextWrapper stats>
-              <Text header>{locale.referrals.downloads}</Text>
-              <Text stat>
-                {processDownloads(this.props.campaign.promo_registrations)}
-              </Text>
-            </TextWrapper>
-            <TextWrapper stats>
-              <Text header>{locale.referrals.installs}</Text>
-              <Text stat>
-                {processInstalls(this.props.campaign.promo_registrations)}
-              </Text>
-            </TextWrapper>
-            <TextWrapper stats>
-              <Text header>{locale.referrals.thirtyDay}</Text>
-              <Text use>
-                {processThirtyDayUse(this.props.campaign.promo_registrations)}
-              </Text>
-            </TextWrapper>
-          </Row>
+        <FlexWrapper style={{ marginTop: "16px", marginBottom: "8px" }}>
+          <TextWrapper stats>
+            <Text header>{locale.referrals.downloads}</Text>
+            <Text stat>
+              {processStats(this.props.campaign.promo_registrations).downloads}
+            </Text>
+          </TextWrapper>
+          <TextWrapper stats>
+            <Text header>{locale.referrals.installs}</Text>
+            <Text stat>
+              {processStats(this.props.campaign.promo_registrations).installs}
+            </Text>
+          </TextWrapper>
+          <TextWrapper stats>
+            <Text header>{locale.referrals.thirtyDay}</Text>
+            <Text use>
+              {
+                processStats(this.props.campaign.promo_registrations)
+                  .thirtyDayUse
+              }
+            </Text>
+          </TextWrapper>
+        </FlexWrapper>
 
-          <Row total>
-            <TextWrapper total>
-              <Text total>{locale.referrals.totalNumber}</Text>
-            </TextWrapper>
-            <TextWrapper total>
-              <Text codes>
-                {processTotalCodes(this.props.campaign.promo_registrations)}
-              </Text>
-            </TextWrapper>
-            <IconWrapper carat>
-              <CaratRightIcon
-                onClick={redirectToReferralsInformation(
-                  this.props.campaign.promo_campaign_id
-                )}
-              />
-            </IconWrapper>
-          </Row>
-        </Grid>
-      </Wrapper>
+        <Row total>
+          <TextWrapper total>
+            <Text total>{locale.referrals.totalNumber}</Text>
+          </TextWrapper>
+          <TextWrapper total>
+            <Text codes>
+              {processStats(this.props.campaign.promo_registrations).total}
+            </Text>
+          </TextWrapper>
+          <IconWrapper carat>
+            <CaratRightIcon
+              onClick={redirectToReferralsInformation(
+                this.props.campaign.promo_campaign_id
+              )}
+            />
+          </IconWrapper>
+        </Row>
+      </Card>
     );
   }
 }
@@ -92,36 +92,23 @@ function redirectToReferralsInformation(campaign) {
   };
 }
 
-function processCreatedAt(createdAt) {
+function formatCreatedAt(createdAt) {
   const options = { year: "numeric", month: "long", day: "numeric" };
   const date = new Date(createdAt);
   return date.toLocaleDateString("en-US", options);
 }
 
-function processDownloads(referralCodes) {
+function processStats(referralCodes) {
+  let installs = 0;
   let downloads = 0;
+  let thirtyDayUse = 0;
+  const total = referralCodes.length;
+
   referralCodes.forEach(code => {
     downloads += JSON.parse(code.stats)[0].retrievals;
-  });
-  return downloads;
-}
-
-function processInstalls(referralCodes) {
-  let installs = 0;
-  referralCodes.forEach(code => {
     installs += JSON.parse(code.stats)[0].first_runs;
-  });
-  return installs;
-}
-
-function processThirtyDayUse(referralCodes) {
-  let thirtyDayUse = 0;
-  referralCodes.forEach(code => {
     thirtyDayUse += JSON.parse(code.stats)[0].finalized;
   });
-  return thirtyDayUse;
-}
 
-function processTotalCodes(referralCodes) {
-  return referralCodes.length;
+  return { downloads, installs, thirtyDayUse, total };
 }

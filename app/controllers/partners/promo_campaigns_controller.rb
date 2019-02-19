@@ -1,3 +1,4 @@
+include ActionView::Helpers::SanitizeHelper
 module Partners
     class PromoCampaignsController < ApplicationController
     def create

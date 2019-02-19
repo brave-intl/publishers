@@ -42,9 +42,9 @@ export default class EditCampaignDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Change Campaign name?</Header>
+        <Header>{locale.referrals.editCampaign}</Header>
         <br />
-        <Label>Enter new name</Label>
+        <Label>{locale.referrals.enterCampaign}</Label>
         <Input
           style={{ width: "100%" }}
           value={this.state.name}
@@ -66,10 +66,10 @@ export default class EditCampaignDialog extends React.Component<
             }
             enabled={true}
           >
-            Change
+            {locale.edit}
           </PrimaryButton>
         ) : (
-          <PrimaryButton enabled={false}>Change</PrimaryButton>
+          <PrimaryButton enabled={false}>{locale.edit}</PrimaryButton>
         )}
       </div>
     );

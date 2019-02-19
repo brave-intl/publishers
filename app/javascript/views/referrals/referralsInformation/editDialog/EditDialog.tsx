@@ -34,9 +34,9 @@ export default class EditDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Edit Campaign?</Header>
+        <Header>{locale.referrals.editCampaign}</Header>
         <br />
-        <Label>Enter new campaign name</Label>
+        <Label>{locale.referrals.enterCampaign}</Label>
         <Input
           value={this.state.campaignName}
           onChange={this.handlecampaignName}
@@ -54,7 +54,7 @@ export default class EditDialog extends React.Component<
           }
           enabled={true}
         >
-          Edit
+          {locale.edit}
         </PrimaryButton>
       </div>
     );

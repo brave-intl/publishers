@@ -66,7 +66,7 @@ export default class MoveDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Move referral code?</Header>
+        <Header>{locale.referrals.moveReferralCodes}</Header>
         <CodesList
           referralCodes={this.props.referralCodes}
           handleCodeSelect={this.handleCodeSelect}
@@ -90,10 +90,10 @@ export default class MoveDialog extends React.Component<
               )
             }
           >
-            Move
+            {locale.move}
           </PrimaryButton>
         ) : (
-          <PrimaryButton enabled={false}>Move</PrimaryButton>
+          <PrimaryButton enabled={false}>{locale.move}</PrimaryButton>
         )}
       </div>
     );

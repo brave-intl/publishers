@@ -77,10 +77,10 @@ export default class CreateDialog extends React.Component<
   public render() {
     return (
       <div>
-        <Header>Create Campaign?</Header>
+        <Header>{locale.referrals.createCampaign}</Header>
         <br />
         <br />
-        <Label>Number of Codes</Label>
+        <Label>{locale.referrals.numberOfCodes}</Label>
         <br />
         <Input
           style={{ width: "25%" }}
@@ -90,7 +90,7 @@ export default class CreateDialog extends React.Component<
         />
         <br />
         <br />
-        <Label>Campaign</Label>
+        <Label>{locale.campaign}</Label>
         <Input
           style={{ width: "100%" }}
           value={this.state.campaign}
@@ -99,7 +99,7 @@ export default class CreateDialog extends React.Component<
         />
         <br />
         <br />
-        <Label>Description</Label>
+        <Label>{locale.description}</Label>
         <Input
           style={{ width: "100%" }}
           value={this.state.description}
@@ -111,10 +111,10 @@ export default class CreateDialog extends React.Component<
         <br />
         {this.isValidForm() === true ? (
           <PrimaryButton enabled={true} onClick={this.handleCreate}>
-            Create
+            {locale.create}
           </PrimaryButton>
         ) : (
-          <PrimaryButton enabled={false}>Create</PrimaryButton>
+          <PrimaryButton enabled={false}>{locale.create}</PrimaryButton>
         )}
       </div>
     );
