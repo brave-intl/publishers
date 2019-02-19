@@ -1,0 +1,25 @@
+h2= "Finalize #{@invoice.partner.name.pluralize} invoice for #{@invoice.date.utc.strftime("%B %Y") }"
+
+p You are about to mark this invoice as "In Progress". From this point forward the invoice will be read-only.
+
+p
+  span This means that
+  strong= " #{@invoice.partner} "
+  span will
+ul
+  li not be able to edit the amount of the invoice
+  li not be able to upload any supporting documents
+  li not be able to archive any documents
+
+p This means that <strong>administrators</strong>
+ul
+  li will not be able to update any amounts
+  li will not be able to upload any supporting documents
+
+p
+  span= "#{@invoice.partner} requested #{@invoice.amount} BAT and will be manually paid out "
+  mark= "#{@invoice.finalized_amount}"
+  span= " BAT."
+
+= form_tag(admin_partner_invoice_update_status_path, method: :patch)
+  = submit_tag 'Mark partner invoice as "In Progress"', class: 'btn btn-warning'

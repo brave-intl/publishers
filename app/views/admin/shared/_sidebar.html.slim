@@ -35,6 +35,10 @@ aside
           li
             = link_to admin_partners_path
               span Partners
+            - if params[:partner_id] && (params[:id] || params[:invoice_id])
+              ul.sub-menu
+                = link_to admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
+                  span Invoice
           li
             a href='#' class="sidebar-toggle pull-right"
               = fa_icon "chevron-down"

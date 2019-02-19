@@ -116,7 +116,7 @@ html
                         strong.error= "#{flash[name].class.human_attribute_name(attribute)}:"
                         span= " #{message}"
 
-      .main-content
+      .main-content#main-content
         = content_for?(:content) ? yield(:content) : yield
 
       = render("footer")
@@ -131,6 +131,7 @@ html
             = render "application/icon_x"
       .modal-overlay
 
+    #modal-root
     / ## Using flash modals in Brave Publishers ##
     /
     / In addition to using flash to pass a message, you can use flash to

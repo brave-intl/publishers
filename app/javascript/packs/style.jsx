@@ -1,14 +1,11 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
-import BatsBackground from '../../assets/images/bg_bats.svg'
-import HeartsBackground from '../../assets/images/bg_hearts.svg'
+import BatsBackground from "../../assets/images/bg_bats.svg";
+import HeartsBackground from "../../assets/images/bg_hearts.svg";
 
-export const Container = styled.div
-`
-`;
+export const Container = styled.div``;
 
-export const Dialogue = styled.div
-`
+export const Dialogue = styled.div`
   position: absolute;
   background-color: white;
   border-radius: 8px;
@@ -17,7 +14,8 @@ export const Dialogue = styled.div
   padding: 75px;
   z-index: 1;
 
-  ${props => props.logo &&
+  ${props =>
+    props.logo &&
     `
     width: 500px;
     height: 500px;
@@ -25,10 +23,10 @@ export const Dialogue = styled.div
     margin-top: -250px;
     padding: 40px;
     text-align: center;
-    `
-  }
+    `}
 
-  ${props => props.cover &&
+  ${props =>
+    props.cover &&
     `
     width: 600px;
     height: 400px;
@@ -36,31 +34,30 @@ export const Dialogue = styled.div
     margin-top: -250px;
     padding: 40px;
     text-align: center;
-    `
-  }
+    `}
 
-  ${props => props.save &&
+  ${props =>
+    props.save &&
     `
     width: 550px;
     height: 350px;
     margin-left: -275px;
     margin-top: -200px;
-    `
-  }
+    `}
 `;
 
-export const Channels = styled.div
-`
+export const Channels = styled.div`
   margin-top: 7px;
 
-  ${({ active }) => active === false && `
+  ${({ active }) =>
+    active === false &&
+    `
     opacity: .3;
     pointer-events: none;
   `}
-`
+`;
 
-export const Opacity = styled.div
-`
+export const Opacity = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -69,21 +66,15 @@ export const Opacity = styled.div
   border-radius: 6px;
 `;
 
-export const Editor = styled.div
-`
+export const Editor = styled.div`
   width: 1300px;
 `;
 
-export const Template = styled.div
-`
-`;
+export const Template = styled.div``;
 
-export const LinkInputWrapper = styled.div
-`
-`;
+export const LinkInputWrapper = styled.div``;
 
-export const Content = styled.div
-`
+export const Content = styled.div`
   display: grid;
   grid-template-columns: 3.5fr 5fr 3fr;
   background-color: rgb(233, 240, 255);
@@ -91,18 +82,15 @@ export const Content = styled.div
   height: 350px;
 `;
 
-export const Input = styled.input
-`
+export const Input = styled.input`
   display: none;
 `;
 
-export const DropdownToggle = styled.div
-`
+export const DropdownToggle = styled.div`
   display: inline;
 `;
 
-export const TextInput = styled.input
-`
+export const TextInput = styled.input`
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid lightGray;
   border-radius: 8px;
@@ -123,29 +111,28 @@ export const TextInput = styled.input
   }
 
 
-  ${props => props.link &&
+  ${props =>
+    props.link &&
     `
     display: inline;
     width: 175px;
     height: 40px;
     margin-left: 5px;
-    `
-  }
+    `}
 
-  ${props => props.headline &&
+  ${props =>
+    props.headline &&
     `
     color: #28292e;
     font-size: 32px;
     width: 100%;
     height: 50px;
     margin-top: 10px;
-    `
-  }
+    `}
 
 `;
 
-export const TextArea = styled.textarea
-`
+export const TextArea = styled.textarea`
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid lightGray;
   border-radius: 8px;
@@ -158,142 +145,136 @@ export const TextArea = styled.textarea
   resize: none;
   cursor: pointer;
 
-  &:hover{
-     box-shadow: 0 0 1px 1px #fc4145;
-     border: 1px solid rgba(0,0,0,0);
+  &:hover {
+    box-shadow: 0 0 1px 1px #fc4145;
+    border: 1px solid rgba(0, 0, 0, 0);
   }
 
-  &:focus{
+  &:focus {
     cursor: text;
     box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0,0,0,0);
+    border: 1px solid rgba(0, 0, 0, 0);
     outline: none;
   }
 `;
 
-
-export const Label = styled.label
-`
+export const Label = styled.label`
   height: 100%;
   width: 100%;
   border: none;
   cursor: pointer;
 
-  ${props => props.logo &&
+  ${props =>
+    props.logo &&
     `
     border-radius:50%;
-    `
-  }
+    `}
 
-  &:hover{
+  &:hover {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
   }
 `;
 
-export const Text = styled.p
-`
+export const Text = styled.p`
     font-size: 18px;
     font-weight: bold;
 
-${props => props.links && css
-  `
-  color: rgb(104, 105, 120);
-  `
-}
+${props =>
+  props.links &&
+  css`
+    color: rgb(104, 105, 120);
+  `}
 
-${props => props.donations && css
-  `
-  font-size: 17px;
-  color: white;
-  padding-left: 42px;
-  margin-bottom: 8px;
-  `
-}
+${props =>
+  props.donations &&
+  css`
+    font-size: 17px;
+    color: white;
+    padding-left: 42px;
+    margin-bottom: 8px;
+  `}
 
-${props => props.add && css
-  `
-  color: rgb(125, 123, 220);
-  margin-left: 78px;
-  margin-top: 15px;
-  font-size: 15px;
-  cursor: pointer;
-  width: 80px;
-  `
-}
+${props =>
+  props.add &&
+  css`
+    color: rgb(125, 123, 220);
+    margin-left: 78px;
+    margin-top: 15px;
+    font-size: 15px;
+    cursor: pointer;
+    width: 80px;
+  `}
 
-${props => props.donation && css
-  `
-  color: white;
-  `
-}
+${props =>
+  props.donation &&
+  css`
+    color: white;
+  `}
 
-${props => props.donationAmount && css
-  `
-  display: inline;
-  font-size: 14px;
-  font-family: Poppins;
-  color: #F1F1F9
-  `
-}
+${props =>
+  props.donationAmount &&
+  css`
+    display: inline;
+    font-size: 14px;
+    font-family: Poppins;
+    color: #f1f1f9;
+  `}
 
-${props => props.convertedAmount && css
-  `
-  display: inline-block;
-  font-size: 14px;
-  padding: 5px;
-  width: 100px;
-  font-weight: normal;
-  font-family: Poppins;
-  color: #F1F1F9
-  `
-}
+${props =>
+  props.convertedAmount &&
+  css`
+    display: inline-block;
+    font-size: 14px;
+    padding: 5px;
+    width: 100px;
+    font-weight: normal;
+    font-family: Poppins;
+    color: #f1f1f9;
+  `}
 
-${props => props.BAT && css
-  `
-  display: inline;
-  font-size: .85rem;
-  font-weight: normal;
-  margin-left: 5px;
-  font-family: Poppins;
-  color: #F1F1F9
-  `
-}
+${props =>
+  props.BAT &&
+  css`
+    display: inline;
+    font-size: 0.85rem;
+    font-weight: normal;
+    margin-left: 5px;
+    font-family: Poppins;
+    color: #f1f1f9;
+  `}
 
-${props => props.dialogueHeader && css
-  `
-  font-size: 24px;
-  font-weight: normal;
-  font-family: Poppins;
-  color: #fb542b;
-  `
-}
+${props =>
+  props.dialogueHeader &&
+  css`
+    font-size: 24px;
+    font-weight: normal;
+    font-family: Poppins;
+    color: #fb542b;
+  `}
 
-${props => props.dialogueSubtext && css
-  `
-  font-size: 15px;
-  font-weight: normal;
-  color: rgb(104, 105, 120);
-  `
-}
+${props =>
+  props.dialogueSubtext &&
+  css`
+    font-size: 15px;
+    font-weight: normal;
+    color: rgb(104, 105, 120);
+  `}
 
-${props => props.channel && css
-  `
-  font-size: 1.25rem;
-  margin-bottom: 0px;
-  user-select: none;
-
-  `
-}
+${props =>
+  props.channel &&
+  css`
+    font-size: 1.25rem;
+    margin-bottom: 0px;
+    user-select: none;
+  `}
 `;
 
-export const Links = styled.div
-`
+export const Links = styled.div`
   padding-left: 80px;
   padding-top: 80px;
 `;
 
-export const Caret = styled.div
-`
+export const Caret = styled.div`
   display: inline;
   height: 25px;
   width: 50px;
@@ -306,24 +287,21 @@ export const Caret = styled.div
   cursor: pointer;
 `;
 
-export const ExplanatoryText = styled.div
-`
+export const ExplanatoryText = styled.div`
   padding-top: 30px;
   padding-right: 75px;
   padding-left: 30px;
 `;
 
-export const DonationWrapper = styled.div
-`
+export const DonationWrapper = styled.div`
   text-align: center;
   padding-top: 5px;
   padding-bottom: 5px;
 `;
 
-export const Channel = styled.p
-`
-  display:inline-block;
-  padding-left:5px;
+export const Channel = styled.p`
+  display: inline-block;
+  padding-left: 5px;
   max-width: 250px;
   margin: auto;
   overflow: hidden;
@@ -331,18 +309,16 @@ export const Channel = styled.p
   text-overflow: ellipsis;
 `;
 
-export const Delete = styled.p
-`
+export const Delete = styled.p`
   display: inline;
   padding-left: 5px;
   padding-right: 5px;
-  cursor:pointer;
-  font-size: .85rem;
+  cursor: pointer;
+  font-size: 0.85rem;
   color: #7d7bdc;
 `;
 
-export const Donations = styled.div
-`
+export const Donations = styled.div`
   background-color: rgb(105, 111, 220);
   margin-right: -1px;
   color: white;
@@ -350,28 +326,26 @@ export const Donations = styled.div
   border-bottom-right-radius: 8px;
 `;
 
-export const Link = styled.div
-``;
+export const Link = styled.div``;
 
-export const BrandBar = styled.div
-`
+export const BrandBar = styled.div`
   display: flex;
   align-items: center;
   height: 80px;
   padding-left: 60px;
   padding-right: 30px;
-  background-color: #E9E9F4;
+  background-color: #e9e9f4;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 
-  ${({ mode }) => mode === "test" && `
+  ${({ mode }) =>
+    mode === "test" &&
+    `
     background-color: blue;
   `}
+`;
 
-`
-
-export const Logo = styled.div
-`
+export const Logo = styled.div`
   position: absolute;
   top: 320px;
   left: 175px;
@@ -380,72 +354,70 @@ export const Logo = styled.div
   height: 160px;
   border: 6px solid white;
 
-  ${({ url }) => url && `
+  ${({ url }) =>
+    url &&
+    `
     background-size: cover;
     background-image: url(${url})
   `}
 
-  ${({ url }) => url === null && `
+  ${({ url }) =>
+    url === null &&
+    `
     background-color: #fb542b;
   `}
-`
+`;
 
-export const Cover = styled.div
-`
+export const Cover = styled.div`
   height: 234px;
 
-  ${({ url }) => url && `
+  ${({ url }) =>
+    url &&
+    `
     background-size: cover;
     background-image: url(${url})
   `}
 
-  ${({ url }) => url === null && `
+  ${({ url }) =>
+    url === null &&
+    `
     background: url(${BatsBackground}) left bottom no-repeat, url(${HeartsBackground}) right top no-repeat, rgb(158, 159, 171);
   `}
-`
+`;
 
-export const ControlBar = styled.div
-`
+export const ControlBar = styled.div`
   display: flex;
   align-items: center;
   height: 80px;
   padding-left: 60px;
   padding-right: 30px;
-
 `;
 
-export const BrandImage = styled.img
-`
+export const BrandImage = styled.img`
   height: 50px;
 `;
 
-export const BrandText = styled.h5
-`
+export const BrandText = styled.h5`
   padding-left: 20px;
   margin-top: 8.5px;
   margin-bottom: 0px;
   user-select: none;
 `;
 
-export const ToggleText = styled.p
-`
+export const ToggleText = styled.p`
   margin-bottom: 0px;
   margin-top: 3.25px;
   margin-left: auto;
   margin-right: 10px;
   font-weight: bold;
   user-select: none;
-
 `;
 
-export const ToggleWrapper = styled.div
-`
+export const ToggleWrapper = styled.div`
   margin-top: 7px;
-
 `;
 
-export const Button = styled.div
-`
+export const Button = styled.div`
   width: 150px;
   text-align: center;
   border-radius: 24px;
@@ -456,47 +428,47 @@ export const Button = styled.div
   user-select: none;
   display: inline-block;
 
-  ${props => props.primary && css
-    `
-    background-color: #fb542b;
-    border: 1px solid #fb542b;
-    color: white;
-    `
-  }
+  ${props =>
+    props.primary &&
+    css`
+      background-color: #fb542b;
+      border: 1px solid #fb542b;
+      color: white;
+    `}
 
-  ${props => props.dialoguePrimary && css
-    `
-    background-color: #fb542b;
-    border: 1px solid #fb542b;
-    color: white;
-    display: block;
-    margin: auto;
-    margin-top: 30px;
-    `
-  }
+  ${props =>
+    props.dialoguePrimary &&
+    css`
+      background-color: #fb542b;
+      border: 1px solid #fb542b;
+      color: white;
+      display: block;
+      margin: auto;
+      margin-top: 30px;
+    `}
 
-  ${props => props.outline && css
-    `
-    border: 1px solid #fb542b;
-    color: #fb542b;
-    `
-  }
+  ${props =>
+    props.outline &&
+    css`
+      border: 1px solid #fb542b;
+      color: #fb542b;
+    `}
 
-  ${props => props.subtle && css
-    `
-    border: 1px solid #A0A1B2;
-    color: #A0A1B2;
-    `
-  }
+  ${props =>
+    props.subtle &&
+    css`
+      border: 1px solid #a0a1b2;
+      color: #a0a1b2;
+    `}
 
-  ${props => props.donation && css
-    `
-    width: 125px;
-    padding: 6px 7px;
-    font-weight: normal;
-    border: 1px solid #AAAFEF;
-    color: #F1F1F9;
-    `
-  }
+  ${props =>
+    props.donation &&
+    css`
+      width: 125px;
+      padding: 6px 7px;
+      font-weight: normal;
+      border: 1px solid #aaafef;
+      color: #f1f1f9;
+    `}
 
 `;

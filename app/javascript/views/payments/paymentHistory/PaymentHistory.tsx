@@ -1,53 +1,31 @@
 import * as React from "react";
 
-import { DownloadIcon } from "brave-ui/components/icons";
-
 import locale from "../../../locale/en";
+import { IInvoice } from "../../payments/Payments";
 
-import { Header, Subheader } from "../../style";
-import { Cell, Link, Table, TableHeader } from "./paymentHistoryStyle";
+import { FlexWrapper, Header, LoadingIcon } from "./PaymentHistoryStyle";
 
-export default class PaymentHistory extends React.Component {
+import InvoicesList from "./invoiceList/InvoiceList";
+
+interface IInvoicesProps {
+  invoices?: IInvoice[];
+  isLoading: boolean;
+  reloadTable: any;
+}
+
+export default class Invoices extends React.Component<IInvoicesProps> {
   public render() {
     return (
-      <div>
-        <Header>{locale.payments.history.title}</Header>
-
-        <Table>
-          <thead>
-            <tr>
-              <TableHeader>{locale.payments.history.earningPeriod}</TableHeader>
-              <TableHeader>{locale.payments.history.paymentDate}</TableHeader>
-              <TableHeader>
-                {locale.payments.history.depositAccount}
-              </TableHeader>
-              <TableHeader>
-                {locale.payments.history.confirmedEarning}
-              </TableHeader>
-              <TableHeader>
-                {locale.payments.history.totalDeposited}
-              </TableHeader>
-              <TableHeader>{locale.payments.history.statement}</TableHeader>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <Cell>Nov 1- Nov 30, 2018</Cell>
-              <Cell>Dec 8th, 2018</Cell>
-              <Cell>Uphold @ aliceblogette</Cell>
-              <Cell>99999.9</Cell>
-              <Cell>999.9 EURO</Cell>
-              <Cell>
-                <Link href="#">View</Link>
-                <Link href="#">
-                  <DownloadIcon style={{ width: "32px" }} />
-                  Download
-                </Link>
-              </Cell>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
+      <React.Fragment>
+        <FlexWrapper>
+          <Header>{locale.payments.history.title}</Header>
+          <LoadingIcon isLoading={this.props.isLoading} />
+        </FlexWrapper>
+        <InvoicesList
+          reload={this.props.reloadTable}
+          invoices={this.props.invoices && this.props.invoices.slice(1)}
+        />
+      </React.Fragment>
     );
   }
 }

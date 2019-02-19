@@ -1,0 +1,36 @@
+.d-flex.mb-3
+  h3 = "Invoices"
+  .ml-3
+    = link_to "Request Invoice", new_admin_partner_invoice_path(partner_id: partner.id), class: 'btn btn-primary'
+table.display.table.table-bordered.table-striped
+  tr
+    th Date
+    th Status
+    th Requested Amount (BAT)
+    th Brave Calculated Total Amount (BAT)
+    th Payment Date
+  tbody
+  - partner.invoices.order(created_at: :desc).limit(limit).each do |invoice|
+    tr.gradeX
+      td = link_to invoice.date.utc.strftime("%B %Y"), admin_partner_invoice_path(partner_id: partner.id, id: invoice.id)
+      td = invoice.status
+      td = invoice.amount
+      td = invoice.finalized_amount
+      td = invoice.payment_date
+
+      / td = report.created_at
+      / td = report.uploaded_by
+      / td
+      /   - if report.paid?
+      /     = "Paid"
+      /   - else
+      /     = "Unpaid"
+      / td= report.paid_by
+      / td
+      /   - unless report.paid?
+      /     = link_to("Pay", edit_admin_publisher_path(@publisher), class: "btn btn-link")
+
+- if limit && partner.invoices.count > limit
+  = link_to "View more", admin_publisher_path(partner.id, view_more: true)
+
+

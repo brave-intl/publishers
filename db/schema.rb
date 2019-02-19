@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_001651) do
+ActiveRecord::Schema.define(version: 2019_02_02_003918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,33 @@ ActiveRecord::Schema.define(version: 2019_01_16_001651) do
     t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id"
     t.index ["question"], name: "index_faqs_on_question", unique: true
     t.index ["rank"], name: "index_faqs_on_rank"
+  end
+
+  create_table "invoice_files", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "invoice_id"
+    t.uuid "uploaded_by_id"
+    t.boolean "archived", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_invoice_files_on_invoice_id"
+    t.index ["uploaded_by_id"], name: "index_invoice_files_on_uploaded_by_id"
+  end
+
+  create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "partner_id"
+    t.datetime "date"
+    t.string "amount", default: "0"
+    t.string "finalized_amount"
+    t.boolean "paid", default: false
+    t.uuid "paid_by_id"
+    t.datetime "payment_date"
+    t.uuid "finalized_by_id"
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["finalized_by_id"], name: "index_invoices_on_finalized_by_id"
+    t.index ["paid_by_id"], name: "index_invoices_on_paid_by_id"
+    t.index ["partner_id"], name: "index_invoices_on_partner_id"
   end
 
   create_table "legacy_publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -444,5 +471,8 @@ ActiveRecord::Schema.define(version: 2019_01_16_001651) do
   end
 
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
+  add_foreign_key "invoice_files", "publishers", column: "uploaded_by_id"
+  add_foreign_key "invoices", "publishers", column: "finalized_by_id"
+  add_foreign_key "invoices", "publishers", column: "paid_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
 end

@@ -6,4 +6,8 @@ module AdminHelper
     icon = column == sort_column ? icon : ""
     link_to "#{title} <span class='#{icon}'></span>".html_safe, {column: column, direction: direction}.merge(params.permit(:type, :search))
   end
+
+  def no_data_default(value)
+    value || "--"
+  end
 end
