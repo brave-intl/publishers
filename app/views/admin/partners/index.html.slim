@@ -22,15 +22,15 @@ div.row
         div.adv-table
           table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
             tr
-              th ID
               th Name
               th Email
+              th ID
               th Organization
             tbody
               - @partners.each do |partner|
                 tr.gradeX
-                  td = link_to partner.id, admin_publisher_path(partner.id)
-                  td = partner.name
+                  td = link_to partner.name, admin_publisher_path(partner.id)
                   td = partner.email
+                  td.small = partner.id
                   td = partner&.membership&.organization&.name
           = will_paginate @partners

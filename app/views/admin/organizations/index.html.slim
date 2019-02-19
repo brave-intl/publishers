@@ -9,13 +9,11 @@ div.row
         div.adv-table
           table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
             tr
-              th ID
               th Name
               th Members
             tbody
               - @organizations.each do |organization|
                 tr.gradeX
-                  td = link_to organization.id, admin_organization_path(organization.id)
-                  td = organization.name
+                  td = link_to organization.name, admin_organization_path(organization.id)
                   td = organization.memberships.length
           = will_paginate @organizations
