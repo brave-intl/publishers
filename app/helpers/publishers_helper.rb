@@ -55,7 +55,7 @@ module PublishersHelper
   def publisher_channel_bat_balance(publisher, channel_identifier)
     channel_balance = publisher.wallet&.channel_balances.dig(channel_identifier)
     if channel_balance&.amount_bat.present?
-      '%.2f' % balance.amount_bat
+      '%.2f' % channel_balance.amount_bat
     else
       I18n.t("helpers.publisher.balance_unavailable")
     end
@@ -64,7 +64,7 @@ module PublishersHelper
     Raven.capture_exception(e)
     I18n.t("helpers.publisher.balance_unavailable")
   end
-  
+
   def publisher_last_settlement_bat_balance(publisher)
     last_settlement_balance = publisher.wallet&.last_settlement_balance
     if last_settlement_balance&.amount_bat.present?
