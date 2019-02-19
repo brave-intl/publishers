@@ -94,9 +94,9 @@ export default class Payments extends React.Component<any, IPaymentsState> {
                   reloadInvoices={this.reloadTable}
                 />
               </Card>
-              <Card>
+              {/* <Card>
                 <UpholdCard name="AliceBlogette" />
-              </Card>
+              </Card> */}
             </Row>
             <Card>
               <PaymentHistory
