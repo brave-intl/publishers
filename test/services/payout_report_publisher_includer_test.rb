@@ -21,7 +21,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create,
+        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -39,7 +39,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create,
+        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -55,14 +55,14 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
   describe "when user is blocked from uphold" do
     let(:publisher) { publishers(:uphold_connected) }
     let(:wallet_response) do
-      { wallet: { authorized: false, status: "blocked", "isMember": false } }
+      { wallet: { authorized: false, status: "blocked", "isMember": false, id: "fake uphold id" } }
     end
 
     let(:subject) do
       perform_enqueued_jobs do
         PayoutReportPublisherIncluder.new(payout_report: @payout_report,
                                           publisher: publisher,
-                                          should_send_notifications: should_send_notifications).perform
+                                          should_send_notifications: false).perform
       end
     end
 
@@ -92,17 +92,37 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     before do
       Rails.application.secrets[:fee_rate] = 0.05
-      @payout_report = PayoutReport.create(fee_rate: 0.05)
+      Rails.application.secrets[:api_eyeshade_offline] = false
+      @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
 
       account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
         .to_return(status: 200, body: wallet_response.to_json, headers: {})
       stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
         .to_return(status: 200, body: balance_response.to_json)
+
+      subject
     end
 
-    it "does not generate a report" do
-      assert_equal 0, PotentialPayment.count
+    it "creates 4 potential payments" do
+      assert_equal 4, PotentialPayment.count
+      PotentialPayment.all.each do |potential_payment|
+        assert_equal false, potential_payment.was_suspended
+        assert_equal true, potential_payment.was_uphold_connected
+        assert_equal "blocked", potential_payment.uphold_status_was
+        if potential_payment.kind == PotentialPayment::REFERRAL
+          assert_equal "20000000000000000000", potential_payment.amount
+          assert_equal "0", potential_payment.fees
+        elsif potential_payment.kind == PotentialPayment::CONTRIBUTION
+          assert_equal "19000000000000000000", potential_payment.amount
+          assert_equal  "1000000000000000000", potential_payment.fees
+        end
+      end
+    end
+
+    it "does not include any in payout report" do
+      @payout_report.update_report_contents
+      assert_equal 0, JSON.parse(@payout_report.contents).length
     end
   end
 
@@ -133,7 +153,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
       let(:subject) do
         perform_enqueued_jobs do
-          PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create,
+          PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments),
                                             publisher: publisher,
                                             should_send_notifications: should_send_notifications).perform
         end
@@ -151,8 +171,21 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         subject
       end
 
-      it "is not included in the report" do
-        assert_equal 0, PotentialPayment.count
+      it "creates two potential payments" do
+        assert_equal 2, PotentialPayment.count
+
+        PotentialPayment.all.each do |potential_payment|
+          assert_equal false, potential_payment.was_uphold_connected
+          assert_equal false, potential_payment.was_uphold_member
+          assert_equal false, potential_payment.was_suspended
+          assert_nil potential_payment.uphold_status_was
+        end
+      end
+
+      it "doesn't include any in payout report" do
+        payout_report = PayoutReport.order("created_at").last
+        payout_report.update_report_contents
+        assert_equal 0, JSON.parse(payout_report.contents).length
       end
 
       it "sends email to connect uphold" do
@@ -200,7 +233,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05)
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
 
             account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
             stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
@@ -225,9 +258,14 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 subject
               end
 
-              it "does not include in report" do
-                assert_equal 0, PotentialPayment.count
+              it "creates potential payments" do
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
+              end
+
+              it "does not include any potential payments in payout report" do
+                @payout_report.update_report_contents
+                assert_equal 0, JSON.parse(@payout_report.contents).length
               end
 
               it "sends no emails" do
@@ -243,7 +281,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
               end
 
               it "does not include in report" do
-                assert_equal 0, PotentialPayment.count
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
               end
 
@@ -255,7 +293,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
           describe "when is a member" do
             let(:wallet_response) do
-              { wallet: { authorized: true, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "ok", "isMember": true } }
+              { wallet: { authorized: true, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "ok", "isMember": true, id: "fake uphold id" } }
             end
 
             describe "when should_send_notifications is false" do
@@ -284,6 +322,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                     elsif potential_payment.kind == PotentialPayment::REFERRAL
                       assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
                     end
+                    assert_equal "ok", potential_payment.uphold_status_was
+                    assert potential_payment.was_uphold_member
+                    refute potential_payment.was_suspended
                   end
                 end
 
@@ -300,19 +341,19 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 end
               end
 
-              describe "when payout_report is nil" do
-                before do
-                  perform_enqueued_jobs do
-                    PayoutReportPublisherIncluder.new(payout_report: nil,
-                                                      publisher: publisher,
-                                                      should_send_notifications: should_send_notifications).perform
-                  end
-                end
+              # describe "when payout_report is nil" do
+              #   before do
+              #     perform_enqueued_jobs do
+              #       PayoutReportPublisherIncluder.new(payout_report: nil,
+              #                                         publisher: publisher,
+              #                                         should_send_notifications: should_send_notifications).perform
+              #     end
+              #   end
 
-                it "does not add to any potentional payments" do
-                  assert_equal 0, PotentialPayment.count
-                end
-              end
+              #   it "does not add any potential payments" do
+              #     assert_equal 0, PotentialPayment.count
+              #   end
+              # end
             end
 
             describe "when should_send_notifications is true" do
@@ -360,7 +401,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
           describe "not a member" do
             # Possible that user
             let(:wallet_response) do
-              { wallet: { authorized: false, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "restricted", "isMember": false } }
+              { wallet: { authorized: false, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "restricted", "isMember": false, id: "fake uphold id" } }
             end
 
             before do
@@ -375,9 +416,18 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 subject
               end
 
-              it "does not include in report" do
-                assert_equal 0, PotentialPayment.count
+              it "creats the potential payments" do
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
+
+                PotentialPayment.all.each do |potential_payment|
+                  refute potential_payment.was_uphold_member
+                end
+              end
+
+              it "does not include in payout report" do
+                @payout_report.update_report_contents
+                assert_equal 0, JSON.parse(@payout_report.contents).length
               end
 
               it "receives KYC email" do
@@ -394,7 +444,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
               end
 
               it "does not include in report" do
-                assert_equal 0, PotentialPayment.count
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
               end
 
@@ -406,22 +456,50 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         end
 
         describe "without balance" do
-          let(:balance_response) { [] }
+          let(:balance_response) do
+            [
+              {
+                account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+                account_type: "owner",
+                balance: "0.00"
+              },
+              {
+                account_id: "uphold_connected.org",
+                account_type: "channel",
+                balance: "0.00"
+              },
+              {
+                account_id: "twitch#author:ucTw",
+                account_type: "channel",
+                balance: "0.00"
+              }, {
+                account_id: "twitter#channel:def456",
+                account_type: "channel",
+                balance: "0.00"
+              }
+            ]
+          end
+
           let(:should_send_notifications) { true }
+          let(:wallet_response) do
+            { wallet: { authorized: false, status: "restricted", "isMember": true, id: "fake uphold id"} }
+          end
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05)
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
 
-            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?pending=true")
+            stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
+              .to_return(status: 200, body: wallet_response.to_json, headers: {})
+            account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
+            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
               .to_return(status: 200, body: balance_response.to_json)
 
             subject
           end
 
           it "is not included in the payout report" do
-            assert_equal 0, PotentialPayment.count
-
+            assert_equal 4, PotentialPayment.count
             assert_equal 0, @payout_report.amount
           end
 
@@ -459,7 +537,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05)
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
             account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
             stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
               .to_return(status: 200, body: balance_response.to_json)
@@ -484,9 +562,14 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 subject
               end
 
-              it "is not included in the report" do
-                assert_equal 0, PotentialPayment.count
+              it "it creates potential payments" do
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
+              end
+
+              it "does not include them in payout report json" do
+                @payout_report.update_report_contents
+                assert_equal 0, JSON.parse(@payout_report.contents).length
               end
 
               it "recieves an email to check uphold" do
@@ -502,8 +585,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 subject
               end
 
-              it "is not included in the report" do
-                assert_equal 0, PotentialPayment.count
+              it "creates payments" do
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
               end
 
@@ -527,9 +610,15 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
               let(:should_send_notifications) { true }
               before { subject }
 
-              it "is not included in report" do
-                assert_equal 0, PotentialPayment.count
+              it "creates the potential payments" do
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
+              end
+
+              it "does not include them in payout report json" do
+                @payout_report.update_report_contents
+
+                assert_equal 0, JSON.parse(@payout_report.contents).length
               end
 
               it "recieves an email to KYC uphold" do
@@ -542,9 +631,14 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
               let(:should_send_notifications) { false }
               before { subject }
 
-              it "is not included in report" do
-                assert_equal 0, PotentialPayment.count
+              it "creates the potential payments" do
+                assert_equal 4, PotentialPayment.count
                 assert_equal 0, @payout_report.amount
+              end
+
+              it "does not include the payments in the payout json" do
+                @payout_report.update_report_contents
+                assert_equal 0, JSON.parse(@payout_report.contents).length
               end
 
               it "does not receive any emails " do

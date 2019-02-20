@@ -10,40 +10,52 @@ class PayoutReportPublisherIncluder < BaseService
     publisher_has_unsettled_balance = false
 
     wallet = @publisher.wallet
-    # If the wallet has been blocked from uphold's terms of service. In this state users are unable to login or access uphold.
-    return if wallet.nil? || wallet.blocked?
 
+    uphold_status = wallet.uphold_account_status
+    uphold_member = wallet.is_a_member?
+    uphold_connected = wallet.uphold_id.present? # TODO consider adding sub category for when wallet.action == 're-authorize'
+    suspended = @publisher.suspended?
+
+    # Create potential payment for referrals
     probi = wallet.channel_balances[@publisher.owner_identifier].probi_before_fees # probi = balance
-    if probi.positive?
-      publisher_has_unsettled_balance = true
+    publisher_has_unsettled_balance = probi.positive? ? true : false
 
-      if create_payment?
-        PotentialPayment.create(payout_report_id: @payout_report.id,
-                                name: @publisher.name,
-                                amount: "#{probi}",
-                                fees: "0",
-                                publisher_id: @publisher.id,
-                                kind: PotentialPayment::REFERRAL,
-                                address: "#{wallet.address}")
-      end
+    unless should_only_notify?
+      PotentialPayment.create(payout_report_id: @payout_report.id,
+                              name: @publisher.name,
+                              amount: "#{probi}",
+                              fees: "0",
+                              publisher_id: @publisher.id,
+                              kind: PotentialPayment::REFERRAL,
+                              address: "#{wallet.address}",
+                              uphold_status_was: uphold_status,
+                              was_uphold_connected: uphold_connected,
+                              was_uphold_member: uphold_member,
+                              was_suspended: suspended)
     end
 
+    # Create potential payments for channel contributions
     @publisher.channels.verified.each do |channel|
       probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
       publisher_has_unsettled_balance = probi.positive? ? true : publisher_has_unsettled_balance
 
-      next unless probi.positive? && create_payment?
-
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
-      PotentialPayment.create(payout_report_id: @payout_report.id,
-                              name: "#{channel.publication_title}",
-                              amount: "#{probi}",
-                              fees: "#{fee_probi}",
-                              publisher_id: @publisher.id,
-                              channel_id: channel.id,
-                              kind: PotentialPayment::CONTRIBUTION,
-                              address: "#{wallet.address}",
-                              url: "#{channel.details.url}")
+
+      unless should_only_notify?
+        PotentialPayment.create(payout_report_id: @payout_report.id,
+                                name: "#{channel.publication_title}",
+                                amount: "#{probi}",
+                                fees: "#{fee_probi}",
+                                publisher_id: @publisher.id,
+                                channel_id: channel.id,
+                                kind: PotentialPayment::CONTRIBUTION,
+                                address: "#{wallet.address}",
+                                url: "#{channel.details.url}",
+                                uphold_status_was: uphold_status,
+                                was_uphold_connected: uphold_connected,
+                                was_uphold_member: uphold_member,
+                                was_suspended: suspended)
+      end
     end
 
     # Notify publishers that have money waiting, but will not will not receive funds
@@ -65,10 +77,6 @@ class PayoutReportPublisherIncluder < BaseService
         PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later
       end
     end
-  end
-
-  def create_payment?
-    @publisher.uphold_verified? && @publisher.wallet.authorized? && @publisher.wallet.is_a_member? && !should_only_notify?
   end
 
   def should_only_notify?
