@@ -12,6 +12,6 @@ module Eyeshade
       @fees_bat = probi_to_bat(@fees_probi)
       @amount_default_currency = convert(@amount_bat, @default_currency)
       @fees_default_currency = convert(@fees_bat, @default_currency)
-    end 
+    end
   end
 end

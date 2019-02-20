@@ -4,9 +4,6 @@ module Eyeshade
     def initialize(rates, default_currency, accounts)
       super(rates, default_currency)
 
-      @amount_probi = 0
-      @fees_probi = 0
-
       accounts.each do |account|
         if account["account_type"] == CHANNEL
           channel_balance = Eyeshade::ChannelBalance.new(@rates, @default_currency, account)

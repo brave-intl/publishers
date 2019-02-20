@@ -19,8 +19,8 @@ function formatConvertedBalance(amount, currency) {
   if (isNaN(amount) || amount === null ) {
     return `${currency} ${UNAVAILABLE}`;
   } else {
-    let amount = formatAmount(amount)
-    return `~ ${amount} ${currency}`;
+    let formattedAmount = formatAmount(amount)
+    return `~ ${formattedAmount} ${currency}`;
   }
 }
 

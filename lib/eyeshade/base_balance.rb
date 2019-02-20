@@ -17,6 +17,8 @@ module Eyeshade
     def initialize(rates, default_currency)
       @rates = rates
       @default_currency = default_currency
+      @amount_probi = 0
+      @fees_probi = 0
     end
 
     private
