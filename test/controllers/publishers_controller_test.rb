@@ -958,7 +958,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
       to_return(status: 200, body: wallet, headers: {})
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:4b296ba7-e725-5736-b402-50f4d15b1ac7&account=completed.org&pending=true").
       to_return(status: 200, body: [].to_json)
 
     get home_publishers_path(publisher)

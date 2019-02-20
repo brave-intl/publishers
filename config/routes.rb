@@ -104,6 +104,7 @@ Rails.application.routes.draw do
         end
         resources :channels, defaults: { format: :json }, only: %i(show)
         resources :promo_campaigns, defaults: { format: :json }, only: %i(index show)
+        resources :referral_codes, defaults: { format: :json }, only: %i(index show)
         namespace :publishers, defaults: { format: :json } do
           get :signups_per_day
           get :email_verified_signups_per_day
