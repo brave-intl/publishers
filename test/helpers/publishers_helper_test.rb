@@ -82,7 +82,7 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal "b8317d8a-78a4-48a6-9eeb-a2674c6455c4", publisher_id_from_owner_identifier("publishers#uuid:b8317d8a-78a4-48a6-9eeb-a2674c6455c4")
   end
 
-  test "publisher_humanize_balance should return a formatted & converted wallet balance, last settlement balances do not apply fee" do
+  test "publishers_last_settlement_balance should return a formatted & converted wallet balance, last settlement balances do not apply fee" do
     class FakePublisher
       attr_reader :default_currency, :wallet
 
