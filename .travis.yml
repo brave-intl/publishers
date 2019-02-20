@@ -1,9 +1,11 @@
 language:
   - ruby
   - node_js
-cache: bundler
 node_js:
   - "11.10.1"
+cache:
+  - bundler
+  - yarn
 bundler_args: "--jobs=3 --retry=3 --without production --without staging --binstubs"
 dist: xenial
 sudo: required
