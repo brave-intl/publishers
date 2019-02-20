@@ -21,7 +21,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments),
+        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -39,7 +39,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments),
+        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -93,7 +93,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     before do
       Rails.application.secrets[:fee_rate] = 0.05
       Rails.application.secrets[:api_eyeshade_offline] = false
-      @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
+      @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
 
       account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
       stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
@@ -153,7 +153,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
       let(:subject) do
         perform_enqueued_jobs do
-          PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments),
+          PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                             publisher: publisher,
                                             should_send_notifications: should_send_notifications).perform
         end
@@ -233,7 +233,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
 
             account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
             stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
@@ -493,7 +493,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
 
             stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
               .to_return(status: 200, body: wallet_response.to_json, headers: {})
@@ -543,7 +543,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments)
+            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
             account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
             stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
               .to_return(status: 200, body: balance_response.to_json)

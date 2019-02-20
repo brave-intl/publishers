@@ -62,8 +62,9 @@ class PayoutReport < ApplicationRecord
       PayoutReport.all.where(final: true).order("created_at").last
     end
 
-    def expected_num_payments
-      Publisher.with_verified_channel.count + Channel.verified.count
+    def expected_num_payments(publishers)
+      channels = Channel.where(publisher_id: publishers.pluck(:id), verified: true)
+      publishers.with_verified_channel.count + channels.count
     end
   end
 end

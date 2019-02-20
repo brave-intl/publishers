@@ -16,7 +16,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     else
       payout_report = PayoutReport.create(final: final,
                                           fee_rate: fee_rate,
-                                          expected_num_payments: PayoutReport.expected_num_payments)
+                                          expected_num_payments: PayoutReport.expected_num_payments(publishers))
     end
 
     publishers.find_each do |publisher|

@@ -10,7 +10,7 @@ class PotentialPaymentTest < ActiveSupport::TestCase
     assert potential_payment_copy.errors.details[:channel_id].any? {|e| e[:error] == :taken}
 
     # ensure two payments to the same channel_id with two different reports is valid
-    new_payout_report = PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments)
+    new_payout_report = PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
     potential_payment_copy.payout_report_id = new_payout_report.id
     assert potential_payment_copy.valid?
   end
