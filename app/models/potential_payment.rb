@@ -17,7 +17,7 @@ class PotentialPayment < ApplicationRecord
 
   scope :to_be_paid, -> {
     where(uphold_status_was: "ok", was_uphold_connected: true, was_uphold_member: true, was_suspended: false).
-    where.not(amount: "0")
+    where("amount::numeric > ?", 0)
   }
 
   private
