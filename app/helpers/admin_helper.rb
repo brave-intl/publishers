@@ -10,4 +10,13 @@ module AdminHelper
   def no_data_default(value)
     value || "--"
   end
+
+  def nav_link(text, path)
+    be_active = request.fullpath.start_with?(path) && path != '/admin'
+    options =  be_active ? { class: "active" } : {}
+
+    content_tag(:li) do
+      link_to text, path, options
+    end
+  end
 end

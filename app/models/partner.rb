@@ -12,4 +12,8 @@ class Partner < Publisher
   def ensure_role
     self.role = 'partner'
   end
+
+  def name
+    self[:name] || self[:email]
+  end
 end

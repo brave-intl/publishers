@@ -2,64 +2,34 @@ aside
   div.nav-collapse id="sidebar"
     div
       ul.sidebar-menu id="nav-accordion"
+        = nav_link "Visitor Stats", admin_root_path
+        = nav_link "Publisher Stats", admin_stats_publisher_statistics_path
+        = nav_link "Top Publisher Contributions", admin_stats_contributions_path
+        = nav_link "Top Publisher Referrals", admin_stats_referrals_path
         li
-          = link_to admin_root_path
-            span Visitor Stats
-        - if can? :access, :admin
-          li
-            = link_to admin_stats_publisher_statistics_path
-              span Publisher Stats
-          li
-            = link_to admin_stats_contributions_path
-              span Top Publisher Contributions
-          li
-            = link_to admin_stats_referrals_path
-              span Top Publisher Referrals
-          li
-            = link_to admin_stats_top_balances_path
-              span Top Channel Balances
-          li
-            a href='#' class="sidebar-toggle pull-right"
-              = fa_icon "chevron-down"
-            p Top Balances
-            ul.sub-menu style="#{params[:controller] == 'admin/stats/top_balances' ? "" : "display:none"} "
-              = link_to admin_stats_top_balances_path(type: Eyeshade::TopBalances::CHANNEL)
-                span Channel
-              = link_to admin_stats_top_balances_path(type: Eyeshade::TopBalances::OWNER)
-                span Owner
-              = link_to admin_stats_top_balances_path(type: Eyeshade::TopBalances::UPHOLD)
-                span Uphold
-          li
-            = link_to admin_organizations_path
-              span Organizations
-          li
-            = link_to admin_partners_path
-              span Partners
-            - if params[:partner_id] && (params[:id] || params[:invoice_id])
+          a href='#' class="sidebar-toggle pull-right"
+            = fa_icon "chevron-down"
+          = link_to "Top Balances", admin_stats_top_balances_path(type: Eyeshade::TopBalances::CHANNEL)
+          ul.sub-menu style="#{params[:controller] == 'admin/stats/top_balances' ? "" : "display:none"} "
+            = nav_link "Channel", admin_stats_top_balances_path(type: Eyeshade::TopBalances::CHANNEL)
+            = nav_link "Owner", admin_stats_top_balances_path(type: Eyeshade::TopBalances::OWNER)
+            = nav_link "Uphold", admin_stats_top_balances_path(type: Eyeshade::TopBalances::UPHOLD)
+        li
+          a href='#' class="sidebar-toggle pull-right"
+            = fa_icon "chevron-down"
+          = link_to admin_channels_path
+            span Channels
+          ul.sub-menu style="#{params[:controller] == 'admin/channels' ? "" : "display:none"} "
+            = nav_link "Websites",  admin_channels_path(type: 'website')
+            = nav_link "Twitch", admin_channels_path(type: 'twitch')
+            = nav_link "Youtube", admin_channels_path(type: 'youtube')
+
+        = nav_link "Organizations", admin_organizations_path
+        = nav_link "Partners", admin_partners_path
+          - if params[:partner_id] && (params[:id] || params[:invoice_id])
               ul.sub-menu
-                = link_to admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
-                  span Invoice
-          li
-            a href='#' class="sidebar-toggle pull-right"
-              = fa_icon "chevron-down"
-            = link_to admin_channels_path
-              span Channels
-            ul.sub-menu style="#{params[:controller] == 'admin/channels' ? "" : "display:none"} "
-              = link_to admin_channels_path(type: 'website')
-                span Websites
-              = link_to admin_channels_path(type: 'twitch')
-                span Twitch
-              = link_to admin_channels_path(type: 'youtube')
-                span Youtube
-          li
-            = link_to admin_publishers_path
-              span Publishers
-          li
-            = link_to admin_faq_categories_path
-              span FAQs
-          li
-            = link_to admin_payout_reports_path
-              span Payout Reports
-          li
-            = link_to admin_unattached_promo_registrations_path
-              span Referral Promo
+                = nav_link "Invoice", admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
+        = nav_link "Publishers", admin_publishers_path
+        = nav_link "FAQs", admin_faq_categories_path
+        = nav_link "Payout Reports", admin_payout_reports_path
+        = nav_link "Referral Promo", admin_unattached_promo_registrations_path

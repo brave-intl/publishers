@@ -29,6 +29,9 @@
   }
 
   .sub-menu {
+    li {
+      list-style: none;
+    }
     .sub li a {
       padding-left: 46px;
     }
