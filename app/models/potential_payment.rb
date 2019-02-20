@@ -13,6 +13,13 @@ class PotentialPayment < ApplicationRecord
   validate :channel_id_not_present_for_referral_payment, if: -> { kind == REFERRAL }
   validate :publisher_id_unique_for_referral_payments
 
+  validates_inclusion_of :was_uphold_connected, :was_suspended, :was_uphold_member, :in => [true, false]
+
+  scope :to_be_paid, -> {
+    where(uphold_status_was: "ok", was_uphold_connected: true, was_uphold_member: true, was_suspended: false).
+    where.not(amount: "0")
+  }
+
   private
 
   def publisher_id_unique_for_referral_payments
@@ -30,4 +37,5 @@ class PotentialPayment < ApplicationRecord
       errors.add(:channel_id, "Referral payments can't have a channel_id for potential_payment='#{id}'")
     end
   end
+
 end

@@ -8,6 +8,11 @@ site:
   amount: 90000000000
   fees: 4500000000
   url: "potentiallypaid.org"
+  uphold_status_was: 'ok'
+  was_uphold_connected: true
+  was_uphold_member: true
+  was_suspended: false
+
 youtube:
   payout_report: one
   publisher: potentially_paid
@@ -18,6 +23,11 @@ youtube:
   amount: 90000000000
   fees: 4500000000
   url: ".org"
+  uphold_status_was: 'ok'
+  was_uphold_connected: true
+  was_uphold_member: true
+  was_suspended: false
+
 publisher:
   payout_report: one
   publisher: potentially_paid
@@ -26,3 +36,7 @@ publisher:
   address: bc29c05c-e6aa-450c-8ea2-7d598666fac0
   amount: 90000000000
   fees: 4500000000
+  uphold_status_was: 'ok'
+  was_uphold_connected: true
+  was_uphold_member: true
+  was_suspended: false

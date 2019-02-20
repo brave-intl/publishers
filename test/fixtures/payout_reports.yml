@@ -1,2 +1,3 @@
 one:
   final: true
+  expected_num_payments: "<%= PayoutReport.expected_num_payments %>"

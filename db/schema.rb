@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_001651) do
+ActiveRecord::Schema.define(version: 2019_02_20_195259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_001651) do
     t.string "encrypted_contents_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "expected_num_payments"
   end
 
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -235,6 +236,10 @@ ActiveRecord::Schema.define(version: 2019_01_16_001651) do
     t.string "amount", null: false
     t.string "fees", null: false
     t.string "url"
+    t.string "uphold_status_was"
+    t.boolean "was_uphold_connected", null: false
+    t.boolean "was_uphold_member", null: false
+    t.boolean "was_suspended", null: false
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
