@@ -237,7 +237,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_195259) do
     t.string "fees", null: false
     t.string "url"
     t.string "uphold_status_was"
-    t.boolean "was_uphold_connected", null: false
+    t.boolean "reauthorization_was_needed", null: false
     t.boolean "was_uphold_member", null: false
     t.boolean "was_suspended", null: false
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"

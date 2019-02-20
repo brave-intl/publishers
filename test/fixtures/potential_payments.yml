@@ -9,7 +9,7 @@ site:
   fees: 4500000000
   url: "potentiallypaid.org"
   uphold_status_was: 'ok'
-  was_uphold_connected: true
+  reauthorization_was_needed: false
   was_uphold_member: true
   was_suspended: false
 
@@ -24,7 +24,7 @@ youtube:
   fees: 4500000000
   url: ".org"
   uphold_status_was: 'ok'
-  was_uphold_connected: true
+  reauthorization_was_needed: false
   was_uphold_member: true
   was_suspended: false
 
@@ -37,6 +37,6 @@ publisher:
   amount: 90000000000
   fees: 4500000000
   uphold_status_was: 'ok'
-  was_uphold_connected: true
+  reauthorization_was_needed: false
   was_uphold_member: true
   was_suspended: false

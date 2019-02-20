@@ -108,7 +108,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       assert_equal 4, PotentialPayment.count
       PotentialPayment.all.each do |potential_payment|
         assert_equal false, potential_payment.was_suspended
-        assert_equal true, potential_payment.was_uphold_connected
+        assert_equal false, potential_payment.reauthorization_was_needed
         assert_equal "blocked", potential_payment.uphold_status_was
         if potential_payment.kind == PotentialPayment::REFERRAL
           assert_equal "20000000000000000000", potential_payment.amount
@@ -175,7 +175,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         assert_equal 2, PotentialPayment.count
 
         PotentialPayment.all.each do |potential_payment|
-          assert_equal false, potential_payment.was_uphold_connected
+          assert_equal false, potential_payment.reauthorization_was_needed
           assert_equal false, potential_payment.was_uphold_member
           assert_equal false, potential_payment.was_suspended
           assert_nil potential_payment.uphold_status_was
@@ -311,6 +311,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                   assert_equal @payout_report.num_payments, publisher.channels.count + 1
                   assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
                   assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
+
+                  @payout_report.update_report_contents
+                  assert_equal 4, JSON.parse(@payout_report.contents).length
                 end
 
                 it "has the correct content" do
@@ -370,10 +373,13 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 assert_empty ActionMailer::Base.deliveries
               end
 
-              it "is not included in payout report" do
+              it "is included in payout report" do
                 assert_equal @payout_report.num_payments, publisher.channels.count + 1
                 assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
                 assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
+
+                @payout_report.update_report_contents
+                assert_equal 4, JSON.parse(@payout_report.contents).length
               end
 
               it "has the correct content" do

@@ -13,7 +13,7 @@ class PayoutReportPublisherIncluder < BaseService
 
     uphold_status = wallet.uphold_account_status
     uphold_member = wallet.is_a_member?
-    uphold_connected = wallet.uphold_id.present? # TODO consider adding sub category for when wallet.action == 're-authorize'
+    reauthorization_needed = wallet.action == "re-authorize"
     suspended = @publisher.suspended?
 
     # Create potential payment for referrals
@@ -29,7 +29,7 @@ class PayoutReportPublisherIncluder < BaseService
                               kind: PotentialPayment::REFERRAL,
                               address: "#{wallet.address}",
                               uphold_status_was: uphold_status,
-                              was_uphold_connected: uphold_connected,
+                              reauthorization_was_needed: reauthorization_needed,
                               was_uphold_member: uphold_member,
                               was_suspended: suspended)
     end
@@ -52,7 +52,7 @@ class PayoutReportPublisherIncluder < BaseService
                                 address: "#{wallet.address}",
                                 url: "#{channel.details.url}",
                                 uphold_status_was: uphold_status,
-                                was_uphold_connected: uphold_connected,
+                                reauthorization_was_needed: reauthorization_needed,
                                 was_uphold_member: uphold_member,
                                 was_suspended: suspended)
       end

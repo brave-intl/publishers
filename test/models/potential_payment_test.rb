@@ -56,9 +56,9 @@ class PotentialPaymentTest < ActiveSupport::TestCase
     refute PotentialPayment.to_be_paid.include?(potential_payment)
   end
 
-  test "to_be_paid scope excludes unless uphold connected" do
+  test "to_be_paid scope excludes unless reauthorization was needed" do
     potential_payment = potential_payments(:site)
-    potential_payment.update!(was_uphold_connected: false)
+    potential_payment.update!(reauthorization_was_needed: true)
     refute PotentialPayment.to_be_paid.include?(potential_payment)
   end
 
