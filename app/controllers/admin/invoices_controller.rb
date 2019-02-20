@@ -1,4 +1,4 @@
-class Admin
+module Admin
   class InvoicesController < AdminController
     def show
       @invoice = Invoice.find(params[:id])
