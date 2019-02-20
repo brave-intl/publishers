@@ -3,9 +3,14 @@
     h2 = @publisher.name
     .rounded-box.split-row-container
       .split-row
-        .db-info-row
-          .db-field = "Email:"
-          .db-value = @publisher.email
+        - if @publisher.email.present?
+          .db-info-row
+            .db-field = "Email:"
+            .db-value = @publisher.email
+        - else
+          .db-info-row
+            .db-field = "Pending Email:"
+            .db-value = @publisher.pending_email
         .db-info-row
           .db-field = "Role:"
           .db-value = @publisher.role
