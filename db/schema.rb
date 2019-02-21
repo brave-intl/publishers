@@ -236,10 +236,10 @@ ActiveRecord::Schema.define(version: 2019_02_20_195259) do
     t.string "amount", null: false
     t.string "fees", null: false
     t.string "url"
-    t.string "uphold_status_was"
-    t.boolean "reauthorization_was_needed", null: false
-    t.boolean "was_uphold_member", null: false
-    t.boolean "was_suspended", null: false
+    t.string "uphold_status"
+    t.boolean "reauthorization_needed"
+    t.boolean "uphold_member"
+    t.boolean "suspended"
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"

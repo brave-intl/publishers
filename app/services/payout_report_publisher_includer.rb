@@ -28,10 +28,10 @@ class PayoutReportPublisherIncluder < BaseService
                               publisher_id: @publisher.id,
                               kind: PotentialPayment::REFERRAL,
                               address: "#{wallet.address}",
-                              uphold_status_was: uphold_status,
-                              reauthorization_was_needed: reauthorization_needed,
-                              was_uphold_member: uphold_member,
-                              was_suspended: suspended)
+                              uphold_status: uphold_status,
+                              reauthorization_needed: reauthorization_needed,
+                              uphold_member: uphold_member,
+                              suspended: suspended)
     end
 
     # Create potential payments for channel contributions
@@ -51,10 +51,10 @@ class PayoutReportPublisherIncluder < BaseService
                                 kind: PotentialPayment::CONTRIBUTION,
                                 address: "#{wallet.address}",
                                 url: "#{channel.details.url}",
-                                uphold_status_was: uphold_status,
-                                reauthorization_was_needed: reauthorization_needed,
-                                was_uphold_member: uphold_member,
-                                was_suspended: suspended)
+                                uphold_status: uphold_status,
+                                reauthorization_needed: reauthorization_needed,
+                                uphold_member: uphold_member,
+                                suspended: suspended)
       end
     end
 

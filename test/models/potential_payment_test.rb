@@ -46,25 +46,25 @@ class PotentialPaymentTest < ActiveSupport::TestCase
     potential_payment = potential_payments(:site)
     assert PotentialPayment.to_be_paid.include?(potential_payment)
 
-    potential_payment.update!(uphold_status_was: "restricted")
+    potential_payment.update!(uphold_status: "restricted")
     refute PotentialPayment.to_be_paid.include?(potential_payment)
   end
 
   test "to_be_paid scope does not include suspended" do
     potential_payment = potential_payments(:site)
-    potential_payment.update!(was_suspended: true)
+    potential_payment.update!(suspended: true)
     refute PotentialPayment.to_be_paid.include?(potential_payment)
   end
 
   test "to_be_paid scope excludes unless reauthorization was needed" do
     potential_payment = potential_payments(:site)
-    potential_payment.update!(reauthorization_was_needed: true)
+    potential_payment.update!(reauthorization_needed: true)
     refute PotentialPayment.to_be_paid.include?(potential_payment)
   end
 
   test "to_be_paid scope excludes unless was uphold member" do
     potential_payment = potential_payments(:site)
-    potential_payment.update!(was_uphold_member: false)
+    potential_payment.update!(uphold_member: false)
     refute PotentialPayment.to_be_paid.include?(potential_payment)
   end
 end

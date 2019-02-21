@@ -115,7 +115,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     it "records reauthorizatio was needed for potential payments" do
       PotentialPayment.all.each do |potential_payment|
-        assert potential_payment.reauthorization_was_needed
+        assert potential_payment.reauthorization_needed
       end
     end
   end
@@ -175,9 +175,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     it "creates 4 potential payments" do
       assert_equal 4, PotentialPayment.count
       PotentialPayment.all.each do |potential_payment|
-        refute potential_payment.was_suspended
-        refute potential_payment.reauthorization_was_needed
-        assert_equal "blocked", potential_payment.uphold_status_was
+        refute potential_payment.suspended
+        refute potential_payment.reauthorization_needed
+        assert_equal "blocked", potential_payment.uphold_status
         if potential_payment.kind == PotentialPayment::REFERRAL
           assert_equal "20000000000000000000", potential_payment.amount
           assert_equal "0", potential_payment.fees
@@ -243,10 +243,10 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         assert_equal 2, PotentialPayment.count
 
         PotentialPayment.all.each do |potential_payment|
-          refute potential_payment.reauthorization_was_needed
-          refute potential_payment.was_uphold_member
-          refute potential_payment.was_suspended
-          assert_nil potential_payment.uphold_status_was
+          refute potential_payment.reauthorization_needed
+          refute potential_payment.uphold_member
+          refute potential_payment.suspended
+          assert_nil potential_payment.uphold_status
         end
       end
 
@@ -393,9 +393,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                     elsif potential_payment.kind == PotentialPayment::REFERRAL
                       assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
                     end
-                    assert_equal "ok", potential_payment.uphold_status_was
-                    assert potential_payment.was_uphold_member
-                    refute potential_payment.was_suspended
+                    assert_equal "ok", potential_payment.uphold_status
+                    assert potential_payment.uphold_member
+                    refute potential_payment.suspended
                   end
                 end
 
@@ -495,7 +495,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 assert_equal 0, @payout_report.amount
 
                 PotentialPayment.all.each do |potential_payment|
-                  refute potential_payment.was_uphold_member
+                  refute potential_payment.uphold_member
                 end
               end
 

@@ -13,10 +13,10 @@ class PotentialPayment < ApplicationRecord
   validate :channel_id_not_present_for_referral_payment, if: -> { kind == REFERRAL }
   validate :publisher_id_unique_for_referral_payments
 
-  validates_inclusion_of :reauthorization_was_needed, :was_suspended, :was_uphold_member, :in => [true, false]
+  validates_inclusion_of :reauthorization_needed, :suspended, :uphold_member, :in => [true, false]
 
   scope :to_be_paid, -> {
-    where(uphold_status_was: "ok", reauthorization_was_needed: false, was_uphold_member: true, was_suspended: false).
+    where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false).
     where("amount::numeric > ?", 0)
   }
 
