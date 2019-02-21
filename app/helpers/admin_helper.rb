@@ -15,4 +15,14 @@ module AdminHelper
       link_to text, path, options
     end
   end
+
+  def payout_report_status_header(account_type)
+    report_date = PayoutReport.most_recent_final_report.created_at.strftime("%b %d")
+
+    if account_type == 'owner'
+      "#{report_date}'s Payout Report Status (Referrals)"
+    else account_type == 'channel'
+      "#{report_date}'s Payout Report Status (Contributions)"
+    end
+  end
 end
