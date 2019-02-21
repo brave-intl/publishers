@@ -12,6 +12,7 @@ site:
   reauthorization_needed: false
   uphold_member: true
   suspended: false
+  uphold_id: 6c6bb015-f307-4440-9935-552a9fa184cb
 
 youtube:
   payout_report: one
@@ -27,6 +28,7 @@ youtube:
   reauthorization_needed: false
   uphold_member: true
   suspended: false
+  uphold_id: 6c6bb015-f307-4440-9935-552a9fa184cb
 
 publisher:
   payout_report: one
@@ -40,3 +42,4 @@ publisher:
   reauthorization_needed: false
   uphold_member: true
   suspended: false
+  uphold_id: 6c6bb015-f307-4440-9935-552a9fa184cb

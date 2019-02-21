@@ -388,6 +388,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                   PotentialPayment.where(payout_report_id: @payout_report.id).each do |potential_payment|
                     assert_equal potential_payment.address, wallet_response[:wallet][:address]
                     assert_equal potential_payment.publisher_id, publisher.id.to_s
+                    assert_equal "fake uphold id", potential_payment.uphold_id
                     if potential_payment.kind == PotentialPayment::CONTRIBUTION
                       assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
                     elsif potential_payment.kind == PotentialPayment::REFERRAL

@@ -15,6 +15,7 @@ class PayoutReportPublisherIncluder < BaseService
     uphold_member = wallet.is_a_member?
     reauthorization_needed = wallet.action == "re-authorize"
     suspended = @publisher.suspended?
+    uphold_id = wallet.uphold_id
 
     # Create potential payment for referrals
     probi = wallet.channel_balances[@publisher.owner_identifier].probi_before_fees # probi = balance
@@ -31,7 +32,8 @@ class PayoutReportPublisherIncluder < BaseService
                               uphold_status: uphold_status,
                               reauthorization_needed: reauthorization_needed,
                               uphold_member: uphold_member,
-                              suspended: suspended)
+                              suspended: suspended,
+                              uphold_id: uphold_id)
     end
 
     # Create potential payments for channel contributions
@@ -54,7 +56,8 @@ class PayoutReportPublisherIncluder < BaseService
                                 uphold_status: uphold_status,
                                 reauthorization_needed: reauthorization_needed,
                                 uphold_member: uphold_member,
-                                suspended: suspended)
+                                suspended: suspended,
+                                uphold_id: uphold_id)
       end
     end
 
