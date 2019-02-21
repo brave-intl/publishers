@@ -29,6 +29,10 @@ export const Input = styled.input`
   }
 `;
 
+export const ErrorText = styled.span`
+  margin: auto 0 auto 1rem;
+`;
+
 interface IButtonProps {
   enabled?: boolean;
 }

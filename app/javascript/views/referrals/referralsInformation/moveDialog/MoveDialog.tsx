@@ -3,7 +3,7 @@ import * as React from "react";
 import locale from "../../../../locale/en";
 
 import Table from "brave-ui/components/dataTables/table";
-import { Header, PrimaryButton } from "./MoveDialogStyle";
+import { ErrorText, Header, PrimaryButton } from "./MoveDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 
@@ -19,6 +19,7 @@ interface IMoveDialogState {
   selectedCampaign: any;
   campaignValue: any;
   codesValue: any;
+  errorText: string;
 }
 
 export default class MoveDialog extends React.Component<
@@ -30,6 +31,7 @@ export default class MoveDialog extends React.Component<
     this.state = {
       campaignValue: null,
       codesValue: null,
+      errorText: "",
       selectedCampaign: null,
       selectedCodes: []
     };
@@ -45,6 +47,39 @@ export default class MoveDialog extends React.Component<
       return false;
     }
   };
+
+  public async moveCodes(
+    selectedCodes,
+    selectedCampaign,
+    closeModal,
+    afterSave
+  ) {
+    const url =
+      "/partners/referrals/promo_registrations/" + selectedCodes.join(",");
+    const body = new FormData();
+    body.append("campaign", selectedCampaign);
+    const options = {
+      body,
+      headers: {
+        Accept: "application/json",
+        "X-CSRF-Token": document.head
+          .querySelector("[name=csrf-token]")
+          .getAttribute("content"),
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      method: "PUT"
+    };
+    const response = await fetch(url, options);
+    if (response.status >= 400) {
+      this.setState({
+        errorText: "An unexpected error has occurred. Please try again later."
+      });
+      return;
+    }
+    afterSave();
+    closeModal();
+    return;
+  }
 
   public handleCampaignSelect = e => {
     this.setState({ selectedCampaign: e.target.value });
@@ -82,7 +117,7 @@ export default class MoveDialog extends React.Component<
           <PrimaryButton
             enabled={true}
             onClick={() =>
-              moveCodes(
+              this.moveCodes(
                 this.state.selectedCodes,
                 this.state.selectedCampaign,
                 this.props.closeModal,
@@ -95,36 +130,10 @@ export default class MoveDialog extends React.Component<
         ) : (
           <PrimaryButton enabled={false}>{locale.move}</PrimaryButton>
         )}
+        <ErrorText>{this.state.errorText}</ErrorText>
       </div>
     );
   }
-}
-
-async function moveCodes(
-  selectedCodes,
-  selectedCampaign,
-  closeModal,
-  afterSave
-) {
-  const url =
-    "/partners/referrals/promo_registrations/" + selectedCodes.join(",");
-  const body = new FormData();
-  body.append("campaign", selectedCampaign);
-  const options = {
-    body,
-    headers: {
-      Accept: "application/json",
-      "X-CSRF-Token": document.head
-        .querySelector("[name=csrf-token]")
-        .getAttribute("content"),
-      "X-Requested-With": "XMLHttpRequest"
-    },
-    method: "PUT"
-  };
-  const response = await fetch(url, options);
-  afterSave();
-  closeModal();
-  return;
 }
 
 function CodesList(props) {

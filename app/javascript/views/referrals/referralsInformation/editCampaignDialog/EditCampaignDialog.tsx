@@ -2,9 +2,13 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, Input, Label, PrimaryButton } from "./EditCampaignDialogStyle";
-
-const initialState = { isLoading: false, errorText: "" };
+import {
+  ErrorText,
+  Header,
+  Input,
+  Label,
+  PrimaryButton
+} from "./EditCampaignDialogStyle";
 
 interface IEditCampaignDialogProps {
   closeModal: () => void;
@@ -14,6 +18,7 @@ interface IEditCampaignDialogProps {
 
 interface IEditCampaignDialogState {
   name: any;
+  errorText: string;
 }
 
 export default class EditCampaignDialog extends React.Component<
@@ -23,6 +28,7 @@ export default class EditCampaignDialog extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
+      errorText: "",
       name: null
     };
   }
@@ -38,6 +44,34 @@ export default class EditCampaignDialog extends React.Component<
       return false;
     }
   };
+
+  public async EditCampaign(name, campaignID, closeModal, afterSave) {
+    const url = "/partners/referrals/promo_campaigns/" + campaignID;
+
+    const body = new FormData();
+    body.append("name", name);
+    const options = {
+      body,
+      headers: {
+        Accept: "application/json",
+        "X-CSRF-Token": document.head
+          .querySelector("[name=csrf-token]")
+          .getAttribute("content"),
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      method: "PUT"
+    };
+    const response = await fetch(url, options);
+    if (response.status >= 400) {
+      this.setState({
+        errorText: "An unexpected error has occurred. Please try again later."
+      });
+      return;
+    }
+    afterSave();
+    closeModal();
+    return response;
+  }
 
   public render() {
     return (
@@ -57,7 +91,7 @@ export default class EditCampaignDialog extends React.Component<
         {this.isValidForm() === true ? (
           <PrimaryButton
             onClick={() =>
-              EditCampaign(
+              this.EditCampaign(
                 this.state.name,
                 this.props.campaign.promo_campaign_id,
                 this.props.closeModal,
@@ -71,29 +105,8 @@ export default class EditCampaignDialog extends React.Component<
         ) : (
           <PrimaryButton enabled={false}>{locale.edit}</PrimaryButton>
         )}
+        <ErrorText>{this.state.errorText}</ErrorText>
       </div>
     );
   }
-}
-
-async function EditCampaign(name, campaignID, closeModal, afterSave) {
-  const url = "/partners/referrals/promo_campaigns/" + campaignID;
-
-  const body = new FormData();
-  body.append("name", name);
-  const options = {
-    body,
-    headers: {
-      Accept: "application/json",
-      "X-CSRF-Token": document.head
-        .querySelector("[name=csrf-token]")
-        .getAttribute("content"),
-      "X-Requested-With": "XMLHttpRequest"
-    },
-    method: "PUT"
-  };
-  const response = await fetch(url, options);
-  afterSave();
-  closeModal();
-  return response;
 }

@@ -2,7 +2,12 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, Label, PrimaryButton } from "./DeleteCampaignDialogStyle";
+import {
+  ErrorText,
+  Header,
+  Label,
+  PrimaryButton
+} from "./DeleteCampaignDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 type IDeleteCampaignDialogState = Readonly<typeof initialState>;
@@ -24,6 +29,38 @@ export default class DeleteCampaignDialog extends React.Component<
     super(props);
   }
 
+  public async DeleteCampaign(campaign, referralCodes, closeModal, afterSave) {
+    const url =
+      "/partners/referrals/promo_campaigns/" + campaign.promo_campaign_id;
+    const body = new FormData();
+    const codes = [];
+    referralCodes.forEach(code => {
+      codes.push(code.id);
+    });
+    body.append("codes", JSON.stringify(codes));
+    const options = {
+      body,
+      headers: {
+        Accept: "application/json",
+        "X-CSRF-Token": document.head
+          .querySelector("[name=csrf-token]")
+          .getAttribute("content"),
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      method: "DELETE"
+    };
+    const response = await fetch(url, options);
+    if (response.status >= 400) {
+      this.setState({
+        errorText: "An unexpected error has occurred. Please try again later."
+      });
+      return;
+    }
+    afterSave();
+    closeModal();
+    return response;
+  }
+
   public render() {
     return (
       <div>
@@ -36,7 +73,7 @@ export default class DeleteCampaignDialog extends React.Component<
         <PrimaryButton
           enabled={true}
           onClick={() =>
-            DeleteCampaign(
+            this.DeleteCampaign(
               this.props.campaign,
               this.props.referralCodes,
               this.props.closeModal,
@@ -46,33 +83,8 @@ export default class DeleteCampaignDialog extends React.Component<
         >
           {locale.delete}
         </PrimaryButton>
+        <ErrorText>{this.state.errorText}</ErrorText>
       </div>
     );
   }
-}
-
-async function DeleteCampaign(campaign, referralCodes, closeModal, afterSave) {
-  const url =
-    "/partners/referrals/promo_campaigns/" + campaign.promo_campaign_id;
-  const body = new FormData();
-  const codes = [];
-  referralCodes.forEach(code => {
-    codes.push(code.id);
-  });
-  body.append("codes", JSON.stringify(codes));
-  const options = {
-    body,
-    headers: {
-      Accept: "application/json",
-      "X-CSRF-Token": document.head
-        .querySelector("[name=csrf-token]")
-        .getAttribute("content"),
-      "X-Requested-With": "XMLHttpRequest"
-    },
-    method: "DELETE"
-  };
-  const response = await fetch(url, options);
-  afterSave();
-  closeModal();
-  return response;
 }

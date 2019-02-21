@@ -2,7 +2,13 @@ import * as React from "react";
 
 import locale from "../../../../../locale/en";
 
-import { Header, Input, Label, PrimaryButton } from "./CreateDialogStyle";
+import {
+  ErrorText,
+  Header,
+  Input,
+  Label,
+  PrimaryButton
+} from "./CreateDialogStyle";
 
 interface ICreateDialogProps {
   closeModal: () => void;
@@ -11,6 +17,7 @@ interface ICreateDialogProps {
 
 interface ICreateDialogState {
   campaignName: string;
+  errorText: string;
   number: number;
   description: string;
 }
@@ -24,6 +31,7 @@ export default class CreateDialog extends React.Component<
     this.state = {
       campaignName: null,
       description: null,
+      errorText: "",
       number: 1
     };
   }
@@ -42,7 +50,7 @@ export default class CreateDialog extends React.Component<
 
   public handleCreate = async e => {
     const newCampaign = await createCampaign(this.state.campaignName);
-    createReferralCode(
+    this.createReferralCode(
       this.state.number,
       this.state.description,
       newCampaign.id,
@@ -57,6 +65,40 @@ export default class CreateDialog extends React.Component<
       (this.state.number > 0 && this.state.number < 100)
     );
   };
+
+  public async createReferralCode(
+    numberOfCodes,
+    description,
+    campaignID,
+    afterSave,
+    closeModal
+  ) {
+    const url = "/partners/referrals/promo_registrations";
+    const body = new FormData();
+    body.append("number", numberOfCodes);
+    body.append("description", description);
+    body.append("promo_campaign_id", campaignID);
+    const options = {
+      body,
+      headers: {
+        Accept: "application/json",
+        "X-CSRF-Token": document.head
+          .querySelector("[name=csrf-token]")
+          .getAttribute("content"),
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      method: "POST"
+    };
+    const response = await fetch(url, options);
+    if (response.status >= 400) {
+      this.setState({
+        errorText: "An unexpected error has occurred. Please try again later."
+      });
+      return;
+    }
+    afterSave();
+    closeModal();
+  }
 
   public render() {
     return (
@@ -100,6 +142,7 @@ export default class CreateDialog extends React.Component<
         ) : (
           <PrimaryButton enabled={false}>{locale.create}</PrimaryButton>
         )}
+        <ErrorText>{this.state.errorText}</ErrorText>
       </div>
     );
   }
@@ -123,32 +166,4 @@ async function createCampaign(name) {
   const response = await fetch(url, options);
   const data = await response.json();
   return data;
-}
-
-async function createReferralCode(
-  numberOfCodes,
-  description,
-  campaignID,
-  afterSave,
-  closeModal
-) {
-  const url = "/partners/referrals/promo_registrations";
-  const body = new FormData();
-  body.append("number", numberOfCodes);
-  body.append("description", description);
-  body.append("promo_campaign_id", campaignID);
-  const options = {
-    body,
-    headers: {
-      Accept: "application/json",
-      "X-CSRF-Token": document.head
-        .querySelector("[name=csrf-token]")
-        .getAttribute("content"),
-      "X-Requested-With": "XMLHttpRequest"
-    },
-    method: "POST"
-  };
-  const response = await fetch(url, options);
-  afterSave();
-  closeModal();
 }

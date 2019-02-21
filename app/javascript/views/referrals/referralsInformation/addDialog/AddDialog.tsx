@@ -2,7 +2,13 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import { Header, Input, Label, PrimaryButton } from "./AddDialogStyle";
+import {
+  ErrorText,
+  Header,
+  Input,
+  Label,
+  PrimaryButton
+} from "./AddDialogStyle";
 
 const initialState = { isLoading: false, errorText: "" };
 
@@ -15,6 +21,7 @@ interface IAddDialogProps {
 interface IAddDialogState {
   description: any;
   number: any;
+  errorText: string;
 }
 
 export default class AddDialog extends React.Component<
@@ -25,6 +32,7 @@ export default class AddDialog extends React.Component<
     super(props);
     this.state = {
       description: null,
+      errorText: "",
       number: 1
     };
   }
@@ -37,6 +45,10 @@ export default class AddDialog extends React.Component<
     this.setState({ number: e.target.value });
   };
 
+  public handleErrorText = text => {
+    this.setState({ errorText: text });
+  };
+
   public isValidForm = () => {
     if (this.state.number > 0 && this.state.number < 500) {
       return true;
@@ -44,6 +56,42 @@ export default class AddDialog extends React.Component<
       return false;
     }
   };
+
+  public async addCode(
+    numberOfCodes,
+    description,
+    campaignID,
+    closeModal,
+    afterSave
+  ) {
+    const url = "/partners/referrals/promo_registrations";
+
+    const body = new FormData();
+    body.append("number", numberOfCodes);
+    body.append("description", description);
+    body.append("promo_campaign_id", campaignID);
+    const options = {
+      body,
+      headers: {
+        Accept: "application/json",
+        "X-CSRF-Token": document.head
+          .querySelector("[name=csrf-token]")
+          .getAttribute("content"),
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      method: "POST"
+    };
+    const response = await fetch(url, options);
+    if (response.status >= 400) {
+      this.setState({
+        errorText: "An unexpected error has occurred. Please try again later."
+      });
+      return;
+    }
+    afterSave();
+    closeModal();
+    return response;
+  }
 
   public render() {
     return (
@@ -70,10 +118,11 @@ export default class AddDialog extends React.Component<
         <br />
         <br />
         <br />
+
         {this.isValidForm() === true ? (
           <PrimaryButton
             onClick={() =>
-              addCode(
+              this.addCode(
                 this.state.number,
                 this.state.description,
                 this.props.campaign.promo_campaign_id,
@@ -88,37 +137,8 @@ export default class AddDialog extends React.Component<
         ) : (
           <PrimaryButton enabled={false}>{locale.add}</PrimaryButton>
         )}
+        <ErrorText>{this.state.errorText}</ErrorText>
       </div>
     );
   }
-}
-
-async function addCode(
-  numberOfCodes,
-  description,
-  campaignID,
-  closeModal,
-  afterSave
-) {
-  const url = "/partners/referrals/promo_registrations";
-
-  const body = new FormData();
-  body.append("number", numberOfCodes);
-  body.append("description", description);
-  body.append("promo_campaign_id", campaignID);
-  const options = {
-    body,
-    headers: {
-      Accept: "application/json",
-      "X-CSRF-Token": document.head
-        .querySelector("[name=csrf-token]")
-        .getAttribute("content"),
-      "X-Requested-With": "XMLHttpRequest"
-    },
-    method: "POST"
-  };
-  const response = await fetch(url, options);
-  afterSave();
-  closeModal();
-  return response;
 }

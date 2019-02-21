@@ -19,6 +19,10 @@ export const Header = styled.header`
   margin-bottom: 1rem;
 `;
 
+export const ErrorText = styled.span`
+  margin: auto 0 auto 1rem;
+`;
+
 interface IButtonProps {
   enabled?: boolean;
 }
