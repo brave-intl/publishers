@@ -52,6 +52,74 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     end
   end
 
+  describe "when a user needs to reauthorize brave on uphold" do
+    let(:publisher) { publishers(:uphold_connected) }
+    let(:wallet_response) do
+      {"rates": {"BTC": "0.000035188764255997","ETH": "0.000956772270647196"},"status":{"provider": "uphold", "action": "re-authorize"}}
+    end
+
+    let (:subject) do
+      perform_enqueued_jobs do
+        PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+                                          publisher: publisher,
+                                          should_send_notifications: false).perform
+      end
+    end
+
+    let(:balance_response) do
+      [
+        {
+          account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+          account_type: "owner",
+          balance: "20.00"
+        },
+        {
+          account_id: "uphold_connected.org",
+          account_type: "channel",
+          balance: "20.00"
+        },
+        {
+          account_id: "twitch#author:ucTw",
+          account_type: "channel",
+          balance: "20.00"
+        }, {
+          account_id: "twitter#channel:def456",
+          account_type: "channel",
+          balance: "20.00"
+        }
+      ]
+    end
+
+    before do
+      Rails.application.secrets[:fee_rate] = 0.05
+      Rails.application.secrets[:api_eyeshade_offline] = false
+      @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+
+      account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
+      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
+        .to_return(status: 200, body: wallet_response.to_json, headers: {})
+      stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
+        .to_return(status: 200, body: balance_response.to_json)
+
+      subject
+    end
+
+    it "creates the potential payments" do
+      assert_equal 4, PotentialPayment.count
+    end
+
+    it "does not include them in payout report" do
+      @payout_report.update_report_contents
+      assert_equal 0, JSON.parse(@payout_report.contents).length
+    end
+
+    it "records reauthorizatio was needed for potential payments" do
+      PotentialPayment.all.each do |potential_payment|
+        assert potential_payment.reauthorization_was_needed
+      end
+    end
+  end
+
   describe "when user is blocked from uphold" do
     let(:publisher) { publishers(:uphold_connected) }
     let(:wallet_response) do
@@ -107,8 +175,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     it "creates 4 potential payments" do
       assert_equal 4, PotentialPayment.count
       PotentialPayment.all.each do |potential_payment|
-        assert_equal false, potential_payment.was_suspended
-        assert_equal false, potential_payment.reauthorization_was_needed
+        refute potential_payment.was_suspended
+        refute potential_payment.reauthorization_was_needed
         assert_equal "blocked", potential_payment.uphold_status_was
         if potential_payment.kind == PotentialPayment::REFERRAL
           assert_equal "20000000000000000000", potential_payment.amount
@@ -175,9 +243,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         assert_equal 2, PotentialPayment.count
 
         PotentialPayment.all.each do |potential_payment|
-          assert_equal false, potential_payment.reauthorization_was_needed
-          assert_equal false, potential_payment.was_uphold_member
-          assert_equal false, potential_payment.was_suspended
+          refute potential_payment.reauthorization_was_needed
+          refute potential_payment.was_uphold_member
+          refute potential_payment.was_suspended
           assert_nil potential_payment.uphold_status_was
         end
       end
