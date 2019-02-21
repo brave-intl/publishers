@@ -1,6 +1,4 @@
 class PromoRegistration < ApplicationRecord
-  has_paper_trail
-
   # A promo registration can belong to a channel,
   # a publisher, or be unattached.  Unattached codes
   # are created by admins.

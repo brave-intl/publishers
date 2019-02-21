@@ -1,6 +1,4 @@
 class PotentialPayment < ApplicationRecord
-  has_paper_trail
-
   REFERRAL = "referral"
   CONTRIBUTION = "contribution"
 
