@@ -14,11 +14,12 @@ import locale from "../../../locale/en";
 import AddDialog from "./addDialog/AddDialog";
 import DeleteCampaignDialog from "./deleteCampaignDialog/DeleteCampaignDialog";
 import DeleteDialog from "./deleteDialog/DeleteDialog";
-
 import EditCampaignDialog from "./editCampaignDialog/EditCampaignDialog";
 import MoveDialog from "./moveDialog/MoveDialog";
 
 import Table from "brave-ui/components/dataTables/table";
+
+import { ICampaign } from "../Referrals";
 
 import {
   CheckCircleIcon,
@@ -27,14 +28,14 @@ import {
 } from "brave-ui/components/icons";
 
 interface IReferralsInfoState {
-  campaigns: any;
-  currentCampaign: any;
+  campaigns: ICampaign[];
+  currentCampaign: ICampaign;
   showAddModal: boolean;
   showMoveModal: boolean;
   showDeleteModal: boolean;
   showDeleteCampaignModal: boolean;
   showEditCampaignModal: boolean;
-  codeToDelete: any;
+  codeToDelete: string;
 }
 
 export default class ReferralsInformation extends React.Component<
@@ -46,7 +47,12 @@ export default class ReferralsInformation extends React.Component<
     this.state = {
       campaigns: [],
       codeToDelete: null,
-      currentCampaign: { name: "fetching...", promo_registrations: [] },
+      currentCampaign: {
+        created_at: null,
+        name: "fetching...",
+        promo_campaign_id: null,
+        promo_registrations: []
+      },
       showAddModal: false,
       showDeleteCampaignModal: false,
       showDeleteModal: false,
@@ -283,7 +289,7 @@ function processDate(created) {
 }
 
 function copyLink(referralCode) {
-  // javscript magick for copying to clipboard
+  // Copy to Clipboard
   const el = document.createElement("textarea");
   el.value = "https://brave.com/" + referralCode;
   document.body.appendChild(el);
@@ -310,132 +316,79 @@ function redirectToReferrals() {
 }
 
 function ReferralsTable(props) {
+  const headerStyle = {
+    "font-size": "15px",
+    opacity: ".7",
+    padding: "20px",
+    "text-align": "center"
+  };
   const header = [
     {
       content: locale.referralCode,
-      customStyle: {
-        "font-size": "15px",
-        opacity: ".7",
-        padding: "20px",
-        "text-align": "center"
-      }
+      customStyle: headerStyle
     },
     {
       content: locale.description,
-      customStyle: {
-        "font-size": "15px",
-        opacity: ".7",
-        padding: "20px",
-        "text-align": "center"
-      }
+      customStyle: headerStyle
     },
     {
       content: locale.downloads,
-      customStyle: {
-        "font-size": "15px",
-        opacity: ".7",
-        padding: "20px",
-        "text-align": "center"
-      }
+      customStyle: headerStyle
     },
     {
       content: locale.installs,
-      customStyle: {
-        "font-size": "15px",
-        opacity: ".7",
-        padding: "20px",
-        "text-align": "center"
-      }
+      customStyle: headerStyle
     },
     {
       content: locale.thirtyDay,
-      customStyle: {
-        "font-size": "15px",
-        opacity: ".7",
-        padding: "20px",
-        "text-align": "center"
-      }
+      customStyle: headerStyle
     },
     {
       content: locale.actions,
-      customStyle: {
-        "font-size": "15px",
-        opacity: ".7",
-        padding: "20px",
-        "text-align": "center"
-      }
+      customStyle: headerStyle
     }
   ];
 
   const rows = [];
 
   props.referralCodes.forEach((referralCode, index) => {
+    const contentStyle = {
+      "font-size": "15px",
+      padding: "24px",
+      "text-align": "center"
+    };
     const content = {
       content: [
         {
-          content: <div key={index}>{referralCode.referral_code}</div>,
-          customStyle: {
-            "font-size": "15px",
-            padding: "24px",
-            "text-align": "center"
-          }
+          content: <div>{referralCode.referral_code}</div>,
+          customStyle: contentStyle
         },
         {
           content: (
-            <div key={index}>
+            <div>
               {referralCode.description === "null"
                 ? ""
                 : referralCode.description}
             </div>
           ),
-          customStyle: {
-            "font-size": "15px",
-            padding: "24px",
-            "text-align": "center"
-          }
+          customStyle: contentStyle
+        },
+        {
+          content: <div>{JSON.parse(referralCode.stats)[0].retrievals}</div>,
+          customStyle: contentStyle
+        },
+        {
+          content: <div>{JSON.parse(referralCode.stats)[0].first_runs}</div>,
+          customStyle: contentStyle
+        },
+        {
+          content: <div>{JSON.parse(referralCode.stats)[0].finalized}</div>,
+          customStyle: contentStyle
         },
         {
           content: (
-            <div key={index}>
-              {JSON.parse(referralCode.stats)[0].retrievals}
-            </div>
-          ),
-          customStyle: {
-            "font-size": "15px",
-            padding: "24px",
-            "text-align": "center"
-          }
-        },
-        {
-          content: (
-            <div key={index}>
-              {JSON.parse(referralCode.stats)[0].first_runs}
-            </div>
-          ),
-          customStyle: {
-            "font-size": "15px",
-            padding: "24px",
-            "text-align": "center"
-          }
-        },
-        {
-          content: (
-            <div key={index}>{JSON.parse(referralCode.stats)[0].finalized}</div>
-          ),
-          customStyle: {
-            "font-size": "15px",
-            padding: "24px",
-            "text-align": "center"
-          }
-        },
-        {
-          content: (
-            <div
-              key={index}
-              style={{ display: "flex", justifyContent: "space-around" }}
-            >
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
               <div
-                key={index}
                 style={{ cursor: "pointer", userSelect: "none" }}
                 onClick={() => {
                   copyLink(referralCode.referral_code);
@@ -444,7 +397,6 @@ function ReferralsTable(props) {
                 {locale.copyLink}
               </div>
               <div
-                key={index}
                 style={{ cursor: "pointer", userSelect: "none" }}
                 onClick={() => {
                   props.setCodeToDelete(referralCode.id);
@@ -455,11 +407,7 @@ function ReferralsTable(props) {
               </div>
             </div>
           ),
-          customStyle: {
-            "font-size": "15px",
-            padding: "24px",
-            "text-align": "center"
-          }
+          customStyle: contentStyle
         }
       ]
     };

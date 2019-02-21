@@ -15,10 +15,12 @@ module Partners
     end
 
     def destroy
-        data = JSON.parse(sanitize(params[:codes]))
-        data.each do |code|
-            promo_registration = PromoRegistration.find(code)
-            promo_registration.destroy
+        if params[:codes] 
+            data = JSON.parse(sanitize(params[:codes]))
+            data.each do |code|
+                promo_registration = PromoRegistration.find(code)
+                promo_registration.destroy
+            end
         end
         campaign = PromoCampaign.find(sanitize(params[:id]))
         campaign.destroy

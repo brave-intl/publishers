@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import locale from "../../../../locale/en";
+import locale from "../../../../../locale/en";
 
 import { Header, Input, Label, PrimaryButton } from "./CreateDialogStyle";
 
@@ -10,9 +10,9 @@ interface ICreateDialogProps {
 }
 
 interface ICreateDialogState {
-  campaign: any;
-  number: any;
-  description: any;
+  campaignName: string;
+  number: number;
+  description: string;
 }
 
 export default class CreateDialog extends React.Component<
@@ -22,14 +22,14 @@ export default class CreateDialog extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      campaign: null,
+      campaignName: null,
       description: null,
       number: 1
     };
   }
 
   public handleCampaignValue = e => {
-    this.setState({ campaign: e.target.value });
+    this.setState({ campaignName: e.target.value });
   };
 
   public handleNumber = e => {
@@ -41,37 +41,21 @@ export default class CreateDialog extends React.Component<
   };
 
   public handleCreate = async e => {
-    let newCampaign = null;
-
-    if (this.state.campaign) {
-      newCampaign = await createCampaign(this.state.campaign);
-      createReferralCode(
-        this.state.number,
-        this.state.description,
-        newCampaign.id,
-        this.props.afterSave,
-        this.props.closeModal
-      );
-    } else {
-      createReferralCode(
-        this.state.number,
-        this.state.description,
-        null,
-        this.props.afterSave,
-        this.props.closeModal
-      );
-    }
+    const newCampaign = await createCampaign(this.state.campaignName);
+    createReferralCode(
+      this.state.number,
+      this.state.description,
+      newCampaign.id,
+      this.props.afterSave,
+      this.props.closeModal
+    );
   };
 
   public isValidForm = () => {
-    if (
-      this.state.campaign &&
-      (this.state.number > 0 && this.state.number < 500)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    return (
+      this.state.campaignName &&
+      (this.state.number > 0 && this.state.number < 100)
+    );
   };
 
   public render() {
@@ -93,7 +77,7 @@ export default class CreateDialog extends React.Component<
         <Label>{locale.campaign}</Label>
         <Input
           style={{ width: "100%" }}
-          value={this.state.campaign}
+          value={this.state.campaignName}
           onChange={this.handleCampaignValue}
           placeholder={locale.referrals.campaignPlaceholder}
         />

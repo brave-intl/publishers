@@ -6,11 +6,32 @@ import ReferralsCard from "./referralsCard/ReferralsCard";
 import ReferralsHeader from "./referralsHeader/ReferralsHeader";
 import ReferralsNav from "./referralsNav/ReferralsNav";
 
-interface IReferralsState {
-  campaigns: any;
+export interface ICampaign {
+  promo_campaign_id: string;
+  created_at: string;
+  name: string;
+  promo_registrations: IPromoRegistration[];
 }
 
-export default class Referrals extends React.Component<{}, IReferralsState> {
+interface IPromoRegistration {
+  id: string;
+  created_at: string;
+  referral_code: string;
+  stats: any;
+}
+
+interface IReferralsProps {
+  campaigns: ICampaign[];
+}
+
+interface IReferralsState {
+  campaigns: ICampaign[];
+}
+
+export default class Referrals extends React.Component<
+  IReferralsProps,
+  IReferralsState
+> {
   constructor(props) {
     super(props);
     this.state = {

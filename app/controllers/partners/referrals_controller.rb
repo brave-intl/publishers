@@ -6,32 +6,24 @@ module Partners
         respond_to do |format|
           format.html
           format.json  do 
-            render json: prepare_json
+            render json: aggregate_organization_data
           end 
         end
     end
 
     private
-    def prepare_json
+    def aggregate_organization_data
         membership = Membership.find_by(user_id: current_publisher.id)
         organization = Organization.find(membership.organization_id)
         partner_ids = Membership.where(organization_id: organization.id).map { |membership| membership.user_id}
-        data = {}
         campaigns = []
         partner_ids.each do |partner_id|
           partner = Publisher.find(partner_id)
           partner.promo_campaigns.each do |promo_campaign|
-            promo_registrations = partner.promo_registrations.where(promo_campaign_id: promo_campaign.id)
-            campaigns.push(
-            {
-                "promo_campaign_id": promo_campaign.id,
-                "name": promo_campaign.name,
-                "created_at": promo_campaign.created_at,
-                "promo_registrations": promo_registrations
-            })
+            campaigns.push(promo_campaign.build_campaign_json)
           end
         end
-        data[:campaigns] = campaigns  
+        data = { campaigns: campaigns}
         return data
     end
     end

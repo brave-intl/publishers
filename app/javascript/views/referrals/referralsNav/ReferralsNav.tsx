@@ -3,12 +3,12 @@ import * as React from "react";
 import { Button, Container, Text, Wrapper } from "./ReferralsNavStyle";
 
 import Modal, { ModalSize } from "../../../components/modal/Modal";
-import CreateDialog from "./createDialog/CreateDialog";
+import CreateDialog from "./components/createDialog/CreateDialog";
 
 import locale from "../../../locale/en";
 
 interface IReferralsNavProps {
-  fetchData: any;
+  fetchData: () => void;
 }
 
 interface IReferralsNavState {
