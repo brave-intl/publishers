@@ -18,7 +18,7 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Create potential payment for referrals
     probi = wallet.channel_balances[@publisher.owner_identifier].probi_before_fees # probi = balance
-    publisher_has_unsettled_balance = probi.positive? ? true : false
+    publisher_has_unsettled_balance = probi.positive?
 
     unless should_only_notify?
       PotentialPayment.create(payout_report_id: @payout_report.id,
