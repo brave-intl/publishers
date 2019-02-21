@@ -30,7 +30,7 @@ module Eyeshade
 
     # Expects a BigDecimal returns an Integer
     def bat_to_probi(bat)
-      (bat * BigDecimal.new('1.0e18')).to_i
+      (bat * BigDecimal.new("1.0e18")).to_i
     end
 
     # Expects and returns values with probi unit

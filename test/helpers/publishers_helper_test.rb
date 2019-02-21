@@ -15,14 +15,14 @@ class PublishersHelperTest < ActionView::TestCase
     assert_dom_equal %{}, publisher_converted_overall_balance(publisher)
   end
 
-  test "publisher_converted_balance should return nothing for BAT publisher currency" do
+  test "publisher_converted_overall_balance should return nothing for BAT publisher currency" do
     publisher = publishers(:default)
     publisher.default_currency = "BAT"
     publisher.save
     assert_dom_equal %{}, publisher_converted_overall_balance(publisher)
   end
 
-  test "publisher_converted_balance should return something for set publisher currency" do
+  test "publisher_converted_overall_balance should return something for set publisher currency" do
     publisher = publishers(:default)
     publisher.default_currency = "USD"
     publisher.save
@@ -30,7 +30,7 @@ class PublishersHelperTest < ActionView::TestCase
     assert_dom_equal %{~ 0.00 USD}, publisher_converted_overall_balance(publisher) # 0 balance because this publisher has no channels
   end
 
-  test "publisher_converted_balance should return `CURRENCY unavailable` when no wallet is set" do
+  test "publisher_converted_overall_balance should return `CURRENCY unavailable` when no wallet is set" do
     class FakePublisher
       attr_reader :default_currency, :wallet
 

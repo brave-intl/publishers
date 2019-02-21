@@ -66,7 +66,7 @@ function updateLastSettlement(lastSettlementBalance) {
 
     lastDepositBatAmount.innerText = lastSettlementBalance.amount_bat;
     lastDepositConvertedAmount.style.display = lastSettlementBalance.settlement_currency === "BAT" || lastSettlementBalance.settlement_currency === null ? 'none' : 'block';
-    lastDepositConvertedAmount.innerText = formatBalance(lastSettlementBalance.amount_settlement_currency, lastSettlementBalance.settlement_currency);
+    lastDepositConvertedAmount.innerText = formatConvertedBalance(lastSettlementBalance.amount_settlement_currency, lastSettlementBalance.settlement_currency);
   } else {
     lastSettlement.classList.remove('settlement-made');
     lastSettlement.classList.add('no-settlement-made');
