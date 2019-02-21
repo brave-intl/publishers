@@ -44,7 +44,14 @@ module Eyeshade
     def convert(amount_bat, currency)
       return amount_bat if currency == "BAT"
       return if @rates[currency].nil?
-      amount_bat * @rates[currency]
+      # (Albert Wang): It's possible that the resulting parameter is actually a String,
+      # so we'll cast it
+      if @rates[currency].is_a? String
+        require 'bigdecimal'
+        amount_bat * BigDecimal.new(@rates[currency])
+      else
+        amount_bat * @rates[currency]
+      end
     end
 
     def fee_rate
