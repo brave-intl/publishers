@@ -1,6 +1,6 @@
 
 .d-flex
-  h1= @invoice.date.utc.strftime("%B %Y")
+  h2.mt-1= @invoice.human_date + " Invoice"
   - if @invoice.in_progress?
     .ml-3
       = link_to "Generate Manual Payout", '#', class: 'btn btn-info'
@@ -10,9 +10,10 @@
     .ml-3
       = link_to "Finalize", admin_partner_invoice_finalize_path(invoice_id: @invoice.id), class: 'btn btn-dark'
 
-h4.mb-4
-  = link_to @invoice.partner.name.pluralize, admin_publisher_path(@invoice.partner)
-  = " Invoice"
+.d-flex.mb-4
+  h4.mr-4= link_to @invoice.partner.name,  admin_publisher_path(@invoice.partner)
+  h4.mr-4.text-muted |
+  h6.align-self-center.text-muted= @invoice.partner.email
 
 #publisher.mb-4
   .rounded-box

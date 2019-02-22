@@ -90,12 +90,12 @@ ActiveRecord::Schema.define(version: 2019_02_02_003918) do
 
   create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "partner_id"
-    t.datetime "date"
+    t.date "date"
     t.string "amount", default: "0"
     t.string "finalized_amount"
     t.boolean "paid", default: false
     t.uuid "paid_by_id"
-    t.datetime "payment_date"
+    t.date "payment_date"
     t.uuid "finalized_by_id"
     t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false

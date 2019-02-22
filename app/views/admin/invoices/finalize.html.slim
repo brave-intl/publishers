@@ -1,4 +1,4 @@
-h2= "Finalize #{@invoice.partner.name.pluralize} invoice for #{@invoice.date.utc.strftime("%B %Y") }"
+h2= "Finalize #{@invoice.partner.name.titleize}'s invoice for #{@invoice.human_date}"
 
 p You are about to mark this invoice as "In Progress". From this point forward the invoice will be read-only.
 

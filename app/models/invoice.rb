@@ -25,10 +25,10 @@ class Invoice < ActiveRecord::Base
   validates :date, uniqueness: { scope: :partner_id }
 
   def human_date
-    if date.utc.day == 1
-      date.utc.strftime("%B %Y")
+    if date.day == 1
+      date.strftime("%B %Y")
     else
-      date.utc.strftime("%B %d, %Y")
+      date.strftime("%B %d, %Y")
     end
   end
 
