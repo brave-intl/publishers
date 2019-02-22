@@ -131,6 +131,10 @@ class Publisher < ApplicationRecord
     joins(:channels).where('channels.verified = true').distinct
   }
 
+  # We aren't going to be tracking these but still want to track when publishers last signed in at
+  # So we need to allow them to be available on the class
+  attr_accessor :last_sign_in_ip, :current_sign_in_ip
+
   def self.statistical_totals
     {
       email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true}).distinct(:id).count,
