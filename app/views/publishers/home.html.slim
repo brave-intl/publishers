@@ -8,20 +8,6 @@ noscript
 script type="text/html" id="confirm_default_currency_modal_wrapper"
   = render :partial => 'confirm_default_currency_modal'
 
-- content_for(:navbar_content_right) do
-  = link_to( \
-    t("shared.dashboard"), \
-    home_publishers_path, \
-    class: 'title' \
-  )
-  - if current_publisher.in_new_ui_whitelist?
-    = link_to(t("shared.referrals"), referrals_publishers_path, class: 'title')
-    = link_to(t("shared.payments"), payments_path, class: 'title' )
-
-  = render partial: "choose_channel_button"
-  = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
-
-
 = hidden_field_tag 'publisher_id', current_publisher.id
 
 .dashboard
