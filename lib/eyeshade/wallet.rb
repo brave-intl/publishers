@@ -28,7 +28,7 @@ module Eyeshade
       @possible_currencies = details_json["possibleCurrencies"] || []
       @address = details_json["address"] || ""
       @is_member = details_json["isMember"] || false
-      @uphold_id = details_json["id"]
+      @uphold_id = details_json["id"] || nil
       @uphold_account_status = details_json["status"] || nil
 
       status_json = wallet_json["status"] || {}
