@@ -42,6 +42,40 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     admin = publishers(:admin)
     sign_in admin
 
+    publisher = publishers(:uphold_connected)
+    delete_publishers_except([admin.id, publisher.id])
+
+    # Stub disconnected /wallet response
+    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
+
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    # Stub /balances response
+    balance_response = [
+      {
+        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+        "account_type" => "owner",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "uphold_connected.org",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "twitch#channel:ucTw",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },      {
+        "account_id" => "twitter#channel:def456",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      }
+    ].to_json
+
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
+      to_return(status: 200, body: balance_response)
     assert_difference("PayoutReport.count", 1) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do
         perform_enqueued_jobs do
@@ -57,6 +91,41 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   test "#create generates final payout report if final flag is set" do
     admin = publishers(:admin)
     sign_in admin
+
+    publisher = publishers(:uphold_connected)
+    delete_publishers_except([admin.id, publisher.id])
+
+    # Stub disconnected /wallet response
+    wallet_response = {"wallet" => {"address" => "ae42daaa-69d8-4400-a0f4-d359279cd3d2"}}.to_json
+
+    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
+      to_return(status: 200, body: wallet_response, headers: {})
+
+    # Stub /balances response
+    balance_response = [
+      {
+        "account_id" => "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+        "account_type" => "owner",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "uphold_connected.org",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },
+      {
+        "account_id" => "twitch#channel:ucTw",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      },      {
+        "account_id" => "twitter#channel:def456",
+        "account_type" => "channel",
+        "balance" => "20.00"
+      }
+    ].to_json
+
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
+      to_return(status: 200, body: balance_response)
 
     assert_difference("PayoutReport.count", 1) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do

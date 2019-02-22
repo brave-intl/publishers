@@ -26,7 +26,7 @@ div.row
             tbody
               - @publishers.left_joins(:channels).each do |publisher|
                 tr.gradeX
-                  td = link_to publisher.email, admin_publisher_path(publisher.id)
+                  td = link_to publisher.email.present? ? publisher.email : publisher.pending_email, admin_publisher_path(publisher.id)
                   td = publisher.name
                   td.small = publisher.id
                   td = publisher_status(publisher)
