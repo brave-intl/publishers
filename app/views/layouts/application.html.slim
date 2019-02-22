@@ -16,12 +16,6 @@ html
     - else
       = javascript_pack_tag('application')
 
-    - content_for(:navbar_content_right) do
-      - if current_publisher && current_publisher.partner?
-        = link_to(t("shared.dashboard"), home_publishers_path, class: 'title')
-        = link_to(t("shared.referrals"), partners_referrals_path, class: 'title')
-        = link_to(t("shared.payments"), payments_path, class: 'title' )
-
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
   body data-action=params[:action] data-controller=params[:controller]
@@ -37,8 +31,6 @@ html
     #main
       - if content_for?(:nav)
         = yield(:nav)
-      - elsif current_publisher && current_publisher.partner?
-        = render("partner_nav")
       - else
         = render("nav")
 
