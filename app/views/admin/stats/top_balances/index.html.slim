@@ -1,4 +1,11 @@
 h2= "Top Balances for #{params[:type].titleize}"
+
+= form_tag nil, method: :get do
+  = hidden_field_tag "type", @type
+  = text_field_tag "limit", @limit, maxlength: 5
+  = submit_tag "Update Limits"
+
+br
 div.panel-body
   div.adv-table
     table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
