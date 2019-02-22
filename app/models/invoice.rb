@@ -49,9 +49,9 @@ class Invoice < ActiveRecord::Base
       url: Rails.application.routes.url_helpers.partners_payments_invoice_path(date.in_time_zone("UTC").strftime(URL_DATE_FORMAT)),
       files: invoice_files.where(archived: false).as_json.compact,
       paid: paid,
-      payment_date: payment_date,
-      finalized_amount: finalized_amount,
-      created_at: created_at.strftime("%b %d, %Y")
+      paymentDate: payment_date,
+      finalizedAmount: finalized_amount,
+      createdAt: created_at.strftime("%b %d, %Y")
     }
   end
 end

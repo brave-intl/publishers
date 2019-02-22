@@ -60,7 +60,7 @@ export default class PaymentOverview extends React.Component<
     ) : (
       <React.Fragment>
         <Text>
-          {this.props.invoices[0].finalized_amount ||
+          {this.props.invoices[0].finalizedAmount ||
             this.props.invoices[0].amount}
         </Text>
         <Subheader> {this.props.defaultCurrency}</Subheader>

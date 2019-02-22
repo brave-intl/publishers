@@ -85,8 +85,8 @@ export default class InvoicesList extends React.Component<IInvoiceListProps> {
             {this.props.invoices &&
               this.props.invoices.map(invoice => (
                 <tr key={invoice.id}>
-                  <Cell>{moment(invoice.date).format("MMMM Y")}</Cell>
-                  <Cell>{invoice.payment_date || "--"}</Cell>
+                  <Cell>{invoice.date}</Cell>
+                  <Cell>{invoice.paymentDate || "--"}</Cell>
                   <Cell>{invoice.amount}</Cell>
                   <Cell>{invoice.status}</Cell>
                   <Cell>--</Cell>

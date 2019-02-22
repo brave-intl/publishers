@@ -126,12 +126,12 @@ export default class InvoiceShow extends React.Component<
         <React.Fragment>
           <FormControl>
             <Header>Finalized Amount</Header>
-            <div>{this.state.invoice.finalized_amount || "--"}</div>
+            <div>{this.state.invoice.finalizedAmount || "--"}</div>
           </FormControl>
 
           <FormControl>
             <Header>Payment Date</Header>
-            <div>{this.state.invoice.payment_date || "--"}</div>
+            <div>{this.state.invoice.paymentDate || "--"}</div>
           </FormControl>
           <FormControl>
             <Header>Status</Header>
@@ -189,10 +189,10 @@ export default class InvoiceShow extends React.Component<
                 <Cell>
                   <a href={invoiceFile.file.url}>{invoiceFile.file.name}</a>
                 </Cell>
-                <Cell>{invoiceFile.created_at}</Cell>
-                <Cell>{invoiceFile.uploaded_by}</Cell>
+                <Cell>{invoiceFile.createdAt}</Cell>
+                <Cell>{invoiceFile.uploadedBy}</Cell>
                 <Cell>
-                  {invoiceFile.can_archive && (
+                  {invoiceFile.canArchive && (
                     <Link href={invoiceFile.url} onClick={this.archiveItem}>
                       <TrashOIcon style={{ width: "18" }} /> Archive
                     </Link>
