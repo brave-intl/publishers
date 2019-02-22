@@ -71,23 +71,24 @@
         .statement
           = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
         .payout-report-status-section
-          h4= payout_report_status_header('owner')
           - @potential_referral_payment = PayoutReport.most_recent_final_report.potential_payments.where(publisher_id: @publisher.id).first
-          .db-info-row
-            .db-field = "Reauthorization was needed"
-            .db-value = @potential_referral_payment.reauthorization_needed
-          .db-info-row
-            .db-field = "Was Uphold member"
-            .db-value = @potential_referral_payment.uphold_member
-          .db-info-row
-            .db-field = "Was suspended"
-            .db-value = @potential_referral_payment.suspended
-          .db-info-row
-            .db-field = "Uphold status was"
-            .db-value = @potential_referral_payment.uphold_status || 'unavailable'
-          .db-info-row
-            .db-field = "Approx. amount"
-            .db-value = @potential_referral_payment.amount.to_d * 1/1E18
+          - if @potential_referral_payment.present?
+            h4= payout_report_status_header('owner')
+            .db-info-row
+              .db-field = "Reauthorization was needed"
+              .db-value = @potential_referral_payment.reauthorization_needed
+            .db-info-row
+              .db-field = "Was Uphold member"
+              .db-value = @potential_referral_payment.uphold_member
+            .db-info-row
+              .db-field = "Was suspended"
+              .db-value = @potential_referral_payment.suspended
+            .db-info-row
+              .db-field = "Uphold status was"
+              .db-value = @potential_referral_payment.uphold_status || 'unavailable'
+            .db-info-row
+              .db-field = "Approx. amount"
+              .db-value = @potential_referral_payment.amount.to_d * 1/1E18
 
   hr
     = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
@@ -134,23 +135,24 @@
               .db-value = channel.promo_registration.referral_code
           - if channel.verified?
             .payout-report-status-section
-              - @potential_payment = PayoutReport.most_recent_final_report.potential_payments.where(channel_id: channel.id).first
-              h4= payout_report_status_header('channel')
-              .db-info-row
-                .db-field = "Reauthorization was needed"
-                .db-value = @potential_payment.reauthorization_needed
-              .db-info-row
-                .db-field = "Was Uphold member"
-                .db-value = @potential_payment.uphold_member
-              .db-info-row
-                .db-field = "Was suspended"
-                .db-value = @potential_payment.suspended
-              .db-info-row
-                .db-field = "Uphold status was"
-                .db-value = @potential_payment.uphold_status || 'unavailable'
-              .db-info-row
-                .db-field = "Approx. amount"
-                .db-value = @potential_payment.amount.to_d * 1/1E18
+              - @potential_contribution_payment = PayoutReport.most_recent_final_report.potential_payments.where(channel_id: channel.id).first
+              - if @potential_contribution_payment.present?
+                h4= payout_report_status_header('channel')
+                .db-info-row
+                  .db-field = "Reauthorization was needed"
+                  .db-value = @potential_contribution_payment.reauthorization_needed
+                .db-info-row
+                  .db-field = "Was Uphold member"
+                  .db-value = @potential_contribution_payment.uphold_member
+                .db-info-row
+                  .db-field = "Was suspended"
+                  .db-value = @potential_contribution_payment.suspended
+                .db-info-row
+                  .db-field = "Uphold status was"
+                  .db-value = @potential_contribution_payment.uphold_status || 'unavailable'
+                .db-info-row
+                  .db-field = "Approx. amount"
+                  .db-value = @potential_contribution_payment.amount.to_d * 1/1E18
 
   hr
   h3.admin-header = "Notes"
