@@ -4,7 +4,7 @@ import * as React from "react";
 
 import locale from "../../../../locale/en";
 
-import Modal, { ModalSize } from "../../../../components/Modal";
+import Modal, { ModalSize } from "../../../../components/modal/Modal";
 import InvoiceShow from "../../components/InvoiceShow";
 import { IInvoice } from "../../Payments";
 
@@ -77,7 +77,7 @@ export default class InvoicesList extends React.Component<IInvoiceListProps> {
               <TableHeader>
                 {locale.payments.invoices.invoice_count}
               </TableHeader>
-              <TableHeader>{locale.payments.history.statement}</TableHeader>
+              {/* <TableHeader>{locale.payments.history.statement}</TableHeader> */}
             </tr>
           </thead>
           <tbody>
@@ -85,8 +85,8 @@ export default class InvoicesList extends React.Component<IInvoiceListProps> {
             {this.props.invoices &&
               this.props.invoices.map(invoice => (
                 <tr key={invoice.id}>
-                  <Cell>{moment(invoice.date).format("MMMM Y")}</Cell>
-                  <Cell>{invoice.payment_date || "--"}</Cell>
+                  <Cell>{invoice.date}</Cell>
+                  <Cell>{invoice.paymentDate || "--"}</Cell>
                   <Cell>{invoice.amount}</Cell>
                   <Cell>{invoice.status}</Cell>
                   <Cell>--</Cell>
@@ -102,13 +102,14 @@ export default class InvoicesList extends React.Component<IInvoiceListProps> {
                       )}
                     </Link>
                   </Cell>
-                  <Cell>
+                  {/* TODO: When statements get refactored introduce this back in */}
+                  {/* <Cell>
                     <Link href="#">View</Link>
                     <Link href="#">
                       <DownloadIcon style={{ width: "32px" }} />
                       Download
                     </Link>
-                  </Cell>
+                  </Cell> */}
                 </tr>
               ))}
           </tbody>

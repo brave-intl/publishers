@@ -14,25 +14,25 @@ export interface IInvoice {
   id: string;
   date: string;
   url: string;
-  finalized_amount: string;
+  finalizedAmount: string;
   files: IInvoiceFile[];
   amount: string;
   status: string;
   paid: boolean;
-  payment_date: string;
-  created_at: string;
+  paymentDate: string;
+  createdAt: string;
 }
 export interface IInvoiceFile {
   id: string;
-  can_archive: boolean;
+  canArchive: boolean;
   file: {
     name: string;
     url: string;
   };
   url: string;
   archived: boolean;
-  uploaded_by: string;
-  created_at: string;
+  uploadedBy: string;
+  createdAt: string;
 }
 interface IPaymentsState {
   invoices: IInvoice[];

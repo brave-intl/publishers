@@ -8,6 +8,8 @@ class PayoutReport < ApplicationRecord
 
   has_many :potential_payments
 
+  validates_presence_of :expected_num_payments
+
   scope :final, -> {
     where(final: true)
   }
@@ -19,15 +21,19 @@ class PayoutReport < ApplicationRecord
   end
 
   def amount
-    potential_payments.sum { |potential_payment| potential_payment.amount.to_i }
+    potential_payments.to_be_paid.sum { |potential_payment| potential_payment.amount.to_i }
   end
 
   def fees
-    potential_payments.sum { |potential_payment| potential_payment.fees.to_i }
+    potential_payments.to_be_paid.sum { |potential_payment| potential_payment.fees.to_i }
   end
 
   def num_payments
     potential_payments.count
+  end
+
+  def num_payments_to_be_paid
+    potential_payments.to_be_paid.count
   end
 
   # Updates the JSON summary of the report downloaded by admins
@@ -50,6 +56,15 @@ class PayoutReport < ApplicationRecord
 
     def total_payments
       PayoutReport.sum { |payout_report| payout_report.num_payments }
+    end
+
+    def most_recent_final_report
+      PayoutReport.all.where(final: true).order("created_at").last
+    end
+
+    def expected_num_payments(publishers)
+      channels = Channel.where(publisher_id: publishers.pluck(:id), verified: true)
+      publishers.with_verified_channel.count + channels.count
     end
   end
 end

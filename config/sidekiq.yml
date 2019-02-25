@@ -23,10 +23,6 @@
   TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
-  Sync::PublisherPromoStatsJob:
-    cron: "15 3 * * *"
-    description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
-    queue: scheduler
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."

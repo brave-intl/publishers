@@ -19,6 +19,7 @@ module Partners
     def update
       invoice = find_invoice
       raise Invoice::ReadOnlyError unless invoice.pending?
+      raise Invoice::ReadOnlyError unless invoice_access?(invoice)
 
       invoice.amount = params[:amount]
 
@@ -37,6 +38,10 @@ module Partners
       @invoice = Invoice
                  .includes(:invoice_files)
                  .find_by(partner: current_publisher, date: date)
+    end
+
+    def invoice_access?(invoice)
+      current_publisher.admin? || current_publisher.id == invoice.partner_id
     end
 
     # Internal: only allow partners to access this UI

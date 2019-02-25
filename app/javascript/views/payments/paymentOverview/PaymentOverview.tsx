@@ -4,7 +4,7 @@ import * as React from "react";
 import locale from "../../../locale/en";
 import routes from "../../routes";
 
-import Modal, { ModalSize } from "../../../components/Modal";
+import Modal, { ModalSize } from "../../../components/modal/Modal";
 import InvoiceShow from "../components/InvoiceShow";
 import { IInvoice } from "../Payments";
 
@@ -60,7 +60,7 @@ export default class PaymentOverview extends React.Component<
     ) : (
       <React.Fragment>
         <Text>
-          {this.props.invoices[0].finalized_amount ||
+          {this.props.invoices[0].finalizedAmount ||
             this.props.invoices[0].amount}
         </Text>
         <Subheader> {this.props.defaultCurrency}</Subheader>

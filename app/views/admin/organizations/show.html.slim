@@ -23,12 +23,12 @@ div.row
         div.adv-table
           table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
             tr
-              th ID
+              th Name
               th Email
               th Status
             tbody
               - @organization.members.each do |member|
                 tr.gradeX
-                  td = link_to member.id, admin_publisher_path(member.id)
+                  td = link_to member.name, admin_publisher_path(member.id)
                   td = member.email
                   td = member.last_status_update.status

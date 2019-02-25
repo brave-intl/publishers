@@ -54,7 +54,17 @@ export default {
       paymentDate: "Payment Date",
       period: "Earning Period",
       show: {
+        amount: "Invoice Amount",
         description: "Invoice",
+        files: {
+          name: "File Name",
+          time: "Date",
+          title: "Files",
+          uploadedBy: "Uploaded By"
+        },
+        finalizedAmount: "Finalized Amount",
+        paymentDate: "Payment Date",
+        status: "Status",
         title: "Brave Rewards"
       },
       status: "Status",
