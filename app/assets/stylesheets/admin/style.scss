@@ -1,20 +1,19 @@
 /* header */
 #header {
-  background:#32323a;
+  background: #32323a;
   top: 0;
   position: fixed;
   width: 100%;
   z-index: 1;
 }
 
-
 /*sidebar navigation*/
 #sidebar {
-  display:block;
-  width:240px;
-  height:100%;
-  position:fixed;
-  background:#28282e;
+  display: block;
+  width: 240px;
+  height: 100%;
+  position: fixed;
+  background: #28282e;
   margin-top: 46px;
 
   li {
@@ -24,14 +23,17 @@
     position: relative;
     li {
       ul.sub {
-        display:none;
+        display: none;
       }
     }
   }
 
   .sub-menu {
+    li {
+      list-style: none;
+    }
     .sub li a {
-      padding-left:46px;
+      padding-left: 46px;
     }
   }
 
@@ -39,91 +41,104 @@
     padding: 14px 20px 15px 25px;
   }
 
-  ul.sidebar-menu,ul.sidebar-menu li ul.sub {
-    margin:-2px 0 0;
-    padding:0;
+  ul.sidebar-menu,
+  ul.sidebar-menu li ul.sub {
+    margin: -2px 0 0;
+    padding: 0;
     li {
-      margin-bottom:0;
-      margin-left:0;
-      margin-right:0;
-      border-bottom:1px solid rgba(255,255,255,0.05);
+      margin-bottom: 0;
+      margin-left: 0;
+      margin-right: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
       .sub-menu {
-        line-height:15px;
+        line-height: 15px;
       }
 
       .sub li {
-        border-bottom:none;
+        border-bottom: none;
       }
 
       a {
-        display:block;
-        font-size:14px;
-        padding:13px 0 13px 25px;
-        color:#aeb2b7;
-        outline:none;
+        display: block;
+        font-size: 14px;
+        padding: 13px 0 13px 25px;
+        color: #aeb2b7;
+        outline: none;
         i {
-          font-size:15px;
-          padding-right:6px;
+          font-size: 15px;
+          padding-right: 6px;
         }
       }
       p {
-        display:block;
-        font-size:14px;
-        padding:13px 0 0 25px;
-        color:#aeb2b7;
-        outline:none;
+        display: block;
+        font-size: 14px;
+        padding: 13px 0 0 25px;
+        color: #aeb2b7;
+        outline: none;
         i {
-          font-size:15px;
-          padding-right:6px;
+          font-size: 15px;
+          padding-right: 6px;
         }
       }
-      a:hover, a:focus, li.active, a.active {
-        background:#202025;
-        color:#f0f0f0;
-        display:block;
-        text-decoration:none;
+      a:hover,
+      a:focus,
+      li.active,
+      a.active {
+        background: #202025;
+        color: #f0f0f0;
+        display: block;
+        text-decoration: none;
       }
     }
   }
 }
 
 #wrapper {
-  display:inline-block;
+  display: inline-block;
   padding: 25px 100px;
-  width:100%;
+  width: 100%;
   margin-top: 46px;
 }
 
 .brand {
-  background:#1fb5ad;
-  float:left;
-  width:240px;
-  height:80px;
-  position:relative;
+  background: #1fb5ad;
+  float: left;
+  width: 240px;
+  height: 80px;
+  position: relative;
 }
 a.logo {
-  font-size:21px;
-  color:#2e2e2e;
-  float:left;
-  margin:20px 0 0 25px;
-  text-transform:uppercase;
+  font-size: 21px;
+  color: #2e2e2e;
+  float: left;
+  margin: 20px 0 0 25px;
+  text-transform: uppercase;
 }
-a.logo:hover,a.logo:focus {
-  text-decoration:none;
-  outline:none;
+a.logo:hover,
+a.logo:focus {
+  text-decoration: none;
+  outline: none;
 }
 a.logo span {
-  color: #FF6C60;
+  color: #ff6c60;
 }
 
 #main-content {
-  margin-left:240px;
+  margin-left: 240px;
 
   /* show */
   #publisher {
     .admin-header {
       text-align: left;
+    }
+
+    .action-container {
+      display: flex;
+    }
+
+    .actions {
+      margin-left: 2rem;
     }
 
     .rounded-box {
@@ -157,6 +172,10 @@ a.logo span {
 
     hr {
       margin: 30px 0px;
+    }
+
+    .payout-report-status-section {
+      margin-top: 10px;
     }
 
     #statement-section {
@@ -204,7 +223,7 @@ a.logo span {
         .channel-info {
           flex: 2;
           hr {
-            margin: 10px
+            margin: 10px;
           }
           .admin-approval {
             display: flex;
@@ -216,7 +235,6 @@ a.logo span {
             .admin-approval-success {
               color: green;
             }
-
           }
         }
       }

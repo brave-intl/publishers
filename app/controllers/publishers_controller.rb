@@ -370,10 +370,6 @@ class PublishersController < ApplicationController
     create_uphold_card_for_default_currency_if_needed
   end
 
-  def referrals
-    redirect_to("/publishers/home") and return unless current_publisher.in_new_ui_whitelist?
-  end
-
   def statements
     statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
     @statement_has_content = statement_contents.length > 0

@@ -4,11 +4,11 @@ class Publisher < ApplicationRecord
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
-  PROMO_STATS_UPDATE_DELAY = 10.minutes
   ADMIN = "admin".freeze
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
+  MAX_PROMO_REGISTRATIONS = 500
 
   class UpholdAccountState
     REAUTHORIZATION_NEEDED      = :reauthorization_needed
@@ -37,6 +37,7 @@ class Publisher < ApplicationRecord
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
+  has_many :promo_campaigns, dependent: :destroy 
   has_many :site_banners
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
@@ -50,7 +51,6 @@ class Publisher < ApplicationRecord
   has_many :created_users, class_name: "Publisher",
                            foreign_key: "created_by_id"
 
-
   attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
@@ -61,6 +61,7 @@ class Publisher < ApplicationRecord
   validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
   validates :email, uniqueness: {case_sensitive: false}, allow_nil: true
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
+  validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change
   validate :pending_email_can_not_be_in_use
 
@@ -91,8 +92,6 @@ class Publisher < ApplicationRecord
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
   after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
-
-  after_save :set_promo_stats_updated_at_2018q1, if: -> { saved_change_to_promo_stats_2018q1? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -297,22 +296,6 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def promo_stats_status
-    promo_disabled = !self.promo_enabled_2018q1
-    has_no_promo_enabled_channels = !self.channels.joins(:promo_registration).where.not(promo_registrations: {referral_code: nil}).any?
-    if promo_disabled || has_no_promo_enabled_channels
-      :disabled
-    elsif self.promo_stats_updated_at_2018q1.nil? || self.promo_stats_updated_at_2018q1 < PROMO_STATS_UPDATE_DELAY.ago
-      :update
-    else
-      :updated
-    end
-  end
-
-  def set_promo_stats_updated_at_2018q1
-    update_column(:promo_stats_updated_at_2018q1, Time.now)
-  end
-
   def has_verified_channel?
     channels.any?(&:verified?)
   end
@@ -361,7 +344,7 @@ class Publisher < ApplicationRecord
 
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
-    self.email.in?((Rails.application.secrets[:new_ui_email_whitelist] || "").split(","))
+    partner?
   end
 
   private

@@ -22,9 +22,9 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     }]
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
       to_return(status: 200, body: stubbed_response_body.to_json)
-      
+
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform
     assert accounts.length == 4
 
@@ -48,9 +48,9 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     end
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
       to_return(status: 200, body: stubbed_response_body.to_json)
-      
+
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform
 
     assert stubbed_response_body.length == 3
