@@ -3,9 +3,14 @@
     h2 = @publisher.name
     .rounded-box.split-row-container
       .split-row
-        .db-info-row
-          .db-field = "Email:"
-          .db-value = @publisher.email
+        - if @publisher.email.present?
+          .db-info-row
+            .db-field = "Email:"
+            .db-value = @publisher.email
+        - else
+          .db-info-row
+            .db-field = "Pending Email:"
+            .db-value = @publisher.pending_email
         .db-info-row
           .db-field = "Role:"
           .db-value = @publisher.role
@@ -65,6 +70,26 @@
           = link_to("last month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "last_month"))
         .statement
           = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
+        .payout-report-status-section
+          - @potential_referral_payment = PayoutReport.most_recent_final_report.potential_payments.where(publisher_id: @publisher.id).first
+          - if @potential_referral_payment.present?
+            h4= payout_report_status_header('owner')
+            .db-info-row
+              .db-field = "Reauthorization was needed"
+              .db-value = @potential_referral_payment.reauthorization_needed
+            .db-info-row
+              .db-field = "Was Uphold member"
+              .db-value = @potential_referral_payment.uphold_member
+            .db-info-row
+              .db-field = "Was suspended"
+              .db-value = @potential_referral_payment.suspended
+            .db-info-row
+              .db-field = "Uphold status was"
+              .db-value = @potential_referral_payment.uphold_status || 'unavailable'
+            .db-info-row
+              .db-field = "Approx. amount"
+              .db-value = @potential_referral_payment.amount.to_d * 1/1E18
+
   hr
     = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
     = link_to("Make partner",
@@ -108,6 +133,26 @@
             .db-info-row
               .db-field = "Referral code:"
               .db-value = channel.promo_registration.referral_code
+          - if channel.verified?
+            .payout-report-status-section
+              - @potential_contribution_payment = PayoutReport.most_recent_final_report.potential_payments.where(channel_id: channel.id).first
+              - if @potential_contribution_payment.present?
+                h4= payout_report_status_header('channel')
+                .db-info-row
+                  .db-field = "Reauthorization was needed"
+                  .db-value = @potential_contribution_payment.reauthorization_needed
+                .db-info-row
+                  .db-field = "Was Uphold member"
+                  .db-value = @potential_contribution_payment.uphold_member
+                .db-info-row
+                  .db-field = "Was suspended"
+                  .db-value = @potential_contribution_payment.suspended
+                .db-info-row
+                  .db-field = "Uphold status was"
+                  .db-value = @potential_contribution_payment.uphold_status || 'unavailable'
+                .db-info-row
+                  .db-field = "Approx. amount"
+                  .db-value = @potential_contribution_payment.amount.to_d * 1/1E18
 
   hr
   h3.admin-header = "Notes"
