@@ -77,7 +77,7 @@ export default class InvoicesList extends React.Component<IInvoiceListProps> {
               <TableHeader>
                 {locale.payments.invoices.invoice_count}
               </TableHeader>
-              <TableHeader>{locale.payments.history.statement}</TableHeader>
+              {/* <TableHeader>{locale.payments.history.statement}</TableHeader> */}
             </tr>
           </thead>
           <tbody>
@@ -102,13 +102,14 @@ export default class InvoicesList extends React.Component<IInvoiceListProps> {
                       )}
                     </Link>
                   </Cell>
-                  <Cell>
+                  {/* TODO: When statements get refactored introduce this back in */}
+                  {/* <Cell>
                     <Link href="#">View</Link>
                     <Link href="#">
                       <DownloadIcon style={{ width: "32px" }} />
                       Download
                     </Link>
-                  </Cell>
+                  </Cell> */}
                 </tr>
               ))}
           </tbody>

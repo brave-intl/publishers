@@ -125,16 +125,16 @@ export default class InvoiceShow extends React.Component<
       completeForm = (
         <React.Fragment>
           <FormControl>
-            <Header>Finalized Amount</Header>
+            <Header>{locale.payments.invoices.show.finalizedAmount}</Header>
             <div>{this.state.invoice.finalizedAmount || "--"}</div>
           </FormControl>
 
           <FormControl>
-            <Header>Payment Date</Header>
+            <Header>{locale.payments.invoices.show.paymentDate}</Header>
             <div>{this.state.invoice.paymentDate || "--"}</div>
           </FormControl>
           <FormControl>
-            <Header>Status</Header>
+            <Header>{locale.payments.invoices.show.status}</Header>
             <div>{this.state.invoice.status || ""}</div>
           </FormControl>
         </React.Fragment>
@@ -144,11 +144,14 @@ export default class InvoiceShow extends React.Component<
     return (
       <div>
         <FormControl>
-          <Title>{this.state.invoice.date} Invoice</Title>
+          <Title>
+            {this.state.invoice.date}{" "}
+            {locale.payments.invoices.show.description}
+          </Title>
         </FormControl>
 
         <FormControl>
-          <Header>Invoice Amount</Header>
+          <Header>{locale.payments.invoices.show.amount}</Header>
           <div>
             <EditIconInput
               initialValue={this.state.invoice.amount || ""}
@@ -161,7 +164,9 @@ export default class InvoiceShow extends React.Component<
         {completeForm}
 
         <FlexWrapper>
-          <SpacedHeader>Files</SpacedHeader>
+          <SpacedHeader>
+            {locale.payments.invoices.show.files.title}
+          </SpacedHeader>
           {this.state.invoice.status === "Pending" && (
             <UploadDialog
               route={routes.payments.invoices.show.invoice_files.path.replace(
@@ -177,9 +182,15 @@ export default class InvoiceShow extends React.Component<
         <Table>
           <thead>
             <tr>
-              <TableHeader>File name</TableHeader>
-              <TableHeader>Uploaded At</TableHeader>
-              <TableHeader>Uploaded By</TableHeader>
+              <TableHeader>
+                {locale.payments.invoices.show.files.name}
+              </TableHeader>
+              <TableHeader>
+                {locale.payments.invoices.show.files.time}
+              </TableHeader>
+              <TableHeader>
+                {locale.payments.invoices.show.files.uploadedBy}
+              </TableHeader>
               <TableHeader />
             </tr>
           </thead>
