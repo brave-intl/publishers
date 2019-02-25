@@ -16,9 +16,9 @@ div.row
         div.adv-table
           table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
             tr
-              th ID
-              th Name
               th Email
+              th Name
+              th ID
               th Status
               th = sort_link(Publisher::VERIFIED_CHANNEL_COUNT, "Number of verified channels")
               th = sort_link(:created_at, "Account creation time")
@@ -26,9 +26,9 @@ div.row
             tbody
               - @publishers.left_joins(:channels).each do |publisher|
                 tr.gradeX
-                  td = link_to publisher.id, admin_publisher_path(publisher.id)
+                  td = link_to publisher.email.present? ? publisher.email : publisher.pending_email, admin_publisher_path(publisher.id)
                   td = publisher.name
-                  td = publisher.email
+                  td.small = publisher.id
                   td = publisher_status(publisher)
                   td = publisher.channels.verified.count
                   td = publisher.created_at

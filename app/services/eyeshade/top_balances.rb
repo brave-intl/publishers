@@ -16,7 +16,7 @@ class Eyeshade::TopBalances < Eyeshade::BaseApiClient
       begin
         response = connection.get do |request|
           request.headers["Authorization"] = api_authorization_header
-          request.url("/v1/accounts/balances/#{@type}/top")
+          request.url("/v1/accounts/balances/#{@type}/top?limit=1000")
         end
         result = JSON.parse(response.body)
       end
