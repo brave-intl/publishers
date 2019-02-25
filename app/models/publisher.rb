@@ -4,7 +4,6 @@ class Publisher < ApplicationRecord
 
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
-  PROMO_STATS_UPDATE_DELAY = 10.minutes
   ADMIN = "admin".freeze
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
@@ -90,8 +89,6 @@ class Publisher < ApplicationRecord
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
   after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
-
-  after_save :set_promo_stats_updated_at_2018q1, if: -> { saved_change_to_promo_stats_2018q1? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -294,22 +291,6 @@ class Publisher < ApplicationRecord
     else
       :inactive
     end
-  end
-
-  def promo_stats_status
-    promo_disabled = !self.promo_enabled_2018q1
-    has_no_promo_enabled_channels = !self.channels.joins(:promo_registration).where.not(promo_registrations: {referral_code: nil}).any?
-    if promo_disabled || has_no_promo_enabled_channels
-      :disabled
-    elsif self.promo_stats_updated_at_2018q1.nil? || self.promo_stats_updated_at_2018q1 < PROMO_STATS_UPDATE_DELAY.ago
-      :update
-    else
-      :updated
-    end
-  end
-
-  def set_promo_stats_updated_at_2018q1
-    update_column(:promo_stats_updated_at_2018q1, Time.now)
   end
 
   def has_verified_channel?

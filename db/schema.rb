@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_21_194249) do
+ActiveRecord::Schema.define(version: 2019_02_22_195643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -318,8 +318,6 @@ ActiveRecord::Schema.define(version: 2019_02_21_194249) do
     t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
-    t.jsonb "promo_stats_2018q1", default: {}, null: false
-    t.datetime "promo_stats_updated_at_2018q1"
     t.text "role", default: "publisher"
     t.datetime "default_currency_confirmed_at"
     t.datetime "javascript_last_detected_at"
