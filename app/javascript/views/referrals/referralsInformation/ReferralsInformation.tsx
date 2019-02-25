@@ -35,6 +35,7 @@ interface IReferralsInfoState {
   showDeleteModal: boolean;
   showDeleteCampaignModal: boolean;
   showEditCampaignModal: boolean;
+  stats: any;
   codeToDelete: string;
 }
 
@@ -57,7 +58,8 @@ export default class ReferralsInformation extends React.Component<
       showDeleteCampaignModal: false,
       showDeleteModal: false,
       showEditCampaignModal: false,
-      showMoveModal: false
+      showMoveModal: false,
+      stats: {}
     };
     this.fetchData = this.fetchData.bind(this);
   }
@@ -81,7 +83,8 @@ export default class ReferralsInformation extends React.Component<
     const currentCampaign = findCurrentCampaign(data.campaigns);
     this.setState({
       campaigns: data.campaigns,
-      currentCampaign
+      currentCampaign,
+      stats: processStats(currentCampaign.promo_registrations)
     });
   }
 
@@ -98,23 +101,15 @@ export default class ReferralsInformation extends React.Component<
           </Content>
           <Content>
             <Text header>{locale.downloads}</Text>
-            <Text h2>
-              {processDownloads(this.state.currentCampaign.promo_registrations)}
-            </Text>
+            <Text h2>{this.state.stats.downloads}</Text>
           </Content>
           <Content>
             <Text header>{locale.installs}</Text>
-            <Text h2>
-              {processInstalls(this.state.currentCampaign.promo_registrations)}
-            </Text>
+            <Text h2>{this.state.stats.installs}</Text>
           </Content>
           <Content>
             <Text header>{locale.thirtyDay}</Text>
-            <Text h2>
-              {processThirtyDayUse(
-                this.state.currentCampaign.promo_registrations
-              )}
-            </Text>
+            <Text h2>{this.state.stats.thirtyDayUse}</Text>
           </Content>
           <Content closeIcon>
             <div
@@ -258,28 +253,16 @@ export default class ReferralsInformation extends React.Component<
   };
 }
 
-function processDownloads(referralCodes) {
+function processStats(referralCodes) {
   let downloads = 0;
-  referralCodes.forEach(code => {
-    downloads += JSON.parse(code.stats)[0].retrievals;
-  });
-  return downloads;
-}
-
-function processInstalls(referralCodes) {
   let installs = 0;
-  referralCodes.forEach(code => {
-    installs += JSON.parse(code.stats)[0].first_runs;
-  });
-  return installs;
-}
-
-function processThirtyDayUse(referralCodes) {
   let thirtyDayUse = 0;
   referralCodes.forEach(code => {
+    downloads += JSON.parse(code.stats)[0].retrievals;
+    installs += JSON.parse(code.stats)[0].first_runs;
     thirtyDayUse += JSON.parse(code.stats)[0].finalized;
   });
-  return thirtyDayUse;
+  return { downloads, installs, thirtyDayUse };
 }
 
 function processDate(created) {

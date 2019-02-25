@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import {
-  Box,
   ContentWrapper,
   Text,
   TextWrapper,
@@ -14,9 +13,47 @@ interface IReferralsHeaderProps {
   campaigns: any;
 }
 
+interface IReferralsHeaderState {
+  stats: any;
+}
+
 export default class ReferralsHeader extends React.Component<
-  IReferralsHeaderProps
+  IReferralsHeaderProps,
+  IReferralsHeaderState
 > {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stats: this.processStats(this.props.campaigns)
+    };
+  }
+
+  public componentDidUpdate() {
+    if (
+      JSON.stringify(this.state.stats) !==
+      JSON.stringify(this.processStats(this.props.campaigns))
+    ) {
+      this.setState({ stats: this.processStats(this.props.campaigns) });
+    }
+  }
+
+  public processStats(campaigns) {
+    let downloads = 0;
+    let installs = 0;
+    let thirtyDayUse = 0;
+    let total = 0;
+
+    campaigns.forEach(campaign => {
+      campaign.promo_registrations.forEach(code => {
+        downloads += JSON.parse(code.stats)[0].retrievals;
+        installs += JSON.parse(code.stats)[0].first_runs;
+        thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+        total++;
+      });
+    });
+    return { downloads, installs, thirtyDayUse, total };
+  }
+
   public render() {
     return (
       <Wrapper>
@@ -28,65 +65,25 @@ export default class ReferralsHeader extends React.Component<
           <TextWrapper>
             <Text header>{locale.referralCodes}</Text>
             <Text stat blue>
-              {countReferralCodes(this.props.campaigns)}
+              {this.state.stats.total}
             </Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.downloads}</Text>
-            <Text stat>{countDownloads(this.props.campaigns)}</Text>
+            <Text stat>{this.state.stats.downloads}</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.installs}</Text>
-            <Text stat>{countInstalls(this.props.campaigns)}</Text>
+            <Text stat>{this.state.stats.installs}</Text>
           </TextWrapper>
           <TextWrapper>
             <Text header>{locale.thirtyDay}</Text>
             <Text stat purple>
-              {countThirtyDayUse(this.props.campaigns)}
+              {this.state.stats.thirtyDayUse}
             </Text>
           </TextWrapper>
         </ContentWrapper>
       </Wrapper>
     );
   }
-}
-
-function countReferralCodes(campaigns) {
-  let referralCodes = 0;
-  campaigns.forEach(campaign => {
-    campaign.promo_registrations.forEach(referralCode => {
-      referralCodes++;
-    });
-  });
-  return referralCodes;
-}
-
-function countDownloads(campaigns) {
-  let downloads = 0;
-  campaigns.forEach(campaign => {
-    campaign.promo_registrations.forEach(referralCode => {
-      downloads += JSON.parse(referralCode.stats)[0].retrievals;
-    });
-  });
-  return downloads;
-}
-
-function countInstalls(campaigns) {
-  let installs = 0;
-  campaigns.forEach(campaign => {
-    campaign.promo_registrations.forEach(referralCode => {
-      installs += JSON.parse(referralCode.stats)[0].first_runs;
-    });
-  });
-  return installs;
-}
-
-function countThirtyDayUse(campaigns) {
-  let thirtyDay = 0;
-  campaigns.forEach(campaign => {
-    campaign.promo_registrations.forEach(referralCode => {
-      thirtyDay += JSON.parse(referralCode.stats)[0].finalized;
-    });
-  });
-  return thirtyDay;
 }

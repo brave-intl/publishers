@@ -21,9 +21,20 @@ interface IReferralsCardProps {
   campaign: any;
 }
 
+interface IReferralsCardState {
+  stats: any;
+}
+
 export default class ReferralsCard extends React.Component<
-  IReferralsCardProps
+  IReferralsCardProps,
+  IReferralsCardState
 > {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stats: processStats(this.props.campaign.promo_registrations)
+    };
+  }
   public render() {
     return (
       <Card>
@@ -43,24 +54,15 @@ export default class ReferralsCard extends React.Component<
         <FlexWrapper style={{ marginTop: "16px", marginBottom: "8px" }}>
           <TextWrapper stats>
             <Text header>{locale.referrals.downloads}</Text>
-            <Text stat>
-              {processStats(this.props.campaign.promo_registrations).downloads}
-            </Text>
+            <Text stat>{this.state.stats.downloads}</Text>
           </TextWrapper>
           <TextWrapper stats>
             <Text header>{locale.referrals.installs}</Text>
-            <Text stat>
-              {processStats(this.props.campaign.promo_registrations).installs}
-            </Text>
+            <Text stat>{this.state.stats.installs}</Text>
           </TextWrapper>
           <TextWrapper stats>
             <Text header>{locale.referrals.thirtyDay}</Text>
-            <Text use>
-              {
-                processStats(this.props.campaign.promo_registrations)
-                  .thirtyDayUse
-              }
-            </Text>
+            <Text use>{this.state.stats.thirtyDayUse}</Text>
           </TextWrapper>
         </FlexWrapper>
 
@@ -69,9 +71,7 @@ export default class ReferralsCard extends React.Component<
             <Text total>{locale.referrals.totalNumber}</Text>
           </TextWrapper>
           <TextWrapper total>
-            <Text codes>
-              {processStats(this.props.campaign.promo_registrations).total}
-            </Text>
+            <Text codes>{this.state.stats.total}</Text>
           </TextWrapper>
           <IconWrapper carat>
             <CaratRightIcon
