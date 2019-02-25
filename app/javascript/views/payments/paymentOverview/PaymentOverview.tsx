@@ -4,7 +4,7 @@ import * as React from "react";
 import locale from "../../../locale/en";
 import routes from "../../routes";
 
-import Modal, { ModalSize } from "../../../components/Modal";
+import Modal, { ModalSize } from "../../../components/modal/Modal";
 import InvoiceShow from "../components/InvoiceShow";
 import { IInvoice } from "../Payments";
 
