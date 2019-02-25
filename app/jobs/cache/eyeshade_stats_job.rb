@@ -10,8 +10,8 @@ class Cache::EyeshadeStatsJob < ApplicationJob
   def perform
     Rails.cache.write(EYESHADE_CONTRIBUTION_TOTALS, Eyeshade::ContributionTotals.new.perform)
     Rails.cache.write(EYESHADE_REFERRAL_TOTALS, Eyeshade::ReferralTotals.new.perform)
-    Rails.cache.write(EYESHADE_TOP_CHANNEL_BALANCES, Eyeshade::TopBalances.new(type: Eyeshade::TopBalances::CHANNEL).perform)
-    Rails.cache.write(EYESHADE_TOP_PUBLISHER_BALANCES, Eyeshade::TopBalances.new(type: Eyeshade::TopBalances::OWNER).perform)
-    Rails.cache.write(EYESHADE_TOP_UPHOLD_BALANCES, Eyeshade::TopBalances.new(type: Eyeshade::TopBalances::UPHOLD).perform)
+    Rails.cache.write(EYESHADE_TOP_CHANNEL_BALANCES, Eyeshade::TopBalances.new(type: Eyeshade::TopBalances::CHANNEL).perform.to_json)
+    Rails.cache.write(EYESHADE_TOP_PUBLISHER_BALANCES, Eyeshade::TopBalances.new(type: Eyeshade::TopBalances::OWNER).perform.to_json)
+    Rails.cache.write(EYESHADE_TOP_UPHOLD_BALANCES, Eyeshade::TopBalances.new(type: Eyeshade::TopBalances::UPHOLD).perform.to_json)
   end
 end
