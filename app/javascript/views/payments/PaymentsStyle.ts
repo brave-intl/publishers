@@ -10,7 +10,7 @@ export const Row = styled.div`
   grid-column-gap: 30px;
   grid-row-gap: 30px;
   @media (min-width: 900px) {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
   }
   @media (max-width: 900px) {
     grid-template-columns: 1fr;

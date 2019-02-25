@@ -1,0 +1,19 @@
+
+h2= "Request Invoice for #{@invoice.partner}"
+
+
+= form_with model: [:admin, :partner, @invoice], local: true do |form|
+  - if @invoice.errors.any?
+    ul
+      - @invoice.errors.full_messages.each do |msg|
+        li= msg
+  .form-group
+    label Date
+    .d-flex
+      = select_month Date.today, {field_name: 'month', prefix: 'invoice'}, class: 'form-control'
+      = select_year Date.today, {field_name: 'year', prefix: 'invoice', start_year: Date.today.year}, class: 'form-control'
+  .form-group
+    label Brave Calculated Total Amount (BAT)
+    = form.text_field :finalized_amount, placeholder: "Optional", class: 'form-control'
+
+  =submit_tag "Request Invoice", class: 'btn btn-primary'

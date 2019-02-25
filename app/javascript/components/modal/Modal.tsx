@@ -24,7 +24,7 @@ export enum ModalSize {
 interface IModalProps {
   show: boolean;
   size: ModalSize;
-  handleClose: () => void;
+  handleClose: any;
   children?: any;
 }
 
