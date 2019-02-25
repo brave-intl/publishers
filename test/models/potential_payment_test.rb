@@ -10,7 +10,7 @@ class PotentialPaymentTest < ActiveSupport::TestCase
     assert potential_payment_copy.errors.details[:channel_id].any? {|e| e[:error] == :taken}
 
     # ensure two payments to the same channel_id with two different reports is valid
-    new_payout_report = PayoutReport.create()
+    new_payout_report = PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
     potential_payment_copy.payout_report_id = new_payout_report.id
     assert potential_payment_copy.valid?
   end
@@ -40,5 +40,31 @@ class PotentialPaymentTest < ActiveSupport::TestCase
 
      potential_payment = potential_payments(:publisher).reload
      assert_equal PotentialPayment.count, 3
-   end
+  end
+
+  test "to_be_paid scope only includes 'ok' uphold status" do
+    potential_payment = potential_payments(:site)
+    assert PotentialPayment.to_be_paid.include?(potential_payment)
+
+    potential_payment.update!(uphold_status: "restricted")
+    refute PotentialPayment.to_be_paid.include?(potential_payment)
+  end
+
+  test "to_be_paid scope does not include suspended" do
+    potential_payment = potential_payments(:site)
+    potential_payment.update!(suspended: true)
+    refute PotentialPayment.to_be_paid.include?(potential_payment)
+  end
+
+  test "to_be_paid scope excludes unless reauthorization was needed" do
+    potential_payment = potential_payments(:site)
+    potential_payment.update!(reauthorization_needed: true)
+    refute PotentialPayment.to_be_paid.include?(potential_payment)
+  end
+
+  test "to_be_paid scope excludes unless was uphold member" do
+    potential_payment = potential_payments(:site)
+    potential_payment.update!(uphold_member: false)
+    refute PotentialPayment.to_be_paid.include?(potential_payment)
+  end
 end

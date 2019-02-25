@@ -5,7 +5,7 @@ class JsonBuilders::PayoutReportJsonBuilder
 
   def build
     contents = []
-    @payout_report.potential_payments.each do |potential_payment|
+    @payout_report.potential_payments.to_be_paid.find_each do |potential_payment|
       if potential_payment.kind == PotentialPayment::REFERRAL
         contents.push({
           "name" => "#{potential_payment.name}",
@@ -16,7 +16,8 @@ class JsonBuilders::PayoutReportJsonBuilder
           "transactionId" => "#{potential_payment.payout_report_id}",
           "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
           "type" => PotentialPayment::REFERRAL,
-          "address" => "#{potential_payment.address}"
+          "address" => "#{potential_payment.address}",
+          "upholdId" => "#{potential_payment.uphold_id}"
         })
       else
         channel = Channel.find_by(id: potential_payment.channel_id)
@@ -32,7 +33,8 @@ class JsonBuilders::PayoutReportJsonBuilder
             "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
             "type" => PotentialPayment::CONTRIBUTION,
             "URL" => "#{Channel.find(potential_payment.channel_id).details.url}",
-            "address" => "#{potential_payment.address}"
+            "address" => "#{potential_payment.address}",
+            "upholdId" => "#{potential_payment.uphold_id}"
           })
         end
       end

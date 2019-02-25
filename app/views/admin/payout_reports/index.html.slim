@@ -6,18 +6,22 @@ table.display.table.table-bordered.table-striped
     th Created
     th ID
     th Type
-    th # Payments
+    th Expected # of payments
+    th Total # of payments
+    th # Payments to be paid
     th Amount
     th Fees
     th Refresh JSON
     th Download
   tbody
-    - @payout_reports.each do |report| 
+    - @payout_reports.each do |report|
       tr.gradeX
         td = report.created_at.strftime("%B %d, %Y, %H:%M")
         td = link_to report.id, admin_payout_report_path(report.id)
         td = report.final ? "final" : "temp"
+        td = report.expected_num_payments
         td = report.num_payments
+        td = report.num_payments_to_be_paid
         td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
         td = "#{'%.2f' % (report.fees.to_d / 1E18)} BAT"
         td = form_tag refresh_admin_payout_report_path(report.id), method: :patch do
@@ -26,7 +30,7 @@ table.display.table.table-bordered.table-striped
 
 table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
   tr
-    th Total # Payments 
+    th Total # Payments
     th Total Amount
     th Total Fees
   tbody
