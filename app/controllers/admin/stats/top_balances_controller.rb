@@ -1,6 +1,6 @@
 class Admin::Stats::TopBalancesController < AdminController
   def index
-    @limit = params[:limit].to_i || 10
+    @limit = params[:limit].present? ? params[:limit].to_i : 25
     @result = JSON.parse(case params[:type]
     when Eyeshade::TopBalances::CHANNEL
       Rails.cache.fetch(Cache::EyeshadeStatsJob::EYESHADE_TOP_CHANNEL_BALANCES) || []

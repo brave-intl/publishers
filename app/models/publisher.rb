@@ -8,6 +8,7 @@ class Publisher < ApplicationRecord
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER]
+  MAX_PROMO_REGISTRATIONS = 500
 
   class UpholdAccountState
     REAUTHORIZATION_NEEDED      = :reauthorization_needed
@@ -36,6 +37,7 @@ class Publisher < ApplicationRecord
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
+  has_many :promo_campaigns, dependent: :destroy 
   has_many :site_banners
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
@@ -59,6 +61,7 @@ class Publisher < ApplicationRecord
   validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
   validates :email, uniqueness: {case_sensitive: false}, allow_nil: true
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
+  validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change
   validate :pending_email_can_not_be_in_use
 

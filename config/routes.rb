@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
       get :home
-      get :referrals
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
@@ -52,6 +51,12 @@ Rails.application.routes.draw do
     resource :payments, only: [:show] do
       resources :invoices do
         resources :invoice_files, only: [:create, :update, :destroy]
+      end
+    end
+    resources :referrals do
+      collection do
+        resources :promo_registrations
+        resources :promo_campaigns
       end
     end
   end

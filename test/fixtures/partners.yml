@@ -1,4 +1,5 @@
 default_partner:
+  id: ade27753-2327-40dc-a1f8-06d3339f08cf
   email: "bob@builder.org"
   name: "Bob the builder"
 

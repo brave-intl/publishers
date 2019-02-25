@@ -7,20 +7,10 @@ export const Wrapper = styled.div`
   padding: 30px;
 `;
 
-interface IContentWrapper {
-  box?: boolean;
-}
 export const ContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-
-  ${(props: IContentWrapper) =>
-    props.box &&
-    `
-      margin-top: 5px;
-      margin-bottom: -15px;
-      justify-content: flex-end;
-    `}
+  flex-wrap: wrap;
 `;
 
 interface ITextWrapper {

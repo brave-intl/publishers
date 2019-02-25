@@ -1,13 +1,23 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  border-radius: 6px;
-  background-color: white;
-  box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
-  padding: 30px;
+export const FlexWrapper = styled.div`
+  display: flex;
 `;
 
-export const Grid = styled.div``;
+export const HeaderRow = styled.div`
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 16px;
+`;
+
+export const Logo = styled.div`
+  height: 50px;
+  width: 50px;
+`;
+
+export const SubHead = styled.div`
+  display: flex;
+`;
 
 interface IRowProps {
   title?: boolean;
@@ -23,7 +33,7 @@ export const Row = styled.div`
   ${props =>
     props.title &&
     `
-      margin-bottom: 30px;
+      margin-bottom: 28px;
     `}
 
   ${(props: IRowProps) =>
@@ -37,13 +47,13 @@ export const Row = styled.div`
   ${(props: IRowProps) =>
     props.total &&
     `
+      background-color: #f8f8f8;
       justify-content: space-between;
       grid-column-gap: 10px;
-      background-color: #F1F1F9;
-      padding: 10px 30px;
-      margin-left: -30px;
-      margin-right: -30px;
-      margin-bottom: -30px;
+      padding: 10px 28px;
+      margin-left: -28px;
+      margin-right: -28px;
+      margin-bottom: -28px;
       border-bottom-right-radius: 6px;
       border-bottom-left-radius: 6px;
     `}
@@ -69,6 +79,7 @@ export const IconWrapper = styled.div`
         width: 40px;
         height: 40px;
         padding-top: 4.5px;
+        cursor: pointer;
       `}
 `;
 
@@ -110,7 +121,6 @@ export const ContentWrapper = styled.div`
 export const Image = styled.div;
 
 interface ITextProps {
-  title?: boolean;
   created?: boolean;
   date?: boolean;
   header?: boolean;
@@ -122,12 +132,6 @@ interface ITextProps {
 export const Text = styled.div`
   font-family: Poppins, sans-serif;
 
-    ${(props: ITextProps) =>
-      props.title &&
-      `
-          font-weight: bold;
-          font-size: 22px;
-      `}
     ${(props: ITextProps) =>
       props.created &&
       `
@@ -152,13 +156,13 @@ export const Text = styled.div`
       props.stat &&
       `
         font-weight: bold;
-        font-size: 20px;
+        font-size: 22px;
       `}
     ${(props: ITextProps) =>
       props.use &&
       `
         font-weight: bold;
-        font-size: 20px;
+        font-size: 22px;
         color: #4C54D2;
       `}
     ${(props: ITextProps) =>
