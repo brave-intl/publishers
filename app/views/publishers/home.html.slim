@@ -16,7 +16,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
   )
   - if current_publisher.partner?
     = link_to(t("shared.referrals"), partners_referrals_path, class: 'title')
-    = link_to(t("shared.payments"), partner_payments_path, class: 'title' )
+    = link_to(t("shared.payments"), partners_payments_path, class: 'title' )
 
   = render partial: "choose_channel_button"
   = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
