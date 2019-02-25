@@ -14,13 +14,13 @@ module Partners
     def update
       data = sanitize(params[:id]).split(/,/)
       data.each do |code|
-        promo_registration = PromoRegistration.find(code)
+        promo_registration = current_publisher.promo_registrations.find(code)
         promo_registration.update(promo_campaign_id: sanitize(params[:campaign]))
       end
     end
 
     def destroy
-      promo_registration = PromoRegistration.find(sanitize(params[:id]))
+      promo_registration = current_publisher.promo_registrations.find(sanitize(params[:id]))
       promo_registration.destroy
     end
   end

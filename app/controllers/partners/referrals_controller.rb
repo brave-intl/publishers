@@ -15,16 +15,10 @@ module Partners
 
     def aggregate_organization_data
       campaigns = []
-      partner_ids = Membership.find_by(user_id: current_publisher.id).organization.
-                    memberships.map { |membership| membership.user_id}
-      partner_ids.each do |partner_id|
-        partner = Publisher.find(partner_id)
-        partner.promo_campaigns.each do |promo_campaign|
-          campaigns.push(promo_campaign.build_campaign_json)
-        end
+      current_publisher.promo_campaigns.each do |promo_campaign|
+        campaigns.push(promo_campaign.build_campaign_json)
       end
-      data = { campaigns: campaigns }
-      data
+      { campaigns: campaigns }
     end
   end
 end

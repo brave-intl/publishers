@@ -24,10 +24,10 @@ html
           = link_to(t("shared.payments"), payments_path, class: 'title-partner' )
           - if current_page?(home_publishers_path) 
               = render partial: "choose_channel_button"
-        - else 
-          = link_to(t("shared.dashboard"), home_publishers_path, class: 'title')
-          = render partial: "choose_channel_button"
-          = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+      - else 
+        = link_to(t("shared.dashboard"), home_publishers_path, class: 'title')
+        = render partial: "choose_channel_button"
+        = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
 
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 

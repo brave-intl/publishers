@@ -10,7 +10,7 @@ module Partners
     end
 
     def update
-      promo_campaign = PromoCampaign.find(sanitize(params[:id]))
+      promo_campaign = current_publisher.promo_campaigns.find(sanitize(params[:id]))
       promo_campaign.update(name: sanitize(params[:name]))
     end
 
@@ -18,11 +18,11 @@ module Partners
       if params[:codes]
         data = JSON.parse(sanitize(params[:codes]))
         data.each do |code|
-          promo_registration = PromoRegistration.find(code)
+          promo_registration = current_publisher.promo_registrations.find(code)
           promo_registration.destroy
         end
       end
-      campaign = PromoCampaign.find(sanitize(params[:id]))
+      campaign = current_publisher.promo_campaigns.find(sanitize(params[:id]))
       campaign.destroy
     end
   end
