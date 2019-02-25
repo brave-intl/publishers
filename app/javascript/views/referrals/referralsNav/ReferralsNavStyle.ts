@@ -38,7 +38,7 @@ export const Text = styled.div`
 
 export const Button = styled.div`
   font-family: Poppins, sans-serif;
-  width: 150px;
+  width: 170px;
   color: white;
   text-align: center;
   border-radius: 26px;

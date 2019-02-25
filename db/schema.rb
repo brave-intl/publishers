@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_195643) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "publisher_id"
     t.index ["name"], name: "index_promo_campaigns_on_name", unique: true
   end
 
@@ -265,6 +266,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_195643) do
     t.boolean "active", default: true, null: false
     t.uuid "publisher_id"
     t.string "installer_type"
+    t.string "description"
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true

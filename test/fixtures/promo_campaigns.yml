@@ -1,5 +1,6 @@
 test_promo_campaign:
   name: test campaign
+  publisher_id: ade27753-2327-40dc-a1f8-06d3339f08cf
 
 test_promo_campaign2:
   name: test campaign2
