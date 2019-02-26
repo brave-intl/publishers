@@ -28,8 +28,11 @@ export default {
   navbar: {
     channels: "Channels",
     dashboard: "Dashboard",
+    help: "Help",
+    logOut: "Log Out",
     payments: "Payments",
-    referrals: "Referrals"
+    referrals: "Referrals",
+    security: "Security"
   },
   notEnoughTokens: "Not enough tokens",
   off: " ",

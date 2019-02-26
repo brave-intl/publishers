@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Container, Grid, Wrapper } from "./ReferralsStyle";
 
-import Navbar from "../../components/navbar/Navbar";
+import { Navbar, NavbarSelection } from "../../components/navbar/Navbar";
 import ReferralsCard from "./referralsCard/ReferralsCard";
 import ReferralsHeader from "./referralsHeader/ReferralsHeader";
 import ReferralsNav from "./referralsNav/ReferralsNav";
@@ -65,7 +65,7 @@ export default class Referrals extends React.Component<
   public render() {
     return (
       <Wrapper>
-        <Navbar />
+        <Navbar navbarSelection={NavbarSelection.Referrals} />
         <ReferralsNav fetchData={this.fetchData} />
         <Container>
           <ReferralsHeader campaigns={this.state.campaigns} />

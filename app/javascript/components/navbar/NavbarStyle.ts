@@ -27,27 +27,80 @@ export const Logo = styled.img`
 
 export const NavGroup = styled.div`
   display: flex;
-  margin-top: auto;
-  margin-bottom: auto;
-  padding-top: 6px;
 `;
 
+interface INavProps {
+  selected: boolean;
+}
 export const Nav = styled.div`
+  display: flex;
+  align-items: center;
+  height: 80px;
   font-family: Poppins;
   font-size: 16px;
+  padding-top: 6px;
   color: #222326;
   margin-right: 40px;
   text-transform: uppercase;
   user-select: none;
   cursor: pointer;
+
+  ${(props: Partial<INavProps>) =>
+    props.selected === true &&
+    `
+    padding-top: 8px;
+    border-bottom: 2px solid #4c54d2;
+  `}
 `;
 
 export const DropdownGroup = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 100%;
   margin-top: auto;
   margin-bottom: auto;
+  margin-left: auto;
+  user-select: none;
+  cursor: pointer;
+`;
+
+interface IDropdownMenuProps {
+  open: boolean;
+}
+export const DropdownMenu = styled.div`
+  position: absolute;
+  background-color: white;
+  top: 80px;
+  width: 220px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 0 rgba(47, 48, 50, 0.15);
+  z-index: 1;
+  ${(props: Partial<IDropdownMenuProps>) =>
+    props.open === false &&
+    `
+      visibility: hidden;
+  `}
+`;
+
+export const DropdownItem = styled.div`
+  display: block;
+  padding: 20px;
+  font-family: Poppins;
+  font-size: 16px;
+  text-align: center;
+  border-top: solid 1px #e7ebee;
+  margin: auto;
+  &:hover {
+    color: #00bcd6;
+  }
+`;
+
+export const DropdownHeader = styled.div`
+  display: block;
+  padding: 20px;
+  font-family: Poppins;
+  font-size: 16px;
+  text-align: center;
+  border-top: solid 1px #e7ebee;
+  margin: auto;
 `;
 
 export const AvatarContainer = styled.div`
