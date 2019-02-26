@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  min-height: calc(100vh - (190px + 2rem));
+`;
 
 export const Container = styled.div`
   max-width: 1200px;

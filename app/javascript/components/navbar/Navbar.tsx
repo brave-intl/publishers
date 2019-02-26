@@ -55,6 +55,7 @@ export class Navbar extends React.Component<INavbarProps, INavbarState> {
           <Logo src={CreatorsLogo} />
           <Navigation navbarSelection={this.props.navbarSelection} />
           <DropdownGroup onClick={this.toggleMenu}>
+            <Dropdown menuOpen={this.state.menuOpen} />
             <AvatarContainer>
               <AvatarIcon />
             </AvatarContainer>
@@ -62,7 +63,6 @@ export class Navbar extends React.Component<INavbarProps, INavbarState> {
             <DropdownToggle>
               <CaratDownIcon height={25} width={25} />
             </DropdownToggle>
-            <Dropdown menuOpen={this.state.menuOpen} />
           </DropdownGroup>
         </Container>
       </Wrapper>

@@ -12,8 +12,10 @@ export const Wrapper = styled.div`
 
 export const Container = styled.div`
   display: flex;
-  max-width: 1140px;
+  max-width: 1200px;
   height: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -22,11 +24,17 @@ export const Logo = styled.img`
   margin-top: auto;
   margin-bottom: auto;
   padding-right: 160px;
+  @media (max-width: 1100px) {
+    padding-right: 0px;
+  }
   height: 30px;
 `;
 
 export const NavGroup = styled.div`
   display: flex;
+  @media (max-width: 1100px) {
+    display: none;
+  }
 `;
 
 interface INavProps {
@@ -55,6 +63,7 @@ export const Nav = styled.div`
 
 export const DropdownGroup = styled.div`
   display: flex;
+  position: relative;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: auto;
@@ -68,7 +77,8 @@ interface IDropdownMenuProps {
 export const DropdownMenu = styled.div`
   position: absolute;
   background-color: white;
-  top: 80px;
+  top: 50px;
+  right: 0px;
   width: 220px;
   border-radius: 4px;
   box-shadow: 2px 2px 0 0 rgba(47, 48, 50, 0.15);
