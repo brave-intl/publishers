@@ -29,10 +29,11 @@ html
       }
 
     #main
-      - if content_for?(:nav)
-        = yield(:nav)
-      - else
-        = render("nav")
+      - if !current_page?(partners_referrals_path)
+        - if content_for?(:nav)
+          = yield(:nav)
+        - else 
+          = render("nav")
 
       /
       / ## Using flash messages in Brave Publishers ##
