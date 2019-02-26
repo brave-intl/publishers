@@ -71,7 +71,7 @@ module Admin
     private
 
     def load_invoice
-      invoice = Invoice.find(params[:id] || params[:invoice_id])
+      invoice = Invoice.includes(:partner).find(params[:id] || params[:invoice_id])
       raise Invoice::ReadOnlyError unless invoice.pending?
 
       invoice
