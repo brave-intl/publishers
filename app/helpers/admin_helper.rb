@@ -7,6 +7,10 @@ module AdminHelper
     link_to "#{title} <span class='#{icon}'></span>".html_safe, {column: column, direction: direction}.merge(params.permit(:type, :search))
   end
 
+  def no_data_default(value)
+    value || "--"
+  end
+
   def nav_link(text, path)
     be_active = request.fullpath.start_with?(path) && path != '/admin'
     options =  be_active ? { class: "active" } : {}

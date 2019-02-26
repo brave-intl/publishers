@@ -1,0 +1,18 @@
+h2= "Edit #{@invoice.human_date} Invoice"
+h5= "Partner: #{@invoice.partner.name}"
+
+
+= form_with model: [:admin, :partner, @invoice], local: true do |form|
+  - if @invoice.errors.any?
+    ul
+      - @invoice.errors.full_messages.each do |msg|
+        li=msg
+
+  .form-group
+    label Requested amount (BAT)
+    = form.text_field :amount, class: 'form-control', readonly: true
+  .form-group
+    label Brave Calculated Total Amount (BAT)
+    = form.text_field :finalized_amount, class: 'form-control'
+
+  = submit_tag "Save Invoice", class: "btn btn-primary"

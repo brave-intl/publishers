@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       get :create_done
       post :resend_auth_email, action: :resend_auth_email
       get :home
-      get :referrals
       get :log_in, action: :new_auth_token, as: :new_auth_token
       post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
@@ -39,11 +38,25 @@ Rails.application.routes.draw do
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
-      resources :payments
+
     end
     resources :site_banners, controller: 'publishers/site_banners' do
       collection do
         post :set_default_site_banner_mode
+      end
+    end
+  end
+
+  namespace :partners do
+    resource :payments, only: [:show] do
+      resources :invoices do
+        resources :invoice_files, only: [:create, :update, :destroy]
+      end
+    end
+    resources :referrals do
+      collection do
+        resources :promo_registrations
+        resources :promo_campaigns
       end
     end
   end
@@ -143,11 +156,18 @@ Rails.application.routes.draw do
         get :statement
         post :create_note
       end
+      resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
 
     resources :organizations, except: [:destroy]
-    resources :partners, except: [:destroy]
+    resources :partners, except: [:destroy] do
+      resources :invoices do
+        post :upload
+        get :finalize
+        patch :update_status
+      end
+    end
 
     namespace :stats do
       resources :contributions, only: [:index]

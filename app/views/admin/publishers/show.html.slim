@@ -1,6 +1,16 @@
 #publisher
   #publisher-section
-    h2 = @publisher.name
+    .action-container
+      h2 = @publisher.name
+      - unless @publisher.partner?
+        .actions
+          = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
+          = link_to("Make partner",
+            edit_admin_partner_path(@publisher),
+            class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
+          = csrf_meta_tag
+
+
     .rounded-box.split-row-container
       .split-row
         - if @publisher.email.present?
@@ -91,13 +101,12 @@
               .db-value = @potential_referral_payment.amount.to_d * 1/1E18
 
   hr
-    = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
-    = link_to("Make partner",
-          edit_admin_partner_path(@publisher),
-          class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
-    = csrf_meta_tag
-  hr
 
+  -if @publisher.partner?
+    hr
+    =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
+
+  hr
   h3.admin-header = "Channels (#{@publisher.channels.count})"
   #channels-section
     - @publisher.channels.each do |channel|

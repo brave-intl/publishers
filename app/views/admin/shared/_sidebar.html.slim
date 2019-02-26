@@ -26,6 +26,9 @@ aside
 
         = nav_link "Organizations", admin_organizations_path
         = nav_link "Partners", admin_partners_path
+          - if params[:partner_id] && (params[:id] || params[:invoice_id])
+              ul.sub-menu
+                = nav_link "Invoice", admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
         = nav_link "Publishers", admin_publishers_path
         = nav_link "FAQs", admin_faq_categories_path
         = nav_link "Payout Reports", admin_payout_reports_path

@@ -35,3 +35,7 @@ suspended:
 suspended_partner:
   publisher: suspended_partner
   status: "suspended"
+
+partner:
+  publisher_id: ade27753-2327-40dc-a1f8-06d3339f08cf
+  status: "active"

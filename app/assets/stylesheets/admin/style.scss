@@ -133,6 +133,14 @@ a.logo span {
       text-align: left;
     }
 
+    .action-container {
+      display: flex;
+    }
+
+    .actions {
+      margin-left: 2rem;
+    }
+
     .rounded-box {
       border-width: 1px;
       border-style: solid;
