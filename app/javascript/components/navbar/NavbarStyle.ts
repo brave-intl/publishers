@@ -44,7 +44,7 @@ export const Nav = styled.div`
   display: flex;
   align-items: center;
   height: 80px;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 16px;
   padding-top: 6px;
   color: #222326;
@@ -93,7 +93,7 @@ export const DropdownMenu = styled.div`
 export const DropdownItem = styled.div`
   display: block;
   padding: 20px;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 16px;
   text-align: center;
   border-top: solid 1px #e7ebee;
@@ -106,7 +106,7 @@ export const DropdownItem = styled.div`
 export const DropdownHeader = styled.div`
   display: block;
   padding: 20px;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 16px;
   text-align: center;
   border-top: solid 1px #e7ebee;
