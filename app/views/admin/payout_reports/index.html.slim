@@ -1,4 +1,17 @@
-h1 Payout Reports
+.d-flex
+  h1 Payout Reports
+  .ml-4
+    = form_tag upload_settlement_report_admin_payout_reports_path, id: "settlementForm", multipart: :true
+      label
+        = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
+        .btn.btn-primary Upload Settlement Report
+
+javascript:
+  document.getElementById('settlementFile').addEventListener("change", function() {
+    document.getElementById('settlementForm').submit();
+  })
+
+
 hr
 
 table.display.table.table-bordered.table-striped
@@ -51,3 +64,6 @@ h3 Generate Payout Report
     = label_tag "Send notifications to publishers"
     = submit_tag("Notify publishers", class: "btn btn-primary")
 = will_paginate @payout_reports
+
+
+

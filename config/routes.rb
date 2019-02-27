@@ -144,6 +144,7 @@ Rails.application.routes.draw do
     resources :payout_reports, only: %i(index show create) do
       collection do
         post :notify
+        post :upload_settlement_report
       end
       member do
         get :download

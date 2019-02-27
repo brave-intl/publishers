@@ -38,7 +38,8 @@ gem "dnsruby", "~> 1.60.0", require: false
 gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
-gem "faraday", "~> 0.9.2", require: false
+gem "faraday", "~> 0.9.2"
+gem 'faraday_middleware', '~> 0.13.1'
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
