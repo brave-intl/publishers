@@ -24,6 +24,7 @@ export const Logo = styled.img`
   margin-top: auto;
   margin-bottom: auto;
   padding-right: 160px;
+  cursor: pointer;
   @media (max-width: 1100px) {
     padding-right: 0px;
   }

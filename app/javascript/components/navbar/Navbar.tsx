@@ -52,7 +52,7 @@ export class Navbar extends React.Component<INavbarProps, INavbarState> {
     return (
       <Wrapper>
         <Container>
-          <Logo src={CreatorsLogo} />
+          <BraveLogo />
           <Navigation navbarSelection={this.props.navbarSelection} />
           <DropdownGroup onClick={this.toggleMenu}>
             <Dropdown menuOpen={this.state.menuOpen} />
@@ -136,5 +136,14 @@ function AvatarIcon() {
         transform="translate(-1 -1)"
       />
     </svg>
+  );
+}
+
+function BraveLogo() {
+  return (
+    <Logo
+      onClick={() => (window.location.href = routes.navbar.dashboard.path)}
+      src={CreatorsLogo}
+    />
   );
 }

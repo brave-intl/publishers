@@ -92,7 +92,7 @@ export default class ReferralsInformation extends React.Component<
 
   public render() {
     return (
-      <div>
+      <div style={{ minHeight: "100vh" }}>
         <Navbar navbarSelection={NavbarSelection.Referrals} />
         <br />
         <br />

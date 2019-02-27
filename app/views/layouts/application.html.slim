@@ -29,7 +29,7 @@ html
       }
 
     #main
-      - if !current_page?(partners_referrals_path) && !current_page?(partners_payments_path)
+      - if !request.original_url.include? "/partners/"
         - if content_for?(:nav)
           = yield(:nav)
         - else 
