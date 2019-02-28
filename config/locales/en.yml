@@ -532,6 +532,7 @@ en:
     dashboard:
       days: "days"
       downloaded: "downloaded"
+      installed: "installed"
       confirmed: "confirmed"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"

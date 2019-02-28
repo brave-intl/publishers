@@ -69,6 +69,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     .promo-panel-header
                       =t("promo.dashboard.downloaded").upcase
                     .promo-panel-number
+                      = publisher_referral_totals[PromoRegistration::RETRIEVALS]
+                  .promo-flex-col.promo-flex-col-installed
+                    .promo-panel-header
+                      =t("promo.dashboard.installed").upcase
+                    .promo-panel-number
                       = publisher_referral_totals[PromoRegistration::FIRST_RUNS]
                   .promo-flex-col.promo-flex-col-confirmed
                     .promo-panel-header
