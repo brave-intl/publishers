@@ -116,10 +116,13 @@
       padding-left: 5px;
       padding-right: 5px;
       &-downloaded {
-        color: white;
+        color: #006192;
+      }
+      &-installed {
+        color: #03375d;
       }
       &-confirmed {
-        color: #03375d;
+        color: white;
       }
     }
     .promo-flex-row {

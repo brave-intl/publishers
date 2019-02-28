@@ -68,6 +68,9 @@
         - if @publisher.promo_enabled_2018q1
           .db-info-row
             .db-field = "Referral downloads:"
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS]
+          .db-info-row
+            .db-field = "Referral installs:"
             .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
           .db-info-row
             .db-field = "Referral confirmations:"
