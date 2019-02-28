@@ -40,14 +40,14 @@ class PromoRegistrationsController < ApplicationController
       render(:index)
     end
   end
-  
+
   def find_publisher
     if current_publisher
       @publisher = current_publisher
     else
       if params[:promo_token].present?
         promo_token = params[:promo_token]
-      elsif params[:publisher][:promo_token].present?
+      elsif params.dig(:publisher).dig(:promo_token).present?
         promo_token = params[:publisher][:promo_token]
       else
         return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
