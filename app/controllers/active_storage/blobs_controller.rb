@@ -19,7 +19,7 @@ class ActiveStorage::BlobsController < ActiveStorage::BaseController
 
   def authenticate
     # All unauthenticated requests go back to home page
-    return redirect_to root_path, flash: {  alert: I18n.t('devise.failure.unauthenticated') } unless publisher_signed_in?
+    redirect_to root_path, flash: { alert: I18n.t('devise.failure.unauthenticated') } and return unless publisher_signed_in?
 
     # Allow administrators to access anything
     return if current_publisher.admin?
