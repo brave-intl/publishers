@@ -4,6 +4,8 @@ class Eyeshade::Publishers < Eyeshade::BaseApiClient
   RESOURCE = "/v2/publishers"
 
   def create_settlement(body: )
+    return {} if Rails.application.secrets[:api_eyeshade_offline]
+
     connection = Faraday.new(url: api_base_uri) do |config|
       config.request :json
       config.response :json
