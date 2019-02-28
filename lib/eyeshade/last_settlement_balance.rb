@@ -17,7 +17,7 @@ module Eyeshade
     private
 
     def calculate_last_settlement(transactions)
-      return {} if transactions == []
+      return {} if transactions.blank?
        # Find most recent settlement transaction
       last_transaction = transactions.select { |transaction|
         transaction["settlement_amount"].present?
