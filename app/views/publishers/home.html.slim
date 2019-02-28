@@ -66,12 +66,17 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     .promo-panel-title-item
                       =t("promo.dashboard.promo").upcase
                   .promo-flex-col.promo-flex-col-downloaded
-                    .promo-panel-header
+                    .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
                       =t("promo.dashboard.downloaded").upcase
+                    .promo-panel-number
+                      = publisher_referral_totals[PromoRegistration::RETRIEVALS]
+                  .promo-flex-col.promo-flex-col-installed
+                    .promo-panel-header title=t("promo.dashboard.tooltip.installed")
+                      =t("promo.dashboard.installed").upcase
                     .promo-panel-number
                       = publisher_referral_totals[PromoRegistration::FIRST_RUNS]
                   .promo-flex-col.promo-flex-col-confirmed
-                    .promo-panel-header
+                    .promo-panel-header title=t("promo.dashboard.tooltip.confirmed")
                       =t("promo.dashboard.confirmed").upcase
                     .promo-panel-number
                       = publisher_referral_totals[PromoRegistration::FINALIZED]

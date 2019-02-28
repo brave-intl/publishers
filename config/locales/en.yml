@@ -532,12 +532,17 @@ en:
     dashboard:
       days: "days"
       downloaded: "downloaded"
+      installed: "installed"
       confirmed: "confirmed"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
       referral: "referral"
       promo: "promo"
       check_statement: "*Check your statement for this period's payout."
+      tooltip: 
+        downloaded: "Downloads - Intent to download the browser"
+        installed: "Installed - Browser installed and opened for the first time"
+        confirmed: "Confirmations -  Browser is active for 30+ days"
     shared:
       tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
       tweet: "Share on Twitter"
