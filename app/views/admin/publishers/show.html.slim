@@ -53,17 +53,20 @@
             .db-field = "Uphold id:"
             .db-value = link_to @publisher.uphold_id, admin_publishers_path(q: @publisher.uphold_id)
         .db-info-row
-          .db-field = "Uphold widget enabled?"
+          .db-field = "Uphold widget enabled"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
         .db-info-row
-          .db-field = "Pending Payouts"
-          .db-value = "#{publisher_humanize_balance(@publisher, "BAT")} BAT, #{publisher_converted_balance(@publisher)}"
+          .db-field = "Overall BAT balance"
+          .db-value = "#{publisher_overall_bat_balance(@publisher)}"
         .db-info-row
-          .db-field = "Default currency:"
-          .db-value = @publisher.default_currency
+          .db-field = "Overall default currency balance"
+          .db-value = "#{publisher_converted_overall_balance(@publisher)}"
+        .db-info-row
+          .db-field = "Last settlement balance"
+          .db-value = "#{publisher_converted_last_settlement_balance(@publisher)}"
         - if @publisher.created_by.present?
           .db-info-row
-            .db-field = "Created By:"
+            .db-field = "Created by"
             .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
         - if @publisher.promo_enabled_2018q1
           .db-info-row
@@ -73,7 +76,7 @@
             .db-field = "Referral installs:"
             .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
           .db-info-row
-            .db-field = "Referral confirmations:"
+            .db-field = "Referral confirmations"
             .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
       #statement-section.split-row
         h3.admin-header = "Statements"
@@ -129,17 +132,17 @@
               span.admin-approval-success = "Admin approved"
             hr
           .db-info-row
-            .db-field = "Pending Payouts"
-            .db-value = publisher_channel_balance(@publisher, channel.details.channel_identifier, "BAT")
+            .db-field = "Channel BAT balance"
+            .db-value = publisher_channel_bat_balance(@publisher, channel.details.channel_identifier)
           - if channel.details.is_a?(SiteChannelDetails)
             .db-info-row
-              .db-field = "Verified:"
+              .db-field = "Verified"
               .db-value = channel.verified?
             .db-info-row
-              .db-field = "Verification Method:"
+              .db-field = "Verification Method"
               .db-value = channel.details.verification_method
             .db-info-row
-              .db-field = "Token:"
+              .db-field = "Token"
               .db-value.token = channel.details.verification_token
           - if channel.promo_registration.present?
             .db-info-row

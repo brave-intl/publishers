@@ -1,5 +1,4 @@
 require "test_helper"
-require "eyeshade/balance"
 
 class PublisherBalanceGetterTest < ActiveJob::TestCase
 
