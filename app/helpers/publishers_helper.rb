@@ -96,8 +96,8 @@ module PublishersHelper
 
   def publisher_last_settlement_date(publisher)
     last_settlement_balance = publisher.wallet&.last_settlement_balance
-    if last_settlement_balance&.settlement_timestamp.present?
-      Time.at(settlement_timestamp).to_datetime.strftime("%B %d, %Y")
+    if last_settlement_balance&.timestamp.present?
+      Time.at(last_settlement_balance.timestamp).to_datetime.strftime("%B %d, %Y")
     else
       I18n.t("helpers.publisher.no_deposit")
     end
