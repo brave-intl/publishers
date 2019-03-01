@@ -75,6 +75,8 @@ class PromoRegistration < ApplicationRecord
       compressed_stats[stat['ymd']]['finalized'] += stat['finalized']
     end
 
+    return [] if starting_date.nil?
+
     rolling_date = Date.parse(starting_date)
     while rolling_date < Date.today
       formatted_date = rolling_date.strftime("%Y-%m-%d")

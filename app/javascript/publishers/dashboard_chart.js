@@ -41,7 +41,7 @@ function createCharts() {
     data = JSON.parse(document.getElementById(element).value);
     createChart(
       data,
-      element.replace(/-/g, " "),
+      element.replace(/referral-stat-/, "Stats for referral code: "),
       getSuggestedMax(data)
     );
   });
