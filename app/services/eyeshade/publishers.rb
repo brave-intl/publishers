@@ -6,20 +6,12 @@ class Eyeshade::Publishers < Eyeshade::BaseApiClient
   def create_settlement(body: )
     return {} if Rails.application.secrets[:api_eyeshade_offline]
 
-    connection = Faraday.new(url: api_base_uri) do |config|
-      config.request :json
-      config.response :json
-      config.adapter Faraday.default_adapter
-
-      config.response(:logger, Rails.logger, bodies: true, headers: true)
-      config.use(Faraday::Response::RaiseError)
-    end
-
     response = connection.post do |request|
       request.headers["Authorization"] = api_authorization_header
+      request.headers["Content-Type"] = "application/json"
       request.url("#{RESOURCE}/settlement")
 
-      request.body = body
+      request.body = body.to_json
     end
 
     response.body
