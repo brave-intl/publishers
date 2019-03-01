@@ -62,17 +62,17 @@ function createChart(data, title, suggestedMax) {
       labels: createLabels(data[0]['ymd']),
       datasets: [
         {
-          label: 'Retrievals',
+          label: 'Downloads',
           data: data.map(x => x.retrievals),
           borderColor: '#F88469',
         },
         {
-          label: 'First Runs',
+          label: 'Installs',
           data: data.map(x => x.first_runs),
           borderColor: '#7B82E1',
         },
         {
-          label: 'Finalized',
+          label: '30-Day-Use',
           data: data.map(x => x.finalized),
           borderColor: '#66C3FC',
         },
