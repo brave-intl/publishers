@@ -78,6 +78,33 @@ ActiveRecord::Schema.define(version: 2019_02_22_204716) do
     t.index ["rank"], name: "index_faqs_on_rank"
   end
 
+  create_table "invoice_files", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "invoice_id"
+    t.uuid "uploaded_by_id"
+    t.boolean "archived", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_invoice_files_on_invoice_id"
+    t.index ["uploaded_by_id"], name: "index_invoice_files_on_uploaded_by_id"
+  end
+
+  create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "partner_id"
+    t.date "date"
+    t.string "amount", default: "0"
+    t.string "finalized_amount"
+    t.boolean "paid", default: false
+    t.uuid "paid_by_id"
+    t.date "payment_date"
+    t.uuid "finalized_by_id"
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["finalized_by_id"], name: "index_invoices_on_finalized_by_id"
+    t.index ["paid_by_id"], name: "index_invoices_on_paid_by_id"
+    t.index ["partner_id"], name: "index_invoices_on_partner_id"
+  end
+
   create_table "legacy_publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
     t.string "period"
@@ -250,6 +277,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_204716) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "publisher_id"
     t.index ["name"], name: "index_promo_campaigns_on_name", unique: true
   end
 
@@ -265,6 +293,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_204716) do
     t.boolean "active", default: true, null: false
     t.uuid "publisher_id"
     t.string "installer_type"
+    t.string "description"
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
@@ -316,8 +345,6 @@ ActiveRecord::Schema.define(version: 2019_02_22_204716) do
     t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
-    t.jsonb "promo_stats_2018q1", default: {}, null: false
-    t.datetime "promo_stats_updated_at_2018q1"
     t.text "role", default: "publisher"
     t.datetime "default_currency_confirmed_at"
     t.datetime "javascript_last_detected_at"
@@ -448,5 +475,8 @@ ActiveRecord::Schema.define(version: 2019_02_22_204716) do
   end
 
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
+  add_foreign_key "invoice_files", "publishers", column: "uploaded_by_id"
+  add_foreign_key "invoices", "publishers", column: "finalized_by_id"
+  add_foreign_key "invoices", "publishers", column: "paid_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
 end

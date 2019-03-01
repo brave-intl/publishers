@@ -370,10 +370,6 @@ class PublishersController < ApplicationController
     create_uphold_card_for_default_currency_if_needed
   end
 
-  def referrals
-    redirect_to("/publishers/home") and return unless current_publisher.in_new_ui_whitelist?
-  end
-
   def statements
     statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
     @statement_has_content = statement_contents.length > 0
@@ -415,12 +411,11 @@ class PublishersController < ApplicationController
       }
     end
   end
-
-  def balance
+  
+  def wallet
     wallet = current_publisher.wallet
     if wallet
-      json = JsonBuilders::WalletJsonBuilder.new(publisher: current_publisher, wallet: wallet).build
-      render(json: json, status: :ok)
+      render(json: wallet.to_json)
     else
       head 404
     end

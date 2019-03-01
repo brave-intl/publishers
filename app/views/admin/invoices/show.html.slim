@@ -1,0 +1,69 @@
+
+.d-flex
+  h2.mt-1= @invoice.human_date + " Invoice"
+  - if @invoice.in_progress?
+    .ml-3
+      = link_to "Generate Manual Payout", '#', class: 'btn btn-info'
+  - else
+    .ml-3
+      = link_to "Edit", edit_admin_partner_invoice_path(@invoice), class: 'btn btn-primary'
+    .ml-3
+      = link_to "Finalize", admin_partner_invoice_finalize_path(invoice_id: @invoice.id), class: 'btn btn-dark'
+
+.d-flex.mb-4
+  h4.mr-4= link_to @invoice.partner.name,  admin_publisher_path(@invoice.partner)
+  h4.mr-4.text-muted |
+  h6.align-self-center.text-muted= @invoice.partner.email
+
+#publisher.mb-4
+  .rounded-box
+    .db-info-row
+      .db-field Status:
+      .db-value = @invoice.status.titleize
+    .db-info-row
+      .db-field Amount (BAT):
+      .db-value = @invoice.amount
+    .db-info-row
+      .db-field Brave Calculated Total Amount (BAT):
+      .db-value= @invoice.finalized_amount
+    .db-info-row
+      .db-field Paid:
+      .db-value= no_data_default(@invoice.paid)
+    .db-info-row
+      .db-field Payment Date:
+      .db-value= no_data_default(@invoice.payment_date)
+    .db-info-row
+      .db-field Paid By:
+      .db-value= no_data_default(@invoice.paid_by)
+    .db-info-row
+      .db-field Finalized By:
+      .db-value= no_data_default(@invoice.finalized_by)
+    .db-info-row
+      .db-field Updated At:
+      .db-value= @invoice.updated_at.to_s(:long_ordinal)
+
+.mb-2
+  h4 Supporting Documents
+
+- if @invoice.pending?
+  = form_tag admin_partner_invoice_upload_path(partner_id: @invoice.partner.id, invoice_id: @invoice.id), multipart: true do |f|
+    label
+      = file_field_tag "file"
+    = submit_tag "Upload Document", class: "btn btn-dark"
+
+table.display.table.table-bordered.table-striped
+  tr
+    th File
+    th Uploaded By
+    th Archived
+    th Created At
+  tbody
+  - @invoice.invoice_files.each do |invoice_file|
+    tr
+      td
+        = link_to invoice_file.file.filename, url_for(invoice_file.file)
+      td= invoice_file.uploaded_by
+      td
+       - if invoice_file.archived
+        = fa_icon "archive"
+      td= invoice_file.created_at
