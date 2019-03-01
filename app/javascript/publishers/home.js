@@ -8,7 +8,7 @@ import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
 import { renderBannerEditor } from '../packs/banner_editor'
-import 'publishers/dashboard_chart';
+import 'publishers/ReferralCharts';
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
