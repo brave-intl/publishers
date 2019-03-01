@@ -17,9 +17,8 @@ class PayoutReportPublisherIncluder < BaseService
     suspended = @publisher.suspended?
     uphold_id = wallet.uphold_id
 
-    # Create potential payment for referrals
-    probi = wallet.channel_balances[@publisher.owner_identifier].probi_before_fees # probi = balance
-    publisher_has_unsettled_balance = probi.positive?
+    probi = wallet.referral_balance.amount_probi # probi = balance
+    publisher_has_unsettled_balance = probi.to_i.positive?
 
     unless should_only_notify?
       PotentialPayment.create(payout_report_id: @payout_report.id,
@@ -38,10 +37,10 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Create potential payments for channel contributions
     @publisher.channels.verified.each do |channel|
-      probi = wallet.channel_balances[channel.details.channel_identifier].probi # probi = balance - fee
+      probi = wallet.channel_balances[channel.details.channel_identifier].amount_probi # probi = balance - fee
       publisher_has_unsettled_balance = probi.positive? ? true : publisher_has_unsettled_balance
 
-      fee_probi = wallet.channel_balances[channel.details.channel_identifier].fee # fee = balance - probi
+      fee_probi = wallet.channel_balances[channel.details.channel_identifier].fees_probi # fee = balance - probi
 
       unless should_only_notify?
         PotentialPayment.create(payout_report_id: @payout_report.id,
