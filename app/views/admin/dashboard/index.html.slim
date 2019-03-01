@@ -13,7 +13,7 @@ div.row
                 td = Rails.cache.fetch(Cache::PiwikDataJob::PIWIK_CACHE_LAST_UPDATED)
               tr
                 td publishers.basicattentiontoken.org Global Alexa Rank
-                td = Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO).select{|d| d["label"] == "Alexa Rank" }[0]["rank"]
+                td = Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO)&.select{|d| d["label"] == "Alexa Rank" }[0]["rank"]
               tr
                 td Total # of verified publishers with channels
                 td = sanitize Publisher.statistical_totals.map { |scope, amount| "#{scope}=#{amount}"}.join("<br/>").html_safe
