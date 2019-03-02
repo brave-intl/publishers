@@ -1,9 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import 'babel-polyfill';
+import styled from 'brave-ui/theme';
 import Select from "brave-ui/components/formControls/select";
 import ControlWrapper from "brave-ui/components/formControls/controlWrapper";
+import { PrimaryButton } from "../publishers/ReferralChartsStyle";
 import '../publishers/dashboard_chart';
-import Payments from "../views/payments/Payments";
 
 export default class ReferralCharts extends React.Component {
   constructor(props) {
@@ -19,14 +21,23 @@ export default class ReferralCharts extends React.Component {
       referralCodesForSelect.push(<div data-value={element}>{element}</div>);
     });
     return (
-      <div>
+      <div style={{display: 'inline-flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
         <ControlWrapper
           text={'Choose Referral Code to view its Stats'}
           type={'light'}>
-          <Select type={'light'} >
-            {referralCodesForSelect}
-          </Select>
+            <div style={{maxWidth: "350px"}} >
+              <Select type={'light'} >
+                {referralCodesForSelect}
+              </Select>
+            </div>
         </ControlWrapper>
+        <div>
+          <div style={{marginTop: '15px', marginLeft: '15px'}}>
+            <PrimaryButton enabled={true} >
+              View
+            </PrimaryButton>
+          </div>
+        </div>
       </div>
     );
   }
