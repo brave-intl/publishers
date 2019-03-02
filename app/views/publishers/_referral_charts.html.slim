@@ -1,5 +1,4 @@
 = hidden_field_tag 'all-channels-referral-stats-starting-month', current_publisher.promo_registrations.order(created_at: :asc).first.created_at.strftime("%Y-%m-%d")
-= javascript_pack_tag "publishers/ReferralCharts.jsx"
 - referrals_hidden_tags = []
 - current_publisher.promo_registrations.each do |promo_registration|
   - hidden_tag_name = 'referral-stat-' + promo_registration.referral_code
@@ -9,7 +8,6 @@
 
 .row
   .col
-    = select_tag "HELLO WORLD"
     .dashboard-panel--wrapper
       .dashboard-panel--header
       #channel-referrals-stats-chart
