@@ -97,9 +97,3 @@ function createChart(data, title, suggestedMax) {
     }
   });
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-  if (window.location.pathname === '/publishers/home') {
-    createCharts();
-  }
-});
