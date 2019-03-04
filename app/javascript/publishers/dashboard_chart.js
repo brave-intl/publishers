@@ -35,24 +35,16 @@ function getSuggestedMax(data) {
   return (currentMax * 100 / 95)
 }
 
-function createCharts() {
-  var data;
-  JSON.parse(document.getElementById('referrals-hidden-tags').value).forEach(function (element) {
-    data = JSON.parse(document.getElementById(element).value);
-    createChart(
-      data,
-      element.replace(/referral-stat-/, "Stats for referral code: "),
-      getSuggestedMax(data)
-    );
-  });
-}
-
 function createChart(data, title, suggestedMax) {
   var wrapper = document.getElementById('channel-referrals-stats-chart');
-  var canvas = document.createElement('canvas');
-  canvas.setAttribute("width", "400");
-  canvas.setAttribute("height", "300");
-  wrapper.appendChild(canvas);
+  var canvas = document.getElementById('chanel-referrals-stats-chart-canvas);
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.setAttribute('id', 'channel-referrals-stats-chart-canvas');
+    canvas.setAttribute("width", "400");
+    canvas.setAttribute("height", "300");
+    wrapper.appendChild(canvas);
+  }
 
   Chart.defaults.global.defaultFontFamily = 'Poppins';
 
