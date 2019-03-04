@@ -110,16 +110,15 @@ export default class ReferralCharts extends React.Component {
     const node = this.selectMenuRef.current;
     var url = routes.publishers.promo_registrations.show.path.replace('{id}', document.getElementById('publisher_id').value);
     url = url.replace('{referral_code}', node.state.value);
-    console.log(url);
     const result = await fetch(url, {
       headers: {'Accept': 'text/html', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': document.head.querySelector("[name=csrf-token]").content},
       credentials: 'same-origin',
       method: "GET"
     }).then(response => {
       response.json().then(json => {
-        console.log(json);
-        this.createChart(json, node.state.value, this.getSuggestedMax(json));
-//        this.setState({ invoices: json.invoices });
+        if (json !== undefined && json.length != 0) {
+          this.createChart(json, node.state.value, this.getSuggestedMax(json));
+        }
       });
     });
   }
@@ -132,7 +131,7 @@ export default class ReferralCharts extends React.Component {
     return (
       <div style={{display: 'inline-flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
         <ControlWrapper
-          text={'Choose Referral Code to view its Stats'}
+          text={'Choose a Referral Code to view its Stats'}
           type={'light'}>
             <div style={{maxWidth: "350px"}} >
               <Select type={'light'} ref={this.selectMenuRef} >
