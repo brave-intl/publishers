@@ -1,13 +1,9 @@
 = hidden_field_tag 'all-channels-referral-stats-starting-month', current_publisher.promo_registrations.order(created_at: :asc).first.created_at.strftime("%Y-%m-%d")
-- referrals_hidden_tags = []
-- current_publisher.promo_registrations.each do |promo_registration|
-  - hidden_tag_name = promo_registration.referral_code
-  = hidden_field_tag hidden_tag_name, promo_registration.stats_by_date.to_json
-  - referrals_hidden_tags << hidden_tag_name
-= hidden_field_tag 'referrals-hidden-tags', referrals_hidden_tags.to_json
+= hidden_field_tag 'referrals-hidden-tags', current_publisher.promo_registrations.pluck(:referral_code).to_json
 
 .row
   .col
     .dashboard-panel--wrapper
       .dashboard-panel--header
       #channel-referrals-stats-chart
+        canvas id="channel-referrals-stats-chart-canvas"
