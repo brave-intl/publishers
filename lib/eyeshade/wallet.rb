@@ -32,10 +32,6 @@ module Eyeshade
       @provider = wallet_info.dig("wallet", "provider") # Wallet provider e.g. Uphold
       @scope = wallet_info.dig("wallet", "scope") # Permissions e.g. cards:read, cards:write
       @default_currency = wallet_info.dig("wallet", "defaultCurrency")
-
-      # TODO: remove
-      @default_currency = "USD"
-
       @available_currencies = wallet_info.dig("wallet", "availableCurrencies") || []
       @possible_currencies = wallet_info.dig("wallet", "possibleCurrencies") || []
       @address = wallet_info.dig("wallet", "address") || ""
