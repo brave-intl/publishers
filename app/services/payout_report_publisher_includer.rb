@@ -60,6 +60,26 @@ class PayoutReportPublisherIncluder < BaseService
       end
     end
 
+    if @publisher.partner? && publisher.invoices.last.finalized_amount.not_nil?
+      unless should_only_notify?
+        invoice = @publisher.invoices.last
+        PotentialPayment.create(payout_report_id: @payout_report.id,
+                                name: @publisher.name,
+                                amount: "#{probi}",
+                                fees: "0",
+                                publisher_id: @publisher.id,
+                                kind: PotentialPayment::MANUAL,
+                                address: "#{wallet.address}",
+                                uphold_status: uphold_status,
+                                reauthorization_needed: reauthorization_needed,
+                                uphold_member: uphold_member,
+                                suspended: suspended,
+                                uphold_id: uphold_id,
+                                invoice_id: invoice.id
+                                )
+      end
+    end
+
     # Notify publishers that have money waiting, but will not will not receive funds
     if publisher_has_unsettled_balance && @should_send_notifications
       if !@publisher.uphold_verified? || wallet.uphold_account_status.nil?

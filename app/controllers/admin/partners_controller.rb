@@ -65,6 +65,12 @@ module Admin
       end
     end
 
+
+    def generate_payout_report
+      puts 'generating that thang'  
+      redirect_to admin_partners_path, flash: { notice: "Generating manual payout report" }
+    end
+
     private
 
     # Internal: Gets a partner

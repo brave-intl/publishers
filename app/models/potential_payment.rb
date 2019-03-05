@@ -3,6 +3,7 @@ class PotentialPayment < ApplicationRecord
 
   REFERRAL = "referral"
   CONTRIBUTION = "contribution"
+  MANUAL = "manual"
 
   belongs_to :payout_report
   belongs_to :publisher

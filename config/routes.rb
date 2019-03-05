@@ -162,6 +162,7 @@ Rails.application.routes.draw do
 
     resources :organizations, except: [:destroy]
     resources :partners, except: [:destroy] do
+      get :generate_payout_report
       resources :invoices do
         post :upload
         get :finalize
