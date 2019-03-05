@@ -17,6 +17,7 @@ module Eyeshade
                 :channel_balances,
                 :rates,
                 :status,
+                :contribution_balance,
                 :referral_balance,
                 :overall_balance,
                 :last_settlement_balance,
@@ -31,6 +32,10 @@ module Eyeshade
       @provider = wallet_info.dig("wallet", "provider") # Wallet provider e.g. Uphold
       @scope = wallet_info.dig("wallet", "scope") # Permissions e.g. cards:read, cards:write
       @default_currency = wallet_info.dig("wallet", "defaultCurrency")
+
+      # TODO: remove
+      @default_currency = "USD"
+
       @available_currencies = wallet_info.dig("wallet", "availableCurrencies") || []
       @possible_currencies = wallet_info.dig("wallet", "possibleCurrencies") || []
       @address = wallet_info.dig("wallet", "address") || ""
@@ -45,6 +50,7 @@ module Eyeshade
 
       @referral_balance = Eyeshade::ReferralBalance.new(rates, @default_currency, accounts)
       @overall_balance = Eyeshade::OverallBalance.new(rates, @default_currency, accounts)
+      @contribution_balance = Eyeshade::ContributionBalance.new(rates, @default_currency, accounts)
 
       @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates, @default_currency, transactions)
     end

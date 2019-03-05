@@ -37,7 +37,7 @@ class Publisher < ApplicationRecord
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
-  has_many :promo_campaigns, dependent: :destroy 
+  has_many :promo_campaigns, dependent: :destroy
   has_many :site_banners
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
@@ -156,6 +156,13 @@ class Publisher < ApplicationRecord
         select("publishers.*", "count(channels.id) channels_count").
         order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
+  end
+
+  # This will convert the user to be a partner, or a publisher
+  def become_subclass
+    klass = self
+    klass = self.becomes(Partner) if partner?
+    klass
   end
 
   # API call to eyeshade

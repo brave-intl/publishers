@@ -1,6 +1,13 @@
 module PublishersHelper
   include ChannelsHelper
 
+  def sentry_catcher
+    yield
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+  end
+
   def publishers_meta_tags
     {
       title: t("shared.app_title"),
@@ -27,17 +34,38 @@ module PublishersHelper
     today.strftime("%B 8th")
   end
 
-  def publisher_overall_bat_balance(publisher)
-    overall_balance = publisher.wallet&.overall_balance
-    if overall_balance&.amount_bat.present?
-       '%.2f' % overall_balance.amount_bat
-    else
-      I18n.t("helpers.publisher.balance_unavailable")
+  def partner_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+      balance = '%.2f' % publisher.balance if publisher.balance.present?
     end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_unavailable")
+
+    balance
+  end
+
+  def partner_converted_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+      if publisher.balance_in_currency.present?
+        balance = I18n.t("helpers.publisher.balance_pending_approximate",
+              amount: '%.2f' % publisher.balance_in_currency,
+              code: publisher.default_currency)
+      end
+    end
+
+    balance
+  end
+
+  def publisher_overall_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      overall_balance = publisher.wallet&.overall_balance
+      balance ='%.2f' % overall_balance.amount_bat if overall_balance&.amount_bat.present?
+    end
+
+    balance
   end
 
   def publisher_converted_overall_balance(publisher)
@@ -53,16 +81,13 @@ module PublishersHelper
   end
 
   def publisher_channel_bat_balance(publisher, channel_identifier)
-    channel_balance = publisher.wallet&.channel_balances.dig(channel_identifier)
-    if channel_balance&.amount_bat.present?
-      '%.2f' % channel_balance.amount_bat
-    else
-      I18n.t("helpers.publisher.balance_unavailable")
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      channel_balance = publisher.wallet&.channel_balances.dig(channel_identifier)
+      balance = '%.2f' % channel_balance.amount_bat if channel_balance&.amount_bat.present?
     end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.balance_unavailable")
+
+    balance
   end
 
   def publisher_last_settlement_bat_balance(publisher)
@@ -70,7 +95,6 @@ module PublishersHelper
     if last_settlement_balance&.amount_bat.present?
       '%.2f' % last_settlement_balance.amount_bat
     else
-      I18n.t("helpers.publisher.no_deposit")
     end
   rescue => e
     require "sentry-raven"

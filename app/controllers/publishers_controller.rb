@@ -411,7 +411,7 @@ class PublishersController < ApplicationController
       }
     end
   end
-  
+
   def wallet
     wallet = current_publisher.wallet
     if wallet

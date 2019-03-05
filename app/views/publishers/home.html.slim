@@ -38,10 +38,13 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
             .bat
-              span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
+              span.bat-amount#bat_amount = current_publisher.partner? ? partner_balance(current_publisher) : publisher_overall_bat_balance(current_publisher)
               span.bat-code= " BAT"
             .converted#converted_amount
-              = publisher_converted_overall_balance(current_publisher)
+              - if current_publisher.partner?
+                = partner_converted_balance(current_publisher)
+              - else
+                = publisher_converted_overall_balance(current_publisher)
             .next_deposit_date
               span = t ".next_deposit_date"
               span= next_deposit_date

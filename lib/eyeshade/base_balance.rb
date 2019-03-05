@@ -21,6 +21,12 @@ module Eyeshade
       @fees_probi = 0
     end
 
+    def add_bat(bat)
+      @amount_bat += bat
+      @amount_probi += bat_to_probi(bat)
+      @amount_default_currency += convert(bat, default_currency)
+    end
+
     private
 
     # Expects an Integer and returns a BigDecimal
