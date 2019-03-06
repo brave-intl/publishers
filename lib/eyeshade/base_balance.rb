@@ -24,7 +24,7 @@ module Eyeshade
     def add_bat(bat)
       @amount_bat += bat
       @amount_probi += bat_to_probi(bat)
-      @amount_default_currency += convert(bat, default_currency)
+      @amount_default_currency += convert(bat, @default_currency) if @default_currency.present?
     end
 
     private

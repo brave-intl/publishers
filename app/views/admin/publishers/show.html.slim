@@ -57,10 +57,10 @@
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
         .db-info-row
           .db-field = "Overall BAT balance"
-          .db-value = @publisher.partner? ? partner_balance(@publisher) : publisher_overall_bat_balance(@publisher)
+          .db-value = "#{publisher_overall_bat_balance(@publisher)}"
         .db-info-row
           .db-field = "Overall default currency balance"
-          .db-value = @publisher.partner? ? partner_converted_balance(@publisher) : publisher_converted_overall_balance(@publisher)
+          .db-value = "#{publisher_converted_overall_balance(@publisher)}"
         .db-info-row
           .db-field = "Last settlement balance"
           .db-value = "#{publisher_converted_last_settlement_balance(@publisher)}"

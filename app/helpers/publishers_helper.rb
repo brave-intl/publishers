@@ -34,35 +34,15 @@ module PublishersHelper
     today.strftime("%B 8th")
   end
 
-  def partner_balance(publisher)
-    balance = I18n.t("helpers.publisher.balance_unavailable")
-    sentry_catcher do
-      publisher = publisher.become_subclass
-      balance = '%.2f' % publisher.balance if publisher.balance.present?
-    end
-
-    balance
-  end
-
-  def partner_converted_balance(publisher)
-    balance = I18n.t("helpers.publisher.balance_unavailable")
-    sentry_catcher do
-      publisher = publisher.become_subclass
-      if publisher.balance_in_currency.present?
-        balance = I18n.t("helpers.publisher.balance_pending_approximate",
-              amount: '%.2f' % publisher.balance_in_currency,
-              code: publisher.default_currency)
-      end
-    end
-
-    balance
-  end
-
   def publisher_overall_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      overall_balance = publisher.wallet&.overall_balance
-      balance ='%.2f' % overall_balance.amount_bat if overall_balance&.amount_bat.present?
+      publisher = publisher.become_subclass
+      balance = publisher.wallet&.overall_balance&.amount_bat
+
+      balance = publisher.balance if publisher.partner?
+
+      balance ='%.2f' % balance.amount_bat if balance.present?
     end
 
     balance
@@ -70,11 +50,17 @@ module PublishersHelper
 
   def publisher_converted_overall_balance(publisher)
     return if publisher.default_currency == "BAT" || publisher.default_currency.blank?
-    overall_balance = publisher.wallet&.overall_balance
-    if overall_balance&.amount_default_currency.present?
+
+    publisher = publisher.become_subclass
+
+    balance = publisher.wallet&.overall_balance.amount_default_currency
+
+    balance = publisher.balance_in_currency if publisher.partner?
+
+    if balance.present?
       I18n.t("helpers.publisher.balance_pending_approximate",
-             amount: '%.2f' % overall_balance.amount_default_currency,
-             code: overall_balance.default_currency)
+             amount: '%.2f' % balance,
+             code: publisher.default_currency)
     else
       I18n.t("helpers.publisher.conversion_unavailable", code: publisher.default_currency)
     end
