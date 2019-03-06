@@ -37,7 +37,7 @@ function getSuggestedMax(data) {
 
 function createChart(data, title, suggestedMax) {
   var wrapper = document.getElementById('channel-referrals-stats-chart');
-  var canvas = document.getElementById('chanel-referrals-stats-chart-canvas);
+  var canvas = document.getElementById('chanel-referrals-stats-chart-canvas');
   if (!canvas) {
     canvas = document.createElement('canvas');
     canvas.setAttribute('id', 'channel-referrals-stats-chart-canvas');
