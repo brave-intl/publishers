@@ -53,8 +53,7 @@ export default class ReferralCharts extends React.Component {
   createChart(data, title, suggestedMax) {
     var wrapper = document.getElementById('channel-referrals-stats-chart');
     var canvas = document.getElementById('chart-canvas');
-    if (canvas) {}
-    else {
+    if (!canvas) {
       canvas = document.createElement('canvas');
       canvas.setAttribute("id", 'chart-canvas');
       canvas.setAttribute("width", "400");
@@ -73,16 +72,19 @@ export default class ReferralCharts extends React.Component {
             label: 'Downloads',
             data: data.map(x => x.retrievals),
             borderColor: '#F88469',
+            fill: false,
           },
           {
             label: 'Installs',
             data: data.map(x => x.first_runs),
-            borderColor: '#7B82E1',
+            borderColor: '#66C3FC',
+            fill: false,
           },
           {
             label: '30-Day-Use',
             data: data.map(x => x.finalized),
-            borderColor: '#66C3FC',
+            borderColor: '#7B82E1',
+            fill: false,
           },
         ]
       },
@@ -101,6 +103,11 @@ export default class ReferralCharts extends React.Component {
               suggestedMax: suggestedMax
             }
           }]
+        },
+        legend: {
+          labels: {
+            usePointStyle: true
+          }
         }
       }
     });
