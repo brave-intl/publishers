@@ -24,7 +24,6 @@ install:
   - chromedriver-update
   - sudo apt-get update
   - sudo apt-get install google-chrome-stable
-  - nvm install stable && nvm alias default stable
   - npm install -g npm@5.6.x
   - npm install -g yarn
   - node --version
