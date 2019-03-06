@@ -8,7 +8,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     if publisher_ids.present?
       publishers = Publisher.where(id: publisher_ids)
     else
-      publishers = Publisher.with_verified_channel
+      publishers = Publisher.partner #Remember to put back channels
     end
 
     if payout_report_id.present?
@@ -20,6 +20,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     end
 
     publishers.find_each do |publisher|
+      puts publisher.email
       IncludePublisherInPayoutReportJob.perform_later(payout_report_id: payout_report.id,
                                                       publisher_id: publisher.id,
                                                       should_send_notifications: should_send_notifications)

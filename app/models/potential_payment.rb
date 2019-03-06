@@ -21,6 +21,8 @@ class PotentialPayment < ApplicationRecord
     where("amount::numeric > ?", 0)
   }
 
+  scope :manual_to_be_paid, -> { where(kind: MANUAL) }
+
   private
 
   def publisher_id_unique_for_referral_payments

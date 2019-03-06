@@ -6,7 +6,8 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if @publisher.suspended? || !@publisher.has_verified_channel? || @publisher.excluded_from_payout?
+    puts "performing on " + @publisher.email
+    return if (@publisher.suspended? || !@publisher.has_verified_channel? || @publisher.excluded_from_payout?) && !@publisher.partner?
     publisher_has_unsettled_balance = false
 
     wallet = @publisher.wallet
@@ -60,12 +61,15 @@ class PayoutReportPublisherIncluder < BaseService
       end
     end
 
-    if @publisher.partner? && publisher.invoices.last.finalized_amount.not_nil?
+    puts @publisher.partner?
+    if @publisher.partner?
       unless should_only_notify?
-        invoice = @publisher.invoices.last
+        puts 'helo'
+        invoice = Invoice.find_by_partner_id(@publisher.id)
+        amount = invoice.finalized_amount_to_probi
         PotentialPayment.create(payout_report_id: @payout_report.id,
                                 name: @publisher.name,
-                                amount: "#{probi}",
+                                amount: amount,
                                 fees: "0",
                                 publisher_id: @publisher.id,
                                 kind: PotentialPayment::MANUAL,
@@ -75,7 +79,8 @@ class PayoutReportPublisherIncluder < BaseService
                                 uphold_member: uphold_member,
                                 suspended: suspended,
                                 uphold_id: uphold_id,
-                                invoice_id: invoice.id
+                                invoice_id: invoice.id,
+                                finalized_by_id: invoice.finalized_by_id
                                 )
       end
     end
