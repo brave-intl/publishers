@@ -50,7 +50,7 @@ export default class ReferralCharts extends React.Component {
       currentMax = value.first_runs > currentMax ? value.first_runs : currentMax;
       currentMax = value.finalized > currentMax ? value.finalized : currentMax;
     });
-    return (currentMax * 100 / 95)
+    return Math.ceil(currentMax / 95) * 100;
   }
 
   createChart(data, title, suggestedMax) {
@@ -112,6 +112,7 @@ export default class ReferralCharts extends React.Component {
             }
           }],
           yAxes: [{
+            type: 'logarithmic',
             ticks: {
               suggestedMax: suggestedMax
             }
