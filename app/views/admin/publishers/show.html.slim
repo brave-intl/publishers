@@ -24,6 +24,9 @@
         .db-info-row
           .db-field = "Role:"
           .db-value = @publisher.role
+        .db-info-row
+          .db-field = "Created:"
+          .db-row = @publisher.created_at.strftime('%B %m, %Y')
         - if @publisher.partner?
           - partner = @publisher.becomes(Partner)
           .db-info-row
