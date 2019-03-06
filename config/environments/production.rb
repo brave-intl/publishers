@@ -79,8 +79,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     port: Rails.application.secrets[:smtp_server_port],
     address: Rails.application.secrets[:smtp_server_address],
-    user_name: Rails.application.secrets[:smtp_server_login],
-    password: Rails.application.secrets[:smtp_server_password],
+    user_name: "apikey", # see https://sendgrid.com/docs/API_Reference/SMTP_API/integrating_with_the_smtp_api.html
+    password: Rails.application.secrets[:sendgrid_api_key],
     domain: Rails.application.secrets[:url_host],
     authentication: :plain,
     enable_starttls_auto: true
