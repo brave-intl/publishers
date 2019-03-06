@@ -25,8 +25,8 @@ class Invoice < ActiveRecord::Base
   validates :date, uniqueness: { scope: :partner_id }
 
   # Ensure these two values are numbers even though field is a string
-  validates :amount,  numericality: true
-  validates :finalized_amount,  numericality: true
+  validates :amount,  numericality: true, allow_nil: true
+  validates :finalized_amount,  numericality: true, allow_nil: true
 
   def human_date
     if date.day == 1

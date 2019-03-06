@@ -39,10 +39,8 @@ module PublishersHelper
     sentry_catcher do
       publisher = publisher.become_subclass
       balance = publisher.wallet&.overall_balance&.amount_bat
-
-      balance = publisher.balance if publisher.partner?
-
-      balance ='%.2f' % balance.amount_bat if balance.present?
+      balance = publisher.balance&.amount_bat if publisher.partner?
+      balance ='%.2f' % balance if balance.present?
     end
 
     balance
@@ -51,10 +49,8 @@ module PublishersHelper
   def publisher_converted_overall_balance(publisher)
     return if publisher.default_currency == "BAT" || publisher.default_currency.blank?
 
-    publisher = publisher.become_subclass
-
-    balance = publisher.wallet&.overall_balance.amount_default_currency
-
+    publisher = publisher&.become_subclass
+    balance = publisher.wallet&.overall_balance&.amount_default_currency
     balance = publisher.balance_in_currency if publisher.partner?
 
     if balance.present?
