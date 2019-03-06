@@ -186,6 +186,15 @@ en:
       headline: Great!
       body: Two-factor Authentication has been enabled for your account
       close: Close
+  partner_mailer:
+    shared:
+      salutation: Hi %{name},
+    invoice_file_added:
+      subject: "A new document has been added to your invoice"
+      body_html: |
+        <p>Your %{date} invoice has a new document ready for you to view.</p>
+        Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
+      button: Log in to Brave Rewards
   publisher_mailer:
     shared:
       button_not_working: "If the button above doesn't work, paste this link into your web browser:"
