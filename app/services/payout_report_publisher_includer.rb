@@ -6,7 +6,7 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if @publisher.suspended? || !@publisher.has_verified_channel? || @publisher.excluded_from_payout?
+    return if !@publisher.has_verified_channel? || @publisher.excluded_from_payout?
     publisher_has_unsettled_balance = false
 
     wallet = @publisher.wallet
