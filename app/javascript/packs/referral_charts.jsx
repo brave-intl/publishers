@@ -28,14 +28,17 @@ export default class ReferralCharts extends React.Component {
   createLabels(startingDate) {
     // https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off
     var loop = new Date(startingDate.replace(/-/g, '\/'));
-    var dates_array = [];
+    var dateFormat = "YYYY/MM/DD";
+    var newDate;
+    var datesArray = [];
 
     while (loop <= new Date()) {
-      dates_array.push(loop.getFullYear() + '-' + (loop.getMonth() + 1) + '-' + loop.getDate());
+      newDate = moment(loop, dateFormat);
+      datesArray.push(newDate);
       loop.setDate(loop.getDate() + 1);
     }
 
-    return dates_array;
+    return datesArray;
   }
 
   // Max of the chart is 80% of the suggested max to be used by Chartjs
@@ -98,6 +101,16 @@ export default class ReferralCharts extends React.Component {
           text: title.toUpperCase()
         },
         scales: {
+          xAxes: [{
+            type: 'time',
+            distribution: 'series',
+            ticks: {
+              source: 'labels'
+            },
+            time: {
+              unit: 'day'
+            }
+          }],
           yAxes: [{
             ticks: {
               suggestedMax: suggestedMax
