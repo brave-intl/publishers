@@ -23,14 +23,16 @@ class Partner < Publisher
     wallet.contribution_balance.amount_default_currency
   end
 
+  def name
+    self[:name] || self[:email]
+  end
+
+  private
+
   def invoice_amount
     invoices = Invoice.where(partner_id: id, paid: false)
     amounts = invoices.map { |i| i.finalized_amount || i.amount }
 
     amounts.map { |x| x.gsub(/,/, '').to_i }.reduce(:+)
-  end
-
-  def name
-    self[:name] || self[:email]
   end
 end
