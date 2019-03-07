@@ -221,6 +221,17 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     span= t("promo.shared.referral_link")
                   .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
                     span= t("promo.shared.copy")
+                / Need to tell the users that it will take 48 hours for their verified channel to appear in the web browser
+                - if channel.created_at > 2.days.ago
+                  .float-right.mr-4.mt-1
+                    .channel-info
+                      .info-popup
+                        .info--details
+                          // JS will break if the next two elements aren't siblings
+                          span.info--what-happened=t(".channel.verification_status_title")
+                          span.info--explanation
+                            span.verification-failed-explanation--content
+                              = t(".channel.verification_status")
               - else
                 .channel-status.float-right
                   .bat-channel
