@@ -147,6 +147,10 @@ group :development do
 
   # Static security vulnerability scanner
   gem "brakeman"
+  gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
+  gem "byebug"
+  gem "pry-byebug", require: false
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
@@ -162,12 +166,10 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-
+  gem "brakeman"
   # API recording and playback
   gem "vcr"
-
   gem "webmock", "~> 3.0"
-
   gem "rails-controller-testing"
 end
 
@@ -179,14 +181,8 @@ end
 group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
-
-  gem "pry"
-  gem 'pry-stack_explorer', '~> 0.4.9.3'
-  gem "byebug"
-  gem "pry-byebug", require: false
   gem "mocha"
   gem 'minitest-rails-capybara', '~> 3.0.1'
-  gem 'rubyzip'
   gem "capybara-selenium"
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test

@@ -6,7 +6,7 @@ node_js:
 cache:
   - bundler
   - yarn
-bundler_args: "--jobs=3 --retry=3 --without production --without staging --binstubs"
+bundler_args: "--jobs=3 --retry=3 --without production --without staging --without development --binstubs"
 dist: xenial
 sudo: required
 addons:
@@ -29,8 +29,6 @@ before_install:
   - npm --version
   - google-chrome --version
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-
-after_install:
   - rake db:setup
   - bundle exec rake assets:precompile
 script:
