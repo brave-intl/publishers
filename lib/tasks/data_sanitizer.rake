@@ -18,6 +18,8 @@ namespace :data_sanitizer do
         encrypted_authentication_token_iv: nil,
         name: "User #{Random.rand(10_000)}",
         email: email_digest && "publishers-staging+2+#{email_digest}@basicattentiontoken.org",
+        current_sign_in_ip: nil,
+        last_sign_in_ip: nil,
         phone: nil,
         phone_normalized: nil,
         uphold_state_token: nil,
