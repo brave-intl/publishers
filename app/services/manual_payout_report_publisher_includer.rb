@@ -20,7 +20,8 @@ class ManualPayoutReportPublisherIncluder < BaseService
     probi = wallet.referral_balance.amount_probi # probi = balance
     publisher_has_unsettled_balance = probi.to_i.positive?
 
-    invoice = Invoice.find_by_partner_id(@publisher.id)
+    invoices = Invoice.where(partner_id: @publisher.id, status: Invoice::IN_PROGRESS)
+    invoices.each do |invoice|
     amount = invoice.finalized_amount_to_probi
     PotentialPayment.create(payout_report_id: @payout_report.id,
                             name: @publisher.name,
@@ -36,5 +37,6 @@ class ManualPayoutReportPublisherIncluder < BaseService
                             uphold_id: uphold_id,
                             invoice_id: invoice.id,
                             finalized_by_id: invoice.finalized_by_id)
+    end
 end
 end

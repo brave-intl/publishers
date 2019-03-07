@@ -39,21 +39,6 @@ class JsonBuilders::PayoutReportJsonBuilder
         end
       end
     end
-    @payout_report.potential_payments.manual_to_be_paid.find_each do |potential_payment|
-      contents.push({
-          "name" => "#{potential_payment.name}",
-          "altcurrency" => "BAT",
-          "probi" => "#{potential_payment.amount}",
-          "fees" => "#{potential_payment.fees}",
-          "authority" => "#{potential_payment.finalized_by_id}",
-          "transactionId" => "#{potential_payment.payout_report_id}",
-          "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
-          "type" => PotentialPayment::MANUAL,
-          "address" => "#{potential_payment.address}",
-          "upholdId" => "#{potential_payment.uphold_id}",
-          "documentId" => "#{potential_payment.invoice_id}"
-        })
-    end
     contents
   end
 end
