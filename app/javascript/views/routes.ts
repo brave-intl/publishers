@@ -18,7 +18,8 @@ export default {
   publishers: {
     promo_registrations: {
       show: {
-        path: "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+        path:
+          "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
       }
     }
   }
