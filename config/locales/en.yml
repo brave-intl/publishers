@@ -25,7 +25,7 @@ en:
     app_title: Brave Rewards
     app_description: Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!
     cancel: Cancel
-    channel_created: Channel created.
+    channel_created: Channel created. Your verified status will be displayed in the Brave browser within the next 24-48 hours.
     channel_contested: Channel will be transferred from current owner in %{time_until_transfer}.
     channel_could_not_be_contested: Channel could not be contested. If you think this is in error, please email us at support+publishers@basicattentiontoken.org
     channel_transfer_rejected: Channel transfer rejected.
@@ -186,6 +186,15 @@ en:
       headline: Great!
       body: Two-factor Authentication has been enabled for your account
       close: Close
+  partner_mailer:
+    shared:
+      salutation: Hi %{name},
+    invoice_file_added:
+      subject: "A new document has been added to your invoice"
+      body_html: |
+        <p>Your %{date} invoice has a new document ready for you to view.</p>
+        Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
+      button: Log in to Brave Rewards
   publisher_mailer:
     shared:
       button_not_working: "If the button above doesn't work, paste this link into your web browser:"
@@ -424,6 +433,8 @@ en:
         one_more_step: One more step to complete...
         lets_finish: Let's Finish
         try_again: Try Again
+        verification_status: Verification status will be displayed in the Brave browser within the next 24-48 hours
+        verification_status_title: Verification Information
       channel_balance_period: CURRENT PERIOD
     new_auth_token:
       signup_prompt: Don't have an account?
@@ -532,12 +543,17 @@ en:
     dashboard:
       days: "days"
       downloaded: "downloaded"
+      installed: "installed"
       confirmed: "confirmed"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
       referral: "referral"
       promo: "promo"
       check_statement: "*Check your statement for this period's payout."
+      tooltip:
+        downloaded: "Downloads - Intent to download the browser"
+        installed: "Installed - Browser installed and opened for the first time"
+        confirmed: "Confirmations -  Browser is active for 30+ days"
     shared:
       tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
       tweet: "Share on Twitter"
@@ -564,7 +580,7 @@ en:
       button: "Activate promo"
     promo_activated_2018q1_verified:
       subject: "Your referral code is now active"
-      body_one_html: "Congratulations on verifying your channel. Use the referral link below to start collecting about 5 USD for every fan you bring to Brave. A qualified referral is a user who downloads Brave browser using the promo link below and uses Brave minimally over a 30 day period."
+      body_one_html: "Congratulations on verifying your channel. The verification status for your channel will be displayed in the Brave browser within the next 24-48 hours. Use the referral link below to start collecting about 5 USD for every fan you bring to Brave. A qualified referral is a user who downloads Brave browser using the promo link below and uses Brave minimally over a 30 day period."
       body_two: "Users are confirmed following 30 days of use. Users that drop out will not be counted."
       body_three: "We wish you good luck!"
       ad_banner_title: "Promo Ad Banner"

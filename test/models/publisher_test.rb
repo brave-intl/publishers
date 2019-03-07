@@ -6,6 +6,15 @@ class PublisherTest < ActiveSupport::TestCase
   include ActionMailer::TestHelper
   include MailerTestHelper
   include PromosHelper
+  include EyeshadeHelper
+
+  before(:example) do
+    @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
+  end
+
+  after(:example) do
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
+  end
 
   test "verified publishers have both a name and email and have agreed to the TOS" do
     publisher = Publisher.new
@@ -150,11 +159,18 @@ class PublisherTest < ActiveSupport::TestCase
   end
 
   test "when wallet is gotten the default currency will be sent to eyeshade if it is mismatched" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:verified)
-    publisher.default_currency = "CAD"
+    publisher.default_currency = "USD"
 
-    assert_enqueued_jobs(1) do
-      assert_equal "USD", publisher.wallet.default_currency
+    wallet = {
+      defaultCurrency: "CAD"
+    }
+
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+
+    assert_enqueued_with(job: UploadDefaultCurrencyJob) do
+      publisher.wallet.default_currency
     end
   end
 
@@ -172,7 +188,10 @@ class PublisherTest < ActiveSupport::TestCase
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
 
-      body = {
+      publisher = publishers(:uphold_connected)
+      assert publisher.uphold_verified
+
+      wallet = {
         "contributions": {
           "amount": "9001.00",
           "currency": "USD",
@@ -196,20 +215,9 @@ class PublisherTest < ActiveSupport::TestCase
           "defaultCurrency": 'USD',
           "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
-      }.to_json
+      }
 
-      publisher = publishers(:uphold_connected)
-      assert publisher.uphold_verified
-
-      # stub wallet response
-      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-          to_return(status: 200, body: body, headers: {})
-
-      # stub balances response so all PublisherWalletGetter requests are stub'd
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
-        to_return(status: 200, body: [].to_json, headers: {})
-
+      stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
       publisher.wallet
       assert publisher.uphold_verified?
@@ -226,7 +234,7 @@ class PublisherTest < ActiveSupport::TestCase
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
 
-      body = {
+      wallet = {
         "contributions": {
           "amount": "9001.00",
           "currency": "USD",
@@ -249,24 +257,19 @@ class PublisherTest < ActiveSupport::TestCase
           "defaultCurrency": 'USD',
           "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
-      }.to_json
+      }
 
       publisher = publishers(:uphold_connected)
       assert publisher.uphold_verified
 
       # stub wallet response
-      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 200, body: body, headers: {})
+      stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
       # stub balances response so all PublisherWalletGetter requests are stub'd
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
-        to_return(status: 200, body: [].to_json, headers: {})
 
       publisher.wallet
       assert publisher.uphold_verified?
       assert_equal Publisher::UpholdAccountState::RESTRICTED, publisher.uphold_status
-
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
     end
@@ -545,59 +548,35 @@ class PublisherTest < ActiveSupport::TestCase
   end
 
   test "publisher.can_create_uphold_cards? depends on uphold status and scope" do
+    Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:created)
     refute publisher.can_create_uphold_cards?
 
-    prev_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
+    wallet = {
+      "status": {
+        "provider": "uphold",
+        "action": ""
+      },
+      "wallet": {
+        "provider": "uphold",
+        "authorized": true,
+        "defaultCurrency": 'USD',
+        "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
+        "scope": ["cards:write"]
+      }
+    }
 
-      refute publisher.can_create_uphold_cards?
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
-      body = {
-        "contributions": {
-          "amount": "9001.00",
-          "currency": "USD",
-          "altcurrency": "BAT",
-          "probi": "38077497398351695427000"
-        },
-        "rates": {
-          "BTC": 0.00005418424016883016,
-          "ETH": 0.000795331082073117,
-          "USD": 0.2363863335301452,
-          "EUR": 0.20187818378874756,
-          "GBP": 0.1799810085548496
-        },
-        "status": {
-          "provider": "uphold",
-          "action": ""
-        },
-        "wallet": {
-          "provider": "uphold",
-          "authorized": true,
-          "defaultCurrency": 'USD',
-          "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
-          "scope": ["cards:write"]
-        }
-      }.to_json
+    publisher.reload
+    publisher.verify_uphold
 
-      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 200, body: body, headers: {})
+    publisher.update(excluded_from_payout: true)
+    assert_not publisher.can_create_uphold_cards?
 
-      publisher.reload
-      publisher.verify_uphold
-
-      publisher.update(excluded_from_payout: true)
-      assert_not publisher.can_create_uphold_cards?
-
-      publisher.update(excluded_from_payout: false)
-      assert publisher.uphold_verified?
-      assert publisher.can_create_uphold_cards?
-
-    ensure
-      Rails.application.secrets[:api_eyeshade_offline] = prev_offline
-    end
+    publisher.update(excluded_from_payout: false)
+    assert publisher.uphold_verified?
+    assert publisher.can_create_uphold_cards?
   end
 
   test "suspended scope returns suspended publishers, not_suspended returns not suspended" do
@@ -623,9 +602,7 @@ class PublisherTest < ActiveSupport::TestCase
   end
 
   test "with_verified_channel scope only selects publishers with verified channels" do
-    publishers = Publisher.with_verified_channel
-
-    publishers.each do |publisher|
+    Publisher.with_verified_channel.each do |publisher|
       with_verified_channel = false # initialize to false
 
       publisher.channels.each do |channel|

@@ -61,12 +61,14 @@
   }
 
   @include media-breakpoint-down(md) {
-    .title, .btn {
+    .title,
+    .btn {
       display: none;
     }
   }
 
-  .title, .btn {
+  .title,
+  .btn {
     margin-right: 25px;
   }
 }
@@ -84,7 +86,8 @@
     text-align: center;
     a {
       color: white;
-      &:hover, &focus {
+      &:hover,
+      &focus {
         color: white;
       }
     }
@@ -100,7 +103,8 @@
     display: table;
     width: 100%;
     height: 150px;
-    background-image: url(asset-path("bat-mercury-patch-jr.png")), url(asset-path("bat-polygon-narrow.png"));
+    background-image: url(asset-path("bat-mercury-patch-jr.png")),
+      url(asset-path("bat-polygon-narrow.png"));
     background-repeat: no-repeat;
     background-position: center left 30px, left top 50px;
     background-size: auto 100px, cover;
@@ -109,11 +113,16 @@
       display: flex;
       flex-direction: column;
       flex: 1;
+      padding-left: 5px;
+      padding-right: 5px;
       &-downloaded {
-        color: white;
+        color: #006192;
+      }
+      &-installed {
+        color: #03375d;
       }
       &-confirmed {
-        color: #03375d;
+        color: white;
       }
     }
     .promo-flex-row {
@@ -173,9 +182,10 @@
       }
       #activate-promo-dashboard-button {
         background: white;
-        color: #4C54D2;
+        color: #4c54d2;
         border: none;
-        &:hover, &focus {
+        &:hover,
+        &focus {
           background: #bcf0f7;
         }
         font-size: 12px;
@@ -310,7 +320,7 @@
       box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
 
       @include media-breakpoint-down(xs) {
-        min-height: $spacer*10;
+        min-height: $spacer * 10;
       }
 
       &.uphold-panel {
@@ -406,7 +416,7 @@
     padding-left: 75px;
 
     #balance_pending_message {
-      opacity: .6;
+      opacity: 0.6;
       padding-left: 7px;
     }
   }
@@ -445,7 +455,7 @@
       margin-top: 40px;
     }
     .field {
-      margin: $spacer*0.4 0;
+      margin: $spacer * 0.4 0;
       label {
         display: inline-block;
         margin: 0;
@@ -537,7 +547,7 @@
       }
       #uphold_dashboard,
       #last_settlement,
-      .statements-available  {
+      .statements-available {
         display: none;
       }
     }
@@ -559,7 +569,7 @@
       }
       .status-summary,
       #go_to_uphold {
-/* (Albert Wang): We add lot's of crazy complexity by disabling HTML elements */
+        /* (Albert Wang): We add lot's of crazy complexity by disabling HTML elements */
         display: inline !important;
       }
     }
@@ -693,13 +703,17 @@
       .channel-details {
         font-size: 14px;
         color: $mediumGray;
-        .added-date, .separator, .remove-channel {
+        .added-date,
+        .separator,
+        .remove-channel {
           display: inline-block;
           margin-right: 12px;
         }
       }
     }
-    &.channel-incomplete, &.channel-started, &.channel-failed {
+    &.channel-incomplete,
+    &.channel-started,
+    &.channel-failed {
       background-color: rgba(255, 255, 255, 0.6);
     }
     &.channel-incomplete {
@@ -709,14 +723,16 @@
           font-size: 14px;
           padding: 3px 0 3px 115px;
           margin-right: 10px;
-          background: url(asset-path("channel-progress.png")) no-repeat center left;
+          background: url(asset-path("channel-progress.png")) no-repeat center
+            left;
         }
       }
     }
     &.channel-failed {
       .channel-status {
         display: flex;
-        background: url(asset-path("icn-warning@1x.png")) no-repeat top left / 24px 24px;
+        background: url(asset-path("icn-warning@1x.png")) no-repeat top left /
+          24px 24px;
         padding: 0 0 12px 38px;
         font-weight: bold;
         .btn {
@@ -778,6 +794,59 @@
       .channel-contested {
         p {
           margin: 5px 0px 0px 0px;
+        }
+      }
+    }
+    .channel-info {
+      display: flex;
+      background: url(asset-path("icn-info.png")) no-repeat top left / 24px 24px;
+      padding: 0 0 12px 38px;
+      font-weight: bold;
+      .btn {
+        vertical-align: top;
+        margin-left: 10px;
+      }
+      .info-popup {
+        .info--details {
+          position: relative;
+          font-size: 14px;
+          font-weight: 500;
+          .info--what-happened {
+            color: $braveAction;
+            cursor: pointer;
+          }
+        }
+        .info--explanation {
+          display: none;
+          position: absolute;
+          left: -145px;
+          bottom: 100%;
+          width: 400px;
+          padding: 30px 40px;
+          background: white;
+          border-radius: 4px;
+          box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
+          font-size: 14px;
+
+          &::after {
+            content: " ";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            margin-top: -5px;
+            margin-left: -5px;
+            background: white;
+            transform: rotate(45deg);
+            border: solid 1px $braveGray-8;
+            border-top-color: transparent;
+            border-left-color: transparent;
+          }
+
+          .verification-failed--explanation-content {
+            display: block;
+          }
         }
       }
     }
@@ -886,7 +955,7 @@
 
 #channel_taken_modal {
   .taken-channel {
-    margin: $spacer*2;
+    margin: $spacer * 2;
     .summary {
       margin-bottom: 20px;
       img {

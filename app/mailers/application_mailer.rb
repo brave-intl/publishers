@@ -1,5 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   INTERNAL_EMAIL = Rails.application.secrets[:internal_email].freeze
+  BIZDEV_EMAIL = Rails.application.secrets[:bizdev_email].freeze
 
   default from: Rails.application.secrets[:from_email]
   layout "mailer"
@@ -26,8 +27,8 @@ class ApplicationMailer < ActionMailer::Base
     add_image("mailer/social_brave.png")
     add_image("mailer/social_twitter.png")
 
-    raise "Invalid mailer class; can't run #add_images." unless self.class == InternalMailer || self.class == PromoMailer || self.class == PublisherMailer
-    
+    raise "Invalid mailer class; can't run #add_images." unless self.class == InternalMailer || self.class == PromoMailer || self.class == PublisherMailer || self.class == PartnerMailer
+
   end
 
   def require_premailer

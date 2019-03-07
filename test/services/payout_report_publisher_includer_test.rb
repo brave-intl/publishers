@@ -2,6 +2,8 @@ require "test_helper"
 require "webmock/minitest"
 
 class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
+  include EyeshadeHelper
+
   before do
     ActionMailer::Base.deliveries.clear
     PotentialPayment.destroy_all
@@ -13,8 +15,6 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = @prev_offline
     Rails.application.secrets[:fee_rate] = @prev_fee_rate
   end
-
-  api_eyeshade_base_uri = Rails.application.secrets[:api_eyeshade_base_uri]
 
   describe "when publisher does not have a verified channel" do
     let(:publisher) { publishers(:fake1) }
@@ -47,8 +47,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     before { subject }
 
-    it "does not generate a report" do
-      assert_equal 0, PotentialPayment.count
+    it "does generate a report noting publisher is suspended" do
+      assert_equal 2, PotentialPayment.count
     end
   end
 
@@ -94,12 +94,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       Rails.application.secrets[:fee_rate] = 0.05
       Rails.application.secrets[:api_eyeshade_offline] = false
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-
-      account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-        .to_return(status: 200, body: wallet_response.to_json, headers: {})
-      stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
-        .to_return(status: 200, body: balance_response.to_json)
+      stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response, wallet: wallet_response)
 
       subject
     end
@@ -163,12 +158,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = false
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
 
-      account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-      stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-        .to_return(status: 200, body: wallet_response.to_json, headers: {})
-      stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
-        .to_return(status: 200, body: balance_response.to_json)
-
+      stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
       subject
     end
 
@@ -228,14 +218,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       end
 
       before do
-        account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-
-        stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-          .to_return(status: 200, body: wallet_response.to_json, headers: {})
-
-        stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
-          .to_return(status: 200, body: balance_response.to_json)
-
+        Rails.application.secrets[:api_eyeshade_offline] = false
+        stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
         subject
       end
 
@@ -261,185 +245,111 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         assert_equal email&.subject, I18n.t("publisher_mailer.wallet_not_connected.subject")
       end
     end
+  end
 
-    describe "when uphold verified" do
-      let(:publisher) { publishers(:uphold_connected) }
-      let(:subject) do
-        perform_enqueued_jobs do
-          PayoutReportPublisherIncluder.new(payout_report: @payout_report,
-                                            publisher: publisher,
-                                            should_send_notifications: should_send_notifications).perform
-        end
+  describe "when uphold verified" do
+    let(:publisher) { publishers(:uphold_connected) }
+    let(:should_send_notifications) { true }
+    let(:subject) do
+      perform_enqueued_jobs do
+        PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+                                          publisher: publisher,
+                                          should_send_notifications: should_send_notifications).perform
       end
+    end
 
-      # All members should have addresses
-      describe "with address" do
-        describe "with balance" do
-          let(:balance_response) do
-            [
-              {
-                account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-                account_type: "owner",
-                balance: "20.00"
-              },
-              {
-                account_id: "uphold_connected.org",
-                account_type: "channel",
-                balance: "20.00"
-              },
-              {
-                account_id: "twitch#author:ucTw",
-                account_type: "channel",
-                balance: "20.00"
-              }, {
-                account_id: "twitter#channel:def456",
-                account_type: "channel",
-                balance: "20.00"
-              }
-            ]
+    # All members should have addresses
+    describe "with address" do
+      describe "with balance" do
+        let(:balance_response) do
+          [
+            {
+              account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+              account_type: "owner",
+              balance: "20.00"
+            },
+            {
+              account_id: "uphold_connected.org",
+              account_type: "channel",
+              balance: "20.00"
+            },
+            {
+              account_id: "twitch#author:ucTw",
+              account_type: "channel",
+              balance: "20.00"
+            }, {
+              account_id: "twitter#channel:def456",
+              account_type: "channel",
+              balance: "20.00"
+            }
+          ]
+        end
+
+        before do
+          Rails.application.secrets[:fee_rate] = 0.05
+          @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+          stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+        end
+
+        # Edge case when user has reached uphold transaction limits
+        describe "when is a member and restricted" do
+          let(:wallet_response) do
+            { wallet: { authorized: false, status: "restricted", "isMember": true } }
           end
 
           before do
             Rails.application.secrets[:fee_rate] = 0.05
             @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-
-            account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
-              .to_return(status: 200, body: balance_response.to_json)
+            Rails.application.secrets[:api_eyeshade_offline] = false
+            stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
+            subject
           end
 
-          # Edge case when user has reached uphold transaction limits
-          describe "when is a member and restricted" do
-            let(:wallet_response) do
-              { wallet: { authorized: false, status: "restricted", "isMember": true } }
+          describe "when should_send_notifications is false" do
+            let(:should_send_notifications) { false }
+
+            it "creates potential payments" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
             end
 
-            before do
-              stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-                .to_return(status: 200, body: wallet_response.to_json, headers: {})
+            it "does not include any potential payments in payout report" do
+              @payout_report.update_report_contents
+              assert_equal 0, JSON.parse(@payout_report.contents).length
             end
 
-            describe "when should_send_notifications is false" do
-              let(:should_send_notifications) { false }
-
-              before do
-                subject
-              end
-
-              it "creates potential payments" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-              end
-
-              it "does not include any potential payments in payout report" do
-                @payout_report.update_report_contents
-                assert_equal 0, JSON.parse(@payout_report.contents).length
-              end
-
-              it "sends no emails" do
-                assert_empty ActionMailer::Base.deliveries
-              end
-            end
-
-            describe "when should_send_notifications is true" do
-              let(:should_send_notifications) { true }
-
-              before do
-                subject
-              end
-
-              it "does not include in report" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-              end
-
-              it "sends an email notifying restricted" do
-                assert ActionMailer::Base.deliveries.present?
-              end
+            it "sends no emails" do
+              assert_empty ActionMailer::Base.deliveries
             end
           end
 
-          describe "when is a member" do
-            let(:wallet_response) do
-              { wallet: { authorized: true, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "ok", "isMember": true, id: "fake uphold id" } }
+          describe "when should_send_notifications is true" do
+            let(:should_send_notifications) { true }
+
+            it "does not include in report" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
             end
 
-            describe "when should_send_notifications is false" do
-              let(:should_send_notifications) { false }
-
-              describe "when payout_report exists" do
-                before do
-                  stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-                    .to_return(status: 200, body: wallet_response.to_json, headers: {})
-
-                  subject
-                end
-
-                it "is included in payout report" do
-                  assert_equal @payout_report.num_payments, publisher.channels.count + 1
-                  assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
-                  assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
-
-                  @payout_report.update_report_contents
-                  assert_equal 4, JSON.parse(@payout_report.contents).length
-                end
-
-                it "has the correct content" do
-                  PotentialPayment.where(payout_report_id: @payout_report.id).each do |potential_payment|
-                    assert_equal potential_payment.address, wallet_response[:wallet][:address]
-                    assert_equal potential_payment.publisher_id, publisher.id.to_s
-                    assert_equal "fake uphold id", potential_payment.uphold_id
-                    if potential_payment.kind == PotentialPayment::CONTRIBUTION
-                      assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
-                    elsif potential_payment.kind == PotentialPayment::REFERRAL
-                      assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
-                    end
-                    assert_equal "ok", potential_payment.uphold_status
-                    assert potential_payment.uphold_member
-                    refute potential_payment.suspended
-                  end
-                end
-
-                it "does not create any extra payments" do
-                  assert_difference -> { PotentialPayment.count }, 0 do
-                    PayoutReportPublisherIncluder.new(payout_report: @payout_report,
-                                                      publisher: publisher,
-                                                      should_send_notifications: should_send_notifications).perform
-                  end
-                end
-
-                it "sends no emails" do
-                  assert_empty ActionMailer::Base.deliveries
-                end
-              end
-
-              # describe "when payout_report is nil" do
-              #   before do
-              #     perform_enqueued_jobs do
-              #       PayoutReportPublisherIncluder.new(payout_report: nil,
-              #                                         publisher: publisher,
-              #                                         should_send_notifications: should_send_notifications).perform
-              #     end
-              #   end
-
-              #   it "does not add any potential payments" do
-              #     assert_equal 0, PotentialPayment.count
-              #   end
-              # end
+            it "sends an email notifying restricted" do
+              assert ActionMailer::Base.deliveries.present?
             end
+          end
+        end
 
-            describe "when should_send_notifications is true" do
-              let(:should_send_notifications) { true }
+        describe "when is a member" do
+          let(:wallet_response) do
+            { wallet: { authorized: true, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "ok", "isMember": true, id: "fake uphold id" } }
+          end
 
+          describe "when should_send_notifications is false" do
+            let(:should_send_notifications) { false }
+
+            describe "when payout_report exists" do
               before do
-                stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-                  .to_return(status: 200, body: wallet_response.to_json, headers: {})
+                Rails.application.secrets[:api_eyeshade_offline] = false
+                stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
                 subject
-              end
-
-              # This is the happy path, the publisher is in the happy state and does not need any additional contact.
-              it "sends no emails" do
-                assert_empty ActionMailer::Base.deliveries
               end
 
               it "is included in payout report" do
@@ -455,11 +365,15 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                 PotentialPayment.where(payout_report_id: @payout_report.id).each do |potential_payment|
                   assert_equal potential_payment.address, wallet_response[:wallet][:address]
                   assert_equal potential_payment.publisher_id, publisher.id.to_s
+                  assert_equal "fake uphold id", potential_payment.uphold_id
                   if potential_payment.kind == PotentialPayment::CONTRIBUTION
                     assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
                   elsif potential_payment.kind == PotentialPayment::REFERRAL
                     assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
                   end
+                  assert_equal "ok", potential_payment.uphold_status
+                  assert potential_payment.uphold_member
+                  refute potential_payment.suspended
                 end
               end
 
@@ -470,255 +384,283 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                                                     should_send_notifications: should_send_notifications).perform
                 end
               end
+
+              it "sends no emails" do
+                assert_empty ActionMailer::Base.deliveries
+              end
             end
           end
 
-          describe "not a member" do
-            # Possible that user
-            let(:wallet_response) do
-              { wallet: { authorized: false, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "restricted", "isMember": false, id: "fake uphold id" } }
-            end
+          describe "when should_send_notifications is true" do
+            let(:should_send_notifications) { true }
 
             before do
-              stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-                .to_return(status: 200, body: wallet_response.to_json, headers: {})
+              Rails.application.secrets[:api_eyeshade_offline] = false
+              stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
+              subject
             end
 
-            describe "should_send_notifications is true" do
-              let(:should_send_notifications) { true }
+            # This is the happy path, the publisher is in the happy state and does not need any additional contact.
+            it "sends no emails" do
+              assert_empty ActionMailer::Base.deliveries
+            end
 
-              before do
-                subject
-              end
+            it "is not included in payout report" do
+              assert_equal @payout_report.num_payments, publisher.channels.count + 1
+              assert_equal @payout_report.amount, (80 * BigDecimal("1e18") - ((60 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i
+              assert_equal @payout_report.fees, (60 * BigDecimal("1e18") * @payout_report.fee_rate).to_i
+            end
 
-              it "creats the potential payments" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-
-                PotentialPayment.all.each do |potential_payment|
-                  refute potential_payment.uphold_member
+            it "has the correct content" do
+              PotentialPayment.where(payout_report_id: @payout_report.id).each do |potential_payment|
+                assert_equal potential_payment.address, wallet_response[:wallet][:address]
+                assert_equal potential_payment.publisher_id, publisher.id.to_s
+                if potential_payment.kind == PotentialPayment::CONTRIBUTION
+                  assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
+                elsif potential_payment.kind == PotentialPayment::REFERRAL
+                  assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
                 end
               end
-
-              it "does not include in payout report" do
-                @payout_report.update_report_contents
-                assert_equal 0, JSON.parse(@payout_report.contents).length
-              end
-
-              it "receives KYC email" do
-                email = ActionMailer::Base.deliveries.last
-                assert_equal email.subject, I18n.t("publisher_mailer.uphold_kyc_incomplete.subject")
-              end
             end
 
-            describe "should_send_notifications is false" do
-              let(:should_send_notifications) { false }
-
-              before do
-                subject
-              end
-
-              it "does not include in report" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-              end
-
-              it "recieves no emails" do
-                assert_empty ActionMailer::Base.deliveries
+            it "does not create any extra payments" do
+              assert_difference -> { PotentialPayment.count }, 0 do
+                PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+                                                  publisher: publisher,
+                                                  should_send_notifications: should_send_notifications).perform
               end
             end
           end
         end
 
-        describe "without balance" do
-          let(:balance_response) do
-            [
-              {
-                account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
-                account_type: "owner",
-                balance: "0.00"
-              },
-              {
-                account_id: "uphold_connected.org",
-                account_type: "channel",
-                balance: "0.00"
-              },
-              {
-                account_id: "twitch#author:ucTw",
-                account_type: "channel",
-                balance: "0.00"
-              }, {
-                account_id: "twitter#channel:def456",
-                account_type: "channel",
-                balance: "0.00"
-              }
-            ]
-          end
-
-          let(:should_send_notifications) { true }
+        describe "not a member" do
+          # Possible that user
           let(:wallet_response) do
-            { wallet: { authorized: false, status: "restricted", "isMember": true, id: "fake uphold id"} }
+            { wallet: { authorized: false, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "restricted", "isMember": false, id: "fake uphold id" } }
           end
 
           before do
-            Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-
-            stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-              .to_return(status: 200, body: wallet_response.to_json, headers: {})
-            account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
-              .to_return(status: 200, body: balance_response.to_json)
-
+            Rails.application.secrets[:api_eyeshade_offline] = false
+            stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
             subject
           end
 
-          it "is not included in the payout report" do
-            assert_equal 4, PotentialPayment.count
-            assert_equal 0, @payout_report.amount
+          describe "should_send_notifications is true" do
+            let(:should_send_notifications) { true }
+
+            it "does not create potential payments" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
+
+              PotentialPayment.all.each do |potential_payment|
+                refute potential_payment.uphold_member
+              end
+            end
+
+            it "does not include in report" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
+            end
+
+            it "receives KYC email" do
+              email = ActionMailer::Base.deliveries.last
+              assert_equal email.subject, I18n.t("publisher_mailer.uphold_kyc_incomplete.subject")
+            end
           end
 
-          it "recieves no emails" do
-            assert_empty ActionMailer::Base.deliveries
+          describe "should_send_notifications is false" do
+            let(:should_send_notifications) { false }
+
+            it "does not include in report" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
+            end
+
+            it "recieves no emails" do
+              assert_empty ActionMailer::Base.deliveries
+            end
           end
         end
       end
 
-      describe "without address" do
-        describe "with balance" do
-          let(:balance_response) do
+      describe "without balance" do
+        let(:balance_response) do
             [
               {
                 account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
                 account_type: "owner",
-                balance: "20.00"
+                balance: "0.00"
               },
               {
                 account_id: "uphold_connected.org",
                 account_type: "channel",
-                balance: "20.00"
+                balance: "0.00"
               },
               {
                 account_id: "twitch#author:ucTw",
                 account_type: "channel",
-                balance: "20.00"
+                balance: "0.00"
               }, {
                 account_id: "twitter#channel:def456",
                 account_type: "channel",
-                balance: "20.00"
+                balance: "0.00"
               }
             ]
           end
+        let(:should_send_notifications) { true }
+        let(:wallet_response) do
+          { wallet: { authorized: false, status: "restricted", "isMember": true, id: "fake uphold id"} }
+        end
+
+        before do
+          Rails.application.secrets[:fee_rate] = 0.05
+          Rails.application.secrets[:api_eyeshade_offline] = false
+          @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+          stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+          subject
+        end
+
+        it "is not included in the payout report" do
+          assert_equal 4, PotentialPayment.count
+          assert_equal 0, @payout_report.amount
+        end
+
+        it "recieves no emails" do
+          assert_empty ActionMailer::Base.deliveries
+        end
+      end
+    end
+
+    describe "without address" do
+      describe "with balance" do
+        let(:balance_response) do
+          [
+            {
+              account_id: "publishers#uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8",
+              account_type: "owner",
+              balance: "20.00"
+            },
+            {
+              account_id: "uphold_connected.org",
+              account_type: "channel",
+              balance: "20.00"
+            },
+            {
+              account_id: "twitch#author:ucTw",
+              account_type: "channel",
+              balance: "20.00"
+            }, {
+              account_id: "twitter#channel:def456",
+              account_type: "channel",
+              balance: "20.00"
+            }
+          ]
+        end
+
+        before do
+          Rails.application.secrets[:fee_rate] = 0.05
+          Rails.application.secrets[:api_eyeshade_offline] = false
+          @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
+          stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+        end
+
+        # Technically this path would only be possible if the user was restricted
+        #  eyeshade omits the wallet address if the status is not ok
+        describe "is a member" do
+          let(:wallet_response) do
+            { wallet: { authorized: false, status: "restricted", "isMember": true } }
+          end
 
           before do
-            Rails.application.secrets[:fee_rate] = 0.05
-            @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-            account_ids = balance_response.map { |x| "account=#{x[:account_id]}" }.join("&")
-            stub_request(:get, "#{api_eyeshade_base_uri}/v1/accounts/balances?#{URI.escape(account_ids)}&pending=true")
-              .to_return(status: 200, body: balance_response.to_json)
+            stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
           end
 
-          # Technically this path would only be possible if the user was restricted
-          #  eyeshade omits the wallet address if the status is not ok
-          describe "is a member" do
-            let(:wallet_response) do
-              { wallet: { authorized: false, status: "restricted", "isMember": true } }
-            end
+          describe "should_send_notifications is true" do
+            let(:should_send_notifications) { true }
 
             before do
-              stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-                .to_return(status: 200, body: wallet_response.to_json, headers: {})
+              subject
             end
 
-            describe "should_send_notifications is true" do
-              let(:should_send_notifications) { true }
-
-              before do
-                subject
-              end
-
-              it "it creates potential payments" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-              end
-
-              it "does not include them in payout report json" do
-                @payout_report.update_report_contents
-                assert_equal 0, JSON.parse(@payout_report.contents).length
-              end
-
-              it "recieves an email to check uphold" do
-                email = ActionMailer::Base.deliveries.last
-                assert_equal email&.subject, I18n.t("publisher_mailer.uphold_member_restricted.subject")
-              end
+            it "it creates potential payments" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
             end
 
-            describe "should_send_notifications is false" do
-              let(:should_send_notifications) { false }
+            it "does not include them in payout report json" do
+              @payout_report.update_report_contents
+              assert_equal 0, JSON.parse(@payout_report.contents).length
+            end
 
-              before do
-                subject
-              end
-
-              it "creates payments" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-              end
-
-              it "does not recieve any emails" do
-                assert_empty ActionMailer::Base.deliveries
-              end
+            it "receives an email to check uphold" do
+              email = ActionMailer::Base.deliveries.last
+              assert_equal email&.subject, I18n.t("publisher_mailer.uphold_member_restricted.subject")
             end
           end
 
-          describe "not a member" do
-            let(:wallet_response) do
-              { wallet: { authorized: false, status: "restricted", "isMember": false } }
-            end
+          describe "should_send_notifications is false" do
+            let(:should_send_notifications) { false }
 
             before do
-              stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/)
-                .to_return(status: 200, body: wallet_response.to_json, headers: {})
+              subject
             end
 
-            describe "should_send_notifications is true" do
-              let(:should_send_notifications) { true }
-              before { subject }
-
-              it "creates the potential payments" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-              end
-
-              it "does not include them in payout report json" do
-                @payout_report.update_report_contents
-
-                assert_equal 0, JSON.parse(@payout_report.contents).length
-              end
-
-              it "recieves an email to KYC uphold" do
-                email = ActionMailer::Base.deliveries.last
-                assert_equal email&.subject, I18n.t("publisher_mailer.uphold_kyc_incomplete.subject")
-              end
+            it "creates payments" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
             end
 
-            describe "should_send_notifications is false" do
-              let(:should_send_notifications) { false }
-              before { subject }
+            it "does not recieve any emails" do
+              assert_empty ActionMailer::Base.deliveries
+            end
+          end
+        end
 
-              it "creates the potential payments" do
-                assert_equal 4, PotentialPayment.count
-                assert_equal 0, @payout_report.amount
-              end
+        describe "not a member" do
+          let(:wallet_response) do
+            { wallet: { authorized: false, status: "restricted", "isMember": false } }
+          end
 
-              it "does not include the payments in the payout json" do
-                @payout_report.update_report_contents
-                assert_equal 0, JSON.parse(@payout_report.contents).length
-              end
+          before do
+            Rails.application.secrets[:api_eyeshade_offline] = false
+            stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
+            subject
+          end
 
-              it "does not receive any emails " do
-                assert_empty ActionMailer::Base.deliveries
-              end
+          describe "should_send_notifications is true" do
+            let(:should_send_notifications) { true }
+
+            it "creates the potential payments" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
+            end
+
+            it "does not include them in payout report json" do
+              @payout_report.update_report_contents
+
+              assert_equal 0, JSON.parse(@payout_report.contents).length
+            end
+
+            it "recieves an email to KYC uphold" do
+              email = ActionMailer::Base.deliveries.last
+              assert_equal email&.subject, I18n.t("publisher_mailer.uphold_kyc_incomplete.subject")
+            end
+          end
+
+          describe "should_send_notifications is false" do
+            let(:should_send_notifications) { false }
+            it "creates the potential payments" do
+              assert_equal 4, PotentialPayment.count
+              assert_equal 0, @payout_report.amount
+            end
+
+            it "does not include the payments in the payout json" do
+              @payout_report.update_report_contents
+              assert_equal 0, JSON.parse(@payout_report.contents).length
+            end
+
+            it "does not receive any emails " do
+              assert_empty ActionMailer::Base.deliveries
             end
           end
         end

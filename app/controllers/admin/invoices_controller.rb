@@ -61,6 +61,7 @@ module Admin
       )
 
       if params[:file].present? && invoice_file.save
+        PartnerMailer.invoice_file_added(invoice_file, @invoice.partner).deliver_later
         redirect_to path, flash: { notice: "Your document was uploaded successfully" }
       else
         redirect_to path, flash: { alert: "Your document could not be uploaded" }

@@ -8,12 +8,27 @@ import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
 import { renderBannerEditor } from '../packs/banner_editor'
+import { renderReferralCharts } from '../packs/referral_charts';
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
 const SELECT_CURRENCY = '---';
 const BASIC_ATTENTION_TOKEN = 'BAT'
 const UNAVAILABLE = 'unavailable';
+
+function formatConvertedBalance(amount, currency) {
+  if (isNaN(amount) || amount === null ) {
+    return `${currency} ${UNAVAILABLE}`;
+  } else {
+    let formattedAmount = formatAmount(amount)
+    return `~ ${formattedAmount} ${currency}`;
+  }
+}
+
+// Ensures amounts always have two decimal places
+function formatAmount(amount) {
+  return (Math.round(parseFloat(amount) * 100) / 100).toFixed(2);
+}
 
 function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById('pending_email_notice');
@@ -26,39 +41,34 @@ function showPendingContactEmail(pendingEmail) {
   }
 }
 
-function updateTotalContributionBalance(balance) {
+function updateOverallBalance(balance) {
   let batAmount = document.getElementById('bat_amount');
-  batAmount.innerText = balance.bat.toFixed(2);
+  batAmount.innerText = formatAmount(balance.amount_bat);
   let convertedAmount = document.getElementById('converted_amount');
 
-  convertedAmount.style.display = balance.currency === "BAT" || balance.currency === null ? 'none' : 'block';
-  convertedAmount.innerText = formatBalance(balance.converted, balance.currency);
-}
-
-function formatBalance(amount, currency) {
-  if (isNaN(amount)) {
-    return `${currency} ${UNAVAILABLE}`;
-  } else {
-    return `~ ${amount.toFixed(2)} ${currency}`;
+  if (!(balance.default_currency === "BAT" || balance.default_currency === null)) {
+    convertedAmount.style.display = 'block';
+    convertedAmount.innerText = formatConvertedBalance(balance.amount_default_currency, balance.default_currency);
   }
 }
 
-function updateLastSettlement(settlement) {
+
+function updateLastSettlement(lastSettlementBalance) {
   let lastSettlement = document.getElementById('last_settlement');
   let lastDepositDate = document.getElementById('last_deposit_date');
   let lastDepositBatAmount = document.getElementById('last_deposit_bat_amount');
   let lastDepositConvertedAmount = document.getElementById('last_deposit_converted_amount');
 
-  if (settlement.date) {
+  if (lastSettlementBalance.timestamp) {
     lastSettlement.classList.remove('no-settlement-made');
     lastSettlement.classList.add('settlement-made');
 
-    lastDepositDate.innerText = formatFullDate(settlement.date);
-    lastDepositBatAmount.innerText = settlement.amount.bat.toFixed(2);
-    lastDepositConvertedAmount.style.display = settlement.amount.currency === "BAT" || settlement.amount.currency === null ? 'none' : 'block';
-    lastDepositConvertedAmount.innerText = formatBalance(settlement.amount.converted, settlement.amount.currency);
-  }
-  else {
+    lastDepositDate.innerText = formatFullDate(new Date(lastSettlementBalance.timestamp * 1000)); // Convert to milliseconds
+
+    lastDepositBatAmount.innerText = lastSettlementBalance.amount_bat;
+    lastDepositConvertedAmount.style.display = lastSettlementBalance.settlement_currency === "BAT" || lastSettlementBalance.settlement_currency === null ? 'none' : 'block';
+    lastDepositConvertedAmount.innerText = formatConvertedBalance(lastSettlementBalance.amount_settlement_currency, lastSettlementBalance.settlement_currency);
+  } else {
     lastSettlement.classList.remove('settlement-made');
     lastSettlement.classList.add('no-settlement-made');
 
@@ -72,21 +82,21 @@ function updateChannelBalances(wallet) {
   for (let channelId in wallet.channelBalances) {
     let channelAmount = document.getElementById('channel_amount_bat_' + channelId);
     if (channelAmount) {
-      channelAmount.innerText = wallet.getChannelAmount(channelId).bat.toFixed(2);
+      channelAmount.innerText = formatAmount(wallet.channelBalances[channelId].amount_bat);
     }
   }
 }
 
 function updateDefaultCurrencyValue(wallet) {
   let upholdStatusElement = document.getElementById('uphold_status');
-  upholdStatusElement.setAttribute('data-default-currency', wallet.providerWallet.defaultCurrency || '');
+  upholdStatusElement.setAttribute('data-default-currency', wallet.defaultCurrency || '');
 
   let defaultCurrencyDisplay = document.getElementById('default_currency_code');
-  defaultCurrencyDisplay.innerText = wallet.providerWallet.defaultCurrency || NO_CURRENCY_SELECTED;
+  defaultCurrencyDisplay.innerText = wallet.defaultCurrency || NO_CURRENCY_SELECTED;
 }
 
 function updatePossibleCurrencies(wallet) {
-  let possibleCurrencies = wallet.providerWallet.possibleCurrencies || [];
+  let possibleCurrencies = wallet.possibleCurrencies;
   let upholdStatusElement = document.getElementById('uphold_status');
   upholdStatusElement.setAttribute('data-possible-currencies', JSON.stringify(possibleCurrencies));
 }
@@ -130,28 +140,29 @@ function refreshBalance() {
     method: 'GET'
   };
 
-  return fetchAfterDelay('./balance', 500)
+  return fetchAfterDelay('./wallet', 500)
     .then(function(response) {
       if (response.status === 200 || response.status === 304) {
         return response.json();
       }
     })
     .then(function(body) {
+
       let wallet = new Wallet(body);
 
       updateDefaultCurrencyValue(wallet);
 
       updatePossibleCurrencies(wallet);
 
-      let contributionAmount = wallet.totalAmount;
-      updateTotalContributionBalance(contributionAmount);
+      let overallBalance = wallet.overallBalance;
+      updateOverallBalance(overallBalance);
 
-      let lastSettlement = wallet.lastSettlement;
-      updateLastSettlement(lastSettlement);
+      let lastSettlementBalance = wallet.lastSettlementBalance;
+      updateLastSettlement(lastSettlementBalance);
 
       updateChannelBalances(wallet);
 
-      if (!wallet.providerWallet.defaultCurrency && wallet.providerWallet.authorized) {
+      if (!wallet.defaultCurrency && wallet.authorized) {
         openDefaultCurrencyModal();
       }
     });
@@ -314,6 +325,19 @@ function hideVerificationFailureWhatHappened(element) {
   elementToHide.style.display = "none"
 }
 
+function toggleDialog(event, elements) {
+  for (var i=0; i < elements.length; i++) {
+    // Do not hide if the clicked element is supposed to show the bubble
+    // Or if the clicked element is the bubble
+    let e = elements[i];
+    if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
+      continue;
+    } else {
+      hideVerificationFailureWhatHappened(e);
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   if (document.querySelectorAll('body[data-action="home"]').length === 0) {
     return;
@@ -389,19 +413,17 @@ document.addEventListener('DOMContentLoaded', function() {
     verificationFailureWhatHappenedElements[i].addEventListener('click', showWhatHappenedVerificationFailure, false);
   }
 
+  let infoText = document.getElementsByClassName('info--what-happened');
+  for (let i=0; i < infoText.length; i++) {
+    infoText[i].addEventListener('click', showWhatHappenedVerificationFailure, false);
+  }
+
   // Hide all verification failed bubbles when anywhere on DOM is clicked
   document.body.addEventListener('click', function(event) {
-    for (var i=0; i<verificationFailureWhatHappenedElements.length; i++) {
-      // Do not hide if the clicked element is supposed to show the bubble
-      // Or if the clicked element is the bubble
-      let e = verificationFailureWhatHappenedElements[i];
-      if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
-        continue;
-      } else {
-        hideVerificationFailureWhatHappened(e);
-      }
-    }
+    toggleDialog(event, verificationFailureWhatHappenedElements);
+    toggleDialog(event, infoText);
   })
+
 
   let instantDonationButton = document.getElementById("instant-donation-button");
 
@@ -501,4 +523,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
   }, false);
+
+  renderReferralCharts();
 });
