@@ -142,8 +142,6 @@ end
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-  # Vulnerabilities
-  gem "bundler-audit", require: false
 
   # Static security vulnerability scanner
   gem "brakeman"
@@ -181,6 +179,8 @@ end
 group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
+  # Vulnerabilities
+  gem "bundler-audit", require: false
   gem "mocha"
   gem 'minitest-rails-capybara', '~> 3.0.1'
   gem "capybara-selenium"
