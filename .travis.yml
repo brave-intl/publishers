@@ -1,5 +1,9 @@
-language: ruby
+language:
+  - ruby
+  - node_js
 cache: bundler
+node_js:
+  - "11.10.1"
 bundler_args: "--jobs=3 --retry=3 --without production --without staging --binstubs"
 dist: xenial
 sudo: required
@@ -20,7 +24,6 @@ install:
   - chromedriver-update
   - sudo apt-get update
   - sudo apt-get install google-chrome-stable
-  - nvm install stable && nvm alias default stable
   - npm install -g npm@5.6.x
   - npm install -g yarn
   - node --version
