@@ -47,8 +47,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     before { subject }
 
-    it "does not generate a report" do
-      assert_equal 0, PotentialPayment.count
+    it "does generate a report noting publisher is suspended" do
+      assert_equal 2, PotentialPayment.count
     end
   end
 
