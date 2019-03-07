@@ -3,7 +3,7 @@
   h2.mt-1= @invoice.human_date + " Invoice"
   - if @invoice.in_progress?
     .ml-3
-      = link_to "Generate Manual Payout", admin_partner_generate_payout_report_path(@invoice.partner), class: 'btn btn-info'
+      = link_to "Generate Manual Payout", admin_partner_generate_manual_payout_path(id: @invoice.partner), class: 'btn btn-info'
   - else
     .ml-3
       = link_to "Edit", edit_admin_partner_invoice_path(@invoice), class: 'btn btn-primary'

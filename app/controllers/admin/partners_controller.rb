@@ -65,10 +65,11 @@ module Admin
       end
     end
 
-
-    def generate_payout_report
-      puts 'generating that thang'  
-      redirect_to admin_partners_path, flash: { notice: "Generating manual payout report" }
+    def generate_manual_payout
+      # Generate report for the selected partner
+      publisher_ids = [].push(params[:id])
+      EnqueuePublishersForPayoutJob.perform_later(final: true, manual: true, publisher_ids: publisher_ids)
+      redirect_to admin_payout_reports_path, flash: { notice: "Generating manual report for partner, please check back soon."}
     end
 
     private

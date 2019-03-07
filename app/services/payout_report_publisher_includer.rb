@@ -6,8 +6,7 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    puts "performing on " + @publisher.email
-    return if (@publisher.suspended? || !@publisher.has_verified_channel? || @publisher.excluded_from_payout?) && !@publisher.partner?
+    return if @publisher.suspended? || !@publisher.has_verified_channel? || @publisher.excluded_from_payout?
     publisher_has_unsettled_balance = false
 
     wallet = @publisher.wallet
@@ -61,30 +60,6 @@ class PayoutReportPublisherIncluder < BaseService
       end
     end
 
-    puts @publisher.partner?
-    if @publisher.partner?
-      unless should_only_notify?
-        puts 'helo'
-        invoice = Invoice.find_by_partner_id(@publisher.id)
-        amount = invoice.finalized_amount_to_probi
-        PotentialPayment.create(payout_report_id: @payout_report.id,
-                                name: @publisher.name,
-                                amount: amount,
-                                fees: "0",
-                                publisher_id: @publisher.id,
-                                kind: PotentialPayment::MANUAL,
-                                address: "#{wallet.address}",
-                                uphold_status: uphold_status,
-                                reauthorization_needed: reauthorization_needed,
-                                uphold_member: uphold_member,
-                                suspended: suspended,
-                                uphold_id: uphold_id,
-                                invoice_id: invoice.id,
-                                finalized_by_id: invoice.finalized_by_id
-                                )
-      end
-    end
-
     # Notify publishers that have money waiting, but will not will not receive funds
     if publisher_has_unsettled_balance && @should_send_notifications
       if !@publisher.uphold_verified? || wallet.uphold_account_status.nil?
@@ -110,4 +85,3 @@ class PayoutReportPublisherIncluder < BaseService
     @payout_report.nil?
   end
 end
-
