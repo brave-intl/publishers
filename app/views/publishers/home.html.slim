@@ -194,7 +194,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
 
     / Don't show if none of the promo registrations has a valid stat
-    - if current_publisher.promo_registrations.present? && current_publisher.promo_registrations.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
+    - if current_publisher.promo_registrations.present? && current_publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
       = render "publishers/referral_charts", current_publisher: current_publisher
 
     - current_publisher.channels.visible.each do |channel|

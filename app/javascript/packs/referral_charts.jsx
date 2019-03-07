@@ -152,7 +152,7 @@ export default class ReferralCharts extends React.Component {
     return (
       <div style={{display: 'inline-flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
         <ControlWrapper
-          text={'Choose a Referral Code to view its Stats'}
+          text={'Choose a Referral Code to view its Stats (ones with no records are hidden)'}
           type={'light'}>
             <div style={{maxWidth: "350px"}} >
               <Select type={'light'} ref={this.selectMenuRef} >

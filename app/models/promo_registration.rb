@@ -43,6 +43,7 @@ class PromoRegistration < ApplicationRecord
   scope :owner_only, -> { where(kind: OWNER) }
   scope :unattached_only, -> { where(kind: UNATTACHED) }
   scope :channels_only, -> { where(kind: CHANNEL) }
+  scope :has_stats, -> { where.not(stats: "[]") }
 
   # Parses the events associated with a promo registration and returns
   # the aggregate totals for each event type
