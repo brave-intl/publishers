@@ -159,7 +159,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
 
     assert_equal promo_registration.aggregate_stats["retrievals"], 0
     assert_equal promo_registration.aggregate_stats["first_runs"], 8
-    assert_equal promo_registration.aggregate_stats["finalized"], 2   
+    assert_equal promo_registration.aggregate_stats["finalized"], 2
   end
 
   test "unattached scope returns only unattached promo registrations" do
@@ -187,6 +187,29 @@ class PromoRegistrationTest < ActiveSupport::TestCase
 
     assert_equal PromoRegistration.channels_only.count, 3
     assert_equal PromoRegistration.channels_only.order("created_at").last, promo_registration
+  end
+
+  describe "promo enabled publishers" do
+    let(:publisher) { publishers(:promo_enabled) }
+    test "stats_by_date returns a summary version of stats grouped by dates and fills in dates" do
+      # Ensure promo registrations with stats present has correct format
+      publisher.promo_registrations.where(referral_code: "PRO123").first.update(stats: [{"referral_code"=>"PRO123",
+                                                                                     "ymd"=>"2018-10-24",
+                                                                                     "retrievals"=>1,
+                                                                                     "first_runs"=>1,
+                                                                                     "finalized"=>0},
+                                                                                  {"referral_code"=>"PRO123",
+                                                                                     "ymd"=>"2018-10-24",
+                                                                                     "retrievals"=>1,
+                                                                                     "first_runs"=>1,
+                                                                                     "finalized"=>0}].to_json)
+      result = PromoRegistration.find_by(referral_code: "PRO123").stats_by_date
+      assert_equal "2018-10-24", result[0]['ymd']
+      assert_equal 2, result[0]['retrievals']
+      assert_equal 2, result[0]['first_runs']
+      assert_equal 0, result[0]['finalized']
+      assert_equal Date.today - Date.parse(result[0]['ymd']), result.length
+    end
   end
 
   test "aggregate_stats class method aggregates stats for all of a publishers's promo registrations" do
