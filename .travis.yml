@@ -29,6 +29,7 @@ before_install:
   - npm --version
   - google-chrome --version
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+after_install:
   - rake db:setup
   - bundle exec rake assets:precompile
 script:
