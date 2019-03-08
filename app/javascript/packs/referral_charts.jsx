@@ -66,6 +66,18 @@ export default class ReferralCharts extends React.Component {
     }
 
     Chart.defaults.global.defaultFontFamily = "Poppins";
+    Chart.scaleService.updateScaleDefaults('logarithmic', {
+      ticks: {
+        callback: function(...args) {
+          // new default function here
+          const value = Chart.Ticks.formatters.logarithmic.call(this, ...args);
+          if (value.length) {
+            return Number(value).toLocaleString()
+          }
+          return value;
+        }
+      }
+    });
 
     new Chart(canvas, {
       type: "line",
@@ -107,7 +119,9 @@ export default class ReferralCharts extends React.Component {
               type: "time",
               distribution: "series",
               ticks: {
-                source: "labels"
+                autoSkip: true,
+                source: "labels",
+                maxTicksLimit: 20
               },
               time: {
                 unit: "day"
