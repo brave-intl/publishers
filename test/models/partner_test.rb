@@ -26,7 +26,7 @@ class PartnerTest < ActiveSupport::TestCase
     end
 
     it 'adds invoices and displays in default currency' do
-      expect('%.2f' % partner.balance_in_currency).must_equal 47.28
+      expect('%.2f' % partner.balance_in_currency).must_equal "47.28"
     end
   end
 end
