@@ -52,6 +52,12 @@ end
 #
 # preload_app!
 
+require 'barnes'
+before_fork do
+  # worker specific setup
+
+  Barnes.start # Must have enabled worker mode for this to block to be called
+end
 # The code in the `on_worker_boot` will be called if you are using
 # clustered mode by specifying a number of `workers`. After each worker
 # process is booted this block will be run, if you are using `preload_app!`
