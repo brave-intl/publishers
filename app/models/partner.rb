@@ -19,7 +19,6 @@ class Partner < Publisher
 
   def balance_in_currency
     wallet.contribution_balance.add_bat(invoice_amount)
-
     wallet.contribution_balance.amount_default_currency
   end
 
@@ -33,6 +32,6 @@ class Partner < Publisher
     invoices = Invoice.where(partner_id: id, paid: false)
     amounts = invoices.map { |i| i.finalized_amount || i.amount }
 
-    amounts.map { |x| x.gsub(/,/, '').to_i }.reduce(:+)
+    amounts.map { |x| x.tr(",", "").to_i }.reduce(:+)
   end
 end
