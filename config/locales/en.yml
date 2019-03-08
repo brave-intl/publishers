@@ -46,6 +46,7 @@ en:
     terms_of_service: Terms of Service
     faqs: FAQs
     ok: OK
+    oh_no: "Oh no!"
     choose_different_verification_method: Choose Different Verification Method
     support_note_html: If you have any questions, please contact the Brave Rewards team at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>
     warning_note_html: This email contains a private access link. Anyone with access to it can gain access to your private publisher information. Ensure you trust the recipient before forwarding or sharing this email. <br> <br>If you have any questions, please contact the Brave Rewards team at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>
