@@ -41,7 +41,8 @@ class Invoice < ActiveRecord::Base
   end
 
   def finalized_amount_to_probi
-    (finalized_amount.to_i * BigDecimal.new("1.0e18")).to_i
+    # Trim commas, convert to decimal, then multiply by 1.0e18
+    (finalized_amount.tr(",", "").to_d * BigDecimal.new("1.0e18")).to_i
   end
 
   def as_json(_options = {})
