@@ -51,21 +51,35 @@ export default class ReferralCharts extends React.Component {
         value.first_runs > currentMax ? value.first_runs : currentMax;
       currentMax = value.finalized > currentMax ? value.finalized : currentMax;
     });
-    return Math.ceil(currentMax / 95) * 100;
+    return Math.ceil(currentMax / 95 * 100);
   }
 
   createChart(data, title, suggestedMax) {
     var wrapper = document.getElementById("channel-referrals-stats-chart");
     var canvas = document.getElementById("chart-canvas");
-    if (!canvas) {
-      canvas = document.createElement("canvas");
-      canvas.setAttribute("id", "chart-canvas");
-      canvas.setAttribute("width", "400");
-      canvas.setAttribute("height", "300");
-      wrapper.appendChild(canvas);
+    if (canvas) {
+      document.removeChild(canvas);
     }
+    canvas = document.createElement("canvas");
+    canvas.setAttribute("id", "chart-canvas");
+    canvas.setAttribute("width", "400");
+    canvas.setAttribute("height", "300");
+    wrapper.appendChild(canvas);
 
     Chart.defaults.global.defaultFontFamily = "Poppins";
+    Chart.scaleService.updateScaleDefaults('logarithmic', {
+      ticks: {
+        callback: function(...args) {
+          // new default function here
+          const value = Chart.Ticks.formatters.logarithmic.call(this, ...args);
+          if (value.length) {
+            var numericalValue = Number(value);
+            return numericalValue >= 1 ? numericalValue.toLocaleString() : "";
+          }
+          return value;
+        }
+      }
+    });
 
     new Chart(canvas, {
       type: "line",
@@ -107,7 +121,8 @@ export default class ReferralCharts extends React.Component {
               type: "time",
               distribution: "series",
               ticks: {
-                source: "labels"
+                autoSkip: true,
+                source: "labels",
               },
               time: {
                 unit: "day"
