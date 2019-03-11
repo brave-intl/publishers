@@ -2,6 +2,8 @@
 
 This project is built using the React framework [Grommet](https://v2.grommet.io), [Brave UI](https://github.com/brave/brave-ui) and [Styled Components](https://styled-components.com/docs/basics). 
 
+For now, you have to remove the node modules folder from the root publishers directory to build this.
+
 To start the build locally and edit files in real time run: 
 
 ### 1. `npm install`
