@@ -144,8 +144,6 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
 
-  # Static security vulnerability scanner
-  gem "brakeman"
   gem "pry"
   gem 'pry-stack_explorer', '~> 0.4.9.3'
   gem "byebug"
@@ -180,6 +178,9 @@ end
 group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
+
+  # Static security vulnerability scanner
+  gem "brakeman"
   # Vulnerabilities
   gem "bundler-audit", require: false
   gem "mocha"
