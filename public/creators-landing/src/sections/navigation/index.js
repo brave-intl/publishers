@@ -15,7 +15,7 @@ const MobileNav = () => (
     width='100%'
     id='nav'
   >
-    <Box as='a' href={locale.nav.logo_href} a11yTitle='Brave Rewards Home Logo'>
+    <Box as='a' href={locale.nav.logoHref} a11yTitle='Brave Rewards Home Logo'>
       <Image
         a11yTitle='Brave Rewards Creator Logo'
         src={mobileLogo}
@@ -47,7 +47,7 @@ const DefaultNav = () => (
   >
     <Box
       as='a'
-      href={locale.nav.logo_href}
+      href={locale.nav.logoHref}
       a11yTitle='Brave Rewards Home Button'
     >
       <Image a11yTitle='Brave Rewards Creator Logo' src={logo} height='32px' />
@@ -56,13 +56,13 @@ const DefaultNav = () => (
       <Anchor
         as='a'
         a11yTitle='Sign up to be a Brave Rewards Creator'
-        href={locale.nav.signup_href}
+        href={locale.nav.signupHref}
         color='white'
         label={locale.nav.signup}
       />
       <SecondaryButton
         a11yTitle='Log in to your Brave Creator dashboard'
-        href={locale.nav.login_href}
+        href={locale.nav.loginHref}
         label={locale.nav.login}
         primary
       />

@@ -11,7 +11,7 @@ import {
   SwoopBottom,
   StyledInput
 } from '../../components'
-import { Heading, Text, Box, Anchor } from 'grommet'
+import { Heading, Text, Box, Anchor, FormField } from 'grommet'
 import locale from '../../locale/en'
 
 export const MainHome = () => {
@@ -21,7 +21,7 @@ export const MainHome = () => {
         <Box
           direction='column'
           pad='large'
-          margin={{ top: '80px', bottom: '60px' }}
+          margin={{ top: '80px', bottom: '90px' }}
         >
           <Heading
             level='1'
@@ -70,7 +70,7 @@ export const MainHome = () => {
           <Box direction='row' pad={{ vertical: '24px' }} width='100%'>
             <PrimaryButton
               label={locale.main.home.btn.signup}
-              a11yTitle='Sign up'
+              href={locale.main.home.btn.signupHref}
             />
           </Box>
         </Box>
@@ -113,22 +113,31 @@ const SignComponent = props => {
             {props.subhead}
           </Text>
           <Box width='100%' margin={{ bottom: '32px' }}>
-            <StyledInput size='large' placeholder={props.input_placeholder} />
+            <FormField
+              htmlFor='email-input'
+              validate=''
+              error=''
+              {...props}
+              required
+            >
+              <StyledInput
+                id='email-input'
+                size='large'
+                placeholder={props.inputPlaceholder}
+                onChange={() => {}}
+              />
+            </FormField>
           </Box>
-          <PrimaryButton
-            label={props.btn}
-            a11yTitle={props.btn}
-            margin={{ bottom: '30px' }}
-          />
+          <PrimaryButton label={props.btn} margin={{ bottom: '30px' }} />
           <Anchor
-            href={props.tiny_1_href}
-            label={props.tiny_1}
+            href={props.tinyOneHref}
+            label={props.tinyOne}
             color='rgba(255, 255, 255, .8)'
             size='xsmall'
           />
           <Anchor
-            href={props.tiny_2_href}
-            label={props.tiny_2}
+            href={props.tinyTwoHref}
+            label={props.tinyTwo}
             color='rgba(255, 255, 255, .8)'
             size='xsmall'
           />
@@ -136,15 +145,15 @@ const SignComponent = props => {
         </Box>
         <Box direction='row' gap='small' align='center' id='terms-help'>
           <Anchor
-            label={props.footer_1}
-            href={props.footer_1_href}
+            label={props.footerOne}
+            href={props.footerOneHref}
             color='rgba(255, 255, 255, .8)'
             size='small'
           />
           <Text>|</Text>
           <Anchor
-            label={props.footer_2}
-            href={props.footer_2_href}
+            label={props.footerTwo}
+            href={props.footerTwoHref}
             color='rgba(255, 255, 255, .8)'
             size='small'
           />
@@ -160,16 +169,16 @@ export const MainSignIn = () => {
     <SignComponent
       heading={locale.main.signin.heading}
       subhead={locale.main.signin.subhead}
-      input_placeholder={locale.main.signin.input_placeholder}
+      inputPlaceholder={locale.main.signin.inputPlaceholder}
       btn={locale.main.signin.btn}
-      tiny_1={locale.main.signin.tiny_1}
-      tiny_1_href={locale.main.signin.tiny_1_href}
-      tiny_2={locale.main.signin.tiny_2}
-      tiny_2_href={locale.main.signin.tiny_2_href}
-      footer_1={locale.main.footer_1}
-      footer_1_href={locale.main.footer_1_href}
-      footer_2={locale.main.footer_2}
-      footer_2_href={locale.main.footer_2_href}
+      tinyOne={locale.main.signin.tinyOne}
+      tinyOneHref={locale.main.signin.tinyOneHref}
+      tinyTwo={locale.main.signin.tinyTwo}
+      tinyTwoHref={locale.main.signin.tinyTwoHref}
+      footerOne={locale.main.footerOne}
+      footerOneHref={locale.main.footerOneHref}
+      footerTwo={locale.main.footerTwo}
+      footerTwoHref={locale.main.footerTwoHref}
     />
   )
 }
@@ -179,14 +188,14 @@ export const MainSignUp = () => {
     <SignComponent
       heading={locale.main.signup.heading}
       subhead={locale.main.signup.subhead}
-      input_placeholder={locale.main.signup.input_placeholder}
+      inputPlaceholder={locale.main.signup.inputPlaceholder}
       btn={locale.main.signup.btn}
-      tiny_1={locale.main.signup.tiny_1}
-      tiny_1_href={locale.main.signup.tiny_1_href}
-      footer_1={locale.main.footer_1}
-      footer_1_href={locale.main.footer_1_href}
-      footer_2={locale.main.footer_2}
-      footer_2_href={locale.main.footer_2_href}
+      tinyOne={locale.main.signup.tinyOne}
+      tinyOneHref={locale.main.signup.tinyOneHref}
+      footerOne={locale.main.footerOne}
+      footerOneHref={locale.main.footerOneHref}
+      footerTwo={locale.main.footerTwo}
+      footerTwoHref={locale.main.footerTwoHref}
     />
   )
 }

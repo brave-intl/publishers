@@ -30,7 +30,7 @@ const TextBlock = props => {
               alignSelf={props.side}
               gap='12px'
               width='100%'
-              margin={{ vertical: 'medium' }}
+              pad='medium'
             >
               <SummaryNumber level='1' color='white' margin='0' size='large'>
                 {props.step}
@@ -41,7 +41,7 @@ const TextBlock = props => {
                 </Heading>
                 <Paragraph color='#E9E9F4' width='100%'>
                   {props.description}
-                  {props.description_link}
+                  {props.descriptionLink}
                 </Paragraph>
               </Box>
             </SummaryContainer>
@@ -53,7 +53,7 @@ const TextBlock = props => {
               width='50%'
               alignSelf={props.side}
               gap='16px'
-              margin={{ vertical: 'medium' }}
+              pad='medium'
             >
               <SummaryNumber level='1' color='white' margin='0' size='large'>
                 {props.step}
@@ -64,7 +64,7 @@ const TextBlock = props => {
                 </Heading>
                 <Paragraph size='small' color='white'>
                   {props.description}
-                  {props.description_link}
+                  {props.descriptionLink}
                 </Paragraph>
               </Box>
             </SummaryContainer>
@@ -115,30 +115,30 @@ export const Summary = () => {
         <TextBlock
           side='start'
           step='1'
-          title={locale.summary.one_title}
-          description={locale.summary.one_desc}
+          title={locale.summary.oneTitle}
+          description={locale.summary.oneDesc}
         />
         <TextBlock
           side='end'
           step='2'
-          title={locale.summary.two_title}
-          description={locale.summary.two_desc}
+          title={locale.summary.twoTitle}
+          description={locale.summary.twoDesc}
         />
         <TextBlock
           side='start'
           step='3'
-          title={locale.summary.three_title}
-          description={locale.summary.three_desc}
+          title={locale.summary.threeTitle}
+          description={locale.summary.threeDesc}
         />
         <TextBlock
           side='end'
           step='4'
-          title={locale.summary.four_title}
-          description={locale.summary.four_desc}
+          title={locale.summary.fourTitle}
+          description={locale.summary.fourDesc}
           description_link={
             <Anchor
-              href={locale.summary.four_link_href}
-              label={locale.summary.four_link}
+              href={locale.summary.fourLinkHref}
+              label={locale.summary.fourLink}
               color='white'
             />
           }
@@ -152,19 +152,19 @@ export const Summary = () => {
           justify='center'
         >
           <CardButton
-            href={locale.summary.card_business_href}
+            href={locale.summary.cardBusinessHref}
             icon={<ChatIcon />}
-            title={locale.summary.card_business}
+            title={locale.summary.cardBusiness}
           />
           <CardButton
-            href={locale.summary.card_help_href}
+            href={locale.summary.cardHelpHref}
             icon={<HelpIcon />}
-            title={locale.summary.card_help}
+            title={locale.summary.cardHelp}
           />
           <CardButton
-            href={locale.summary.card_gen_href}
+            href={locale.summary.cardGenHref}
             icon={<MailIcon />}
-            title={locale.summary.card_gen}
+            title={locale.summary.cardGen}
           />
         </Box>
       </Container>

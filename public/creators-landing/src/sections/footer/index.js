@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Text, Image, ResponsiveContext } from 'grommet'
 import { FooterLegal } from '../../components'
 import BuiltWithBat from '../../components/img/built-with-bat.svg'
+import locale from '../../locale/en'
 
 const FooterComponent = props => (
   <Box
@@ -13,30 +14,20 @@ const FooterComponent = props => (
     wrap
   >
     <Box direction='row' gap='small' pad={props.padded}>
-      <FooterLegal
-        label='© Brave Software'
-        href='http://www.brave.com'
-        a11yTitle='Brave Browser Link'
-      />
+      <FooterLegal label={locale.footer.one} href={locale.footer.oneHref} />
       <Text color='grey' size='small'>
         |
       </Text>
-      <FooterLegal
-        label='Privacy Policy'
-        href='https://brave.com/publishers-creators-privacy'
-      />
+      <FooterLegal label={locale.footer.two} href={locale.footer.twoHref} />
       <Text color='grey' size='small'>
         |
       </Text>
-      <FooterLegal
-        label='Terms of Use'
-        href='https://basicattentiontoken.org/publisher-terms-of-service/'
-      />
+      <FooterLegal label={locale.footer.three} href={locale.footer.threeHref} />
     </Box>
     <Box
       as='a'
       direction='row'
-      href='https://basicattentiontoken.org'
+      href={locale.footer.fourHref}
       pad={props.padded}
     >
       <Image src={BuiltWithBat} />

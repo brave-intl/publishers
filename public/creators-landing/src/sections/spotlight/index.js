@@ -9,14 +9,20 @@ import locale from '../../locale/en'
 
 const Slide = props => (
   <Box
-    margin={{ vertical: 'medium', horizontal: 'medium' }}
+    margin={{ horizontal: 'medium' }}
     direction='row'
     justify='center'
     id={props.backwards}
     className='carousel-container'
     wrap
   >
-    <Box pad='large' align='center' justify='center' id='min' flex>
+    <Box
+      pad={{ horizontal: 'large' }}
+      align='center'
+      justify='center'
+      id='min'
+      flex
+    >
       <Heading level='3'>
         {props.quote}
         <Text as='p' color='grey'>
@@ -24,7 +30,13 @@ const Slide = props => (
         </Text>
       </Heading>
     </Box>
-    <Box as='a' href={props.link} id='carousel-img' pad='medium'>
+    <Box
+      as='a'
+      href={props.link}
+      id='carousel-img'
+      pad='medium'
+      className='carousel-height'
+    >
       <Image src={props.card} fit='contain' />
     </Box>
   </Box>
@@ -34,7 +46,6 @@ export const Spotlight = () => {
   return (
     <Box align='center' pad='large'>
       <Container align='center'>
-        <Box height='32px' />
         <Box align='center' pad='medium'>
           <Heading level='3' textAlign='center'>
             {locale.spotlight.heading}
@@ -47,33 +58,32 @@ export const Spotlight = () => {
           <Carousel play={9000}>
             <Slide
               card={BakerCard}
-              link={locale.spotlight.baker_href}
-              text={locale.spotlight.baker_credit}
-              quote={locale.spotlight.baker_quote}
+              link={locale.spotlight.bakerHref}
+              text={locale.spotlight.bakerCredit}
+              quote={locale.spotlight.bakerQuote}
             />
             <Slide
               card={DefrancoCard}
-              link={locale.spotlight.defranco_href}
-              text={locale.spotlight.defranco_credit}
-              quote={locale.spotlight.defranco_quote}
+              link={locale.spotlight.defrancoHref}
+              text={locale.spotlight.defrancoCredit}
+              quote={locale.spotlight.defrancoQuote}
               backwards='row-reverse'
             />
             <Slide
               card={BobbyCard}
-              link={locale.spotlight.bobby_href}
-              text={locale.spotlight.bobby_credit}
-              quote={locale.spotlight.bobby_quote}
+              link={locale.spotlight.bobbyHref}
+              text={locale.spotlight.bobbyCredit}
+              quote={locale.spotlight.bobbyQuote}
             />
             <Slide
               card={CiccoCard}
-              link={locale.spotlight.decicco_href}
-              text={locale.spotlight.decicco_credit}
-              quote={locale.spotlight.decicco_quote}
+              link={locale.spotlight.deciccoHref}
+              text={locale.spotlight.deciccoCredit}
+              quote={locale.spotlight.deciccoQuote}
               backwards='row-reverse'
             />
           </Carousel>
         </Box>
-        <Box height='40px' />
       </Container>
     </Box>
   )

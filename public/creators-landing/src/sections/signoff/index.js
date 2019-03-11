@@ -11,9 +11,9 @@ export const Signoff = () => {
       <Container align='center' pad='large'>
         <Box pad={{ horizontal: 'large' }}>
           <Heading alignSelf='center' level='4' textAlign='center'>
-            {locale.signoff.headline_1}
+            {locale.signoff.headlineOne}
             <strong>28,000</strong>
-            {locale.signoff.headline_2}
+            {locale.signoff.headlineTwo}
           </Heading>
           <ResponsiveContext.Consumer>
             {size => {
@@ -36,7 +36,7 @@ export const Signoff = () => {
         <PrimaryButton
           label={locale.signoff.btn}
           margin='large'
-          a11yTitle='Sign up'
+          href={locale.signoff.btnHref}
         />
       </Container>
     </Box>
