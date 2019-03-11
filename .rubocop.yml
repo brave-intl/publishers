@@ -10,8 +10,9 @@ AllCops:
     - config.ru
     - Gemfile
     - Rakefile
+    - app/models/**/*
   Exclude:
     - bin/**/*
     - db/**/*
 LineLength:
-  Max: 180
+  Max: 225
