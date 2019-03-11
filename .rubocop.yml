@@ -1,3 +1,6 @@
+inherit_from:
+  - .rubocop_airbnb.yml
+
 AlignParameters:
   Enabled: false
 Documentation:
@@ -11,8 +14,4 @@ AllCops:
     - bin/**/*
     - db/**/*
 LineLength:
-  Max: 120
-StringLiterals:
-  EnforcedStyle: double_quotes
-Style/NegatedIf:
-  Enabled: false
+  Max: 180

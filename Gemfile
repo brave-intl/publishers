@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source "https://rubygems.org"
 
 # Rate limit ActiveJob
@@ -153,7 +154,8 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
-  gem "rubocop", require: false
+  gem 'rubocop-airbnb'
+
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
 
@@ -164,7 +166,6 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-  gem "brakeman"
   # API recording and playback
   gem "vcr"
   gem "webmock", "~> 3.0"
