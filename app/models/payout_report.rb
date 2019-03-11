@@ -2,7 +2,7 @@ class PayoutReport < ApplicationRecord
   has_paper_trail
   self.per_page = 8
 
-  LEGACY_PAYOUT_REPORT_TRANSITION_DATE = "2018-12-01 09:14:58 -0800"
+  LEGACY_PAYOUT_REPORT_TRANSITION_DATE = "2018-12-01 09:14:58 -0800".freeze
 
   attr_encrypted :contents, key: :encryption_key, marshal: true
 

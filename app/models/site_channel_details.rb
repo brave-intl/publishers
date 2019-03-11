@@ -27,22 +27,22 @@ class SiteChannelDetails < BaseChannelDetails
   before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
 
   scope :recent_unverified_site_channels, -> (max_age: 6.weeks) {
-    joins(:channel)
-        .where.not(brave_publisher_id: SiteChannelDetails.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true))
-        .where("channels.created_at": max_age.ago..Time.now)
+    joins(:channel).
+      where.not(brave_publisher_id: SiteChannelDetails.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true)).
+      where("channels.created_at": max_age.ago..Time.now)
   }
 
   scope :recent_ready_to_verify_site_channels, -> (max_age: 6.weeks) {
-    joins(:channel)
-        .where.not(
-          brave_publisher_id: SiteChannelDetails
-                              .joins(:channel)
-                              .select(:brave_publisher_id)
-                              .distinct
-                              .where("channels.verified": true)
-        )
-        .where.not(verification_method: nil)
-        .where("channels.updated_at": max_age.ago..Time.now)
+    joins(:channel).
+      where.not(
+        brave_publisher_id: SiteChannelDetails.
+                            joins(:channel).
+                            select(:brave_publisher_id).
+                            distinct.
+                            where("channels.verified": true)
+      ).
+      where.not(verification_method: nil).
+      where("channels.updated_at": max_age.ago..Time.now)
   }
 
   def initialized?
@@ -68,24 +68,24 @@ class SiteChannelDetails < BaseChannelDetails
   end
 
   def brave_publisher_id_error_description
-    case self.brave_publisher_id_error_code.to_sym
-      when :taken
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.taken")
-      when :exclusion_list_error
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.exclusion_list_error")
-      when :api_error_cant_normalize
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.api_error_cant_normalize")
-      when :invalid_uri
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri")
-      else
-        raise "Unrecognized brave_publisher_id_error_code: #{self.brave_publisher_id_error_code}"
+    case brave_publisher_id_error_code.to_sym
+    when :taken
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.taken")
+    when :exclusion_list_error
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.exclusion_list_error")
+    when :api_error_cant_normalize
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.api_error_cant_normalize")
+    when :invalid_uri
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri")
+    else
+      raise "Unrecognized brave_publisher_id_error_code: #{brave_publisher_id_error_code}"
     end
   end
 
   def inspect_host
     return unless brave_publisher_id
 
-    result = SiteChannelHostInspector.new(url: self.brave_publisher_id).perform
+    result = SiteChannelHostInspector.new(url: brave_publisher_id).perform
     self.supports_https = result[:https].present?
     self.detected_web_host = result[:web_host]
     self.host_connection_verified = result[:host_connection_verified]
@@ -103,10 +103,10 @@ class SiteChannelDetails < BaseChannelDetails
   end
 
   def register_brave_publisher_id_error
-    self.errors.add(
-        :brave_publisher_id_unnormalized,
-        self.brave_publisher_id_error_description
-    )
+    errors.add(
+      :brave_publisher_id_unnormalized,
+        brave_publisher_id_error_description
+      )
   end
 
   # verification to ensure brave_publisher_id is not changed

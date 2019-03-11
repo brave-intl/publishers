@@ -1,10 +1,10 @@
 class PublisherStatusUpdate < ApplicationRecord
-  SUSPENDED = 'suspended'
-  ACTIVE = 'active'
-  ONBOARDING = 'onboarding'
-  CREATED = 'created'
+  SUSPENDED = 'suspended'.freeze
+  ACTIVE = 'active'.freeze
+  ONBOARDING = 'onboarding'.freeze
+  CREATED = 'created'.freeze
 
-  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED]
+  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED].freeze
 
   belongs_to :publisher
 
