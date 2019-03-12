@@ -20,16 +20,16 @@ class Promo::OwnerRegistrar < BaseApiClient
       request.url("/api/2/promo/referral_code/unattached?number=#{@number}")
     end
 
-    promo_registrations = JSON.parse(response.body)
-    promo_registrations.each do |promo_registration|
-      PromoRegistration.create!(referral_code: promo_registration["referral_code"],
-                                publisher_id: @publisher_id,
-                                promo_id: active_promo_id,
-                                promo_campaign_id: @promo_campaign_id,
-                                description: @description,
-                                kind: PromoRegistration::OWNER)
+    payload = JSON.parse(response.body)
+    payload.each do |promo_registration|
+      PromoRegistration.create!(
+        referral_code: promo_registration["referral_code"],
+        publisher_id: @publisher_id,
+        promo_id: active_promo_id,
+        promo_campaign_id: @promo_campaign_id,
+        description: @description,
+        kind: PromoRegistration::OWNER)
     end
-    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
   end
 
   def perform_offline
