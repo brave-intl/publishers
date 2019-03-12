@@ -66,7 +66,10 @@ class Api::V1::Stats::PublishersController < Api::V1::StatsController
   end
 
   def totals
-    render(json: Publisher.statistical_totals(since_date: params[:date]), status: 200)
+    if params[:up_to_date].present?
+      up_to_date = Date.parse(params[:up_to_date])
+    end
+    render(json: Publisher.statistical_totals(up_to_date: up_to_date.respond_to?(:strftime) ? up_to_date : 1.day.from_now), status: 200)
   end
 
   def javascript_enabled_usage

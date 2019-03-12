@@ -37,7 +37,7 @@ class Publisher < ApplicationRecord
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
-  has_many :promo_campaigns, dependent: :destroy 
+  has_many :promo_campaigns, dependent: :destroy
   has_many :site_banners
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
@@ -131,12 +131,12 @@ class Publisher < ApplicationRecord
     joins(:channels).where('channels.verified = true').distinct
   }
 
-  def self.statistical_totals(since_date: 1.day.from_now)
+  def self.statistical_totals(up_to_date: 1.day.from_now)
     {
-      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true}).where("channels.verified_at <= ? or channels.verified_at is null", since_date).where("channels.created_at <= ?", since_date).distinct(:id).count,
-      email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).where("channels.verified_at <= ? or channels.verified_at is null", since_date).where("channels.created_at <= ?", since_date).distinct(:id).count,
-      email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channel).where("channels.created_at <= ?", since_date).distinct(:id).count,
-      email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.where("created_at <= ?", since_date).distinct(:id).count,
+      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true}).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true}).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.where("created_at <= ?", up_to_date).distinct(:id).count,
     }
   end
 
