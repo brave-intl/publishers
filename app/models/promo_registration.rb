@@ -40,11 +40,10 @@ class PromoRegistration < ApplicationRecord
   validates :kind, inclusion: { in: KINDS, message: "%{value} is not a valid kind of promo registration." }
   validates :referral_code, presence: true, uniqueness: { scope: :promo_id }
 
-  validates_associated :publisher
-
   scope :owner_only, -> { where(kind: OWNER) }
   scope :unattached_only, -> { where(kind: UNATTACHED) }
   scope :channels_only, -> { where(kind: CHANNEL) }
+  scope :has_stats, -> { where.not(stats: "[]") }
 
   # Parses the events associated with a promo registration and returns
   # the aggregate totals for each event type
@@ -57,6 +56,42 @@ class PromoRegistration < ApplicationRecord
       aggregate_stats[FINALIZED] += event[FINALIZED]
       aggregate_stats.slice(RETRIEVALS, FIRST_RUNS, FINALIZED)
     }
+  end
+
+  # the stats are currently organized by platform.
+  def stats_by_date
+    compressed_stats = {}
+    starting_date = nil
+    JSON.parse(stats).each do |stat|
+      starting_date ||= stat['ymd'] if starting_date.nil?
+      unless compressed_stats.has_key?(stat['ymd'])
+        compressed_stats[stat['ymd']] = {}
+        compressed_stats[stat['ymd']]['retrievals'] = 0
+        compressed_stats[stat['ymd']]['first_runs'] = 0
+        compressed_stats[stat['ymd']]['finalized'] = 0
+        compressed_stats[stat['ymd']]['ymd'] = stat['ymd']
+      end
+      compressed_stats[stat['ymd']]['retrievals'] += stat['retrievals']
+      compressed_stats[stat['ymd']]['first_runs'] += stat['first_runs']
+      compressed_stats[stat['ymd']]['finalized'] += stat['finalized']
+    end
+
+    return [] if starting_date.nil?
+
+    rolling_date = Date.parse(starting_date)
+    while rolling_date < Date.today
+      formatted_date = rolling_date.strftime("%Y-%m-%d")
+      unless compressed_stats.has_key?(formatted_date)
+        compressed_stats[formatted_date] = {}
+        compressed_stats[formatted_date]['retrievals'] = 0
+        compressed_stats[formatted_date]['first_runs'] = 0
+        compressed_stats[formatted_date]['finalized'] = 0
+        compressed_stats[formatted_date]['ymd'] = formatted_date
+      end
+      rolling_date = rolling_date.tomorrow
+    end
+
+    compressed_stats.values.sort_by! { |h| h['ymd'] }
   end
 
   class << self

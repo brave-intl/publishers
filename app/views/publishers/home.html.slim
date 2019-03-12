@@ -38,10 +38,10 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
             .bat
-              span.bat-amount#bat_amount= publisher_humanize_balance(current_publisher, "BAT")
+              span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
               span.bat-code= " BAT"
             .converted#converted_amount
-              = publisher_converted_balance(current_publisher)
+              = publisher_converted_overall_balance(current_publisher)
             .next_deposit_date
               span = t ".next_deposit_date"
               span= next_deposit_date
@@ -66,12 +66,17 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     .promo-panel-title-item
                       =t("promo.dashboard.promo").upcase
                   .promo-flex-col.promo-flex-col-downloaded
-                    .promo-panel-header
+                    .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
                       =t("promo.dashboard.downloaded").upcase
+                    .promo-panel-number
+                      = publisher_referral_totals[PromoRegistration::RETRIEVALS]
+                  .promo-flex-col.promo-flex-col-installed
+                    .promo-panel-header title=t("promo.dashboard.tooltip.installed")
+                      =t("promo.dashboard.installed").upcase
                     .promo-panel-number
                       = publisher_referral_totals[PromoRegistration::FIRST_RUNS]
                   .promo-flex-col.promo-flex-col-confirmed
-                    .promo-panel-header
+                    .promo-panel-header title=t("promo.dashboard.tooltip.confirmed")
                       =t("promo.dashboard.confirmed").upcase
                     .promo-panel-number
                       = publisher_referral_totals[PromoRegistration::FINALIZED]
@@ -129,18 +134,18 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   span= ")"
               .last-deposit-date.field
                 label= t ".uphold.last_deposit_date"
-                .value.deposit-date#last_deposit_date= publisher_humanize_last_settlement_date(current_publisher)
+                .value.deposit-date#last_deposit_date=publisher_last_settlement_date(current_publisher)
             .dashboard-panel--content#last_settlement class=last_settlement_class(current_publisher)
               .last-deposit
                 = t ".uphold.last_deposit"
                 .amounts
                   .bat
-                    - last_deposit_balance = publisher_humanize_last_settlement(current_publisher, "BAT")
+                    - last_deposit_balance = publisher_last_settlement_bat_balance(current_publisher)
                     span.bat-amount#last_deposit_bat_amount= last_deposit_balance
                     - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
                       span.bat-code= " BAT"
                   .converted#last_deposit_converted_amount
-                    = publisher_converted_last_settlement(current_publisher)
+                    = publisher_converted_last_settlement_balance(current_publisher)
                 = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
                         id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                         :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
@@ -187,6 +192,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               = f.check_box(:visible, class: "form-check-input")
               = f.label(:visible, class: "form-check-label", for: "publisher_visible")
 
+
+    / Don't show if none of the promo registrations has a valid stat
+    - if current_publisher.promo_registrations.present? && current_publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
+      = render "publishers/referral_charts", current_publisher: current_publisher
+
     - current_publisher.channels.visible.each do |channel|
       .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
         .col
@@ -211,11 +221,22 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     span= t("promo.shared.referral_link")
                   .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
                     span= t("promo.shared.copy")
+                / Need to tell the users that it will take 48 hours for their verified channel to appear in the web browser
+                - if channel.created_at > 2.days.ago
+                  .float-right.mr-4.mt-1
+                    .channel-info
+                      .info-popup
+                        .info--details
+                          // JS will break if the next two elements aren't siblings
+                          span.info--what-happened=t(".channel.verification_status_title")
+                          span.info--explanation
+                            span.verification-failed-explanation--content
+                              = t(".channel.verification_status")
               - else
                 .channel-status.float-right
                   .bat-channel
                     h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
+                      = publisher_channel_bat_balance(current_publisher, channel.details.channel_identifier)
                     span.bat-channel--currency= " BAT"
                     .bat-channel--period
                       = t(".channel_balance_period")

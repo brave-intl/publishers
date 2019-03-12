@@ -265,9 +265,11 @@ function processStats(referralCodes) {
   let installs = 0;
   let thirtyDayUse = 0;
   referralCodes.forEach(code => {
-    downloads += JSON.parse(code.stats)[0].retrievals;
-    installs += JSON.parse(code.stats)[0].first_runs;
-    thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+    if (JSON.parse(code.stats)[0]) {
+      downloads += JSON.parse(code.stats)[0].retrievals;
+      installs += JSON.parse(code.stats)[0].first_runs;
+      thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+    }
   });
   return { downloads, installs, thirtyDayUse };
 }
@@ -281,12 +283,12 @@ function processDate(created) {
 function copyLink(referralCode) {
   // Copy to Clipboard
   const el = document.createElement("textarea");
-  el.value = "https://brave.com/" + referralCode;
+  el.value = "https://laptop-updates.brave.com/download/" + referralCode;
   document.body.appendChild(el);
   el.select();
   document.execCommand("copy");
   document.body.removeChild(el);
-  alert("Copied! " + el.value);
+  alert("Copied to clipboard! \n" + el.value);
 }
 
 function findCurrentCampaign(campaigns) {
@@ -364,15 +366,33 @@ function ReferralsTable(props) {
           customStyle: contentStyle
         },
         {
-          content: <div>{JSON.parse(referralCode.stats)[0].retrievals}</div>,
+          content: (
+            <div>
+              {JSON.parse(referralCode.stats)[0]
+                ? JSON.parse(referralCode.stats)[0].retrievals
+                : 0}
+            </div>
+          ),
           customStyle: contentStyle
         },
         {
-          content: <div>{JSON.parse(referralCode.stats)[0].first_runs}</div>,
+          content: (
+            <div>
+              {JSON.parse(referralCode.stats)[0]
+                ? JSON.parse(referralCode.stats)[0].first_runs
+                : 0}
+            </div>
+          ),
           customStyle: contentStyle
         },
         {
-          content: <div>{JSON.parse(referralCode.stats)[0].finalized}</div>,
+          content: (
+            <div>
+              {JSON.parse(referralCode.stats)[0]
+                ? JSON.parse(referralCode.stats)[0].finalized
+                : 0}
+            </div>
+          ),
           customStyle: contentStyle
         },
         {

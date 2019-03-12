@@ -551,7 +551,6 @@ DEPENDENCIES
   rotp (~> 3.3)
   rqrcode (~> 0.10)
   rubocop
-  rubyzip
   sass-rails (~> 5.0)
   sendgrid-ruby
   sentry-raven (~> 2.1)
