@@ -151,7 +151,7 @@ To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
 
 1. Request access to [Vault-Promo-Services](https://github.com/brave-intl/vault-promo-services) and [ip2tags](https://github.com/brave-intl/vault-promo-services)
 2. Follow the [setup instructions](https://github.com/brave-intl/vault-promo-services)
-3. Create and run a start script like this 
+3. Create and run a `vault-promo-services.sh` start script like this 
 ```
 export DATABASE_URL="services"
 export PGDATABASE="services"
