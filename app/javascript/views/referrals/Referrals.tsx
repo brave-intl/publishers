@@ -65,7 +65,7 @@ export default class Referrals extends React.Component<
   public render() {
     return (
       <Wrapper>
-        <Navbar navbarSelection={NavbarSelection.Referrals} />
+        <Navbar navbarSelection={NavbarSelection.Referrals} name={"Partner"} />
         <ReferralsNav fetchData={this.fetchData} />
         <Container>
           <ReferralsHeader campaigns={this.state.campaigns} />

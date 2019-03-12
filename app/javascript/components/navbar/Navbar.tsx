@@ -1,5 +1,6 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+
+import OutsideAlerter from "../outsideAlerter/OutsideAlerter";
 
 import { CaratDownIcon } from "brave-ui/components/icons";
 import CreatorsLogo from "../../../assets/images/logo_br_creators.png";
@@ -28,11 +29,19 @@ export enum NavbarSelection {
 }
 
 interface INavbarProps {
+  name: string;
   navbarSelection: NavbarSelection;
 }
 interface INavbarState {
   menuOpen: boolean;
 }
+
+const outsideAlerterStyle = {
+  marginBottom: "auto",
+  marginLeft: "auto",
+  marginTop: "auto",
+  minWidth: "125px"
+};
 
 export class Navbar extends React.Component<INavbarProps, INavbarState> {
   constructor(props) {
@@ -48,22 +57,33 @@ export class Navbar extends React.Component<INavbarProps, INavbarState> {
     }));
   };
 
+  public closeMenu = () => {
+    this.setState({
+      menuOpen: false
+    });
+  };
+
   public render() {
     return (
       <Wrapper>
         <Container>
           <BraveLogo />
           <Navigation navbarSelection={this.props.navbarSelection} />
-          <DropdownGroup onClick={this.toggleMenu}>
-            <Dropdown menuOpen={this.state.menuOpen} />
-            <AvatarContainer>
-              <AvatarIcon />
-            </AvatarContainer>
-            <Name>Partner</Name>
-            <DropdownToggle>
-              <CaratDownIcon height={25} width={25} />
-            </DropdownToggle>
-          </DropdownGroup>
+          <OutsideAlerter
+            onOutsideClick={this.closeMenu}
+            outsideAlerterStyle={outsideAlerterStyle}
+          >
+            <DropdownGroup onClick={this.toggleMenu}>
+              <Dropdown menuOpen={this.state.menuOpen} />
+              <AvatarContainer>
+                <AvatarIcon />
+              </AvatarContainer>
+              <Name>{this.props.name}</Name>
+              <DropdownToggle>
+                <CaratDownIcon height={25} width={25} />
+              </DropdownToggle>
+            </DropdownGroup>
+          </OutsideAlerter>
         </Container>
       </Wrapper>
     );

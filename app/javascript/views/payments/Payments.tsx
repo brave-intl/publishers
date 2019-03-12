@@ -81,7 +81,7 @@ export default class Payments extends React.Component<any, IPaymentsState> {
   public render() {
     return (
       <Wrapper>
-        <Navbar navbarSelection={NavbarSelection.Payments} />
+        <Navbar navbarSelection={NavbarSelection.Payments} name={"Partner"} />
         <PaymentHeader />
         <Container>
           <Layout>

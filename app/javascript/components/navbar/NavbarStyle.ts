@@ -23,7 +23,7 @@ export const Container = styled.div`
 export const Logo = styled.img`
   margin-top: auto;
   margin-bottom: auto;
-  padding-right: 160px;
+  padding-right: 112px;
   cursor: pointer;
   @media (max-width: 1100px) {
     padding-right: 0px;
@@ -82,7 +82,7 @@ export const DropdownMenu = styled.div`
   right: 0px;
   width: 220px;
   border-radius: 4px;
-  box-shadow: 2px 2px 0 0 rgba(47, 48, 50, 0.15);
+  box-shadow: 0px 1px 2px 1px rgba(47, 48, 50, 0.15);
   z-index: 1;
   ${(props: Partial<IDropdownMenuProps>) =>
     props.open === false &&
