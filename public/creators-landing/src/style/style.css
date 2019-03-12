@@ -23,7 +23,6 @@ h4 {
   top: 0;
   width: 100%;
   z-index: 400;
-  ;
 }
 
 .carousel-container {
@@ -108,4 +107,9 @@ h4 {
   width: 100%;
   z-index: 0;
   opacity: .05;
+}
+
+.email-input {
+  display: flex;
+  flex-direction: column;
 }

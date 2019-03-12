@@ -11,7 +11,7 @@ import {
   SwoopBottom,
   StyledInput
 } from '../../components'
-import { Heading, Text, Box, Anchor, FormField } from 'grommet'
+import { Heading, Text, Box, Anchor, Form } from 'grommet'
 import locale from '../../locale/en'
 
 export const MainHome = () => {
@@ -23,15 +23,10 @@ export const MainHome = () => {
           pad='large'
           margin={{ top: '80px', bottom: '90px' }}
         >
-          <Heading
-            level='1'
-            color='white'
-            margin={{ vertical: 'small' }}
-            a11yTitle='Headline'
-          >
+          <Heading level='1' color='white' margin={{ vertical: 'small' }}>
             {locale.main.home.headline}
           </Heading>
-          <H2 level='2' size='small' color='#E9E9F4' a11yTitle='Subtitle'>
+          <H2 level='2' size='small' color='#E9E9F4'>
             {locale.main.home.subhead}
           </H2>
           <Heading level='3' size='small' color='#E9E9F4'>
@@ -108,27 +103,31 @@ const SignComponent = props => {
             size='16px'
             color='rgba(255, 255, 255, .8)'
             textAlign='center'
-            margin={{ bottom: '52px' }}
+            margin={{ bottom: '50px' }}
           >
             {props.subhead}
           </Text>
-          <Box width='100%' margin={{ bottom: '32px' }}>
-            <FormField
-              htmlFor='email-input'
-              validate=''
-              error=''
-              {...props}
-              required
+          <Box width='100%' margin={{ bottom: '30px' }}>
+            <Form
+              className='email-input'
+              messages={{
+                required: 'Please enter a valid email address.'
+              }}
+              onSubmit={({ value }) => console.log('Submit', value)}
             >
               <StyledInput
-                id='email-input'
-                size='large'
-                placeholder={props.inputPlaceholder}
-                onChange={() => {}}
+                name='email'
+                type='email'
+                placeholder='Enter your email'
+                required
               />
-            </FormField>
+              <PrimaryButton
+                label={props.btn}
+                type='submit'
+                alignSelf='center'
+              />
+            </Form>
           </Box>
-          <PrimaryButton label={props.btn} margin={{ bottom: '30px' }} />
           <Anchor
             href={props.tinyOneHref}
             label={props.tinyOne}

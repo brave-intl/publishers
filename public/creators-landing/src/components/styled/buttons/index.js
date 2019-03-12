@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Button, TextInput } from 'grommet'
+import { Button, FormField } from 'grommet'
 
 // Large primary signup button
 export const PrimaryButton = styled(Button)`
@@ -27,9 +27,18 @@ export const SecondaryButton = styled(Button)`
   }
 `
 
-export const StyledInput = styled(TextInput)`
+export const StyledInput = styled(FormField)`
   font-size: 16px;
-  font-weight: 400;
-  background: white;
   width: 100%;
+  margin: 0 0 24px;
+  & input {
+    height: 48px;
+    border-radius: 4px;
+    background: white;
+    font-weight: 400;
+  }
+  & :focus-within {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-bottom: none !important;
+  }
 `
