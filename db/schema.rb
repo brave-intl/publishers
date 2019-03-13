@@ -288,13 +288,14 @@ ActiveRecord::Schema.define(version: 2019_03_13_163937) do
     t.string "referral_code", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "kind"
+    t.text "kind", null: false
     t.jsonb "stats", default: "{}"
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
     t.uuid "publisher_id"
     t.string "installer_type"
     t.string "description"
+    t.boolean "hidden", default: false, null: false
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true

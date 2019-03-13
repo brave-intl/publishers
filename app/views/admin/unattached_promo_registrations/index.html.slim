@@ -10,8 +10,9 @@
         .
           = number_field_tag "number_of_codes_to_create", nil, placeholder: "# of codes"
           br
-          = check_box_tag "hidden"
-          = label_tag "Hide from publishers (Used for testing, checking this is uncommon)"
+          = label_tag
+            = check_box_tag "hidden"
+            = "Hide from publishers (Used for testing, checking this is uncommon)"
           = submit_tag "Create", class: "btn btn-info", style: "float:right;"
     .panel.panel--double
       = form_tag admin_promo_campaigns_path, id: "create-promo-campaign" do
