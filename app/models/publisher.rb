@@ -37,7 +37,7 @@ class Publisher < ApplicationRecord
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
-  has_many :promo_campaigns, dependent: :destroy 
+  has_many :promo_campaigns, dependent: :destroy
   has_many :site_banners
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
@@ -130,10 +130,6 @@ class Publisher < ApplicationRecord
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
-
-  # We aren't going to be tracking these but still want to track when publishers last signed in at
-  # So we need to allow them to be available on the class
-  attr_accessor :last_sign_in_ip, :current_sign_in_ip
 
   def self.statistical_totals
     {
@@ -349,6 +345,10 @@ class Publisher < ApplicationRecord
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
     partner?
+  end
+
+  def most_recent_potential_referral_payment
+    PayoutReport.most_recent_final_report&.potential_payments&.where(publisher_id: self.id, channel_id: nil)&.first
   end
 
   private

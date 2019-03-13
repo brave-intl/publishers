@@ -332,6 +332,8 @@ ActiveRecord::Schema.define(version: 2019_03_07_022345) do
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
     t.boolean "created_via_api", default: false, null: false
     t.string "default_currency"
     t.string "uphold_state_token"

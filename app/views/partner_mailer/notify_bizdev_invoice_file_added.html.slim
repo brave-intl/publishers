@@ -1,0 +1,17 @@
+- content_for(:title) do
+  h3= t ".subject"
+
+p.salutation= "Hi there 👋"
+
+p
+  span= "#{@publisher.name || name_from_email(@publisher.email)} "
+  - if @organization_name.present?
+    span = "from #{@organization_name} "
+  span= "has added a new file to their "
+  = link_to "#{@invoice.human_date} invoice.",admin_partner_invoice_url(@invoice, partner_id: @publisher.id)
+
+p Here's a handy link to view the file
+= link_to @invoice_file.file.filename, rails_blob_url(@invoice_file.file, disposition: "attachment")
+
+
+.notice
