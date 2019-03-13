@@ -19,11 +19,11 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
   end
 
   def create
-    number = create_params.to_i
+    number = create_params[:number_of_codes_to_create].to_i
     if number > 50
       redirect_to admin_unattached_promo_registrations_path, alert: "Can't create more than 50 codes at a time."
     else
-      Promo::UnattachedRegistrar.new(number: number).perform
+      Promo::UnattachedRegistrar.new(number: number, hidden: create_params[:hidden]).perform
       redirect_to admin_unattached_promo_registrations_path, notice: "#{number} codes created."
     end
   end
@@ -37,7 +37,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
       return redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
                         alert: "Please check at least one of downloads, installs, or confirmations."
     end
-    
+
     report_start_and_end_date = parse_report_dates(params[:referral_code_report_period], @reporting_interval)
     report_csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: referral_codes,
                                                               start_date: report_start_and_end_date[:start_date],
@@ -94,6 +94,6 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
   end
 
   def create_params
-    params.require(:number_of_codes_to_create)
+    params.permit(:number_of_codes_to_create, :hidden)
   end
 end

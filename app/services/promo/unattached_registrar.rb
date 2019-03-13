@@ -2,10 +2,11 @@
 class Promo::UnattachedRegistrar < BaseApiClient
   include PromosHelper
 
-  def initialize(number:, promo_id: active_promo_id, campaign: nil)
+  def initialize(number:, promo_id: active_promo_id, campaign: nil, hidden: false)
     @number = number
     @promo_id = promo_id
     @campaign
+    @hidden = hidden
   end
 
   def perform
@@ -21,7 +22,8 @@ class Promo::UnattachedRegistrar < BaseApiClient
     promo_registrations.each do |promo_registration|
       PromoRegistration.create!(referral_code: promo_registration["referral_code"],
                                 promo_id: active_promo_id,
-                                kind: PromoRegistration::UNATTACHED)
+                                kind: PromoRegistration::UNATTACHED,
+                                hidden: @hidden)
     end
   end
 
@@ -29,7 +31,8 @@ class Promo::UnattachedRegistrar < BaseApiClient
     @number.times do
       PromoRegistration.create!(referral_code: offline_referral_code,
                                 promo_id: active_promo_id,
-                                kind: PromoRegistration::UNATTACHED)
+                                kind: PromoRegistration::UNATTACHED,
+                                hidden: @hidden)
     end
   end
 
