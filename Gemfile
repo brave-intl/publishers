@@ -152,7 +152,6 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
-  gem 'rubocop-airbnb'
 
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
@@ -178,6 +177,7 @@ end
 group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
+  gem 'rubocop-airbnb'
 
   # Static security vulnerability scanner
   gem "brakeman"
