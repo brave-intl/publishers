@@ -6,7 +6,7 @@ class JsonBuilders::ManualPayoutReportJsonBuilder
   def build
     contents = []
     @payout_report.potential_payments.manual_to_be_paid.find_each do |potential_payment|
-      contents.push(
+      contents.push({
         "name" => potential_payment.name.to_s,
         "altcurrency" => "BAT",
         "probi" => potential_payment.amount.to_s,
@@ -18,7 +18,7 @@ class JsonBuilders::ManualPayoutReportJsonBuilder
         "address" => potential_payment.address.to_s,
         "upholdId" => potential_payment.uphold_id.to_s,
         "documentId" => potential_payment.invoice_id.to_s
-      )
+    })
     end
     contents
   end
