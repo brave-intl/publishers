@@ -3,7 +3,7 @@ require "webmock/minitest"
 
 
 class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
-  include PromosHelper 
+  include PromosHelper
   include Devise::Test::IntegrationHelpers
 
   before(:example) do
@@ -23,7 +23,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
       .to_return(status: 200, body: [{"referral_code":"NDF915","ts":"2018-10-12T20:06:50.125Z","type":"unattached","owner_id":"","channel_id":"","status":"active"}].to_json)
 
     assert_difference -> { PromoRegistration.count }, 1 do
-      post(admin_unattached_promo_registrations_path, params: {number_of_codes_to_create: "1"})
+      post(admin_unattached_promo_registrations_path, params: {number_of_codes_to_create: "1", hidden: false})
     end
 
     assert_equal PromoRegistration.order("created_at").last.kind, "unattached"
@@ -102,7 +102,7 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     patch(assign_campaign_admin_unattached_promo_registrations_path, params: {referral_codes: ["ABC123", "DEF456"], promo_campaign_target: "October 2018"})
 
     campaign = PromoCampaign.where(name: "October 2018").first
-    
+
     assert_equal campaign.promo_registrations.count, 2
     assert campaign.promo_registrations.include?(promo_registration_1)
     assert campaign.promo_registrations.include?(promo_registration_2)
@@ -130,10 +130,18 @@ class Admin::UnattachedPromoRegistrationsControllerTest < ActionDispatch::Integr
     sign_in admin
 
     assert_difference -> { PromoRegistration.count }, 0 do
-      post(admin_unattached_promo_registrations_path, params: {number_of_codes_to_create: "51"})
+      post(admin_unattached_promo_registrations_path, params: {number_of_codes_to_create: "51", hidden: false})
     end
 
     assert_equal flash[:alert], "Can't create more than 50 codes at a time."
   end
 
+  test "creates a hidden cound" do
+    admin = publishers(:admin)
+    sign_in admin
+
+    assert_difference -> { PromoRegistration.hidden.count }, 1 do
+      post(admin_unattached_promo_registrations_path, params: {number_of_codes_to_create: "1", hidden: true})
+    end
+  end
 end
