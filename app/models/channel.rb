@@ -308,6 +308,10 @@ class Channel < ApplicationRecord
     details_type.split("ChannelDetails").join
   end
 
+  def most_recent_potential_payment
+    PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: self.id)&.first
+  end
+
   private
 
   def should_register_channel_for_promo

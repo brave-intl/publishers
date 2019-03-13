@@ -404,4 +404,12 @@ class ChannelTest < ActionDispatch::IntegrationTest
     found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
     assert_equal channel, found_channel
   end
+
+  test "most_recent_potential_payment finds the most recent potential payment" do
+    channel = channels(:potentially_paid_site)
+    assert channel.most_recent_potential_payment.present?
+
+    channel = channels(:uphold_connected)
+    refute channel.most_recent_potential_payment.present?
+  end
 end

@@ -347,6 +347,10 @@ class Publisher < ApplicationRecord
     partner?
   end
 
+  def most_recent_potential_referral_payment
+    PayoutReport.most_recent_final_report&.potential_payments&.where(publisher_id: self.id, channel_id: nil)&.first
+  end
+
   private
 
   def set_created_status
