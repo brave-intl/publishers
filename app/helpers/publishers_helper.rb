@@ -53,7 +53,7 @@ module PublishersHelper
   end
 
   def publisher_channel_bat_balance(publisher, channel_identifier)
-    channel_balance = publisher.wallet&.channel_balances.dig(channel_identifier)
+    channel_balance = publisher.wallet&.channel_balances&.dig(channel_identifier)
     if channel_balance&.amount_bat.present?
       '%.2f' % channel_balance.amount_bat
     else
