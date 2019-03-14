@@ -1,6 +1,4 @@
 class PotentialPayment < ApplicationRecord
-  has_paper_trail
-
   REFERRAL = "referral"
   CONTRIBUTION = "contribution"
 
@@ -37,5 +35,4 @@ class PotentialPayment < ApplicationRecord
       errors.add(:channel_id, "Referral payments can't have a channel_id for potential_payment='#{id}'")
     end
   end
-
 end

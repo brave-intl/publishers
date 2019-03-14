@@ -82,14 +82,14 @@ gem "premailer-rails", "~> 1.9.4", require: false
 gem 'public_suffix', '~> 3.0.2'
 
 # Puma as app server
-gem "puma", "3.10"
+gem "puma", "3.12"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
 gem 'railties', "~> 5.2.0"
 
-gem "rails", "~> 5.2.2.rc1"
+gem "rails", "~> 5.2.2.1"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -142,11 +142,13 @@ end
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-  # Vulnerabilities
-  gem "bundler-audit", require: false
 
   # Static security vulnerability scanner
   gem "brakeman"
+  gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
+  gem "byebug"
+  gem "pry-byebug", require: false
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
@@ -162,12 +164,10 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-
+  gem "brakeman"
   # API recording and playback
   gem "vcr"
-
   gem "webmock", "~> 3.0"
-
   gem "rails-controller-testing"
 end
 
@@ -179,14 +179,10 @@ end
 group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
-
-  gem "pry"
-  gem 'pry-stack_explorer', '~> 0.4.9.3'
-  gem "byebug"
-  gem "pry-byebug", require: false
+  # Vulnerabilities
+  gem "bundler-audit", require: false
   gem "mocha"
   gem 'minitest-rails-capybara', '~> 3.0.1'
-  gem 'rubyzip'
   gem "capybara-selenium"
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test

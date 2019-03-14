@@ -14,5 +14,13 @@ export default {
     reports: {
       path: "/partners/payments/reports"
     }
+  },
+  publishers: {
+    promo_registrations: {
+      show: {
+        path:
+          "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+      }
+    }
   }
 };

@@ -1,36 +1,38 @@
-language: ruby
-cache: bundler
-bundler_args: "--jobs=3 --retry=3 --without production --without staging --binstubs"
+language:
+  - ruby
+  - node_js
+node_js:
+  - "11.10.1"
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - node_modules
+bundler_args: "--jobs=3 --retry=3 --without production --without staging --without development --binstubs"
 dist: xenial
 sudo: required
 addons:
-  postgresql: '9.6'
-  chrome: stable
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 services:
-- postgresql
-- redis-server
+  - postgresql
+  - redis-server
 env:
   global:
   - RAILS_ENV=test
+  - TZ="America/Los_Angeles"
   matrix:
     secure: GfHO6+Nw5ofPlvCPFNFCUvQBTW9w5fRy3z8ktlwR4kaT9Q5FkNwtLYgFsX35F0BRQKAT+i43P9ADwku+C53xAfp6IjFqK9bcP8ICi49d2pRl5qzOfscza/UbrO0nxoxfuaFMzVbJC0copi/HP5f/yQ115D5MuxGS47hTdKWNwwNvuaKog7di53q0lVbk9mR1vrwKHreAq7iIuH8szmm7sJpXi/6OuSkd3Gwms/aDpiU4cys0QLtLcCg9G+5WNtjtpSel87xLTR38vWV1/ho9PuYfhKhEMW5VH7ko/w9vl4lybkJ/tP/RE8sRZ8oN/Xb3RD+R/wr9JkgTgq67m762/IpJu55+iGNbLTUQdt2FKNLXozhmQXe1HUbqlpc8JY6zryf6Iy/A/9B9189fiQFnl1AWmYQZlwlfkBVSxQMuOFw+zGPf6aSIUng5HX5jEdkz3fnqxfwZWa7HV6HQ352BzcX8NYvCWz6JZV4v3R8oybQhkH88zpTcW3z20lPSx4/7JqnbGxxbPi9k73xbkAzq1yn5JN8LGQpm0MOuDHKeUem+JfZukxkvzVpDWZRszMARVC12XZd2ZKvm7rhbQahTBwJD0qmRcl5RNhQUQmi2kkKb1CQLd25f4YQFQJFbnOU/R+FIwSghDKQzxXiHce2kFRhiSzOmb3rSLB44sstRbrg=
-install:
-  - export TZ="America/Los_Angeles"
-  - bundle install
-  - chromedriver-update
-  - sudo apt-get update
-  - sudo apt-get install google-chrome-stable
-  - nvm install stable && nvm alias default stable
-  - npm install -g npm@5.6.x
-  - npm install -g yarn
+before_install:
   - node --version
   - npm --version
   - google-chrome --version
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost
-    &
-  - yarn install --frozen-lockfile
-  - rake db:setup
-  - bundle exec rake assets:precompile
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+before_script:
+  - bundle exec rake db:setup
 script:
   - yarn audit
   - yarn lint

@@ -24,6 +24,7 @@ class Admin::PublishersController < AdminController
 
   def show
     @publisher = Publisher.find(params[:id])
+    @potential_referral_payment = @publisher.most_recent_potential_referral_payment
     @note = PublisherNote.new
   end
 

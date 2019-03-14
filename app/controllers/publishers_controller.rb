@@ -411,12 +411,11 @@ class PublishersController < ApplicationController
       }
     end
   end
-
-  def balance
+  
+  def wallet
     wallet = current_publisher.wallet
     if wallet
-      json = JsonBuilders::WalletJsonBuilder.new(publisher: current_publisher, wallet: wallet).build
-      render(json: json, status: :ok)
+      render(json: wallet.to_json)
     else
       head 404
     end

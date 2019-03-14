@@ -1,17 +1,21 @@
 require "test_helper"
+require "shared/mailer_test_helper"
 require "webmock/minitest"
 
 class Partners::InvoicesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ActionMailer::TestHelper
 
   describe '#create' do
+    let(:invoice) { Invoice.create(partner: partner, date: "2019-01-01") }
+    let(:partner) { partners(:default_partner) }
+    let(:file) { fixture_file_upload(Rails.root.join('test','fixtures', '1x1.png')) }
+
     before do
-      partner = partners(:default_partner)
+      Rails.application.secrets[:bizdev_email] = 'noreply@brave.com'
+
       sign_in partner
       Invoice.destroy_all
-
-      invoice = Invoice.create(partner: partner, date: "2019-01-01")
-      file = fixture_file_upload(Rails.root.join('test','fixtures', '1x1.png'))
 
       post partners_payments_invoice_invoice_files_path(invoice_id: invoice.id),
         params: { file: file },
@@ -20,6 +24,14 @@ class Partners::InvoicesControllerTest < ActionDispatch::IntegrationTest
 
     it 'renders json' do
       assert JSON.parse(@response.body)["files"]
+    end
+
+    it 'sends an email' do
+      assert_enqueued_emails(1) do
+        post partners_payments_invoice_invoice_files_path(invoice_id: invoice.id),
+          params: { file: file },
+          headers: { 'content-type': 'multipart/form-data' }
+      end
     end
   end
 
