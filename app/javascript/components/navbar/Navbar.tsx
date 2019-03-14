@@ -99,9 +99,9 @@ function Navigation(props) {
       >
         {locale.navbar.dashboard}
       </Nav>
-      <Nav selected={props.navbarSelection === NavbarSelection.Channels}>
+      {/* <Nav selected={props.navbarSelection === NavbarSelection.Channels}>
         {locale.navbar.channels}
-      </Nav>
+      </Nav> */}
       <Nav
         onClick={() => (window.location.href = routes.navbar.referrals.path)}
         selected={props.navbarSelection === NavbarSelection.Referrals}
