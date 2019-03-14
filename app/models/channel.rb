@@ -309,7 +309,7 @@ class Channel < ApplicationRecord
   end
 
   def most_recent_potential_payment
-    PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: self.id)&.first
+    PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: id)&.first
   end
 
   private
