@@ -15,6 +15,11 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
 
+  rescue_from CanCan::AccessDenied do |e|
+    sign_out
+    redirect_to root_url, alert: e.message, status: :authorized
+  end
+
   def no_cache
     response.headers['Cache-Control'] = 'no-cache, no-store'
   end

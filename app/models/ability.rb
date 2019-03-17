@@ -36,9 +36,9 @@ class Ability
   end
 
   def admin
-    raise AdminNotOnIPWhitelistError, "Administrator must be IP whitelisted" unless admin_ip_whitelisted?
+    raise CanCan::AccessDenied.new("Administrator must be IP whitelisted") unless admin_ip_whitelisted?
     if Rails.env.production? || Rails.env.test?
-      raise U2fDisabledError, "U2F must be enabled for administrators" unless u2f_enabled?(@publisher)
+      raise CanCan::AccessDenied.new("U2F must be enabled for administrators") unless u2f_enabled?(@publisher)
     end
     can :manage, :all
     can :access, :all
@@ -48,11 +48,5 @@ class Ability
     return true if ADMIN_IP_WHITELIST.blank? && (Rails.env.development? || Rails.env.test?)
     admin_ip_whitelisted = ADMIN_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(@ip) }
     admin_ip_whitelisted
-  end
-
-  class U2fDisabledError < RuntimeError
-  end
-
-  class AdminNotOnIPWhitelistError < RuntimeError
   end
 end
