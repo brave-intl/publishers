@@ -36,7 +36,7 @@ class Ability
   end
 
   def admin
-    raise CanCan::AccessDenied.new("Administrator must be IP whitelisted") unless admin_ip_whitelisted?
+    raise CanCan::AccessDenied.new("You're not authorized") unless admin_ip_whitelisted?
     if Rails.env.production? || Rails.env.test?
       raise CanCan::AccessDenied.new("U2F must be enabled for administrators") unless u2f_enabled?(@publisher)
     end

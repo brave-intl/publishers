@@ -8,9 +8,8 @@ class Admin::FaqCategoriesControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
 
-    assert_raises(CanCan::AccessDenied) {
-      get admin_faq_categories_path
-    }
+    get admin_faq_categories_path
+    assert_response 302
   end
 
   test "admin can access" do
@@ -26,9 +25,7 @@ class Admin::FaqCategoriesControllerTest < ActionDispatch::IntegrationTest
     admin.u2f_registrations.destroy_all # remove 2fa
     admin.reload
     sign_in admin
-
-    assert_raises(Ability::U2fDisabledError) do
-      get admin_faq_categories_path
-    end
+    get admin_faq_categories_path
+    assert_response 302
   end
 end

@@ -30,9 +30,8 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
     sign_in publisher
 
-    assert_raises(CanCan::AccessDenied) {
-      get admin_publishers_path
-    }
+    get admin_publishers_path
+    assert_response 302
   end
 
   test "admin can access" do
@@ -110,24 +109,21 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "raises error unless admin has u2f enabled" do
+  test "redirects back to unless admin has u2f enabled" do
     admin = publishers(:admin)
     admin.u2f_registrations.each { |r| r.destroy } # remove all u2f registrations
     admin.reload
     sign_in admin
-
-    assert_raises(Ability::U2fDisabledError) do
-      get admin_publishers_path
-    end
+    get admin_publishers_path
+    assert_response 302
   end
 
   test "raises error unless admin is on admin whitelist" do
     admin = publishers(:admin)
     sign_in admin
 
-    assert_raises(Ability::AdminNotOnIPWhitelistError) do
-      get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
-    end
+    get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
+    assert_response 302
   end
 
   test "admins can approve channels waiting for admin approval" do

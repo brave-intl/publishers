@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |e|
     sign_out
-    redirect_to root_url, alert: e.message, status: :authorized
+    redirect_to static_index_url, alert: e.message
   end
 
   def no_cache

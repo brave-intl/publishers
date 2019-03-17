@@ -34,9 +34,8 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:default)
     sign_in publisher
 
-    assert_raises do
-      post admin_payout_reports_path
-    end
+    post admin_payout_reports_path
+    assert_response 302
   end
 
   test "#create doesn't send email or set final if no params are present in POST" do
