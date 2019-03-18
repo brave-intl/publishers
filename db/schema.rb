@@ -249,7 +249,7 @@ ActiveRecord::Schema.define(version: 2019_03_07_022345) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
-    t.boolean "manual"
+    t.boolean "manual", default: false
   end
 
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
