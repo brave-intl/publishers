@@ -10,14 +10,8 @@
     "target": "es5",
     "jsx": "react"
   },
-  "include": [
-    "app/javascript/**/*",
-  ],
-  "exclude": [
-    "**/*.test.tsx",
-    "node_modules",
-    "vendor",
-    "public"
-  ],
+  "files": ["custom.d.ts"],
+  "include": ["app/javascript/**/*"],
+  "exclude": ["**/*.test.tsx", "node_modules", "vendor", "public"],
   "compileOnSave": false
 }

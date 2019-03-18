@@ -8,6 +8,7 @@ export const Container = styled.div`
   margin-right: auto;
   padding-left: 30px;
   padding-right: 30px;
+  min-height: calc(100vh - (190px + 2rem));
 `;
 
 export const Grid = styled.div`

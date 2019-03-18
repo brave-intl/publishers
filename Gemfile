@@ -32,7 +32,7 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.4.3"
+gem "devise", "~> 4.6.1"
 
 gem "dnsruby", "~> 1.60.0", require: false
 

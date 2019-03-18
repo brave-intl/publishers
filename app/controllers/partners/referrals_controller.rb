@@ -10,7 +10,7 @@ module Partners
         end
       end
     end
-
+    
     private
 
     def aggregate_organization_data

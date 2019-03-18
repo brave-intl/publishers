@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   background-color: #a0a1b2;
-  margin-top: -2rem;
   margin-bottom: 30px;
   height: 80px;
 `;
