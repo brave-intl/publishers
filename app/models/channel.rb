@@ -12,22 +12,30 @@ class Channel < ApplicationRecord
   FOLLOWER_COUNT = :follower_count
   VIDEO_COUNT = :video_count
   SUBSCRIBER_COUNT = :subscriber_count
-  ADVANCED_SORTABLE_COLUMNS = [YOUTUBE_VIEW_COUNT, TWITCH_VIEW_COUNT, VIDEO_COUNT, SUBSCRIBER_COUNT, FOLLOWER_COUNT]
+  ADVANCED_SORTABLE_COLUMNS = [YOUTUBE_VIEW_COUNT, TWITCH_VIEW_COUNT, VIDEO_COUNT, SUBSCRIBER_COUNT, FOLLOWER_COUNT].freeze
 
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
-  belongs_to :site_channel_details, -> { where( channels: { details_type: 'SiteChannelDetails' } )
-                                             .includes( :channels ) }, foreign_key: 'details_id'
+  belongs_to :site_channel_details, -> {
+                                      where(channels: { details_type: 'SiteChannelDetails' }).
+                                        includes(:channels)
+                                    }, foreign_key: 'details_id'
 
-  belongs_to :youtube_channel_details, -> { where( channels: { details_type: 'YoutubeChannelDetails' } )
-                                                .includes( :channels ) }, foreign_key: 'details_id'
+  belongs_to :youtube_channel_details, -> {
+                                         where(channels: { details_type: 'YoutubeChannelDetails' }).
+                                           includes(:channels)
+                                       }, foreign_key: 'details_id'
 
-  belongs_to :twitch_channel_details, -> { where( channels: { details_type: 'TwitchChannelDetails' } )
-                                               .includes( :channels ) }, foreign_key: 'details_id'
+  belongs_to :twitch_channel_details, -> {
+                                        where(channels: { details_type: 'TwitchChannelDetails' }).
+                                          includes(:channels)
+                                      }, foreign_key: 'details_id'
 
-  belongs_to :twitter_channel_details, -> { where( channels: { details_type: 'TwitterChannelDetails' } )
-                                               .includes( :channels ) }, foreign_key: 'details_id'
+  belongs_to :twitter_channel_details, -> {
+                                         where(channels: { details_type: 'TwitterChannelDetails' }).
+                                           includes(:channels)
+                                       }, foreign_key: 'details_id'
 
   has_one :promo_registration, dependent: :destroy
 
@@ -50,7 +58,7 @@ class Channel < ApplicationRecord
   validates :verification_status, inclusion: { in: %w(failed awaiting_admin_approval approved_by_admin) }, allow_nil: true
 
   validates :verification_details, inclusion: {
-    in: %w(domain_not_found connection_failed too_many_redirects timeout no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https)
+    in: %w(domain_not_found connection_failed too_many_redirects timeout no_txt_records token_incorrect_dns token_not_found_dns token_not_found_public_file no_https),
   }, allow_nil: true
 
   validate :site_channel_details_brave_publisher_id_unique_for_publisher, if: -> { details_type == 'SiteChannelDetails' }
@@ -80,7 +88,7 @@ class Channel < ApplicationRecord
     site_channels.where('channels.verified = true or NOT site_channel_details.verification_method IS NULL')
   }
   scope :not_visible_site_channels, -> {
-    site_channels.where(verified: [false, nil]).where(site_channel_details: {verification_method: nil})
+    site_channels.where(verified: [false, nil]).where(site_channel_details: { verification_method: nil })
   }
   scope :visible_youtube_channels, -> {
     youtube_channels.where.not('youtube_channel_details.youtube_channel_id': nil)
@@ -94,7 +102,7 @@ class Channel < ApplicationRecord
 
   scope :visible, -> {
     left_outer_joins(:site_channel_details).
-        where('(channels.verified = true or channels.verification_pending) or NOT site_channel_details.verification_method IS NULL')
+      where('(channels.verified = true or channels.verification_pending) or NOT site_channel_details.verification_method IS NULL')
   }
 
   scope :contested_channels_ready_to_transfer, -> {
@@ -105,14 +113,14 @@ class Channel < ApplicationRecord
 
   scope :by_channel_identifier, -> (identifier) {
     case identifier.split("#")[0]
-      when "twitch"
-        visible_twitch_channels.where('twitch_channel_details.twitch_channel_id': identifier.split(":").last)
-      when "youtube"
-        visible_youtube_channels.where('youtube_channel_details.youtube_channel_id': identifier.split(":").last)
-      when "twitter"
-        visible_twitter_channels.where('twitch_channel_details.twitter_channel_id': identifier.split(":").last)
-      else
-        visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
+    when "twitch"
+      visible_twitch_channels.where('twitch_channel_details.twitch_channel_id': identifier.split(":").last)
+    when "youtube"
+      visible_youtube_channels.where('youtube_channel_details.youtube_channel_id': identifier.split(":").last)
+    when "twitter"
+      visible_twitter_channels.where('twitch_channel_details.twitter_channel_id': identifier.split(":").last)
+    else
+      visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
     end
   }
 
@@ -121,7 +129,7 @@ class Channel < ApplicationRecord
       all_channels: Channel.verified.count,
       twitch: Channel.verified.twitch_channels.count,
       youtube:  Channel.verified.youtube_channels.count,
-      site:  Channel.verified.site_channels.count
+      site:  Channel.verified.site_channels.count,
     }
   end
 
@@ -138,16 +146,16 @@ class Channel < ApplicationRecord
   # NOTE This method is should only be used in referral promo logic. Use {channel}.details.channel_identifier for everything else.
   # This will return the channel_identifier without the youtube#channel: or twitch#channel: prefix
   def channel_id
-    channel_type = self.details_type
+    channel_type = details_type
     case channel_type
     when "YoutubeChannelDetails"
-      self.details.youtube_channel_id
+      details.youtube_channel_id
     when "SiteChannelDetails"
-      self.details.brave_publisher_id
+      details.brave_publisher_id
     when "TwitchChannelDetails"
-      self.details.name
+      details.name
     when "TwitterChannelDetails"
-      self.details.twitter_channel_id
+      details.twitter_channel_id
     else
       nil
     end
@@ -164,53 +172,53 @@ class Channel < ApplicationRecord
     if channel_is_site_channel
       channel_details_type_identifier = channel_id_split_on_prefix.first
       return SiteChannelDetails.where(brave_publisher_id: channel_details_type_identifier).
-                        joins(:channel).
-                        where('channels.verified = true').first.channel
+          joins(:channel).
+          where('channels.verified = true').first.channel
     end
 
     prefix = channel_id_split_on_prefix.first
     channel_details_type_identifier = channel_id_split_on_prefix.second
     case prefix
-      when "youtube#channel"
-        YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).
-                              joins(:channel).
-                              where('channels.verified = true').first.channel
-      when "twitch#channel"
-        TwitchChannelDetails.where(name: channel_details_type_identifier).
-                            joins(:channel).
-                            where('channels.verified = true').first.channel
-      when "twitch#author"
-        TwitchChannelDetails.where(name: channel_details_type_identifier).
-                            joins(:channel).
-                            where('channels.verified = true').first.channel
-      when "twitter#channel"
-        TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
-                             joins(:channel).
-                             where('channels.verified = true').first.channel
-      else
-        Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
-        nil
+    when "youtube#channel"
+      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).
+        joins(:channel).
+        where('channels.verified = true').first.channel
+    when "twitch#channel"
+      TwitchChannelDetails.where(name: channel_details_type_identifier).
+        joins(:channel).
+        where('channels.verified = true').first.channel
+    when "twitch#author"
+      TwitchChannelDetails.where(name: channel_details_type_identifier).
+        joins(:channel).
+        where('channels.verified = true').first.channel
+    when "twitter#channel"
+      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
+        joins(:channel).
+        where('channels.verified = true').first.channel
+    else
+      Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
+      nil
     end
   end
 
   def promo_enabled?
-    if self.promo_registration.present?
-      if self.promo_registration.referral_code.present?
+    if promo_registration.present?
+      if promo_registration.referral_code.present?
         return true
       end
     end
     false
   end
 
-  def verification_failed!(details = nil)
+  def verification_failed!(details = nil) # rubocop:disable Airbnb/OptArgParameters
     # Clear changes so we don't bypass validations when saving without checking them
-    self.reload
+    reload
 
     self.verified = false
     self.verified_at = nil
     self.verification_status = 'failed'
     self.verification_details = details
-    self.save!
+    save!
   end
 
   def verification_awaiting_admin_approval!
@@ -240,39 +248,39 @@ class Channel < ApplicationRecord
   def self.search(query)
     query = query.downcase
 
-    base_channel = Channel
-              .joins(:publisher)
-              .left_outer_joins(:site_channel_details)
-              .left_outer_joins(:youtube_channel_details)
-              .left_outer_joins(:twitch_channel_details)
+    base_channel = Channel.
+      joins(:publisher).
+      left_outer_joins(:site_channel_details).
+      left_outer_joins(:youtube_channel_details).
+      left_outer_joins(:twitch_channel_details)
 
     channel = base_channel
     query.split(' ').each do |q|
-      channel = channel
-        .where("lower(publishers.email) LIKE ?", q)
-        .or(base_channel.where("lower(publishers.name) LIKE ?", q))
-        .or(base_channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", q))
-        .or(base_channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", q))
-        .or(base_channel.where("lower(twitch_channel_details.display_name) LIKE ?", q))
-        .or(base_channel.where("lower(twitch_channel_details.email) LIKE ?", q))
-        .or(base_channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", q))
-        .or(base_channel.where("lower(youtube_channel_details.title) LIKE ?", q))
-        .or(base_channel.where("lower(youtube_channel_details.auth_email) LIKE ?", q))
+      channel = channel.
+        where("lower(publishers.email) LIKE ?", q).
+        or(base_channel.where("lower(publishers.name) LIKE ?", q)).
+        or(base_channel.where("lower(site_channel_details.brave_publisher_id) LIKE ?", q)).
+        or(base_channel.where("lower(twitch_channel_details.twitch_channel_id) LIKE ?", q)).
+        or(base_channel.where("lower(twitch_channel_details.display_name) LIKE ?", q)).
+        or(base_channel.where("lower(twitch_channel_details.email) LIKE ?", q)).
+        or(base_channel.where("lower(youtube_channel_details.youtube_channel_id) LIKE ?", q)).
+        or(base_channel.where("lower(youtube_channel_details.title) LIKE ?", q)).
+        or(base_channel.where("lower(youtube_channel_details.auth_email) LIKE ?", q))
     end
 
     channel
   end
 
   def verification_failed?
-    self.verification_status == 'failed'
+    verification_status == 'failed'
   end
 
   def verification_awaiting_admin_approval?
-    self.verification_status == 'awaiting_admin_approval'
+    verification_status == 'awaiting_admin_approval'
   end
 
   def verification_approved_by_admin?
-    self.verification_status == 'approved_by_admin'
+    verification_status == 'approved_by_admin'
   end
 
   def update_last_verification_timestamp
@@ -297,23 +305,23 @@ class Channel < ApplicationRecord
   end
 
   def type_display
-    self.details_type.split("ChannelDetails").join
+    details_type.split("ChannelDetails").join
   end
 
   def most_recent_potential_payment
-    PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: self.id)&.first
+    PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: id)&.first
   end
 
   private
 
   def should_register_channel_for_promo
-    promo_running = Rails.application.secrets[:active_promo_id].present?  # Could use PromosHelper#active_promo_id
-    publisher_enabled_promo = self.publisher.promo_enabled_2018q1?
+    promo_running = Rails.application.secrets[:active_promo_id].present? # Could use PromosHelper#active_promo_id
+    publisher_enabled_promo = publisher.promo_enabled_2018q1?
     promo_running && publisher_enabled_promo && saved_change_to_verified? && verified
   end
 
   def clear_verified_at_if_necessary
-    self.verified_at = nil if self.verified == false && self.verified_at.present?
+    self.verified_at = nil if verified == false && verified_at.present?
   end
 
   def register_channel_for_promo
@@ -321,9 +329,9 @@ class Channel < ApplicationRecord
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
-    duplicate_unverified_channels = publisher.channels.visible_site_channels
-                                                     .where(site_channel_details: { brave_publisher_id: self.details.brave_publisher_id })
-                                                     .where.not(id: id)
+    duplicate_unverified_channels = publisher.channels.visible_site_channels.
+      where(site_channel_details: { brave_publisher_id: details.brave_publisher_id }).
+      where.not(id: id)
 
     if duplicate_unverified_channels.any?
       errors.add(:brave_publisher_id, "must be unique")
@@ -338,19 +346,19 @@ class Channel < ApplicationRecord
 
   def verified_duplicate_channels_must_be_contested
     duplicate_verified_channels = case details_type
-      when "SiteChannelDetails"
-        Channel.other_verified_site_channels(id: self.id)
-            .where(site_channel_details: { brave_publisher_id: self.details.brave_publisher_id })
-      when "YoutubeChannelDetails"
-        Channel.other_verified_youtube_channels(id: self.id)
-            .where(youtube_channel_details: { youtube_channel_id: self.details.youtube_channel_id })
-      when "TwitchChannelDetails"
-        Channel.other_verified_twitch_channels(id: self.id)
-            .where(twitch_channel_details: { twitch_channel_id: self.details.twitch_channel_id })
-      when "TwitterChannelDetails"
-        Channel.other_verified_twitter_channels(id: self.id)
-            .where(twitter_channel_details: { twitter_channel_id: self.details.twitter_channel_id })
-    end
+                                  when "SiteChannelDetails"
+                                    Channel.other_verified_site_channels(id: id).
+                                      where(site_channel_details: { brave_publisher_id: details.brave_publisher_id })
+                                  when "YoutubeChannelDetails"
+                                    Channel.other_verified_youtube_channels(id: id).
+                                      where(youtube_channel_details: { youtube_channel_id: details.youtube_channel_id })
+                                  when "TwitchChannelDetails"
+                                    Channel.other_verified_twitch_channels(id: id).
+                                      where(twitch_channel_details: { twitch_channel_id: details.twitch_channel_id })
+                                  when "TwitterChannelDetails"
+                                    Channel.other_verified_twitter_channels(id: id).
+                                      where(twitter_channel_details: { twitter_channel_id: details.twitter_channel_id })
+                                  end
 
     if duplicate_verified_channels.any?
       if duplicate_verified_channels.count > 1
@@ -358,7 +366,7 @@ class Channel < ApplicationRecord
       end
 
       contesting_channel = duplicate_verified_channels.first
-      if (contesting_channel.contested_by_channel_id != self.id) && (contesting_channel.contested_by_channel_id != nil)
+      if (contesting_channel.contested_by_channel_id != id) && !contesting_channel.contested_by_channel_id.nil?
         errors.add(:base, "contesting channel does not match")
       end
     end
