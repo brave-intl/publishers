@@ -21,6 +21,9 @@ class Promo::RegistrationsGeoStatsFetcher < BaseApiClient
       geo_stats = geo_stats + JSON.parse(response.body)
     end
     geo_stats
+  rescue Faraday::ClientError => e
+    Rails.logger.info("Error receiving referral stats #{e.message}")
+    []
   end
 
   def perform_offline

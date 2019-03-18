@@ -21,6 +21,9 @@ class PublisherBalanceGetter < BaseApiClient
     complete_accounts = fill_in_missing_accounts(accounts)
     complete_accounts
 
+  rescue Faraday::ClientError => e
+    Rails.logger.info("Error receiving eyeshade balance #{e.message}")
+    :unavailable
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
