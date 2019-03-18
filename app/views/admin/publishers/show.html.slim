@@ -54,7 +54,7 @@
           .db-value = "#{publisher_overall_bat_balance(@publisher)}"
         - if @publisher.default_currency.present?
           .db-info-row
-            .db-field = "Overall #{publisher.default_currency} balance:"
+            .db-field = "Overall #{@publisher.default_currency} balance:"
             .db-value = "#{publisher_converted_overall_balance(@publisher)}"
         .db-info-row
           .db-field = "Last settlement balance:"
