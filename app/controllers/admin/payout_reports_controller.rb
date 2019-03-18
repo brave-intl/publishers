@@ -34,6 +34,19 @@ class Admin::PayoutReportsController < AdminController
   def upload_settlement_report
     content = File.read(params[:file].tempfile)
     json = JSON.parse(content)
+    json.each do |entry|
+      next unless entry["documentId"]
+      invoice = Invoice.find_by(id: entry["documentId"])
+      next unless invoice.present?
+
+      invoice.update(
+        paid: true,
+        payment_date: Date.today,
+        status: "paid",
+        paid_by: current_publisher
+      )
+    end
+
     Eyeshade::Publishers.new.create_settlement(body: json)
 
     redirect_to admin_payout_reports_path, flash: { notice: "Successfully uploaded settlement report" }
