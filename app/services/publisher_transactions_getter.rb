@@ -45,6 +45,9 @@ class PublisherTransactionsGetter < BaseApiClient
     #     "transaction_type": "referral_settlement"
     #   }
     # ]
+  rescue Faraday::ClientError => e
+    Rails.logger.info "Error receiving eyeshade transactions #{e.message}"
+    []
   end
 
   def perform_offline
