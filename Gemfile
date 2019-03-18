@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source "https://rubygems.org"
 
 # Rate limit ActiveJob
@@ -31,7 +32,7 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.4.3"
+gem "devise", "~> 4.6.1"
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -82,14 +83,14 @@ gem "premailer-rails", "~> 1.9.4", require: false
 gem 'public_suffix', '~> 3.0.2'
 
 # Puma as app server
-gem "puma", "3.10"
+gem "puma", "3.12"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
 gem 'railties', "~> 5.2.0"
 
-gem "rails", "~> 5.2.2.rc1"
+gem "rails", "~> 5.2.2.1"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -143,8 +144,6 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
 
-  # Static security vulnerability scanner
-  gem "brakeman"
   gem "pry"
   gem 'pry-stack_explorer', '~> 0.4.9.3'
   gem "byebug"
@@ -153,7 +152,7 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
-  gem "rubocop", require: false
+
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
 
@@ -164,7 +163,6 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-  gem "brakeman"
   # API recording and playback
   gem "vcr"
   gem "webmock", "~> 3.0"
@@ -179,6 +177,10 @@ end
 group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
+  gem 'rubocop-airbnb'
+
+  # Static security vulnerability scanner
+  gem "brakeman"
   # Vulnerabilities
   gem "bundler-audit", require: false
   gem "mocha"

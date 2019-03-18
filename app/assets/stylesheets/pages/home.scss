@@ -60,6 +60,13 @@
     font-size: 18px;
   }
 
+  .title-partner {
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 18px;
+  }
+
   @include media-breakpoint-down(md) {
     .title,
     .btn {
@@ -67,7 +74,18 @@
     }
   }
 
+  @media only screen and (max-width: 1300px) {
+    .title-partner {
+      display: none;
+    }
+  }
+
   .title,
+  .btn {
+    margin-right: 25px;
+  }
+
+  .title-partner,
   .btn {
     margin-right: 25px;
   }
