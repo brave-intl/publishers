@@ -20,9 +20,9 @@ class PotentialPayment < ApplicationRecord
       where("amount::numeric > ?", 0)
   }
 
-  scope :manual_to_be_paid, -> { 
+  scope :manual_to_be_paid, -> {
     where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false, kind: MANUAL).
-     where("amount::numeric > ?", 0)
+      where("amount::numeric > ?", 0)
   }
 
   private
