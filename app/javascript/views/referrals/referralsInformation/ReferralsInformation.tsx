@@ -17,6 +17,8 @@ import DeleteDialog from "./deleteDialog/DeleteDialog";
 import EditCampaignDialog from "./editCampaignDialog/EditCampaignDialog";
 import MoveDialog from "./moveDialog/MoveDialog";
 
+import { Navbar, NavbarSelection } from "../../../components/navbar/Navbar";
+
 import Table from "brave-ui/components/dataTables/table";
 
 import { ICampaign } from "../Referrals";
@@ -90,137 +92,142 @@ export default class ReferralsInformation extends React.Component<
 
   public render() {
     return (
-      <Container>
-        <Row campaign>
-          <Content campaignIcon>
-            <CheckCircleIcon />
-          </Content>
-          <Content>
-            <Text header>{locale.campaigns}</Text>
-            <Text h2>{this.state.currentCampaign.name}</Text>
-          </Content>
-          <Content>
-            <Text header>{locale.downloads}</Text>
-            <Text h2>{this.state.stats.downloads}</Text>
-          </Content>
-          <Content>
-            <Text header>{locale.installs}</Text>
-            <Text h2>{this.state.stats.installs}</Text>
-          </Content>
-          <Content>
-            <Text header>{locale.thirtyDay}</Text>
-            <Text h2>{this.state.stats.thirtyDayUse}</Text>
-          </Content>
-          <Content closeIcon>
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={this.triggerDeleteCampaignModal}
-            >
-              <CloseStrokeIcon />
-            </div>
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={this.triggerEditCampaignModal}
-            >
-              <SettingsAdvancedIcon />
-            </div>
-          </Content>
-        </Row>
-        <Row lineBreak />
-        <Row>
-          <Content created>
-            <Text h4>{locale.created}</Text>
-            <Text style={{ paddingLeft: "8px" }} p>
-              {processDate(this.state.currentCampaign.created_at)}
-            </Text>
-          </Content>
-        </Row>
-        <Row>
-          <Content total>
-            <Text h4>{locale.referrals.totalReferralCodes}</Text>
-            <Text style={{ paddingLeft: "8px" }} p>
-              {this.state.currentCampaign.promo_registrations.length}
-            </Text>
-          </Content>
-        </Row>
-        <Row buttons>
-          <Content buttons>
-            <Button onClick={this.triggerAddModal}>
-              {locale.referrals.addCodes}
-            </Button>
-            <Button
-              style={{ marginLeft: "8px" }}
-              onClick={this.triggerMoveModal}
-            >
-              {locale.referrals.moveCodes}
-            </Button>
-          </Content>
-          <br />
-          <br />
-        </Row>
-        <ReferralsTable
-          referralCodes={this.state.currentCampaign.promo_registrations}
-          triggerDeleteModal={this.triggerDeleteModal}
-          setCodeToDelete={this.setCodeToDelete}
-        />
-        <Modal
-          handleClose={this.triggerDeleteModal}
-          show={this.state.showDeleteModal}
-          size={ModalSize.ExtraSmall}
-        >
-          <DeleteDialog
-            closeModal={this.triggerDeleteModal}
-            codeID={this.state.codeToDelete}
-            afterSave={this.fetchData}
-          />
-        </Modal>
-        <Modal
-          handleClose={this.triggerAddModal}
-          show={this.state.showAddModal}
-          size={ModalSize.ExtraSmall}
-        >
-          <AddDialog
-            closeModal={this.triggerAddModal}
-            campaign={this.state.currentCampaign}
-            afterSave={this.fetchData}
-          />
-        </Modal>
-        <Modal
-          handleClose={this.triggerMoveModal}
-          show={this.state.showMoveModal}
-          size={ModalSize.ExtraSmall}
-        >
-          <MoveDialog
-            closeModal={this.triggerMoveModal}
-            campaigns={this.state.campaigns}
+      <div style={{ minHeight: "100vh" }}>
+        <Navbar navbarSelection={NavbarSelection.Referrals} name={"Partner"} />
+        <br />
+        <br />
+        <Container>
+          <Row campaign>
+            <Content campaignIcon>
+              <CheckCircleIcon />
+            </Content>
+            <Content>
+              <Text header>{locale.campaigns}</Text>
+              <Text h2>{this.state.currentCampaign.name}</Text>
+            </Content>
+            <Content>
+              <Text header>{locale.downloads}</Text>
+              <Text h2>{this.state.stats.downloads}</Text>
+            </Content>
+            <Content>
+              <Text header>{locale.installs}</Text>
+              <Text h2>{this.state.stats.installs}</Text>
+            </Content>
+            <Content>
+              <Text header>{locale.thirtyDay}</Text>
+              <Text h2>{this.state.stats.thirtyDayUse}</Text>
+            </Content>
+            <Content closeIcon>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={this.triggerDeleteCampaignModal}
+              >
+                <CloseStrokeIcon />
+              </div>
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={this.triggerEditCampaignModal}
+              >
+                <SettingsAdvancedIcon />
+              </div>
+            </Content>
+          </Row>
+          <Row lineBreak />
+          <Row>
+            <Content created>
+              <Text h4>{locale.created}</Text>
+              <Text style={{ paddingLeft: "8px" }} p>
+                {processDate(this.state.currentCampaign.created_at)}
+              </Text>
+            </Content>
+          </Row>
+          <Row>
+            <Content total>
+              <Text h4>{locale.referrals.totalReferralCodes}</Text>
+              <Text style={{ paddingLeft: "8px" }} p>
+                {this.state.currentCampaign.promo_registrations.length}
+              </Text>
+            </Content>
+          </Row>
+          <Row buttons>
+            <Content buttons>
+              <Button onClick={this.triggerAddModal}>
+                {locale.referrals.addCodes}
+              </Button>
+              <Button
+                style={{ marginLeft: "8px" }}
+                onClick={this.triggerMoveModal}
+              >
+                {locale.referrals.moveCodes}
+              </Button>
+            </Content>
+            <br />
+            <br />
+          </Row>
+          <ReferralsTable
             referralCodes={this.state.currentCampaign.promo_registrations}
-            afterSave={this.fetchData}
+            triggerDeleteModal={this.triggerDeleteModal}
+            setCodeToDelete={this.setCodeToDelete}
           />
-        </Modal>
-        <Modal
-          handleClose={this.triggerDeleteCampaignModal}
-          show={this.state.showDeleteCampaignModal}
-          size={ModalSize.ExtraSmall}
-        >
-          <DeleteCampaignDialog
-            closeModal={this.triggerDeleteCampaignModal}
-            campaign={this.state.currentCampaign}
-            referralCodes={this.state.currentCampaign.promo_registrations}
-            afterSave={redirectToReferrals}
-          />
-        </Modal>
-        <Modal
-          handleClose={this.triggerEditCampaignModal}
-          show={this.state.showEditCampaignModal}
-          size={ModalSize.ExtraSmall}
-        >
-          <EditCampaignDialog
-            closeModal={this.triggerEditCampaignModal}
-            campaign={this.state.currentCampaign}
-            afterSave={this.fetchData}
-          />
-        </Modal>
-      </Container>
+          <Modal
+            handleClose={this.triggerDeleteModal}
+            show={this.state.showDeleteModal}
+            size={ModalSize.ExtraSmall}
+          >
+            <DeleteDialog
+              closeModal={this.triggerDeleteModal}
+              codeID={this.state.codeToDelete}
+              afterSave={this.fetchData}
+            />
+          </Modal>
+          <Modal
+            handleClose={this.triggerAddModal}
+            show={this.state.showAddModal}
+            size={ModalSize.ExtraSmall}
+          >
+            <AddDialog
+              closeModal={this.triggerAddModal}
+              campaign={this.state.currentCampaign}
+              afterSave={this.fetchData}
+            />
+          </Modal>
+          <Modal
+            handleClose={this.triggerMoveModal}
+            show={this.state.showMoveModal}
+            size={ModalSize.ExtraSmall}
+          >
+            <MoveDialog
+              closeModal={this.triggerMoveModal}
+              campaigns={this.state.campaigns}
+              referralCodes={this.state.currentCampaign.promo_registrations}
+              afterSave={this.fetchData}
+            />
+          </Modal>
+          <Modal
+            handleClose={this.triggerDeleteCampaignModal}
+            show={this.state.showDeleteCampaignModal}
+            size={ModalSize.ExtraSmall}
+          >
+            <DeleteCampaignDialog
+              closeModal={this.triggerDeleteCampaignModal}
+              campaign={this.state.currentCampaign}
+              referralCodes={this.state.currentCampaign.promo_registrations}
+              afterSave={redirectToReferrals}
+            />
+          </Modal>
+          <Modal
+            handleClose={this.triggerEditCampaignModal}
+            show={this.state.showEditCampaignModal}
+            size={ModalSize.ExtraSmall}
+          >
+            <EditCampaignDialog
+              closeModal={this.triggerEditCampaignModal}
+              campaign={this.state.currentCampaign}
+              afterSave={this.fetchData}
+            />
+          </Modal>
+        </Container>
+      </div>
     );
   }
 
@@ -258,9 +265,11 @@ function processStats(referralCodes) {
   let installs = 0;
   let thirtyDayUse = 0;
   referralCodes.forEach(code => {
-    downloads += JSON.parse(code.stats)[0].retrievals;
-    installs += JSON.parse(code.stats)[0].first_runs;
-    thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+    if (JSON.parse(code.stats)[0]) {
+      downloads += JSON.parse(code.stats)[0].retrievals;
+      installs += JSON.parse(code.stats)[0].first_runs;
+      thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+    }
   });
   return { downloads, installs, thirtyDayUse };
 }
@@ -274,12 +283,12 @@ function processDate(created) {
 function copyLink(referralCode) {
   // Copy to Clipboard
   const el = document.createElement("textarea");
-  el.value = "https://brave.com/" + referralCode;
+  el.value = "https://laptop-updates.brave.com/download/" + referralCode;
   document.body.appendChild(el);
   el.select();
   document.execCommand("copy");
   document.body.removeChild(el);
-  alert("Copied! " + el.value);
+  alert("Copied to clipboard! \n" + el.value);
 }
 
 function findCurrentCampaign(campaigns) {
@@ -357,15 +366,33 @@ function ReferralsTable(props) {
           customStyle: contentStyle
         },
         {
-          content: <div>{JSON.parse(referralCode.stats)[0].retrievals}</div>,
+          content: (
+            <div>
+              {JSON.parse(referralCode.stats)[0]
+                ? JSON.parse(referralCode.stats)[0].retrievals
+                : 0}
+            </div>
+          ),
           customStyle: contentStyle
         },
         {
-          content: <div>{JSON.parse(referralCode.stats)[0].first_runs}</div>,
+          content: (
+            <div>
+              {JSON.parse(referralCode.stats)[0]
+                ? JSON.parse(referralCode.stats)[0].first_runs
+                : 0}
+            </div>
+          ),
           customStyle: contentStyle
         },
         {
-          content: <div>{JSON.parse(referralCode.stats)[0].finalized}</div>,
+          content: (
+            <div>
+              {JSON.parse(referralCode.stats)[0]
+                ? JSON.parse(referralCode.stats)[0].finalized
+                : 0}
+            </div>
+          ),
           customStyle: contentStyle
         },
         {

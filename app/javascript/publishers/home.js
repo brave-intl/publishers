@@ -8,6 +8,7 @@ import flash from '../utils/flash';
 import { Wallet } from '../wallet';
 import { formatFullDate } from '../utils/dates';
 import { renderBannerEditor } from '../packs/banner_editor'
+import { renderReferralCharts } from '../packs/referral_charts';
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = 'None selected';
@@ -324,6 +325,19 @@ function hideVerificationFailureWhatHappened(element) {
   elementToHide.style.display = "none"
 }
 
+function toggleDialog(event, elements) {
+  for (var i=0; i < elements.length; i++) {
+    // Do not hide if the clicked element is supposed to show the bubble
+    // Or if the clicked element is the bubble
+    let e = elements[i];
+    if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
+      continue;
+    } else {
+      hideVerificationFailureWhatHappened(e);
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   if (document.querySelectorAll('body[data-action="home"]').length === 0) {
     return;
@@ -399,19 +413,17 @@ document.addEventListener('DOMContentLoaded', function() {
     verificationFailureWhatHappenedElements[i].addEventListener('click', showWhatHappenedVerificationFailure, false);
   }
 
+  let infoText = document.getElementsByClassName('info--what-happened');
+  for (let i=0; i < infoText.length; i++) {
+    infoText[i].addEventListener('click', showWhatHappenedVerificationFailure, false);
+  }
+
   // Hide all verification failed bubbles when anywhere on DOM is clicked
   document.body.addEventListener('click', function(event) {
-    for (var i=0; i<verificationFailureWhatHappenedElements.length; i++) {
-      // Do not hide if the clicked element is supposed to show the bubble
-      // Or if the clicked element is the bubble
-      let e = verificationFailureWhatHappenedElements[i];
-      if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
-        continue;
-      } else {
-        hideVerificationFailureWhatHappened(e);
-      }
-    }
+    toggleDialog(event, verificationFailureWhatHappenedElements);
+    toggleDialog(event, infoText);
   })
+
 
   let instantDonationButton = document.getElementById("instant-donation-button");
 
@@ -511,4 +523,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
   }, false);
+
+  renderReferralCharts();
 });

@@ -65,7 +65,7 @@ module PublishersHelper
   def publisher_channel_bat_balance(publisher, channel_identifier)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      channel_balance = publisher.wallet&.channel_balances.dig(channel_identifier)
+      channel_balance = publisher.wallet&.channel_balances&.dig(channel_identifier)
       balance = '%.2f' % channel_balance.amount_bat if channel_balance&.amount_bat.present?
     end
 

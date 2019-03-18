@@ -655,4 +655,12 @@ class PublisherTest < ActiveSupport::TestCase
       count, result.length
     )
   end
+
+  test "#most_recent_potential_referral_payment finds the most recent referral payment" do
+    publisher = publishers(:potentially_paid)
+    assert publisher.most_recent_potential_referral_payment.present?
+
+    publisher = publishers(:completed)
+    assert publisher.most_recent_potential_referral_payment.blank?
+  end
 end

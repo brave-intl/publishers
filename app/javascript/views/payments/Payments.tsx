@@ -3,6 +3,7 @@ import * as React from "react";
 import { Container, Wrapper } from "../style";
 import { Card, Layout, Row } from "./PaymentsStyle";
 
+import { Navbar, NavbarSelection } from "../../components/navbar/Navbar";
 import PaymentHistory from "./paymentHistory/PaymentHistory";
 import PaymentOverview from "./paymentOverview/PaymentOverview";
 import PaymentHeader from "./paymentsHeader/PaymentsHeader";
@@ -80,6 +81,7 @@ export default class Payments extends React.Component<any, IPaymentsState> {
   public render() {
     return (
       <Wrapper>
+        <Navbar navbarSelection={NavbarSelection.Payments} name={"Partner"} />
         <PaymentHeader />
         <Container>
           <Layout>
