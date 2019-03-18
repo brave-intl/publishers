@@ -45,9 +45,11 @@ export default class ReferralsHeader extends React.Component<
 
     campaigns.forEach(campaign => {
       campaign.promo_registrations.forEach(code => {
-        downloads += JSON.parse(code.stats)[0].retrievals;
-        installs += JSON.parse(code.stats)[0].first_runs;
-        thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+        if (JSON.parse(code.stats)[0]) {
+          downloads += JSON.parse(code.stats)[0].retrievals || 0;
+          installs += JSON.parse(code.stats)[0].first_runs || 0;
+          thirtyDayUse += JSON.parse(code.stats)[0].finalized || 0;
+        }
         total++;
       });
     });

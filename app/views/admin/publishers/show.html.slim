@@ -19,54 +19,49 @@
             .db-value = @publisher.email
         - else
           .db-info-row
-            .db-field = "Pending Email:"
+            .db-field = "Pending email:"
             .db-value = @publisher.pending_email
         .db-info-row
           .db-field = "Role:"
           .db-value = @publisher.role
+        .db-info-row
+          .db-field = "Created:"
+          .db-row = @publisher.created_at.strftime('%B %m, %Y')
         - if @publisher.partner?
           - partner = @publisher.becomes(Partner)
           .db-info-row
             .db-field = "Organization:"
             .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
-          .db-field = "Publisher Status:"
+          .db-field = "Publisher status:"
           .db-value = publisher_status(@publisher)
-        .db-info-row
-          .db-field = "Eyeshade wallet address:"
-          .db-value = @publisher.wallet.address
-        .db-info-row
-          .db-field = "Eyeshade wallet is a member:"
-          .db-value = @publisher.wallet.is_a_member?
-        .db-info-row
-          .db-field = "Uphold once connected:"
-          .db-value = @publisher.uphold_verified?
-        .db-info-row
-          .db-field = "Uphold authorized: (Possibly Deprecated?)"
-          .db-value = @publisher.wallet.authorized?
         - if @publisher.wallet.uphold_account_status.present?
           .db-info-row
             .db-field = "Uphold status:"
             .db-value = @publisher.wallet.uphold_account_status
+        .db-info-row
+          .db-field = "Uphold member:"
+          .db-value = @publisher.wallet.is_a_member?
         -if @publisher.uphold_id.present?
           .db-info-row
-            .db-field = "Uphold id:"
+            .db-field = "Uphold account id:"
             .db-value = link_to @publisher.uphold_id, admin_publishers_path(q: @publisher.uphold_id)
         .db-info-row
-          .db-field = "Uphold widget enabled"
+          .db-field = "Uphold widget enabled:"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
         .db-info-row
-          .db-field = "Overall BAT balance"
+          .db-field = "Overall BAT balance:"
           .db-value = "#{publisher_overall_bat_balance(@publisher)}"
+        - if @publisher.default_currency.present?
+          .db-info-row
+            .db-field = "Overall #{@publisher.default_currency} balance:"
+            .db-value = "#{publisher_converted_overall_balance(@publisher)}"
         .db-info-row
-          .db-field = "Overall default currency balance"
-          .db-value = "#{publisher_converted_overall_balance(@publisher)}"
-        .db-info-row
-          .db-field = "Last settlement balance"
+          .db-field = "Last settlement balance:"
           .db-value = "#{publisher_converted_last_settlement_balance(@publisher)}"
         - if @publisher.created_by.present?
           .db-info-row
-            .db-field = "Created by"
+            .db-field = "Created by:"
             .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
         - if @publisher.promo_enabled_2018q1
           .db-info-row
@@ -76,7 +71,7 @@
             .db-field = "Referral installs:"
             .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
           .db-info-row
-            .db-field = "Referral confirmations"
+            .db-field = "Referral confirmations:"
             .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
       #statement-section.split-row
         h3.admin-header = "Statements"
@@ -90,22 +85,22 @@
           - if @potential_referral_payment.present?
             h4= payout_report_status_header('owner')
             .db-info-row
-              .db-field = "Reauthorization was needed"
-              .db-value = @potential_referral_payment.reauthorization_needed
+              .db-field = "Uphold status was"
+              .db-value = @potential_referral_payment.uphold_status || 'unavailable'
+            - if @potential_referral_payment.reauthorization_needed
+              .db-info-row
+                .db-field = "Reauthorization was needed"
+                .db-value = @potential_referral_payment.reauthorization_needed
             .db-info-row
               .db-field = "Was Uphold member"
               .db-value = @potential_referral_payment.uphold_member
-            .db-info-row
-              .db-field = "Was suspended"
-              .db-value = @potential_referral_payment.suspended
-            .db-info-row
-              .db-field = "Uphold status was"
-              .db-value = @potential_referral_payment.uphold_status || 'unavailable'
+            - if @potential_referral_payment.suspended
+              .db-info-row
+                .db-field = "Was suspended"
+                .db-value = @potential_referral_payment.suspended
             .db-info-row
               .db-field = "Approx. amount"
-              .db-value = @potential_referral_payment.amount.to_d * 1/1E18
-
-  hr
+              .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"
 
   -if @publisher.partner?
     hr
@@ -149,24 +144,12 @@
               .db-value = channel.promo_registration.referral_code
           - if channel.verified?
             .payout-report-status-section
-              - @potential_contribution_payment = PayoutReport.most_recent_final_report.potential_payments.where(channel_id: channel.id).first
-              - if @potential_contribution_payment.present?
+              - potential_contribution_payment = channel.most_recent_potential_payment
+              - if potential_contribution_payment.present?
                 h4= payout_report_status_header('channel')
                 .db-info-row
-                  .db-field = "Reauthorization was needed"
-                  .db-value = @potential_contribution_payment.reauthorization_needed
-                .db-info-row
-                  .db-field = "Was Uphold member"
-                  .db-value = @potential_contribution_payment.uphold_member
-                .db-info-row
-                  .db-field = "Was suspended"
-                  .db-value = @potential_contribution_payment.suspended
-                .db-info-row
-                  .db-field = "Uphold status was"
-                  .db-value = @potential_contribution_payment.uphold_status || 'unavailable'
-                .db-info-row
                   .db-field = "Approx. amount"
-                  .db-value = @potential_contribution_payment.amount.to_d * 1/1E18
+                  .db-value = "#{potential_contribution_payment.amount.to_d * 1/1E18} BAT"
 
   hr
   h3.admin-header = "Notes"

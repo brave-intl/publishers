@@ -31,6 +31,10 @@ class Publishers::SiteBannersController < ApplicationController
       end
     end
     head :ok
+  rescue MiniMagick::Error
+    render status: 400, json: { message: I18n.t('.shared.oh_no') }.to_json
+  rescue StandardError => e
+    render status: 400, json: { message: e.message }.to_json
   end
 
   def set_default_site_banner_mode
@@ -86,6 +90,7 @@ class Publishers::SiteBannersController < ApplicationController
     rescue OutsidePaddingRangeError => e
       logger.error "Outside padding range #{e.message}"
       LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: {publisher_id: current_publisher.id})
+      raise StandardError.new("File size too big for #{attachment_type}")
     end
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)

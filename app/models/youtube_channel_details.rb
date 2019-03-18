@@ -7,7 +7,7 @@ class YoutubeChannelDetails < BaseChannelDetails
   validates :thumbnail_url, presence: true
   validates :auth_user_id, presence: true
 
-  YOUTUBE_PREFIX = "youtube#channel:"
+  YOUTUBE_PREFIX = "youtube#channel:".freeze
 
   ## Begin methods to satisfy the Eyeshade integration
 

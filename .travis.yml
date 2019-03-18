@@ -22,8 +22,8 @@ services:
   - redis-server
 env:
   global:
-  - RAILS_ENV=test
-  - TZ="America/Los_Angeles"
+    - RAILS_ENV=test
+    - TZ="America/Los_Angeles"
   matrix:
     secure: GfHO6+Nw5ofPlvCPFNFCUvQBTW9w5fRy3z8ktlwR4kaT9Q5FkNwtLYgFsX35F0BRQKAT+i43P9ADwku+C53xAfp6IjFqK9bcP8ICi49d2pRl5qzOfscza/UbrO0nxoxfuaFMzVbJC0copi/HP5f/yQ115D5MuxGS47hTdKWNwwNvuaKog7di53q0lVbk9mR1vrwKHreAq7iIuH8szmm7sJpXi/6OuSkd3Gwms/aDpiU4cys0QLtLcCg9G+5WNtjtpSel87xLTR38vWV1/ho9PuYfhKhEMW5VH7ko/w9vl4lybkJ/tP/RE8sRZ8oN/Xb3RD+R/wr9JkgTgq67m762/IpJu55+iGNbLTUQdt2FKNLXozhmQXe1HUbqlpc8JY6zryf6Iy/A/9B9189fiQFnl1AWmYQZlwlfkBVSxQMuOFw+zGPf6aSIUng5HX5jEdkz3fnqxfwZWa7HV6HQ352BzcX8NYvCWz6JZV4v3R8oybQhkH88zpTcW3z20lPSx4/7JqnbGxxbPi9k73xbkAzq1yn5JN8LGQpm0MOuDHKeUem+JfZukxkvzVpDWZRszMARVC12XZd2ZKvm7rhbQahTBwJD0qmRcl5RNhQUQmi2kkKb1CQLd25f4YQFQJFbnOU/R+FIwSghDKQzxXiHce2kFRhiSzOmb3rSLB44sstRbrg=
 before_install:
@@ -33,10 +33,10 @@ before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 before_script:
   - bundle exec rake db:setup
-  - bundle exec rake assets:precompile
 script:
   - yarn audit
   - yarn lint
   - bin/rails test
   - yarn test
   - bundle exec brakeman
+  - bundle exec rubocop
