@@ -8,7 +8,7 @@ class Admin::PayoutReportsController < AdminController
     render(json: @payout_report.contents, status: 200)
   end
 
-  def download    
+  def download
     @payout_report = PayoutReport.find(params[:id])
     contents = assign_authority(@payout_report.contents)
     send_data contents,
@@ -22,7 +22,7 @@ class Admin::PayoutReportsController < AdminController
   end
 
   def create
-    EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?)
+    EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?, manual: params[:manual].present?)
     redirect_to admin_payout_reports_path, flash: { notice: "Your payout report is being generated, check back soon." }
   end
 

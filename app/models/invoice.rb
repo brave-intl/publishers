@@ -40,6 +40,14 @@ class Invoice < ActiveRecord::Base
     status == PENDING
   end
 
+  def finalized_amount_to_probi
+    if finalized_amount
+      (finalized_amount.tr(",", "").to_d * BigDecimal.new("1.0e18")).to_i
+    else
+      0
+    end
+  end
+
   def as_json(_options = {})
     {
       id: id,
