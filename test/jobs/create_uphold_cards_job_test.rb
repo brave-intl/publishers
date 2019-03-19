@@ -26,7 +26,6 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                              "authorized" => true,
                              "isMember" => true,
                              "status" => "ok",
-                             "availableCurrencies" => "",
                              "possibleCurrencies" => "BAT",
                              "scope" => "cards:read, cards:write, user:read",
                            },
@@ -60,7 +59,6 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
                              "authorized" => true,
                              "isMember" => true,
                              "status" => "ok",
-                             "availableCurrencies" => "BAT",
                              "possibleCurrencies" => "BAT",
                              "scope" => "cards:read, cards:write, user:read",
                              "address" => "cc053a27-cdcd-4fdb-aa90-f0417df26242"

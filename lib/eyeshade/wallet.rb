@@ -12,7 +12,6 @@ module Eyeshade
                 :provider,
                 :scope,
                 :default_currency,
-                :available_currencies,
                 :possible_currencies,
                 :channel_balances,
                 :rates,

@@ -62,7 +62,6 @@ class PublishersHelperTest < ActionView::TestCase
           "provider" => "uphold",
           "authorized" => true,
           "defaultCurrency" => 'USD',
-          "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       }
     )
@@ -120,7 +119,6 @@ class PublishersHelperTest < ActionView::TestCase
           "provider" => "uphold",
           "authorized" => true,
           "defaultCurrency" => 'USD',
-          "availableCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       },
       accounts: [

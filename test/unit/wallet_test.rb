@@ -23,7 +23,6 @@ class WalletTest < ActiveSupport::TestCase
           "provider" => "uphold",
           "authorized" => true,
           "defaultCurrency" => 'USD',
-          "availableCurrencies" => [ 'USD', 'EUR', 'BAT' ],
           "possibleCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
           "scope" => 'cards:write'
       }
