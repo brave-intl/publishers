@@ -272,6 +272,8 @@ ActiveRecord::Schema.define(version: 2019_03_07_022345) do
     t.uuid "invoice_id"
     t.uuid "finalized_by_id"
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
+    t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
+    t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
