@@ -16,7 +16,7 @@ AllCops:
     - db/**/*
     - vendor/**/*
 LineLength:
-  Max: 225
+  Max: 400
 Airbnb/SimpleModifierConditional:
   Enabled: false
 Airbnb/DefaultScope:
