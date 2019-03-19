@@ -11,15 +11,15 @@ class PublisherTokenAuthenticator < BaseService
 
   # Note: If the token was valid, this consumes it.
   def perform
-    if publisher.authentication_token.blank?
+    if publisher.user_authentication_token.authentication_token.blank?
       return false
     end
-    if publisher.authentication_token_expires_at.blank? || (Time.now > publisher.authentication_token_expires_at)
+    if publisher.user_authentication_token.authentication_token_expires_at.blank? || (Time.now > publisher.authentication_token_expires_at)
       return false
     end
     result = ActiveSupport::SecurityUtils.secure_compare(
       ::Digest::SHA256.hexdigest(token),
-      ::Digest::SHA256.hexdigest(publisher.authentication_token)
+      ::Digest::SHA256.hexdigest(publisher.user_authentication_token.authentication_token)
     )
     if result
       pending_email = publisher.pending_email
@@ -31,7 +31,7 @@ class PublisherTokenAuthenticator < BaseService
         end
         publisher.pending_email = nil
       end
-      publisher.authentication_token = nil
+      publisher.user_authentication_token.update(authentication_token: nil)
       publisher.save!
     end
     result

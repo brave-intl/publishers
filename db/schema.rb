@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_19_174004) do
+ActiveRecord::Schema.define(version: 2019_03_19_190754) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -451,6 +452,14 @@ ActiveRecord::Schema.define(version: 2019_03_19_174004) do
     t.datetime "updated_at", null: false
     t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
+  end
+
+  create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "encrypted_authentication_token"
+    t.string "encrypted_authentication_token_iv"
+    t.datetime "authentication_token_expires_at"
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id"
   end
 
   create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

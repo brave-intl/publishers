@@ -33,6 +33,7 @@ class Publisher < ApplicationRecord
 
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
+  has_one :user_authentication_token, foreign_key: :user_id
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -138,6 +139,14 @@ class Publisher < ApplicationRecord
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.where("created_at <= ?", up_to_date).distinct(:id).count,
     }
+  end
+
+  def authentication_token
+    user_authentication_token.authentication_token
+  end
+
+  def authentication_token_expires_at
+    user_authentication_token.authentication_token_expires_at
   end
 
   def self.advanced_sort(column, sort_direction)
