@@ -15,5 +15,7 @@ class Eyeshade::Publishers < Eyeshade::BaseApiClient
     end
 
     response.body
+  rescue Faraday::ClientError => e
+    Rails.logger.info("Could not post settlement #{e.message}")
   end
 end
