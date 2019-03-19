@@ -102,6 +102,8 @@ Rails.application.routes.draw do
   resources :faqs, only: [:index]
 
   root "static#index"
+  get 'sign-up', to: "static#index"
+  get 'log-in', to: "static#index"
 
   namespace :api, defaults: { format: :json } do
     resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
