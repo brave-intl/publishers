@@ -7,6 +7,7 @@ export default {
   campaign: "Campaign",
   campaignName: "Campaign Name",
   campaigns: "Campaigns",
+  channels: "Channels",
   common: {
     unexpectedError: "An unexpected error has occurred. Please try again later."
   },
@@ -14,6 +15,7 @@ export default {
   create: "Create",
   createCode: "Create Code",
   created: "Created",
+  dashboard: "Dashboard",
   delete: "Delete",
   description: "Description",
   donationAmount: "Donation amount",
@@ -23,6 +25,15 @@ export default {
   installs: "Installs",
   makeMonthly: "Make this monthly",
   move: "Move",
+  navbar: {
+    channels: "Channels",
+    dashboard: "Dashboard",
+    help: "Help",
+    logOut: "Log Out",
+    payments: "Payments",
+    referrals: "Referrals",
+    security: "Security"
+  },
   notEnoughTokens: "Not enough tokens",
   off: " ",
   payments: {
