@@ -11,6 +11,9 @@ h5.admin-header Change current status for #{@publisher.name}
     = check_box_tag("send_email", true)
     = " Send email (suspended only)"
   br
+  = label_tag(:note_label, "Include a note: ")
+  = text_area_tag(:note)
+  br
   = f.submit("Update Status", class: 'btn btn-primary')
 
 hr
