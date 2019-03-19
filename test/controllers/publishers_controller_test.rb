@@ -725,7 +725,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     wallet = { "wallet" => { "defaultCurrency" => "USD",
                              "authorized" => false,
-                             "availableCurrencies" => [],
                              "possibleCurrencies" => ["BAT"],
                              "scope" => "cards:read, user:read" },
                "rates" => {},
@@ -763,7 +762,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # Mock the eyeshade wallet response to include cards:write scope
     wallet = { "wallet" => { "defaultCurrency" => "USD",
                              "authorized" => true,
-                             "availableCurrencies" => [],
                              "possibleCurrencies" => ["BAT"],
                              "scope" => "cards:read, cards:write, user:read"},
                "rates" => {},
@@ -799,7 +797,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # Mock the eyeshade wallet response to include cards:write scope
     wallet = { "wallet" => { "defaultCurrency" => "USD",
                              "authorized" => true,
-                             "availableCurrencies" => [],
                              "possibleCurrencies" => ["BAT", "BTC"],
                              "scope" => "cards:read, cards:write, user:read" },
                "rates" => {},
@@ -835,7 +832,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # Mock the eyeshade wallet response to include cards:write scope
     wallet = { "wallet" => { "defaultCurrency" => "BAT",
                              "authorized" => true,
-                             "availableCurrencies" => ["BAT"],
                              "possibleCurrencies" => ["BAT"],
                              "scope" => "cards:read, cards:write, user:read" },
                "rates" => {},
@@ -869,7 +865,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     wallet = { "wallet" => { "defaultCurrency" => "USD",
                              "authorized" => false,
-                             "availableCurrencies" => [],
                              "possibleCurrencies" => ["BAT"],
                              "scope" => "cards:read, user:read" },
                "rates" => {},
@@ -893,7 +888,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     wallet = { "wallet" => { "defaultCurrency" => "BAT",
                              "authorized" => true,
-                             "availableCurrencies" => [],  # BAT will not be available
                              "possibleCurrencies" => ["BAT"],
                              "scope" => "cards:read, cards:write, user:read" },
                "rates" => {},

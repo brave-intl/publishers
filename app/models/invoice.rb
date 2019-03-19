@@ -51,7 +51,7 @@ class Invoice < ActiveRecord::Base
       paid: paid,
       paymentDate: payment_date,
       finalizedAmount: finalized_amount,
-      createdAt: created_at.strftime("%b %d, %Y")
+      createdAt: created_at.strftime("%b %d, %Y"),
     }
   end
 end

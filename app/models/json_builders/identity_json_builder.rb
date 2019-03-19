@@ -1,13 +1,10 @@
 class JsonBuilders::IdentityJsonBuilder
-=begin
-(Albert Wang). Meant for the browsers. Parity with Ledger's v3/identity.
-=end
+  # (Albert Wang). Meant for the browsers. Parity with Ledger's v3/identity.
 
   attr_reader :channel_detail, :publisher_name, :errors
 
   # Copy of bat-ledger/node_modules/bat-publisher/index.js `providerRE`
   URL_REGULAR_EXPRESSION = /^([A-Za-z0-9][A-Za-z0-9]{0,62})#([A-Za-z0-9][A-Za-z0-9]{0,62}):(([A-Za-z0-9\-._~]|%[0-9A-F]{2})+)$/
-
 
   def initialize(publisher_name:)
     @errors = []
@@ -16,7 +13,7 @@ class JsonBuilders::IdentityJsonBuilder
   end
 
   def find_channel_detail
-    channel_detail = if @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::YOUTUBE
+    if @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::YOUTUBE
       YoutubeChannelDetails.find_by(youtube_channel_id: @parsed_publisher_name[3])
     elsif @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::TWITCH
       find_twitch_channel_detail
@@ -28,7 +25,7 @@ class JsonBuilders::IdentityJsonBuilder
   def find_twitch_channel_detail
     twitch_channel_details = TwitchChannelDetails.where(
       "twitch_channel_id = :parsed_twitch_suffix OR name = :parsed_twitch_suffix",
-      {parsed_twitch_suffix: @parsed_publisher_name[3]}
+      { parsed_twitch_suffix: @parsed_publisher_name[3] }
     )
 
     if twitch_channel_details.count > 1
@@ -40,12 +37,12 @@ class JsonBuilders::IdentityJsonBuilder
 
   def build
     @json = if @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::YOUTUBE
-      build_youtube_identity_json
-    elsif @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::TWITCH
-      build_twitch_identity_json
-    else
-      build_site_identity_json
-    end
+              build_youtube_identity_json
+            elsif @parsed_publisher_name.present? && @parsed_publisher_name[1] == Channel::TWITCH
+              build_twitch_identity_json
+            else
+              build_site_identity_json
+            end
     self
   end
 
@@ -108,11 +105,9 @@ class JsonBuilders::IdentityJsonBuilder
     channel_detail = find_channel_detail
 
     if channel_detail.present? && channel_detail.channel.present?
-=begin
-      (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
-      which erroneously uses Bson.timestamp().
-=end
-      json.timestamp (channel_detail.channel.updated_at.to_i << 32).to_s
+      #       (Albert Wang): To satisfy backwards compatibility in Ledger's v3.identity
+      #       which erroneously uses Bson.timestamp().
+      json.timestamp(channel_detail.channel.updated_at.to_i << 32).to_s
       if channel_detail.channel.verified?
         json.verified true
       end
