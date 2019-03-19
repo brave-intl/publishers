@@ -38,9 +38,9 @@ module PublishersHelper
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
       publisher = publisher.become_subclass
-      balance = publisher.wallet&.overall_balance&.amount_bat
-      balance = publisher.balance&.amount_bat if publisher.partner?
-      balance ='%.2f' % balance if balance.present?
+      amount = publisher.wallet&.overall_balance&.amount_bat
+      amount = publisher.balance&.amount_bat if publisher.partner?
+      balance ='%.2f' % amount if amount.present?
     end
 
     balance
