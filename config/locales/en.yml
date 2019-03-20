@@ -44,6 +44,7 @@ en:
     log_in: Log In
     remove: Remove
     terms_of_service: Terms of Service
+    lost_2fa: Lost 2fa?
     faqs: FAQs
     ok: OK
     oh_no: "Oh no!"
@@ -480,6 +481,11 @@ en:
         We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
         <br/><br/>
         If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a> where a real human will read and reply to your message — normally within 48 hours.
+    two_factor_authentication_removal:
+      heading: Have an issue with 2-factor authentication?
+      leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
+      note: Please note, for your security, we require a 2 week waiting period for the 2-factor authentication removal to complete. Additionally, once it is completed you will need to reverify your channels and uphold wallet.
+      request_2fa_removal: Request 2-factor Security Removal
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel

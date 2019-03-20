@@ -22,6 +22,7 @@ class PublishersController < ApplicationController
     only: %i(show)
   before_action :authenticate_publisher!,
     except: %i(sign_up
+               two_factor_authentication_removal
                create
                create_auth_token
                create_done
@@ -31,6 +32,7 @@ class PublishersController < ApplicationController
                resend_auth_email)
   before_action :require_unauthenticated_publisher,
     only: %i(sign_up
+             two_factor_authentication_removal
              create
              create_auth_token
              new
@@ -197,6 +199,9 @@ class PublishersController < ApplicationController
         format.html { render(status: 400) }
       end
     end
+  end
+
+  def two_factor_authentication_removal
   end
 
   def javascript_detected
