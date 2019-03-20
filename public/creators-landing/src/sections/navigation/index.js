@@ -1,9 +1,11 @@
-import React from "react";
-import { Box, Image, ResponsiveContext, Menu, Anchor } from "grommet";
-import { MenuIcon, SecondaryButton } from "../../components";
-import logo from "../../components/img/brave-rewards-creators-logo.svg";
-import mobileLogo from "../../components/img/brave-rewards-logo.svg";
-import locale from "../../locale/en";
+import React from "react"
+import { Box, Image, ResponsiveContext, Menu, Anchor } from "grommet"
+import { MenuIcon, SecondaryButton } from "../../components"
+import logo from "../../components/img/brave-rewards-creators-logo.svg"
+import mobileLogo from "../../components/img/brave-rewards-logo.svg"
+import batPill from "../../components/img/built-with-bat-pill.svg"
+
+import locale from "../../locale/en"
 
 const MobileNav = () => (
   <Box
@@ -15,12 +17,8 @@ const MobileNav = () => (
     width="100%"
     id="nav"
   >
-    <Box as="a" href={locale.nav.logoHref} a11yTitle="Brave Rewards Home Logo">
-      <Image
-        a11yTitle="Brave Rewards Creator Logo"
-        src={mobileLogo}
-        height="36px"
-      />
+    <Box as="a" href={locale.nav.logoHref}>
+      <Image src={mobileLogo} height="36px" />
     </Box>
     <Menu
       icon={<MenuIcon />}
@@ -32,7 +30,7 @@ const MobileNav = () => (
       ]}
     />
   </Box>
-);
+)
 
 const DefaultNav = () => (
   <Box
@@ -48,9 +46,12 @@ const DefaultNav = () => (
     <Box
       as="a"
       href={locale.nav.logoHref}
-      a11yTitle="Brave Rewards Home Button"
+      direction="row"
+      gap="medium"
+      align="center"
     >
-      <Image a11yTitle="Brave Rewards Creator Logo" src={logo} height="32px" />
+      <Image src={logo} height="32px" />
+      <Image src={batPill} height="28px" />
     </Box>
     <Box direction="row" align="center" gap="large">
       <Anchor
@@ -68,18 +69,18 @@ const DefaultNav = () => (
       />
     </Box>
   </Box>
-);
+)
 
 export const Nav = () => {
   return (
     <ResponsiveContext.Consumer>
       {size => {
-        if (size === "small") {
-          return <MobileNav />;
+        if (size >= "medium") {
+          return <MobileNav />
         } else {
-          return <DefaultNav />;
+          return <DefaultNav />
         }
       }}
     </ResponsiveContext.Consumer>
-  );
-};
+  )
+}
