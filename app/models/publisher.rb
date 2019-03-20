@@ -142,11 +142,11 @@ class Publisher < ApplicationRecord
   end
 
   def authentication_token
-    user_authentication_token.authentication_token
+    user_authentication_token&.authentication_token
   end
 
   def authentication_token_expires_at
-    user_authentication_token.authentication_token_expires_at
+    user_authentication_token&.authentication_token_expires_at
   end
 
   def self.advanced_sort(column, sort_direction)

@@ -1,6 +1,6 @@
 class UserAuthenticationToken < ActiveRecord::Base
   attr_encrypted :authentication_token, key: :encryption_key
-  belongs_to :user
+  belongs_to :user, class_name: "Publisher", foreign_key: :user_id
 
   def encryption_key
     UserAuthenticationToken.encryption_key
