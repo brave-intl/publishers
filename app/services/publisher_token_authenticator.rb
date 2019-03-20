@@ -11,10 +11,10 @@ class PublisherTokenAuthenticator < BaseService
 
   # Note: If the token was valid, this consumes it.
   def perform
-    if publisher.user_authentication_token.authentication_token.blank?
+    if publisher.authentication_token.blank?
       return false
     end
-    if publisher.user_authentication_token.authentication_token_expires_at.blank? || (Time.now > publisher.authentication_token_expires_at)
+    if publisher.authentication_token_expires_at.blank? || (Time.now > publisher.authentication_token_expires_at)
       return false
     end
     result = ActiveSupport::SecurityUtils.secure_compare(

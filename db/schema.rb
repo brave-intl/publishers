@@ -459,7 +459,7 @@ ActiveRecord::Schema.define(version: 2019_03_19_190754) do
     t.string "encrypted_authentication_token_iv"
     t.datetime "authentication_token_expires_at"
     t.uuid "user_id", null: false
-    t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id"
+    t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
 
   create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
