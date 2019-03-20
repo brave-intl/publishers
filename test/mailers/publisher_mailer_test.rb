@@ -55,6 +55,8 @@ class PublisherMailerTest < ActionMailer::TestCase
     publisher.pending_email = "alice-pending@verified.com"
     publisher.save
 
+    # Same logic as ConfirmEmailChangeEmailer
+    PublisherTokenGenerator.new(publisher: publisher).perform
     email = PublisherMailer.confirm_email_change(publisher)
 
     assert_emails 1 do
