@@ -3,8 +3,8 @@ require 'test_helper'
 class MembershipTest < ActiveSupport::TestCase
   test "Membership test" do
     partner = partners(:default_partner)
-    organization = organizations(:brave_organization)
-    organization.organization_permission = organization_permissions(:default_permission)
+    organization_permission = organization_permissions(:default_permission)
+    organization = organization_permission.organization
     membership = Membership.create(organization: organization, member: partner)
 
     assert_equal partner.membership, membership

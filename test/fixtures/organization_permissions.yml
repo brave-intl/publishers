@@ -1,4 +1,9 @@
 default_permission:
   uphold_wallet: true
   offline_reporting: false
+  organization: default_organization
 
+brave_permission:
+  uphold_wallet: true
+  offline_reporting: false
+  organization: brave_organization
