@@ -15,8 +15,8 @@ class LogInTest < Capybara::Rails::TestCase
   test "can navigate to log in from landing page" do
     visit root_path
     assert_content page, "Brave Rewards"
-    click_link('Log In')
-    assert_content page, "Log In"
+    click_link('log in')
+    assert_content page, "Sign in"
   end
 
   test "a user with an existing email can receive a login email" do
