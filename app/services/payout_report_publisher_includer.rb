@@ -85,4 +85,3 @@ class PayoutReportPublisherIncluder < BaseService
     @payout_report.nil?
   end
 end
-

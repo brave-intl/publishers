@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
-    "@rails/webpacker": "^4.0.0-rc.2",
+    "@rails/webpacker": "^4.0.2",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
@@ -86,9 +86,6 @@
     "hoek": "^6.0.1",
     "jest": "^24.1.0",
     "jest-styled-components": "^5.0.1",
-    "postcss-cssnext": "^3.1.0",
-    "postcss-import": "^12.0.1",
-    "postcss-loader": "^3.0.0",
     "prettier": "1.16.3",
     "stylelint": "^9.4.0",
     "stylelint-config-recommended-scss": "^3.2.0",

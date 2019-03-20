@@ -13,7 +13,6 @@ describe("Wallet", () => {
     provider: "uphold",
     scope: "cards:read user:read",
     default_currency: "GBP",
-    available_currencies: ["USD", "EUR", "BTC", "ETH", "BAT"],
     possible_currencies: [
       "AED",
       "ARS",
@@ -115,7 +114,6 @@ describe("Wallet", () => {
     let wallet = new Wallet(walletData);
     expect(wallet.defaultCurrency).toEqual("GBP");
     expect(wallet.authorized).toEqual(true);
-    expect(wallet.availableCurrencies.includes("USD")).toEqual(true);
     expect(wallet.possibleCurrencies.includes("HKD")).toEqual(true);
   });
 
