@@ -6,6 +6,9 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
 
   def create
     @publisher.status_updates.create(status: params[:publisher_status])
+    if params[:note].present?
+      @publisher.notes.create(note: params[:note], created_by_id: current_publisher.id)
+    end
     @publisher.reload
 
     # TODO: Send emails for other manual status updates, and send email without creating a status update

@@ -29,7 +29,12 @@ aside
           - if params[:partner_id] && (params[:id] || params[:invoice_id])
               ul.sub-menu
                 = nav_link "Invoice", admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
-        = nav_link "Publishers", admin_publishers_path
+        li
+          a href='#' class="sidebar-toggle pull-right"
+            = fa_icon "chevron-down"
+          = link_to "Publishers", admin_publishers_path
+          ul.sub-menu style="#{params[:controller] == 'admin/publishers' ? "" : "display:none"} "
+            = nav_link "Suspended Publishers", admin_publishers_path(suspended: true)
         = nav_link "FAQs", admin_faq_categories_path
         = nav_link "Payout Reports", admin_payout_reports_path
         = nav_link "Referral Promo", admin_unattached_promo_registrations_path
