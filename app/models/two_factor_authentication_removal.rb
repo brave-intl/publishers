@@ -1,0 +1,2 @@
+class TwoFactorAuthenticationRemoval < ApplicationRecord
+end
