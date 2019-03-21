@@ -22,7 +22,7 @@ class LogInTest < Capybara::Rails::TestCase
   test "a user with an existing email can receive a login email" do
     email = 'alice@verified.org'
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
 
     assert_content page, "Log In"
     fill_in 'publisher_email', with: email
@@ -34,7 +34,7 @@ class LogInTest < Capybara::Rails::TestCase
   test "after failed login, user can create an account instead" do
     email = 'new-test@example.com'
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
 
     assert_content page, "Log In"
     fill_in 'publisher_email', with: email
@@ -49,7 +49,7 @@ class LogInTest < Capybara::Rails::TestCase
   test "a user can resend log in email" do
     email = 'alice@verified.org'
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
 
     assert_content page, "Log In"
     fill_in 'publisher_email', with: email
@@ -62,7 +62,7 @@ class LogInTest < Capybara::Rails::TestCase
 
   test "a user without 2FA enabled will be taken to the dashboard after log in" do
     publisher = publishers(:completed)
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
     fill_in 'publisher_email', with: publisher.email
@@ -73,7 +73,7 @@ class LogInTest < Capybara::Rails::TestCase
 
   test "a user with TOTP enabled will be asked for an auth code after log in" do
     publisher = publishers(:verified_totp_only)
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
     fill_in 'publisher_email', with: publisher.email
@@ -91,7 +91,7 @@ class LogInTest < Capybara::Rails::TestCase
 
   test "a user with TOTP enabled can retry entry of their auth code" do
     publisher = publishers(:verified_totp_only)
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
     fill_in 'publisher_email', with: publisher.email
@@ -115,7 +115,7 @@ class LogInTest < Capybara::Rails::TestCase
     publisher = publishers(:verified)
     u2f_registration = u2f_registrations(:default)
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
     fill_in 'publisher_email', with: publisher.email
@@ -137,7 +137,7 @@ class LogInTest < Capybara::Rails::TestCase
     publisher = publishers(:verified)
     u2f_registration = u2f_registrations(:default)
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
     fill_in 'publisher_email', with: publisher.email

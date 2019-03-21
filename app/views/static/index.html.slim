@@ -26,7 +26,7 @@
                 strong= t("shared.existing_account")
               p= t ".login.body"
             .col.col-xs-12.col-sm-4.button-column
-              = link_to(t("shared.log_in"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+              = link_to(t("shared.log_in"), log_in_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
           hr.tos-faq--divider
           .row
             .col.col-xs-12.col-sm-8

@@ -20,112 +20,22 @@ class PublishersController < ApplicationController
 
   before_action :authenticate_via_token,
     only: %i(show)
-  before_action :authenticate_publisher!,
-    except: %i(sign_up
-               create
-               create_auth_token
-               create_done
-               new
-               new_auth_token
-               expired_auth_token
-               resend_auth_email)
-  before_action :require_unauthenticated_publisher,
-    only: %i(sign_up
-             create
-             create_auth_token
-             new
-             new_auth_token)
-  before_action :require_verified_email,
-    only: %i(email_verified
-             complete_signup)
+
   before_action :require_publisher_email_not_verified_through_youtube_auth,
     except: %i(update_email
                change_email)
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
+
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
   before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
   before_action :prompt_for_two_factor_setup,
     only: %i(home)
 
-  def sign_up
-    @publisher = Publisher.new(email: params[:email])
-  end
-
-  # Used by sign_up.html.slim.  If a user attempts to sign up with an existing email, a log in email
-  # is sent to the existing user. Otherwise, a new publisher is created and a sign up email is sent.
-  def create
-    email = params[:email]
-
-    if email.blank?
-      flash[:warning] = t(".missing_email")
-      return redirect_to sign_up_publishers_path
-    end
-
-    @should_throttle = should_throttle_create?
-    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
-    if !throttle_legit
-      return redirect_to root_path(captcha: params[:captcha]), alert: t(".access_throttled")
-    end
-
-    # First check if publisher with the email already exists.
-    existing_email_verified_publisher = Publisher.by_email_case_insensitive(email).first
-    if existing_email_verified_publisher
-      @publisher = existing_email_verified_publisher
-      @publisher_email = existing_email_verified_publisher.email
-      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-      flash.now[:notice] = t(".email_already_active", email: email)
-      render :emailed_auth_token
-    else
-      # Check if an existing email unverified publisher record exists to prevent duplicating unverified publishers.
-      # Requiring `email: nil` ensures we do not select a publisher with the same pending_email
-      # as a publisher in the middle of the change email flow
-      @publisher = Publisher.find_or_create_by(pending_email: email, email: nil)
-      @publisher_email = @publisher.pending_email
-
-      if @publisher.save
-        MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
-        render :emailed_auth_token
-      else
-        Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-        flash[:warning] = t(".invalid_email")
-        redirect_to sign_up_publishers_path
-      end
-    end
-  end
-
-  def create_done
-    @publisher = Publisher.find(session[:created_publisher_id])
-    @publisher_email = @publisher.pending_email
-
-    render :emailed_auth_token
-  end
-
-  # Used by emailed_auth_token.html.slim to send a new sign up or log in access email
-  # to the publisher passed through the params
-  def resend_auth_email
-    @publisher = Publisher.find(params[:publisher_id])
-
-    @should_throttle = should_throttle_resend_auth_email?
-    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
-
-    if !throttle_legit
-      render(:emailed_auth_token)
-      return
-    end
-
-    if @publisher.email.nil?
-      MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
-      @publisher_email = @publisher.pending_email
-    else
-      @publisher_email = @publisher.email
-      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-    end
-
-    flash.now[:notice] = t(".done")
-    render(:emailed_auth_token)
-  end
+    before_action :require_verified_email,
+            only: %i(email_verified
+                    complete_signup
 
   def email_verified
     @publisher = current_publisher
@@ -249,54 +159,6 @@ class PublishersController < ApplicationController
     end
   end
 
-  # Log in page
-  def new_auth_token
-    @publisher = Publisher.new
-  end
-
-  # Used by new_auth_token.html.slim to send a log in link to an existing publisher
-  def create_auth_token
-    @publisher_email = publisher_create_auth_token_params[:email].downcase
-
-    if @publisher_email.blank?
-      flash[:warning] = t(".missing_email")
-      return redirect_to new_auth_token_publishers_path
-    end
-
-    @should_throttle = should_throttle_create_auth_token?
-    throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
-    if !throttle_legit
-      return redirect_to :new_auth_token_publishers, alert: t(".access_throttled")
-    end
-
-    @publisher = Publisher.where(email: @publisher_email).take
-
-    if @publisher
-      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-    else
-      # Failed to find publisher
-      flash.now[:alert_html_safe] = t('publishers.emailed_auth_token.unfound_alert_html', {
-        new_publisher_path: sign_up_publishers_path(email: @publisher_email),
-        create_publisher_path: publishers_path(email: @publisher_email),
-        email: ERB::Util.html_escape(@publisher_email)
-      })
-      new_auth_token
-      render(:new_auth_token)
-      return
-    end
-
-    render :emailed_auth_token
-  end
-
-  def expired_auth_token
-    @publisher = Publisher.find(params[:publisher_id])
-    if @publisher.verified?
-      return
-    end
-
-    redirect_to(root_path, alert: t(".expired_error"))
-  end
-
   def uphold_verified
     @publisher = current_publisher
 
@@ -375,12 +237,6 @@ class PublishersController < ApplicationController
     @statement_has_content = statement_contents.length > 0
   end
 
-  def log_out
-    path = after_sign_out_path_for(current_publisher)
-    sign_out
-    redirect_to(path)
-  end
-
   def choose_new_channel_type
   end
 
@@ -432,27 +288,6 @@ class PublishersController < ApplicationController
 
   private
 
-  def create_uphold_card_for_default_currency_if_needed
-    if current_publisher.can_create_uphold_cards? &&
-      current_publisher.default_currency_confirmed_at.present? &&
-      current_publisher.wallet.address.blank?
-      CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
-    end
-  end
-
-  def prepare_site_banner_data
-    if current_publisher.default_site_banner_id.nil?
-      default_site_banner = SiteBanner.new_helper(current_publisher.id, nil)
-      current_publisher.update(default_site_banner_id: default_site_banner.id)
-    end
-    if current_publisher.channels.length.zero?
-      current_publisher.update(default_site_banner_mode: true)
-    else
-      current_publisher.channels.each do |channel|
-        channel.site_banner = SiteBanner.new_helper(current_publisher.id, channel.id) if channel.site_banner.nil?
-      end
-    end
-  end
 
   def authenticate_via_token
     sign_out(current_publisher) if current_publisher
@@ -493,6 +328,28 @@ class PublishersController < ApplicationController
     end
   end
 
+  def create_uphold_card_for_default_currency_if_needed
+    if current_publisher.can_create_uphold_cards? &&
+      current_publisher.default_currency_confirmed_at.present? &&
+      current_publisher.wallet.address.blank?
+      CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
+    end
+  end
+
+  def prepare_site_banner_data
+    if current_publisher.default_site_banner_id.nil?
+      default_site_banner = SiteBanner.new_helper(current_publisher.id, nil)
+      current_publisher.update(default_site_banner_id: default_site_banner.id)
+    end
+    if current_publisher.channels.length.zero?
+      current_publisher.update(default_site_banner_mode: true)
+    else
+      current_publisher.channels.each do |channel|
+        channel.site_banner = SiteBanner.new_helper(current_publisher.id, channel.id) if channel.site_banner.nil?
+      end
+    end
+  end
+
   def publisher_complete_signup_params
     params.require(:publisher).permit(:name, :visible)
   end
@@ -509,21 +366,6 @@ class PublishersController < ApplicationController
     params.require(:publisher).permit(:default_currency)
   end
 
-  def publisher_create_auth_token_params
-    params.require(:publisher).permit(:email, :brave_publisher_id)
-  end
-
-  # If an active session is present require users to explicitly sign out
-  def require_unauthenticated_publisher
-    return if !current_publisher
-    redirect_to(publisher_next_step_path(current_publisher))
-  end
-
-  def require_verified_email
-    return if current_publisher.email_verified?
-    redirect_to(publisher_next_step_path(current_publisher), alert: t(".email_verification_required"))
-  end
-
   def require_verified_publisher
     return if current_publisher.verified?
     redirect_to(publisher_next_step_path(current_publisher), alert: t(".verification_required"))
@@ -537,33 +379,6 @@ class PublishersController < ApplicationController
   def require_publisher_email_verified_through_youtube_auth
     return if publisher_created_through_youtube_auth?(current_publisher)
     redirect_to(change_email_publishers_path)
-  end
-
-  # Level 1 throttling -- After the first two requests, ask user to
-  # submit a captcha. See rack-attack.rb for throttle keys.
-  def should_throttle_create?
-    manually_triggered_captcha? ||
-    request.env["rack.attack.throttle_data"] &&
-    request.env["rack.attack.throttle_data"]["registrations/ip"] &&
-    request.env["rack.attack.throttle_data"]["registrations/ip"][:count] >= THROTTLE_THRESHOLD_CREATE
-  end
-
-  def should_throttle_create_auth_token?
-    manually_triggered_captcha? ||
-    request.env["rack.attack.throttle_data"] &&
-    request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"] &&
-    request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"][:count] >= THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN
-  end
-
-  def should_throttle_resend_auth_email?
-    manually_triggered_captcha? ||
-    request.env["rack.attack.throttle_data"] &&
-    request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"] &&
-    request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"][:count] >= THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL
-  end
-
-  def manually_triggered_captcha?
-    params[:captcha].present?
   end
 
   def prompt_for_two_factor_setup

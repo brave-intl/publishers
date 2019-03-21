@@ -10,12 +10,12 @@ class CustomFailureApp < Devise::FailureApp
       if attempted_path == publisher_path(token: params[:token])
         # send publishers attempting to claim expired token to expired token page
         flash[:alert] = nil
-        expired_auth_token_publishers_path(publisher_id: params[:id])
+        expired_authentication_token_publishers_path(publisher_id: params[:id])
       end
     elsif warden_message == :timeout && unauthenticated
       # send publishers whose session timed out to login page
       flash[:alert] = I18n.t("publishers.devise.login_session_expired")
-      new_auth_token_publishers_path
+      log_in_publishers_path
     else
       super
     end

@@ -187,7 +187,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
 
     # verify publisher is redirected to login page
-    assert_redirected_to new_auth_token_publishers_path
+    assert_redirected_to log_in_publishers_path
   end
 
   test "an unauthenticated html request redirects to home" do
@@ -202,7 +202,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   def request_login_email(publisher:)
     perform_enqueued_jobs do
-      get(new_auth_token_publishers_path)
+      get(log_in_publishers_path)
       params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id email)) }
       post(create_auth_token_publishers_path, params: params)
     end
@@ -210,7 +210,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   def request_login_email_uppercase_email(publisher:)
     perform_enqueued_jobs do
-      get(new_auth_token_publishers_path)
+      get(log_in_publishers_path)
       params = { publisher: { email: publisher.email.upcase } }
       post(create_auth_token_publishers_path, params: params)
     end
@@ -253,7 +253,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   # test "relogin for unverified publishers requires email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
-  #     get(new_auth_token_publishers_path)
+  #     get(log_in_publishers_path)
   #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
   #     post(create_auth_token_publishers_path, params: params)
   #   end
@@ -262,7 +262,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   # test "relogin for unverified publishers fails with the wrong email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
-  #     get(new_auth_token_publishers_path)
+  #     get(log_in_publishers_path)
   #     params = { publisher: { "brave_publisher_id" => publisher.brave_publisher_id, "email" => "anon@cock.li" } }
   #     post(create_auth_token_publishers_path, params: params)
   #   end
@@ -271,7 +271,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   # test "relogin for verified publishers without an email sends to the publisher's email" do
   #   publisher = publishers(:verified)
   #   perform_enqueued_jobs do
-  #     get(new_auth_token_publishers_path)
+  #     get(log_in_publishers_path)
   #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
   #     post(create_auth_token_publishers_path, params: params)
   #   end

@@ -11,7 +11,7 @@ module Publishers
 
     def request_login_email(publisher:)
       perform_enqueued_jobs do
-        get(new_auth_token_publishers_path)
+        get(log_in_publishers_path)
         params = { publisher: publisher.attributes.slice(*%w(email)) }
         post(create_auth_token_publishers_path, params: params)
       end
@@ -205,7 +205,7 @@ module Publishers
 
       get(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
-      assert_redirected_to new_auth_token_publishers_path
+      assert_redirected_to log_in_publishers_path
     end
 
     test "a publisher who was registered by youtube channel signup can't add additional youtube channels" do
