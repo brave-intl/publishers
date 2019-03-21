@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import React from 'react'
-import { Box, Anchor } from 'grommet'
+import { Box } from 'grommet'
 
 // this container element acts as a faux max width
 // getting the large breakpoint from grommet to behave
 // is a pain and so this is easier
 export const Container = styled(Box)`
   width: 100%;
-  max-width: 1160px;
+  max-width: 1440px;
 `
 
 export const GradientBackground = styled(Box)`
@@ -82,20 +82,6 @@ export const SwoopTop = () => (
 
 export const SummaryContainer = styled(Box)`
   min-height: initial;
-`
-
-export const CardButtonContainer = styled(Box)`
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 24px;
-  border-radius: 8px;
-  font-size: 18px;
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-`
-
-export const CardButtonAnchor = styled(Anchor)`
-  flex-grow: 1;
 `
 
 export const DividerLine = styled.div`

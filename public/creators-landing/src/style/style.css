@@ -52,8 +52,9 @@ h4 {
   max-height: 100%;
 }
 
-#min {
+#carousel-quote {
   min-width: 300px;
+  max-width: 700px;
 }
 
 /* reverses the order of the carousel divs */

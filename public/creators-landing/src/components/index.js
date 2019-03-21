@@ -1,7 +1,9 @@
 export {
   PrimaryButton,
   SecondaryButton,
-  StyledInput
+  StyledInput,
+  CardButtonContainer,
+  CardButtonAnchor,
 } from '../components/styled/buttons'
 
 // Containers
@@ -9,8 +11,6 @@ export {
   Container,
   GradientBackground,
   SummaryContainer,
-  CardButtonContainer,
-  CardButtonAnchor,
   SwoopBottom,
   SwoopTop,
   DividerLine,

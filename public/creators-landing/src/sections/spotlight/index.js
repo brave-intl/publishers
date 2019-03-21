@@ -20,7 +20,7 @@ const Slide = props => (
       pad={{ horizontal: 'large' }}
       align='center'
       justify='center'
-      id='min'
+      id='carousel-quote'
       flex
     >
       <Heading level='3'>

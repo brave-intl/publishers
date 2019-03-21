@@ -43,15 +43,13 @@ const DefaultNav = () => (
     role="navigation"
     id="nav"
   >
-    <Box
-      as="a"
-      href={locale.nav.logoHref}
-      direction="row"
-      gap="medium"
-      align="center"
-    >
-      <Image src={logo} height="32px" />
-      <Image src={batPill} height="28px" />
+    <Box direction="row" gap="medium" align="center">
+      <Box as="a" href={locale.nav.logoHref}>
+        <Image src={logo} height="32px" />
+      </Box>
+      <Box as="a" href={locale.nav.batPillHref}>
+        <Image src={batPill} height="28px" />
+      </Box>
     </Box>
     <Box direction="row" align="center" gap="large">
       <Anchor

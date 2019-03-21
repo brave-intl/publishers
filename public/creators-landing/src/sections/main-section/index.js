@@ -29,6 +29,12 @@ export const MainHome = () => {
           <H2 level="2" size="small" color="#E9E9F4">
             {locale.main.home.subhead}
           </H2>
+          <Box direction="row" pad={{ vertical: "24px" }} width="100%">
+            <PrimaryButton
+              label={locale.main.home.btn.signup}
+              href={locale.main.home.btn.signupHref}
+            />
+          </Box>
           <Heading level="3" size="small" color="#E9E9F4">
             {locale.main.home.examples.headline}
           </Heading>
@@ -61,12 +67,6 @@ export const MainHome = () => {
                 </Heading>
               </Box>
             </Box>
-          </Box>
-          <Box direction="row" pad={{ vertical: "24px" }} width="100%">
-            <PrimaryButton
-              label={locale.main.home.btn.signup}
-              href={locale.main.home.btn.signupHref}
-            />
           </Box>
         </Box>
       </Container>

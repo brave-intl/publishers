@@ -58,7 +58,7 @@ const TextBlock = props => {
               <SummaryNumber level='1' color='white' margin='0' size='large'>
                 {props.step}
               </SummaryNumber>
-              <Box>
+              <Box width='480px'>
                 <Heading level='3' color='white' margin='0'>
                   {props.title}
                 </Heading>
