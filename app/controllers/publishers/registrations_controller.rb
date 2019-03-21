@@ -5,7 +5,6 @@ module Publishers
     THROTTLE_THRESHOLD_LOG_IN = 3
     THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL = 3
 
-
     before_action :require_unauthenticated_publisher,
       only: %i(sign_up
               create
@@ -88,9 +87,7 @@ module Publishers
 
     def expired_authentication_token
       @publisher = Publisher.find(params[:publisher_id])
-      if @publisher.verified?
-        return
-      end
+      return if @publisher.verified?
 
       redirect_to(root_path, alert: t(".expired_error"))
     end
@@ -98,11 +95,9 @@ module Publishers
     # Used by emailed_authentication_token.html.slim to send a new sign up or log in access email
     # to the publisher passed through the params
     def resend_authentication_email
-      enforce_throttle!(throttled: should_throttle_resend_auth_email?, path: log_in_publishers_path)
       @publisher = Publisher.find(params[:publisher_id])
 
-      @should_throttle = should_throttle_resend_auth_email?
-      throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
+      enforce_throttle!(throttled: should_throttle_resend_auth_email?, path: log_in_publishers_path)
 
       if @publisher.email.nil?
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
@@ -163,6 +158,5 @@ module Publishers
       return if current_publisher.email_verified?
       redirect_to(publisher_next_step_path(current_publisher), alert: t(".email_verification_required"))
     end
-
   end
 end
