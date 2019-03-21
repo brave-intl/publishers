@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_19_190754) do
+ActiveRecord::Schema.define(version: 2019_03_21_223558) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -328,9 +327,6 @@ ActiveRecord::Schema.define(version: 2019_03_19_190754) do
     t.string "pending_email"
     t.string "phone"
     t.string "phone_normalized"
-    t.string "encrypted_authentication_token"
-    t.string "encrypted_authentication_token_iv"
-    t.datetime "authentication_token_expires_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
