@@ -377,7 +377,7 @@ en:
       create_auth_token:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         missing_email: We seem to be missing some info. Please make sure you provided an email address.
-      emailed_auth_token:
+      emailed_authentication_token:
         missing_email: We seem to be missing some info. Please make sure you provided an email address.
         unfound_alert_html: |
           Couldn't find a publisher with that email address. Please try again, or you may
@@ -388,7 +388,7 @@ en:
         sent_access_link_html: We just sent an access link to <strong class="email-address">%{email}</strong>.  Click on the link to log in to your account
         resend_email_html: Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.
         try_again: try again
-      expired_auth_token:
+      expired_authentication_token:
         expired_error: Your login link has expired. Please send yourself another one.
         heading: Login Link Expired
         body: Login link access expires after 30 minutes and can only be used once
@@ -400,7 +400,8 @@ en:
         legacy_youtube_login: Legacy YouTube Login
       sign_up:
         heading: Join Brave Rewards
-
+      resend_authentication_email:
+        done: The access email has been resent.
     devise:
       login_session_expired: Your session has expired. Please log in again.
     email_verified:
@@ -462,8 +463,6 @@ en:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_publisher:
       verification_required: To continue please confirm your email address and name.
-    resend_auth_email:
-      done: The access email has been resent.
     statements:
       title: Statements
       description: Statements contain the details of deposit history.

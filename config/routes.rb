@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         get :log_in
         get :log_out
         get :expired_authentication_token
+        post :resend_authentication_email
 
         resource :registrations, only: [:create, :update]
       end
@@ -15,7 +16,6 @@ Rails.application.routes.draw do
 
 
       put :javascript_detected
-      post :resend_auth_email, action: :resend_auth_email
       get :home
       get :change_email
       get :change_email_confirm

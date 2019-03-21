@@ -27,6 +27,7 @@ class PublishersController < ApplicationController
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
 
+  before_action :authenticate_publisher!
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
   before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
@@ -35,7 +36,7 @@ class PublishersController < ApplicationController
 
     before_action :require_verified_email,
             only: %i(email_verified
-                    complete_signup
+                    complete_signup)
 
   def email_verified
     @publisher = current_publisher

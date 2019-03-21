@@ -84,7 +84,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       end
     end
     assert_response 200
-    assert_template :emailed_auth_token
+    assert_template :emailed_authentication_token
 
     publisher = Publisher.order(created_at: :asc).last
     get(publisher_path(publisher))
@@ -99,7 +99,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       end
     end
     assert_response :success
-    assert_template :emailed_auth_token
+    assert_template :emailed_authentication_token
   end
 
   test "sends an email with an access link" do
