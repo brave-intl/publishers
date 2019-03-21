@@ -22,21 +22,23 @@ class PublishersController < ApplicationController
     only: %i(show)
   before_action :authenticate_publisher!,
     except: %i(sign_up
-               two_factor_authentication_removal
                create
                create_auth_token
                create_done
                new
                new_auth_token
                expired_auth_token
-               resend_auth_email)
+               resend_auth_email
+               two_factor_authentication_removal
+               request_two_factor_authentication_removal)
   before_action :require_unauthenticated_publisher,
     only: %i(sign_up
-             two_factor_authentication_removal
              create
              create_auth_token
              new
-             new_auth_token)
+             new_auth_token
+             two_factor_authentication_removal
+             request_two_factor_authentication_removal)
   before_action :require_verified_email,
     only: %i(email_verified
              complete_signup)
@@ -201,7 +203,15 @@ class PublishersController < ApplicationController
     end
   end
 
-  def two_factor_authentication_removal
+  def request_two_factor_authentication_removal
+    publisher = Publisher.find_by_email(params[:email])
+    if publisher
+      flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
+      MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: publisher).perform
+    else
+      flash[:warning] = t("publishers.two_factor_authentication_removal.request_not_found")
+    end
+    redirect_to two_factor_authentication_removal_publishers_path
   end
 
   def javascript_detected

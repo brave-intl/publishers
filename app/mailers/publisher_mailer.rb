@@ -162,6 +162,15 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def two_factor_authentication_removal_request(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject,
+      template_name: "two_factor_authentication_removal_request"
+    )
+  end
+
   def channel_contested(channel)
     @channel = channel
     @channel_name = @channel.publication_title

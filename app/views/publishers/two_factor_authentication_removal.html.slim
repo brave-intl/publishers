@@ -20,9 +20,9 @@ css:
       p.leadin= t("publishers.two_factor_authentication_removal.leadin")
 
       .col-small-centered
-        = form_tag two_factor_authentication_removal_publishers_path, method: :post do |f|
+        = form_tag request_two_factor_authentication_removal_publishers_path, method: :post do |f|
           .form-group
-            = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email")
+            = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true
           - if params[:captcha]
             = hidden_field_tag :captcha
           - if @should_throttle
