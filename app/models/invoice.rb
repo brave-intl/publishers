@@ -42,6 +42,7 @@ class Invoice < ActiveRecord::Base
 
   def paid?
     status == PAID
+  end
 
   def finalized_amount_to_probi
     if finalized_amount
