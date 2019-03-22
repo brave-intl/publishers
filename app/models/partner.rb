@@ -29,7 +29,7 @@ class Partner < Publisher
   private
 
   def invoice_amount
-    invoices = Invoice.where(partner_id: id, status: Invoice::PAID)
+    invoices = Invoice.where(partner_id: id, status: Invoice::IN_PROGRESS)
     amounts = invoices.map { |i| i.finalized_amount || i.amount }
 
     amounts.map { |x| x.tr(",", "").to_d }.reduce(:+) || 0
