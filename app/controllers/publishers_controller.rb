@@ -35,6 +35,13 @@ class PublishersController < ApplicationController
             only: %i(email_verified
                     complete_signup)
 
+
+  def log_out
+    path = after_sign_out_path_for(current_publisher)
+    sign_out(current_publisher)
+    redirect_to(path)
+  end
+
   def email_verified
     @publisher = current_publisher
     @publisher_created_through_youtube_auth = session[:publisher_created_through_youtube_auth]

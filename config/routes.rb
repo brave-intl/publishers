@@ -5,16 +5,13 @@ Rails.application.routes.draw do
       scope controller: 'registrations', module: 'publishers' do
         get :sign_up
         get :log_in
-        get :log_out
         get :expired_authentication_token
         post :resend_authentication_email
 
         resource :registrations, only: [:create, :update]
       end
 
-      # post :log_in, action: :create_auth_token, as: :create_auth_token
-
-
+      get :log_out
       put :javascript_detected
       get :home
       get :change_email

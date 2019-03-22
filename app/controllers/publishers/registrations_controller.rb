@@ -17,12 +17,6 @@ module Publishers
       @publisher = Publisher.new
     end
 
-    def log_out
-      path = after_sign_out_path_for(current_publisher)
-      sign_out
-      redirect_to(path)
-    end
-
     # Used by sign_up.html.slim.  If a user attempts to sign up with an existing email, a log in email
     # is sent to the existing user. Otherwise, a new publisher is created and a sign up email is sent.
     def create
@@ -95,7 +89,7 @@ module Publishers
 
       enforce_throttle(throttled: throttle_resend_auth_email?, path: log_in_publishers_path) and return
 
-      if @publisher.email.nil?
+      if @publisher.email.blank?
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
         @publisher_email = @publisher.pending_email
       else
