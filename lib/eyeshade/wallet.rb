@@ -16,6 +16,7 @@ module Eyeshade
                 :channel_balances,
                 :rates,
                 :status,
+                :contribution_balance,
                 :referral_balance,
                 :overall_balance,
                 :last_settlement_balance,
@@ -43,6 +44,7 @@ module Eyeshade
 
       @referral_balance = Eyeshade::ReferralBalance.new(rates, @default_currency, accounts)
       @overall_balance = Eyeshade::OverallBalance.new(rates, @default_currency, accounts)
+      @contribution_balance = Eyeshade::ContributionBalance.new(rates, @default_currency, accounts)
 
       @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates, @default_currency, transactions)
     end

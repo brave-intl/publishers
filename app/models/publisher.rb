@@ -154,6 +154,13 @@ class Publisher < ApplicationRecord
     end
   end
 
+  # This will convert the user to be a partner, or a publisher
+  def become_subclass
+    klass = self
+    klass = becomes(Partner) if partner?
+    klass
+  end
+
   # API call to eyeshade
   def wallet
     return @_wallet if @_wallet

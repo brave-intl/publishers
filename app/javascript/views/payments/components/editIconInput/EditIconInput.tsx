@@ -115,7 +115,7 @@ export default class EditIconInput extends React.Component<
           <InputComponent>
             <StyledInput
               ref={this.textInput}
-              type="text"
+              type="number"
               maxLength={24}
               value={this.state.value}
               onKeyPress={this.handleKeyPress}

@@ -84,6 +84,7 @@ completed_partner:
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   created_by: admin
+  default_currency: "USD"
   default_currency_confirmed_at: "<%= DateTime.now %>"
 
 suspended_partner:
