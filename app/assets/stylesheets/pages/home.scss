@@ -19,7 +19,6 @@
       margin-top: 5px;
       font-size: 16px;
     }
-
     &-camera {
       margin-left: 46%;
       margin-top: -60px;
@@ -29,19 +28,16 @@
     &-parent {
       position: relative;
     }
-
     &-label {
       display: block;
       margin-left: -4px;
       margin-top: 5px;
       font-size: 16px;
     }
-
     &-no-attachment {
       margin-left: 30%;
       position: absolute;
     }
-
     &-camera {
       margin-left: 30%;
       margin-top: 30%;
@@ -52,39 +48,30 @@
 
 .nav {
   display: block;
-
   .title {
-    display: inline-block;
-    text-transform: uppercase;
-    font-weight: 500;
-    font-size: 18px;
+    display: none;
   }
-
   .title-partner {
     display: inline-block;
     text-transform: uppercase;
     font-weight: 500;
     font-size: 18px;
   }
-
   @include media-breakpoint-down(md) {
     .title,
     .btn {
       display: none;
     }
   }
-
   @media only screen and (max-width: 1300px) {
     .title-partner {
       display: none;
     }
   }
-
   .title,
   .btn {
     margin-right: 25px;
   }
-
   .title-partner,
   .btn {
     margin-right: 25px;
@@ -94,7 +81,6 @@
 .dashboard {
   max-width: 1140px;
   margin: auto;
-
   .promo--tos {
     color: white;
     opacity: 0.7;
@@ -114,19 +100,22 @@
       margin-right: 85px;
     }
   }
-
   .promo-panel {
-    padding: 0px 15px 0px 100px;
     background-color: #00bcd6;
-    display: table;
     width: 100%;
-    height: 150px;
-    background-image: url(asset-path("bat-mercury-patch-jr.png")),
-      url(asset-path("bat-polygon-narrow.png"));
-    background-repeat: no-repeat;
-    background-position: center left 30px, left top 50px;
-    background-size: auto 100px, cover;
-    border-radius: $brave-panels-borderRadius;
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 0 0 24px;
+    &-item-info {
+      margin: 12px;
+    }
+    &-item-button {
+      margin: 12px;
+    }
     .promo-flex-col {
       display: flex;
       flex-direction: column;
@@ -179,8 +168,6 @@
       }
     }
     .promo-panel-item {
-      display: table-cell;
-      vertical-align: middle;
       #promo-limited-time {
         color: #006192;
         font-weight: 700;
@@ -194,9 +181,6 @@
         color: #bcf0f7;
         font-size: 20px;
         font-weight: 500;
-      }
-      &-button {
-        text-align: center;
       }
       #activate-promo-dashboard-button {
         background: white;
@@ -229,7 +213,6 @@
       }
     }
   }
-
   .channel--promo-info-container {
     float: right;
     height: 45px;
@@ -322,30 +305,13 @@
       }
     }
   }
-
   .dashboard-panel {
     &--wrapper {
-      margin-top: 30px;
       padding: 64px 45px 55px 95px;
-      min-width: 450px;
-
-      @include media-breakpoint-up(md) {
-        min-height: 460px;
-      }
-
       background-color: white;
       border-radius: $brave-panels-borderRadius;
       box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
-
-      @include media-breakpoint-down(xs) {
-        min-height: $spacer * 10;
-      }
-
-      &.uphold-panel {
-        background-image: url(asset-path("uphold@1x.png"));
-        background-repeat: no-repeat;
-        background-position: top right;
-      }
+      margin: 0 0 24px;
     }
     &--header {
       margin: 0 0 0 -50px;
@@ -373,17 +339,14 @@
         font-size: $font-size-base;
       }
     }
-
     &--content {
       margin-bottom: 25px;
     }
   }
-
   .tos-row {
     margin-top: 20px;
     margin-bottom: 150px;
   }
-
   .block-note {
     margin-top: 12px;
     background: #f0f0f0;
@@ -392,7 +355,6 @@
     color: #666666;
     border-radius: $brave-panels-borderRadius;
   }
-
   .in-place-edit {
     background: $braveGray-9;
     border-radius: $brave-panels-borderRadius;
@@ -402,43 +364,27 @@
       margin-left: 18px;
     }
   }
-
   .form-group {
     padding-top: 5px;
   }
-
   .form-group.button:last-child {
     margin: 40px 0 20px 0;
   }
-
   .control-label {
     font-weight: 500;
     color: #484b4e;
   }
-
   .attribute-value {
     margin-bottom: 24px;
   }
-
   #converted_amount {
     @include media-breakpoint-down(sm) {
       margin-bottom: 20px;
     }
   }
-
   h4.balance-header {
     font-size: 13px;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    padding-left: 75px;
-
-    #balance_pending_message {
-      opacity: 0.6;
-      padding-left: 7px;
-    }
   }
-
   #uphold_status {
     #uphold_status_display {
       vertical-align: top;
@@ -590,8 +536,7 @@
         /* (Albert Wang): We add lot's of crazy complexity by disabling HTML elements */
         display: inline !important;
       }
-    }
-    // Status summary label
+    } // Status summary label
     &.uphold-complete,
     &.uphold-restricted,
     &.uphold-blocked,
@@ -620,36 +565,41 @@
   #update_publisher_visible_form {
     margin-top: 40px;
     margin-left: -30px;
-    width: 370px;
     .form-check-input {
       vertical-align: top;
       margin-top: 5px;
     }
     .form-check-label {
       padding-left: 15px;
-      width: 350px;
       font-size: 15px;
       font-weight: 300;
     }
   }
+  .payouts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
   .balance {
     font-size: $font-size-base;
-    vertical-align: top;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    & img {
+      margin: 12px;
+    }
     .amounts {
-      margin-top: -16px;
-      margin-left: 15px;
       .bat-amount {
         font-size: 48px;
         color: #222326;
-        font-weight: 500;
+        line-height: 42px;
       }
       .bat-code {
         font-size: 16px;
-        color: #222326;
-        font-weight: 500;
       }
       .converted {
-        margin-top: -8px;
         font-size: 14px;
         color: $braveGray-4;
       }
@@ -692,7 +642,6 @@
     border-radius: $brave-panels-borderRadius;
     background-color: white;
     box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
-
     .channel-thumbnail {
       margin-right: 15px;
       float: left;
@@ -714,7 +663,6 @@
         overflow: hidden;
         white-space: nowrap;
       }
-
       h3.unverified {
         padding-top: 11px;
       }
@@ -741,16 +689,14 @@
           font-size: 14px;
           padding: 3px 0 3px 115px;
           margin-right: 10px;
-          background: url(asset-path("channel-progress.png")) no-repeat center
-            left;
+          background: url(asset-path("channel-progress.png")) no-repeat center left;
         }
       }
     }
     &.channel-failed {
       .channel-status {
         display: flex;
-        background: url(asset-path("icn-warning@1x.png")) no-repeat top left /
-          24px 24px;
+        background: url(asset-path("icn-warning@1x.png")) no-repeat top left / 24px 24px;
         padding: 0 0 12px 38px;
         font-weight: bold;
         .btn {
@@ -772,13 +718,11 @@
             position: absolute;
             left: -145px;
             bottom: 100%;
-            width: 400px;
             padding: 30px 40px;
             background: white;
             border-radius: 4px;
             box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
             font-size: 14px;
-
             &::after {
               content: " ";
               position: absolute;
@@ -794,7 +738,6 @@
               border-top-color: transparent;
               border-left-color: transparent;
             }
-
             .verification-failed--explanation-content {
               display: block;
             }
@@ -839,13 +782,11 @@
           position: absolute;
           left: -145px;
           bottom: 100%;
-          width: 400px;
           padding: 30px 40px;
           background: white;
           border-radius: 4px;
           box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
           font-size: 14px;
-
           &::after {
             content: " ";
             position: absolute;
@@ -861,7 +802,6 @@
             border-top-color: transparent;
             border-left-color: transparent;
           }
-
           .verification-failed--explanation-content {
             display: block;
           }
@@ -911,7 +851,6 @@
       font-weight: 300;
     }
   }
-
   .bat-channel {
     &--amount {
       font-size: 28px;
@@ -937,23 +876,19 @@
 
 #confirm_default_currency_modal {
   text-align: center;
-
   #publisher_default_currency {
     display: block;
     margin: 0px auto 36px;
   }
-
   #img-currency-setting {
     height: 79px;
     width: 71px;
     margin-top: 30px;
     margin-bottom: 60px;
   }
-
   .transition {
     display: none;
   }
-
   &.transitioning {
     .entry {
       display: none;
@@ -1010,7 +945,7 @@
 
 .modal-container--modal-identifier--choose-channel-type {
   max-width: 685px;
-  & > div {
+  &>div {
     width: 100%;
     background-image: url(asset-path("choose-channel/header.jpg"));
     background-repeat: no-repeat;
@@ -1085,9 +1020,7 @@
       }
     }
     &--body-box {
-      padding: 16px;
-
-      // make modal scrollable
+      padding: 16px; // make modal scrollable
       overflow-y: auto;
       max-height: calc(100vh - 210px);
     }
