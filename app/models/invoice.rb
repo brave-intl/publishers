@@ -44,6 +44,10 @@ class Invoice < ActiveRecord::Base
     status == PENDING
   end
 
+  def paid?
+    status == PAID
+  end
+
   def finalized_amount_to_probi
     if finalized_amount
       (finalized_amount.tr(",", "").to_d * BigDecimal.new("1.0e18")).to_i
@@ -60,7 +64,7 @@ class Invoice < ActiveRecord::Base
       date: human_date,
       url: Rails.application.routes.url_helpers.partners_payments_invoice_path(date.in_time_zone("UTC").strftime(URL_DATE_FORMAT)),
       files: invoice_files.where(archived: false).as_json.compact,
-      paid: paid,
+      paid: paid?,
       paymentDate: payment_date,
       finalizedAmount: finalized_amount,
       createdAt: created_at.strftime("%b %d, %Y"),

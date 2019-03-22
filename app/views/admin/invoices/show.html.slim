@@ -27,6 +27,9 @@
       .db-field Brave Calculated Total Amount (BAT):
       .db-value= @invoice.finalized_amount
     .db-info-row
+      .db-field Paid:
+      .db-value= no_data_default(@invoice.paid?)
+    .db-info-row
       .db-field Payment Date:
       .db-value= no_data_default(@invoice.payment_date)
     .db-info-row
