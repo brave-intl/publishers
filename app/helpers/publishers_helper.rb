@@ -39,7 +39,7 @@ module PublishersHelper
     sentry_catcher do
       publisher = publisher.become_subclass
       amount = publisher.wallet&.overall_balance&.amount_bat
-      amount = publisher.balance&.amount_bat if publisher.partner?
+      amount = publisher.balance if publisher.partner?
       balance ='%.2f' % amount if amount.present?
     end
 
