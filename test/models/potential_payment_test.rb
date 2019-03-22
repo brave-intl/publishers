@@ -39,7 +39,7 @@ class PotentialPaymentTest < ActiveSupport::TestCase
      publisher.destroy!
 
      potential_payment = potential_payments(:publisher).reload
-     assert_equal PotentialPayment.count, 3
+     assert_equal PotentialPayment.count, 4
   end
 
   test "to_be_paid scope only includes 'ok' uphold status" do

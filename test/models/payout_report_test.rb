@@ -2,7 +2,7 @@ require "test_helper"
 
 class PayoutReportTest < ActiveSupport::TestCase
   test "#total_amount returns the total amount ever paid" do
-    assert_equal PayoutReport.total_amount.to_s, "270000000000"
+    assert_equal PayoutReport.total_amount.to_s, "270000000100"
   end
 
   test "#total_fees returns the total amount ever paid " do

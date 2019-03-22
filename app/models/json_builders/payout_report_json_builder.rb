@@ -39,7 +39,6 @@ class JsonBuilders::PayoutReportJsonBuilder
         end
       end
     end
-
     contents
   end
 end
