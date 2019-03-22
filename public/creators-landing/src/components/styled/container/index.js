@@ -7,7 +7,7 @@ import { Box } from 'grommet'
 // is a pain and so this is easier
 export const Container = styled(Box)`
   width: 100%;
-  max-width: 1440px;
+  max-width: 1200px;
 `
 
 export const GradientBackground = styled(Box)`
@@ -98,3 +98,20 @@ export const IconContainer = styled.svg`
   height: ${p => p.size};
   width: ${p => p.size};
 `
+// These styles match the dashboard nav spacing/styling in 
+// an effort to be a seamless transition on login
+export const NavWrapper = styled(Box)`
+  margin-bottom: 30px;
+  height: 80px;
+`;
+
+export const NavContainer = styled(Box)`
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
+`;

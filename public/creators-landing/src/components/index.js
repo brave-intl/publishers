@@ -14,7 +14,9 @@ export {
   SwoopBottom,
   SwoopTop,
   DividerLine,
-  IconContainer
+  IconContainer,
+  NavContainer,
+  NavWrapper
 } from '../components/styled/container'
 
 // Typography
