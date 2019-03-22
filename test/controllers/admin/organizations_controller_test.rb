@@ -8,9 +8,9 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   before do
     admin = publishers(:admin)
     sign_in admin
-
-    @org_name = "Cory's Great Organization"
-    @org_id = "bde27753-2327-40dc-a1f8-06d3339f08cf"
+    organization_permission = organization_permissions(:default_permission)
+    @org_name = organization_permission.organization.name
+    @org_id = organization_permissions(:default_permission).organization.id
   end
 
   describe "index" do
@@ -37,9 +37,10 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   describe "create" do
+    let(:organization_name) { "Test Org" }
     let(:organization_params) do
       {
-        organization: { name: @org_name },
+        organization: { name: organization_name },
         uphold: "1",
         referral_codes: "1",
         offline_reporting: "1"
@@ -67,15 +68,7 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
       it "redirects to organization when saved" do
         organization = controller.instance_variable_get("@organization")
-        assert_redirected_to admin_organization_path(organization.id)
-      end
-    end
-
-    describe "when test is invalid" do
-      it "renders new if invalid" do
-        @org_name = ""
-        subject
-        assert_template :new
+        assert_redirected_to admin_organization_path(Organization.find_by(name: organization_name))
       end
     end
   end

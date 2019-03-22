@@ -2,11 +2,13 @@
 class EnqueuePublishersForPayoutJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(should_send_notifications: false, final: true, payout_report_id: "", publisher_ids: [])
+  def perform(should_send_notifications: false, final: true, manual: false, payout_report_id: "", publisher_ids: [])
     Rails.logger.info("Enqueuing publishers for payment.")
 
     if publisher_ids.present?
       publishers = Publisher.where(id: publisher_ids)
+    elsif manual
+      publishers = Publisher.partner
     else
       publishers = Publisher.with_verified_channel
     end
@@ -15,14 +17,22 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
       payout_report = PayoutReport.find(payout_report_id)
     else
       payout_report = PayoutReport.create(final: final,
+                                          manual: manual,
                                           fee_rate: fee_rate,
                                           expected_num_payments: PayoutReport.expected_num_payments(publishers))
     end
 
     publishers.find_each do |publisher|
-      IncludePublisherInPayoutReportJob.perform_later(payout_report_id: payout_report.id,
-                                                      publisher_id: publisher.id,
-                                                      should_send_notifications: should_send_notifications)
+      if manual 
+        # We can consider using a job here if n is sufficiently large 
+        ManualPayoutReportPublisherIncluder.new(publisher: publisher,
+                                                payout_report: payout_report,
+                                                should_send_notifications: should_send_notifications).perform
+      else
+        IncludePublisherInPayoutReportJob.perform_later(payout_report_id: payout_report.id,
+                                                        publisher_id: publisher.id,
+                                                        should_send_notifications: should_send_notifications)
+      end
     end
     Rails.logger.info("Enuqueued #{publishers.count} publishers for payment.")
 

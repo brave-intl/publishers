@@ -435,7 +435,7 @@ class PublishersController < ApplicationController
   def create_uphold_card_for_default_currency_if_needed
     if current_publisher.can_create_uphold_cards? &&
       current_publisher.default_currency_confirmed_at.present? &&
-      current_publisher.wallet.available_currencies.exclude?(current_publisher.default_currency)
+      current_publisher.wallet.address.blank?
       CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
     end
   end

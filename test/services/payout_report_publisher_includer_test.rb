@@ -566,7 +566,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
         # Technically this path would only be possible if the user was restricted
         #  eyeshade omits the wallet address if the status is not ok
-        describe "is a member" do
+        describe "is a member and restricted" do
           let(:wallet_response) do
             { wallet: { authorized: false, status: "restricted", "isMember": true } }
           end
@@ -613,6 +613,27 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
             it "does not recieve any emails" do
               assert_empty ActionMailer::Base.deliveries
             end
+          end
+        end
+
+        # This only happens if there is a bug somewhere
+        # but if there is, we want to handle appropriately
+        # by creating uphold cards
+        describe "is a member and status is ok" do
+          let(:wallet_response) do
+            { wallet: { authorized: true, status: "restricted", "isMember": true, address: "", scope: "cards:read, cards:write, user:read"}}
+          end
+
+          before do
+            stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
+            subject
+          end
+
+          it "makes a request to create uphold cards" do
+            assert_requested :post,
+              "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
+              body: '{"currency":"USD","label":"Brave Rewards"}',
+              times: 1
           end
         end
 

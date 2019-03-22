@@ -3,11 +3,12 @@ require "test_helper"
 class OrganizationTest < ActiveSupport::TestCase
   test "must have a name and permission and cannot be taken" do
     permission = OrganizationPermission.new
-    organization = Organization.new(name: "Brave", permissions: permission)
+    organization_name = "Test organization"
+    organization = Organization.new(name: organization_name, permissions: permission)
     assert organization.save
     refute organization.errors.present?
 
-    organization = Organization.new(name: "Brave", permissions: permission)
+    organization = Organization.new(name: organization_name, permissions: permission)
     refute organization.save
     assert organization.errors.present?
 

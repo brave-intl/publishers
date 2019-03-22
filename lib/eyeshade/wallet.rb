@@ -12,7 +12,6 @@ module Eyeshade
                 :provider,
                 :scope,
                 :default_currency,
-                :available_currencies,
                 :possible_currencies,
                 :channel_balances,
                 :rates,
@@ -32,7 +31,6 @@ module Eyeshade
       @provider = wallet_info.dig("wallet", "provider") # Wallet provider e.g. Uphold
       @scope = wallet_info.dig("wallet", "scope") # Permissions e.g. cards:read, cards:write
       @default_currency = wallet_info.dig("wallet", "defaultCurrency")
-      @available_currencies = wallet_info.dig("wallet", "availableCurrencies") || []
       @possible_currencies = wallet_info.dig("wallet", "possibleCurrencies") || []
       @address = wallet_info.dig("wallet", "address") || ""
       @is_member = wallet_info.dig("wallet", "isMember") || false
@@ -65,10 +63,6 @@ module Eyeshade
 
     def not_a_member?
       !is_a_member?
-    end
-
-    def currency_is_possible_but_not_available?(currency)
-      @available_currencies.exclude?(currency) && @possible_currencies.include?(currency)
     end
   end
 end
