@@ -22,7 +22,7 @@ class Admin::PayoutReportsController < AdminController
   end
 
   def create
-    EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?)
+    EnqueuePublishersForPayoutJob.perform_later(final: params[:final].present?, manual: params[:manual].present?)
     redirect_to admin_payout_reports_path, flash: { notice: "Your payout report is being generated, check back soon." }
   end
 

@@ -1,3 +1,6 @@
+inherit_from:
+  - .rubocop_airbnb.yml
+
 AlignParameters:
   Enabled: false
 Documentation:
@@ -7,12 +10,16 @@ AllCops:
     - config.ru
     - Gemfile
     - Rakefile
+    - app/models/**/*
   Exclude:
     - bin/**/*
     - db/**/*
+    - vendor/**/*
 LineLength:
-  Max: 120
-StringLiterals:
-  EnforcedStyle: double_quotes
-Style/NegatedIf:
+  Max: 400
+Airbnb/SimpleModifierConditional:
+  Enabled: false
+Airbnb/DefaultScope:
+  Enabled: false
+Airbnb/SimpleUnless:
   Enabled: false

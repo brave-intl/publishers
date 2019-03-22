@@ -42,6 +42,13 @@ class Invoice < ActiveRecord::Base
 
   def paid?
     status == PAID
+
+  def finalized_amount_to_probi
+    if finalized_amount
+      (finalized_amount.tr(",", "").to_d * BigDecimal.new("1.0e18")).to_i
+    else
+      0
+    end
   end
 
   def as_json(_options = {})
@@ -55,7 +62,7 @@ class Invoice < ActiveRecord::Base
       paid: paid?,
       paymentDate: payment_date,
       finalizedAmount: finalized_amount,
-      createdAt: created_at.strftime("%b %d, %Y")
+      createdAt: created_at.strftime("%b %d, %Y"),
     }
   end
 end
