@@ -1,8 +1,5 @@
 class PublishersController < ApplicationController
   # Number of requests to #create before we present a captcha.
-  THROTTLE_THRESHOLD_CREATE = 3
-  THROTTLE_THRESHOLD_CREATE_AUTH_TOKEN = 3
-  THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL = 3
 
   include PublishersHelper
   include PromosHelper
@@ -390,5 +387,10 @@ class PublishersController < ApplicationController
 
   def update_sendgrid(publisher:, prior_email: nil)
     RegisterPublisherWithSendGridJob.perform_later(publisher.id, prior_email)
+  end
+
+  def require_verified_email
+    return if current_publisher.email_verified?
+    redirect_to(publisher_next_step_path(current_publisher), alert: t(".email_verification_required"))
   end
 end

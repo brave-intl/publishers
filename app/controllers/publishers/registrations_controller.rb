@@ -1,16 +1,12 @@
 module Publishers
   class RegistrationsController < ApplicationController
+    include PublishersHelper
+
     # Number of requests to #create before we present a captcha.
-    THROTTLE_THRESHOLD_CREATE = 3
-    THROTTLE_THRESHOLD_LOG_IN = 3
+    THROTTLE_THRESHOLD_REGISTRATION = 3
     THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL = 3
 
-    before_action :require_unauthenticated_publisher,
-      only: %i(sign_up
-              create
-              create_auth_token
-              new
-              new_auth_token)
+    before_action :require_unauthenticated_publisher
 
     # Log in page
     def sign_up
@@ -30,7 +26,7 @@ module Publishers
     # Used by sign_up.html.slim.  If a user attempts to sign up with an existing email, a log in email
     # is sent to the existing user. Otherwise, a new publisher is created and a sign up email is sent.
     def create
-      enforce_throttle!(throttled: should_throttle_create?, path: root_path(captcha: params[:captcha]))
+      enforce_throttle(throttled: throttle_registration?, path: root_path(captcha: params[:captcha])) and return
 
       # First check if publisher with the email already exists.
       existing_publisher = Publisher.by_email_case_insensitive(params[:email]).first
@@ -66,7 +62,7 @@ module Publishers
     def update
       @publisher = Publisher.by_email_case_insensitive(params[:email]).first
 
-      enforce_throttle!(throttled: should_throttle_log_in?, path: log_in_publishers_path )
+      enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path ) and return
 
       if @publisher
         MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
@@ -97,7 +93,7 @@ module Publishers
     def resend_authentication_email
       @publisher = Publisher.find(params[:publisher_id])
 
-      enforce_throttle!(throttled: should_throttle_resend_auth_email?, path: log_in_publishers_path)
+      enforce_throttle(throttled: throttle_resend_auth_email?, path: log_in_publishers_path) and return
 
       if @publisher.email.nil?
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
@@ -113,39 +109,29 @@ module Publishers
 
     private
 
-    def enforce_throttle!(throttled:, path:)
+    def enforce_throttle(throttled:, path:)
       @should_throttle = throttled
-      throttle_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
-      if !throttle_legit
-        return redirect_to path, alert: t(".access_throttled")
+      throttle_is_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
+      unless throttle_is_legit
+        Rails.logger.info("User has been throttled")
+        redirect_to path, alert: t(".access_throttled") and return true
       end
     end
 
     # Level 1 throttling -- After the first two requests, ask user to
-    # submit a captcha. See rack-attack.rb for throttle keys.
+    # submit a captcha. See rack-ttack.rb for throttle keys.
     def manually_triggered_captcha?
       params[:captcha].present?
     end
 
-    def should_throttle_create?
+    def throttle_registration?
       manually_triggered_captcha? ||
-      request.env["rack.attack.throttle_data"] &&
-      request.env["rack.attack.throttle_data"]["registrations/ip"] &&
-      request.env["rack.attack.throttle_data"]["registrations/ip"][:count] >= THROTTLE_THRESHOLD_CREATE
+        request.env.dig("rack.attack.throttle_data", "created-auth-tokens/ip", :count).to_i >= THROTTLE_THRESHOLD_REGISTRATION
     end
 
-    def should_throttle_log_in?
+    def throttle_resend_auth_email?
       manually_triggered_captcha? ||
-      request.env["rack.attack.throttle_data"] &&
-      request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"] &&
-      request.env["rack.attack.throttle_data"]["created-auth-tokens/ip"][:count] >= THROTTLE_THRESHOLD_LOG_IN
-    end
-
-    def should_throttle_resend_auth_email?
-      manually_triggered_captcha? ||
-      request.env["rack.attack.throttle_data"] &&
-      request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"] &&
-      request.env["rack.attack.throttle_data"]["resend_auth_email/publisher_id"][:count] >= THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL
+        request.env.dig("rack.attack.throttle_data", "resend_authentication_email/publisher_id", :count).to_i >= THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL
     end
 
     # If an active session is present require users to explicitly sign out

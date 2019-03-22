@@ -25,6 +25,7 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+
   # Enable/disable caching. By default caching is disabled.
   if Rails.application.secrets[:redis_url]
     config.action_controller.perform_caching = true
@@ -33,9 +34,11 @@ Rails.application.configure do
       "Cache-Control" => "public, max-age=172800"
     }
   else
-    config.action_controller.perform_caching = false
-    config.cache_store = :null_store
+    # config.action_controller.perform_caching = false
+    # config.cache_store = :null_store
+    config.action_controller.perform_caching = true
   end
+  config.action_controller.perform_caching = true
 
   config.action_mailer.raise_delivery_errors = true
 

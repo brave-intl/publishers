@@ -374,7 +374,7 @@ en:
         email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
         invalid_email: There was an unexpected error creating your account. Please make sure you have provided a full email address.
         access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
-      create_auth_token:
+      log_in:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         missing_email: We seem to be missing some info. Please make sure you provided an email address.
       emailed_authentication_token:
@@ -401,6 +401,7 @@ en:
       sign_up:
         heading: Join Brave Rewards
       resend_authentication_email:
+        access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         done: The access email has been resent.
     devise:
       login_session_expired: Your session has expired. Please log in again.
