@@ -32,6 +32,6 @@ class Partner < Publisher
     invoices = Invoice.where(partner_id: id, paid: false)
     amounts = invoices.map { |i| i.finalized_amount || i.amount }
 
-    amounts.map { |x| x.tr(",", "").to_i }.reduce(:+)
+    amounts.map { |x| x.tr(",", "").to_i }.reduce(:+) || 0
   end
 end
