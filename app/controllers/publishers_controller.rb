@@ -27,6 +27,7 @@ class PublishersController < ApplicationController
                create_done
                new
                new_auth_token
+               show
                expired_auth_token
                resend_auth_email)
   before_action :require_unauthenticated_publisher,
@@ -204,7 +205,7 @@ class PublishersController < ApplicationController
   end
 
   def protect
-    return redirect_to admin_publishers_path unless current_publisher.publisher? || current_publisher.partner?
+    return redirect_to admin_publishers_path unless current_publisher&.publisher? || current_publisher&.partner?
   end
 
   # Records default currency preference
