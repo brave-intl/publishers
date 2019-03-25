@@ -1,4 +1,5 @@
 require 'eyeshade/base_balance'
+require "eyeshade/contribution_balance"
 require "eyeshade/overall_balance"
 require "eyeshade/channel_balance"
 require "eyeshade/referral_balance"
