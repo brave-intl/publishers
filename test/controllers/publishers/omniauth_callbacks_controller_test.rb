@@ -12,7 +12,7 @@ module Publishers
     def request_login_email(publisher:)
       perform_enqueued_jobs do
         get(log_in_publishers_path)
-        params = { publisher: publisher.attributes.slice(*%w(email)) }
+        params = publisher.attributes.slice(*%w(email))
         post(registrations_path, params: params)
       end
     end

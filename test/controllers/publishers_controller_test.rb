@@ -145,9 +145,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify that publisher attempt to claim expired token returns expired token page
     assert_redirected_to expired_authentication_token_publishers_path(publisher_id: publisher.id)
     follow_redirect!
-
-    # verify that publisher is then redirect to root
-    assert_redirected_to root_path
   end
 
   test "expired login link takes verified publishers to expired auth token page" do

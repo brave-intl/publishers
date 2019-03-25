@@ -48,6 +48,7 @@ module Publishers
     # then we provide the ability to create an account by clicking the alert on the page.
     def update
       @publisher = Publisher.by_email_case_insensitive(params[:email]).first
+      @publisher_email = params[:email]
 
       enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path ) and return
 
@@ -70,9 +71,6 @@ module Publishers
 
     def expired_authentication_token
       @publisher = Publisher.find(params[:publisher_id])
-      return if @publisher.verified?
-
-      redirect_to(root_path, alert: t(".expired_error"))
     end
 
     # Used by emailed_authentication_token.html.slim to send a new sign up or log in access email

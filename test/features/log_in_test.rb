@@ -25,7 +25,8 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'publisher_email', with: email
+    fill_in 'email', with: email
+
     click_button('Log In')
 
     assert_content page, "An email is on its way! We just sent an access link to #{email}"
@@ -37,7 +38,7 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'publisher_email', with: email
+    fill_in 'email', with: email
     click_button('Log In')
 
     assert_content page, "Couldn't find a publisher with that email address"
@@ -52,7 +53,7 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'publisher_email', with: email
+    fill_in 'email', with: email
     click_button('Log In')
 
     assert_enqueued_emails(1) do
@@ -65,7 +66,7 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "DASHBOARD"
@@ -76,7 +77,7 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
@@ -94,7 +95,7 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
@@ -118,7 +119,7 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
@@ -140,7 +141,7 @@ class LogInTest < Capybara::Rails::TestCase
     visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"

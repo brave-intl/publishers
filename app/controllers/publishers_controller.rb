@@ -342,7 +342,7 @@ class PublishersController < ApplicationController
       end
     else
       flash[:alert] = t(".token_invalid")
-      redirect_to expired_auth_token_publishers_path(publisher_id: publisher.id)
+      redirect_to expired_authentication_token_publishers_path(publisher_id: publisher.id)
     end
   end
 

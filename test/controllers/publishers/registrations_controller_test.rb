@@ -69,6 +69,7 @@ module Publishers
 
     describe '#expired_authentication_token' do
 
+
     end
 
     describe '#resend_authentication_email' do

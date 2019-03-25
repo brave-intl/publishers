@@ -7,7 +7,6 @@
 
       .col-small-centered
         p= t ".body"
-        = form_for @publisher, {method: :post, url: registrations_path} do |f|
-          = hidden_field_tag(:email, @publisher.email)
+        = form_tag resend_authentication_email_publishers_path(publisher_id: @publisher.id), method: "post" do
           .panel-controls.col-center
-            = f.submit(t(".button"), class: "btn btn-block btn-primary")
+            = submit_tag(t(".button"), class: "btn btn-block btn-primary")
