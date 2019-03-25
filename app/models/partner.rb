@@ -13,7 +13,25 @@ class Partner < Publisher
     self.role = 'partner'
   end
 
+  def balance
+    wallet.contribution_balance.amount_bat + invoice_amount
+  end
+
+  def balance_in_currency
+    wallet.contribution_balance.add_bat(invoice_amount)
+    wallet.contribution_balance.amount_default_currency
+  end
+
   def name
     self[:name] || self[:email]
+  end
+
+  private
+
+  def invoice_amount
+    invoices = Invoice.where(partner_id: id, status: Invoice::IN_PROGRESS)
+    amounts = invoices.map { |i| i.finalized_amount || i.amount }
+
+    amounts.map { |x| x.tr(",", "").to_d }.reduce(:+) || 0
   end
 end

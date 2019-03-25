@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.date "date"
     t.string "amount", default: "0"
     t.string "finalized_amount"
-    t.boolean "paid", default: false
     t.uuid "paid_by_id"
     t.date "payment_date"
     t.uuid "finalized_by_id"
