@@ -13,7 +13,7 @@ module Publishers
       perform_enqueued_jobs do
         get(log_in_publishers_path)
         params = { publisher: publisher.attributes.slice(*%w(email)) }
-        post(create_auth_token_publishers_path, params: params)
+        post(registrations_path, params: params)
       end
     end
 

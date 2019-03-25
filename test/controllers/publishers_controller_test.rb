@@ -203,7 +203,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   def request_login_email(publisher:)
     perform_enqueued_jobs do
       get(log_in_publishers_path)
-      params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id email)) }
+      params = publisher.attributes.slice(*%w(brave_publisher_id email))
       put(registrations_path, params: params)
     end
   end
@@ -245,8 +245,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     email = ActionMailer::Base.deliveries.find do |message|
       message.to.first == publisher.email
     end
-    require 'pry'
-    binding.pry
     assert_not_nil(email)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
     assert_email_body_matches(matcher: url, email: email)
@@ -324,7 +322,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # update the publisher email
     perform_enqueued_jobs do
-      patch(registrations_path,
+      patch(publishers_path,
             params: { publisher: {pending_email: 'alice-pending@example.com' } },
             headers: { 'HTTP_ACCEPT' => "application/json" })
     end
