@@ -14,10 +14,6 @@ class CreateUpholdCardsJob < ApplicationJob
                                               currency_code: default_currency).perform
     end
 
-    if default_currency != "BAT" && publisher.wallet.address.blank?
-      UpholdServices::CardCreationService.new(publisher: publisher, currency_code: "BAT").perform
-    end
-
     if default_currency != publisher.wallet.default_currency
       PublisherDefaultCurrencySetter.new(publisher: publisher).perform
     end

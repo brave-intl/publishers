@@ -17,6 +17,15 @@ class PublishersController < ApplicationController
 
   before_action :authenticate_via_token,
     only: %i(show)
+  before_action :authenticate_publisher!,
+    except: %i(
+               create_done
+               new
+               new_auth_token
+               show
+               expired_auth_token
+               resend_auth_email)
+
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
     except: %i(update_email
@@ -24,7 +33,6 @@ class PublishersController < ApplicationController
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
 
-  before_action :authenticate_publisher!
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
   before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
@@ -119,7 +127,11 @@ class PublishersController < ApplicationController
   end
 
   def protect
-    return redirect_to admin_publishers_path unless current_publisher.publisher? || current_publisher.partner?
+    if current_publisher.nil?
+      redirect_to root_url and return
+    elsif current_publisher.admin?
+      redirect_to admin_publishers_path and return
+    end
   end
 
   # Records default currency preference
@@ -330,6 +342,7 @@ class PublishersController < ApplicationController
       end
     else
       flash[:alert] = t(".token_invalid")
+      redirect_to expired_auth_token_publishers_path(publisher_id: publisher.id)
     end
   end
 

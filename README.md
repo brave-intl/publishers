@@ -339,12 +339,12 @@ By default when you create a channel it will not have a balance on Eyeshade, the
 
 To add a contribution to a channel account:
 ```
-rake docker:add_contribution_balance_to_account['youtube#channel:UCOo92t8m-tWKgmw276q7mxw', 200] # Adds 200 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
+rails "docker:add_contribution_balance_to_account[youtube#channel:UCOo92t8m-tWKgmw276q7mxw, 200]" # Adds 200 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
 ```
 
 To add add a referral balance to an owner account:
 ```
-rake docker:add_referral_balance_to_account['publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7', 400] # Adds 400 BAT to publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7 
+rails "docker:add_referral_balance_to_account[publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7, 400]" # Adds 400 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
 ```
 
 The new balance should be reflected on the dashboard.
