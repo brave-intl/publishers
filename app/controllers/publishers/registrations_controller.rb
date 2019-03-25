@@ -42,13 +42,6 @@ module Publishers
       end
     end
 
-    def email_existing_publisher(publisher)
-      @publisher = publisher
-      @publisher_email = publisher.email
-      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-      flash.now[:notice] = t("publishers.registrations.create.email_already_active", email: @publisher_email)
-      render :emailed_authentication_token
-    end
 
     # This is the method that is called after the user clicks the "Log In" button
     # If the user is an existing publisher we will send them a log in link, if they are not
@@ -102,6 +95,14 @@ module Publishers
     end
 
     private
+
+    def email_existing_publisher(publisher)
+      @publisher = publisher
+      @publisher_email = publisher.email
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
+      flash.now[:notice] = t("publishers.registrations.create.email_already_active", email: @publisher_email)
+      render :emailed_authentication_token
+    end
 
     def enforce_throttle(throttled:, path:)
       @should_throttle = throttled
