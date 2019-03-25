@@ -65,7 +65,7 @@ class Publisher < ApplicationRecord
   validate :pending_email_must_be_a_change
   validate :pending_email_can_not_be_in_use
 
-  # validates :name, presence: true, if: -> { brave_publisher_id.present? }
+  validates :name, presence: true, allow_blank: true
   validates :phone_normalized, phony_plausible: true
 
   validates_inclusion_of :role, in: ROLES
