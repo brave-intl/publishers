@@ -7,6 +7,6 @@
 
       .col-small-centered
         p= t ".body"
-        = form_tag resend_authentication_email_publishers_path(publisher_id: @publisher.id), method: "post" do
+        = form_tag resend_authentication_email_publishers_path(id: @publisher.id), method: "post" do
           .panel-controls.col-center
             = submit_tag(t(".button"), class: "btn btn-block btn-primary")

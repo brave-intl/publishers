@@ -24,7 +24,7 @@ module Publishers
 
       # First check if publisher with the email already exists.
       existing_publisher = Publisher.by_email_case_insensitive(params[:email]).first
-      return email_existing_publisher(existing_publisher) if existing_publisher
+      email_existing_publisher(existing_publisher) and return if existing_publisher
 
       # Check if an existing email unverified publisher record exists to prevent duplicating unverified publishers.
       # Requiring `email: nil` ensures we do not select a publisher with the same pending_email
@@ -70,13 +70,13 @@ module Publishers
     end
 
     def expired_authentication_token
-      @publisher = Publisher.find(params[:publisher_id])
+      @publisher = Publisher.find(params[:id])
     end
 
     # Used by emailed_authentication_token.html.slim to send a new sign up or log in access email
     # to the publisher passed through the params
     def resend_authentication_email
-      @publisher = Publisher.find(params[:publisher_id])
+      @publisher = Publisher.find(params[:id])
 
       enforce_throttle(throttled: throttle_resend_auth_email?, path: log_in_publishers_path) and return
 

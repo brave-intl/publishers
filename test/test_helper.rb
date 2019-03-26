@@ -10,6 +10,7 @@ require "webmock/minitest"
 require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
+require "pry"
 
 # https://github.com/rails/rails/issues/31324
 if ActionPack::VERSION::STRING >= "5.2.0"

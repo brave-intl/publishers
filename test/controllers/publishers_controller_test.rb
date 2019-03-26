@@ -127,10 +127,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to home_publishers_url, "precond - publisher is logged in"
 
     get url
-    assert_redirected_to expired_authentication_token_publishers_path(publisher_id: publisher.id), "re-used URL is rejected, publisher not logged in"
+    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id), "re-used URL is rejected, publisher not logged in"
   end
 
-  test "expired login link takes unverified publishers to dashboard" do
+  test "expired login link takes unverified publishers to renew their login link" do
     perform_enqueued_jobs do
       post(registrations_path, params: SIGNUP_PARAMS)
     end
@@ -143,8 +143,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get(url)
 
     # verify that publisher attempt to claim expired token returns expired token page
-    assert_redirected_to expired_authentication_token_publishers_path(publisher_id: publisher.id)
-    follow_redirect!
+    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id)
   end
 
   test "expired login link takes verified publishers to expired auth token page" do
@@ -159,7 +158,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get(url)
 
     # verify that verified publishers are taken to expired token page
-    assert_redirected_to expired_authentication_token_publishers_path(publisher_id: publisher.id)
+    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id)
     follow_redirect!
 
     # verify publisher is not redirected to homepage
@@ -242,6 +241,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     email = ActionMailer::Base.deliveries.find do |message|
       message.to.first == publisher.email
     end
+
     assert_not_nil(email)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
     assert_email_body_matches(matcher: url, email: email)
