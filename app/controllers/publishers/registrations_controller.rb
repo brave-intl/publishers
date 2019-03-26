@@ -4,7 +4,7 @@ module Publishers
 
     # Number of requests to #create before we present a captcha.
     THROTTLE_THRESHOLD_REGISTRATION = 3
-    THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL = 20
+    THROTTLE_THRESHOLD_RESEND_AUTHENTICATION_EMAIL = 20
 
     before_action :require_unauthenticated_publisher
 
@@ -76,7 +76,7 @@ module Publishers
     def resend_authentication_email
       @publisher = Publisher.find(params[:id])
 
-      enforce_throttle(throttled: throttle_resend_auth_email?, path: log_in_publishers_path) and return
+      enforce_throttle(throttled: throttle_resend_authentication_email?, path: log_in_publishers_path) and return
 
       if @publisher.email.blank?
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
@@ -120,9 +120,9 @@ module Publishers
         request.env.dig("rack.attack.throttle_data", "created-auth-tokens/ip", :count).to_i >= THROTTLE_THRESHOLD_REGISTRATION
     end
 
-    def throttle_resend_auth_email?
+    def throttle_resend_authetnication_email?
       manually_triggered_captcha? ||
-        request.env.dig("rack.attack.throttle_data", "resend_authentication_email/publisher_id", :count).to_i >= THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL
+        request.env.dig("rack.attack.throttle_data", "resend_authentication_email/publisher_id", :count).to_i >= THROTTLE_THRESHOLD_RESEND_AUTHENTICATION_EMAIL
     end
 
     # If an active session is present require users to explicitly sign out
