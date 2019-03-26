@@ -120,7 +120,7 @@ module Publishers
         request.env.dig("rack.attack.throttle_data", "created-auth-tokens/ip", :count).to_i >= THROTTLE_THRESHOLD_REGISTRATION
     end
 
-    def throttle_resend_authetnication_email?
+    def throttle_resend_authentication_email?
       manually_triggered_captcha? ||
         request.env.dig("rack.attack.throttle_data", "resend_authentication_email/publisher_id", :count).to_i >= THROTTLE_THRESHOLD_RESEND_AUTHENTICATION_EMAIL
     end
