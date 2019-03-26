@@ -17,7 +17,7 @@ class PublishersController < ApplicationController
   ].freeze
 
   before_action :authenticate_via_token, only: %i(show)
-  before_action :authenticate_publisher!, except: %i(create_done show)
+  before_action :authenticate_publisher!, except: %i(show)
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 except: %i(update_email change_email)
@@ -69,7 +69,6 @@ class PublishersController < ApplicationController
       if @publisher.update(update_params)
         MailerServices::ConfirmEmailChangeEmailer.new(publisher: @publisher).perform
         @publisher_email = @publisher.pending_email
-        render :create_done
         return
       end
     end
