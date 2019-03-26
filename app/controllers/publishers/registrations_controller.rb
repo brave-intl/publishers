@@ -4,7 +4,7 @@ module Publishers
 
     # Number of requests to #create before we present a captcha.
     THROTTLE_THRESHOLD_REGISTRATION = 3
-    THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL = 3
+    THROTTLE_THRESHOLD_RESEND_AUTH_EMAIL = 20
 
     before_action :require_unauthenticated_publisher
 
