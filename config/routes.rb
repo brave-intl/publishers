@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       get :sign_up
       get :two_factor_authentication_removal
       post :request_two_factor_authentication_removal
+      get :confirm_two_factor_authentication_removal
       put :javascript_detected
       get :create_done
       post :resend_auth_email, action: :resend_auth_email

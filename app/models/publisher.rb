@@ -342,6 +342,12 @@ class Publisher < ApplicationRecord
       !excluded_from_payout
   end
 
+  def register_for_2fa_removal
+    TwoFactorAuthenticationRemoval.create(
+      publisher_id: id
+    )
+  end
+
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
     partner?

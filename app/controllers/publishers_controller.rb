@@ -16,10 +16,12 @@ class PublishersController < ApplicationController
     :statements,
     :update,
     :uphold_status,
-    :uphold_verified]
+    :uphold_verified,
+  ]
 
   before_action :authenticate_via_token,
-    only: %i(show)
+    only: %i(show
+             confirm_two_factor_authentication_removal)
   before_action :authenticate_publisher!,
     except: %i(sign_up
                create
@@ -30,7 +32,8 @@ class PublishersController < ApplicationController
                expired_auth_token
                resend_auth_email
                two_factor_authentication_removal
-               request_two_factor_authentication_removal)
+               request_two_factor_authentication_removal
+               confirm_two_factor_authentication_removal)
   before_action :require_unauthenticated_publisher,
     only: %i(sign_up
              create
@@ -38,7 +41,8 @@ class PublishersController < ApplicationController
              new
              new_auth_token
              two_factor_authentication_removal
-             request_two_factor_authentication_removal)
+             request_two_factor_authentication_removal
+            )
   before_action :require_verified_email,
     only: %i(email_verified
              complete_signup)
@@ -204,14 +208,21 @@ class PublishersController < ApplicationController
   end
 
   def request_two_factor_authentication_removal
-    publisher = Publisher.find_by_email(params[:email])
-    if publisher
+    @publisher = Publisher.find_by_email(params[:email])
+    if @publisher
       flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
-      MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: publisher).perform
+      MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: @publisher).perform
     else
       flash[:warning] = t("publishers.two_factor_authentication_removal.request_not_found")
     end
     redirect_to two_factor_authentication_removal_publishers_path
+  end
+
+  def confirm_two_factor_authentication_removal
+    publisher = Publisher.find(params[:id])
+    publisher.register_for_2fa_removal
+    flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_login_flash")
+    redirect_to(home_publishers_path)
   end
 
   def javascript_detected
