@@ -1,0 +1,20 @@
+- table_identifier = "youtube#channel"
+- youtube_channels = YoutubeChannelDetails.joins(:channel).where(youtube_channel_id: @result.select { |entry| entry["account_id"].split(":")[0] == table_identifier }.map { |entry| entry["account_id"].split(":")[1]}).pluck("youtube_channel_id, channels.id, title").map { |row| {row[0] => [row[1], row[2]]}}.reduce(:merge)
+- site_channels = SiteChannelDetails.joins(:channel).where(brave_publisher_id: @result.map { |entry| entry["account_id"] }).pluck("brave_publisher_id, channels.id").to_h
+
+br
+div.panel-body
+  div.adv-table
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th Account ID
+        th Balance
+      tbody
+        - @result.each do |entry|
+          tr.gradeX
+            - if entry["account_id"].starts_with?(table_identifier)
+              - youtube_channel_id = entry["account_id"].split(":")[1]
+              td = link_to youtube_channels[youtube_channel_id]&.dig(1), admin_channels_path(youtube_channels[youtube_channel_id]&.dig(0))
+            - else
+              td = link_to entry["account_id"], admin_channels_path(site_channels.dig(entry["account_id"])&.dig(0))
+            td = entry["balance"].to_f.round(2)
