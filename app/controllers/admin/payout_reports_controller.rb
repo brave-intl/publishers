@@ -31,6 +31,31 @@ class Admin::PayoutReportsController < AdminController
     redirect_to admin_payout_reports_path, flash: { notice: "Sending notifications to publishers with disconnected wallets." }
   end
 
+  def upload_settlement_report
+    content = File.read(params[:file].tempfile)
+    json = JSON.parse(content)
+
+    Eyeshade::Publishers.new.create_settlement(body: json)
+
+    json.each do |entry|
+      next unless entry["documentId"]
+      invoice = Invoice.find_by(id: entry["documentId"])
+      next unless invoice.present?
+
+      invoice.update(
+        payment_date: Date.today,
+        status: "paid",
+        paid_by: current_publisher
+      )
+    end
+
+    redirect_to admin_payout_reports_path, flash: { notice: "Successfully uploaded settlement report" }
+  rescue JSON::ParserError => e
+    redirect_to admin_payout_reports_path, flash: { alert: "Could not parse JSON. #{e.message}" }
+  rescue Faraday::ClientError => eyeshade_error
+    redirect_to admin_payout_reports_path, flash: { alert: "Eyeshade responded with a 400 🤷‍️" }
+  end
+
   private
 
   def assign_authority(report_contents)

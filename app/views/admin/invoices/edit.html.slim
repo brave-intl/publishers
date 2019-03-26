@@ -13,6 +13,6 @@ h5= "Partner: #{@invoice.partner.name}"
     = form.text_field :amount, class: 'form-control', readonly: true
   .form-group
     label Brave Calculated Total Amount (BAT)
-    = form.text_field :finalized_amount, class: 'form-control'
+    = form.number_field :finalized_amount, class: 'form-control'
 
   = submit_tag "Save Invoice", class: "btn btn-primary"
