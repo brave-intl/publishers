@@ -42,7 +42,6 @@ module Publishers
       end
     end
 
-
     # This is the method that is called after the user clicks the "Log In" button
     # If the user is an existing publisher we will send them a log in link, if they are not
     # then we provide the ability to create an account by clicking the alert on the page.
@@ -50,17 +49,16 @@ module Publishers
       @publisher = Publisher.by_email_case_insensitive(params[:email]).first
       @publisher_email = params[:email]
 
-      enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path ) and return
+      enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path) and return
 
       if @publisher
         MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
       else
         # Failed to find publisher
-        flash[:alert_html_safe] = t('publishers.registrations.emailed_authentication_token.unfound_alert_html', {
+        flash[:alert_html_safe] = t("publishers.registrations.emailed_authentication_token.unfound_alert_html",
           new_publisher_path: sign_up_publishers_path(email: params[:email]),
           create_publisher_path: registrations_path(email: params[:email]),
-          email: ERB::Util.html_escape(params[:email])
-        })
+          email: ERB::Util.html_escape(params[:email]))
 
         @publisher = Publisher.new
         return redirect_to log_in_publishers_path
@@ -105,10 +103,10 @@ module Publishers
     def enforce_throttle(throttled:, path:)
       @should_throttle = throttled
       throttle_is_legit = @should_throttle ? verify_recaptcha(model: @publisher) : true
-      unless throttle_is_legit
-        Rails.logger.info("User has been throttled")
-        redirect_to path, alert: t(".access_throttled") and return true
-      end
+      return if throttle_is_legit
+
+      Rails.logger.info("User has been throttled")
+      redirect_to path, alert: t(".access_throttled") and return true
     end
 
     # Level 1 throttling -- After the first two requests, ask user to
@@ -129,13 +127,9 @@ module Publishers
 
     # If an active session is present require users to explicitly sign out
     def require_unauthenticated_publisher
-      return if !current_publisher
-      redirect_to(publisher_next_step_path(current_publisher))
-    end
+      return unless current_publisher
 
-    def require_verified_email
-      return if current_publisher.email_verified?
-      redirect_to(publisher_next_step_path(current_publisher), alert: t(".email_verification_required"))
+      redirect_to(publisher_next_step_path(current_publisher))
     end
   end
 end

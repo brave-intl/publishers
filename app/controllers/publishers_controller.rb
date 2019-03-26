@@ -13,36 +13,24 @@ class PublishersController < ApplicationController
     :statements,
     :update,
     :uphold_status,
-    :uphold_verified]
+    :uphold_verified,
+  ].freeze
 
-  before_action :authenticate_via_token,
-    only: %i(show)
-  before_action :authenticate_publisher!,
-    except: %i(
-               create_done
-               new
-               new_auth_token
-               show
-               expired_auth_token
-               resend_auth_email)
-
+  before_action :authenticate_via_token, only: %i(show)
+  before_action :authenticate_publisher!, except: %i(create_done show)
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
-    except: %i(update_email
-               change_email)
+                except: %i(update_email change_email)
+
   before_action :require_publisher_email_verified_through_youtube_auth,
                 only: %i(update_email)
 
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
   before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
-  before_action :prompt_for_two_factor_setup,
-    only: %i(home)
+  before_action :prompt_for_two_factor_setup, only: %i(home)
 
-    before_action :require_verified_email,
-            only: %i(email_verified
-                    complete_signup)
-
+  before_action :require_verified_email, only: %i(email_verified complete_signup)
 
   def log_out
     path = after_sign_out_path_for(current_publisher)
@@ -113,7 +101,7 @@ class PublishersController < ApplicationController
 
     respond_to do |format|
       if success
-        format.json { head :no_content  }
+        format.json { head :no_content }
         format.html { redirect_to home_publishers_path }
       else
         format.json { render(json: { errors: publisher.errors }, status: 400) }
@@ -163,7 +151,7 @@ class PublishersController < ApplicationController
         action: 'redirect',
         status: t("publishers.confirm_default_currency_modal.redirecting"),
         redirectURL: uphold_authorization_endpoint(current_publisher),
-        timeout: 3000
+        timeout: 3000,
       }, status: 200)
     else
       create_uphold_card_for_default_currency_if_needed
@@ -171,7 +159,7 @@ class PublishersController < ApplicationController
       render(json: {
         action: 'refresh',
         status: t("publishers.confirm_default_currency_modal.refreshing"),
-        timeout: 2000
+        timeout: 2000,
       }, status: 200)
     end
   end
@@ -274,14 +262,14 @@ class PublishersController < ApplicationController
   def uphold_status
     publisher = current_publisher
     respond_to do |format|
-      format.json {
+      format.json do
         render(json: {
           uphold_status: publisher.uphold_status.to_s,
           uphold_status_summary: uphold_status_summary(publisher),
           uphold_status_description: uphold_status_description(publisher),
-          uphold_status_class: uphold_status_class(publisher)
+          uphold_status_class: uphold_status_class(publisher),
         }, status: 200)
-      }
+      end
     end
   end
 
@@ -297,14 +285,13 @@ class PublishersController < ApplicationController
   def get_site_banner_data
     prepare_site_banner_data
     default_site_banner_mode = current_publisher.default_site_banner_mode
-    default_site_banner = {:id => current_publisher.default_site_banner_id, :name => "Default", :type => "Default"}
-    channel_banners = current_publisher.channels.map { |channel| {id: channel.site_banner.id, name: channel.publication_title, type: channel.details_type} }
-    data = {default_site_banner_mode: default_site_banner_mode, default_site_banner: default_site_banner, channel_banners: channel_banners}
+    default_site_banner = { :id => current_publisher.default_site_banner_id, :name => "Default", :type => "Default" }
+    channel_banners = current_publisher.channels.map { |channel| { id: channel.site_banner.id, name: channel.publication_title, type: channel.details_type } }
+    data = { default_site_banner_mode: default_site_banner_mode, default_site_banner: default_site_banner, channel_banners: channel_banners }
     render(json: data.to_json)
   end
 
   private
-
 
   def authenticate_via_token
     sign_out(current_publisher) if current_publisher
