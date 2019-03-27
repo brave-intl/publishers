@@ -26,16 +26,12 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
-  def payout_in_progress?(today = DateTime.now)
-    today.day <= 8
+  def payout_in_progress?
+    !!Rails.cache.fetch('payout_in_progress')
   end
 
-  def next_deposit_date(today = DateTime.now)
-    if payout_in_progress?(today)
-      today.strftime("%B 8th")
-    else
-      (today + 1.month).strftime("%B 8th")
-    end
+  def next_deposit_date
+    (DateTime.now + 1.month).strftime("%B 8th")
   end
 
   def publisher_overall_bat_balance(publisher)

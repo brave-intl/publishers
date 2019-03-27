@@ -42,13 +42,14 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               span.bat-code= " BAT"
             .converted#converted_amount
               = publisher_converted_overall_balance(current_publisher)
-            .next_deposit_date
-              span = t ".next_deposit_date"
-              span = next_deposit_date
             - if payout_in_progress?
               .payout_in_progress
                 span
                   i = t ".payout_in_progress"
+            - else
+              .next_deposit_date
+                span = t ".next_deposit_date"
+                span = next_deposit_date
       - if promo_running?
         .col
           .promo-panel

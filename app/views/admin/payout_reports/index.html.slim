@@ -5,12 +5,15 @@
       label
         = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
         .btn.btn-primary Upload Settlement Report
+  .ml-4
+    - toggle_text = Rails.cache.fetch('payout_in_progress') ? "Remove payout in progress" : "Set payout in progress"
+    = form_tag toggle_payout_in_progress_admin_payout_reports_path
+      = submit_tag("#{toggle_text}", class: "btn btn-primary")
 
 javascript:
   document.getElementById('settlementFile').addEventListener("change", function() {
     document.getElementById('settlementForm').submit();
   })
-
 
 hr
 
@@ -58,7 +61,7 @@ hr
 
 h3 Generate Payout Report
 = form_tag admin_payout_reports_path do
-    p Final - the report will be used in settlement. 
+    p Final - the report will be used in settlement.
     p Manual - the report will include only partners with finalized invoices. ** Note - A report can be both final and manual **
     = check_box_tag :final
     span = "   "
