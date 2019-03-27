@@ -100,11 +100,14 @@
     "stylelint-scss": "^3.4.1",
     "sugarss": "^2.0.0",
     "ts-jest": "^24.0.0",
-    "tslint": "^5.8.0",
-    "tslint-config-prettier": "^1.17.0",
-    "tslint-config-standard": "^7.0.0",
-    "tslint-react": "^3.2.0",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-react": "^3.6.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "3.1.14"
+  },
+  "resolutions": {
+    "js-yaml": "3.13.0"
   }
 }

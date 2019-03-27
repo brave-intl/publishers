@@ -23,7 +23,6 @@ class WalletTest < ActiveSupport::TestCase
           "provider" => "uphold",
           "authorized" => true,
           "defaultCurrency" => 'USD',
-          "availableCurrencies" => [ 'USD', 'EUR', 'BAT' ],
           "possibleCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
           "scope" => 'cards:write'
       }
@@ -223,7 +222,6 @@ class WalletTest < ActiveSupport::TestCase
   end
 
   test "handles initialization with empty wallet details" do
-    assert empty_wallet.available_currencies.is_a?(Array)
     assert empty_wallet.possible_currencies.is_a?(Array)
     assert empty_wallet.address.is_a?(String)
   end
@@ -234,13 +232,6 @@ class WalletTest < ActiveSupport::TestCase
     assert_equal "uphold", test_wallet.provider
     assert_equal 'cards:write', test_wallet.scope
     assert_equal "USD", test_wallet.default_currency
-    assert_equal [ 'USD', 'EUR', 'BAT' ], test_wallet.available_currencies
     assert_equal [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ], test_wallet.possible_currencies
-  end
-
-  test "currency_is_possible_but_not_available? checks available and possible currencies" do
-    assert test_wallet.currency_is_possible_but_not_available?('ETH')
-    refute test_wallet.currency_is_possible_but_not_available?('USD')
-    refute test_wallet.currency_is_possible_but_not_available?('FAKE')
   end
 end

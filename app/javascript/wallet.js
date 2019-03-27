@@ -4,7 +4,6 @@ export class Wallet {
 
     // Wallet info
     this.authorized = data.authorized;
-    this.availableCurrencies = data.available_currencies ? data.available_currencies : [];
     this.possibleCurrencies = data.possible_currencies ? data.possible_currencies : [];
     this.defaultCurrency = data.default_currency;
 

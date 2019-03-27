@@ -1,4 +1,5 @@
 require 'eyeshade/base_balance'
+require "eyeshade/contribution_balance"
 require "eyeshade/overall_balance"
 require "eyeshade/channel_balance"
 require "eyeshade/referral_balance"
@@ -12,11 +13,11 @@ module Eyeshade
                 :provider,
                 :scope,
                 :default_currency,
-                :available_currencies,
                 :possible_currencies,
                 :channel_balances,
                 :rates,
                 :status,
+                :contribution_balance,
                 :referral_balance,
                 :overall_balance,
                 :last_settlement_balance,
@@ -31,7 +32,6 @@ module Eyeshade
       @provider = wallet_info.dig("wallet", "provider") # Wallet provider e.g. Uphold
       @scope = wallet_info.dig("wallet", "scope") # Permissions e.g. cards:read, cards:write
       @default_currency = wallet_info.dig("wallet", "defaultCurrency")
-      @available_currencies = wallet_info.dig("wallet", "availableCurrencies") || []
       @possible_currencies = wallet_info.dig("wallet", "possibleCurrencies") || []
       @address = wallet_info.dig("wallet", "address") || ""
       @is_member = wallet_info.dig("wallet", "isMember") || false
@@ -45,6 +45,7 @@ module Eyeshade
 
       @referral_balance = Eyeshade::ReferralBalance.new(rates, @default_currency, accounts)
       @overall_balance = Eyeshade::OverallBalance.new(rates, @default_currency, accounts)
+      @contribution_balance = Eyeshade::ContributionBalance.new(rates, @default_currency, accounts)
 
       @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates, @default_currency, transactions)
     end
@@ -63,10 +64,6 @@ module Eyeshade
 
     def not_a_member?
       !is_a_member?
-    end
-
-    def currency_is_possible_but_not_available?(currency)
-      @available_currencies.exclude?(currency) && @possible_currencies.include?(currency)
     end
   end
 end

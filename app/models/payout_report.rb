@@ -40,7 +40,11 @@ class PayoutReport < ApplicationRecord
   def update_report_contents
     # Do not update json contents for legacy reports
     return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
-    payout_report_hash = JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
+    if manual
+      payout_report_hash = JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
+    else
+      payout_report_hash = JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
+    end
     self.contents = payout_report_hash.to_json
     save!
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_22_195643) do
+ActiveRecord::Schema.define(version: 2019_03_22_143005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(version: 2019_02_22_195643) do
     t.date "date"
     t.string "amount", default: "0"
     t.string "finalized_amount"
-    t.boolean "paid", default: false
     t.uuid "paid_by_id"
     t.date "payment_date"
     t.uuid "finalized_by_id"
@@ -249,6 +248,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_195643) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
+    t.boolean "manual", default: false
   end
 
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -268,7 +268,11 @@ ActiveRecord::Schema.define(version: 2019_02_22_195643) do
     t.boolean "uphold_member"
     t.boolean "suspended"
     t.string "uphold_id"
+    t.uuid "invoice_id"
+    t.uuid "finalized_by_id"
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
+    t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
+    t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
@@ -318,7 +322,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_195643) do
   end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
+    t.string "name", default: "", null: false
     t.string "email"
     t.string "pending_email"
     t.string "phone"

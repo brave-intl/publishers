@@ -65,6 +65,11 @@ module Admin
       end
     end
 
+    def generate_manual_payout
+      EnqueuePublishersForPayoutJob.perform_later(final: true, manual: true, publisher_ids: [params[:id]])
+      redirect_to admin_payout_reports_path, flash: { notice: "Generating manual report for partner, please check back soon."}
+    end
+
     private
 
     # Internal: Gets a partner

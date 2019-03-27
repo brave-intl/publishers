@@ -27,6 +27,7 @@ class PublishersController < ApplicationController
                create_done
                new
                new_auth_token
+               show
                expired_auth_token
                resend_auth_email)
   before_action :require_unauthenticated_publisher,
@@ -204,7 +205,11 @@ class PublishersController < ApplicationController
   end
 
   def protect
-    return redirect_to admin_publishers_path unless current_publisher.publisher? || current_publisher.partner?
+    if current_publisher.nil?
+      redirect_to root_url and return
+    elsif current_publisher.admin?
+      redirect_to admin_publishers_path and return
+    end
   end
 
   # Records default currency preference
@@ -411,7 +416,7 @@ class PublishersController < ApplicationController
       }
     end
   end
-  
+
   def wallet
     wallet = current_publisher.wallet
     if wallet
@@ -435,7 +440,7 @@ class PublishersController < ApplicationController
   def create_uphold_card_for_default_currency_if_needed
     if current_publisher.can_create_uphold_cards? &&
       current_publisher.default_currency_confirmed_at.present? &&
-      current_publisher.wallet.available_currencies.exclude?(current_publisher.default_currency)
+      current_publisher.wallet.address.blank?
       CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
     end
   end
@@ -490,6 +495,7 @@ class PublishersController < ApplicationController
       end
     else
       flash[:alert] = t(".token_invalid")
+      redirect_to expired_auth_token_publishers_path(publisher_id: publisher.id)
     end
   end
 

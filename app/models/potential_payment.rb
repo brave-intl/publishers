@@ -1,8 +1,8 @@
 class PotentialPayment < ApplicationRecord
-  has_paper_trail
-
   REFERRAL = "referral".freeze
   CONTRIBUTION = "contribution".freeze
+  MANUAL = "manual".freeze
+  has_paper_trail
 
   belongs_to :payout_report
   belongs_to :publisher
@@ -17,6 +17,11 @@ class PotentialPayment < ApplicationRecord
 
   scope :to_be_paid, -> {
     where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false).
+      where("amount::numeric > ?", 0)
+  }
+
+  scope :manual_to_be_paid, -> {
+    where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false, kind: MANUAL).
       where("amount::numeric > ?", 0)
   }
 

@@ -213,7 +213,6 @@ class PublisherTest < ActiveSupport::TestCase
           "provider": "uphold",
           "authorized": true,
           "defaultCurrency": 'USD',
-          "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       }
 
@@ -255,7 +254,6 @@ class PublisherTest < ActiveSupport::TestCase
           "provider": "uphold",
           "authorized": false,
           "defaultCurrency": 'USD',
-          "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ]
         }
       }
 
@@ -561,7 +559,6 @@ class PublisherTest < ActiveSupport::TestCase
         "provider": "uphold",
         "authorized": true,
         "defaultCurrency": 'USD',
-        "availableCurrencies": [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
         "scope": ["cards:write"]
       }
     }

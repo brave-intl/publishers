@@ -32,7 +32,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
           "isMember": true,
           "status": "ok",
           "defaultCurrency": "USD",
-          "availableCurrencies": [ "EUR", "BTC", "ETH" ],
           "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
           "scope": ["cards:write"]
         },
@@ -193,7 +192,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         "provider": "uphold",
         "authorized": true,
         "defaultCurrency": "USD",
-        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
         "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
         "scope": ["cards:write"]
       }
@@ -216,7 +214,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         "provider": "uphold",
         "authorized": true,
         "defaultCurrency": "USD",
-        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
         "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
         "scope": ["cards:write"]
       }
@@ -253,7 +250,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         "provider": "uphold",
         "authorized": true,
         "defaultCurrency": "USD",
-        "availableCurrencies": [ "EUR", "BTC", "ETH" ],
         "possibleCurrencies": [ "USD", "EUR", "BTC", "ETH", "BAT" ],
         "scope": ["cards:write"]
       }

@@ -65,7 +65,7 @@ class Publisher < ApplicationRecord
   validate :pending_email_must_be_a_change
   validate :pending_email_can_not_be_in_use
 
-  # validates :name, presence: true, if: -> { brave_publisher_id.present? }
+  validates :name, presence: true, allow_blank: true
   validates :phone_normalized, phony_plausible: true
 
   validates_inclusion_of :role, in: ROLES
@@ -152,6 +152,13 @@ class Publisher < ApplicationRecord
         select("publishers.*", "count(channels.id) channels_count").
         order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
+  end
+
+  # This will convert the user to be a partner, or a publisher
+  def become_subclass
+    klass = self
+    klass = becomes(Partner) if partner?
+    klass
   end
 
   # API call to eyeshade

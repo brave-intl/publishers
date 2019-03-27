@@ -1,4 +1,17 @@
-h1 Payout Reports
+.d-flex
+  h1 Payout Reports
+  .ml-4
+    = form_tag upload_settlement_report_admin_payout_reports_path, id: "settlementForm", multipart: :true
+      label
+        = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
+        .btn.btn-primary Upload Settlement Report
+
+javascript:
+  document.getElementById('settlementFile').addEventListener("change", function() {
+    document.getElementById('settlementForm').submit();
+  })
+
+
 hr
 
 table.display.table.table-bordered.table-striped
@@ -6,6 +19,7 @@ table.display.table.table-bordered.table-striped
     th Created
     th ID
     th Type
+    th Manual
     th Expected # of payments
     th Total # of payments
     th # Payments to be paid
@@ -18,7 +32,8 @@ table.display.table.table-bordered.table-striped
       tr.gradeX
         td = report.created_at.strftime("%B %d, %Y, %H:%M")
         td = link_to report.id, admin_payout_report_path(report.id)
-        td = report.final ? "final" : "temp"
+        td = report.final ? "Final" : "Temp"
+        td = report.manual ? "Yes" : "No"
         td = report.expected_num_payments
         td = report.num_payments
         td = report.num_payments_to_be_paid
@@ -43,11 +58,21 @@ hr
 
 h3 Generate Payout Report
 = form_tag admin_payout_reports_path do
+    p Final - the report will be used in settlement. 
+    p Manual - the report will include only partners with finalized invoices. ** Note - A report can be both final and manual **
     = check_box_tag :final
-    = label_tag "Final (this report will be used for settlement)"
+    span = "   "
+    = label_tag "Final"
+    span = "   "
+    = check_box_tag :manual
+    span = "   "
+    = label_tag "Manual"
+    span = "   "
     = submit_tag("Generate", class: "btn btn-primary")
+br
 
 = form_tag notify_admin_payout_reports_path do
     = label_tag "Send notifications to publishers"
+    span = "   "
     = submit_tag("Notify publishers", class: "btn btn-primary")
 = will_paginate @payout_reports
