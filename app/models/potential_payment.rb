@@ -17,9 +17,9 @@ class PotentialPayment < ApplicationRecord
 
   scope :to_be_paid, -> {
     where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false).
-    where("amount::numeric > ?", 0).
-    where.not(address: "").
-    where.not(address: nil)
+      where("amount::numeric > ?", 0).
+      where.not(address: "").
+      where.not(address: nil)
   }
 
   private
