@@ -61,7 +61,7 @@ export default {
   spotlight: {
     heading: "You create content and we get you paid.",
     subhead:
-      "Brave Rewards can help you earn more for doing what you do best and get back some of that revenue lost to you when your viewers use ad blocking. Get paid directly by your audience for your content, instead of relying on ad revenue.",
+      "Brave Rewards helps you earn more for doing what you do best and get back some of that revenue lost for when your viewers use ad blocking. Get paid directly by your audience for your content, instead of relying on ad revenue.",
     bakerHref: "https://www.youtube.com/BartBaKer",
     bakerQuote:
       "“Brave is basically free crowdfunding. It is like Patreon but without having to spend any of your hard earned money.”",
