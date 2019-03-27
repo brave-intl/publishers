@@ -1,7 +1,7 @@
 export default {
   nav: {
     logoHref: "/",
-    batPillHref: 'http://www.basicattentiontoken.org',
+    batPillHref: "http://www.basicattentiontoken.org",
     signup: "sign up",
     signupHref: "/sign-up",
     login: "log in",

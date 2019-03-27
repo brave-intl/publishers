@@ -1,0 +1,28 @@
+#!/bin/bash
+git secrets
+if [ $? -ne 0 ]; then
+    RED='\033[0;31m'
+    NC='\033[0m'
+    echo ""
+    echo "Could not run git secrets, this is a required commit hook to ensure that our AWS secrets do not get pushed up to Github."
+    echo "Try fix this try running:"
+    echo ""
+    echo -e "${RED}brew install git-secrets${NC}"
+    echo ""
+
+    exit 1
+fi
+
+# exit when any command fails
+set -e
+git secrets --pre_commit_hook
+
+if git diff --cached --name-status | grep public/creators-landing
+then
+  echo "Building the landing page"
+  cd public/creators-landing && yarn install && yarn build
+  cd -
+  exit 0
+else
+  exit 0
+fi
