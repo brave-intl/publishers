@@ -39,7 +39,7 @@ export default {
     signup: {
       heading: "Become a Creator",
       subhead:
-        "You will receive an email momentarily with instructions on becoming a verified Creator. Be sure to check your Junk folder if nothing arrives within a few minutes.",
+        "You will receive an email momentarily with instructions on becoming a verified Creator. Be sure to check your junk folder if nothing arrives within a few minutes.",
       inputPlaceholder: "Enter your email",
       btn: "Create account",
       tinyOne: "Already have an account? Log in",
