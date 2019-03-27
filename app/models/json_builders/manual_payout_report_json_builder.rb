@@ -12,7 +12,7 @@ class JsonBuilders::ManualPayoutReportJsonBuilder
           "altcurrency" => "BAT",
           "probi" => potential_payment.amount.to_s,
           "fees" => potential_payment.fees.to_s,
-          "authority" => Publisher.find(potential_payment.finalized_by_id).to_s,
+          "authority" => Publisher.find(potential_payment.finalized_by_id).email,
           "transactionId" => potential_payment.payout_report_id.to_s,
           "owner" => Publisher.find(potential_payment.publisher_id).owner_identifier.to_s,
           "type" => PotentialPayment::MANUAL,
