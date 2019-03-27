@@ -10,7 +10,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./build-landing-page.sh"
+      "pre-commit": "yarn test"
     }
   },
   "jest": {
