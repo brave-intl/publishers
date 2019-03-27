@@ -1,5 +1,5 @@
 #!/bin/bash
-git secrets
+git secrets &> /dev/null
 if [ $? -ne 0 ]; then
     RED='\033[0;31m'
     NC='\033[0m'
@@ -22,6 +22,7 @@ then
   echo "Building the landing page"
   cd public/creators-landing && yarn install && yarn build
   cd -
+  git add public/
   exit 0
 else
   exit 0
