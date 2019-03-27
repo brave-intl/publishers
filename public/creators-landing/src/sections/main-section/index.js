@@ -11,7 +11,8 @@ import {
   SwoopBottom,
   StyledInput
 } from "../../components"
-import { Heading, Text, Box, Anchor, Form } from "grommet"
+import batPill from "../../components/img/built-with-bat-pill.svg"
+import { Heading, Text, Box, Anchor, Form, Image } from "grommet"
 import locale from "../../locale/en"
 
 export const MainHome = () => {
@@ -23,6 +24,9 @@ export const MainHome = () => {
           pad="large"
           margin={{ top: "80px", bottom: "90px" }}
         >
+          <Box className="bat-pill" as="a" href={locale.nav.batPillHref}>
+            <Image src={batPill} />
+          </Box>
           <Heading level="1" color="white" margin={{ vertical: "small" }}>
             {locale.main.home.headline}
           </Heading>
@@ -142,20 +146,25 @@ const SignComponent = props => {
           />
           <Box height="100px" />
         </Box>
-        <Box direction="row" gap="small" align="center" id="terms-help">
-          <Anchor
-            label={props.footerOne}
-            href={props.footerOneHref}
-            color="rgba(255, 255, 255, .8)"
-            size="small"
-          />
-          <Text>|</Text>
-          <Anchor
-            label={props.footerTwo}
-            href={props.footerTwoHref}
-            color="rgba(255, 255, 255, .8)"
-            size="small"
-          />
+        <Box id="terms-help" gap="large">
+          <Box direction="row" gap="small" align="center">
+            <Anchor
+              label={props.footerOne}
+              href={props.footerOneHref}
+              color="rgba(255, 255, 255, .8)"
+              size="small"
+            />
+            <Text>|</Text>
+            <Anchor
+              label={props.footerTwo}
+              href={props.footerTwoHref}
+              color="rgba(255, 255, 255, .8)"
+              size="small"
+            />
+          </Box>
+          <Box as="a" href={locale.nav.batPillHref}>
+            <Image src={batPill} height="28px" />
+          </Box>
         </Box>
       </Container>
       <SwoopBottom swoop="fade" />

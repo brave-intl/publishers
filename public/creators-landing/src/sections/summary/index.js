@@ -102,7 +102,7 @@ export const Summary = () => {
   return (
     <GradientBackground align='center'>
       <SwoopTop />
-      <Box height='160px' />
+      <Box height='100px' />
       <Container align='center' pad={{ horizontal: 'large' }} responsive>
         <Heading
           level='2'
@@ -168,7 +168,7 @@ export const Summary = () => {
           />
         </Box>
       </Container>
-      <Box height='180px' />
+      <Box height='100px' />
       <SwoopBottom />
     </GradientBackground>
   )

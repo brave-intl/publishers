@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Image, ResponsiveContext, Menu, Anchor } from "grommet"
 import { MenuIcon, SecondaryButton } from "../../components"
 import logo from "../../components/img/brave-rewards-creators-logo.svg"
-import mobileLogo from "../../components/img/brave-rewards-logo.svg"
+import mobileLogo from "../../components/img/brave-rewards-creators-mobile-logo.svg"
 import batPill from "../../components/img/built-with-bat-pill.svg"
 
 import locale from "../../locale/en"
@@ -57,7 +57,7 @@ const DefaultNav = () => (
           <Image src={logo} height="32px" />
         </Box>
         <Box as="a" href={locale.nav.batPillHref}>
-          <Image src={batPill} height="28px" />
+          <Image src={batPill} height="24px" />
         </Box>
       </Box>
       <Box direction="row" align="center" gap="large">

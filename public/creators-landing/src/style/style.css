@@ -78,6 +78,8 @@ h4 {
   z-index: 0;
 }
 
+/* Terms in Signup and Signin */
+
 #terms-help {
   position: absolute;
   bottom: 60px;
@@ -89,12 +91,36 @@ h4 {
   font-size: 12px;
 }
 
-@media (max-width: 460px) {
+#terms-help img {
+  display: none;
+}
+
+@media (max-width: 840px) {
   #terms-help {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
     width: fit-content;
+  }
+
+  #terms-help img {
+    display: flex;
+  }
+}
+
+/* Responsive BAT pill changes oh landing main section */
+
+.bat-pill img {
+  display: none;
+  height: 24px;
+}
+
+@media (max-width: 840px) {
+  .bat-pill img {
+    display: flex;
+    align-self: flex-start;
+    margin: 0 0 18px;
+
   }
 }
 
