@@ -85,19 +85,23 @@
           - if @potential_referral_payment.present?
             h4= payout_report_status_header('owner')
             .db-info-row
-              .db-field = "Uphold status was"
+              .db-field = "Uphold status"
               .db-value = @potential_referral_payment.uphold_status || 'unavailable'
             - if @potential_referral_payment.reauthorization_needed
               .db-info-row
-                .db-field = "Reauthorization was needed"
+                .db-field = "Reauthorization status"
                 .db-value = @potential_referral_payment.reauthorization_needed
             .db-info-row
-              .db-field = "Was Uphold member"
+              .db-field = "Uphold membership stattus"
               .db-value = @potential_referral_payment.uphold_member
             - if @potential_referral_payment.suspended
               .db-info-row
-                .db-field = "Was suspended"
+                .db-field = "Suspendension status"
                 .db-value = @potential_referral_payment.suspended
+            - if @potential_referral_payment.address.blank?
+              .db-info-row
+                .db-field = "Wallet address"
+                .db-value = "Missing"
             .db-info-row
               .db-field = "Approx. amount"
               .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"
