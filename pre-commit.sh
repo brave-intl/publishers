@@ -1,13 +1,11 @@
 #!/bin/bash
 git secrets &> /dev/null
 if [ $? -ne 0 ]; then
-    RED='\033[0;31m'
-    NC='\033[0m'
     echo ""
     echo "Could not run git secrets, this is a required commit hook to ensure that our AWS secrets do not get pushed up to Github."
     echo "Try fix this try running:"
     echo ""
-    echo -e "${RED}brew install git-secrets${NC}"
+    echo -e "brew install git-secrets"
     echo ""
 
     exit 1
