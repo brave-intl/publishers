@@ -26,12 +26,16 @@ module PublishersHelper
     publisher.uphold_status == :verified
   end
 
+  def payout_in_progress?(today = DateTime.now)
+    today.day <= 8
+  end
 
   def next_deposit_date(today = DateTime.now)
-    if today.day > 8
-      today = today + 1.month
+    if payout_in_progress?(today)
+      today.strftime("%B 8th")
+    else
+      (today + 1.month).strftime("%B 8th")
     end
-    today.strftime("%B 8th")
   end
 
   def publisher_overall_bat_balance(publisher)
@@ -40,7 +44,7 @@ module PublishersHelper
       publisher = publisher.become_subclass
       amount = publisher.wallet&.overall_balance&.amount_bat
       amount = publisher.balance if publisher.partner?
-      balance ='%.2f' % amount if amount.present?
+      balance = '%.2f' % amount if amount.present?
     end
 
     balance
