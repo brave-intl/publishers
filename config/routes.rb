@@ -102,6 +102,7 @@ Rails.application.routes.draw do
   resources :faqs, only: [:index]
 
   root "static#index"
+  get 'no_js', controller: "static"
   get 'sign-up', to: "static#index"
   get 'log-in', to: "static#index"
 

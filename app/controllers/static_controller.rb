@@ -8,6 +8,10 @@ class StaticController < ApplicationController
     render file: 'public/index.html'
   end
 
+  def no_js
+    render(:layout => "layouts/no_js")
+  end
+
   private
 
   def redirect_if_current_publisher

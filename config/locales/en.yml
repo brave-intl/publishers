@@ -712,7 +712,7 @@ en:
       success: Channel verified!
       awaiting_admin_approval: Verification is almost complete! We've notified an admin who will review and finalize your channel.
   static:
-    index:
+    no_js:
       welcome: Welcome to
       header: Brave Rewards
       body_html: |
