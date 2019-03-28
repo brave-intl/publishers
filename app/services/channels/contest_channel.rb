@@ -7,7 +7,7 @@ module Channels
     end
 
     def perform
-      raise SuspendedPublisherError if @channel.publisher.suspended?
+      raise SuspendedPublisherError.new(contested_by: @contested_by, channel: @channel) if @channel.publisher.suspended?
       ActiveRecord::Base.transaction do
         @contested_by.verified = false
         @contested_by.verification_pending = true
@@ -51,6 +51,13 @@ module Channels
 
     class ChannelTypeMismatchError < RuntimeError; end
     class ChannelIdMismatchError < RuntimeError; end
-    class SuspendedPublisherError < RuntimeError; end
+    class SuspendedPublisherError < RuntimeError
+      attr_reader: :contested_by, :channel
+
+      def initialize(contested_by: channel:)
+        @contested_by = contested_by
+        @channel = channel
+      end
+    end
   end
 end
