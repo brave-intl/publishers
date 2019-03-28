@@ -2,7 +2,6 @@ class PotentialPayment < ApplicationRecord
   REFERRAL = "referral".freeze
   CONTRIBUTION = "contribution".freeze
   MANUAL = "manual".freeze
-  has_paper_trail
 
   belongs_to :payout_report
   belongs_to :publisher
