@@ -51,10 +51,11 @@ module Channels
 
     class ChannelTypeMismatchError < RuntimeError; end
     class ChannelIdMismatchError < RuntimeError; end
-    class SuspendedPublisherError < RuntimeError
-      attr_reader: :contested_by, :channel
 
-      def initialize(contested_by: channel:)
+    class SuspendedPublisherError < RuntimeError
+      attr_reader :contested_by, :channel
+
+      def initialize(contested_by:, channel:)
         @contested_by = contested_by
         @channel = channel
       end
