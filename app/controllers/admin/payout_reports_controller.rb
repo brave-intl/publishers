@@ -60,9 +60,9 @@ class Admin::PayoutReportsController < AdminController
 
   def assign_authority(report_contents)
     report_contents = JSON.parse(report_contents)
-
     report_contents.each do |potential_payout|
-      potential_payout["authority"] = current_publisher.email # Assigns authority to admin email
+      # Assign current admin as authority, unless it is a manual report.
+      potential_payout["authority"] = current_publisher.email unless potential_payout["type"] == PotentialPayment::MANUAL 
     end
 
     report_contents.to_json
