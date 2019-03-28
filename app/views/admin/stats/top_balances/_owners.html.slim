@@ -1,4 +1,3 @@
-- publisher_emails = Publisher.where(id: @result.map { |entry| entry["account_id"].split(":")[1] }).pluck(:id, :email).to_h
 
 br
 div.panel-body
@@ -11,6 +10,6 @@ div.panel-body
         - @result.each do |entry|
           tr.gradeX
             - publisher_id =  entry["account_id"].split(":")[1]
-            td = link_to publisher_emails.dig(publisher_id) || "Publisher not found", admin_publisher_path(publisher_id)
+            td = link_to @publisher_emails.dig(publisher_id) || "Publisher not found", admin_publisher_path(publisher_id)
             td = entry["balance"].to_f.round(2)
 

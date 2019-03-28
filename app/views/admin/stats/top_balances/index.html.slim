@@ -6,8 +6,8 @@ h2= "Top Balances for #{params[:type].titleize}"
   = submit_tag "Update Limits"
 
 - if @type == Eyeshade::TopBalances::CHANNEL
-  = render partial: 'admin/stats/top_balances/channels', result: @result
+  = render partial: 'admin/stats/top_balances/channels', result: @result, table_identifier: @table_identifier, youtube_channels: @youtube_channels, site_channels: @site_channels
 - elsif @type == Eyeshade::TopBalances::OWNER
-  = render partial: 'admin/stats/top_balances/owners', result: @result
+  = render partial: 'admin/stats/top_balances/owners', result: @result, publisher_emails: @publisher_emails
 - elsif @type == Eyeshade::TopBalances::UPHOLD
   = render partial: 'admin/stats/top_balances/uphold_accounts', result: @result
