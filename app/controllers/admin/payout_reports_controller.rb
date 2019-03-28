@@ -56,6 +56,12 @@ class Admin::PayoutReportsController < AdminController
     redirect_to admin_payout_reports_path, flash: { alert: "Eyeshade responded with a 400 🤷‍️" }
   end
 
+  def toggle_payout_in_progress
+    payout_status = Rails.cache.fetch('payout_in_progress')
+    Rails.cache.write('payout_in_progress', !payout_status)
+    redirect_to admin_payout_reports_path, flash: { alert: "Set 'payout in progress' to #{!payout_status}" }
+  end
+
   private
 
   def assign_authority(report_contents)

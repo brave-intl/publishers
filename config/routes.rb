@@ -150,6 +150,7 @@ Rails.application.routes.draw do
       collection do
         post :notify
         post :upload_settlement_report
+        post :toggle_payout_in_progress
       end
       member do
         get :download
