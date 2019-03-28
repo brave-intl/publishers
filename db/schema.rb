@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_143005) do
+ActiveRecord::Schema.define(version: 2019_03_27_195041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,17 +184,6 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.datetime "updated_at", null: false
     t.index ["key_handle"], name: "index_legacy_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_legacy_u2f_registrations_on_publisher_id"
-  end
-
-  create_table "legacy_versions", id: :serial, force: :cascade do |t|
-    t.string "item_type", null: false
-    t.integer "item_id", null: false
-    t.string "event", null: false
-    t.string "whodunnit"
-    t.text "object"
-    t.datetime "created_at"
-    t.text "object_changes"
-    t.index ["item_type", "item_id"], name: "index_legacy_versions_on_item_type_and_item_id"
   end
 
   create_table "legacy_youtube_channels", id: :string, force: :cascade do |t|
