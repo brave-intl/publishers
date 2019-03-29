@@ -33,7 +33,7 @@ table.display.table.table-bordered.table-striped
         td = link_to report.id[0..6], admin_payout_report_path(report.id)
         td = report.final ? "Final" : "Temp"
         td = report.manual ? "Yes" : "No"
-        td = report.expected_num_payments - report.num_payments
+        td = "#{report.expected_num_payments} - #{report.num_payments}"
         td = report.num_payments_to_be_paid
         td = report.potential_payments.to_be_paid.unscope(where: :address).count
         td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
