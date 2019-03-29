@@ -11,6 +11,8 @@ div.panel-body
             - if entry["account_id"].starts_with?(@table_identifier)
               - youtube_channel_id = entry["account_id"].split(":")[1]
               td = link_to @youtube_channels[youtube_channel_id]&.dig(1), admin_channels_path(@youtube_channels[youtube_channel_id]&.dig(0))
+            - elsif (channel_id = @site_channels.dig(entry["account_id"])&.dig(0)).present?
+              td = link_to entry["account_id"], admin_channels_path(channel_id)
             - else
-              td = link_to entry["account_id"], admin_channels_path(@site_channels.dig(entry["account_id"])&.dig(0))
+              td = entry["account_id"]
             td = entry["balance"].to_f.round(2)
