@@ -5,6 +5,7 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
     th Publisher
     th = sort_link(:twitch_view_count, "View Count")
     th = sort_link(:follower_count, "Follower Count")
+    th = sort_link(:created_at, "Created At")
   tbody
     - channels.each do |channel|
       tr.gradeX
@@ -13,3 +14,4 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
         td = publisher_link(channel.publisher)
         td = channel.details.stats["view_count"]
         td = channel.details.stats["followers_count"]
+        td = channel.created_at.to_s(:long)

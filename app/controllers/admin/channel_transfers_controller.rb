@@ -1,7 +1,7 @@
 module Admin
   class ChannelTransfersController < AdminController
     def index
-      @transfers = ChannelTransfer.paginate(page: params[:page])
+      @transfers = ChannelTransfer.paginate(page: params[:page]).order(created_at: :desc)
     end
 
     def show

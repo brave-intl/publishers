@@ -7,6 +7,7 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
     th = sort_link(:video_count, "Video Count")
     th = sort_link(:subscriber_count, "Subscriber Count")
     th Channel Identifier
+    th = sort_link(:created_at, "Created At")
   tbody
     - channels.each do |channel|
       tr.gradeX
@@ -17,3 +18,4 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
         td = channel.details.stats["video_count"]
         td = channel.details.stats["subscriber_count"]
         td = channel.details.channel_identifier.split(':').second
+        td = channel.created_at.to_s(:long)
