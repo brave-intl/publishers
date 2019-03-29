@@ -10,6 +10,6 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
       tr.gradeX
         td = channel.id
         td = link_to channel.details.name, channel.details.url
-        td = link_to channel.publisher&.email, admin_publisher_path(channel.publisher_id)
+        td = publisher_link(channel.publisher)
         td = channel.details.stats["view_count"]
         td = channel.details.stats["followers_count"]

@@ -1,14 +1,6 @@
 #publisher
   #publisher-section
-    .action-container
-      h2 = @publisher.name
-      - unless @publisher.partner?
-        .actions
-          = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
-          = link_to("Make partner",
-            edit_admin_partner_path(@publisher),
-            class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
-          = csrf_meta_tag
+    = render partial: 'admin/shared/publisher_header', locals: { publisher: @publisher }
 
 
     .rounded-box.split-row-container
@@ -26,7 +18,7 @@
           .db-value = @publisher.role
         .db-info-row
           .db-field = "Created:"
-          .db-row = @publisher.created_at.strftime('%B %m, %Y')
+          .db-row = @publisher.created_at.strftime('%B %d, %Y')
         - if @publisher.partner?
           - partner = @publisher.becomes(Partner)
           .db-info-row

@@ -37,6 +37,18 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "channel_transfers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "transfer_from_id"
+    t.uuid "transfer_to_id"
+    t.uuid "channel_id"
+    t.boolean "suspended"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_channel_transfers_on_channel_id"
+    t.index ["transfer_from_id"], name: "index_channel_transfers_on_transfer_from_id"
+    t.index ["transfer_to_id"], name: "index_channel_transfers_on_transfer_to_id"
+  end
+
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id"
     t.boolean "created_via_api", default: false, null: false
@@ -403,17 +415,6 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.jsonb "stats", default: "{}", null: false
   end
 
-  create_table "suspended_channel_transfers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "transfer_from_id"
-    t.uuid "transfer_to_id"
-    t.uuid "channel_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["channel_id"], name: "index_suspended_channel_transfers_on_channel_id"
-    t.index ["transfer_from_id"], name: "index_suspended_channel_transfers_on_transfer_from_id"
-    t.index ["transfer_to_id"], name: "index_suspended_channel_transfers_on_transfer_to_id"
-  end
-
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "encrypted_secret"
     t.string "encrypted_secret_iv"
@@ -491,11 +492,11 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end
 
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_from_id"
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_to_id"
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
   add_foreign_key "invoice_files", "publishers", column: "uploaded_by_id"
   add_foreign_key "invoices", "publishers", column: "finalized_by_id"
   add_foreign_key "invoices", "publishers", column: "paid_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
-  add_foreign_key "suspended_channel_transfers", "publishers", column: "transfer_from_id"
-  add_foreign_key "suspended_channel_transfers", "publishers", column: "transfer_to_id"
 end

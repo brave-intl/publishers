@@ -8,6 +8,6 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
     - channels.each do |channel|
       tr.gradeX
         td = channel.id
-        td = link_to channel.publisher&.email, admin_publisher_path(channel.publisher_id)
+        td = publisher_link(channel.publisher)
         td = channel.details.channel_identifier
         td = channel.verified
