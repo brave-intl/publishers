@@ -38,7 +38,7 @@ table.display.table.table-bordered.table-striped
         td = report.manual ? "Yes" : "No"
         td = "#{report.expected_num_payments} - #{report.num_payments}"
         td = report.num_payments_to_be_paid
-        td = report.potential_payments.to_be_paid.unscope(where: :address).count - report.potential_payments.to_be_paid
+        td = report.potential_payments.to_be_paid.unscope(where: :address).count - report.potential_payments.to_be_paid.count
         td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
         td = form_tag refresh_admin_payout_report_path(report.id), method: :patch do
              = submit_tag "refresh", class: "btn btn-info"
