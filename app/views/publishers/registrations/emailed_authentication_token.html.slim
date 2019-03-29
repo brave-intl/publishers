@@ -7,7 +7,7 @@
       .col-small-centered
         p= t ".sent_access_link_html", email: @publisher_email
         hr
-        = form_tag resend_auth_email_publishers_path(publisher_id: @publisher.id), method: "post", class: "hidden", id: "resend_email_form" do
+        = form_tag resend_authentication_email_publishers_path(id: @publisher.id), method: "post", class: "hidden", id: "resend_email_form" do
           - if params[:captcha]
             = hidden_field_tag :captcha
           - if @should_throttle
