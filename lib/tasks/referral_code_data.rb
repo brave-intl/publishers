@@ -1,5 +1,5 @@
 
-# I am sorry for the attrocities I have commited
+# I am sorry for the atrocities I have commited
 REFERRAL_CODES_1 = [
   {"referral_code"=>"", "ymd"=>"2018-11-28", "retrievals"=>1, "first_runs"=>0, "finalized"=>0},
   {"referral_code"=>"", "ymd"=>"2018-12-02", "retrievals"=>1, "first_runs"=>1, "finalized"=>1},
