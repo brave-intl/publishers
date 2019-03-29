@@ -28,6 +28,10 @@ module ChannelStatsServices
         request.url("users?login=#{URI.escape(@channel_details.name)}")
       end
 
+      rate_limit_reset_time = response.headers["Ratelimit-Reset"]
+      time_to_wait = rate_limit_reset_time.to_i - Time.now.strftime('%s').to_i
+      sleep time_to_wait
+
       @twitch_id = JSON.parse(response.body)["data"].first["id"]
       channel_view_count = JSON.parse(response.body)["data"].first["view_count"]
       channel_view_count
