@@ -5,7 +5,7 @@ class JsonBuilders::ManualPayoutReportJsonBuilder
 
   def build
     contents = []
-    @payout_report.potential_payments.manual_to_be_paid.find_each do |potential_payment|
+    @payout_report.potential_payments.to_be_paid.where(kind: PotentialPayment::MANUAL).find_each do |potential_payment|
       contents.push(
         {
           "name" => potential_payment.name.to_s,
