@@ -105,8 +105,8 @@ class SiteChannelDetails < BaseChannelDetails
   def register_brave_publisher_id_error
     errors.add(
       :brave_publisher_id_unnormalized,
-        brave_publisher_id_error_description
-      )
+      brave_publisher_id_error_description
+    )
   end
 
   # verification to ensure brave_publisher_id is not changed

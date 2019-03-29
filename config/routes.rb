@@ -1,19 +1,23 @@
 Rails.application.routes.draw do
   resources :publishers, only: %i(create update new show) do
     collection do
-      get :sign_up
+      # Registrations, eventually we should consider refactoring these routes into something a little more restful
+      scope controller: 'registrations', module: 'publishers' do
+        get :sign_up
+        get :log_in
+        get :expired_authentication_token
+        post :resend_authentication_email
+
+        resource :registrations, only: [:create, :update]
+      end
+
+      get :log_out
       put :javascript_detected
-      get :create_done
-      post :resend_auth_email, action: :resend_auth_email
       get :home
-      get :log_in, action: :new_auth_token, as: :new_auth_token
-      post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
       get :change_email_confirm
       patch :update_email
       patch :confirm_default_currency
-      get :expired_auth_token
-      get :log_out
       get :email_verified
       get :wallet
       get :uphold_verified

@@ -368,24 +368,41 @@ en:
         description: I own a Twitter account.
     contact_info:
       heading: Contact Information
-    create:
-      missing_email: We seem to be missing some info. Please make sure you provided an email address.
-      invalid_email: There was an unexpected error creating your account. Please make sure you have provided a full email address.
-      email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
-      access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
-    create_auth_token:
-      access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
-    emailed_auth_token:
-      missing_email: We seem to be missing some info. Please make sure you provided an email address.
-      unfound_alert_html: |
-        Couldn't find a publisher with that email address. Please try again, or you may
-        <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.
-      heading: Login email sent!
-      body: Please check your email for the login link.
-      heading: An email is on its way!
-      sent_access_link_html: We just sent an access link to <strong class="email-address">%{email}</strong>.  Click on the link to log in to your account
-      resend_email_html: Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.
-      try_again: try again
+    registrations:
+      create:
+        missing_email: We seem to be missing some info. Please make sure you provided an email address.
+        email_already_active: The email address you entered "%{email}" is an active account. We've emailed you a login link.
+        invalid_email: There was an unexpected error creating your account. Please make sure you have provided a full email address.
+        access_throttled: You've attempted to sign up too many times and your access had been throttled. Try again later.
+      log_in:
+        access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
+        missing_email: We seem to be missing some info. Please make sure you provided an email address.
+      emailed_authentication_token:
+        missing_email: We seem to be missing some info. Please make sure you provided an email address.
+        unfound_alert_html: |
+          Couldn't find a publisher with that email address. Please try again, or you may
+          <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.
+        heading: Login email sent!
+        body: Please check your email for the login link.
+        heading: An email is on its way!
+        sent_access_link_html: We just sent an access link to <strong class="email-address">%{email}</strong>.  Click on the link to log in to your account
+        resend_email_html: Don't see the email? Be sure to check your spam folder. Please wait for a few minutes and %{try_again_link}.
+        try_again: try again
+      expired_authentication_token:
+        expired_error: Your login link has expired. Please send yourself another one.
+        heading: Login Link Expired
+        body: Login link access expires after 30 minutes and can only be used once
+        button: Send me a new link
+      require_verified_email:
+        email_verification_required: To continue please confirm your email address.
+      log_in:
+        signup_prompt: Don't have an account?
+        legacy_youtube_login: Legacy YouTube Login
+      sign_up:
+        heading: Join Brave Rewards
+      resend_authentication_email:
+        access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
+        done: The access email has been resent.
     devise:
       login_session_expired: Your session has expired. Please log in again.
     email_verified:
@@ -393,11 +410,6 @@ en:
       intro: Finish signing up by entering below.
       name_placeholder: First and last name
       tos_html: By clicking '%{action}', you're agreeing to our %{tos_link}
-    expired_auth_token:
-      expired_error: Your login link has expired. Please send yourself another one.
-      heading: Login Link Expired
-      body: Login link access expires after 30 minutes and can only be used once
-      button: Send me a new link
     home:
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       title: Dashboard
@@ -437,9 +449,6 @@ en:
         verification_status: Verification status will be displayed in the Brave browser within the next 24-48 hours
         verification_status_title: Verification Information
       channel_balance_period: CURRENT PERIOD
-    new_auth_token:
-      signup_prompt: Don't have an account?
-      legacy_youtube_login: Legacy YouTube Login
     omniauth_callbacks:
       register_youtube_channel:
         channel_already_registered: You have already registered this YouTube channel.
@@ -453,14 +462,8 @@ en:
         channel_already_registered: You have already claimed this Twitter account.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
-    require_verified_email:
-      email_verification_required: To continue please confirm your email address.
     require_verified_publisher:
       verification_required: To continue please confirm your email address and name.
-    resend_auth_email:
-      done: The access email has been resent.
-    sign_up:
-      heading: Join Brave Rewards
     statements:
       title: Statements
       description: Statements contain the details of deposit history.
