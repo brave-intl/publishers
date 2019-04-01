@@ -59,6 +59,19 @@
         .db-info-row
           .db-field = "Last settlement balance:"
           .db-value = "#{publisher_converted_last_settlement_balance(@publisher)}"
+        .db-info-row
+          .db-field = "2fa removal in progress? :"
+          .db-value = @publisher.two_factor_authentication_removal ? "Yes" : "No"
+        - if @publisher.two_factor_authentication_removal
+          .db-info-row
+            .db-field = "2fa removal time remaining:"
+            .db-value = "#{@publisher.two_factor_authentication_removal.two_factor_authentication_removal_days_remaining}"
+          .db-info-row
+            .db-field = "Locked status time remaining:"
+            .db-value = "#{@publisher.two_factor_authentication_removal.locked_status_days_remaining}"
+          .db-info-row
+            .db-field = "Cancel 2fa removal:"
+            .db-value =  link_to("❌", cancel_two_factor_authentication_removal_admin_publishers_path(id: @publisher.id))
         - if @publisher.created_by.present?
           .db-info-row
             .db-field = "Created by:"

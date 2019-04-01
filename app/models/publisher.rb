@@ -33,6 +33,7 @@ class Publisher < ApplicationRecord
 
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
+  has_one :two_factor_authentication_removal
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -203,6 +204,10 @@ class Publisher < ApplicationRecord
 
   def suspended?
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
+  end
+
+  def locked? 
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::LOCKED
   end
 
   def verified?

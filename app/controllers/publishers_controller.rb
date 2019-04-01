@@ -208,10 +208,10 @@ class PublishersController < ApplicationController
   end
 
   def request_two_factor_authentication_removal
-    @publisher = Publisher.find_by_email(params[:email])
-    if @publisher
+    publisher = Publisher.find_by_email(params[:email])
+    if publisher
       flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
-      MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: @publisher).perform
+      MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: publisher).perform
     else
       flash[:warning] = t("publishers.two_factor_authentication_removal.request_not_found")
     end
@@ -221,6 +221,7 @@ class PublishersController < ApplicationController
   def confirm_two_factor_authentication_removal
     publisher = Publisher.find(params[:id])
     publisher.register_for_2fa_removal
+    MailerServices::TwoFactorAuthenticationRemovalReminderEmailer.new(publisher: publisher).perform
     flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_login_flash")
     redirect_to(home_publishers_path)
   end

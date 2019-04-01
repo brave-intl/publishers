@@ -163,6 +163,7 @@ Rails.application.routes.draw do
         patch :approve_channel
         get :statement
         post :create_note
+        get :cancel_two_factor_authentication_removal
       end
       resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'

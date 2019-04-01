@@ -71,6 +71,12 @@ class Admin::PublishersController < AdminController
     redirect_to(admin_publisher_path(channel.publisher))
   end
 
+  def cancel_two_factor_authentication_removal
+    publisher = Publisher.find(params[:id])
+    publisher.two_factor_authentication_removal.destroy
+    redirect_to(admin_publisher_path(publisher), flash: { alert: "2fa removal was cancelled" })
+  end
+
   private
 
   def get_publisher

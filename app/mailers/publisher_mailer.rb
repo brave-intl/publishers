@@ -172,6 +172,16 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def two_factor_authentication_removal_reminder(publisher, remainder)
+    @publisher = publisher
+    @remainder = remainder
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject,
+      template_name: "two_factor_authentication_removal_reminder"
+    )
+  end
+
   def channel_contested(channel)
     @channel = channel
     @channel_name = @channel.publication_title
