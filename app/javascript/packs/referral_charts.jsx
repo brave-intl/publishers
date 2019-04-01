@@ -51,7 +51,7 @@ export default class ReferralCharts extends React.Component {
         value.first_runs > currentMax ? value.first_runs : currentMax;
       currentMax = value.finalized > currentMax ? value.finalized : currentMax;
     });
-    return Math.ceil(currentMax / 95 * 100);
+    return Math.ceil((currentMax / 95) * 100);
   }
 
   createChart(data, title, suggestedMax) {
@@ -67,7 +67,7 @@ export default class ReferralCharts extends React.Component {
     wrapper.appendChild(canvas);
 
     Chart.defaults.global.defaultFontFamily = "Poppins";
-    Chart.scaleService.updateScaleDefaults('logarithmic', {
+    Chart.scaleService.updateScaleDefaults("logarithmic", {
       ticks: {
         callback: function(...args) {
           // new default function here
@@ -110,6 +110,13 @@ export default class ReferralCharts extends React.Component {
         tooltips: {
           mode: "x"
         },
+        elements: {
+          point: {
+            radius: 0,
+            hitRadius: 5,
+            hoverRadius: 5
+          }
+        },
         title: {
           fontSize: 18,
           display: true,
@@ -122,7 +129,7 @@ export default class ReferralCharts extends React.Component {
               distribution: "series",
               ticks: {
                 autoSkip: true,
-                source: "labels",
+                source: "labels"
               },
               time: {
                 unit: "day"

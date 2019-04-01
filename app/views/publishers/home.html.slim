@@ -30,13 +30,13 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                    data-possible-currencies=possible_currencies(current_publisher)
                    data-default-currency=current_publisher.default_currency }
     .row
-      .col
+      .col.payouts
         .balance
-          h4.balance-header
-            span = t ".balance_pending"
           .float-left
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
+            h4.balance-header
+              span = t ".balance_pending"
             .bat
               span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
               span.bat-code= " BAT"
@@ -70,6 +70,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       =t("promo.dashboard.referral").upcase
                     .promo-panel-title-item
                       =t("promo.dashboard.promo").upcase
+                .promo-flex-stats
                   .promo-flex-col.promo-flex-col-downloaded
                     .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
                       =t("promo.dashboard.downloaded").upcase
