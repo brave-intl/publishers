@@ -27,9 +27,10 @@ Follow these steps to setup the App for [publishers.basicattentiontoken.org](htt
       `bundle config build.nokogiri --use-system-libraries` then again
       `bundle install`.,.
 	- __Node__ dependencies: `yarn --frozen-lockfile`
-8. (Optional) Get an `env.sh` file from another developer which contains development-mode bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
-9. Install __Rails__: `gem install rails` Be sure to restart your terminal before continuing.
-10. Setup SSL as described below.
+8.  Install [git-secrets](https://github.com/awslabs/git-secrets). This prevents AWS keys from being committed.
+9. (Optional) Get an `env.sh` file from another developer which contains development-mode bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
+10. Install __Rails__: `gem install rails` Be sure to restart your terminal before continuing.
+11. Setup SSL as described below.
 
 ### HTTPS Setup
 
