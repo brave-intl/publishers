@@ -58,15 +58,9 @@ class Rack::Attack
     end
   end
 
-  throttle("created-auth-tokens/ip", limit: 10, period: 20.minutes) do |req|
-    if req.path == "/publishers/log_in" && req.post?
-      req.ip
-    end
-  end
-
   # Throttle resend auth emails for a publisher
-  throttle("resend_auth_email/publisher_id", limit: 20, period: 20.minutes) do |req|
-    if req.path == "/publishers/resend_auth_email" && req.post?
+  throttle("resend_authentication_email/publisher_id", limit: 20, period: 20.minutes) do |req|
+    if req.path == "/publishers/resend_authentication_email" && req.post?
       req['publisher_id']
     end
   end
@@ -89,7 +83,7 @@ class Rack::Attack
   # In PublishersController we'll check the annotated request object
   # to apply additional Recaptcha.
   throttle("registrations/ip", limit: 60, period: 1.hour) do |req|
-    if req.path == "/publishers" && req.post?
+    if (req.path == "/publishers" || req.path == "/publishers/registrations") && (req.post? || req.patch?)
       req.ip
     end
   end

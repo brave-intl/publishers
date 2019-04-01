@@ -86,8 +86,8 @@ class Publisher < ApplicationRecord
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
 
-  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
-  scope :by_pending_email_case_insensitive, -> (email_to_find) { where('lower(publishers.pending_email) = :email_to_find', email_to_find: email_to_find.downcase) }
+  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find&.downcase) }
+  scope :by_pending_email_case_insensitive, -> (email_to_find) { where('lower(publishers.pending_email) = :email_to_find', email_to_find: email_to_find&.downcase) }
 
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }

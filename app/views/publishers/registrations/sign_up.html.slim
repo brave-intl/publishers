@@ -6,7 +6,7 @@
       h3.single-panel--headline= t ".heading"
 
       .col-small-centered
-        = form_tag publishers_path, method: :post do |f|
+        = form_tag registrations_path, method: :post do |f|
           .form-group
             = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true, value: @publisher.email
           - if params[:captcha]
@@ -18,4 +18,4 @@
 
       .single-panel--footer.single-panel--footer--secondary
         ' #{t("shared.existing_account")}
-        = link_to t("shared.log_in"), new_auth_token_publishers_path
+        = link_to t("shared.log_in"), log_in_publishers_path

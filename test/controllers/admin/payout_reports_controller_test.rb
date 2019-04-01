@@ -313,4 +313,32 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  describe "#toggle_payout_in_progress" do
+    before do
+      admin = publishers(:admin)
+      sign_in admin
+    end
+
+    describe "when payout not in progress" do
+      before do
+        Rails.cache.write('payout_in_progress', false)
+        post toggle_payout_in_progress_admin_payout_reports_path
+      end
+
+      it "set payout in progress" do
+        assert Rails.cache.fetch('payout_in_progress')
+      end
+    end
+
+    describe "when payout in progress" do
+      before do
+        Rails.cache.write('payout_in_progress', true)
+        post toggle_payout_in_progress_admin_payout_reports_path
+      end
+
+      it "set payout in progress" do
+        refute Rails.cache.fetch('payout_in_progress')
+      end
+    end  end
 end

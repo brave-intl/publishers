@@ -17,7 +17,7 @@
             .col.col-xs-12.col-sm-12
               = link_to(t("shared.get_started"), sign_up_publishers_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "StartSignupClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
               .col.col-xs-12.col-sm-4.button-column
-              = link_to(t("shared.log_in"), new_auth_token_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+              = link_to(t("shared.log_in"), log_in_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
           hr.divider
           .row
             .col.col-xs-12.col-sm-8

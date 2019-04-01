@@ -11,6 +11,8 @@ AllCops:
     - Gemfile
     - Rakefile
     - app/models/**/*
+    - app/controllers/publishers_controller.rb
+    - app/controllers/publishers/registrations_controller.rb
   Exclude:
     - bin/**/*
     - db/**/*
@@ -22,4 +24,6 @@ Airbnb/SimpleModifierConditional:
 Airbnb/DefaultScope:
   Enabled: false
 Airbnb/SimpleUnless:
+  Enabled: false
+Style/AndOr:
   Enabled: false
