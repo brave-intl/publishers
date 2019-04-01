@@ -4,10 +4,12 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
     th Publisher
     th Channel Identifier
     th Verified
+    th = sort_link(:created_at, "Created At")
   tbody
     - channels.each do |channel|
       tr.gradeX
         td = channel.id
-        td = link_to channel.publisher&.email, admin_publisher_path(channel.publisher_id)
+        td = publisher_link(channel.publisher)
         td = channel.details.channel_identifier
         td = channel.verified
+        td = channel.created_at.to_s(:long)

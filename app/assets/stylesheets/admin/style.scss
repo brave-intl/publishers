@@ -133,14 +133,6 @@ a.logo span {
       text-align: left;
     }
 
-    .action-container {
-      display: flex;
-    }
-
-    .actions {
-      margin-left: 2rem;
-    }
-
     .rounded-box {
       border-style: solid;
       border-width: 1px;
@@ -259,4 +251,35 @@ a.logo span {
       }
     }
   }
+}
+
+// Pagination
+.pagination {
+  padding: 3px;
+  margin: 3px;
+}
+.pagination a {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #dfdfe8;
+  text-decoration: none;
+  color: #131525;
+}
+.pagination a:hover,
+.pagination a:active {
+  border: 1px solid #131525;
+}
+.pagination em.current {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #dfdfe8;
+  font-weight: bold;
+  font-style: normal;
+  color: #fb542b;
+}
+.pagination span.disabled {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #eee;
+  color: #ddd;
 }
