@@ -24,6 +24,10 @@ class Invoice < ActiveRecord::Base
 
   validates :date, uniqueness: { scope: :partner_id }
 
+  # Ensure these two values are numbers even though field is a string
+  validates :amount, numericality: true, allow_nil: true
+  validates :finalized_amount, numericality: true, allow_nil: true
+
   def human_date
     if date.day == 1
       date.strftime("%B %Y")
@@ -38,6 +42,10 @@ class Invoice < ActiveRecord::Base
 
   def pending?
     status == PENDING
+  end
+
+  def paid?
+    status == PAID
   end
 
   def finalized_amount_to_probi
@@ -56,7 +64,7 @@ class Invoice < ActiveRecord::Base
       date: human_date,
       url: Rails.application.routes.url_helpers.partners_payments_invoice_path(date.in_time_zone("UTC").strftime(URL_DATE_FORMAT)),
       files: invoice_files.where(archived: false).as_json.compact,
-      paid: paid,
+      paid: paid?,
       paymentDate: payment_date,
       finalizedAmount: finalized_amount,
       createdAt: created_at.strftime("%b %d, %Y"),

@@ -80,11 +80,11 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
       assert_enqueued_emails(2) do
-        post(publishers_path, params: SIGNUP_PARAMS)
+        post(registrations_path, params: SIGNUP_PARAMS)
       end
     end
     assert_response 200
-    assert_template :emailed_auth_token
+    assert_template :emailed_authentication_token
 
     publisher = Publisher.order(created_at: :asc).last
     get(publisher_path(publisher))
@@ -95,17 +95,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference("Publisher.count") do
       # Login email should be generated
       assert_enqueued_emails(1) do
-        post(publishers_path, params: { email: "alice@verified.org" })
+        post(registrations_path, params: { email: "alice@verified.org" })
       end
     end
     assert_response :success
-    assert_template :emailed_auth_token
+    assert_template :emailed_authentication_token
   end
 
   test "sends an email with an access link" do
     url = nil
     perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
+      post(registrations_path, params: SIGNUP_PARAMS)
       publisher = Publisher.order(created_at: :asc).last
       email = ActionMailer::Base.deliveries.find do |message|
         message.to.first == SIGNUP_PARAMS[:email]
@@ -127,12 +127,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to home_publishers_url, "precond - publisher is logged in"
 
     get url
-    assert_redirected_to expired_auth_token_publishers_path(publisher_id: publisher.id), "re-used URL is rejected, publisher not logged in"
+    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id), "re-used URL is rejected, publisher not logged in"
   end
 
-  test "expired login link takes unverified publishers to dashboard" do
+  test "expired login link takes unverified publishers to renew their login link" do
     perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
+      post(registrations_path, params: SIGNUP_PARAMS)
     end
     publisher = Publisher.order(created_at: :asc).last
 
@@ -143,11 +143,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get(url)
 
     # verify that publisher attempt to claim expired token returns expired token page
-    assert_redirected_to expired_auth_token_publishers_path(publisher_id: publisher.id)
-    follow_redirect!
-
-    # verify that publisher is then redirect to root
-    assert_redirected_to root_path
+    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id)
   end
 
   test "expired login link takes verified publishers to expired auth token page" do
@@ -162,7 +158,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get(url)
 
     # verify that verified publishers are taken to expired token page
-    assert_redirected_to expired_auth_token_publishers_path(publisher_id: publisher.id)
+    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id)
     follow_redirect!
 
     # verify publisher is not redirected to homepage
@@ -187,7 +183,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
 
     # verify publisher is redirected to login page
-    assert_redirected_to new_auth_token_publishers_path
+    assert_redirected_to log_in_publishers_path
   end
 
   test "an unauthenticated html request redirects to home" do
@@ -202,17 +198,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   def request_login_email(publisher:)
     perform_enqueued_jobs do
-      get(new_auth_token_publishers_path)
-      params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id email)) }
-      post(create_auth_token_publishers_path, params: params)
+      get(log_in_publishers_path)
+      params = publisher.attributes.slice(*%w(brave_publisher_id email))
+      put(registrations_path, params: params)
     end
   end
 
   def request_login_email_uppercase_email(publisher:)
     perform_enqueued_jobs do
-      get(new_auth_token_publishers_path)
-      params = { publisher: { email: publisher.email.upcase } }
-      post(create_auth_token_publishers_path, params: params)
+      get(log_in_publishers_path)
+      params = { email: publisher.email.upcase }
+      put(registrations_path, params: params)
     end
   end
 
@@ -245,6 +241,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     email = ActionMailer::Base.deliveries.find do |message|
       message.to.first == publisher.email
     end
+
     assert_not_nil(email)
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
     assert_email_body_matches(matcher: url, email: email)
@@ -253,27 +250,27 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   # test "relogin for unverified publishers requires email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
-  #     get(new_auth_token_publishers_path)
+  #     get(log_in_publishers_path)
   #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
-  #     post(create_auth_token_publishers_path, params: params)
+  #     post(create_authentication_token_publishers_path, params: params)
   #   end
   # end
 
   # test "relogin for unverified publishers fails with the wrong email" do
   #   publisher = publishers(:default)
   #   assert_enqueued_jobs(0) do
-  #     get(new_auth_token_publishers_path)
+  #     get(log_in_publishers_path)
   #     params = { publisher: { "brave_publisher_id" => publisher.brave_publisher_id, "email" => "anon@cock.li" } }
-  #     post(create_auth_token_publishers_path, params: params)
+  #     post(create_authentication_token_publishers_path, params: params)
   #   end
   # end
 
   # test "relogin for verified publishers without an email sends to the publisher's email" do
   #   publisher = publishers(:verified)
   #   perform_enqueued_jobs do
-  #     get(new_auth_token_publishers_path)
+  #     get(log_in_publishers_path)
   #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
-  #     post(create_auth_token_publishers_path, params: params)
+  #     post(create_authentication_token_publishers_path, params: params)
   #   end
   #   email = ActionMailer::Base.deliveries.find do |message|
   #     message.to.first == publisher.email
@@ -285,7 +282,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher completing signup will agree to TOS" do
     perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
+      post(registrations_path, params: SIGNUP_PARAMS)
     end
     publisher = Publisher.order(created_at: :asc).last
     url = publisher_url(publisher, token: publisher.authentication_token)
@@ -307,7 +304,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher updating contact email address will trigger 3 emails and allow publishers confirm new address" do
     perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
+      post(registrations_path, params: SIGNUP_PARAMS)
     end
     publisher = Publisher.order(created_at: :asc).last
     url = publisher_url(publisher, token: publisher.authentication_token)
@@ -372,7 +369,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher completing signup will trigger RegisterPublisherWithSendGridJob" do
     perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
+      post(registrations_path, params: SIGNUP_PARAMS)
     end
 
     publisher = Publisher.order(created_at: :asc).last
@@ -386,7 +383,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "publisher updating contact email address will trigger RegisterPublisherWithSendGridJob" do
     perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
+      post(registrations_path, params: SIGNUP_PARAMS)
     end
 
     publisher = Publisher.order(created_at: :asc).last
@@ -666,7 +663,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = nil
 
     perform_enqueued_jobs do
-      post(publishers_path, params: SIGNUP_PARAMS)
+      post(registrations_path, params: SIGNUP_PARAMS)
       publisher = Publisher.find_by(pending_email: SIGNUP_PARAMS[:email])
       assert_equal "created", publisher.last_status_update.status
 

@@ -31,7 +31,7 @@ export const PrimaryButton = styled.div`
 interface InputProps {
   testId?: string;
   icon?: React.ReactNode;
-  type?: "text" | "email" | "search" | "password";
+  type?: "text" | "email" | "search" | "password" | "number";
   value?: string;
   disabled?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;

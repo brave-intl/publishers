@@ -1,14 +1,6 @@
 #publisher
   #publisher-section
-    .action-container
-      h2 = @publisher.name
-      - unless @publisher.partner?
-        .actions
-          = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
-          = link_to("Make partner",
-            edit_admin_partner_path(@publisher),
-            class: "btn btn-primary partner-button #{@publisher.publisher? ? '' : 'disabled'}")
-          = csrf_meta_tag
+    = render partial: 'admin/shared/publisher_header', locals: { publisher: @publisher }
 
 
     .rounded-box.split-row-container
@@ -26,7 +18,7 @@
           .db-value = @publisher.role
         .db-info-row
           .db-field = "Created:"
-          .db-row = @publisher.created_at.strftime('%B %m, %Y')
+          .db-row = @publisher.created_at.strftime('%B %d, %Y')
         - if @publisher.partner?
           - partner = @publisher.becomes(Partner)
           .db-info-row
@@ -102,19 +94,23 @@
           - if @potential_referral_payment.present?
             h4= payout_report_status_header('owner')
             .db-info-row
-              .db-field = "Uphold status was"
+              .db-field = "Uphold status"
               .db-value = @potential_referral_payment.uphold_status || 'unavailable'
             - if @potential_referral_payment.reauthorization_needed
               .db-info-row
-                .db-field = "Reauthorization was needed"
+                .db-field = "Reauthorization status"
                 .db-value = @potential_referral_payment.reauthorization_needed
             .db-info-row
-              .db-field = "Was Uphold member"
+              .db-field = "Uphold membership stattus"
               .db-value = @potential_referral_payment.uphold_member
             - if @potential_referral_payment.suspended
               .db-info-row
-                .db-field = "Was suspended"
+                .db-field = "Suspension status"
                 .db-value = @potential_referral_payment.suspended
+            - if @potential_referral_payment.address.blank?
+              .db-info-row
+                .db-field = "Wallet address"
+                .db-value = "Missing"
             .db-info-row
               .db-field = "Approx. amount"
               .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"

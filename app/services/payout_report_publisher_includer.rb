@@ -9,7 +9,10 @@ class PayoutReportPublisherIncluder < BaseService
     return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout?
     publisher_has_unsettled_balance = false
 
-    wallet = @publisher.wallet
+    create_uphold_card_for_default_currency_if_needed
+
+    publisher_has_unsettled_balance = false
+    wallet = PublisherWalletGetter.new(publisher: @publisher).perform
 
     uphold_status = wallet.uphold_account_status
     uphold_member = wallet.is_a_member?
@@ -78,6 +81,16 @@ class PayoutReportPublisherIncluder < BaseService
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
         PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later
       end
+    end
+  end
+
+  private
+
+  def create_uphold_card_for_default_currency_if_needed
+    if @publisher.can_create_uphold_cards? &&
+      @publisher.default_currency_confirmed_at.present? &&
+      @publisher.wallet.address.blank?
+      CreateUpholdCardsJob.perform_now(publisher_id: @publisher.id)
     end
   end
 

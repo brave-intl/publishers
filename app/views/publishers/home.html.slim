@@ -30,21 +30,26 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                    data-possible-currencies=possible_currencies(current_publisher)
                    data-default-currency=current_publisher.default_currency }
     .row
-      .col
+      .col.payouts
         .balance
-          h4.balance-header
-            span = t ".balance_pending"
           .float-left
             = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
           .float-left.amounts
+            h4.balance-header
+              span = t ".balance_pending"
             .bat
               span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
               span.bat-code= " BAT"
             .converted#converted_amount
               = publisher_converted_overall_balance(current_publisher)
-            .next_deposit_date
-              span = t ".next_deposit_date"
-              span= next_deposit_date
+            - if payout_in_progress?
+              .payout_in_progress
+                span
+                  i = t ".payout_in_progress"
+            - else
+              .next_deposit_date
+                span = t ".next_deposit_date"
+                span = next_deposit_date
       - if promo_running?
         .col
           .promo-panel
@@ -65,6 +70,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       =t("promo.dashboard.referral").upcase
                     .promo-panel-title-item
                       =t("promo.dashboard.promo").upcase
+                .promo-flex-stats
                   .promo-flex-col.promo-flex-col-downloaded
                     .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
                       =t("promo.dashboard.downloaded").upcase

@@ -22,10 +22,11 @@ class LogInTest < Capybara::Rails::TestCase
   test "a user with an existing email can receive a login email" do
     email = 'alice@verified.org'
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'publisher_email', with: email
+    fill_in 'email', with: email
+
     click_button('Log In')
 
     assert_content page, "An email is on its way! We just sent an access link to #{email}"
@@ -34,10 +35,10 @@ class LogInTest < Capybara::Rails::TestCase
   test "after failed login, user can create an account instead" do
     email = 'new-test@example.com'
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'publisher_email', with: email
+    fill_in 'email', with: email
     click_button('Log In')
 
     assert_content page, "Couldn't find a publisher with that email address"
@@ -49,10 +50,10 @@ class LogInTest < Capybara::Rails::TestCase
   test "a user can resend log in email" do
     email = 'alice@verified.org'
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
 
     assert_content page, "Log In"
-    fill_in 'publisher_email', with: email
+    fill_in 'email', with: email
     click_button('Log In')
 
     assert_enqueued_emails(1) do
@@ -62,21 +63,21 @@ class LogInTest < Capybara::Rails::TestCase
 
   test "a user without 2FA enabled will be taken to the dashboard after log in" do
     publisher = publishers(:completed)
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
-    assert_content page, "DASHBOARD"
+    assert_content page, "PENDING PAYOUTS"
   end
 
   test "a user with TOTP enabled will be asked for an auth code after log in" do
     publisher = publishers(:verified_totp_only)
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
@@ -86,15 +87,15 @@ class LogInTest < Capybara::Rails::TestCase
 
     fill_in 'totp_password', with: '123456'
     click_button 'Verify'
-    assert_content page, "DASHBOARD"
+    assert_content page, "PENDING PAYOUTS"
   end
 
   test "a user with TOTP enabled can retry entry of their auth code" do
     publisher = publishers(:verified_totp_only)
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
@@ -108,17 +109,17 @@ class LogInTest < Capybara::Rails::TestCase
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
     fill_in 'totp_password', with: '123456'
     click_button 'Verify'
-    assert_content page, "DASHBOARD"
+    assert_content page, "PENDING PAYOUTS"
   end
 
   test "a user with U2F enabled will be asked to insert their U2F device after log in" do
     publisher = publishers(:verified)
     u2f_registration = u2f_registrations(:default)
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
@@ -130,17 +131,17 @@ class LogInTest < Capybara::Rails::TestCase
     # Simulate U2F device usage, which submits the form on success
     page.execute_script("document.querySelector('input[name=\"u2f_response\"]').value = '#{u2f_response}';")
     page.execute_script("document.querySelector('form.js-authenticate-u2f').submit();")
-    assert_content page, "DASHBOARD"
+    assert_content page, "PENDING PAYOUTS"
   end
 
   test "a user with U2F enabled can choose to use TOTP if they don't have their device" do
     publisher = publishers(:verified)
     u2f_registration = u2f_registrations(:default)
 
-    visit new_auth_token_publishers_path
+    visit log_in_publishers_path
     assert_content page, "Log In"
 
-    fill_in 'publisher_email', with: publisher.email
+    fill_in 'email', with: publisher.email
     click_button 'Log In'
     visit publisher_path(publisher, token: publisher.reload.authentication_token)
     assert_content page, "Two-factor Authentication"
@@ -155,6 +156,6 @@ class LogInTest < Capybara::Rails::TestCase
 
     fill_in 'totp_password', with: '123456'
     click_button 'Verify'
-    assert_content page, "DASHBOARD"
+    assert_content page, "PENDING PAYOUTS"
   end
 end

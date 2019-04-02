@@ -278,4 +278,67 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  describe "#upload_settlement_report" do
+    before do
+      admin = publishers(:admin)
+      sign_in admin
+    end
+
+    describe 'when user uploads a bad JSON file' do
+      let(:file) { fixture_file_upload(Rails.root.join('test','fixtures', '1x1.png')) }
+
+      before do
+        post upload_settlement_report_admin_payout_reports_path,
+          params: { file: file },
+          headers: { 'content-type': 'multipart/form-data' }
+      end
+
+      it 'alerts failure' do
+        assert_includes flash[:alert],"Could not parse JSON."
+      end
+    end
+
+    describe 'when user uploads a valid JSON file' do
+      let(:json_file) { fixture_file_upload(Rails.root.join("test","fixtures", "files", "test.json")) }
+
+      before do
+        post upload_settlement_report_admin_payout_reports_path,
+          params: { file: json_file },
+          headers: { 'content-type': 'multipart/form-data' }
+      end
+
+      it 'alerts sucess' do
+        assert_equal "Successfully uploaded settlement report", flash[:notice]
+      end
+    end
+  end
+
+  describe "#toggle_payout_in_progress" do
+    before do
+      admin = publishers(:admin)
+      sign_in admin
+    end
+
+    describe "when payout not in progress" do
+      before do
+        Rails.cache.write('payout_in_progress', false)
+        post toggle_payout_in_progress_admin_payout_reports_path
+      end
+
+      it "set payout in progress" do
+        assert Rails.cache.fetch('payout_in_progress')
+      end
+    end
+
+    describe "when payout in progress" do
+      before do
+        Rails.cache.write('payout_in_progress', true)
+        post toggle_payout_in_progress_admin_payout_reports_path
+      end
+
+      it "set payout in progress" do
+        refute Rails.cache.fetch('payout_in_progress')
+      end
+    end  end
 end

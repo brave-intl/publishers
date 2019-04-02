@@ -5,18 +5,18 @@
       h3.single-panel--headline= t "shared.log_in"
 
       .col-small-centered
-        = form_for @publisher, url: create_auth_token_publishers_path do |f|
+        = form_tag registrations_path, method: :patch do |f|
           .form-group
-            = f.email_field :email, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true
+            = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true
           - if params[:captcha]
             = hidden_field_tag(:captcha)
           - if @should_throttle
             .form-group
               = recaptcha_tags
-          = f.submit(t("shared.log_in"), class: "btn btn-block btn-primary", :"data-piwik-action" => "NewAuthLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "NewAuthFlow")
+          = submit_tag(t("shared.log_in"), class: "btn btn-block btn-primary", :"data-piwik-action" => "NewAuthLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "NewAuthFlow")
 
       .single-panel--footer.single-panel--footer--secondary
         p
           ' #{t(".signup_prompt")}
           = link_to t("publishers.shared.sign_up"), sign_up_publishers_path
-        p = link_to t("publishers.new_auth_token.legacy_youtube_login"), publisher_youtube_login_omniauth_authorize_path, class: "text-muted"
+        p = link_to t(".legacy_youtube_login"), publisher_youtube_login_omniauth_authorize_path, class: "text-muted"

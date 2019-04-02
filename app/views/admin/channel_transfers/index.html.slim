@@ -1,0 +1,20 @@
+h2 Channel Transfers
+table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+  tr
+    th Date
+    th Identifier
+    th From
+    th To
+  tbody
+    - @transfers.each do |transfer|
+      tr.gradeX
+        td = transfer.created_at.to_s(:long)
+        td
+          = image_tag(channel_type_icon_url(transfer.channel), size: "16x16", class: "mx-1")
+          = transfer.channel.details.channel_identifier
+          - if transfer.suspended?
+            .badge.badge-danger.ml-3 Suspended Transfer
+        td = publisher_link(transfer.transfer_from)
+        td = publisher_link(transfer.transfer_to)
+
+= will_paginate @transfers

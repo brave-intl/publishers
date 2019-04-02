@@ -54,6 +54,10 @@
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"
     queue: scheduler
+  SetPayoutInProgressJob:
+    cron: "0 0 1 * *"
+    description: "Sets a flag in redis which tells the app to display 'payout in progress' at the beginning of the month."
+    queue: scheduler
   UpdatePayoutReportContentsJob:
     cron: "0 3 1 * *"
     description: "Refreshes the json version of the report that's built from the potential payments table on the first of every month."

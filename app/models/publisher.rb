@@ -66,7 +66,7 @@ class Publisher < ApplicationRecord
   validate :pending_email_must_be_a_change
   validate :pending_email_can_not_be_in_use
 
-  # validates :name, presence: true, if: -> { brave_publisher_id.present? }
+  validates :name, presence: true, allow_blank: true
   validates :phone_normalized, phony_plausible: true
 
   validates_inclusion_of :role, in: ROLES
@@ -87,8 +87,8 @@ class Publisher < ApplicationRecord
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
 
-  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
-  scope :by_pending_email_case_insensitive, -> (email_to_find) { where('lower(publishers.pending_email) = :email_to_find', email_to_find: email_to_find.downcase) }
+  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find&.downcase) }
+  scope :by_pending_email_case_insensitive, -> (email_to_find) { where('lower(publishers.pending_email) = :email_to_find', email_to_find: email_to_find&.downcase) }
 
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
@@ -153,6 +153,13 @@ class Publisher < ApplicationRecord
         select("publishers.*", "count(channels.id) channels_count").
         order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
+  end
+
+  # This will convert the user to be a partner, or a publisher
+  def become_subclass
+    klass = self
+    klass = becomes(Partner) if partner?
+    klass
   end
 
   # API call to eyeshade

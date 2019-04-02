@@ -21,16 +21,18 @@ div.row
               th ID
               th Status
               th = sort_link(Publisher::VERIFIED_CHANNEL_COUNT, "Number of verified channels")
+              th Last note
               th = sort_link(:created_at, "Account creation time")
               th = sort_link(:last_sign_in_at, "Last sign in at")
             tbody
               - @publishers.left_joins(:channels).each do |publisher|
                 tr.gradeX
-                  td = link_to publisher.email.present? ? publisher.email : publisher.pending_email, admin_publisher_path(publisher.id)
+                  td = publisher_link(publisher)
                   td = publisher.name
                   td.small = publisher.id
                   td = publisher_status(publisher)
                   td = publisher.channels.verified.count
-                  td = publisher.created_at.strftime('%B %m, %Y')
+                  td = publisher.notes.order(created_at: :desc).first&.note
+                  td = publisher.created_at.strftime('%B %d, %Y')
                   td = distance_of_time_in_words(publisher.last_sign_in_at, Time.now) if publisher.last_sign_in_at.present?
           = will_paginate @publishers

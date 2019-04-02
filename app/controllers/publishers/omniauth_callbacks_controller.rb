@@ -93,7 +93,7 @@ module Publishers
           where.not(youtube_channel_id: nil).first
 
       if channel_details.nil?
-        redirect_to new_auth_token_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
+        redirect_to log_in_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
         return
       end
 
@@ -101,7 +101,7 @@ module Publishers
 
       # if publisher.email != oauth_response.dig('info', 'email')
       unless youtube_login_permitted?(channel_details.channel)
-        redirect_to new_auth_token_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
+        redirect_to log_in_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
         return
       end
 

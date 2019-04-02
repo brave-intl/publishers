@@ -304,7 +304,7 @@ class PublisherMailer < ApplicationMailer
 
   def wallet_not_connected(publisher)
     @publisher = publisher
-    @publisher_log_in_url = new_auth_token_publishers_url
+    @publisher_log_in_url = log_in_publishers_url
 
     if @publisher.uphold_verified? && publisher.wallet.address.present?
       begin

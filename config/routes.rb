@@ -1,22 +1,23 @@
 Rails.application.routes.draw do
   resources :publishers, only: %i(create update new show) do
     collection do
-      get :sign_up
-      get :two_factor_authentication_removal
-      post :request_two_factor_authentication_removal
-      get :confirm_two_factor_authentication_removal
+      # Registrations, eventually we should consider refactoring these routes into something a little more restful
+      scope controller: 'registrations', module: 'publishers' do
+        get :sign_up
+        get :log_in
+        get :expired_authentication_token
+        post :resend_authentication_email
+
+        resource :registrations, only: [:create, :update]
+      end
+
+      get :log_out
       put :javascript_detected
-      get :create_done
-      post :resend_auth_email, action: :resend_auth_email
       get :home
-      get :log_in, action: :new_auth_token, as: :new_auth_token
-      post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
       get :change_email_confirm
       patch :update_email
       patch :confirm_default_currency
-      get :expired_auth_token
-      get :log_out
       get :email_verified
       get :wallet
       get :uphold_verified
@@ -30,6 +31,9 @@ Rails.application.routes.draw do
       patch :complete_signup
       patch :disconnect_uphold
       get :choose_new_channel_type
+      get :two_factor_authentication_removal
+      post :request_two_factor_authentication_removal
+      get :confirm_two_factor_authentication_removal
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index) do
         collection do
@@ -107,14 +111,6 @@ Rails.application.routes.draw do
   root "static#index"
 
   namespace :api, defaults: { format: :json } do
-    resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
-      resources :channels, only: %i(create), constraints: { channel_id: %r{[^\/]+} } do
-        get "/", action: :show
-      end
-    end
-    resources :tokens, only: %i(index)
-    resources :channels, constraints: { channel_id: %r{[^\/]+} }
-
     # /api/v1/
     namespace :v1, defaults: { format: :json } do
       # /api/v1/stats/
@@ -152,6 +148,8 @@ Rails.application.routes.draw do
     resources :payout_reports, only: %i(index show create) do
       collection do
         post :notify
+        post :upload_settlement_report
+        post :toggle_payout_in_progress
       end
       member do
         get :download
@@ -168,6 +166,7 @@ Rails.application.routes.draw do
       resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
+    resources :channel_transfers
 
     resources :organizations, except: [:destroy]
     resources :partners, except: [:destroy] do

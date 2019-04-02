@@ -30,15 +30,24 @@ class PublishersHelperTest < ActionView::TestCase
     assert_dom_equal %{~ 0.00 USD}, publisher_converted_overall_balance(publisher) # 0 balance because this publisher has no channels
   end
 
-  test "publisher_converted_overall_balance should return `CURRENCY unavailable` when no wallet is set" do
-    class FakePublisher
-      attr_reader :default_currency, :wallet
+  class FakePublisher
+    attr_reader :default_currency, :wallet
 
-      def initialize(wallet_info:)
-        @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: [], transactions: []) if wallet_info
-        @default_currency = 'USD'
-      end
+    def initialize(wallet_info:, accounts: [], transactions: [])
+      @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions) if wallet_info
+      @default_currency = 'USD'
     end
+
+    def become_subclass
+      self
+    end
+
+    def partner?
+      false
+    end
+  end
+
+  test "publisher_converted_overall_balance should return `CURRENCY unavailable` when no wallet is set" do
 
     publisher = FakePublisher.new(
       wallet_info: {
@@ -82,15 +91,6 @@ class PublishersHelperTest < ActionView::TestCase
   end
 
   test "publishers_last_settlement_balance should return a formatted & converted wallet balance, last settlement balances do not apply fee" do
-    class FakePublisher
-      attr_reader :default_currency, :wallet
-
-      def initialize(wallet_info:, accounts:, transactions:)
-        @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions ) if wallet_info
-        @default_currency = 'USD'
-      end
-    end
-
     publisher = FakePublisher.new(
       wallet_info: {
         "status" => {
@@ -187,11 +187,5 @@ class PublishersHelperTest < ActionView::TestCase
 
     publisher.uphold_status = Publisher::UpholdAccountState::BLOCKED
     assert_equal "uphold-complete", uphold_status_class(publisher)
-  end
-
-  test "next settlement date is current month if <= 8th, otherwise next month" do
-    assert_equal "June 8th", next_deposit_date(DateTime.parse("June 7, 2018"))
-    assert_equal "June 8th", next_deposit_date(DateTime.parse("June 8, 2018"))
-    assert_equal "July 8th", next_deposit_date(DateTime.parse("June 9, 2018"))
   end
 end
