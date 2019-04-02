@@ -83,14 +83,14 @@ gem "premailer-rails", "~> 1.9.4", require: false
 gem 'public_suffix', '~> 3.0.2'
 
 # Puma as app server
-gem "puma", "3.12"
+gem "puma", "3.12.1"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 5.2.0"
+gem 'railties', "~> 5.2.3"
 
-gem "rails", "~> 5.2.2.1"
+gem "rails", "~> 5.2.3"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
