@@ -1,5 +1,4 @@
 class YoutubeChannelDetails < BaseChannelDetails
-  has_paper_trail
 
   validate :youtube_channel_not_changed_once_initialized
   validates :youtube_channel_id, presence: true
