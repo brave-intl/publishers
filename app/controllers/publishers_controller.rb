@@ -20,8 +20,7 @@ class PublishersController < ApplicationController
   ]
 
   before_action :authenticate_via_token,
-    only: %i(show
-             confirm_two_factor_authentication_removal)
+    only: %i(show)
   before_action :authenticate_publisher!,
     except: %i(sign_up
                create
@@ -33,7 +32,8 @@ class PublishersController < ApplicationController
                resend_auth_email
                two_factor_authentication_removal
                request_two_factor_authentication_removal
-               confirm_two_factor_authentication_removal)
+               confirm_two_factor_authentication_removal
+               )
   before_action :require_unauthenticated_publisher,
     only: %i(sign_up
              create
@@ -42,6 +42,7 @@ class PublishersController < ApplicationController
              new_auth_token
              two_factor_authentication_removal
              request_two_factor_authentication_removal
+             confirm_two_factor_authentication_removal
             )
   before_action :require_verified_email,
     only: %i(email_verified
@@ -219,11 +220,20 @@ class PublishersController < ApplicationController
   end
 
   def confirm_two_factor_authentication_removal
+    sign_out(current_publisher) if current_publisher
+
     publisher = Publisher.find(params[:id])
-    publisher.register_for_2fa_removal
-    MailerServices::TwoFactorAuthenticationRemovalReminderEmailer.new(publisher: publisher).perform
-    flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_login_flash")
-    redirect_to(home_publishers_path)
+    token = params[:token]
+
+    if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: publisher.email).perform
+      publisher.register_for_2fa_removal
+      MailerServices::TwoFactorAuthenticationRemovalReminderEmailer.new(publisher: publisher).perform
+      flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_login_flash")
+      redirect_to(root_path)
+    else
+      flash[:notice] = t("Error")
+      redirect_to(root_path)
+    end
   end
 
   def javascript_detected
