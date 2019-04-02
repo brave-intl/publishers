@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_143005) do
+ActiveRecord::Schema.define(version: 2019_03_20_030220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
   end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name", default: "", null: false
+    t.string "name"
     t.string "email"
     t.string "pending_email"
     t.string "phone"
@@ -443,8 +443,7 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
 
   create_table "two_factor_authentication_removals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
-    t.boolean "canceled", default: false
-    t.boolean "completed", default: false
+    t.boolean "removal_completed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["publisher_id"], name: "index_two_factor_authentication_removals_on_publisher_id"

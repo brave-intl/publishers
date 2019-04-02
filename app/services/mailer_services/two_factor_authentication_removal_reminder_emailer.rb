@@ -15,7 +15,7 @@ module MailerServices
   
       def send_email
         return false if !publisher
-        remainder = publisher.two_factor_authentication_removal.time_remainder_in_days
+        remainder = publisher.two_factor_authentication_removal.two_factor_authentication_removal_days_remaining
         PublisherMailer.two_factor_authentication_removal_reminder(publisher, remainder).deliver
       end
     end
