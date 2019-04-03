@@ -1,6 +1,4 @@
 # For users in the process of 2fa removal
-# If 2fa removal is less than 14 days old -> Send reminder e-mails
-# If 2fa removal is greater than or equal to 14 days -> Remove channels and uphold information, mark as complete
 
 class TwoFactorAuthenticationRemovalJob < ApplicationJob
   queue_as :low
@@ -19,6 +17,7 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
         publisher.totp_registration.destroy if publisher.totp_registration.present?
         publisher.u2f_registrations.destroy_all if !publisher.u2f_registrations.empty?
         publisher.channels.destroy_all if !publisher.channels.empty?
+        publisher.disconnect_uphold
         PublisherWalletDisconnector.new(publisher: publisher).perform
         # Set status to Locked, mark 2fa removals as complete
         publisher.status_updates.create(status: PublisherStatusUpdate::LOCKED)
