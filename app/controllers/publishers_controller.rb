@@ -18,9 +18,9 @@ class PublishersController < ApplicationController
 
   before_action :authenticate_via_token, only: %i(show)
   before_action :authenticate_publisher!, except: %i(show
-                                                    two_factor_authentication_removal
-                                                    request_two_factor_authentication_removal
-                                                    confirm_two_factor_authentication_removal)
+                                                     two_factor_authentication_removal
+                                                     request_two_factor_authentication_removal
+                                                     confirm_two_factor_authentication_removal)
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 except: %i(update_email change_email)
@@ -118,7 +118,7 @@ class PublishersController < ApplicationController
       flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
       MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: publisher).perform
     else
-      flash[:warning] = t("publishers.two_factor_authentication_removal.request_not_found")
+      flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
     end
     redirect_to two_factor_authentication_removal_publishers_path
   end
