@@ -127,12 +127,12 @@ class PublishersController < ApplicationController
     token = params[:token]
 
     if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: publisher.email).perform
-      publisher.register_for_2fa_removal
+      publisher.register_for_2fa_removal if publisher.two_factor_authentication_removal.blank?
       MailerServices::TwoFactorAuthenticationRemovalReminderEmailer.new(publisher: publisher).perform
       flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_login_flash")
       redirect_to(root_path)
     else
-      flash[:notice] = t("Error")
+      flash[:notice] = t("publishers.shared.error")
       redirect_to(root_path)
     end
   end

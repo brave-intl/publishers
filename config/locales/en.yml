@@ -38,6 +38,7 @@ en:
     referrals: Referrals
     download: Download
     existing_account: Already have an account?
+    error: Oh no! Something went wrong, please contact support.
     get_started: Get Started
     instant_donation: Tipping Banner
     invalid_totp: Invalid 6-digit code. Please try again.
