@@ -1,19 +1,23 @@
 self.__precacheManifest = [
   {
-    "revision": "5bf27ac018bf830922bd",
-    "url": "/static/css/main.6f9307c0.chunk.css"
+    "revision": "dd7957051897668cbd19",
+    "url": "/static/css/main.2ff3258f.chunk.css"
   },
   {
-    "revision": "5bf27ac018bf830922bd",
-    "url": "/static/js/main.99ad797e.chunk.js"
+    "revision": "dd7957051897668cbd19",
+    "url": "/static/js/main.6279aac5.chunk.js"
   },
   {
     "revision": "42ac5946195a7306e2a5",
     "url": "/static/js/runtime~main.a8a9905a.js"
   },
   {
-    "revision": "01a140e1e71a5294d53e",
-    "url": "/static/js/2.f954987e.chunk.js"
+    "revision": "a1dbe1a90f71169de87d",
+    "url": "/static/js/2.06fc39a0.chunk.js"
+  },
+  {
+    "revision": "f4c2d5ec3e17b33d5700a4fa021e64e6",
+    "url": "/static/media/built-with-bat-pill.f4c2d5ec.svg"
   },
   {
     "revision": "74b296338283810bc8aa24521154e176",
@@ -21,7 +25,7 @@ self.__precacheManifest = [
   },
   {
     "revision": "58394134d4f10d125217be29381bcbbd",
-    "url": "/static/media/brave-rewards-logo.58394134.svg"
+    "url": "/static/media/brave-rewards-creators-mobile-logo.58394134.svg"
   },
   {
     "revision": "50f47a3de8db3be0a5461e3acacec029",
@@ -52,7 +56,7 @@ self.__precacheManifest = [
     "url": "/static/media/built-with-bat.fe7c3954.svg"
   },
   {
-    "revision": "d5358f0f3d42bb499567924a769f7a59",
+    "revision": "3aa81a0e4eb23873c65de0f5fecb7cf9",
     "url": "/index.html"
   }
 ];

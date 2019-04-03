@@ -34,11 +34,20 @@ module Publishers
 
       if @publisher.save
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
-        render :emailed_authentication_token
+
+        respond_to do |format|
+          format.html { render :emailed_authentication_token }
+          format.json { head :ok }
+        end
       else
         Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-        flash[:warning] = t(".invalid_email")
-        redirect_to sign_up_publishers_path
+        respond_to do |format|
+          format.html do
+            flash[:warning] = t(".invalid_email")
+            redirect_to sign_up_publishers_path
+          end
+          format.json { head :bad_request }
+        end
       end
     end
 
