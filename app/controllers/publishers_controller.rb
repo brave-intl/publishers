@@ -17,10 +17,12 @@ class PublishersController < ApplicationController
   ].freeze
 
   before_action :authenticate_via_token, only: %i(show)
-  before_action :authenticate_publisher!, except: %i(show
-                                                     two_factor_authentication_removal
-                                                     request_two_factor_authentication_removal
-                                                     confirm_two_factor_authentication_removal)
+  before_action :authenticate_publisher!, except: %i(
+    show
+    two_factor_authentication_removal
+    request_two_factor_authentication_removal
+    confirm_two_factor_authentication_removal
+  )
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 except: %i(update_email change_email)

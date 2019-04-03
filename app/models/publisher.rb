@@ -213,7 +213,7 @@ class Publisher < ApplicationRecord
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
   end
 
-  def locked? 
+  def locked?
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::LOCKED
   end
 

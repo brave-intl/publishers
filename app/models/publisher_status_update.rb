@@ -1,5 +1,4 @@
 class PublisherStatusUpdate < ApplicationRecord
-
   CREATED = 'created'.freeze
   ONBOARDING = 'onboarding'.freeze
   ACTIVE = 'active'.freeze
