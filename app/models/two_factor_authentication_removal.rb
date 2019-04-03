@@ -1,4 +1,5 @@
 class TwoFactorAuthenticationRemoval < ApplicationRecord
+  belongs_to :publisher
   # 2 Weeks represented in seconds
   TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD = 1209600
   # 4 Weeks represented in seconds

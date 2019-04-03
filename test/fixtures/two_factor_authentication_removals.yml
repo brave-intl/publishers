@@ -1,11 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  publisher_id: 
-  canceled: false
-  completed: false
+one: &one
+  publisher: verified
+  removal_completed: false
 
-two:
-  publisher_id: 
-  canceled: false
-  completed: false
+two: &two
+  publisher: verified
+  removal_completed: false
