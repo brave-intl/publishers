@@ -12,7 +12,7 @@ class TwoFactorAuthenticationRemoval < ApplicationRecord
   # 6 Weeks represented in seconds
   TOTAL_WAITING_PERIOD = TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD + LOCKED_STATUS_WAITING_PERIOD
 
-  # Returns time remaining in seconds 
+  # Returns time remaining in seconds
   def total_time_remaining
     time = Time.now
     remainder = TOTAL_WAITING_PERIOD - (time - created_at)
@@ -42,9 +42,6 @@ class TwoFactorAuthenticationRemoval < ApplicationRecord
   def two_factor_authentication_removal_time_completed?
     time = Time.now
     remainder = TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD - (time - created_at)
-    puts remainder
-    puts "tc? "
-    puts remainder <= 0
     remainder <= 0
   end
 
