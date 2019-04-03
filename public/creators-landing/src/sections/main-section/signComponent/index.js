@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   GradientBackground,
@@ -11,45 +11,15 @@ import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
 import { Heading, Text, Box, Anchor, Layer, Form, Image } from "grommet";
 
-const submitForm = event => {
-  doTheThing(event.value);
-};
-
-async function doTheThing(body) {
-  const url = "publishers/registrations.json";
-
-  console.log(JSON.stringify(body));
-  let crsf = document.head.querySelector("[name=csrf-token]");
-  if (crsf) {
-    crsf = crsf.getAttribute("content");
-  }
-
-  const result = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-      "X-CSRF-Token": crsf,
-      "X-Requested-With": "XMLHttpRequest",
-      "Content-Type": "application/json"
-    },
-    method: "POST",
-    body: JSON.stringify(body)
-  });
-
-  if (result.ok) {
-    console.log("ay");
-  }
-}
-const NotificationLayer = props => {
+function NotificationLayer(props) {
   return (
     <Layer
-      align="center"
-      direction="row"
-      gap="small"
-      justify="between"
-      round="medium"
-      elevation="medium"
-      pad={{ vertical: "xsmall", horizontal: "small" }}
-      background="status-ok"
+      position={props.display}
+      modal={false}
+      margin={{ vertical: "medium", horizontal: "small" }}
+      responsive={false}
+      animate
+      plain
     >
       <Box
         align="center"
@@ -59,24 +29,67 @@ const NotificationLayer = props => {
         round="medium"
         elevation="medium"
         pad={{ vertical: "xsmall", horizontal: "small" }}
-        background="status-ok"
+        background="#F3F3FD"
       >
         <Box align="center" direction="row" gap="xsmall">
-          <Text>A new virtual machine has been successfully added</Text>
+          <Text>An access link has been sent</Text>
         </Box>
       </Box>
     </Layer>
   );
-};
+}
 
 // Sign up and sign in shared this component since
 // they are so similar in structure
 const SignComponent = props => {
-  const [notification, setNotification] = useState();
+  const [notification, setNotification] = useState("hidden");
+
+  useEffect(() => {
+    if (notification === "hidden") {
+      return;
+    }
+    const timer = window.setInterval(() => {
+      // setNotification("hidden");
+    }, 5000);
+    return () => {
+      // Return callback to run on unmount.
+      window.clearInterval(timer);
+    };
+  }); // Pass in empty array to run useEffect only on mount.
+
+  const submitForm = event => {
+    doTheThing(event.value);
+  };
+
+  async function doTheThing(body) {
+    const url = "publishers/registrations.json";
+
+    console.log(JSON.stringify(body));
+    let crsf = document.head.querySelector("[name=csrf-token]");
+    if (crsf) {
+      crsf = crsf.getAttribute("content");
+    }
+    setNotification("bottom");
+
+    // const result = await fetch(url, {
+    //   headers: {
+    //     Accept: "application/json",
+    //     "X-CSRF-Token": crsf,
+    //     "X-Requested-With": "XMLHttpRequest",
+    //     "Content-Type": "application/json"
+    //   },
+    //   method: "POST",
+    //   body: JSON.stringify(body)
+    // });
+
+    // if (result.ok) {
+    console.log("ay");
+    // }
+  }
 
   return (
     <GradientBackground height="100vh" align="center">
-      <NotificationLayer />
+      <NotificationLayer display={notification} />
       <Container
         animation="fadeIn"
         role="main"
