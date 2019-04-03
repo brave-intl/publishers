@@ -56,9 +56,6 @@
           .db-value = @publisher.two_factor_authentication_removal ? "Yes" : "No"
         - if @publisher.two_factor_authentication_removal
           .db-info-row
-            .db-field = "2fa Debugger time remaining:"
-            .db-value = "#{@publisher.two_factor_authentication_removal.total_time_remaining.round}"
-          .db-info-row
             .db-field = "2fa removal time remaining:"
             .db-value = "#{@publisher.two_factor_authentication_removal.two_factor_authentication_removal_days_remaining}"
           .db-info-row
