@@ -14,17 +14,13 @@ export const PrimaryButton = styled.div`
   color: white;
   display: inline-block;
   line-height: 1.5;
-  font-family: Poppins, sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.02em;
   &:hover {
-    background: #ff1919;
+    background: #fb542b;
   }
   ${(props: IButtonProps) =>
     props.enabled
       ? `
-        background: #ff3f3f;
-        border-color: #ff3f3f;
+        background: #fb542b;
         cursor: pointer;
       `
       : `

@@ -195,7 +195,7 @@
         display: inline;
         text-align: left;
         font-weight: 600;
-        padding: 8px 8px 8px 0;
+        padding: 0 8px 0 0;
         font-size: 24px;
         color: #006192;
       }
@@ -256,27 +256,28 @@
   }
 
   .channel--promo-info-container {
-    float: right;
-    height: 45px;
-    width: 166px;
-    transition: 0.3s ease-in-out;
-    display: table;
+    position: absolute;
+    right: 24px;
+
+    @media only screen and (max-width: 520px) {
+      margin: 8px 0;
+      display: flex;
+      position: initial;
+    }
 
     .promo-info-item {
       height: 100%;
       text-align: center;
       display: table-cell;
       vertical-align: middle;
+      padding: 4px;
     }
 
     .referral-link-button {
-      width: 110px;
       background: #edf3f9;
       display: table-cell;
-      border: solid;
-      border-width: 1px;
       border-radius: 4px;
-      border-color: #cddeec;
+      padding: 8px;
       cursor: pointer;
 
       span {
@@ -315,8 +316,8 @@
     }
 
     .promo-share-button {
-      height: 23px;
-      width: 28px;
+      height: 36px;
+      width: 36px;
       display: table-cell;
       background-position: center;
       background-repeat: no-repeat;
@@ -331,8 +332,6 @@
     }
 
     &-slideout {
-      width: 340px;
-
       .promo-info-item {
         display: table-cell;
       }
@@ -366,41 +365,20 @@
 
   .dashboard-panel {
     &--wrapper {
-      padding: 24px;
+      padding: 32px;
       background-color: white;
       border-radius: $brave-panels-borderRadius;
-      box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
       margin: 0 0 24px;
     }
 
     &--header {
-      padding: 12px 0 12px 50px;
-      vertical-align: middle;
-      background-position: center left;
-      background-repeat: no-repeat;
-      background-size: 34px 42px;
+      padding: 4px 0 4px;
       font-size: 20px;
-
-      &#dashboard_uphold_header {
-        padding-top: 14px;
-        background-image: url(asset-path("wallet@1x.png"));
-      }
-
-      &#publishers_statements {
-        background-image: url(asset-path("download@1x.png"));
-      }
-
-      &#publishers_contact {
-        background-image: url(asset-path("contact@1x.png"));
-      }
-
-      &#publishers_list {
-        background-image: url(asset-path("list@1x.png"));
-      }
-
-      h4 {
-        font-size: $font-size-base;
-      }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
     }
 
     &--content {
@@ -472,7 +450,6 @@
 
       .text {
         display: inline-block;
-        padding: 0 0 0 50px;
 
         &:before {
           content: "\25CF\00a0";
@@ -587,12 +564,13 @@
     &.uphold-reauthorization-needed,
     &.uphold-unconnected {
       .status-description {
-        padding: 0 0 24px 50px;
-        min-height: 42px;
-        background-position: top left;
+        background-position: left;
         background-repeat: no-repeat;
-        background-size: 42px;
+        background-size: 30px;
         background-image: url(asset-path("icn-warning@1x.png"));
+        padding: 0 0 0 48px;
+        margin: 0 0 24px;
+        font-size: 14px;
       }
 
       #uphold_connect {
@@ -635,7 +613,7 @@
     }
 
     #add_channel_placeholder {
-      padding: 24px;
+      margin: 0 0 24px;
     }
 
     // Status summary label
@@ -686,7 +664,7 @@
   .payouts {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 24px;
   }
 
@@ -746,9 +724,6 @@
   }
 
   .channel-row {
-    margin-top: 30px;
-    max-height: 300px;
-
     &.channel-hidden {
       transition: max-height 300ms ease-out;
       max-height: 0;
@@ -760,18 +735,8 @@
     padding: 24px;
     border-radius: $brave-panels-borderRadius;
     background-color: white;
-    box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
-
-    .channel-thumbnail {
-      margin-right: 15px;
-      float: left;
-
-      img {
-        height: 40px;
-        width: 40px;
-        border-radius: 20px;
-      }
-    }
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
 
     .channel-summary {
       width: 100%;
@@ -786,15 +751,11 @@
 
       .channel-details {
         font-size: 14px;
-        color: $mediumGray;
         display: flex;
-        padding: 18px 0;
+      }
 
-        .added-date,
-        .separator,
-        .remove-channel {
-          margin-right: 12px;
-        }
+      .separator {
+        padding: 0 8px;
       }
     }
 
@@ -948,40 +909,28 @@
     }
 
     &--intro {
-      margin-bottom: 7px;
-      font-size: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
     }
 
     &--intro-icon {
-      float: left;
-      margin-right: 7px;
+      margin-right: 8px;
+      display: flex;
     }
 
     &--intro-body {
-      line-height: 1.8;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1;
     }
-
-    &.channel-unverified {
-      .channel-panel--intro {
-        margin-bottom: 3px;
-      }
-    }
-  }
-
-  #default_currency_code {
-    font-weight: 600;
   }
 
   .payment-info {
     font-size: $font-size-base;
   }
 
-  .last-deposit {
-    font-weight: 700;
-  }
-
   .header-link {
-    float: right;
     font-size: 16px;
     font-weight: 500;
     color: #00bcda;
@@ -990,7 +939,6 @@
 
   .terms-of-service {
     text-align: right;
-    margin-top: -10px;
 
     a {
       padding-right: 20px;
@@ -1206,4 +1154,30 @@
       max-height: calc(100vh - 210px);
     }
   }
+}
+
+.referral-graph {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 16px;
+
+  h4 {
+    margin: auto 0;
+    font-family: Muli, 'sans-serif';
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  @media only screen and (max-width: 560px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+}
+
+.bat-logo {
+  padding: 8px;
+}
+
+.uphold-panel {
+  min-height: 336px;
 }

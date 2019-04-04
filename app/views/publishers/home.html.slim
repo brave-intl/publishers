@@ -32,8 +32,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     .row
       .col.payouts
         .balance
-          .float-left
-            = image_tag("bat-logo@2x.png", class: "", width: 60, height: 57)
+          .bat-logo
+            = image_tag("bat-logo@2x.png", class: "", width: 60, height: 60)
           .float-left.amounts
             h4.balance-header
               span = t ".balance_pending"
@@ -168,7 +168,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = t ".contact.heading"
             a.header-link#edit_contact href="#"
               = t ".contact.edit"
-            .clearfix
           .dashboard-panel--content.contact-person
             #show_contact
               #show_contact_name= current_publisher.name
@@ -212,8 +211,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 img src=(channel_type_icon_url(channel)) width=16 height=16
               .channel-panel--intro-body
                 = channel_type(channel).upcase
-            .channel-thumbnail
-              img src=(channel_thumbnail_url(channel))
             - if channel.verified?
               - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
                 .channel--promo-info-container
@@ -297,7 +294,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                         verified_by_email: channel.contested_by_channel.publisher.email
                 a.reject_transfer href=token_reject_transfer_url(channel, channel.contest_token)
                   = t ".channel.reject_transfer"
-            .clearfix
 
     .row id="add_channel_placeholder"
       .col
