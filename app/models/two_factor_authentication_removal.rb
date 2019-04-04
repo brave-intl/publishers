@@ -36,14 +36,10 @@ class TwoFactorAuthenticationRemoval < ApplicationRecord
   end
 
   def two_factor_authentication_removal_time_completed?
-    time = Time.now
-    remainder = TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD - (time - created_at)
-    remainder <= 0
+    (TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD - (Time.now - created_at)) <= 0
   end
 
   def locked_status_time_completed?
-    time = Time.now
-    remainder = TOTAL_WAITING_PERIOD - (time - created_at)
-    remainder <= 0
+    (TOTAL_WAITING_PERIOD - (Time.now - created_at)) <= 0
   end
 end
