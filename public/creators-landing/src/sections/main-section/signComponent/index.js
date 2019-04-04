@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import {
   Container,
   GradientBackground,
@@ -51,6 +52,7 @@ function NotificationLayer(props) {
 // they are so similar in structure
 const SignComponent = props => {
   const [notification, setNotification] = useState("hidden");
+  const [thing, setThing] = useState("fadeIn");
 
   useEffect(() => {
     if (notification === "hidden") {
@@ -63,7 +65,7 @@ const SignComponent = props => {
       // Return callback to run on unmount.
       window.clearInterval(timer);
     };
-  }); // Pass in empty array to run useEffect only on mount.
+  });
 
   const submitForm = event => {
     doTheThing(event.value);
@@ -77,7 +79,6 @@ const SignComponent = props => {
     if (crsf) {
       crsf = crsf.getAttribute("content");
     }
-    setNotification("bottom");
 
     // const result = await fetch(url, {
     //   headers: {
@@ -91,15 +92,21 @@ const SignComponent = props => {
     // });
 
     // if (result.ok) {
-    console.log("ay");
-    // }
+    // setNotification("bottom");
+    setThing("fadeOut");
+    const timer = window.setInterval(() => {
+      props.history.push("sent-email");
+    }, 150);
+    return () => {
+      window.clearInterval(timer);
+    };
   }
 
   return (
     <GradientBackground height="100vh" align="center">
       <NotificationLayer display={notification} />
       <Container
-        animation="fadeIn"
+        animation={thing}
         role="main"
         justify="center"
         align="center"
@@ -186,4 +193,4 @@ const SignComponent = props => {
   );
 };
 
-export default SignComponent;
+export default withRouter(SignComponent);

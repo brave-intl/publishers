@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import {
   Container,
   GradientBackground,
@@ -8,13 +8,14 @@ import {
   YouTubeIcon,
   PublicationIcon,
   TwitchIcon,
-  SwoopBottom,
-} from "../../components"
+  SwoopBottom
+} from "../../components";
 
-import SignComponent from './signComponent'
-import batPill from "../../components/img/built-with-bat-pill.svg"
-import { Heading, Box, Image } from "grommet"
-import locale from "../../locale/en"
+import { Link } from "react-router-dom";
+import SignComponent from "./signComponent";
+import batPill from "../../components/img/built-with-bat-pill.svg";
+import { Heading, Box, Image } from "grommet";
+import locale from "../../locale/en";
 
 export const MainHome = () => {
   return (
@@ -35,10 +36,9 @@ export const MainHome = () => {
             {locale.main.home.subhead}
           </H2>
           <Box direction="row" pad={{ vertical: "24px" }} width="100%">
-            <PrimaryButton
-              label={locale.main.home.btn.signup}
-              href={locale.main.home.btn.signupHref}
-            />
+            <Link to={locale.main.home.btn.signupHref}>
+              <PrimaryButton label={locale.main.home.btn.signup} />
+            </Link>
           </Box>
           <Heading level="3" size="small" color="#E9E9F4">
             {locale.main.home.examples.headline}
@@ -77,8 +77,8 @@ export const MainHome = () => {
       </Container>
       <SwoopBottom />
     </GradientBackground>
-  )
-}
+  );
+};
 
 export const MainSignIn = () => {
   return (
@@ -96,8 +96,8 @@ export const MainSignIn = () => {
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
     />
-  )
-}
+  );
+};
 
 export const MainSignUp = () => {
   return (
@@ -113,5 +113,5 @@ export const MainSignUp = () => {
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
     />
-  )
-}
+  );
+};

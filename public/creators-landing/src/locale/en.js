@@ -33,8 +33,7 @@ export default {
       tinyOne: "Don't have an account? Sign up",
       tinyOneHref: "/sign-up",
       tinyTwo: "Legacy YouTube Login",
-      tinyTwoHref:
-        "https://publishers.basicattentiontoken.org/publishers/auth/youtube_login"
+      tinyTwoHref: "/publishers/auth/youtube_login"
     },
     signup: {
       heading: "Become a Creator",
