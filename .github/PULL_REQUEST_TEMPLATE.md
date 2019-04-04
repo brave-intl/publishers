@@ -1,10 +1,10 @@
-## PR Name
+## Pull Request Name
 
-Add screenshot if applicable
+[Add Screenshot if applicable]
 
 #### Features
 
-Enter a brief summary of the PR - features, motivations, and issues it #closes
+Enter a brief summary of the Pull Request - features, motivations, and issues it #closes
 
 #### How To Test
 
