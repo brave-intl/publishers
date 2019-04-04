@@ -9,12 +9,11 @@ import {
   PublicationIcon,
   TwitchIcon,
   SwoopBottom,
-  StyledInput
 } from "../../components"
 
 import SignComponent from './signComponent'
 import batPill from "../../components/img/built-with-bat-pill.svg"
-import { Heading, Text, Box, Anchor, Form, Image } from "grommet"
+import { Heading, Box, Image } from "grommet"
 import locale from "../../locale/en"
 
 export const MainHome = () => {

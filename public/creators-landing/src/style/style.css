@@ -140,3 +140,9 @@ h4 {
   display: flex;
   flex-direction: column;
 }
+
+@media (max-width: 720px) {
+  .notification-layer {
+    width: 96%
+  }
+}

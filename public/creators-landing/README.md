@@ -2,18 +2,19 @@
 
 This project is built using the React framework [Grommet](https://v2.grommet.io), [Brave UI](https://github.com/brave/brave-ui) and [Styled Components](https://styled-components.com/docs/basics).
 
-For now, you have to remove the node modules folder from the root publishers directory to build this.
+**Note:** For now, you have to remove the node modules folder from the root publishers directory to build this.
 
 To start the build locally and edit files in real time run:
 
-### 1. `yarn install`
+### 1. `yarn`
 
 This installs the necessary dependencies.
 
 ### 2. `yarn start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the app in the development mode.
+
+### 3. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits. You will also see any lint errors in the console.
 

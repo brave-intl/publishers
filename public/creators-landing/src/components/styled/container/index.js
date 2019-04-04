@@ -97,6 +97,7 @@ export const IconContainer = styled.svg`
   fill: ${p => p.color};
   height: ${p => p.size};
   width: ${p => p.size};
+  min-width: ${p => p.minWidth};
 `
 // These styles match the dashboard nav spacing/styling in 
 // an effort to be a seamless transition on login
@@ -114,4 +115,20 @@ export const NavContainer = styled(Box)`
   margin-right: auto;
   padding-left: 30px;
   padding-right: 30px;
+`;
+
+export const NotificationWrapper = styled(Box)`
+  border-radius: 100px;
+  padding: 8px 32px;
+  box-shadow: 0 12px 16px rgba(0,0,0,.2);
+
+  img {
+    min-width:24px;
+    height: 24px;
+    /* for images in layer notification */
+  }
+  
+  svg {
+    height: 20px;
+  }
 `;

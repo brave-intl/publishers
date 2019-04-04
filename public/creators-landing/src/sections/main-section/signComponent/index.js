@@ -4,37 +4,45 @@ import {
   GradientBackground,
   PrimaryButton,
   SwoopBottom,
-  StyledInput
+  StyledInput,
+  CloseIcon,
+  NotificationWrapper,
+  InfoIcon,
+  IconContainer
 } from "../../../components";
 
 import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
-import { Heading, Text, Box, Anchor, Layer, Form, Image } from "grommet";
+import { Heading, Text, Box, Anchor, Layer, Form, Image, Button } from "grommet";
 
 function NotificationLayer(props) {
   return (
     <Layer
       position={props.display}
       modal={false}
-      margin={{ vertical: "medium", horizontal: "small" }}
+      margin={{vertical: "xlarge", horizontal: "none"}}
       responsive={false}
-      animate
+      className="notification-layer"
       plain
     >
-      <Box
+      <NotificationWrapper
         align="center"
         direction="row"
         gap="small"
         justify="between"
         round="medium"
         elevation="medium"
-        pad={{ vertical: "xsmall", horizontal: "small" }}
+        pad={{ vertical: "small", horizontal: "medium" }}
         background="#F3F3FD"
       >
-        <Box align="center" direction="row" gap="xsmall">
-          <Text>An access link has been sent</Text>
+        <Box align="center" direction="row" gap="small">
+          <IconContainer minWidth="32px" height="32px" width="32px" color="#339AF0">
+            <InfoIcon />
+          </IconContainer>
+          <Text>An access link has been sent and this needs to be longer cause I'm testing.</Text>
+          <Button icon={<CloseIcon />} onClick={() => {}} plain />
         </Box>
-      </Box>
+      </NotificationWrapper>
     </Layer>
   );
 }

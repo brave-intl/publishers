@@ -16,7 +16,8 @@ export {
   DividerLine,
   IconContainer,
   NavContainer,
-  NavWrapper
+  NavWrapper,
+  NotificationWrapper
 } from '../components/styled/container'
 
 // Typography
@@ -29,6 +30,8 @@ export {
 
 // Icons
 export { YouTubeIcon } from './icons/YouTube'
+export { CloseIcon } from './icons/Close'
+export { InfoIcon } from './icons/Info'
 export { PublicationIcon } from './icons/Publication'
 export { TwitchIcon } from './icons/Twitch'
 export { MenuIcon } from './icons/Menu'
