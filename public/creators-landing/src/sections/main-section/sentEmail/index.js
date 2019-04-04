@@ -15,7 +15,7 @@ import { Heading, Text, Box, Anchor, Layer, Form, Image } from "grommet";
 // they are so similar in structure
 const SignComponent = props => {
   return (
-    <GradientBackground height="100vh" align="center">
+    <React.Fragment>
       <Container
         animation="fadeIn"
         role="main"
@@ -64,15 +64,15 @@ const SignComponent = props => {
         <Box id="terms-help" gap="large">
           <Box direction="row" gap="small" align="center">
             <Anchor
-              label={props.footerOne}
-              href={props.footerOneHref}
+              label={locale.main.footerOne}
+              href={locale.main.footerOneHref}
               color="rgba(255, 255, 255, .8)"
               size="small"
             />
             <Text>|</Text>
             <Anchor
-              label={props.footerTwo}
-              href={props.footerTwoHref}
+              label={locale.main.footerTwo}
+              href={locale.main.footerTwoHref}
               color="rgba(255, 255, 255, .8)"
               size="small"
             />
@@ -83,7 +83,7 @@ const SignComponent = props => {
         </Box>
       </Container>
       <SwoopBottom swoop="fade" />
-    </GradientBackground>
+    </React.Fragment>
   );
 };
 

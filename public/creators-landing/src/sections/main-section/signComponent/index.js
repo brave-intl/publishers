@@ -14,14 +14,25 @@ import {
 
 import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
-import { Heading, Text, Box, Anchor, Layer, Form, Image, Button } from "grommet";
+import {
+  Heading,
+  Text,
+  Box,
+  Anchor,
+  Layer,
+  Form,
+  Image,
+  Button
+} from "grommet";
+
+import SentEmail from "../sentEmail";
 
 function NotificationLayer(props) {
   return (
     <Layer
       position={props.display}
       modal={false}
-      margin={{vertical: "xlarge", horizontal: "none"}}
+      margin={{ vertical: "xlarge", horizontal: "none" }}
       responsive={false}
       className="notification-layer"
       plain
@@ -37,10 +48,18 @@ function NotificationLayer(props) {
         background="#F3F3FD"
       >
         <Box align="center" direction="row" gap="small">
-          <IconContainer minWidth="32px" height="32px" width="32px" color="#339AF0">
+          <IconContainer
+            minWidth="32px"
+            height="32px"
+            width="32px"
+            color="#339AF0"
+          >
             <InfoIcon />
           </IconContainer>
-          <Text>An access link has been sent and this needs to be longer cause I'm testing.</Text>
+          <Text>
+            An access link has been sent and this needs to be longer cause I'm
+            testing.
+          </Text>
           <Button icon={<CloseIcon />} onClick={() => {}} plain />
         </Box>
       </NotificationWrapper>
@@ -51,62 +70,11 @@ function NotificationLayer(props) {
 // Sign up and sign in shared this component since
 // they are so similar in structure
 const SignComponent = props => {
-  const [notification, setNotification] = useState("hidden");
-  const [thing, setThing] = useState("fadeIn");
-
-  useEffect(() => {
-    if (notification === "hidden") {
-      return;
-    }
-    const timer = window.setInterval(() => {
-      // setNotification("hidden");
-    }, 5000);
-    return () => {
-      // Return callback to run on unmount.
-      window.clearInterval(timer);
-    };
-  });
-
-  const submitForm = event => {
-    doTheThing(event.value);
-  };
-
-  async function doTheThing(body) {
-    const url = "publishers/registrations.json";
-
-    console.log(JSON.stringify(body));
-    let crsf = document.head.querySelector("[name=csrf-token]");
-    if (crsf) {
-      crsf = crsf.getAttribute("content");
-    }
-
-    // const result = await fetch(url, {
-    //   headers: {
-    //     Accept: "application/json",
-    //     "X-CSRF-Token": crsf,
-    //     "X-Requested-With": "XMLHttpRequest",
-    //     "Content-Type": "application/json"
-    //   },
-    //   method: "POST",
-    //   body: JSON.stringify(body)
-    // });
-
-    // if (result.ok) {
-    // setNotification("bottom");
-    setThing("fadeOut");
-    const timer = window.setInterval(() => {
-      props.history.push("sent-email");
-    }, 150);
-    return () => {
-      window.clearInterval(timer);
-    };
-  }
-
   return (
-    <GradientBackground height="100vh" align="center">
-      <NotificationLayer display={notification} />
+    <React.Fragment>
+      <NotificationLayer display={props.notification} />
       <Container
-        animation={thing}
+        animation={props.animation}
         role="main"
         justify="center"
         align="center"
@@ -138,7 +106,7 @@ const SignComponent = props => {
               messages={{
                 required: "Please enter a valid email address."
               }}
-              onSubmit={submitForm}
+              onSubmit={props.submitForm}
             >
               <StyledInput
                 name="email"
@@ -189,8 +157,66 @@ const SignComponent = props => {
         </Box>
       </Container>
       <SwoopBottom swoop="fade" />
+    </React.Fragment>
+  );
+};
+
+const WrappedSignComponent = props => {
+  const [notification, setNotification] = useState("hidden");
+  const [animation, setAnimation] = useState("fadeIn");
+  const [emailed, setEmailed] = useState(false);
+
+  const submitForm = event => {
+    doTheThing(event.value);
+  };
+
+  async function doTheThing(body) {
+    const url = "publishers/registrations.json";
+
+    console.log(JSON.stringify(body));
+    let crsf = document.head.querySelector("[name=csrf-token]");
+    if (crsf) {
+      crsf = crsf.getAttribute("content");
+    }
+
+    // const result = await fetch(url, {
+    //   headers: {
+    //     Accept: "application/json",
+    //     "X-CSRF-Token": crsf,
+    //     "X-Requested-With": "XMLHttpRequest",
+    //     "Content-Type": "application/json"
+    //   },
+    //   method: "POST",
+    //   body: JSON.stringify(body)
+    // });
+
+    // if (result.ok) {
+    // setNotification("bottom");
+    setAnimation({
+      type: "fadeOut",
+      delay: 0,
+      duration: 200,
+      size: "xsmall"
+    });
+    setTimeout(function() {
+      setEmailed(true);
+    }, 250);
+  }
+
+  return (
+    <GradientBackground height="100vh" align="center">
+      {emailed ? (
+        <SentEmail />
+      ) : (
+        <SignComponent
+          submitForm={submitForm}
+          animation={animation}
+          notification={notification}
+          {...props}
+        />
+      )}
     </GradientBackground>
   );
 };
 
-export default withRouter(SignComponent);
+export default withRouter(WrappedSignComponent);
