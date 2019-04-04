@@ -14,7 +14,7 @@ Enter a brief summary of the Pull Request - features, motivations, and issues it
 
 #### Standard Checklist
 
-- [ ] Adequate test coverage exists to prevent regressions -- [Rails Guide to Testing](https://guides.rubyonrails.org/testing.html)
-- [ ] No raw SQL -- [Rails Guide to SQL Injection Prevention](https://guides.rubyonrails.org/security.html#sql-injection)
-- [ ] XSS is mitigated -- [Rails Guide to XSS Prevention](https://guides.rubyonrails.org/security.html#cross-site-scripting-xss)
+- [ ] Adequate test coverage exists to prevent regressions -- [Guide to Testing](https://guides.rubyonrails.org/testing.html)
+- [ ] No raw SQL -- [Guide to SQL Injection Prevention](https://guides.rubyonrails.org/security.html#sql-injection)
+- [ ] XSS is mitigated -- [Guide to XSS Prevention](https://guides.rubyonrails.org/security.html#cross-site-scripting-xss)
 - [ ] Integrated Matomo for code that adds new buttons
