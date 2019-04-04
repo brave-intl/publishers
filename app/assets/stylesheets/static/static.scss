@@ -19,18 +19,18 @@ p {
 body {
   font-size: 16px;
   font-family: Muli, sans-serif;
-  background-image: url(asset-path("landing-bgd.png")), -webkit-linear-gradient(-72deg, #f7383a, #e72d5d, #cc0099);
-  margin: 0;
   background-repeat: no-repeat;
   background-position: top right;
   background-attachment: fixed;
+  background-image: url(asset-path("landing-bgd.png")), -webkit-linear-gradient(-72deg, #f7383a, #e72d5d, #cc0099);
+  margin: 0;
+}
+
+#content {
   padding: 180px 0 0 0;
   @media screen and (max-width: 760px) {
     padding: 0;
   }
-}
-
-#content {
   display: flex;
   align-items: center;
   justify-content: center;
