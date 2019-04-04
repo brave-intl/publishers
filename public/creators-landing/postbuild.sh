@@ -7,3 +7,5 @@ rm -rf ../static/js/*.chunk.*
 rm -rf ../static/js/runtime*
 
 cp -Rf build/* ../
+
+mv ../index.html ../../app/views/static/

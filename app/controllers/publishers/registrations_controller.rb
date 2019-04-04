@@ -60,20 +60,16 @@ module Publishers
 
       enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path) and return
 
-      if @publisher
-        MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-      else
-        # Failed to find publisher
-        flash[:alert_html_safe] = t("publishers.registrations.emailed_authentication_token.unfound_alert_html",
-          new_publisher_path: sign_up_publishers_path(email: params[:email]),
-          create_publisher_path: registrations_path(email: params[:email]),
-          email: ERB::Util.html_escape(params[:email]))
+      email_existing_publisher(@publisher) and return if @publisher
 
-        @publisher = Publisher.new
-        return redirect_to log_in_publishers_path
-      end
+      # Failed to find publisher
+      flash[:alert_html_safe] = t("publishers.registrations.emailed_authentication_token.unfound_alert_html",
+        new_publisher_path: sign_up_publishers_path(email: params[:email]),
+        create_publisher_path: registrations_path(email: params[:email]),
+        email: ERB::Util.html_escape(params[:email]))
 
-      render :emailed_authentication_token
+      @publisher = Publisher.new
+      return redirect_to log_in_publishers_path
     end
 
     def expired_authentication_token
@@ -106,7 +102,10 @@ module Publishers
       @publisher_email = publisher.email
       MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
       flash.now[:notice] = t("publishers.registrations.create.email_already_active", email: @publisher_email)
-      render :emailed_authentication_token
+      respond_to do |format|
+        format.html { render :emailed_authentication_token }
+        format.json { head :ok }
+      end
     end
 
     def enforce_throttle(throttled:, path:)

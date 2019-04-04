@@ -103,6 +103,7 @@ const SignComponent = props => {
           <Box width="100%" margin={{ bottom: "30px" }}>
             <Form
               className="email-input"
+              errors={props.errors}
               messages={{
                 required: "Please enter a valid email address."
               }}
@@ -179,28 +180,29 @@ const WrappedSignComponent = props => {
       crsf = crsf.getAttribute("content");
     }
 
-    // const result = await fetch(url, {
-    //   headers: {
-    //     Accept: "application/json",
-    //     "X-CSRF-Token": crsf,
-    //     "X-Requested-With": "XMLHttpRequest",
-    //     "Content-Type": "application/json"
-    //   },
-    //   method: "POST",
-    //   body: JSON.stringify(body)
-    // });
-
-    // if (result.ok) {
-    // setNotification("bottom");
-    setAnimation({
-      type: "fadeOut",
-      delay: 0,
-      duration: 200,
-      size: "xsmall"
+    const result = await fetch(url, {
+      headers: {
+        Accept: "application/json",
+        "X-CSRF-Token": crsf,
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/json"
+      },
+      method: props.method,
+      body: JSON.stringify(body)
     });
-    setTimeout(function() {
-      setEmailed(true);
-    }, 250);
+
+    if (result.ok) {
+      // setNotification("bottom");
+      setAnimation({
+        type: "fadeOut",
+        delay: 0,
+        duration: 200,
+        size: "xsmall"
+      });
+      setTimeout(function() {
+        setEmailed(true);
+      }, 250);
+    }
   }
 
   return (

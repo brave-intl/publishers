@@ -95,6 +95,7 @@ export const MainSignIn = () => {
       footerOneHref={locale.main.footerOneHref}
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
+      method="PUT"
     />
   );
 };
@@ -112,6 +113,7 @@ export const MainSignUp = () => {
       footerOneHref={locale.main.footerOneHref}
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
+      method="POST"
     />
   );
 };

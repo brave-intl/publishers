@@ -5,7 +5,6 @@ class StaticController < ApplicationController
   before_action :redirect_if_current_publisher, only: :index
 
   def index
-    render file: 'public/index.html'
   end
 
   def no_js
