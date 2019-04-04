@@ -69,6 +69,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   .promo-flex-col.promo-panel-title
                     .promo-panel-title-item
                       =t("promo.dashboard.referral")
+                    .promo-flex-row.promo-flex-row-sub
+                      =t("promo.dashboard.check_statement")
                 .promo-flex-stats
                   .promo-flex-col.promo-flex-col-downloaded
                     .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
@@ -85,8 +87,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       =t("promo.dashboard.confirmed").upcase
                     .promo-panel-number
                       = publisher_referral_totals[PromoRegistration::FINALIZED]
-                .promo-flex-row.promo-flex-row-sub
-                  =t("promo.dashboard.check_statement")
             - else
               .promo-panel-item.promo-panel-item-alert
                 #promo-panel-alert
@@ -105,11 +105,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               .status-summary
                 .text= uphold_status_summary(current_publisher)
                 .action
-                  span= "("
                   = link_to(t(".uphold.connect"), uphold_authorization_endpoint(current_publisher), class: "connect-uphold", :"data-piwik-action" => "UpholdConnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
                   a.disconnect-uphold href="#"
                     = t ".uphold.disconnect"
-                  span= ")"
                   script type="text/html" id="disconnect-uphold-js"
                     = render "publishers/disconnect_uphold_modal"
                   = form_for(current_publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|

@@ -95,29 +95,20 @@
   margin: auto;
 
   .promo--tos {
-    color: white;
+    color: $braveText-3;
     opacity: 0.7;
     font-size: 12px;
     text-align: center;
     max-width: 700px;
     margin: 0 auto;
-
-    a {
-      color: white;
-
-      &:hover,
-      &focus {
-        color: white;
-      }
-    }
   }
 
   .promo-panel {
     background-color: #00bcd6;
     width: 100%;
     border-radius: 8px;
-    padding: 24px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    padding: 32px;
+    box-shadow: $defaultBoxShadow;
 
     &-item-info {
       margin: 12px;
@@ -129,6 +120,7 @@
 
     &-header {
       color: #326183;
+      letter-spacing: .5px;
     }
 
     .promo-flex-col {
@@ -152,9 +144,9 @@
       display: flex;
 
       &-sub {
-        padding: 16px 0;
         color: #326183;
-        font-size: 13px;
+        font-size: 14px;
+        margin: 0 0 16px;
       }
     }
 
@@ -172,8 +164,7 @@
 
     .promo-panel-title {
       display: flex;
-      flex-direction: row;
-      margin: 0 0 12px;
+      flex-direction: column;
 
       &-item {
         display: inline;
@@ -291,8 +282,8 @@
     }
 
     .referral-link-copy-button {
-      background: #4C54D2;
-      color: white;
+      background: $braveBrand;
+      color: $braveText-2;
       height: 100%;
       border-radius: 0px 4px 4px 0px;
       cursor: pointer;
@@ -352,7 +343,7 @@
       padding: 32px;
       background-color: white;
       border-radius: $brave-panels-borderRadius;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      box-shadow: $defaultBoxShadow;
       height: 100%;
     }
 
@@ -374,7 +365,7 @@
     background: #f0f0f0;
     border: 1px solid #cccccc;
     padding: 10px 15px;
-    color: #666666;
+    color: $braveText-2;
     border-radius: $brave-panels-borderRadius;
   }
 
@@ -398,7 +389,7 @@
 
   .control-label {
     font-weight: 500;
-    color: #484b4e;
+    color: $braveText-2;
   }
 
   .attribute-value {
@@ -439,7 +430,7 @@
         margin-left: 15px;
 
         .disconnect-uphold {
-          color: $mediumGray;
+          color: $braveText-4;
         }
       }
     }
@@ -480,13 +471,13 @@
         .amounts {
           .bat-amount {
             font-size: 30px;
-            color: #fc4145;
+            color: $braveBrand;
             font-weight: 500;
           }
 
           .bat-code {
             font-size: 16px;
-            color: #222326;
+            color: $braveText-2;
             font-weight: 500;
           }
 
@@ -609,7 +600,7 @@
 
     &.uphold-unconnected {
       .status-summary .text {
-        color: $mediumGray;
+        color: $braveGray-6;
       }
     }
 
@@ -637,7 +628,6 @@
 
   .payouts {
     display: flex;
-    margin: 0 0 24px;
   }
 
   .balance {
@@ -647,6 +637,7 @@
     align-items: center;
     padding: 24px;
     width: 100%;
+    color: $braveText-2;
 
     & img {
       margin: 12px;
@@ -684,16 +675,17 @@
   }
 
   .channel-placeholder {
-    display: block;
-    padding: 32px;
-    border: 3px dashed white;
-    border-radius: $brave-panels-borderRadius;
-    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed $braveBrand-Light;
+    border-radius: 8px;
+    color: $braveBrand;
     font-weight: 600;
-    text-align: center;
+    padding: 32px;
 
     &:hover {
-      background: rgba(255, 255, 255, .2);
+      background: rgba(255, 255, 255, .8);
       text-decoration: none;
     }
   }
@@ -710,7 +702,7 @@
     padding: 24px;
     border-radius: $brave-panels-borderRadius;
     background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: $defaultBoxShadow;
     position: relative;
 
     .channel-summary {
@@ -772,7 +764,7 @@
             font-weight: 500;
 
             .verification-failed--what-happened {
-              color: $braveAction;
+              color: $braveBrand;
               cursor: pointer;
             }
           }
@@ -785,7 +777,7 @@
             padding: 30px 40px;
             background: white;
             border-radius: 4px;
-            box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
+            box-shadow: $defaultBoxShadow;
             font-size: 14px;
 
             &::after {
@@ -844,7 +836,7 @@
           font-weight: 500;
 
           .info--what-happened {
-            color: $braveAction;
+            color: $braveBrand;
             cursor: pointer;
           }
         }
@@ -857,7 +849,7 @@
           padding: 30px 40px;
           background: white;
           border-radius: 4px;
-          box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
+          box-shadow: $defaultBoxShadow;
           font-size: 14px;
 
           &::after {
@@ -908,19 +900,8 @@
   .header-link {
     font-size: 16px;
     font-weight: 500;
-    color: #00bcda;
+    color: $braveBrand;
     display: inline-block;
-  }
-
-  .terms-of-service {
-    text-align: right;
-
-    a {
-      padding-right: 20px;
-      color: rgba(#ededee, 0.65);
-      font-size: 14px;
-      font-weight: 300;
-    }
   }
 
   .bat-channel {
@@ -934,16 +915,16 @@
     &--currency {
       font-size: 14px;
       display: inline;
-      color: #2f3032;
+      color: $braveText-2;
       line-height: 1;
       padding-left: 3px;
     }
 
     &--period {
       line-height: 1;
-      color: #999999;
-      font-size: 11px;
-      font-weight: bolder;
+      color: $braveText-3;
+      font-size: 12px;
+      font-weight: 600;
     }
   }
 }
@@ -1040,7 +1021,7 @@
     background-repeat: no-repeat;
     background-size: 685px;
     background-position: top center;
-    background-color: #eff2f5;
+    background-color: $braveGray-9;
     padding-bottom: 0;
   }
 
@@ -1052,7 +1033,7 @@
 
     &:hover {
       border: 1px solid #dbdfe3;
-      box-shadow: 0 0 22px 0 rgba(34, 35, 38, 0.12);
+      box-shadow: $defaultBoxShadow;
     }
   }
 
@@ -1071,7 +1052,7 @@
     padding: 24px 64px;
 
     h6 {
-      color: #7d7bdc;
+      color: $braveBrand;
       font-weight: bold;
       font-size: 18px;
     }
@@ -1118,7 +1099,7 @@
       }
 
       p {
-        color: #bcc0f6;
+        color: $braveBrand-Ghost;
         font-weight: bolder;
       }
     }
@@ -1141,7 +1122,7 @@
     font-size: 20px;
     font-weight: 600;
     font-family: Muli, 'sans-serif';
-    color: #606467;
+    color: $braveText-2;
   }
 
   @media only screen and (max-width: 560px) {
@@ -1165,9 +1146,17 @@
   width: 100%;
   height: 100%;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+  box-shadow: $defaultBoxShadow;
 }
 
 .bot-marg {
   margin: 0 0 24px;
+}
+
+p, body, h1, h2, h3, h4, h5, h6 {
+  color: $braveText-2;
+}
+
+#cancel_edit_contact {
+  padding: 8px;
 }
