@@ -249,7 +249,7 @@ ${props =>
     font-size: 24px;
     font-weight: normal;
     font-family: Poppins;
-    color: #fb542b;
+    color: $braveBrand;
   `}
 
 ${props =>
@@ -364,7 +364,7 @@ export const Logo = styled.div`
   ${({ url }) =>
     url === null &&
     `
-    background-color: #fb542b;
+    background-color: $braveBrand;
   `}
 `;
 
@@ -431,16 +431,16 @@ export const Button = styled.div`
   ${props =>
     props.primary &&
     css`
-      background-color: #fb542b;
-      border: 1px solid #fb542b;
+      background-color: $braveBrand;
+      border: 1px solid $braveBrand;
       color: white;
     `}
 
   ${props =>
     props.dialoguePrimary &&
     css`
-      background-color: #fb542b;
-      border: 1px solid #fb542b;
+      background-color: $braveBrand;
+      border: 1px solid $braveBrand;
       color: white;
       display: block;
       margin: auto;
@@ -450,8 +450,8 @@ export const Button = styled.div`
   ${props =>
     props.outline &&
     css`
-      border: 1px solid #fb542b;
-      color: #fb542b;
+      border: 1px solid $braveBrand;
+      color: $braveBrand;
     `}
 
   ${props =>

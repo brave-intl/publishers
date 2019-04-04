@@ -2,7 +2,7 @@
 = hidden_field_tag 'referrals-hidden-tags', current_publisher.promo_registrations.has_stats.pluck(:referral_code).to_json
 
 .row
-  .col
+  .col.bot-marg
     .dashboard-panel--wrapper
       #channel-referrals-stats-chart
         canvas id="channel-referrals-stats-chart-canvas"

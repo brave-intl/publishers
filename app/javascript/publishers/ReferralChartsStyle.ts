@@ -15,12 +15,12 @@ export const PrimaryButton = styled.div`
   display: inline-block;
   line-height: 1.5;
   &:hover {
-    background: #fb542b;
+    background: #4C54D2;
   }
   ${(props: IButtonProps) =>
     props.enabled
       ? `
-        background: #fb542b;
+        background: #4C54D2;
         cursor: pointer;
       `
       : `

@@ -1,7 +1,7 @@
-$braveBrand-Dark: #dd1c0d;
-$braveBrand: #ff3f3f;
-$braveBrand-Light: #ff8e78;
-$braveBrand-Ghost: #ffc8b3;
+$braveBrand: #4C54D2;
+$braveBrand-Dark: darken($braveBrand, 10%);
+$braveBrand-Light: lighten($braveBrand, 10%);
+$braveBrand-Ghost: lighten($braveBrand, 20%);
 
 $braveAction-Dark: #00a1c0;
 $braveAction: #00bcd6;

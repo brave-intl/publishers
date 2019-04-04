@@ -553,8 +553,7 @@ en:
       confirmed: "confirmed"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
-      referral: "referral"
-      promo: "promo"
+      referral: "Referral Promo"
       check_statement: "*Check your statement for this period's payout."
       tooltip:
         downloaded: "Downloads - Intent to download the browser"
