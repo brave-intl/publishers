@@ -12,7 +12,7 @@ Enter a brief summary of the Pull Request - Features, motivations, and issues it
 2. Step two
 3. Step three
 
-#### Standard Checklist
+#### Pull Request Checklist
 
 - [ ] Adequate test coverage exists to prevent regressions -- [Guide to Testing](https://guides.rubyonrails.org/testing.html)
 - [ ] XSS is mitigated -- [Guide to XSS Prevention](https://guides.rubyonrails.org/security.html#cross-site-scripting-xss)
