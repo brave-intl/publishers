@@ -54,11 +54,6 @@ When you first visit the application in a browser you may need to add an
 exception to trust this self-signed certificate. Sometimes this is under an
 "advanced" or "proceed" link.
 
-Note:
-If you're seeing `SSL error, peer: 127.0.0.1, peer cert: , #<Puma::MiniSSL::SSLError: OpenSSL error: error:141F7065:SSL routines:final_key_share:no suitable key share - 337604709>`
-
-Please try changing your Gemfile to use the fixes documented in https://github.com/puma/puma/issues/1670
-
 ### Run
 
 1. Start __Postgres__ and __Redis__: `brew services start redis postgresql`
