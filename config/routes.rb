@@ -167,6 +167,7 @@ Rails.application.routes.draw do
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
     resources :channel_transfers
+    resources :security
 
     resources :organizations, except: [:destroy]
     resources :partners, except: [:destroy] do
