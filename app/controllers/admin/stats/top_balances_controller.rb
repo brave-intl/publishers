@@ -15,8 +15,22 @@ class Admin::Stats::TopBalancesController < AdminController
 
     if params[:type] == Eyeshade::TopBalances::CHANNEL
       @table_identifier = "youtube#channel"
-      @youtube_channels = YoutubeChannelDetails.joins(:channel).where(youtube_channel_id: @result.select { |entry| entry["account_id"].split(":")[0] == @table_identifier }.map { |entry| entry["account_id"].split(":")[1]}).pluck("youtube_channel_id, channels.id, title").map { |row| {row[0] => [row[1], row[2]]}}.reduce(:merge)
-      @site_channels = SiteChannelDetails.joins(:channel).where(brave_publisher_id: @result.map { |entry| entry["account_id"] }).pluck("brave_publisher_id, channels.id").to_h
+      @youtube_channels = YoutubeChannelDetails
+                            .joins(:channel)
+                            .where(youtube_channel_id:
+                              @result.select { |entry| entry["account_id"].split(":")[0] == @table_identifier }
+                              .map { |entry| entry["account_id"].split(":")[1]}
+                            )
+                              .pluck("youtube_channel_id, channels.publisher_id, title")
+                            .map { |row| {row[0] => [row[1], row[2]]}}
+                            .reduce(:merge)
+      @site_channels = SiteChannelDetails
+                          .joins(:channel)
+                          .where(brave_publisher_id:
+                              @result.map { |entry| entry["account_id"] }
+                          )
+                          .pluck("brave_publisher_id, channels.publisher_id")
+                          .to_h
     elsif params[:type] == Eyeshade::TopBalances::OWNER
       @publisher_emails = Publisher.where(id: @result.map { |entry| entry["account_id"].split(":")[1] }).pluck(:id, :email).to_h
     end
