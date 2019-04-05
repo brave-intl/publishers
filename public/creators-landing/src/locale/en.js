@@ -37,8 +37,7 @@ export default {
     },
     signup: {
       heading: "Become a Creator",
-      subhead:
-        "You will receive an email momentarily with instructions on becoming a verified Creator. Be sure to check your junk folder if nothing arrives within a few minutes.",
+      subhead: "Earn more for content you publish to the web.",
       inputPlaceholder: "Enter your email",
       btn: "Create account",
       tinyOne: "Already have an account? Log in",
@@ -56,6 +55,22 @@ export default {
     headlineOne: "Join ",
     headlineTwo:
       " content creators and publishers earning more from Brave Rewards"
+  },
+  sign: {
+    signupSuccess: "Welcome to the party!",
+    signupSuccessBody:
+      "Verify your email address by clicking on the secure login link in the email we just sent to finish setting up your account. Don't see the email? Be sure to check your spam folder or try again.",
+    signinSuccess: "A secure login email has been sent",
+    signinSuccessBody:
+      "Click on the secure login link in the email to access your account. Don't see the email? Be sure to check your spam folder or try again.",
+    iconHelpHref: "https://support.brave.com/hc/en-us",
+    iconMessageHref: "mailto: publishers@basicattentiontoken.org",
+    iconRedditHref: "https://www.reddit.com/r/BATProject/",
+    iconCommunityHref: "https://batcommunity.org/index.html",
+    iconHelpTitle: "Help Center",
+    iconMessageTitle: "Email Us",
+    iconRedditTitle: "BAT Subreddit",
+    iconCommunityTitle: "BAT Community"
   },
   spotlight: {
     heading: "You create content and we get you paid.",

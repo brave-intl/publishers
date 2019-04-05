@@ -98,6 +98,7 @@ export const IconContainer = styled.svg`
   height: ${p => p.size};
   width: ${p => p.size};
   min-width: ${p => p.minWidth};
+  padding: ${p => p.padding};
 `
 // These styles match the dashboard nav spacing/styling in 
 // an effort to be a seamless transition on login

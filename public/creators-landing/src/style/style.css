@@ -4,7 +4,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Poppins", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "Poppins", "-apple-system", "BlinkMacSystemFont", "Segoe UI",
+    "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
 }
 
 /* correct the tight line height on Muli */
@@ -12,6 +14,7 @@ h6 {
 body,
 p {
   line-height: 1.6 !important;
+  overflow: hidden;
 }
 
 h4 {
@@ -80,32 +83,48 @@ h4 {
 
 /* Terms in Signup and Signin */
 
-#terms-help {
+.terms-help {
   position: absolute;
   bottom: 60px;
   left: 72px;
   color: rgb(182, 182, 182);
 }
 
-#terms-help a {
-  font-size: 12px;
+.terms-help a {
+  font-size: 14px;
 }
 
-#terms-help img {
+.terms-help img {
   display: none;
 }
 
 @media (max-width: 840px) {
-  #terms-help {
+  .terms-help {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
     width: fit-content;
   }
 
-  #terms-help img {
+  .terms-help img {
     display: flex;
   }
+}
+
+.sign-icon {
+  padding: 8px;
+  display: flex;
+  border-radius: 40px;
+  margin: 4px;
+}
+
+.sign-icon svg {
+  height: 32px;
+  width: 32px;
+}
+
+.sign-icon:hover {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive BAT pill changes oh landing main section */
@@ -120,7 +139,6 @@ h4 {
     display: flex;
     align-self: flex-start;
     margin: 0 0 18px;
-
   }
 }
 
@@ -133,7 +151,7 @@ h4 {
   bottom: 0;
   width: 100%;
   z-index: 0;
-  opacity: .05;
+  opacity: 0.05;
 }
 
 .email-input {
@@ -143,6 +161,53 @@ h4 {
 
 @media (max-width: 720px) {
   .notification-layer {
-    width: 96%
+    width: 96%;
+  }
+}
+
+.spacer {
+  display: flex;
+  height: 60px;
+}
+
+/* BAT Logo Animation */
+.icon {
+  height: 180px;
+}
+
+.bat-svg {
+  overflow: visible;
+}
+
+.circle {
+  animation: pulse 1.3s alternate infinite;
+  z-index: 30;
+}
+
+.circle2 {
+  animation: pulse 1.7s alternate infinite;
+  z-index: 30;
+}
+
+.circle-delay {
+  animation: pulse 2.2s alternate infinite;
+  z-index: 30;
+}
+
+.circle-delay2 {
+  animation: pulse 2.6s alternate infinite;
+  z-index: 30;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+    transition-timing-function: ease;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(4px);
+    transition-timing-function: ease;
   }
 }

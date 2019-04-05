@@ -6,73 +6,21 @@ import {
   PrimaryButton,
   SwoopBottom,
   StyledInput,
-  CloseIcon,
-  NotificationWrapper,
-  InfoIcon,
-  IconContainer
+  Toast
 } from "../../../components";
 
 import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
-import {
-  Heading,
-  Text,
-  Box,
-  Anchor,
-  Layer,
-  Form,
-  Image,
-  Button
-} from "grommet";
+import { Heading, Text, Box, Anchor, Form, Image } from "grommet";
 
 import SentEmail from "../sentEmail";
-
-function NotificationLayer(props) {
-  return (
-    <Layer
-      position={props.display}
-      modal={false}
-      margin={{ vertical: "xlarge", horizontal: "none" }}
-      responsive={false}
-      className="notification-layer"
-      plain
-    >
-      <NotificationWrapper
-        align="center"
-        direction="row"
-        gap="small"
-        justify="between"
-        round="medium"
-        elevation="medium"
-        pad={{ vertical: "small", horizontal: "medium" }}
-        background="#F3F3FD"
-      >
-        <Box align="center" direction="row" gap="small">
-          <IconContainer
-            minWidth="32px"
-            height="32px"
-            width="32px"
-            color="#339AF0"
-          >
-            <InfoIcon />
-          </IconContainer>
-          <Text>
-            An access link has been sent and this needs to be longer cause I'm
-            testing.
-          </Text>
-          <Button icon={<CloseIcon />} onClick={() => {}} plain />
-        </Box>
-      </NotificationWrapper>
-    </Layer>
-  );
-}
 
 // Sign up and sign in shared this component since
 // they are so similar in structure
 const SignComponent = props => {
   return (
     <React.Fragment>
-      <NotificationLayer display={props.notification} />
+      <Toast display={props.notification} />
       <Container
         animation={props.animation}
         role="main"
@@ -80,24 +28,21 @@ const SignComponent = props => {
         align="center"
         pad="large"
         id="zindex"
-        fill
-      >
+        fill>
         <Box width="540px" align="center">
           <Heading
-            level="3"
+            level="2"
             color="white"
             a11yTitle="Headline"
             textAlign="center"
-            margin="small"
-          >
+            margin="small">
             {props.heading}
           </Heading>
           <Text
-            size="16px"
+            size="18px"
             color="rgba(255, 255, 255, .8)"
             textAlign="center"
-            margin={{ bottom: "50px" }}
-          >
+            margin={{ bottom: "50px" }}>
             {props.subhead}
           </Text>
           <Box width="100%" margin={{ bottom: "30px" }}>
@@ -107,8 +52,7 @@ const SignComponent = props => {
               messages={{
                 required: "Please enter a valid email address."
               }}
-              onSubmit={props.submitForm}
-            >
+              onSubmit={props.submitForm}>
               <StyledInput
                 name="email"
                 type="email"
@@ -126,17 +70,17 @@ const SignComponent = props => {
             href={props.tinyOneHref}
             label={props.tinyOne}
             color="rgba(255, 255, 255, .8)"
-            size="xsmall"
+            size="small"
           />
           <Anchor
             href={props.tinyTwoHref}
             label={props.tinyTwo}
             color="rgba(255, 255, 255, .8)"
-            size="xsmall"
+            size="small"
           />
           <Box height="100px" />
         </Box>
-        <Box id="terms-help" gap="large">
+        <Box className="terms-help" gap="large">
           <Box direction="row" gap="small" align="center">
             <Anchor
               label={props.footerOne}
@@ -166,6 +110,7 @@ const WrappedSignComponent = props => {
   const [notification, setNotification] = useState("hidden");
   const [animation, setAnimation] = useState("fadeIn");
   const [emailed, setEmailed] = useState(false);
+  const [confetti, setConfetti] = useState(false);
 
   const submitForm = event => {
     doTheThing(event.value);
@@ -181,14 +126,14 @@ const WrappedSignComponent = props => {
     }
 
     const result = await fetch(url, {
-      headers: {
-        Accept: "application/json",
-        "X-CSRF-Token": crsf,
-        "X-Requested-With": "XMLHttpRequest",
-        "Content-Type": "application/json"
-      },
-      method: props.method,
-      body: JSON.stringify(body)
+      // headers: {
+      //   Accept: "application/json",
+      //   "X-CSRF-Token": crsf,
+      //   "X-Requested-With": "XMLHttpRequest",
+      //   "Content-Type": "application/json"
+      // },
+      // method: props.method,
+      // body: JSON.stringify(body)
     });
 
     if (result.ok) {
@@ -201,6 +146,7 @@ const WrappedSignComponent = props => {
       });
       setTimeout(function() {
         setEmailed(true);
+        setConfetti(true);
       }, 250);
     }
   }
@@ -208,7 +154,7 @@ const WrappedSignComponent = props => {
   return (
     <GradientBackground height="100vh" align="center">
       {emailed ? (
-        <SentEmail />
+        <SentEmail confetti={confetti} />
       ) : (
         <SignComponent
           submitForm={submitForm}

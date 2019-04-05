@@ -1,19 +1,25 @@
 import React from "react";
+import Confetti from "react-dom-confetti";
 import {
   Container,
-  GradientBackground,
-  PrimaryButton,
   SwoopBottom,
-  StyledInput
+  ConfettiConfig,
+  IconContainer,
+  SignInfoIcon,
+  SignMessageIcon,
+  BatLockup,
+  SignRedditIcon,
+  SignCommunityIcon
 } from "../../../components";
 
 import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
-import { Heading, Text, Box, Anchor, Layer, Form, Image } from "grommet";
+import { Heading, Text, Box, Anchor, Image } from "grommet";
 
 // Sign up and sign in shared this component since
-// they are so similar in structure
-const SignComponent = props => {
+// they are so similar in structure. It only fires
+// in instances of successful sign up or sign in email being sent
+const SentEmail = props => {
   return (
     <React.Fragment>
       <Container
@@ -23,68 +29,86 @@ const SignComponent = props => {
         align="center"
         pad="large"
         id="zindex"
-        fill
-      >
-        <Text color="white" size="72px">
-          you did it
-        </Text>
-        <Box width="540px" align="center">
+        fill>
+        <Box
+          margin={{ bottom: "30px" }}
+          animation={{
+            type: "fadeIn",
+            delay: 300,
+            duration: 2000
+          }}>
+          <IconContainer height="160px">
+            <BatLockup />
+          </IconContainer>
+        </Box>
+        <Box width="600px" align="center">
           <Heading
-            level="3"
+            level="2"
             color="white"
             a11yTitle="Headline"
             textAlign="center"
-            margin="small"
-          >
-            {props.heading}
+            margin="medium">
+            {locale.sign.signupSuccess}
           </Heading>
           <Text
-            size="16px"
+            as="p"
+            size="18px"
             color="rgba(255, 255, 255, .8)"
             textAlign="center"
-            margin={{ bottom: "50px" }}
-          >
-            {props.subhead}
+            margin={{ top: "0", bottom: "40px" }}>
+            {locale.sign.signupSuccessBody}
           </Text>
-
-          <Anchor
-            href={props.tinyOneHref}
-            label={props.tinyOne}
-            color="rgba(255, 255, 255, .8)"
-            size="xsmall"
-          />
-          <Anchor
-            href={props.tinyTwoHref}
-            label={props.tinyTwo}
-            color="rgba(255, 255, 255, .8)"
-            size="xsmall"
-          />
-          <Box height="100px" />
-        </Box>
-        <Box id="terms-help" gap="large">
-          <Box direction="row" gap="small" align="center">
-            <Anchor
-              label={locale.main.footerOne}
-              href={locale.main.footerOneHref}
-              color="rgba(255, 255, 255, .8)"
-              size="small"
-            />
-            <Text>|</Text>
-            <Anchor
-              label={locale.main.footerTwo}
-              href={locale.main.footerTwoHref}
-              color="rgba(255, 255, 255, .8)"
-              size="small"
-            />
+          <Box
+            direction="row"
+            animation={{
+              type: "fadeIn",
+              delay: 1000,
+              duration: 2000
+            }}>
+            <a
+              href={locale.sign.iconHelpHref}
+              className="sign-icon"
+              title={locale.sign.iconHelpTitle}>
+              <SignInfoIcon />
+            </a>
+            <a
+              href={locale.sign.iconMessageHref}
+              className="sign-icon"
+              title={locale.sign.iconMessageTitle}>
+              <SignMessageIcon />
+            </a>
+            <a
+              href={locale.sign.iconRedditHref}
+              className="sign-icon"
+              title={locale.sign.iconRedditTitle}>
+              <SignRedditIcon />
+            </a>
+            <a
+              href={locale.sign.iconCommunityHref}
+              className="sign-icon"
+              title={locale.sign.iconCommunityTitle}>
+              <SignCommunityIcon />
+            </a>
           </Box>
-          <Box as="a" href={locale.nav.batPillHref}>
-            <Image src={batPill} height="28px" />
+          <div className="spacer" />
+          <Box
+            id="terms-help"
+            gap="large"
+            animation={{
+              type: "fadeIn",
+              delay: 1000,
+              duration: 2000
+            }}>
+            <Box as="a" href={locale.nav.batPillHref}>
+              <Image src={batPill} height="28px" />
+            </Box>
           </Box>
         </Box>
       </Container>
       <SwoopBottom swoop="fade" />
+      <Confetti active={props.confetti} config={ConfettiConfig} />
     </React.Fragment>
   );
 };
 
-export default SignComponent;
+export default SentEmail;
