@@ -1,20 +1,22 @@
-Submitter Checklist:
+## Pull Request Name
 
-- [ ] Submitted a [ticket](https://github.com/brave-intl/publishers/issues) for my issue if one did not already exist.
-- [ ] Used Github [auto-closing keywords](https://help.github.com/articles/closing-issues-via-commit-messages/) in the commit message.
-- [ ] Added/updated tests for this change (for new code or code which already has tests).
-- [ ] Tagged reviewers.
-- [ ] Integrated piwik/matomo (for code that adds new buttons).
-- [ ] Addressed or ignored all brakeman warnings
+[Add screenshot if applicable]
 
-Test Plan:
+#### Features
 
+Enter a brief summary of the Pull Request - Features, motivations, and issues it #closes
 
-Reviewer Checklist:
+#### How To Test
 
-Tests
-- [ ] Adequate test coverage exists to prevent regressions
+1. Step one
+2. Step two
+3. Step three
 
-Security:
-- [ ] No raw SQL -- Always prefer ActiveRecord query helpers ([more info on StackOverflow](https://stackoverflow.com/questions/41410752/rails-5-sql-injection#41452695))
-- [ ] XSS is mitigated -- Avoid `html_safe` and `raw`; escape untrusted content from users and 3rd party APIs ([Rails XSS guide](https://brakemanpro.com/2017/09/08/cross-site-scripting-in-rails) and [OWASP XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet))
+#### Pull Request Checklist
+
+- [ ] Adequate test coverage exists to prevent regressions -- [Guide to Testing](https://guides.rubyonrails.org/testing.html)
+- [ ] XSS is mitigated -- [Guide to XSS Prevention](https://guides.rubyonrails.org/security.html#cross-site-scripting-xss)
+- [ ] No raw SQL -- [Guide to SQL Injection Prevention](https://guides.rubyonrails.org/security.html#sql-injection)
+- [ ] UI/UX is responsive -- [Guide to Responsive UI/UX](https://developers.google.com/web/fundamentals/design-and-ux/responsive/)
+- [ ] Integrated Matomo for new UI elements -- [Guide to Matomo](https://developer.matomo.org/guides/integrate-introduction)
+- [ ] Passes checklist for Progressive Web App -- [Guide to PWAs](https://developers.google.com/web/progressive-web-apps/checklist)
