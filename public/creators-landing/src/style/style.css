@@ -14,7 +14,6 @@ h6 {
 body,
 p {
   line-height: 1.6 !important;
-  overflow: hidden;
 }
 
 h4 {
@@ -125,6 +124,10 @@ h4 {
 
 .sign-icon:hover {
   background: rgba(0, 0, 0, 0.2);
+}
+
+.confetti-overflow {
+  position: relative;
 }
 
 /* Responsive BAT pill changes oh landing main section */

@@ -98,15 +98,16 @@ const SentEmail = props => {
               type: "fadeIn",
               delay: 1000,
               duration: 2000
-            }}>
-            <Box as="a" href={locale.nav.batPillHref}>
-              <Image src={batPill} height="28px" />
-            </Box>
-          </Box>
+            }}
+          />
         </Box>
+        <Confetti
+          active={props.confetti}
+          config={ConfettiConfig}
+          className="confetti-overflow"
+        />
       </Container>
       <SwoopBottom swoop="fade" />
-      <Confetti active={props.confetti} config={ConfettiConfig} />
     </React.Fragment>
   );
 };
