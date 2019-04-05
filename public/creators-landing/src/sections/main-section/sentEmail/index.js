@@ -1,15 +1,16 @@
 import React from "react";
 import Confetti from "react-dom-confetti";
 import {
-  Container,
-  SwoopBottom,
+  BatLockup,
   ConfettiConfig,
+  Container,
   IconContainer,
+  SignCommunityIcon,
   SignInfoIcon,
   SignMessageIcon,
-  BatLockup,
   SignRedditIcon,
-  SignCommunityIcon
+  SwoopBottom,
+  Toast
 } from "../../../components";
 
 import batPill from "../../../components/img/built-with-bat-pill.svg";
@@ -29,14 +30,20 @@ const SentEmail = props => {
         align="center"
         pad="large"
         id="zindex"
-        fill>
+        fill
+      >
+        <Toast
+          notification={props.notification}
+          closeNotification={props.closeNotification}
+        />
         <Box
           margin={{ bottom: "30px" }}
           animation={{
             type: "fadeIn",
             delay: 300,
             duration: 2000
-          }}>
+          }}
+        >
           <IconContainer height="160px">
             <BatLockup />
           </IconContainer>
@@ -47,7 +54,8 @@ const SentEmail = props => {
             color="white"
             a11yTitle="Headline"
             textAlign="center"
-            margin="medium">
+            margin="medium"
+          >
             {locale.sign.signupSuccess}
           </Heading>
           <Text
@@ -55,8 +63,13 @@ const SentEmail = props => {
             size="18px"
             color="rgba(255, 255, 255, .8)"
             textAlign="center"
-            margin={{ top: "0", bottom: "40px" }}>
+            margin={{ top: "0", bottom: "40px" }}
+          >
             {locale.sign.signupSuccessBody}
+
+            <Anchor color="rgba(255, 255, 255, .8)" onClick={props.tryAgain}>
+              <strong>{locale.sign.signupTryAgain}</strong>
+            </Anchor>
           </Text>
           <Box
             direction="row"
@@ -64,29 +77,34 @@ const SentEmail = props => {
               type: "fadeIn",
               delay: 1000,
               duration: 2000
-            }}>
+            }}
+          >
             <a
               href={locale.sign.iconHelpHref}
               className="sign-icon"
-              title={locale.sign.iconHelpTitle}>
+              title={locale.sign.iconHelpTitle}
+            >
               <SignInfoIcon />
             </a>
             <a
               href={locale.sign.iconMessageHref}
               className="sign-icon"
-              title={locale.sign.iconMessageTitle}>
+              title={locale.sign.iconMessageTitle}
+            >
               <SignMessageIcon />
             </a>
             <a
               href={locale.sign.iconRedditHref}
               className="sign-icon"
-              title={locale.sign.iconRedditTitle}>
+              title={locale.sign.iconRedditTitle}
+            >
               <SignRedditIcon />
             </a>
             <a
               href={locale.sign.iconCommunityHref}
               className="sign-icon"
-              title={locale.sign.iconCommunityTitle}>
+              title={locale.sign.iconCommunityTitle}
+            >
               <SignCommunityIcon />
             </a>
           </Box>
@@ -99,15 +117,15 @@ const SentEmail = props => {
               delay: 1000,
               duration: 2000
             }}
-          />
+          >
+            <Box as="a" href={locale.nav.batPillHref}>
+              <Image src={batPill} height="28px" />
+            </Box>
+          </Box>
         </Box>
-        <Confetti
-          active={props.confetti}
-          config={ConfettiConfig}
-          className="confetti-overflow"
-        />
       </Container>
       <SwoopBottom swoop="fade" />
+      <Confetti active={props.confetti} config={ConfettiConfig} />
     </React.Fragment>
   );
 };

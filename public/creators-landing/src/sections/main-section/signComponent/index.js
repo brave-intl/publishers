@@ -18,9 +18,13 @@ import SentEmail from "../sentEmail";
 // Sign up and sign in shared this component since
 // they are so similar in structure
 const SignComponent = props => {
+  const [notification, setNotification] = useState({ show: false });
   return (
     <React.Fragment>
-      <Toast display={props.notification} />
+      <Toast
+        notification={notification}
+        closeNotification={() => setNotification({ show: false })}
+      />
       <Container
         animation={props.animation}
         role="main"
@@ -111,13 +115,18 @@ const SignComponent = props => {
 };
 
 const WrappedSignComponent = props => {
-  const [notification, setNotification] = useState("hidden");
+  const [notification, setNotification] = useState({ show: false });
   const [animation, setAnimation] = useState("fadeIn");
   const [emailed, setEmailed] = useState(false);
   const [confetti, setConfetti] = useState(false);
 
   const submitForm = event => {
     doTheThing(event.value);
+  };
+
+  const tryAgain = event => {
+    event.preventDefault();
+    setNotification({ show: true, text: locale.sign.sentAgain });
   };
 
   async function doTheThing(body) {
@@ -141,7 +150,6 @@ const WrappedSignComponent = props => {
     });
 
     if (result.ok) {
-      // setNotification("bottom");
       setAnimation({
         type: "fadeOut",
         delay: 0,
@@ -150,14 +158,20 @@ const WrappedSignComponent = props => {
       });
       setTimeout(function() {
         setEmailed(true);
-      }, 150);
+        setConfetti(true);
+      }, 250);
     }
   }
 
   return (
     <GradientBackground height="100vh" align="center">
       {emailed ? (
-        <SentEmail confetti={confetti} />
+        <SentEmail
+          confetti={confetti}
+          notification={notification}
+          closeNotification={() => setNotification({ show: false })}
+          tryAgain={tryAgain}
+        />
       ) : (
         <SignComponent
           submitForm={submitForm}

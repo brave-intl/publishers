@@ -1,7 +1,11 @@
 import React from "react";
 
 export const BatLockup = () => (
-  <svg viewBox="0 0 62 60" xmlns="http://www.w3.org/2000/svg" class="bat-svg">
+  <svg
+    viewBox="0 0 62 60"
+    xmlns="http://www.w3.org/2000/svg"
+    className="bat-svg"
+  >
     <defs>
       <filter
         x="-36.5%"
@@ -9,7 +13,8 @@ export const BatLockup = () => (
         width="172.9%"
         height="183.3%"
         filterUnits="objectBoundingBox"
-        id="bat-logo">
+        id="bat-logo"
+      >
         <feOffset dy="4" in="SourceAlpha" result="shadowOffsetOuter1" />
         <feGaussianBlur
           stdDeviation="2.5"
@@ -29,64 +34,64 @@ export const BatLockup = () => (
     </defs>
     <g>
       <circle
-        class="circle-delay"
-        fill-opacity=".1"
+        className="circle-delay"
+        fillOpacity=".1"
         fill="#CD58EB"
         cx="16.5"
         cy="11"
         r="5"
       />
       <circle
-        class="circle-delay"
-        fill-opacity=".1"
+        className="circle-delay"
+        fillOpacity=".1"
         fill="#CD58EB"
         cx="49"
         cy="20"
         r="6"
       />
       <circle
-        class="circle-delay"
-        fill-opacity=".3"
+        className="circle-delay"
+        fillOpacity=".3"
         fill="#CD58EB"
         cx="50"
         cy="50"
         r="5"
       />
       <circle
-        class="circle-delay"
-        fill-opacity=".3"
+        className="circle-delay"
+        fillOpacity=".3"
         fill="#CD58EB"
         cx="2"
         cy="50"
         r="2"
       />
       <circle
-        class="circle-delay2"
-        fill-opacity=".4"
+        className="circle-delay2"
+        fillOpacity=".4"
         fill="#CD58EB"
         cx="9"
         cy="0"
         r="1"
       />
       <circle
-        class="circle-delay2"
-        fill-opacity=".4"
+        className="circle-delay2"
+        fillOpacity=".4"
         fill="#CD58EB"
         cx="12"
         cy="34"
         r="4"
       />
       <circle
-        class="circle-delay2"
-        fill-opacity=".3"
+        className="circle-delay2"
+        fillOpacity=".3"
         fill="#CD58EB"
         cx="40"
         cy="33"
         r="2"
       />
       <circle
-        class="circle-delay2"
-        fill-opacity=".1"
+        className="circle-delay2"
+        fillOpacity=".1"
         fill="#CD58EB"
         cx="6"
         cy="66"
@@ -94,64 +99,64 @@ export const BatLockup = () => (
       />
 
       <circle
-        class="circle2"
-        fill-opacity=".1"
+        className="circle2"
+        fillOpacity=".1"
         fill="#CD58EB"
         cx="10"
         cy="14"
         r="2"
       />
       <circle
-        class="circle2"
-        fill-opacity=".1"
+        className="circle2"
+        fillOpacity=".1"
         fill="#CD58EB"
         cx="20"
         cy="3"
         r="1"
       />
       <circle
-        class="circle2"
-        fill-opacity=".3"
+        className="circle2"
+        fillOpacity=".3"
         fill="#CD58EB"
         cx="20"
         cy="17"
         r="1"
       />
       <circle
-        class="circle2"
-        fill-opacity=".3"
+        className="circle2"
+        fillOpacity=".3"
         fill="#CD58EB"
         cx="60"
         cy="24"
         r="2"
       />
       <circle
-        class="circle"
-        fill-opacity=".4"
+        className="circle"
+        fillOpacity=".4"
         fill="#CD58EB"
         cx="3"
         cy="20"
         r="1"
       />
       <circle
-        class="circle"
-        fill-opacity=".4"
+        className="circle"
+        fillOpacity=".4"
         fill="#CD58EB"
         cx="20"
         cy="56"
         r="1"
       />
       <circle
-        class="circle"
-        fill-opacity=".3"
+        className="circle"
+        fillOpacity=".3"
         fill="#CD58EB"
         cx="30"
         cy="26"
         r="1"
       />
       <circle
-        class="circle"
-        fill-opacity=".1"
+        className="circle"
+        fillOpacity=".1"
         fill="#CD58EB"
         cx="6"
         cy="11"
