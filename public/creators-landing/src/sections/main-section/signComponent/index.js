@@ -28,21 +28,24 @@ const SignComponent = props => {
         align="center"
         pad="large"
         id="zindex"
-        fill>
+        fill
+      >
         <Box width="540px" align="center">
           <Heading
             level="2"
             color="white"
             a11yTitle="Headline"
             textAlign="center"
-            margin="small">
+            margin="small"
+          >
             {props.heading}
           </Heading>
           <Text
             size="18px"
             color="rgba(255, 255, 255, .8)"
             textAlign="center"
-            margin={{ bottom: "50px" }}>
+            margin={{ bottom: "50px" }}
+          >
             {props.subhead}
           </Text>
           <Box width="100%" margin={{ bottom: "30px" }}>
@@ -52,7 +55,8 @@ const SignComponent = props => {
               messages={{
                 required: "Please enter a valid email address."
               }}
-              onSubmit={props.submitForm}>
+              onSubmit={props.submitForm}
+            >
               <StyledInput
                 name="email"
                 type="email"
@@ -141,13 +145,12 @@ const WrappedSignComponent = props => {
       setAnimation({
         type: "fadeOut",
         delay: 0,
-        duration: 200,
+        duration: 100,
         size: "xsmall"
       });
       setTimeout(function() {
         setEmailed(true);
-        setConfetti(true);
-      }, 250);
+      }, 150);
     }
   }
 
