@@ -6,7 +6,7 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if !@publisher.has_verified_channel? || @publisher.excluded_from_payout?
+    return if !@publisher.has_verified_channel? || @publisher.excluded_from_payout? || @publisher.umbra?
 
     create_uphold_card_for_default_currency_if_needed
 

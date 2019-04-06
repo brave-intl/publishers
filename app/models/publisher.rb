@@ -212,6 +212,10 @@ class Publisher < ApplicationRecord
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
   end
 
+  def umbra?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::UMBRA
+  end
+
   def verified?
     email_verified? && name.present? && agreed_to_tos.present?
   end

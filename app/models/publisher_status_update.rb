@@ -3,8 +3,9 @@ class PublisherStatusUpdate < ApplicationRecord
   ACTIVE = 'active'.freeze
   ONBOARDING = 'onboarding'.freeze
   CREATED = 'created'.freeze
+  UMBRA = 'umbra'.freeze
 
-  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED].freeze
+  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, UMBRA].freeze
 
   belongs_to :publisher
 

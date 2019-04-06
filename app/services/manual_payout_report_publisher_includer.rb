@@ -6,7 +6,7 @@ class ManualPayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if @publisher.suspended? || @publisher.excluded_from_payout?
+    return if @publisher.suspended? || @publisher.excluded_from_payout? || @publisher.umbra?
 
     wallet = @publisher.wallet
 
