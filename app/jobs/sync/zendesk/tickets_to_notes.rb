@@ -1,10 +1,8 @@
-class Sync::Zendesk::TicketsToNotes < ApplicationJob
-  queue_as :default
+class Sync::Zendesk::TicketsToNotes
+  include Sidekiq::Worker
 
   def perform(page_number = 0)
     require 'zendesk_api'
-    return if Rails.env.development?
-
     client = ZendeskAPI::Client.new do |config|
       # Mandatory:
 
@@ -41,12 +39,13 @@ class Sync::Zendesk::TicketsToNotes < ApplicationJob
       # use the API at https://yoursubdomain.zendesk.com/api/v2
     end
 
-    # (Albert Wang): Are tickets collapsed?
-    response = client.search(query: "type:ticket group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}&sort_by:created_at&sort_order:asc").per_page(50)
-    response[:results].each do |result|
-      Sync::Zendesk::TicketCommentsToNotes.perform_later(1.minute, result[:id], 0)
+    # (Albert Wang): Don't bother with sorting. There's a bug in the app where it casts & into urlencoding. Zendesk should fix it on their
+    # end or we make a fix on Zendesk's Ruby Gem
+    response = client.search(query: "type:ticket group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}").per_page(50)
+    response.all! do |result|
+      Sync::Zendesk::TicketCommentsToNotes.perform_in(1.minute, result[:id], 0)
     end
 
-    Sync::Sidekiq::TicketsToNotes.perform_in(5.seconds, page_number + 1) if page_number <= results[:count]
+    Sync::Zendesk::TicketsToNotes.perform_in(5.seconds, page_number + 1) if page_number <= response.count
   end
 end
