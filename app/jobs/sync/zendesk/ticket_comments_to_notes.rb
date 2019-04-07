@@ -1,11 +1,9 @@
-class Sync::Zendesk::TicketCommentsToNotes < ApplicationJob
-  queue_as :default
+class Sync::Zendesk::TicketCommentsToNotes
+  include Sidekiq::Worker
 
   # https://developer.zendesk.com/rest_api/docs/support/ticket_comments#list-comments
   def perform(zendesk_ticket_id, page_number = 0)
     require 'zendesk_api'
-    return if Rails.env.development?
-
     client = ZendeskAPI::Client.new do |config|
       # Mandatory:
       config.url = "#{Rails.application.secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
@@ -30,6 +28,7 @@ class Sync::Zendesk::TicketCommentsToNotes < ApplicationJob
 
     publisher_notes = []
     publisher = nil
+    admin_id = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email]).id
     for index in (0...client.ticket.find(id: zendesk_ticket_id).comments.count)
       comment = client.ticket.find(id: zendesk_ticket_id).comments[index]
       publisher_email = comment&.via&.source&.from&.address
@@ -41,6 +40,7 @@ class Sync::Zendesk::TicketCommentsToNotes < ApplicationJob
     ActiveRecord::Base.transaction do
       publisher_notes.each do |publisher_note|
         publisher_note.publisher_id = publisher.id
+        publisher_note.created_by_id = admin_id
         publisher_note.save
       end
     end
