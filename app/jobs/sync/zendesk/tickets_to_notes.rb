@@ -42,12 +42,9 @@ class Sync::Zendesk::TicketsToNotes < ApplicationJob
     end
 
     # (Albert Wang): Are tickets collapsed?
-    response = client.search(query: "type:ticket group_id:360001946832 sort_by:created_at sort_order:asc").per_page(50)
-    # TODO: Tweak to measure comments
-    # https://developer.zendesk.com/rest_api/docs/support/ticket_comments#list-comments
+    response = client.search(query: "type:ticket group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}&sort_by:created_at&sort_order:asc").per_page(50)
     response[:results].each do |result|
-      publisher = Publisher.find_by(email: result[:via][:source][:from][:address])
-      PublisherNote.create(note: "#{result[:subject]}\n#{result[:description]}", zendesk_ticket_id: result[:id], publisher_id: publisher.id, zendesk_comment_id: todo) if publisher.present?
+      Sync::Zendesk::TicketCommentsToNotes.perform_later(1.minute, result[:id], 0)
     end
 
     Sync::Sidekiq::TicketsToNotes.perform_in(5.seconds, page_number + 1) if page_number <= results[:count]
