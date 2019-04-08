@@ -20,12 +20,11 @@ import SentEmail from "../sentEmail";
 // Sign up and sign in shared this component since
 // they are so similar in structure
 const SignComponent = props => {
-  const [notification, setNotification] = useState({ show: false });
   return (
     <React.Fragment>
       <Toast
-        notification={notification}
-        closeNotification={() => setNotification({ show: false })}
+        notification={props.notification}
+        closeNotification={() => props.setNotification({ show: false })}
       />
       <Container
         animation={props.animation}
@@ -67,6 +66,7 @@ const SignComponent = props => {
               <StyledInput
                 name="email"
                 type="email"
+                autofocus
                 placeholder="Enter your email"
                 required
               />
@@ -137,6 +137,7 @@ const WrappedSignComponent = props => {
   };
 
   const submitForm = event => {
+    setNotification({ show: false, text: "" });
     doTheThing(event);
   };
 
@@ -159,37 +160,47 @@ const WrappedSignComponent = props => {
     }
 
     setLoading(true);
-    const result = await fetch(url, {
-      // headers: {
-      //   Accept: "application/json",
-      //   "X-CSRF-Token": crsf,
-      //   "X-Requested-With": "XMLHttpRequest",
-      //   "Content-Type": "application/json"
-      // },
-      // method: props.method,
-      // body: JSON.stringify(body)
-    });
+    console.log(`method ${props.method}`);
 
-    setTimeout(function() {
-      console.log("ye");
+    await fetch(url, {
+      headers: {
+        Accept: "application/json",
+        "X-CSRF-Token": crsf,
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/json"
+      },
+      method: props.method,
+      body: JSON.stringify(body.value)
+    }).then(response => {
       setLoading(false);
-    }, 250);
 
-    if (result.ok) {
-      setAnimation({
-        type: "fadeOut",
-        delay: 0,
-        duration: 100,
-        size: "xsmall"
-      });
-      setTimeout(function() {
-        setEmailed(true);
-        setConfetti(true);
-      }, 250);
-    } else {
-      setNotification({ show: true, text: "Something went wrong!" });
-    }
+      if (response.ok) {
+        submitSuccess();
+      } else {
+        response
+          .json()
+          .then(json => {
+            setNotification({ show: true, text: json.message });
+          })
+          .catch(errorText => {
+            setNotification({ show: true, text: "Something went wrong!" });
+          });
+      }
+    });
   }
+
+  const submitSuccess = () => {
+    setAnimation({
+      type: "fadeOut",
+      delay: 0,
+      duration: 100,
+      size: "xsmall"
+    });
+    setTimeout(function() {
+      setEmailed(true);
+      setConfetti(true);
+    }, 250);
+  };
 
   return (
     <GradientBackground height="100vh" align="center">
@@ -207,6 +218,7 @@ const WrappedSignComponent = props => {
           animation={animation}
           loading={loading}
           notification={notification}
+          setNotification={setNotification}
           {...props}
         />
       )}

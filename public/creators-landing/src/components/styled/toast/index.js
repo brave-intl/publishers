@@ -11,7 +11,8 @@ export function Toast(props) {
       margin={{ vertical: "xlarge", horizontal: "none" }}
       responsive={false}
       className="notification-layer"
-      plain>
+      plain
+    >
       <NotificationWrapper
         align="center"
         direction="row"
@@ -20,12 +21,14 @@ export function Toast(props) {
         round="medium"
         elevation="medium"
         pad={{ vertical: "small", horizontal: "medium" }}
-        background="#F3F3FD">
+        background="#F3F3FD"
+      >
         <IconContainer
           minWidth="32px"
           height="32px"
           width="32px"
-          color="#339AF0">
+          color="#339AF0"
+        >
           <InfoIcon />
         </IconContainer>
         <Text size="16px">{props.notification.text}</Text>
