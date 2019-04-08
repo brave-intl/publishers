@@ -265,6 +265,13 @@ module PublishersHelper
     confirm_two_factor_authentication_removal_publishers_url(nil, options)
   end
 
+  def publisher_private_two_factor_cancellation_url(publisher:, confirm_email: nil)
+    token = publisher.authentication_token
+    options = { id: publisher.id, token: token }
+    options[:confirm_email] = confirm_email if (confirm_email)
+    cancel_two_factor_authentication_removal_publishers_url(nil, options)
+  end
+
   def publisher_verification_dns_record(publisher)
     PublisherDnsRecordGenerator.new(publisher: publisher).perform
   end

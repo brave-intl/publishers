@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       get :two_factor_authentication_removal
       post :request_two_factor_authentication_removal
       get :confirm_two_factor_authentication_removal
+      get :cancel_two_factor_authentication_removal
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index) do
         collection do

@@ -1,5 +1,5 @@
 module MailerServices
-  class TwoFactorAuthenticationRemovalReminderEmailer < BaseService
+  class TwoFactorAuthenticationRemovalCancellationEmailer < BaseService
     attr_accessor :error
     attr_reader :publisher
 
@@ -15,8 +15,8 @@ module MailerServices
 
     def send_email
       return false if !publisher
-      remainder = publisher.two_factor_authentication_removal.two_factor_authentication_removal_days_remaining
-      PublisherMailer.two_factor_authentication_removal_reminder(publisher, remainder).deliver
+      PublisherTokenGenerator.new(publisher: publisher).perform
+      PublisherMailer.two_factor_authentication_removal_cancellation(publisher).deliver
     end
   end
 end

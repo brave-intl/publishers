@@ -22,6 +22,7 @@ class PublishersController < ApplicationController
     two_factor_authentication_removal
     request_two_factor_authentication_removal
     confirm_two_factor_authentication_removal
+    cancel_two_factor_authentication_removal
   )
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
@@ -116,13 +117,31 @@ class PublishersController < ApplicationController
 
   def request_two_factor_authentication_removal
     publisher = Publisher.find_by_email(params[:email])
+    flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
     if publisher
-      flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
-      MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: publisher).perform
-    else
-      flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
+      if publisher.two_factor_authentication_removal.blank?
+        MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: publisher).perform
+      elsif !publisher.two_factor_authentication_removal.removal_completed
+        MailerServices::TwoFactorAuthenticationRemovalCancellationEmailer.new(publisher: publisher).perform
+      end
     end
     redirect_to two_factor_authentication_removal_publishers_path
+  end
+
+  def cancel_two_factor_authentication_removal
+    sign_out(current_publisher) if current_publisher
+
+    publisher = Publisher.find(params[:id])
+    token = params[:token]
+
+    if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: publisher.email).perform
+      publisher.two_factor_authentication_removal.destroy if publisher.two_factor_authentication_removal.present?
+      flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_cancel_flash")
+      redirect_to(root_path)
+    else
+      flash[:notice] = t("publishers.shared.error")
+      redirect_to(root_path)
+    end
   end
 
   def confirm_two_factor_authentication_removal

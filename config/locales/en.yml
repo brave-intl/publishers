@@ -497,7 +497,8 @@ en:
         <li>There will be a 30-day waiting period on payments.</li>
         </ul>
       reminder_body_two_html: >
-        If you did not make this request, or wish to cancel your 2-factor authentication removal please contact support at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>
+        If you did not make this request, or wish to cancel your 2-factor authentication removal please see visit our <a href="https://support.brave.com/hc/en-us/articles/360022724391-What-do-I-do-if-I-get-locked-out-of-my-account-">help center </a> for instructions.
+      cancellation_body: You have requested the cancellation of 2-factor authentication on your account. To confirm your request and cancel the removal, click the button below.
       request_body: You have requested the removal of 2-factor authentication on your account. To confirm your request and initiate the removal, click the button below.
       request_body_two_html: >
         Please note, for your security, the removal process will require a 14-day waiting period. Additionally, once your 2-factor authentication is removed:
@@ -514,6 +515,7 @@ en:
       confirm_2fa_removal: Confirm 2-factor Security Removal
       cancel_2fa_removal: Cancel 2-factor Security Removal
       confirm_login_flash: You have confirmed your request for 2-factor security removal. 
+      confirm_cancel_flash: You have cancelled your request for 2-factor security removal. 
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel

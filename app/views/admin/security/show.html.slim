@@ -6,9 +6,6 @@
     .rounded-box
         .db-field = "2FA via Authenticator App - " + (@publisher.totp_registration ? "Yes" : "No")
         .db-field = "2FA via Hardware Key - " + (!@publisher.u2f_registrations.empty? ? "Yes" : "No")
-        - if !@publisher.u2f_registrations.empty?
-            - @publisher.u2f_registrations.each do |u2f_registration|
-              .db-value = u2f_registration.name
     br
     br
     h5.admin-header = "2FA Removal 🔐"
