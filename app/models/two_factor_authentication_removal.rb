@@ -1,10 +1,8 @@
 class TwoFactorAuthenticationRemoval < ApplicationRecord
   include ActionView::Helpers::DateHelper
   belongs_to :publisher
-  # 2 Weeks represented in seconds
-  TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD = 1209600
-  # 4 Weeks represented in seconds
-  LOCKED_STATUS_WAITING_PERIOD = 2592000
+  TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD = 2.weeks.seconds
+  LOCKED_STATUS_WAITING_PERIOD = 4.weeks.seconds
   # 6 Weeks represented in seconds
   TOTAL_WAITING_PERIOD = TWO_FACTOR_AUTHENTICATION_REMOVAL_WAITING_PERIOD + LOCKED_STATUS_WAITING_PERIOD
 

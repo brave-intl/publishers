@@ -19,6 +19,6 @@ class TwoFactorAuthenticationRemovalTest < ActiveSupport::TestCase
     advanced_date = original_date - 14.days
     two_factor_authentication_removal.update(created_at: advanced_date)
     remainder = two_factor_authentication_removal.locked_status_days_remaining
-    assert_equal("about 1 month", remainder)
+    assert_equal("28 days", remainder)
   end
 end
