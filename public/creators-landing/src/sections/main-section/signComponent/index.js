@@ -66,7 +66,7 @@ const SignComponent = props => {
               <StyledInput
                 name="email"
                 type="email"
-                autofocus
+                autoFocus
                 placeholder="Enter your email"
                 required
               />

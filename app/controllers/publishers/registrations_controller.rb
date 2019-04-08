@@ -74,7 +74,7 @@ module Publishers
           return redirect_to log_in_publishers_path
         end
         format.json do
-          render json: { message: t("publishers.registrations.emailed_authentication_token.unfound_alert_json")},  status: 400
+          render json: { message: t("publishers.registrations.emailed_authentication_token.unfound_alert_json") }, status: 400
         end
       end
     end
@@ -123,9 +123,9 @@ module Publishers
       Rails.logger.info("User has been throttled")
       respond_to do |format|
         format.html { redirect_to path, alert: t(".access_throttled") and return true }
-        format.json {
-          render json: { message: t(".access_throttled")},  status: :too_many_requests
-        }
+        format.json do
+          render json: { message: t(".access_throttled") }, status: :too_many_requests
+        end
       end
     end
 
