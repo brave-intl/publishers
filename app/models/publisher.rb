@@ -2,25 +2,11 @@ class Publisher < ApplicationRecord
   has_paper_trail only: [:name, :email, :pending_email, :phone_normalized, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
-  UPHOLD_CODE_TIMEOUT = 5.minutes
-  UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
   ADMIN = "admin".freeze
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
   ROLES = [ADMIN, PARTNER, PUBLISHER].freeze
   MAX_PROMO_REGISTRATIONS = 500
-
-  class UpholdAccountState
-    REAUTHORIZATION_NEEDED      = :reauthorization_needed
-    VERIFIED                    = :verified
-    ACCESS_PARAMETERS_ACQUIRED  = :access_parameters_acquired
-    CODE_ACQUIRED               = :code_acquired
-    UNCONNECTED                 = :unconnected
-    # (Albert Wang): Consider adding refactoring all of the above states as they
-    # aren't valid states: https://uphold.com/en/developer/api/documentation/#user-object
-    RESTRICTED      = :restricted
-    BLOCKED         = :blocked
-  end
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
   ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT].freeze
@@ -52,8 +38,6 @@ class Publisher < ApplicationRecord
                            foreign_key: "created_by_id"
 
   attr_encrypted :authentication_token, key: :encryption_key
-  attr_encrypted :uphold_code, key: :encryption_key
-  attr_encrypted :uphold_access_parameters, key: :encryption_key
 
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
@@ -113,20 +97,6 @@ class Publisher < ApplicationRecord
     where.not(id: suspended)
   }
 
-  # publishers that have uphold codes that have been sitting for five minutes
-  # can be cleared if publishers do not create wallet within 5 minute window
-  scope :has_stale_uphold_code, -> {
-    where.not(encrypted_uphold_code: nil).
-      where("uphold_updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
-  }
-
-  # publishers that have access params that havent accepted by eyeshade
-  # can be cleared after 2 hours
-  scope :has_stale_uphold_access_parameters, -> {
-    where.not(encrypted_uphold_access_parameters: nil).
-      where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
-  }
-
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
@@ -176,6 +146,7 @@ class Publisher < ApplicationRecord
         UploadDefaultCurrencyJob.perform_later(publisher_id: id)
       end
 
+      # TODO think about this later
       if @_wallet.uphold_id.present? && @_wallet.uphold_id != uphold_id
         self.uphold_id = wallet.uphold_id
         save!
@@ -218,75 +189,6 @@ class Publisher < ApplicationRecord
 
   def to_s
     name || email
-  end
-
-  def prepare_uphold_state_token
-    if uphold_state_token.nil?
-      self.uphold_state_token = SecureRandom.hex(64)
-      save!
-    end
-  end
-
-  def receive_uphold_code(code)
-    self.uphold_state_token = nil
-    self.uphold_code = code
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
-  end
-
-  def verify_uphold
-    self.uphold_state_token = nil
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = true
-    save!
-  end
-
-  def disconnect_uphold
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
-  end
-
-  def uphold_reauthorization_needed?
-    uphold_verified? &&
-      wallet.present? &&
-      ['re-authorize', 'authorize'].include?(wallet.action)
-  end
-
-  def uphold_status
-    if self&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::BLOCKED
-      # Notify on Slack that there's someone suspect
-      SlackMessenger.new(message: "Publisher #{id} is blocked by Uphold and has just logged in. <!channel>").perform
-    end
-
-    if self&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::RESTRICTED
-      UpholdAccountState::RESTRICTED
-    elsif uphold_verified?
-      if uphold_reauthorization_needed?
-        UpholdAccountState::REAUTHORIZATION_NEEDED
-      elsif self&.wallet&.not_a_member?
-        UpholdAccountState::RESTRICTED
-      else
-        UpholdAccountState::VERIFIED
-      end
-    elsif uphold_access_parameters.present?
-      :access_parameters_acquired
-    elsif uphold_code.present?
-      :code_acquired
-    else
-      UpholdAccountState::UNCONNECTED
-    end
-  end
-
-  def uphold_processing?
-    uphold_access_parameters.present? || uphold_code.present?
-  end
-
-  def set_uphold_updated_at
-    self.uphold_updated_at = Time.now
   end
 
   def owner_identifier
@@ -339,16 +241,6 @@ class Publisher < ApplicationRecord
   def last_login_activity
     login_activities.last
   end
-
-  def can_create_uphold_cards?
-    uphold_verified? &&
-      wallet.present? &&
-      wallet.authorized? &&
-      wallet.scope &&
-      wallet.scope.include?("cards:write") &&
-      !excluded_from_payout
-  end
-
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
     partner?
