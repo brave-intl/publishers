@@ -342,6 +342,8 @@ module PublishersHelper
       I18n.t("helpers.publisher.channel_type.twitch")
     when TwitterChannelDetails
       I18n.t("helpers.publisher.channel_type.twitter")
+    when VimeoChannelDetails
+      I18n.t("helpers.publisher.channel_type.vimeo")
     else
       I18n.t("helpers.publisher.channel_type.unknown")
     end
@@ -355,6 +357,8 @@ module PublishersHelper
       I18n.t("helpers.publisher.channel_name.youtube")
     when TwitchChannelDetails
       I18n.t("helpers.publisher.channel_name.twitch")
+    when VimeoChannelDetails
+      I18n.t("helpers.publisher.channel_name.vimeo")
     else
       I18n.t("helpers.publisher.channel_name.unknown")
     end
@@ -389,6 +393,8 @@ module PublishersHelper
       asset_url('publishers-home/twitch-icon_32x32.png')
     when TwitterChannelDetails
       asset_url('publishers-home/twitter-icon_32x32.png')
+    when VimeoChannelDetails
+      asset_url('publishers-home/vimeo-icon_32x32.png')
     else
       asset_url('publishers-home/website-icon_32x32.png')
     end

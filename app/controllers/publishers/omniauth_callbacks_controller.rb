@@ -157,6 +157,32 @@ module Publishers
       return
     end
 
+    def register_vimeo_channel
+      vimeo_auth_hash = request.env['omniauth.auth']
+      channel = current_publisher.channels.new(verified: true)
+      channel.details = VimeoChannelDetails.new(
+        name: vimeo_auth_hash.info.name,
+        vimeo_channel_id: vimeo_auth_hash.info.id,
+        auth_provider: vimeo_auth_hash.info.auth_provider,
+        thumbnail_url: vimeo_auth_hash.info.pictures.last.link,
+        channel_url: vimeo_auth_hash.info.link,
+        nickname: vimeo_auth_hash.info.nickname
+      )
+
+      existing_channel = Channel.verified.joins(:vimeo_channel_details).
+          where("vimeo_channel_details.vimeo_channel_id": vimeo_auth_hash['id']).first
+
+      if existing_channel&.publisher == current_publisher
+        redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.nickname })
+        return
+      end
+
+      contest_channel(existing_channel) and return if existing_channel
+      channel.save!
+
+      redirect_to home_publishers_path, notice: t("shared.channel_created")
+    end
+
     private
 
     def contest_channel(existing_channel)

@@ -136,11 +136,13 @@ en:
         website: Website
         twitch: Twitch channel
         twitter: Twitter
+        vimeo: Vimeo channel
         unknown: Channel
       channel_name:
         youtube: YouTube
         website: the website
         twitch: Twitch
+        vimeo: Vimeo
         unknown: the website
       statement_periods:
         past_7_days: Past 7 days
@@ -368,6 +370,9 @@ en:
       twitter:
         heading: TWITTER
         description: I own a Twitter account.
+      vimeo:
+        heading: VIMEO CHANNEL
+        description: I own or manage a Vimeo channel.
     contact_info:
       heading: Contact Information
     registrations:
