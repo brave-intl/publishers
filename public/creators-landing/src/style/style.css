@@ -168,6 +168,16 @@ h4 {
   }
 }
 
+.summary-spacer {
+  height: 100px;
+}
+
+@media (min-width: 1200px) {
+  .summary-spacer {
+    height: 200px;
+  }
+}
+
 .spacer {
   display: flex;
   height: 60px;
@@ -208,6 +218,7 @@ h4 {
     transform: translateY(0);
     transition-timing-function: ease;
   }
+
   100% {
     opacity: 1;
     transform: translateY(4px);
