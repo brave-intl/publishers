@@ -57,14 +57,17 @@ export default {
       " content creators and publishers earning more from Brave Rewards"
   },
   sign: {
-    sentAgain: "The access email has been resent.",
+    sentAgain:
+      "A new email is on the way. If you still experience problems, please contact publishers@basicattentiontoken.org",
+    sentAgainSupportEmail: "publishers@basicattentiontoken.org",
+    sentAgainMailto: "mailto: publishers@basicattentiontoken.org",
     signupSuccess: "Welcome to the party!",
     signupSuccessBody:
-      "Verify your email address by clicking on the secure login link in the email we just sent to finish setting up your account. Don't see the email? Be sure to check your spam folder or ",
-    signupTryAgain: "try again.",
-    signinSuccess: "A secure login email has been sent",
+      "Finish setting up your Creator's account by clicking on the secure login link in the email we just sent. Don't see the email? Be sure to check your spam folder or ",
+    signinSuccess: "A login email is on the way",
     signinSuccessBody:
-      "Click on the secure login link in the email to access your account. Don't see the email? Be sure to check your spam folder or try again.",
+      "Click on the secure login link in the email to access your account. Don't see the email? Be sure to check your spam folder or ",
+    signTryAgain: "click here to try again.",
     iconHelpHref: "https://support.brave.com/hc/en-us",
     iconMessageHref: "mailto: publishers@basicattentiontoken.org",
     iconRedditHref: "https://www.reddit.com/r/BATProject/",

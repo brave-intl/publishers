@@ -24,8 +24,7 @@ export const MainHome = () => {
         <Box
           direction="column"
           pad="large"
-          margin={{ top: "80px", bottom: "90px" }}
-        >
+          margin={{ top: "80px", bottom: "90px" }}>
           <Box className="bat-pill" as="a" href={locale.nav.batPillHref}>
             <Image src={batPill} />
           </Box>
@@ -95,6 +94,7 @@ export const MainSignIn = () => {
       footerOneHref={locale.main.footerOneHref}
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
+      formId="signInForm"
       method="PUT"
     />
   );
@@ -113,6 +113,7 @@ export const MainSignUp = () => {
       footerOneHref={locale.main.footerOneHref}
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
+      formId="signUpForm"
       method="POST"
     />
   );

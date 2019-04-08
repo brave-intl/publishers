@@ -32,24 +32,21 @@ const SignComponent = props => {
         align="center"
         pad="large"
         id="zindex"
-        fill
-      >
+        fill>
         <Box width="540px" align="center">
           <Heading
             level="2"
             color="white"
             a11yTitle="Headline"
             textAlign="center"
-            margin="small"
-          >
+            margin="small">
             {props.heading}
           </Heading>
           <Text
             size="18px"
             color="rgba(255, 255, 255, .8)"
             textAlign="center"
-            margin={{ bottom: "50px" }}
-          >
+            margin={{ bottom: "50px" }}>
             {props.subhead}
           </Text>
           <Box width="100%" margin={{ bottom: "30px" }}>
@@ -59,8 +56,8 @@ const SignComponent = props => {
               messages={{
                 required: "Please enter a valid email address."
               }}
-              onSubmit={props.submitForm}
-            >
+              id={props.formId}
+              onSubmit={props.submitForm}>
               <StyledInput
                 name="email"
                 type="email"
@@ -119,9 +116,20 @@ const WrappedSignComponent = props => {
   const [animation, setAnimation] = useState("fadeIn");
   const [emailed, setEmailed] = useState(false);
   const [confetti, setConfetti] = useState(false);
+  const [words, setWords] = useState({});
+
+  const successSignInWords = {
+    headline: locale.sign.signinSuccess,
+    body: locale.sign.signinSuccessBody
+  };
+
+  const successSignUpWords = {
+    headline: locale.sign.signupSuccess,
+    body: locale.sign.signupSuccessBody
+  };
 
   const submitForm = event => {
-    doTheThing(event.value);
+    doTheThing(event);
   };
 
   const tryAgain = event => {
@@ -131,8 +139,12 @@ const WrappedSignComponent = props => {
 
   async function doTheThing(body) {
     const url = "publishers/registrations.json";
+    console.log(body.target.id);
+    body.target.id === "signInForm"
+      ? setWords(successSignInWords)
+      : setWords(successSignUpWords);
 
-    console.log(JSON.stringify(body));
+    console.log(JSON.stringify(body.value));
     let crsf = document.head.querySelector("[name=csrf-token]");
     if (crsf) {
       crsf = crsf.getAttribute("content");
@@ -171,6 +183,7 @@ const WrappedSignComponent = props => {
           notification={notification}
           closeNotification={() => setNotification({ show: false })}
           tryAgain={tryAgain}
+          words={words}
         />
       ) : (
         <SignComponent

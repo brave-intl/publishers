@@ -40,6 +40,7 @@ export {
 export { PublicationIcon } from "./icons/Publication";
 export { TwitchIcon } from "./icons/Twitch";
 export { MenuIcon } from "./icons/Menu";
+export { InfoIcon } from "./icons/Info";
 export { UserIcon } from "./icons/User";
 export { CaratRightIcon } from "./icons/CaratRight";
 export { MailIcon } from "./icons/Mail";

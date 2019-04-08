@@ -75,7 +75,7 @@ export const BatLockup = () => (
       />
       <circle
         className="circle-delay2"
-        fillOpacity=".4"
+        fillOpacity=".6"
         fill="#CD58EB"
         cx="12"
         cy="34"
@@ -83,7 +83,7 @@ export const BatLockup = () => (
       />
       <circle
         className="circle-delay2"
-        fillOpacity=".3"
+        fillOpacity=".8"
         fill="#CD58EB"
         cx="40"
         cy="33"
@@ -100,7 +100,7 @@ export const BatLockup = () => (
 
       <circle
         className="circle2"
-        fillOpacity=".1"
+        fillOpacity=".6"
         fill="#CD58EB"
         cx="10"
         cy="14"
@@ -108,7 +108,7 @@ export const BatLockup = () => (
       />
       <circle
         className="circle2"
-        fillOpacity=".1"
+        fillOpacity=".6"
         fill="#CD58EB"
         cx="20"
         cy="3"
@@ -116,7 +116,7 @@ export const BatLockup = () => (
       />
       <circle
         className="circle2"
-        fillOpacity=".3"
+        fillOpacity=".7"
         fill="#CD58EB"
         cx="20"
         cy="17"
@@ -132,7 +132,7 @@ export const BatLockup = () => (
       />
       <circle
         className="circle"
-        fillOpacity=".4"
+        fillOpacity=".8"
         fill="#CD58EB"
         cx="3"
         cy="20"
@@ -148,7 +148,7 @@ export const BatLockup = () => (
       />
       <circle
         className="circle"
-        fillOpacity=".3"
+        fillOpacity=".8"
         fill="#CD58EB"
         cx="30"
         cy="26"
@@ -156,7 +156,7 @@ export const BatLockup = () => (
       />
       <circle
         className="circle"
-        fillOpacity=".1"
+        fillOpacity=".8"
         fill="#CD58EB"
         cx="6"
         cy="11"
