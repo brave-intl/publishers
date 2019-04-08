@@ -9,6 +9,8 @@ import {
   Toast
 } from "../../../components";
 
+import { Loading } from "../../../components/icons/Loading";
+
 import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
 import { Heading, Text, Box, Anchor, Form, Image } from "grommet";
@@ -32,21 +34,24 @@ const SignComponent = props => {
         align="center"
         pad="large"
         id="zindex"
-        fill>
+        fill
+      >
         <Box width="540px" align="center">
           <Heading
             level="2"
             color="white"
             a11yTitle="Headline"
             textAlign="center"
-            margin="small">
+            margin="small"
+          >
             {props.heading}
           </Heading>
           <Text
             size="18px"
             color="rgba(255, 255, 255, .8)"
             textAlign="center"
-            margin={{ bottom: "50px" }}>
+            margin={{ bottom: "50px" }}
+          >
             {props.subhead}
           </Text>
           <Box width="100%" margin={{ bottom: "30px" }}>
@@ -57,7 +62,8 @@ const SignComponent = props => {
                 required: "Please enter a valid email address."
               }}
               id={props.formId}
-              onSubmit={props.submitForm}>
+              onSubmit={props.submitForm}
+            >
               <StyledInput
                 name="email"
                 type="email"
@@ -66,6 +72,7 @@ const SignComponent = props => {
               />
               <PrimaryButton
                 label={props.btn}
+                icon={props.loading ? <Loading /> : <span />}
                 type="submit"
                 alignSelf="center"
               />
@@ -115,6 +122,7 @@ const WrappedSignComponent = props => {
   const [notification, setNotification] = useState({ show: false });
   const [animation, setAnimation] = useState("fadeIn");
   const [emailed, setEmailed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [confetti, setConfetti] = useState(false);
   const [words, setWords] = useState({});
 
@@ -150,6 +158,7 @@ const WrappedSignComponent = props => {
       crsf = crsf.getAttribute("content");
     }
 
+    setLoading(true);
     const result = await fetch(url, {
       // headers: {
       //   Accept: "application/json",
@@ -160,6 +169,11 @@ const WrappedSignComponent = props => {
       // method: props.method,
       // body: JSON.stringify(body)
     });
+
+    setTimeout(function() {
+      console.log("ye");
+      setLoading(false);
+    }, 250);
 
     if (result.ok) {
       setAnimation({
@@ -172,6 +186,8 @@ const WrappedSignComponent = props => {
         setEmailed(true);
         setConfetti(true);
       }, 250);
+    } else {
+      setNotification({ show: true, text: "Something went wrong!" });
     }
   }
 
@@ -189,6 +205,7 @@ const WrappedSignComponent = props => {
         <SignComponent
           submitForm={submitForm}
           animation={animation}
+          loading={loading}
           notification={notification}
           {...props}
         />

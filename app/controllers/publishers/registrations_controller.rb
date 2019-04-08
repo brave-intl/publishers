@@ -62,6 +62,7 @@ module Publishers
 
       email_existing_publisher(@publisher) and return if @publisher
 
+
       # Failed to find publisher
       flash[:alert_html_safe] = t("publishers.registrations.emailed_authentication_token.unfound_alert_html",
         new_publisher_path: sign_up_publishers_path(email: params[:email]),
