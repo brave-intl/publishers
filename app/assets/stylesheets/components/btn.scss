@@ -35,16 +35,19 @@
 .btn--wrapper--with-icon {
   display: flex;
   align-items: center;
+
   > * {
     margin-right: $spacer;
   }
 }
 
 .btn-wide {
-  min-width: $spacer*10;
+  min-width: $spacer * 10;
 }
 
-.btn-primary, .btn-secondary, .btn-outline-primary {
+.btn-primary,
+.btn-secondary,
+.btn-outline-primary {
   padding: 10px 24px;
   letter-spacing: 0.02em;
   font-size: 14px;
@@ -55,7 +58,7 @@
   background: white;
   border: 1px solid;
   box-shadow: 2px 2px 100px rgba(255, 255, 255, 0.5);
-  color: #8F9397;
+  color: $braveBrand;
   font-weight: 400;
 
   &:hover {
@@ -64,17 +67,17 @@
   }
 
   &:active {
-    color: #8F9397;
+    color: #8f9397;
   }
 }
 
 .btn-highlight {
-  border-color: #4C54D2;
-  color: #4C54D2;
+  border-color: $braveBrand;
+  color: $braveBrand;
 
   &:hover {
     background: white;
-    border-color: #4C54D2;
-    color: #4C54D2;
+    border-color: $braveBrand;
+    color: $braveBrand;
   }
 }

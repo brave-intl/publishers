@@ -134,7 +134,7 @@ export const TextInput = styled.input`
 
 export const TextArea = styled.textarea`
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid lightGray;
+  border: 1px solid #686978;
   border-radius: 8px;
   color: #686978;
   width: 100%;
@@ -147,13 +147,13 @@ export const TextArea = styled.textarea`
 
   &:hover {
     box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0, 0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0.5);
   }
 
   &:focus {
     cursor: text;
     box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0, 0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     outline: none;
   }
 `;
@@ -216,7 +216,6 @@ ${props =>
   css`
     display: inline;
     font-size: 14px;
-    font-family: Poppins;
     color: #f1f1f9;
   `}
 
@@ -228,7 +227,6 @@ ${props =>
     padding: 5px;
     width: 100px;
     font-weight: normal;
-    font-family: Poppins;
     color: #f1f1f9;
   `}
 
@@ -249,7 +247,7 @@ ${props =>
     font-size: 24px;
     font-weight: normal;
     font-family: Poppins;
-    color: $braveBrand;
+    color: #4c54d2;
   `}
 
 ${props =>
@@ -276,8 +274,6 @@ export const Links = styled.div`
 
 export const Caret = styled.div`
   display: inline;
-  height: 25px;
-  width: 50px;
   font-size: 20px;
   margin: auto;
   user-select: none;
@@ -364,7 +360,7 @@ export const Logo = styled.div`
   ${({ url }) =>
     url === null &&
     `
-    background-color: $braveBrand;
+    background-color: #4C54D2;
   `}
 `;
 
@@ -431,16 +427,16 @@ export const Button = styled.div`
   ${props =>
     props.primary &&
     css`
-      background-color: $braveBrand;
-      border: 1px solid $braveBrand;
+      background-color: #4c54d2;
+      border: 1px solid #4c54d2;
       color: white;
     `}
 
   ${props =>
     props.dialoguePrimary &&
     css`
-      background-color: $braveBrand;
-      border: 1px solid $braveBrand;
+      background-color: #4c54d2;
+      border: 1px solid #4c54d2;
       color: white;
       display: block;
       margin: auto;
@@ -450,8 +446,8 @@ export const Button = styled.div`
   ${props =>
     props.outline &&
     css`
-      border: 1px solid $braveBrand;
-      color: $braveBrand;
+      border: 1px solid #4c54d2;
+      color: #4c54d2;
     `}
 
   ${props =>
