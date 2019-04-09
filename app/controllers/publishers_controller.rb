@@ -116,7 +116,7 @@ class PublishersController < ApplicationController
   end
 
   def request_two_factor_authentication_removal
-    publisher = Publisher.find_by_email(params[:email])
+    publisher = Publisher.by_email_case_insensitive(params[:email]).first
     flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
     if publisher
       if publisher.two_factor_authentication_removal.blank?
