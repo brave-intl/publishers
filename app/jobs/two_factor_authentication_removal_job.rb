@@ -16,7 +16,11 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
         ActiveRecord::Base.transaction do
           publisher.totp_registration.destroy if publisher.totp_registration.present?
           publisher.u2f_registrations.destroy_all if !publisher.u2f_registrations.empty?
-          publisher.channels.destroy_all if !publisher.channels.empty?
+          if !publisher.channels.empty?
+            publisher.channels.each do |channel|
+              DeletePublisherChannelJob.perform_now(channel_id: channel.id)
+            end
+          end
           publisher.disconnect_uphold
           PublisherWalletDisconnector.new(publisher: publisher).perform
           publisher.status_updates.create(status: PublisherStatusUpdate::LOCKED)

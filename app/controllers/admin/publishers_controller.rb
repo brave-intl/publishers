@@ -19,6 +19,9 @@ class Admin::PublishersController < AdminController
     end
 
     @publishers = @publishers.suspended if params[:suspended].present?
+    if params[:two_factor_authentication_removal].present?
+      @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
+    end
     @publishers = @publishers.group(:id).paginate(page: params[:page])
   end
 
