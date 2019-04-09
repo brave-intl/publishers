@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_28_231740) do
+ActiveRecord::Schema.define(version: 2019_04_08_215416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -371,10 +371,12 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
     t.uuid "uphold_id"
+    t.uuid "uphold_connections_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
+    t.index ["uphold_connections_id"], name: "index_publishers_on_uphold_connections_id"
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
@@ -465,6 +467,17 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
   end
 
+  create_table "uphold_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "uphold_state_token"
+    t.boolean "uphold_verified", default: false
+    t.string "encrypted_uphold_code"
+    t.string "encrypted_uphold_code_iv"
+    t.string "encrypted_uphold_access_parameters"
+    t.string "encrypted_uphold_access_parameters_iv"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "item_type", null: false
     t.uuid "item_id", null: false
@@ -499,4 +512,5 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
   add_foreign_key "invoices", "publishers", column: "finalized_by_id"
   add_foreign_key "invoices", "publishers", column: "paid_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
+  add_foreign_key "publishers", "uphold_connections", column: "uphold_connections_id"
 end

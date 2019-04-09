@@ -471,7 +471,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_nil(publisher.uphold_state_token)
 
       # verify that the uphold_code has been cleared
-      assert_nil(publisher.uphold_code)
+      assert_nil(publisher.uphold_connection.uphold_code)
 
       # verify that the uphold_access_parameters has been set
       assert_match('FAKEACCESSTOKEN', publisher.uphold_access_parameters)
@@ -958,8 +958,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       assert_nil(publisher.uphold_state_token)
 
       # verify that the uphold_code has been set
-      assert_not_nil(publisher.uphold_code)
-      assert_equal('ebb18043eb2e106fccb9d13d82bec119d8cd016c', publisher.uphold_code)
+      assert_not_nil(publisher.uphold_connection.uphold_code)
+      assert_equal('ebb18043eb2e106fccb9d13d82bec119d8cd016c', publisher.uphold_connection.uphold_code)
 
       # verify that the uphold_access_parameters has not been set
       assert_nil(publisher.uphold_access_parameters)
