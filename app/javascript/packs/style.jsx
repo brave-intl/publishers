@@ -92,24 +92,23 @@ export const DropdownToggle = styled.div`
 
 export const TextInput = styled.input`
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid lightGray;
+  border: 1px solid #686978;
   border-radius: 8px;
-  color: #686978
+  color: #686978;
   padding: 10px;
   cursor: pointer;
 
-  &:hover{
-     box-shadow: 0 0 1px 1px #fc4145;
-     border: 1px solid rgba(0,0,0,0);
+  &:hover {
+    box-shadow: 0 0 1px 1px #fc4145;
+    border: 1px solid rgba(0, 0, 0, 0);
   }
 
-  &:focus{
+  &:focus {
     cursor: text;
     box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0,0,0,0);
+    border: 1px solid rgba(0, 0, 0, 0);
     outline: none;
   }
-
 
   ${props =>
     props.link &&
@@ -129,7 +128,6 @@ export const TextInput = styled.input`
     height: 50px;
     margin-top: 10px;
     `}
-
 `;
 
 export const TextArea = styled.textarea`
@@ -176,8 +174,9 @@ export const Label = styled.label`
 `;
 
 export const Text = styled.p`
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Poppins, sans-serif;
 
 ${props =>
   props.links &&
