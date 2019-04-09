@@ -10,7 +10,8 @@ div.panel-body
           tr.gradeX
             - if entry["account_id"].starts_with?(@table_identifier)
               - youtube_channel_id = entry["account_id"].split(":")[1]
-              td = link_to @youtube_channels[youtube_channel_id]&.dig(1), admin_publisher_path(@youtube_channels[youtube_channel_id]&.dig(0))
+              - if @youtube_channels.has_key? youtube_channel_id
+                td = link_to @youtube_channels[youtube_channel_id]&.dig(1), admin_publisher_path(@youtube_channels[youtube_channel_id]&.dig(0))
             - elsif (channel_id = @site_channels.dig(entry["account_id"])).present?
               td = link_to entry["account_id"], admin_publisher_path(channel_id)
             - else
