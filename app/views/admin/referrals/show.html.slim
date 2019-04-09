@@ -1,0 +1,15 @@
+
+= render partial: 'admin/shared/publisher_header', locals: { publisher: @publisher }
+
+h4 Referrals
+
+- @promo_registrations.each do |promo_registration|
+  .border.mb-2.shadow-sm.rounded
+    .d-flex.justify-content-between.m-2
+      .details
+        .d-flex.align-items-center.mt-2
+          .ml-2= promo_registration.referral_code
+        .d-flex.align-items-center.my-2
+
+
+
