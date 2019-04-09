@@ -7,8 +7,8 @@ class Sync::ChannelStatsJob < ApplicationJob
       ChannelStatsServices::YoutubeChannelStatsService.new(youtube_channel_details: youtube_channel_details).perform
     end
 
-    TwitchChannelDetails.find_each do |twitch_channel_details|
-      ChannelStatsServices::TwitchChannelStatsService.new(twitch_channel_details: twitch_channel_details).perform
+    TwitchChannelDetails.find_in_batches(batch_size: 30).with_index do |group, batch|
+      Sync::TwitchStatsJob.set(wait: batch.minutes).perform_later(ids: group.map(&:id))
     end
   end
 end
