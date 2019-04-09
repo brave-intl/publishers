@@ -11,7 +11,14 @@ class Eyeshade::TopBalances < Eyeshade::BaseApiClient
 
   def perform
     if Rails.application.secrets[:api_eyeshade_offline]
-      result = perform_offline
+      result =
+        if @type == OWNER
+          perform_offline_owner
+        elsif @type == CHANNEL
+          perform_offline_channel
+        elsif @type == UPHOLD
+          perform_offline_uphold
+        end
     else
       begin
         response = connection.get do |request|
@@ -24,7 +31,32 @@ class Eyeshade::TopBalances < Eyeshade::BaseApiClient
     result
   end
 
-  def perform_offline
+  def perform_offline_channel
+    [
+      {
+        "account_type"=>"channel",
+        "account_id"=>"brave.com",
+        "balance"=>"199.866965493802047491"
+      }
+    ]
+  end
+
+  def perform_offline_owner
+    [
+      {
+        "account_type" => "owner",
+        "account_id" => "publishers#uuid:#{Publisher.first.id}",
+        "balance" => "123.123123123123123123"
+      },
+      {
+        "account_type" => "owner",
+        "account_id" => "publishers#uuid:#{Publisher.second.id}",
+        "balance" => "200.000000000000000001"
+      }
+    ]
+  end
+
+  def perform_offline_uphold
     [
       {
         "account_type"=>"channel",
