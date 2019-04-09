@@ -478,7 +478,7 @@ en:
     suspended_error:
       heading_html: Your account is under review
       body: >
-        We noticed some unusual activity on your account. We've suspended access while we take a closer look.
+        We noticed some unusual activity on your account. We've suspended access while we take a closer look. This may include violations of the <a href="https://community.brave.com/t/a-note-to-publishers/48733"> BAT grant guidelines.</a>
         <br/><br/>
         We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
         <br/><br/>
