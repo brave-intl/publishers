@@ -15,7 +15,6 @@ module Admin
         @channels = @channels.search(query)
       end
 
-
       @channels = @channels.verified if params[:verified].present?
 
       case params[:type]
@@ -33,7 +32,7 @@ module Admin
     private
 
     def sortable_columns
-      [] + Channel::ADVANCED_SORTABLE_COLUMNS
+      [:created_at] + Channel::ADVANCED_SORTABLE_COLUMNS
     end
   end
 end

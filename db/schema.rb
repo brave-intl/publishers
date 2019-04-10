@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_143005) do
+ActiveRecord::Schema.define(version: 2019_03_28_231740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,18 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "channel_transfers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "transfer_from_id"
+    t.uuid "transfer_to_id"
+    t.uuid "channel_id"
+    t.boolean "suspended"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_channel_transfers_on_channel_id"
+    t.index ["transfer_from_id"], name: "index_channel_transfers_on_transfer_from_id"
+    t.index ["transfer_to_id"], name: "index_channel_transfers_on_transfer_to_id"
   end
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -480,6 +492,8 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end
 
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_from_id"
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_to_id"
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
   add_foreign_key "invoice_files", "publishers", column: "uploaded_by_id"
   add_foreign_key "invoices", "publishers", column: "finalized_by_id"
