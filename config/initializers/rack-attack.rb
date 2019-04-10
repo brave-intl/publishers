@@ -79,6 +79,13 @@ class Rack::Attack
     end
   end
 
+  # Throttle cancel 2fa disable emails for an IP address
+  throttle("cancel_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
+    if req.path == "/publishers/cancel_two_factor_authentication_removal" && req.get?
+      req.ip
+    end
+  end
+
   # Throttle POST requests to /login by email param
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:logins/email:#{req.email}"
