@@ -384,8 +384,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash
 
-      # (Albert Wang): Change this back to 1 when we enable twitter registration
-      assert_difference("Channel.count", 0) do
+      assert_difference("Channel.count", 1) do
         get(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
@@ -393,7 +392,6 @@ module Publishers
 
       channel = Channel.order(created_at: :asc).last
 
-      return unless Channel::TWITTER_ENABLED
       assert_equal channel.details.auth_provider, "register_twitter_channel"
       assert_equal channel.details.auth_email, "ted@example.com"
       assert_equal channel.details.twitter_channel_id, "123545"
@@ -415,8 +413,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash("uid" => "abc124")
 
-      # (Albert Wang): Change this back to 1 when we enable twitter registration
-      assert_difference("Channel.count", 0) do
+      assert_difference("Channel.count", 1) do
         get(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
@@ -424,11 +421,8 @@ module Publishers
       end
 
       assert_select('div.channel-status') do |element|
-        if Channel::TWITTER_ENABLED
-          assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)), element.text)
-        else
-          assert_no_match(I18n.t("shared.channel_contested", time_until_transfer: nil), element.text)
-        end
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
+                    element.text)
       end
     end
 
@@ -450,11 +444,7 @@ module Publishers
       end
 
       assert_select('div.notifications') do |element|
-        if Channel::TWITTER_ENABLED
-          assert_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
-        else
-          assert_no_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
-        end
+        assert_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
       end
     end
   end
