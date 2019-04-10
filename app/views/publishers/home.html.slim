@@ -30,7 +30,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                    data-possible-currencies=possible_currencies(current_publisher)
                    data-default-currency=current_publisher.default_currency }
     .row
-      .col.payouts.mb-4
+      .col-md.payouts.mb-4
         .balance-panel
           .balance
             .bat-logo
@@ -52,7 +52,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   span = t ".next_deposit_date"
                   span = next_deposit_date
       - if promo_running?
-        .col.mb-4
+        .col-md.mb-4
           .promo-panel
             - if current_publisher.promo_status(promo_running?) == :inactive
               .promo-panel-item.promo-panel-item-info
@@ -92,7 +92,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 #promo-panel-alert
                   = t("promo.dashboard.add_channel")
       - elsif current_publisher.channels.empty?
-        .col.mb-4
+        .col-md.mb-4
           .add-channel-cta
             = t ".add_channel_cta"
     .row
@@ -152,7 +152,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
                         id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                         :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
-      .col.mb-4
+      .col-md.mb-4
         .dashboard-panel--wrapper
           .dashboard-panel--header#publishers_statements
             = t ".statements.heading"
