@@ -30,7 +30,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                    data-possible-currencies=possible_currencies(current_publisher)
                    data-default-currency=current_publisher.default_currency }
     .row
-      .col.payouts.bot-marg
+      .col.payouts.mb-4
         .balance-panel
           .balance
             .bat-logo
@@ -52,7 +52,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   span = t ".next_deposit_date"
                   span = next_deposit_date
       - if promo_running?
-        .col.bot-marg
+        .col.mb-4
           .promo-panel
             - if current_publisher.promo_status(promo_running?) == :inactive
               .promo-panel-item.promo-panel-item-info
@@ -92,12 +92,12 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 #promo-panel-alert
                   = t("promo.dashboard.add_channel")
       - elsif current_publisher.channels.empty?
-        .col.bot-marg
+        .col.mb-4
           .add-channel-cta
             = t ".add_channel_cta"
     .row
       - unless current_publisher.excluded_from_payout?
-        .col.bot-marg
+        .col.mb-4
           .dashboard-panel--wrapper.uphold-panel
             .dashboard-panel--header#dashboard_uphold_header
               = t ".uphold.heading"
@@ -152,7 +152,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
                         id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                         :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
-      .col.bot-marg
+      .col.mb-4
         .dashboard-panel--wrapper
           .dashboard-panel--header#publishers_statements
             = t ".statements.heading"
@@ -201,7 +201,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
     - current_publisher.channels.visible.each do |channel|
       .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
-        .col.bot-marg
+        .col.mb-4
           div class=("channel-panel channel-#{channel_verification_status(channel)}")
             .channel-panel--intro
               .channel-panel--intro-icon
@@ -292,7 +292,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   = t ".channel.reject_transfer"
 
     .row id="add_channel_placeholder"
-      .col.bot-marg
+      .col.mb-4
         = link_to(\
           "+ #{t "shared.add_channel"}", \
           choose_new_channel_type_publishers_path, \
@@ -301,7 +301,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
         )
 
     .row.tos-row
-      .col.bot-marg
+      .col.mb-4
         - if current_publisher.promo_enabled_2018q1
           .promo--tos
             = t("promo.shared.tos_2_html")
