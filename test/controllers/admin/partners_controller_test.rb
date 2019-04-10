@@ -31,7 +31,7 @@ class Admin::PartnersControllerTest < ActionDispatch::IntegrationTest
           get admin_partners_path, params: { suspended: '1' }
 
           partners = controller.instance_variable_get("@partners")
-          assert partners.count
+          assert partners.length
           partners.each do |p|
             assert p.suspended?
           end
@@ -46,7 +46,7 @@ class Admin::PartnersControllerTest < ActionDispatch::IntegrationTest
           get admin_partners_path, params: { created_by_me: '1' }
 
           partners = controller.instance_variable_get("@partners")
-          assert partners.count
+          assert partners.length
           partners.each do |p|
             assert created_by_me.include? p
             refute not_created_by_me.include? p

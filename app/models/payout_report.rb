@@ -63,7 +63,7 @@ class PayoutReport < ApplicationRecord
     end
 
     def most_recent_final_report
-      PayoutReport.all.where(final: true).order("created_at").last
+      PayoutReport.all.where(final: true, manual: false).order("created_at").last
     end
 
     def expected_num_payments(publishers)

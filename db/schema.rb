@@ -339,9 +339,6 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.string "pending_email"
     t.string "phone"
     t.string "phone_normalized"
-    t.string "encrypted_authentication_token"
-    t.string "encrypted_authentication_token_iv"
-    t.datetime "authentication_token_expires_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -471,6 +468,14 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.datetime "updated_at", null: false
     t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
+  end
+
+  create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "encrypted_authentication_token"
+    t.string "encrypted_authentication_token_iv"
+    t.datetime "authentication_token_expires_at"
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
 
   create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
