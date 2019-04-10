@@ -137,8 +137,21 @@ const WrappedSignComponent = props => {
   };
 
   const submitForm = event => {
+    // Analytics
+    if (window._paq) {
+      let action = "StartFlowClicked";
+      let value = "Landing";
+
+      if (event.target.id === "signInForm") {
+        action = "NewAuthLoginClicked";
+        value = "NewAuthFlow";
+      }
+
+      window._paq.push(["trackEvent", action, "Clicked", value]);
+    }
+
     setNotification({ show: false, text: "" });
-    doTheThing(event);
+    sendToServer(event);
   };
 
   const tryAgain = event => {
@@ -146,21 +159,18 @@ const WrappedSignComponent = props => {
     setNotification({ show: true, text: locale.sign.sentAgain });
   };
 
-  async function doTheThing(body) {
+  async function sendToServer(body) {
     const url = "publishers/registrations.json";
-    console.log(body.target.id);
     body.target.id === "signInForm"
       ? setWords(successSignInWords)
       : setWords(successSignUpWords);
 
-    console.log(JSON.stringify(body.value));
     let crsf = document.head.querySelector("[name=csrf-token]");
     if (crsf) {
       crsf = crsf.getAttribute("content");
     }
 
     setLoading(true);
-    console.log(`method ${props.method}`);
 
     await fetch(url, {
       headers: {

@@ -17,6 +17,12 @@ import batPill from "../../components/img/built-with-bat-pill.svg";
 import { Heading, Box, Image } from "grommet";
 import locale from "../../locale/en";
 
+const logAction = (action, value) => {
+  if (window._paq) {
+    window._paq.push(["trackEvent", action, "Clicked", value]);
+  }
+};
+
 export const MainHome = () => {
   return (
     <GradientBackground align="center">
@@ -24,7 +30,8 @@ export const MainHome = () => {
         <Box
           direction="column"
           pad="large"
-          margin={{ top: "80px", bottom: "90px" }}>
+          margin={{ top: "80px", bottom: "90px" }}
+        >
           <Box className="bat-pill" as="a" href={locale.nav.batPillHref}>
             <Image src={batPill} />
           </Box>
@@ -35,7 +42,10 @@ export const MainHome = () => {
             {locale.main.home.subhead}
           </H2>
           <Box direction="row" pad={{ vertical: "24px" }} width="100%">
-            <Link to={locale.main.home.btn.signupHref}>
+            <Link
+              to={locale.main.home.btn.signupHref}
+              onClick={() => logAction("StartSignupClicked", "Landing")}
+            >
               <PrimaryButton label={locale.main.home.btn.signup} />
             </Link>
           </Box>
@@ -61,7 +71,7 @@ export const MainHome = () => {
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>
                 <PublicationIcon />
                 <Heading level="3" color="#E9E9F4" size="small" margin="0">
-                  {locale.main.home.examples.publication}
+                  {/* {locale.main.home.examples.publication} */}
                 </Heading>
               </Box>
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>

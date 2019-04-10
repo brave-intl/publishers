@@ -9,6 +9,12 @@ import locale from "../../locale/en";
 import { NavWrapper, NavContainer } from "../../components/styled/container";
 import MobileNav from "./mobileNav";
 
+const logAction = (action, value) => {
+  if (window._paq) {
+    window._paq.push(["trackEvent", action, "Clicked", value]);
+  }
+};
+
 const DefaultNav = () => (
   <NavWrapper as="nav" id="nav">
     <NavContainer
@@ -30,7 +36,10 @@ const DefaultNav = () => (
         </Box>
       </Box>
       <Box direction="row" align="center" gap="large">
-        <Link to={locale.nav.signupHref}>
+        <Link
+          to={locale.nav.signupHref}
+          onClick={() => logAction("LandingSignUpClicked", "Landing")}
+        >
           <Anchor
             as="span"
             a11yTitle="Sign up to be a Brave Rewards Creator"
@@ -38,7 +47,10 @@ const DefaultNav = () => (
             label={locale.nav.signup}
           />
         </Link>
-        <Link to={locale.nav.loginHref}>
+        <Link
+          to={locale.nav.loginHref}
+          onClick={() => logAction("LandingLoginClicked", "Landing")}
+        >
           <SecondaryButton
             a11yTitle="Log in to your Brave Creator dashboard"
             label={locale.nav.login}
