@@ -49,6 +49,8 @@ export class Navbar extends React.Component<INavbarProps, INavbarState> {
     this.state = {
       menuOpen: false
     };
+    // TODO When we migrate over to new dashboard remove this
+    document.getElementById("main-content").style.height = "100vh";
   }
 
   public toggleMenu = () => {
