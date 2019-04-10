@@ -11,9 +11,10 @@ class PublisherTokenGenerator < BaseService
   end
 
   def perform
-    publisher.authentication_token = SecureRandom.hex(32)
-    publisher.authentication_token_expires_at = Time.now + TOKEN_TTL
-    publisher.save!
-    publisher.authentication_token
+    user_authentication_token = UserAuthenticationToken.find_or_initialize_by(user_id: publisher.id)
+    user_authentication_token.authentication_token = SecureRandom.hex(32)
+    user_authentication_token.authentication_token_expires_at = Time.now + TOKEN_TTL
+    user_authentication_token.save!
+    user_authentication_token.authentication_token
   end
 end
