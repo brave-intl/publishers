@@ -16,10 +16,10 @@ $brave-panels-borderRadius: 8px;
 
     background-color: white;
     border-radius: $brave-panels-borderRadius;
-    box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
+    box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
 
     @include media-breakpoint-down(xs) {
-      min-height: $spacer*10; 
+      min-height: $spacer*10;
     }
 
     &--medium {
@@ -39,10 +39,12 @@ $brave-panels-borderRadius: 8px;
         @include make-col(12);
         @include make-col-offset(0);
       }
+
       @include media-breakpoint-up(md) {
         @include make-col(10);
         @include make-col-offset(1);
       }
+
       @include media-breakpoint-up(lg) {
         @include make-col(7);
         @include make-col-offset(2.5);
@@ -64,6 +66,7 @@ $brave-panels-borderRadius: 8px;
     &--platforms {
       padding-top: $spacer*2;
       padding-bottom: $spacer;
+
       @include media-breakpoint-up(md) {
         background-image: url(asset-path("img-brands.png"));
         background-position: top right;
@@ -72,6 +75,7 @@ $brave-panels-borderRadius: 8px;
         padding-bottom: $spacer*7;
       }
     }
+
     &--alert {
       flex: 0;
       padding: $spacer*2 $spacer*2 $spacer*2;
@@ -79,10 +83,13 @@ $brave-panels-borderRadius: 8px;
       color: $braveError-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
-      b, strong {
+
+      b,
+      strong {
         color: inherit;
       }
     }
+
     &--warning {
       flex: 0;
       padding: $spacer*2 $spacer*2 $spacer*2;
@@ -90,10 +97,13 @@ $brave-panels-borderRadius: 8px;
       color: $braveWarning-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
-      b, strong {
+
+      b,
+      strong {
         color: inherit;
       }
     }
+
     &--notice {
       flex: 0;
       padding: $spacer*2 $spacer*2 $spacer*2;
@@ -102,15 +112,19 @@ $brave-panels-borderRadius: 8px;
       border-bottom: 1px solid $braveInfo-Border;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+
       a {
         text-decoration: underline;
       }
-      b, strong {
+
+      b,
+      strong {
         color: inherit;
       }
     }
-    > form,
-    > div {
+
+    >form,
+    >div {
       width: 100%;
     }
   }
@@ -124,6 +138,7 @@ $brave-panels-borderRadius: 8px;
     &--email-sent {
       padding-top: 125px;
       margin-top: 30px;
+
       @include media-breakpoint-up(md) {
         background-image: url(asset-path("email-2@1x.png"));
         background-position: center 20px;
@@ -133,18 +148,16 @@ $brave-panels-borderRadius: 8px;
 
     align-items: center;
     justify-content: center;
-
-    @include media-breakpoint-down(xs) {
-      padding: $spacer;
-    }
   }
 
   &--headline {
     width: 100%;
     margin-bottom: $spacer*2;
+
     @include media-breakpoint-down(xs) {
       margin-top: $spacer;
     }
+
     &--primary {
       color: theme-color('primary');
     }
@@ -159,6 +172,7 @@ $brave-panels-borderRadius: 8px;
     width: 100%;
     margin-top: $spacer*2;
     margin-bottom: $spacer;
+
     &--secondary {
       text-align: center;
     }
@@ -172,18 +186,22 @@ $brave-panels-borderRadius: 8px;
     flex-direction: row;
     flex-wrap: nowrap;
   }
+
   &--icon {
     flex: 0 0 0;
     align-self: center;
     margin: 0 14px 0 6px;
     line-height: 0;
+
     @include media-breakpoint-down(xs) {
       display: none;
     }
+
     &--top {
       align-self: flex-start;
     }
   }
+
   &--text {
     text-align: left;
     flex: 1 1 100%;

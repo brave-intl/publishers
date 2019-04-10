@@ -92,24 +92,23 @@ export const DropdownToggle = styled.div`
 
 export const TextInput = styled.input`
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid lightGray;
+  border: 1px solid #686978;
   border-radius: 8px;
-  color: #686978
+  color: #686978;
   padding: 10px;
   cursor: pointer;
 
-  &:hover{
-     box-shadow: 0 0 1px 1px #fc4145;
-     border: 1px solid rgba(0,0,0,0);
+  &:hover {
+    box-shadow: 0 0 1px 1px #fc4145;
+    border: 1px solid rgba(0, 0, 0, 0);
   }
 
-  &:focus{
+  &:focus {
     cursor: text;
     box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0,0,0,0);
+    border: 1px solid rgba(0, 0, 0, 0);
     outline: none;
   }
-
 
   ${props =>
     props.link &&
@@ -129,12 +128,11 @@ export const TextInput = styled.input`
     height: 50px;
     margin-top: 10px;
     `}
-
 `;
 
 export const TextArea = styled.textarea`
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid lightGray;
+  border: 1px solid #686978;
   border-radius: 8px;
   color: #686978;
   width: 100%;
@@ -147,13 +145,13 @@ export const TextArea = styled.textarea`
 
   &:hover {
     box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0, 0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0.5);
   }
 
   &:focus {
     cursor: text;
     box-shadow: 0 0 1px 1px #fc4145;
-    border: 1px solid rgba(0, 0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     outline: none;
   }
 `;
@@ -176,8 +174,9 @@ export const Label = styled.label`
 `;
 
 export const Text = styled.p`
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Poppins, sans-serif;
 
 ${props =>
   props.links &&
@@ -216,7 +215,6 @@ ${props =>
   css`
     display: inline;
     font-size: 14px;
-    font-family: Poppins;
     color: #f1f1f9;
   `}
 
@@ -228,7 +226,6 @@ ${props =>
     padding: 5px;
     width: 100px;
     font-weight: normal;
-    font-family: Poppins;
     color: #f1f1f9;
   `}
 
@@ -249,7 +246,7 @@ ${props =>
     font-size: 24px;
     font-weight: normal;
     font-family: Poppins;
-    color: #fb542b;
+    color: #4c54d2;
   `}
 
 ${props =>
@@ -276,8 +273,6 @@ export const Links = styled.div`
 
 export const Caret = styled.div`
   display: inline;
-  height: 25px;
-  width: 50px;
   font-size: 20px;
   margin: auto;
   user-select: none;
@@ -364,7 +359,7 @@ export const Logo = styled.div`
   ${({ url }) =>
     url === null &&
     `
-    background-color: #fb542b;
+    background-color: #4C54D2;
   `}
 `;
 
@@ -431,16 +426,16 @@ export const Button = styled.div`
   ${props =>
     props.primary &&
     css`
-      background-color: #fb542b;
-      border: 1px solid #fb542b;
+      background-color: #4c54d2;
+      border: 1px solid #4c54d2;
       color: white;
     `}
 
   ${props =>
     props.dialoguePrimary &&
     css`
-      background-color: #fb542b;
-      border: 1px solid #fb542b;
+      background-color: #4c54d2;
+      border: 1px solid #4c54d2;
       color: white;
       display: block;
       margin: auto;
@@ -450,8 +445,8 @@ export const Button = styled.div`
   ${props =>
     props.outline &&
     css`
-      border: 1px solid #fb542b;
-      color: #fb542b;
+      border: 1px solid #4c54d2;
+      color: #4c54d2;
     `}
 
   ${props =>
