@@ -7,22 +7,37 @@ interface ITextProps {
   bold?: boolean;
 }
 
-export const H1 = styled.div``;
+export const H1 = styled.div`
+  font-family: Poppins, sans-serif;
+  font-size: 30px;
+`;
 
 export const H2 = styled.div`
-  font-size: 22px;
+  font-family: Poppins, sans-serif;
+  font-size: 24px;
   ${(props: ITextProps) =>
     props.bold &&
     `
     font-weight: bold;
     `}
 `;
-export const H3 = styled.div``;
-export const H4 = styled.div``;
-export const H5 = styled.div``;
-export const H6 = styled.div``;
+export const H3 = styled.div`
+  font-size: 22px;
+`;
+export const H4 = styled.div`
+  font-family: Poppins, sans-serif;
+  font-size: 20px;
+`;
+export const H5 = styled.div`
+  font-size: 18px;
+`;
+export const H6 = styled.div`
+  font-size: 16px;
+`;
 
-export const P = styled.div``;
+export const P = styled.div`
+  font-size: 14px;
+`;
 
 export const Subtitle = styled.div``;
 export const SubtitleAlt = styled.div``;
