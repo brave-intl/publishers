@@ -1,7 +1,7 @@
 class Sync::Zendesk::TicketsToNotes
   include Sidekiq::Worker
 
-  def perform(page_number = 0)
+  def perform(page_number = 0, start_date = nil)
     require 'zendesk_api'
     client = ZendeskAPI::Client.new do |config|
       # Mandatory:
@@ -41,7 +41,14 @@ class Sync::Zendesk::TicketsToNotes
 
     # (Albert Wang): Don't bother with sorting. There's a bug in the app where it casts & into urlencoding. Zendesk should fix it on their
     # end or we make a fix on Zendesk's Ruby Gem
-    response = client.search(query: "type:ticket group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}").per_page(50)
+    # Pages 100 per query
+    # Rate limited to 700 per minute
+    # Zendesk's `updated` gets updated if a new comment is added.
+    response = client.search(query:
+                              "type:ticket " +
+                              "group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}" +
+                              (start_date.present? ? " updated>#{start_date}" : "")
+                            )
     response.all! do |result|
       Sync::Zendesk::TicketCommentsToNotes.perform_async(result[:id], 0)
     end
