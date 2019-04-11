@@ -71,7 +71,7 @@ export const MainHome = () => {
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>
                 <PublicationIcon />
                 <Heading level="3" color="#E9E9F4" size="small" margin="0">
-                  {/* {locale.main.home.examples.publication} */}
+                  {locale.main.home.examples.publication}
                 </Heading>
               </Box>
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>
