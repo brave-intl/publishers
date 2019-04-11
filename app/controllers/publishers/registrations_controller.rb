@@ -62,20 +62,10 @@ module Publishers
 
       email_existing_publisher(@publisher) and return if @publisher
 
+      # If the publisher doesn't exist we'll just pretend like they do
       respond_to do |format|
-        format.html do
-          # Failed to find publisher
-          flash[:alert_html_safe] = t("publishers.registrations.emailed_authentication_token.unfound_alert_html",
-            new_publisher_path: sign_up_publishers_path(email: params[:email]),
-            create_publisher_path: registrations_path(email: params[:email]),
-            email: ERB::Util.html_escape(params[:email]))
-
-          @publisher = Publisher.new
-          return redirect_to log_in_publishers_path
-        end
-        format.json do
-          render json: { message: t("publishers.registrations.emailed_authentication_token.unfound_alert_json") }, status: 400
-        end
+        format.html { render :emailed_authentication_token }
+        format.json { head :ok }
       end
     end
 
