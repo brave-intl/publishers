@@ -193,7 +193,7 @@ const WrappedSignComponent = props => {
             setNotification({ show: true, text: json.message });
           })
           .catch(errorText => {
-            setNotification({ show: true, text: "Something went wrong!" });
+            setNotification({ show: true, text: "Something went wrong." });
           });
       }
     });

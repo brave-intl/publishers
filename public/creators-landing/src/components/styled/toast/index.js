@@ -24,10 +24,10 @@ export function Toast(props) {
         background="#F3F3FD"
       >
         <IconContainer
-          minWidth="32px"
-          height="32px"
-          width="32px"
-          color="#339AF0"
+          minWidth="24px"
+          height="24px"
+          width="24px"
+          color="#E32444"
         >
           <InfoIcon />
         </IconContainer>
