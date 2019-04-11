@@ -43,9 +43,9 @@ class Sync::Zendesk::TicketsToNotes
     # end or we make a fix on Zendesk's Ruby Gem
     response = client.search(query: "type:ticket group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}").per_page(50)
     response.all! do |result|
-      Sync::Zendesk::TicketCommentsToNotes.perform_in(1.minute, result[:id], 0)
+      Sync::Zendesk::TicketCommentsToNotes.perform_async(result[:id], 0)
     end
 
-    Sync::Zendesk::TicketsToNotes.perform_in(5.seconds, page_number + 1) if page_number <= response.count
+    Sync::Zendesk::TicketsToNotes.perform_in(30.seconds, page_number + 1) if page_number <= response.count
   end
 end
