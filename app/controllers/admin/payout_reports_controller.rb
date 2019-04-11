@@ -1,4 +1,6 @@
 class Admin::PayoutReportsController < AdminController
+  MANUAL = "manual"
+
   def index
     @payout_reports = PayoutReport.all.order(created_at: :desc).paginate(page: params[:page])
   end
@@ -38,13 +40,21 @@ class Admin::PayoutReportsController < AdminController
     Eyeshade::Publishers.new.create_settlement(body: json)
 
     json.each do |entry|
-      next unless entry["documentId"]
-      invoice = Invoice.find_by(id: entry["documentId"])
+      next unless entry["type"] == MANUAL && entry["owner"] && entry["amount"]
+
+      partner_id = entry["owner"].sub("publishers#uuid:", "")
+
+      invoice = Invoice.where(
+        partner_id: partner_id,
+        finalized_amount: entry["amount"],
+        status: Invoice::IN_PROGRESS
+      ).order(:created_at).first
+
       next unless invoice.present?
 
       invoice.update(
         payment_date: Date.today,
-        status: "paid",
+        status: Invoice::PAID,
         paid_by: current_publisher
       )
     end
@@ -68,7 +78,7 @@ class Admin::PayoutReportsController < AdminController
     report_contents = JSON.parse(report_contents)
     report_contents.each do |potential_payout|
       # Assign current admin as authority, unless it is a manual report.
-      potential_payout["authority"] = current_publisher.email unless potential_payout["type"] == PotentialPayment::MANUAL 
+      potential_payout["authority"] = current_publisher.email unless potential_payout["type"] == PotentialPayment::MANUAL
     end
 
     report_contents.to_json
