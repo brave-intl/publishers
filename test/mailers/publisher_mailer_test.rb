@@ -55,6 +55,8 @@ class PublisherMailerTest < ActionMailer::TestCase
     publisher.pending_email = "alice-pending@verified.com"
     publisher.save
 
+    # Same logic as ConfirmEmailChangeEmailer
+    PublisherTokenGenerator.new(publisher: publisher).perform
     email = PublisherMailer.confirm_email_change(publisher)
 
     assert_emails 1 do
@@ -73,6 +75,8 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     # verify error raised if no pending email
     assert_nothing_raised do
+      # (Albert Wang): VerifyEmailEmailer should be tested but it simply runs the below statements
+      PublisherTokenGenerator.new(publisher: publisher).perform
       PublisherMailer.verify_email(publisher).deliver_now
     end
 
@@ -87,9 +91,6 @@ class PublisherMailerTest < ActionMailer::TestCase
 
   test "login_email verify_email verification_done and confirm_email_change raise unless token fresh" do
     publisher = publishers(:default)
-
-    publisher.authentication_token = nil
-    publisher.authentication_token_expires_at = 1.hour.ago
 
     assert_raise do PublisherMailer.login_email(publisher).deliver end
     assert_raise do PublisherMailer.verify_email(publisher).deliver end

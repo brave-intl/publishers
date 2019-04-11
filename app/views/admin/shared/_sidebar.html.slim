@@ -23,6 +23,7 @@ aside
             = nav_link "Websites",  admin_channels_path(type: 'website')
             = nav_link "Twitch", admin_channels_path(type: 'twitch')
             = nav_link "Youtube", admin_channels_path(type: 'youtube')
+            = nav_link "Transfers", admin_channel_transfers_path
 
         = nav_link "Organizations", admin_organizations_path
         = nav_link "Partners", admin_partners_path
@@ -35,6 +36,8 @@ aside
           = link_to "Publishers", admin_publishers_path
           ul.sub-menu style="#{params[:controller] == 'admin/publishers' ? "" : "display:none"} "
             = nav_link "Suspended Publishers", admin_publishers_path(suspended: true)
+          ul.sub-menu style="#{params[:controller] == 'admin/publishers' ? "" : "display:none"} "
+            = nav_link "2FA Removals", admin_publishers_path(two_factor_authentication_removal: true)
         = nav_link "FAQs", admin_faq_categories_path
         = nav_link "Payout Reports", admin_payout_reports_path
         = nav_link "Referral Promo", admin_unattached_promo_registrations_path

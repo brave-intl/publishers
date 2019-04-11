@@ -20,6 +20,14 @@ module AdminHelper
     end
   end
 
+  def publisher_link(publisher)
+    link = link_to(publisher.email || publisher.pending_email, admin_publisher_path(publisher))
+    badge = nil
+    badge = content_tag(:span, 'S', class: 'badge badge-danger ml-2', title: "Suspended") if publisher.suspended?
+
+    link + badge
+  end
+
   def payout_report_status_header(account_type)
     report_date = PayoutReport.most_recent_final_report.created_at.strftime("%b %d")
 

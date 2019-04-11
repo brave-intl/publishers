@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_143005) do
+ActiveRecord::Schema.define(version: 2019_03_28_231740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,18 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "channel_transfers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "transfer_from_id"
+    t.uuid "transfer_to_id"
+    t.uuid "channel_id"
+    t.boolean "suspended"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_channel_transfers_on_channel_id"
+    t.index ["transfer_from_id"], name: "index_channel_transfers_on_transfer_from_id"
+    t.index ["transfer_to_id"], name: "index_channel_transfers_on_transfer_to_id"
   end
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -327,9 +339,6 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.string "pending_email"
     t.string "phone"
     t.string "phone_normalized"
-    t.string "encrypted_authentication_token"
-    t.string "encrypted_authentication_token_iv"
-    t.datetime "authentication_token_expires_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -440,6 +449,14 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id"
   end
 
+  create_table "two_factor_authentication_removals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.boolean "removal_completed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_two_factor_authentication_removals_on_publisher_id"
+  end
+
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.text "certificate"
     t.string "key_handle"
@@ -451,6 +468,14 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.datetime "updated_at", null: false
     t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
+  end
+
+  create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "encrypted_authentication_token"
+    t.string "encrypted_authentication_token_iv"
+    t.datetime "authentication_token_expires_at"
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
 
   create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -480,6 +505,8 @@ ActiveRecord::Schema.define(version: 2019_03_22_143005) do
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end
 
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_from_id"
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_to_id"
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
   add_foreign_key "invoice_files", "publishers", column: "uploaded_by_id"
   add_foreign_key "invoices", "publishers", column: "finalized_by_id"

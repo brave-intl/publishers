@@ -12,7 +12,8 @@ class VerifyEmailEmailerTest < ActiveJob::TestCase
       MailerServices::VerifyEmailEmailer.new(publisher: publisher).perform
     end
 
+    publisher.reload
     assert_not_equal prev_auth_token, publisher.authentication_token
-    assert prev_auth_token_expires_at < publisher.authentication_token_expires_at
+    assert_not_equal prev_auth_token_expires_at, publisher.authentication_token_expires_at
   end
 end

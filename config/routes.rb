@@ -31,6 +31,10 @@ Rails.application.routes.draw do
       patch :complete_signup
       patch :disconnect_uphold
       get :choose_new_channel_type
+      get :two_factor_authentication_removal
+      post :request_two_factor_authentication_removal
+      get :confirm_two_factor_authentication_removal
+      get :cancel_two_factor_authentication_removal
       resources :two_factor_authentications, only: %i(index)
       resources :two_factor_registrations, only: %i(index) do
         collection do
@@ -111,14 +115,6 @@ Rails.application.routes.draw do
   get 'log-in', to: "static#index"
 
   namespace :api, defaults: { format: :json } do
-    resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
-      resources :channels, only: %i(create), constraints: { channel_id: %r{[^\/]+} } do
-        get "/", action: :show
-      end
-    end
-    resources :tokens, only: %i(index)
-    resources :channels, constraints: { channel_id: %r{[^\/]+} }
-
     # /api/v1/
     namespace :v1, defaults: { format: :json } do
       # /api/v1/stats/
@@ -169,10 +165,13 @@ Rails.application.routes.draw do
         patch :approve_channel
         get :statement
         post :create_note
+        get :cancel_two_factor_authentication_removal
       end
       resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
+    resources :channel_transfers
+    resources :security
 
     resources :organizations, except: [:destroy]
     resources :partners, except: [:destroy] do

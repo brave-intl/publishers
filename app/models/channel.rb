@@ -4,7 +4,6 @@ class Channel < ApplicationRecord
   YOUTUBE = "youtube".freeze
   TWITCH = "twitch".freeze
   TWITTER = "twitter".freeze
-  TWITTER_ENABLED = false
   CONTEST_TIMEOUT = 10.days
 
   YOUTUBE_VIEW_COUNT = :youtube_view_count
