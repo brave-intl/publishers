@@ -803,8 +803,11 @@ en:
           protocol. Please use a current release of Google Chrome or Opera.
           (IMPLEMENTATION_INCOMPLETE)
       lost_account:
-        body: Lost your 2FA?
-        body_link: Visit our Help Center to restore your account access.
+        lost_2fa: Lost your 2-factor-authentication?
+        lost_2fa_link: We can help.
+        lost_2fa_note_html: |
+          For information related to account settings, visit our <a href="https://support.brave.com/hc/en-us/articles/360022724391-What-do-I-do-if-I-get-locked-out-of-my-account-">Help Center.</a>
+
   two_factor_registrations:
     index:
       heading: Two-factor Authentication
