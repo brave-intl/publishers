@@ -449,6 +449,14 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id"
   end
 
+  create_table "two_factor_authentication_removals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.boolean "removal_completed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_two_factor_authentication_removals_on_publisher_id"
+  end
+
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.text "certificate"
     t.string "key_handle"

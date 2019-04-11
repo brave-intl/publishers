@@ -33,6 +33,7 @@ class Publisher < ApplicationRecord
 
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
+  has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
   has_many :login_activities
 
@@ -220,6 +221,10 @@ class Publisher < ApplicationRecord
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
   end
 
+  def locked?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::LOCKED
+  end
+
   def verified?
     email_verified? && name.present? && agreed_to_tos.present?
   end
@@ -355,6 +360,12 @@ class Publisher < ApplicationRecord
       wallet.scope &&
       wallet.scope.include?("cards:write") &&
       !excluded_from_payout
+  end
+
+  def register_for_2fa_removal
+    TwoFactorAuthenticationRemoval.create(
+      publisher_id: id
+    )
   end
 
   # Remove when new dashboard is finished
