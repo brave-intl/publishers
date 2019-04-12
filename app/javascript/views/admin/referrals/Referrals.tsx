@@ -7,24 +7,22 @@ import Card from "../../../components/card/Card";
 import ReferralsHeader from "./components/referralsHeader/ReferralsHeader";
 
 import { element } from "prop-types";
+import console = require("console");
 
 export default class Referrals extends React.Component<{}, {}> {
   constructor(props) {
     super(props);
     this.state = {
-      data: { referralCodes: [] }
+      data: { referralCodes: [{stats: null}] }
     };
   }
 
   public componentDidMount() {
     this.fetchData();
+  }
 
-    const node = this.node;
-
-    var myChart = new Chart(node, {
-      type: "line",
-      data: [{ x: 12, y: 20 }, { x: 20, y: 25 }]
-    });
+  public componentDidUpdate() {
+    this.createReferralsChart(this.state.data.referralCodes[0]);
   }
 
   public async fetchData() {
@@ -55,6 +53,73 @@ export default class Referrals extends React.Component<{}, {}> {
     ));
   }
 
+  public handleSelect = e => {
+    this.createReferralsChart(this.state.data.referralCodes[e]);
+  }
+
+  public createReferralsChart(referralCode) {
+
+    let stats = JSON.parse(referralCode.stats)
+
+    const node = this.node;
+
+    let referralChartDatasets = []
+
+    let referralChartLabels = []
+    let downloads = []
+    let installs = []
+    let confirmations = []
+    stats.forEach((stat) => {
+      referralChartLabels.push(stat.ymd)
+      downloads.push(stat.retrievals)
+      installs.push(stat.first_runs)
+      confirmations.push(stat.finalized)
+    })
+
+    let referralChartData = {
+      labels: referralChartLabels,
+      datasets: [
+        {
+          label: "Downloads",
+          data: downloads,
+          borderColor: "#FFCD56",
+          backgroundColor: "#FFCD56",
+          fill: true
+        }, 
+        {
+          label: "Installs",
+          data: installs,
+          borderColor: "#36A2EB",
+          backgroundColor: "#36A2EB",
+          fill: true
+        }, 
+        {
+          label: "Confirmations",
+          data: confirmations,
+          borderColor: "#FF6384",
+          backgroundColor: "#FF6384",
+          fill: true
+        }]
+    }
+
+    let referralChartSettings = {
+      options: {
+        scales: {
+          yAxes: [
+            {
+              display: false,
+              stacked: true
+            }
+          ]
+        }
+      },
+      type: "line"
+      data: referralChartData  
+    }
+
+    var myChart = new Chart(node, referralChartSettings)
+  }
+
   public render() {
     return (
       <div
@@ -75,7 +140,9 @@ export default class Referrals extends React.Component<{}, {}> {
         </div>
         <div style={{ gridColumn: "1 / 4" }}>
           <Card>
-            <Select>{this.populateSelect()}</Select>
+            <Select onChange={e => this.handleSelect(e)}>
+            {this.populateSelect()}
+            </Select>
           </Card>
         </div>
         <div style={{ gridColumn: "4 / 13" }}>
