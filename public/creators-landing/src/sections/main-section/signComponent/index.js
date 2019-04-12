@@ -137,6 +137,12 @@ const WrappedSignComponent = props => {
   };
 
   const submitForm = event => {
+    // Prevent people from endlessly submitting
+    event.target.blur();
+    if (loading) {
+      return;
+    }
+
     // Analytics
     if (window._paq) {
       let action = "StartFlowClicked";
@@ -150,6 +156,7 @@ const WrappedSignComponent = props => {
       window._paq.push(["trackEvent", action, "Clicked", value]);
     }
 
+    setLoading(true);
     setNotification({ show: false, text: "" });
     sendToServer(event);
   };
@@ -169,8 +176,6 @@ const WrappedSignComponent = props => {
     if (crsf) {
       crsf = crsf.getAttribute("content");
     }
-
-    setLoading(true);
 
     await fetch(url, {
       headers: {

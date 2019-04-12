@@ -41,9 +41,6 @@ class LogInTest < Capybara::Rails::TestCase
     fill_in 'email', with: email
     click_button('Log In')
 
-    assert_content page, "Couldn't find a publisher with that email address"
-    click_link("create an account with the email #{email}")
-
     assert_content page, "An email is on its way"
   end
 

@@ -225,3 +225,7 @@ h4 {
     transition-timing-function: ease;
   }
 }
+
+a {
+  text-decoration: none;
+}

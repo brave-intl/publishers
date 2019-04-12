@@ -60,7 +60,7 @@ module Publishers
 
       enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path) and return
 
-      email_existing_publisher(@publisher) and return if @publisher
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
 
       # If the publisher doesn't exist we'll just pretend like they do
       respond_to do |format|
