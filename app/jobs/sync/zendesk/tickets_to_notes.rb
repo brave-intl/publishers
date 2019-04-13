@@ -26,8 +26,8 @@ class Sync::Zendesk::TicketsToNotes
       config.retry = true
 
       # Logger prints to STDERR by default, to e.g. print to stdout:
-      require 'logger'
-      config.logger = Logger.new(STDOUT)
+      # require 'logger'
+      # config.logger = Logger.new(STDOUT)
 
       # Changes Faraday adapter
       # config.adapter = :patron
@@ -53,6 +53,6 @@ class Sync::Zendesk::TicketsToNotes
       Sync::Zendesk::TicketCommentsToNotes.perform_async(result[:id], 0)
     end
 
-    Sync::Zendesk::TicketsToNotes.perform_in(30.seconds, page_number + 1) if page_number <= response.count
+    Sync::Zendesk::TicketsToNotes.perform_in(30.seconds, page_number + 1) if response.included["next_page"].present?
   end
 end
