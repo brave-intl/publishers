@@ -44,9 +44,14 @@ VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
   config.filter_sensitive_data("<ENCODED API KEY>") { Rails.application.secrets[:sendgrid_api_key] }
+  config.before_record do |i|
+    i.response.body.force_encoding('UTF-8')
+    i.response.headers.delete('Set-Cookie')
+    i.request.headers.delete('Authorization')
+  end
   config.ignore_hosts '127.0.0.1', 'localhost'
   config.allow_http_connections_when_no_cassette = true
-  config.default_cassette_options = { match_requests_on: [:method, :uri, :body] }
+  config.default_cassette_options = { match_requests_on: [:method, :uri, :body], decode_compressed_response: true }
 end
 
 class Capybara::Rails::TestCase

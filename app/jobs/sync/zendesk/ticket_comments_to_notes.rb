@@ -39,9 +39,12 @@ class Sync::Zendesk::TicketCommentsToNotes
     end
     # Don't lock this in a transaction as we might need to parse over to update the ticket
     publisher_notes.each do |publisher_note|
-      publisher_note.publisher_id = publisher.id
-      publisher_note.created_by_id = admin_id
-      publisher_note.save
+      begin
+        publisher_note.publisher_id = publisher.id
+        publisher_note.created_by_id = admin_id
+        publisher_note.save
+      rescue ActiveRecord::RecordNotUnique
+      end
     end
   end
 end
