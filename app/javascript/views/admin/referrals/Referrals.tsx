@@ -4,10 +4,10 @@ import Select from "brave-ui/components/formControls/select";
 import Chart from "chart.js";
 import Card from "../../../components/card/Card";
 
+import UserNavbar from "../components/userNavbar/UserNavbar"
 import ReferralsHeader from "./components/referralsHeader/ReferralsHeader";
 
 import { element } from "prop-types";
-import console = require("console");
 
 export default class Referrals extends React.Component<{}, {}> {
   constructor(props) {
@@ -131,6 +131,9 @@ export default class Referrals extends React.Component<{}, {}> {
           gridGap: "30px"
         }}
       >
+        <div style={{ gridColumn: "1 / 13" }}>
+          <UserNavbar/>
+        </div>
         <div style={{ gridColumn: "1 / 13" }}>
           <ReferralsHeader
             downloads={this.state.data.downloads}

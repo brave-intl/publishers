@@ -164,6 +164,7 @@ Rails.application.routes.draw do
     end
     resources :channel_transfers
     resources :referrals
+    resources :payments
 
     resources :organizations, except: [:destroy]
     resources :partners, except: [:destroy] do
