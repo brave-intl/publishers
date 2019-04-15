@@ -19,6 +19,8 @@ class Publisher < ApplicationRecord
 
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
+  has_one :two_factor_authentication_removal
+  has_one :user_authentication_token, foreign_key: :user_id
   has_many :login_activities
 
   belongs_to :uphold_connection
@@ -102,6 +104,14 @@ class Publisher < ApplicationRecord
     }
   end
 
+  def authentication_token
+    user_authentication_token&.authentication_token
+  end
+
+  def authentication_token_expires_at
+    user_authentication_token&.authentication_token_expires_at
+  end
+
   def self.advanced_sort(column, sort_direction)
     # Please update ADVANCED_SORTABLE_COLUMNS
     case column
@@ -175,6 +185,10 @@ class Publisher < ApplicationRecord
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
   end
 
+  def locked?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::LOCKED
+  end
+
   def verified?
     email_verified? && name.present? && agreed_to_tos.present?
   end
@@ -233,6 +247,13 @@ class Publisher < ApplicationRecord
   def last_login_activity
     login_activities.last
   end
+
+  def register_for_2fa_removal
+    TwoFactorAuthenticationRemoval.create(
+      publisher_id: id
+    )
+  end
+
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
     partner?

@@ -6,10 +6,10 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if !@publisher.has_verified_channel? || @publisher.excluded_from_payout?
+    return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout?
 
+    publisher_has_unsettled_balance = false
     create_uphold_card_for_default_currency_if_needed
-
     publisher_has_unsettled_balance = false
     wallet = PublisherWalletGetter.new(publisher: @publisher).perform
 

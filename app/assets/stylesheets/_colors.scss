@@ -1,12 +1,25 @@
-$braveBrand-Dark: #dd1c0d;
-$braveBrand: #ff3f3f;
-$braveBrand-Light: #ff8e78;
-$braveBrand-Ghost: #ffc8b3;
+$defaultBoxShadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-$braveAction-Dark: #00a1c0;
-$braveAction: #00bcd6;
-$braveAction-Light: #85dde9;
-$braveAction-Ghost: #bcf0f7;
+$braveBrand: #4C54D2;
+$braveBrand-Dark: darken($braveBrand, 10%);
+$braveBrand-Light: lighten($braveBrand, 20%);
+$braveBrand-Ghost: lighten($braveBrand, 50%);
+
+$braveGray-1: #1E2029;
+$braveGray-2: #3B3E4F;
+$braveGray-3: #5E6175;
+$braveGray-4: #84889C;
+$braveGray-5: #999ea2;
+$braveGray-6: #a7acb2;
+$braveGray-7: #cdd1d5;
+$braveGray-8: #dbdfe3;
+$braveGray-9: #e7ebee;
+$braveGray-10: #f7f8f9;
+
+$braveText-1: $braveGray-1;
+$braveText-2: $braveGray-2;
+$braveText-3: $braveGray-3;
+$braveText-4: $braveGray-4;
 
 $braveAccent-Dark: #5c58c2;
 $braveAccent: #7d7bdc;
@@ -36,27 +49,11 @@ $bravePromo-DarkBlue: #006192;
 $bravePromo-TwitterBlue: #1DA1F2;
 $bravePromo-FacebookBlue: #3B5998;
 
-$braveGray-1: #222326;
-$braveGray-2: #484b4e;
-$braveGray-3: #606467;
-$braveGray-4: #818589;
-$braveGray-5: #999ea2;
-$braveGray-6: #a7acb2;
-$braveGray-7: #cdd1d5;
-$braveGray-8: #dbdfe3;
-$braveGray-9: #e7ebee;
-$braveGray-10: #f7f8f9;
-
 $braveWarning-Background: #FFF8D2;
 $braveWarning-Foreground: $braveGray-1;
 
 $braveOrange: #FF7A1D;
 $braveRed: #E2052A;
-
-$braveText-1: $braveGray-1;
-$braveText-2: $braveGray-2;
-$braveText-3: $braveGray-3;
-$braveText-4: $braveGray-4;
 
 $braveBackground-1: $braveGray-8;
 $braveBackground-2: $braveGray-9;
@@ -64,10 +61,6 @@ $braveBackground-3: $braveGray-10;
 
 $braveDivider-1: $braveGray-8;
 $braveDivider-2: $braveGray-9;
-
-$braveGradient-LegacyPink: linear-gradient(165deg, #e9eaef, #e0e3e6, #d6d6d6, #e7ccc9, #f7ada7, #d68588, #ca3884, #c7297b);
-$braveGradient-Pink: linear-gradient(to right, #dce6f5 0%, #dce6f5 15%, #d9d8e6 28%, #d9d8e6 39%, #e7ccc9 49%, #d7ada7 61%, #d68588 74%, #ca3884 86%, #c7297b 100%);
-$braveGradient-Purple: linear-gradient(to right, $braveSuccess-Ghost, #7d78df);
 
 $highlightBlue: #37A9FD;
 $chromePrimary: #F3F3F3;
