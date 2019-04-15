@@ -9,7 +9,7 @@ class PublisherWalletDisconnector < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    if publisher.uphold_verified
+    if publisher.uphold_connection.uphold_verified
       raise "Publisher #{publisher.id} has re-verified their Uphold connection, so it should not be disconnected."
     end
 
@@ -21,7 +21,7 @@ class PublisherWalletDisconnector < BaseApiClient
       request.body =
           <<~BODY
           {
-            "provider": "uphold", 
+            "provider": "uphold",
             "parameters": {}
           }
       BODY

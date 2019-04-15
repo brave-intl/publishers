@@ -62,7 +62,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
           with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
           to_return(status: 200, body: eyeshade_response.to_json, headers: {})
         PublisherWalletGetter.new(publisher: publisher).perform
-        assert_equal Publisher::UpholdAccountState::VERIFIED, publisher.uphold_status
+        assert_equal UpholdConnection::UpholdAccountState::VERIFIED, publisher.uphold_status
       end
 
       test "not a member yet ok" do
@@ -72,7 +72,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         publisher = publishers(:uphold_connected)
         publisher.channels.delete_all
         stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-        assert_equal Publisher::UpholdAccountState::RESTRICTED, publisher.uphold_status
+        assert_equal UpholdConnection::UpholdAccountState::RESTRICTED, publisher.uphold_status
       end
 
       test "unconnected" do
@@ -80,7 +80,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         publisher = publishers(:verified)
         publisher.channels.delete_all
         stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-        assert_equal Publisher::UpholdAccountState::UNCONNECTED, publisher.uphold_status
+        assert_equal UpholdConnection::UpholdAccountState::UNCONNECTED, publisher.uphold_status
       end
 
       test "has an action" do
@@ -90,7 +90,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
           eyeshade_response[:status][:action] = action
           stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
           PublisherWalletGetter.new(publisher: publisher).perform
-          assert_equal Publisher::UpholdAccountState::REAUTHORIZATION_NEEDED, publisher.uphold_status
+          assert_equal UpholdConnection::UpholdAccountState::REAUTHORIZATION_NEEDED, publisher.uphold_status
         end
       end
     end

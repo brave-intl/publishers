@@ -19,7 +19,6 @@ class UpholdConnection < ActiveRecord::Base
     BLOCKED         = :blocked
   end
 
-  belongs_to :user, class_name: "Publisher", foreign_key: :user_id
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters

@@ -8,7 +8,7 @@ class CleanStaleUpholdDataJobTest < ActiveJob::TestCase
     publisher.save!
 
     # override `before_validation :set_uphold_updated_at`
-    publisher.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.second
+    publisher.uphold_updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.second
     publisher.save!
 
     CleanStaleUpholdDataJob.perform_now
@@ -25,7 +25,7 @@ class CleanStaleUpholdDataJobTest < ActiveJob::TestCase
     publisher.save!
 
     # override `before_validation :set_uphold_updated_at`
-    publisher.uphold_connection.uphold_updated_at = Publisher::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.second
+    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.second
     publisher.save!
 
     CleanStaleUpholdDataJob.perform_now

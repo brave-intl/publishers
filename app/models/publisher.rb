@@ -21,6 +21,8 @@ class Publisher < ApplicationRecord
   has_one :totp_registration
   has_many :login_activities
 
+  belongs_to :uphold_connection
+
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
   has_many :promo_campaigns, dependent: :destroy
@@ -53,17 +55,6 @@ class Publisher < ApplicationRecord
   validates :phone_normalized, phony_plausible: true
 
   validates_inclusion_of :role, in: ROLES
-
-  # uphold_code is an intermediate step to acquiring uphold_access_parameters
-  # and should be cleared once it has been used to get uphold_access_parameters
-  validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
-  before_validation :set_uphold_updated_at, if: -> {
-    uphold_code_changed? || uphold_access_parameters_changed? || uphold_state_token_changed?
-  }
-
-  # uphold_access_parameters should be cleared once uphold_verified has been set
-  # (see `verify_uphold` method below)
-  validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
   validates :promo_token_2018q1, uniqueness: true, allow_nil: true
 
@@ -102,6 +93,7 @@ class Publisher < ApplicationRecord
   }
 
   def self.statistical_totals(up_to_date: 1.day.from_now)
+    # TODO change this
     {
       email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,

@@ -182,10 +182,10 @@ class PublishersHelperTest < ActionView::TestCase
     publisher.uphold_status = :unconnected
     assert_equal "uphold-unconnected", uphold_status_class(publisher)
 
-    publisher.uphold_status = Publisher::UpholdAccountState::RESTRICTED
-    assert_equal "uphold-" + Publisher::UpholdAccountState::RESTRICTED.to_s, uphold_status_class(publisher)
+    publisher.uphold_status = UpholdConnection::UpholdAccountState::RESTRICTED
+    assert_equal "uphold-" + UpholdConnection::UpholdAccountState::RESTRICTED.to_s, uphold_status_class(publisher)
 
-    publisher.uphold_status = Publisher::UpholdAccountState::BLOCKED
+    publisher.uphold_status = UpholdConnection::UpholdAccountState::BLOCKED
     assert_equal "uphold-complete", uphold_status_class(publisher)
   end
 end

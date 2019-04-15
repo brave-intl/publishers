@@ -7,7 +7,7 @@ class CleanStaleUpholdDataJob < ApplicationJob
     publishers = Publisher.has_stale_uphold_code
     n = 0
     publishers.each do |publisher|
-      raise if publisher.uphold_connection.uphold_status != :code_acquired
+      raise if publisher.uphold_connection&.uphold_status != :code_acquired
       publisher.uphold_connection.uphold_code = nil
       publisher.save!
       n += 1

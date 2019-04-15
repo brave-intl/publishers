@@ -267,7 +267,7 @@ class PublisherTest < ActiveSupport::TestCase
 
       publisher.wallet
       assert publisher.uphold_connection.uphold_verified?
-      assert_equal Publisher::UpholdAccountState::RESTRICTED, publisher.uphold_connection.uphold_status
+      assert_equal UpholdConnection::UpholdAccountState::RESTRICTED, publisher.uphold_connection.uphold_status
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
     end
@@ -383,7 +383,7 @@ class PublisherTest < ActiveSupport::TestCase
     # verify scope includes publisher if uphold_code exist and exceeds timeout
     publisher.uphold_connection.uphold_code = "foo"
     publisher.save
-    publisher.uphold_connection.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
     publisher.save
     assert_equal Publisher.has_stale_uphold_code.count, 1
 
@@ -400,7 +400,7 @@ class PublisherTest < ActiveSupport::TestCase
     # verify scope does not include publisher if uphold_code does not exist and exceeds timeout
     publisher.uphold_connection.uphold_code = nil
     publisher.save!
-    publisher.uphold_connection.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
     publisher.save!
     assert_equal Publisher.has_stale_uphold_code.count, 0
   end
@@ -414,7 +414,7 @@ class PublisherTest < ActiveSupport::TestCase
     # verify scope includes publisher if uphold_access_params exist and exceeds timeout
     publisher.uphold_connection.uphold_access_parameters = "foo"
     publisher.save
-    publisher.uphold_connection.uphold_updated_at = Publisher::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.minute
     publisher.save
     assert_equal Publisher.has_stale_uphold_access_parameters.count, 1
 
@@ -431,7 +431,7 @@ class PublisherTest < ActiveSupport::TestCase
     # verify scope does not include publisher if uphold_access_params does not exist and exceeds timeout
     publisher.uphold_connection.uphold_access_parameters = nil
     publisher.save!
-    publisher.uphold_connection.uphold_updated_at = Publisher::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
     publisher.save!
     assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
   end
