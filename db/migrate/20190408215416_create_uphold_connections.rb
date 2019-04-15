@@ -4,6 +4,8 @@ class CreateUpholdConnections < ActiveRecord::Migration[5.2]
       t.string :uphold_state_token
       t.boolean :uphold_verified, default: false
       t.uuid :uphold_id
+      t.belongs_to :publisher, index: true, type: :uuid
+
       t.string :encrypted_uphold_code
       t.string :encrypted_uphold_code_iv
       t.string :encrypted_uphold_access_parameters
@@ -12,6 +14,6 @@ class CreateUpholdConnections < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_reference :publishers, :uphold_connections, index: true, foreign_key: { to_table: :uphold_connections }, type: :uuid
+    add_reference :publishers, :uphold_connection, index: true, foreign_key: { to_table: :uphold_connections }, type: :uuid
   end
 end

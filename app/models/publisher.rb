@@ -23,7 +23,6 @@ class Publisher < ApplicationRecord
   has_one :user_authentication_token, foreign_key: :user_id
   has_many :login_activities
 
-  belongs_to :uphold_connection
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
@@ -36,6 +35,10 @@ class Publisher < ApplicationRecord
   has_many :potential_payments
 
   belongs_to :youtube_channel
+
+  # Setting a belongs to so we don't create have an extra query
+  # everytime we want to check to see if the publisher has an uphold connection
+  belongs_to :uphold_connection
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",

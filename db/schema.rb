@@ -368,12 +368,12 @@ ActiveRecord::Schema.define(version: 2019_04_08_215416) do
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
     t.uuid "uphold_id"
-    t.uuid "uphold_connections_id"
+    t.uuid "uphold_connection_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
-    t.index ["uphold_connections_id"], name: "index_publishers_on_uphold_connections_id"
+    t.index ["uphold_connection_id"], name: "index_publishers_on_uphold_connection_id"
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
@@ -476,12 +476,14 @@ ActiveRecord::Schema.define(version: 2019_04_08_215416) do
     t.string "uphold_state_token"
     t.boolean "uphold_verified", default: false
     t.uuid "uphold_id"
+    t.uuid "publisher_id"
     t.string "encrypted_uphold_code"
     t.string "encrypted_uphold_code_iv"
     t.string "encrypted_uphold_access_parameters"
     t.string "encrypted_uphold_access_parameters_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id"
   end
 
   create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -526,5 +528,5 @@ ActiveRecord::Schema.define(version: 2019_04_08_215416) do
   add_foreign_key "invoices", "publishers", column: "finalized_by_id"
   add_foreign_key "invoices", "publishers", column: "paid_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
-  add_foreign_key "publishers", "uphold_connections", column: "uphold_connections_id"
+  add_foreign_key "publishers", "uphold_connections"
 end

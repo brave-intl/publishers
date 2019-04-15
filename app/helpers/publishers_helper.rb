@@ -123,17 +123,18 @@ module PublishersHelper
   # end
 
   def uphold_authorization_endpoint(publisher)
-    publisher.uphold_connection&.prepare_uphold_state_token
+    Rails.logger.info "👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻"  if publisher.uphold_connection.uphold_state_token.nil?
+    return if publisher.uphold_connection.uphold_state_token.nil?
 
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
         .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-        .gsub('<STATE>', publisher.uphold_state_token.to_s)
+        .gsub('<STATE>', publisher.uphold_connection.uphold_state_token)
   end
 
   def uphold_authorization_description(publisher)
     case publisher.uphold_connection&.uphold_status
-    when :unconnected
+    when :unconnected, nil
       I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
     when UpholdConnection::UpholdAccountState::RESTRICTED
       publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")

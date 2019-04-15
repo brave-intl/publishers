@@ -19,13 +19,11 @@ class UpholdConnection < ActiveRecord::Base
     BLOCKED         = :blocked
   end
 
+  belongs_to :publisher
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
   validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
-  before_validation :set_uphold_updated_at, if: -> {
-    uphold_code_changed? || uphold_access_parameters_changed? || uphold_state_token_changed?
-  }
 
   # uphold_access_parameters should be cleared once uphold_verified has been set
   # (see `verify_uphold` method below)
@@ -45,11 +43,16 @@ class UpholdConnection < ActiveRecord::Base
       where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
-  def prepare_uphold_state_token
-    if uphold_state_token.nil?
-      self.uphold_state_token = SecureRandom.hex(64)
+  # This state token is generated and must be unique when connecting to uphold.
+  # It is used to navigate to Uphold, therefore on GET request this state token must be there.
+  def uphold_state_token
+    if expired_state_token?
+      Rails.logger.info "🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑"
+      self.uphold_state_token = SecureRandom.hex(64).to_s
       save!
     end
+
+    read_attribute(:uphold_state_token)
   end
 
   def receive_uphold_code(code)
@@ -82,17 +85,17 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def uphold_status
-    if self&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::BLOCKED
+    if self.publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::BLOCKED
       # Notify on Slack that there's someone suspect
       SlackMessenger.new(message: "Publisher #{id} is blocked by Uphold and has just logged in. <!channel>").perform
     end
 
-    if self&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::RESTRICTED
+    if self.publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::RESTRICTED
       UpholdAccountState::RESTRICTED
     elsif uphold_verified?
       if uphold_reauthorization_needed?
         UpholdAccountState::REAUTHORIZATION_NEEDED
-      elsif self&.wallet&.not_a_member?
+      elsif self.publisher&.wallet&.not_a_member?
         UpholdAccountState::RESTRICTED
       else
         UpholdAccountState::VERIFIED
@@ -110,10 +113,6 @@ class UpholdConnection < ActiveRecord::Base
     uphold_access_parameters.present? || uphold_code.present?
   end
 
-  def set_uphold_updated_at
-    self.uphold_updated_at = Time.now
-  end
-
   def can_create_uphold_cards?
     uphold_verified? &&
       wallet.present? &&
@@ -123,11 +122,22 @@ class UpholdConnection < ActiveRecord::Base
       !excluded_from_payout
   end
 
-  private
+  def wallet
+    @wallet ||= self.publisher.wallet
+  end
 
-  def self.encryption_key
-      # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
-      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+  def encryption_key
+    # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
+    # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
     Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
   end
+
+  def expired_state_token?
+    state_token = read_attribute(:uphold_state_token)
+
+    ye = (state_token.blank? && uphold_access_parameters.blank? && uphold_verified.blank?) || (state_token.present? && self.updated_at < 5.minutes.ago)
+
+    ye
+  end
+
 end

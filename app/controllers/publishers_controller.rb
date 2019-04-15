@@ -221,6 +221,7 @@ class PublishersController < ApplicationController
 
     # Ensure the uphold_state_token has been set. If not send back to try again
     if @publisher.uphold_connection&.uphold_state_token.blank?
+      Rails.logger.info("!!!!!!!!!! State token is blank ")
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
@@ -228,7 +229,7 @@ class PublishersController < ApplicationController
     # Catch uphold errors
     uphold_error = params[:error]
     if uphold_error.present?
-      Rails.logger.error("Uphold Error: #{uphold_error}-> #{params[:error_description]}")
+      Rails.logger.error("🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨 Uphold Error: #{uphold_error}-> #{params[:error_description]}")
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
@@ -236,11 +237,12 @@ class PublishersController < ApplicationController
     # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
     state_token = params[:state]
     if @publisher.uphold_connection&.uphold_state_token != state_token
+      Rails.logger.info "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ #{params[:state]} != #{@publisher.uphold_connection&.uphold_state_token}"
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
 
-    @publisher.receive_uphold_code(params[:code])
+    @publisher.uphold_connection.receive_uphold_code(params[:code])
 
     begin
       ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
@@ -256,7 +258,7 @@ class PublishersController < ApplicationController
 
   def disconnect_uphold
     publisher = current_publisher
-    publisher.disconnect_uphold
+    publisher.uphold_connection.disconnect_uphold
     DisconnectUpholdJob.perform_later(publisher_id: publisher.id)
 
     head :no_content
@@ -371,6 +373,11 @@ class PublishersController < ApplicationController
         update_sendgrid(publisher: publisher, prior_email: prior_email)
 
         flash[:alert] = t(".email_confirmed", email: publisher.email)
+      end
+
+      if publisher.uphold_connection.blank?
+        publisher.uphold_connection = UpholdConnection.new(publisher: publisher)
+        publisher.save
       end
 
       if two_factor_enabled?(publisher)
