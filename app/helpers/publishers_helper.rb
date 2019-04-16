@@ -123,8 +123,9 @@ module PublishersHelper
   # end
 
   def uphold_authorization_endpoint(publisher)
-    Rails.logger.info "👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻👻"  if publisher.uphold_connection.uphold_state_token.nil?
-    return if publisher.uphold_connection.uphold_state_token.nil?
+    # TODO: This method should be a PATCH route in an Uphold controller.
+    # We should not be updating database values on GET requests
+    publisher.uphold_connection.prepare_uphold_state_token
 
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
@@ -208,8 +209,9 @@ module PublishersHelper
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
     when UpholdConnection::UpholdAccountState::RESTRICTED
       publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_status_description.restricted_member") : I18n.t("helpers.publisher.uphold_status_description.non_member")
+    else
+      I18n.t("helpers.publisher.uphold_status_description.unconnected")
     end
-    I18n.t("helpers.publisher.uphold_status_description.unconnected")
   end
 
   def publisher_last_verification_method_path(publisher)

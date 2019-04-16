@@ -23,7 +23,7 @@ class PublisherWalletSetterTest < ActiveJob::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = false
 
       publisher = publishers(:verified)
-      publisher.uphold_access_parameters = "{\"foo\":\"bar\"}"
+      publisher.uphold_connection.uphold_access_parameters = "{\"foo\":\"bar\"}"
       wallet = "{\"wallet\":\"abc123\"}"
 
       stub_request(:put, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).

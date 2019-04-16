@@ -33,26 +33,22 @@ class UpholdConnection < ActiveRecord::Base
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
     where.not(encrypted_uphold_code: nil).
-      where("uphold_updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
+      where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
   scope :has_stale_uphold_access_parameters, -> {
     where.not(encrypted_uphold_access_parameters: nil).
-      where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
+      where("updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
   # This state token is generated and must be unique when connecting to uphold.
   # It is used to navigate to Uphold, therefore on GET request this state token must be there.
-  def uphold_state_token
-    if expired_state_token?
-      Rails.logger.info "🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑"
-      self.uphold_state_token = SecureRandom.hex(64).to_s
-      save!
-    end
-
-    read_attribute(:uphold_state_token)
+  def prepare_uphold_state_token
+    return if uphold_state_token.present?
+    self.uphold_state_token = SecureRandom.hex(64).to_s
+    save!
   end
 
   def receive_uphold_code(code)
@@ -119,7 +115,7 @@ class UpholdConnection < ActiveRecord::Base
       wallet.authorized? &&
       wallet.scope &&
       wallet.scope.include?("cards:write") &&
-      !excluded_from_payout
+      !self.publisher.excluded_from_payout
   end
 
   def wallet
@@ -131,13 +127,4 @@ class UpholdConnection < ActiveRecord::Base
     # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
     Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
   end
-
-  def expired_state_token?
-    state_token = read_attribute(:uphold_state_token)
-
-    ye = (state_token.blank? && uphold_access_parameters.blank? && uphold_verified.blank?) || (state_token.present? && self.updated_at < 5.minutes.ago)
-
-    ye
-  end
-
 end

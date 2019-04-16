@@ -8,7 +8,7 @@ class UploadUpholdAccessParametersJobTest < ActiveJob::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = false
 
       publisher = publishers(:verified)
-      publisher.uphold_access_parameters = '{"access_token":"abc123","token_type":"bearer"}'
+      publisher.uphold_connection.uphold_access_parameters = '{"access_token":"abc123","token_type":"bearer"}'
       publisher.save!
 
       stub_request(:put, /v1\/owners\/#{publisher.owner_identifier}\/wallet/).
@@ -19,7 +19,7 @@ class UploadUpholdAccessParametersJobTest < ActiveJob::TestCase
              body:
                <<~BODY
                 {
-                  "provider": "uphold", 
+                  "provider": "uphold",
                   "parameters": {"access_token":"abc123","token_type":"bearer","server":"#{Rails.application.secrets[:uphold_api_uri]}"}
                 }
                BODY

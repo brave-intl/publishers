@@ -1,0 +1,22 @@
+unconnected:
+  created_at: 2019-01-01
+  publisher: completed
+
+default_connection:
+  created_at: 2019-01-01
+  publisher: default
+
+unprompted_connection:
+  created_at: 2019-01-01
+  publisher: unpromted
+
+created_connection:
+  publisher: created
+
+verified:
+  uphold_verified: true
+  publisher: uphold_connected
+
+verified_no_currency:
+  uphold_verified: true
+  publisher: uphold_connected_currency_unconfirmed

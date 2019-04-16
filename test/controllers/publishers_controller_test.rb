@@ -455,7 +455,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
       uphold_state_token = SecureRandom.hex(64)
-      publisher.uphold_state_token = uphold_state_token
+      publisher.uphold_connection.uphold_state_token = uphold_state_token
 
       publisher.save!
 
@@ -469,13 +469,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       publisher.reload
       # verify that the uphold_state_token has been cleared
-      assert_nil(publisher.uphold_state_token)
+      assert_nil(publisher.uphold_connection.uphold_state_token)
 
       # verify that the uphold_code has been cleared
       assert_nil(publisher.uphold_connection.uphold_code)
 
       # verify that the uphold_access_parameters has been set
-      assert_match('FAKEACCESSTOKEN', publisher.uphold_access_parameters)
+      assert_match('FAKEACCESSTOKEN', publisher.uphold_connection.uphold_access_parameters)
 
       assert_redirected_to '/publishers/home'
     end
@@ -502,7 +502,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     uphold_state_token = SecureRandom.hex(64)
-    publisher.uphold_state_token = uphold_state_token
+    publisher.uphold_connection.uphold_state_token = uphold_state_token
 
     publisher.two_factor_prompted_at = 1.day.ago
     publisher.save!
@@ -526,7 +526,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # give pub uphold state token
     uphold_state_token = SecureRandom.hex(64)
-    publisher.uphold_state_token = uphold_state_token
+    publisher.uphold_connection.uphold_state_token = uphold_state_token
     expected_uphold_code = 'ebb18043eb2e106fccb9d13d82bec119d8cd016c'
     publisher.save
 
@@ -540,7 +540,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     # verify uphold :code_acquired but not :access params
-    assert_equal publisher.reload.uphold_status, :code_acquired
+    assert_equal publisher.uphold_connection.reload.uphold_status, :code_acquired
 
     # verify message tells publisher they need to reconnect
     assert_select("div#uphold_status.uphold-processing .status-description") do |element|
@@ -616,8 +616,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "a publisher can be disconnected from uphold" do
     publisher = publishers(:verified)
-    publisher.verify_uphold
-    assert publisher.uphold_verified?
+    publisher.uphold_connection.verify_uphold
+    assert publisher.uphold_connection.uphold_verified?
     sign_in publisher
 
     patch disconnect_uphold_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
@@ -625,7 +625,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 204
 
     publisher.reload
-    refute publisher.uphold_verified?
+    refute publisher.uphold_connection.uphold_verified?
   end
 
   test "home redirects to 2FA prompt on first visit" do
@@ -918,7 +918,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
       # verify that the state token has not yet been set
-      assert_nil(publisher.uphold_state_token)
+      assert_nil(publisher.uphold_connection.uphold_state_token)
 
       # move right to `dashboard`
       url = home_publishers_url
@@ -926,13 +926,13 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
       # verify that a state token has been set
       publisher.reload
-      assert_not_nil(publisher.uphold_state_token)
+      assert_not_nil(publisher.uphold_connection.uphold_state_token)
 
       # assert that the state token is included in the uphold authorization url
       endpoint = Rails.application.secrets[:uphold_authorization_endpoint]
                      .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
                      .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-                     .gsub('<STATE>', publisher.uphold_state_token)
+                     .gsub('<STATE>', publisher.uphold_connection.uphold_state_token)
 
       assert_select "a[href='#{endpoint}']", text: "Connect", count: 1
       assert_select "a[href='#{endpoint}']", text: "Connect to Uphold", count: 1
@@ -940,7 +940,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do
       uphold_state_token = SecureRandom.hex(64)
-      publisher.uphold_state_token = uphold_state_token
+      publisher.uphold_connection.uphold_state_token = uphold_state_token
 
       publisher.save!
 
@@ -956,14 +956,14 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       publisher.reload
 
       # verify that the uphold_state_token has been cleared
-      assert_nil(publisher.uphold_state_token)
+      assert_nil(publisher.uphold_connection.uphold_state_token)
 
       # verify that the uphold_code has been set
       assert_not_nil(publisher.uphold_connection.uphold_code)
       assert_equal('ebb18043eb2e106fccb9d13d82bec119d8cd016c', publisher.uphold_connection.uphold_code)
 
       # verify that the uphold_access_parameters has not been set
-      assert_nil(publisher.uphold_access_parameters)
+      assert_nil(publisher.uphold_connection.uphold_access_parameters)
 
       # verify that the finished_header was not displayed
       refute_match(I18n.t('publishers.finished_header'), response.body)

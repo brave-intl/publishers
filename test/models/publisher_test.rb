@@ -45,119 +45,6 @@ class PublisherTest < ActiveSupport::TestCase
     assert publisher.save
   end
 
-  test "uphold_code is only valid without uphold_access_parameters and before uphold_verified" do
-    publisher = publishers(:verified)
-    publisher.uphold_connection.uphold_code = "foo"
-    publisher.uphold_connection.uphold_access_parameters = nil
-    assert publisher.valid?
-
-    publisher.uphold_connection.uphold_access_parameters = "bar"
-    refute publisher.valid?
-    assert_equal [:uphold_code], publisher.errors.keys
-
-    publisher.uphold_connection.uphold_access_parameters = nil
-    publisher.uphold_connection.uphold_verified = true
-    refute publisher.valid?
-    assert_equal [:uphold_code], publisher.errors.keys
-  end
-
-  test "uphold_access_parameters can not be set when uphold_verified" do
-    publisher = publishers(:verified)
-    publisher.uphold_connection.uphold_code = nil
-    publisher.uphold_connection.uphold_access_parameters = nil
-    publisher.uphold_connection.uphold_verified = true
-    assert publisher.valid?
-
-    publisher.uphold_connection.uphold_access_parameters = "bar"
-    refute publisher.valid?
-    assert_equal [:uphold_access_parameters], publisher.errors.keys
-  end
-
-  test "prepare_uphold_state_token generates a new uphold_state_token if one does not already exist" do
-    publisher = publishers(:verified)
-    publisher.uphold_connection.uphold_state_token = nil
-    publisher.prepare_uphold_state_token
-
-    assert publisher.uphold_connection.uphold_state_token
-    assert publisher.valid?
-
-    uphold_state_token = publisher.uphold_connection.uphold_state_token
-    publisher.prepare_uphold_state_token
-    assert_equal uphold_state_token, publisher.uphold_connection.uphold_state_token, 'uphold_state_token is not regenerated if it already exists'
-  end
-
-  test "receive_uphold_code sets uphold_code and clears other uphold fields" do
-    publisher = publishers(:verified)
-    publisher.uphold_connection.uphold_state_token = "abc123"
-    publisher.uphold_connection.uphold_code = nil
-    publisher.uphold_connection.uphold_access_parameters = "bar"
-    publisher.uphold_connection.uphold_verified = false
-    publisher.receive_uphold_code('secret!')
-
-    assert_equal 'secret!', publisher.uphold_connection.uphold_code
-    assert_nil publisher.uphold_connection.uphold_state_token
-    assert_nil publisher.uphold_connection.uphold_access_parameters
-    assert publisher.valid?
-    assert publisher.uphold_connection.uphold_processing?
-    assert_equal :code_acquired, publisher.uphold_connection.uphold_status
-  end
-
-  test "verify_uphold sets uphold_verified to true and clears uphold_code and uphold_access_parameters" do
-    publisher = publishers(:verified)
-    publisher.uphold_connection.uphold_code = "foo"
-    publisher.uphold_connection.uphold_access_parameters = "bar"
-    publisher.uphold_connection.uphold_verified = false
-    assert publisher.uphold_connection.uphold_processing?
-    publisher.verify_uphold
-
-    assert publisher.uphold_connection.uphold_verified?
-    assert publisher.valid?
-    refute publisher.uphold_connection.uphold_processing?
-  end
-
-  test "disconnect_uphold clears uphold settings" do
-    publisher = publishers(:verified)
-    publisher.verify_uphold
-    assert publisher.uphold_connection.uphold_verified?
-
-    publisher.disconnect_uphold
-    refute publisher.uphold_connection.uphold_verified?
-    refute publisher.uphold_connection.uphold_processing?
-    assert publisher.valid?
-  end
-
-  test "verify_uphold_status correctly calculated" do
-    publisher = publishers(:verified)
-
-    # unconnected
-    publisher.uphold_connection.uphold_code = nil
-    publisher.uphold_connection.uphold_access_parameters = nil
-    publisher.uphold_connection.uphold_verified = false
-    assert publisher.valid?
-    assert_equal :unconnected, publisher.uphold_connection.uphold_status
-
-    # code_acquired
-    publisher.uphold_connection.uphold_code = "foo"
-    publisher.uphold_connection.uphold_access_parameters = nil
-    publisher.uphold_connection.uphold_verified = false
-    assert publisher.valid?
-    assert_equal :code_acquired, publisher.uphold_connection.uphold_status
-
-    # access_parameters_acquired
-    publisher.uphold_connection.uphold_code = nil
-    publisher.uphold_connection.uphold_access_parameters = "bar"
-    publisher.uphold_connection.uphold_verified = false
-    assert publisher.valid?
-    assert_equal :access_parameters_acquired, publisher.uphold_connection.uphold_status
-
-    # verified
-    publisher.uphold_connection.uphold_code = nil
-    publisher.uphold_connection.uphold_access_parameters = nil
-    publisher.uphold_connection.uphold_verified = true
-    assert publisher.valid?
-    assert_equal :verified, publisher.uphold_connection.uphold_status
-  end
-
   test "when wallet is gotten the default currency will be sent to eyeshade if it is mismatched" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:verified)
@@ -375,91 +262,71 @@ class PublisherTest < ActiveSupport::TestCase
   end
 
   test "test `has_stale_uphold_code` scopes to correct publishers" do
+    ActiveRecord::Base.record_timestamps = false
     publisher = publishers(:default)
 
     # verify there are no publishers with stale codes to begin with
-    assert_equal Publisher.has_stale_uphold_code.count, 0
+    assert_equal UpholdConnection.has_stale_uphold_code.count, 0
 
     # verify scope includes publisher if uphold_code exist and exceeds timeout
     publisher.uphold_connection.uphold_code = "foo"
-    publisher.save
-    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
-    publisher.save
-    assert_equal Publisher.has_stale_uphold_code.count, 1
+    publisher.uphold_connection.updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.save
+    assert_equal UpholdConnection.has_stale_uphold_code.count, 1
 
+
+    ActiveRecord::Base.record_timestamps = true
     # verify scope does not include publisher if uphold_code exists and within timeout
     publisher.uphold_connection.uphold_code = "bar"
-    publisher.save
-    assert_equal Publisher.has_stale_uphold_code.count, 0
+    publisher.uphold_connection.save
+    assert_equal UpholdConnection.has_stale_uphold_code.count, 0
 
     # verify scope does not include publisher if uphold_code does not exist and within timeout
     publisher.uphold_connection.uphold_code = nil
-    publisher.save
-    assert_equal Publisher.has_stale_uphold_code.count, 0
+    publisher.uphold_connection.save
+    assert_equal UpholdConnection.has_stale_uphold_code.count, 0
 
+    ActiveRecord::Base.record_timestamps = false
     # verify scope does not include publisher if uphold_code does not exist and exceeds timeout
     publisher.uphold_connection.uphold_code = nil
-    publisher.save!
-    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
-    publisher.save!
-    assert_equal Publisher.has_stale_uphold_code.count, 0
+    publisher.uphold_connection.updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.save!
+    assert_equal UpholdConnection.has_stale_uphold_code.count, 0
+    ActiveRecord::Base.record_timestamps = true
   end
 
   test "test `has_stale_access_params` scopes to correct publishers " do
+    ActiveRecord::Base.record_timestamps = false
     publisher = publishers(:default)
 
     # verify there are no publishers with stale codes to begin with
-    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
+    assert_equal UpholdConnection.has_stale_uphold_access_parameters.count, 0
 
     # verify scope includes publisher if uphold_access_params exist and exceeds timeout
     publisher.uphold_connection.uphold_access_parameters = "foo"
-    publisher.save
-    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.minute
-    publisher.save
-    assert_equal Publisher.has_stale_uphold_access_parameters.count, 1
+    publisher.uphold_connection.updated_at = UpholdConnection::UPHOLD_ACCESS_PARAMS_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.save
+    assert_equal UpholdConnection.has_stale_uphold_access_parameters.count, 1
 
+    ActiveRecord::Base.record_timestamps = true
     # verify scope does not include publisher if uphold_access_params exists and within timeout
     publisher.uphold_connection.uphold_access_parameters = "bar"
-    publisher.save
-    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
+    publisher.uphold_connection.save
+    assert_equal UpholdConnection.has_stale_uphold_access_parameters.count, 0
 
     # verify scope does not include publisher if uphold_access_params does not exist and within timeout
     publisher.uphold_connection.uphold_access_parameters = nil
-    publisher.save
-    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
+    publisher.uphold_connection.save
+    assert_equal UpholdConnection.has_stale_uphold_access_parameters.count, 0
 
+    ActiveRecord::Base.record_timestamps = false
     # verify scope does not include publisher if uphold_access_params does not exist and exceeds timeout
     publisher.uphold_connection.uphold_access_parameters = nil
-    publisher.save!
-    publisher.uphold_connection.uphold_updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
-    publisher.save!
-    assert_equal Publisher.has_stale_uphold_access_parameters.count, 0
-  end
+    publisher.uphold_connection.updated_at = UpholdConnection::UPHOLD_CODE_TIMEOUT.ago - 1.minute
+    publisher.uphold_connection.save!
+    assert_equal UpholdConnection.has_stale_uphold_access_parameters.count, 0
 
-  test "test `before_validation :set_uphold_updated_at` updates correctly" do
-    publisher = publishers(:default)
-
-    # verify uphold_updated_at has been set after `uphold_state_token` updated
-    publisher.uphold_connection.uphold_updated_at = 1.hour.ago
-    publisher.save
-    publisher.uphold_connection.uphold_state_token = "foo"
-    publisher.save
-    assert publisher.uphold_connection.uphold_updated_at > 30.minutes.ago
-
-    # verify uphold_updated_at has been set after `uphold_code` updated
-    publisher.uphold_connection.uphold_updated_at = 1.hour.ago
-    publisher.save
-    publisher.uphold_connection.uphold_code = "foo"
-    publisher.save
-    assert publisher.uphold_connection.uphold_updated_at > 30.minutes.ago
-
-    # verify uphold_updated_at has been set after `uphold_access_parameters` updated
-    publisher.uphold_connection.uphold_updated_at = 1.hour.ago
-    publisher.uphold_connection.uphold_code = nil
-    publisher.save
-    publisher.uphold_connection.uphold_access_parameters = "foo"
-    publisher.save
-    assert publisher.uphold_connection.uphold_updated_at > 30.minutes.ago
+    ActiveRecord::Base.record_timestamps = true
   end
 
   test "formats owner_identifier correctly" do
@@ -545,10 +412,10 @@ class PublisherTest < ActiveSupport::TestCase
     assert publisher.last_status_update.status == "active"
   end
 
-  test "publisher.can_create_uphold_cards? depends on uphold status and scope" do
+  test "publisher.uphold_connection.can_create_uphold_cards? depends on uphold status and scope" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:created)
-    refute publisher.can_create_uphold_cards?
+    refute publisher.uphold_connection.can_create_uphold_cards?
 
     wallet = {
       "status": {
@@ -565,15 +432,17 @@ class PublisherTest < ActiveSupport::TestCase
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
-    publisher.reload
-    publisher.verify_uphold
+    publisher.uphold_connection.reload
+    publisher.uphold_connection.verify_uphold
 
     publisher.update(excluded_from_payout: true)
-    assert_not publisher.can_create_uphold_cards?
+    assert_not publisher.uphold_connection.can_create_uphold_cards?
 
     publisher.update(excluded_from_payout: false)
+    publisher.reload
+    publisher.uphold_connection.reload
     assert publisher.uphold_connection.uphold_verified?
-    assert publisher.can_create_uphold_cards?
+    assert publisher.uphold_connection.can_create_uphold_cards?
   end
 
   test "suspended scope returns suspended publishers, not_suspended returns not suspended" do

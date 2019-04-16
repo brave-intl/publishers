@@ -86,7 +86,7 @@ class PayoutReportPublisherIncluder < BaseService
   private
 
   def create_uphold_card_for_default_currency_if_needed
-    if @publisher.can_create_uphold_cards? &&
+    if @publisher.uphold_connection.can_create_uphold_cards? &&
       @publisher.default_currency_confirmed_at.present? &&
       @publisher.wallet.address.blank?
       CreateUpholdCardsJob.perform_now(publisher_id: @publisher.id)

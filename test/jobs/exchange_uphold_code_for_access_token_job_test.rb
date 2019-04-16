@@ -18,13 +18,13 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
 
     publisher.reload
     assert_nil publisher.uphold_connection.uphold_code
-    refute_nil publisher.uphold_access_parameters
+    refute_nil publisher.uphold_connection.uphold_access_parameters
   end
 
   test "clears uphold_code on invalid_grant" do
     publisher = publishers(:verified)
     publisher.uphold_connection.uphold_code = "foo"
-    publisher.uphold_access_parameters = nil
+    publisher.uphold_connection.uphold_access_parameters = nil
     publisher.save!
 
     stub_request(:post, "#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
