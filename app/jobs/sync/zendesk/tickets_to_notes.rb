@@ -48,8 +48,8 @@ class Sync::Zendesk::TicketsToNotes
                               "type:ticket " +
                               "group_id:#{Rails.application.secrets[:zendesk_publisher_group_id]}" +
                               (start_date.present? ? " updated>#{start_date}" : "")
-                            )
-    response.all! do |result|
+                            ).page(page_number)
+    response.each do |result|
       Sync::Zendesk::TicketCommentsToNotes.perform_async(result[:id], 0)
     end
 
