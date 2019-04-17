@@ -467,6 +467,8 @@ en:
         channel_already_registered: You have already claimed the Twitch account %{channel_title}. If you would like to claim a second account, please sign out of Twitch and try again.
       register_twitter_channel:
         channel_already_registered: You have already claimed this Twitter account.
+      register_vimeo_channel:
+        channel_already_registered: You have already claimed this Vimeo account.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_publisher:
