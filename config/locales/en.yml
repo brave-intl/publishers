@@ -481,11 +481,11 @@ en:
     suspended_error:
       heading_html: Your account is under review
       body: >
-        We noticed some unusual activity on your account. We've suspended access while we take a closer look. This may include violations of the <a href="https://community.brave.com/t/a-note-to-publishers/48733"> BAT grant guidelines.</a>
+        We've noticed some unusual activity on your account. For that reason, we've suspended access while we take a closer look. Reasons may include violations of the <a href="https://community.brave.com/t/a-note-to-publishers/48733"> BAT grant guidelines.</a>
         <br/><br/>
         We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
         <br/><br/>
-        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a> where a real human will read and reply to your message.
+        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:suspensions@brave.com">suspensions@brave.com</a> where a real human will read and reply to your message.
     two_factor_authentication_removal:
       heading: Having trouble with 2-factor authentication?
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
