@@ -169,8 +169,7 @@ module Publishers
         nickname: vimeo_auth_hash.info.nickname
       )
 
-      existing_channel = Channel.joins(:vimeo_channel_details).
-        where("vimeo_channel_details.vimeo_channel_id": vimeo_auth_hash.info.id).first
+      existing_channel = Channel.joins(:vimeo_channel_details).where("vimeo_channel_details.vimeo_channel_id": vimeo_auth_hash.info.id).first
 
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered")

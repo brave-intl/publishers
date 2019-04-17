@@ -508,7 +508,7 @@ module Publishers
       assert_equal channel.details.thumbnail_url, auth_hash.info.pictures.last.link
     end
 
-    test "a publisher who adds a vimeo channel taken by themselves will see .channel_already_registered" do
+    test "a publisher who adds a vimeo channel taken by another will see custom dialog based on the taken channel" do
       publisher = publishers(:uphold_connected)
       verified_details = vimeo_channel_details(:vimeo_details)
       request_login_email(publisher: publisher)
@@ -516,9 +516,36 @@ module Publishers
       get(url)
       follow_redirect!
 
-      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(uid: verified_details.vimeo_channel_id,
-                                                                     info: { id: verified_details.vimeo_channel_id}
-                                                                    )
+      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(
+          uid: verified_details.vimeo_channel_id,
+          info: { id: verified_details.vimeo_channel_id }
+      )
+
+      assert_difference("Channel.count", 1) do
+        get(publisher_register_vimeo_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('div.channel-status') do |element|
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
+                    element.text)
+      end
+    end
+
+    test "a publisher who adds a vimeo channel taken by themselves will see .channel_already_registered" do
+      publisher = publishers(:vimeo_publisher)
+      verified_details = vimeo_channel_details(:vimeo_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(
+          uid: verified_details.vimeo_channel_id,
+          info: { id: verified_details.vimeo_channel_id }
+      )
 
       assert_difference("Channel.count", 0) do
         get(publisher_register_vimeo_channel_omniauth_authorize_url)

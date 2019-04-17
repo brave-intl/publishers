@@ -203,7 +203,9 @@ twitch_verified:
 vimeo_publisher:
   email: "aliceVimeo@gmail.com"
   name: "Alice from Vimeo"
+  agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  default_currency: "BAT"
 
 global_media_group:
   email: "fred@vglobal.org"
