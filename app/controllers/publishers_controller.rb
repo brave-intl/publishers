@@ -162,10 +162,6 @@ class PublishersController < ApplicationController
     end
   end
 
-  def javascript_detected
-    current_publisher.update(javascript_last_detected_at: Time.now)
-  end
-
   def protect
     if current_publisher.nil?
       redirect_to root_url and return

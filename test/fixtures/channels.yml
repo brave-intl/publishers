@@ -136,7 +136,7 @@ twitter_new:
   verified: true
 
 vimeo_new:
-  publisher: vimeo_publisher
+  publisher: uphold_connected
   details: vimeo_details (VimeoChannelDetails)
   verified: true
 

@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       end
 
       get :log_out
-      put :javascript_detected
       get :home
       get :change_email
       get :change_email_confirm

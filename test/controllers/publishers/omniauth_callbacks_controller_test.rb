@@ -509,14 +509,16 @@ module Publishers
     end
 
     test "a publisher who adds a vimeo channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:vimeo_publisher)
+      publisher = publishers(:uphold_connected)
       verified_details = vimeo_channel_details(:vimeo_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
       get(url)
       follow_redirect!
 
-      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash("uid" => verified_details.vimeo_channel_id)
+      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(uid: verified_details.vimeo_channel_id,
+                                                                     info: { id: verified_details.vimeo_channel_id}
+                                                                    )
 
       assert_difference("Channel.count", 0) do
         get(publisher_register_vimeo_channel_omniauth_authorize_url)
@@ -525,13 +527,8 @@ module Publishers
         follow_redirect!
       end
 
-      assert_select('div.notifications') do |element|
-        assert_match(
-          I18n.t(
-            "publishers.omniauth_callbacks.register_vimeo_channel.channel_already_registered"
-          ),
-          element.text
-        )
+      assert_select('body') do |element|
+        assert_select 'div.alert', I18n.t("publishers.omniauth_callbacks.register_vimeo_channel.channel_already_registered")
       end
     end
   end

@@ -71,28 +71,4 @@ class Api::V1::Stats::PublishersController < Api::V1::StatsController
     end
     render(json: Publisher.statistical_totals(up_to_date: up_to_date.respond_to?(:strftime) ? up_to_date : 1.day.from_now), status: 200)
   end
-
-  def javascript_enabled_usage
-    active_users_with_javascript_enabled = Publisher.
-      distinct.
-      joins("inner join channels on channels.publisher_id = publishers.id").
-      where.not(javascript_last_detected_at: nil).
-      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
-      count
-
-    active_users_with_javascript_disabled = Publisher.
-      distinct.
-      joins("inner join channels on channels.publisher_id = publishers.id").
-      where(javascript_last_detected_at: nil).
-      where("publishers.last_sign_in_at > ?", Publisher::JAVASCRIPT_DETECTED_RELEASE_TIME).
-      count
-
-    render(
-      json: {
-        active_users_with_javascript_enabled: active_users_with_javascript_enabled,
-        active_users_with_javascript_disabled: active_users_with_javascript_disabled,
-      },
-      status: 200
-    )
-  end
 end
