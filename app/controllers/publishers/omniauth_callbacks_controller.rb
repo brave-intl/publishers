@@ -125,7 +125,6 @@ module Publishers
     end
 
     def register_twitter_channel
-      redirect_to home_publishers_path and return
       oauth_response = request.env['omniauth.auth']
       twitter_details_attrs = {
         auth_provider: oauth_response.provider,
@@ -151,9 +150,7 @@ module Publishers
 
       @channel = Channel.new(publisher: current_publisher, verified: true)
       @channel.details = TwitterChannelDetails.new(twitter_details_attrs)
-
       contest_channel(existing_channel) and return if existing_channel
-
       @channel.save!
 
       redirect_to home_publishers_path, notice: t("shared.channel_created")

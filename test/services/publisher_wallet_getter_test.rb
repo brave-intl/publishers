@@ -58,9 +58,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         eyeshade_response[:wallet][:status] = "ok"
         publisher = publishers(:uphold_connected)
         publisher.channels.delete_all
-        stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-          with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-          to_return(status: 200, body: eyeshade_response.to_json, headers: {})
+        stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
         PublisherWalletGetter.new(publisher: publisher).perform
         assert_equal Publisher::UpholdAccountState::VERIFIED, publisher.uphold_status
       end

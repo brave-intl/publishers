@@ -19,7 +19,7 @@ class PublisherTokenAuthenticator < BaseService
     end
     result = ActiveSupport::SecurityUtils.secure_compare(
       ::Digest::SHA256.hexdigest(token),
-      ::Digest::SHA256.hexdigest(publisher.authentication_token)
+      ::Digest::SHA256.hexdigest(publisher.user_authentication_token.authentication_token)
     )
     if result
       pending_email = publisher.pending_email
@@ -31,7 +31,7 @@ class PublisherTokenAuthenticator < BaseService
         end
         publisher.pending_email = nil
       end
-      publisher.authentication_token = nil
+      publisher.user_authentication_token.update(authentication_token: nil)
       publisher.save!
     end
     result
