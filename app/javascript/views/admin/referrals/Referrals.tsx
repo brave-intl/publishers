@@ -3,9 +3,12 @@ import * as React from "react";
 import Select from "brave-ui/components/formControls/select";
 import Chart from "chart.js";
 import Card from "../../../components/card/Card";
+import { Cell, Container, Grid } from "../../../components/grid/Grid";
 
-import UserNavbar from "../components/userNavbar/UserNavbar"
-import ReferralsHeader from "./components/referralsHeader/ReferralsHeader";
+import UserNavbar from "../components/userNavbar/UserNavbar";
+import CurrentTable from "./components/currentTable/CurrentTable";
+import ReferralsChart from "./components/referralsChart/ReferralsChart";
+import TotalTable from "./components/totalTable/TotalTable";
 
 import { element } from "prop-types";
 
@@ -13,16 +16,12 @@ export default class Referrals extends React.Component<{}, {}> {
   constructor(props) {
     super(props);
     this.state = {
-      data: { referralCodes: [{stats: null}] }
+      data: { referralCodes: [{ stats: null }] }
     };
   }
 
   public componentDidMount() {
     this.fetchData();
-  }
-
-  public componentDidUpdate() {
-    this.createReferralsChart(this.state.data.referralCodes[0]);
   }
 
   public async fetchData() {
@@ -53,107 +52,42 @@ export default class Referrals extends React.Component<{}, {}> {
     ));
   }
 
-  public handleSelect = e => {
-    this.createReferralsChart(this.state.data.referralCodes[e]);
-  }
-
-  public createReferralsChart(referralCode) {
-
-    let stats = JSON.parse(referralCode.stats)
-
-    const node = this.node;
-
-    let referralChartDatasets = []
-
-    let referralChartLabels = []
-    let downloads = []
-    let installs = []
-    let confirmations = []
-    stats.forEach((stat) => {
-      referralChartLabels.push(stat.ymd)
-      downloads.push(stat.retrievals)
-      installs.push(stat.first_runs)
-      confirmations.push(stat.finalized)
-    })
-
-    let referralChartData = {
-      labels: referralChartLabels,
-      datasets: [
-        {
-          label: "Downloads",
-          data: downloads,
-          borderColor: "#FFCD56",
-          backgroundColor: "#FFCD56",
-          fill: true
-        }, 
-        {
-          label: "Installs",
-          data: installs,
-          borderColor: "#36A2EB",
-          backgroundColor: "#36A2EB",
-          fill: true
-        }, 
-        {
-          label: "Confirmations",
-          data: confirmations,
-          borderColor: "#FF6384",
-          backgroundColor: "#FF6384",
-          fill: true
-        }]
-    }
-
-    let referralChartSettings = {
-      options: {
-        scales: {
-          yAxes: [
-            {
-              display: false,
-              stacked: true
-            }
-          ]
-        }
-      },
-      type: "line"
-      data: referralChartData  
-    }
-
-    var myChart = new Chart(node, referralChartSettings)
-  }
+  public handleSelect = e => {};
 
   public render() {
     return (
-      <div
-        style={{
-          margin: "30px",
-          display: "grid",
-          gridTemplateColumns:
-            "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
-          gridGap: "30px"
-        }}
-      >
-        <div style={{ gridColumn: "1 / 13" }}>
-          <UserNavbar/>
-        </div>
-        <div style={{ gridColumn: "1 / 13" }}>
-          <ReferralsHeader
-            downloads={this.state.data.downloads}
-            installs={this.state.data.installs}
-            confirmations={this.state.data.confirmations}
-          />
-        </div>
-        <div style={{ gridColumn: "1 / 4" }}>
-          <Card>
-            <Select onChange={e => this.handleSelect(e)}>
-            {this.populateSelect()}
-            </Select>
-          </Card>
-        </div>
-        <div style={{ gridColumn: "4 / 13" }}>
-          <Card>
-            <canvas ref={node => (this.node = node)} />
-          </Card>
-        </div>
-      </div>
+      <Container>
+        <Grid>
+          <Cell startColumn={1} endColumn={13}>
+            <UserNavbar />
+          </Cell>
+          <Cell startColumn={1} endColumn={5}>
+            <TotalTable
+              downloads={this.state.data.downloads}
+              installs={this.state.data.installs}
+              confirmations={this.state.data.confirmations}
+            />
+          </Cell>
+          <Cell startColumn={5} endColumn={13}>
+            <Card>Earnings Chart Coming Soon...</Card>
+          </Cell>
+          <Cell startColumn={1} endColumn={13}>
+            <CurrentTable
+              referralBalance={this.state.data.currentReferralBalance}
+            />
+          </Cell>
+          <Cell startColumn={1} endColumn={4}>
+            <Card>
+              <Select onChange={e => this.handleSelect(e)}>
+                {this.populateSelect()}
+              </Select>
+            </Card>
+          </Cell>
+          <Cell startColumn={4} endColumn={13}>
+            <ReferralsChart referralCode={this.state.data.referralCodes[0]} />
+          </Cell>
+        </Grid>
+      </Container>
     );
   }
 }

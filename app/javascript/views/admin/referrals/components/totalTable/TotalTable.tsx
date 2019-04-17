@@ -42,31 +42,6 @@ export default class TotalTable extends React.Component<{}, {}> {
       {
         content: [
           {
-            content: "Contributions",
-            customStyle: {
-              "font-weight": "bold",
-              "font-size": "18px",
-              padding: "16px 0px 16px 0px"
-            }
-          },
-          {
-            content: ""
-          }
-        ]
-      },
-      {
-        content: [
-          {
-            content: "Contributions Earned"
-          },
-          {
-            content: "Coming Soon..."
-          }
-        ]
-      },
-      {
-        content: [
-          {
             content: "Referrals",
             customStyle: {
               "font-weight": "bold",
@@ -118,43 +93,9 @@ export default class TotalTable extends React.Component<{}, {}> {
             content: "Coming Soon..."
           }
         ]
-      },
-      {
-        content: [
-          {
-            content: "Total",
-            customStyle: {
-              "font-weight": "bold",
-              "font-size": "18px",
-              padding: "16px 0px 16px 0px"
-            }
-          },
-          {
-            content: ""
-          }
-        ]
-      },
-      {
-        content: [
-          {
-            content: "Total"
-          },
-          {
-            content: "Coming Soon..."
-          }
-        ]
       }
     ];
-    if (this.props.channelBalances) {
-      this.props.channelBalances.forEach((channel, index) => {
-        rows.splice(index + 2, 0, {
-          content: [
-            { content: <a href={channel.url}>{channel.title}</a> },
-            { content: "Coming Soon..." }
-          ]
-        });
-      });
-    }
+
     return (
       <Card>
         <Table header={header} rows={rows}>

@@ -74,6 +74,18 @@ module PublishersHelper
     balance
   end
 
+  def publisher_contribution_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+      amount = publisher.wallet&.contribution_balance&.amount_bat
+      amount = publisher.balance if publisher.partner?
+      balance = '%.2f' % amount if amount.present?
+    end
+
+    balance
+  end
+
   def publisher_channel_bat_balance(publisher, channel_identifier)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do

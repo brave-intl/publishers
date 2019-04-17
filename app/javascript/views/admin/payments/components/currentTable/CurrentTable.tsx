@@ -1,11 +1,39 @@
 import * as React from "react";
 
-import Table from "brave-ui/components/dataTables/table";
 import Card from "../../../../../components/card/Card";
 
-export default class TotalTable extends React.Component<{}, {}> {
+import Table from "brave-ui/components/dataTables/table";
+
+export default class CurrentTable extends React.Component<{}, {}> {
   constructor(props) {
     super(props);
+    this.state = {
+      data: { referralCodes: [{ stats: null }] }
+    };
+  }
+
+  public componentDidMount() {
+    this.fetchData();
+  }
+
+  public async fetchData() {
+    const id = window.location.pathname.substring(
+      window.location.pathname.lastIndexOf("/") + 1
+    );
+    const url = "/admin/payments/" + id;
+    const options = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest"
+      },
+      method: "GET"
+    };
+    const response = await fetch(url, options);
+    const data = await response.json();
+    this.setState({
+      data
+    });
   }
 
   public render() {
@@ -27,7 +55,7 @@ export default class TotalTable extends React.Component<{}, {}> {
       {
         content: [
           {
-            content: "Earned To Date",
+            content: "Current Cycle",
             customStyle: {
               "font-weight": "bold",
               "font-size": "22px",
@@ -57,10 +85,10 @@ export default class TotalTable extends React.Component<{}, {}> {
       {
         content: [
           {
-            content: "Contributions Earned"
+            content: "Contributions Balance"
           },
           {
-            content: "Coming Soon..."
+            content: this.props.contributionBalance + " BAT"
           }
         ]
       },
@@ -85,7 +113,7 @@ export default class TotalTable extends React.Component<{}, {}> {
             content: "Downloads"
           },
           {
-            content: this.props.downloads
+            content: "Coming Soon..."
           }
         ]
       },
@@ -95,7 +123,7 @@ export default class TotalTable extends React.Component<{}, {}> {
             content: "Installs"
           },
           {
-            content: this.props.installs
+            content: "Coming Soon..."
           }
         ]
       },
@@ -105,17 +133,17 @@ export default class TotalTable extends React.Component<{}, {}> {
             content: "Confirmations"
           },
           {
-            content: this.props.confirmations
+            content: "Coming Soon..."
           }
         ]
       },
       {
         content: [
           {
-            content: "Referrals Earned"
+            content: "Referrals Balance"
           },
           {
-            content: "Coming Soon..."
+            content: this.props.referralBalance + " BAT"
           }
         ]
       },
@@ -137,10 +165,10 @@ export default class TotalTable extends React.Component<{}, {}> {
       {
         content: [
           {
-            content: "Total"
+            content: "Total Balance"
           },
           {
-            content: "Coming Soon..."
+            content: this.props.totalBalance + " BAT"
           }
         ]
       }
@@ -150,11 +178,12 @@ export default class TotalTable extends React.Component<{}, {}> {
         rows.splice(index + 2, 0, {
           content: [
             { content: <a href={channel.url}>{channel.title}</a> },
-            { content: "Coming Soon..." }
+            { content: channel.balance + " BAT" }
           ]
         });
       });
     }
+
     return (
       <Card>
         <Table header={header} rows={rows}>

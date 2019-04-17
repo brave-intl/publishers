@@ -17,6 +17,7 @@ module Admin
     def show_data(id)
       publisher = Publisher.find(id)
       promo_registrations = publisher.promo_registrations
+      current_referral_balance = publisher_referral_bat_balance(publisher)
       downloads = publisher_referral_totals(publisher)[PromoRegistration::RETRIEVALS]
       installs = publisher_referral_totals(publisher)[PromoRegistration::FIRST_RUNS]
       confirmations = publisher_referral_totals(publisher)[PromoRegistration::FINALIZED]
@@ -24,6 +25,7 @@ module Admin
       {
         publisher: publisher,
         referralCodes: promo_registrations,
+        currentReferralBalance: current_referral_balance,
         downloads: downloads,
         installs: installs,
         confirmations: confirmations,
