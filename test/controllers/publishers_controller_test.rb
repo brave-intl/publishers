@@ -121,6 +121,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "re-used access link is rejected and send publisher to the expired auth token page" do
     publisher = publishers(:completed)
+    PublisherTokenGenerator.new(publisher: publisher).perform
     url = publisher_url(publisher, token: publisher.authentication_token)
 
     get url
@@ -137,8 +138,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = Publisher.order(created_at: :asc).last
 
     # expire token and attempt to cliam
-    publisher.authentication_token_expires_at = Time.now
-    publisher.save
+    publisher.user_authentication_token.authentication_token_expires_at = Time.now
+    publisher.user_authentication_token.save
     url = publisher_url(publisher, token: publisher.authentication_token)
     get(url)
 
@@ -153,8 +154,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
 
     # expire the token and attempt to claim
-    publisher.authentication_token_expires_at = Time.now
-    publisher.save
+    publisher.user_authentication_token.authentication_token_expires_at = Time.now
+    publisher.user_authentication_token.save
     get(url)
 
     # verify that verified publishers are taken to expired token page

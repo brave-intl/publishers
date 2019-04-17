@@ -262,7 +262,7 @@ Devise.setup do |config|
                   {
                     name: 'register_twitch_channel'
                   }
-
+                  
   config.omniauth :twitter,
                   Rails.application.secrets[:twitter_client_id],
                   Rails.application.secrets[:twitter_client_secret],

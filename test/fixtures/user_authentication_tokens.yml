@@ -1,0 +1,11 @@
+<% salt = SecureRandom.random_bytes(12) %>
+
+completed:
+  authentication_token_expires_at: "<%= DateTime.now + PublisherTokenGenerator::TOKEN_TTL %>"
+  encrypted_authentication_token_iv: "<%= Base64.encode64(salt) %>"
+  encrypted_authentication_token: "<%= UserAuthenticationToken.encrypt_authentication_token(
+    "authentication_token",
+    key: UserAuthenticationToken.encryption_key,
+    iv: salt
+  ) %>"
+  user: publishers(:completed)

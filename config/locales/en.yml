@@ -38,12 +38,14 @@ en:
     referrals: Referrals
     download: Download
     existing_account: Already have an account?
+    error: Oh no! Something went wrong, please contact support.
     get_started: Get Started
     instant_donation: Tipping Banner
     invalid_totp: Invalid 6-digit code. Please try again.
     log_in: Log In
     remove: Remove
     terms_of_service: Terms of Service
+    lost_2fa: Lost 2fa?
     faqs: FAQs
     ok: OK
     oh_no: "Oh no!"
@@ -478,13 +480,42 @@ en:
     suspended_error:
       heading_html: Your account is under review
       body: >
-        We noticed some unusual activity on your account. We've suspended access while we take a closer look. This may include violations of the <a href="https://community.brave.com/t/a-note-to-publishers/48733"> BAT grant guidelines.</a>
+        We've noticed some unusual activity on your account. For that reason, we've suspended access while we take a closer look. Reasons may include violations of the <a href="https://community.brave.com/t/a-note-to-publishers/48733"> BAT grant guidelines.</a>
         <br/><br/>
         We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
         <br/><br/>
-        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a> where a real human will read and reply to your message.
-        <br/><br/>
-        Given the support volume, please allow additional time for account reviews.
+        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:suspensions@brave.com">suspensions@brave.com</a> where a real human will read and reply to your message.
+    two_factor_authentication_removal:
+      heading: Having trouble with 2-factor authentication?
+      leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
+      note: Please note, for your security, we require a 2 week waiting period for the 2-factor authentication removal to complete. Additionally, once it is completed you will need to reverify your channels and uphold wallet.
+      reminder_body_html: >
+        This is a friendly reminder that the requested changes to your security settings are in progress. In %{remainder}, 2-factor authentication will be removed from your account. Please note, once your 2-factor authentication is removed:  
+        <ul>
+        <li>The account channels will need to be re-verified.</li>
+        <li>The account wallet will need to be re-verified.</li>
+        <li>There will be a 30-day waiting period on payments.</li>
+        </ul>
+      reminder_body_two_html: >
+        If you did not make this request, or wish to cancel your 2-factor authentication removal please see visit our <a href="https://support.brave.com/hc/en-us/articles/360022724391-What-do-I-do-if-I-get-locked-out-of-my-account-">help center </a> for instructions.
+      cancellation_body: You have requested the cancellation of 2-factor authentication on your account. To confirm your request and cancel the removal, click the button below.
+      request_body: You have requested the removal of 2-factor authentication on your account. To confirm your request and initiate the removal, click the button below.
+      request_body_two_html: >
+        Please note, for your security, the removal process will require a 14-day waiting period. Additionally, once your 2-factor authentication is removed:
+        <ul>
+        <li>The account channels will need to be re-verified.</li>
+        <li>The account wallet will need to be re-verified.</li>
+        <li>There will be a 30-day waiting period on payments.</li>
+        </ul>
+        <br></br>
+      request_note: 
+      request_success: You have requested a 2-factor security removal. Please check your e-mail to confirm and initiate the process.
+      request_not_found: Publisher not found. Please ensure you have entered the correct e-mail
+      request_2fa_removal: Request 2-factor Security Removal
+      confirm_2fa_removal: Confirm 2-factor Security Removal
+      cancel_2fa_removal: Cancel 2-factor Security Removal
+      confirm_login_flash: You have confirmed your request for 2-factor security removal. 
+      confirm_cancel_flash: You have cancelled your request for 2-factor security removal. 
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel
