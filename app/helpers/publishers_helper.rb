@@ -125,12 +125,12 @@ module PublishersHelper
   def uphold_authorization_endpoint(publisher)
     # TODO: This method should be a PATCH route in an Uphold controller.
     # We should not be updating database values on GET requests
-    publisher.uphold_connection.prepare_uphold_state_token
+    publisher.uphold_connection&.prepare_uphold_state_token
 
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
         .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-        .gsub('<STATE>', publisher.uphold_connection.uphold_state_token)
+        .gsub('<STATE>', publisher.uphold_connection&.uphold_state_token)
   end
 
   def uphold_authorization_description(publisher)

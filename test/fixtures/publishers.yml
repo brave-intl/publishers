@@ -21,7 +21,7 @@ verified:
   default_site_banner_id: "00000000-0000-0000-0000-000000000005"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
-  uphold_connection: unconnected
+  uphold_connection: verified_connection
   visible: true
 
 notes:
@@ -144,7 +144,7 @@ uphold_connected:
   name: "Alice the uphold_connected"
   phone: "4159001421"
   phone_normalized: "+14159001421"
-  uphold_connection: verified
+  uphold_connection: connected_connection
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   default_currency: "USD"
@@ -227,6 +227,7 @@ small_media_group:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  uphold_connection: small_media_group_connection
   default_currency: "BAT"
 
 medium_media_group:

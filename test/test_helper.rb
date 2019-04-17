@@ -11,6 +11,7 @@ require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 
+
 # https://github.com/rails/rails/issues/31324
 if ActionPack::VERSION::STRING >= "5.2.0"
   Minitest::Rails::TestUnit = Rails::TestUnit

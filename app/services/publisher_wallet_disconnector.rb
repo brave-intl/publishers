@@ -27,6 +27,7 @@ class PublisherWalletDisconnector < BaseApiClient
       BODY
       request.url("/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet")
     end
+
     response
 
   rescue Faraday::Error => e

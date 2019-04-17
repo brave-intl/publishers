@@ -18,7 +18,7 @@ class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
     end
 
   rescue UpholdRequestAccessParameters::InvalidGrantError => e
-    publisher.uphold_code = nil
-    publisher.save!
+    publisher.uphold_connection.uphold_code = nil
+    publisher.uphold_connection.save!
   end
 end

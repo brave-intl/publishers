@@ -60,7 +60,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         publisher.channels.delete_all
         stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
         PublisherWalletGetter.new(publisher: publisher).perform
-        assert_equal UpholdConnection::UpholdAccountState::VERIFIED, publisher.uphold_status
+        assert_equal UpholdConnection::UpholdAccountState::VERIFIED, publisher.uphold_connection.uphold_status
       end
 
       test "not a member yet ok" do
@@ -70,7 +70,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         publisher = publishers(:uphold_connected)
         publisher.channels.delete_all
         stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-        assert_equal UpholdConnection::UpholdAccountState::RESTRICTED, publisher.uphold_status
+        assert_equal UpholdConnection::UpholdAccountState::RESTRICTED, publisher.uphold_connection.uphold_status
       end
 
       test "unconnected" do
@@ -78,7 +78,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
         publisher = publishers(:verified)
         publisher.channels.delete_all
         stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-        assert_equal UpholdConnection::UpholdAccountState::UNCONNECTED, publisher.uphold_status
+        assert_equal UpholdConnection::UpholdAccountState::UNCONNECTED, publisher.uphold_connection.uphold_status
       end
 
       test "has an action" do
@@ -88,7 +88,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
           eyeshade_response[:status][:action] = action
           stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
           PublisherWalletGetter.new(publisher: publisher).perform
-          assert_equal UpholdConnection::UpholdAccountState::REAUTHORIZATION_NEEDED, publisher.uphold_status
+          assert_equal UpholdConnection::UpholdAccountState::REAUTHORIZATION_NEEDED, publisher.uphold_connection.uphold_status
         end
       end
     end
