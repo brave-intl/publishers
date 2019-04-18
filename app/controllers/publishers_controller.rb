@@ -221,7 +221,6 @@ class PublishersController < ApplicationController
 
     # Ensure the uphold_state_token has been set. If not send back to try again
     if @publisher.uphold_connection&.uphold_state_token.blank?
-      Rails.logger.info("!!!!!!!!!! State token is blank ")
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
@@ -229,7 +228,6 @@ class PublishersController < ApplicationController
     # Catch uphold errors
     uphold_error = params[:error]
     if uphold_error.present?
-      Rails.logger.error("🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨 Uphold Error: #{uphold_error}-> #{params[:error_description]}")
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
@@ -237,7 +235,6 @@ class PublishersController < ApplicationController
     # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
     state_token = params[:state]
     if @publisher.uphold_connection&.uphold_state_token != state_token
-      Rails.logger.info "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️ #{params[:state]} != #{@publisher.uphold_connection&.uphold_state_token}"
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
