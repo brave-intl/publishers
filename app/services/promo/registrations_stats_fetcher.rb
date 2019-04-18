@@ -21,12 +21,12 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
       referral_code_events_by_date = JSON.parse(response.body)
       referral_code_batch.each do |referral_code|
         promo_registration = PromoRegistration.find_by_referral_code(referral_code)
-        promo_registration.stats = referral_code_events_by_date.select {|referral_code_event_date|
+        promo_registration.stats = referral_code_events_by_date.select { |referral_code_event_date|
           referral_code_event_date["referral_code"] == referral_code
         }.to_json
         promo_registration.save!
       end
-      stats = stats + referral_code_events_by_date
+      stats += referral_code_events_by_date
     end
 
     stats
@@ -35,17 +35,19 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   def perform_offline
     stats = []
     @referral_codes.each do |referral_code|
-      ((1.month.ago.utc.to_date)..(Time.now.utc.to_date)).each do |day|
+      events = []
+      (1..6).reverse_each do |i|
         event = {
           "referral_code" => "#{referral_code}",
-          PromoRegistration::RETRIEVALS => 1,
-          PromoRegistration::FIRST_RUNS => 1,
-          PromoRegistration::FINALIZED => 1,
-          "ymd" => "#{day}",
+          PromoRegistration::RETRIEVALS => rand(50..75),
+          PromoRegistration::FIRST_RUNS => rand(30..50),
+          PromoRegistration::FINALIZED => rand(1..30),
+          "ymd" => "#{i.month.ago.utc.to_date}",
         }
-        PromoRegistration.find_by_referral_code(referral_code).update(stats: [event].to_json)
+        events.push(event)
         stats.push(event)
       end
+      PromoRegistration.find_by_referral_code(referral_code).update(stats: events.to_json)
     end
 
     stats
@@ -62,6 +64,10 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   end
 
   def query_string(referral_codes)
-    "?" + referral_codes.map { |referral_code| "referral_code=#{referral_code}"}.join("&")
+    query_string = "?"
+    referral_codes.each do |referral_code|
+      query_string = "#{query_string}referral_code=#{referral_code}&"
+    end
+    query_string.chomp("&") # Remove the final ampersand
   end
 end
