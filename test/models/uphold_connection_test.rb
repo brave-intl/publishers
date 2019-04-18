@@ -1,120 +1,270 @@
+require "test_helper"
+require "shared/mailer_test_helper"
+require "webmock/minitest"
+
+class UpholdConnectionTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
+  include MailerTestHelper
+  include PromosHelper
+  include EyeshadeHelper
+
+  describe 'prepare_uphold_state' do
+    let(:verified_connection) { uphold_connections(:verified_connection) }
+    let(:subject) { verified_connection.prepare_uphold_state_token }
+
+    before do
+      verified_connection.uphold_state_token = nil
+      subject
+    end
+
+    it 'is valid' do
+      assert verified_connection.valid?
+    end
+
+    it 'generates a new state token' do
+      assert verified_connection.uphold_state_token
+    end
+
+    describe 'when it is previously set' do
+      existing_value = nil
+
+      before do
+        existing_value = verified_connection.uphold_state_token
+        subject
+      end
+
+      it 'does not change' do
+        assert_equal existing_value, verified_connection.uphold_state_token
+      end
+    end
+  end
+
+  describe 'validations' do
+    let(:uphold_connection) { uphold_connections(:verified_connection) }
+
+    describe 'when uphold_access_parameters is nil' do
+      before do
+        uphold_connection.uphold_access_parameters = nil
+      end
+
+      describe 'when uphold_code is present' do
+        before do
+          uphold_connection.uphold_code = 'foo'
+        end
+
+        it 'is valid' do
+          assert uphold_connection.valid?
+        end
+
+        describe 'when uphold_verified is true' do
+          before do
+            uphold_connection.uphold_verified = true
+          end
+
+          it 'is not valid' do
+            refute uphold_connection.valid?
+          end
+        end
+      end
+
+      describe 'when uphold_code is missing' do
+        before do
+          uphold_connection.uphold_code = nil
+        end
+
+        it 'is valid' do
+          assert uphold_connection.valid?
+        end
+
+        describe 'when uphold_verified is true' do
+          before do
+            uphold_connection.uphold_verified = true
+          end
+
+          it 'is valid' do
+            assert uphold_connection.valid?
+          end
+        end
+      end
+    end
+
+    describe 'when uphold_access_parameters are present' do
+      before do
+        uphold_connection.uphold_access_parameters = 'bar'
+      end
+
+      describe 'when uphold_code is present' do
+        before do
+          uphold_connection.uphold_code = 'foo'
+        end
+
+        it 'is not valid' do
+          refute uphold_connection.valid?
+        end
+      end
+
+      describe 'when uphold_code is missing' do
+        before do
+          uphold_connection.uphold_code = nil
+        end
+
+        it 'is valid' do
+          assert uphold_connection.valid?
+        end
+
+        describe 'when uphold_verified is true' do
+          before do
+            uphold_connection.uphold_verified = true
+          end
+
+          it 'access_parameters cannot be set with uphold_verified' do
+            refute uphold_connection.valid?
+          end
+
+          it 'has a key with errors' do
+            uphold_connection.valid?
+            assert_equal [:uphold_access_parameters], uphold_connection.errors.keys
+          end
+        end
+      end
+    end
+  end
+
+  describe 'receive_uphold_code' do
+    uphold_connection = nil
+    let(:subject) { uphold_connection.receive_uphold_code('secret!') }
+
+    before do
+      uphold_connection = uphold_connections(:verified_connection)
+      uphold_connection.uphold_state_token = '1234'
+      uphold_connection.uphold_code = nil
+      uphold_connection.uphold_access_parameters = '1234'
+      uphold_connection.uphold_verified = false
+
+      subject
+    end
+
+    it 'uphold_processing? returns true' do
+      assert uphold_connection.uphold_processing?
+    end
+
+    it 'it sets uphold_code' do
+      assert uphold_connection.uphold_code
+    end
+
+    it 'clears the uphold_access_parameters field' do
+      assert_nil uphold_connection.uphold_access_parameters
+    end
+
+    it 'clears the uphold_state_token field' do
+      assert_nil uphold_connection.uphold_state_token
+    end
+  end
 
 
+  describe 'verify_uphold' do
+    uphold_connection = nil
 
-  # test "prepare_uphold_state_token generates a new uphold_state_token if one does not already exist" do
-  #   publisher = publishers(:verified)
-  #   publisher.uphold_connection.uphold_state_token = nil
-  #   publisher.prepare_uphold_state_token
+    before do
+      uphold_connection = uphold_connections(:verified_connection)
+      uphold_connection.uphold_code = "foo"
+      uphold_connection.uphold_access_parameters = "bar"
+      uphold_connection.uphold_verified = false
 
-  #   assert publisher.uphold_connection.uphold_state_token
-  #   assert publisher.valid?
+      assert uphold_connection.uphold_processing?
+      uphold_connection.verify_uphold
+    end
 
-  #   uphold_state_token = publisher.uphold_connection.uphold_state_token
-  #   publisher.prepare_uphold_state_token
-  #   assert_equal uphold_state_token, publisher.uphold_connection.uphold_state_token, 'uphold_state_token is not regenerated if it already exists'
-  # end
+    it 'sets uphold_verified to true' do
+      refute uphold_connection.uphold_processing?
+    end
 
+    it 'has uphold_verified?' do
+      assert uphold_connection.uphold_verified?
+    end
 
-  # test "uphold_code is only valid without uphold_access_parameters and before uphold_verified" do
-  #   publisher = publishers(:verified)
-  #   publisher.uphold_connection.uphold_code = "foo"
-  #   publisher.uphold_connection.uphold_access_parameters = nil
-  #   assert publisher.valid?
+    it 'is valid' do
+      assert uphold_connection.valid?
+    end
 
-  #   publisher.uphold_connection.uphold_access_parameters = "bar"
-  #   refute publisher.valid?
-  #   assert_equal [:uphold_code], publisher.errors.keys
+    it 'is not uphold_processing' do
+      refute uphold_connection.uphold_processing?
+    end
+  end
 
-  #   publisher.uphold_connection.uphold_access_parameters = nil
-  #   publisher.uphold_connection.uphold_verified = true
-  #   refute publisher.valid?
-  #   assert_equal [:uphold_code], publisher.errors.keys
-  # end
+  describe 'disconnect upholds' do
+    let(:uphold_connection) { uphold_connections(:verified_connection) }
 
-  # test "uphold_access_parameters can not be set when uphold_verified" do
-  #   publisher = publishers(:verified)
-  #   publisher.uphold_connection.uphold_code = nil
-  #   publisher.uphold_connection.uphold_access_parameters = nil
-  #   publisher.uphold_connection.uphold_verified = true
-  #   assert publisher.valid?
+    before do
+      uphold_connection.disconnect_uphold
+    end
 
-  #   publisher.uphold_connection.uphold_access_parameters = "bar"
-  #   refute publisher.valid?
-  #   assert_equal [:uphold_access_parameters], publisher.errors.keys
-  # end
+    it 'not uphold_verified?' do
+      refute uphold_connection.uphold_verified?
+    end
 
-  # test "receive_uphold_code sets uphold_code and clears other uphold fields" do
-  #   publisher = publishers(:verified)
-  #   publisher.uphold_connection.uphold_state_token = "abc123"
-  #   publisher.uphold_connection.uphold_code = nil
-  #   publisher.uphold_connection.uphold_access_parameters = "bar"
-  #   publisher.uphold_connection.uphold_verified = false
-  #   publisher.receive_uphold_code('secret!')
+    it 'not uphold_processing?' do
+      refute uphold_connection.uphold_processing?
+    end
 
-  #   assert_equal 'secret!', publisher.uphold_connection.uphold_code
-  #   assert_nil publisher.uphold_connection.uphold_state_token
-  #   assert_nil publisher.uphold_connection.uphold_access_parameters
-  #   assert publisher.valid?
-  #   assert publisher.uphold_connection.uphold_processing?
-  #   assert_equal :code_acquired, publisher.uphold_connection.uphold_status
-  # end
+    it 'uphold_connection is valid?' do
+      assert uphold_connection.valid?
+    end
+  end
+  
+  describe 'verify_uphold_status' do
+    uphold_connection = nil
 
+    before do
+      uphold_connection = uphold_connections(:verified_connection)
+    end
 
+    describe 'when uphold_code, access_parameters, and uphold_verified are nil'  do
+      before do
+        uphold_connection.uphold_code = nil
+        uphold_connection.uphold_access_parameters = nil
+        uphold_connection.uphold_verified = false
+      end
 
-  # test "verify_uphold sets uphold_verified to true and clears uphold_code and uphold_access_parameters" do
-  #   publisher = publishers(:verified)
-  #   publisher.uphold_connection.uphold_code = "foo"
-  #   publisher.uphold_connection.uphold_access_parameters = "bar"
-  #   publisher.uphold_connection.uphold_verified = false
-  #   assert publisher.uphold_connection.uphold_processing?
-  #   publisher.uphold_connection.verify_uphold
+      it 'sets the status to unconnected' do 
+        assert_equal :unconnected, uphold_connection.uphold_status
+      end
+    end
 
-  #   assert publisher.uphold_connection.uphold_verified?
-  #   assert publisher.valid?
-  #   assert publisher.uphold_connection.valid?
-  #   refute publisher.uphold_connection.uphold_processing?
-  # end
+    describe 'when uphold_code is set but the other parameters are nil' do
+      before do
+        uphold_connection.uphold_code = 'foo'
+        uphold_connection.uphold_access_parameters = nil
+        uphold_connection.uphold_verified = false
+      end
 
-  # test "disconnect_uphold clears uphold settings" do
-  #   publisher = publishers(:verified)
-  #   publisher.uphold_connection.verify_uphold
-  #   assert publisher.uphold_connection.uphold_verified?
+      it 'returns code_acquired' do
+        assert_equal :code_acquired, uphold_connection.uphold_status
+      end
+    end
 
-  #   publisher.disconnect_uphold
-  #   refute publisher.uphold_connection.uphold_verified?
-  #   refute publisher.uphold_connection.uphold_processing?
-  #   assert publisher.valid?
-  #   assert publisher.uphold_connection.valid?
-  # end
+    describe 'when uphold_code is nil but there are access parameters' do 
+      before do 
+        uphold_connection.uphold_code = nil
+        uphold_connection.uphold_access_parameters = "foo"
+        uphold_connection.uphold_verified = false
+      end
 
-  # test "verify_uphold_status correctly calculated" do
-  #   publisher = publishers(:verified)
+      it 'returns access_parameters_acquired' do
+        assert_equal :access_parameters_acquired, uphold_connection.uphold_status
+      end
+    end
 
-  #   # unconnected
-  #   publisher.uphold_connection.uphold_code = nil
-  #   publisher.uphold_connection.uphold_access_parameters = nil
-  #   publisher.uphold_connection.uphold_verified = false
-  #   assert publisher.valid?
-  #   assert_equal :unconnected, publisher.uphold_connection.uphold_status
+    describe 'when uphold_code and access_parameters are nil' do 
+      before do 
+        uphold_connection.uphold_code = nil
+        uphold_connection.uphold_access_parameters = nil
+        uphold_connection.uphold_verified = true
+      end
 
-  #   # code_acquired
-  #   publisher.uphold_connection.uphold_code = "foo"
-  #   publisher.uphold_connection.uphold_access_parameters = nil
-  #   publisher.uphold_connection.uphold_verified = false
-  #   assert publisher.valid?
-  #   assert_equal :code_acquired, publisher.uphold_connection.uphold_status
-
-  #   # access_parameters_acquired
-  #   publisher.uphold_connection.uphold_code = nil
-  #   publisher.uphold_connection.uphold_access_parameters = "bar"
-  #   publisher.uphold_connection.uphold_verified = false
-  #   assert publisher.valid?
-  #   assert_equal :access_parameters_acquired, publisher.uphold_connection.uphold_status
-
-  #   # verified
-  #   publisher.uphold_connection.uphold_code = nil
-  #   publisher.uphold_connection.uphold_access_parameters = nil
-  #   publisher.uphold_connection.uphold_verified = true
-  #   assert publisher.valid?
-  #   assert_equal :verified, publisher.uphold_connection.uphold_status
-  # end
+      it 'returns access_parameters_acquired' do
+        assert_equal :verified, uphold_connection.uphold_status
+      end
+    end
+  end
+end
