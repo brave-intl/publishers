@@ -3,7 +3,10 @@ class CreateUpholdConnections < ActiveRecord::Migration[5.2]
     create_table :uphold_connections, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|
       t.string :uphold_state_token
       t.boolean :uphold_verified, default: false
+      t.boolean :is_member, default: false
+
       t.uuid :uphold_id
+      t.uuid :address
       t.belongs_to :publisher, index: true, type: :uuid
 
       t.string :encrypted_uphold_code

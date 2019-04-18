@@ -475,7 +475,9 @@ ActiveRecord::Schema.define(version: 2019_04_08_215416) do
   create_table "uphold_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "uphold_state_token"
     t.boolean "uphold_verified", default: false
+    t.boolean "is_member", default: false
     t.uuid "uphold_id"
+    t.uuid "address"
     t.uuid "publisher_id"
     t.string "encrypted_uphold_code"
     t.string "encrypted_uphold_code_iv"

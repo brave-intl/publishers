@@ -81,17 +81,17 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def uphold_status
-    if self.publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::BLOCKED
+    if publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::BLOCKED
       # Notify on Slack that there's someone suspect
       SlackMessenger.new(message: "Publisher #{id} is blocked by Uphold and has just logged in. <!channel>").perform
     end
 
-    if self.publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::RESTRICTED
+    if publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::RESTRICTED
       UpholdAccountState::RESTRICTED
     elsif uphold_verified?
       if uphold_reauthorization_needed?
         UpholdAccountState::REAUTHORIZATION_NEEDED
-      elsif self.publisher&.wallet&.not_a_member?
+      elsif publisher&.wallet&.not_a_member?
         UpholdAccountState::RESTRICTED
       else
         UpholdAccountState::VERIFIED
@@ -115,11 +115,11 @@ class UpholdConnection < ActiveRecord::Base
       wallet.authorized? &&
       wallet.scope &&
       wallet.scope.include?("cards:write") &&
-      !self.publisher.excluded_from_payout
+      !publisher.excluded_from_payout
   end
 
   def wallet
-    @wallet ||= self.publisher.wallet
+    @wallet ||= publisher.wallet
   end
 
   def encryption_key

@@ -23,7 +23,6 @@ class Publisher < ApplicationRecord
   has_one :user_authentication_token, foreign_key: :user_id
   has_many :login_activities
 
-
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
   has_many :promo_campaigns, dependent: :destroy
@@ -151,11 +150,11 @@ class Publisher < ApplicationRecord
         UploadDefaultCurrencyJob.perform_later(publisher_id: id)
       end
 
-      # TODO think about this later
-      if @_wallet.uphold_id.present? && @_wallet.uphold_id != uphold_id
-        self.uphold_id = wallet.uphold_id
-        save!
-      end
+      uphold_connection&.update_attributes(
+        is_member: @_wallet.is_a_member?,
+        uphold_id:  @_wallet.uphold_id,
+        address: @_wallet.address
+      )
     end
 
     @_wallet
