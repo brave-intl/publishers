@@ -22,6 +22,7 @@ class PayoutReportPublisherIncluder < BaseService
     probi = wallet.referral_balance.amount_probi # probi = balance
     publisher_has_unsettled_balance = probi.to_i.positive?
 
+    # Create the referral payment for the owner
     unless should_only_notify?
       PotentialPayment.create(payout_report_id: @payout_report.id,
                               name: @publisher.name,
@@ -58,7 +59,8 @@ class PayoutReportPublisherIncluder < BaseService
                                 reauthorization_needed: reauthorization_needed,
                                 uphold_member: uphold_member,
                                 suspended: suspended,
-                                uphold_id: uphold_id)
+                                uphold_id: uphold_id,
+                                channel_stats: channel.details.stats)
       end
     end
 
