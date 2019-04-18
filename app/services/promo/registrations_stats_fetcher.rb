@@ -64,10 +64,6 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   end
 
   def query_string(referral_codes)
-    query_string = "?"
-    referral_codes.each do |referral_code|
-      query_string = "#{query_string}referral_code=#{referral_code}&"
-    end
-    query_string.chomp("&") # Remove the final ampersand
+    "?" + referral_codes.map { |referral_code| "referral_code=#{referral_code}" }.join("&")
   end
 end
