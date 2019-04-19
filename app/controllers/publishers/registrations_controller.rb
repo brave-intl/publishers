@@ -34,11 +34,20 @@ module Publishers
 
       if @publisher.save
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
-        render :emailed_authentication_token
+
+        respond_to do |format|
+          format.html { render :emailed_authentication_token }
+          format.json { head :ok }
+        end
       else
         Rails.logger.error("Create publisher errors: #{@publisher.errors.full_messages}")
-        flash[:warning] = t(".invalid_email")
-        redirect_to sign_up_publishers_path
+        respond_to do |format|
+          format.html do
+            flash[:warning] = t(".invalid_email")
+            redirect_to sign_up_publishers_path
+          end
+          format.json { head :bad_request }
+        end
       end
     end
 
@@ -51,20 +60,13 @@ module Publishers
 
       enforce_throttle(throttled: throttle_registration?, path: log_in_publishers_path) and return
 
-      if @publisher
-        MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
-      else
-        # Failed to find publisher
-        flash[:alert_html_safe] = t("publishers.registrations.emailed_authentication_token.unfound_alert_html",
-          new_publisher_path: sign_up_publishers_path(email: params[:email]),
-          create_publisher_path: registrations_path(email: params[:email]),
-          email: ERB::Util.html_escape(params[:email]))
+      MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
 
-        @publisher = Publisher.new
-        return redirect_to log_in_publishers_path
+      # If the publisher doesn't exist we'll just pretend like they do
+      respond_to do |format|
+        format.html { render :emailed_authentication_token }
+        format.json { head :ok }
       end
-
-      render :emailed_authentication_token
     end
 
     def expired_authentication_token
@@ -97,7 +99,10 @@ module Publishers
       @publisher_email = publisher.email
       MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
       flash.now[:notice] = t("publishers.registrations.create.email_already_active", email: @publisher_email)
-      render :emailed_authentication_token
+      respond_to do |format|
+        format.html { render :emailed_authentication_token }
+        format.json { head :ok }
+      end
     end
 
     def enforce_throttle(throttled:, path:)
@@ -106,7 +111,12 @@ module Publishers
       return if throttle_is_legit
 
       Rails.logger.info("User has been throttled")
-      redirect_to path, alert: t(".access_throttled") and return true
+      respond_to do |format|
+        format.html { redirect_to path, alert: t(".access_throttled") and return true }
+        format.json do
+          render json: { message: t(".access_throttled") }, status: :too_many_requests
+        end
+      end
     end
 
     # Level 1 throttling -- After the first two requests, ask user to

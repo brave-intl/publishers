@@ -4,7 +4,7 @@
   - if @invoice.in_progress?
     .ml-3
       = link_to "Generate Manual Payout", admin_partner_generate_manual_payout_path(id: @invoice.partner), class: 'btn btn-info'
-  - else
+  - elsif @invoice.pending?
     .ml-3
       = link_to "Edit", edit_admin_partner_invoice_path(@invoice), class: 'btn btn-primary'
     .ml-3

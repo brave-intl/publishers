@@ -105,10 +105,14 @@ function processStats(referralCodes) {
   const total = referralCodes.length;
 
   referralCodes.forEach(code => {
-    if (JSON.parse(code.stats)[0]) {
-      downloads += JSON.parse(code.stats)[0].retrievals;
-      installs += JSON.parse(code.stats)[0].first_runs;
-      thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+    try {
+      JSON.parse(code.stats).forEach(stat => {
+        downloads += stat.retrievals || 0;
+        installs += stat.first_runs || 0;
+        thirtyDayUse += stat.finalized || 0;
+      });
+    } catch (e) {
+      // catch if stats are empty
     }
   });
 
