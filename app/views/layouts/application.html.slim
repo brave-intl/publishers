@@ -57,7 +57,7 @@ html
       - if !request.original_url.include? "/partners/"
         - if content_for?(:nav)
           = yield(:nav)
-        - else 
+        - else
           = render("nav")
 
       /
