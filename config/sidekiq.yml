@@ -26,10 +26,6 @@
   TwoFactorAuthenticationRemovalJob:
     cron: "0 12 * * *"
     description: "Handle two factor authentication removal requests, send reminder e-mails, process 2fa removals, remove channels/wallets when required"
-  Sync::OwnerPromoRegistrationsStatsJob:
-    cron: "0 */12 * * *"
-    description: "Syncs referral stats for owner codes every 12 hours."
-    queue: low
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
