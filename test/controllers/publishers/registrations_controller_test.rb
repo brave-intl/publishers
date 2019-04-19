@@ -120,18 +120,6 @@ module Publishers
           assert_enqueued_emails(1) { subject }
         end
       end
-
-      describe 'when the user does not exist in the system' do
-        let(:update_email) { 'not_found@example.org' }
-
-        before do
-          subject
-        end
-
-        it 'gives the ability to sign up' do
-          assert_not_nil flash[:alert_html_safe]
-        end
-      end
     end
 
     describe '#expired_authentication_token' do

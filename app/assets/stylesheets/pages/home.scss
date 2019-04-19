@@ -25,6 +25,7 @@
       margin-top: -60px;
     }
   }
+
   &--logo {
     &-parent {
       position: relative;
@@ -54,10 +55,7 @@
   display: block;
 
   .title {
-    display: inline-block;
-    text-transform: uppercase;
-    font-weight: 500;
-    font-size: 18px;
+    display: none;
   }
 
   .title-partner {
@@ -68,6 +66,7 @@
   }
 
   @include media-breakpoint-down(md) {
+
     .title,
     .btn {
       display: none;
@@ -96,122 +95,123 @@
   margin: auto;
 
   .promo--tos {
-    color: white;
+    color: $braveText-3;
     opacity: 0.7;
-    margin-left: 60px;
-    margin-right: 60px;
     font-size: 12px;
     text-align: center;
-    a {
-      color: white;
-      &:hover,
-      &focus {
-        color: white;
-      }
-    }
-    @include media-breakpoint-down(sm) {
-      margin-left: 85px;
-      margin-right: 85px;
-    }
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   .promo-panel {
-    padding: 0px 15px 0px 100px;
     background-color: #00bcd6;
-    display: table;
     width: 100%;
-    height: 150px;
-    background-image: url(asset-path("bat-mercury-patch-jr.png")),
-      url(asset-path("bat-polygon-narrow.png"));
-    background-repeat: no-repeat;
-    background-position: center left 30px, left top 50px;
-    background-size: auto 100px, cover;
-    border-radius: $brave-panels-borderRadius;
+    border-radius: 8px;
+    padding: 32px;
+    box-shadow: $defaultBoxShadow;
+
+    &-item-info {
+      margin: 12px;
+    }
+
+    &-item-button {
+      margin: 12px;
+    }
+
+    &-header {
+      color: #326183;
+      letter-spacing: .5px;
+    }
+
     .promo-flex-col {
       display: flex;
       flex-direction: column;
-      flex: 1;
-      padding-left: 5px;
-      padding-right: 5px;
-      &-downloaded {
-        color: #006192;
-      }
-      &-installed {
-        color: #03375d;
-      }
-      &-confirmed {
-        color: white;
+      color: #fff;
+    }
+
+    .promo-flex-stats {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media only screen and (max-width: 400px) {
+      .promo-flex-stats {
+        flex-direction: column;
       }
     }
+
     .promo-flex-row {
       display: flex;
-      flex-direction: row;
+
       &-sub {
-        text-align: right;
-        padding-right: 30px;
-        padding-top: 15px;
-        color: #03375d;
-        margin-left: auto;
-        font-size: 13px;
-        font-weight: 600;
+        color: #326183;
+        font-size: 14px;
+        margin: 0 0 16px;
       }
     }
+
     .promo-panel-header {
-      padding-top: 30px;
       text-align: center;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
     }
+
     .promo-panel-number {
       text-align: center;
       font-weight: 600;
       font-size: 30px;
-      white-space: nowrap;
-      margin-top: -10px;
     }
+
     .promo-panel-title {
-      padding-top: 40px;
-      color: #006192;
+      display: flex;
+      flex-direction: column;
+
       &-item {
-        padding-top: 0px;
+        display: inline;
         text-align: left;
         font-weight: 600;
+        padding: 0 8px 0 0;
+        font-size: 24px;
+        color: #FFF;
       }
     }
+
     .promo-panel-item {
-      display: table-cell;
-      vertical-align: middle;
       #promo-limited-time {
         color: #006192;
         font-weight: 700;
       }
+
       #promo-header {
         color: white;
         font-weight: 600;
         margin-bottom: 0px;
       }
+
       #promo-referring-fans {
         color: #bcf0f7;
         font-size: 20px;
         font-weight: 500;
       }
-      &-button {
-        text-align: center;
-      }
+
       #activate-promo-dashboard-button {
         background: white;
         color: #4c54d2;
         border: none;
+
         &:hover,
         &focus {
           background: #bcf0f7;
         }
+
         font-size: 12px;
         font-weight: 600;
         font-weight: 700;
       }
+
       &-alert {
         width: 60%;
+
         #promo-panel-alert {
           font-size: 14px;
           font-weight: 600;
@@ -231,36 +231,43 @@
   }
 
   .channel--promo-info-container {
-    float: right;
-    height: 45px;
-    width: 166px;
-    transition: 0.3s ease-in-out;
-    display: table;
+    position: absolute;
+    right: 24px;
+
+    @media only screen and (max-width: 520px) {
+      margin: 8px 0;
+      display: flex;
+      position: initial;
+    }
+
     .promo-info-item {
       height: 100%;
       text-align: center;
       display: table-cell;
       vertical-align: middle;
+      padding: 4px;
     }
+
     .referral-link-button {
-      width: 110px;
       background: #edf3f9;
       display: table-cell;
-      border: solid;
-      border-width: 1px;
       border-radius: 4px;
-      border-color: #cddeec;
+      padding: 8px;
       cursor: pointer;
+
       span {
         transition: opacity 0.7s linear;
       }
+
       span.fadedOut {
         opacity: 0;
       }
+
       &-mobile {
         display: none;
       }
     }
+
     .referral-link-url {
       background: #edf3f9;
       height: 100%;
@@ -273,50 +280,58 @@
       white-space: nowrap;
       display: none;
     }
+
     .referral-link-copy-button {
-      background: #ff3f3f;
-      color: white;
+      background: $braveBrand;
+      color: $braveText-2;
       height: 100%;
       border-radius: 0px 4px 4px 0px;
       cursor: pointer;
       display: none;
     }
+
     .promo-share-button {
-      height: 23px;
-      width: 28px;
+      height: 36px;
+      width: 36px;
       display: table-cell;
       background-position: center;
       background-repeat: no-repeat;
+
       &-twitter {
         background-image: url(asset-path("tweet.png"));
       }
+
       &-facebook {
         background-image: url(asset-path("f-share.png"));
       }
     }
+
     &-slideout {
-      width: 340px;
       .promo-info-item {
         display: table-cell;
       }
+
       .referral-link-button {
         display: none;
       }
     }
+
     @include media-breakpoint-down(sm) {
-      margin-top: 20px;
-      margin-left: 30px;
+
       .referral-link-button {
         &-mobile {
           display: table-cell;
         }
+
         &-desktop {
           display: none;
         }
       }
+
       .referral-link-copy-button {
         display: none;
       }
+
       .referral-link-url {
         display: none;
       }
@@ -325,71 +340,32 @@
 
   .dashboard-panel {
     &--wrapper {
-      margin-top: 30px;
-      padding: 64px 45px 55px 95px;
-      min-width: 450px;
-
-      @include media-breakpoint-up(md) {
-        min-height: 460px;
-      }
-
+      padding: 32px;
       background-color: white;
       border-radius: $brave-panels-borderRadius;
-      box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
-
-      @include media-breakpoint-down(xs) {
-        min-height: $spacer * 10;
-      }
-
-      &.uphold-panel {
-        background-image: url(asset-path("uphold@1x.png"));
-        background-repeat: no-repeat;
-        background-position: top right;
-      }
+      box-shadow: $defaultBoxShadow;
+      height: 100%;
     }
+
     &--header {
-      margin: 0 0 0 -50px;
-      padding: 12px 0 12px 50px;
-      vertical-align: middle;
-      font-weight: 400;
-      background-position: center left;
-      background-repeat: no-repeat;
-      background-size: 34px 42px;
+      padding: 4px 0 4px;
       font-size: 20px;
-      &#dashboard_uphold_header {
-        padding-top: 14px;
-        background-image: url(asset-path("wallet@1x.png"));
-      }
-      &#publishers_statements {
-        background-image: url(asset-path("download@1x.png"));
-      }
-      &#publishers_contact {
-        background-image: url(asset-path("contact@1x.png"));
-      }
-      &#publishers_list {
-        background-image: url(asset-path("list@1x.png"));
-      }
-      h4 {
-        font-size: $font-size-base;
-      }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
     }
 
     &--content {
-      margin-bottom: 25px;
+      margin-bottom: 24px;
     }
   }
 
-  .tos-row {
-    margin-top: 20px;
-    margin-bottom: 150px;
-  }
-
   .block-note {
-    margin-top: 12px;
     background: #f0f0f0;
     border: 1px solid #cccccc;
     padding: 10px 15px;
-    color: #666666;
+    color: $braveText-2;
     border-radius: $brave-panels-borderRadius;
   }
 
@@ -397,9 +373,9 @@
     background: $braveGray-9;
     border-radius: $brave-panels-borderRadius;
     padding: 18px;
+
     .button.form-group a {
       display: inline-block;
-      margin-left: 18px;
     }
   }
 
@@ -413,30 +389,15 @@
 
   .control-label {
     font-weight: 500;
-    color: #484b4e;
+    color: $braveText-2;
   }
 
   .attribute-value {
     margin-bottom: 24px;
   }
 
-  #converted_amount {
-    @include media-breakpoint-down(sm) {
-      margin-bottom: 20px;
-    }
-  }
-
   h4.balance-header {
     font-size: 13px;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    padding-left: 75px;
-
-    #balance_pending_message {
-      opacity: 0.6;
-      padding-left: 7px;
-    }
   }
 
   #uphold_status {
@@ -444,6 +405,7 @@
       vertical-align: top;
       margin-bottom: 5px;
     }
+
     .unavailable-currencies {
       padding: 9px 0 9px 52px;
       background-position: left center;
@@ -451,64 +413,74 @@
       background-size: 42px;
       background-image: url(asset-path("icn-warning@1x.png"));
     }
+
     .status-summary {
-      margin-top: -10px;
-      margin-bottom: 20px;
       font-size: 14px;
+
       .text {
         display: inline-block;
+
         &:before {
           content: "\25CF\00a0";
         }
       }
+
       .action {
         display: inline-block;
         margin-left: 15px;
+
         .disconnect-uphold {
-          color: $mediumGray;
+          color: $braveText-4;
         }
       }
     }
-    .status-description {
-      margin-top: 40px;
-    }
+
     .field {
       margin: $spacer * 0.4 0;
+
       label {
         display: inline-block;
         margin: 0;
       }
+
       .value {
         display: inline-block;
         margin-left: 11px;
       }
+
       .action {
         display: inline-block;
         margin-left: 11px;
       }
     }
+
     #last_settlement {
       &.settlement-made {
         display: block;
       }
+
       &.no-settlement-made {
         display: none;
       }
+
       .last-deposit {
         font-size: $font-size-base;
         vertical-align: top;
         margin-top: 34px;
+
         .amounts {
           .bat-amount {
             font-size: 30px;
-            color: #fc4145;
+            color: $braveBrand;
             font-weight: 500;
           }
+
           .bat-code {
             font-size: 16px;
-            color: #222326;
+            color: $braveText-2;
             font-weight: 500;
           }
+
           .converted {
             margin-top: -8px;
             font-size: 14px;
@@ -517,10 +489,13 @@
         }
       }
     }
+
     #uphold_check_balance {
       margin-top: 2rem;
     }
+
     &.uphold-timeout {
+
       .status-summary .action,
       #uphold_dashboard,
       #uphold_connect,
@@ -529,68 +504,83 @@
         display: none;
       }
     }
+
     &.uphold-complete,
     &.uphold-processing {
+
       .status-summary .action .connect-uphold,
       #uphold_connect {
         display: none;
       }
     }
+
     &.uphold-processing {
+
       #uphold_dashboard,
       #last_settlement,
       .statements-available {
         display: none;
       }
     }
+
     &.uphold-complete {
       .statements-unavailable {
         display: none;
       }
     }
+
     &.uphold-restricted,
     &.uphold-reauthorization-needed,
     &.uphold-unconnected {
       .status-description {
-        margin: 50px 0 30px -52px;
-        padding: 0 0 5px 52px;
-        min-height: 42px;
-        background-position: top left;
+        background-position: left;
         background-repeat: no-repeat;
-        background-size: 42px;
+        background-size: 30px;
         background-image: url(asset-path("icn-warning@1x.png"));
+        padding: 0 0 0 48px;
+        margin: 0 0 24px;
+        font-size: 14px;
       }
+
       #uphold_connect {
         margin-top: 30px;
       }
+
       #uphold_dashboard,
       #last_settlement,
       .statements-available {
         display: none;
       }
     }
+
     &.uphold-reauthorization-needed,
     &.uphold-unconnected {
+
       .status-summary .action .disconnect-uphold,
       .reconnect-instructions {
         display: none;
       }
     }
+
     &.uphold-restricted {
+
       .status-summary .action .connect-uphold,
       .reconnect-instructions {
         display: none;
       }
+
       .status-summary,
       #reconnect_to_uphold {
         display: none;
       }
+
       .status-summary,
       #go_to_uphold {
         /* (Albert Wang): We add lot's of crazy complexity by disabling HTML elements */
         display: inline !important;
       }
     }
+
     // Status summary label
     &.uphold-complete,
     &.uphold-restricted,
@@ -600,61 +590,79 @@
         color: darken(#2aeaa1, 10%);
       }
     }
+
     &.uphold-reauthorization-needed,
     &.uphold-timeout {
       .status-summary .text {
         color: $braveRed;
       }
     }
+
     &.uphold-unconnected {
       .status-summary .text {
-        color: $mediumGray;
+        color: $braveGray-6;
       }
     }
+
     &.uphold-processing {
       .status-summary .text {
         animation: blinker 1s linear infinite;
       }
     }
   }
+
   #update_publisher_visible_form {
-    margin-top: 40px;
-    margin-left: -30px;
-    width: 370px;
+    padding: 24px 24px 0 24px;
+
     .form-check-input {
       vertical-align: top;
       margin-top: 5px;
     }
+
     .form-check-label {
       padding-left: 15px;
-      width: 350px;
       font-size: 15px;
       font-weight: 300;
     }
   }
+
+  .payouts {
+    display: flex;
+  }
+
   .balance {
     font-size: $font-size-base;
-    vertical-align: top;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 24px;
+    width: 100%;
+    color: $braveText-2;
+
+    & img {
+      margin: 12px;
+    }
+
     .amounts {
-      margin-top: -16px;
-      margin-left: 15px;
+      display: flex;
+      flex-direction: column;
+
       .bat-amount {
         font-size: 48px;
-        color: #222326;
-        font-weight: 500;
+        line-height: 42px;
       }
+
       .bat-code {
         font-size: 16px;
-        color: #222326;
-        font-weight: 500;
       }
+
       .converted {
-        margin-top: -8px;
         font-size: 14px;
         color: $braveGray-4;
       }
     }
   }
+
   .add-channel-cta {
     display: inline-block;
     margin-top: 25px;
@@ -664,119 +672,111 @@
     background-size: 42px;
     background-image: url(asset-path("icn-info.png"));
   }
+
   .channel-placeholder {
-    margin-top: 30px;
-    display: block;
-    padding: 30px;
-    border: 3px dashed white;
-    border-radius: $brave-panels-borderRadius;
-    color: white;
-    font-weight: 500;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed $braveBrand-Light;
+    border-radius: 8px;
+    color: $braveBrand;
+    font-weight: 600;
+    padding: 32px;
+
     &:hover {
-      color: white;
+      background: rgba(255, 255, 255, .8);
       text-decoration: none;
     }
   }
+
   .channel-row {
-    margin-top: 30px;
-    max-height: 300px;
     &.channel-hidden {
       transition: max-height 300ms ease-out;
       max-height: 0;
       overflow: hidden;
     }
   }
+
   .channel-panel {
-    padding: 18px 40px 20px;
+    padding: 24px;
     border-radius: $brave-panels-borderRadius;
     background-color: white;
-    box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
+    box-shadow: $defaultBoxShadow;
+    position: relative;
 
-    .channel-thumbnail {
-      margin-right: 15px;
-      float: left;
-      img {
-        height: 40px;
-        width: 40px;
-        border-radius: 20px;
-      }
-    }
     .channel-summary {
-      padding-right: 120px;
-      margin-right: 20px;
       width: 100%;
+
       h3 {
-        font-weight: bolder;
         font-size: 20px;
-        margin: 0;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
       }
 
       h3.unverified {
         padding-top: 11px;
       }
+
       .channel-details {
         font-size: 14px;
-        color: $mediumGray;
-        .added-date,
-        .separator,
-        .remove-channel {
-          display: inline-block;
-          margin-right: 12px;
-        }
+        display: flex;
+      }
+
+      .separator {
+        padding: 0 8px;
       }
     }
+
     &.channel-incomplete,
     &.channel-started,
     &.channel-failed {
       background-color: rgba(255, 255, 255, 0.6);
     }
+
     &.channel-incomplete {
       .channel-progress {
         padding: 8px 0;
+
         .one-more-step {
           font-size: 14px;
           padding: 3px 0 3px 115px;
           margin-right: 10px;
-          background: url(asset-path("channel-progress.png")) no-repeat center
-            left;
+          background: url(asset-path("channel-progress.png")) no-repeat center left;
         }
       }
     }
+
     &.channel-failed {
       .channel-status {
         display: flex;
-        background: url(asset-path("icn-warning@1x.png")) no-repeat top left /
-          24px 24px;
+        background: url(asset-path("icn-warning@1x.png")) no-repeat top left / 24px 24px;
         padding: 0 0 12px 38px;
         font-weight: bold;
+
         .btn {
           vertical-align: top;
           margin-left: 10px;
         }
+
         .verification-failed {
           .verification-failed--details {
             position: relative;
             font-size: 14px;
             font-weight: 500;
+
             .verification-failed--what-happened {
-              color: $braveAction;
+              color: $braveBrand;
               cursor: pointer;
             }
           }
+
           .verification-failed--explanation {
             display: none;
             position: absolute;
             left: -145px;
             bottom: 100%;
-            width: 400px;
             padding: 30px 40px;
             background: white;
             border-radius: 4px;
-            box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
+            box-shadow: $defaultBoxShadow;
             font-size: 14px;
 
             &::after {
@@ -802,48 +802,53 @@
         }
       }
     }
+
     &.channel-verified {
       .channel-status {
         background: url(asset-path("bat-logo@1x.png")) no-repeat top left;
         background-size: 30px 28.5px;
         padding: 1px 0 12px 38px;
-        margin-top: -11px;
       }
+
       .channel-contested {
         p {
           margin: 5px 0px 0px 0px;
         }
       }
     }
+
     .channel-info {
       display: flex;
       background: url(asset-path("icn-info.png")) no-repeat top left / 24px 24px;
       padding: 0 0 12px 38px;
       font-weight: bold;
+
       .btn {
         vertical-align: top;
         margin-left: 10px;
       }
+
       .info-popup {
         .info--details {
           position: relative;
           font-size: 14px;
           font-weight: 500;
+
           .info--what-happened {
-            color: $braveAction;
+            color: $braveBrand;
             cursor: pointer;
           }
         }
+
         .info--explanation {
           display: none;
           position: absolute;
           left: -145px;
           bottom: 100%;
-          width: 400px;
           padding: 30px 40px;
           background: white;
           border-radius: 4px;
-          box-shadow: 0 0 10px 0 rgba(34, 35, 38, 0.15);
+          box-shadow: $defaultBoxShadow;
           font-size: 14px;
 
           &::after {
@@ -868,48 +873,34 @@
         }
       }
     }
+
     &--intro {
-      margin-bottom: 7px;
-      font-size: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
     }
+
     &--intro-icon {
-      float: left;
-      margin-right: 7px;
+      margin-right: 8px;
+      display: flex;
     }
+
     &--intro-body {
-      line-height: 1.8;
-    }
-    &.channel-unverified {
-      .channel-panel--intro {
-        margin-bottom: 3px;
-      }
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1;
     }
   }
-  #default_currency_code {
-    font-weight: 600;
-  }
+
   .payment-info {
     font-size: $font-size-base;
   }
-  .last-deposit {
-    font-weight: 700;
-  }
+
   .header-link {
-    float: right;
     font-size: 16px;
     font-weight: 500;
-    color: #00bcda;
+    color: $braveBrand;
     display: inline-block;
-  }
-  .terms-of-service {
-    text-align: right;
-    margin-top: -10px;
-    a {
-      padding-right: 20px;
-      color: rgba(#ededee, 0.65);
-      font-size: 14px;
-      font-weight: 300;
-    }
   }
 
   .bat-channel {
@@ -919,18 +910,20 @@
       display: inline;
       line-height: 1;
     }
+
     &--currency {
       font-size: 14px;
       display: inline;
-      color: #2f3032;
+      color: $braveText-2;
       line-height: 1;
       padding-left: 3px;
     }
+
     &--period {
       line-height: 1;
-      color: #999999;
-      font-size: 11px;
-      font-weight: bolder;
+      color: $braveText-3;
+      font-size: 12px;
+      font-weight: 600;
     }
   }
 }
@@ -958,11 +951,14 @@
     .entry {
       display: none;
     }
+
     .transition {
       display: block;
+
       .spinner {
         padding: 40px 100px;
       }
+
       .status {
         min-height: 3rem;
         font-size: 18px;
@@ -974,8 +970,10 @@
 #channel_taken_modal {
   .taken-channel {
     margin: $spacer * 2;
+
     .summary {
       margin-bottom: 20px;
+
       img {
         display: inline-block;
         width: 40px;
@@ -983,24 +981,29 @@
         border-radius: 20px;
         margin-right: 10px;
       }
+
       .title {
         display: inline-block;
       }
     }
+
     .registration-date {
       label {
         display: inline-block;
         margin-right: 8px;
       }
+
       .value {
         display: inline-block;
       }
     }
+
     .registered-by {
       label {
         display: inline-block;
         margin-right: 8px;
       }
+
       .value {
         display: inline-block;
       }
@@ -1010,42 +1013,50 @@
 
 .modal-container--modal-identifier--choose-channel-type {
   max-width: 685px;
-  & > div {
+
+  &>div {
     width: 100%;
     background-image: url(asset-path("choose-channel/header.jpg"));
     background-repeat: no-repeat;
     background-size: 685px;
     background-position: top center;
-    background-color: #eff2f5;
+    background-color: $braveGray-9;
     padding-bottom: 0;
   }
+
   .card {
     display: block;
     border-radius: 4px;
     background: white;
     border: 1px solid white;
+
     &:hover {
       border: 1px solid #dbdfe3;
-      box-shadow: 0 0 22px 0 rgba(34, 35, 38, 0.12);
+      box-shadow: $defaultBoxShadow;
     }
   }
+
   .block-link--card {
     margin-bottom: 24px;
     color: inherit;
     text-decoration: inherit;
+
     &:hover {
       color: inherit;
       text-decoration: inherit;
     }
   }
+
   .card-body {
     padding: 24px 64px;
+
     h6 {
-      color: #7d7bdc;
+      color: $braveBrand;
       font-weight: bold;
       font-size: 18px;
     }
   }
+
   .icon-and-text {
     &--wrapper {
       display: flex;
@@ -1053,43 +1064,97 @@
       flex-direction: row;
       flex-wrap: nowrap;
     }
+
     &--icon {
       flex: 0 0 0;
       align-self: center;
       margin: 0 14px 0 6px;
       line-height: 0;
+
       @include media-breakpoint-down(xs) {
         display: none;
       }
     }
+
     &--text {
       text-align: left;
       flex: 1 1 100%;
       margin: auto 0;
     }
   }
+
   .choose-channel {
     &--icon {
       margin-right: 24px;
     }
+
     &--header-box {
       height: 130px;
       margin-bottom: -10px;
+
       h3 {
         color: white;
         margin-bottom: 0;
       }
+
       p {
-        color: #bcc0f6;
+        color: $braveBrand-Ghost;
         font-weight: bolder;
       }
     }
-    &--body-box {
-      padding: 16px;
 
-      // make modal scrollable
+    &--body-box {
+      padding: 16px; // make modal scrollable
       overflow-y: auto;
       max-height: calc(100vh - 210px);
     }
   }
+}
+
+.referral-graph {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 16px;
+
+  h4 {
+    margin: auto 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: $braveText-2;
+  }
+
+  @media only screen and (max-width: 560px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+}
+
+.bat-logo {
+  padding: 8px;
+}
+
+.uphold-panel {
+  min-height: 336px;
+}
+
+.balance-panel {
+  display: flex;
+  align-items: center;
+  background: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: $defaultBoxShadow;
+}
+
+.bot-marg {
+  margin: 0 0 24px;
+}
+
+p, body, h1, h2, h3, h4, h5, h6 {
+  color: $braveText-2;
+}
+
+#cancel_edit_contact {
+  padding: 8px;
 }

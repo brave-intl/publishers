@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import {
   Container,
   GradientBackground,
@@ -8,12 +8,20 @@ import {
   YouTubeIcon,
   PublicationIcon,
   TwitchIcon,
-  SwoopBottom,
-  StyledInput
-} from "../../components"
-import batPill from "../../components/img/built-with-bat-pill.svg"
-import { Heading, Text, Box, Anchor, Form, Image } from "grommet"
-import locale from "../../locale/en"
+  SwoopBottom
+} from "../../components";
+
+import { Link } from "react-router-dom";
+import SignComponent from "./signComponent";
+import batPill from "../../components/img/built-with-bat-pill.svg";
+import { Heading, Box, Image } from "grommet";
+import locale from "../../locale/en";
+
+const logAction = (action, value) => {
+  if (window._paq) {
+    window._paq.push(["trackEvent", action, "Clicked", value]);
+  }
+};
 
 export const MainHome = () => {
   return (
@@ -34,10 +42,12 @@ export const MainHome = () => {
             {locale.main.home.subhead}
           </H2>
           <Box direction="row" pad={{ vertical: "24px" }} width="100%">
-            <PrimaryButton
-              label={locale.main.home.btn.signup}
-              href={locale.main.home.btn.signupHref}
-            />
+            <Link
+              to={locale.main.home.btn.signupHref}
+              onClick={() => logAction("StartSignupClicked", "Landing")}
+            >
+              <PrimaryButton label={locale.main.home.btn.signup} />
+            </Link>
           </Box>
           <Heading level="3" size="small" color="#E9E9F4">
             {locale.main.home.examples.headline}
@@ -76,101 +86,8 @@ export const MainHome = () => {
       </Container>
       <SwoopBottom />
     </GradientBackground>
-  )
-}
-
-// Sign up and sign in shared this component since
-// they are so similar in structure
-const SignComponent = props => {
-  return (
-    <GradientBackground height="100vh" align="center">
-      <Container
-        animation="fadeIn"
-        role="main"
-        justify="center"
-        align="center"
-        pad="large"
-        id="zindex"
-        fill
-      >
-        <Box width="540px" align="center">
-          <Heading
-            level="3"
-            color="white"
-            a11yTitle="Headline"
-            textAlign="center"
-            margin="small"
-          >
-            {props.heading}
-          </Heading>
-          <Text
-            size="16px"
-            color="rgba(255, 255, 255, .8)"
-            textAlign="center"
-            margin={{ bottom: "50px" }}
-          >
-            {props.subhead}
-          </Text>
-          <Box width="100%" margin={{ bottom: "30px" }}>
-            <Form
-              className="email-input"
-              messages={{
-                required: "Please enter a valid email address."
-              }}
-              onSubmit={({ value }) => console.log("Submit", value)}
-            >
-              <StyledInput
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                required
-              />
-              <PrimaryButton
-                label={props.btn}
-                type="submit"
-                alignSelf="center"
-              />
-            </Form>
-          </Box>
-          <Anchor
-            href={props.tinyOneHref}
-            label={props.tinyOne}
-            color="rgba(255, 255, 255, .8)"
-            size="xsmall"
-          />
-          <Anchor
-            href={props.tinyTwoHref}
-            label={props.tinyTwo}
-            color="rgba(255, 255, 255, .8)"
-            size="xsmall"
-          />
-          <Box height="100px" />
-        </Box>
-        <Box id="terms-help" gap="large">
-          <Box direction="row" gap="small" align="center">
-            <Anchor
-              label={props.footerOne}
-              href={props.footerOneHref}
-              color="rgba(255, 255, 255, .8)"
-              size="small"
-            />
-            <Text>|</Text>
-            <Anchor
-              label={props.footerTwo}
-              href={props.footerTwoHref}
-              color="rgba(255, 255, 255, .8)"
-              size="small"
-            />
-          </Box>
-          <Box as="a" href={locale.nav.batPillHref}>
-            <Image src={batPill} height="28px" />
-          </Box>
-        </Box>
-      </Container>
-      <SwoopBottom swoop="fade" />
-    </GradientBackground>
-  )
-}
+  );
+};
 
 export const MainSignIn = () => {
   return (
@@ -187,9 +104,11 @@ export const MainSignIn = () => {
       footerOneHref={locale.main.footerOneHref}
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
+      formId="signInForm"
+      method="PUT"
     />
-  )
-}
+  );
+};
 
 export const MainSignUp = () => {
   return (
@@ -204,6 +123,8 @@ export const MainSignUp = () => {
       footerOneHref={locale.main.footerOneHref}
       footerTwo={locale.main.footerTwo}
       footerTwoHref={locale.main.footerTwoHref}
+      formId="signUpForm"
+      method="POST"
     />
-  )
-}
+  );
+};

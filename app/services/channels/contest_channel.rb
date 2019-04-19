@@ -7,7 +7,9 @@ module Channels
     end
 
     def perform
+      ChannelTransfer.create(transfer_from: @channel.publisher, transfer_to: @contested_by.publisher, channel: @channel, suspended: @channel.publisher.suspended?)
       raise SuspendedPublisherError if @channel.publisher.suspended?
+
       ActiveRecord::Base.transaction do
         @contested_by.verified = false
         @contested_by.verification_pending = true

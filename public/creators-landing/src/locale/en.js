@@ -33,13 +33,11 @@ export default {
       tinyOne: "Don't have an account? Sign up",
       tinyOneHref: "/sign-up",
       tinyTwo: "Legacy YouTube Login",
-      tinyTwoHref:
-        "https://publishers.basicattentiontoken.org/publishers/auth/youtube_login"
+      tinyTwoHref: "/publishers/auth/youtube_login"
     },
     signup: {
       heading: "Become a Creator",
-      subhead:
-        "You will receive an email momentarily with instructions on becoming a verified Creator. Be sure to check your junk folder if nothing arrives within a few minutes.",
+      subhead: "Earn more for content you publish to the web.",
       inputPlaceholder: "Enter your email",
       btn: "Create account",
       tinyOne: "Already have an account? Log in",
@@ -57,6 +55,27 @@ export default {
     headlineOne: "Join ",
     headlineTwo:
       " content creators and publishers earning more from Brave Rewards"
+  },
+  sign: {
+    sentAgain:
+      "A new email is on the way. If you still experience problems, please contact publishers@basicattentiontoken.org",
+    sentAgainSupportEmail: "publishers@basicattentiontoken.org",
+    sentAgainMailto: "mailto: publishers@basicattentiontoken.org",
+    signupSuccess: "Welcome to the party!",
+    signupSuccessBody:
+      "Finish setting up your Creator's account by clicking on the secure login link in the email we just sent. Don't see the email? Be sure to check your spam folder or ",
+    signinSuccess: "A login email is on the way",
+    signinSuccessBody:
+      "Click on the secure login link in the email to access your account. Don't see the email? Be sure to check your spam folder or ",
+    signTryAgain: "click here to try again.",
+    iconHelpHref: "https://support.brave.com/hc/en-us",
+    iconMessageHref: "mailto: publishers@basicattentiontoken.org",
+    iconRedditHref: "https://www.reddit.com/r/BATProject/",
+    iconCommunityHref: "https://batcommunity.org/index.html",
+    iconHelpTitle: "Help Center",
+    iconMessageTitle: "Email Us",
+    iconRedditTitle: "BAT Subreddit",
+    iconCommunityTitle: "BAT Community"
   },
   spotlight: {
     heading: "You create content and we get you paid.",

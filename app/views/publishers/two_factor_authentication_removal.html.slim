@@ -1,0 +1,34 @@
+css: 
+    .leadin {
+     width: 85%;
+     margin: auto;
+     padding-bottom: 60px;
+    }
+
+    .note {
+     width: 85%;
+     margin: auto;
+     padding-top: 60px;
+    }
+
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+
+      h4.single-panel--headline= t("publishers.two_factor_authentication_removal.heading")
+      p.leadin= t("publishers.two_factor_authentication_removal.leadin")
+
+      .col-small-centered
+        = form_tag request_two_factor_authentication_removal_publishers_path, method: :post do |f|
+          .form-group
+            = email_field_tag :email, nil, autofocus: true, class: "form-control", placeholder: t("publishers.shared.enter_email"), required: true
+          - if params[:captcha]
+            = hidden_field_tag :captcha
+          - if @should_throttle
+            .form-group
+              = recaptcha_tags
+          = submit_tag t("publishers.two_factor_authentication_removal.request_2fa_removal"), class: "btn btn-block btn-primary", :"data-piwik-action" => "StartFlowClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing"
+
+      p.note
+        ' #{t("publishers.two_factor_authentication_removal.note")}

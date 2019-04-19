@@ -106,6 +106,7 @@ module ActionDispatch
     end
 
     def visit_authentication_url(publisher)
+      PublisherTokenGenerator.new(publisher: publisher).perform
       get publisher_url(publisher, token: publisher.authentication_token)
     end
   end

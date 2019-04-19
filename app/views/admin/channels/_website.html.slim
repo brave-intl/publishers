@@ -5,11 +5,12 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
     th Channel Identifier
     th Verified
     th Verification Method
+    th = sort_link(:created_at, "Created At")
   tbody
     - channels.each do |channel|
       tr.gradeX
         td = channel.id
-        td = link_to channel.publisher&.email, admin_publisher_path(channel.publisher_id)
+        td = publisher_link(channel.publisher)
         td = channel.details.channel_identifier
         td
           - if channel.verified
@@ -18,3 +19,4 @@ table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table
             = fa_icon 'times', class: 'text-danger'
           = " #{channel.verified}"
         td = channel.details.verification_method
+        td = channel.created_at.to_s(:long)

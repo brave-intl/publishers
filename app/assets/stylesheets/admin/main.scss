@@ -1,9 +1,8 @@
 // Configuration
 @import "*";
-@import "breakpoints";
-@import "fonts";
-@import 'admin/bootstrap';
 @import "colors";
+@import "fonts";
+@import "admin/bootstrap";
 @import "bootstrap-config";
 
 // Vendor
@@ -15,5 +14,3 @@
 
 // Admin pages
 @import "pages/**/*";
-
-@import "admin/will_paginate";
