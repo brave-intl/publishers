@@ -29,7 +29,7 @@ export default class ReferralCharts extends React.Component {
     const node = this.selectMenuRef.current;
     var url = routes.publishers.promo_registrations.show.path.replace(
       "{id}",
-      document.getElementById("publisher_id").value
+      this.props.publisherId
     );
     url = url.replace("{referral_code}", node.state.value);
     const result = await fetch(url, {
@@ -79,6 +79,7 @@ export default class ReferralCharts extends React.Component {
 
 export function renderReferralCharts() {
   const { value } = document.getElementById("referrals-hidden-tags");
+  const publisherId = document.getElementById("publisher_id").value;
   if (value === undefined) {
     return;
   }
@@ -87,7 +88,7 @@ export function renderReferralCharts() {
     referralCodes: referralCodes
   };
   ReactDOM.render(
-    <ReferralCharts {...props} />,
+    <ReferralCharts {...props} publisherId={publisherId} />,
     document.getElementById("channel-referrals-stats-chart")
   );
 }
