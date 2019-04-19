@@ -823,7 +823,6 @@ export default class BannerEditor extends React.Component {
     let save = await fetch(url, options);
     if (save.status == 400) {
       const errorMessage = await save.json();
-      console.log(errorMessage);
       const { message } = errorMessage;
 
       this.setState({

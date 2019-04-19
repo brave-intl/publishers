@@ -28,7 +28,6 @@ class ReactChart extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(this.props.title);
     if (this.props.title === prevProps.title) {
       return;
     }
