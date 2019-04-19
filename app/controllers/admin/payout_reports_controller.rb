@@ -42,7 +42,7 @@ class Admin::PayoutReportsController < AdminController
     json.each do |entry|
       next unless entry["type"] == MANUAL && entry["owner"] && entry["amount"]
 
-      partner_id = entry["owner"].sub("publishers#uuid:", "")
+      partner_id = entry["owner"].sub(Publisher::OWNER_PREFIX, "")
 
       invoice = Invoice.where(
         partner_id: partner_id,
