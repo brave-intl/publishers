@@ -17,8 +17,6 @@ export default class ReferralsChart extends React.Component<{}, {}> {
 
     const node = this.node;
 
-    let referralChartDatasets = []
-
     let referralChartLabels = []
     let downloads = []
     let installs = []

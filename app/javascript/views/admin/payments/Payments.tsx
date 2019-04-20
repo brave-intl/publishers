@@ -6,6 +6,8 @@ import UserNavbar from "../components/userNavbar/UserNavbar";
 
 import CurrentTable from "./components/currentTable/CurrentTable";
 import TotalTable from "./components/totalTable/TotalTable";
+import EarningsChart from "./components/earningsChart/EarningsChart";
+import console = require("console");
 
 export default class Payments extends React.Component<{}, {}> {
   constructor(props) {
@@ -37,6 +39,7 @@ export default class Payments extends React.Component<{}, {}> {
     this.setState({
       data
     });
+    console.log(data);
   }
 
   public render() {
@@ -55,7 +58,7 @@ export default class Payments extends React.Component<{}, {}> {
             />
           </Cell>
           <Cell startColumn={5} endColumn={13}>
-            <Card>Earnings Chart Coming Soon...</Card>
+            <EarningsChart transactions={this.state.data.transactions}>
           </Cell>
           <Cell startColumn={1} endColumn={13}>
             <CurrentTable

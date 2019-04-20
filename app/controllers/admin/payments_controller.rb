@@ -16,6 +16,7 @@ module Admin
       current_referral_balance = publisher_referral_bat_balance(publisher)
       current_contribution_balance = publisher_contribution_bat_balance(publisher)
       current_overall_balance = publisher_overall_bat_balance(publisher)
+      transactions = PublisherStatementGetter.new(publisher: publisher, statement_period: "all").perform
       downloads = publisher_referral_totals(publisher)[PromoRegistration::RETRIEVALS]
       installs = publisher_referral_totals(publisher)[PromoRegistration::FIRST_RUNS]
       confirmations = publisher_referral_totals(publisher)[PromoRegistration::FINALIZED]
@@ -42,6 +43,7 @@ module Admin
         currentChannelBalances: current_channel_balances,
         currentContributionBalance: current_contribution_balance,
         currentOverallBalance: current_overall_balance,
+        transactions: transactions,
       }
     end
   end
