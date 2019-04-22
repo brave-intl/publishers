@@ -142,6 +142,12 @@ Rails.application.routes.draw do
           get "totals"
         end
       end
+      # /api/v1/private/
+      namespace :private, defaults: { format: :json } do
+        resources :publishers, defaults: { format: :json } do
+          post "publisher_status_updates"
+        end
+      end
     end
   end
 
