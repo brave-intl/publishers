@@ -59,7 +59,7 @@ class Publisher < ApplicationRecord
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
-  validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
+  validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? || deleted? }
   validates :email, uniqueness: { case_sensitive: false }, allow_nil: true
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
@@ -215,6 +215,10 @@ class Publisher < ApplicationRecord
     combined = combined.sort { |x, y| x.keys.first <=> y.keys.first }.reverse
 
     combined.map { |c| c.values.first }
+  end
+
+  def deleted?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::DELETED
   end
 
   def suspended?
