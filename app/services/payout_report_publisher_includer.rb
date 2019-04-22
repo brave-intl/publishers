@@ -60,7 +60,8 @@ class PayoutReportPublisherIncluder < BaseService
                                 uphold_member: uphold_member,
                                 suspended: suspended,
                                 uphold_id: uphold_id,
-                                channel_stats: channel.details.stats)
+                                channel_stats: channel.details.stats,
+                                channel_type: channel.details_type)
       end
     end
 
