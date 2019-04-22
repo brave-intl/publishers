@@ -22,6 +22,7 @@ div.row
               th Status
               th = sort_link(Publisher::VERIFIED_CHANNEL_COUNT, "Number of verified channels")
               th Last note
+              th = sort_link(:created_at, "2FA removal time remaining")
               th = sort_link(:created_at, "Account creation time")
               th = sort_link(:last_sign_in_at, "Last sign in at")
             tbody
@@ -33,6 +34,10 @@ div.row
                   td = publisher_status(publisher)
                   td = publisher.channels.verified.count
                   td = publisher.notes.order(created_at: :desc).first&.note
+                  - if publisher.two_factor_authentication_removal
+                    td = publisher.two_factor_authentication_removal.total_time_remaining
+                  - else 
+                     td = "N/A"
                   td = publisher.created_at.strftime('%B %d, %Y')
                   td = distance_of_time_in_words(publisher.last_sign_in_at, Time.now) if publisher.last_sign_in_at.present?
           = will_paginate @publishers

@@ -28,11 +28,36 @@ html
         document.body.classList.add('js-feature-available-u2f');
       }
 
+    - if content_for?(:application_flash)
+      / This branch permits the panel_flash_messages parital to disable
+      / navigation bar flash messages.
+      = yield(:application_flash)
+    - else
+      .notifications.no-padding.navbar-static-top#flash
+        - [:alert, :notice, :warning].each do |name|
+          - {alert: 'danger', notice: 'info', warning: 'warning'}[name].tap do |flash_class|
+            - if flash[name]
+              .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
+                = flash[name]
+            - "#{name}_html_safe".tap do |html_safe_name|
+              - if flash[html_safe_name]
+                .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
+                  == flash[html_safe_name]
+            - "#{name}_model_errors".tap do |name|
+              - if flash[name] && flash[name].errors.any?
+                .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
+                  p= t "activerecord.shared.errors"
+                  - flash[name].errors.each do |attribute, message|
+                    p
+                      strong.error= "#{flash[name].class.human_attribute_name(attribute)}:"
+                      span= " #{message}"
+
+
     #main
       - if !request.original_url.include? "/partners/"
         - if content_for?(:nav)
           = yield(:nav)
-        - else 
+        - else
           = render("nav")
 
       /
@@ -93,32 +118,9 @@ html
       / The postfix is available for all three flash names and for rendering
       / below the navigation bar or in a panel.
       /
-      - if content_for?(:application_flash)
-        / This branch permits the panel_flash_messages parital to disable
-        / navigation bar flash messages.
-        = yield(:application_flash)
-      - else
-        .notifications.navbar-static-top#flash
-          - [:alert, :notice, :warning].each do |name|
-            - {alert: 'danger', notice: 'info', warning: 'warning'}[name].tap do |flash_class|
-              - if flash[name]
-                .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
-                  = flash[name]
-              - "#{name}_html_safe".tap do |html_safe_name|
-                - if flash[html_safe_name]
-                  .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
-                    == flash[html_safe_name]
-              - "#{name}_model_errors".tap do |name|
-                - if flash[name] && flash[name].errors.any?
-                  .alert.flash class="alert-#{flash_class}" data-test-flash-message=flash_class
-                    p= t "activerecord.shared.errors"
-                    - flash[name].errors.each do |attribute, message|
-                      p
-                        strong.error= "#{flash[name].class.human_attribute_name(attribute)}:"
-                        span= " #{message}"
-
       .main-content#main-content
         = content_for?(:content) ? yield(:content) : yield
+
 
       = render("footer")
 

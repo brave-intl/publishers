@@ -33,6 +33,8 @@ class Publisher < ApplicationRecord
 
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
+  has_one :two_factor_authentication_removal
+  has_one :user_authentication_token, foreign_key: :user_id
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -51,7 +53,6 @@ class Publisher < ApplicationRecord
   has_many :created_users, class_name: "Publisher",
                            foreign_key: "created_by_id"
 
-  attr_encrypted :authentication_token, key: :encryption_key
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
 
@@ -140,6 +141,14 @@ class Publisher < ApplicationRecord
     }
   end
 
+  def authentication_token
+    user_authentication_token&.authentication_token
+  end
+
+  def authentication_token_expires_at
+    user_authentication_token&.authentication_token_expires_at
+  end
+
   def self.advanced_sort(column, sort_direction)
     # Please update ADVANCED_SORTABLE_COLUMNS
     case column
@@ -214,6 +223,10 @@ class Publisher < ApplicationRecord
 
   def umbra?
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::UMBRA
+  end
+  
+  def locked?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::LOCKED
   end
 
   def verified?
@@ -353,6 +366,12 @@ class Publisher < ApplicationRecord
       !excluded_from_payout
   end
 
+  def register_for_2fa_removal
+    TwoFactorAuthenticationRemoval.create(
+      publisher_id: id
+    )
+  end
+
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
     partner?
@@ -360,6 +379,11 @@ class Publisher < ApplicationRecord
 
   def most_recent_potential_referral_payment
     PayoutReport.most_recent_final_report&.potential_payments&.where(publisher_id: id, channel_id: nil)&.first
+  end
+
+  def timeout_in
+    return 2.hours if admin?
+    30.minutes
   end
 
   private

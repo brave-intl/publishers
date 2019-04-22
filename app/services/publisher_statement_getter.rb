@@ -40,6 +40,8 @@ class PublisherStatementGetter < BaseApiClient
       account_identifier = transaction["channel"]
       if account_identifier.starts_with?(Publisher::OWNER_PREFIX)
         transaction["channel"] = "All"
+      elsif account_identifier.blank?
+        transaction["channel"] = "Manual"
       else
         channel = Channel.find_by_channel_identifier(account_identifier)
         transaction["channel"] = channel.publication_title

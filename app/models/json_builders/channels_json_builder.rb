@@ -26,7 +26,7 @@ class JsonBuilders::ChannelsJsonBuilder
   def build
     channels = []
 
-    [Channel.verified.site_channels, Channel.youtube_channels, Channel.twitch_channels, Channel.twitter_channels].each do |verified_channels|
+    [Channel.verified.site_channels, Channel.verified.youtube_channels, Channel.verified.twitch_channels, Channel.verified.twitter_channels].each do |verified_channels|
       verified_channels.find_each do |verified_channel|
         next if verified_channel.details.nil?
         if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)

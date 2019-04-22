@@ -19,6 +19,9 @@ class Admin::PublishersController < AdminController
     end
 
     @publishers = @publishers.suspended if params[:suspended].present?
+    if params[:two_factor_authentication_removal].present?
+      @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
+    end
     @publishers = @publishers.group(:id).paginate(page: params[:page])
   end
 
@@ -69,6 +72,12 @@ class Admin::PublishersController < AdminController
     end
 
     redirect_to(admin_publisher_path(channel.publisher))
+  end
+
+  def cancel_two_factor_authentication_removal
+    publisher = Publisher.find(params[:id])
+    publisher.two_factor_authentication_removal.destroy
+    redirect_to(admin_publisher_path(publisher), flash: { alert: "2fa removal was cancelled" })
   end
 
   private

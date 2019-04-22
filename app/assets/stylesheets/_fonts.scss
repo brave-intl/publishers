@@ -1,23 +1,67 @@
 @font-face {
   font-family: 'Poppins';
   font-weight: 400;
+  font-style: normal;
   src: local('Poppins Regular'), local('Poppins-Regular'),
-    font-url('poppins/poppins-400.woff2') format('woff2'),
-    font-url('poppins/poppins-400.woff') format('woff');
+    font-url('poppins/Poppins-Regular.ttf') format('ttf'),
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-style: italic;
+  src: local('Poppins Italic'), local('Poppins-Italic'),
+    font-url('poppins/Poppins-Italic.ttf') format('ttf'),
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-style: bold;
+  src: local('Poppins SemiBold'), local('Poppins-SemiBold'),
+    font-url('poppins/Poppins-SemiBold.ttf') format('ttf'),
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-style: italic;
+  src: local('Poppins SemiBold Italic'), local('Poppins-SemiBold-Italic'),
+    font-url('poppins/Poppins-SemiBoldItalic') format('ttf'),
 }
 
 @font-face {
   font-family: 'Muli';
   font-weight: 400;
+  font-style: normal;
   src: local('Muli Regular'), local('Muli-Regular'),
-    font-url('muli/muli-400.woff2') format('woff2'),
-    font-url('muli/muli-400.woff') format('woff');
+    font-url('muli/Muli-Regular.ttf') format('ttf'),
+}
+
+@font-face {
+  font-family: 'Muli';
+  font-weight: 400;
+  font-style: italic;
+  src: local('Muli Italic'), local('Muli-Italic'),
+    font-url('muli/Muli-Italic.ttf') format('ttf'),
 }
 
 @font-face {
   font-family: 'Muli';
   font-weight: 600;
-  src: local('Muli SemiBold'), local('Muli-SemiBold'),
-    font-url('muli/muli-600.woff2') format('woff2'),
-    font-url('muli/muli-600.woff') format('woff');
+  font-style: bold;
+  src: local('Muli Bold'), local('Muli-Bold'),
+    font-url('muli/Muli-Bold.ttf') format('ttf'),
 }
+
+
+@font-face {
+  font-family: 'Muli';
+  font-weight: 600;
+  font-style: italic;
+  src: local('Muli Bold Italic'), local('Muli-BoldItalic'),
+    font-url('muli/Muli-BoldItalic.ttf') format('ttf'),
+}
+
+
+
