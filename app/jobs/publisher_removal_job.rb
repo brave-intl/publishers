@@ -1,18 +1,20 @@
 class PublisherRemovalJob < ApplicationJob
-  queue_as :low
+  queue_as :default
 
-  def perform(publisher_id:, override: false)
-    publisher = Publisher.find_by(publisher_id)
-    return if publisher.suspended? && !override
-    publisher.last_status_updates.create(status: PublisherStatusUpdate::DELETED)
+  DELETED_IP_ADDRESS = "192.168.1.1".freeze
+
+  def perform(publisher_id:)
+    publisher = Publisher.find_by(id: publisher_id)
+    return if publisher.suspended?
+    publisher.status_updates.create(status: PublisherStatusUpdate::DELETED)
     ActiveRecord::Base.transaction do
-      publisher.update(email: "DELETED")
-      publisher.update(name: "DELETED")
+      publisher.update(email: PublisherStatusUpdate::DELETED)
+      publisher.update(name: PublisherStatusUpdate::DELETED)
       # If they're signed in, they should not longer be signed in
-      publisher.user_authentication_token.update(authorication_token_expires_at: Time.now)
-      publisher.update(last_sign_in_ip: "192.168.1.1")
+      publisher.user_authentication_token&.update(authentication_token_expires_at: Time.now)
+      publisher.update(last_sign_in_ip: DELETED_IP_ADDRESS)
     end
-    publisher.channels.pluck(:channel_id).each do |channel_id|
+    publisher.channels.pluck(:id).each do |channel_id|
       DeletePublisherChannelJob.perform_now(channel_id: channel_id)
     end
 
