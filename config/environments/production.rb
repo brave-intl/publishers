@@ -43,9 +43,9 @@ Rails.application.configure do
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  if ENV["CDN_HOST"].present?
+  if ENV["PUBLIC_URL"].present?
     # example: https://publishers-staging-distro.basicattentiontoken.org
-    config.action_controller.asset_host = ENV["CDN_HOST"]
+    config.action_controller.asset_host = ENV["PUBLIC_URL"]
   end
 
   # Specifies the header that your server uses for sending files.
