@@ -22,7 +22,7 @@ class Admin::PublishersController < AdminController
     if params[:two_factor_authentication_removal].present?
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
-    @publishers = @publishers.where("email IS NOT NULL or pending_email IS NOT NULL") # Don't include deleted users
+    @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
     @publishers = @publishers.group(:id).paginate(page: params[:page])
   end
 

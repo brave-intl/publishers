@@ -218,15 +218,15 @@ class Publisher < ApplicationRecord
   end
 
   def deleted?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::DELETED
+    last_status_update&.status == PublisherStatusUpdate::DELETED
   end
 
   def suspended?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
+    last_status_update&.status == PublisherStatusUpdate::SUSPENDED
   end
 
   def locked?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::LOCKED
+    last_status_update&.status == PublisherStatusUpdate::LOCKED
   end
 
   def verified?
