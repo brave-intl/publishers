@@ -1,10 +1,10 @@
 import React from 'react'
 import { Box, Heading, Text, Carousel, Image } from 'grommet'
 import { Container } from '../../components'
-import BakerCard from '../../components/img/card-baker.png'
-import CiccoCard from '../../components/img/card-decicco.png'
-import BobbyCard from '../../components/img/card-bobby.png'
-import DefrancoCard from '../../components/img/card-defranco.png'
+import BakerCard from '../../components/img/card-baker.webp'
+import CiccoCard from '../../components/img/card-decicco.webp'
+import BobbyCard from '../../components/img/card-bobby.webp'
+import DefrancoCard from '../../components/img/card-defranco.webp'
 import locale from '../../locale/en'
 
 const Slide = props => (
@@ -37,7 +37,7 @@ const Slide = props => (
       pad='medium'
       className='carousel-height'
     >
-      <Image src={props.card} fit='contain' />
+      <Image src={props.card} fit='contain' alt={props.alt} />
     </Box>
   </Box>
 )
@@ -61,6 +61,7 @@ export const Spotlight = () => {
               link={locale.spotlight.bakerHref}
               text={locale.spotlight.bakerCredit}
               quote={locale.spotlight.bakerQuote}
+              alt={locale.spotlight.bakerAlt}
             />
             <Slide
               card={DefrancoCard}
@@ -68,12 +69,14 @@ export const Spotlight = () => {
               text={locale.spotlight.defrancoCredit}
               quote={locale.spotlight.defrancoQuote}
               backwards='row-reverse'
+              alt={locale.spotlight.defrancoAlt}
             />
             <Slide
               card={BobbyCard}
               link={locale.spotlight.bobbyHref}
               text={locale.spotlight.bobbyCredit}
               quote={locale.spotlight.bobbyQuote}
+              alt={locale.spotlight.bobbyAlt}
             />
             <Slide
               card={CiccoCard}
@@ -81,6 +84,7 @@ export const Spotlight = () => {
               text={locale.spotlight.deciccoCredit}
               quote={locale.spotlight.deciccoQuote}
               backwards='row-reverse'
+              alt={locale.spotlight.deciccoAlt}
             />
           </Carousel>
         </Box>
