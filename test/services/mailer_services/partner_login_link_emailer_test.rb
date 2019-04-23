@@ -12,7 +12,8 @@ class PartnerLoginLinkEmailerTest < ActiveJob::TestCase
       MailerServices::PartnerLoginLinkEmailer.new(partner: partner).perform
     end
 
+    partner.reload
     assert_not_equal prev_auth_token, partner.authentication_token
-    assert prev_auth_token_expires_at < partner.authentication_token_expires_at
+    assert_not_equal prev_auth_token_expires_at, partner.authentication_token_expires_at
   end
 end

@@ -1,0 +1,34 @@
+#content.container
+  .row.center-things
+    .col.col-md-6.col-xs-12.col-centered.col-left
+      .content-section-left
+        .logo
+          =render("application/logo_white_svg")
+        .main-heading
+          h2.welcome= t ".welcome"
+          h1= t ".header"
+        = t ".body_html"
+    .col.col-md-6.col-xs-12.col-centered.col-right
+      .content-section-right
+        .signup-panel
+          h3.section-header= t ".new.header"
+          p= t ".new.body"
+          .row.form-row
+            .col.col-xs-12.col-sm-12
+              = link_to(t("shared.get_started"), sign_up_publishers_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "StartSignupClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+              .col.col-xs-12.col-sm-4.button-column
+              = link_to(t("shared.log_in"), log_in_publishers_path, class: "btn btn-block btn-secondary", :"data-piwik-action" => "LandingLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Landing")
+          hr.divider
+          .row
+            .col.col-xs-12.col-sm-12
+              .tos-faq
+                - if show_faq_link?
+                  span= link_to(t("shared.faqs"), faqs_path)
+                  span.link-separator= " | "
+                span= link_to(t("shared.terms_of_service"), "https://basicattentiontoken.org/publisher-terms-of-service/")
+                span.link-separator= " | "
+                = link_to(t("shared.help_center"), "https://support.brave.com/hc/en-us/articles/360022724391-What-do-I-do-if-I-get-locked-out-of-my-account-")
+                span.link-separator= " | "
+                = link_to(t("shared.lost_2fa"), two_factor_authentication_removal_publishers_path)
+
+

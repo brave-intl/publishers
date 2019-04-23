@@ -6,10 +6,10 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if !@publisher.has_verified_channel? || @publisher.excluded_from_payout?
+    return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout?
 
+    publisher_has_unsettled_balance = false
     create_uphold_card_for_default_currency_if_needed
-
     publisher_has_unsettled_balance = false
     wallet = PublisherWalletGetter.new(publisher: @publisher).perform
 
@@ -22,6 +22,7 @@ class PayoutReportPublisherIncluder < BaseService
     probi = wallet.referral_balance.amount_probi # probi = balance
     publisher_has_unsettled_balance = probi.to_i.positive?
 
+    # Create the referral payment for the owner
     unless should_only_notify?
       PotentialPayment.create(payout_report_id: @payout_report.id,
                               name: @publisher.name,
@@ -58,7 +59,9 @@ class PayoutReportPublisherIncluder < BaseService
                                 reauthorization_needed: reauthorization_needed,
                                 uphold_member: uphold_member,
                                 suspended: suspended,
-                                uphold_id: uphold_id)
+                                uphold_id: uphold_id,
+                                channel_stats: channel.details.stats,
+                                channel_type: channel.details_type)
       end
     end
 

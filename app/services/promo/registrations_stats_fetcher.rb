@@ -35,6 +35,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   def perform_offline
     stats = []
     @referral_codes.each do |referral_code|
+      events = []
       (1..6).reverse_each do |i|
         event = {
           "referral_code" => "#{referral_code}",
@@ -43,9 +44,10 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
           PromoRegistration::FINALIZED => rand(1..30),
           "ymd" => "#{i.month.ago.utc.to_date}",
         }
+        events.push(event)
         stats.push(event)
       end
-      PromoRegistration.find_by_referral_code(referral_code).update(stats: stats.to_json)
+      PromoRegistration.find_by_referral_code(referral_code).update(stats: events.to_json)
     end
 
     stats
@@ -62,10 +64,6 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   end
 
   def query_string(referral_codes)
-    query_string = "?"
-    referral_codes.each do |referral_code|
-      query_string = "#{query_string}referral_code=#{referral_code}&"
-    end
-    query_string.chomp("&") # Remove the final ampersand
+    "?" + referral_codes.map { |referral_code| "referral_code=#{referral_code}" }.join("&")
   end
 end

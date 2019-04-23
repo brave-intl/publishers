@@ -265,10 +265,14 @@ function processStats(referralCodes) {
   let installs = 0;
   let thirtyDayUse = 0;
   referralCodes.forEach(code => {
-    if (JSON.parse(code.stats)[0]) {
-      downloads += JSON.parse(code.stats)[0].retrievals;
-      installs += JSON.parse(code.stats)[0].first_runs;
-      thirtyDayUse += JSON.parse(code.stats)[0].finalized;
+    try {
+      JSON.parse(code.stats).forEach(stat => {
+        downloads += stat.retrievals || 0;
+        installs += stat.first_runs || 0;
+        thirtyDayUse += stat.finalized || 0;
+      });
+    } catch (e) {
+      // catch if stats are empty
     }
   });
   return { downloads, installs, thirtyDayUse };
@@ -344,6 +348,19 @@ function ReferralsTable(props) {
   const rows = [];
 
   props.referralCodes.forEach((referralCode, index) => {
+    let downloads = 0;
+    let installs = 0;
+    let thirtyDayUse = 0;
+    try {
+      JSON.parse(referralCode.stats).forEach(stat => {
+        downloads += stat.retrievals || 0;
+        installs += stat.first_runs || 0;
+        thirtyDayUse += stat.finalized || 0;
+      });
+    } catch (e) {
+      // catch if stats are empty
+    }
+
     const contentStyle = {
       "font-size": "15px",
       padding: "24px",
@@ -366,33 +383,15 @@ function ReferralsTable(props) {
           customStyle: contentStyle
         },
         {
-          content: (
-            <div>
-              {JSON.parse(referralCode.stats)[0]
-                ? JSON.parse(referralCode.stats)[0].retrievals
-                : 0}
-            </div>
-          ),
+          content: <div>{downloads}</div>,
           customStyle: contentStyle
         },
         {
-          content: (
-            <div>
-              {JSON.parse(referralCode.stats)[0]
-                ? JSON.parse(referralCode.stats)[0].first_runs
-                : 0}
-            </div>
-          ),
+          content: <div>{installs}</div>,
           customStyle: contentStyle
         },
         {
-          content: (
-            <div>
-              {JSON.parse(referralCode.stats)[0]
-                ? JSON.parse(referralCode.stats)[0].finalized
-                : 0}
-            </div>
-          ),
+          content: <div>{thirtyDayUse}</div>,
           customStyle: contentStyle
         },
         {

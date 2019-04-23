@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_28_231740) do
+ActiveRecord::Schema.define(version: 2019_04_22_195852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,6 +282,8 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.string "uphold_id"
     t.uuid "invoice_id"
     t.uuid "finalized_by_id"
+    t.jsonb "channel_stats", default: {}
+    t.text "channel_type"
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
@@ -339,9 +341,6 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.string "pending_email"
     t.string "phone"
     t.string "phone_normalized"
-    t.string "encrypted_authentication_token"
-    t.string "encrypted_authentication_token_iv"
-    t.datetime "authentication_token_expires_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -452,6 +451,14 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id"
   end
 
+  create_table "two_factor_authentication_removals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.boolean "removal_completed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_two_factor_authentication_removals_on_publisher_id"
+  end
+
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.text "certificate"
     t.string "key_handle"
@@ -463,6 +470,14 @@ ActiveRecord::Schema.define(version: 2019_03_28_231740) do
     t.datetime "updated_at", null: false
     t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
+  end
+
+  create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "encrypted_authentication_token"
+    t.string "encrypted_authentication_token_iv"
+    t.datetime "authentication_token_expires_at"
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
   end
 
   create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

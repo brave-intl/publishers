@@ -131,6 +131,67 @@ module Publishers
       end
     end
 
+    test "a publisher who adds a youtube channel that has already been contested" do
+
+      publisher = publishers(:uphold_connected)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
+
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
+          with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                          'Authorization' => "Bearer #{token}",
+                          'User-Agent' => 'Faraday v0.9.2' }).
+          to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
+
+      assert_difference("Channel.count", 1) do
+        get(publisher_register_youtube_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select(".channel-summary", text: channel_data["snippet"]["title"])
+
+
+      # Sign the current pub out
+      sign_out publisher
+
+      publisher = publishers(:uphold_connected_currency_unconfirmed)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+
+      get(publisher_register_youtube_channel_omniauth_authorize_url)
+      follow_redirect!
+      assert_redirected_to home_publishers_path
+      follow_redirect!
+
+      # Channel was transferred
+      assert_select('div.channel-status.float-right') do |element|
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)), element.text)
+      end
+
+      # Check the previous transfer to make sure it was deleted
+      sign_out publisher
+
+      publisher = publishers(:uphold_connected)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+
+      assert_select('div.channel-status.float-right') do |element|
+        refute_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(Channel.where(verification_pending: true).first)), element.text)
+      end
+    end
+
     test "a publisher who adds a youtube channel taken by themselves will see .channel_already_registered" do
       publisher = publishers(:google_verified)
       request_login_email(publisher: publisher)
@@ -384,8 +445,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash
 
-      # (Albert Wang): Change this back to 1 when we enable twitter registration
-      assert_difference("Channel.count", 0) do
+      assert_difference("Channel.count", 1) do
         get(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
@@ -393,7 +453,6 @@ module Publishers
 
       channel = Channel.order(created_at: :asc).last
 
-      return unless Channel::TWITTER_ENABLED
       assert_equal channel.details.auth_provider, "register_twitter_channel"
       assert_equal channel.details.auth_email, "ted@example.com"
       assert_equal channel.details.twitter_channel_id, "123545"
@@ -415,8 +474,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash("uid" => "abc124")
 
-      # (Albert Wang): Change this back to 1 when we enable twitter registration
-      assert_difference("Channel.count", 0) do
+      assert_difference("Channel.count", 1) do
         get(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
@@ -424,11 +482,8 @@ module Publishers
       end
 
       assert_select('div.channel-status') do |element|
-        if Channel::TWITTER_ENABLED
-          assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)), element.text)
-        else
-          assert_no_match(I18n.t("shared.channel_contested", time_until_transfer: nil), element.text)
-        end
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
+                    element.text)
       end
     end
 
@@ -450,11 +505,7 @@ module Publishers
       end
 
       assert_select('div.notifications') do |element|
-        if Channel::TWITTER_ENABLED
-          assert_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
-        else
-          assert_no_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
-        end
+        assert_match(I18n.t("publishers.omniauth_callbacks.register_twitter_channel.channel_already_registered"), element.text)
       end
     end
   end

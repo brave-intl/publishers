@@ -5,7 +5,7 @@ interface IModalProps {
 }
 
 export const Wrapper = styled.div`
-  margin-top: -2rem;
+  margin-top: -20px;
   height: 80px;
   background-color: white;
 `;

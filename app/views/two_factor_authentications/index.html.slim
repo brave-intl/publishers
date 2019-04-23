@@ -62,7 +62,10 @@
       - elsif @totp_enabled
         = render "totp"
     .single-panel--footer
-      span = t(".lost_account.body")
-      span = link_to(" " + t(".lost_account.body_link"), "https://support.brave.com/hc/en-us/articles/360022724391-What-do-I-do-if-I-get-locked-out-of-my-account-")
+      span = t(".lost_account.lost_2fa")
+      span = link_to(" " + t(".lost_account.lost_2fa_link"), two_factor_authentication_removal_publishers_path)
+      br
+      br
+      p = t(".lost_account.lost_2fa_note_html")
 
 

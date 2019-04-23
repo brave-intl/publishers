@@ -282,6 +282,20 @@ module PublishersHelper
     publisher_url(publisher, options)
   end
 
+  def publisher_private_two_factor_removal_url(publisher:, confirm_email: nil)
+    token = publisher.authentication_token
+    options = { id: publisher.id, token: token }
+    options[:confirm_email] = confirm_email if (confirm_email)
+    confirm_two_factor_authentication_removal_publishers_url(nil, options)
+  end
+
+  def publisher_private_two_factor_cancellation_url(publisher:, confirm_email: nil)
+    token = publisher.authentication_token
+    options = { id: publisher.id, token: token }
+    options[:confirm_email] = confirm_email if (confirm_email)
+    cancel_two_factor_authentication_removal_publishers_url(nil, options)
+  end
+
   def publisher_verification_dns_record(publisher)
     PublisherDnsRecordGenerator.new(publisher: publisher).perform
   end
@@ -392,7 +406,7 @@ module PublishersHelper
   end
 
   def channel_type_icon_url(channel)
-    case channel.details
+    case channel&.details
     when YoutubeChannelDetails
       asset_url('publishers-home/youtube-icon_32x32.png')
     when TwitchChannelDetails
