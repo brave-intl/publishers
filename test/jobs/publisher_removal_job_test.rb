@@ -11,5 +11,6 @@ class PublisherRemovalJobTest < ActiveJob::TestCase
     assert_equal PublisherStatusUpdate::DELETED, publisher.name
     assert_equal IPAddr.new(PublisherRemovalJob::DELETED_IP_ADDRESS), publisher.last_sign_in_ip
     assert_equal 0, publisher.channels.count
+    assert_equal 0, publisher.versions.count
   end
 end
