@@ -9,6 +9,7 @@ class PublisherRemovalJob < ApplicationJob
     publisher.status_updates.create(status: PublisherStatusUpdate::DELETED)
     ActiveRecord::Base.transaction do
       publisher.update(email: nil)
+      publisher.update(pending_email: nil)
       publisher.update(name: PublisherStatusUpdate::DELETED)
       # If they're signed in, they should not longer be signed in
       publisher.user_authentication_token.update(authentication_token_expires_at: Time.now) if publisher.user_authentication_token.present?
