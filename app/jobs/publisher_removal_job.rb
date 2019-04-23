@@ -8,10 +8,10 @@ class PublisherRemovalJob < ApplicationJob
     return if publisher.suspended?
     publisher.status_updates.create(status: PublisherStatusUpdate::DELETED)
     ActiveRecord::Base.transaction do
-      publisher.update(email: PublisherStatusUpdate::DELETED)
+      publisher.update(email: nil)
       publisher.update(name: PublisherStatusUpdate::DELETED)
       # If they're signed in, they should not longer be signed in
-      publisher.user_authentication_token&.update(authentication_token_expires_at: Time.now)
+      publisher.user_authentication_token.update(authentication_token_expires_at: Time.now) if publisher.user_authentication_token.present?
       publisher.update(last_sign_in_ip: DELETED_IP_ADDRESS)
     end
     publisher.channels.pluck(:id).each do |channel_id|

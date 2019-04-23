@@ -41,6 +41,12 @@ class Admin::PublishersController < AdminController
     redirect_to admin_publisher_path(@publisher)
   end
 
+  def destroy
+    PublisherRemovalJob.perform_later(publisher_id: @publisher.id)
+    flash[:alert] = "Deletion job enqueued. This usually takes a few seconds to complete"
+    redirect_to admin_publisher_path(@publisher)
+  end
+
   def statement
     statement_period = params[:statement_period]
     @transactions = PublisherStatementGetter.new(publisher: @publisher, statement_period: statement_period).perform
