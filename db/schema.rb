@@ -44,8 +44,10 @@ ActiveRecord::Schema.define(version: 2019_04_22_195852) do
     t.boolean "suspended"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "transfer_to_channel_id"
     t.index ["channel_id"], name: "index_channel_transfers_on_channel_id"
     t.index ["transfer_from_id"], name: "index_channel_transfers_on_transfer_from_id"
+    t.index ["transfer_to_channel_id"], name: "index_channel_transfers_on_transfer_to_channel_id"
     t.index ["transfer_to_id"], name: "index_channel_transfers_on_transfer_to_id"
   end
 
