@@ -337,43 +337,6 @@ class PublisherTest < ActiveSupport::TestCase
     end
   end
 
-  describe "#history" do
-    describe "when the publisher has notes" do
-      it 'shows just the notes' do
-        histories = publishers(:just_notes).history
-        histories.each do |history|
-          assert_equal history.class, PublisherNote
-        end
-      end
-    end
-
-    describe "when the publisher has notes and statuses" do
-      it 'interweaves the objects' do
-        histories = publishers(:notes).history
-
-        assert histories.any? { |h| h.is_a? PublisherNote }
-        assert histories.any? { |h| h.is_a? PublisherStatusUpdate }
-      end
-
-      it 'sorts the object by created_at time' do
-        histories = publishers(:notes).history
-        histories.each_with_index do |history, index|
-          next if index == 0
-          assert history.created_at < histories[index-1].created_at
-        end
-      end
-    end
-
-    describe 'when the publisher just has statuses' do
-      it 'just shows the statuses' do
-        histories = publishers(:default).history
-        histories.each do |history|
-          assert_equal history.class, PublisherStatusUpdate
-        end
-      end
-    end
-  end
-
   test "test `has_stale_uphold_code` scopes to correct publishers" do
     publisher = publishers(:default)
 
@@ -484,6 +447,7 @@ class PublisherTest < ActiveSupport::TestCase
     publisher.save!
 
     assert publisher.status_updates.count
+    publisher.reload
     assert publisher.last_status_update
   end
 
@@ -659,5 +623,42 @@ class PublisherTest < ActiveSupport::TestCase
 
     publisher = publishers(:completed)
     assert publisher.most_recent_potential_referral_payment.blank?
+  end
+
+  describe "#history" do
+    describe "when the publisher has notes" do
+      it 'shows just the notes' do
+        histories = publishers(:just_notes).history
+        histories.each do |history|
+          assert_equal history.class, PublisherNote
+        end
+      end
+    end
+
+    describe "when the publisher has notes and statuses" do
+      it 'interweaves the objects' do
+        histories = publishers(:notes).history
+
+        assert histories.any? { |h| h.is_a? PublisherNote }
+        assert histories.any? { |h| h.is_a? PublisherStatusUpdate }
+      end
+
+      it 'sorts the object by created_at time' do
+        histories = publishers(:notes).history
+        histories.each_with_index do |history, index|
+          next if index == 0
+          assert history.created_at < histories[index-1].created_at
+        end
+      end
+    end
+
+    describe 'when the publisher just has statuses' do
+      it 'just shows the statuses' do
+        histories = publishers(:default).history
+        histories.each do |history|
+          assert_equal history.class, PublisherStatusUpdate
+        end
+      end
+    end
   end
 end
