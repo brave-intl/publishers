@@ -5,7 +5,9 @@ export default {
     signup: "sign up",
     signupHref: "/sign-up",
     login: "log in",
-    loginHref: "/log-in"
+    loginHref: "/log-in",
+    logoAlt: "Brave Rewards Creator Logo",
+    batPillAlt: "Built with BAT"
   },
   main: {
     home: {
@@ -96,7 +98,11 @@ export default {
     bobbyCredit: "- Crypto Bobby",
     bobbyHref: "https://www.youtube.com/channel/UCt_oM56Ui0BCCgi0Yc-Wh3Q",
     bobbyQuote:
-      "\"Thanks to anyone who uses the Brave Browser and helps me out. It's not millions, but it's not peanuts either and it's cool to see a crypto project actually working as intended!\""
+      "\"Thanks to anyone who uses the Brave Browser and helps me out. It's not millions, but it's not peanuts either and it's cool to see a crypto project actually working as intended!\"",
+    bakerAlt: "Bart Baker Brave Rewards",
+    defrancoAlt: "Philip DeFranco Brave Rewards",
+    deciccoAlt: "Tom DeCicco Brave Rewards",
+    bobbyAlt: "Crypto Bobby Brave Rewards"
   },
   summary: {
     heading: "How does Brave Rewards work?",
