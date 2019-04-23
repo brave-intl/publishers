@@ -7,7 +7,7 @@ namespace :database_updates do
       puts "Running populate promo stats"
 
       PromoRegistration.find_each do |promo|
-        stats = [REFERRAL_CODES_1, REFERRAL_CODES_1].sample
+        stats = [REFERRAL_CODES_1, REFERRAL_CODES_2].sample
         stats = stats.each { |x| x["referral_code"] = promo.referral_code }
         promo.stats = stats.to_json
         if promo.save

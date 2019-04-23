@@ -50,7 +50,7 @@ gem 'jbuilder', '~> 2.7.0'
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.8.4"
+gem "nokogiri"
 
 # Open Graph tag
 gem "meta-tags"
