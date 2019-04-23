@@ -46,7 +46,9 @@ Rails.application.configure do
   if ENV["PUBLIC_URL"].present?
     # example: https://publishers-staging-distro.basicattentiontoken.org
     config.action_controller.asset_host = ENV["PUBLIC_URL"]
-    config.static_cache_control = "public, max-age=2592000"
+    config.public_file_server.headers = {
+      'Cache-Control' => 'public, max-age=31536000'
+    }
   end
 
   # Specifies the header that your server uses for sending files.
