@@ -32,7 +32,7 @@ export const MainHome = () => {
           pad="large"
           margin={{ top: "80px", bottom: "90px" }}
         >
-          <Box className="bat-pill" as="a" href={locale.nav.batPillHref}>
+          <Box className="bat-pill" as="a" href={locale.nav.batPillHref} alt={locale.nav.batPillAlt}>
             <Image src={batPill} />
           </Box>
           <Heading level="1" color="white" margin={{ vertical: "small" }}>
@@ -46,7 +46,7 @@ export const MainHome = () => {
               to={locale.main.home.btn.signupHref}
               onClick={() => logAction("StartSignupClicked", "Landing")}
             >
-              <PrimaryButton label={locale.main.home.btn.signup} />
+              <PrimaryButton label={locale.main.home.btn.signup} name={locale.main.home.btn.signup} />
             </Link>
           </Box>
           <Heading level="3" size="small" color="#E9E9F4">
