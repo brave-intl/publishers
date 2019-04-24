@@ -7,7 +7,7 @@ let builtHTMLContent = fs.readFileSync(pathToEntry).toString();
 
 builtHTMLContent.match(bundlesRegExp).map(bundle => {
   if (bundle.indexOf(".js") !== -1) {
-    builtHTMLContent = builtHTMLContent.replace(bundle, `${bundle} async`);
+    builtHTMLContent = builtHTMLContent.replace(bundle, `${bundle} defer`);
   }
 });
 
