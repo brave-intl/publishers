@@ -1,23 +1,43 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b408f6de4b89deb6e53e7e7171e499f6",
+    "revision": "0fc7786c0a31bcfdf0e76c9f540095a7",
     "url": "/index.html"
   },
   {
-    "revision": "bcf28a6dbd40dd5d48dd",
-    "url": "/static/css/main.e43cfce9.chunk.css"
+    "revision": "f9a21119aa295499fb3e",
+    "url": "/static/css/main.025b45d9.chunk.css"
   },
   {
     "revision": "0714d1baebf2047752cb",
     "url": "/static/js/2.afab0b54.chunk.js"
   },
   {
-    "revision": "bcf28a6dbd40dd5d48dd",
-    "url": "/static/js/main.01b9c38f.chunk.js"
+    "revision": "f9a21119aa295499fb3e",
+    "url": "/static/js/main.1cf6c969.chunk.js"
   },
   {
     "revision": "42ac5946195a7306e2a5",
     "url": "/static/js/runtime~main.a8a9905a.js"
+  },
+  {
+    "revision": "6504fb0ee64c3e27ee8c1bb17b5a2f3b",
+    "url": "/static/media/Muli-Bold.6504fb0e.woff2"
+  },
+  {
+    "revision": "b196dd5c8067325517bac20f66b3edbd",
+    "url": "/static/media/Muli-Light.b196dd5c.woff2"
+  },
+  {
+    "revision": "13a82fa49eeaf93d6b525a3dad74942b",
+    "url": "/static/media/Muli-Regular.13a82fa4.woff2"
+  },
+  {
+    "revision": "e8794816c5eaeaa9dd20a6d77ea3b272",
+    "url": "/static/media/Poppins-Light.e8794816.woff2"
+  },
+  {
+    "revision": "61e2d96d01a7eba5ea3ec1bad7e736a8",
+    "url": "/static/media/Poppins-Medium.61e2d96d.woff2"
   },
   {
     "revision": "74b296338283810bc8aa24521154e176",
