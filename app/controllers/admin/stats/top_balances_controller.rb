@@ -17,6 +17,7 @@ class Admin::Stats::TopBalancesController < AdminController
       @table_identifier = "youtube#channel"
       @youtube_channels = YoutubeChannelDetails
                             .joins(:channel)
+                            .where(channels: { verified: true })
                             .where(youtube_channel_id:
                               @result.select { |entry| entry["account_id"].split(":")[0] == @table_identifier }
                               .map { |entry| entry["account_id"].split(":")[1]}
@@ -26,6 +27,7 @@ class Admin::Stats::TopBalancesController < AdminController
                             .reduce(:merge)
       @site_channels = SiteChannelDetails
                           .joins(:channel)
+                          .where(channels: { verified: true })
                           .where(brave_publisher_id:
                               @result.map { |entry| entry["account_id"] }
                           )
