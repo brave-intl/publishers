@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build && ./postbuild.sh",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build && node ./preload-links.js && ./postbuild.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

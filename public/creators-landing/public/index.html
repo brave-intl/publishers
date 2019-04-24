@@ -28,6 +28,86 @@
     <noscript>
       <meta http-equiv="refresh" content="0;url=no_js" />
     </noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div class="full-page-loader">
+        <img width="80" src="./brave-logo-lion.webp" alt="Brave" />
+      </div>
+    </div>
+
+    <style>
+      .full-page-loader {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+
+        background: linear-gradient(-45deg, #2a1fad 0%, #a91b78 100%);
+        background-size: 150% 150%;
+        -webkit-animation: Gradient 5s ease infinite;
+        -moz-animation: Gradient 5s ease infinite;
+        animation: Gradient 5s ease infinite;
+
+        @-webkit-keyframes Gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        @-moz-keyframes Gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        @keyframes Gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      }
+
+      .full-page-loader > img {
+        animation: 1.5s infinite pulse;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 0;
+          transition-timing-function: ease;
+        }
+
+        50% {
+          opacity: 1;
+          transition-timing-function: ease;
+        }
+        100% {
+          opacity: 0;
+          transition-timing-function: ease;
+        }
+      }
+    </style>
   </body>
 </html>
