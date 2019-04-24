@@ -3,6 +3,14 @@ import * as React from "react";
 import Card from "../../../components/card/Card";
 import { Cell, Container, Grid } from "../../../components/grid/Grid";
 import UserNavbar from "../components/userNavbar/UserNavbar";
+import {
+  xsTemplate,
+  smTemplate,
+  mdTemplate,
+  lgTemplate,
+  xlTemplate,
+  xsRows
+} from "./PaymentsStyle";
 
 import CurrentTable from "./components/currentTable/CurrentTable";
 import TotalTable from "./components/totalTable/TotalTable";
@@ -39,17 +47,22 @@ export default class Payments extends React.Component<{}, {}> {
     this.setState({
       data
     });
-    console.log(data);
   }
 
   public render() {
     return (
       <Container>
-        <Grid>
-          <Cell startColumn={1} endColumn={13}>
+        <Grid
+          xsTemplate={xsTemplate}
+          smTemplate={smTemplate}
+          mdTemplate={mdTemplate}
+          lgTemplate={lgTemplate}
+          xlTemplate={xlTemplate}
+        >
+          <Cell gridArea={"navbar"}>
             <UserNavbar />
           </Cell>
-          <Cell startColumn={1} endColumn={5}>
+          <Cell gridArea={"total"}>
             <TotalTable
               downloads={this.state.data.downloads}
               installs={this.state.data.installs}
@@ -57,10 +70,10 @@ export default class Payments extends React.Component<{}, {}> {
               channelBalances={this.state.data.currentChannelBalances}
             />
           </Cell>
-          <Cell startColumn={5} endColumn={13}>
-            <EarningsChart transactions={this.state.data.transactions}>
+          <Cell gridArea={"earnings"}>
+            <EarningsChart transactions={this.state.data.transactions} />
           </Cell>
-          <Cell startColumn={1} endColumn={13}>
+          <Cell gridArea={"current"}>
             <CurrentTable
               referralBalance={this.state.data.currentReferralBalance}
               contributionBalance={this.state.data.currentContributionBalance}

@@ -5,6 +5,9 @@ const Card = styled.div`
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
   border-radius: 6px;
+  height: 100%;
 `;
+
+//Do not merge height: 100% without fixing other components using Card.
 
 export default Card;
