@@ -1,43 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bd4118e68adc35141e1a92fa4b50d4b4",
+    "revision": "240b9835e813ff239a25b2918f065752",
     "url": "/index.html"
   },
   {
-    "revision": "10abee2207389b937ec2",
-    "url": "/static/css/main.fea6c30c.chunk.css"
+    "revision": "d5caa3b7214cccab9797",
+    "url": "/static/css/main.2e801ca5.chunk.css"
   },
   {
     "revision": "0714d1baebf2047752cb",
     "url": "/static/js/2.afab0b54.chunk.js"
   },
   {
-    "revision": "10abee2207389b937ec2",
-    "url": "/static/js/main.361b1399.chunk.js"
+    "revision": "d5caa3b7214cccab9797",
+    "url": "/static/js/main.3545053a.chunk.js"
   },
   {
     "revision": "42ac5946195a7306e2a5",
     "url": "/static/js/runtime~main.a8a9905a.js"
-  },
-  {
-    "revision": "6504fb0ee64c3e27ee8c1bb17b5a2f3b",
-    "url": "/static/media/Muli-Bold.6504fb0e.woff2"
-  },
-  {
-    "revision": "b196dd5c8067325517bac20f66b3edbd",
-    "url": "/static/media/Muli-Light.b196dd5c.woff2"
-  },
-  {
-    "revision": "13a82fa49eeaf93d6b525a3dad74942b",
-    "url": "/static/media/Muli-Regular.13a82fa4.woff2"
-  },
-  {
-    "revision": "e8794816c5eaeaa9dd20a6d77ea3b272",
-    "url": "/static/media/Poppins-Light.e8794816.woff2"
-  },
-  {
-    "revision": "61e2d96d01a7eba5ea3ec1bad7e736a8",
-    "url": "/static/media/Poppins-Medium.61e2d96d.woff2"
   },
   {
     "revision": "74b296338283810bc8aa24521154e176",
@@ -72,11 +52,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/card-defranco.1bad4ceb.webp"
   },
   {
-    "revision": "9e6e4e5b14edf16d188d6d18c8ae5e4f",
-    "url": "/static/media/creator-logos-mobile.9e6e4e5b.webp"
+    "revision": "8b4729d7c672c85fe19cba1e285a11bc",
+    "url": "/static/media/creator-logos-mobile.8b4729d7.webp"
   },
   {
-    "revision": "8f3dba9ec23c270e1401e9bc3d9a01c1",
-    "url": "/static/media/creator-logos-wide.8f3dba9e.webp"
+    "revision": "f181ba5a0cb8b09e3348aa9548da8747",
+    "url": "/static/media/creator-logos-wide.f181ba5a.webp"
   }
 ]);

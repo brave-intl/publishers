@@ -41,7 +41,6 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   if ENV["PUBLIC_URL"].present?
     # example: https://publishers-staging-distro.basicattentiontoken.org
-    config.action_controller.asset_host = ENV["PUBLIC_URL"]
     config.public_file_server.headers = {
       'Cache-Control' => 'public, max-age=31536000'
     }

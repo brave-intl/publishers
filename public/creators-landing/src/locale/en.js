@@ -117,7 +117,7 @@ export default {
       "Signing up as a verified content creator gives you access to the Creators dashboard, where you can manage all your tips. It will also give you access to your referral link, which you can use to earn more tokens.",
     fourTitle: "Collect your tips in the Creators dashboard",
     fourDesc:
-      "Once you’ve signed up and logged into the dashboard, you can use our partner Uphold to automatically convert the tokens you earned into a currency of your choosing. One token is currently worth 0.21 USD. ",
+      "Once you’ve signed up and logged into the dashboard, you can use our partner Uphold to automatically convert the tokens you earned into a currency of your choosing.",
     fourLink_href: "https://basicattentiontoken.org/",
     fourLink: "Learn more about tokens.",
     cardBusiness: "Business inquiries",
