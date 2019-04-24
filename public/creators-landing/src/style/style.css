@@ -4,7 +4,6 @@ h3,
 h4,
 h5,
 h6 {
-  font-display: swap;
   font-family: "Poppins", "-apple-system", "BlinkMacSystemFont", "Segoe UI",
     "Helvetica", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol";
@@ -14,7 +13,6 @@ h6 {
 
 body,
 p {
-  font-display: swap;
   line-height: 1.6 !important;
 }
 
@@ -230,67 +228,4 @@ h4 {
 
 a {
   text-decoration: none;
-}
-
-/* latin */
-@font-face {
-  font-family: "Muli";
-  font-display: swap;
-  font-style: normal;
-  font-weight: 300;
-  src: local("Muli Light"), local("Muli-Light"),
-    url("./fonts/Muli-Light.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
-}
-/* latin */
-@font-face {
-  font-family: "Muli";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: local("Muli Regular"), local("Muli-Regular"),
-    url("./fonts/Muli-Regular.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
-}
-
-/* latin */
-@font-face {
-  font-family: "Muli";
-  font-display: swap;
-  font-style: normal;
-  font-weight: 700;
-  src: local("Muli Bold"), local("Muli-Bold"),
-    url("./fonts/Muli-Bold.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
-}
-
-/* latin */
-@font-face {
-  font-family: "Poppins";
-  font-display: swap;
-  font-style: normal;
-  font-weight: 300;
-  src: local("Poppins Light"), local("Poppins-Light"),
-    url("./fonts/Poppins-Light.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
-}
-/* latin */
-@font-face {
-  font-family: "Poppins";
-  font-display: swap;
-  font-style: normal;
-  font-weight: 500;
-  src: local("Poppins Medium"), local("Poppins-Medium"),
-    url("./fonts/Poppins-Medium.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
 }
