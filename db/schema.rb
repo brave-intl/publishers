@@ -489,7 +489,7 @@ ActiveRecord::Schema.define(version: 2019_04_22_195852) do
     t.string "encrypted_uphold_access_parameters_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id"
+    t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 
   create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

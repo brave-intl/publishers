@@ -7,7 +7,7 @@ class CreateUpholdConnections < ActiveRecord::Migration[5.2]
 
       t.uuid :uphold_id
       t.uuid :address
-      t.belongs_to :publisher, index: true, type: :uuid
+      t.belongs_to :publisher, index: { unique: true }, type: :uuid
 
       t.string :encrypted_uphold_code
       t.string :encrypted_uphold_code_iv
