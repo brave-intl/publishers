@@ -5,7 +5,10 @@ class StaticController < ApplicationController
   before_action :redirect_if_current_publisher, only: :index
 
   def index
-    @should_throttle = should_throttle_create? || params[:captcha]
+  end
+
+  def no_js
+    render(:layout => "layouts/no_js")
   end
 
   private

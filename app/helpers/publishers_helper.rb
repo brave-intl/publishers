@@ -386,7 +386,7 @@ module PublishersHelper
   end
 
   def channel_type_icon_url(channel)
-    case channel.details
+    case channel&.details
     when YoutubeChannelDetails
       asset_url('publishers-home/youtube-icon_32x32.png')
     when TwitchChannelDetails

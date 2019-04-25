@@ -15,8 +15,8 @@ class LogInTest < Capybara::Rails::TestCase
   test "can navigate to log in from landing page" do
     visit root_path
     assert_content page, "Brave Rewards"
-    click_link('Log In')
-    assert_content page, "Log In"
+    click_link('log in')
+    assert_content page, "Sign in"
   end
 
   test "a user with an existing email can receive a login email" do
@@ -40,9 +40,6 @@ class LogInTest < Capybara::Rails::TestCase
     assert_content page, "Log In"
     fill_in 'email', with: email
     click_button('Log In')
-
-    assert_content page, "Couldn't find a publisher with that email address"
-    click_link("create an account with the email #{email}")
 
     assert_content page, "An email is on its way"
   end

@@ -28,10 +28,6 @@
     cron: "30 * * * *"
     description: "Sync stats for channel owned referral codes with the promo server every hour."
     queue: heavy
-  Sync::OwnerPromoRegistrationsStatsJob:
-    cron: "0 */12 * * *"
-    description: "Syncs referral stats for owner codes every 12 hours."
-    queue: low
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."

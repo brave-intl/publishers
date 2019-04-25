@@ -265,6 +265,11 @@ class Publisher < ApplicationRecord
     PayoutReport.most_recent_final_report&.potential_payments&.where(publisher_id: id, channel_id: nil)&.first
   end
 
+  def timeout_in
+    return 2.hours if admin?
+    30.minutes
+  end
+
   private
 
   def set_created_status

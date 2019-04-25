@@ -110,6 +110,9 @@ Rails.application.routes.draw do
   resources :faqs, only: [:index]
 
   root "static#index"
+  get 'no_js', controller: "static"
+  get 'sign-up', to: "static#index"
+  get 'log-in', to: "static#index"
 
   namespace :api, defaults: { format: :json } do
     # /api/v1/
@@ -184,6 +187,7 @@ Rails.application.routes.draw do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
       resources :top_balances, only: [:index]
+      resources :top_youtube_channels, only: [:index]
       resources :publisher_statistics, only: [:index]
     end
     resources :unattached_promo_registrations, only: %i(index create)do
