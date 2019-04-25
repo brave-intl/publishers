@@ -10,10 +10,16 @@ h4 Channels Transfers
         .d-flex.align-items-center.mt-2
           .ml-2= transfer.created_at.strftime('%B %d, %Y')
         .d-flex.align-items-center.my-2
-          = image_tag(channel_type_icon_url(transfer.channel), size: "20x20", class: "mx-2")
-          = link_to(on_channel_type(transfer.channel), transfer.channel.details.url)
-          - if transfer.suspended?
-            .badge.badge-danger.ml-3 Suspended Transfer
+          - if transfer.channel&.details
+            = transfer_details(transfer.channel.details, transfer.suspended?)
+          - elsif transfer.transfer_to_channel&.details
+            = transfer_details(transfer.transfer_to_channel.details, transfer.suspended?)
+          - else
+            .d-flex
+              span.mx-1 Channel was deleted (
+              div
+                code= transfer.channel_id
+              span.ml-1 )
 
         .d-flex.mb-2
           .wrapper.mr-4.ml-2
@@ -26,7 +32,10 @@ h4 Channels Transfers
 
       .d-flex.align-items-center.m-2
         span.font-weight-bold.mr-1 Balance:
-        = publisher_channel_bat_balance(transfer.transfer_to, transfer.channel)
+        - if transfer.channel&.details
+          = publisher_channel_bat_balance(transfer.transfer_from, transfer.channel.details.channel_identifier)
+        - elsif transfer.transfer_to_channel
+          = publisher_channel_bat_balance(transfer.transfer_to, transfer.transfer_to_channel.details.channel_identifier)
 
 = link_to "View all transfers", admin_channel_transfers_path
 

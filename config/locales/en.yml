@@ -22,7 +22,7 @@
 en:
   shared:
     add_channel: Add Channel
-    app_title: Brave Rewards
+    app_title: Brave Rewards | Creators
     app_description: Do you run a website or channels on YouTube or Twitch? If you’re interested in monetizing your content, verify your site and unlock your contributions!
     cancel: Cancel
     channel_created: Channel created. Your verified status will be displayed in the Brave browser within the next 24-48 hours.
@@ -381,6 +381,7 @@ en:
         missing_email: We seem to be missing some info. Please make sure you provided an email address.
       emailed_authentication_token:
         missing_email: We seem to be missing some info. Please make sure you provided an email address.
+        unfound_alert_json: Couldn't find a publisher with that email address.
         unfound_alert_html: |
           Couldn't find a publisher with that email address. Please try again, or you may
           <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">create an account with the email %{email}</a>.
@@ -745,7 +746,7 @@ en:
       success: Channel verified!
       awaiting_admin_approval: Verification is almost complete! We've notified an admin who will review and finalize your channel.
   static:
-    index:
+    no_js:
       welcome: Welcome to
       header: Brave Rewards
       body_html: |

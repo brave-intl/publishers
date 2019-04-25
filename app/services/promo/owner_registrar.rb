@@ -1,5 +1,4 @@
-
-# Registers infinity codes for a Publisher
+# !! important, We are using UNATTACHED type for now until we move to polymorphic codes. 
 class Promo::OwnerRegistrar < BaseApiClient
   include PromosHelper
 
@@ -28,7 +27,8 @@ class Promo::OwnerRegistrar < BaseApiClient
         promo_id: active_promo_id,
         promo_campaign_id: @promo_campaign_id,
         description: @description,
-        kind: PromoRegistration::OWNER)
+        kind: PromoRegistration::UNATTACHED
+      )
     end
   end
 
@@ -36,13 +36,12 @@ class Promo::OwnerRegistrar < BaseApiClient
     promo_registrations = []
     @number.times do
       promo_registrations.push(PromoRegistration.create!(referral_code: offline_referral_code,
-                                                              publisher_id: @publisher_id,
-                                                              promo_id: active_promo_id,
-                                                              promo_campaign_id: @promo_campaign_id,
-                                                              description: @description,
-                                                              kind: PromoRegistration::OWNER))                                                    
+                                                         publisher_id: @publisher_id,
+                                                         promo_id: active_promo_id,
+                                                         promo_campaign_id: @promo_campaign_id,
+                                                         description: @description,
+                                                         kind: PromoRegistration::UNATTACHED))
     end
-    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations).perform
   end
 
   private

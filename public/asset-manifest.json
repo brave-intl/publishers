@@ -1,0 +1,23 @@
+{
+  "main.css": "/static/css/main.7ff55dc7.chunk.css",
+  "main.js": "/static/js/main.bb98a979.chunk.js",
+  "main.js.map": "/static/js/main.bb98a979.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+  "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+  "static/js/2.f0856909.chunk.js": "/static/js/2.f0856909.chunk.js",
+  "static/js/2.f0856909.chunk.js.map": "/static/js/2.f0856909.chunk.js.map",
+  "index.html": "/index.html",
+  "precache-manifest.3cf21e83e04913fe8cccb315e879ccd9.js": "/precache-manifest.3cf21e83e04913fe8cccb315e879ccd9.js",
+  "service-worker.js": "/service-worker.js",
+  "static/css/main.7ff55dc7.chunk.css.map": "/static/css/main.7ff55dc7.chunk.css.map",
+  "static/media/brave-rewards-creators-logo.svg": "/static/media/brave-rewards-creators-logo.74b29633.svg",
+  "static/media/brave-rewards-creators-mobile-logo.svg": "/static/media/brave-rewards-creators-mobile-logo.58394134.svg",
+  "static/media/built-with-bat-pill.svg": "/static/media/built-with-bat-pill.f4c2d5ec.svg",
+  "static/media/built-with-bat.svg": "/static/media/built-with-bat.fe7c3954.svg",
+  "static/media/card-baker.png": "/static/media/card-baker.50f47a3d.png",
+  "static/media/card-bobby.png": "/static/media/card-bobby.81b852eb.png",
+  "static/media/card-decicco.png": "/static/media/card-decicco.0ec34be4.png",
+  "static/media/card-defranco.png": "/static/media/card-defranco.fc8790b0.png",
+  "static/media/creator-logos-mobile.png": "/static/media/creator-logos-mobile.6b69dbd8.png",
+  "static/media/creator-logos-wide.png": "/static/media/creator-logos-wide.4e6300db.png"
+}
