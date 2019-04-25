@@ -11,6 +11,8 @@ html
     = display_meta_tags
     = javascript_pack_tag('static', defer: true)
 
+    = stylesheet_link_tag "static"
+
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
   body data-action=params[:action] data-controller=params[:controller]
