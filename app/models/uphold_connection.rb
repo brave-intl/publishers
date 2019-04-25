@@ -81,21 +81,18 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def uphold_status
-    if publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::BLOCKED
-      # Notify on Slack that there's someone suspect
-      SlackMessenger.new(message: "Publisher #{id} is blocked by Uphold and has just logged in. <!channel>").perform
-    end
+    uphold_account_status = wallet&.uphold_account_status&.to_sym
 
-    if publisher&.wallet&.uphold_account_status&.to_sym == UpholdAccountState::RESTRICTED
+    send_blocked_message if uphold_account_status == UpholdAccountState::BLOCKED
+
+    if uphold_account_status == UpholdAccountState::RESTRICTED
       UpholdAccountState::RESTRICTED
-    elsif uphold_verified?
-      if uphold_reauthorization_needed?
-        UpholdAccountState::REAUTHORIZATION_NEEDED
-      elsif publisher&.wallet&.not_a_member?
-        UpholdAccountState::RESTRICTED
-      else
-        UpholdAccountState::VERIFIED
-      end
+    elsif uphold_reauthorization_needed?
+      UpholdAccountState::REAUTHORIZATION_NEEDED
+    elsif uphold_verified? && wallet&.not_a_member?
+      UpholdAccountState::RESTRICTED
+    elsif uphold_verified? && wallet&.is_a_member?
+      UpholdAccountState::VERIFIED
     elsif uphold_access_parameters.present?
       :access_parameters_acquired
     elsif uphold_code.present?
@@ -119,12 +116,18 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def wallet
-    @wallet ||= publisher.wallet
+    @wallet ||= publisher&.wallet
   end
 
   def encryption_key
     # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
     # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
     Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
+  end
+
+  private
+
+  def send_blocked_message
+    SlackMessenger.new(message: "Publisher #{id} is blocked by Uphold and has just logged in. <!channel>").perform
   end
 end

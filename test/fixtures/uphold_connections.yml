@@ -28,3 +28,6 @@ verified_no_currency:
 small_media_group_connection:
   publisher: small_media_group
 
+verified_totp_connection:
+  created_at: 2019-01-01
+
