@@ -190,6 +190,7 @@ Rails.application.routes.draw do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
       resources :top_balances, only: [:index]
+      resources :top_youtube_channels, only: [:index]
       resources :publisher_statistics, only: [:index]
     end
     resources :unattached_promo_registrations, only: %i(index create) do

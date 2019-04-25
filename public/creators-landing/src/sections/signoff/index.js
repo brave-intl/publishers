@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box, Heading, Image, ResponsiveContext } from 'grommet'
 import { Container, PrimaryButton } from '../../components'
-import CreatorsWide from '../../components/img/creator-logos-wide.png'
-import CreatorsMobile from '../../components/img/creator-logos-mobile.png'
+import CreatorsWide from '../../components/img/creator-logos-wide.webp'
+import CreatorsMobile from '../../components/img/creator-logos-mobile.webp'
 import locale from '../../locale/en'
 
 export const Signoff = () => {
@@ -37,6 +37,7 @@ export const Signoff = () => {
           label={locale.signoff.btn}
           margin='large'
           href={locale.signoff.btnHref}
+          name={locale.signoff.btn}
         />
       </Container>
     </Box>

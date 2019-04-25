@@ -7,13 +7,22 @@ module Channels
     end
 
     def perform
-      ChannelTransfer.create(transfer_from: @channel.publisher, transfer_to: @contested_by.publisher, channel: @channel, suspended: @channel.publisher.suspended?)
+      transfer = ChannelTransfer.create(
+        transfer_from: @channel.publisher,
+        transfer_to: @contested_by.publisher,
+        channel: @channel,
+        suspended: @channel.publisher.suspended?
+      )
+
       raise SuspendedPublisherError if @channel.publisher.suspended?
 
       ActiveRecord::Base.transaction do
         @contested_by.verified = false
         @contested_by.verification_pending = true
         @contested_by.save!
+
+        # Update the transfer so that we have information about the channel that was transferred
+        transfer.update(transfer_to_channel_id: @contested_by.id)
 
         # Reject prior channels contesting the same channel
         if @channel.contested_by_channel_id
