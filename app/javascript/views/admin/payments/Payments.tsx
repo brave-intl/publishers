@@ -14,6 +14,7 @@ import {
 
 import CurrentTable from "./components/currentTable/CurrentTable";
 import TotalTable from "./components/totalTable/TotalTable";
+import CurrentChart from "./components/currentChart/CurrentChart";
 import EarningsChart from "./components/earningsChart/EarningsChart";
 import console = require("console");
 
@@ -51,38 +52,60 @@ export default class Payments extends React.Component<{}, {}> {
 
   public render() {
     return (
-      <Container>
-        <Grid
-          xsTemplate={xsTemplate}
-          smTemplate={smTemplate}
-          mdTemplate={mdTemplate}
-          lgTemplate={lgTemplate}
-          xlTemplate={xlTemplate}
+      <div>
+        <Container>
+          <Grid
+            xsTemplate={xsTemplate}
+            smTemplate={smTemplate}
+            mdTemplate={mdTemplate}
+            lgTemplate={lgTemplate}
+            xlTemplate={xlTemplate}
+          >
+            <Cell gridArea={"a"}>
+              <UserNavbar />
+            </Cell>
+            <Cell gridArea={"b"}>
+              <CurrentChart />
+            </Cell>
+            <Cell gridArea={"c"}>
+              <EarningsChart transactions={this.state.data.transactions} />
+            </Cell>
+            <Cell gridArea={"d"}>
+              <TotalTable
+                downloads={this.state.data.downloads}
+                installs={this.state.data.installs}
+                confirmations={this.state.data.confirmations}
+                channelBalances={this.state.data.currentChannelBalances}
+              />
+            </Cell>
+            <Cell gridArea={"e"}>
+              <CurrentTable
+                referralBalance={this.state.data.currentReferralBalance}
+                contributionBalance={this.state.data.currentContributionBalance}
+                channelBalances={this.state.data.currentChannelBalances}
+                totalBalance={this.state.data.currentOverallBalance}
+              />
+            </Cell>
+          </Grid>
+        </Container>
+        <div
+          style={{
+            backgroundColor: "white",
+            borderTop: "1px solid #ededed",
+            height: "75px",
+            width: "100%",
+            position: "fixed",
+            bottom: "0"
+          }}
         >
-          <Cell gridArea={"navbar"}>
-            <UserNavbar />
-          </Cell>
-          <Cell gridArea={"total"}>
-            <TotalTable
-              downloads={this.state.data.downloads}
-              installs={this.state.data.installs}
-              confirmations={this.state.data.confirmations}
-              channelBalances={this.state.data.currentChannelBalances}
-            />
-          </Cell>
-          <Cell gridArea={"earnings"}>
-            <EarningsChart transactions={this.state.data.transactions} />
-          </Cell>
-          <Cell gridArea={"current"}>
-            <CurrentTable
-              referralBalance={this.state.data.currentReferralBalance}
-              contributionBalance={this.state.data.currentContributionBalance}
-              channelBalances={this.state.data.currentChannelBalances}
-              totalBalance={this.state.data.currentOverallBalance}
-            />
-          </Cell>
-        </Grid>
-      </Container>
+          Hello!
+        </div>
+        <div
+          style={{ color: "white", backgroundColor: "pink", height: "400px" }}
+        >
+          Hello!
+        </div>
+      </div>
     );
   }
 }

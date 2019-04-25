@@ -9,7 +9,7 @@
 
 /*sidebar navigation*/
 #sidebar {
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
     visibility: hidden;
   }
 
@@ -131,7 +131,7 @@ a.logo span {
 #main-content {
   margin-left: 240px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
     margin-left: 0px;
   }
 

@@ -29,10 +29,24 @@ enum Breakpoint {
 }
 
 export const Container = styled.div`
-  margin: 30px;
+  margin: auto;
+  @media (max-width: ${Breakpoint.xs}) {
+    max-width: ${Breakpoint.xs};
+  }
+  @media (min-width: ${Breakpoint.xs}) and (max-width: ${Breakpoint.sm}) {
+    max-width: ${Breakpoint.xs};
+  }
+  @media (min-width: ${Breakpoint.sm}) and (max-width: ${Breakpoint.md}) {
+    max-width: ${Breakpoint.sm};
+  }
+  @media (min-width: ${Breakpoint.md}) and (max-width: ${Breakpoint.lg}) {
+    max-width: ${Breakpoint.md};
+  }
+  @media (min-width: ${Breakpoint.lg}) {
+    max-width: ${Breakpoint.lg};
+  }
 `;
 
-// May expand this to 4-5 breakpoints, tbd by brave design system.
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;

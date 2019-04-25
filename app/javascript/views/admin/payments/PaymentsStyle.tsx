@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const xsTemplate = `
-'navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar'
-'total total total total total total total total total total total total'
-'earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings'
-'current current current current current current current current current current current current'
+'a a a a a a a a a a a a'
+'b b b b b b b b b b b b'
+'c c c c c c c c c c c c'
+'d d d d d d d d d d d d'
+'e e e e e e e e e e e e'
 `;
 
 export const xsRows = `
@@ -12,28 +13,29 @@ export const xsRows = `
 `;
 
 export const smTemplate = `
-'navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar'
-'total total total total total total total total total total total total'
-'earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings'
-'current current current current current current current current current current current current'
+'a a a a a a a a a a a a'
+'b b b b b b b b b b b b'
+'c c c c c c c c c c c c'
+'d d d d d d d d d d d d'
+'e e e e e e e e e e e e'
 `;
 
 export const mdTemplate = `
-'navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar'
-'total total total total total total total total total total total total'
-'earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings'
-'current current current current current current current current current current current current'
+'a a a a a a a a a a a a'
+'b b b b c c c c c c c c'
+'d d d d d d d d d d d d'
+'e e e e e e e e e e e e'
 `;
 
 export const lgTemplate = `
-'navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar'
-'total total total total total total total total total total total total'
-'earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings earnings'
-'current current current current current current current current current current current current'
+'a a a a a a a a a a a a'
+'b b b b c c c c c c c c'
+'d d d d d d d d d d d d'
+'e e e e e e e e e e e e'
 `;
 
 export const xlTemplate = `
-'navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar navbar'
-'total total total total total earnings earnings earnings earnings earnings earnings earnings'
-'current current current current current current current current current current current current'
+'a a a a a a a a a a a a'
+'b b b b c c c c c c c c'
+'d d d d d d e e e e e e'
 `;
