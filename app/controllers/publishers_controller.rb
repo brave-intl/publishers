@@ -373,8 +373,7 @@ class PublishersController < ApplicationController
       end
 
       if publisher.uphold_connection.blank?
-        publisher.uphold_connection = UpholdConnection.new(publisher: publisher)
-        publisher.save
+        publisher.uphold_connection = UpholdConnection.create!(publisher: publisher)
       end
 
       if two_factor_enabled?(publisher)
