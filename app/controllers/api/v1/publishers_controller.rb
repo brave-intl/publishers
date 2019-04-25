@@ -1,4 +1,4 @@
-class Api::V1::Private::PublishersController < Api::V1::Private::BaseController
+class Api::V1::PublishersController < Api::BaseController
   class InvalidNote < StandardError; end
   class InvalidAdmin < StandardError; end
   def show
@@ -30,7 +30,7 @@ class Api::V1::Private::PublishersController < Api::V1::Private::BaseController
   end
 
   def publisher_status_updates
-    publisher = Publisher.find(params[:publisher_id])
+    user = Publisher.find(params[:publisher_id])
     admin = Publisher.find_by_email(params[:admin])
     status = params[:status]
     note = params[:note]
@@ -38,8 +38,8 @@ class Api::V1::Private::PublishersController < Api::V1::Private::BaseController
     raise InvalidNote if note.blank?
     raise InvalidAdmin if admin.blank?
 
-    PublisherStatusUpdate.create!(publisher: publisher, status: status)
-    PublisherNote.create!(note: note, publisher: publisher, created_by: admin)
+    PublisherStatusUpdate.create!(publisher: user, status: status)
+    PublisherNote.create!(note: note, publisher: user, created_by: admin)
 
     render(status: 200, json: { success: "true" }) and return
 
