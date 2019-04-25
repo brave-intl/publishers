@@ -16,7 +16,5 @@ class CreateUpholdConnections < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-
-    add_reference :publishers, :uphold_connection, index: true, foreign_key: { to_table: :uphold_connections }, type: :uuid
   end
 end

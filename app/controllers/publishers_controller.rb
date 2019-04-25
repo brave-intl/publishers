@@ -372,9 +372,7 @@ class PublishersController < ApplicationController
         flash[:alert] = t(".email_confirmed", email: publisher.email)
       end
 
-      if publisher.uphold_connection.blank?
-        publisher.uphold_connection = UpholdConnection.create!(publisher: publisher)
-      end
+      UpholdConnection.create!(publisher: publisher) if publisher.uphold_connection.blank?
 
       if two_factor_enabled?(publisher)
         session[:pending_2fa_current_publisher_id] = publisher_id

@@ -35,9 +35,7 @@ class Publisher < ApplicationRecord
 
   belongs_to :youtube_channel
 
-  # Setting a belongs to so we don't create have an extra query
-  # everytime we want to check to see if the publisher has an uphold connection
-  belongs_to :uphold_connection
+  has_one :uphold_connection
 
   belongs_to :created_by, class_name: "Publisher"
   has_many :created_users, class_name: "Publisher",
