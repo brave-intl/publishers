@@ -23,6 +23,9 @@
   TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
+  Sync::ChannelPromoRegistrationsStatsJob:
+    cron: "0 1 * * *"
+    description: "Sync stats for channel owned referral codes with the promo server every hour."
   TwoFactorAuthenticationRemovalJob:
     cron: "0 12 * * *"
     description: "Handle two factor authentication removal requests, send reminder e-mails, process 2fa removals, remove channels/wallets when required"

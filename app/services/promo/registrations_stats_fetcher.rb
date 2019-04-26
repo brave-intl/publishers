@@ -3,8 +3,9 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
   BATCH_SIZE = 50
 
-  def initialize(promo_registrations:)
+  def initialize(promo_registrations:, update_only: false)
     @referral_codes = promo_registrations.map { |promo_registration| promo_registration.referral_code }
+    @update_only = update_only
   end
 
   def perform
@@ -26,7 +27,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
         }.to_json
         promo_registration.save!
       end
-      stats += referral_code_events_by_date
+      stats += referral_code_events_by_date unless @update_only
     end
 
     stats
