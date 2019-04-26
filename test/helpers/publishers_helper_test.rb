@@ -188,4 +188,14 @@ class PublishersHelperTest < ActionView::TestCase
     publisher.uphold_status = Publisher::UpholdAccountState::BLOCKED
     assert_equal "uphold-complete", uphold_status_class(publisher)
   end
+
+  test '#next_deposit_date when it is midnight UTC displays the current month' do
+    date = DateTime.parse("2019-05-01T00:00:00+0000")
+    assert_equal next_deposit_date(date), "May 8th"
+  end
+
+  test '#next_deposit_date when it is midnight PST displays current month' do
+    date = DateTime.parse("2019-05-01T00:00:00-0800")
+    assert_equal next_deposit_date(date), "May 8th"
+  end
 end
