@@ -19,16 +19,18 @@ class JsonBuilders::ChannelsJsonBuilder
   def initialize
     require "publishers/excluded_channels"
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
-    @verified_channels = Channel.verified
     @excluded_verified_channel_ids = []
   end
 
   def build
     channels = []
 
-    [Channel.verified.site_channels, Channel.verified.youtube_channels, Channel.verified.twitch_channels, Channel.verified.twitter_channels].each do |verified_channels|
+    [Channel.verified.site_channels.includes(:site_banner).includes(publisher: :site_banners),
+     Channel.verified.youtube_channels.includes(:site_banner).includes(publisher: :site_banners),
+     Channel.verified.twitch_channels.includes(:site_banner).includes(publisher: :site_banners),
+     Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners)
+    ].each do |verified_channels|
       verified_channels.find_each do |verified_channel|
-        next if verified_channel.details.nil?
         if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
           excluded = true
           @excluded_verified_channel_ids.push(verified_channel.details.channel_identifier)
