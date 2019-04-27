@@ -9,7 +9,7 @@ div.panel-body
         th Video count
         th Youtube Channel
       tbody
-        - @youtube_channel_details.find_each do |youtube_channel_detail|
+        - @youtube_channel_details.each do |youtube_channel_detail|
           tr.gradeX
             td = link_to youtube_channel_detail.title, admin_publisher_path(youtube_channel_detail.channel.publisher_id)
             td = youtube_channel_detail.stats['subscriber_count']
