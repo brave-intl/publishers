@@ -25,11 +25,7 @@ class JsonBuilders::ChannelsJsonBuilder
   def build
     channels = []
 
-    [Channel.verified.site_channels.includes(:site_banner).includes(publisher: :site_banners),
-     Channel.verified.youtube_channels.includes(:site_banner).includes(publisher: :site_banners),
-     Channel.verified.twitch_channels.includes(:site_banner).includes(publisher: :site_banners),
-     Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners)
-    ].each do |verified_channels|
+    [Channel.verified.site_channels.includes(:site_banner).includes(publisher: :site_banners), Channel.verified.youtube_channels.includes(:site_banner).includes(publisher: :site_banners), Channel.verified.twitch_channels.includes(:site_banner).includes(publisher: :site_banners), Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners)].each do |verified_channels|
       verified_channels.find_each do |verified_channel|
         if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
           excluded = true
