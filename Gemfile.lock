@@ -355,7 +355,7 @@ GEM
       ffi (>= 0.5.0, < 2)
     recaptcha (3.4.0)
       json
-    redis (4.0.1)
+    redis (4.0.3)
     request_store (1.4.1)
       rack (>= 1.4)
     responders (2.4.1)
