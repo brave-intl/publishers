@@ -21,6 +21,10 @@ Sidekiq::Testing.fake!
 
 WebMock.allow_net_connect!
 
+# TODO, we can replace the below config with the following
+# Capybara.enable_aria_label = true
+# Capybara.default_driver = :selenium_chrome_headless
+
 Chromedriver.set_version "2.38"
 
 Capybara.register_driver "chrome" do |app|
@@ -40,6 +44,12 @@ end
 
 Capybara.default_driver = "chrome"
 
+class Capybara::Rails::TestCase
+  def setup
+    Capybara.current_driver = "chrome"
+  end
+end
+
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
@@ -49,11 +59,6 @@ VCR.configure do |config|
   config.default_cassette_options = { match_requests_on: [:method, :uri, :body] }
 end
 
-class Capybara::Rails::TestCase
-  def setup
-    Capybara.current_driver = "chrome"
-  end
-end
 
 module ActiveSupport
   class TestCase
