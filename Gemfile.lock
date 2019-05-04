@@ -270,7 +270,7 @@ GEM
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.9)
-    omniauth-twitch (0.2.0)
+    omniauth-twitch (1.0.0)
       omniauth-oauth2 (~> 1.1)
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
