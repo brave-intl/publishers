@@ -3,7 +3,15 @@ import * as React from "react";
 import Table from "brave-ui/components/dataTables/table";
 import Card from "../../../../../components/card/Card";
 
-export default class TotalTable extends React.Component<{}, {}> {
+interface ITotalTableProps {
+  downloads: any;
+  installs: any;
+  confirmations: any;
+  channelBalances: any;
+  transactions: any;
+}
+
+export default class TotalTable extends React.Component<ITotalTableProps, {}> {
   constructor(props) {
     super(props);
   }
@@ -12,8 +20,6 @@ export default class TotalTable extends React.Component<{}, {}> {
     let contributionsBalance = 0;
     let referralsBalance = 0;
     let totalBalance = 0;
-
-    console.log(this.props.transactions);
 
     if (this.props.transactions) {
       this.props.transactions.forEach(transaction => {
@@ -28,9 +34,11 @@ export default class TotalTable extends React.Component<{}, {}> {
       });
     }
 
-    totalBalance = (contributionsBalance + referralsBalance).toFixed(2);
-    contributionsBalance = contributionsBalance.toFixed(2);
-    referralsBalance = referralsBalance.toFixed(2);
+    totalBalance = parseFloat(
+      (contributionsBalance + referralsBalance).toFixed(2)
+    );
+    contributionsBalance = parseFloat(contributionsBalance.toFixed(2));
+    referralsBalance = parseFloat(referralsBalance.toFixed(2));
 
     const header = [
       {
@@ -52,8 +60,8 @@ export default class TotalTable extends React.Component<{}, {}> {
           {
             content: "Earned To Date",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "22px",
+              "font-weight": "bold",
               padding: "16px 0px 16px 0px"
             }
           },
@@ -67,8 +75,9 @@ export default class TotalTable extends React.Component<{}, {}> {
           {
             content: "Contributions",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "18px",
+              "font-weight": "bold",
+
               padding: "16px 0px 16px 0px"
             }
           },
@@ -92,8 +101,9 @@ export default class TotalTable extends React.Component<{}, {}> {
           {
             content: "Referrals",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "18px",
+              "font-weight": "bold",
+
               padding: "16px 0px 16px 0px"
             }
           },
@@ -147,8 +157,9 @@ export default class TotalTable extends React.Component<{}, {}> {
           {
             content: "Total",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "18px",
+              "font-weight": "bold",
+
               padding: "16px 0px 16px 0px"
             }
           },
@@ -177,7 +188,6 @@ export default class TotalTable extends React.Component<{}, {}> {
               transaction.transaction_type === "contribution" &&
               transaction.channel === channel.title
             ) {
-              console.log(transaction.amount);
               channelBalance += parseFloat(transaction.amount);
             }
           });

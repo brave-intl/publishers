@@ -1,15 +1,15 @@
 import * as React from "react";
 
 import {
-  CheckIcon,
   BatGreyIcon,
-  PaperAirplaneIcon,
+  CheckIcon,
   LoveIcon,
-  WalletActivityIcon,
-  WalletManageIcon,
-  SettingsIcon,
+  PaperAirplaneIcon,
   PaymentDueIcon,
-  VerifiedIcon
+  SettingsIcon,
+  VerifiedIcon,
+  WalletActivityIcon,
+  WalletManageIcon
 } from "brave-ui/components/icons";
 import {
   Container,

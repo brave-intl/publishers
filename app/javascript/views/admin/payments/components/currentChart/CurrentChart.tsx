@@ -1,61 +1,127 @@
 import * as React from "react";
 
+import Chart from "chart.js";
 import Card from "../../../../../components/card/Card";
 
-export default class CurrentChart extends React.Component<{}, {}> {
+interface ICurrentChartProps {
+  referralBalance: any;
+  contributionBalance: any;
+}
+
+export default class CurrentChart extends React.Component<
+  ICurrentChartProps,
+  {}
+> {
+  private node;
   constructor(props) {
     super(props);
   }
 
   public componentDidUpdate() {
-    this.createCurrentChart(this.props.contributionBalance, this.props.referralBalance);
+    this.createCurrentChart(
+      this.props.contributionBalance,
+      this.props.referralBalance
+    );
   }
 
   public createCurrentChart(contributionBalance, referralBalance) {
-
     const node = this.node;
 
-    let currentChartData = {
-      datasets: [{
-        data: [contributionBalance, referralBalance]
-        backgroundColor: ["#D2D8FD", "#A0AAF8"]
-      }],
+    const currentChartData = {
+      datasets: [
+        {
+          backgroundColor: ["#D2D8FD", "#A0AAF8"],
+          data: [contributionBalance, referralBalance]
+        }
+      ],
       labels: ["Referrals", "Contributions"]
-    }
+    };
 
-    let currentChartSettings = {
+    const currentChartSettings = {
+      data: currentChartData,
       options: {
-          responsive: false,
-          legend: {display: false}
+        legend: { display: false },
+        responsive: false
       },
-      type: "doughnut",
-      data: currentChartData
-    }
+      type: "doughnut"
+    };
 
-    var myChart = new Chart(node, currentChartSettings)
+    const myChart = new Chart(node, currentChartSettings);
   }
 
   public render() {
     return (
       <Card>
-        <div style={{textAlign: 'center', fontSize: '22px', fontWeight: "bold", color: "#686978", paddingBottom: "18px"}}>Current Cycle</div>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <canvas style={{height: '300px', width: '300px'}} ref={node => (this.node = node)} />
+        <div
+          style={{
+            color: "#686978",
+            fontSize: "22px",
+            fontWeight: "bold",
+            paddingBottom: "18px",
+            textAlign: "center"
+          }}
+        >
+          Current Cycle
         </div>
-        <div style={{display: "flex", justifyContent: "center"}}>
-        <div>
-        <div style={{display: "flex", marginTop: "23px"}}>
-        <div style={{borderRadius: "50%", backgroundColor: "#A0AAF8", height: "16px", width: "16px", marginTop: "12px", marginRight: "4px"}}></div>
-        <div style={{textAlign: 'center', fontSize: '16px', color: "#686978", paddingTop: "8px"}}>Contributions</div>
+        <div
+          style={{
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center"
+          }}
+        >
+          <canvas
+            style={{ height: "300px", width: "300px" }}
+            ref={node => (this.node = node)}
+          />
         </div>
-        <div style={{display: "flex"}}>
-        <div style={{borderRadius: "50%", backgroundColor: "#D2D8FD", height: "16px", width: "16px", marginTop: "4px", marginRight: "4px"}}></div>
-        <div style={{textAlign: 'center', fontSize: '16px', color: "#686978"}}>Referrals</div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div>
+            <div style={{ display: "flex", marginTop: "23px" }}>
+              <div
+                style={{
+                  backgroundColor: "#A0AAF8",
+                  borderRadius: "50%",
+                  height: "16px",
+                  marginRight: "4px",
+                  marginTop: "12px",
+                  width: "16px"
+                }}
+              />
+              <div
+                style={{
+                  color: "#686978",
+                  fontSize: "16px",
+                  paddingTop: "8px",
+                  textAlign: "center"
+                }}
+              >
+                Contributions
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  backgroundColor: "#D2D8FD",
+                  borderRadius: "50%",
+                  height: "16px",
+                  marginRight: "4px",
+                  marginTop: "4px",
+                  width: "16px"
+                }}
+              />
+              <div
+                style={{
+                  color: "#686978",
+                  fontSize: "16px",
+                  textAlign: "center"
+                }}
+              >
+                Referrals
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
-
-
       </Card>
     );
   }

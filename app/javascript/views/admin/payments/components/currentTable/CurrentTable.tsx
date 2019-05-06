@@ -4,36 +4,22 @@ import Card from "../../../../../components/card/Card";
 
 import Table from "brave-ui/components/dataTables/table";
 
-export default class CurrentTable extends React.Component<{}, {}> {
+interface ICurrentTableProps {
+  referralBalance: any;
+  contributionBalance: any;
+  channelBalances: any;
+  totalBalance: any;
+}
+
+export default class CurrentTable extends React.Component<
+  ICurrentTableProps,
+  {}
+> {
   constructor(props) {
     super(props);
     this.state = {
       data: { referralCodes: [{ stats: null }] }
     };
-  }
-
-  public componentDidMount() {
-    this.fetchData();
-  }
-
-  public async fetchData() {
-    const id = window.location.pathname.substring(
-      window.location.pathname.lastIndexOf("/") + 1
-    );
-    const url = "/admin/payments/" + id;
-    const options = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest"
-      },
-      method: "GET"
-    };
-    const response = await fetch(url, options);
-    const data = await response.json();
-    this.setState({
-      data
-    });
   }
 
   public render() {
@@ -57,8 +43,8 @@ export default class CurrentTable extends React.Component<{}, {}> {
           {
             content: "Current Cycle",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "22px",
+              "font-weight": "bold",
               padding: "16px 0px 16px 0px"
             }
           },
@@ -72,8 +58,8 @@ export default class CurrentTable extends React.Component<{}, {}> {
           {
             content: "Contributions",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "18px",
+              "font-weight": "bold",
               padding: "16px 0px 16px 0px"
             }
           },
@@ -97,8 +83,8 @@ export default class CurrentTable extends React.Component<{}, {}> {
           {
             content: "Referrals",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "18px",
+              "font-weight": "bold",
               padding: "16px 0px 16px 0px"
             }
           },
@@ -152,8 +138,8 @@ export default class CurrentTable extends React.Component<{}, {}> {
           {
             content: "Total",
             customStyle: {
-              "font-weight": "bold",
               "font-size": "18px",
+              "font-weight": "bold",
               padding: "16px 0px 16px 0px"
             }
           },
@@ -177,7 +163,7 @@ export default class CurrentTable extends React.Component<{}, {}> {
       this.props.channelBalances.forEach((channel, index) => {
         rows.splice(index + 2, 0, {
           content: [
-            { content: <a href={channel.url}>{channel.title}</a> },
+            { content: channel.title },
             { content: channel.balance + " BAT" }
           ]
         });

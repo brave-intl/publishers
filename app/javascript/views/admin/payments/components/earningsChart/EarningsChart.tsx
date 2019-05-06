@@ -1,9 +1,17 @@
 import * as React from "react";
 
+import Chart from "chart.js";
 import Card from "../../../../../components/card/Card";
-import console = require("console");
 
-export default class EarningsChart extends React.Component<{}, {}> {
+interface IEarningsChartProps {
+  transactions: any;
+}
+
+export default class EarningsChart extends React.Component<
+  IEarningsChartProps,
+  {}
+> {
+  private node;
   constructor(props) {
     super(props);
   }
@@ -15,69 +23,67 @@ export default class EarningsChart extends React.Component<{}, {}> {
   public createEarningsChart(transactions) {
     const node = this.node;
 
-    let timestamps = [];
-    let contributions = [];
-    let referrals = [];
-    let fees = [];
+    const timestamps = [];
+    const contributions = [];
+    const referrals = [];
+    const fees = [];
 
     transactions.forEach((transaction, index) => {
-      let date = new Date(transaction.created_at);
-      console.log(
-        date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
-      );
+      const date = new Date(transaction.created_at);
       switch (transaction.transaction_type) {
         case "contribution_settlement":
-          let date1 = new Date(transaction.created_at);
-          let timestamp =
+          const date1 = new Date(transaction.created_at);
+          const timestamp1 =
             date1.getMonth() +
             1 +
             "/" +
             date1.getDate() +
             "/" +
             date1.getFullYear();
-          if (!timestamps.includes(timestamp)) {
-            timestamps.push(timestamp);
+          if (!timestamps.includes(timestamp1)) {
+            timestamps.push(timestamp1);
           }
           contributions.push(Math.abs(transaction.amount).toFixed(2));
           break;
         case "referral_settlement":
-          let date2 = new Date(transaction.created_at);
-          let timestamp =
+          const date2 = new Date(transaction.created_at);
+          const timestamp2 =
             date2.getMonth() +
             1 +
             "/" +
             date2.getDate() +
             "/" +
             date2.getFullYear();
-          if (!timestamps.includes(timestamp)) {
-            timestamps.push(timestamp);
+          if (!timestamps.includes(timestamp2)) {
+            timestamps.push(timestamp2);
           }
           referrals.push(Math.abs(transaction.amount).toFixed(2));
           break;
       }
     });
 
-    let referralChartData = {
-      labels: timestamps,
+    const referralChartData = {
       datasets: [
         {
-          label: "Contributions",
-          data: contributions,
-          borderColor: "#A0AAF8",
           backgroundColor: "#A0AAF8",
-          fill: true
+          borderColor: "#A0AAF8",
+          data: contributions,
+          fill: true,
+          label: "Contributions"
         },
         {
-          label: "Referrals",
-          data: referrals,
-          borderColor: "#D2D8FD",
           backgroundColor: "#D2D8FD",
-          fill: true
+          borderColor: "#D2D8FD",
+          data: referrals,
+          fill: true,
+          label: "Referrals"
         }
-      ]
+      ],
+      labels: timestamps
     };
 
-    let referralChartSettings = {
+    const referralChartSettings = {
+      data: referralChartData,
       options: {
         legend: {
           display: false
@@ -91,11 +97,10 @@ export default class EarningsChart extends React.Component<{}, {}> {
           ]
         }
       },
-      type: "line",
-      data: referralChartData
+      type: "line"
     };
 
-    var myChart = new Chart(node, referralChartSettings);
+    const myChart = new Chart(node, referralChartSettings);
   }
 
   public render() {
@@ -103,19 +108,19 @@ export default class EarningsChart extends React.Component<{}, {}> {
       <Card>
         <div
           style={{
-            textAlign: "center",
+            color: "#686978",
             fontSize: "22px",
             fontWeight: "bold",
-            color: "#686978",
-            paddingBottom: "18px"
+            paddingBottom: "18px",
+            textAlign: "center"
           }}
         >
           Earned To Date
         </div>
         <div
           style={{
-            display: "flex",
             alignItems: "center",
+            display: "flex",
             justifyContent: "center"
           }}
         >
@@ -135,20 +140,20 @@ export default class EarningsChart extends React.Component<{}, {}> {
             >
               <div
                 style={{
-                  borderRadius: "50%",
                   backgroundColor: "#A0AAF8",
+                  borderRadius: "50%",
                   height: "16px",
-                  width: "16px",
+                  marginRight: "4px",
                   marginTop: "12px",
-                  marginRight: "4px"
+                  width: "16px"
                 }}
               />
               <div
                 style={{
-                  textAlign: "center",
-                  fontSize: "16px",
                   color: "#686978",
-                  paddingTop: "8px"
+                  fontSize: "16px",
+                  paddingTop: "8px",
+                  textAlign: "center"
                 }}
               >
                 Contributions
@@ -157,19 +162,19 @@ export default class EarningsChart extends React.Component<{}, {}> {
             <div style={{ display: "flex" }}>
               <div
                 style={{
-                  borderRadius: "50%",
                   backgroundColor: "#D2D8FD",
+                  borderRadius: "50%",
                   height: "16px",
-                  width: "16px",
+                  marginRight: "4px",
                   marginTop: "4px",
-                  marginRight: "4px"
+                  width: "16px"
                 }}
               />
               <div
                 style={{
-                  textAlign: "center",
+                  color: "#686978",
                   fontSize: "16px",
-                  color: "#686978"
+                  textAlign: "center"
                 }}
               >
                 Referrals
