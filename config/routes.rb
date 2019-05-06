@@ -117,6 +117,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     # /api/v1/
     namespace :v1, defaults: { format: :json } do
+      resources :publishers, defaults: { format: :json } do
+        post "publisher_status_updates"
+      end
       # /api/v1/stats/
       namespace :stats, defaults: { format: :json } do
         namespace :channels, defaults: { format: :json } do
@@ -173,6 +176,7 @@ Rails.application.routes.draw do
     resources :channel_transfers
     resources :referrals
     resources :payments
+    resources :channel_approvals
     resources :security
 
     resources :organizations, except: [:destroy]
@@ -189,9 +193,10 @@ Rails.application.routes.draw do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
       resources :top_balances, only: [:index]
+      resources :top_youtube_channels, only: [:index]
       resources :publisher_statistics, only: [:index]
     end
-    resources :unattached_promo_registrations, only: %i(index create)do
+    resources :unattached_promo_registrations, only: %i(index create) do
       collection do
         get :report, defaults: { format: :csv }
         patch :update_statuses

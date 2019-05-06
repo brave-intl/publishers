@@ -30,8 +30,9 @@ module PublishersHelper
     !!Rails.cache.fetch('payout_in_progress')
   end
 
-  def next_deposit_date
-    (DateTime.now + 1.month).strftime("%B 8th")
+  def next_deposit_date(today = DateTime.now)
+    today = today + 1.month if today.day > 8
+    today.strftime("%B 8th")
   end
 
   def publisher_overall_bat_balance(publisher)
