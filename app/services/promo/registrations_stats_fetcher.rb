@@ -22,6 +22,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
       referral_code_events_by_date = JSON.parse(response.body)
       referral_code_batch.each do |referral_code|
         promo_registration = PromoRegistration.find_by_referral_code(referral_code)
+        next if referral_code.nil?
         promo_registration.stats = referral_code_events_by_date.select { |referral_code_event_date|
           referral_code_event_date["referral_code"] == referral_code
         }.to_json
