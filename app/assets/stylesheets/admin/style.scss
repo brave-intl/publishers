@@ -9,10 +9,6 @@
 
 /*sidebar navigation*/
 #sidebar {
-  // @media (max-width: 992px) {
-  //   visibility: hidden;
-  // }
-
   display: block;
   width: 240px;
   height: 100%;
@@ -130,11 +126,6 @@ a.logo span {
 
 #main-content {
   margin-left: 240px;
-  background-color: #fdfdfd;
-
-  // @media (max-width: 992px) {
-  //   margin-left: 0px;
-  // }
 
   /* show */
   #publisher {

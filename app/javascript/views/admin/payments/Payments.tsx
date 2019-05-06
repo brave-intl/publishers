@@ -4,19 +4,18 @@ import Card from "../../../components/card/Card";
 import { Cell, Container, Grid } from "../../../components/grid/Grid";
 import UserNavbar from "../components/userNavbar/UserNavbar";
 import {
-  xsTemplate,
-  smTemplate,
-  mdTemplate,
   lgTemplate,
+  mdTemplate,
+  smTemplate,
   xlTemplate,
-  xsRows
+  xsRows,
+  xsTemplate
 } from "./PaymentsStyle";
 
-import CurrentTable from "./components/currentTable/CurrentTable";
-import TotalTable from "./components/totalTable/TotalTable";
 import CurrentChart from "./components/currentChart/CurrentChart";
+import CurrentTable from "./components/currentTable/CurrentTable";
 import EarningsChart from "./components/earningsChart/EarningsChart";
-import console = require("console");
+import TotalTable from "./components/totalTable/TotalTable";
 
 export default class Payments extends React.Component<{}, {}> {
   constructor(props) {
