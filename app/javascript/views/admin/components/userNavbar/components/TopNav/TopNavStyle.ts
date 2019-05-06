@@ -1,27 +1,20 @@
 import styled from "styled-components";
 
-interface IModalProps {
-  open: boolean;
-}
-
-export const Wrapper = styled.div`
-  margin-top: -2rem;
-  height: 80px;
-  background-color: white;
-`;
-
-export const Container = styled.div`
+export const InnerContainer = styled.div`
+  @media (min-width: 992px) and (max-width: 1200px) {
+    max-width: 992px;
+  }
+  @media (min-width: 1200px) {
+    max-width: 1200px;
+  }
   display: flex;
   justify-content: space-between;
-  max-width: 1200px;
   margin: auto;
 `;
 
-export const BottomNavContainer = styled.div``;
-
-export const TopNavContainer = styled.div`
-  @media (max-width: 1200px) {
-    visibility: hidden;
+export const Container = styled.div`
+  @media (max-width: 992px) {
+    display: none;
   }
   background-color: white;
   box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;

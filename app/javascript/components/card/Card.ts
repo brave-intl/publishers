@@ -8,6 +8,4 @@ const Card = styled.div`
   height: 100%;
 `;
 
-//Do not merge height: 100% without fixing other components using Card.
-
 export default Card;

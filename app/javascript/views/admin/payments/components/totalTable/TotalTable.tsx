@@ -9,6 +9,29 @@ export default class TotalTable extends React.Component<{}, {}> {
   }
 
   public render() {
+    let contributionsBalance = 0;
+    let referralsBalance = 0;
+    let totalBalance = 0;
+
+    console.log(this.props.transactions);
+
+    if (this.props.transactions) {
+      this.props.transactions.forEach(transaction => {
+        switch (transaction.transaction_type) {
+          case "contribution_settlement":
+            contributionsBalance += Math.abs(transaction.amount);
+            break;
+          case "referral_settlement":
+            referralsBalance += Math.abs(transaction.amount);
+            break;
+        }
+      });
+    }
+
+    totalBalance = (contributionsBalance + referralsBalance).toFixed(2);
+    contributionsBalance = contributionsBalance.toFixed(2);
+    referralsBalance = referralsBalance.toFixed(2);
+
     const header = [
       {
         content: "Key",
@@ -60,7 +83,7 @@ export default class TotalTable extends React.Component<{}, {}> {
             content: "Contributions Earned"
           },
           {
-            content: "Coming Soon..."
+            content: contributionsBalance + " BAT"
           }
         ]
       },
@@ -115,7 +138,7 @@ export default class TotalTable extends React.Component<{}, {}> {
             content: "Referrals Earned"
           },
           {
-            content: "Coming Soon..."
+            content: referralsBalance + " BAT"
           }
         ]
       },
@@ -140,17 +163,29 @@ export default class TotalTable extends React.Component<{}, {}> {
             content: "Total"
           },
           {
-            content: "Coming Soon..."
+            content: totalBalance + " BAT"
           }
         ]
       }
     ];
     if (this.props.channelBalances) {
       this.props.channelBalances.forEach((channel, index) => {
+        let channelBalance = 0;
+        if (this.props.transactions) {
+          this.props.transactions.forEach(transaction => {
+            if (
+              transaction.transaction_type === "contribution" &&
+              transaction.channel === channel.title
+            ) {
+              console.log(transaction.amount);
+              channelBalance += parseFloat(transaction.amount);
+            }
+          });
+        }
         rows.splice(index + 2, 0, {
           content: [
             { content: <a href={channel.url}>{channel.title}</a> },
-            { content: "Coming Soon..." }
+            { content: channelBalance.toFixed(2) + " BAT" }
           ]
         });
       });

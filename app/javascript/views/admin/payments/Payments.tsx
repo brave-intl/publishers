@@ -52,7 +52,8 @@ export default class Payments extends React.Component<{}, {}> {
 
   public render() {
     return (
-      <div>
+      <div style={{ marginTop: "-53px" }}>
+        <UserNavbar />
         <Container>
           <Grid
             xsTemplate={xsTemplate}
@@ -60,12 +61,13 @@ export default class Payments extends React.Component<{}, {}> {
             mdTemplate={mdTemplate}
             lgTemplate={lgTemplate}
             xlTemplate={xlTemplate}
+            style={{ marginTop: "30px" }}
           >
-            <Cell gridArea={"a"}>
-              <UserNavbar />
-            </Cell>
             <Cell gridArea={"b"}>
-              <CurrentChart />
+              <CurrentChart
+                referralBalance={this.state.data.currentReferralBalance}
+                contributionBalance={this.state.data.currentContributionBalance}
+              />
             </Cell>
             <Cell gridArea={"c"}>
               <EarningsChart transactions={this.state.data.transactions} />
@@ -76,6 +78,7 @@ export default class Payments extends React.Component<{}, {}> {
                 installs={this.state.data.installs}
                 confirmations={this.state.data.confirmations}
                 channelBalances={this.state.data.currentChannelBalances}
+                transactions={this.state.data.transactions}
               />
             </Cell>
             <Cell gridArea={"e"}>
@@ -88,23 +91,7 @@ export default class Payments extends React.Component<{}, {}> {
             </Cell>
           </Grid>
         </Container>
-        <div
-          style={{
-            backgroundColor: "white",
-            borderTop: "1px solid #ededed",
-            height: "75px",
-            width: "100%",
-            position: "fixed",
-            bottom: "0"
-          }}
-        >
-          Hello!
-        </div>
-        <div
-          style={{ color: "white", backgroundColor: "pink", height: "400px" }}
-        >
-          Hello!
-        </div>
+        <div style={{ color: "white", height: "100px" }} />
       </div>
     );
   }

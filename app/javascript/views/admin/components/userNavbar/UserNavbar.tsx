@@ -1,14 +1,9 @@
 import * as React from "react";
 
 import Card from "../../../../components/card/Card";
-import {
-  Avatar,
-  Container,
-  Name,
-  Nav,
-  Section,
-  Status
-} from "./UserNavbarStyle";
+import BottomNav from "./components/BottomNav/BottomNav";
+import TopNav from "./components/TopNav/TopNav";
+import {} from "./UserNavbarStyle";
 
 export default class Referrals extends React.Component<{}, {}> {
   constructor(props) {
@@ -18,21 +13,10 @@ export default class Referrals extends React.Component<{}, {}> {
 
   public render() {
     return (
-      <Card>
-        <Container>
-          <Section>
-            <Avatar />
-            <Name>Dan</Name>
-            <Status>Active</Status>
-          </Section>
-          <Section>
-            <Nav>Overview</Nav>
-            <Nav>Channels</Nav>
-            <Nav>Referrals</Nav>
-            <Nav>Payments</Nav>
-          </Section>
-        </Container>
-      </Card>
+      <div>
+        <TopNav />
+        <BottomNav />
+      </div>
     );
   }
 }

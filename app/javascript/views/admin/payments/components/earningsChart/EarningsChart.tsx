@@ -15,58 +15,63 @@ export default class EarningsChart extends React.Component<{}, {}> {
   public createEarningsChart(transactions) {
     const node = this.node;
 
-    let referralChartLabels = [
-      "9/1",
-      "10/1",
-      "11/1",
-      "12/1",
-      "1/1",
-      "2/1",
-      "3/1",
-      "4/1"
-    ];
+    let timestamps = [];
     let contributions = [];
     let referrals = [];
     let fees = [];
 
-    // transactions.forEach((transaction, index) => {
-    //   switch (transaction.transaction_type) {
-    //     case "contribution_settlement":
-    //       if (!referralChartLabels.includes(transaction.created_at)) {
-    //         referralChartLabels.push(transaction.created_at);
-    //       }
-    //       contributions.push(Math.abs(transaction.amount));
-    //       break;
-    //     case "referral_settlement":
-    //       if (!referralChartLabels.includes(transaction.created_at)) {
-    //         referralChartLabels.push(transaction.created_at);
-    //       }
-    //       referrals.push(Math.abs(transaction.amount));
-    //       break;
-    //     case "fee":
-    //       if (!referralChartLabels.includes(transaction.created_at)) {
-    //         referralChartLabels.push(transaction.created_at);
-    //       }
-    //       fees.push(Math.abs(transaction.amount));
-    //       break;
-    //   }
-    // });
+    transactions.forEach((transaction, index) => {
+      let date = new Date(transaction.created_at);
+      console.log(
+        date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
+      );
+      switch (transaction.transaction_type) {
+        case "contribution_settlement":
+          let date1 = new Date(transaction.created_at);
+          let timestamp =
+            date1.getMonth() +
+            1 +
+            "/" +
+            date1.getDate() +
+            "/" +
+            date1.getFullYear();
+          if (!timestamps.includes(timestamp)) {
+            timestamps.push(timestamp);
+          }
+          contributions.push(Math.abs(transaction.amount).toFixed(2));
+          break;
+        case "referral_settlement":
+          let date2 = new Date(transaction.created_at);
+          let timestamp =
+            date2.getMonth() +
+            1 +
+            "/" +
+            date2.getDate() +
+            "/" +
+            date2.getFullYear();
+          if (!timestamps.includes(timestamp)) {
+            timestamps.push(timestamp);
+          }
+          referrals.push(Math.abs(transaction.amount).toFixed(2));
+          break;
+      }
+    });
 
     let referralChartData = {
-      labels: referralChartLabels,
+      labels: timestamps,
       datasets: [
         {
           label: "Contributions",
-          data: [50, 75, 73, 40, 50, 67, 75, 112],
-          borderColor: "#36A2EB",
-          backgroundColor: "#36A2EB",
+          data: contributions,
+          borderColor: "#A0AAF8",
+          backgroundColor: "#A0AAF8",
           fill: true
         },
         {
           label: "Referrals",
-          data: [10, 25, 53, 25, 40, 67, 33, 50],
-          borderColor: "#FFCD56",
-          backgroundColor: "#FFCD56",
+          data: referrals,
+          borderColor: "#D2D8FD",
+          backgroundColor: "#D2D8FD",
           fill: true
         }
       ]
@@ -95,17 +100,83 @@ export default class EarningsChart extends React.Component<{}, {}> {
 
   public render() {
     return (
-      <Card
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <canvas
-          style={{ height: "300px", width: "700px", marginTop: "20px" }}
-          ref={node => (this.node = node)}
-        />
+      <Card>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "22px",
+            fontWeight: "bold",
+            color: "#686978",
+            paddingBottom: "18px"
+          }}
+        >
+          Earned To Date
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <canvas
+            style={{ height: "300px", width: "700px" }}
+            ref={node => (this.node = node)}
+          />
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "16px"
+              }}
+            >
+              <div
+                style={{
+                  borderRadius: "50%",
+                  backgroundColor: "#A0AAF8",
+                  height: "16px",
+                  width: "16px",
+                  marginTop: "12px",
+                  marginRight: "4px"
+                }}
+              />
+              <div
+                style={{
+                  textAlign: "center",
+                  fontSize: "16px",
+                  color: "#686978",
+                  paddingTop: "8px"
+                }}
+              >
+                Contributions
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  borderRadius: "50%",
+                  backgroundColor: "#D2D8FD",
+                  height: "16px",
+                  width: "16px",
+                  marginTop: "4px",
+                  marginRight: "4px"
+                }}
+              />
+              <div
+                style={{
+                  textAlign: "center",
+                  fontSize: "16px",
+                  color: "#686978"
+                }}
+              >
+                Referrals
+              </div>
+            </div>
+          </div>
+        </div>
       </Card>
     );
   }

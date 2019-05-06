@@ -9,9 +9,9 @@
 
 /*sidebar navigation*/
 #sidebar {
-  @media (max-width: 1200px) {
-    visibility: hidden;
-  }
+  // @media (max-width: 992px) {
+  //   visibility: hidden;
+  // }
 
   display: block;
   width: 240px;
@@ -130,10 +130,11 @@ a.logo span {
 
 #main-content {
   margin-left: 240px;
+  background-color: #fdfdfd;
 
-  @media (max-width: 1200px) {
-    margin-left: 0px;
-  }
+  // @media (max-width: 992px) {
+  //   margin-left: 0px;
+  // }
 
   /* show */
   #publisher {
