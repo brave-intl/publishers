@@ -8,7 +8,7 @@ class CleanStaleUpholdDataJob < ApplicationJob
     n = 0
     connections.each do |connection|
       raise if connection.uphold_status != :code_acquired
-      uphold_code = nil
+      connection.uphold_code = nil
       connection.save!
       n += 1
       Rails.logger.info("Cleaned stalled uphold code for #{connection.publisher.owner_identifier}.")
