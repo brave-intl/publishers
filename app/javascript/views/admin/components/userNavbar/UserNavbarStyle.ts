@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   margin-top: -2rem;
   height: 80px;
   background-color: white;
+  margin-top: -53px;
 `;
 
 export const Container = styled.div`

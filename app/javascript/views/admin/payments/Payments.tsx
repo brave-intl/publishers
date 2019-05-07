@@ -47,7 +47,7 @@ export default class Payments extends React.Component<{}, IPaymentsState> {
 
   public render() {
     return (
-      <div style={{ marginTop: "-53px" }}>
+      <React.Fragment>
         <UserNavbar />
         <Container>
           <Grid
@@ -83,7 +83,7 @@ export default class Payments extends React.Component<{}, IPaymentsState> {
             </Cell>
           </Grid>
         </Container>
-      </div>
+      </React.Fragment>
     );
   }
 }
