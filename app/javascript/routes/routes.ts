@@ -1,5 +1,20 @@
-/* tslint:disable:object-literal-sort-keys */
 export default {
+  admin: {
+    userNavbar: {
+      channels: {
+        path: "/admin/channels/{id}"
+      },
+      dashboard: {
+        path: "/admin/publishers/{id}"
+      },
+      payments: {
+        path: "/admin/payments/{id}"
+      },
+      referrals: {
+        path: "/admin/referrals/{id}"
+      }
+    }
+  },
   navbar: {
     channels: {
       path: "/partners/channels"

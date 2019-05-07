@@ -13,6 +13,13 @@ interface IPaymentsState {
   data: any;
 }
 
+export enum NavbarSelection {
+  Dashboard,
+  Channels,
+  Referrals,
+  Payments
+}
+
 export default class Payments extends React.Component<{}, IPaymentsState> {
   constructor(props) {
     super(props);
@@ -48,7 +55,12 @@ export default class Payments extends React.Component<{}, IPaymentsState> {
   public render() {
     return (
       <React.Fragment>
-        <UserNavbar />
+        <UserNavbar
+          navbarSelection={NavbarSelection.Payments}
+          name={this.state.data.name}
+          userID={this.state.data.userID}
+          status={this.state.data.status}
+        />
         <Container>
           <Grid
             templateAreas={templateAreas}

@@ -80,6 +80,9 @@ export const Name = styled.div`
   user-select: none;
 `;
 
+interface IStatusProps {
+  status: string;
+}
 export const Status = styled.div`
   border-radius: 6px;
   background-color: #2dbd4e;
@@ -93,6 +96,21 @@ export const Status = styled.div`
   user-select: none;
   margin-top: auto;
   margin-bottom: auto;
+  ${(props: Partial<IStatusProps>) =>
+    props.status === "active" &&
+    `
+    background-color: #2dbd4e;
+    `}
+  ${(props: Partial<IStatusProps>) =>
+    props.status === "suspended" &&
+    `
+    background-color: #CB2431;
+    `}
+  ${(props: Partial<IStatusProps>) =>
+    props.status === "locked" &&
+    `
+    background-color: #FCCD56;
+    `}
 `;
 
 export const Avatar = styled.div`

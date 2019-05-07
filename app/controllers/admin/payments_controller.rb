@@ -13,6 +13,9 @@ module Admin
 
     def show_data(id)
       publisher = Publisher.find(id)
+      userID = publisher.id
+      name = publisher.name
+      status = publisher.last_status_update.status
       current_referral_balance = publisher_referral_bat_balance(publisher)
       current_contribution_balance = publisher_contribution_bat_balance(publisher)
       current_overall_balance = publisher_overall_bat_balance(publisher)
@@ -36,6 +39,9 @@ module Admin
 
       {
         publisher: publisher,
+        userID: userID,
+        name: name,
+        status: status,
         downloads: downloads,
         installs: installs,
         confirmations: confirmations,
