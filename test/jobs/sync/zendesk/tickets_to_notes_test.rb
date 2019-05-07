@@ -6,6 +6,7 @@ class Sync::Zendesk::TicketsToNotesTest < ActiveJob::TestCase
     VCR.use_cassette("test_reading_zendesk_tickets") do
       start_date = nil
       require 'zendesk_api'
+      p Rails.application.secrets[:zendesk_url]
       client = ZendeskAPI::Client.new do |config|
         # Mandatory:
         config.url = "#{Rails.application.secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
