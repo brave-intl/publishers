@@ -3,6 +3,7 @@ class Sync::Zendesk::TicketCommentsToNotes
 
   # https://developer.zendesk.com/rest_api/docs/support/ticket_comments#list-comments
   def perform(zendesk_ticket_id, page_number = 0)
+    Rails.logger.info "Starting zendesk ticket #{zendesk_ticket_id}"
     require 'zendesk_api'
     client = ZendeskAPI::Client.new do |config|
       # Mandatory:
@@ -29,14 +30,17 @@ class Sync::Zendesk::TicketCommentsToNotes
     publisher_notes = []
     publisher = nil
     admin_id = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email]).id
-    for index in (0...client.ticket.find(id: zendesk_ticket_id).comments.count)
-      comment = client.ticket.find(id: zendesk_ticket_id).comments[index]
+    zendesk_comments = client.ticket.find(id: zendesk_ticket_id).comments
+    for index in (0...zendesk_comments.count)
+      comment = zendesk_comments[index]
       publisher_email = comment&.via&.source&.from&.address
+
       if publisher_email.present? && publisher.nil?
         publisher = Publisher.find_by(email: publisher_email)
       end
       publisher_notes << PublisherNote.new(note: comment.plain_body, zendesk_ticket_id: zendesk_ticket_id, zendesk_comment_id: comment.id, created_at: comment.created_at)
     end
+    return if publisher.nil?
     # Don't lock this in a transaction as we might need to parse over to update the ticket
     publisher_notes.each do |publisher_note|
       begin
@@ -46,5 +50,6 @@ class Sync::Zendesk::TicketCommentsToNotes
       rescue ActiveRecord::RecordNotUnique
       end
     end
+    Rails.logger.info "Done with zendesk ticket #{zendesk_ticket_id}"
   end
 end

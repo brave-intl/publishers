@@ -33,7 +33,7 @@ class Sync::Zendesk::TicketsToNotesTest < ActiveJob::TestCase
   end
 
   test "find comments found on zendesk" do
-    VCR.use_cassette("test_reading_zendesk_comments_from_a_ticket") do
+    VCR.use_cassette("test_reading_zendesk_comments_from_a_ticket_backup") do
       PublisherNote.destroy_all
       admin = publishers(:zendesk_admin)
       publisher = publishers(:notes)
