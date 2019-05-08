@@ -373,6 +373,16 @@ class PublishersController < ApplicationController
       end
 
       UpholdConnection.create!(publisher: publisher) if publisher.uphold_connection.blank?
+      # Handle the live case. TODO Remove in issue #1866
+
+      if(publisher.uphold_updated_at.present? || publisher.uphold_verified || publisher.uphold_id)
+        publisher.uphold_connection.update(
+          created_at: publisher.uphold_updated_at || DateTime.now,
+          updated_at: publisher.uphold_updated_at || DateTime.now,
+          uphold_id: publisher.uphold_id,
+          uphold_verified: publisher.uphold_verified
+        )
+      end
 
       if two_factor_enabled?(publisher)
         session[:pending_2fa_current_publisher_id] = publisher_id
