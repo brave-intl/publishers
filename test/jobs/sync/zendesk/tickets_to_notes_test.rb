@@ -3,8 +3,6 @@ require 'vcr'
 
 class Sync::Zendesk::TicketsToNotesTest < ActiveJob::TestCase
   test "find tickets from zendesk" do
-    p "hello world"
-    p Rails.application.secrets[:zendesk_url]
     VCR.use_cassette("test_reading_zendesk_tickets") do
       start_date = nil
       require 'zendesk_api'
