@@ -374,7 +374,7 @@ class PublishersController < ApplicationController
 
       if publisher.uphold_connection.blank?
         # Handle the live case. TODO Remove and only keep the else branch in issue #1866
-        if (publisher.uphold_updated_at.present? || publisher.uphold_verified || publisher.uphold_id)
+        if publisher.uphold_updated_at.present? || publisher.uphold_verified || publisher.uphold_id
           publisher.uphold_connection.create(
             created_at: publisher.uphold_updated_at || DateTime.now,
             updated_at: publisher.uphold_updated_at || DateTime.now,
