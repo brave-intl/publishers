@@ -67,7 +67,7 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Notify publishers that have money waiting, but will not will not receive funds
     if publisher_has_unsettled_balance && @should_send_notifications
-      if !@publisher.uphold_verified? || wallet.uphold_account_status.nil?
+      if !@publisher.uphold_connection&.uphold_verified? || wallet.uphold_account_status.nil?
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are disconnected from Uphold.")
         PublisherMailer.wallet_not_connected(@publisher).deliver_later
       end
@@ -79,7 +79,7 @@ class PayoutReportPublisherIncluder < BaseService
       end
 
       # The wallet's uphold account status has to exist because otherwise their wallet is just not connected
-      if @publisher.uphold_verified? && wallet.uphold_account_status.present? && wallet.not_a_member?
+      if @publisher.uphold_connection&.uphold_verified? && wallet.uphold_account_status.present? && wallet.not_a_member?
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
         PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later
       end
@@ -89,7 +89,7 @@ class PayoutReportPublisherIncluder < BaseService
   private
 
   def create_uphold_card_for_default_currency_if_needed
-    if @publisher.can_create_uphold_cards? &&
+    if @publisher.uphold_connection&.can_create_uphold_cards? &&
       @publisher.default_currency_confirmed_at.present? &&
       @publisher.wallet.address.blank?
       CreateUpholdCardsJob.perform_now(publisher_id: @publisher.id)

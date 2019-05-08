@@ -100,7 +100,6 @@ unprompted:
   name: "Alice the Unprompted"
   phone: "4159001421"
   phone_normalized: "+14159001421"
-  # two_factor_prompted_at: nil
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
@@ -141,7 +140,6 @@ uphold_connected:
   name: "Alice the uphold_connected"
   phone: "4159001421"
   phone_normalized: "+14159001421"
-  uphold_verified: true
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   default_currency: "USD"
@@ -153,7 +151,6 @@ uphold_connected_currency_unconfirmed:
   name: "Carol the unconfirmed currency"
   phone: "5555555555"
   phone_normalized: "+15555555555"
-  uphold_verified: true
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   visible: true

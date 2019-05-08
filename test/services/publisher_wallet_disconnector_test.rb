@@ -23,7 +23,7 @@ class PublisherWalletDisconnectorTest < ActiveJob::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = false
 
       publisher = publishers(:verified)
-      publisher.uphold_verified = false
+      publisher.uphold_connection.uphold_verified = false
 
       stub_request(:put, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
           with(headers: {'Accept'=>'*/*',
@@ -33,7 +33,7 @@ class PublisherWalletDisconnectorTest < ActiveJob::TestCase
                body:
                    <<~BODY
                 {
-                  "provider": "uphold", 
+                  "provider": "uphold",
                   "parameters": {}
                 }
           BODY
@@ -53,7 +53,7 @@ class PublisherWalletDisconnectorTest < ActiveJob::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = false
 
       publisher = publishers(:verified)
-      publisher.uphold_verified = true
+      publisher.uphold_connection.uphold_verified = true
 
       assert_raises("Publisher #{publisher.id} has re-verified their Uphold connection, so it should not be disconnected.") do
         PublisherWalletDisconnector.new(publisher: publisher).perform
