@@ -74,7 +74,12 @@ function Navigation(props) {
         {locale.navbar.channels}
       </Nav>
       <Nav
-        style={{ opacity: 0.5 }}
+        onClick={() =>
+          (window.location.href = routes.admin.userNavbar.referrals.path.replace(
+            "{id}",
+            props.userID
+          ))
+        }
         selected={props.navbarSelection === NavbarSelection.Referrals}
       >
         {locale.navbar.referrals}
