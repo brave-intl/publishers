@@ -26,6 +26,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     fill_in 'update_contact_name', with: new_name
 
     click_button('Update')
+    wait_until { !page.find('.cssload-container', visible: :all).visible? }
 
     assert_content page, new_name
     refute_content 'Update'
@@ -37,6 +38,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     fill_in 'update_contact_name', with: new_name
 
     click_button('Update')
+    wait_until { !page.find('.cssload-container', visible: :all).visible? }
 
     assert_content page, new_name
     refute_content 'Update'
@@ -47,8 +49,8 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     sign_in publisher
 
     visit home_publishers_path
-    assert_content page, publisher.name
-    assert_content page, publisher.email
+    assert_content publisher.name
+    assert_content publisher.email
 
     original_email = publisher.email
     new_email = 'jane.doe@example.com'
@@ -58,7 +60,9 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     fill_in 'update_contact_email', with: new_email
     click_button 'Update'
 
-    assert_content page, 'Pending: Email address has been updated to: ' + new_email
+    wait_until { !page.find('.cssload-container', visible: :all).visible? }
+
+    assert_content "Pending: Email address has been updated to: #{new_email}"
     refute_content 'Update'
 
     page.evaluate_script 'window.location.reload()' # Refresh to remove spinner overlay to make button visible
@@ -96,7 +100,8 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     find("#channel_row_#{channel.id}").click_link('Remove Channel')
     assert_content page, "Are you sure you want to remove this channel?"
     find('[data-test-modal-container]').click_link("Remove Channel")
-    refute_content page, channel.publication_title
+    wait_until { !page.find('.cssload-container', visible: :all).visible? }
+    refute_content channel.publication_title
   end
 
   test "website channel type can be chosen" do
@@ -104,7 +109,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     sign_in publisher
     visit home_publishers_path
 
-    find('.navbar').click_link('+ Add Channel')
+    click_link('+ Add Channel', match: :first)
 
     assert_content page, 'Add Channel'
     assert_content page, 'WEBSITE'
