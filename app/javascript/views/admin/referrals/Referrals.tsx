@@ -37,7 +37,6 @@ export default class Referrals extends React.Component<IReferralsProps, {}> {
             style={{ marginTop: "30px", marginBottom: "30px" }}
           >
             <Cell gridArea={"a"}>
-              {console.log(this.props.data.referralCodes)}
               <ReferralsChart referralCodes={this.props.data.referralCodes} />
             </Cell>
           </Grid>

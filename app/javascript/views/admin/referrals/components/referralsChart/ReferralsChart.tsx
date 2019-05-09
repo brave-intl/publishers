@@ -57,33 +57,34 @@ export default class Referrals extends React.Component<
     });
 
     const chartData = {
-      labels: chartLabels,
       datasets: [
         {
-          label: "Downloads",
-          data: downloads,
-          borderColor: "#DFF3FE",
           backgroundColor: "#DFF3FE",
-          fill: true
+          borderColor: "#DFF3FE",
+          data: downloads,
+          fill: true,
+          label: "Downloads"
         },
         {
-          label: "Installs",
-          data: installs,
-          borderColor: "#D2D8FD",
           backgroundColor: "#D2D8FD",
-          fill: true
+          borderColor: "#D2D8FD",
+          data: installs,
+          fill: true,
+          label: "Installs"
         },
         {
-          label: "Confirmations",
-          data: confirmations,
-          borderColor: "#A0AAF8",
           backgroundColor: "#A0AAF8",
-          fill: true
+          borderColor: "#A0AAF8",
+          data: confirmations,
+          fill: true,
+          label: "Confirmations"
         }
-      ]
+      ],
+      labels: chartLabels
     };
 
     const chartSettings = {
+      data: chartData,
       options: {
         legend: {
           display: false
@@ -97,8 +98,7 @@ export default class Referrals extends React.Component<
           ]
         }
       },
-      type: "line",
-      data: chartData
+      type: "line"
     };
 
     const myChart = new Chart(node, chartSettings);
@@ -133,10 +133,10 @@ export default class Referrals extends React.Component<
         </div>
         <div
           style={{
+            margin: "auto",
             paddingTop: "20px",
             textAlign: "center",
-            width: "25%",
-            margin: "auto"
+            width: "25%"
           }}
         >
           <ReferralCodeSelect
