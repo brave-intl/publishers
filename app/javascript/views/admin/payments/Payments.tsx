@@ -91,6 +91,9 @@ export default class Payments extends React.Component<{}, IPaymentsState> {
                 contributionBalance={this.state.data.currentContributionBalance}
                 channelBalances={this.state.data.currentChannelBalances}
                 totalBalance={this.state.data.currentOverallBalance}
+                currentDownloads={this.state.data.currentDownloads}
+                currentInstalls={this.state.data.currentInstalls}
+                currentConfirmations={this.state.data.currentConfirmations}
               />
             </Cell>
           </Grid>

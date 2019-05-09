@@ -8,6 +8,9 @@ interface ICurrentTableProps {
   referralBalance: any;
   contributionBalance: any;
   channelBalances: any;
+  currentDownloads: any;
+  currentInstalls: any;
+  currentConfirmations: any;
   totalBalance: any;
 }
 
@@ -99,7 +102,7 @@ export default class CurrentTable extends React.Component<
             content: "Downloads"
           },
           {
-            content: "Coming Soon..."
+            content: this.props.currentDownloads
           }
         ]
       },
@@ -109,7 +112,7 @@ export default class CurrentTable extends React.Component<
             content: "Installs"
           },
           {
-            content: "Coming Soon..."
+            content: this.props.currentInstalls
           }
         ]
       },
@@ -119,7 +122,7 @@ export default class CurrentTable extends React.Component<
             content: "Confirmations"
           },
           {
-            content: "Coming Soon..."
+            content: this.props.currentConfirmations
           }
         ]
       },

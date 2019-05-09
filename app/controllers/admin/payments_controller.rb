@@ -16,6 +16,7 @@ module Admin
       userID = publisher.id
       name = publisher.name
       status = publisher.last_status_update.status
+
       current_referral_balance = publisher_referral_bat_balance(publisher)
       current_contribution_balance = publisher_contribution_bat_balance(publisher)
       current_overall_balance = publisher_overall_bat_balance(publisher)
@@ -23,6 +24,9 @@ module Admin
       downloads = publisher_referral_totals(publisher)[PromoRegistration::RETRIEVALS]
       installs = publisher_referral_totals(publisher)[PromoRegistration::FIRST_RUNS]
       confirmations = publisher_referral_totals(publisher)[PromoRegistration::FINALIZED]
+      current_downloads = publisher_current_cycle_referral_totals(publisher)[PromoRegistration::RETRIEVALS]
+      current_installs = publisher_current_cycle_referral_totals(publisher)[PromoRegistration::FIRST_RUNS]
+      current_confirmations = publisher_current_cycle_referral_totals(publisher)[PromoRegistration::FINALIZED]
 
       current_channel_balances = []
       publisher.channels.each do |channel|
@@ -45,6 +49,9 @@ module Admin
         downloads: downloads,
         installs: installs,
         confirmations: confirmations,
+        currentDownloads: current_downloads,
+        currentInstalls: current_installs,
+        currentConfirmations: current_confirmations,
         currentReferralBalance: current_referral_balance,
         currentChannelBalances: current_channel_balances,
         currentContributionBalance: current_contribution_balance,

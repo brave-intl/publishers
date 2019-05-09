@@ -17,7 +17,7 @@ module PromosHelper
   end
 
   def offline_promo_stats
-    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}, "aggregate"=> {"downloads"=> 200, "finalized"=> 30}}
+    { "times" => [Time.now.to_s], "series" => { "name" => "downloads", "values" => [rand(0..1000)] }, "aggregate" => { "downloads" => 200, "finalized" => 30 } }
   end
 
   def publisher_referral_totals(publisher)
@@ -27,6 +27,27 @@ module PromosHelper
       PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
       PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
       PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED],
+    }
+  end
+
+  def publisher_current_cycle_referral_totals(publisher)
+    retrievals = 0
+    first_runs = 0
+    finalized = 0
+    cutoff = Date.today.beginning_of_month
+    publisher.promo_registrations.each do |promo_registration|
+      JSON.parse(promo_registration.stats).each do |stat|
+        if Date.parse(stat["ymd"]) > cutoff
+          retrievals += stat["retrievals"]
+          first_runs += stat["first_runs"]
+          finalized += stat["finalized"]
+        end
+      end
+    end
+    {
+      PromoRegistration::RETRIEVALS => retrievals,
+      PromoRegistration::FIRST_RUNS => first_runs,
+      PromoRegistration::FINALIZED => finalized,
     }
   end
 
@@ -103,9 +124,9 @@ module PromosHelper
 
   def ratios_column_header(is_geo)
     if is_geo
-      ["Referral code", "Country",  "Downloads", "Installs", "Eligible Installs", "30 days", "Installs / Downloads", "30 days / Eligible Installs"]
+      ["Referral code", "Country", "Downloads", "Installs", "Eligible Installs", "30 days", "Installs / Downloads", "30 days / Eligible Installs"]
     else
-      ["Referral code", "Downloads", "Installs", "Eligible Installs", "30 days",  "Installs / Downloads", "30 days / Eligible Installs"]
+      ["Referral code", "Downloads", "Installs", "Eligible Installs", "30 days", "Installs / Downloads", "30 days / Eligible Installs"]
     end
   end
 
