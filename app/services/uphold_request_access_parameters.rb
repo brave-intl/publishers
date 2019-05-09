@@ -30,7 +30,7 @@ class UpholdRequestAccessParameters < BaseService
   def perform
     response = connection.post do |request|
       request.url("#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-      request.body = "code=#{@publisher.uphold_code}&grant_type=authorization_code"
+      request.body = "code=#{@publisher.uphold_connection.uphold_code}&grant_type=authorization_code"
     end
 
     response.body

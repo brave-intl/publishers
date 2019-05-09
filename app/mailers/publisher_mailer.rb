@@ -316,7 +316,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     @publisher_log_in_url = log_in_publishers_url
 
-    if @publisher.uphold_verified? && publisher.wallet.address.present?
+    if @publisher.uphold_connection&.uphold_verified? && publisher.wallet.address.present?
       begin
         raise "#{@publisher.id}'s wallet is connected."
       rescue => e

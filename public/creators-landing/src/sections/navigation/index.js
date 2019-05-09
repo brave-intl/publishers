@@ -26,13 +26,13 @@ const DefaultNav = () => (
       role="navigation"
     >
       <Box direction="row" gap="medium" align="center">
-        <Link to={locale.nav.logoHref}>
+        <Link to={locale.nav.logoHref} name='Home'>
           <Box as="span">
-            <Image src={logo} height="32px" />
+            <Image src={logo} height="32px" alt={locale.nav.logoAlt}/>
           </Box>
         </Link>
-        <Box as="a" href={locale.nav.batPillHref}>
-          <Image src={batPill} height="24px" />
+        <Box as="a" href={locale.nav.batPillHref} name={locale.nav.batPillHref}>
+          <Image src={batPill} height="24px" alt={locale.nav.batPillAlt}/>
         </Box>
       </Box>
       <Box direction="row" align="center" gap="large">
@@ -45,6 +45,7 @@ const DefaultNav = () => (
             a11yTitle="Sign up to be a Brave Rewards Creator"
             color="white"
             label={locale.nav.signup}
+            name={locale.nav.signup}
           />
         </Link>
         <Link
@@ -54,6 +55,7 @@ const DefaultNav = () => (
           <SecondaryButton
             a11yTitle="Log in to your Brave Creator dashboard"
             label={locale.nav.login}
+            name={locale.nav.login}
             primary
           />
         </Link>

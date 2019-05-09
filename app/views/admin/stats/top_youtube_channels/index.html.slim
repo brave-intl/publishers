@@ -1,0 +1,18 @@
+br
+div.panel-body
+  div.adv-table
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th Title
+        th Subscriber count
+        th View count
+        th Video count
+        th Youtube Channel
+      tbody
+        - @youtube_channel_details.each do |youtube_channel_detail|
+          tr.gradeX
+            td = link_to youtube_channel_detail.title, admin_publisher_path(youtube_channel_detail.channel.publisher_id)
+            td = youtube_channel_detail.stats['subscriber_count']
+            td = youtube_channel_detail.stats['view_count']
+            td = youtube_channel_detail.stats['video_count']
+            td = link_to youtube_channel_detail.description, "youtube.com/channel/#{youtube_channel_detail.youtube_channel_id}"

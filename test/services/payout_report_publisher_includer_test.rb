@@ -369,7 +369,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
                   if potential_payment.kind == PotentialPayment::CONTRIBUTION
                     assert_equal potential_payment.amount, (20 * BigDecimal("1e18") - ((20 * BigDecimal("1e18")) * @payout_report.fee_rate)).to_i.to_s
                     assert potential_payment.channel_stats.present?
+                    assert potential_payment.channel_type.present?
                     assert_equal potential_payment.channel.details.stats, potential_payment.channel_stats
+                    assert_equal potential_payment.channel.details_type, potential_payment.channel_type
                   elsif potential_payment.kind == PotentialPayment::REFERRAL
                     assert_equal potential_payment.amount, (20 * BigDecimal("1e18")).to_i.to_s
                   end

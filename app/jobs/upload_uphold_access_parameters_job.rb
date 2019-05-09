@@ -6,6 +6,6 @@ class UploadUpholdAccessParametersJob < ApplicationJob
 
     PublisherWalletSetter.new(publisher: publisher).perform
 
-    publisher.verify_uphold
+    publisher.uphold_connection.verify_uphold
   end
 end

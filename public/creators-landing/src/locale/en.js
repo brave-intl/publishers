@@ -5,7 +5,9 @@ export default {
     signup: "sign up",
     signupHref: "/sign-up",
     login: "log in",
-    loginHref: "/log-in"
+    loginHref: "/log-in",
+    logoAlt: "Brave Rewards Creator Logo",
+    batPillAlt: "Built with BAT"
   },
   main: {
     home: {
@@ -96,7 +98,11 @@ export default {
     bobbyCredit: "- Crypto Bobby",
     bobbyHref: "https://www.youtube.com/channel/UCt_oM56Ui0BCCgi0Yc-Wh3Q",
     bobbyQuote:
-      "\"Thanks to anyone who uses the Brave Browser and helps me out. It's not millions, but it's not peanuts either and it's cool to see a crypto project actually working as intended!\""
+      "\"Thanks to anyone who uses the Brave Browser and helps me out. It's not millions, but it's not peanuts either and it's cool to see a crypto project actually working as intended!\"",
+    bakerAlt: "Bart Baker Brave Rewards",
+    defrancoAlt: "Philip DeFranco Brave Rewards",
+    deciccoAlt: "Tom DeCicco Brave Rewards",
+    bobbyAlt: "Crypto Bobby Brave Rewards"
   },
   summary: {
     heading: "How does Brave Rewards work?",
@@ -111,7 +117,7 @@ export default {
       "Signing up as a verified content creator gives you access to the Creators dashboard, where you can manage all your tips. It will also give you access to your referral link, which you can use to earn more tokens.",
     fourTitle: "Collect your tips in the Creators dashboard",
     fourDesc:
-      "Once you’ve signed up and logged into the dashboard, you can use our partner Uphold to automatically convert the tokens you earned into a currency of your choosing. One token is currently worth 0.21 USD. ",
+      "Once you’ve signed up and logged into the dashboard, you can use our partner Uphold to automatically convert the tokens you earned into a currency of your choosing.",
     fourLink_href: "https://basicattentiontoken.org/",
     fourLink: "Learn more about tokens.",
     cardBusiness: "Business inquiries",
