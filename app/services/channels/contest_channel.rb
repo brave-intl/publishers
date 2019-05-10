@@ -55,6 +55,8 @@ module Channels
           @channel.details.twitch_channel_id == @contested_by.details.twitch_channel_id
         when "TwitterChannelDetails"
           @channel.details.twitter_channel_id == @contested_by.details.twitter_channel_id
+        when "VimeoChannelDetails"
+          @channel.details.vimeo_channel_id == @contested_by.details.vimeo_channel_id
       end
 
       raise ChannelIdMismatchError if !channel_ids_match

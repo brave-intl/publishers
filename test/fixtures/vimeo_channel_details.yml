@@ -1,0 +1,9 @@
+vimeo_details:
+  vimeo_channel_id: "12345678"
+  auth_provider: "register_vimeo_channel"
+  name: "Vimeo New"
+  nickname: "user12345678"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
+  channel_url: "https://vimeo.com/user12345678"
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
