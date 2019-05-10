@@ -282,7 +282,6 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
-
     if current_publisher.uphold_connection.blank?
       # Handle the live case. TODO Remove and only keep the else branch in issue #1866
       if current_publisher.uphold_updated_at.present? || current_publisher.uphold_verified || current_publisher.uphold_id
