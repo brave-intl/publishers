@@ -162,30 +162,34 @@ class PublishersHelperTest < ActionView::TestCase
 
   test "uphold_status_class returns a css class that corresponds to a publisher's uphold_status" do
     class PublisherWithUpholdStatus
+      attr_accessor :uphold_connection
+    end
+    class AnonymousUpholdConnection
       attr_accessor :uphold_status
     end
 
     publisher = PublisherWithUpholdStatus.new
+    publisher.uphold_connection = AnonymousUpholdConnection.new
 
-    publisher.uphold_status = :verified
+    publisher.uphold_connection.uphold_status = :verified
     assert_equal "uphold-complete", uphold_status_class(publisher)
 
-    publisher.uphold_status = :access_parameters_acquired
+    publisher.uphold_connection.uphold_status = :access_parameters_acquired
     assert_equal "uphold-processing", uphold_status_class(publisher)
 
-    publisher.uphold_status = :code_acquired
+    publisher.uphold_connection.uphold_status = :code_acquired
     assert_equal "uphold-processing", uphold_status_class(publisher)
 
-    publisher.uphold_status = :reauthorization_needed
+    publisher.uphold_connection.uphold_status = :reauthorization_needed
     assert_equal "uphold-reauthorization-needed", uphold_status_class(publisher)
 
-    publisher.uphold_status = :unconnected
+    publisher.uphold_connection.uphold_status = :unconnected
     assert_equal "uphold-unconnected", uphold_status_class(publisher)
 
-    publisher.uphold_status = Publisher::UpholdAccountState::RESTRICTED
-    assert_equal "uphold-" + Publisher::UpholdAccountState::RESTRICTED.to_s, uphold_status_class(publisher)
+    publisher.uphold_connection.uphold_status = UpholdConnection::UpholdAccountState::RESTRICTED
+    assert_equal "uphold-" + UpholdConnection::UpholdAccountState::RESTRICTED.to_s, uphold_status_class(publisher)
 
-    publisher.uphold_status = Publisher::UpholdAccountState::BLOCKED
+    publisher.uphold_connection.uphold_status = UpholdConnection::UpholdAccountState::BLOCKED
     assert_equal "uphold-complete", uphold_status_class(publisher)
   end
 

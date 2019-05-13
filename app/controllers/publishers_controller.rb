@@ -220,7 +220,7 @@ class PublishersController < ApplicationController
     @publisher = current_publisher
 
     # Ensure the uphold_state_token has been set. If not send back to try again
-    if @publisher.uphold_state_token.blank?
+    if @publisher.uphold_connection&.uphold_state_token.blank?
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
@@ -228,23 +228,23 @@ class PublishersController < ApplicationController
     # Catch uphold errors
     uphold_error = params[:error]
     if uphold_error.present?
-      Rails.logger.error("Uphold Error: #{uphold_error}-> #{params[:error_description]}")
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
 
     # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
     state_token = params[:state]
-    if @publisher.uphold_state_token != state_token
+    if @publisher.uphold_connection&.uphold_state_token != state_token
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
       return
     end
 
-    @publisher.receive_uphold_code(params[:code])
+    @publisher.uphold_connection.receive_uphold_code(params[:code])
 
     begin
       ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
       @publisher.reload
+      @publisher.uphold_connection.reload
     rescue Faraday::Error
       Rails.logger.error("Unable to exchange Uphold access token with eyeshade")
       redirect_to(publisher_next_step_path(@publisher), alert: t(".uphold_error"))
@@ -256,7 +256,7 @@ class PublishersController < ApplicationController
 
   def disconnect_uphold
     publisher = current_publisher
-    publisher.disconnect_uphold
+    publisher.uphold_connection.disconnect_uphold
     DisconnectUpholdJob.perform_later(publisher_id: publisher.id)
 
     head :no_content
@@ -282,6 +282,21 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
+    if current_publisher.uphold_connection.blank?
+      # Handle the live case. TODO Remove and only keep the else branch in issue #1866
+      if current_publisher.uphold_updated_at.present? || current_publisher.uphold_verified || current_publisher.uphold_id
+        UpholdConnection.create!(
+          publisher: current_publisher,
+          created_at: current_publisher.uphold_updated_at || DateTime.now,
+          updated_at: current_publisher.uphold_updated_at || DateTime.now,
+          uphold_id: current_publisher.uphold_id,
+          uphold_verified: current_publisher.uphold_verified
+        )
+      else
+        UpholdConnection.create!(publisher: current_publisher)
+      end
+    end
+
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     @wallet = current_publisher.wallet
@@ -316,7 +331,7 @@ class PublishersController < ApplicationController
     respond_to do |format|
       format.json do
         render(json: {
-          uphold_status: publisher.uphold_status.to_s,
+          uphold_status: publisher.uphold_connection&.uphold_status.to_s,
           uphold_status_summary: uphold_status_summary(publisher),
           uphold_status_description: uphold_status_description(publisher),
           uphold_status_class: uphold_status_class(publisher),
@@ -386,7 +401,7 @@ class PublishersController < ApplicationController
   end
 
   def create_uphold_card_for_default_currency_if_needed
-    if current_publisher.can_create_uphold_cards? &&
+    if current_publisher.uphold_connection&.can_create_uphold_cards? &&
       current_publisher.default_currency_confirmed_at.present? &&
       current_publisher.wallet.address.blank?
       CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
