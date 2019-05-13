@@ -36,7 +36,7 @@ export default class Payments extends React.Component<
     return (
       <React.Fragment>
         <UserNavbar
-          navbarSelection={NavbarSelection.Payments}
+          navbarSelection={"Payments"}
           publisher={this.props.data.publisher}
         />
         <Container>
