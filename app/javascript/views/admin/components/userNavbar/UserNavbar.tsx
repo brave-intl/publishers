@@ -18,10 +18,10 @@ interface IPublisherNavProps {
 }
 
 export enum NavbarSelection {
-  Dashboard,
-  Channels,
-  Referrals,
-  Payments
+  Dashboard = "Dashboard",
+  Channels = "Channels",
+  Referrals = "Referrals",
+  Payments = "Payments"
 }
 
 export default class Referrals extends React.Component<IUserNavbarProps, {}> {

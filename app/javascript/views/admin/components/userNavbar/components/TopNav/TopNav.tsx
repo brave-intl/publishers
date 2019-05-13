@@ -1,4 +1,5 @@
 import * as React from "react";
+import AvatarIcon from "./Avatar.svg";
 import {
   Avatar,
   AvatarImage,
@@ -9,20 +10,14 @@ import {
   Nav,
   Section,
   SectionGroup,
-  Status
+  Status,
+  StatusLink
 } from "./TopNavStyle";
 
-import AvatarIcon from "./Avatar.svg";
+import NavbarSelection from "../../UserNavbar";
 
 import locale from "../../../../../../locale/en";
 import routes from "../../../../../../routes/routes";
-
-export enum NavbarSelection {
-  Dashboard,
-  Channels,
-  Referrals,
-  Payments
-}
 
 interface ITopNavProps {
   name: string;
@@ -59,7 +54,15 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
                 <Name href={`/admin/publishers/${this.props.userID}`}>
                   {this.props.name}
                 </Name>
-                <Status status={this.props.status}>{this.props.status}</Status>
+                <StatusLink
+                  href={`/admin/publishers/${
+                    this.props.userID
+                  }/publisher_status_updates`}
+                >
+                  <Status status={this.props.status}>
+                    {this.props.status}
+                  </Status>
+                </StatusLink>
               </Section>
               <Link href={`/admin/publishers/${this.props.userID}/edit`}>
                 Settings
@@ -67,6 +70,10 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
               <Link>|</Link>
               <Link href={`/admin/security/${this.props.userID}`}>
                 Security
+              </Link>
+              <Link>|</Link>
+              <Link href={`/admin/channel_transfers/${this.props.userID}`}>
+                Transfers
               </Link>
             </SectionGroup>
           </Section>
@@ -92,19 +99,19 @@ function Navigation(props) {
             props.userID
           ))
         }
-        selected={props.navbarSelection === NavbarSelection.Dashboard}
+        selected={props.navbarSelection === "Dashboard"}
       >
         {locale.navbar.dashboard}
       </Nav>
       <Nav
         style={{ opacity: 0.5 }}
-        selected={props.navbarSelection === NavbarSelection.Channels}
+        selected={props.navbarSelection === "Channels"}
       >
         {locale.navbar.channels}
       </Nav>
       <Nav
         style={{ opacity: 0.5 }}
-        selected={props.navbarSelection === NavbarSelection.Referrals}
+        selected={props.navbarSelection === "Referrals"}
       >
         {locale.navbar.referrals}
       </Nav>
@@ -115,7 +122,7 @@ function Navigation(props) {
             props.userID
           ))
         }
-        selected={props.navbarSelection === NavbarSelection.Payments}
+        selected={props.navbarSelection === "Payments"}
       >
         {locale.navbar.payments}
       </Nav>

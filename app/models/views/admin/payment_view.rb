@@ -28,11 +28,6 @@ module Views
       # TODO, parse transactions here instead of on client side
       def as_json
         {
-          publisher: {
-            id: @publisher.id,
-            name: @publisher.name,
-            status: @publisher.last_status_update.status,
-          },
           current: {
             downloads: publisher_current_referral_totals(@publisher)[PromoRegistration::RETRIEVALS],
             installs: publisher_current_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS],
@@ -49,7 +44,7 @@ module Views
             confirmations: publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED],
             transactions: PublisherStatementGetter.new(publisher: @publisher, statement_period: "all").perform,
           },
-        }
+        }.merge(NavigationView.new(@publisher).as_json)
       end
     end
   end

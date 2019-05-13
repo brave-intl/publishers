@@ -95,13 +95,11 @@ export const Status = styled.div`
   color: white;
   display: flex;
   align-items: center;
-  height: 20px;
-  padding: 15px;
   font-size: 16px;
-  margin-left: 20px;
   user-select: none;
-  margin-top: auto;
-  margin-bottom: auto;
+  padding: 15px;
+  height: 20px;
+
   ${(props: Partial<IStatusProps>) =>
     props.status === "active" &&
     `
@@ -117,6 +115,13 @@ export const Status = styled.div`
     `
     background-color: #FCCD56;
     `}
+`;
+
+export const StatusLink = styled.a`
+  margin-left: 20px;
+  padding: 0;
+  margin-top: auto;
+  margin-bottom: auto;
 `;
 
 export const Avatar = styled.div`

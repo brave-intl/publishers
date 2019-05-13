@@ -32,7 +32,7 @@ module Views
             id: publisher.id,
             name: publisher.name,
             status: publisher.last_status_update.status,
-            avatar: avatar
+            avatar: avatar,
           },
         }
       end
