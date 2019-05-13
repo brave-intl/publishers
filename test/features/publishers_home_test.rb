@@ -120,16 +120,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     assert_current_path(new_site_channel_path)
   end
 
-  test "javascript_last_detected_at is updated when visiting the dashboard" do
-    publisher = publishers(:completed)
-    assert_nil publisher.javascript_last_detected_at
-
-    sign_in publisher
-    visit home_publishers_path
-
-    wait_until { publisher.reload.javascript_last_detected_at != nil }
-  end
-
   test "confirm default currency modal appears after uphold signup" do
     publisher = publishers(:uphold_connected_currency_unconfirmed)
     sign_in publisher

@@ -160,19 +160,13 @@ class Channel < ApplicationRecord
   # This will return the channel_identifier without the youtube#channel: or twitch#channel: prefix
   def channel_id
     channel_type = details_type
+    integration_name = details_type.gsub("ChannelDetails", "").downcase
+
     case channel_type
-    when "YoutubeChannelDetails"
-      details.youtube_channel_id
-    when "SiteChannelDetails"
-      details.brave_publisher_id
     when "TwitchChannelDetails"
       details.name
-    when "TwitterChannelDetails"
-      details.twitter_channel_id
-    when "VimeoChannelDetails"
-      details.vimeo_channel_id
     else
-      nil
+      details.send("#{integration_name}_channel_id")
     end
   end
 
@@ -195,25 +189,14 @@ class Channel < ApplicationRecord
     channel_details_type_identifier = channel_id_split_on_prefix.second
     case prefix
     when "youtube#channel"
-      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
-    when "twitch#channel"
-      TwitchChannelDetails.where(name: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
-    when "twitch#author"
-      TwitchChannelDetails.where(name: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
+      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
     when "twitter#channel"
-      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
+      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
     when "vimeo#channel"
-      VimeoChannelDetails.where(vimeo_channel_id: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
+      VimeoChannelDetails.where(vimeo_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+    when "twitch#channel"
+    when "twitch#author"
+      TwitchChannelDetails.where(name: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
     else
       Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
       nil

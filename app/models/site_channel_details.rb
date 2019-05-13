@@ -12,6 +12,8 @@ class SiteChannelDetails < BaseChannelDetails
   VERIFICATION_METHODS = %w(dns_record public_file github wordpress).freeze
   validates :verification_method, allow_blank: true, inclusion: { in: VERIFICATION_METHODS }
 
+  alias_attribute :site_channel_id, :brave_publisher_id
+
   class VerificationTokenValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
       unless value =~ /\A[a-z0-9]{64}\z/i

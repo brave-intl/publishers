@@ -264,7 +264,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     contested_by_channel.details = TwitchChannelDetails.new(twitch_channel_id: "78032",
                                                             auth_user_id: "abc123",
                                                             auth_provider: "twitch",
-                                                            name: "twtwtw",
+                                                            name: channel.details.name,
                                                             display_name: "TwTwTw",
                                                             thumbnail_url: "https://some_image_host.com/some_image.png")
 
