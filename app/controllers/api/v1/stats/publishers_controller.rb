@@ -54,8 +54,10 @@ class Api::V1::Stats::PublishersController < Api::V1::StatsController
         from publishers
         inner join channels
         on channels.publisher_id = publishers.id and channels.verified = true
+        inner join uphold_connections
+        on uphold_connections.publisher_id = publishers.id
         where role = 'publisher'
-        and uphold_verified = true
+        and uphold_connections.uphold_verified = true
         and email is not null
       ) as p
       group by p.created_at::date

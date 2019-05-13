@@ -474,6 +474,22 @@ ActiveRecord::Schema.define(version: 2019_04_22_195852) do
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
   end
 
+  create_table "uphold_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "uphold_state_token"
+    t.boolean "uphold_verified", default: false
+    t.boolean "is_member", default: false
+    t.uuid "uphold_id"
+    t.uuid "address"
+    t.uuid "publisher_id"
+    t.string "encrypted_uphold_code"
+    t.string "encrypted_uphold_code_iv"
+    t.string "encrypted_uphold_access_parameters"
+    t.string "encrypted_uphold_access_parameters_iv"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
+  end
+
   create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "encrypted_authentication_token"
     t.string "encrypted_authentication_token_iv"
