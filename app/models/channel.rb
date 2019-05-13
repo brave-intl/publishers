@@ -18,29 +18,24 @@ class Channel < ApplicationRecord
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
   belongs_to :site_channel_details, -> {
-                                      where(channels: { details_type: 'SiteChannelDetails' }).
-                                        includes(:channels)
-                                    }, foreign_key: 'details_id'
+    where(channels: { details_type: 'SiteChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   belongs_to :youtube_channel_details, -> {
-                                         where(channels: { details_type: 'YoutubeChannelDetails' }).
-                                           includes(:channels)
-                                       }, foreign_key: 'details_id'
+    where(channels: { details_type: 'YoutubeChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   belongs_to :twitch_channel_details, -> {
-                                        where(channels: { details_type: 'TwitchChannelDetails' }).
-                                          includes(:channels)
-                                      }, foreign_key: 'details_id'
+    where(channels: { details_type: 'TwitchChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   belongs_to :twitter_channel_details, -> {
-                                         where(channels: { details_type: 'TwitterChannelDetails' }).
-                                           includes(:channels)
-                                       }, foreign_key: 'details_id'
-  belongs_to :vimeo_channel_details, -> {
-                                         where(channels: { details_type: 'VimeoChannelDetails' }).
-                                           includes(:channels)
-                                       }, foreign_key: 'details_id'
+    where(channels: { details_type: 'TwitterChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
+  belongs_to :vimeo_channel_details, -> {
+    where(channels: { details_type: 'VimeoChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   has_one :promo_registration, dependent: :destroy
 
