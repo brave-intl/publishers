@@ -3,9 +3,11 @@ import {
   Avatar,
   Container,
   InnerContainer,
+  Link,
   Name,
   Nav,
   Section,
+  SectionGroup,
   Status
 } from "./TopNavStyle";
 
@@ -38,8 +40,21 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
         <InnerContainer>
           <Section>
             <Avatar />
-            <Name>{this.props.name}</Name>
-            <Status status={this.props.status}>{this.props.status}</Status>
+            <SectionGroup>
+              <Section>
+                <Name href={`/admin/publishers/${this.props.userID}`}>
+                  {this.props.name}
+                </Name>
+                <Status status={this.props.status}>{this.props.status}</Status>
+              </Section>
+              <Link href={`/admin/publishers/${this.props.userID}/edit`}>
+                Edit Settings
+              </Link>
+              <Link>|</Link>
+              <Link href={`/admin/security/${this.props.userID}`}>
+                Security
+              </Link>
+            </SectionGroup>
           </Section>
           <Section>
             <Navigation

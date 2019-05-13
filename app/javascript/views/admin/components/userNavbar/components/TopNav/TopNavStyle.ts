@@ -28,6 +28,10 @@ export const Section = styled.div`
   margin-bottom: auto;
 `;
 
+export const SectionGroup = styled.div`
+  margin-left: 20px;
+`;
+
 export const Logo = styled.img`
   margin-top: auto;
   margin-bottom: auto;
@@ -70,14 +74,16 @@ export const Nav = styled.div`
   `}
 `;
 
-export const Name = styled.div`
+export const Name = styled.a`
   display: flex;
   align-items: center;
-  height: 80px;
   font-size: 30px;
   color: #222326;
-  margin-left: 20px;
   user-select: none;
+`;
+
+export const Link = styled.a`
+  margin-right: 0.5rem;
 `;
 
 interface IStatusProps {
@@ -114,6 +120,7 @@ export const Status = styled.div`
 `;
 
 export const Avatar = styled.div`
+  display: flex;
   border-radius: 50%;
   width: 75px;
   height: 75px;
