@@ -12,6 +12,7 @@ interface IUserNavbarProps {
 
 interface IPublisherNavProps {
   name: string;
+  avatar: string;
   status: string;
   id: string;
 }
@@ -36,6 +37,7 @@ export default class Referrals extends React.Component<IUserNavbarProps, {}> {
           navbarSelection={this.props.navbarSelection}
           name={this.props.publisher.name}
           status={this.props.publisher.status}
+          avatar={this.props.publisher.avatar}
           userID={this.props.publisher.id}
         />
         <BottomNav />

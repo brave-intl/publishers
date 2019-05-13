@@ -126,6 +126,11 @@ export const Avatar = styled.div`
   height: 75px;
   background-color: #e8e8e8;
 `;
+export const AvatarImage = styled.img`
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+`;
 
 export const DropdownGroup = styled.div`
   display: flex;

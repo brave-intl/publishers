@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   Avatar,
+  AvatarImage,
   Container,
   InnerContainer,
   Link,
@@ -10,6 +11,8 @@ import {
   SectionGroup,
   Status
 } from "./TopNavStyle";
+
+import AvatarIcon from "./Avatar.svg";
 
 import locale from "../../../../../../locale/en";
 import routes from "../../../../../../routes/routes";
@@ -25,6 +28,7 @@ interface ITopNavProps {
   name: string;
   status: string;
   userID: string;
+  avatar: string;
   navbarSelection: string;
 }
 
@@ -39,7 +43,17 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
       <Container>
         <InnerContainer>
           <Section>
-            <Avatar />
+            <a href={`/admin/publishers/${this.props.userID}`}>
+              {this.props.avatar ? (
+                <Avatar>
+                  <AvatarImage src={this.props.avatar} />
+                </Avatar>
+              ) : (
+                <Avatar>
+                  <AvatarImage src={AvatarIcon} />
+                </Avatar>
+              )}
+            </a>
             <SectionGroup>
               <Section>
                 <Name href={`/admin/publishers/${this.props.userID}`}>
@@ -48,7 +62,7 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
                 <Status status={this.props.status}>{this.props.status}</Status>
               </Section>
               <Link href={`/admin/publishers/${this.props.userID}/edit`}>
-                Edit Settings
+                Settings
               </Link>
               <Link>|</Link>
               <Link href={`/admin/security/${this.props.userID}`}>
