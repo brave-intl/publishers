@@ -16,7 +16,7 @@ export default class EarningsChart extends React.Component<
     super(props);
   }
 
-  public componentDidUpdate() {
+  public componentDidMount() {
     this.createEarningsChart(this.props.transactions);
   }
 

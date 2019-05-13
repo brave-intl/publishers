@@ -17,7 +17,7 @@ export default class CurrentChart extends React.Component<
     super(props);
   }
 
-  public componentDidUpdate() {
+  public componentDidMount() {
     this.createCurrentChart(
       this.props.contributionBalance,
       this.props.referralBalance

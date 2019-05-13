@@ -4,60 +4,15 @@ module Admin
     include PublishersHelper
     def show
       respond_to do |format|
-        format.html
+        format.html do
+          publisher = Publisher.find(params[:id])
+          @data = Views::Admin::PaymentView.new(publisher: publisher).as_json
+        end
         format.json do
-          render json: show_data(params[:id])
+          publisher = Publisher.find(params[:id])
+          render json: Views::Admin::PaymentView.new(publisher: publisher).as_json
         end
       end
-    end
-
-    def show_data(id)
-      publisher = Publisher.find(id)
-      userID = publisher.id
-      name = publisher.name
-      status = publisher.last_status_update.status
-
-      current_referral_balance = publisher_referral_bat_balance(publisher)
-      current_contribution_balance = publisher_contribution_bat_balance(publisher)
-      current_overall_balance = publisher_overall_bat_balance(publisher)
-      transactions = PublisherStatementGetter.new(publisher: publisher, statement_period: "all").perform
-      downloads = publisher_referral_totals(publisher)[PromoRegistration::RETRIEVALS]
-      installs = publisher_referral_totals(publisher)[PromoRegistration::FIRST_RUNS]
-      confirmations = publisher_referral_totals(publisher)[PromoRegistration::FINALIZED]
-      current_downloads = publisher_current_cycle_referral_totals(publisher)[PromoRegistration::RETRIEVALS]
-      current_installs = publisher_current_cycle_referral_totals(publisher)[PromoRegistration::FIRST_RUNS]
-      current_confirmations = publisher_current_cycle_referral_totals(publisher)[PromoRegistration::FINALIZED]
-
-      current_channel_balances = []
-      publisher.channels.each do |channel|
-        channel_identifier = channel.details.channel_identifier
-        channel_title = channel.details.publication_title
-        channel_url = channel.details.url
-        channel_balance = publisher_channel_bat_balance(publisher, channel_identifier)
-        current_channel_balances.push({
-          title: channel_title,
-          url: channel_url,
-          balance: channel_balance,
-        })
-      end
-
-      {
-        publisher: publisher,
-        userID: userID,
-        name: name,
-        status: status,
-        downloads: downloads,
-        installs: installs,
-        confirmations: confirmations,
-        currentDownloads: current_downloads,
-        currentInstalls: current_installs,
-        currentConfirmations: current_confirmations,
-        currentReferralBalance: current_referral_balance,
-        currentChannelBalances: current_channel_balances,
-        currentContributionBalance: current_contribution_balance,
-        currentOverallBalance: current_overall_balance,
-        transactions: transactions,
-      }
     end
   end
 end

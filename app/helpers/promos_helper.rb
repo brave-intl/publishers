@@ -30,7 +30,7 @@ module PromosHelper
     }
   end
 
-  def publisher_current_cycle_referral_totals(publisher)
+  def publisher_current_referral_totals(publisher)
     retrievals = 0
     first_runs = 0
     finalized = 0
