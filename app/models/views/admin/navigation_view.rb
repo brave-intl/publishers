@@ -14,8 +14,8 @@ module Views
           publisher: {
             id: publisher.id,
             name: publisher.name,
-            status: publisher.last_status_update.status
-          }
+            status: publisher.last_status_update.status,
+          },
         }
       end
     end
