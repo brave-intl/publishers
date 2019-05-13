@@ -6,10 +6,14 @@ import TopNav from "./components/TopNav/TopNav";
 import {} from "./UserNavbarStyle";
 
 interface IUserNavbarProps {
+  publisher: IPublisherNavProps;
+  navbarSelection: string;
+}
+
+interface IPublisherNavProps {
   name: string;
   status: string;
-  userID: string;
-  navbarSelection: NavbarSelection;
+  id: string;
 }
 
 export enum NavbarSelection {
@@ -30,9 +34,9 @@ export default class Referrals extends React.Component<IUserNavbarProps, {}> {
       <div>
         <TopNav
           navbarSelection={this.props.navbarSelection}
-          name={this.props.name}
-          status={this.props.status}
-          userID={this.props.userID}
+          name={this.props.publisher.name}
+          status={this.props.publisher.status}
+          userID={this.props.publisher.id}
         />
         <BottomNav />
       </div>

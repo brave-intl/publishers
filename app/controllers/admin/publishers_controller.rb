@@ -27,6 +27,7 @@ class Admin::PublishersController < AdminController
 
   def show
     @publisher = Publisher.find(params[:id])
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection:"Overview"}).to_json
     @potential_referral_payment = @publisher.most_recent_potential_referral_payment
     @note = PublisherNote.new
   end

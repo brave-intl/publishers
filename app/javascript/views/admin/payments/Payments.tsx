@@ -36,10 +36,8 @@ export default class Payments extends React.Component<
     return (
       <React.Fragment>
         <UserNavbar
-          navbarSelection={NavbarSelection.Payments}
-          name={this.props.data.publisher.name}
-          userID={this.props.data.publisher.id}
-          status={this.props.data.publisher.status}
+          navbarSelection="Payments"
+          publisher={this.props.data.publisher}
         />
         <Container>
           <Grid

@@ -23,7 +23,7 @@ interface ITopNavProps {
   name: string;
   status: string;
   userID: string;
-  navbarSelection: NavbarSelection;
+  navbarSelection: string;
 }
 
 export default class Referrals extends React.Component<ITopNavProps, {}> {
