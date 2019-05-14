@@ -1,0 +1,34 @@
+unconnected:
+  created_at: 2019-01-01
+  publisher: completed
+
+verified_connection:
+  publisher: verified
+
+default_connection:
+  created_at: 2019-01-01
+  publisher: default
+
+unprompted_connection:
+  created_at: 2019-01-01
+  publisher: unpromted
+
+created_connection:
+  publisher: created
+
+connected_connection:
+  uphold_verified: true
+  publisher: uphold_connected
+
+verified_no_currency:
+  uphold_verified: true
+  uphold_state_token:
+  publisher: uphold_connected_currency_unconfirmed
+
+small_media_group_connection:
+  publisher: small_media_group
+
+unprompted_connection:
+  created_at: 2019-01-01
+  publisher: unprompted
+

@@ -48,10 +48,11 @@ module Search
 
         SELECT publishers.id
         FROM publishers
+        LEFT JOIN uphold_connections ON uphold_connections.publisher_id = publishers.id
         WHERE publishers.email ILIKE :search_query
               OR publishers.name ILIKE :search_query
               OR publishers.id::text = :search_query
-              OR publishers.uphold_id::text = :search_query
+              OR uphold_connections.uphold_id::text = :search_query
       )
     }
   end

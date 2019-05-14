@@ -23,15 +23,16 @@ module PublishersHelper
   end
 
   def publisher_can_receive_funds?(publisher)
-    publisher.uphold_status == :verified
+    publisher.uphold_connection&.uphold_status == :verified
   end
 
   def payout_in_progress?
     !!Rails.cache.fetch('payout_in_progress')
   end
 
-  def next_deposit_date
-    (DateTime.now + 1.month).strftime("%B 8th")
+  def next_deposit_date(today = DateTime.now)
+    today = today + 1.month if today.day > 8
+    today.strftime("%B 8th")
   end
 
   def publisher_overall_bat_balance(publisher)
@@ -60,6 +61,30 @@ module PublishersHelper
     else
       I18n.t("helpers.publisher.conversion_unavailable", code: publisher.default_currency)
     end
+  end
+
+  def publisher_referral_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+      amount = publisher.wallet&.referral_balance&.amount_bat
+      amount = publisher.balance if publisher.partner?
+      balance = '%.2f' % amount if amount.present?
+    end
+
+    balance
+  end
+
+  def publisher_contribution_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+      amount = publisher.wallet&.contribution_balance&.amount_bat
+      amount = publisher.balance if publisher.partner?
+      balance = '%.2f' % amount if amount.present?
+    end
+
+    balance
   end
 
   def publisher_channel_bat_balance(publisher, channel_identifier)
@@ -123,19 +148,21 @@ module PublishersHelper
   # end
 
   def uphold_authorization_endpoint(publisher)
-    publisher.prepare_uphold_state_token
+    # TODO: This method should be a PATCH route in an Uphold controller.
+    # We should not be updating database values on GET requests
+    publisher.uphold_connection&.prepare_uphold_state_token
 
     Rails.application.secrets[:uphold_authorization_endpoint]
         .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
         .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-        .gsub('<STATE>', publisher.uphold_state_token.to_s)
+        .gsub('<STATE>', publisher.uphold_connection&.uphold_state_token)
   end
 
   def uphold_authorization_description(publisher)
-    case publisher.uphold_status
-    when :unconnected
+    case publisher.uphold_connection&.uphold_status
+    when :unconnected, nil
       I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
-    when Publisher::UpholdAccountState::RESTRICTED
+    when UpholdConnection::UpholdAccountState::RESTRICTED
       publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
     else
       I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
@@ -155,8 +182,8 @@ module PublishersHelper
   end
 
   def uphold_status_class(publisher)
-    case publisher.uphold_status
-    when :verified, Publisher::UpholdAccountState::BLOCKED
+    case publisher.uphold_connection&.uphold_status
+    when :verified, UpholdConnection::UpholdAccountState::BLOCKED
       # (Albert Wang): We notify Brave when we detect a login of someone with a blocked
       # Uphold account
       'uphold-complete'
@@ -164,8 +191,8 @@ module PublishersHelper
       'uphold-processing'
     when :reauthorization_needed
       'uphold-reauthorization-needed'
-    when Publisher::UpholdAccountState::RESTRICTED
-      'uphold-' + Publisher::UpholdAccountState::RESTRICTED.to_s
+    when UpholdConnection::UpholdAccountState::RESTRICTED
+      'uphold-' + UpholdConnection::UpholdAccountState::RESTRICTED.to_s
     else
       'uphold-unconnected'
     end
@@ -183,8 +210,8 @@ module PublishersHelper
   end
 
   def uphold_status_summary(publisher)
-    case publisher.uphold_status
-    when :verified, Publisher::UpholdAccountState::RESTRICTED, Publisher::UpholdAccountState::BLOCKED
+    case publisher.uphold_connection&.uphold_status
+    when :verified, UpholdConnection::UpholdAccountState::RESTRICTED, UpholdConnection::UpholdAccountState::BLOCKED
       I18n.t("helpers.publisher.uphold_status_summary.connected")
     when :code_acquired, :access_parameters_acquired
       I18n.t("helpers.publisher.uphold_status_summary.connecting")
@@ -196,7 +223,7 @@ module PublishersHelper
   end
 
   def uphold_status_description(publisher)
-    case publisher.uphold_status
+    case publisher.uphold_connection&.uphold_status
     when :verified
       I18n.t("helpers.publisher.uphold_status_description.verified")
     when :code_acquired, :access_parameters_acquired
@@ -205,8 +232,10 @@ module PublishersHelper
       I18n.t("helpers.publisher.uphold_status_description.reauthorization_needed")
     when :unconnected
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
-    when Publisher::UpholdAccountState::RESTRICTED
+    when UpholdConnection::UpholdAccountState::RESTRICTED
       publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_status_description.restricted_member") : I18n.t("helpers.publisher.uphold_status_description.non_member")
+    else
+      I18n.t("helpers.publisher.uphold_status_description.unconnected")
     end
   end
 
