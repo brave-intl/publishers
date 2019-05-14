@@ -185,8 +185,8 @@ class Publisher < ApplicationRecord
     last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
   end
 
-  def umbra?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::UMBRA
+  def no_grants?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::NO_GRANTS
   end
 
   def locked?
