@@ -570,7 +570,7 @@ DEPENDENCIES
   vcr
   web-console
   webmock (~> 3.0)
-  webpacker (~> 4.0.0.rc.2)
+  webpacker (~> 4.0.2)
   will_paginate
   yt
 
@@ -578,4 +578,4 @@ RUBY VERSION
    ruby 2.5.5p157
 
 BUNDLED WITH
-   1.17.2
+   2.0.1
