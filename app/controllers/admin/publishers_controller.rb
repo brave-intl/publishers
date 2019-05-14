@@ -34,6 +34,7 @@ class Admin::PublishersController < AdminController
 
   def edit
     @publisher = Publisher.find(params[:id])
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard"}).to_json
   end
 
   def update
