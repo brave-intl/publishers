@@ -7,9 +7,11 @@ html
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1"
 
-    - set_meta_tags( title: "Earn more for content you publish to the web - Brave Rewards | Creators", description: "Viewers who use the Brave Browser may have contributed money to you while surfing the web through Brave Rewards. Simply sign up as a verified content creator on Brave Rewards to start collecting your contributions.", image: "/preview.png")
+    - set_meta_tags(title: "Earn more for content you publish to the web - Brave Creators", description: "Viewers who use the Brave Browser may have contributed money to you while surfing the web through Brave Rewards. Simply sign up as a verified content creator on Brave Rewards to start collecting your contributions.", image: "/preview.png")
     = display_meta_tags
-    = javascript_pack_tag('static')
+    = javascript_pack_tag('static', defer: true)
+
+    = stylesheet_link_tag "static", rel: "preload"
 
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 

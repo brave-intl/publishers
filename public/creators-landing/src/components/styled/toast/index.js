@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Layer, Text, Button } from "grommet";
+import { Layer, Text, Button } from "grommet";
 import { NotificationWrapper, CloseIcon, IconContainer } from "../../index";
 import { InfoIcon } from "../../index";
 
