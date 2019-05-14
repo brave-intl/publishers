@@ -3,8 +3,9 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   include PromosHelper
   BATCH_SIZE = 50
 
-  def initialize(promo_registrations:)
+  def initialize(promo_registrations:, update_only: false)
     @referral_codes = promo_registrations.map { |promo_registration| promo_registration.referral_code }
+    @update_only = update_only
   end
 
   def perform
@@ -21,12 +22,13 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
       referral_code_events_by_date = JSON.parse(response.body)
       referral_code_batch.each do |referral_code|
         promo_registration = PromoRegistration.find_by_referral_code(referral_code)
+        next if referral_code.nil?
         promo_registration.stats = referral_code_events_by_date.select { |referral_code_event_date|
           referral_code_event_date["referral_code"] == referral_code
         }.to_json
         promo_registration.save!
       end
-      stats += referral_code_events_by_date
+      stats += referral_code_events_by_date unless @update_only
     end
 
     stats

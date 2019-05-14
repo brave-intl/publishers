@@ -19,7 +19,7 @@
     ],
     "moduleFileExtensions": [
       "ts",
-      "tsx",
+      "jsx",
       "js",
       "json"
     ],
@@ -34,11 +34,11 @@
     "resetModules": true,
     "collectCoverage": false,
     "collectCoverageFrom": [
-      "src/**/*.tsx",
+      "src/**/*.jsx",
       "!src/**/index.ts"
     ],
     "testMatch": [
-      "<rootDir>/app/javascript/**/*.test.tsx"
+      "<rootDir>/app/javascript/**/*.test.jsx"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"

@@ -28,6 +28,10 @@ export const Section = styled.div`
   margin-bottom: auto;
 `;
 
+export const SectionGroup = styled.div`
+  margin-left: 20px;
+`;
+
 export const Logo = styled.img`
   margin-top: auto;
   margin-bottom: auto;
@@ -70,14 +74,16 @@ export const Nav = styled.div`
   `}
 `;
 
-export const Name = styled.div`
+export const Name = styled.a`
   display: flex;
   align-items: center;
-  height: 80px;
   font-size: 30px;
   color: #222326;
-  margin-left: 20px;
   user-select: none;
+`;
+
+export const Link = styled.a`
+  margin-right: 0.5rem;
 `;
 
 interface IStatusProps {
@@ -89,13 +95,11 @@ export const Status = styled.div`
   color: white;
   display: flex;
   align-items: center;
-  height: 20px;
-  padding: 15px;
   font-size: 16px;
-  margin-left: 20px;
   user-select: none;
-  margin-top: auto;
-  margin-bottom: auto;
+  padding: 15px;
+  height: 20px;
+
   ${(props: Partial<IStatusProps>) =>
     props.status === "active" &&
     `
@@ -113,11 +117,24 @@ export const Status = styled.div`
     `}
 `;
 
+export const StatusLink = styled.a`
+  margin-left: 20px;
+  padding: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+`;
+
 export const Avatar = styled.div`
+  display: flex;
   border-radius: 50%;
   width: 75px;
   height: 75px;
   background-color: #e8e8e8;
+`;
+export const AvatarImage = styled.img`
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
 `;
 
 export const DropdownGroup = styled.div`

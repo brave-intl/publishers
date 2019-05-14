@@ -1,29 +1,30 @@
 import * as React from "react";
+import AvatarIcon from "./Avatar.svg";
 import {
   Avatar,
+  AvatarImage,
   Container,
   InnerContainer,
+  Link,
   Name,
   Nav,
   Section,
-  Status
+  SectionGroup,
+  Status,
+  StatusLink
 } from "./TopNavStyle";
+
+import NavbarSelection from "../../UserNavbar";
 
 import locale from "../../../../../../locale/en";
 import routes from "../../../../../../routes/routes";
-
-export enum NavbarSelection {
-  Dashboard,
-  Channels,
-  Referrals,
-  Payments
-}
 
 interface ITopNavProps {
   name: string;
   status: string;
   userID: string;
-  navbarSelection: NavbarSelection;
+  avatar: string;
+  navbarSelection: string;
 }
 
 export default class Referrals extends React.Component<ITopNavProps, {}> {
@@ -37,9 +38,44 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
       <Container>
         <InnerContainer>
           <Section>
-            <Avatar />
-            <Name>{this.props.name}</Name>
-            <Status status={this.props.status}>{this.props.status}</Status>
+            <a href={`/admin/publishers/${this.props.userID}`}>
+              {this.props.avatar ? (
+                <Avatar>
+                  <AvatarImage src={this.props.avatar} />
+                </Avatar>
+              ) : (
+                <Avatar>
+                  <AvatarImage src={AvatarIcon} />
+                </Avatar>
+              )}
+            </a>
+            <SectionGroup>
+              <Section>
+                <Name href={`/admin/publishers/${this.props.userID}`}>
+                  {this.props.name}
+                </Name>
+                <StatusLink
+                  href={`/admin/publishers/${
+                    this.props.userID
+                  }/publisher_status_updates`}
+                >
+                  <Status status={this.props.status}>
+                    {this.props.status}
+                  </Status>
+                </StatusLink>
+              </Section>
+              <Link href={`/admin/publishers/${this.props.userID}/edit`}>
+                Settings
+              </Link>
+              <Link>|</Link>
+              <Link href={`/admin/security/${this.props.userID}`}>
+                Security
+              </Link>
+              <Link>|</Link>
+              <Link href={`/admin/channel_transfers/${this.props.userID}`}>
+                Transfers
+              </Link>
+            </SectionGroup>
           </Section>
           <Section>
             <Navigation
@@ -63,24 +99,19 @@ function Navigation(props) {
             props.userID
           ))
         }
-        selected={props.navbarSelection === NavbarSelection.Dashboard}
+        selected={props.navbarSelection === "Dashboard"}
       >
         {locale.navbar.dashboard}
       </Nav>
       <Nav
         style={{ opacity: 0.5 }}
-        selected={props.navbarSelection === NavbarSelection.Channels}
+        selected={props.navbarSelection === "Channels"}
       >
         {locale.navbar.channels}
       </Nav>
       <Nav
-        onClick={() =>
-          (window.location.href = routes.admin.userNavbar.referrals.path.replace(
-            "{id}",
-            props.userID
-          ))
-        }
-        selected={props.navbarSelection === NavbarSelection.Referrals}
+        style={{ opacity: 0.5 }}
+        selected={props.navbarSelection === "Referrals"}
       >
         {locale.navbar.referrals}
       </Nav>
@@ -91,7 +122,7 @@ function Navigation(props) {
             props.userID
           ))
         }
-        selected={props.navbarSelection === NavbarSelection.Payments}
+        selected={props.navbarSelection === "Payments"}
       >
         {locale.navbar.payments}
       </Nav>

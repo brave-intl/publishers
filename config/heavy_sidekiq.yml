@@ -24,10 +24,6 @@
   TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
-  Sync::ChannelPromoRegistrationsStatsJob:
-    cron: "30 * * * *"
-    description: "Sync stats for channel owned referral codes with the promo server every hour."
-    queue: heavy
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
