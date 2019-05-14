@@ -43,6 +43,9 @@ export default class Referrals extends React.Component<
   public createReferralsChart(referralCode) {
     const node = this.node;
 
+    if (!referralCode) {
+      return;
+    }
     const stats = referralCode.stats;
     const chartLabels = [];
     const downloads = [];
@@ -126,10 +129,15 @@ export default class Referrals extends React.Component<
             width: "100%"
           }}
         >
-          <canvas
-            style={{ height: "400px", width: "100%" }}
-            ref={node => (this.node = node)}
-          />
+          {this.props.referralCodes.length > 0 && (
+            <canvas
+              style={{ height: "400px", width: "100%" }}
+              ref={node => (this.node = node)}
+            />
+          )}
+          {this.props.referralCodes.length === 0 && (
+            <h5 className="mt-5 text-muted">No referral codes </h5>
+          )}
         </div>
         <div
           style={{
@@ -228,13 +236,17 @@ function ReferralCodeSelect(props) {
       {referralCode.referralCode}
     </option>
   ));
-  return (
-    <select
-      onChange={e => {
-        props.handleReferralCodeSelect(e);
-      }}
-    >
-      {dropdownOptions}
-    </select>
-  );
+  if (props.referralCodes.length > 0) {
+    return (
+      <select
+        onChange={e => {
+          props.handleReferralCodeSelect(e);
+        }}
+      >
+        {dropdownOptions}
+      </select>
+    );
+  } else {
+    return <React.Fragment />;
+  }
 }

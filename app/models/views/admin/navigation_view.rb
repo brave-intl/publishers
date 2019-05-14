@@ -27,11 +27,12 @@ module Views
       end
 
       def as_json(*)
+        name = publisher.name.present? ? publisher.name : publisher.email || publisher.pending_email
         {
           publisher: {
             id: publisher.id,
-            name: publisher.name,
-            status: publisher.last_status_update.status,
+            name: name,
+            status: publisher.last_status_update&.status,
             avatar: avatar,
           },
         }

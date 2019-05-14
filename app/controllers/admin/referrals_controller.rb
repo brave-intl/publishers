@@ -17,9 +17,6 @@ module Admin
 
     def show_data(id)
       publisher = Publisher.find(id)
-      user_id = publisher.id
-      name = publisher.name
-      status = publisher.last_status_update.status
       promo_registrations = []
 
       publisher.promo_registrations.each do |promo_registration|
