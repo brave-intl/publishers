@@ -25,10 +25,8 @@ export default class Referrals extends React.Component<IReferralsProps, {}> {
     return (
       <React.Fragment>
         <UserNavbar
-          navbarSelection={NavbarSelection.Referrals}
-          name={this.props.data.name}
-          userID={this.props.data.userID}
-          status={this.props.data.status}
+          navbarSelection={"Referrals"}
+          publisher={this.props.data.publisher}
         />
         <Container>
           <Grid

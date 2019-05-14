@@ -3,6 +3,8 @@ module Admin
     include PromosHelper
     include PublishersHelper
     def show
+      publisher = Publisher.find(params[:id])
+      @navigation_view = Views::Admin::NavigationView.new(publisher).as_json.merge({ navbarSelection: "Referrals" }).to_json
       respond_to do |format|
         format.html do
           @data = show_data(params[:id])
@@ -38,11 +40,8 @@ module Admin
       end
 
       {
-        userID: user_id,
-        name: name,
-        status: status,
         referralCodes: promo_registrations,
-      }
+      }.merge(Views::Admin::NavigationView.new(publisher).as_json)
     end
   end
 end
