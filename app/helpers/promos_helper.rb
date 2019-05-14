@@ -63,8 +63,7 @@ module PromosHelper
     when "SiteChannelDetails"
       "#{channel.publication_title.upcase}"
     else
-      integration_name = channel.details_type.gsub("ChannelDetails", "").downcase
-      "#{channel.publication_title.upcase} #{t("promo.shared.on_#{integration_name}")}"
+      "#{channel.publication_title.upcase} #{t("promo.shared.on_#{channel.type_display.downcase}")}"
     end
   end
 

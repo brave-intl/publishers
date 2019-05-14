@@ -13,7 +13,7 @@ class Api::V1::Stats::ChannelsController < Api::V1::StatsController
         channel_type = "website"
         channel_name = channel_details.url
       else
-        channel_type = channel.details_type.gsub("ChannelDetails", "").downcase
+        channel_type = channel.type_display.downcase
         channel_name = channel_details.name
       end
 

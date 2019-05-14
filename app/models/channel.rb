@@ -155,13 +155,12 @@ class Channel < ApplicationRecord
   # This will return the channel_identifier without the youtube#channel: or twitch#channel: prefix
   def channel_id
     channel_type = details_type
-    integration_name = details_type.gsub("ChannelDetails", "").downcase
 
     case channel_type
     when "TwitchChannelDetails"
       details.name
     else
-      details.send("#{integration_name}_channel_id")
+      details.send("#{type_display.downcase}_channel_id")
     end
   end
 
