@@ -213,8 +213,8 @@ class WalletTest < ActiveSupport::TestCase
   test "last settlement balance has correct timestamp and amount" do
     last_settlement_balance = test_wallet.last_settlement_balance
     assert_equal last_settlement_balance.timestamp, 1544169600
-    assert_equal last_settlement_balance.amount_bat.to_s, "151.24"
-    assert_equal last_settlement_balance.amount_settlement_currency.to_s, "0.12028587285273821508"
+    assert_equal last_settlement_balance.amount_bat.to_s, "749.007010384244866026"
+    assert_equal last_settlement_balance.amount_settlement_currency.to_s, "151.24"
   end
 
   test "supports action" do

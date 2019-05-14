@@ -321,8 +321,8 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     wallet = PublisherWalletGetter.new(publisher: publisher).perform
     last_settlement_balance = wallet.last_settlement_balance
 
-    assert_equal last_settlement_balance.amount_bat.to_s, "226.86"
-    assert_equal last_settlement_balance.amount_settlement_currency.to_s, "0.18042880927910732262"
+    assert_equal last_settlement_balance.amount_bat.to_s, "1123.510515576367299039"
+    assert_equal last_settlement_balance.amount_settlement_currency.to_s, "226.86"
     assert_equal last_settlement_balance.settlement_currency, "ETH"
   end
 
