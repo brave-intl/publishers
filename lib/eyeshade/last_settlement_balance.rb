@@ -10,7 +10,7 @@ module Eyeshade
         @amount_bat = last_settlement[:amount_bat]
         @timestamp = last_settlement[:timestamp]
         @settlement_currency = last_settlement[:currency]
-        @amount_settlement_currency = last_settlement[:amount]
+        @amount_settlement_currency = last_settlement[:amount_currency]
       end
     end
 
