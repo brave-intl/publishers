@@ -131,8 +131,13 @@ twitch_verified:
   verified: true
 
 twitter_new:
-  publisher: twitter_new
+  publisher: vimeo_publisher
   details: twitter_new_details (TwitterChannelDetails)
+  verified: true
+
+vimeo_new:
+  publisher: vimeo_publisher
+  details: vimeo_details (VimeoChannelDetails)
   verified: true
 
 global_yt1:

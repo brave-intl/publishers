@@ -68,6 +68,7 @@ gem "omniauth-twitch"
 
 # Oauth client for twitter
 gem "omniauth-twitter"
+gem "omniauth-vimeo"
 
 # Model record auditing
 gem "paper_trail", "~> 10.1.0"

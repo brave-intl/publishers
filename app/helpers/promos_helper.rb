@@ -81,16 +81,10 @@ module PromosHelper
 
   def on_channel_type(channel)
     case channel.details_type
-    when "YoutubeChannelDetails"
-      "#{channel.publication_title.upcase} #{t("promo.shared.on_youtube")}"
-    when "TwitchChannelDetails"
-      "#{channel.publication_title.upcase} #{t("promo.shared.on_twitch")}"
-    when "TwitterChannelDetails"
-      "#{channel.publication_title.upcase} #{t("promo.shared.on_twitter")}"
     when "SiteChannelDetails"
       "#{channel.publication_title.upcase}"
     else
-      raise
+      "#{channel.publication_title.upcase} #{t("promo.shared.on_#{channel.type_display.downcase}")}"
     end
   end
 

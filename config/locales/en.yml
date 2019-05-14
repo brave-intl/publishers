@@ -136,11 +136,13 @@ en:
         website: Website
         twitch: Twitch channel
         twitter: Twitter
+        vimeo: Vimeo channel
         unknown: Channel
       channel_name:
         youtube: YouTube
         website: the website
         twitch: Twitch
+        vimeo: Vimeo
         unknown: the website
       statement_periods:
         past_7_days: Past 7 days
@@ -368,6 +370,9 @@ en:
       twitter:
         heading: TWITTER
         description: I own a Twitter account.
+      vimeo:
+        heading: VIMEO CHANNEL
+        description: I own or manage a Vimeo channel.
     contact_info:
       heading: Contact Information
     registrations:
@@ -463,6 +468,8 @@ en:
         channel_already_registered: You have already claimed the Twitch account %{channel_title}. If you would like to claim a second account, please sign out of Twitch and try again.
       register_twitter_channel:
         channel_already_registered: You have already claimed this Twitter account.
+      register_vimeo_channel:
+        channel_already_registered: You have already claimed this Vimeo account.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_publisher:
@@ -491,7 +498,7 @@ en:
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
       note: Please note, for your security, we require a 2 week waiting period for the 2-factor authentication removal to complete. Additionally, once it is completed you will need to reverify your channels and uphold wallet.
       reminder_body_html: >
-        This is a friendly reminder that the requested changes to your security settings are in progress. In %{remainder}, 2-factor authentication will be removed from your account. Please note, once your 2-factor authentication is removed:  
+        This is a friendly reminder that the requested changes to your security settings are in progress. In %{remainder}, 2-factor authentication will be removed from your account. Please note, once your 2-factor authentication is removed:
         <ul>
         <li>The account channels will need to be re-verified.</li>
         <li>The account wallet will need to be re-verified.</li>
@@ -509,14 +516,14 @@ en:
         <li>There will be a 30-day waiting period on payments.</li>
         </ul>
         <br></br>
-      request_note: 
+      request_note:
       request_success: You have requested a 2-factor security removal. Please check your e-mail to confirm and initiate the process.
       request_not_found: Publisher not found. Please ensure you have entered the correct e-mail
       request_2fa_removal: Request 2-factor Security Removal
       confirm_2fa_removal: Confirm 2-factor Security Removal
       cancel_2fa_removal: Cancel 2-factor Security Removal
-      confirm_login_flash: You have confirmed your request for 2-factor security removal. 
-      confirm_cancel_flash: You have cancelled your request for 2-factor security removal. 
+      confirm_login_flash: You have confirmed your request for 2-factor security removal.
+      confirm_cancel_flash: You have cancelled your request for 2-factor security removal.
     remove_channel_modal:
       headline: Remove Channel?
       intro: You are removing the channel
@@ -606,6 +613,7 @@ en:
       on_youtube: "on YouTube"
       on_twitch: "on Twitch"
       on_twitter: "on Twitter"
+      on_vimeo: "on Vimeo"
       tos_1: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period."
       tos_2_html: |
         The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service.</a>
