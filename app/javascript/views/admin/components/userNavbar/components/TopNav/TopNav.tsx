@@ -60,7 +60,7 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
                   }/publisher_status_updates`}
                 >
                   <Status status={this.props.status}>
-                    {this.props.status}
+                    {this.props.status || "active"}
                   </Status>
                 </StatusLink>
               </Section>
