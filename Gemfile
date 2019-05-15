@@ -68,7 +68,6 @@ gem "omniauth-twitch"
 
 # Oauth client for twitter
 gem "omniauth-twitter"
-gem "omniauth-vimeo"
 
 # Model record auditing
 gem "paper_trail", "~> 10.1.0"
@@ -130,7 +129,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', '~> 4.0.2'
+gem 'webpacker', '~> 4.0.0.rc.2'
 
 # pagination support for models
 gem "will_paginate"
