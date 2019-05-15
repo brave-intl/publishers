@@ -7,6 +7,23 @@ module AdminHelper
     link_to "#{title} <span class='#{icon}'></span>".html_safe, {column: column, direction: direction}.merge(params.permit(:type, :search))
   end
 
+
+  def status_badge_class(status)
+    label = case status
+    when PublisherStatusUpdate::SUSPENDED
+      "badge-danger"
+    when PublisherStatusUpdate::LOCKED
+      "badge-warning"
+    when PublisherStatusUpdate::NO_GRANTS
+      "badge-dark"
+    when PublisherStatusUpdate::ACTIVE
+      "badge-success"
+    else
+      "badge-secondary"
+    end
+    "badge #{label}"
+  end
+
   def no_data_default(value)
     value || "--"
   end

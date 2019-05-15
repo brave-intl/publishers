@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_22_195852) do
+ActiveRecord::Schema.define(version: 2019_05_15_170634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -326,8 +326,10 @@ ActiveRecord::Schema.define(version: 2019_04_22_195852) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
+    t.uuid "thread_id"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id"
+    t.index ["thread_id"], name: "index_publisher_notes_on_thread_id"
   end
 
   create_table "publisher_status_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

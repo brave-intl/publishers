@@ -115,6 +115,11 @@ export const Status = styled.div`
     `
     background-color: #FCCD56;
     `}
+  ${(props: Partial<IStatusProps>) =>
+    props.status === "no_grants" &&
+    `
+    background-color: #343a40;
+    `}
 `;
 
 export const StatusLink = styled.a`

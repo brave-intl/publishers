@@ -1,8 +1,38 @@
-.note.rounded-box
-  .note-header
-    .box
-      = note.created_by.name
-    .box
-      = note.created_at.strftime("%B %d, %Y %k:%M %Z")
-  hr
+.note.mt-4 id="container_#{note.id}"
+  = csrf_meta_tags
+
+  strong= note.created_by.name
+
+  small.text-muted.mx-2 &#149;
+
+  = note.created_at.strftime("%B %d, %Y %k:%M %Z")
+  div.my-3
     = note.note
+    br
+
+  a.text-dark id="reply_#{note.id}" href="#" Reply
+  - if current_user == note.created_by
+    small.text-muted.mx-2 &#149;
+    = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note and all the children?' }, class: 'text-dark'
+
+
+    / reply box
+  div id=note.id class="d-none mt-3"
+    = render partial: 'admin/publisher_notes/new', locals: { publisher_id: @publisher.id, note_id: note.id }
+  javascript:
+    document.addEventListener('DOMContentLoaded', function() {
+      var el = document.getElementById("reply_#{note.id}");
+
+      el.onclick = function() {
+        const replyBox = document.getElementById("#{note.id}")
+        replyBox.classList.toggle('d-none');
+        replyBox.querySelector("textarea").focus()
+
+        return false;
+      }
+    });
+
+  / the sub comments
+  - note.comments&.each do |comment|
+    .ml-4
+      = render partial: 'note', locals: { note: comment, current_user: current_user }

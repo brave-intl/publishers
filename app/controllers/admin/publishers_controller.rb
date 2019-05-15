@@ -29,7 +29,7 @@ class Admin::PublishersController < AdminController
     @publisher = Publisher.find(params[:id])
     @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard"}).to_json
     @potential_referral_payment = @publisher.most_recent_potential_referral_payment
-    @note = PublisherNote.new
+    @current_user = current_user
   end
 
   def edit
@@ -87,10 +87,6 @@ class Admin::PublishersController < AdminController
   def get_publisher
     return unless params[:id].present? || params[:publisher_id].present?
     @publisher = Publisher.find(params[:publisher_id] || params[:id])
-  end
-
-  def publisher_create_note_params
-    params.require(:publisher_note).permit(:publisher, :note)
   end
 
   def admin_approval_channel_params

@@ -170,7 +170,7 @@ class Publisher < ApplicationRecord
   def history
     # Create hash with created_at time as the key
     # Then we can merge and sort by the key to get history
-    notes = self.notes.map { |n| { n.created_at => n } }
+    notes = self.notes.where(thread_id: nil).map { |n| { n.created_at => n } }
     status = status_updates.map { |s| { s.created_at => s } }
 
     combined = notes + status
