@@ -1,6 +1,5 @@
 module Publishers
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-
     include PublishersHelper
 
     before_action :require_publisher, only: [:register_youtube_channel, :register_twitch_channel]
@@ -19,7 +18,7 @@ module Publishers
       end
 
       existing_channel = Channel.joins(:youtube_channel_details).
-          where(verified: true, "youtube_channel_details.youtube_channel_id": youtube_channel_data['id']).first
+        where(verified: true, "youtube_channel_details.youtube_channel_id": youtube_channel_data['id']).first
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered")
         return
@@ -36,7 +35,7 @@ module Publishers
         auth_provider: oauth_response.provider,
         auth_user_id: oauth_response.uid,
         auth_name: oauth_response.dig('info', 'name'),
-        auth_email: oauth_response.dig('info', 'email')
+        auth_email: oauth_response.dig('info', 'email'),
       }
 
       @channel.details = YoutubeChannelDetails.new(youtube_details_attrs)
@@ -45,7 +44,7 @@ module Publishers
 
       @channel.save!
       redirect_to home_publishers_path, notice: t("shared.channel_created")
-      return
+      nil
     end
 
     def register_twitch_channel
@@ -54,7 +53,7 @@ module Publishers
       uid = twitch_auth_hash[:uid]
 
       existing_channel = Channel.joins(:twitch_channel_details).
-          where(verified: true, "twitch_channel_details.twitch_channel_id": uid).first
+        where(verified: true, "twitch_channel_details.twitch_channel_id": uid).first
 
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.display_name })
@@ -70,7 +69,7 @@ module Publishers
         auth_user_id: uid,
         display_name: twitch_info.name,
         name: twitch_info.nickname,
-        email: twitch_info.email
+        email: twitch_info.email,
       }
 
       @channel.details = TwitchChannelDetails.new(twitch_details_attrs)
@@ -90,7 +89,7 @@ module Publishers
       oauth_response = request.env['omniauth.auth']
 
       channel_details = YoutubeChannelDetails.where(auth_user_id: oauth_response.uid).
-          where.not(youtube_channel_id: nil).first
+        where.not(youtube_channel_id: nil).first
 
       if channel_details.nil?
         redirect_to log_in_publishers_path, notice: t(".channel_not_eligable_for_youtube_login")
@@ -137,11 +136,11 @@ module Publishers
           followers_count: oauth_response.extra.raw_info.followers_count,
           statuses_count: oauth_response.extra.raw_info.statuses_count,
           verified: oauth_response.extra.raw_info.verified,
-        }
+        },
       }
 
       existing_channel = Channel.joins(:twitter_channel_details).
-          where(verified: true, "twitter_channel_details.twitter_channel_id": twitter_details_attrs[:twitter_channel_id]).first
+        where(verified: true, "twitter_channel_details.twitter_channel_id": twitter_details_attrs[:twitter_channel_id]).first
 
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered", { channel_title: existing_channel.details.screen_name })
@@ -154,7 +153,7 @@ module Publishers
       @channel.save!
 
       redirect_to home_publishers_path, notice: t("shared.channel_created")
-      return
+      nil
     end
 
     def register_vimeo_channel
@@ -182,17 +181,20 @@ module Publishers
       redirect_to home_publishers_path, notice: t("shared.channel_created")
     end
 
+    def register_reddit_channel
+      reddit_auth_hash = request.env['omniauth.auth']
+      puts reddit_auth_hash
+    end
+
     private
 
     def contest_channel(existing_channel)
-      begin
-        Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
+      Channels::ContestChannel.new(channel: existing_channel, contested_by: @channel).perform
 
-        redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
-      rescue RuntimeError
-        SlackMessenger.new(message: "Publisher #{current_publisher.id} could not contest Channel #{@channel.id}")
-        redirect_to home_publishers_path, notice: t("shared.channel_could_not_be_contested")
-      end
+      redirect_to home_publishers_path, notice: t("shared.channel_contested", time_until_transfer: time_until_transfer(@channel))
+    rescue RuntimeError
+      SlackMessenger.new(message: "Publisher #{current_publisher.id} could not contest Channel #{@channel.id}")
+      redirect_to home_publishers_path, notice: t("shared.channel_could_not_be_contested")
     end
 
     def require_publisher
