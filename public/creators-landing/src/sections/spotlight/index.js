@@ -1,60 +1,60 @@
-import React from 'react'
-import { Box, Heading, Text, Carousel, Image } from 'grommet'
-import { Container } from '../../components'
-import BakerCard from '../../components/img/card-baker.webp'
-import CiccoCard from '../../components/img/card-decicco.webp'
-import BobbyCard from '../../components/img/card-bobby.webp'
-import DefrancoCard from '../../components/img/card-defranco.webp'
-import locale from '../../locale/en'
+import React from "react";
+import { Box, Heading, Text, Carousel, Image } from "grommet";
+import { Container } from "../../components";
+import BakerCard from "../../components/img/card-baker.webp";
+import CiccoCard from "../../components/img/card-decicco.webp";
+import BobbyCard from "../../components/img/card-bobby.webp";
+import DefrancoCard from "../../components/img/card-defranco.webp";
+import locale from "../../locale/en";
 
 const Slide = props => (
   <Box
-    margin={{ horizontal: 'medium' }}
-    direction='row'
-    justify='center'
+    margin={{ horizontal: "medium" }}
+    direction="row"
+    justify="center"
     id={props.backwards}
-    className='carousel-container'
+    className="carousel-container"
     wrap
   >
     <Box
-      pad={{ horizontal: 'large' }}
-      align='center'
-      justify='center'
-      id='carousel-quote'
+      pad={{ horizontal: "large" }}
+      align="center"
+      justify="center"
+      className="carousel-quote"
       flex
     >
-      <Heading level='3'>
+      <Heading level="3">
         {props.quote}
-        <Text as='p' color='grey'>
+        <Text as="p" color="grey">
           {props.text}
         </Text>
       </Heading>
     </Box>
     <Box
-      as='a'
+      as="a"
       href={props.link}
-      id='carousel-img'
-      pad='medium'
-      className='carousel-height'
+      id="carousel-img"
+      pad="medium"
+      className="carousel-height"
     >
-      <Image src={props.card} fit='contain' alt={props.alt} />
+      <Image src={props.card} fit="contain" alt={props.alt} />
     </Box>
   </Box>
-)
+);
 
 export const Spotlight = () => {
   return (
-    <Box align='center' pad='large'>
-      <Container align='center'>
-        <Box align='center' pad='medium'>
-          <Heading level='3' textAlign='center'>
+    <Box align="center" pad="large">
+      <Container align="center">
+        <Box align="center" pad="medium">
+          <Heading level="3" textAlign="center">
             {locale.spotlight.heading}
           </Heading>
-          <Text as='p' textAlign='center' color='grey'>
+          <Text as="p" textAlign="center" color="grey">
             {locale.spotlight.subhead}
           </Text>
         </Box>
-        <Box width='100%'>
+        <Box width="100%">
           <Carousel play={9000}>
             <Slide
               card={BakerCard}
@@ -68,7 +68,7 @@ export const Spotlight = () => {
               link={locale.spotlight.defrancoHref}
               text={locale.spotlight.defrancoCredit}
               quote={locale.spotlight.defrancoQuote}
-              backwards='row-reverse'
+              backwards="row-reverse"
               alt={locale.spotlight.defrancoAlt}
             />
             <Slide
@@ -83,12 +83,12 @@ export const Spotlight = () => {
               link={locale.spotlight.deciccoHref}
               text={locale.spotlight.deciccoCredit}
               quote={locale.spotlight.deciccoQuote}
-              backwards='row-reverse'
+              backwards="row-reverse"
               alt={locale.spotlight.deciccoAlt}
             />
           </Carousel>
         </Box>
       </Container>
     </Box>
-  )
-}
+  );
+};

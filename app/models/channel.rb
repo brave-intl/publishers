@@ -4,6 +4,7 @@ class Channel < ApplicationRecord
   YOUTUBE = "youtube".freeze
   TWITCH = "twitch".freeze
   TWITTER = "twitter".freeze
+  VIMEO = "vimeo".freeze
   CONTEST_TIMEOUT = 10.days
 
   YOUTUBE_VIEW_COUNT = :youtube_view_count
@@ -17,24 +18,24 @@ class Channel < ApplicationRecord
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
   belongs_to :site_channel_details, -> {
-                                      where(channels: { details_type: 'SiteChannelDetails' }).
-                                        includes(:channels)
-                                    }, foreign_key: 'details_id'
+    where(channels: { details_type: 'SiteChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   belongs_to :youtube_channel_details, -> {
-                                         where(channels: { details_type: 'YoutubeChannelDetails' }).
-                                           includes(:channels)
-                                       }, foreign_key: 'details_id'
+    where(channels: { details_type: 'YoutubeChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   belongs_to :twitch_channel_details, -> {
-                                        where(channels: { details_type: 'TwitchChannelDetails' }).
-                                          includes(:channels)
-                                      }, foreign_key: 'details_id'
+    where(channels: { details_type: 'TwitchChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   belongs_to :twitter_channel_details, -> {
-                                         where(channels: { details_type: 'TwitterChannelDetails' }).
-                                           includes(:channels)
-                                       }, foreign_key: 'details_id'
+    where(channels: { details_type: 'TwitterChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
+
+  belongs_to :vimeo_channel_details, -> {
+    where(channels: { details_type: 'VimeoChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
 
   has_one :promo_registration, dependent: :destroy
 
@@ -81,6 +82,9 @@ class Channel < ApplicationRecord
   scope :twitter_channels, -> { joins(:twitter_channel_details) }
   scope :other_verified_twitter_channels, -> (id:) { twitter_channels.where(verified: true).where.not(id: id) }
 
+  scope :vimeo_channels, -> { joins(:vimeo_channel_details) }
+  scope :other_verified_vimeo_channels, -> (id:) { vimeo_channels.where(verified: true).where.not(id: id) }
+
   # Once the verification_method has been set it shows we have presented the publisher with the token. We need to
   # ensure this site_channel will be preserved so the publisher cna come back to it.
   scope :visible_site_channels, -> {
@@ -97,6 +101,9 @@ class Channel < ApplicationRecord
   }
   scope :visible_twitter_channels, -> {
     twitch_channels.where.not('twitter_channel_details.twitter_channel_id': nil)
+  }
+  scope :visible_vimeo_channels, -> {
+    twitch_channels.where.not('vimeo_channel_details.vimeo_channel_id': nil)
   }
 
   scope :visible, -> {
@@ -118,6 +125,8 @@ class Channel < ApplicationRecord
       visible_youtube_channels.where('youtube_channel_details.youtube_channel_id': identifier.split(":").last)
     when "twitter"
       visible_twitter_channels.where('twitch_channel_details.twitter_channel_id': identifier.split(":").last)
+    when "vimeo"
+      visible_vimeo_channels.where('vimeo_channel_details.vimeo_channel_id': identifier.split(":").last)
     else
       visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
     end
@@ -146,17 +155,12 @@ class Channel < ApplicationRecord
   # This will return the channel_identifier without the youtube#channel: or twitch#channel: prefix
   def channel_id
     channel_type = details_type
+
     case channel_type
-    when "YoutubeChannelDetails"
-      details.youtube_channel_id
-    when "SiteChannelDetails"
-      details.brave_publisher_id
     when "TwitchChannelDetails"
       details.name
-    when "TwitterChannelDetails"
-      details.twitter_channel_id
     else
-      nil
+      details.send("#{type_display.downcase}_channel_id")
     end
   end
 
@@ -179,21 +183,14 @@ class Channel < ApplicationRecord
     channel_details_type_identifier = channel_id_split_on_prefix.second
     case prefix
     when "youtube#channel"
-      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
-    when "twitch#channel"
-      TwitchChannelDetails.where(name: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
-    when "twitch#author"
-      TwitchChannelDetails.where(name: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
+      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
     when "twitter#channel"
-      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).
-        joins(:channel).
-        where('channels.verified = true').first.channel
+      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+    when "vimeo#channel"
+      VimeoChannelDetails.where(vimeo_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+    when "twitch#channel"
+    when "twitch#author"
+      TwitchChannelDetails.where(name: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
     else
       Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
       nil
@@ -357,6 +354,9 @@ class Channel < ApplicationRecord
                                   when "TwitterChannelDetails"
                                     Channel.other_verified_twitter_channels(id: id).
                                       where(twitter_channel_details: { twitter_channel_id: details.twitter_channel_id })
+                                  when "VimeoChannelDetails"
+                                    Channel.other_verified_vimeo_channels(id: id).
+                                      where(vimeo_channel_details: { vimeo_channel_id: details.vimeo_channel_id })
                                   end
 
     if duplicate_verified_channels.any?

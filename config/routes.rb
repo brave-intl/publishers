@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       end
 
       get :log_out
-      put :javascript_detected
       get :home
       get :change_email
       get :change_email_confirm
@@ -174,6 +173,8 @@ Rails.application.routes.draw do
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
     resources :channel_transfers
+    resources :referrals
+    resources :payments
     resources :channel_approvals
     resources :security
 

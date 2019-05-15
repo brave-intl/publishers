@@ -509,6 +509,18 @@ ActiveRecord::Schema.define(version: 2019_04_22_195852) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  create_table "vimeo_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "vimeo_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "youtube_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "youtube_channel_id"
     t.string "auth_provider"

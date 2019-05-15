@@ -7,26 +7,32 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.8",
-    "styled-components": "^4.1.3"
+    "react-scripts": "3.0",
+    "styled-components": "^4.1.3",
+    "react-dom-confetti": "^0.1.0"
   },
   "devDependencies": {
-    "prettier": "1.16.3",
-    "react-dom-confetti": "^0.1.0"
+    "prettier": "1.16.3"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build && ./postbuild.sh",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build && node ./async-script.js && ./postbuild.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

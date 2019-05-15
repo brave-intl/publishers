@@ -73,98 +73,6 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert Channel.search("global%").map(&:id).include? channel.id
   end
 
-  describe "#advanced_sort" do
-    describe 'youtube view count' do
-      it 'sorts by ascending' do
-        channels = Channel.advanced_sort(Channel::YOUTUBE_VIEW_COUNT, 'asc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["view_count"].nil?
-          assert channel.details.stats["view_count"] > channels[index-1].details.stats["view_count"]
-        end
-      end
-
-      it 'sorts by descending' do
-        channels = Channel.advanced_sort(Channel::YOUTUBE_VIEW_COUNT, 'desc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["view_count"].nil?
-          assert channel.details.stats["view_count"] < channels[index-1].details.stats["view_count"]
-        end
-      end
-    end
-
-    describe 'twitch view count' do
-      it 'sorts by ascending' do
-        channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'asc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["view_count"].nil?
-          assert channel.details.stats["view_count"] > channels[index-1].details.stats["view_count"]
-        end
-      end
-
-      it 'sorts by descending' do
-        channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'desc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["view_count"].nil?
-          assert channel.details.stats["view_count"] < channels[index-1].details.stats["view_count"]
-        end
-      end
-    end
-
-    describe 'follower count' do
-      it 'sorts by ascending' do
-        channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'asc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["followers_count"].nil?
-          assert channel.details.stats["followers_count"] > channels[index-1].details.stats["followers_count"]
-        end
-      end
-
-      it 'sorts by descending' do
-        channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'desc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["followers_count"].nil?
-          assert channel.details.stats["followers_count"] < channels[index-1].details.stats["followers_count"]
-        end
-      end
-    end
-
-    describe 'video count' do
-      it 'sorts by ascending' do
-        channels = Channel.advanced_sort(Channel::VIDEO_COUNT, 'asc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["video_count"].nil?
-          assert channel.details.stats["video_count"] > channels[index-1].details.stats["video_count"]
-        end
-      end
-
-      it 'sorts by descending' do
-        channels = Channel.advanced_sort(Channel::VIDEO_COUNT, 'desc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["video_count"].nil?
-          assert channel.details.stats["video_count"] < channels[index-1].details.stats["video_count"]
-        end
-      end
-    end
-
-    describe 'subscriber count' do
-      it 'sorts by ascending' do
-        channels = Channel.advanced_sort(Channel::SUBSCRIBER_COUNT, 'asc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["subscriber_count"].nil?
-          assert channel.details.stats["subscriber_count"] > channels[index-1].details.stats["subscriber_count"]
-        end
-      end
-
-      it 'sorts by descending' do
-        channels = Channel.advanced_sort(Channel::SUBSCRIBER_COUNT, 'desc')
-        channels.each_with_index do |channel, index|
-          next if index == 0 || channel.details.stats["subscriber_count"].nil?
-          assert channel.details.stats["subscriber_count"] < channels[index-1].details.stats["subscriber_count"]
-        end
-      end
-    end
-  end
-
   # Maybe put this in a RegisterChannelForPromoJobTest?
   test "verifying a channel calls register_channel_for_promo (site)" do
     channel = channels(:default)
@@ -356,7 +264,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     contested_by_channel.details = TwitchChannelDetails.new(twitch_channel_id: "78032",
                                                             auth_user_id: "abc123",
                                                             auth_provider: "twitch",
-                                                            name: "twtwtw",
+                                                            name: channel.details.name,
                                                             display_name: "TwTwTw",
                                                             thumbnail_url: "https://some_image_host.com/some_image.png")
 
@@ -405,6 +313,12 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal channel, found_channel
   end
 
+  test "find_by_channel_identifier finds vimeo channels" do
+    channel = channels(:vimeo_new)
+    found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
+    assert_equal channel, found_channel
+  end
+
   test "most_recent_potential_payment finds the most recent potential payment" do
     channel = channels(:potentially_paid_site)
     assert channel.most_recent_potential_payment.present?
@@ -412,4 +326,97 @@ class ChannelTest < ActionDispatch::IntegrationTest
     channel = channels(:uphold_connected)
     refute channel.most_recent_potential_payment.present?
   end
+
+  describe "#advanced_sort" do
+    describe 'youtube view count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::YOUTUBE_VIEW_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] > channels[index-1].details.stats["view_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::YOUTUBE_VIEW_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] < channels[index-1].details.stats["view_count"]
+        end
+      end
+    end
+
+    describe 'twitch view count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] > channels[index-1].details.stats["view_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] < channels[index-1].details.stats["view_count"]
+        end
+      end
+    end
+
+    describe 'follower count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["followers_count"].nil?
+          assert channel.details.stats["followers_count"] > channels[index-1].details.stats["followers_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["followers_count"].nil?
+          assert channel.details.stats["followers_count"] < channels[index-1].details.stats["followers_count"]
+        end
+      end
+    end
+
+    describe 'video count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::VIDEO_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["video_count"].nil?
+          assert channel.details.stats["video_count"] > channels[index-1].details.stats["video_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::VIDEO_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["video_count"].nil?
+          assert channel.details.stats["video_count"] < channels[index-1].details.stats["video_count"]
+        end
+      end
+    end
+
+    describe 'subscriber count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::SUBSCRIBER_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["subscriber_count"].nil?
+          assert channel.details.stats["subscriber_count"] > channels[index-1].details.stats["subscriber_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::SUBSCRIBER_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["subscriber_count"].nil?
+          assert channel.details.stats["subscriber_count"] < channels[index-1].details.stats["subscriber_count"]
+        end
+      end
+    end
+  end
+
 end

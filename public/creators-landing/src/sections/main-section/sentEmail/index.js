@@ -30,7 +30,8 @@ const SentEmail = props => {
         align="center"
         pad="large"
         id="zindex"
-        fill>
+        fill
+      >
         <Toast
           notification={props.notification}
           closeNotification={props.closeNotification}
@@ -41,7 +42,8 @@ const SentEmail = props => {
             type: "fadeIn",
             delay: 300,
             duration: 2000
-          }}>
+          }}
+        >
           <IconContainer height="160px">
             <BatLockup />
           </IconContainer>
@@ -52,7 +54,8 @@ const SentEmail = props => {
             color="white"
             a11yTitle="Headline"
             textAlign="center"
-            margin="medium">
+            margin="medium"
+          >
             {props.words.headline}
           </Heading>
           <Text
@@ -60,7 +63,8 @@ const SentEmail = props => {
             size="18px"
             color="rgba(255, 255, 255, .8)"
             textAlign="center"
-            margin={{ top: "0", bottom: "40px" }}>
+            margin={{ top: "0", bottom: "40px" }}
+          >
             {props.words.body}
             <Anchor color="rgba(255, 255, 255, .8)" onClick={props.tryAgain}>
               <strong>{locale.sign.signTryAgain}</strong>
@@ -72,29 +76,34 @@ const SentEmail = props => {
               type: "fadeIn",
               delay: 1000,
               duration: 2000
-            }}>
+            }}
+          >
             <a
               href={locale.sign.iconHelpHref}
               className="sign-icon"
-              title={locale.sign.iconHelpTitle}>
+              title={locale.sign.iconHelpTitle}
+            >
               <SignInfoIcon />
             </a>
             <a
               href={locale.sign.iconMessageHref}
               className="sign-icon"
-              title={locale.sign.iconMessageTitle}>
+              title={locale.sign.iconMessageTitle}
+            >
               <SignMessageIcon />
             </a>
             <a
               href={locale.sign.iconRedditHref}
               className="sign-icon"
-              title={locale.sign.iconRedditTitle}>
+              title={locale.sign.iconRedditTitle}
+            >
               <SignRedditIcon />
             </a>
             <a
               href={locale.sign.iconCommunityHref}
               className="sign-icon"
-              title={locale.sign.iconCommunityTitle}>
+              title={locale.sign.iconCommunityTitle}
+            >
               <SignCommunityIcon />
             </a>
           </Box>
@@ -106,8 +115,13 @@ const SentEmail = props => {
               type: "fadeIn",
               delay: 1000,
               duration: 2000
-            }}>
-            <Box as="a" href={locale.nav.batPillHref}>
+            }}
+          >
+            <Box
+              as="a"
+              href={locale.nav.batPillHref}
+              aria-label={locale.nav.batPillAlt}
+            >
               <Image src={batPill} height="28px" />
             </Box>
           </Box>

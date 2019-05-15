@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import {
   Container,
@@ -108,7 +108,11 @@ const SignComponent = props => {
               size="small"
             />
           </Box>
-          <Box as="a" href={locale.nav.batPillHref}>
+          <Box
+            as="a"
+            href={locale.nav.batPillHref}
+            aria-label={locale.nav.batPillAlt}
+          >
             <Image src={batPill} height="28px" />
           </Box>
         </Box>

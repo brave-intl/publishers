@@ -509,4 +509,115 @@ module Publishers
       end
     end
   end
+
+  class VimeoOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+
+    def token
+      "459609731-kjE9N6xB6DmRDL8okQykgnEa7MeECh3Fp8enmAkj"
+    end
+
+    def auth_hash(options={})
+      OmniAuth::AuthHash.new(
+          {
+            "uid" => "1000",
+            "info" => {
+              "name"=>"Vince the Vimeo owner",
+              "email"=>"vince@example.com",
+              "id" => "1000",
+              "pictures"=> [
+                {
+                  link: "https://vimeo.com/small_image.jpg"
+                },
+                {
+                  link: "https://vimeo.com/medium_image.jpg"
+                },
+                {
+                  link: "https://vimeo.com/big_image.jpg"
+                }
+              ],
+              "link" => "http://vimeo.com/user12345678",
+              "nickname" => "Vince Channel",
+              "auth_provider" => "register_vimeo_channel",
+            },
+            "credentials" => {
+              "token" => token
+            }
+          }.deep_merge(options)
+      )
+    end
+
+    test "a publisher can add a vimeo channel" do
+      publisher = publishers(:uphold_connected)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash
+
+      assert_difference("Channel.count", 1) do
+        get(publisher_register_vimeo_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+      end
+
+      channel = Channel.order(created_at: :asc).last
+
+      assert_equal channel.details.auth_provider, auth_hash.info.auth_provider
+      assert_equal channel.details.vimeo_channel_id, auth_hash.info.id
+      assert_equal channel.details.name, auth_hash.info.name
+      assert_equal channel.details.thumbnail_url, auth_hash.info.pictures.last.link
+    end
+
+    test "a publisher who adds a vimeo channel taken by another will see custom dialog based on the taken channel" do
+      publisher = publishers(:uphold_connected)
+      verified_details = vimeo_channel_details(:vimeo_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(
+          uid: verified_details.vimeo_channel_id,
+          info: { id: verified_details.vimeo_channel_id }
+      )
+
+      assert_difference("Channel.count", 1) do
+        get(publisher_register_vimeo_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('div.channel-status') do |element|
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
+                    element.text)
+      end
+    end
+
+    test "a publisher who adds a vimeo channel taken by themselves will see .channel_already_registered" do
+      publisher = publishers(:vimeo_publisher)
+      verified_details = vimeo_channel_details(:vimeo_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash(
+          uid: verified_details.vimeo_channel_id,
+          info: { id: verified_details.vimeo_channel_id }
+      )
+
+      assert_difference("Channel.count", 0) do
+        get(publisher_register_vimeo_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('body') do |element|
+        assert_select 'div.alert', I18n.t("publishers.omniauth_callbacks.register_vimeo_channel.channel_already_registered")
+      end
+    end
+  end
 end
