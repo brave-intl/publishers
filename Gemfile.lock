@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/jackdempsey/omniauth-reddit.git
+  revision: 47d8d310f144c084fb373db282f6a4aa5f48847f
+  specs:
+    omniauth-reddit (0.0.2)
+      omniauth-oauth2 (~> 1.1)
+
+GIT
   remote: https://github.com/matomo-org/piwik-ruby-api.git
   revision: ad7ed94c15cb201fe6297e33a199eb4471aa292a
   branch: master
@@ -538,6 +545,7 @@ DEPENDENCIES
   newrelic_rpm (~> 3.16)
   nokogiri
   omniauth-google-oauth2 (~> 0.5.2)
+  omniauth-reddit!
   omniauth-twitch
   omniauth-twitter
   omniauth-vimeo
