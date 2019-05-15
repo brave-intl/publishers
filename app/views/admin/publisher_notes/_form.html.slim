@@ -4,6 +4,7 @@
     = f.hidden_field :thread_id, value: note_id
   = f.text_area(:note, rows: "4", class: "form-control",  placeholder:"Add a comment...")
   .mt-3
-    = f.submit("Add note", class: 'btn btn-primary mr-1')
+    = f.submit(note.id.present? ? "Update note" : "Add note", class: 'btn btn-primary mr-1')
+
     - if note_id.present?
       a.btn.btn-dark href="#" Cancel

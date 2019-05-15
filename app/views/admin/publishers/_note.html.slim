@@ -9,11 +9,16 @@
       small.text-muted.mx-2 &#149;
 
       = note.created_at.strftime("%B %d, %Y %k:%M %Z")
-      div.my-3
+
+      div id="update_#{note.id}" class="d-none my-3"
+        = render partial: 'admin/publisher_notes/form', locals: { note: note, publisher_id: @publisher.id, note_id: note.id }
+      div.my-3 id="content_#{note.id}"
+
         = note.note
         br
 
       a.text-dark id="reply_#{note.id}" href="#" Reply
+
       - if current_user == note.created_by
         small.text-muted.mx-2 &#149;
         a.text-dark id="edit_#{note.id}" href="#" Edit
@@ -24,14 +29,15 @@
         / reply box
       div id="new_#{note.id}" class="d-none mt-3"
         = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher_id: @publisher.id, note_id: note.id }
-      div id="edit_#{note.id}" class="d-none mt-3"
-        = render partial: 'admin/publisher_notes/form', locals: { note: note, publisher_id: @publisher.id, note_id: note.id }
+
+
+      / TODO fix this
+      / TODO fix the comment so that
 
       javascript:
         document.addEventListener('DOMContentLoaded', function() {
-          // TODO fix this
-          // TODO fix the comment so that
           var reply = document.getElementById("reply_#{note.id}");
+          var edit = document.getElementById("edit_#{note.id}");
 
           function toggle(id) {
             const replyBox = document.getElementById(id)
@@ -41,7 +47,16 @@
             return false;
           }
 
-          reply.onclick = toggle("reply_#{note.id}")
+          reply.onclick = function() {
+            toggle("new_#{note.id}")
+            return false;
+          }
+
+          edit.onclick = function() {
+            toggle("update_#{note.id}")
+            document.getElementById("content_#{note.id}").classList.toggle('d-none');
+            return false;
+          }
         });
 
       / the sub comments
