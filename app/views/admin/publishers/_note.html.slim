@@ -1,38 +1,50 @@
 .note.mt-4 id="container_#{note.id}"
   = csrf_meta_tags
 
-  strong= note.created_by.name
+  .d-flex
+    .avatar.mr-2
+      .user-avatar style="background: ##{note.created_by.avatar_color};"= render "avatar_svg"
+    .content.w-100
+      strong= note.created_by.name
+      small.text-muted.mx-2 &#149;
 
-  small.text-muted.mx-2 &#149;
+      = note.created_at.strftime("%B %d, %Y %k:%M %Z")
+      div.my-3
+        = note.note
+        br
 
-  = note.created_at.strftime("%B %d, %Y %k:%M %Z")
-  div.my-3
-    = note.note
-    br
-
-  a.text-dark id="reply_#{note.id}" href="#" Reply
-  - if current_user == note.created_by
-    small.text-muted.mx-2 &#149;
-    = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note and all the children?' }, class: 'text-dark'
+      a.text-dark id="reply_#{note.id}" href="#" Reply
+      - if current_user == note.created_by
+        small.text-muted.mx-2 &#149;
+        a.text-dark id="edit_#{note.id}" href="#" Edit
+        small.text-muted.mx-2 &#149;
+        = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note and all the children?' }, class: 'text-dark'
 
 
-    / reply box
-  div id=note.id class="d-none mt-3"
-    = render partial: 'admin/publisher_notes/new', locals: { publisher_id: @publisher.id, note_id: note.id }
-  javascript:
-    document.addEventListener('DOMContentLoaded', function() {
-      var el = document.getElementById("reply_#{note.id}");
+        / reply box
+      div id="new_#{note.id}" class="d-none mt-3"
+        = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher_id: @publisher.id, note_id: note.id }
+      div id="edit_#{note.id}" class="d-none mt-3"
+        = render partial: 'admin/publisher_notes/form', locals: { note: note, publisher_id: @publisher.id, note_id: note.id }
 
-      el.onclick = function() {
-        const replyBox = document.getElementById("#{note.id}")
-        replyBox.classList.toggle('d-none');
-        replyBox.querySelector("textarea").focus()
+      javascript:
+        document.addEventListener('DOMContentLoaded', function() {
+          // TODO fix this
+          // TODO fix the comment so that
+          var reply = document.getElementById("reply_#{note.id}");
 
-        return false;
-      }
-    });
+          function toggle(id) {
+            const replyBox = document.getElementById(id)
+            replyBox.classList.toggle('d-none');
+            replyBox.querySelector("textarea").focus()
 
-  / the sub comments
-  - note.comments&.each do |comment|
-    .ml-4
-      = render partial: 'note', locals: { note: comment, current_user: current_user }
+            return false;
+          }
+
+          reply.onclick = toggle("reply_#{note.id}")
+        });
+
+      / the sub comments
+      .border-left.pl-2
+        - note.comments&.each do |comment|
+          = render partial: 'note', locals: { note: comment, current_user: current_user }

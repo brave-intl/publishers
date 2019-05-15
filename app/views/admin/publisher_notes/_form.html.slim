@@ -1,8 +1,8 @@
-= form_for PublisherNote.new, { method: :post, url: admin_publisher_publisher_notes_path(publisher_id: publisher_id) } do |f|
+= form_for note, { method: :post, url: admin_publisher_publisher_notes_path(publisher_id: publisher_id) } do |f|
   - note_id ||= nil
   - if note_id.present?
     = f.hidden_field :thread_id, value: note_id
-  = f.text_area(:note, rows: "4", class: "form-control")
+  = f.text_area(:note, rows: "4", class: "form-control",  placeholder:"Add a comment...")
   .mt-3
     = f.submit("Add note", class: 'btn btn-primary mr-1')
     - if note_id.present?

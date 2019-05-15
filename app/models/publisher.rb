@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 class Publisher < ApplicationRecord
   has_paper_trail only: [:name, :email, :pending_email, :phone_normalized, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
@@ -162,6 +164,11 @@ class Publisher < ApplicationRecord
 
   def email_verified?
     email.present?
+  end
+
+  # Silly method for showing a color for people's avatar
+  def avatar_color
+    Digest::MD5.hexdigest(email || pending_email)[0...6]
   end
 
   # Public: Show history of publisher's notes and statuses sorted by the created time

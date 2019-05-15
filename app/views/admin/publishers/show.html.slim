@@ -155,7 +155,7 @@ hr
 
   hr
   h3.admin-header = "Notes"
-  = render partial: 'admin/publisher_notes/new', locals: { publisher_id: @publisher.id }
+  = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher_id: @publisher.id }
 
   #notes-section
     #create-note

@@ -282,3 +282,18 @@ a.logo span {
   border: 1px solid #eee;
   color: #ddd;
 }
+
+.user-avatar {
+  margin: 4px;
+  width: 42px;
+  height: 42px;
+  border: solid 1px #d3d5d7;
+  border-radius: 50%;
+  overflow: hidden;
+
+  svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+  }
+}
