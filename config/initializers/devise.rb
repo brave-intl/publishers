@@ -244,25 +244,25 @@ Devise.setup do |config|
                   Rails.application.secrets[:google_client_id],
                   Rails.application.secrets[:google_client_secret],
                   {
-                      name: 'register_youtube_channel',
-                      scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
+                    name: 'register_youtube_channel',
+                    scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly",
                   }
 
   config.omniauth :google_oauth2,
                   Rails.application.secrets[:google_client_id],
                   Rails.application.secrets[:google_client_secret],
                   {
-                      name: 'youtube_login',
-                      scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly"
+                    name: 'youtube_login',
+                    scope: "profile,email,https://www.googleapis.com/auth/youtube.readonly",
                   }
 
   config.omniauth :twitch,
                   Rails.application.secrets[:twitch_client_id],
                   Rails.application.secrets[:twitch_client_secret],
                   {
-                    name: 'register_twitch_channel'
+                    name: 'register_twitch_channel',
                   }
-                  
+
   config.omniauth :twitter,
                   Rails.application.secrets[:twitter_client_id],
                   Rails.application.secrets[:twitter_client_secret],
@@ -271,15 +271,23 @@ Devise.setup do |config|
                     secure_image_url: true,
                     image_size: 'normal',
                     authorize_params: {
-                      force_login: true
-                    }
+                      force_login: true,
+                    },
                   }
 
   config.omniauth :vimeo,
                   Rails.application.secrets[:vimeo_client_id],
                   Rails.application.secrets[:vimeo_client_secret],
                   {
-                    name: 'register_vimeo_channel'
+                    name: 'register_vimeo_channel',
+                  }
+
+  config.omniauth :reddit,
+                  Rails.application.secrets[:reddit_client_id],
+                  Rails.application.secrets[:reddit_client_secret],
+                  {
+                    name: 'register_reddit_channel',
+                    scope: "identity",
                   }
 
   # ==> Warden configuration

@@ -1,6 +1,7 @@
 GIT
-  remote: git://github.com/jackdempsey/omniauth-reddit.git
-  revision: 47d8d310f144c084fb373db282f6a4aa5f48847f
+  remote: git://github.com/dlipeles/omniauth-reddit.git
+  revision: 07724946d9a94c591ada3e43e849b34860fab46e
+  branch: master
   specs:
     omniauth-reddit (0.0.2)
       omniauth-oauth2 (~> 1.1)
@@ -250,7 +251,7 @@ GEM
     msgpack (1.2.10)
     multi_json (1.13.1)
     multi_xml (0.6.0)
-    multipart-post (2.0.0)
+    multipart-post (2.1.1)
     mustermann (1.0.3)
     netrc (0.11.0)
     newrelic_rpm (3.18.1.330)

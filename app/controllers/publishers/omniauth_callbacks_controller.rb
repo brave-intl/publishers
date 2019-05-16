@@ -183,7 +183,9 @@ module Publishers
 
     def register_reddit_channel
       reddit_auth_hash = request.env['omniauth.auth']
+      puts 'hello'
       puts reddit_auth_hash
+      redirect_to home_publishers_path, notice: t("shared.channel_created")
     end
 
     private
