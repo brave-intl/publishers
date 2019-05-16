@@ -13,18 +13,21 @@ module Admin
       )
       note.thread_id = note_params[:thread_id] if note_params[:thread_id].present?
 
-      note.save!
-      redirect_to(admin_publisher_path(publisher.id))
+      if note.save
+        redirect_to(admin_publisher_path(publisher.id))
+      else
+       redirect_to admin_publisher_path(publisher.id), flash: { alert: note.errors.full_messages.join(',') }
+      end
     end
 
     def update
       if @note.update(note_params)
         redirect_to admin_publisher_path(id: params[:publisher_id] ), flash: { success: "Successfully updated comment"}
       else
-
-        redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { error: "COuld not update"}
+        redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { alert: note.errors.full_messages }
       end
     end
+
 
     def destroy
       publisher = @note.publisher

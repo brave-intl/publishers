@@ -10,7 +10,7 @@ html
       = render 'admin/shared/sidebar'
       section id='main-content'
         section id='wrapper'
-          .notifications
+          .notifications.mb-2
             - if flash[:alert]
               .alert.alert-warning.flash= flash[:alert]
             - if flash[:notice]
