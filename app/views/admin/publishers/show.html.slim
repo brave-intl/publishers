@@ -155,13 +155,13 @@ hr
 
   hr
   h3.admin-header = "Notes"
-  = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher_id: @publisher.id }
+  = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
 
   #notes-section
     #create-note
     - @publisher.history.each do |h|
       - if h.is_a?(PublisherNote)
-        = render partial: 'note', locals: { note: h, current_user: @current_user}
+        = render partial: 'note', locals: { note: h, publisher: @publisher, current_user: @current_user}
       - elsif h.is_a?(PublisherStatusUpdate)
         = render partial: 'status', locals: { note: h }
       hr

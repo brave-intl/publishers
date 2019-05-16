@@ -19,6 +19,16 @@ module Admin
       end
     end
 
+    def update
+      note = PublisherNote.find(params[:id])
+      if note.update(note_params)
+        redirect_to admin_publisher_path(id: params[:publisher_id] ), flash: { success: "Successfully updated comment"}
+      else
+
+        redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { error: "COuld not update"}
+      end
+    end
+
     def destroy
       note = PublisherNote.find(params[:id])
       raise unless note.created_by == current_user

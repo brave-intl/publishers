@@ -1,10 +1,10 @@
-= form_for note, { method: :post, url: admin_publisher_publisher_notes_path(publisher_id: publisher_id) } do |f|
-  - note_id ||= nil
-  - if note_id.present?
-    = f.hidden_field :thread_id, value: note_id
+= form_for [:admin, publisher, note] do |f|
+  - thread_id ||= nil
+  - if thread_id.present?
+    = f.hidden_field :thread_id, value: thread_id
   = f.text_area(:note, rows: "4", class: "form-control",  placeholder:"Add a comment...")
   .mt-3
     = f.submit(note.id.present? ? "Update note" : "Add note", class: 'btn btn-primary mr-1')
 
-    - if note_id.present?
-      a.btn.btn-dark href="#" Cancel
+    - if note.id.present? || thread_id.present?
+      a.btn.btn-dark id="cancel_#{note.id}_#{thread_id}" href="#" Cancel
