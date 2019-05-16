@@ -38,15 +38,15 @@ class SiteBanner < ApplicationRecord
     require 'addressable'
     self.social_links = social_links.select { |key, _| key.in?(["twitch", "youtube", "twitter"]) }
 
-    unless social_links["twitch"].blank? || Addressable::URI.parse(social_links["twitch"]).to_s.starts_with?('https://twitch.tv/', 'www.twitch.tv/', 'twitch.tv/')
+    unless social_links["twitch"].blank? || Addressable::URI.parse(social_links["twitch"]).to_s.starts_with?('https://www.twitch.tv/', 'https://twitch.tv/', 'www.twitch.tv/', 'twitch.tv/')
       social_links["twitch"] = ""
     end
 
-    unless social_links["youtube"].blank? || Addressable::URI.parse(social_links["youtube"]).to_s.starts_with?('https://youtube.com/', 'www.youtube.com/', 'youtube.com/')
+    unless social_links["youtube"].blank? || Addressable::URI.parse(social_links["youtube"]).to_s.starts_with?('https://www.youtube.com/', 'https://youtube.com/', 'www.youtube.com/', 'youtube.com/')
       social_links["youtube"] = ""
     end
 
-    unless social_links["twitter"].blank? || Addressable::URI.parse(social_links["twitter"]).to_s.starts_with?('https://twitter.com/', 'www.twitter.com/', 'twitter.com/')
+    unless social_links["twitter"].blank? || Addressable::URI.parse(social_links["twitter"]).to_s.starts_with?('https://www.twitter.com/', 'https://twitter.com/', 'www.twitter.com/', 'twitter.com/')
       social_links["twitter"] = ""
     end
   end
