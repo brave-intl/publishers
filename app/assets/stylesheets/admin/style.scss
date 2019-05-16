@@ -294,6 +294,8 @@ a.logo span {
   svg {
     width: 40px;
     height: 40px;
-    opacity: 0.7;
+    opacity: 0.8;
+    filter: brightness(5) grayscale(1)
+      drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.3));
   }
 }
