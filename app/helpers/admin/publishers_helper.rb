@@ -7,5 +7,20 @@ module Admin
         class: status_badge_class(publisher.last_status_update.status)
       )
     end
+
+    def set_mentions(note)
+      # Regex to find any @words
+      note.scan(/\@(\w*)/).each do |mention|
+        # Some reason the regex likes to put an array inside array
+        mention = mention[0]
+        publisher = Publisher.where("email LIKE ?", "#{mention}@brave.com").first
+        if publisher.present?
+          # Assuming the administrator is a brave.com email address :)
+          note = note.sub("@#{mention}", link_to(publisher.name, admin_publisher_path(publisher)))
+        end
+      end
+
+      note
+    end
   end
 end

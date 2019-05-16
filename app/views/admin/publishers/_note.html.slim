@@ -26,7 +26,7 @@
 
       / Actual content of the note
       div.my-3 id="content_#{note.id}"
-        = simple_format(note.note, sanitize: true)
+        = simple_format(set_mentions(note.note), sanitize: true)
 
       / Reply button
       a.text-dark id="reply_#{note.id}" href="#" Reply
@@ -36,7 +36,7 @@
         small.text-muted.mx-2 &#149;
         a.text-dark id="edit_#{note.id}" href="#" Edit
         small.text-muted.mx-2 &#149;
-        = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note and all the children?' }, class: 'text-dark'
+        = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note?' }, class: 'text-dark'
 
       / The reply box
       div id="new_#{note.id}" class="d-none mt-3"

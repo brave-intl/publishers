@@ -34,7 +34,7 @@ class Admin::PublishersController < AdminController
     @publishers = @publishers.group(:id).paginate(page: params[:page])
 
     respond_to do |format|
-      format.json { render json: @publishers }
+      format.json { render json: @publishers.to_json({methods: :avatar_color}) }
       format.html { }
     end
   end

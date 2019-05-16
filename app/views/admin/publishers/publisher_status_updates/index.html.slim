@@ -9,6 +9,15 @@ h5.admin-header Change current status for #{@publisher.name}
       br
       br
       = "If you believe this user is a potential outlier please contact the appropriate group and alert them."
+- else
+  .my-3
+    p.alert.alert-warning
+      = "If you are planning on suspending this user please provide evidence and justification for your actions. This may come in the form of excel, git, or a reasonable explaination of the users misdeeds."
+      br
+      br
+      = "Please view more information about the publisher guidelines here."
+      br
+      = link_to "https://community.brave.com/t/a-note-to-publishers/48733"
 
 = form_for(@publisher, url: admin_publisher_publisher_status_updates_path(@publisher.id), method: :create) do |f|
   .form-group
