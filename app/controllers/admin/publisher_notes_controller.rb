@@ -1,5 +1,7 @@
 module Admin
   class PublisherNotesController < AdminController
+    before_action :authorize, except: :create
+
     def create
       publisher = Publisher.find(params[:publisher_id])
       admin = current_user
@@ -12,16 +14,11 @@ module Admin
       note.thread_id = note_params[:thread_id] if note_params[:thread_id].present?
 
       note.save!
-      if note_params[:thread_id].present?
-        redirect_to(admin_publisher_path(publisher.id, anchor: "container_#{note_params[:thread_id]}"))
-      else
-        redirect_to(admin_publisher_path(publisher.id))
-      end
+      redirect_to(admin_publisher_path(publisher.id))
     end
 
     def update
-      note = PublisherNote.find(params[:id])
-      if note.update(note_params)
+      if @note.update(note_params)
         redirect_to admin_publisher_path(id: params[:publisher_id] ), flash: { success: "Successfully updated comment"}
       else
 
@@ -30,16 +27,22 @@ module Admin
     end
 
     def destroy
-      note = PublisherNote.find(params[:id])
-      raise unless note.created_by == current_user
+      publisher = @note.publisher
+      if @note.comments.any?
+        redirect_to admin_publisher_path(publisher), flash: { alert: "Can't delete a note that has comments." }
+      else
+        @note.destroy
 
-      publisher = note.publisher
-      note.destroy
-
-      redirect_to admin_publisher_path(publisher)
+        redirect_to admin_publisher_path(publisher)
+      end
     end
 
     private
+
+    def authorize
+      @note =  PublisherNote.find(params[:id])
+      raise unless @note.created_by == current_user
+    end
 
     def note_params
       params.require(:publisher_note).permit(:note, :thread_id)
