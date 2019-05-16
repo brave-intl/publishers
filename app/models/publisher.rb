@@ -77,14 +77,13 @@ class Publisher < ApplicationRecord
   scope :not_admin, -> { where.not(role: ADMIN) }
   scope :partner, -> { where(role: PARTNER) }
   scope :not_partner, -> { where.not(role: PARTNER) }
-  scope :suspended, -> {
-    joins(:status_updates).
-      where('publisher_status_updates.created_at =
-            (SELECT MAX(publisher_status_updates.created_at)
-            FROM publisher_status_updates
-            WHERE publisher_status_updates.publisher_id = publishers.id)').
-      where("publisher_status_updates.status = 'suspended'")
-  }
+
+  scope :created, -> { filter_status(PublisherStatusUpdate::CREATED )}
+  scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING )}
+  scope :active, -> { filter_status(PublisherStatusUpdate::ACTIVE )}
+  scope :suspended, -> { filter_status(PublisherStatusUpdate::SUSPENDED )}
+  scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED )}
+  scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS )}
 
   scope :not_suspended, -> {
     where.not(id: suspended)
@@ -93,6 +92,16 @@ class Publisher < ApplicationRecord
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
+
+  def self.filter_status(status)
+    joins(:status_updates).
+    where('publisher_status_updates.created_at =
+          (SELECT MAX(publisher_status_updates.created_at)
+          FROM publisher_status_updates
+          WHERE publisher_status_updates.publisher_id = publishers.id)').
+    where("publisher_status_updates.status = ?", status)
+  end
+
 
   def self.statistical_totals(up_to_date: 1.day.from_now)
     # TODO change this

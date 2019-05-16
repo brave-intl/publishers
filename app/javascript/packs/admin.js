@@ -1,8 +1,30 @@
-import 'utils/request';
-import 'admin/dashboard/index';
-import 'admin/stats/index';
-import 'admin/dashboard/unattached_promo_registration'
-import Rails from 'rails-ujs';
+import "utils/request";
+import "admin/dashboard/index";
+import "admin/stats/index";
+import "admin/dashboard/unattached_promo_registration";
+import Rails from "rails-ujs";
+import Tribute from "tributejs";
+import "tributejs/dist/tribute.css";
+
+document.addEventListener("DOMContentLoaded", function() {
+  if (window.location.href.indexOf("admin/publishers/") !== -1) {
+    fetch("/admin/publishers?role=admin")
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(publishers) {
+        const list = publishers.map(p => {
+          return { key: p.name, value: p.email.split("@")[0] };
+        });
+
+        var tribute = new Tribute({
+          values: list
+        });
+
+        tribute.attach(document.querySelectorAll(".note-form"));
+      });
+  }
+});
 
 /*
  * Override the default way Rails picks an href for a data-method link. This
@@ -31,10 +53,12 @@ Rails.href = function Rails_href_override(element) {
 };
 
 Rails.start();
-document.addEventListener('DOMContentLoaded', function(){ 
-  let sidebarToggles = document.getElementsByClassName("sidebar-toggle"); 
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    let sidebarToggles = document.getElementsByClassName("sidebar-toggle");
     for (var i = 0; i < sidebarToggles.length; i++) {
-      sidebarToggles[i].addEventListener('click', function (event) {
+      sidebarToggles[i].addEventListener("click", function(event) {
         var item = event.target || event.srcElement;
         // If the clicked element doesn't have the right selector, bail
         document.activeElement.blur();
@@ -44,16 +68,18 @@ document.addEventListener('DOMContentLoaded', function(){
         let icon = item.children[0];
 
         // Toggle the menu
-        let element = item.parentElement.querySelector('.sub-menu');
-        if(element.style.display === 'none') {
+        let element = item.parentElement.querySelector(".sub-menu");
+        if (element.style.display === "none") {
           icon.classList.remove("fa-chevron-down");
           icon.classList.add("fa-chevron-up");
-          element.style.display = '';
+          element.style.display = "";
         } else {
           icon.classList.remove("fa-chevron-up");
           icon.classList.add("fa-chevron-down");
-          element.style.display = 'none';
+          element.style.display = "none";
         }
       });
     }
-  }, false);
+  },
+  false
+);

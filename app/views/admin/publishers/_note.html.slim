@@ -26,7 +26,7 @@
 
       / Actual content of the note
       div.my-3 id="content_#{note.id}"
-        = simple_format(note.note)
+        = simple_format(note.note, sanitize: true)
 
       / Reply button
       a.text-dark id="reply_#{note.id}" href="#" Reply

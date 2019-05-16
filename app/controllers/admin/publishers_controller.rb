@@ -18,11 +18,25 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.where(search_sql, search_query: search_query)
     end
 
-    @publishers = @publishers.suspended if params[:suspended].present?
+    if params[:status].present?
+      if PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
+        @publishers = @publishers.send(params[:status])
+      end
+    end
+
+    if params[:role].present?
+      @publishers = @publishers.where(role: params[:role])
+    end
+
     if params[:two_factor_authentication_removal].present?
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
     @publishers = @publishers.group(:id).paginate(page: params[:page])
+
+    respond_to do |format|
+      format.json { render json: @publishers }
+      format.html { }
+    end
   end
 
   def show
