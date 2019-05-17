@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_214846) do
+ActiveRecord::Schema.define(version: 2019_05_17_152544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,18 @@ ActiveRecord::Schema.define(version: 2019_05_16_214846) do
     t.index ["faq_category_id"], name: "index_faqs_on_faq_category_id"
     t.index ["question"], name: "index_faqs_on_question", unique: true
     t.index ["rank"], name: "index_faqs_on_rank"
+  end
+
+  create_table "github_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "github_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "invoice_files", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

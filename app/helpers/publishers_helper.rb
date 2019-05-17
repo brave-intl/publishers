@@ -375,6 +375,8 @@ module PublishersHelper
       I18n.t("helpers.publisher.channel_type.vimeo")
     when RedditChannelDetails
       I18n.t("helpers.publisher.channel_type.reddit")
+    when GithubChannelDetails
+      I18n.t("helpers.publisher.channel_type.github")
     else
       I18n.t("helpers.publisher.channel_type.unknown")
     end
@@ -392,6 +394,8 @@ module PublishersHelper
       I18n.t("helpers.publisher.channel_name.vimeo")
     when RedditChannelDetails
       I18n.t("helpers.publisher.channel_name.reddit")
+    when GithubChannelDetails
+      I18n.t("helpers.publisher.channel_name.github")
     else
       I18n.t("helpers.publisher.channel_name.unknown")
     end
@@ -429,6 +433,8 @@ module PublishersHelper
     when VimeoChannelDetails
       asset_url('publishers-home/vimeo-icon_32x32.png')
     when RedditChannelDetails
+      asset_url('publishers-home/vimeo-icon_32x32.png')
+    when GithubChannelDetails
       asset_url('publishers-home/vimeo-icon_32x32.png')
     else
       asset_url('publishers-home/website-icon_32x32.png')

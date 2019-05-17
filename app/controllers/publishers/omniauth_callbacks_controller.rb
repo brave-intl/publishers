@@ -206,6 +206,12 @@ module Publishers
       redirect_to home_publishers_path, notice: t("shared.channel_created")
     end
 
+    def register_github_channel
+      github_auth_hash = request.env['omniauth.auth']
+      puts github_auth_hash
+      redirect_to home_publishers_path, notice: t("shared.channel_created")
+    end
+
     private
 
     def contest_channel(existing_channel)

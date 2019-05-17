@@ -290,6 +290,14 @@ Devise.setup do |config|
                     scope: "identity",
                   }
 
+  config.omniauth :github,
+                  Rails.application.secrets[:github_client_id],
+                  Rails.application.secrets[:github_client_secret],
+                  {
+                    name: 'register_github_channel',
+                    scope: "identity",
+                  }
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

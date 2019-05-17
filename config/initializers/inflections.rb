@@ -23,6 +23,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
     twitter_channel_details
     vimeo_channel_details
     reddit_channel_details
+    github_channel_details
   )
   inflect.acronym 'OAuth'
 end
