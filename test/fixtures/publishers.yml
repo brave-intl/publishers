@@ -204,6 +204,13 @@ vimeo_publisher:
   visible: true
   default_currency: "BAT"
 
+reddit_publisher:
+  email: "reggieReddit@gmail.com"
+  name: "Reggie the Redditor"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  default_currency: "BAT"
+
 global_media_group:
   email: "fred@vglobal.org"
   name: "Global Media Group"

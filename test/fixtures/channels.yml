@@ -140,6 +140,11 @@ vimeo_new:
   details: vimeo_details (VimeoChannelDetails)
   verified: true
 
+reddit_new:
+  publisher: reddit_publisher
+  details: reddit_details (RedditChannelDetails)
+  verified: true
+
 global_yt1:
   publisher: global_media_group
   details: global_yt1_details (YoutubeChannelDetails)

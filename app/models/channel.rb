@@ -5,6 +5,7 @@ class Channel < ApplicationRecord
   TWITCH = "twitch".freeze
   TWITTER = "twitter".freeze
   VIMEO = "vimeo".freeze
+  REDDIT = "reddit".freeze
   CONTEST_TIMEOUT = 10.days
 
   YOUTUBE_VIEW_COUNT = :youtube_view_count
@@ -35,6 +36,10 @@ class Channel < ApplicationRecord
 
   belongs_to :vimeo_channel_details, -> {
     where(channels: { details_type: 'VimeoChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
+
+  belongs_to :reddit_channel_details, -> {
+    where(channels: { details_type: 'RedditChannelDetails' }).includes(:channels)
   }, foreign_key: 'details_id'
 
   has_one :promo_registration, dependent: :destroy
@@ -85,6 +90,9 @@ class Channel < ApplicationRecord
   scope :vimeo_channels, -> { joins(:vimeo_channel_details) }
   scope :other_verified_vimeo_channels, -> (id:) { vimeo_channels.where(verified: true).where.not(id: id) }
 
+  scope :reddit_channels, -> { joins(:reddit_channel_details) }
+  scope :other_verified_reddit_channels, -> (id:) { reddit_channels.where(verified: true).where.not(id: id) }
+
   # Once the verification_method has been set it shows we have presented the publisher with the token. We need to
   # ensure this site_channel will be preserved so the publisher cna come back to it.
   scope :visible_site_channels, -> {
@@ -104,6 +112,9 @@ class Channel < ApplicationRecord
   }
   scope :visible_vimeo_channels, -> {
     twitch_channels.where.not('vimeo_channel_details.vimeo_channel_id': nil)
+  }
+  scope :visible_reddit_channels, -> {
+    reddit_channels.where.not('reddit_channel_details.reddit_channel_id': nil)
   }
 
   scope :visible, -> {
@@ -127,6 +138,8 @@ class Channel < ApplicationRecord
       visible_twitter_channels.where('twitch_channel_details.twitter_channel_id': identifier.split(":").last)
     when "vimeo"
       visible_vimeo_channels.where('vimeo_channel_details.vimeo_channel_id': identifier.split(":").last)
+    when "reddit"
+      visible_vimeo_channels.where('reddit_channel_details.reddit_channel_id': identifier.split(":").last)
     else
       visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
     end
@@ -188,6 +201,8 @@ class Channel < ApplicationRecord
       TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
     when "vimeo#channel"
       VimeoChannelDetails.where(vimeo_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+    when "reddit#channel"
+      RedditChannelDetails.where(reddit_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
     when "twitch#channel"
     when "twitch#author"
       TwitchChannelDetails.where(name: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
@@ -357,6 +372,9 @@ class Channel < ApplicationRecord
                                   when "VimeoChannelDetails"
                                     Channel.other_verified_vimeo_channels(id: id).
                                       where(vimeo_channel_details: { vimeo_channel_id: details.vimeo_channel_id })
+                                  when "RedditChannelDetails"
+                                    Channel.other_verified_reddit_channels(id: id).
+                                      where(reddit_channel_details: { reddit_channel_id: details.reddit_channel_id })
                                   end
 
     if duplicate_verified_channels.any?
