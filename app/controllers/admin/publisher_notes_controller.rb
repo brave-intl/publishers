@@ -33,6 +33,8 @@ module Admin
 
     def update
       if @note.update(note_params)
+        email_tagged_users(@note)
+
         redirect_to admin_publisher_path(id: params[:publisher_id] ), flash: { success: "Successfully updated comment"}
       else
         redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { alert: note.errors.full_messages }
