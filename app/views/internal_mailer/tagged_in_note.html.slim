@@ -1,0 +1,16 @@
+- if @note.thread_id
+  div style=".25em solid #dfe2e5; padding: 0 1em; color: #6a737d;"
+    div
+      =simple_format(@note.thread.note)
+    ="— #{@note.thread.created_by.name}"
+
+
+= simple_format(set_mentions(@note.note))
+
+= link_to "View this note", admin_publisher_url(@note.publisher), target: '_blank', style: "font-size: small;"
+
+div style="color: #666; font-size: small;"
+  ="—"
+  br
+  ="You are receiving this because you were mentioned."
+

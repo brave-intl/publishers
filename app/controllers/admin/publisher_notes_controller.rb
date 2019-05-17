@@ -13,7 +13,18 @@ module Admin
       )
       note.thread_id = note_params[:thread_id] if note_params[:thread_id].present?
 
+
       if note.save
+        email_tagged_users(note)
+
+        if note_params[:thread_id].present?
+          created_by = PublisherNote.find(note_params[:thread_id]).created_by
+          InternalMailer::tagged_in_note(
+            tagged_user: created_by,
+            note: note
+          ).deliver_later unless current_user == created_by
+        end
+
         redirect_to(admin_publisher_path(publisher.id))
       else
        redirect_to admin_publisher_path(publisher.id), flash: { alert: note.errors.full_messages.join(',') }
@@ -28,7 +39,6 @@ module Admin
       end
     end
 
-
     def destroy
       publisher = @note.publisher
       if @note.comments.any?
@@ -41,6 +51,15 @@ module Admin
     end
 
     private
+
+    def email_tagged_users(publisher_note)
+      publisher_note.note.scan(/\@(\w*)/).each do |mention|
+        # Some reason the regex likes to put an array inside array
+        mention = mention[0]
+        publisher = Publisher.where("email LIKE ?", "#{mention}@brave.com").first
+        InternalMailer::tagged_in_note(tagged_user: publisher, note: publisher_note).deliver_later if publisher.present?
+      end
+    end
 
     def authorize
       @note =  PublisherNote.find(params[:id])

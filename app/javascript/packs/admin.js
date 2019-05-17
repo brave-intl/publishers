@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
               };">` +
               `<img src=${Avatar} />` +
               `</div>` +
-              `<span>${item.string}</span>` +
+              `${item.string}` +
               `</div>`
             );
           }

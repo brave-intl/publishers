@@ -7,21 +7,19 @@ module AdminHelper
     link_to "#{title} <span class='#{icon}'></span>".html_safe, {column: column, direction: direction}.merge(params.permit(:type, :search))
   end
 
-
-  def status_badge_class(status)
-    label = case status
-    when PublisherStatusUpdate::SUSPENDED
-      "badge-danger"
-    when PublisherStatusUpdate::LOCKED
-      "badge-warning"
-    when PublisherStatusUpdate::NO_GRANTS
-      "badge-dark"
-    when PublisherStatusUpdate::ACTIVE
-      "badge-success"
-    else
-      "badge-secondary"
+  def set_mentions(note)
+    # Regex to find any @words
+    note.scan(/\@(\w*)/).each do |mention|
+      # Some reason the regex likes to put an array inside array
+      mention = mention[0]
+      publisher = Publisher.where("email LIKE ?", "#{mention}@brave.com").first
+      if publisher.present?
+        # Assuming the administrator is a brave.com email address :)
+        note = note.sub("@#{mention}", link_to("@" + publisher.name, admin_publisher_url(publisher)))
+      end
     end
-    "badge #{label}"
+
+    note
   end
 
   def no_data_default(value)
