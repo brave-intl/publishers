@@ -208,7 +208,26 @@ module Publishers
 
     def register_github_channel
       github_auth_hash = request.env['omniauth.auth']
-      puts github_auth_hash
+      @channel = current_publisher.channels.new(verified: true)
+      @channel.details = GithubChannelDetails.new(
+        name: github_auth_hash.info.name,
+        github_channel_id: github_auth_hash.uid,
+        auth_provider: github_auth_hash.provider,
+        thumbnail_url: github_auth_hash.info.image,
+        channel_url: github_auth_hash.info.urls.GitHub,
+        nickname: reddit_auth_hash.info.nickname,
+      )
+
+      existing_channel = Channel.joins(:github_channel_details).where("github_channel_details.github_channel_id": github_auth_hash.uid).first
+
+      if existing_channel&.publisher == current_publisher
+        redirect_to home_publishers_path, notice: t(".channel_already_registered")
+        return
+      end
+
+      contest_channel(existing_channel) and return if existing_channel
+      @channel.save!
+
       redirect_to home_publishers_path, notice: t("shared.channel_created")
     end
 
