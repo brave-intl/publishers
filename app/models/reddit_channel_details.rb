@@ -24,4 +24,4 @@ class RedditChannelDetails < BaseChannelDetails
   def url
     channel_url
   end
-  end
+end

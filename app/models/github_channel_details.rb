@@ -24,4 +24,4 @@ class GithubChannelDetails < BaseChannelDetails
   def url
     channel_url
   end
-  end
+end
