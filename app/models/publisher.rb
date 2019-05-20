@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 class Publisher < ApplicationRecord
   has_paper_trail only: [:name, :email, :pending_email, :phone_normalized, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
@@ -75,14 +77,13 @@ class Publisher < ApplicationRecord
   scope :not_admin, -> { where.not(role: ADMIN) }
   scope :partner, -> { where(role: PARTNER) }
   scope :not_partner, -> { where.not(role: PARTNER) }
-  scope :suspended, -> {
-    joins(:status_updates).
-      where('publisher_status_updates.created_at =
-            (SELECT MAX(publisher_status_updates.created_at)
-            FROM publisher_status_updates
-            WHERE publisher_status_updates.publisher_id = publishers.id)').
-      where("publisher_status_updates.status = 'suspended'")
-  }
+
+  scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
+  scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
+  scope :active, -> { filter_status(PublisherStatusUpdate::ACTIVE) }
+  scope :suspended, -> { filter_status(PublisherStatusUpdate::SUSPENDED) }
+  scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED) }
+  scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS) }
 
   scope :not_suspended, -> {
     where.not(id: suspended)
@@ -91,6 +92,15 @@ class Publisher < ApplicationRecord
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
+
+  def self.filter_status(status)
+    joins(:status_updates).
+      where('publisher_status_updates.created_at =
+            (SELECT MAX(publisher_status_updates.created_at)
+            FROM publisher_status_updates
+            WHERE publisher_status_updates.publisher_id = publishers.id)').
+      where("publisher_status_updates.status = ?", status)
+  end
 
   def self.statistical_totals(up_to_date: 1.day.from_now)
     # TODO change this
@@ -164,13 +174,18 @@ class Publisher < ApplicationRecord
     email.present?
   end
 
+  # Silly method for showing a color for people's avatar
+  def avatar_color
+    Digest::MD5.hexdigest(email || pending_email)[0...6]
+  end
+
   # Public: Show history of publisher's notes and statuses sorted by the created time
   #
   # Returns an array of PublisherNote and PublisherStatusUpdate
   def history
     # Create hash with created_at time as the key
     # Then we can merge and sort by the key to get history
-    notes = self.notes.map { |n| { n.created_at => n } }
+    notes = self.notes.where(thread_id: nil).map { |n| { n.created_at => n } }
     status = status_updates.map { |s| { s.created_at => s } }
 
     combined = notes + status
