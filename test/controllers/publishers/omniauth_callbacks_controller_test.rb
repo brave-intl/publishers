@@ -595,7 +595,7 @@ module Publishers
     end
 
     test "a publisher who adds a vimeo channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:vimeo_publisher)
+      publisher = publishers(:channel_publisher)
       verified_details = vimeo_channel_details(:vimeo_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
@@ -692,7 +692,7 @@ module Publishers
     end
 
     test "a publisher who adds a reddit channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:reddit_publisher)
+      publisher = publishers(:channel_publisher)
       verified_details = reddit_channel_details(:reddit_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
@@ -788,7 +788,7 @@ module Publishers
     end
 
     test "a publisher who adds a github channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:github_publisher)
+      publisher = publishers(:channel_publisher)
       verified_details = github_channel_details(:github_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)

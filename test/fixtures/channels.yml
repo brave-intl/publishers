@@ -131,22 +131,22 @@ twitch_verified:
   verified: true
 
 twitter_new:
-  publisher: vimeo_publisher
+  publisher: channel_publisher
   details: twitter_new_details (TwitterChannelDetails)
   verified: true
 
 vimeo_new:
-  publisher: vimeo_publisher
+  publisher: channel_publisher
   details: vimeo_details (VimeoChannelDetails)
   verified: true
 
 reddit_new:
-  publisher: reddit_publisher
+  publisher: channel_publisher
   details: reddit_details (RedditChannelDetails)
   verified: true
 
 github_new:
-  publisher: github_publisher
+  publisher: channel_publisher
   details: github_details (GithubChannelDetails)
   verified: true
 
