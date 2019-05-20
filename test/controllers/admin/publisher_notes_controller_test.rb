@@ -3,7 +3,7 @@ require "shared/mailer_test_helper"
 require "webmock/minitest"
 
 module Admin
-  class OrganizationsControllerTest < ActionDispatch::IntegrationTest
+  class PublisherNotesControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
     include ActionMailer::TestHelper
 
@@ -197,14 +197,14 @@ module Admin
         let(:subject) do
           delete admin_publisher_publisher_note_path(
             id: publisher_notes(:child_note).id,
-            publisher_id: publishers(:verified).id
+            publisher_id: publishers(:just_notes).id
           )
         end
 
         before { subject }
 
         it 'redirects to the publisher page' do
-          assert_redirected_to admin_publisher_path(publishers(:verified))
+          assert_redirected_to admin_publisher_path(publishers(:just_notes).id)
         end
 
         it 'deletes the note' do
