@@ -32,21 +32,21 @@ class Admin::PublishersController < AdminController
     @publishers = @publishers.group(:id).paginate(page: params[:page])
 
     respond_to do |format|
-      format.json { render json: @publishers.to_json({methods: :avatar_color}) }
-      format.html { }
+      format.json { render json: @publishers.to_json({ methods: :avatar_color }) }
+      format.html {}
     end
   end
 
   def show
     @publisher = Publisher.find(params[:id])
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard"}).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
     @potential_referral_payment = @publisher.most_recent_potential_referral_payment
     @current_user = current_user
   end
 
   def edit
     @publisher = Publisher.find(params[:id])
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard"}).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
   end
 
   def update

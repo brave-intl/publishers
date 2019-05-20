@@ -4,7 +4,6 @@ module Admin
 
     def create
       publisher = Publisher.find(params[:publisher_id])
-      admin = current_user
 
       note = PublisherNote.new(
         publisher: publisher,
@@ -13,21 +12,22 @@ module Admin
       )
       note.thread_id = note_params[:thread_id] if note_params[:thread_id].present?
 
-
       if note.save
         email_tagged_users(note)
 
         if note_params[:thread_id].present?
           created_by = PublisherNote.find(note_params[:thread_id]).created_by
-          InternalMailer::tagged_in_note(
-            tagged_user: created_by,
-            note: note
-          ).deliver_later unless current_user == created_by
+          unless current_user == created_by
+            InternalMailer.tagged_in_note(
+              tagged_user: created_by,
+              note: note
+            ).deliver_later
+          end
         end
 
         redirect_to(admin_publisher_path(publisher.id))
       else
-       redirect_to admin_publisher_path(publisher.id), flash: { alert: note.errors.full_messages.join(',') }
+        redirect_to admin_publisher_path(publisher.id), flash: { alert: note.errors.full_messages.join(',') }
       end
     end
 
@@ -35,7 +35,7 @@ module Admin
       if @note.update(note_params)
         email_tagged_users(@note)
 
-        redirect_to admin_publisher_path(id: params[:publisher_id] ), flash: { success: "Successfully updated comment"}
+        redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { success: "Successfully updated comment" }
       else
         redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { alert: @note.errors.full_messages.join(',') }
       end
@@ -59,12 +59,12 @@ module Admin
         # Some reason the regex likes to put an array inside array
         mention = mention[0]
         publisher = Publisher.where("email LIKE ?", "#{mention}@brave.com").first
-        InternalMailer::tagged_in_note(tagged_user: publisher, note: publisher_note).deliver_later if publisher.present?
+        InternalMailer.tagged_in_note(tagged_user: publisher, note: publisher_note).deliver_later if publisher.present?
       end
     end
 
     def authorize
-      @note =  PublisherNote.find(params[:id])
+      @note = PublisherNote.find(params[:id])
       raise unless @note.created_by == current_user
     end
 

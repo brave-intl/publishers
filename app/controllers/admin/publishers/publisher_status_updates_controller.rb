@@ -1,7 +1,7 @@
 class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersController
   def index
     get_publisher
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard"}).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
     @publisher_status_updates = @publisher.status_updates
   end
 
