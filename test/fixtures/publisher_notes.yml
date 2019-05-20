@@ -16,3 +16,23 @@ note:
   note: "Should be suspended"
   created_at: "2018-12-04"
   created_by: default
+
+admin_note:
+  publisher: just_notes
+  note: "This is an admin note"
+  created_at: "2018-12-04"
+  created_by: admin
+
+thread_note:
+  publisher: just_notes
+  note: "This is parent note"
+  created_at: "2018-12-04"
+  created_by: admin
+
+
+child_note:
+  publisher: just_notes
+  note: "This is child note"
+  created_at: "2018-12-04"
+  created_by: admin
+  thread: thread_note

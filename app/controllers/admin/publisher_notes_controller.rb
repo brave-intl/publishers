@@ -37,7 +37,7 @@ module Admin
 
         redirect_to admin_publisher_path(id: params[:publisher_id] ), flash: { success: "Successfully updated comment"}
       else
-        redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { alert: note.errors.full_messages }
+        redirect_to admin_publisher_path(id: params[:publisher_id]), flash: { alert: @note.errors.full_messages.join(',') }
       end
     end
 

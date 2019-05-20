@@ -20,7 +20,7 @@ class InternalMailer < ApplicationMailer
     @note = note
 
     mail(
-      to: tagged_user,
+      to: tagged_user.email,
       subject: "New reply or mention in note on publisher #{note.publisher.name || note.publisher.email}"
     )
   end
