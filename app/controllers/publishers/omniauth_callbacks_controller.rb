@@ -215,7 +215,7 @@ module Publishers
         auth_provider: github_auth_hash.provider,
         thumbnail_url: github_auth_hash.info.image,
         channel_url: github_auth_hash.info.urls.GitHub,
-        nickname: reddit_auth_hash.info.nickname,
+        nickname: github_auth_hash.info.nickname,
       )
 
       existing_channel = Channel.joins(:github_channel_details).where("github_channel_details.github_channel_id": github_auth_hash.uid).first

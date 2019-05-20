@@ -145,6 +145,11 @@ reddit_new:
   details: reddit_details (RedditChannelDetails)
   verified: true
 
+github_new:
+  publisher: github_publisher
+  details: github_details (GithubChannelDetails)
+  verified: true
+
 global_yt1:
   publisher: global_media_group
   details: global_yt1_details (YoutubeChannelDetails)

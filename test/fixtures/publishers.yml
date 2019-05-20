@@ -211,6 +211,13 @@ reddit_publisher:
   visible: true
   default_currency: "BAT"
 
+github_publisher:
+  email: "garyGitHub@gmail.com"
+  name: "Gary from GitHub"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  default_currency: "BAT"
+
 global_media_group:
   email: "fred@vglobal.org"
   name: "Global Media Group"

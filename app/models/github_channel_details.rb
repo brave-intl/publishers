@@ -1,7 +1,7 @@
 class GithubChannelDetails < BaseChannelDetails
   has_paper_trail
 
-  REDDIT_PREFIX = "github#channel:".freeze
+  GITHUB_PREFIX = "github#channel:".freeze
 
   validates :github_channel_id, presence: true
   validates :thumbnail_url, presence: true
@@ -18,7 +18,7 @@ class GithubChannelDetails < BaseChannelDetails
   ## End methods to satisfy the Eyeshade integration
 
   def publication_title
-    name
+    nickname
   end
 
   def url

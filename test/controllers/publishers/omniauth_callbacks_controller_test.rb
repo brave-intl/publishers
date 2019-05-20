@@ -628,10 +628,10 @@ module Publishers
     def auth_hash(options = {})
       OmniAuth::AuthHash.new(
         {
-          "uid" => "1000",
+          "uid" => "12345678",
           "provider" => "register_reddit_channel",
           "info" => {
-            "name" => "Vince the Vimeo owner",
+            "name" => "Reggie the Redditor",
           },
           "extra" => {
             "raw_info" => {
@@ -713,6 +713,102 @@ module Publishers
 
       assert_select('body') do |element|
         assert_select 'div.alert', I18n.t("publishers.omniauth_callbacks.register_reddit_channel.channel_already_registered")
+      end
+    end
+  end
+
+  class GithubOmniauthCallbacksControllerTest < AbstractOmniauthCallbacksControllerTest
+    def token
+      "459609731-kjE9N6xB6DmRDL8okQykgnEa7MeECh3Fp8enmAkj"
+    end
+
+    def auth_hash(options = {})
+      OmniAuth::AuthHash.new(
+        {
+          "uid" => "12345678",
+          "provider" => "register_github_channel",
+          "info" => {
+            "name" => "GitHub New",
+            "image" => "https://some_image_host.com/some_image.png",
+            "urls" => {
+              "GitHub": "https://github.com/user/user12345678",
+            },
+          },
+        }.deep_merge(options)
+      )
+    end
+
+    test "a publisher can add a github channel" do
+      publisher = publishers(:uphold_connected)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_github_channel] = auth_hash
+
+      assert_difference("Channel.count", 1) do
+        get(publisher_register_github_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+      end
+
+      channel = Channel.order(created_at: :asc).last
+
+      assert_equal channel.details.auth_provider, auth_hash.provider
+      assert_equal channel.details.github_channel_id, auth_hash.uid
+      assert_equal channel.details.name, auth_hash.info.name
+      assert_equal channel.details.thumbnail_url, auth_hash.info.image
+    end
+
+    test "a publisher who adds a github channel taken by another will see custom dialog based on the taken channel" do
+      publisher = publishers(:uphold_connected)
+      verified_details = github_channel_details(:github_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_github_channel] = auth_hash(
+        uid: verified_details.github_channel_id,
+        info: { id: verified_details.github_channel_id }
+      )
+
+      assert_difference("Channel.count", 1) do
+        get(publisher_register_github_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('div.channel-status') do |element|
+        assert_match(I18n.t("shared.channel_contested", time_until_transfer: time_until_transfer(publisher.channels.where(verification_pending: true).first)),
+                    element.text)
+      end
+    end
+
+    test "a publisher who adds a github channel taken by themselves will see .channel_already_registered" do
+      publisher = publishers(:github_publisher)
+      verified_details = github_channel_details(:github_details)
+      request_login_email(publisher: publisher)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token)
+      get(url)
+      follow_redirect!
+
+      OmniAuth.config.mock_auth[:register_github_channel] = auth_hash(
+        uid: verified_details.github_channel_id,
+        info: { id: verified_details.github_channel_id }
+      )
+
+      assert_difference("Channel.count", 0) do
+        get(publisher_register_github_channel_omniauth_authorize_url)
+        follow_redirect!
+        assert_redirected_to home_publishers_path
+        follow_redirect!
+      end
+
+      assert_select('body') do |element|
+        assert_select 'div.alert', I18n.t("publishers.omniauth_callbacks.register_github_channel.channel_already_registered")
       end
     end
   end
