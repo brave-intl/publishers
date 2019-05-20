@@ -49,12 +49,8 @@ module Channels
       channel_ids_match = case @channel.details_type
         when "SiteChannelDetails"
           @channel.details.brave_publisher_id == @contested_by.details.brave_publisher_id
-        when "YoutubeChannelDetails"
-          @channel.details.youtube_channel_id == @contested_by.details.youtube_channel_id
-        when "TwitchChannelDetails"
-          @channel.details.twitch_channel_id == @contested_by.details.twitch_channel_id
-        when "TwitterChannelDetails"
-          @channel.details.twitter_channel_id == @contested_by.details.twitter_channel_id
+        else
+          @channel.details.channel_identifier == @contested_by.details.channel_identifier
       end
 
       raise ChannelIdMismatchError if !channel_ids_match

@@ -1,1 +1,1 @@
-import 'analytics';
+import "analytics";

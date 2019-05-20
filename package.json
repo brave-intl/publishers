@@ -6,6 +6,7 @@
     "lint-js-css": "stylelint --config '.stylelintrc-jsx.json' 'app/**/*.{ts,tsx}'",
     "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'",
     "prettier": "prettier --check 'app/javascript/**/*.{ts,tsx}'",
+    "build": "cd public/creators-landing && yarn install && yarn build",
     "test": "jest"
   },
   "husky": {
@@ -20,6 +21,7 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
+      "jsx",
       "js",
       "json"
     ],
@@ -38,7 +40,7 @@
       "!src/**/index.ts"
     ],
     "testMatch": [
-      "<rootDir>/app/javascript/**/*.test.tsx"
+      "<rootDir>/app/javascript/**/*.test.jsx"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"

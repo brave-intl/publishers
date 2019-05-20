@@ -1,16 +1,16 @@
 module Eyeshade
   class LastSettlementBalance < BaseBalance
-    attr_reader :date, :amount_settlement_currency, :timestamp, :settlement_currency
+    attr_reader :date, :amount_bat, :amount_settlement_currency, :timestamp, :settlement_currency
 
     def initialize(rates, default_currency, transactions)
       super(rates, default_currency)
 
       last_settlement = calculate_last_settlement(transactions)
       if last_settlement.present?
-        @amount_bat = last_settlement["amount_bat"]
-        @timestamp = last_settlement["timestamp"]
-        @settlement_currency = last_settlement["currency"]
-        @amount_settlement_currency = convert(@amount_bat, @settlement_currency)
+        @amount_bat = last_settlement[:amount_bat]
+        @timestamp = last_settlement[:timestamp]
+        @settlement_currency = last_settlement[:currency]
+        @amount_settlement_currency = last_settlement[:amount_currency]
       end
     end
 
@@ -35,11 +35,23 @@ module Eyeshade
 
       # Sum the all the settlement transactions
       last_settlement_currency = last_settlement_transactions&.first["settlement_currency"] || nil
-      last_settlement_bat = last_settlement_transactions.map { |transaction|
+
+      # The amount is the BAT that was withdrawn from our ledger. This is a negative value.
+      last_settlement_amount_bat = last_settlement_transactions.map { |transaction|
+        transaction["amount"].to_d.abs
+      }.reduce(:+)
+
+      # Settlement amount will be in the user's default currency
+      last_settlement_amount_currency = last_settlement_transactions.map { |transaction|
         transaction["settlement_amount"].to_d
       }.reduce(:+)
 
-      {"amount_bat" => last_settlement_bat, "timestamp" => last_settlement_time.to_i, "currency" => last_settlement_currency}
+      {
+        amount_bat: last_settlement_amount_bat,
+        amount_currency: last_settlement_amount_currency,
+        timestamp: last_settlement_time.to_i,
+        currency: last_settlement_currency
+      }
     end
   end
 end

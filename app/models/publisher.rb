@@ -11,8 +11,6 @@ class Publisher < ApplicationRecord
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
   ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT].freeze
 
-  JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
-
   OWNER_PREFIX = "publishers#uuid:".freeze
 
   devise :timeoutable, :trackable, :omniauthable
@@ -189,8 +187,8 @@ class Publisher < ApplicationRecord
     last_status_update&.status == PublisherStatusUpdate::SUSPENDED
   end
 
-  def umbra?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::UMBRA
+  def no_grants?
+    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::NO_GRANTS
   end
 
   def locked?

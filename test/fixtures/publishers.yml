@@ -197,13 +197,12 @@ twitch_verified:
   visible: true
   default_currency: "BAT"
 
-twitter_new:
-  email: "aliceTwitter@spud.com"
-  name: "Alice the Tweeter"
-  phone: "4159001420"
-  phone_normalized: "+14159001420"
+vimeo_publisher:
+  email: "aliceVimeo@gmail.com"
+  name: "Alice from Vimeo"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  default_currency: "BAT"
 
 global_media_group:
   email: "fred@vglobal.org"

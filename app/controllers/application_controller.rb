@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   before_action :no_cache
 
   def no_cache
+    return if controller_name == 'static' # We want to cache on the homepage
     response.headers['Cache-Control'] = 'no-cache, no-store'
   end
 

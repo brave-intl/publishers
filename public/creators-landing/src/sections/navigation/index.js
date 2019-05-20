@@ -26,13 +26,18 @@ const DefaultNav = () => (
       role="navigation"
     >
       <Box direction="row" gap="medium" align="center">
-        <Link to={locale.nav.logoHref} name='Home'>
+        <Link to={locale.nav.logoHref} name="Home">
           <Box as="span">
-            <Image src={logo} height="32px" alt={locale.nav.logoAlt}/>
+            <Image src={logo} height="32px" alt={locale.nav.logoAlt} />
           </Box>
         </Link>
-        <Box as="a" href={locale.nav.batPillHref} name={locale.nav.batPillHref}>
-          <Image src={batPill} height="24px" alt={locale.nav.batPillAlt}/>
+        <Box
+          as="a"
+          href={locale.nav.batPillHref}
+          name={locale.nav.batPillHref}
+          aria-label={locale.nav.batPillAlt}
+        >
+          <Image src={batPill} height="24px" alt={locale.nav.batPillAlt} />
         </Box>
       </Box>
       <Box direction="row" align="center" gap="large">

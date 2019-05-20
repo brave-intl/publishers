@@ -145,10 +145,10 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal "58.22", publisher_overall_bat_balance(publisher)
 
     # ensure last settlement balance does not have fee applied
-    assert_equal publisher_last_settlement_bat_balance(publisher), "18.81"
+    assert_equal publisher_last_settlement_bat_balance(publisher), "94.62"
 
     # ensure publisher_converted_last_settlement does not have fee applied
-    assert_equal publisher_converted_last_settlement_balance(publisher), "~ 0.01 ETH"
+    assert_equal publisher_converted_last_settlement_balance(publisher), "~ 18.81 ETH"
 
     publisher = FakePublisher.new(
       wallet_info: nil,

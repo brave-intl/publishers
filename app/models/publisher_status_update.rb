@@ -5,9 +5,9 @@ class PublisherStatusUpdate < ApplicationRecord
   SUSPENDED = 'suspended'.freeze
   LOCKED = 'locked'.freeze
   DELETED = 'deleted'.freeze
-  UMBRA = 'umbra'.freeze
+  NO_GRANTS = 'no_grants'.freeze
 
-  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, DELETED, UMBRA].freeze
+  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS].freeze
 
   belongs_to :publisher
 

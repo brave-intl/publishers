@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ruby "2.5.5"
+
 source "https://rubygems.org"
 
 # Rate limit ActiveJob
@@ -66,6 +68,7 @@ gem "omniauth-twitch"
 
 # Oauth client for twitter
 gem "omniauth-twitter"
+gem "omniauth-vimeo"
 
 # Model record auditing
 gem "paper_trail", "~> 10.1.0"
@@ -192,5 +195,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-ruby "2.4.5"
