@@ -18,10 +18,8 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.where(search_sql, search_query: search_query)
     end
 
-    if params[:status].present?
-      if PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
-        @publishers = @publishers.send(params[:status])
-      end
+    if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
+      @publishers = @publishers.send(params[:status])
     end
 
     if params[:role].present?
