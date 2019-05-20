@@ -135,6 +135,21 @@ twitter_new:
   details: twitter_new_details (TwitterChannelDetails)
   verified: true
 
+vimeo_new:
+  publisher: channel_publisher
+  details: vimeo_details (VimeoChannelDetails)
+  verified: true
+
+reddit_new:
+  publisher: channel_publisher
+  details: reddit_details (RedditChannelDetails)
+  verified: true
+
+github_new:
+  publisher: channel_publisher
+  details: github_details (GithubChannelDetails)
+  verified: true
+
 global_yt1:
   publisher: global_media_group
   details: global_yt1_details (YoutubeChannelDetails)
