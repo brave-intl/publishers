@@ -19,7 +19,7 @@ class Admin::PublishersController < AdminController
     end
 
     if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
-      # @publishers = @publishers.send(params[:status])
+      @publishers = @publishers.send(params[:status])
     end
 
     if params[:role].present?
@@ -33,7 +33,7 @@ class Admin::PublishersController < AdminController
 
     respond_to do |format|
       format.json { render json: @publishers.to_json({ methods: :avatar_color }) }
-      format.html
+      format.html {}
     end
   end
 
