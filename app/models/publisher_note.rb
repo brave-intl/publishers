@@ -9,4 +9,3 @@ class PublisherNote < ApplicationRecord
 
   validates :note, presence: true, allow_blank: false
 end
-
