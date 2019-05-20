@@ -6,8 +6,8 @@
     "lint-js-css": "stylelint --config '.stylelintrc-jsx.json' 'app/**/*.{ts,tsx}'",
     "lint-ts": "tslint --project tsconfig.json 'app/javascript/**/*.{ts,tsx}'",
     "prettier": "prettier --check 'app/javascript/**/*.{ts,tsx}'",
-    "test": "jest",
-    "build": "cd public/creators-landing && yarn install && yarn build"
+    "build": "cd public/creators-landing && yarn install && yarn build",
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -20,6 +20,7 @@
     ],
     "moduleFileExtensions": [
       "ts",
+      "tsx",
       "jsx",
       "js",
       "json"
@@ -35,7 +36,7 @@
     "resetModules": true,
     "collectCoverage": false,
     "collectCoverageFrom": [
-      "src/**/*.jsx",
+      "src/**/*.tsx",
       "!src/**/index.ts"
     ],
     "testMatch": [
@@ -62,7 +63,6 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-polyfill": "^6.26.0",
     "babel-preset-react": "^6.24.1",
     "brave-ui": "^0.30.8",
