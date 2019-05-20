@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/dlipeles/omniauth-reddit.git
+  remote: https://github.com/dlipeles/omniauth-reddit.git
   revision: 07724946d9a94c591ada3e43e849b34860fab46e
   branch: master
   specs:

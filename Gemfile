@@ -73,7 +73,7 @@ gem "omniauth-twitter"
 gem "omniauth-vimeo"
 
 # OAuth client for Reddit
-gem 'omniauth-reddit', :git => 'git://github.com/dlipeles/omniauth-reddit.git', :branch => "master"
+gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git', :branch => "master"
 
 # OAuth client for GitHub
 gem "omniauth-github"
