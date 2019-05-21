@@ -19,7 +19,9 @@ class Admin::PublishersController < AdminController
     end
 
     if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
-      @publishers = @publishers.send(params[:status])
+      # Effectively sanitizes the users input
+      method = PublisherStatusUpdate::ALL_STATUSES.detect { |x| x == params[:status] }
+      @publishers = @publishers.send(method)
     end
 
     if params[:role].present?
