@@ -368,8 +368,8 @@ en:
         heading: TWITCH CHANNEL
         description: I'm the primary owner of a Twitch channel.
       twitter:
-        heading: TWITTER - BETA
-        description: Try this feature out before general release! Open to users on Brave Nightly.
+        heading: TWITTER
+        description: I own or manage a Twitter channel.
       vimeo:
         heading: VIMEO CHANNEL
         description: I own or manage a Vimeo channel.
