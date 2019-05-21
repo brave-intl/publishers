@@ -1,6 +1,5 @@
-import Tribute from "./tribute/tribute";
-import "./tribute/tribute.css";
-
+import Tribute from "tributejs";
+import "tributejs/dist/tribute.css";
 import Avatar from "../views/admin/components/userNavbar/components/TopNav/Avatar.svg";
 
 document.addEventListener("DOMContentLoaded", function() {
