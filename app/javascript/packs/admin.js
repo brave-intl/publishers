@@ -3,48 +3,6 @@ import "admin/dashboard/index";
 import "admin/stats/index";
 import "admin/dashboard/unattached_promo_registration";
 import Rails from "rails-ujs";
-import Tribute from "tributejs";
-// import "tributejs/dist/tribute.css";
-
-import Avatar from "../views/admin/components/userNavbar/components/TopNav/Avatar.svg";
-
-// document.addEventListener("DOMContentLoaded", function() {
-//   if (window.location.href.indexOf("admin/publishers/") !== -1) {
-//     fetch("/admin/publishers?role=admin")
-//       .then(function(response) {
-//         return response.json();
-//       })
-//       .then(function(publishers) {
-//         const list = publishers.map(p => {
-//           console.log(p);
-//           return {
-//             key: p.name,
-//             value: p.email.split("@")[0],
-//             avatarColor: p.avatar_color
-//           };
-//         });
-
-//         var tribute = new Tribute({
-//           values: list,
-//           menuItemTemplate: function(item) {
-//             console.log(item);
-//             return (
-//               `<div class="d-flex align-items-center">` +
-//               `<div class="user-avatar-dropdown" style="background: #${
-//                 item.original.avatarColor
-//               };">` +
-//               `<img src=${Avatar} />` +
-//               `</div>` +
-//               `${item.string}` +
-//               `</div>`
-//             );
-//           }
-//         });
-
-//         tribute.attach(document.querySelectorAll(".note-form"));
-//       });
-//   }
-// });
 
 /*
  * Override the default way Rails picks an href for a data-method link. This
