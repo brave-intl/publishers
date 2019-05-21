@@ -3,7 +3,7 @@ import "admin/dashboard/index";
 import "admin/stats/index";
 import "admin/dashboard/unattached_promo_registration";
 import Rails from "rails-ujs";
-// import Tribute from "tributejs";
+import Tribute from "tributejs";
 // import "tributejs/dist/tribute.css";
 
 import Avatar from "../views/admin/components/userNavbar/components/TopNav/Avatar.svg";
