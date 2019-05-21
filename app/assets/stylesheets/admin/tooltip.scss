@@ -25,7 +25,6 @@
   padding: 7px;
   width: 180px;
   border-radius: 3px;
-  background-color: #000;
   background-color: hsla(0, 0%, 20%, 0.9);
   color: #fff;
   content: attr(data-tooltip);
@@ -41,7 +40,6 @@
   left: 50%;
   margin-left: -5px;
   width: 0;
-  border-top: 5px solid #000;
   border-top: 5px solid hsla(0, 0%, 20%, 0.9);
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
