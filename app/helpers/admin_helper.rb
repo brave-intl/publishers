@@ -8,18 +8,33 @@ module AdminHelper
   end
 
   def set_mentions(note)
-    # Regex to find any @words
-    note.scan(/\@(\w*)/).each do |mention|
-      # Some reason the regex likes to put an array inside array
-      mention = mention[0]
-      publisher = Publisher.where("email LIKE ?", "#{mention}@brave.com").first
-      if publisher.present?
-        # Assuming the administrator is a brave.com email address :)
-        note = note.sub("@#{mention}", link_to("@" + publisher.name, admin_publisher_url(publisher)))
+    formatted_note = note.lines.map do |line|
+      line = line.split(" ").map do |word|
+        if word.starts_with?("@")
+          publisher = Publisher.where("email LIKE ?", "#{word[1..-1]}@brave.com").first
+          # Assuming the administrator is a brave.com email address :)
+          word = link_to("@#{publisher.name}", admin_publisher_url(publisher)) if publisher.present?
+        end
+
+        # Format for link
+        if word.starts_with?("http://") || word.starts_with?("https://")
+          # If the link is another publisher
+          if word.include?('admin/publishers/')
+            publisher_id = word.sub("#{root_url}admin/publishers/", "")
+            publisher = Publisher.find_by(id: publisher_id)
+            word = link_to("@#{publisher.name}", admin_publisher_url(publisher)) if publisher
+          end
+
+          word = link_to(word)
+        end
+
+        word
       end
+
+      line.join(" ") + "\r\n"
     end
 
-    note
+    formatted_note.join
   end
 
   def no_data_default(value)
