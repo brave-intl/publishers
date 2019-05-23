@@ -7,7 +7,7 @@ class PublisherStatusUpdate < ApplicationRecord
   DELETED = 'deleted'.freeze
   NO_GRANTS = 'no_grants'.freeze
 
-  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS].freeze
+  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS, DELETED].freeze
 
   belongs_to :publisher
 
