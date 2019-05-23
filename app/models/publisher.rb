@@ -256,6 +256,10 @@ class Publisher < ApplicationRecord
     )
   end
 
+  def is_registered_for_2fa_removal?
+    two_factor_authentication_removal.present?
+  end
+
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
     partner?
