@@ -141,6 +141,7 @@ class Channel < ApplicationRecord
       twitter:  Channel.verified.twitter_channels.count,
       reddit: 0,
       github: 0,
+      vimeo: Channel.verified.vimeo_channels.count,
     }
   end
 
