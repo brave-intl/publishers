@@ -138,6 +138,7 @@ class Channel < ApplicationRecord
       twitch: Channel.verified.twitch_channels.count,
       youtube:  Channel.verified.youtube_channels.count,
       site:  Channel.verified.site_channels.count,
+      twitter:  Channel.verified.twitter_channels.count,
     }
   end
 
