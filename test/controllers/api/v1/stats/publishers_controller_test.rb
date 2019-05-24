@@ -75,6 +75,25 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
       [1.days.ago.to_date.to_s, 0],
       [0.days.ago.to_date.to_s, 0]
     ], JSON.parse(response.body)
+
+    get "/api/v1/stats/publishers/channel_and_kyc_uphold_and_email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+
+    assert_equal 200, response.status
+    assert_equal [
+      [6.days.ago.to_date.to_s, Publisher.distinct.joins(:channels).joins(:uphold_connection)
+                                         .where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day,
+                                                'uphold_connections.uphold_verified': true, 'uphold_connections.is_member': true,
+                                                role: Publisher::PUBLISHER)
+                                         .where.not(email: nil)
+                                         .where(channels: { verified: true })
+                                         .count],
+      [5.days.ago.to_date.to_s, 0],
+      [4.days.ago.to_date.to_s, 0],
+      [3.days.ago.to_date.to_s, 0],
+      [2.days.ago.to_date.to_s, 0],
+      [1.days.ago.to_date.to_s, 0],
+      [0.days.ago.to_date.to_s, 0]
+    ], JSON.parse(response.body)
   end
 
   test "totals endpoint has content" do
