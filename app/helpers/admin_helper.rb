@@ -22,7 +22,7 @@ module AdminHelper
           if word.include?('admin/publishers/')
             publisher_id = word.sub("#{root_url}admin/publishers/", "")
             publisher = Publisher.find_by(id: publisher_id)
-            word = link_to("@#{publisher.name}", admin_publisher_url(publisher)) if publisher
+            word = link_to(publisher.name, admin_publisher_url(publisher)) if publisher
           end
 
           word = link_to(word)
