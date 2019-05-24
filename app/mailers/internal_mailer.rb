@@ -17,6 +17,8 @@ class InternalMailer < ApplicationMailer
   end
 
   def tagged_in_note(tagged_user:, note:)
+    return unless tagged_user.admin?
+
     @note = note
 
     mail(
