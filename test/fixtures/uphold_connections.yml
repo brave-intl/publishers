@@ -19,6 +19,7 @@ created_connection:
 connected_connection:
   uphold_verified: true
   publisher: uphold_connected
+  is_member: true
 
 verified_no_currency:
   uphold_verified: true
