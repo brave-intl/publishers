@@ -3,7 +3,7 @@ class CacheBrowserChannelsJsonJob < ApplicationJob
 
   def perform
     channels_json = JsonBuilders::ChannelsJsonBuilder.new.build
-    Rails.cache.write('browser_channels_json', channels_json)
-    Rails.logger.info("CacheBrowserChannelsJsonJob updated the cached browser channels json.")
+    result = Rails.cache.write('browser_channels_json', channels_json)
+    Rails.logger.info("CacheBrowserChannelsJsonJob updated the cached browser channels json. Result: #{result}")
   end
 end
