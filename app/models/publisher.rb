@@ -256,7 +256,7 @@ class Publisher < ApplicationRecord
     )
   end
 
-  def is_registered_for_2fa_removal?
+  def registered_for_2fa_removal?
     two_factor_authentication_removal.present?
   end
 
