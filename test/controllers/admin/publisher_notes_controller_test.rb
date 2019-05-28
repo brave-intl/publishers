@@ -51,25 +51,50 @@ module Admin
       end
 
       describe 'when the note is being replied' do
-        let(:note_params) do
-          {
-            publisher_note: {
-              note: "reply note",
-              thread_id: publisher_notes(:note).id
+        describe 'it replies to admins' do
+          let(:note_params) do
+            {
+              publisher_note: {
+                note: "reply note",
+                thread_id: publisher_notes(:note).id
+              }
             }
-          }
-        end
-
-        let(:subject) { post admin_publisher_publisher_notes_path(publishers(:verified).id), params: note_params }
-
-        it 'emails the user who is being replied to' do
-          perform_enqueued_jobs { subject }
-
-          email = ActionMailer::Base.deliveries.find do |message|
-            message.to.first == publisher_notes(:note).created_by.email
           end
 
-          refute_nil email
+          let(:subject) { post admin_publisher_publisher_notes_path(publishers(:verified).id), params: note_params }
+
+          it 'emails the user who is being replied to' do
+            perform_enqueued_jobs { subject }
+
+            email = ActionMailer::Base.deliveries.find do |message|
+              message.to.first == publisher_notes(:note).created_by.email
+            end
+
+            refute_nil email
+          end
+        end
+
+        describe 'it does not send an email to non-administrators' do
+          let(:note_params) do
+            {
+              publisher_note: {
+                note: "reply note",
+                thread_id: publisher_notes(:non_admin_note).id
+              }
+            }
+          end
+
+          let(:subject) { post admin_publisher_publisher_notes_path(publishers(:verified).id), params: note_params }
+
+          it 'emails the user who is being replied to' do
+            perform_enqueued_jobs { subject }
+
+            email = ActionMailer::Base.deliveries.find do |message|
+              message.to.first == publisher_notes(:non_admin_note).created_by.email
+            end
+
+            assert_nil email
+          end
         end
       end
 
