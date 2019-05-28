@@ -3,7 +3,8 @@ class DeletePublisherChannelJob < ApplicationJob
 
   def perform(channel_id:)
     @channel = Channel.find(channel_id)
-    raise "Can't remove a channel that is contesting another a channel." if @channel.verification_pending?
+    publisher = @channel.publisher
+    raise "Can't remove a channel that is contesting another a channel." if @channel.verification_pending? && !publisher.registered_for_2fa_removal?
 
     # If channel is being contested, approve the channel which will also delete
     if @channel.contested_by_channel.present?
