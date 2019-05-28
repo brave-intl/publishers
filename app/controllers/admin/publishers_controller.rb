@@ -22,6 +22,7 @@ class Admin::PublishersController < AdminController
     if params[:two_factor_authentication_removal].present?
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
+    @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
     @publishers = @publishers.group(:id).paginate(page: params[:page])
   end
 
@@ -40,6 +41,12 @@ class Admin::PublishersController < AdminController
   def update
     @publisher.update(update_params)
 
+    redirect_to admin_publisher_path(@publisher)
+  end
+
+  def destroy
+    PublisherRemovalJob.perform_later(publisher_id: @publisher.id)
+    flash[:alert] = "Deletion job enqueued. This usually takes a few seconds to complete"
     redirect_to admin_publisher_path(@publisher)
   end
 
