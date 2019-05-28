@@ -9,8 +9,8 @@ div.row
             .input-group-btn
                 = submit_tag("Search", class: 'btn btn-default', name: nil)
         .form-inline.mt-1
-          = select_tag(:status, options_for_select(PublisherStatusUpdate::ALL_STATUSES, params[:status]), include_blank: "Filter by status" , class: "form-control mr-2")
-          = select_tag(:role, options_for_select(Publisher::ROLES, params[:role]), include_blank: "Filter by role" , class: "form-control")
+          = select_tag(:status, options_for_select(PublisherStatusUpdate::ALL_STATUSES, params[:status]), include_blank: "Filter by status" , class: "form-control mr-2", onchange:"this.form.submit()")
+          = select_tag(:role, options_for_select(Publisher::ROLES, params[:role]), include_blank: "Filter by role" , class: "form-control",  onchange: "this.form.submit()")
       br
       div.panel-body
         div.adv-table

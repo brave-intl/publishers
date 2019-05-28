@@ -80,7 +80,6 @@ class Publisher < ApplicationRecord
 
   scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
   scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
-  scope :active, -> { filter_status(PublisherStatusUpdate::ACTIVE) }
   scope :suspended, -> { filter_status(PublisherStatusUpdate::SUSPENDED) }
   scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED) }
   scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS) }
@@ -100,6 +99,19 @@ class Publisher < ApplicationRecord
             FROM publisher_status_updates
             WHERE publisher_status_updates.publisher_id = publishers.id)').
       where("publisher_status_updates.status = ?", status)
+  end
+
+  # Because the status_updates wasn't backfilled we also include those who have no status to be "Active"
+  def self.active
+    joins('LEFT OUTER JOIN publisher_status_updates ON publisher_status_updates.publisher_id = publishers.id').
+      where('publisher_status_updates.created_at =
+            (
+              SELECT MAX(publisher_status_updates.created_at)
+              FROM publisher_status_updates
+              WHERE publisher_status_updates.publisher_id = publishers.id
+            ) OR
+            publisher_status_updates.publisher_id is NULL').
+      where("publisher_status_updates.status = ? OR publisher_status_updates.status is NULL", PublisherStatusUpdate::ACTIVE)
   end
 
   def self.statistical_totals(up_to_date: 1.day.from_now)
