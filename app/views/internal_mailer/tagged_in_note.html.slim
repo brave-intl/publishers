@@ -1,13 +1,32 @@
 - if @note.thread_id
-  div style=".25em solid #dfe2e5; padding: 0 1em; color: #6a737d;"
+  div style="border-left: .25em solid #dfe2e5; padding: 0 1em; color: #6a737d;"
     div
-      =simple_format(@note.thread.note)
+      = simple_format(set_mentions(@note.thread.note), sanitize: true)
     ="— #{@note.thread.created_by.name}"
 
+div style="margin-top: 1rem;"
+  .d-flex
+    .avatar.mr-2
+      .user-avatar style="background: ##{@note.created_by.avatar_color};"= render "application/avatar_svg"
+    .w-100
+      .note-header
+        / The name of the person
+        strong= @note.created_by.name
+        / Bullet point
+        small.text-muted.mx-2 &#8226;
 
-= simple_format(set_mentions(@note.note))
+        span.date
+          = "Created #{@note.created_at.strftime("%B %d, %Y %k:%M %Z")}"
 
-= link_to "View this note", admin_publisher_url(@note.publisher), target: '_blank', style: "font-size: small;"
+        / Time it was updated
+        - if @note.created_at != @note.updated_at
+          small.text-muted.mx-2 &#8226;
+          = "Updated #{@note.updated_at.strftime("%B %d, %Y %k:%M %Z")}"
+
+      .my-2
+        = simple_format(set_mentions(@note.note), sanitize: true)
+div
+  = link_to "View this note", admin_publisher_url(@note.publisher), target: '_blank', style: "font-size: small;"
 
 div style="color: #666; font-size: small;"
   ="—"

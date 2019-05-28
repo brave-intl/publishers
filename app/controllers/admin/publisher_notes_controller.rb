@@ -2,6 +2,8 @@ module Admin
   class PublisherNotesController < AdminController
     before_action :authorize, except: :create
 
+    EMAIL = "@brave.com"
+
     def create
       publisher = Publisher.find(params[:publisher_id])
 
@@ -16,10 +18,10 @@ module Admin
         email_tagged_users(note)
 
         if note_params[:thread_id].present?
-          created_by = PublisherNote.find(note_params[:thread_id]).created_by
-          unless current_user == created_by
+          created_by = note.thread.created_by
+          if current_user != created_by && note.note.exclude?("@" + created_by.email.sub(EMAIL, ''))
             InternalMailer.tagged_in_note(
-              tagged_user: created_by,
+              tagged_user: note.thread.created_by,
               note: note
             ).deliver_later
           end
@@ -55,10 +57,10 @@ module Admin
     private
 
     def email_tagged_users(publisher_note)
-      publisher_note.note.scan(/\@(\w*)/).each do |mention|
+      publisher_note.note.scan(/\@(\w*)/).uniq.each do |mention|
         # Some reason the regex likes to put an array inside array
         mention = mention[0]
-        publisher = Publisher.where("email LIKE ?", "#{mention}@brave.com").first
+        publisher = Publisher.where("email LIKE ?", mention + EMAIL).first
         InternalMailer.tagged_in_note(tagged_user: publisher, note: publisher_note).deliver_later if publisher.present?
       end
     end

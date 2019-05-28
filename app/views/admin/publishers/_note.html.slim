@@ -1,42 +1,49 @@
+- condense ||= nil
+
 .note.mt-4 id="container_#{note.id}"
   = csrf_meta_tags
 
   .d-flex
-    .avatar.mr-2
-      .user-avatar style="background: ##{note.created_by.avatar_color};"= render "avatar_svg"
+    - unless condense
+      .avatar.mr-2
+        .user-avatar style="background: ##{note.created_by.avatar_color};"= render "avatar_svg"
     .content.w-100
-      / The name of the person
-      strong= note.created_by.name
-      / Bullet point
-      small.text-muted.mx-2 &#149;
+      - unless condense
+        .note-header
+          / The name of the person
+          strong= note.created_by.name
+          / Bullet point
+          small.text-muted.mx-2 &#149;
 
-      / Time it was created
-      span.date data-tooltip=note.created_at.strftime("%B %d, %Y %k:%M %Z")
-        = time_ago_in_words(note.created_at)
-        span= " ago"
+          / Time it was created
+          span.date data-tooltip=note.created_at.strftime("%B %d, %Y %k:%M %Z")
+            = time_ago_in_words(note.created_at)
+            span= " ago"
 
-      / Time it was updated
-      - if note.created_at != note.updated_at
-        small.text-muted.mx-2 &#149;
-        span data-tooltip=note.updated_at.strftime("%B %d, %Y %k:%M %Z") edited
+          / Time it was updated
+          - if note.created_at != note.updated_at
+            small.text-muted.mx-2 &#149;
+            span data-tooltip=note.updated_at.strftime("%B %d, %Y %k:%M %Z") edited
 
       / Hidden field for showing the edit
       div id="update_#{note.id}" class="d-none my-3"
         = render partial: 'admin/publisher_notes/form', locals: { note: note, publisher: publisher }
 
       / Actual content of the note
-      div.my-3 id="content_#{note.id}"
+      div id="content_#{note.id}" class="#{condense ? "" : "my-3" }"
         = simple_format(set_mentions(note.note), sanitize: true)
 
-      / Reply button
-      a.text-dark id="reply_#{note.id}" href="#" Reply
+      .links
+        / Reply button
+        a.text-dark id="reply_#{note.id}" href="#" Reply
 
-      / Optionally show the edit and delete if the user created the note
-      - if current_user == note.created_by
-        small.text-muted.mx-2 &#149;
-        a.text-dark id="edit_#{note.id}" href="#" Edit
-        small.text-muted.mx-2 &#149;
-        = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note?' }, class: 'text-dark'
+        / Optionally show the edit and delete if the user created the note
+        - if current_user == note.created_by
+          small.text-muted.mx-2 &#149;
+          a.text-dark id="edit_#{note.id}" href="#" Edit
+          - unless condense
+            small.text-muted.mx-2 &#149;
+            = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note?' }, class: 'text-dark'
 
       / The reply box
       div id="new_#{note.id}" class="d-none mt-3"
