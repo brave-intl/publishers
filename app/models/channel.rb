@@ -147,15 +147,15 @@ class Channel < ApplicationRecord
 
   def self.duplicates
     entries = [
-      TwitchChannelDetails.select(:name).group(:name),
-      YoutubeChannelDetails.select(:youtube_channel_id).group(:youtube_channel_id),
-      TwitterChannelDetails.select(:twitter_channel_id).group(:twitter_channel_id),
+      TwitchChannelDetails.joins(:channel).where("channels.verified = true").select(:name).group(:name),
+      YoutubeChannelDetails.joins(:channel).where("channels.verified = true").select(:youtube_channel_id).group(:youtube_channel_id),
+      TwitterChannelDetails.joins(:channel).where("channels.verified = true").select(:twitter_channel_id).group(:twitter_channel_id),
       SiteChannelDetails.joins(:channel).where("channels.verified = true").select(:brave_publisher_id).group(:brave_publisher_id),
-      VimeoChannelDetails.select(:vimeo_channel_id).group(:vimeo_channel_id)
+      VimeoChannelDetails.joins(:channel).where("channels.verified = true").select(:vimeo_channel_id).group(:vimeo_channel_id),
     ]
 
     duplicates = entries.map do |entry|
-      entry.having("count(*) >1").map { |x,y| x.channel_identifier }
+      entry.having("count(*) >1").map { |x, y| x.channel_identifier }
     end
 
     @duplicates ||= duplicates.flatten

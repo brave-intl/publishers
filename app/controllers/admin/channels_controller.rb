@@ -29,6 +29,17 @@ module Admin
       @channels = @channels.paginate(page: params[:page])
     end
 
+    def duplicates
+      @channels = Channel.duplicates
+
+      respond_to do |format|
+        format.html {}
+        format.json {
+          render json: @channels
+        }
+      end
+    end
+
     private
 
     def sortable_columns
