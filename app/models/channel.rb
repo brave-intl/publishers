@@ -331,6 +331,7 @@ class Channel < ApplicationRecord
   end
 
   def notify_slack
+    return unless verified?
     emoji =
       case details_type
         when "SiteChannelDetails"
