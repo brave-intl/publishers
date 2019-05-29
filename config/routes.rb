@@ -133,6 +133,7 @@ Rails.application.routes.draw do
           get :email_verified_signups_per_day
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
+          get :channel_and_kyc_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
           get :totals
         end
