@@ -72,7 +72,7 @@ Rails.application.configure do
     url: Rails.application.secrets[:redis_url],
     connect_timeout: 30,  # Defaults to 20 seconds
     read_timeout:    10, # Defaults to 1 second
-    write_timeout:   10, # Defaults to 1 second
+    write_timeout:   60, # Defaults to 1 second
 
     error_handler: -> (method:, returning:, exception:) {
       # Report errors to Sentry as warnings
