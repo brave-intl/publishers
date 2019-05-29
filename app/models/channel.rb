@@ -66,6 +66,8 @@ class Channel < ApplicationRecord
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
+  after_save :notify_slack, if: :saved_change_to_verified?
+
   before_save :clear_verified_at_if_necessary
 
   before_destroy :preserve_contested_by_channels
@@ -326,6 +328,28 @@ class Channel < ApplicationRecord
 
   def register_channel_for_promo
     RegisterChannelForPromoJob.new.perform(channel: self)
+  end
+
+  def notify_slack
+    emoji =
+      case details_type
+        when "SiteChannelDetails"
+          "🌐"
+        when "TwitchChannelDetails"
+          "👾"
+        when "YoutubeChannelDetails"
+          "📺"
+        when "VimeoChannelDetails"
+          "🎥"
+        when "TwitterChannelDetails"
+          "🐦"
+        else
+          ""
+      end
+
+    SlackMessenger.new(
+      message: "#{emoji} *#{details.publication_title}* verified by owner #{publisher.owner_identifier}; id=#{details.channel_identifier}; url=#{details.url}"
+    ).perform
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
