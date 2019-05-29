@@ -33,9 +33,6 @@ hr
           .db-info-row
             .db-field = "Organization:"
             .db-value = link_to partner.organization, admin_organization_path(partner.organization)
-        .db-info-row
-          .db-field = "Publisher status:"
-          .db-value = publisher_status(@publisher)
         - if @publisher.wallet.uphold_account_status.present?
           .db-info-row
             .db-field = "Uphold status:"
@@ -158,15 +155,19 @@ hr
 
   hr
   h3.admin-header = "Notes"
+  = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
+  hr
+
   #notes-section
-    #create-note.rounded-box
-      = form_for @note, { method: :post, url: create_note_admin_publishers_path } do |f|
-        = f.text_area(:note, id: "create-note-content")
-        = f.hidden_field(:publisher, :value => @publisher.id)
-        = f.submit("Add note", class: 'btn btn-primary')
+    #create-note
     - @publisher.history.each do |h|
       - if h.is_a?(PublisherNote)
-        = render partial: 'note', locals: { note: h }
+        = render partial: 'note', locals: { note: h, publisher: @publisher, current_user: @current_user}
       - elsif h.is_a?(PublisherStatusUpdate)
-        = render partial: 'status', locals: { note: h }
+        = render partial: 'status', locals: { status: h, publisher: @publisher, current_user: @current_user}
+      hr
 
+
+
+= javascript_pack_tag 'tribute'
+= stylesheet_pack_tag 'tribute'

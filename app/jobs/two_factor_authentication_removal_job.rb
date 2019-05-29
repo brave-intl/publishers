@@ -21,7 +21,7 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
               DeletePublisherChannelJob.perform_now(channel_id: channel.id)
             end
           end
-          publisher.uphold_connection.disconnect_uphold
+          publisher.uphold_connection&.disconnect_uphold
           PublisherWalletDisconnector.new(publisher: publisher).perform
           publisher.status_updates.create(status: PublisherStatusUpdate::LOCKED)
           two_factor_authentication_removal.update(removal_completed: true)

@@ -133,6 +133,7 @@ Rails.application.routes.draw do
           get :email_verified_signups_per_day
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
+          get :channel_and_kyc_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
           get :totals
         end
@@ -166,9 +167,9 @@ Rails.application.routes.draw do
       collection do
         patch :approve_channel
         get :statement
-        post :create_note
         get :cancel_two_factor_authentication_removal
       end
+      resources :publisher_notes
       resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end

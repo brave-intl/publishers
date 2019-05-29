@@ -7,10 +7,10 @@ div.row
         .input-group
             = text_field_tag(:q, params[:q], class:'form-control')
             .input-group-btn
-                = submit_tag("Search", class: 'btn btn-default')
-        label
-            = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
-            = "Suspended"
+                = submit_tag("Search", class: 'btn btn-default', name: nil)
+        .form-inline.mt-1
+          = select_tag(:status, options_for_select(PublisherStatusUpdate::ALL_STATUSES, params[:status]), include_blank: "Filter by status" , class: "form-control mr-2", onchange:"this.form.submit()")
+          = select_tag(:role, options_for_select(Publisher::ROLES, params[:role]), include_blank: "Filter by role" , class: "form-control",  onchange: "this.form.submit()")
       br
       div.panel-body
         div.adv-table
@@ -36,7 +36,7 @@ div.row
                   td = publisher.notes.order(created_at: :desc).first&.note
                   - if publisher.two_factor_authentication_removal
                     td = publisher.two_factor_authentication_removal.total_time_remaining
-                  - else 
+                  - else
                      td = "N/A"
                   td = publisher.created_at.strftime('%B %d, %Y')
                   td = distance_of_time_in_words(publisher.last_sign_in_at, Time.now) if publisher.last_sign_in_at.present?
