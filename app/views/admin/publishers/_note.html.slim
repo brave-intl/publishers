@@ -1,8 +1,96 @@
-.note.rounded-box
-  .note-header
-    .box
-      = note.created_by.name
-    .box
-      = note.created_at.strftime("%B %d, %Y %k:%M %Z")
-  hr
-    = note.note
+- condense ||= nil
+
+.note.mt-4 id="container_#{note.id}"
+  = csrf_meta_tags
+
+  .d-flex
+    - unless condense
+      .avatar.mr-2
+        .user-avatar style="background: ##{note.created_by.avatar_color};"= render "avatar_svg"
+    .content.w-100
+      - unless condense
+        .note-header
+          / The name of the person
+          strong= note.created_by.name
+          / Bullet point
+          small.text-muted.mx-2 &#149;
+
+          / Time it was created
+          span.date data-tooltip=note.created_at.strftime("%B %d, %Y %k:%M %Z")
+            = time_ago_in_words(note.created_at)
+            span= " ago"
+
+          / Time it was updated
+          - if note.created_at != note.updated_at
+            small.text-muted.mx-2 &#149;
+            span data-tooltip=note.updated_at.strftime("%B %d, %Y %k:%M %Z") edited
+
+      / Hidden field for showing the edit
+      div id="update_#{note.id}" class="d-none my-3"
+        = render partial: 'admin/publisher_notes/form', locals: { note: note, publisher: publisher }
+
+      / Actual content of the note
+      div id="content_#{note.id}" class="#{condense ? "" : "my-3" }"
+        = simple_format(set_mentions(note.note), sanitize: true)
+
+      .links
+        / Reply button
+        a.text-dark id="reply_#{note.id}" href="#" Reply
+
+        / Optionally show the edit and delete if the user created the note
+        - if current_user == note.created_by
+          small.text-muted.mx-2 &#149;
+          a.text-dark id="edit_#{note.id}" href="#" Edit
+          - unless condense
+            small.text-muted.mx-2 &#149;
+            = link_to 'Delete', admin_publisher_publisher_note_path(publisher_id: note.publisher.id, id: note.id), method: :delete, data: { confirm: 'Are you sure you want do delete this note?' }, class: 'text-dark'
+
+      / The reply box
+      div id="new_#{note.id}" class="d-none mt-3"
+        = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: publisher, thread_id: note.id }
+
+      javascript:
+        document.addEventListener('DOMContentLoaded', function() {
+          var reply = document.getElementById("reply_#{note.id}");
+          var edit = document.getElementById("edit_#{note.id}");
+          // This is "clever" which means it needs explaining.
+          // Basically the edit and new forms are the same thing, except for a parameter called thread_id
+          // thread_id is the comment that users are replying to, if it's a new comment then it will have the thread id
+          // otherwise there will be a note.id which is the note that we're editing.
+          // we can find which one by setting the id of the cancel button to "cancel_{note.id}_{thread_id}"
+          var cancelReply = document.getElementById("cancel__#{note.id}");
+          var cancelEdit = document.getElementById("cancel_#{note.id}_");
+
+          function toggle(id) {
+            const replyBox = document.getElementById(id)
+            replyBox.classList.toggle('d-none');
+            replyBox.querySelector("textarea").focus()
+
+            return false;
+          }
+
+          function toggle_reply() {
+            toggle("new_#{note.id}")
+            return false;
+          }
+
+          function toggle_edit() {
+            toggle("update_#{note.id}")
+            // Hide the previous content
+            document.getElementById("content_#{note.id}").classList.toggle('d-none');
+            return false;
+          }
+
+          reply.onclick = toggle_reply;
+          cancelReply.onclick = toggle_reply;
+
+          if (edit) {
+            edit.onclick = toggle_edit;
+            cancelEdit.onclick = toggle_edit;
+          }
+        });
+
+      / the sub comments
+      .border-left.pl-2
+        - note.comments&.each do |comment|
+          = render partial: 'note', locals: { note: comment, publisher: publisher, current_user: current_user }

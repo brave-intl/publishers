@@ -4,6 +4,7 @@ SimpleCov.start 'rails'
 
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
+require "webpacker"
 require "selenium/webdriver"
 require "minitest/rails/capybara"
 require "webmock/minitest"
@@ -17,6 +18,7 @@ if ActionPack::VERSION::STRING >= "5.2.0"
   Minitest::Rails::TestUnit = Rails::TestUnit
 end
 
+Webpacker.compile
 
 Sidekiq::Testing.fake!
 

@@ -85,7 +85,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     end
 
     it 'only shows suspended when suspended filter is on' do
-      get admin_publishers_path, params: { suspended: "1" }
+      get admin_publishers_path, params: { status: "suspended" }
 
       publishers = controller.instance_variable_get("@publishers")
 

@@ -37,7 +37,7 @@ aside
             = fa_icon "chevron-down"
           = link_to "Publishers", admin_publishers_path
           ul.sub-menu style="#{params[:controller] == 'admin/publishers' ? "" : "display:none"} "
-            = nav_link "Suspended Publishers", admin_publishers_path(suspended: true)
+            = nav_link "Suspended Publishers", admin_publishers_path(status: PublisherStatusUpdate::SUSPENDED)
           ul.sub-menu style="#{params[:controller] == 'admin/publishers' ? "" : "display:none"} "
             = nav_link "2FA Removals", admin_publishers_path(two_factor_authentication_removal: true)
         = nav_link "FAQs", admin_faq_categories_path
