@@ -20,6 +20,14 @@ h4 {
   font-weight: 400 !important;
 }
 
+/* Main section styling */
+
+.main-btns {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 #nav {
   position: absolute;
   top: 0;

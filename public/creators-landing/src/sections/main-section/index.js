@@ -14,7 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import SignComponent from "./signComponent";
 import batPill from "../../components/img/built-with-bat-pill.svg";
-import { Heading, Box, Image } from "grommet";
+import { Heading, Box, Image, Anchor } from "grommet";
 import locale from "../../locale/en";
 
 const logAction = (action, value) => {
@@ -46,7 +46,7 @@ export const MainHome = () => {
           <H2 level="2" size="small" color="#E9E9F4">
             {locale.main.home.subhead}
           </H2>
-          <Box direction="row" pad={{ vertical: "24px" }} width="100%">
+          <Box direction="row" pad={{ vertical: "24px" }} width="100%" className="main-btns">
             <Link
               to={locale.main.home.btn.signupHref}
               onClick={() => logAction("StartSignupClicked", "Landing")}
@@ -54,6 +54,17 @@ export const MainHome = () => {
               <PrimaryButton
                 label={locale.main.home.btn.signup}
                 name={locale.main.home.btn.signup}
+                margin={{right: "medium"}}
+              />
+            </Link>
+            <Link
+              to={locale.main.home.btn.loginHref}
+              onClick={() => logAction("StartSignupClicked", "Landing")}
+            >
+              <Anchor
+                label={locale.main.home.btn.login}
+                name={locale.main.home.btn.login}
+                color="white"
               />
             </Link>
           </Box>
