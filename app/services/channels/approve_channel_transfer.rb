@@ -18,7 +18,9 @@ module Channels
         channel_name = @channel.publication_title
 
         # Delete the channel from eyeshade and clean up the promo registration
-        DeletePublisherChannelJob.perform_now(channel_id: @channel.id)
+        is_deleted = DeletePublisherChannelJob.perform_now(channel_id: @channel.id)
+        # If couldn't delete the channel roll back the transaction
+        raise ActiveRecord::Rollback unless is_deleted
 
         contested_by.verified = true
         contested_by.verification_pending = false
@@ -38,9 +40,6 @@ module Channels
         # Notify Slack
         SlackMessenger.new(message: "#{@channel.details.channel_identifier} has been successfully contested by #{@channel.publisher.owner_identifier}.").perform
       end
-    rescue DeletePublisherChannelJob::CannotDeleteChannel => e
-      Raven.extra_context channel_id: @channel.id
-      Raven.capture_exception(e)
     end
   end
 end
