@@ -52,34 +52,41 @@ export default class Referrals extends React.Component<
     const installs = [];
     const confirmations = [];
 
-    stats.forEach(stat => {
-      chartLabels.push(stat.date);
-      downloads.push(stat.downloads);
-      installs.push(stat.installs);
-      confirmations.push(stat.confirmations);
+    stats.forEach((stat, index) => {
+      if (index < stats.length - 1) {
+        if (stat.date !== stats[index + 1].date) {
+          chartLabels.push(stat.date);
+          downloads.push(stat.downloads);
+          installs.push(stat.installs);
+          confirmations.push(stat.confirmations);
+        }
+      }
+      if (index === stats.length - 1) {
+        chartLabels.push(stat.date);
+        downloads.push(stat.downloads);
+        installs.push(stat.installs);
+        confirmations.push(stat.confirmations);
+      }
     });
 
     const chartData = {
       datasets: [
         {
-          backgroundColor: "#DFF3FE",
-          borderColor: "#DFF3FE",
+          backgroundColor: "#FFFFFF00",
+          borderColor: "#FF6384",
           data: downloads,
-          fill: true,
           label: "Downloads"
         },
         {
-          backgroundColor: "#D2D8FD",
-          borderColor: "#D2D8FD",
+          backgroundColor: "#FFFFFF00",
+          borderColor: "#36A2EB",
           data: installs,
-          fill: true,
           label: "Installs"
         },
         {
-          backgroundColor: "#A0AAF8",
-          borderColor: "#A0AAF8",
+          backgroundColor: "#FFFFFF00",
+          borderColor: "#9966FF",
           data: confirmations,
-          fill: true,
           label: "Confirmations"
         }
       ],
@@ -95,8 +102,7 @@ export default class Referrals extends React.Component<
         scales: {
           yAxes: [
             {
-              display: false,
-              stacked: true
+              display: false
             }
           ]
         }
@@ -163,7 +169,7 @@ export default class Referrals extends React.Component<
             <div style={{ display: "flex" }}>
               <div
                 style={{
-                  backgroundColor: "#A0AAF8",
+                  backgroundColor: "#9966FF",
                   borderRadius: "50%",
                   height: "16px",
                   marginRight: "4px",
@@ -184,7 +190,7 @@ export default class Referrals extends React.Component<
             <div style={{ display: "flex" }}>
               <div
                 style={{
-                  backgroundColor: "#D2D8FD",
+                  backgroundColor: "#36A2EB",
                   borderRadius: "50%",
                   height: "16px",
                   marginRight: "4px",
@@ -205,7 +211,7 @@ export default class Referrals extends React.Component<
             <div style={{ display: "flex" }}>
               <div
                 style={{
-                  backgroundColor: "#DFF3FE",
+                  backgroundColor: "#FF6384",
                   borderRadius: "50%",
                   height: "16px",
                   marginRight: "4px",
