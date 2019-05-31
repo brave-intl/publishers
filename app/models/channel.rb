@@ -334,18 +334,18 @@ class Channel < ApplicationRecord
     return unless verified?
     emoji =
       case details_type
-        when "SiteChannelDetails"
-          "🌐"
-        when "TwitchChannelDetails"
-          "👾"
-        when "YoutubeChannelDetails"
-          "📺"
-        when "VimeoChannelDetails"
-          "🎥"
-        when "TwitterChannelDetails"
-          "🐦"
-        else
-          ""
+      when "SiteChannelDetails"
+        "🌐"
+      when "TwitchChannelDetails"
+        "👾"
+      when "YoutubeChannelDetails"
+        "📺"
+      when "VimeoChannelDetails"
+        "🎥"
+      when "TwitterChannelDetails"
+        "🐦"
+      else
+        ""
       end
 
     SlackMessenger.new(
