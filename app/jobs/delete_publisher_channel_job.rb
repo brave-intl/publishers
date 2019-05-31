@@ -1,10 +1,15 @@
 class DeletePublisherChannelJob < ApplicationJob
   queue_as :default
 
+  class CannotDeleteChannel < StandardError; end
+
   def perform(channel_id:)
     @channel = Channel.find(channel_id)
     publisher = @channel.publisher
-    raise "Can't remove a channel that is contesting another a channel." if @channel.verification_pending? && !publisher.registered_for_2fa_removal?
+
+    if @channel.verification_pending? && !publisher.registered_for_2fa_removal?
+      raise CannotDeleteChannel.new("Can't remove a channel that is contesting another a channel or is in the process of removing 2fa.")
+    end
 
     # If channel is being contested, approve the channel which will also delete
     if @channel.contested_by_channel.present?

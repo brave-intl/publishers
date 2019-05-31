@@ -38,6 +38,9 @@ module Channels
         # Notify Slack
         SlackMessenger.new(message: "#{@channel.details.channel_identifier} has been successfully contested by #{@channel.publisher.owner_identifier}.").perform
       end
+    rescue DeletePublisherChannelJob::CannotDeleteChannel => e
+      Raven.extra_context channel_id: @channel.id
+      Raven.capture_exception(e)
     end
   end
 end
