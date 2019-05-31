@@ -5,7 +5,7 @@ class CreateUpholdCardsJob < ApplicationJob
   def perform(publisher_id:)
     publisher = Publisher.find(publisher_id)
 
-    raise unless publisher.uphold_connection.can_create_uphold_cards?
+    return if publisher.uphold_connection.can_create_uphold_cards?
 
     default_currency = publisher.default_currency
 
