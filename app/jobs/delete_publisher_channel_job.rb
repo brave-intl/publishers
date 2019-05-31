@@ -8,7 +8,7 @@ class DeletePublisherChannelJob < ApplicationJob
     publisher = @channel.publisher
 
     if @channel.verification_pending? && !publisher.registered_for_2fa_removal?
-      raise CannotDeleteChannel.new("Can't remove a channel that is contesting another a channel or is in the process of removing 2fa.")
+      raise CannotDeleteChannel.new("Can't remove a channel that is contesting another a channel")
     end
 
     # If channel is being contested, approve the channel which will also delete
