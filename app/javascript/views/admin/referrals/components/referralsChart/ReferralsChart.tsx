@@ -10,6 +10,9 @@ interface IReferralsChartProps {
 
 interface IReferralsChartState {
   selectedReferralCode: any;
+  downloadsToggle: any;
+  installsToggle: any;
+  confirmationsToggle: any;
 }
 
 export default class Referrals extends React.Component<
@@ -20,6 +23,9 @@ export default class Referrals extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
+      confirmationsToggle: true,
+      downloadsToggle: true,
+      installsToggle: true,
       selectedReferralCode: 0
     };
   }
@@ -38,6 +44,26 @@ export default class Referrals extends React.Component<
 
   public handleReferralCodeSelect = e => {
     this.setState({ selectedReferralCode: e.target.value });
+  };
+
+  public handleDataSelect = index => {
+    switch (index) {
+      case 0:
+        this.setState(prevState => ({
+          downloadsToggle: !prevState.downloadsToggle
+        }));
+        break;
+      case 1:
+        this.setState(prevState => ({
+          installsToggle: !prevState.installsToggle
+        }));
+        break;
+      case 2:
+        this.setState(prevState => ({
+          confirmationsToggle: !prevState.confirmationsToggle
+        }));
+        break;
+    }
   };
 
   public createReferralsChart(referralCode) {
@@ -68,6 +94,16 @@ export default class Referrals extends React.Component<
         confirmations.push(stat.confirmations);
       }
     });
+
+    if (!this.state.downloadsToggle) {
+      downloads = [];
+    }
+    if (!this.state.installsToggle) {
+      installs = [];
+    }
+    if (!this.state.confirmationsToggle) {
+      confirmations = [];
+    }
 
     const chartData = {
       datasets: [
@@ -114,6 +150,9 @@ export default class Referrals extends React.Component<
   }
 
   public render() {
+    let confirmationsOpacity = this.state.confirmationsToggle ? 1 : 0.5;
+    let installsOpacity = this.state.installsToggle ? 1 : 0.5;
+    let downloadsOpacity = this.state.downloadsToggle ? 1 : 0.5;
     return (
       <Card>
         <div
@@ -168,9 +207,12 @@ export default class Referrals extends React.Component<
           <div>
             <div style={{ display: "flex" }}>
               <div
+                onClick={() => this.handleDataSelect(2)}
                 style={{
                   backgroundColor: "#9966FF",
                   borderRadius: "50%",
+                  cursor: "pointer",
+                  opacity: confirmationsOpacity,
                   height: "16px",
                   marginRight: "4px",
                   marginTop: "4px",
@@ -187,14 +229,19 @@ export default class Referrals extends React.Component<
                 Confirmation
               </div>
             </div>
-            <div style={{ display: "flex" }}>
+            <div
+              onClick={() => this.handleDataSelect(1)}
+              style={{ display: "flex" }}
+            >
               <div
                 style={{
                   backgroundColor: "#36A2EB",
                   borderRadius: "50%",
+                  cursor: "pointer",
                   height: "16px",
                   marginRight: "4px",
                   marginTop: "4px",
+                  opacity: installsOpacity,
                   width: "16px"
                 }}
               />
@@ -208,14 +255,19 @@ export default class Referrals extends React.Component<
                 Installs
               </div>
             </div>
-            <div style={{ display: "flex" }}>
+            <div
+              onClick={() => this.handleDataSelect(0)}
+              style={{ display: "flex" }}
+            >
               <div
                 style={{
                   backgroundColor: "#FF6384",
                   borderRadius: "50%",
+                  cursor: "pointer",
                   height: "16px",
                   marginRight: "4px",
                   marginTop: "4px",
+                  opacity: downloadsOpacity,
                   width: "16px"
                 }}
               />
