@@ -22,8 +22,10 @@ export default {
         Twitch: "Twitch"
       },
       btn: {
-        signup: "Sign up now",
-        signupHref: "/sign-up"
+        signup: "Sign up",
+        signupHref: "/sign-up",
+        login: "Log in",
+        loginHref: "/log-in"
       }
     },
     signin: {
