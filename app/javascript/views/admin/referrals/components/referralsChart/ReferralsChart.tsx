@@ -150,9 +150,9 @@ export default class Referrals extends React.Component<
   }
 
   public render() {
-    let confirmationsOpacity = this.state.confirmationsToggle ? 1 : 0.5;
-    let installsOpacity = this.state.installsToggle ? 1 : 0.5;
-    let downloadsOpacity = this.state.downloadsToggle ? 1 : 0.5;
+    const confirmationsOpacity = this.state.confirmationsToggle ? 1 : 0.5;
+    const installsOpacity = this.state.installsToggle ? 1 : 0.5;
+    const downloadsOpacity = this.state.downloadsToggle ? 1 : 0.5;
     return (
       <Card>
         <div
@@ -212,10 +212,10 @@ export default class Referrals extends React.Component<
                   backgroundColor: "#9966FF",
                   borderRadius: "50%",
                   cursor: "pointer",
-                  opacity: confirmationsOpacity,
                   height: "16px",
                   marginRight: "4px",
                   marginTop: "4px",
+                  opacity: confirmationsOpacity,
                   width: "16px"
                 }}
               />
