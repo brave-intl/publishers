@@ -324,7 +324,6 @@ class PublishersController < ApplicationController
 
   def uphold_status
     publisher = current_publisher
-    )
     respond_to do |format|
       format.json do
         render(json: {
