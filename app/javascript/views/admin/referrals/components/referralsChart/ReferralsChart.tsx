@@ -74,9 +74,9 @@ export default class Referrals extends React.Component<
     }
     const stats = referralCode.stats;
     const chartLabels = [];
-    const downloads = [];
-    const installs = [];
-    const confirmations = [];
+    let downloads = [];
+    let installs = [];
+    let confirmations = [];
 
     stats.forEach((stat, index) => {
       if (index < stats.length - 1) {
