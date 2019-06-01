@@ -39,15 +39,18 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
     @referral_codes.each do |referral_code|
       events = []
       (1..6).reverse_each do |i|
-        event = {
-          "referral_code" => "#{referral_code}",
-          PromoRegistration::RETRIEVALS => rand(50..75),
-          PromoRegistration::FIRST_RUNS => rand(30..50),
-          PromoRegistration::FINALIZED => rand(1..30),
-          "ymd" => "#{i.month.ago.utc.to_date}",
-        }
-        events.push(event)
-        stats.push(event)
+        (1..3).each do |j|
+          puts j
+          event = {
+            "referral_code" => "#{referral_code}",
+            PromoRegistration::RETRIEVALS => rand(50..75),
+            PromoRegistration::FIRST_RUNS => rand(30..50),
+            PromoRegistration::FINALIZED => rand(1..30),
+            "ymd" => "#{i.month.ago.utc.to_date}",
+          }
+          events.push(event)
+          stats.push(event)
+        end
       end
       PromoRegistration.find_by_referral_code(referral_code).update(stats: events.to_json)
     end

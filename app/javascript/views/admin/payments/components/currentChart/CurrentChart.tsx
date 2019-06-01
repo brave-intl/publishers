@@ -31,7 +31,7 @@ export default class CurrentChart extends React.Component<
       datasets: [
         {
           backgroundColor: ["#D2D8FD", "#A0AAF8"],
-          data: [contributionBalance, referralBalance]
+          data: [referralBalance, contributionBalance]
         }
       ],
       labels: ["Referrals", "Contributions"]
