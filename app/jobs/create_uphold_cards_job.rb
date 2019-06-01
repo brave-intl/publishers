@@ -5,7 +5,10 @@ class CreateUpholdCardsJob < ApplicationJob
   def perform(publisher_id:)
     publisher = Publisher.find(publisher_id)
 
-    return if publisher.uphold_connection.can_create_uphold_cards?
+    unless publisher.uphold_connection.can_create_uphold_cards?
+      Rails.logger.info("Could not create uphold card for publisher #{publisher.id}.")
+      return
+    end
 
     default_currency = publisher.default_currency
 
