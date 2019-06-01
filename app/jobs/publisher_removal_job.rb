@@ -16,9 +16,9 @@ class PublisherRemovalJob < ApplicationJob
       publisher.update(current_sign_in_ip: nil)
       publisher.update(last_sign_in_ip: nil)
     end
+
     publisher.channels.pluck(:id).each do |channel_id|
-      is_deleted = DeletePublisherChannelJob.perform_now(channel_id: channel_id)
-      raise ActiveRecord::Rollback unless is_deleted
+      DeletePublisherChannelJob.perform_now(channel_id: channel_id)
     end
 
     # Paper trail retains all records: we destroy all historical PII and non-PII
