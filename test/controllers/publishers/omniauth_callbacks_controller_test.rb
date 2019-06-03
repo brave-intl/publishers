@@ -89,7 +89,7 @@ module Publishers
           to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_youtube_channel_omniauth_authorize_url)
+        post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
       end
@@ -120,7 +120,7 @@ module Publishers
           to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_youtube_channel_omniauth_authorize_url)
+        post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -148,7 +148,7 @@ module Publishers
           to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_youtube_channel_omniauth_authorize_url)
+        post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -167,7 +167,7 @@ module Publishers
       follow_redirect!
 
 
-      get(publisher_register_youtube_channel_omniauth_authorize_url)
+      post(publisher_register_youtube_channel_omniauth_authorize_url)
       follow_redirect!
       assert_redirected_to home_publishers_path
       follow_redirect!
@@ -208,7 +208,7 @@ module Publishers
           to_return(status: 200, body: { items: [channel_data("id" => "78032")] }.to_json, headers: {})
 
       assert_difference("Channel.count", 0) do
-        get(publisher_register_youtube_channel_omniauth_authorize_url)
+        post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -249,7 +249,7 @@ module Publishers
     test "a publisher who only has a google plus email can login using their login channel" do
       OmniAuth.config.mock_auth[:youtube_login] = auth_hash
 
-      get(publisher_youtube_login_omniauth_authorize_url)
+      post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
       assert_redirected_to change_email_publishers_path
     end
@@ -264,7 +264,7 @@ module Publishers
           }
       )
 
-      get(publisher_youtube_login_omniauth_authorize_url)
+      post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
       assert_redirected_to log_in_publishers_path
     end
@@ -272,7 +272,7 @@ module Publishers
     test "a publisher who was registered by youtube channel signup can't add additional youtube channels" do
       OmniAuth.config.mock_auth[:youtube_login] = auth_hash
 
-      get(publisher_youtube_login_omniauth_authorize_url)
+      post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
       assert_redirected_to change_email_publishers_path
 
@@ -317,7 +317,7 @@ module Publishers
           to_return(status: 200, body: { items: [register_youtube_channel_data] }.to_json, headers: {})
 
       assert_difference("Channel.count", 0) do
-        get(publisher_register_youtube_channel_omniauth_authorize_url)
+        post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -362,7 +362,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_twitch_channel] = auth_hash
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_twitch_channel_omniauth_authorize_url)
+        post(publisher_register_twitch_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
       end
@@ -386,7 +386,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_twitch_channel] = auth_hash("uid" => verified_details[:twitch_channel_id])
 
       assert_difference("Channel.count", 0) do
-        get(publisher_register_twitch_channel_omniauth_authorize_url)
+        post(publisher_register_twitch_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -446,7 +446,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_twitter_channel_omniauth_authorize_url)
+        post(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
       end
@@ -475,7 +475,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash("uid" => "abc124")
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_twitter_channel_omniauth_authorize_url)
+        post(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -498,7 +498,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_twitter_channel] = auth_hash("uid" => verified_details[:twitter_channel_id])
 
       assert_difference("Channel.count", 0) do
-        get(publisher_register_twitter_channel_omniauth_authorize_url)
+        post(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -556,7 +556,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_vimeo_channel] = auth_hash
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_vimeo_channel_omniauth_authorize_url)
+        post(publisher_register_vimeo_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
       end
@@ -583,7 +583,7 @@ module Publishers
       )
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_vimeo_channel_omniauth_authorize_url)
+        post(publisher_register_vimeo_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -609,7 +609,7 @@ module Publishers
       )
 
       assert_difference("Channel.count", 0) do
-        get(publisher_register_vimeo_channel_omniauth_authorize_url)
+        post(publisher_register_vimeo_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
