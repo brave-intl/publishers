@@ -285,10 +285,6 @@ GEM
     parser (2.6.3.0)
       ast (~> 2.4.0)
     pg (0.21.0)
-    phony (2.18.2)
-    phony_rails (0.14.11)
-      activesupport (>= 3.0)
-      phony (> 2.15)
     popper_js (1.14.5)
     powerpack (0.1.2)
     premailer (1.11.1)
@@ -543,7 +539,6 @@ DEPENDENCIES
   omniauth-vimeo
   paper_trail (~> 10.1.0)
   pg (~> 0.18)
-  phony_rails (~> 0.14)
   premailer-rails (~> 1.9.4)
   pry
   pry-byebug

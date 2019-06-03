@@ -1,7 +1,7 @@
 require 'digest/md5'
 
 class Publisher < ApplicationRecord
-  has_paper_trail only: [:name, :email, :pending_email, :phone_normalized, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
+  has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
   ADMIN = "admin".freeze
@@ -43,9 +43,6 @@ class Publisher < ApplicationRecord
 
   attr_encrypted :authentication_token, key: :encryption_key
 
-  # Normalizes attribute before validation and saves into other attribute
-  phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
-
   validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? || deleted? }
   validates :email, uniqueness: { case_sensitive: false }, allow_nil: true, unless: -> { deleted? }
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? && !deleted? }
@@ -54,7 +51,6 @@ class Publisher < ApplicationRecord
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
 
   validates :name, presence: true, allow_blank: true
-  validates :phone_normalized, phony_plausible: true
 
   validates_inclusion_of :role, in: ROLES
 
@@ -118,7 +114,7 @@ class Publisher < ApplicationRecord
   def self.statistical_totals(up_to_date: 1.day.from_now)
     # TODO change this
     {
-      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.where(role: Publisher::PUBLISHER, uphold_verified: true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.uphold_verified': true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.where("created_at <= ?", up_to_date).distinct(:id).count,

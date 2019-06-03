@@ -30,8 +30,7 @@ namespace :data_sanitizer do
         uphold_verified: false,
         auth_user_id: auth_user_id,
         auth_name: "User #{Random.rand(10_000)}",
-        auth_email: auth_email_digest && "publishers-staging+2+#{auth_email_digest}@basicattentiontoken.org",
-        uphold_updated_at: nil
+        auth_email: auth_email_digest && "publishers-staging+2+#{auth_email_digest}@basicattentiontoken.org"
       )
       STDOUT << "."
     end
