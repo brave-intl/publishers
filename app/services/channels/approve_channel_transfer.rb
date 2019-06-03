@@ -18,7 +18,9 @@ module Channels
         channel_name = @channel.publication_title
 
         # Delete the channel from eyeshade and clean up the promo registration
-        DeletePublisherChannelJob.perform_now(channel_id: @channel.id)
+        is_deleted = DeletePublisherChannelJob.perform_now(channel_id: @channel.id)
+        # If couldn't delete the channel roll back the transaction
+        raise ActiveRecord::Rollback unless is_deleted
 
         contested_by.verified = true
         contested_by.verification_pending = false

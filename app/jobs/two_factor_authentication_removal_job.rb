@@ -18,7 +18,8 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
           publisher.u2f_registrations.destroy_all if !publisher.u2f_registrations.empty?
           if !publisher.channels.empty?
             publisher.channels.each do |channel|
-              DeletePublisherChannelJob.perform_now(channel_id: channel.id)
+              is_deleted = DeletePublisherChannelJob.perform_now(channel_id: channel.id)
+              raise ActiveRecord::Rollback unless is_deleted
             end
           end
           publisher.uphold_connection&.disconnect_uphold
