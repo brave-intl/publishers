@@ -653,7 +653,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_reddit_channel] = auth_hash
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_reddit_channel_omniauth_authorize_url)
+        post(publisher_register_reddit_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
       end
@@ -680,7 +680,7 @@ module Publishers
       )
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_reddit_channel_omniauth_authorize_url)
+        post(publisher_register_reddit_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -706,7 +706,7 @@ module Publishers
       )
 
       assert_difference("Channel.count", 0) do
-        get(publisher_register_reddit_channel_omniauth_authorize_url)
+        post(publisher_register_reddit_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -749,7 +749,7 @@ module Publishers
       OmniAuth.config.mock_auth[:register_github_channel] = auth_hash
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_github_channel_omniauth_authorize_url)
+        post(publisher_register_github_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
       end
@@ -776,7 +776,7 @@ module Publishers
       )
 
       assert_difference("Channel.count", 1) do
-        get(publisher_register_github_channel_omniauth_authorize_url)
+        post(publisher_register_github_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
@@ -802,7 +802,7 @@ module Publishers
       )
 
       assert_difference("Channel.count", 0) do
-        get(publisher_register_github_channel_omniauth_authorize_url)
+        post(publisher_register_github_channel_omniauth_authorize_url)
         follow_redirect!
         assert_redirected_to home_publishers_path
         follow_redirect!
