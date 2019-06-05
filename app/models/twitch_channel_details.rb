@@ -1,5 +1,4 @@
 class TwitchChannelDetails < BaseChannelDetails
-
   validate :twitch_channel_not_changed_once_initialized
   validates :twitch_channel_id, presence: true
   validates :thumbnail_url, presence: true
