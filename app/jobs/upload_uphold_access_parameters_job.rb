@@ -6,7 +6,7 @@ class UploadUpholdAccessParametersJob < ApplicationJob
 
     if publisher.uphold_connection.uphold_access_parameters.blank?
       Rails.logger.info("Publisher #{publisher.id} is missing uphold_access_parameters. UpholdConnection #{publisher.uphold_connection.to_json}")
-      SlackMessenger.new(message: "🤔 Publisher #{publisher.id} is missing uphold_access_parameters.").perform
+      SlackMessenger.new(message: "🤔 Publisher #{publisher.id} is missing uphold_access_parameters.", channel: SlackMessenger::ALERTS).perform
       return
     end
 

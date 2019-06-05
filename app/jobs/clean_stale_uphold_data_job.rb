@@ -24,9 +24,9 @@ class CleanStaleUpholdDataJob < ApplicationJob
       connection.save!
       n += 1
       Rails.logger.info("Cleaned stalled uphold access parameters for #{connection.publisher.owner_identifier}.")
-      SlackMessenger.new(message: "Cleaned stalled uphold access parameters for #{connection.publisher.owner_identifier}.").perform
+      SlackMessenger.new(message: "Cleaned stalled uphold access parameters for #{connection.publisher.owner_identifier}.", channel: SlackMessenger::ALERTS).perform
     end
     Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.")
-    SlackMessenger.new(message: "CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.").perform
+    SlackMessenger.new(message: "CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.", channel: SlackMessenger::ALERTS).perform
   end
 end
