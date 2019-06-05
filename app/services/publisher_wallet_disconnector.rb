@@ -9,8 +9,9 @@ class PublisherWalletDisconnector < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
-    if publisher.uphold_connection.uphold_verified
-      raise "Publisher #{publisher.id} has re-verified their Uphold connection, so it should not be disconnected."
+    if publisher.uphold_connection&.uphold_verified
+      SlackMessenger.new(message: "️🤔 Publisher #{publisher.id} has re-verified their Uphold connection, so it should not be disconnected.", channel: SlackMessenger::ALERTS)
+      return
     end
 
     # This raises when response is not 2xx.

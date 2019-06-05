@@ -33,17 +33,17 @@ hr
           .db-info-row
             .db-field = "Organization:"
             .db-value = link_to partner.organization, admin_organization_path(partner.organization)
-        - if @publisher.wallet.uphold_account_status.present?
+        - if @publisher.wallet&.uphold_account_status.present?
           .db-info-row
             .db-field = "Uphold status:"
             .db-value = @publisher.wallet.uphold_account_status
         .db-info-row
-          .db-field = "Uphold member:"
-          .db-value = @publisher.wallet.is_a_member?
-        -if @publisher.uphold_id.present?
+          .db-field = "Uphold member (KYC):"
+          .db-value = @publisher.wallet&.is_a_member?
+        -if @publisher&.uphold_connection.uphold_id.present?
           .db-info-row
             .db-field = "Uphold account id:"
-            .db-value = link_to @publisher.uphold_id, admin_publishers_path(q: @publisher.uphold_id)
+            .db-value = link_to @publisher.uphold_connection.uphold_id, admin_publishers_path(q: @publisher.uphold_connection.uphold_id)
         .db-info-row
           .db-field = "Uphold widget enabled:"
           .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
