@@ -7,6 +7,7 @@ class CreateUpholdCardsJob < ApplicationJob
 
     unless publisher.uphold_connection.can_create_uphold_cards?
       Rails.logger.info("Could not create uphold card for publisher #{publisher.id}.")
+      SlackMessenger.new(message: "Could not create uphold card for publisher #{publisher.id}.").perform
       return
     end
 
