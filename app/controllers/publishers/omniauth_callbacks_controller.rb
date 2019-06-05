@@ -168,7 +168,7 @@ module Publishers
         nickname: vimeo_auth_hash.info.nickname
       )
 
-      existing_channel = Channel.joins(:vimeo_channel_details).where("vimeo_channel_details.vimeo_channel_id": vimeo_auth_hash.info.id).first
+      existing_channel = Channel.joins(:vimeo_channel_details).where(verified: true, "vimeo_channel_details.vimeo_channel_id": vimeo_auth_hash.info.id).first
 
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered")
@@ -193,7 +193,7 @@ module Publishers
         nickname: reddit_auth_hash.info.name,
       )
 
-      existing_channel = Channel.joins(:reddit_channel_details).where("reddit_channel_details.reddit_channel_id": reddit_auth_hash.uid).first
+      existing_channel = Channel.joins(:reddit_channel_details).where(verified: true, "reddit_channel_details.reddit_channel_id": reddit_auth_hash.uid).first
 
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered")
@@ -218,7 +218,7 @@ module Publishers
         nickname: github_auth_hash.info.nickname,
       )
 
-      existing_channel = Channel.joins(:github_channel_details).where("github_channel_details.github_channel_id": github_auth_hash.uid).first
+      existing_channel = Channel.joins(:github_channel_details).where(verified: true, "github_channel_details.github_channel_id": github_auth_hash.uid).first
 
       if existing_channel&.publisher == current_publisher
         redirect_to home_publishers_path, notice: t(".channel_already_registered")
