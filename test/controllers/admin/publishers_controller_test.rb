@@ -121,13 +121,13 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "raises error unless admin is on admin whitelist" do
+  test "renders whitelist unless admin is on admin whitelist" do
     admin = publishers(:admin)
     sign_in admin
 
-    assert_raises(Ability::AdminNotOnIPWhitelistError) do
-      get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
-    end
+    get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
+
+    assert_template "admin/errors/whitelist.html"
   end
 
   test "admins can approve channels waiting for admin approval" do
