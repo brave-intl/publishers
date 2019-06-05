@@ -1,5 +1,4 @@
 class SiteChannelDetails < BaseChannelDetails
-
   # brave_publisher_id is a normalized identifier provided by eyeshade API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
