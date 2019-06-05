@@ -112,8 +112,8 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     click_link('+ Add Channel', match: :first)
 
     assert_content page, 'Add Channel'
-    assert_content page, 'WEBSITE'
-    assert_content page, 'YOUTUBE CHANNEL'
+    assert_content page, 'Website'
+    assert_content page, 'YouTube'
 
     find('[data-test-choose-channel-website]').click
 
