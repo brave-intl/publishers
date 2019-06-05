@@ -80,4 +80,7 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.confirm_email_change(publisher)
   end
 
+  def tagged_in_note
+    InternalMailer.tagged_in_note(tagged_user: Publisher.where(role: 'admin').first, note: PublisherNote.where("note LIKE ?", "%@%").first)
+  end
 end

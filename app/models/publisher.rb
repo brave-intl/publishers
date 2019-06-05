@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 class Publisher < ApplicationRecord
   has_paper_trail only: [:name, :email, :pending_email, :phone_normalized, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
@@ -44,12 +46,12 @@ class Publisher < ApplicationRecord
   # Normalizes attribute before validation and saves into other attribute
   phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
 
-  validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
-  validates :email, uniqueness: { case_sensitive: false }, allow_nil: true
-  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
+  validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? || deleted? }
+  validates :email, uniqueness: { case_sensitive: false }, allow_nil: true, unless: -> { deleted? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? && !deleted? }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
-  validate :pending_email_must_be_a_change
-  validate :pending_email_can_not_be_in_use
+  validate :pending_email_must_be_a_change, unless: -> { deleted? }
+  validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
 
   validates :name, presence: true, allow_blank: true
   validates :phone_normalized, phony_plausible: true
@@ -75,14 +77,13 @@ class Publisher < ApplicationRecord
   scope :not_admin, -> { where.not(role: ADMIN) }
   scope :partner, -> { where(role: PARTNER) }
   scope :not_partner, -> { where.not(role: PARTNER) }
-  scope :suspended, -> {
-    joins(:status_updates).
-      where('publisher_status_updates.created_at =
-            (SELECT MAX(publisher_status_updates.created_at)
-            FROM publisher_status_updates
-            WHERE publisher_status_updates.publisher_id = publishers.id)').
-      where("publisher_status_updates.status = 'suspended'")
-  }
+
+  scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
+  scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
+  scope :suspended, -> { filter_status(PublisherStatusUpdate::SUSPENDED) }
+  scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED) }
+  scope :deleted, -> { filter_status(PublisherStatusUpdate::DELETED) }
+  scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS) }
 
   scope :not_suspended, -> {
     where.not(id: suspended)
@@ -91,6 +92,28 @@ class Publisher < ApplicationRecord
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
+
+  def self.filter_status(status)
+    joins(:status_updates).
+      where('publisher_status_updates.created_at =
+            (SELECT MAX(publisher_status_updates.created_at)
+            FROM publisher_status_updates
+            WHERE publisher_status_updates.publisher_id = publishers.id)').
+      where("publisher_status_updates.status = ?", status)
+  end
+
+  # Because the status_updates wasn't backfilled we also include those who have no status to be "Active"
+  def self.active
+    joins('LEFT OUTER JOIN publisher_status_updates ON publisher_status_updates.publisher_id = publishers.id').
+      where('publisher_status_updates.created_at =
+            (
+              SELECT MAX(publisher_status_updates.created_at)
+              FROM publisher_status_updates
+              WHERE publisher_status_updates.publisher_id = publishers.id
+            ) OR
+            publisher_status_updates.publisher_id is NULL').
+      where("publisher_status_updates.status = ? OR publisher_status_updates.status is NULL", PublisherStatusUpdate::ACTIVE)
+  end
 
   def self.statistical_totals(up_to_date: 1.day.from_now)
     # TODO change this
@@ -164,14 +187,24 @@ class Publisher < ApplicationRecord
     email.present?
   end
 
+  # Silly method for showing a color for people's avatar
+  def avatar_color
+    Digest::MD5.hexdigest(email || pending_email)[0...6]
+  end
+
   # Public: Show history of publisher's notes and statuses sorted by the created time
   #
   # Returns an array of PublisherNote and PublisherStatusUpdate
   def history
     # Create hash with created_at time as the key
     # Then we can merge and sort by the key to get history
-    notes = self.notes.map { |n| { n.created_at => n } }
+    notes = self.notes.where(thread_id: nil)
     status = status_updates.map { |s| { s.created_at => s } }
+
+    statuses_with_notes = status_updates.select { |s| s.publisher_note_id.present? }.map(&:publisher_note_id)
+    notes = notes.to_a.delete_if { |n| statuses_with_notes.include?(n.id) }
+
+    notes.map! { |n| { n.created_at => n } }
 
     combined = notes + status
     combined = combined.sort { |x, y| x.keys.first <=> y.keys.first }.reverse
@@ -179,8 +212,12 @@ class Publisher < ApplicationRecord
     combined.map { |c| c.values.first }
   end
 
+  def deleted?
+    last_status_update&.status == PublisherStatusUpdate::DELETED
+  end
+
   def suspended?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
+    last_status_update&.status == PublisherStatusUpdate::SUSPENDED
   end
 
   def no_grants?
@@ -188,7 +225,7 @@ class Publisher < ApplicationRecord
   end
 
   def locked?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::LOCKED
+    last_status_update&.status == PublisherStatusUpdate::LOCKED
   end
 
   def verified?
@@ -254,6 +291,10 @@ class Publisher < ApplicationRecord
     TwoFactorAuthenticationRemoval.create(
       publisher_id: id
     )
+  end
+
+  def registered_for_2fa_removal?
+    two_factor_authentication_removal.present?
   end
 
   # Remove when new dashboard is finished

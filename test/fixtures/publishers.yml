@@ -39,6 +39,7 @@ just_notes:
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  role: 'admin'
 
 verified_totp_only:
   email: "alice_totp@verified.org"

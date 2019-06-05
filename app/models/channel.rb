@@ -76,6 +76,8 @@ class Channel < ApplicationRecord
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
+  after_save :notify_slack, if: :saved_change_to_verified?
+
   before_save :clear_verified_at_if_necessary
 
   before_destroy :preserve_contested_by_channels
@@ -164,7 +166,27 @@ class Channel < ApplicationRecord
       twitch: Channel.verified.twitch_channels.count,
       youtube:  Channel.verified.youtube_channels.count,
       site:  Channel.verified.site_channels.count,
+      twitter:  Channel.verified.twitter_channels.count,
+      reddit: 0,
+      github: 0,
+      vimeo: Channel.verified.vimeo_channels.count,
     }
+  end
+
+  def self.duplicates
+    entries = [
+      TwitchChannelDetails.joins(:channel).where("channels.verified = true").select(:name).group(:name),
+      YoutubeChannelDetails.joins(:channel).where("channels.verified = true").select(:youtube_channel_id).group(:youtube_channel_id),
+      TwitterChannelDetails.joins(:channel).where("channels.verified = true").select(:twitter_channel_id).group(:twitter_channel_id),
+      SiteChannelDetails.joins(:channel).where("channels.verified = true").select(:brave_publisher_id).group(:brave_publisher_id),
+      VimeoChannelDetails.joins(:channel).where("channels.verified = true").select(:vimeo_channel_id).group(:vimeo_channel_id),
+    ]
+
+    duplicates = entries.map do |entry|
+      entry.having("count(*) >1").map { |x, y| x.channel_identifier }
+    end
+
+    @duplicates ||= duplicates.flatten
   end
 
   def publication_title
@@ -352,6 +374,29 @@ class Channel < ApplicationRecord
 
   def register_channel_for_promo
     RegisterChannelForPromoJob.new.perform(channel: self)
+  end
+
+  def notify_slack
+    return unless verified?
+    emoji =
+      case details_type
+      when "SiteChannelDetails"
+        "🌐"
+      when "TwitchChannelDetails"
+        "👾"
+      when "YoutubeChannelDetails"
+        "📺"
+      when "VimeoChannelDetails"
+        "🎥"
+      when "TwitterChannelDetails"
+        "🐦"
+      else
+        ""
+      end
+
+    SlackMessenger.new(
+      message: "#{emoji} *#{details.publication_title}* verified by owner #{publisher.owner_identifier}; id=#{details.channel_identifier}; url=#{details.url}"
+    ).perform
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher

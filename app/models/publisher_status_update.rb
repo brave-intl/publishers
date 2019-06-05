@@ -4,11 +4,13 @@ class PublisherStatusUpdate < ApplicationRecord
   ACTIVE = 'active'.freeze
   SUSPENDED = 'suspended'.freeze
   LOCKED = 'locked'.freeze
+  DELETED = 'deleted'.freeze
   NO_GRANTS = 'no_grants'.freeze
 
-  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS].freeze
+  ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS, DELETED].freeze
 
   belongs_to :publisher
+  belongs_to :publisher_note
 
   validates :status, presence: true, :inclusion => { in: ALL_STATUSES }
 

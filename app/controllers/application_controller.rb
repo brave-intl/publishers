@@ -15,6 +15,10 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
 
+  rescue_from Ability::AdminNotOnIPWhitelistError do |e|
+    render file: "admin/errors/whitelist.html", layout: false
+  end
+
   def no_cache
     return if controller_name == 'static' # We want to cache on the homepage
     response.headers['Cache-Control'] = 'no-cache, no-store'

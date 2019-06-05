@@ -133,6 +133,7 @@ Rails.application.routes.draw do
           get :email_verified_signups_per_day
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
+          get :channel_and_kyc_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
           get :totals
         end
@@ -148,7 +149,12 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :channels, only: [:index]
+    resources :channels, only: [:index] do
+      collection do
+        get :duplicates
+      end
+    end
+
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
@@ -166,9 +172,9 @@ Rails.application.routes.draw do
       collection do
         patch :approve_channel
         get :statement
-        post :create_note
         get :cancel_two_factor_authentication_removal
       end
+      resources :publisher_notes
       resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
     end
