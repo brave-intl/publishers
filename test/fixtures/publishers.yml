@@ -198,9 +198,9 @@ twitch_verified:
   visible: true
   default_currency: "BAT"
 
-vimeo_publisher:
-  email: "aliceVimeo@gmail.com"
-  name: "Alice from Vimeo"
+channel_publisher:
+  email: "channel_publisher@gmail.com"
+  name: "Carlos the Channel Adder"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   default_currency: "BAT"

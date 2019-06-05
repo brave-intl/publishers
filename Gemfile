@@ -69,7 +69,15 @@ gem "omniauth-twitch"
 
 # Oauth client for twitter
 gem "omniauth-twitter"
+
+# OAuth client for Vimeo
 gem "omniauth-vimeo"
+
+# OAuth client for Reddit
+gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git', :branch => "master"
+
+# OAuth client for GitHub
+gem "omniauth-github"
 
 # Model record auditing
 gem "paper_trail", "~> 10.1.0"

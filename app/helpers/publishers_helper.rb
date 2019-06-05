@@ -17,8 +17,8 @@ module PublishersHelper
         image: image_url("open-graph-preview.png", host: root_url),
         description: t("shared.app_description"),
         url: request.url,
-        type: "website"
-      }
+        type: "website",
+      },
     }
   end
 
@@ -31,7 +31,7 @@ module PublishersHelper
   end
 
   def next_deposit_date(today = DateTime.now)
-    today = today + 1.month if today.day > 8
+    today += 1.month if today.day > 8
     today.strftime("%B 8th")
   end
 
@@ -152,10 +152,10 @@ module PublishersHelper
     # We should not be updating database values on GET requests
     publisher.uphold_connection&.prepare_uphold_state_token
 
-    Rails.application.secrets[:uphold_authorization_endpoint]
-        .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
-        .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-        .gsub('<STATE>', publisher.uphold_connection&.uphold_state_token)
+    Rails.application.secrets[:uphold_authorization_endpoint].
+      gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
+      gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
+      gsub('<STATE>', publisher.uphold_connection&.uphold_state_token)
   end
 
   def uphold_authorization_description(publisher)
@@ -241,16 +241,16 @@ module PublishersHelper
 
   def publisher_last_verification_method_path(publisher)
     case publisher.verification_method
-      when "dns_record"
-        verification_dns_record_publishers_path
-      when "public_file"
-        verification_public_file_publishers_path
-      when "github"
-        verification_github_publishers_path
-      when "wordpress"
-        verification_wordpress_publishers_path
-      else
-        verification_choose_method_publishers_path
+    when "dns_record"
+      verification_dns_record_publishers_path
+    when "public_file"
+      verification_public_file_publishers_path
+    when "github"
+      verification_github_publishers_path
+    when "wordpress"
+      verification_wordpress_publishers_path
+    else
+      verification_choose_method_publishers_path
     end
   end
 
@@ -283,21 +283,21 @@ module PublishersHelper
   def publisher_private_reauth_url(publisher:, confirm_email: nil)
     token = publisher.authentication_token
     options = { token: token }
-    options[:confirm_email] = confirm_email if (confirm_email)
+    options[:confirm_email] = confirm_email if confirm_email
     publisher_url(publisher, options)
   end
 
   def publisher_private_two_factor_removal_url(publisher:, confirm_email: nil)
     token = publisher.authentication_token
     options = { id: publisher.id, token: token }
-    options[:confirm_email] = confirm_email if (confirm_email)
+    options[:confirm_email] = confirm_email if confirm_email
     confirm_two_factor_authentication_removal_publishers_url(nil, options)
   end
 
   def publisher_private_two_factor_cancellation_url(publisher:, confirm_email: nil)
     token = publisher.authentication_token
     options = { id: publisher.id, token: token }
-    options[:confirm_email] = confirm_email if (confirm_email)
+    options[:confirm_email] = confirm_email if confirm_email
     cancel_two_factor_authentication_removal_publishers_url(nil, options)
   end
 
@@ -373,6 +373,10 @@ module PublishersHelper
       I18n.t("helpers.publisher.channel_type.twitter")
     when VimeoChannelDetails
       I18n.t("helpers.publisher.channel_type.vimeo")
+    when RedditChannelDetails
+      I18n.t("helpers.publisher.channel_type.reddit")
+    when GithubChannelDetails
+      I18n.t("helpers.publisher.channel_type.github")
     else
       I18n.t("helpers.publisher.channel_type.unknown")
     end
@@ -388,6 +392,10 @@ module PublishersHelper
       I18n.t("helpers.publisher.channel_name.twitch")
     when VimeoChannelDetails
       I18n.t("helpers.publisher.channel_name.vimeo")
+    when RedditChannelDetails
+      I18n.t("helpers.publisher.channel_name.reddit")
+    when GithubChannelDetails
+      I18n.t("helpers.publisher.channel_name.github")
     else
       I18n.t("helpers.publisher.channel_name.unknown")
     end
@@ -404,13 +412,13 @@ module PublishersHelper
 
   def channel_edit_link(channel)
     case channel.details
-      when SiteChannelDetails
-        link_to(home_publishers_path)
+    when SiteChannelDetails
+      link_to(home_publishers_path)
 
-      when YoutubeChannelDetails
+    when YoutubeChannelDetails
 
-      else
-        link_to(home_publishers_path)
+    else
+      link_to(home_publishers_path)
     end
   end
 
@@ -423,6 +431,10 @@ module PublishersHelper
     when TwitterChannelDetails
       asset_url('publishers-home/twitter-icon_32x32.png')
     when VimeoChannelDetails
+      asset_url('publishers-home/vimeo-icon_32x32.png')
+    when RedditChannelDetails
+      asset_url('publishers-home/vimeo-icon_32x32.png')
+    when GithubChannelDetails
       asset_url('publishers-home/vimeo-icon_32x32.png')
     else
       asset_url('publishers-home/website-icon_32x32.png')
@@ -439,11 +451,11 @@ module PublishersHelper
             channel.details.thumbnail_url
           end
 
-    return url || asset_url('default-channel.png')
+    url || asset_url('default-channel.png')
   end
 
   def publisher_id_from_owner_identifier(owner_identifier)
-    owner_identifier[/publishers#uuid:(.*)/,1]
+    owner_identifier[/publishers#uuid:(.*)/, 1]
   end
 
   def email_is_youtube_format?(email)
