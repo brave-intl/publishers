@@ -128,6 +128,6 @@ class UpholdConnection < ActiveRecord::Base
   private
 
   def send_blocked_message
-    SlackMessenger.new(message: "Publisher #{id} is blocked by Uphold and has just logged in. <!channel>").perform
+    SlackMessenger.new(message: "Publisher #{id} is blocked by Uphold and has just logged in. <!channel>", channel: SlackMessenger::ALERTS).perform
   end
 end

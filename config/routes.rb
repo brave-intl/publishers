@@ -149,7 +149,12 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :channels, only: [:index]
+    resources :channels, only: [:index] do
+      collection do
+        get :duplicates
+      end
+    end
+
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do

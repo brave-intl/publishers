@@ -16,6 +16,7 @@ class PublisherRemovalJob < ApplicationJob
       publisher.update(current_sign_in_ip: nil)
       publisher.update(last_sign_in_ip: nil)
     end
+
     publisher.channels.pluck(:id).each do |channel_id|
       DeletePublisherChannelJob.perform_now(channel_id: channel_id)
     end
