@@ -49,7 +49,7 @@
           = t "publishers.choose_new_channel_type.vimeo.description"
 
 - if params[:reddit]
-  = link_to(publisher_register_reddit_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddRedditChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  = link_to(publisher_register_reddit_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddRedditChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
     .card-body
       .icon-and-text--wrapper
         .icon-and-text--icon
@@ -59,7 +59,7 @@
           = t "publishers.choose_new_channel_type.reddit.description"
 
 - if params[:github]
-  = link_to(publisher_register_github_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddGithubChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  = link_to(publisher_register_github_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddGithubChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
     .card-body
       .icon-and-text--wrapper
         .icon-and-text--icon
