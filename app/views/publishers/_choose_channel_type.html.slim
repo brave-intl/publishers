@@ -3,62 +3,67 @@
   class: 'card block-link--card', \
   data: { "test-choose-channel-website": 1} \
 ) do
-  .new-tag
   .card-body
-    .icon-and-text--icon
-      = image_tag "choose-channel/web.svg", class: "choose-channel--icon"
-    .icon-and-text--text
-      h6= t "publishers.choose_new_channel_type.website.heading"
-      = t "publishers.choose_new_channel_type.website.description"
-
-= link_to(publisher_register_youtube_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddYoutubeChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
-  .card-body
-    .icon-and-text--icon
-      = image_tag "choose-channel/youtube.svg", class: "choose-channel--icon"
-    .icon-and-text--text
-      h6= t "publishers.choose_new_channel_type.youtube.heading"
-      = t "publishers.choose_new_channel_type.youtube.description"
-
-= link_to(publisher_register_twitch_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddTwitchChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
-  .card-body
-    .icon-and-text--icon
-      = image_tag "choose-channel/twitch.svg", class: "choose-channel--icon"
-    .icon-and-text--text
-      h6= t "publishers.choose_new_channel_type.twitch.heading"
-      = t "publishers.choose_new_channel_type.twitch.description"
-
-- if params[:twitter]
-  = link_to(publisher_register_twitter_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddTwitterChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
-    .card-body
+    .icon-and-text--wrapper
       .icon-and-text--icon
-        = image_tag "choose-channel/twitter.svg", class: "choose-channel--icon"
+        = image_tag "choose-channel/choose-channel--site.jpg", height: 72, width: 88, class: "choose-channel--icon"
+      .icon-and-text--text
+        h6= t "publishers.choose_new_channel_type.website.heading"
+        = t "publishers.choose_new_channel_type.website.description"
+
+= link_to(publisher_register_youtube_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddYoutubeChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  .card-body
+    .icon-and-text--wrapper
+      .icon-and-text--icon
+        = image_tag "choose-channel/choose-channel--youtube.jpg", height: 72, width: 88, class: "choose-channel--icon"
+      .icon-and-text--text
+        h6= t "publishers.choose_new_channel_type.youtube.heading"
+        = t "publishers.choose_new_channel_type.youtube.description"
+
+= link_to(publisher_register_twitch_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddTwitchChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  .card-body
+    .icon-and-text--wrapper
+      .icon-and-text--icon
+        = image_tag "choose-channel/choose-channel--twitch.jpg", height: 72, width: 88, class: "choose-channel--icon"
+      .icon-and-text--text
+        h6= t "publishers.choose_new_channel_type.twitch.heading"
+        = t "publishers.choose_new_channel_type.twitch.description"
+
+= link_to(publisher_register_twitter_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddTwitterChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  .card-body
+    .icon-and-text--wrapper
+      .icon-and-text--icon
+        = image_tag "choose-channel/choose-channel--twitter.jpg", height: 72, width: 88, class: "choose-channel--icon"
       .icon-and-text--text
         h6= t "publishers.choose_new_channel_type.twitter.heading"
         = t "publishers.choose_new_channel_type.twitter.description"
 
 - if params[:vimeo]
-  = link_to(publisher_register_vimeo_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddVimeoChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  = link_to(publisher_register_vimeo_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddVimeoChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
     .card-body
-      .icon-and-text--icon
-        = image_tag "choose-channel/vimeo.svg", class: "choose-channel--icon"
-      .icon-and-text--text
-        h6= t "publishers.choose_new_channel_type.vimeo.heading"
-        = t "publishers.choose_new_channel_type.vimeo.description"
+      .icon-and-text--wrapper
+        .icon-and-text--icon
+          = image_tag "choose-channel/choose-channel--vimeo.jpg", height: 72, width: 88, class: "choose-channel--icon"
+        .icon-and-text--text
+          h6= t "publishers.choose_new_channel_type.vimeo.heading"
+          = t "publishers.choose_new_channel_type.vimeo.description"
 
 - if params[:reddit]
-  = link_to(publisher_register_reddit_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddRedditChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  = link_to(publisher_register_reddit_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddRedditChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
     .card-body
-      .icon-and-text--icon
-        = image_tag "choose-channel/reddit.svg", class: "choose-channel--icon"
-      .icon-and-text--text
-        h6= t "publishers.choose_new_channel_type.reddit.heading"
-        = t "publishers.choose_new_channel_type.reddit.description"
+      .icon-and-text--wrapper
+        .icon-and-text--icon
+          = image_tag "choose-channel/choose-channel--vimeo.jpg", height: 72, width: 88, class: "choose-channel--icon"
+        .icon-and-text--text
+          h6= t "publishers.choose_new_channel_type.reddit.heading"
+          = t "publishers.choose_new_channel_type.reddit.description"
 
 - if params[:github]
-  = link_to(publisher_register_github_channel_omniauth_authorize_path, class: 'card block-link--card', :"data-piwik-action" => "AddGithubChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  = link_to(publisher_register_github_channel_omniauth_authorize_path, class: 'card block-link--card', method: :post, :"data-piwik-action" => "AddGithubChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
     .card-body
-      .icon-and-text--icon
-        = image_tag "choose-channel/github.svg", class: "choose-channel--icon"
-      .icon-and-text--text
-        h6= t "publishers.choose_new_channel_type.github.heading"
-        = t "publishers.choose_new_channel_type.github.description"
+      .icon-and-text--wrapper
+        .icon-and-text--icon
+          = image_tag "choose-channel/choose-channel--vimeo.jpg", height: 72, width: 88, class: "choose-channel--icon"
+        .icon-and-text--text
+          h6= t "publishers.choose_new_channel_type.github.heading"
+          = t "publishers.choose_new_channel_type.github.description"

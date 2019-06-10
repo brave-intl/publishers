@@ -35,6 +35,7 @@ gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.6.1"
+gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -107,7 +108,7 @@ gem "rails", "~> 5.2.3"
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
 # Cache with Redis
-gem 'redis', '~> 4.0.1'
+gem 'redis', '~> 4.1.2'
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"

@@ -18,28 +18,49 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.where(search_sql, search_query: search_query)
     end
 
-    @publishers = @publishers.suspended if params[:suspended].present?
+    if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
+      # Effectively sanitizes the users input
+      method = PublisherStatusUpdate::ALL_STATUSES.detect { |x| x == params[:status] }
+      @publishers = @publishers.send(method)
+    end
+
+    if params[:role].present?
+      @publishers = @publishers.where(role: params[:role])
+    end
+
     if params[:two_factor_authentication_removal].present?
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
+    @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
     @publishers = @publishers.group(:id).paginate(page: params[:page])
+
+    respond_to do |format|
+      format.json { render json: @publishers.to_json({ methods: :avatar_color }) }
+      format.html {}
+    end
   end
 
   def show
     @publisher = Publisher.find(params[:id])
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard"}).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
     @potential_referral_payment = @publisher.most_recent_potential_referral_payment
-    @note = PublisherNote.new
+    @current_user = current_user
   end
 
   def edit
     @publisher = Publisher.find(params[:id])
-    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard"}).to_json
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
   end
 
   def update
     @publisher.update(update_params)
 
+    redirect_to admin_publisher_path(@publisher)
+  end
+
+  def destroy
+    PublisherRemovalJob.perform_later(publisher_id: @publisher.id)
+    flash[:alert] = "Deletion job enqueued. This usually takes a few seconds to complete"
     redirect_to admin_publisher_path(@publisher)
   end
 
@@ -87,10 +108,6 @@ class Admin::PublishersController < AdminController
   def get_publisher
     return unless params[:id].present? || params[:publisher_id].present?
     @publisher = Publisher.find(params[:publisher_id] || params[:id])
-  end
-
-  def publisher_create_note_params
-    params.require(:publisher_note).permit(:publisher, :note)
   end
 
   def admin_approval_channel_params

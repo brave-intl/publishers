@@ -361,28 +361,28 @@ en:
         try_logging_out: If this account is not the one you wanted to claim, please log out of %{channel_name} and try again.
         ok: OK
     choose_new_channel_type:
-      intro: Choose the type of channel you would like to add to your dashboard.
+      intro: Let's start with choosing where you're publishing your content.
       website:
-        heading: Website
+        heading: WEBSITE
         description: I have my own website and have access to the domain directory.
       youtube:
-        heading: YouTube
+        heading: YOUTUBE CHANNEL
         description: I own or manage a YouTube channel.
       twitch:
-        heading: Twitch
-        description: I own or manage a Twitch channel.
+        heading: TWITCH CHANNEL
+        description: I'm the primary owner of a Twitch channel.
       twitter:
-        heading: Twitter
-        description: I own a Twitter account.
+        heading: TWITTER
+        description: I own or manage a Twitter account.
       vimeo:
-        heading: Vimeo
+        heading: VIMEO CHANNEL
         description: I own or manage a Vimeo channel.
       reddit:
-        heading: Reddit
-        description: I own or manage a Reddit account.
+        heading: REDDIT
+        description: I own a Reddit account.
       github:
-        heading: GitHub
-        description: I own or manage a GitHub account.
+        heading: GITHUB
+        description: I own a GitHub account.
     contact_info:
       heading: Contact Information
     registrations:

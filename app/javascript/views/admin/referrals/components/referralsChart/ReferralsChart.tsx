@@ -10,6 +10,9 @@ interface IReferralsChartProps {
 
 interface IReferralsChartState {
   selectedReferralCode: any;
+  downloadsToggle: any;
+  installsToggle: any;
+  confirmationsToggle: any;
 }
 
 export default class Referrals extends React.Component<
@@ -20,6 +23,9 @@ export default class Referrals extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
+      confirmationsToggle: true,
+      downloadsToggle: true,
+      installsToggle: true,
       selectedReferralCode: 0
     };
   }
@@ -40,6 +46,26 @@ export default class Referrals extends React.Component<
     this.setState({ selectedReferralCode: e.target.value });
   };
 
+  public handleDataSelect = index => {
+    switch (index) {
+      case 0:
+        this.setState(prevState => ({
+          downloadsToggle: !prevState.downloadsToggle
+        }));
+        break;
+      case 1:
+        this.setState(prevState => ({
+          installsToggle: !prevState.installsToggle
+        }));
+        break;
+      case 2:
+        this.setState(prevState => ({
+          confirmationsToggle: !prevState.confirmationsToggle
+        }));
+        break;
+    }
+  };
+
   public createReferralsChart(referralCode) {
     const node = this.node;
 
@@ -48,38 +74,55 @@ export default class Referrals extends React.Component<
     }
     const stats = referralCode.stats;
     const chartLabels = [];
-    const downloads = [];
-    const installs = [];
-    const confirmations = [];
+    let downloads = [];
+    let installs = [];
+    let confirmations = [];
 
-    stats.forEach(stat => {
-      chartLabels.push(stat.date);
-      downloads.push(stat.downloads);
-      installs.push(stat.installs);
-      confirmations.push(stat.confirmations);
+    stats.forEach((stat, index) => {
+      if (index < stats.length - 1) {
+        if (stat.date !== stats[index + 1].date) {
+          chartLabels.push(stat.date);
+          downloads.push(stat.downloads);
+          installs.push(stat.installs);
+          confirmations.push(stat.confirmations);
+        }
+      }
+      if (index === stats.length - 1) {
+        chartLabels.push(stat.date);
+        downloads.push(stat.downloads);
+        installs.push(stat.installs);
+        confirmations.push(stat.confirmations);
+      }
     });
+
+    if (!this.state.downloadsToggle) {
+      downloads = [];
+    }
+    if (!this.state.installsToggle) {
+      installs = [];
+    }
+    if (!this.state.confirmationsToggle) {
+      confirmations = [];
+    }
 
     const chartData = {
       datasets: [
         {
-          backgroundColor: "#DFF3FE",
-          borderColor: "#DFF3FE",
+          backgroundColor: "#FFFFFF00",
+          borderColor: "#FF6384",
           data: downloads,
-          fill: true,
           label: "Downloads"
         },
         {
-          backgroundColor: "#D2D8FD",
-          borderColor: "#D2D8FD",
+          backgroundColor: "#FFFFFF00",
+          borderColor: "#36A2EB",
           data: installs,
-          fill: true,
           label: "Installs"
         },
         {
-          backgroundColor: "#A0AAF8",
-          borderColor: "#A0AAF8",
+          backgroundColor: "#FFFFFF00",
+          borderColor: "#9966FF",
           data: confirmations,
-          fill: true,
           label: "Confirmations"
         }
       ],
@@ -95,8 +138,7 @@ export default class Referrals extends React.Component<
         scales: {
           yAxes: [
             {
-              display: false,
-              stacked: true
+              display: false
             }
           ]
         }
@@ -108,6 +150,9 @@ export default class Referrals extends React.Component<
   }
 
   public render() {
+    const confirmationsOpacity = this.state.confirmationsToggle ? 1 : 0.5;
+    const installsOpacity = this.state.installsToggle ? 1 : 0.5;
+    const downloadsOpacity = this.state.downloadsToggle ? 1 : 0.5;
     return (
       <Card>
         <div
@@ -162,12 +207,15 @@ export default class Referrals extends React.Component<
           <div>
             <div style={{ display: "flex" }}>
               <div
+                onClick={() => this.handleDataSelect(2)}
                 style={{
-                  backgroundColor: "#A0AAF8",
+                  backgroundColor: "#9966FF",
                   borderRadius: "50%",
+                  cursor: "pointer",
                   height: "16px",
                   marginRight: "4px",
                   marginTop: "4px",
+                  opacity: confirmationsOpacity,
                   width: "16px"
                 }}
               />
@@ -181,14 +229,19 @@ export default class Referrals extends React.Component<
                 Confirmation
               </div>
             </div>
-            <div style={{ display: "flex" }}>
+            <div
+              onClick={() => this.handleDataSelect(1)}
+              style={{ display: "flex" }}
+            >
               <div
                 style={{
-                  backgroundColor: "#D2D8FD",
+                  backgroundColor: "#36A2EB",
                   borderRadius: "50%",
+                  cursor: "pointer",
                   height: "16px",
                   marginRight: "4px",
                   marginTop: "4px",
+                  opacity: installsOpacity,
                   width: "16px"
                 }}
               />
@@ -202,14 +255,19 @@ export default class Referrals extends React.Component<
                 Installs
               </div>
             </div>
-            <div style={{ display: "flex" }}>
+            <div
+              onClick={() => this.handleDataSelect(0)}
+              style={{ display: "flex" }}
+            >
               <div
                 style={{
-                  backgroundColor: "#DFF3FE",
+                  backgroundColor: "#FF6384",
                   borderRadius: "50%",
+                  cursor: "pointer",
                   height: "16px",
                   marginRight: "4px",
                   marginTop: "4px",
+                  opacity: downloadsOpacity,
                   width: "16px"
                 }}
               />

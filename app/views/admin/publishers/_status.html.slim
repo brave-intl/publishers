@@ -1,8 +1,16 @@
-.note.rounded-box
-  .note-header
-    .box
-      = "Status change"
-    .box
-      = note.created_at.strftime("%B %d, %Y %k:%M %Z")
-  hr
-    = note.status
+.note.mt-4
+  strong
+    = "Status change"
+    - if status.publisher_note.present?
+      = " by #{status.publisher_note.created_by.name}"
+
+  small.text-muted.mx-2 &#149;
+  span.date data-tooltip=status.created_at.strftime("%B %d, %Y %k:%M %Z")
+    = time_ago_in_words(status.created_at)
+    span= " ago"
+  div
+    .mt-3
+      span class=status_badge_class(status.status)
+        = status.status
+    - if status.publisher_note.present?
+      = render partial: 'note', locals: { note: status.publisher_note, publisher: publisher, current_user: current_user, condense: true }

@@ -12,10 +12,6 @@ class PublisherWalletSetter < BaseApiClient
     # (Albert Wang): Unlikely this will happen. Just a safeguard
     return false if publisher.excluded_from_payout?
 
-    if !publisher.uphold_connection.uphold_access_parameters
-      raise "Publisher #{publisher.id} is missing uphold_access_parameters."
-    end
-
     uphold_access_parameters = JSON.parse(publisher.uphold_connection.uphold_access_parameters)
     uphold_access_parameters[:server] = Rails.application.secrets[:uphold_api_uri]
 

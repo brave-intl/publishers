@@ -67,15 +67,13 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
     assert_nil channel.contesting_channel
   end
 
-  test "destroying a contested_by raises error" do
+  test "destroying a contested_by returns false" do
     channel = channels(:fraudulently_verified_site)
     contested_by_channel = channels(:locked_out_site)
     # contest channel
     Channels::ContestChannel.new(channel: channel, contested_by: contested_by_channel).perform
 
-    assert_raises do
-      DeletePublisherChannelJob.perform_now(channel_id: contested_by_channel.id)
-    end
+    refute DeletePublisherChannelJob.perform_now(channel_id: contested_by_channel.id)
 
     # ensure the unverified channle is gone
     assert Channel.where(id: contested_by_channel.id).present?

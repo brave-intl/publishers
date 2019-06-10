@@ -1,0 +1,12 @@
+= form_for [:admin, publisher, note] do |f|
+  - thread_id ||= nil
+  - if thread_id.present?
+    = f.hidden_field :thread_id, value: thread_id
+  = f.text_area(:note, rows: "4", class: "form-control note-form",  placeholder:"Add a comment...")
+  .mt-3
+    = f.submit(note.id.present? ? "Update note" : "Add note", class: 'btn btn-primary mr-1')
+
+    - if note.id.present? || thread_id.present?
+      a.btn.btn-dark id="cancel_#{note.id}_#{thread_id}" href="#" Cancel
+
+  javascript:

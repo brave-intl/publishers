@@ -16,3 +16,5 @@
           = " Uphold widget disabled"
       .form-group
         = f.submit class: "btn btn-primary"
+    = form_tag admin_publisher_path, method: :delete
+      = submit_tag "Delete account", class: 'btn btn-danger', data: { confirm: "Are you sure you want to delete this account?" }

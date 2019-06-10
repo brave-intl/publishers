@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_152544) do
+ActiveRecord::Schema.define(version: 2019_05_24_205525) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -147,7 +148,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_152544) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: true
+    t.boolean "verified", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -338,15 +339,19 @@ ActiveRecord::Schema.define(version: 2019_05_17_152544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
+    t.uuid "thread_id"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id"
+    t.index ["thread_id"], name: "index_publisher_notes_on_thread_id"
   end
 
   create_table "publisher_status_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
     t.string "status", null: false
     t.datetime "created_at", null: false
+    t.uuid "publisher_note_id"
     t.index ["publisher_id", "created_at"], name: "index_publisher_status_updates_on_publisher_id_and_created_at"
+    t.index ["publisher_note_id"], name: "index_publisher_status_updates_on_publisher_note_id"
   end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -373,12 +378,12 @@ ActiveRecord::Schema.define(version: 2019_05_17_152544) do
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "visible", default: true
-    t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
+    t.boolean "promo_enabled_2018q1", default: false
     t.string "promo_token_2018q1"
     t.text "role", default: "publisher"
-    t.datetime "default_currency_confirmed_at"
     t.datetime "javascript_last_detected_at"
+    t.datetime "default_currency_confirmed_at"
     t.boolean "excluded_from_payout", default: false, null: false
     t.uuid "created_by_id"
     t.uuid "default_site_banner_id"
@@ -405,8 +410,8 @@ ActiveRecord::Schema.define(version: 2019_05_17_152544) do
   create_table "sessions", id: :serial, force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -436,8 +441,8 @@ ActiveRecord::Schema.define(version: 2019_05_17_152544) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
+    t.string "https_error"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

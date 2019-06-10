@@ -1,44 +1,50 @@
 [![Build Status](https://travis-ci.org/brave-intl/publishers.svg?branch=master)](https://travis-ci.org/brave-intl/publishers)
 
-## :wrench: Setup
+# :wrench: Setup
 
-Follow these steps to setup the App for [publishers.basicattentiontoken.org](https://publishers.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
+Follow these steps to setup the App for [creators.brave.com](https://creators.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
 
-1. Install __Ruby 2.4.5__. For a Ruby version manager try
-   [rbenv](https://github.com/rbenv/rbenv). Follow the `Installation` section instructions. Once installed run `rbenv install 2.4.5`. Be sure to restart your terminal before continuing.
-2. Install __Node 6.12.3__ or greater: `brew install node`
-3. Install __Postgresql 9.5+__: `brew install postgresql`
-   
-	If you get the error `psql: FATAL: role “postgres” does not exist`. You'll need to create the `/usr/local/opt/postgres/bin/createuser -s postgres`
-4. Install __Redis__: `brew install redis`
-5. Install __Ruby__ gems: `gem install bundler foreman mailcatcher`.
+1. Install **Ruby 2.5.5**. For a Ruby version manager try
+   [rbenv](https://github.com/rbenv/rbenv). Follow the `Installation` section instructions and ensure your version is at least 1.1.2. Once installed run `rbenv install 2.5.5`. Be sure to restart your terminal before continuing.
+2. Install **Node 6.12.3** or greater: `brew install node`
+3. Install **Postgresql 9.5+**: `brew install postgresql`
+
+   If you get the error `psql: FATAL: role “postgres” does not exist`. You'll need to create the `/usr/local/opt/postgres/bin/createuser -s postgres`
+
+4. Install **Redis**: `brew install redis`
+5. Install **Ruby** gems: `gem install bundler foreman mailcatcher`.
    - [bundler](http://bundler.io/)
    - [foreman](https://github.com/ddollar/foreman)
    - [mailcatcher](https://github.com/sj26/mailcatcher)
-6. Install __[Yarn](https://yarnpkg.com/en/)__ for Node dependency management:
-   `brew install yarn --without-node`
-   
-	__Note:__ `--without-node` avoids installing Homebrew's version of Node, which is
-   desirable if you are using nvm for Node version management.
+6. Install **[Yarn](https://yarnpkg.com/en/)** for Node dependency management: `brew install yarn`
 7. Install project dependencies
-	- __Ruby__ dependencies: `bundle install`
-		- Possible error: Nokogiri, with libxml2. Try installing a system libxml2
-      with `brew install libxml2` and then
-      `bundle config build.nokogiri --use-system-libraries` then again
-      `bundle install`.,.
-	- __Node__ dependencies: `yarn --frozen-lockfile`
-8.  Install [git-secrets](https://github.com/awslabs/git-secrets). This prevents AWS keys from being committed.
+
+   **Ruby** dependencies: `bundle install`
+
+   **Possible errors:**
+
+   - Nokogiri, with libxml2. Try installing a system libxml2
+     with `brew install libxml2` and then
+     `bundle config build.nokogiri --use-system-libraries` then again `bundle install`
+   - Run `gem install nokogiri -v '1.10.3'` and then `bundle install`
+
+   **Node** dependencies: `yarn --frozen-lockfile`
+
+   Your version of Node must be v11.15.0 or earlier. For a node version manager, try [NVM](https://github.com/nvm-sh/nvm).
+
+8. Install [git-secrets](https://github.com/awslabs/git-secrets) with `brew install git-secrets` This prevents AWS keys from being committed.
 9. (Optional) Get an `env.sh` file from another developer which contains development-mode bash env exports and `source` that file. You can start developing without this, but some functionality may be limited.
-10. Install __Rails__: `gem install rails` Be sure to restart your terminal before continuing.
+10. Install **Rails**: `gem install rails`
+
+    **Be sure to restart your terminal before continuing.**
+
 11. Setup SSL as described below.
 
-### HTTPS Setup
+## HTTPS Setup
 
-Local development of brave-intl uses HTTPS. This allow us to use web APIs such
-as U2F in development.
+Local development of brave-intl uses HTTPS. This allow us to use web APIs such as U2F in development.
 
-If you already have a key and certificate for the `localhost` domain place them in the
-`ssl/` directory:
+If you already have a key and certificate for the `localhost` domain place them in the `ssl/` directory:
 
 ```
 ssl/server.key
@@ -55,16 +61,25 @@ When you first visit the application in a browser you may need to add an
 exception to trust this self-signed certificate. Sometimes this is under an
 "advanced" or "proceed" link.
 
-### Run
+## Run
 
-1. Start __Postgres__ and __Redis__: `brew services start redis postgresql`
+1. Start **Postgres** and **Redis**: `brew services start redis postgresql`
 2. Create and initialize the database:
-```
-rails db:create RAILS_ENV=development
-rails db:migrate RAILS_ENV=development
-```
 
-__Note__: If you receive a `fatal-role` error, try running `/usr/local/opt/postgres/bin/createuser -s postgres` due to being installed from `homebrew`. Further documentation is [here.](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist)
+   ```
+   rails db:create RAILS_ENV=development
+   rails db:migrate RAILS_ENV=development
+   ```
+
+   **Note**: If you receive a `fatal-role` error, try running `/usr/local/opt/postgres/bin/createuser -s postgres` due to being installed from `homebrew`. Further documentation is [here.](https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-exist)
+
+   If you receive an error about Readline, try running:
+
+   ```
+   ln -s /usr/local/opt/readline/lib/libreadline.dylib /usr/local/opt/readline/lib/libreadline.7.dylib
+   ```
+
+   Issue for [further documentation](https://github.com/deivid-rodriguez/byebug/issues/289).
 
 3. Run Rails server and async worker: `foreman start -f Procfile.dev`
 
@@ -74,28 +89,30 @@ __Note__: If you receive a `fatal-role` error, try running `/usr/local/opt/postg
 
 6. To view the emails sent to your inbox visit: http://localhost:1080
 
+---
+
 ## API Setups
 
 ### Google API Setup
 
 Setup a google API project:
 
-* Login to your google account (dev), or the Brave google account (staging, production)
-* Go to [https://console.developers.google.com](https://console.developers.google.com)
-* Select "Create Project" then "Create" to setup a new API project
-* Give the project a name such as "publishers-dev"
-* Select "+ Enable APIs and Services"
-* Enable "Google+ API" and "YouTube Data API v3"
-* Back at the console select Credentials, then select the "OAuth consent screen" sub tab
-* Fill in the details. For development you need the Product name, try "Publishers Dev (localhost)"
-* Then Select "Create credentials", then "OAuth client ID"
-  * Application type is "Web application"
-  * Name is "Publishers"
-  * Authorized redirect URIs is `http://localhost:3000/publishers/auth/google_oauth2/callback`
-  * select "Create"
-* Record the Client ID and Client secret and enter them in your Env variables
-* Back at the console select "Create credentials" and select API key.  This will be used for youtube channel stats via the data api.
-* Record the API and enter it in your Env variables
+- Login to your google account (dev), or the Brave google account (staging, production)
+- Go to [https://console.developers.google.com](https://console.developers.google.com)
+- Select "Create Project" then "Create" to setup a new API project
+- Give the project a name such as "publishers-dev"
+- Select "+ Enable APIs and Services"
+- Enable "Google+ API" and "YouTube Data API v3"
+- Back at the console select Credentials, then select the "OAuth consent screen" sub tab
+- Fill in the details. For development you need the Product name, try "Publishers Dev (localhost)"
+- Then Select "Create credentials", then "OAuth client ID"
+  - Application type is "Web application"
+  - Name is "Publishers"
+  - Authorized redirect URIs is `http://localhost:3000/publishers/auth/google_oauth2/callback`
+  - select "Create"
+- Record the Client ID and Client secret and enter them in your Env variables
+- Back at the console select "Create credentials" and select API key. This will be used for youtube channel stats via the data api.
+- Record the API and enter it in your Env variables
 
 You may need to wait up to 10 minutes for the changes to propagate.
 
@@ -105,29 +122,29 @@ These steps based on [directions at the omniauth-google-oauth2 gem](https://gith
 
 Setup a twitch API project:
 
-* Login to your Twitch account (dev), or the Brave Twitch account (staging, production)
-* Go to [https://dev.twitch.tv/dashboard](https://dev.twitch.tv/dashboard)
-* Select "Get Started" for "App"
-* Give the project a name such as "publishers-dev"
-* Give the app a name and application category.
-* Use the redirect URI `https://localhost:3000/publishers/auth/register_twitch_channel/callback` in development.
-* Create a Client ID and secret, saving each of them.
-  * Update your env to include `TWITCH_CLIENT_ID="your-app-id"`
-  * Update your env to include `TWITCH_CLIENT_SECRET="your-app-secret"`
-* Save the app
+- Login to your Twitch account (dev), or the Brave Twitch account (staging, production)
+- Go to [https://dev.twitch.tv/dashboard](https://dev.twitch.tv/dashboard)
+- Select "Get Started" for "App"
+- Give the project a name such as "publishers-dev"
+- Give the app a name and application category.
+- Use the redirect URI `https://localhost:3000/publishers/auth/register_twitch_channel/callback` in development.
+- Create a Client ID and secret, saving each of them.
+  - Update your env to include `TWITCH_CLIENT_ID="your-app-id"`
+  - Update your env to include `TWITCH_CLIENT_SECRET="your-app-secret"`
+- Save the app
 
 ### Twitter API Setup
 
-* Apply for a developer account at [developer.twitter.com](https://developer.twitter.com/)
-* Select "Create an App"
-* Give the app a name like "Brave Payments Dev"
-* Make sure "Enable Sign in with Twitter" is checked
-* Set the callback url to `https://localhost:3000/publishers/auth/register_twitter_channel/callback`.  If it does not allow you to set `localhost`, use a place holder for now, and later add the correct callback url through apps.twitter.com instead.
-* Fill in the remaining information and hit "Create"
-* Navigate to your app settings -> permissions and ensure it is readonly and requests the user email
-* Regenerate your Consumer API keys
-* Update your env to include `TWITCH_CLIENT_ID="your-api-key"` and `TWITTER_CLIENT_SECRET="your-api-secret-key"`
-* Save
+- Apply for a developer account at [developer.twitter.com](https://developer.twitter.com/)
+- Select "Create an App"
+- Give the app a name like "Brave Payments Dev"
+- Make sure "Enable Sign in with Twitter" is checked
+- Set the callback url to `https://localhost:3000/publishers/auth/register_twitter_channel/callback`. If it does not allow you to set `localhost`, use a place holder for now, and later add the correct callback url through apps.twitter.com instead.
+- Fill in the remaining information and hit "Create"
+- Navigate to your app settings -> permissions and ensure it is readonly and requests the user email
+- Regenerate your Consumer API keys
+- Update your env to include `TWITCH_CLIENT_ID="your-api-key"` and `TWITTER_CLIENT_SECRET="your-api-secret-key"`
+- Save
 
 ### reCAPTCHA Setup
 
@@ -147,7 +164,8 @@ To stop using Eyeshade locally, set `API_EYESHADE_BASE_URI=""`.
 
 1. Request access to [Vault-Promo-Services](https://github.com/brave-intl/vault-promo-services) and [ip2tags](https://github.com/brave-intl/vault-promo-services)
 2. Follow the [setup instructions](https://github.com/brave-intl/vault-promo-services)
-3. Create and run a `vault-promo-services.sh` start script like this 
+3. Create and run a `vault-promo-services.sh` start script like this
+
 ```
 export DATABASE_URL="services"
 export PGDATABASE="services"
@@ -167,11 +185,12 @@ done
 npm start
 ```
 
-* If you run into an issue about a missing `.mmdb` file, run `fetch.sh` in `node_modules/ip2tags`
+- If you run into an issue about a missing `.mmdb` file, run `fetch.sh` in `node_modules/ip2tags`
 
-4. Add the following into your Publishers start script 
+4. Add the following into your Publishers start script
+
 ```
-export API_PROMO_BASE_URI="http://127.0.0.1:8194" 
+export API_PROMO_BASE_URI="http://127.0.0.1:8194"
 export API_PROMO_KEY="1234"
 ```
 
@@ -203,7 +222,6 @@ rails database_updates:mock_data:populate_promo_stats
 
 <img src="docs/promo.png" alt="A picture of the chart generated by the promo server">
 
-
 #### Other vars
 
 A few variables are not configured in secrets.yml: currently none
@@ -226,7 +244,6 @@ To run simply open the project and run in the terminal
 yarn lint
 ```
 
-
 ## Testing
 
 ### Ruby
@@ -242,13 +259,14 @@ On debian you can install it like:
 ```sh
 sudo apt-get install chromium
 ```
+
 And on mac with:
 
 ```
 brew cask install chromium
 ```
 
-We also use ImageMagick to process user uploaded images. If you don't have it already, you might get an error "You must have ImageMagick or GraphicsMagick installed".  You can install on mac with:
+We also use ImageMagick to process user uploaded images. If you don't have it already, you might get an error "You must have ImageMagick or GraphicsMagick installed". You can install on mac with:
 
 ```
 brew install imagemagick
@@ -275,6 +293,7 @@ file at the top of the repo. Docker compose will automatically load from this
 file when launching services.
 
 e.g. you might have the following in `.env`:
+
 ```
 BAT_MEDIUM_URL=https://medium.com/@attentiontoken
 BAT_REDDIT_URL=https://www.reddit.com/r/BATProject/
@@ -313,45 +332,50 @@ top of the repo. For example you can expose ports on your system for the databas
 `docker-compose.override.yml`:
 
 ```yaml
-version: "2.1"
+version: '2.1'
 
 services:
   mongo:
     ports:
-      - "27017:27017"
+      - '27017:27017'
   redis:
     ports:
-      - "6379:6379"
+      - '6379:6379'
   postgres:
     ports:
-      - "5432:5432"
+      - '5432:5432'
 ```
 
 to start with docker build the app and eyeshade images
+
 ```sh
 docker-compose build
 ```
 
 and bring up the full stack
+
 ```sh
 docker-compose up
 ```
 
 ### Create the databases
+
 ```sh
 docker-compose run app yarn install; docker-compose run app rake db:setup; docker-compose run eyeshade-worker sh -c "cd eyeshade && ./bin/migrate-up.sh"
 ```
 
 ### Adding balances to Eyeshade
 
-By default when you create a channel it will not have a balance on Eyeshade, the accounting server.  To test wallet code with non nil balances, you must add them first.
+By default when you create a channel it will not have a balance on Eyeshade, the accounting server. To test wallet code with non nil balances, you must add them first.
 
 To add a contribution to a channel account:
+
 ```
 rails "docker:add_contribution_balance_to_account[youtube#channel:UCOo92t8m-tWKgmw276q7mxw, 200]" # Adds 200 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
 ```
 
 To add add a referral balance to an owner account:
+
 ```
 rails "docker:add_referral_balance_to_account[publishers#uuid:967a9919-34f4-4ce6-af36-e3f592a6eab7, 400]" # Adds 400 BAT to youtube#channel:UCOo92t8m-tWKgmw276q7mxw
 ```
@@ -361,6 +385,7 @@ The new balance should be reflected on the dashboard.
 ### Run Tests
 
 Tests can be run on the container with
+
 ```sh
 docker-compose run app rake test
 ```
@@ -368,6 +393,7 @@ docker-compose run app rake test
 Other one off commands can be run as above, but replacing `rake test`. Note this spawns a new container.
 
 ### Debugging
+
 Debugging with byebug and pry can be done by attaching to the running process. First get the container
 id with `docker ps`
 
@@ -386,6 +412,7 @@ docker attach 234f116cd942
 ```
 
 To connect with a bash shell on a running container use:
+
 ```sh
 docker exec -i -t 234f116cd942 /bin/bash
 root@234f116cd942:/var/www#
