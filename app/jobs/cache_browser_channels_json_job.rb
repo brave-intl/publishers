@@ -19,7 +19,7 @@ class CacheBrowserChannelsJsonJob < ApplicationJob
     if result
       Rails.logger.info("CacheBrowserChannelsJsonJob updated the cached browser channels json.")
     else
-      SlackMessenger.new(message: "🚨 CacheBrowserChannelsJsonJob could not update the channels JSON. @publishers-team  🚨")
+      SlackMessenger.new(message: "🚨 CacheBrowserChannelsJsonJob could not update the channels JSON. @publishers-team  🚨", channel: SlackMessenger::ALERTS)
       Rails.logger.info("CacheBrowserChannelsJsonJob could not update the channels JSON.")
     end
   end

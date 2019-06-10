@@ -92,6 +92,18 @@ ActiveRecord::Schema.define(version: 2019_06_03_195000) do
     t.index ["rank"], name: "index_faqs_on_rank"
   end
 
+  create_table "github_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "github_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "invoice_files", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "invoice_id"
     t.uuid "uploaded_by_id"
@@ -344,6 +356,18 @@ ActiveRecord::Schema.define(version: 2019_06_03_195000) do
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
+  end
+
+  create_table "reddit_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "reddit_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|

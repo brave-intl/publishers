@@ -47,7 +47,7 @@ class PublisherWalletDisconnectorTest < ActiveJob::TestCase
     end
   end
 
-  test "raises if uphold has been reverified" do
+  test "returns nil if uphold has been reverified" do
     prev_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
       Rails.application.secrets[:api_eyeshade_offline] = false
@@ -55,9 +55,7 @@ class PublisherWalletDisconnectorTest < ActiveJob::TestCase
       publisher = publishers(:verified)
       publisher.uphold_connection.uphold_verified = true
 
-      assert_raises("Publisher #{publisher.id} has re-verified their Uphold connection, so it should not be disconnected.") do
-        PublisherWalletDisconnector.new(publisher: publisher).perform
-      end
+      refute PublisherWalletDisconnector.new(publisher: publisher).perform
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_offline
     end

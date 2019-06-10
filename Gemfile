@@ -35,6 +35,7 @@ gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.6.1"
+gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -68,7 +69,15 @@ gem "omniauth-twitch"
 
 # Oauth client for twitter
 gem "omniauth-twitter"
+
+# OAuth client for Vimeo
 gem "omniauth-vimeo"
+
+# OAuth client for Reddit
+gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git', :branch => "master"
+
+# OAuth client for GitHub
+gem "omniauth-github"
 
 # Model record auditing
 gem "paper_trail", "~> 10.1.0"

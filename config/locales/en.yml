@@ -136,12 +136,16 @@ en:
         twitch: Twitch channel
         twitter: Twitter
         vimeo: Vimeo channel
+        reddit: Reddit
+        github: GitHub
         unknown: Channel
       channel_name:
         youtube: YouTube
         website: the website
         twitch: Twitch
         vimeo: Vimeo
+        reddit: Reddit
+        github: GitHub
         unknown: the website
       statement_periods:
         past_7_days: Past 7 days
@@ -370,6 +374,12 @@ en:
       vimeo:
         heading: VIMEO CHANNEL
         description: I own or manage a Vimeo channel.
+      reddit:
+        heading: REDDIT
+        description: I own a Reddit account.
+      github:
+        heading: GITHUB
+        description: I own a GitHub account.
     contact_info:
       heading: Contact Information
     registrations:
@@ -467,6 +477,10 @@ en:
         channel_already_registered: You have already claimed this Twitter account.
       register_vimeo_channel:
         channel_already_registered: You have already claimed this Vimeo account.
+      register_reddit_channel:
+        channel_already_registered: You have already claimed this Reddit account.
+      register_github_channel:
+        channel_already_registered: You have already claimed this GitHub account.
     require_unauthenticated_publisher:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_publisher:
@@ -611,6 +625,8 @@ en:
       on_twitch: "on Twitch"
       on_twitter: "on Twitter"
       on_vimeo: "on Vimeo"
+      on_reddit: "on Reddit"
+      on_github: "on GitHub"
       tos_1: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period."
       tos_2_html: |
         The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service.</a>

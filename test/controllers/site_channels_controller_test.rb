@@ -190,7 +190,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
           }
       )
 
-      get(publisher_youtube_login_omniauth_authorize_url)
+      post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
       assert_redirected_to change_email_publishers_path
 
