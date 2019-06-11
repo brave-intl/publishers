@@ -144,6 +144,8 @@ gem "will_paginate"
 # YouTube API client
 gem 'yt'
 
+gem "zendesk_api"
+
 group :development, :staging do
   # Offline domain normalization
   gem "domain_name", require: false

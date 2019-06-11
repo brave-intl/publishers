@@ -80,6 +80,7 @@ class Publisher < ApplicationRecord
   scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED) }
   scope :deleted, -> { filter_status(PublisherStatusUpdate::DELETED) }
   scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS) }
+  scope :hold, -> { filter_status(PublisherStatusUpdate::HOLD) }
 
   scope :not_suspended, -> {
     where.not(id: suspended)
@@ -217,7 +218,11 @@ class Publisher < ApplicationRecord
   end
 
   def no_grants?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::NO_GRANTS
+    last_status_update&.status == PublisherStatusUpdate::NO_GRANTS
+  end
+
+  def hold?
+    last_status_update&.status == PublisherStatusUpdate::HOLD
   end
 
   def locked?

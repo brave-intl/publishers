@@ -260,6 +260,20 @@ en:
       intro: "We’ve received a request to update your Brave Rewards email address. Please confirm you would like to proceed with the change below."
       confirmation_link: Confirm your email change
       confirmation_link_help: Use this link to confirm that you would like to proceed with this change
+    email_user_on_hold:
+      subject: Regarding your Brave Rewards account
+      body: >
+        Thank you for being a Brave Creator.
+        <br/><br/>
+        We have currently held your payment for the month of %{month}; however, you are not suspended. We would like to invite you on a call to understand how you drove the referrals for your account.
+        <br/><br/>
+        We are located in San Francisco and support calls operate at pacific time (PST). Would you kindly schedule 15 minutes in the coming week so we can converse and understand how you are driving Brave user growth?
+        <br/><br/>
+        Please use <a href="%{link}">this link</a> to schedule a chat with us. We look forward to talking to you.
+        <br/><br/>
+        Thank you.
+        <br/><br/>
+        The Brave Rewards | Creator team
     login_email:
       subject: Log in to Brave Rewards
       body_html: |
@@ -504,6 +518,8 @@ en:
         We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
         <br/><br/>
         If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:suspensions@brave.com">suspensions@brave.com</a> where a real human will read and reply to your message.
+
+
     two_factor_authentication_removal:
       heading: Having trouble with 2-factor authentication?
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
