@@ -12,10 +12,10 @@ class Api::V1::Public::ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert JSON.parse(response.body)
   end
 
-  # test "channels endpoint returns at least as many verified channels" do
-  #   get api_v1_public_channels_path
-  #   assert JSON.parse(response.body).count >= Channel.verified.count
-  # end
+  test "channels endpoint returns at least as many verified channels" do
+    get api_v1_public_channels_path
+    assert JSON.parse(response.body).count >= Channel.verified.count
+  end
 
   test "totals endpoint works" do
     get api_v1_public_channels_totals_path
