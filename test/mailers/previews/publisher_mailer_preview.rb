@@ -83,4 +83,8 @@ class PublisherMailerPreview < ActionMailer::Preview
   def tagged_in_note
     InternalMailer.tagged_in_note(tagged_user: Publisher.where(role: 'admin').first, note: PublisherNote.where("note LIKE ?", "%@%").first)
   end
+
+  def email_user_on_hold
+    PublisherMailer.email_user_on_hold(Publisher.first)
+  end
 end
