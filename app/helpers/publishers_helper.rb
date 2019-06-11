@@ -479,15 +479,4 @@ module PublishersHelper
   def publisher_created_through_youtube_auth?(publisher)
     publisher && publisher.channels.visible.count == 1 && youtube_login_permitted?(publisher.channels.visible.first)
   end
-
-  def site_banner_details(channel)
-    publisher = channel.publisher
-    if publisher.default_site_banner_mode && publisher.default_site_banner_id
-      publisher.default_site_banner.read_only_react_property
-    elsif channel.site_banner
-      channel.site_banner.read_only_react_property
-    else
-      {}
-    end
-  end
 end

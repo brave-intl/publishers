@@ -17,8 +17,6 @@
 # ]
 
 class JsonBuilders::ChannelsJsonBuilder
-  include PublishersHelper
-
   def initialize(version)
     require "publishers/excluded_channels"
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
@@ -98,6 +96,17 @@ class JsonBuilders::ChannelsJsonBuilder
       verified_channel.publisher.uphold_connection.address,
       site_banner_details(verified_channel),
     ])
+  end
+
+  def site_banner_details(channel)
+    publisher = channel.publisher
+    if publisher.default_site_banner_mode && publisher.default_site_banner_id
+      publisher.default_site_banner.read_only_react_property
+    elsif channel.site_banner
+      channel.site_banner.read_only_react_property
+    else
+      {}
+    end
   end
 
   def append_excluded
