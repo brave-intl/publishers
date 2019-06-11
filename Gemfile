@@ -85,9 +85,6 @@ gem "paper_trail", "~> 10.1.0"
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
 
-# Phone number validation
-gem "phony_rails", "~> 0.14"
-
 # Easy CSS-sthled emails
 gem "premailer-rails", "~> 1.9.4", require: false
 

@@ -170,10 +170,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               #show_contact_name= current_publisher.name
               span.email#show_contact_email= current_publisher.email
               span.hidden#pending_contact_email= current_publisher.pending_email
-              span#show_contact_phone_separator class=(current_publisher.phone.present? ? '' : 'hidden')
-                |&nbsp;&bull;&nbsp;
-              span.phone#show_contact_phone
-                = current_publisher.phone
+
             = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit hidden" }) do |f|
               .form-group
                 = f.label(:name, class: "control-label", for: "update_contact_name")
@@ -181,9 +178,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               .form-group
                 = f.label(:email, class: "control-label", for: "update_contact_email")
                 = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
-              .form-group
-                = f.label(:phone, t("publishers.shared.verified_phone_html"), class: "control-label", for: "update_contact_phone")
-                = f.phone_field(:phone, class: "form-control", pattern: "^[0-9\-\+\.\s\(\)]*$", title: t("publishers.shared.phone_validation"), id: "update_contact_phone", placeholder: "+1 888 555 9001", required: false)
               .button.form-group
                 = f.submit(translate(".contact.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
                 a#cancel_edit_contact href="#"

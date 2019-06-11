@@ -5,11 +5,11 @@ http_interactions:
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@default.org","name":"Alice
-        the Pyramid","phone":"+14159001420"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice_totp@verified.org","name":"Alice
-        the Verified TOTP User","phone":"+14159001421"}]'
+      string: '[{"email":"alice2@verified.org","name":"Alice the Verified"},{"email":"alice@completed.org","name":"Alice
+        the Completed"},{"email":"alice@default.org","name":"Alice
+        the Pyramid"},{"email":"alice@spud.com","name":"Alice
+        the Youtuber"},{"email":"alice_totp@verified.org","name":"Alice
+        the Verified TOTP User"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -65,7 +65,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAc3B1ZC5jb20=","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:04 GMT
 - request:
     method: post
@@ -126,16 +126,16 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:05 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"fred@small.org","name":"Small
-        Media Group","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"}]'
+      string: '[{"email":"alice@verified.org","name":"Alice the Verified"},{"email":"fred@small.org","name":"Small
+        Media Group"},{"email":"fred@vglobal.org","name":"Global
+        Media Group"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -191,7 +191,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2],"persisted_recipients":["YWxpY2VAdmVyaWZpZWQub3Jn","ZnJlZEBzbWFsbC5vcmc=","ZnJlZEB2Z2xvYmFsLm9yZw=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:06 GMT
 - request:
     method: post
@@ -252,18 +252,18 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:06 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@default.org","name":"Alice
-        the Pyramid","phone":"+14159001420"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice_totp@verified.org","name":"Alice
-        the Verified TOTP User","phone":"+14159001421"}]'
+      string: '[{"email":"alice2@verified.org","name":"Alice the Verified"},{"email":"alice@completed.org","name":"Alice
+        the Completed"},{"email":"alice@default.org","name":"Alice
+        the Pyramid"},{"email":"alice@spud.com","name":"Alice
+        the Youtuber"},{"email":"alice_totp@verified.org","name":"Alice
+        the Verified TOTP User"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -319,7 +319,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAc3B1ZC5jb20=","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:07 GMT
 - request:
     method: post
@@ -380,16 +380,16 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:07 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"fred@small.org","name":"Small
-        Media Group","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"}]'
+      string: '[{"email":"alice@verified.org","name":"Alice the Verified"},{"email":"fred@small.org","name":"Small
+        Media Group"},{"email":"fred@vglobal.org","name":"Global
+        Media Group"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -445,7 +445,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2],"persisted_recipients":["YWxpY2VAdmVyaWZpZWQub3Jn","ZnJlZEBzbWFsbC5vcmc=","ZnJlZEB2Z2xvYmFsLm9yZw=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:08 GMT
 - request:
     method: post
@@ -506,18 +506,18 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:08 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@default.org","name":"Alice
-        the Pyramid","phone":"+14159001420"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice_totp@verified.org","name":"Alice
-        the Verified TOTP User","phone":"+14159001421"}]'
+      string: '[{"email":"alice2@verified.org","name":"Alice the Verified"},{"email":"alice@completed.org","name":"Alice
+        the Completed"},{"email":"alice@default.org","name":"Alice
+        the Pyramid"},{"email":"alice@spud.com","name":"Alice
+        the Youtuber"},{"email":"alice_totp@verified.org","name":"Alice
+        the Verified TOTP User"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -573,7 +573,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAc3B1ZC5jb20=","YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:09 GMT
 - request:
     method: post
@@ -634,16 +634,16 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:10 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"fred@small.org","name":"Small
-        Media Group","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"}]'
+      string: '[{"email":"alice@verified.org","name":"Alice the Verified"},{"email":"fred@small.org","name":"Small
+        Media Group"},{"email":"fred@vglobal.org","name":"Global
+        Media Group"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -699,7 +699,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2],"persisted_recipients":["YWxpY2VAdmVyaWZpZWQub3Jn","ZnJlZEBzbWFsbC5vcmc=","ZnJlZEB2Z2xvYmFsLm9yZw=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:11 GMT
 - request:
     method: post
@@ -760,18 +760,18 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Thu, 07 Jun 2018 20:07:11 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@default.org","name":"Alice
-        the Pyramid","phone":"+14159001420"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"}]'
+      string: '[{"email":"alice2@verified.org","name":"Alice the Verified"},{"email":"alice@completed.org","name":"Alice
+        the Completed"},{"email":"alice@default.org","name":"Alice
+        the Pyramid"},{"email":"alice@spud.com","name":"Alice
+        the Youtuber"},{"email":"alice@verified.org","name":"Alice
+        the Verified"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -827,7 +827,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAc3B1ZC5jb20=","YWxpY2VAdmVyaWZpZWQub3Jn"],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Fri, 14 Sep 2018 21:45:35 GMT
 - request:
     method: post
@@ -888,7 +888,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Fri, 14 Sep 2018 21:58:26 GMT
 - request:
     method: patch
@@ -896,9 +896,9 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"email":"alice_totp@verified.org","name":"Alice the Verified TOTP
-        User","phone":"+14159001421"},{"email":"fred@small.org","name":"Small Media
-        Group","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"}]'
+        User"},{"email":"fred@small.org","name":"Small Media
+        Group"},{"email":"fred@vglobal.org","name":"Global
+        Media Group"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -954,7 +954,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2],"persisted_recipients":["YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","ZnJlZEBzbWFsbC5vcmc=","ZnJlZEB2Z2xvYmFsLm9yZw=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Fri, 14 Sep 2018 21:58:27 GMT
 - request:
     method: post
@@ -1015,18 +1015,18 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Fri, 14 Sep 2018 21:58:27 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@default.org","name":"Alice
-        the Pyramid","phone":"+14159001420"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"}]'
+      string: '[{"email":"alice2@verified.org","name":"Alice the Verified"},{"email":"alice@completed.org","name":"Alice
+        the Completed"},{"email":"alice@default.org","name":"Alice
+        the Pyramid"},{"email":"alice@spud.com","name":"Alice
+        the Youtuber"},{"email":"alice@verified.org","name":"Alice
+        the Verified"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -1082,7 +1082,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAc3B1ZC5jb20=","YWxpY2VAdmVyaWZpZWQub3Jn"],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:06 GMT
 - request:
     method: post
@@ -1143,7 +1143,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:07 GMT
 - request:
     method: patch
@@ -1151,9 +1151,9 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"email":"alice_totp@verified.org","name":"Alice the Verified TOTP
-        User","phone":"+14159001421"},{"email":"fred@small.org","name":"Small Media
-        Group","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"}]'
+        User"},{"email":"fred@small.org","name":"Small Media
+        Group"},{"email":"fred@vglobal.org","name":"Global
+        Media Group"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -1209,7 +1209,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2],"persisted_recipients":["YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","ZnJlZEBzbWFsbC5vcmc=","ZnJlZEB2Z2xvYmFsLm9yZw=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:08 GMT
 - request:
     method: post
@@ -1270,18 +1270,18 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:09 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice2@verified.org","name":"Alice the Verified","phone":"+14159001421"},{"email":"alice@completed.org","name":"Alice
-        the Completed","phone":"+14159001421"},{"email":"alice@default.org","name":"Alice
-        the Pyramid","phone":"+14159001420"},{"email":"alice@spud.com","name":"Alice
-        the Youtuber","phone":"+14159001420"},{"email":"alice@verified.org","name":"Alice
-        the Verified","phone":"+14159001421"}]'
+      string: '[{"email":"alice2@verified.org","name":"Alice the Verified"},{"email":"alice@completed.org","name":"Alice
+        the Completed"},{"email":"alice@default.org","name":"Alice
+        the Pyramid"},{"email":"alice@spud.com","name":"Alice
+        the Youtuber"},{"email":"alice@verified.org","name":"Alice
+        the Verified"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -1337,7 +1337,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2,3,4],"persisted_recipients":["YWxpY2UyQHZlcmlmaWVkLm9yZw==","YWxpY2VAY29tcGxldGVkLm9yZw==","YWxpY2VAZGVmYXVsdC5vcmc=","YWxpY2VAc3B1ZC5jb20=","YWxpY2VAdmVyaWZpZWQub3Jn"],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:10 GMT
 - request:
     method: post
@@ -1398,7 +1398,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:10 GMT
 - request:
     method: patch
@@ -1406,9 +1406,9 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"email":"alice_totp@verified.org","name":"Alice the Verified TOTP
-        User","phone":"+14159001421"},{"email":"fred@small.org","name":"Small Media
-        Group","phone":"+14159001421"},{"email":"fred@vglobal.org","name":"Global
-        Media Group","phone":"+14159001421"}]'
+        User"},{"email":"fred@small.org","name":"Small Media
+        Group"},{"email":"fred@vglobal.org","name":"Global
+        Media Group"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -1464,7 +1464,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0,1,2],"persisted_recipients":["YWxpY2VfdG90cEB2ZXJpZmllZC5vcmc=","ZnJlZEBzbWFsbC5vcmc=","ZnJlZEB2Z2xvYmFsLm9yZw=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:11 GMT
 - request:
     method: post
@@ -1525,6 +1525,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Tue, 04 Dec 2018 19:16:12 GMT
 recorded_with: VCR 4.0.0

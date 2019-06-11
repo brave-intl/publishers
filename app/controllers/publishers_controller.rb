@@ -279,18 +279,7 @@ class PublishersController < ApplicationController
   # Domain verified. See balance and submit payment info.
   def home
     if current_publisher.uphold_connection.blank?
-      # Handle the live case. TODO Remove and only keep the else branch in issue #1866
-      if current_publisher.uphold_updated_at.present? || current_publisher.uphold_verified || current_publisher.uphold_id
-        UpholdConnection.create!(
-          publisher: current_publisher,
-          created_at: current_publisher.uphold_updated_at || DateTime.now,
-          updated_at: current_publisher.uphold_updated_at || DateTime.now,
-          uphold_id: current_publisher.uphold_id,
-          uphold_verified: current_publisher.uphold_verified
-        )
-      else
-        UpholdConnection.create!(publisher: current_publisher)
-      end
+      UpholdConnection.create!(publisher: current_publisher)
     end
 
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
@@ -423,7 +412,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :phone, :name, :visible)
+    params.require(:publisher).permit(:pending_email, :name, :visible)
   end
 
   def publisher_update_email_params

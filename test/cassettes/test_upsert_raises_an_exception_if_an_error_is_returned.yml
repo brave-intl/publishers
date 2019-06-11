@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice@completed.org","name":"Alice the Completed","phone":"+14159001421"}]'
+      string: '[{"email":"alice@completed.org","name":"Alice the Completed"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
