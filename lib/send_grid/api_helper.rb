@@ -81,7 +81,6 @@ module SendGrid
       def contact_params(publisher:)
         params = { 'email': publisher.email}
         params['name'] = publisher.name unless publisher.name.blank?
-        params['phone'] = publisher.phone_normalized unless publisher.phone_normalized.blank?
         params
       end
 

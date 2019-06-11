@@ -12,7 +12,6 @@ class SiteChannelDetailsSerializerTest < ActiveSupport::TestCase
     assert_equal true, json_result["show_verification_status"]
     assert_equal "Alice the Verified", json_result["name"]
     assert_equal "alice@verified.org", json_result["email"]
-    assert_equal "+14159001421", json_result["phone_normalized"]
     assert_nil json_result["preferred_currency"]
   end
 end

@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_24_205525) do
+ActiveRecord::Schema.define(version: 2019_06_03_195000) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -93,6 +92,18 @@ ActiveRecord::Schema.define(version: 2019_05_24_205525) do
     t.index ["rank"], name: "index_faqs_on_rank"
   end
 
+  create_table "github_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "github_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "invoice_files", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "invoice_id"
     t.uuid "uploaded_by_id"
@@ -119,24 +130,12 @@ ActiveRecord::Schema.define(version: 2019_05_24_205525) do
     t.index ["partner_id"], name: "index_invoices_on_partner_id"
   end
 
-  create_table "legacy_publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "publisher_id", null: false
-    t.string "period"
-    t.string "source_url"
-    t.text "encrypted_contents"
-    t.string "encrypted_contents_iv"
-    t.datetime "expires_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["publisher_id"], name: "index_legacy_publisher_statements_on_publisher_id"
-  end
-
   create_table "legacy_publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "brave_publisher_id"
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: false
+    t.boolean "verified", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -186,19 +185,6 @@ ActiveRecord::Schema.define(version: 2019_05_24_205525) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["publisher_id"], name: "index_legacy_totp_registrations_on_publisher_id"
-  end
-
-  create_table "legacy_u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.text "certificate"
-    t.string "key_handle"
-    t.string "public_key"
-    t.integer "counter", null: false
-    t.string "name"
-    t.uuid "publisher_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["key_handle"], name: "index_legacy_u2f_registrations_on_key_handle"
-    t.index ["publisher_id"], name: "index_legacy_u2f_registrations_on_publisher_id"
   end
 
   create_table "legacy_versions", id: :serial, force: :cascade do |t|
@@ -328,9 +314,12 @@ ActiveRecord::Schema.define(version: 2019_05_24_205525) do
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
     t.uuid "thread_id"
+    t.bigint "zendesk_ticket_id"
+    t.bigint "zendesk_comment_id"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id"
     t.index ["thread_id"], name: "index_publisher_notes_on_thread_id"
+    t.index ["zendesk_ticket_id", "zendesk_comment_id"], name: "index_publisher_notes_zendesk_ids", unique: true
   end
 
   create_table "publisher_status_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -346,8 +335,6 @@ ActiveRecord::Schema.define(version: 2019_05_24_205525) do
     t.string "name", default: "", null: false
     t.string "email"
     t.string "pending_email"
-    t.string "phone"
-    t.string "phone_normalized"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -355,39 +342,42 @@ ActiveRecord::Schema.define(version: 2019_05_24_205525) do
     t.inet "last_sign_in_ip"
     t.boolean "created_via_api", default: false, null: false
     t.string "default_currency"
-    t.string "uphold_state_token"
-    t.boolean "uphold_verified", default: false
-    t.string "encrypted_uphold_code"
-    t.string "encrypted_uphold_code_iv"
-    t.string "encrypted_uphold_access_parameters"
-    t.string "encrypted_uphold_access_parameters_iv"
-    t.datetime "uphold_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
     t.boolean "visible", default: true
-    t.datetime "agreed_to_tos"
     t.boolean "promo_enabled_2018q1", default: false
+    t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
     t.text "role", default: "publisher"
-    t.datetime "javascript_last_detected_at"
     t.datetime "default_currency_confirmed_at"
     t.boolean "excluded_from_payout", default: false, null: false
     t.uuid "created_by_id"
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
-    t.uuid "uphold_id"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
   end
 
+  create_table "reddit_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "reddit_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sessions", id: :serial, force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -417,8 +407,8 @@ ActiveRecord::Schema.define(version: 2019_05_24_205525) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "stats", default: "{}", null: false
     t.string "https_error"
+    t.jsonb "stats", default: "{}", null: false
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

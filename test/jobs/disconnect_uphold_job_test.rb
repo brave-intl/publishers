@@ -8,7 +8,7 @@ class DisconnectUpholdJobTest < ActiveJob::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = false
 
       publisher = publishers(:verified)
-      publisher.uphold_verified = false
+      publisher.uphold_connection.uphold_verified = false
       publisher.save!
 
       stub_request(:put, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
@@ -19,7 +19,7 @@ class DisconnectUpholdJobTest < ActiveJob::TestCase
              body:
                <<~BODY
                 {
-                  "provider": "uphold", 
+                  "provider": "uphold",
                   "parameters": {}
                 }
         BODY
@@ -29,7 +29,7 @@ class DisconnectUpholdJobTest < ActiveJob::TestCase
       DisconnectUpholdJob.perform_now(publisher_id: publisher.id)
 
       publisher.reload
-      refute publisher.uphold_verified?
+      refute publisher.uphold_connection.uphold_verified?
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
     end

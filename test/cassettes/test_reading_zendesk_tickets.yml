@@ -1,0 +1,75 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/search?query=type:ticket%20group_id:360004379911
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 03:56:33 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=10, private
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '699'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"1d196fccc8de5c3109cec825e0cdf5c5"
+      X-Zendesk-Origin-Server:
+      - app55.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6a82c2fe252258-SEA
+      X-Runtime:
+      - '0.179456'
+      X-Zendesk-Request-Id:
+      - e87df49698c79df5c3c1
+      X-Content-Type-Options:
+      - nosniff
+      Content-Encoding:
+      - gzip
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6a82c2fe252258-LAX
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA4VTy5LaMBD8FUpnFmyMefgPUpUjp6RSqrE8NlpkSdEDskvx7xkhIE7lkJNKrVFPd2t0ZQ59VMGz5vuVRadYw44hWN8sl62DM3rThws4LOt1tau31Xqz+ETdoT8thBmXYOXyvFoGKU4Y/HK1ePdGszmTHWtWc4a/AjoNiqe9jkrN2VkCa65MHEFrTO0u2NIFb6ITmE56Z0Zab3MWTF5dqku3bwQKhxCw4xDo7qoo92/F+q3YHIp1U++bavuNyKLt/q0py0O5bapVU99rwoeldlmTj+07ikR4cCa2CmfKDIPUw0wmMw4u/D8lFIhw0gZJ7hv21TgcZ1+sjyNdt04aJ8PHq1uAEClwpvGS2FFIK1FT+6zG4c+InoK7p1Zt9/Vmv1tX27qkmGI7yjA9K3fFdr8vKWzwXg4acRK2cQNo+QlJ1wQeyKXN7JuiKIibGIhdGKWgNQ6CSc3TUPyYs55Qc7nLeSA4glRciGmNiyMPxsoEPp1YZyjMcYIcwXOphezIL5H1oDzStHhuKXYpWBNcJKCLeH/gHEiA4dFYRB/MyHuJ6qnFkznfg7hbJOX0aq+gj+Boy2FwiCN1nOidMGR/90AebfI48964rL1KKRWrdV2nlOhf6O5PeuVuUxYJ/0tJsg6tVJN3hxQjfwx+C+L08p9PIAQQx6STZOQc8ufkeVZZlsVu6U1A0H97GtX0z7iF4TXQ1uFZmkixTkBhYhqy8vYbqsco7PUDAAA=
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 03:56:33 GMT
+recorded_with: VCR 4.0.0

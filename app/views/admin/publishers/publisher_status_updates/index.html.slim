@@ -30,7 +30,7 @@ h5.admin-header Change current status for #{@publisher.name}
   .form-group
     label
       = check_box_tag("send_email", true)
-      = " Send email (suspended only)"
+      = " Send email (suspended & hold only)"
   = f.submit("Update Status", class: 'btn btn-primary')
 
 hr
