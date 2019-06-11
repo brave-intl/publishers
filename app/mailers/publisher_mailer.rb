@@ -331,6 +331,16 @@ class PublisherMailer < ApplicationMailer
     end
   end
 
+  def email_user_on_hold(publisher)
+    @publisher = publisher
+
+    mail(
+      to: @publisher.email,
+      from: ApplicationMailer::PAYOUT_CONTACT_EMAIL,
+      subject: default_i18n_subject
+    )
+  end
+
 
   private
 
