@@ -19,18 +19,20 @@
 class JsonBuilders::ChannelsJsonBuilder
   include PublishersHelper
 
-  def initialize
+  def initialize(version)
     require "publishers/excluded_channels"
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
     @excluded_verified_channel_ids = []
     @channels = []
+    @version = version
   end
 
   def build
     joined_verified_channels = join_verified_channels
     joined_verified_channels.each do |verified_channels|
       verified_channels.find_each do |verified_channel|
-        include_verified_channel(verified_channel)
+        include_verified_channel(verified_channel) if @version == "v1"
+        include_verified_channel_v2(verified_channel) if @version == "v2"
       end
     end
     append_excluded
@@ -54,6 +56,25 @@ class JsonBuilders::ChannelsJsonBuilder
   end
 
   def include_verified_channel(verified_channel)
+    ############################################################################################
+    # Step one, if channel is on exclusion list, then skip it.
+    ############################################################################################
+
+    return if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
+
+    ############################################################################################
+    # Step two, if channel not on exclusion list, add the channel
+    ############################################################################################
+
+    @channels.push([
+      verified_channel.details.channel_identifier,
+      true,
+      false,
+      site_banner_details(verified_channel),
+    ])
+  end
+
+  def include_verified_channel_v2(verified_channel)
     ############################################################################################
     # Step one, if channel is on exclusion list, then skip it.
     ############################################################################################

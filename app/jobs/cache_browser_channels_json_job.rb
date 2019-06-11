@@ -4,7 +4,7 @@ class CacheBrowserChannelsJsonJob < ApplicationJob
   MAX_RETRY = 10
 
   def perform
-    channels_json = JsonBuilders::ChannelsJsonBuilder.new.build
+    channels_json = JsonBuilders::ChannelsJsonBuilder.new("v1").build
     retry_count = 0
     result = nil
 
