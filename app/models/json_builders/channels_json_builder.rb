@@ -6,6 +6,7 @@
 #   verified (boolean),
 #   excluded (boolean),
 #   site_banner details
+#   wallet address
 # ]
 #
 # ex.
@@ -67,12 +68,18 @@ def include_verified_channel(verified_channel)
   # Step three, if channel not on exclusion list, and publisher has KYC'd, add the channel.
   ############################################################################################
 
-  @channels.push([verified_channel.details.channel_identifier, true, false, site_banner_details(verified_channel)])
+  @channels.push([
+    verified_channel.details.channel_identifier, 
+    true, 
+    false, 
+    site_banner_details(verified_channel), 
+    verified_channel.publisher.uphold_connection.address
+  ])
 
 end
 
 def append_excluded
   @excluded_channel_ids.each do |excluded_channel_id|
-    @channels.push([excluded_channel_id, false, true, {}])
+    @channels.push([excluded_channel_id, false, true, {}, nil])
   end
 end
