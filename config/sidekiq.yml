@@ -5,8 +5,8 @@
 :queues:
   - mailers
   - transactional
-  - scheduler
   - default
+  - scheduler
   - low
 :schedule:
   EnqueueSiteChannelVerifications:
