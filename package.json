@@ -78,7 +78,8 @@
     "styled-components": "^4.0.3",
     "tributejs": "^3.7.1",
     "ts-loader": "^5.3.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "webpack-cli": "^3.1.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.2.3",
@@ -108,7 +109,6 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-react": "^3.6.0",
-    "webpack-cli": "^3.1.2",
     "webpack-dev-server": "3.7.1"
   },
   "resolutions": {
