@@ -26,7 +26,6 @@ class JsonBuilders::ChannelsJsonBuilder
   end
 
   def build
-    joined_verified_channels = join_verified_channels
     joined_verified_channels.each do |verified_channels|
       verified_channels.find_each do |verified_channel|
         include_verified_channel(verified_channel) if @version == "v1"
@@ -41,7 +40,7 @@ class JsonBuilders::ChannelsJsonBuilder
   # Helper Functions
   ##################
 
-  def join_verified_channels
+  def joined_verified_channels
     [
       Channel.verified.site_channels.includes(:site_banner).includes(publisher: :site_banners),
       Channel.verified.youtube_channels.includes(:site_banner).includes(publisher: :site_banners),
@@ -83,7 +82,7 @@ class JsonBuilders::ChannelsJsonBuilder
     # Step two, if channel not on exclusion list, check for KYC'd Uphold.
     ############################################################################################
 
-    return if verified_channel.publisher&.uphold_connection&.is_member != true
+    return unless verified_channel.publisher&.uphold_connection&.is_member
 
     ############################################################################################
     # Step three, if channel not on exclusion list, and publisher has KYC'd, add the channel.
