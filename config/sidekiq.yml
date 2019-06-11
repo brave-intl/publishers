@@ -4,9 +4,8 @@
 :max_retries: 3
 :queues:
   - mailers
-  - transactional
-  - scheduler
   - default
+  - scheduler
   - low
 :schedule:
   EnqueueSiteChannelVerifications:
@@ -43,11 +42,11 @@
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
     description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"
-    queue: transactional
+    queue: scheduler
   Cache::EyeshadeStatsJob:
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
-    queue: transactional
+    queue: scheduler
   CleanAbandonedSiteChannelsJob:
     cron: "0 3 * * *"
     description: "Remove abandoned site channels."
