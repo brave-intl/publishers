@@ -72,8 +72,8 @@ def include_verified_channel(verified_channel)
     verified_channel.details.channel_identifier, 
     true, 
     false, 
-    site_banner_details(verified_channel), 
-    verified_channel.publisher.uphold_connection.address
+    verified_channel.publisher.uphold_connection.address,
+    site_banner_details(verified_channel)
   ])
 
 end
