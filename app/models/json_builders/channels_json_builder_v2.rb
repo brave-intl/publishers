@@ -78,4 +78,4 @@ class JsonBuilders::ChannelsJsonBuilderV2
       @channels.push([excluded_channel_id, false, true, {}, nil])
     end
   end
-  end
+end
