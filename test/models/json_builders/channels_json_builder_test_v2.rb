@@ -1,16 +1,7 @@
 require 'test_helper'
 
 class ChannelsJsonBuilderTestV2 < ActiveSupport::TestCase
-  SITE_BANNER_INDEX = 3
-
-  def get_channel_from_json(channels, channel_id)
-    channels.each do |channel_info|
-      return channel_info if channel_info.first == channel_id
-    end
-
-    nil
-  end
-
+    
   test "returns V2 Json" do
     channels = JSON.parse(JsonBuilders::ChannelsJsonBuilderV2.new.build)
     assert channels
