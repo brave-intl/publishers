@@ -9,8 +9,7 @@ class PublisherRemovalJob < ApplicationJob
       publisher.update(email: nil)
       publisher.update(pending_email: nil)
       publisher.update(name: PublisherStatusUpdate::DELETED)
-      publisher.update(phone: nil)
-      publisher.update(phone_normalized: nil)
+
       # If they're signed in, they should not longer be signed in
       publisher.user_authentication_token.update(authentication_token_expires_at: Time.now) if publisher.user_authentication_token.present?
       publisher.update(current_sign_in_ip: nil)

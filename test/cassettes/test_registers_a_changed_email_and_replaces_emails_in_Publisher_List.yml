@@ -56,11 +56,11 @@ http_interactions:
       - Mako
     body:
       encoding: UTF-8
-      string: '{"id":"YWxpY2VAY29tcGxldGVkLm9yZw==","email":"alice@completed.org","created_at":1525207625,"updated_at":1525207625,"last_emailed":null,"last_clicked":null,"last_opened":null,"first_name":null,"last_name":null,"custom_fields":[{"id":2337510,"name":"phone","type":"text","value":"+14159001421"},{"id":2337512,"name":"name","type":"text","value":"Alice
+      string: '{"id":"YWxpY2VAY29tcGxldGVkLm9yZw==","email":"alice@completed.org","created_at":1525207625,"updated_at":1525207625,"last_emailed":null,"last_clicked":null,"last_opened":null,"first_name":null,"last_name":null,"custom_fields":[{"id":2337512,"name":"name","type":"text","value":"Alice
         the Completed"}]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Wed, 02 May 2018 13:16:28 GMT
 - request:
     method: delete
@@ -119,14 +119,14 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Wed, 02 May 2018 13:16:29 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"test@test.com","name":"Alice the Completed","phone":"+14159001421"}]'
+      string: '[{"email":"test@test.com","name":"Alice the Completed"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -182,7 +182,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0],"persisted_recipients":["dGVzdEB0ZXN0LmNvbQ=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Wed, 02 May 2018 13:16:29 GMT
 - request:
     method: post
@@ -243,7 +243,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Wed, 02 May 2018 13:16:29 GMT
 - request:
     method: delete
@@ -302,7 +302,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Fri, 14 Sep 2018 22:04:28 GMT
 - request:
     method: post
@@ -363,6 +363,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Fri, 14 Sep 2018 22:04:28 GMT
 recorded_with: VCR 4.0.0

@@ -1,5 +1,5 @@
 class BaseChannelDetailsSerializer < ActiveModel::Serializer
-  attributes :id, :show_verification_status, :method, :visible, :name, :email, :phone_normalized, :preferred_currency
+  attributes :id, :show_verification_status, :method, :visible, :name, :email, :preferred_currency
   def id
     object.channel_identifier
   end
@@ -23,10 +23,6 @@ class BaseChannelDetailsSerializer < ActiveModel::Serializer
 
   def email
     object.channel.publisher.email
-  end
-
-  def phone_normalized
-    object.channel.publisher.phone_normalized
   end
 
   def preferred_currency

@@ -120,6 +120,11 @@ export const Status = styled.div`
     `
     background-color: #343a40;
     `}
+  ${(props: Partial<IStatusProps>) =>
+    props.status === "hold" &&
+    `
+      background-color: #343a40;
+    `}
 `;
 
 export const StatusLink = styled.a`
