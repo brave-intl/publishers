@@ -17,7 +17,7 @@
 # ]
 
 class JsonBuilders::ChannelsJsonBuilderV2
-  def initialize()
+  def initialize
     require "publishers/excluded_channels"
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
     @excluded_verified_channel_ids = []
