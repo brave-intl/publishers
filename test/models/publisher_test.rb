@@ -45,16 +45,24 @@ class PublisherTest < ActiveSupport::TestCase
     assert publisher.save
   end
 
-  test "when wallet is gotten the default currency will be sent to eyeshade if it is mismatched" do
+  test "when wallet has an address, a job will set the default currency on eyeshade if it is mismatched" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:verified)
     publisher.default_currency = "USD"
 
     wallet = {
-      defaultCurrency: "CAD"
+      defaultCurrency: "CAD",
+      address: ""
+    }
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: { wallet: wallet })
+    assert_no_enqueued_jobs
+
+    wallet = {
+      defaultCurrency: "CAD",
+      address: "12345-67890"
     }
 
-    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: { wallet: wallet })
 
     assert_enqueued_with(job: UploadDefaultCurrencyJob) do
       publisher.wallet.default_currency
