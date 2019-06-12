@@ -44,7 +44,7 @@ class PublisherStatementGetter < BaseApiClient
         transaction["channel"] = "Manual"
       else
         channel = Channel.find_by_channel_identifier(account_identifier)
-        transaction["channel"] = channel.publication_title
+        transaction["channel"] = channel&.publication_title || account_identifier
       end
       transaction
     }
