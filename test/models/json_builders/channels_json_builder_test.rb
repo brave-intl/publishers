@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class ChannelsJsonBuilderTest < ActiveSupport::TestCase
+
   SITE_BANNER_INDEX = 3
 
   def get_channel_from_json(channels, channel_id)
@@ -50,6 +51,21 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
 
     # ensure channel is not returned in the response
     refute channel
+  end
+
+  test "verified channel that is excluded is returned and marked correctly" do
+    verified_excluded_channel = channels(:verified_exclude)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
+    channel = get_channel_from_json(channels, verified_excluded_channel.details.channel_identifier)
+
+    # ensure channel is in the JSON channels response
+    assert channel
+
+    # ensure channel is marked as verified
+    assert_equal channel.second, true
+
+    # ensure channel is marked as excluded
+    assert_equal channel.third, true
   end
 
   test "unverified channel that is excluded is returned and marked correctly" do
