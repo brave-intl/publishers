@@ -12,25 +12,25 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
   end
 
   test "returns JSON" do
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
     assert channels
   end
 
   test "number of channels returned is at least as large as number of verified channels" do
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
     assert channels.count >= Channel.verified.count
   end
 
   test "number of channels returned is at least as large as number of excluded channels " do
     require "publishers/excluded_channels"
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
     assert channels.count >= @excluded_channel_ids.count
   end
 
   test "verified channel that is not excluded is returned and marked correctly" do
     verified_channel = channels(:completed) # not excluded
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
     channel = get_channel_from_json(channels, verified_channel.details.channel_identifier)
 
     # ensure channel is in the JSON channels response
@@ -45,7 +45,7 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
 
   test "unverified channel that is not excluded is not returned" do
     unverified_channel = channels(:default) # unverfied, not excluded
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
     channel = get_channel_from_json(channels, unverified_channel.details.channel_identifier)
 
     # ensure channel is not returned in the response
@@ -53,7 +53,7 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
   end
 
   test "unverified channel that is excluded is returned and marked correctly" do
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
     unverified_excluded_channel_id = "456.gov"
     channel = get_channel_from_json(channels, unverified_excluded_channel_id)
 
@@ -68,7 +68,7 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
   end
 
   test "returned channels only appear once" do
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
     returned_channel_ids = []
     channels.each do |channel|
       if returned_channel_ids.include?(channel.first)
@@ -80,7 +80,7 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
   end
 
   test "returns default site_banner if default_site_banner_mode is true" do
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
 
     default_site_banner = site_banners(:verified_default_banner)
     verified_channel = channels(:verified)
@@ -96,7 +96,7 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     channel_site_banner.update(channel_id: verified_channel.id)
     verified_channel.publisher.update(default_site_banner_mode: false)
 
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
 
     verified_channel = channels(:verified)
     channel = get_channel_from_json(channels, verified_channel.details.channel_identifier)
@@ -109,7 +109,7 @@ class ChannelsJsonBuilderTest < ActiveSupport::TestCase
     # Simulated error
     verified_channel.site_banner = nil
 
-    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new("v1").build)
+    channels = JSON.parse(JsonBuilders::ChannelsJsonBuilder.new.build)
 
     channel = get_channel_from_json(channels, verified_channel.details.channel_identifier)
     assert_equal channel[SITE_BANNER_INDEX], {}

@@ -1,4 +1,4 @@
-# Builds a list of distinct channels that are either verified, excluded or both for the Brave Browser.
+# V2 Version of Channels list
 #
 # Each channel is an array:
 # [
@@ -6,16 +6,17 @@
 #   verified (boolean),
 #   excluded (boolean),
 #   site_banner details
+#   wallet address
 # ]
 #
 # ex.
 # [
-#   ["brave.com", true, false, {title: 'Hello', description: 'world'...}],
-#   ["google.com", false, true, {}],
-#   ["us.gov", false, false, {}]
+#   ["brave.com", true, false, {title: 'Hello', description: 'world'...}, 1234-abcd-5678-efgh],
+#   ["google.com", false, true, {}, 1234-abcd-5678-efgh],
+#   ["us.gov", false, false, {}, 1234-abcd-5678-efgh]
 # ]
 
-class JsonBuilders::ChannelsJsonBuilder
+class JsonBuilders::ChannelsJsonBuilderV2
   def initialize()
     require "publishers/excluded_channels"
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
@@ -50,10 +51,13 @@ class JsonBuilders::ChannelsJsonBuilder
   def include_verified_channel(verified_channel)
     # Skip if channel is on exclusion list
     return if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
+    # Skip if channel publisher has not yet KYC'd
+    return unless verified_channel.publisher&.uphold_connection&.is_member
     @channels.push([
       verified_channel.details.channel_identifier,
       true,
       false,
+      verified_channel.publisher.uphold_connection.address,
       site_banner_details(verified_channel),
     ])
   end
@@ -74,4 +78,4 @@ class JsonBuilders::ChannelsJsonBuilder
       @channels.push([excluded_channel_id, false, true, {}, nil])
     end
   end
-end
+  end
