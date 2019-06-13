@@ -583,8 +583,14 @@ en:
         We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
         <br/><br/>
         If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:suspensions@brave.com">suspensions@brave.com</a> where a real human will read and reply to your message.
-
-
+    policy_agreements:
+      heading_html: Please review our Terms of Services and Privacy Policy
+      body: >
+        Please review the and accept the following
+        <br/><br/>
+        We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
+        <br/><br/>
+        If you think you know what might be going on, the fastest way to clear this up is to get in touch with us at <a href="mailto:suspensions@brave.com">suspensions@brave.com</a> where a real human will read and reply to your message.
     two_factor_authentication_removal:
       heading: Having trouble with 2-factor authentication?
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.

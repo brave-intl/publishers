@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       get :email_verified
       get :wallet
       get :uphold_verified
-      get :suspended_error
+      get :policy_agreements
       get :statement
       get :statements
       get :uphold_status
@@ -52,6 +52,7 @@ Rails.application.routes.draw do
       end
     end
     # (Albert Wang): Need to factor the above promo_registrations, as they should be in Publishers::PromoRegistrationsController rather than in the PromoRegistrationsController
+    resources :policy_agreements, controller: 'publishers/policy_agreements', only: [:new, :update]
     resources :promo_registrations, controller: 'publishers/promo_registrations', only: [] do
       collection do
         get :for_referral_code

@@ -34,6 +34,7 @@ class PublishersController < ApplicationController
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
   before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
+  before_action :redirect_if_not_yet_accepted_policy_agreements, only: VERIFIED_PUBLISHER_ROUTES
   before_action :prompt_for_two_factor_setup, only: %i(home)
 
   before_action :require_verified_email, only: %i(email_verified complete_signup)
@@ -274,6 +275,11 @@ class PublishersController < ApplicationController
   def redirect_if_suspended
     # Redirect to suspended page if they're logged in
     redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
+  end
+
+  def redirect_if_not_yet_accepted_policy_agreements
+    # Redirect to suspended page if they're logged in
+    redirect_to(policy_agreements_publishers_path) and return if current_publisher.present? && current_publisher.not_reviewed_policy_agreements
   end
 
   # Domain verified. See balance and submit payment info.
