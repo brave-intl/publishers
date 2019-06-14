@@ -1,0 +1,14 @@
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+      h3.single-panel--headline= t ".heading_html"
+      .text-left
+        = simple_format(t ".body")
+        = form_for PolicyAgreement.new, { method: :post, url: publisher_policy_agreements_path } do |f|
+          = link_to t('.review_terms_of_service'), "www.example.com"
+          = f.check_box(:accepted_publisher_tos)
+          = link_to t('.review_privacy_policy'), "www.example_privacy.com"
+          = f.check_box(:accepted_publisher_privacy_policy)
+          = f.submit
+
