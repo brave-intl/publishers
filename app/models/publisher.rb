@@ -21,6 +21,7 @@ class Publisher < ApplicationRecord
   has_one :totp_registration
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
+  has_one :policy_agreement, foreign_key: :user_id
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -305,6 +306,10 @@ class Publisher < ApplicationRecord
   # Remove when new dashboard is finished
   def in_new_ui_whitelist?
     partner?
+  end
+
+  def accepted_policy_agreements?
+    policy_agreement&.accepted_publisher_tos && policy_agreement&.accepted_publisher_privacy_policy
   end
 
   def most_recent_potential_referral_payment
