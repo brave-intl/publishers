@@ -222,14 +222,14 @@ module Admin
         let(:subject) do
           delete admin_publisher_publisher_note_path(
             id: publisher_notes(:child_note).id,
-            publisher_id: publishers(:just_notes).id
+            publisher_id: publishers(:admin).id
           )
         end
 
         before { subject }
 
         it 'redirects to the publisher page' do
-          assert_redirected_to admin_publisher_path(publishers(:just_notes).id)
+          assert_redirected_to admin_publisher_path(publishers(:admin).id)
         end
 
         it 'deletes the note' do

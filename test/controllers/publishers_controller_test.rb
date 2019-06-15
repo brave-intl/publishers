@@ -76,6 +76,19 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
   end
 
+  test "new tos and privacy policy get enforced" do
+    publisher = publishers(:completed)
+    # Start off as an active user
+    publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
+
+    sign_in publisher
+    publisher.policy_agreement.destroy
+    publisher.reload
+
+    get home_publishers_path
+    assert_redirected_to(new_publisher_policy_agreement_path(publisher.id))
+  end
+
   test "can create a Publisher registration, pending email verification" do
     assert_difference("Publisher.count") do
       # Confirm email + Admin notification
@@ -311,6 +324,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.authentication_token)
     get(url)
     follow_redirect!
+
     perform_enqueued_jobs do
       patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)
     end
@@ -320,9 +334,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     # update the publisher email
     perform_enqueued_jobs do
-      patch(publishers_path,
-            params: { publisher: {pending_email: 'alice-pending@example.com' } },
-            headers: { 'HTTP_ACCEPT' => "application/json" })
+      patch(publishers_path, params: { publisher: {pending_email: 'alice-pending@example.com' } }, headers: { 'HTTP_ACCEPT' => "application/json" })
     end
 
     publisher.reload

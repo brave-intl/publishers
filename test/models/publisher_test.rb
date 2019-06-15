@@ -505,7 +505,7 @@ class PublisherTest < ActiveSupport::TestCase
   describe "#history" do
     describe "when the publisher has notes" do
       it 'shows just the notes' do
-        histories = publishers(:just_notes).history
+        histories = publishers(:admin).history
         histories.each do |history|
           assert_equal history.class, PublisherNote
         end
