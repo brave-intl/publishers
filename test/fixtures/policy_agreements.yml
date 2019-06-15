@@ -1,0 +1,20 @@
+default_policy_agreement: &default_policy_agreement
+  accepted_publisher_tos: true
+  accepted_publisher_privacy_policy: true
+  publisher: default
+
+complete_publisher_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: completed
+
+verified_publisher_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: verified
+
+uphold_connected_publisher_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: uphold_connected
+
+unprompted_publisher_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: unprompted

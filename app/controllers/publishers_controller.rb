@@ -34,10 +34,9 @@ class PublishersController < ApplicationController
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
   before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
-  before_action :redirect_if_not_yet_accepted_policy_agreements, only: VERIFIED_PUBLISHER_ROUTES
   before_action :prompt_for_two_factor_setup, only: %i(home)
-
   before_action :require_verified_email, only: %i(email_verified complete_signup)
+  before_action :redirect_if_not_yet_accepted_policy_agreements, only: %i(home)
 
   def log_out
     path = after_sign_out_path_for(current_publisher)

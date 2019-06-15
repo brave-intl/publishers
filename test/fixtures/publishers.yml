@@ -1,7 +1,7 @@
 <% salt = SecureRandom.random_bytes(12) %>
 
 # Just registered.
-default: &default
+default: &default_publisher
   email: "alice@default.org"
   name: "Alice the Pyramid"
   default_site_banner_id: "00000000-0000-0000-0000-000000000000"
@@ -10,72 +10,60 @@ default: &default
   visible: true
 
 verified:
+  <<: *default_publisher
   email: "alice@verified.org"
   name: "Alice the Verified"
   default_site_banner_mode: true
   default_site_banner_id: "00000000-0000-0000-0000-000000000005"
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 notes:
+  <<: *default_publisher
   email: "alice@notes.org"
   name: "Alice the Notes"
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
-
-just_notes:
-  email: "only@notes.org"
-  name: "Only the Notes"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
-  role: 'admin'
 
 verified_totp_only:
+  <<: *default_publisher
   email: "alice_totp@verified.org"
   name: "Alice the Verified TOTP User"
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 # A publisher that has received an authentication email
 completed:
+  <<: *default_publisher
   email: "alice@completed.org"
   name: "Alice the Completed"
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   default_currency_confirmed_at: "<%= DateTime.now %>"
 
 completed_partner:
+  <<: *default_publisher
   email: "partner@completed.org"
   name: "Paul the Partner"
   role: 'partner'
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   created_by: admin
   default_currency: "USD"
   default_currency_confirmed_at: "<%= DateTime.now %>"
 
 suspended_partner:
+  <<: *default_publisher
   email: "suspended_partner@completed.org"
   name: "Suspended"
   role: 'partner'
   two_factor_prompted_at: "<%= 1.day.ago %>"
   created_by: admin
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   default_currency_confirmed_at: "<%= DateTime.now %>"
 
 admin:
+  <<: *default_publisher
   email: "hello@brave.com"
   role: "admin"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 zendesk_admin:
+  <<: *default_publisher
   email: <%= Rails.application.secrets[:zendesk_admin_email] %>
   role: "admin"
   two_factor_prompted_at: "<%= 1.day.ago %>"
@@ -85,125 +73,109 @@ zendesk_end_user:
   role: "publisher"
 
 partner:
+  <<: *default_publisher
   email: "partner@brave.com"
   role: "partner"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
 
 unprompted:
+  <<: *default_publisher
   email: "alice@unprompted.org"
   name: "Alice the Unprompted"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
+  two_factor_prompted_at: nil
 
 stale:
+  <<: *default_publisher
   email: "alice@stale.org"
   name: "Alice the Stale"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 fake1:
+  <<: *default_publisher
   email: "alice@fake.org"
   name: "Fake Alice"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 fake2:
+  <<: *default_publisher
   email: "bob@fake.org"
   name: "Fake Bob"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 stats:
+  <<: *default_publisher
   email: "test@stats.org"
   name: "Stats Test"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 uphold_connected:
+  <<: *default_publisher
   email: "alice@upholdconnected.org"
   name: "Alice the uphold_connected"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   default_currency: "USD"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
 
 uphold_connected_currency_unconfirmed:
+  <<: *default_publisher
   email: "carol@upholdconnected.org"
   name: "Carol the unconfirmed currency"
-  agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
-  visible: true
 
 youtube_initial:
+  <<: *default_publisher
   email: "alice@spud.com"
   name: "Alice the Youtuber"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 youtube_new:
+  <<: *default_publisher
   email: "alice2@spud.com"
   name: "Alice the Youtuber"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 google_verified:
+  <<: *default_publisher
   email: "alice2@verified.org"
   name: "Alice the Verified"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   default_currency: "BAT"
 
 twitch_new:
+  <<: *default_publisher
   email: "aliceTwitch@spud.com"
   name: "Alice the Twitcher"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 twitch_verified:
+  <<: *default_publisher
   email: "aliceTwitch@verified.org"
   name: "Alice the Verified"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   default_currency: "BAT"
 
 channel_publisher:
+  <<: *default_publisher
   email: "channel_publisher@gmail.com"
   name: "Carlos the Channel Adder"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   default_currency: "BAT"
 
 global_media_group:
+  <<: *default_publisher
   email: "fred@vglobal.org"
   name: "Global Media Group"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 small_media_group:
+  <<: *default_publisher
+  two_factor_prompted_at: "<%= 1.day.ago %>"
   email: "fred@small.org"
   name: "Small Media Group"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   default_currency: "BAT"
 
 medium_media_group:
+  <<: *default_publisher
+  two_factor_prompted_at: "<%= 1.day.ago %>"
   email: "barney@medium.org"
   name: "Medium Media Group"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 joe_the_only_yt_verified:
+  <<: *default_publisher
   email: "joes-great-channel@pages.plusgoogle.com"
   name: "Joe Schmoe"
-  visible: true
-  agreed_to_tos: "<%= 1.day.ago %>"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
 
 # A publisher that has not verified their email
 created:
+  <<: *default_publisher
   email:
   pending_email: "carolthecreated@example.com"
   name: "Carol the created"
@@ -213,41 +185,44 @@ created:
 # A publisher that has verified their email but not
 # agreed to TOS and addressed the 2fa prompt
 onboarding:
+  <<: *default_publisher
   email: "owentheonboard@example.com"
   name: "Owen the onboard"
-  agreed_to_tos:
   two_factor_prompted_at:
 
 suspended:
+  <<: *default_publisher
   email: "susanthesuspended@example.com"
   name: "Susan the suspended"
-  agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 # Has one verified channel, and one unverified channel
 partially_completed:
+  <<: *default_publisher
   email: "partially_completed@example.com"
   name: "Perry"
-  agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 fraudulent_verifier:
+  <<: *default_publisher
   email: "fraud@verifications.org"
   name: "Frank the fraud"
-  agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 locked_out_verifier:
+  <<: *default_publisher
   email: "locked_out@verifications.org"
   name: "Logan the locked out"
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 promo_enabled:
+  <<: *default_publisher
   email: "enabled@promo.org"
   name: "peter promo"
 
 potentially_paid:
+  <<: *default_publisher
   email: "priscilla@potentiallypaid.org"
 
 

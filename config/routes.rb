@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get :email_verified
       get :wallet
       get :uphold_verified
+      get :suspended_error
       get :statement
       get :statements
       get :uphold_status
