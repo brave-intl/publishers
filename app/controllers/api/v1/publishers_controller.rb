@@ -41,6 +41,9 @@ class Api::V1::PublishersController < Api::BaseController
     PublisherStatusUpdate.create!(publisher: user, status: status)
     PublisherNote.create!(note: note, publisher: user, created_by: admin)
 
+    # Email users who were put on hold via the API
+    PublisherMailer.email_user_on_hold(@publisher).deliver_later if status == PublisherStatusUpdate::HOLD
+
     render(status: 200, json: { success: "true" }) and return
 
   rescue ActiveRecord::RecordInvalid

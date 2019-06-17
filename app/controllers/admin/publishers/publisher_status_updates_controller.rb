@@ -11,8 +11,13 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
     @publisher.reload
 
     # TODO: Send emails for other manual status updates, and send email without creating a status update
-    if params[:publisher_status] == "suspended" && params[:send_email].present?
-      PublisherMailer.suspend_publisher(@publisher).deliver_later
+    if params[:send_email].present?
+      case params[:publisher_status]
+      when PublisherStatusUpdate::SUSPENDED
+        PublisherMailer.suspend_publisher(@publisher).deliver_later
+      when PublisherStatusUpdate::HOLD
+        PublisherMailer.email_user_on_hold(@publisher).deliver_later
+      end
     end
 
     flash[:notice] = "Updated publisher's status to #{@publisher.inferred_status}"

@@ -3,11 +3,6 @@ language:
   - node_js
 node_js:
   - "11.10.1"
-cache:
-  bundler: true
-  yarn: true
-  directories:
-    - node_modules
 bundler_args: "--jobs=3 --retry=3 --without production --without staging --without development --binstubs"
 dist: xenial
 sudo: required
@@ -31,9 +26,18 @@ before_install:
   - npm --version
   - google-chrome --version
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.16.0
+  - export PATH=$HOME/.yarn/bin:$PATH
+  - yarn --version
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - node_modules
 before_script:
   - bundle exec rake db:setup
 script:
+  - yarn install
   - yarn audit
   - yarn lint
   - bin/rails test
