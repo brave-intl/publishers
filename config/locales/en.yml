@@ -298,10 +298,6 @@ en:
       body_html: We have noticed some unusual or suspicious contributions to your Brave Rewards account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
       closing_html: Thank you.<br/>The Brave Rewards Team
       contact_support: If you did not make this change yourself, please contact support ASAP
-    uphold_account_changed:
-      subject: Your Brave Rewards Uphold account has been updated
-      title: Publisher Uphold account changed
-      body: This email confirms your Uphold account through Brave Rewards has been updated.
     uphold_kyc_incomplete:
       subject: Please verify your Uphold identity
       body_html: |
