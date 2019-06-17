@@ -7,7 +7,7 @@ class PublisherStatusUpdate < ApplicationRecord
   DELETED = 'deleted'.freeze
   NO_GRANTS = 'no_grants'.freeze
   HOLD = 'hold'.freeze
-  ONLY_USER_FUNDS = 'only user funds'.freeze
+  ONLY_USER_FUNDS = 'only_user_funds'.freeze
 
   ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS, DELETED, HOLD, ONLY_USER_FUNDS].freeze
 

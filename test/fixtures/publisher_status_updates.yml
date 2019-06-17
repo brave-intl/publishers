@@ -42,4 +42,4 @@ partner:
 
 only_user_funds:
   publisher: promo_enabled_but_only_user_funds
-  status: "only user funds"
+  status: "only_user_funds"
