@@ -392,7 +392,7 @@ en:
         heading: Reddit
         description: I own a Reddit account.
       github:
-        heading: Github
+        heading: GitHub
         description: I own a GitHub account.
     contact_info:
       heading: Contact Information
