@@ -1008,7 +1008,6 @@
 
 .modal-container--modal-identifier--choose-channel-type {
   max-width: 960px;
-  min-width: 0;
   width: 100%;
 
   .modal-panel {
@@ -1056,6 +1055,8 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+      overflow-y: auto;
+      max-height: calc(100vh - 150px);
     }
     &--icon {
       margin: 0;
@@ -1102,6 +1103,7 @@
       padding: 0;
       display: flex;
       flex-direction: column;
+      min-width: 210px;
 
       & .icon-and-text {
         &--icon {

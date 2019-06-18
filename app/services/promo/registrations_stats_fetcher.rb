@@ -40,7 +40,6 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
       events = []
       (1..6).reverse_each do |i|
         (1..3).each do |j|
-          puts j
           event = {
             "referral_code" => "#{referral_code}",
             PromoRegistration::RETRIEVALS => rand(50..75),
