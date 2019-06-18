@@ -66,7 +66,6 @@
   }
 
   @include media-breakpoint-down(md) {
-
     .title,
     .btn {
       display: none;
@@ -120,7 +119,7 @@
 
     &-header {
       color: #326183;
-      letter-spacing: .5px;
+      letter-spacing: 0.5px;
     }
 
     .promo-flex-col {
@@ -172,7 +171,7 @@
         font-weight: 600;
         padding: 0 8px 0 0;
         font-size: 24px;
-        color: #FFF;
+        color: #fff;
       }
     }
 
@@ -317,7 +316,6 @@
     }
 
     @include media-breakpoint-down(sm) {
-
       .referral-link-button {
         &-mobile {
           display: table-cell;
@@ -495,7 +493,6 @@
     }
 
     &.uphold-timeout {
-
       .status-summary .action,
       #uphold_dashboard,
       #uphold_connect,
@@ -507,7 +504,6 @@
 
     &.uphold-complete,
     &.uphold-processing {
-
       .status-summary .action .connect-uphold,
       #uphold_connect {
         display: none;
@@ -515,7 +511,6 @@
     }
 
     &.uphold-processing {
-
       #uphold_dashboard,
       #last_settlement,
       .statements-available {
@@ -555,7 +550,6 @@
 
     &.uphold-reauthorization-needed,
     &.uphold-unconnected {
-
       .status-summary .action .disconnect-uphold,
       .reconnect-instructions {
         display: none;
@@ -563,7 +557,6 @@
     }
 
     &.uphold-restricted {
-
       .status-summary .action .connect-uphold,
       .reconnect-instructions {
         display: none;
@@ -576,7 +569,7 @@
 
       .status-summary,
       #go_to_uphold {
-        /* (Albert Wang): We add lot's of crazy complexity by disabling HTML elements */
+        /* (Albert Wang): We add lot"s of crazy complexity by disabling HTML elements */
         display: inline !important;
       }
     }
@@ -684,7 +677,7 @@
     padding: 32px;
 
     &:hover {
-      background: rgba(255, 255, 255, .8);
+      background: rgba(255, 255, 255, 0.8);
       text-decoration: none;
     }
   }
@@ -739,7 +732,8 @@
           font-size: 14px;
           padding: 3px 0 3px 115px;
           margin-right: 10px;
-          background: url(asset-path("channel-progress.png")) no-repeat center left;
+          background: url(asset-path("channel-progress.png")) no-repeat center
+            left;
         }
       }
     }
@@ -747,7 +741,8 @@
     &.channel-failed {
       .channel-status {
         display: flex;
-        background: url(asset-path("icn-warning@1x.png")) no-repeat top left / 24px 24px;
+        background: url(asset-path("icn-warning@1x.png")) no-repeat top left /
+          24px 24px;
         padding: 0 0 12px 38px;
         font-weight: bold;
 
@@ -1012,101 +1007,119 @@
 }
 
 .modal-container--modal-identifier--choose-channel-type {
-  max-width: 685px;
+  max-width: 960px;
+  width: 100%;
 
-  &>div {
-    width: 100%;
-    background-image: url(asset-path("choose-channel/header.jpg"));
-    background-repeat: no-repeat;
-    background-size: 685px;
-    background-position: top center;
-    background-color: $braveGray-9;
-    padding-bottom: 0;
-  }
+  .modal-panel {
+    padding: 0;
+    margin: 0;
+    width: inherit;
+    max-width: inherit;
+    min-width: inherit;
 
-  .card {
-    display: block;
-    border-radius: 4px;
-    background: white;
-    border: 1px solid white;
+    &--close {
+      position: absolute;
+      right: 20px;
+      top: 12px;
+    }
 
-    &:hover {
-      border: 1px solid #dbdfe3;
-      box-shadow: $defaultBoxShadow;
+    &--content {
+      padding: 0;
+      margin: 0;
     }
   }
-
-  .block-link--card {
-    margin-bottom: 24px;
-    color: inherit;
-    text-decoration: inherit;
-
-    &:hover {
-      color: inherit;
-      text-decoration: inherit;
-    }
+  .text-center {
+    padding: 0;
   }
-
-  .card-body {
-    padding: 24px 64px;
-
-    h6 {
-      color: $braveBrand;
-      font-weight: bold;
-      font-size: 18px;
-    }
-  }
-
-  .icon-and-text {
-    &--wrapper {
-      display: flex;
-      justify-content: flex-start;
-      flex-direction: row;
-      flex-wrap: nowrap;
-    }
-
-    &--icon {
-      flex: 0 0 0;
-      align-self: center;
-      margin: 0 14px 0 6px;
-      line-height: 0;
-
-      @include media-breakpoint-down(xs) {
-        display: none;
-      }
-    }
-
-    &--text {
-      text-align: left;
-      flex: 1 1 100%;
-      margin: auto 0;
-    }
-  }
-
   .choose-channel {
-    &--icon {
-      margin-right: 24px;
-    }
-
     &--header-box {
-      height: 130px;
-      margin-bottom: -10px;
+      background: linear-gradient(
+          -225deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(0, 0, 0, 0.2) 100%
+        )
+        rgb(76, 84, 210);
+      background: $braveBrand;
+      padding: 24px;
+      border-radius: 8px 8px 0 0;
 
-      h3 {
-        color: white;
-        margin-bottom: 0;
-      }
-
+      h3,
       p {
-        color: $braveBrand-Ghost;
-        font-weight: bolder;
+        color: #fff;
+        margin: 8px;
+        padding: 0;
       }
     }
-
     &--body-box {
-      padding: 16px; // make modal scrollable
+      padding: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       overflow-y: auto;
-      max-height: calc(100vh - 210px);
+      max-height: calc(100vh - 150px);
+    }
+    &--icon {
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .new-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: $braveBrand;
+    border-radius: 40px;
+    color: #fff;
+    font-size: 16px;
+    padding: 4px 12px;
+
+    &::before {
+      content: "New";
+    }
+  }
+
+  // this is overwriting bootstrap card styles via specificity
+  & .block-link--card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    background-color: #fff;
+    border: 1px solid $borderColor;
+    border-radius: 12px;
+    // new styles
+    max-width: 260px;
+    min-width: 210px;
+    padding: 24px;
+    margin: 12px;
+
+    &:hover {
+      box-shadow: 0 0 0 2px $braveBrand;
+    }
+
+    & .card-body {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-width: 210px;
+
+      & .icon-and-text {
+        &--icon {
+          margin: 20px;
+          height: 80px;
+          width: 80px;
+        }
+        &--text {
+          text-align: center;
+          color: $braveText-4;
+
+          & h6 {
+            color: $braveText-2;
+          }
+        }
+      }
     }
   }
 }
@@ -1151,7 +1164,14 @@
   margin: 0 0 24px;
 }
 
-p, body, h1, h2, h3, h4, h5, h6 {
+p,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: $braveText-2;
 }
 

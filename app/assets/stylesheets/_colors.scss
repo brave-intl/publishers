@@ -1,20 +1,22 @@
 $defaultBoxShadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-$braveBrand: #4C54D2;
+$braveBrand: #4c54d2;
 $braveBrand-Dark: darken($braveBrand, 10%);
 $braveBrand-Light: lighten($braveBrand, 20%);
 $braveBrand-Ghost: lighten($braveBrand, 50%);
 
-$braveGray-1: #1E2029;
-$braveGray-2: #3B3E4F;
-$braveGray-3: #5E6175;
-$braveGray-4: #84889C;
+$braveGray-1: #1e2029;
+$braveGray-2: #3b3e4f;
+$braveGray-3: #5e6175;
+$braveGray-4: #84889c;
 $braveGray-5: #999ea2;
 $braveGray-6: #a7acb2;
 $braveGray-7: #cdd1d5;
 $braveGray-8: #dbdfe3;
 $braveGray-9: #e7ebee;
 $braveGray-10: #f7f8f9;
+
+$borderColor: $braveGray-8;
 
 $braveText-1: $braveGray-1;
 $braveText-2: $braveGray-2;
@@ -23,13 +25,8 @@ $braveText-4: $braveGray-4;
 
 $braveAccent-Dark: #5c58c2;
 $braveAccent: #7d7bdc;
-$braveAccent-Light: #9997ea;
-$braveAccent-Ghost: #bcc0f6;
 
-$braveSuccess-Dark: #009683;
 $braveSuccess: #02b999;
-$braveSuccess-Light: #6cdac1;
-$braveSuccess-Ghost: #9bf0e1;
 
 $braveFailure-Dark: #c51840;
 $braveFailure: #e2052a;
@@ -44,27 +41,20 @@ $braveError-Background: #feedf0;
 $braveError-Foreground: #dd0529;
 
 // Promo Colors
-$bravePromo-LightBlue: #00BCD6;
+$bravePromo-LightBlue: #00bcd6;
 $bravePromo-DarkBlue: #006192;
-$bravePromo-TwitterBlue: #1DA1F2;
-$bravePromo-FacebookBlue: #3B5998;
+$bravePromo-TwitterBlue: #1da1f2;
+$bravePromo-FacebookBlue: #3b5998;
 
-$braveWarning-Background: #FFF8D2;
+$braveWarning-Background: #fff8d2;
 $braveWarning-Foreground: $braveGray-1;
 
-$braveOrange: #FF7A1D;
-$braveRed: #E2052A;
+$braveOrange: #ff7a1d;
+$braveRed: #e2052a;
 
 $braveBackground-1: $braveGray-8;
 $braveBackground-2: $braveGray-9;
 $braveBackground-3: $braveGray-10;
-
-$braveDivider-1: $braveGray-8;
-$braveDivider-2: $braveGray-9;
-
-$highlightBlue: #37A9FD;
-$chromePrimary: #F3F3F3;
-$chromeSecondary: #d3d3d3;
 
 $veryLightGray: rgb(250, 250, 250);
 $lightGray: rgb(236, 236, 236);
@@ -73,7 +63,7 @@ $mediumGray: rgb(101, 101, 101);
 $darkGray: rgb(68, 68, 68);
 
 $white25: rgba(255, 255, 255, 0.25);
-$white30: rgba(255, 255, 255, 0.30);
+$white30: rgba(255, 255, 255, 0.3);
 $white50: rgba(255, 255, 255, 0.5);
 $gray25: rgba(116, 116, 130, 0.25);
 $gray50: rgba(116, 116, 130, 0.5);
@@ -84,14 +74,14 @@ $black50: rgba(0, 0, 0, 0.5);
 // Mailer Colors
 
 $primaryGrey: #2a2b33;
-$primaryGreyLighten50: lighten( $primaryGrey, 50% );
-$primaryGreyLighten75: lighten( $primaryGrey, 75% );
+$primaryGreyLighten50: lighten($primaryGrey, 50%);
+$primaryGreyLighten75: lighten($primaryGrey, 75%);
 
-$primaryAccent: #4C54D2;
-$primaryAccentDarken10: darken( $primaryAccent, 10% );
-$primaryAccentLighten30: lighten( $primaryAccent, 30% );
+$primaryAccent: #4c54d2;
+$primaryAccentDarken10: darken($primaryAccent, 10%);
+$primaryAccentLighten30: lighten($primaryAccent, 30%);
 
-$strokeGrey: #D6D6D6; 
+$strokeGrey: #d6d6d6;
 
-$twitterPrimary: #38A1F3;
+$twitterPrimary: #38a1f3;
 $facebookPrimary: #3b5998;
