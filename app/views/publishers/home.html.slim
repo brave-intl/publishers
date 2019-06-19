@@ -203,7 +203,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               .channel-panel--intro-body
                 = channel_type(channel).upcase
             - if channel.verified?
-              - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled?
+              - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled? && !current_publisher.only_user_funds?
                 .channel--promo-info-container
                   = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
                   = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")

@@ -20,10 +20,8 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
       end
     end
 
-    # If the user is being transitioned to only user funds remove all their promo registrations
     if @publisher.only_user_funds?
-      @publisher.promo_registrations.destroy_all
-      @publisher.channels.find_each { |c| c.promo_registration&.destroy }
+      flash[:alert] = "FYI: The promo registrations have not been destroyed for this user - however they will not see their promotions"
     end
 
     flash[:notice] = "Updated publisher's status to #{@publisher.inferred_status}"
