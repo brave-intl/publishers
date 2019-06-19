@@ -10,19 +10,6 @@ class PublisherMailerTest < ActionMailer::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
-  test "uphold_account_changed" do
-    publisher = publishers(:default)
-    email = PublisherMailer.uphold_account_changed(publisher)
-
-    # # Send the email, then test that it got queued
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal [publisher.email], email.to
-  end
-
   test "wallet_not_connected" do
     publisher = publishers(:uphold_connected)
     email = PublisherMailer.wallet_not_connected(publisher)
