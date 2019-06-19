@@ -33,6 +33,22 @@ h5.admin-header Change current status for #{@publisher.name}
       = " Send email (suspended & hold only)"
   = f.submit("Update Status", class: 'btn btn-primary')
 
+
+.legend.my-5
+  h2.mb-0 Legend
+  table.table
+    thead
+      tr
+        th Status
+        th Description
+    tbody
+      - PublisherStatusUpdate::DESCRIPTIONS.each do |description|
+        tr
+          td
+            span class=status_badge_class(description.first)
+              = description.first
+          td= description.second
+
 hr
 
 h5.admin-header Status history

@@ -211,6 +211,67 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'when a channel is created a promotion is registered' do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
+      publisher = publishers(:promo_enabled)
+
+      sign_in publishers(:promo_enabled)
+
+      create_params = {
+          channel: {
+              details_attributes: {
+                  brave_publisher_id_unnormalized: "new_site_54634.org"
+              }
+          }
+      }
+
+      assert_difference('publisher.channels.count') do
+        post site_channels_url, params: create_params
+      end
+
+      new_channel = publisher.channels.order(created_at: :asc).last
+
+      # Triggering an update to test if the promo was created
+      assert_enqueued_with(job: ActionMailer::DeliveryJob) do
+        new_channel.update(verified: true)
+      end
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
+  end
+
+  test "when user only is in status 'only user funds' we do not register for promos" do
+    prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+    begin
+      Rails.application.secrets[:host_inspector_offline] = true
+      publisher = publishers(:promo_enabled_but_only_user_funds)
+
+      sign_in publishers(:promo_enabled_but_only_user_funds)
+
+      create_params = {
+          channel: {
+              details_attributes: {
+                  brave_publisher_id_unnormalized: "new_site_54634.org"
+              }
+          }
+      }
+
+      assert_difference('publisher.channels.count') do
+        post site_channels_url, params: create_params
+      end
+
+      new_channel = publisher.channels.order(created_at: :asc).last
+
+      # Triggering an update to test if the promo was created
+      assert_no_enqueued_jobs do
+        new_channel.update(verified: true)
+      end
+    ensure
+      Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
+    end
+  end
   test "two different publishers can have the same unverifed site channel" do
     prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
     begin

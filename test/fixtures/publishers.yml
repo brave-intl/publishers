@@ -246,6 +246,12 @@ locked_out_verifier:
 promo_enabled:
   email: "enabled@promo.org"
   name: "peter promo"
+  promo_enabled_2018q1: true
+
+promo_enabled_but_only_user_funds:
+  email: "only user funds@promo.org"
+  name: "peter promo"
+  promo_enabled_2018q1: true
 
 potentially_paid:
   email: "priscilla@potentiallypaid.org"
