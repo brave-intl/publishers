@@ -85,11 +85,7 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.email_user_on_hold(Publisher.first)
   end
 
-  def two_factor_authentication_removal_request
-    PublisherMailer.two_factor_authentication_removal_request(Publisher.first)
-  end
-
-  def two_factor_authentication_removal_cancellation
-    PublisherMailer.two_factor_authentication_removal_cancellation(Publisher.first)
+  def update_to_tos
+    PublisherMailer.update_to_tos(Publisher.first)
   end
 end
