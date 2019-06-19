@@ -87,4 +87,8 @@ class PublisherMailerPreview < ActionMailer::Preview
   def email_user_on_hold
     PublisherMailer.email_user_on_hold(Publisher.first)
   end
+
+  def update_to_tos
+    PublisherMailer.update_to_tos(Publisher.first)
+  end
 end
