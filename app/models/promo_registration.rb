@@ -42,6 +42,12 @@ class PromoRegistration < ApplicationRecord
   scope :channels_only, -> { where(kind: CHANNEL) }
   scope :has_stats, -> { where.not(stats: "[]") }
 
+  before_destroy :delete_from_promo_server
+
+  def delete_from_promo_server
+    Promo::ChannelOwnerUpdater.new(referral_code: referral_code).perform
+  end
+
   # Parses the events associated with a promo registration and returns
   # the aggregate totals for each event type
   def aggregate_stats

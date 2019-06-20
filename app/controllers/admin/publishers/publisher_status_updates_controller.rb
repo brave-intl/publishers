@@ -20,6 +20,10 @@ class Admin::Publishers::PublisherStatusUpdatesController < Admin::PublishersCon
       end
     end
 
+    if @publisher.only_user_funds?
+      flash[:alert] = "FYI: The promo registrations have not been destroyed for this user - however they will not see their promotions"
+    end
+
     flash[:notice] = "Updated publisher's status to #{@publisher.inferred_status}"
     redirect_to admin_publisher_path(id: @publisher.id)
   end

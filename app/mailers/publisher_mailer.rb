@@ -121,14 +121,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def uphold_account_changed(publisher)
-    @publisher = publisher
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject
-    )
-  end
-
   def uphold_kyc_incomplete(publisher)
     @publisher = publisher
     mail(
@@ -139,15 +131,6 @@ class PublisherMailer < ApplicationMailer
 
   def uphold_member_restricted(publisher)
     @publisher = publisher
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject
-    )
-  end
-
-  def statement_ready(publisher_statement)
-    @publisher_statement = publisher_statement
-    @publisher = publisher_statement.publisher
     mail(
       to: @publisher.email,
       subject: default_i18n_subject
@@ -341,6 +324,13 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def update_to_tos(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email || @publisher.pending_email,
+      subject: default_i18n_subject
+    )
+  end
 
   private
 

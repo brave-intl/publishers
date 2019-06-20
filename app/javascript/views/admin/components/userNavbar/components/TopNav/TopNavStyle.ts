@@ -111,6 +111,11 @@ export const Status = styled.div`
     background-color: #CB2431;
     `}
   ${(props: Partial<IStatusProps>) =>
+    props.status === "only_user_funds" &&
+    `
+    background-color: #CB2431;
+    `}
+  ${(props: Partial<IStatusProps>) =>
     props.status === "locked" &&
     `
     background-color: #FCCD56;

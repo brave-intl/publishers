@@ -13,6 +13,8 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
       next unless should_register_channel?(channel)
 
       result = register_channel(channel)
+      next if result.nil?
+
       referral_code = result[:referral_code]
       should_update_promo_server = result[:should_update_promo_server]
 
@@ -36,6 +38,9 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
         Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
       end
     end
+  rescue Faraday::Error::ClientError => e
+    # When the owner is "no-ugp" the promo server will return 409.
+    nil
   end
 
   def register_channel(channel)
@@ -51,23 +56,27 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
       referral_code: JSON.parse(response.body)["referral_code"],
       should_update_promo_server: false
     }
+  rescue Faraday::Error::ClientError => e
+    change_ownership(channel)
   rescue Faraday::Error => e
-    if e.response[:status] == 409
-      Rails.logger.warn("Promo::PublisherChannelsRegistrar #register_channel returned 409, channel already registered.  Using Promo::RegistrationGetter to get the referral_code.")
+    require "sentry-raven"
+    Rails.logger.error("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
+    Raven.capture_exception("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
+    nil
+  end
 
-      # Get the referral code
-      registration = Promo::RegistrationGetter.new(publisher: @publisher, channel: channel).perform
+  def change_ownership(channel)
+    Rails.logger.warn("Promo::PublisherChannelsRegistrar #register_channel returned 409, channel already registered.  Using Promo::RegistrationGetter to get the referral_code.")
 
-      {
-        referral_code: registration["referral_code"],
-        should_update_promo_server: registration["owner_id"] != @publisher.id ? true : false
-      }
-    else
-      require "sentry-raven"
-      Rails.logger.error("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
-      Raven.capture_exception("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
-      nil
-    end
+    # Get the referral code
+    registration = Promo::RegistrationGetter.new(publisher: @publisher, channel: channel).perform
+
+    {
+      referral_code: registration["referral_code"],
+      should_update_promo_server: registration["owner_id"] != @publisher.id ? true : false
+    }
+  rescue Faraday::Error::ClientError => e
+    nil
   end
 
   def register_channel_offline

@@ -9,8 +9,8 @@ class LaunchPromoTest < ActiveJob::TestCase
   end
 
   test "generates a promo token and sends email to each publisher" do
-    assert_difference("Publisher.where.not(promo_token_2018q1: nil).count", Publisher.where.not(email: nil).count) do
-      assert_enqueued_jobs(Publisher.where.not(email: nil).count) do
+    assert_difference("Publisher.where.not(promo_token_2018q1: nil).count", Publisher.where.not(email: nil, promo_enabled_2018q1: true).count) do
+      assert_enqueued_jobs(Publisher.where.not(email: nil, promo_enabled_2018q1: true).count) do
         Rake::Task["promo:launch_promo"].invoke
         Rake::Task["promo:launch_promo"].reenable
       end
