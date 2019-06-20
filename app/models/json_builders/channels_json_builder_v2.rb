@@ -5,8 +5,8 @@
 #   channel_identifier (string),
 #   verified (boolean),
 #   excluded (boolean),
-#   site_banner details
 #   wallet address
+#   site_banner details
 # ]
 #
 # ex.
