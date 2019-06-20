@@ -324,14 +324,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def update_to_tos(publisher)
-    @publisher = publisher
-    mail(
-      to: @publisher.email || @publisher.pending_email,
-      subject: default_i18n_subject
-    )
-  end
-
   private
 
   def ensure_fresh_token
