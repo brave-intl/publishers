@@ -9,6 +9,8 @@ namespace :email do
     puts "Emailing #{publisher.count} users"
     publisher.order(id: :desc).find_each.with_index do |user, index|
       begin
+        next if user.email.blank? && user.pending_email.blank?
+
         PublisherMailer.update_to_tos(user).deliver_now
         print '.' if index % 1000 == 0
       rescue => ex
