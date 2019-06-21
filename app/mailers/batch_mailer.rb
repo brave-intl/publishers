@@ -8,6 +8,5 @@ class BatchMailer < ApplicationMailer
       to: @publisher.email || @publisher.pending_email,
       subject: default_i18n_subject
     )
-    raise
   end
 end
