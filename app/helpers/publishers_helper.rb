@@ -433,9 +433,9 @@ module PublishersHelper
     when VimeoChannelDetails
       asset_url('publishers-home/vimeo-icon_32x32.png')
     when RedditChannelDetails
-      asset_url('publishers-home/vimeo-icon_32x32.png')
+      asset_url('publishers-home/reddit-icon_32x32.png')
     when GithubChannelDetails
-      asset_url('publishers-home/vimeo-icon_32x32.png')
+      asset_url('publishers-home/github-icon_32x32.png')
     else
       asset_url('publishers-home/website-icon_32x32.png')
     end
