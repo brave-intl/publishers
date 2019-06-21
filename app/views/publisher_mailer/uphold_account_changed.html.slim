@@ -1,9 +1,0 @@
-/ Sent as soon as a publisher fills out the first step.
-- content_for(:title) do
-  h3= t ".title"
-
-p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name || name_from_email(@publisher.email)
-
-p= t ".body"
-
-.notice= t "shared.support_note_html"

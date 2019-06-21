@@ -225,6 +225,10 @@ class Publisher < ApplicationRecord
     last_status_update&.status == PublisherStatusUpdate::HOLD
   end
 
+  def only_user_funds?
+    last_status_update&.status == PublisherStatusUpdate::ONLY_USER_FUNDS
+  end
+
   def locked?
     last_status_update&.status == PublisherStatusUpdate::LOCKED
   end

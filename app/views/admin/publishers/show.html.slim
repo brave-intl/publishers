@@ -14,6 +14,9 @@ hr
 
     .rounded-box.split-row-container
       .split-row
+        .db-info-row
+          .db-field = "ID:"
+          .db-value = @publisher.id
         - if @publisher.email.present?
           .db-info-row
             .db-field = "Email:"
@@ -40,7 +43,7 @@ hr
         .db-info-row
           .db-field = "Uphold member (KYC):"
           .db-value = @publisher.wallet&.is_a_member?
-        -if @publisher&.uphold_connection.uphold_id.present?
+        -if @publisher.uphold_connection&.uphold_id.present?
           .db-info-row
             .db-field = "Uphold account id:"
             .db-value = link_to @publisher.uphold_connection.uphold_id, admin_publishers_path(q: @publisher.uphold_connection.uphold_id)
