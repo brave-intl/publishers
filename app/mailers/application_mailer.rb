@@ -27,9 +27,6 @@ class ApplicationMailer < ActionMailer::Base
     add_image("mailer/social_reddit.png")
     add_image("mailer/social_brave.png")
     add_image("mailer/social_twitter.png")
-
-    raise "Invalid mailer class; can't run #add_images." unless self.class == InternalMailer || self.class == PromoMailer || self.class == PublisherMailer || self.class == PartnerMailer
-
   end
 
   def require_premailer
