@@ -45,15 +45,14 @@
         h6= t "publishers.choose_new_channel_type.vimeo.heading"
         = t "publishers.choose_new_channel_type.vimeo.description"
 
-- if params[:reddit]
-  = link_to(publisher_register_reddit_channel_omniauth_authorize_path,  method: :post, class: 'card block-link--card', :"data-piwik-action" => "AddRedditChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
-    .new-tag
-    .card-body
-      .icon-and-text--icon
-        = image_tag "choose-channel/reddit.svg", class: "choose-channel--icon"
-      .icon-and-text--text
-        h6= t "publishers.choose_new_channel_type.reddit.heading"
-        = t "publishers.choose_new_channel_type.reddit.description"
+= link_to(publisher_register_reddit_channel_omniauth_authorize_path,  method: :post, class: 'card block-link--card', :"data-piwik-action" => "AddRedditChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
+  .new-tag
+  .card-body
+    .icon-and-text--icon
+      = image_tag "choose-channel/reddit.svg", class: "choose-channel--icon"
+    .icon-and-text--text
+      h6= t "publishers.choose_new_channel_type.reddit.heading"
+      = t "publishers.choose_new_channel_type.reddit.description"
 
 - if params[:github]
   = link_to(publisher_register_github_channel_omniauth_authorize_path, method: :post, class: 'card block-link--card', :"data-piwik-action" => "AddGithubChannelClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "AddChannelFlow") do
