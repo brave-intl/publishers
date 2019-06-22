@@ -78,27 +78,35 @@
  *
  */
 
-var MODAL_SHOW_CLASS = 'modal-show';
+var MODAL_SHOW_CLASS = "modal-show";
 
 /*
  * On demand open a modal.
  */
-self.openModal = function openModal(html, confirmCallback, denyCallback, identifier) {
-  var modalElement = document.querySelector('.js-shared-modal');
-  var contentElement = modalElement.querySelector('.modal-panel--content');
-  var containerElement = modalElement.querySelector('.modal-container');
+self.openModal = function openModal(
+  html,
+  confirmCallback,
+  denyCallback,
+  identifier
+) {
+  var modalElement = document.querySelector(".js-shared-modal");
+  var contentElement = modalElement.querySelector(".modal-panel--content");
+  var containerElement = modalElement.querySelector(".modal-container");
 
   contentElement.innerHTML = html;
-  containerElement.classList.add(MODAL_SHOW_CLASS);
 
-  let identifierClass = identifier && `modal-container--modal-identifier--${identifier}`;
+  let identifierClass =
+    identifier && `modal-container--modal-identifier--${identifier}`;
   if (identifierClass) {
     containerElement.classList.add(identifierClass);
+    containerElement.classList.add(MODAL_SHOW_CLASS);
+  } else {
+    containerElement.classList.add(MODAL_SHOW_CLASS);
   }
 
   function closeModal(event) {
-    modalElement.removeEventListener('click', confirmationEventDelegate);
-    contentElement.innerHTML = '';
+    modalElement.removeEventListener("click", confirmationEventDelegate);
+    contentElement.innerHTML = "";
     if (identifierClass) {
       containerElement.classList.remove(identifierClass);
     }
@@ -112,7 +120,7 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
   function confirmationEventDelegate(event) {
     var target = event.target;
 
-    while (target.parentNode && target.tagName.toLowerCase() !== 'a') {
+    while (target.parentNode && target.tagName.toLowerCase() !== "a") {
       target = target.parentNode;
     }
 
@@ -120,10 +128,10 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
       return;
     }
 
-    if (target.classList.contains('js-confirm')) {
+    if (target.classList.contains("js-confirm")) {
       closeModal(event);
       confirmCallback();
-    } else if (target.classList.contains('js-deny')) {
+    } else if (target.classList.contains("js-deny")) {
       closeModal(event);
       if (denyCallback) {
         denyCallback();
@@ -139,39 +147,46 @@ self.openModal = function openModal(html, confirmCallback, denyCallback, identif
 
   // Always attempt to remove the listener, ensuring that two
   // calls to openModal don't create duplicate listeners.
-  modalElement.removeEventListener('click', confirmationEventDelegate);
-  modalElement.addEventListener('click', confirmationEventDelegate);
+  modalElement.removeEventListener("click", confirmationEventDelegate);
+  modalElement.addEventListener("click", confirmationEventDelegate);
 
-  document.removeEventListener('keyup', keyupDelegate);
-  document.addEventListener('keyup', keyupDelegate);
+  document.removeEventListener("keyup", keyupDelegate);
+  document.addEventListener("keyup", keyupDelegate);
 
   return closeModal;
-}
+};
 
 /*
  * Open a modal based on the template specified by the confirmed link
  */
 function confirmWithModal(confirmableLink) {
-  let identifier = confirmableLink.getAttribute('data-js-confirm-with-modal');
+  let identifier = confirmableLink.getAttribute("data-js-confirm-with-modal");
   var template = document.getElementById(identifier);
 
-  openModal(template.innerHTML, function() {
-    confirmableLink.setAttribute('data-user-verified', '');
-    confirmableLink.click();
-  }, function() {
-    confirmableLink.blur();
-  }, identifier);
+  openModal(
+    template.innerHTML,
+    function() {
+      confirmableLink.setAttribute("data-user-verified", "");
+      confirmableLink.click();
+    },
+    function() {
+      confirmableLink.blur();
+    },
+    identifier
+  );
 }
 
 /*
  * Setup the DOM event listeners on links requesting confirmation.
  */
-document.addEventListener('DOMContentLoaded', function() {
-  var confirmableLinks = document.querySelectorAll('[data-js-confirm-with-modal]');
-  for (var i=0;i<confirmableLinks.length;i++) {
+document.addEventListener("DOMContentLoaded", function() {
+  var confirmableLinks = document.querySelectorAll(
+    "[data-js-confirm-with-modal]"
+  );
+  for (var i = 0; i < confirmableLinks.length; i++) {
     let confirmableLink = confirmableLinks[i];
-    confirmableLink.addEventListener('click', function(event) {
-      var userVerified = confirmableLink.getAttribute('data-user-verified');
+    confirmableLink.addEventListener("click", function(event) {
+      var userVerified = confirmableLink.getAttribute("data-user-verified");
       if (userVerified === null) {
         event.preventDefault();
         event.stopPropagation();
@@ -180,10 +195,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  var modalTemplate = document.getElementById('js-open-modal-on-load');
+  var modalTemplate = document.getElementById("js-open-modal-on-load");
   if (modalTemplate) {
-    openModal(modalTemplate.innerHTML, function() {}, function() {
-      modalTemplate.parentNode.removeChild(modalTemplate);
-    });
+    openModal(
+      modalTemplate.innerHTML,
+      function() {},
+      function() {
+        modalTemplate.parentNode.removeChild(modalTemplate);
+      }
+    );
   }
 });

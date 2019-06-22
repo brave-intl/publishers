@@ -15,9 +15,9 @@ $brave-modal-borderRadius: 8px;
 }
 
 .modal-panel {
-  max-width: $spacer*40;
-  min-width: $spacer*30;
-  padding: $spacer*2 $spacer*2;
+  max-width: $spacer * 40;
+  min-width: $spacer * 30;
+  padding: $spacer * 2 $spacer * 2;
   position: relative;
   margin: 0 auto;
   opacity: 0;
@@ -35,7 +35,7 @@ $brave-modal-borderRadius: 8px;
     padding: $spacer $spacer 0 $spacer;
 
     h4 {
-      margin: 0 0 $spacer*1.5 0;
+      margin: 0 0 $spacer * 1.5 0;
 
       &.alert {
         color: $braveRed;
@@ -43,7 +43,7 @@ $brave-modal-borderRadius: 8px;
     }
 
     .modal-buttons {
-      margin-top: $spacer*2;
+      margin-top: $spacer * 2;
       text-align: center;
 
       .btn {

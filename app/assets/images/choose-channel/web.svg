@@ -1,0 +1,36 @@
+<svg viewBox="0 0 81 82" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient x1="35.192%" y1="49.524%" x2="146.327%" y2="51.646%" id="a">
+      <stop stop-color="#392DD1" offset="0%"/>
+      <stop stop-color="#FF4343" offset="100%"/>
+    </linearGradient>
+    <linearGradient x1="51.122%" y1="50.054%" x2="69.842%" y2="49.887%" id="b">
+      <stop stop-color="#150D7E" offset="0%"/>
+      <stop stop-color="#360A4C" offset="100%"/>
+    </linearGradient>
+    <linearGradient x1="91.95%" y1="50%" x2="199.603%" y2="50%" id="c">
+      <stop stop-color="#150D7E" offset="0%"/>
+      <stop stop-color="#360A4C" offset="100%"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(1)" fill="none" fill-rule="evenodd">
+    <path d="M.163 4.418A3.88 3.88 0 0 1 4.035.546h71.426a3.872 3.872 0 0 1 3.872 3.872v72.54a3.88 3.88 0 0 1-3.872 3.873H4.035a3.872 3.872 0 0 1-3.872-3.872V4.418z" stroke="#350A4B" stroke-width=".889"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="7.111" y="16.022" width="18.667" height="16.912" rx="1.852"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="7.111" y="34.714" width="18.667" height="39.165" rx="1.852"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="29.333" y="49.846" width="42.667" height="24.033" rx="1.852"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="29.333" y="16.912" width="42.667" height="2.67" rx="1.333"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="29.333" y="27.593" width="34.667" height="2.67" rx="1.333"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="29.333" y="22.253" width="24.889" height="2.67" rx="1.333"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="29.333" y="32.934" width="24.889" height="2.67" rx="1.333"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="29.333" y="38.275" width="42.667" height="2.67" rx="1.333"/>
+    <rect fill="#150D7E" fill-rule="nonzero" opacity=".315" x="29.333" y="43.615" width="30.222" height="2.67" rx="1.333"/>
+    <g transform="translate(.163 .139)">
+      <path d="M0 3.862A3.863 3.863 0 0 1 3.872 0h71.426a3.87 3.87 0 0 1 3.872 3.862v3.862H0V3.862z" fill="url(#a)"/>
+      <path fill="url(#b)" transform="matrix(1 0 0 -1 0 18.045)" d="M0 7.724h79.17v2.596H0z"/>
+      <path d="M16.362 5.794c0-1.349 1.09-2.443 2.453-2.443h13.856a2.442 2.442 0 0 1 2.452 2.443v2.443h-18.76V5.794z" fill="url(#c)"/>
+      <ellipse fill="#FFF" cx="4.466" cy="3.659" rx="1.218" ry="1.22"/>
+      <ellipse fill="#FFF" cx="8.526" cy="3.659" rx="1.218" ry="1.22"/>
+      <ellipse fill="#FFF" cx="12.586" cy="3.659" rx="1.218" ry="1.22"/>
+    </g>
+  </g>
+</svg>

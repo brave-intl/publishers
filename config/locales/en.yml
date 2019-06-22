@@ -439,25 +439,25 @@ en:
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
       website:
-        heading: WEBSITE
+        heading: Website
         description: I have my own website and have access to the domain directory.
       youtube:
-        heading: YOUTUBE CHANNEL
+        heading: Youtube Channel
         description: I own or manage a YouTube channel.
       twitch:
-        heading: TWITCH CHANNEL
+        heading: Twitch Channel
         description: I'm the primary owner of a Twitch channel.
       twitter:
-        heading: TWITTER
+        heading: Twitter
         description: I own or manage a Twitter account.
       vimeo:
-        heading: VIMEO CHANNEL
+        heading: Vimeo Channel
         description: I own or manage a Vimeo channel.
       reddit:
-        heading: REDDIT
+        heading: Reddit
         description: I own a Reddit account.
       github:
-        heading: GITHUB
+        heading: GitHub
         description: I own a GitHub account.
     contact_info:
       heading: Contact Information
