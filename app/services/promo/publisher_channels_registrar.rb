@@ -99,52 +99,22 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
 
   def request_body(channel)
     case channel.details_type
-    when "YoutubeChannelDetails"
-      return youtube_request_body(channel)
-    when "TwitchChannelDetails"
-      return twitch_request_body(channel)
-    when "TwitterChannelDetails"
-      return twitter_request_body(channel)
     when "SiteChannelDetails"
       return site_request_body(channel)
     else
-      raise
+      return channel_request_body(channel)
     end
   end
 
-  def youtube_request_body(channel)
+  def channel_request_body(channel)
     {
       "owner_id": @publisher.id,
       "promo": @promo_id,
       "channel": channel.channel_id,
       "title": channel.publication_title,
-      "channel_type": "youtube",
-      "thumbnail_url": channel.details.thumbnail_url,
-      "description": channel.details.description.presence
-    }.to_json
-  end
-
-  def twitch_request_body(channel)
-    {
-      "owner_id": @publisher.id,
-      "promo": @promo_id,
-      "channel": channel.channel_id,
-      "title": channel.publication_title,
-      "channel_type": "twitch",
+      "channel_type": channel.type_display.downcase,
       "thumbnail_url": channel.details.thumbnail_url,
       "description": nil
-    }.to_json
-  end
-
-  def twitter_request_body(channel)
-    {
-      "owner_id": @publisher.id,
-      "promo": @promo_id,
-      "channel": channel.channel_id,
-      "title": channel.publication_title,
-      "channel_type": "twitter",
-      "thumbnail_url": channel.details.thumbnail_url,
-      "description": nil # TODO: Should we store the twitter bio when channel is added to display here?
     }.to_json
   end
 

@@ -203,6 +203,74 @@ en:
         <p>Your %{date} invoice has a new document ready for you to view.</p>
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
       button: Log in to Brave Rewards
+  batch_mailer:
+    update_to_tos:
+      subject: Updates to the Brave Rewards Terms of Service for Creators
+      body: >
+        <p>
+          We know it’s not glamorous or exciting, but we’ve made some changes to the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Brave Rewards Terms of Service.</a> We'd love for you to take a look so that you can see the whole updated document. But just to make things a little easier, here’s a quick summary of all the recent changes.
+        </p>
+        In June:
+        <table cellpadding="2" cellspacing="2" border="0">
+          <tr>
+            <td style="vertical-align:top;">&ndash;</td>
+            <td>
+              We made it clear we would not send BAT belonging to Brave (including UGP grants and referral payments) to anyone who encourages or engages in violence.
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align:top;">&ndash;</td>
+            <td>
+              We explained how UGP grants work in the terms for publishers, where it was previously only in the user terms.
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align:top;">&ndash;</td>
+            <td>
+              We noted that we are the judge of what is and isn’t the prohibited conduct described in §8.
+            </td>
+          </tr>
+        </table>
+        <br/>
+        In April:
+        <table cellpadding="2" cellspacing="2" border="0">
+          <tr>
+            <td style="vertical-align:top;">&ndash;</td>
+            <td>
+              We launched Brave Ads! Now there are terms for advertisers, and the terms for publishers reflects that.
+            </td>
+          </tr>
+        </table>
+        <br/>
+        In March:
+        <table cellpadding="2" cellspacing="2" border="0">
+          <tr>
+            <td style="vertical-align:top;">&ndash;</td>
+            <td>
+            We made it possible for people aged 16 and up to use Brave Rewards with a parent’s permission.
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align:top;">&ndash;</td>
+            <td>
+              We rewrote §4, which explains how contributions work. Contributions essentially didn’t change, we just described them better.
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align:top;">&ndash;</td>
+            <td>
+              We also made some formatting changes which you might not notice, but we think makes the whole thing easier to read.
+            </td>
+          </tr>
+        </table>
+
+        <p>This is only a summary. It doesn’t describe everything that changed. You should read the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">actual real policy.</a></p>
+
+        <p>
+          Thanks for being a Brave Rewards Creator,
+          <br/>
+          The Brave Rewards Team
+        </p>
   publisher_mailer:
     shared:
       button_not_working: "If the button above doesn't work, paste this link into your web browser:"
@@ -274,73 +342,7 @@ en:
         Thank you.
         <br/><br/>
         The Brave Rewards | Creator team
-    update_to_tos:
-      subject: Updates to the Brave Rewards Terms of Service for Creators
-      body: >
-        <p>
-          We know it’s not glamorous or exciting, but we’ve made some changes to the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Brave Rewards Terms of Service.</a> We'd love for you to take a look so that you can see the whole updated document. But just to make things a little easier, here’s a quick summary of all the recent changes.
-        </p>
-        In June:
-        <table cellpadding="2" cellspacing="2" border="0">
-          <tr>
-            <td style="vertical-align:top;">&ndash;</td>
-            <td>
-              We made it clear we would not send BAT belonging to Brave (including UGP grants and referral payments) to anyone who encourages or engages in violence.
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align:top;">&ndash;</td>
-            <td>
-              We explained how UGP grants work in the terms for publishers, where it was previously only in the user terms.
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align:top;">&ndash;</td>
-            <td>
-              We noted that we are the judge of what is and isn’t the prohibited conduct described in §8.
-            </td>
-          </tr>
-        </table>
-        <br/>
-        In April:
-        <table cellpadding="2" cellspacing="2" border="0">
-          <tr>
-            <td style="vertical-align:top;">&ndash;</td>
-            <td>
-              We launched Brave Ads! Now there are terms for advertisers, and the terms for publishers reflects that.
-            </td>
-          </tr>
-        </table>
-        <br/>
-        In March:
-        <table cellpadding="2" cellspacing="2" border="0">
-          <tr>
-            <td style="vertical-align:top;">&ndash;</td>
-            <td>
-            We made it possible for people aged 16 and up to use Brave Rewards with a parent’s permission.
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align:top;">&ndash;</td>
-            <td>
-              We rewrote §4, which explains how contributions work. Contributions essentially didn’t change, we just described them better.
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align:top;">&ndash;</td>
-            <td>
-              We also made some formatting changes which you might not notice, but we think makes the whole thing easier to read.
-            </td>
-          </tr>
-        </table>
 
-        <p>This is only a summary. It doesn’t describe everything that changed. You should read the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">actual real policy.</a></p>
-
-        <p>
-          Thanks for being a Brave Rewards Creator,
-          <br/>
-          The Brave Rewards Team
-        </p>
     login_email:
       subject: Log in to Brave Rewards
       body_html: |
@@ -437,25 +439,25 @@ en:
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
       website:
-        heading: WEBSITE
+        heading: Website
         description: I have my own website and have access to the domain directory.
       youtube:
-        heading: YOUTUBE CHANNEL
+        heading: Youtube Channel
         description: I own or manage a YouTube channel.
       twitch:
-        heading: TWITCH CHANNEL
+        heading: Twitch Channel
         description: I'm the primary owner of a Twitch channel.
       twitter:
-        heading: TWITTER
+        heading: Twitter
         description: I own or manage a Twitter account.
       vimeo:
-        heading: VIMEO CHANNEL
+        heading: Vimeo Channel
         description: I own or manage a Vimeo channel.
       reddit:
-        heading: REDDIT
+        heading: Reddit
         description: I own a Reddit account.
       github:
-        heading: GITHUB
+        heading: GitHub
         description: I own a GitHub account.
     contact_info:
       heading: Contact Information
