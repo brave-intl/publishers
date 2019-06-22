@@ -167,8 +167,8 @@ class Channel < ApplicationRecord
       youtube:  Channel.verified.youtube_channels.count,
       site:  Channel.verified.site_channels.count,
       twitter:  Channel.verified.twitter_channels.count,
-      reddit: 0,
-      github: 0,
+      reddit: Channel.verified.reddit_channels.count,
+      github: Channel.verified.github_channels.count,
       vimeo: Channel.verified.vimeo_channels.count,
     }
   end
