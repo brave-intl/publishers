@@ -11,7 +11,7 @@ namespace :email do
       begin
         next if user.email.blank? && user.pending_email.blank?
 
-        BatchMailer.update_to_tos(user).deliver_later
+        BatchMailer.update_to_tos(user).deliver_later(queue: :low)
         print '.' if index % 1000 == 0
       rescue => ex
         puts

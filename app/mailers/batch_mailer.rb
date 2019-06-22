@@ -1,7 +1,5 @@
 # Used for designating batch jobs, usually to all publishers - thus we should queue as low
 class BatchMailer < ApplicationMailer
-  ActionMailer::Base.deliver_later_queue_name = :low
-
   def update_to_tos(publisher)
     @publisher = publisher
     mail(
