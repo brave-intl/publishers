@@ -175,11 +175,11 @@ Rails.application.routes.draw do
         get :cancel_two_factor_authentication_removal
       end
       resources :publisher_notes
-      resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
+      resources :referrals, controller: 'publishers/referrals'
+      resources :reports
     end
     resources :channel_transfers
-    resources :referrals
     resources :payments
     resources :channel_approvals
     resources :security

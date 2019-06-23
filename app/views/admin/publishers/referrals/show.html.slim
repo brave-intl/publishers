@@ -1,0 +1,8 @@
+= hidden_field_tag 'all-channels-referral-stats-starting-month', @publisher.promo_registrations.has_stats.order(created_at: :asc).first.created_at.strftime("%Y-%m-%d")
+= hidden_field_tag 'referrals-hidden-tags', @publisher.promo_registrations.has_stats.pluck(:referral_code).to_json
+
+.row
+  .col.bot-marg
+    .dashboard-panel--wrapper
+      #channel-referrals-stats-chart
+        canvas id="channel-referrals-stats-chart-canvas"
