@@ -2,7 +2,8 @@ import * as React from "react";
 
 import { Cell, Container, Grid } from "../../../components/grid/Grid";
 import UserNavbar from "../components/userNavbar/UserNavbar";
-import ReferralsChart from "./components/referralsChart/ReferralsChart";
+// import ReferralsChart from "./components/referralsChart/ReferralsChart";
+import renderReferralCharts from "../../../packs/referral_charts"
 import { templateAreas, templateRows } from "./ReferralsStyle";
 
 export enum NavbarSelection {
@@ -19,6 +20,7 @@ interface IReferralsProps {
 export default class Referrals extends React.Component<IReferralsProps, {}> {
   constructor(props) {
     super(props);
+    renderReferralCharts();
   }
 
   public render() {
@@ -35,7 +37,6 @@ export default class Referrals extends React.Component<IReferralsProps, {}> {
             style={{ marginTop: "30px", marginBottom: "30px" }}
           >
             <Cell gridArea={"a"}>
-              <ReferralsChart referralCodes={this.props.data.referralCodes} />
             </Cell>
           </Grid>
         </Container>

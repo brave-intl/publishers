@@ -2,7 +2,7 @@ import * as React from "react";
 import moment from "moment";
 import Chart from "chart.js";
 
-class ReactChart extends React.Component {
+export class ReactChart extends React.Component {
   constructor(props) {
     super(props);
     this.chartRef = React.createRef();
@@ -161,5 +161,3 @@ class ReactChart extends React.Component {
     );
   }
 }
-
-export default ReactChart;

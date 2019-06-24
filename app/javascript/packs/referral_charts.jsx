@@ -7,7 +7,7 @@ import ControlWrapper from "brave-ui/components/formControls/controlWrapper";
 import { PrimaryButton } from "../publishers/ReferralChartsStyle";
 // import "../publishers/dashboard_chart";
 import routes from "../views/routes";
-import Chart from "./chart/Chart";
+import ReactChart from "./chart/Chart";
 import { ThemeProvider } from "brave-ui/theme";
 import Theme from "brave-ui/theme/brave-default";
 
