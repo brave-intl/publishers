@@ -27,10 +27,7 @@ export default class ReferralCharts extends React.Component {
 
   async viewReferralCodeStats() {
     const node = this.selectMenuRef.current;
-    var url = routes.publishers.promo_registrations.show.path.replace(
-      "{id}",
-      this.props.publisherId
-    );
+    var url = routes.publishers.promo_registrations.show.path.replace("{id}", this.props.publisherId);
     url = url.replace("{referral_code}", node.state.value);
     const result = await fetch(url, {
       headers: {
@@ -71,7 +68,7 @@ export default class ReferralCharts extends React.Component {
             View stats
           </PrimaryButton>
         </div>
-        <Chart data={this.state.data} title={this.state.title} />
+        <ReactChart data={this.state.data} title={this.state.title} />
       </React.Fragment>
     );
   }
