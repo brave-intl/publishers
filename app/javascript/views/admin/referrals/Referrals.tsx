@@ -1,9 +1,10 @@
 import * as React from "react";
 
 import { Cell, Container, Grid } from "../../../components/grid/Grid";
+import renderReferralCharts from "../../../packs/referral_charts";
 import UserNavbar from "../components/userNavbar/UserNavbar";
 // import ReferralsChart from "./components/referralsChart/ReferralsChart";
-import renderReferralCharts from "../../../packs/referral_charts"
+
 import { templateAreas, templateRows } from "./ReferralsStyle";
 
 export enum NavbarSelection {
@@ -26,18 +27,14 @@ export default class Referrals extends React.Component<IReferralsProps, {}> {
   public render() {
     return (
       <React.Fragment>
-        <UserNavbar
-          navbarSelection={"Referrals"}
-          publisher={this.props.data.publisher}
-        />
+        <UserNavbar navbarSelection={"Referrals"} publisher={this.props.data.publisher} />
         <Container>
           <Grid
             templateAreas={templateAreas}
             templateRows={templateRows}
             style={{ marginTop: "30px", marginBottom: "30px" }}
           >
-            <Cell gridArea={"a"}>
-            </Cell>
+            <Cell gridArea={"a"} />
           </Grid>
         </Container>
       </React.Fragment>
