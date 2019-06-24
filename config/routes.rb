@@ -154,7 +154,11 @@ Rails.application.routes.draw do
         get :duplicates
       end
     end
-
+    resources :promo_registrations, only: [] do
+      collection do
+        get :for_referral_code
+      end
+    end
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
