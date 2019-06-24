@@ -7,7 +7,7 @@ namespace :email do
     end
 
     puts "Emailing #{publisher.count} users"
-    publisher.order(id: :desc).find_each.with_index do |user, index|
+    publisher.order(id: :asc).find_each.with_index do |user, index|
       begin
         next if user.email.blank? && user.pending_email.blank?
 
