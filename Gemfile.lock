@@ -522,6 +522,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   activejob-traffic_control
   activerecord-session_store
+  addressable (~> 2.6)
   api-pagination
   attr_encrypted (~> 3.1.0)
   autometal-piwik!
