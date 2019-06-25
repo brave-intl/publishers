@@ -5,6 +5,7 @@ class PublisherRemovalJob < ApplicationJob
     publisher = Publisher.find_by(id: publisher_id)
     return if publisher.suspended?
     publisher.status_updates.create(status: PublisherStatusUpdate::DELETED)
+    publisher.reload
     ActiveRecord::Base.transaction do
       publisher.update(email: nil)
       publisher.update(pending_email: nil)
