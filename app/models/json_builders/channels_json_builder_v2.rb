@@ -73,9 +73,10 @@ class JsonBuilders::ChannelsJsonBuilderV2
     end
   end
 
+  # (Albert Wang): Note: Ordering is different from v1
   def append_excluded
     @excluded_channel_ids.each do |excluded_channel_id|
-      @channels.push([excluded_channel_id, false, true, {}, nil])
+      @channels.push([excluded_channel_id, false, true, "", {}])
     end
   end
 end
