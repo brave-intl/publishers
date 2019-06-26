@@ -21,7 +21,7 @@ interface IReferralsProps {
 export default class Referrals extends React.Component<IReferralsProps, {}> {
   constructor(props) {
     super(props);
-    renderReferralCharts();
+    renderReferralCharts("admin");
   }
 
   public render() {

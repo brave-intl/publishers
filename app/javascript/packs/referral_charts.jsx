@@ -26,7 +26,11 @@ export default class ReferralCharts extends React.Component {
 
   async viewReferralCodeStats() {
     const node = this.selectMenuRef.current;
-    var url = routes.admin.promo_registrations.show.path.replace("{publisher_id}", this.props.publisherId);
+    var url =
+      this.props.scope === "admin"
+        ? routes.admin.promo_registrations.show.path.replace("{publisher_id}", this.props.publisherId)
+        : routes.publishers.promo_registrations.show.path.replace("{id}", this.props.publisherId);
+
     url = url.replace("{referral_code}", node.state.value);
     const result = await fetch(url, {
       headers: {
@@ -73,7 +77,7 @@ export default class ReferralCharts extends React.Component {
   }
 }
 
-export function renderReferralCharts() {
+export function renderReferralCharts(scope) {
   const { value } = document.getElementById("referrals-hidden-tags");
   const publisherId = document.getElementById("publisher_id").value;
   if (value === undefined) {
@@ -81,7 +85,8 @@ export function renderReferralCharts() {
   }
   let referralCodes = JSON.parse(value);
   let props = {
-    referralCodes: referralCodes
+    referralCodes: referralCodes,
+    scope: scope
   };
   ReactDOM.render(
     <ReferralCharts {...props} publisherId={publisherId} />,
