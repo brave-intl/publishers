@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import renderReferralCharts from "../../../packs/referral_charts"
+import Referrals from "../../../views/referrals/Referrals";
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderReferralCharts();
+  ReactDOM.render(<Referrals />, document.body.appendChild(document.getElementsByClassName("main-content")[0]));
 });

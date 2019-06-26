@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "babel-polyfill";
 import styled from "brave-ui/theme";
 import Select from "brave-ui/components/formControls/select";
 import ControlWrapper from "brave-ui/components/formControls/controlWrapper";
