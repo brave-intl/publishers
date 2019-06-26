@@ -11,7 +11,7 @@ class PublisherStatusUpdate < ApplicationRecord
 
   ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS, DELETED, HOLD, ONLY_USER_FUNDS].freeze
 
-  USER_SELECTABLE = [ACTIVE, SUSPENDED, NO_GRANTS, HOLD, ONLY_USER_FUNDS]
+  USER_SELECTABLE = [ACTIVE, SUSPENDED, NO_GRANTS, HOLD, ONLY_USER_FUNDS].freeze
 
   DESCRIPTIONS = {
     CREATED => "User has signed up but not signed in.",
@@ -34,7 +34,6 @@ class PublisherStatusUpdate < ApplicationRecord
 
   # After a user creates a new status then we should check to see the previous staus and call backing server
   after_create :update_services, if: :should_update?
-
 
   # Calls the promo server to update the owner state for the publisher based on the status
   #
