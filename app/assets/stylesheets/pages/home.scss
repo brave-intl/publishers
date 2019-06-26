@@ -626,7 +626,6 @@
     justify-content: flex-start;
     align-items: center;
     padding: 24px;
-    width: 100%;
     color: $braveText-2;
 
     & img {
@@ -1148,7 +1147,6 @@
 }
 
 .balance-panel {
-  display: flex;
   align-items: center;
   background: white;
   width: 100%;
@@ -1174,4 +1172,19 @@ h6 {
 
 #cancel_edit_contact {
   padding: 8px;
+}
+
+.grayscale {
+  filter: grayscale(100%);
+}
+
+.withheld-color {
+  color: $braveGray-3;
+}
+
+.line {
+  height: 80%;
+  min-height: 6em;
+  width: 1px;
+  background: $braveGray-7;
 }

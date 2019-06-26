@@ -32,32 +32,55 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     .row
       .col-md.payouts.mb-4
         .balance-panel
-          .balance
-            .bat-logo
-              = image_tag("bat-logo@2x.png", class: "", width: 60, height: 60)
-            .amounts
-              h4.balance-header
-                span = t(".balance_pending")
-              .bat
-                span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
-                span.bat-code= " BAT"
-              .converted#converted_amount
-                = publisher_converted_overall_balance(current_publisher)
-              - if payout_in_progress?
-                .payout_in_progress
-                  span
-                    i = t(".payout_in_progress")
-              - else
-                .next_deposit_date
-                  span = t(".next_deposit_date")
-                  span = next_deposit_date
+          .d-flex.align-items-center
+            .balance
+              .bat-logo
+                = image_tag("bat-logo@2x.png", class: "", width: 60, height: 60)
+              .amounts
+                h4.balance-header
+                  span = t(".balance_pending")
+                .bat
+                  span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
+                  span.bat-code= " BAT"
+                .converted#converted_amount
+                  = publisher_converted_overall_balance(current_publisher)
+                - if payout_in_progress?
+                  .payout_in_progress
+                    span
+                      i = t(".payout_in_progress")
+                - else
+                  .next_deposit_date
+                    span = t(".next_deposit_date")
+                    span = next_deposit_date
 
-      - if promo_running?
-        = render partial: 'promo_panel'
-      - elsif current_publisher.channels.empty?
-        .col-md.mb-4
-          .add-channel-cta
-            = t ".add_channel_cta"
+
+            - if current_publisher.no_grants?
+              .line
+              .withheld
+                .balance
+                  .bat-logo
+
+                    = image_tag("bat-disabled", class: "", width: 60, height: 60)
+                  .amounts
+                    h4.balance-header
+                      span = "BALANCE WITHHELD"
+                    .bat
+                      span.withheld-color.bat-amount#bat_amount = "130.23"
+                      span.withheld-color.bat-code= " BAT"
+
+
+          p.px-5
+            = "We have observed some irregular activity with regard to the rewards you have received. "
+            = "As a result, we are withholding Brave controlled Grant rewards."
+            .btn.ml-5.btn-primary Appeal decision
+
+
+        - if promo_running?
+          = render partial: 'promo_panel'
+        - elsif current_publisher.channels.empty?
+          .col-md.mb-4
+            .add-channel-cta
+              = t ".add_channel_cta"
     .row
       - unless current_publisher.excluded_from_payout?
         .col-md.mb-4
