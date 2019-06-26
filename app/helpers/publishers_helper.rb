@@ -39,10 +39,14 @@ module PublishersHelper
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
       publisher = publisher.become_subclass
-      amount = publisher.wallet&.overall_balance&.amount_bat
-      amount = publisher.balance if publisher.partner?
-      # If the user is in the "user funds only" then only show contributions
-      amount = publisher.wallet&.contribution_balance&.amount_bat if publisher.only_user_funds?
+
+      if publisher.partner?
+        amount = publisher.balance
+      elsif publisher.only_user_funds?
+        amount = publisher.wallet&.contribution_balance&.amount_bat
+      else
+        amount = publisher.wallet&.overall_balance&.amount_bat
+      end
 
       balance = '%.2f' % amount if amount.present?
     end
@@ -54,10 +58,14 @@ module PublishersHelper
     return if publisher.default_currency == "BAT" || publisher.default_currency.blank?
 
     publisher = publisher&.become_subclass
-    balance = publisher.wallet&.overall_balance&.amount_default_currency
-    balance = publisher.balance_in_currency if publisher.partner?
-    # If the user is in the "user funds only" then only show contributions
-    balance = publisher.wallet&.contribution_balance&.amount_default_currency if publisher.only_user_funds?
+
+    if publisher.partner?
+      balance = publisher.balance_in_currency
+    elsif publisher.only_user_funds?
+      balance = publisher.wallet&.contribution_balance&.amount_default_currency
+    else
+      balance = publisher.wallet&.overall_balance&.amount_default_currency
+    end
 
     if balance.present?
       I18n.t("helpers.publisher.balance_pending_approximate",
