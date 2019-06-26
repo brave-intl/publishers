@@ -1,8 +1,66 @@
 class BaseApiClient < BaseService
+  # Make a GET request.
+  #
+  # path    - [String] the path relative to the endpoint
+  # options - [Hash] the parameters to supply
+  #
+  # returns  the response
+  def get(path, options = {})
+    request(:get, path, params: options)
+  end
+
+  # Make a POST request.
+  #
+  # path    - [String] the path relative to the endpoint
+  # options - [Hash] the parameters to supply
+  #
+  # returns - [Response] the response
+  def post(path, options = {})
+    request(:post, path, form: options)
+  end
+
+  # Make a PUT request.
+  #
+  # path    - [String] the path relative to the endpoint
+  # options - [Hash] the parameters to supply
+  #
+  # returns [Response] the response
+  def put(path, options = {})
+    request(:put, path, form: options)
+  end
+
+  # Make a PATCH request.
+  #
+  # path    - [String] the path relative to the endpoint
+  # options - [Hash] the parameters to supply
+  #
+  # returns [Response] the response
+  def patch(path, options = {})
+    request(:patch, path, form: options)
+  end
+
+  # Make a DELETE request.
+  # path    - [String] the path relative to the endpoint
+  # options - [Hash] the parameters to supply
+  # returns [Response] the response
+  def delete(path, options = {})
+    request(:delete, path, form: options)
+  end
+
   private
 
   def api_base_uri
     raise "specify me"
+  end
+
+  def request(method, path, payload = {})
+    @connection.send(method) do |req|
+      req.url [api_base_uri, path].join('')
+      req.headers["Authorization"] = api_authorization_header
+      req.headers['Content-Type'] = 'application/json'
+      req.body = payload.to_json if method.to_sym.eql?(:post)
+      req.params = payload if method.to_sym.eql?(:get)
+    end
   end
 
   def connection

@@ -24,9 +24,6 @@ class PublisherMailerPreview < ActionMailer::Preview
     PublisherMailer.verification_done(Channel.first)
   end
 
-  def uphold_account_changed
-    PublisherMailer.uphold_account_changed(Publisher.first)
-  end
 
   def wallet_not_connected
     PublisherMailer.wallet_not_connected(Publisher.first)
@@ -86,5 +83,9 @@ class PublisherMailerPreview < ActionMailer::Preview
 
   def email_user_on_hold
     PublisherMailer.email_user_on_hold(Publisher.first)
+  end
+
+  def update_to_tos
+    PublisherMailer.update_to_tos(Publisher.first)
   end
 end

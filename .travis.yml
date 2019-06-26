@@ -40,7 +40,7 @@ script:
   - yarn install
   - yarn audit
   - yarn lint
-  - bin/rails test
+  - bundle exec rails test
   - yarn test
   - bundle exec brakeman
   - bundle exec rubocop

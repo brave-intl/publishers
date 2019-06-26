@@ -13,6 +13,8 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
       next unless should_register_channel?(channel)
 
       result = register_channel(channel)
+      next if result.nil?
+
       referral_code = result[:referral_code]
       should_update_promo_server = result[:should_update_promo_server]
 
@@ -36,6 +38,9 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
         Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
       end
     end
+  rescue Faraday::Error::ClientError => e
+    # When the owner is "no-ugp" the promo server will return 409.
+    nil
   end
 
   def register_channel(channel)
@@ -51,23 +56,27 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
       referral_code: JSON.parse(response.body)["referral_code"],
       should_update_promo_server: false
     }
+  rescue Faraday::Error::ClientError => e
+    change_ownership(channel)
   rescue Faraday::Error => e
-    if e.response[:status] == 409
-      Rails.logger.warn("Promo::PublisherChannelsRegistrar #register_channel returned 409, channel already registered.  Using Promo::RegistrationGetter to get the referral_code.")
+    require "sentry-raven"
+    Rails.logger.error("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
+    Raven.capture_exception("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
+    nil
+  end
 
-      # Get the referral code
-      registration = Promo::RegistrationGetter.new(publisher: @publisher, channel: channel).perform
+  def change_ownership(channel)
+    Rails.logger.warn("Promo::PublisherChannelsRegistrar #register_channel returned 409, channel already registered.  Using Promo::RegistrationGetter to get the referral_code.")
 
-      {
-        referral_code: registration["referral_code"],
-        should_update_promo_server: registration["owner_id"] != @publisher.id ? true : false
-      }
-    else
-      require "sentry-raven"
-      Rails.logger.error("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
-      Raven.capture_exception("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
-      nil
-    end
+    # Get the referral code
+    registration = Promo::RegistrationGetter.new(publisher: @publisher, channel: channel).perform
+
+    {
+      referral_code: registration["referral_code"],
+      should_update_promo_server: registration["owner_id"] != @publisher.id ? true : false
+    }
+  rescue Faraday::Error::ClientError => e
+    nil
   end
 
   def register_channel_offline
@@ -90,52 +99,22 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
 
   def request_body(channel)
     case channel.details_type
-    when "YoutubeChannelDetails"
-      return youtube_request_body(channel)
-    when "TwitchChannelDetails"
-      return twitch_request_body(channel)
-    when "TwitterChannelDetails"
-      return twitter_request_body(channel)
     when "SiteChannelDetails"
       return site_request_body(channel)
     else
-      raise
+      return channel_request_body(channel)
     end
   end
 
-  def youtube_request_body(channel)
+  def channel_request_body(channel)
     {
       "owner_id": @publisher.id,
       "promo": @promo_id,
       "channel": channel.channel_id,
       "title": channel.publication_title,
-      "channel_type": "youtube",
-      "thumbnail_url": channel.details.thumbnail_url,
-      "description": channel.details.description.presence
-    }.to_json
-  end
-
-  def twitch_request_body(channel)
-    {
-      "owner_id": @publisher.id,
-      "promo": @promo_id,
-      "channel": channel.channel_id,
-      "title": channel.publication_title,
-      "channel_type": "twitch",
+      "channel_type": channel.type_display.downcase,
       "thumbnail_url": channel.details.thumbnail_url,
       "description": nil
-    }.to_json
-  end
-
-  def twitter_request_body(channel)
-    {
-      "owner_id": @publisher.id,
-      "promo": @promo_id,
-      "channel": channel.channel_id,
-      "title": channel.publication_title,
-      "channel_type": "twitter",
-      "thumbnail_url": channel.details.thumbnail_url,
-      "description": nil # TODO: Should we store the twitter bio when channel is added to display here?
     }.to_json
   end
 

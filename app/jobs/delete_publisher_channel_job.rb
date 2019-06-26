@@ -17,23 +17,6 @@ class DeletePublisherChannelJob < ApplicationJob
 
     channel_is_verified = @channel.verified?
 
-    if should_update_promo_server
-      referral_code = @channel.promo_registration.referral_code
-    end
-
-    success = @channel.destroy!
-
-    # Update Eyeshade and Promo
-    if success && channel_is_verified && should_update_promo_server
-      Promo::ChannelOwnerUpdater.new(referral_code: referral_code).perform
-    end
-
-    success
-  end
-
-  private
-
-  def should_update_promo_server
-    @channel.promo_registration.present?
+    @channel.destroy!
   end
 end

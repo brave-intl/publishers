@@ -13,6 +13,9 @@ gem "active_model_serializers", "~> 0.10.0"
 # ActiveRecord Session store for server side storage of session data
 gem 'activerecord-session_store'
 
+# Allowing for URI templates, for HTTP clients
+gem 'addressable', '~> 2.6'
+
 # Pagination
 gem "api-pagination"
 

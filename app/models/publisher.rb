@@ -162,7 +162,7 @@ class Publisher < ApplicationRecord
       # Sync the default_currency to eyeshade, if they are mismatched
       # ToDo: This can be eliminated once eyeshade no longer maintains a default_currency
       # (which should be after publishers is driving payout report generation)
-      if default_currency.present? && default_currency != @_wallet.default_currency
+      if default_currency.present? && @_wallet.address.present? && default_currency != @_wallet.default_currency
         UploadDefaultCurrencyJob.perform_later(publisher_id: id)
       end
 
@@ -223,6 +223,10 @@ class Publisher < ApplicationRecord
 
   def hold?
     last_status_update&.status == PublisherStatusUpdate::HOLD
+  end
+
+  def only_user_funds?
+    last_status_update&.status == PublisherStatusUpdate::ONLY_USER_FUNDS
   end
 
   def locked?

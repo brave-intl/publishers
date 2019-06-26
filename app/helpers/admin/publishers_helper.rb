@@ -10,11 +10,12 @@ module Admin
 
     def status_badge_class(status)
       label = case status
-      when PublisherStatusUpdate::SUSPENDED
+      when PublisherStatusUpdate::SUSPENDED, PublisherStatusUpdate::ONLY_USER_FUNDS
+        "badge-danger"
         "badge-danger"
       when PublisherStatusUpdate::LOCKED
         "badge-warning"
-      when PublisherStatusUpdate::NO_GRANTS
+      when PublisherStatusUpdate::NO_GRANTS, PublisherStatusUpdate::HOLD
         "badge-dark"
       when PublisherStatusUpdate::ACTIVE
         "badge-success"

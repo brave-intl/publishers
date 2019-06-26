@@ -167,8 +167,8 @@ class Channel < ApplicationRecord
       youtube:  Channel.verified.youtube_channels.count,
       site:  Channel.verified.site_channels.count,
       twitter:  Channel.verified.twitter_channels.count,
-      reddit: 0,
-      github: 0,
+      reddit: Channel.verified.reddit_channels.count,
+      github: Channel.verified.github_channels.count,
       vimeo: Channel.verified.vimeo_channels.count,
     }
   end
@@ -224,25 +224,25 @@ class Channel < ApplicationRecord
       channel_details_type_identifier = channel_id_split_on_prefix.first
       return SiteChannelDetails.where(brave_publisher_id: channel_details_type_identifier).
           joins(:channel).
-          where('channels.verified = true').first.channel
+          where('channels.verified = true').first&.channel
     end
 
     prefix = channel_id_split_on_prefix.first
     channel_details_type_identifier = channel_id_split_on_prefix.second
     case prefix
     when "youtube#channel"
-      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
     when "twitter#channel"
-      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
     when "vimeo#channel"
-      VimeoChannelDetails.where(vimeo_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+      VimeoChannelDetails.where(vimeo_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
     when "reddit#channel"
-      RedditChannelDetails.where(reddit_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+      RedditChannelDetails.where(reddit_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
     when "github#channel"
-      GithubChannelDetails.where(github_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+      GithubChannelDetails.where(github_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
     when "twitch#channel"
     when "twitch#author"
-      TwitchChannelDetails.where(name: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first.channel
+      TwitchChannelDetails.where(name: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
     else
       Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
       nil
@@ -365,7 +365,7 @@ class Channel < ApplicationRecord
   def should_register_channel_for_promo
     promo_running = Rails.application.secrets[:active_promo_id].present? # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = publisher.promo_enabled_2018q1?
-    promo_running && publisher_enabled_promo && saved_change_to_verified? && verified
+    promo_running && publisher_enabled_promo && saved_change_to_verified? && verified && !publisher.only_user_funds?
   end
 
   def clear_verified_at_if_necessary

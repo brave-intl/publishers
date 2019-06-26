@@ -146,6 +146,15 @@ Rails.application.routes.draw do
         end
       end
     end
+    # /api/v2/
+    namespace :v2, defaults: { format: :json } do
+      namespace :public, defaults: { format: :json } do
+        get "channels", controller: "channels"
+        namespace :channels, defaults: { format: :json } do
+          get "totals"
+        end
+      end
+    end
   end
 
   namespace :admin do
