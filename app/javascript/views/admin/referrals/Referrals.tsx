@@ -3,7 +3,6 @@ import * as React from "react";
 import { Cell, Container, Grid } from "../../../components/grid/Grid";
 import renderReferralCharts from "../../../packs/referral_charts";
 import UserNavbar from "../components/userNavbar/UserNavbar";
-// import ReferralsChart from "./components/referralsChart/ReferralsChart";
 
 import { templateAreas, templateRows } from "./ReferralsStyle";
 
