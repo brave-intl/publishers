@@ -534,14 +534,14 @@ en:
         heading: Contact
         edit: Edit Contact
         update: Update
-      channel:
-        added: added %{date}
-        remove_verified: Remove Channel
-        one_more_step: One more step to complete...
-        lets_finish: Let's Finish
-        try_again: Try Again
-        verification_status: Verification status will be displayed in the Brave browser within the next 24-48 hours
-        verification_status_title: Verification Information
+    channel:
+      added: added %{date}
+      remove_verified: Remove Channel
+      one_more_step: One more step to complete...
+      lets_finish: Let's Finish
+      try_again: Try Again
+      verification_status: Verification status will be displayed in the Brave browser within the next 24-48 hours
+      verification_status_title: Verification Information
       channel_balance_period: CURRENT PERIOD
     omniauth_callbacks:
       register_youtube_channel:
@@ -684,6 +684,7 @@ en:
       confirmed: "confirmed"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
+      violation: We regret to inform you that we've suspended your right to participate in Brave Rewards Referral Program due to violation of our <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a>. However, you can still earn and redeem rewards from from participating in our other programs.
       referral: "Referral Promo Stats"
       check_statement: "Check your statement for this period's payout."
       tooltip:

@@ -41,6 +41,9 @@ module PublishersHelper
       publisher = publisher.become_subclass
       amount = publisher.wallet&.overall_balance&.amount_bat
       amount = publisher.balance if publisher.partner?
+      # If the user is in the "user funds only" then only show contributions
+      amount = publisher.wallet&.contribution_balance&.amount_bat if publisher.only_user_funds?
+
       balance = '%.2f' % amount if amount.present?
     end
 
@@ -53,6 +56,8 @@ module PublishersHelper
     publisher = publisher&.become_subclass
     balance = publisher.wallet&.overall_balance&.amount_default_currency
     balance = publisher.balance_in_currency if publisher.partner?
+    # If the user is in the "user funds only" then only show contributions
+    balance = publisher.wallet&.contribution_balance&.amount_default_currency if publisher.only_user_funds?
 
     if balance.present?
       I18n.t("helpers.publisher.balance_pending_approximate",
