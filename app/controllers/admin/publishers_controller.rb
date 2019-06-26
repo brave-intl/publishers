@@ -44,6 +44,7 @@ class Admin::PublishersController < AdminController
     @publisher = Publisher.find(params[:id])
     @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
     @potential_referral_payment = @publisher.most_recent_potential_referral_payment
+    @referral_owner_status = Promo::Client.new.owner_state.find(id: params[:id])
     @current_user = current_user
   end
 

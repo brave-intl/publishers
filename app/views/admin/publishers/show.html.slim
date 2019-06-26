@@ -74,6 +74,15 @@ hr
           .db-info-row
             .db-field = "Referral confirmations:"
             .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
+          .db-info-row
+            .db-field
+              = "Referral owner status"
+              span data-tooltip="If the user is 'suspended' or 'no-ugp' this means their promos will redirect to the homepage"
+                = fa_icon 'question-circle', class: 'mx-1'
+              = ": "
+
+            .db-value= @referral_owner_status
+
       #statement-section.split-row
         h3.admin-header = "Statements"
         .statement
