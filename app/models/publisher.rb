@@ -308,10 +308,6 @@ class Publisher < ApplicationRecord
     partner?
   end
 
-  def accepted_policy_agreements?
-    policy_agreement&.accepted_publisher_tos && policy_agreement&.accepted_publisher_privacy_policy
-  end
-
   def most_recent_potential_referral_payment
     PayoutReport.most_recent_final_report&.potential_payments&.where(publisher_id: id, channel_id: nil)&.first
   end
