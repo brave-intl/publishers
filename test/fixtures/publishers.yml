@@ -62,6 +62,12 @@ admin:
   role: "admin"
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
+admin_2:
+  <<: *default_publisher
+  email: "hello2@brave.com"
+  role: "admin"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+
 zendesk_admin:
   <<: *default_publisher
   email: <%= Rails.application.secrets[:zendesk_admin_email] %>

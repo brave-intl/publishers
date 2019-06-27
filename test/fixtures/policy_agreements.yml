@@ -7,6 +7,10 @@ complete_publisher_policy_agreement:
   <<: *default_policy_agreement
   publisher: completed
 
+google_verified_publisher_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: google_verified
+
 verified_publisher_policy_agreement:
   <<: *default_policy_agreement
   publisher: verified
@@ -15,6 +19,22 @@ uphold_connected_publisher_policy_agreement:
   <<: *default_policy_agreement
   publisher: uphold_connected
 
+uphold_connected_currency_unconfirmed_publisher_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: uphold_connected_currency_unconfirmed
+
 unprompted_publisher_policy_agreement:
   <<: *default_policy_agreement
   publisher: unprompted
+
+verified_totp_only_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: verified_totp_only
+
+channel_publisher_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: channel_publisher
+
+small_media_group_policy_agreement:
+  <<: *default_policy_agreement
+  publisher: small_media_group

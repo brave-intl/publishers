@@ -278,7 +278,7 @@ class PublishersController < ApplicationController
 
   def redirect_if_not_yet_accepted_policy_agreements
     # Redirect to suspended page if they're logged in
-    redirect_to(new_publisher_policy_agreement_path(publisher_id: current_publisher.id)) and return if current_publisher.present? && !current_publisher.policy_agreement&.accepted?
+    redirect_to(new_publisher_policy_agreement_path(publisher_id: current_publisher.id)) and return if current_publisher.present? && !current_publisher.policy_agreement&.accepted? && !current_publisher.admin?
   end
 
   # Domain verified. See balance and submit payment info.

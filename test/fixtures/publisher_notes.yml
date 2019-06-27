@@ -12,31 +12,31 @@ comment_after_suspended: &comment_after_suspended
   created_by: default
 
 note:
-  publisher: admin
+  publisher: admin_2
   note: "Should be suspended"
   created_at: "2018-12-04"
-  created_by: admin
+  created_by: admin_2
 
 non_admin_note:
-  publisher: admin
+  publisher: admin_2
   note: "Should be suspended"
   created_at: "2018-12-04"
   created_by: default
 
 admin_note:
-  publisher: admin
+  publisher: admin_2
   note: "This is an admin note"
   created_at: "2018-12-04"
   created_by: admin
 
 thread_note:
-  publisher: admin
+  publisher: admin_2
   note: "This is parent note"
   created_at: "2018-12-04"
   created_by: admin
 
 child_note:
-  publisher: admin
+  publisher: admin_2
   note: "This is child note"
   created_at: "2018-12-04"
   created_by: admin

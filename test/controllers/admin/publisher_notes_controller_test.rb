@@ -65,11 +65,9 @@ module Admin
 
           it 'emails the user who is being replied to' do
             perform_enqueued_jobs { subject }
-
             email = ActionMailer::Base.deliveries.find do |message|
               message.to.first == publisher_notes(:note).created_by.email
             end
-
             refute_nil email
           end
         end
@@ -222,14 +220,14 @@ module Admin
         let(:subject) do
           delete admin_publisher_publisher_note_path(
             id: publisher_notes(:child_note).id,
-            publisher_id: publishers(:admin).id
+            publisher_id: publishers(:admin_2).id
           )
         end
 
         before { subject }
 
         it 'redirects to the publisher page' do
-          assert_redirected_to admin_publisher_path(publishers(:admin).id)
+          assert_redirected_to admin_publisher_path(publishers(:admin_2).id)
         end
 
         it 'deletes the note' do
