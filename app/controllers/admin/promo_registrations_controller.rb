@@ -6,4 +6,3 @@ class Admin::PromoRegistrationsController < AdminController
       render json: promo_registration.stats_by_date.to_json
     end
 end
-  
