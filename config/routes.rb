@@ -11,6 +11,9 @@ Rails.application.routes.draw do
         resource :registrations, only: [:create, :update]
       end
 
+      # Eventually we should consider moving all these resources under a namespace
+      resource :case, module: 'publishers'
+
       get :log_out
       get :home
       get :change_email

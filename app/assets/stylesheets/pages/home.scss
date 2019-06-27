@@ -152,7 +152,7 @@
     .promo-panel-header {
       text-align: center;
       font-weight: 600;
-      font-size: 16px;
+      font-size: 1em;
     }
 
     .promo-panel-number {
@@ -223,6 +223,11 @@
           background-repeat: no-repeat;
         }
       }
+    }
+  }
+  .col-md-5 {
+    .promo-panel-header {
+      font-size: 0.75em;
     }
   }
 
@@ -624,8 +629,6 @@
     font-size: $font-size-base;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
-    padding: 24px;
     color: $braveText-2;
 
     & img {
@@ -635,6 +638,7 @@
     .amounts {
       display: flex;
       flex-direction: column;
+      min-width: 12em;
 
       .bat-amount {
         font-size: 48px;
@@ -1147,8 +1151,8 @@
 }
 
 .balance-panel {
-  align-items: center;
   background: white;
+  display: flex;
   width: 100%;
   height: 100%;
   border-radius: 8px;
@@ -1183,8 +1187,21 @@ h6 {
 }
 
 .line {
-  height: 80%;
-  min-height: 6em;
+  height: 8em;
+  align-self: center;
   width: 1px;
   background: $braveGray-7;
+}
+.warning-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.container-panel {
+  background: white;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: $defaultBoxShadow;
 }

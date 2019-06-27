@@ -1,0 +1,47 @@
+- content_for(:navbar_content_right) do
+  = link_to( \
+    t("shared.dashboard"), \
+    home_publishers_path, \
+    class: 'title' \
+  )
+  - if current_publisher.partner?
+    = link_to(t("shared.referrals"), partners_referrals_path, class: 'title-partner')
+    = link_to(t("shared.payments"), partners_payments_path, class: 'title-partner' )
+
+  = render partial: "choose_channel_button"
+  = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+
+
+.container.container-panel
+  .p-3
+    h2 Create an Appeal
+    p We have observed irregular activity with the rewards you have received on your site and/or channel. As a result, we are withholding Brave controlled Grant rewards.
+    p
+      ="In order to get your account cleared, we will have to review your account data. Before we can do so, we need to hear from you about a few things. "
+      = "The account review process will begin as soon as you answer and submit the following questions these questions for us"
+    / p The Rewards team will make a final decision regarding the status of your account.
+
+    .alert.alert-primary.my-2
+      span Please note that you can only appeal once, kindly provide all information you have.
+    .form.mt-3
+      .form-group
+        label
+          strong 1. How did you solicit tips / contributions / referrals? What were your methods for doing so?
+        textarea.form-control rows=6
+      .form-group
+        label
+          strong 2. Do you believe that there was anything you did that may have accidentally triggered our security checks?
+        textarea.form-control rows=6
+      .form-group
+        label
+          strong Please provide evidence that supports your arguments above.
+        #fileUploadSection
+
+
+
+
+      = submit_tag "Submit appeal", class: 'btn btn-primary'
+
+
+
+=javascript_pack_tag 'case'
