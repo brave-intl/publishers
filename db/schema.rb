@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_03_195000) do
+ActiveRecord::Schema.define(version: 2019_06_27_173744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,29 @@ ActiveRecord::Schema.define(version: 2019_06_03_195000) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "case_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "case_id", null: false
+    t.uuid "created_by_id"
+    t.string "type"
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["case_id"], name: "index_case_notes_on_case_id"
+    t.index ["created_by_id"], name: "index_case_notes_on_created_by_id"
+  end
+
+  create_table "cases", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "solicit_question"
+    t.text "accident_question"
+    t.string "status", default: "new"
+    t.uuid "publisher_id"
+    t.uuid "assignee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignee_id"], name: "index_cases_on_assignee_id"
+    t.index ["publisher_id"], name: "index_cases_on_publisher_id", unique: true
   end
 
   create_table "channel_transfers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -102,6 +125,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_195000) do
     t.jsonb "stats"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["github_channel_id"], name: "index_github_channel_details_on_github_channel_id"
   end
 
   create_table "invoice_files", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -313,9 +337,9 @@ ActiveRecord::Schema.define(version: 2019_06_03_195000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
-    t.uuid "thread_id"
     t.bigint "zendesk_ticket_id"
     t.bigint "zendesk_comment_id"
+    t.uuid "thread_id"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id"
     t.index ["thread_id"], name: "index_publisher_notes_on_thread_id"
@@ -371,6 +395,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_195000) do
     t.jsonb "stats"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["reddit_channel_id"], name: "index_reddit_channel_details_on_reddit_channel_id"
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
@@ -532,6 +557,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_195000) do
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end
 
+  add_foreign_key "cases", "publishers", column: "assignee_id"
   add_foreign_key "channel_transfers", "publishers", column: "transfer_from_id"
   add_foreign_key "channel_transfers", "publishers", column: "transfer_to_id"
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"

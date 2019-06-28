@@ -61,17 +61,20 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   .balance
                     .amounts
                       h4.balance-header
-                        span = "WITHHELD FUNDS"
+                          span = t('.held_funds')
                       .bat
                         span.withheld-color.bat-amount#bat_amount = "130.23"
                         span.withheld-color.bat-code= " BAT"
                   .small.mt-2
                     .d-flex
-                      span.warning-icon.mr-2
-                        = render 'icon_circled_bang_warning'
-                      span
-                        = "These funds have been flagged for irregular activity. Appeal this action by "
-                        = link_to "following these steps", case_path
+                      - if @case&.open?.present?
+                        span== t('.open_case_description')
+                      -else
+                        span.warning-icon.mr-2
+                          = render 'icon_circled_bang_warning'
+                        span
+                          == t('.held_funds_description')
+
 
 
       - if promo_running?
