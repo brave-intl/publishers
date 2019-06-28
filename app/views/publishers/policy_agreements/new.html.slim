@@ -14,5 +14,6 @@
           = t('.user_reviewed_privacy_policy')
           = link_to t('.privacy_policy'), "https://brave.com/publishers-creators-privacy/"
           br
-          center = f.submit("Proceed", class: "btn btn-primary")
+          .d-flex.justify-content-center
+            = f.submit(t('.proceed'), class: "btn btn-primary")
 

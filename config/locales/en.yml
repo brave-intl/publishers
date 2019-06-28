@@ -590,6 +590,7 @@ en:
         user_reviewed_privacy_policy: " By checking here, I have reviewed and accept the Brave Publisher's "
         privacy_policy: Privacy Policy
         terms_of_service: Terms of Service
+        proceed: Proceed
     two_factor_authentication_removal:
       heading: Having trouble with 2-factor authentication?
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
