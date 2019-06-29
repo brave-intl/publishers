@@ -1,10 +1,11 @@
-class Publishers::PolicyAgreementsController < ApplicationController
+class Publishers::PolicyAgreementsController < PublishersController
   def new
+    @policy_agreement = PolicyAgreement.new
   end
 
   def create
-    flash[:alert] = "You must accept the Terms of Service to proceed" unless create_params[:accepted_publisher_tos] == 'true'
-    flash[:alert] = "You must accept the Privacy Policy to proceed" unless create_params[:accepted_publisher_privacy_policy] == 'true'
+    flash[:alert] = I18n.t("publishers.policy_agreements.create.must_accept_tos") unless create_params[:accepted_publisher_tos] == 'true'
+    flash[:alert] = I18n.t("publishers.policy_agreements.create.must_accept_privacy_policy") unless create_params[:accepted_publisher_privacy_policy] == 'true'
     redirect_to home_publishers_path and return if flash[:alert].present?
     result = PolicyAgreement.create(
       user_id: current_publisher.id,

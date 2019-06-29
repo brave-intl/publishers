@@ -6,7 +6,6 @@ class PolicyAgreement < ActiveRecord::Base
   attribute :accepted_publisher_tos, :boolean, default: false
   attribute :accepted_publisher_privacy_policy, :boolean, default: false
 
-
   def accepted?
     accepted_publisher_tos && accepted_publisher_privacy_policy
   end

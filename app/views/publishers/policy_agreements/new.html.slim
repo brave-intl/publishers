@@ -4,7 +4,7 @@
     .single-panel--padded-content
       h4.single-panel--headline= t ".heading_html"
       .text-left
-        = form_for PolicyAgreement.new, { method: :post, url: publisher_policy_agreements_path } do |f|
+        = form_for @policy_agreement, { method: :post, url: publisher_policy_agreements_path } do |f|
           = f.check_box(:accepted_publisher_tos, {}, 'true', 'false')
           = t('.user_reviewed_tos')
           = link_to t('.terms_of_service'), "https://basicattentiontoken.org/publisher-terms-of-service/"
