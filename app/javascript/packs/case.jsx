@@ -145,11 +145,11 @@ const openCase = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Auto save the form every 90 seconds
-  setInterval(autoSave, 90000);
   const element = document.querySelector("#fileUploadSection");
   ReactDOM.render(<FileUpload />, element);
 
   const button = document.querySelector("#open-case");
-  button.onclick = openCase;
+  if (button) {
+    button.onclick = openCase;
+  }
 });

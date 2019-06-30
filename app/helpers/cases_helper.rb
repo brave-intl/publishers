@@ -8,6 +8,8 @@ module CasesHelper
       "badge-dark"
     when Case::ACCEPTED
       "badge-success"
+    when Case::ASSIGNED
+      "badge-primary"
     else
       "badge-secondary"
     end

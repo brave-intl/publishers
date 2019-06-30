@@ -550,8 +550,10 @@ en:
       held_funds: SUSPENDED BAT
       held_funds_description: |
         These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
+      rejected_funds_description: |
+        <a href="/publishers/case">Your appeal was rejected</a>. This decision is final.
       open_case_description:
-        <a href="/publishers/case">Your appeal case </a> has been opened.
+        <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
       closed_case_description:
         <a href="/publishers/case">Your appeal case </a> has been rejected.
 

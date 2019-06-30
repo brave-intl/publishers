@@ -23,12 +23,15 @@
     .form-group
       label
         strong= t('publishers.cases.shared.question')
-      p=simple_format(@case.description)
+      p=simple_format(@case.description, sanitize: true)
 
+    .form-group
+      label
+        strong= t('publishers.cases.shared.evidence')
       .row
         - @case.files.each do |file|
-          .c-4.m-3.shadow-sm.rounded.p-3
-            =link_to file.blob.filename, url_for(file)
+          = render partial: 'file', locals: { file: file}
+
 
 - if @notes.present?
   .container.container-panel.mb-4
@@ -38,7 +41,7 @@
         = render partial: 'message', locals: { message: message }
 
 
-- if @case.open?
+- if @case.open? || @case.assigned?
   .container.container-panel
     .p-3
       h3 = t('.new_message_title')
@@ -47,8 +50,8 @@
       = form_with model: CaseNote.new, local: true, id: "case-form" do |f|
         .form-group
           = f.text_area :note, { class:'form-control', rows:'6', minlength: "5", }
+        .form-group
+          = f.file_field :files, multiple: true, direct_upload: true
 
         =submit_tag(t('.send_message'), class: "btn btn-primary")
-
-
 

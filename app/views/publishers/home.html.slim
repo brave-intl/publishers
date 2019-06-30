@@ -54,21 +54,27 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       span = t(".next_deposit_date")
                       span = next_deposit_date
             - if current_publisher.no_grants?
-              / .col.d-none.d-lg-block
-              .line
+              .d-none.d-xl-block
+                .line
+
               .col
+                .d-xl-none.d-lg-none
+                  .ml-4.mt-4.h-line
+
                 .withheld.px-4.pt-4
                   .balance
                     .amounts
                       h4.balance-header
                           span = t('.held_funds')
                       .bat
-                        span.withheld-color.bat-amount#bat_amount = "130.23"
+                        span.withheld-color.bat-amount#bat_amount= publisher_contribution_bat_balance(current_publisher)
                         span.withheld-color.bat-code= " BAT"
-                  .small.mt-2
+                  .small.my-2
                     .d-flex
-                      - if @case&.open?.present?
+                      - if @case&.open?.present? || @case&.assigned?&.present?
                         span== t('.open_case_description')
+                      - elsif @case && @case.rejected?
+                        span == t('.rejected_funds_description')
                       -else
                         span.warning-icon.mr-2
                           = render 'icon_circled_bang_warning'

@@ -1,0 +1,4 @@
+.c-4.m-3.shadow-sm.rounded.p-3
+  - if file.blob.image?
+    = image_tag file, class: "img-thumbnail img-fluid"
+  .ml-2.mt-3=file.blob.filename

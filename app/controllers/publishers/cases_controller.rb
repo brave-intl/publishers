@@ -5,7 +5,7 @@ module Publishers
 
     def new
       @case = Case.find_or_create_by!(publisher: current_publisher)
-      redirect_to case_path if @case.open?
+      redirect_to case_path unless @case.new?
     end
 
     def show
@@ -16,14 +16,15 @@ module Publishers
     end
 
     def update
-      # Publisher only allowed one case so this is okay for now
+      # Publisher only allowed one case
       @case = Case.find_by(publisher: current_publisher)
+      redirect_to new_case_path and return if @case.open?
 
       @case.status = Case::OPEN if params[:status].present?
       @case.update(case_params)
 
       respond_to do |format|
-        format.html { redirect_to new_case_path, notice: 'User was successfully created.' }
+        format.html { redirect_to new_case_path }
         format.js   { }
         format.json { render :new, status: :updated, location: @case }
       end

@@ -1188,10 +1188,17 @@ h6 {
 
 .line {
   height: 8em;
-  align-self: center;
   width: 1px;
+  align-self: center;
   background: $braveGray-7;
 }
+.h-line {
+  width: 80%;
+  height: 1px;
+  align-self: center;
+  background: $braveGray-7;
+}
+
 .warning-icon svg {
   width: 16px;
   height: 16px;

@@ -1,8 +1,13 @@
 
 .note.mt-4
   .d-flex
+
     .avatar.mr-2
-      .u-avatar style="background: ##{message.created_by.avatar_color};"= render "avatar_svg"
+      - if message.created_by.admin?
+        .border.rounded-circle.text-center style="width:42px; height: 42px;"
+          .my-1=render "logo_svg"
+      - else
+        .u-avatar style="background: ##{message.created_by.avatar_color};"= render "avatar_svg"
     .content.w-100
       .note-header
         / The name of the person
@@ -20,4 +25,10 @@
 
       / Actual content of the note
       div id="content_#{message.id}" class="my-3"
-        = simple_format(set_mentions(message.note), sanitize: true)
+        = simple_format(message.note, sanitize: true)
+
+        .row
+          - message.files.each do |file|
+            = render partial: 'file', locals: { file: file}
+
+
