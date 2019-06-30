@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
       scope module: 'publishers' do
         resource :case do
-          patch :open
+          delete :delete_file
         end
         resources :case_notes
       end

@@ -13,6 +13,8 @@ class Case < ApplicationRecord
 
   validates :status, presence: true, :inclusion => { in: ALL_STATUSES }
 
+  has_many_attached :files
+
   def new?
     status == NEW
   end

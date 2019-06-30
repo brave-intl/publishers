@@ -19,19 +19,16 @@
       small= t(".last_updated_at", time: time_ago_in_words(@case.updated_at))
     hr
 
-    .form-group
-      label
-        strong= t('publishers.cases.shared.solicit_question')
-      p=simple_format(@case.solicit_question)
-    .form-group
-      label
-        strong= t('publishers.cases.shared.accident_question')
-      p=simple_format(@case.accident_question)
-    .form-group
-      label
-        .text-warning  todo put images here
-
     .my-3.alert.alert-primary= t(".notice")
+    .form-group
+      label
+        strong= t('publishers.cases.shared.question')
+      p=simple_format(@case.description)
+
+      .row
+        - @case.files.each do |file|
+          .c-4.m-3.shadow-sm.rounded.p-3
+            =link_to file.blob.filename, url_for(file)
 
 - if @notes.present?
   .container.container-panel.mb-4
@@ -49,7 +46,7 @@
 
       = form_with model: CaseNote.new, local: true, id: "case-form" do |f|
         .form-group
-          = f.text_area :note, { class:'form-control', rows:'6' }
+          = f.text_area :note, { class:'form-control', rows:'6', minlength: "5", }
 
         =submit_tag(t('.send_message'), class: "btn btn-primary")
 
