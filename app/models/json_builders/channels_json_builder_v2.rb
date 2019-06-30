@@ -24,7 +24,8 @@ class JsonBuilders::ChannelsJsonBuilderV2
     @channels = []
   end
 
-  def build
+  def build(whitelist = false)
+    @whitelist = whitelist
     joined_verified_channels.each do |verified_channels|
       verified_channels.find_each do |verified_channel|
         include_verified_channel(verified_channel)
@@ -57,7 +58,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
       verified_channel.details.channel_identifier,
       true,
       false,
-      "00000000-0000-0000-0000-000000000000",
+      @whitelist ? verified_channel.publisher.uphold_connection.address : "00000000-0000-0000-0000-000000000000",
       site_banner_details(verified_channel),
     ])
   end
