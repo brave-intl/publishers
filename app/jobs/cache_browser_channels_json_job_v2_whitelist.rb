@@ -10,7 +10,7 @@ class CacheBrowserChannelsJsonJobV2Whitelist < ApplicationJob
     result = nil
 
     loop do
-      result = Rails.cache.write(KEY, channels_json)
+      result = Rails.cache.write(REDIS_KEY, channels_json)
       break if result || retry_count > MAX_RETRY
 
       retry_count += 1
