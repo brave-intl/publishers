@@ -24,4 +24,4 @@ class CacheBrowserChannelsJsonJobV2Whitelist < ApplicationJob
       Rails.logger.info("CacheBrowserChannelsJsonJob V2 could not update the channels JSON.")
     end
   end
-  end
+end

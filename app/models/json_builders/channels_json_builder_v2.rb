@@ -24,7 +24,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
     @channels = []
   end
 
-  def build(whitelist = false)
+  def build(whitelist: false)
     @whitelist = whitelist
     joined_verified_channels.each do |verified_channels|
       verified_channels.find_each do |verified_channel|
