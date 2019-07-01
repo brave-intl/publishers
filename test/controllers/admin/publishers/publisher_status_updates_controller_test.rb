@@ -50,7 +50,7 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
     sign_in admin
     publisher = publishers(:uphold_connected)
 
-    assert_enqueued_jobs(1) do
+    assert_enqueued_jobs(2) do
       post(
         admin_publisher_publisher_status_updates_path(
           publisher_id: publisher.id,
@@ -67,7 +67,7 @@ class Admin::Publishers::PublisherStatusUpdatesControllerTest < ActionDispatch::
     admin = publishers(:admin)
     sign_in admin
     publisher = publishers(:uphold_connected)
-    assert_enqueued_jobs(0) do
+    assert_enqueued_jobs(1) do
       post(
         admin_publisher_publisher_status_updates_path(
           publisher_id: publisher.id,

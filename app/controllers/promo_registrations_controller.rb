@@ -15,7 +15,7 @@ class PromoRegistrationsController < ApplicationController
 
     if @publisher_has_verified_channel
       if @publisher.channels.where(verified: true).count > 5
-        RegisterPublisherForPromoJob.perform_later(publisher: @publisher)
+        Promo::RegisterPublisherForPromoJob.perform_later(publisher: @publisher)
         redirect_to home_publishers_path, notice: t("promo.activated.please_wait")
       else
         Promo::PublisherChannelsRegistrar.new(publisher: @publisher).perform
