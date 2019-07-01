@@ -2,7 +2,7 @@ import * as React from "react";
 import moment from "moment";
 import Chart from "chart.js";
 
-class ReactChart extends React.Component {
+export default class ReactChart extends React.Component {
   constructor(props) {
     super(props);
     this.chartRef = React.createRef();
@@ -40,10 +40,7 @@ class ReactChart extends React.Component {
       });
     } else {
       this.chart.data = this.getData(this.props.data);
-      this.chart.options = this.getOptions(
-        this.props.title,
-        this.getSuggestedMax(this.props.data)
-      );
+      this.chart.options = this.getOptions(this.props.title, this.getSuggestedMax(this.props.data));
       this.chart.update();
     }
   }
@@ -128,10 +125,8 @@ class ReactChart extends React.Component {
     var currentMax = 0;
     Object.keys(data).forEach(function(key) {
       var value = data[key];
-      currentMax =
-        value.retrievals > currentMax ? value.retrievals : currentMax;
-      currentMax =
-        value.first_runs > currentMax ? value.first_runs : currentMax;
+      currentMax = value.retrievals > currentMax ? value.retrievals : currentMax;
+      currentMax = value.first_runs > currentMax ? value.first_runs : currentMax;
       currentMax = value.finalized > currentMax ? value.finalized : currentMax;
     });
     return Math.ceil((currentMax / 95) * 100);
@@ -154,12 +149,6 @@ class ReactChart extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.props.data && <canvas id="chart-canvas" ref={this.chartRef} />}
-      </div>
-    );
+    return <div>{this.props.data && <canvas id="chart-canvas" ref={this.chartRef} />}</div>;
   }
 }
-
-export default ReactChart;
