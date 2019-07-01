@@ -324,6 +324,34 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+
+  def submit_appeal(publisher)
+    @name = publisher.name
+    @body = I18n.t('.publisher_mailer.submit_appeal.body')
+
+    mail(to: publisher.email,
+      subject: I18n.t('.publisher_mailer.submit_appeal.subject'),
+      template_name: 'shared')
+  end
+
+  def accept_appeal(publisher)
+    @name = publisher.name
+    @body = I18n.t('.publisher_mailer.accept_appeal.body')
+
+    mail(to: publisher.email,
+      subject: I18n.t('.publisher_mailer.accept_appeal.subject'),
+      template_name: 'shared')
+  end
+
+  def reject_appeal(publisher)
+    @name = publisher.name
+    @body = I18n.t('.publisher_mailer.reject_appeal.body')
+
+    mail(to: publisher.email,
+      subject: I18n.t('.publisher_mailer.reject_appeal.subject'),
+      template_name: 'shared')
+  end
+
   private
 
   def ensure_fresh_token

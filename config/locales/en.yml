@@ -367,6 +367,31 @@ en:
       body_html: We have noticed some unusual or suspicious contributions to your Brave Rewards account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
       closing_html: Thank you.<br/>The Brave Rewards Team
       contact_support: If you did not make this change yourself, please contact support ASAP
+    submit_appeal:
+      subject: Brave Rewards Appeal — Under Review
+      body: |
+        Thank you for submitting your appeal. We’re reviewing it and will get back to you as soon as we can.
+        <br/><br/>
+        In the meantime, we appreciate your support,
+        <br/>
+        The Brave Rewards | Creator team
+    accept_appeal:
+      subject: Brave Rewards Appeal — Accepted
+      body: |
+        We read your appeal, and we’ve approved it. Your suspended BAT should be with you in the next payout cycle.
+        <br/><br/>
+        We appreciate your support,
+        <br/>
+        The Brave Rewards | Creator team
+    reject_appeal:
+      subject: Brave Rewards Appeal — Denied
+      body: |
+        We have concluded that the activity on your account was not in line with the Brave Rewards rules so we have denied your appeal.
+        While you remain able to receive BAT owned by people using Brave when they send it as tips or attention-based contributions, you are no longer eligible to receive BAT owned by Brave itself.
+        <br/><br/>
+        We appreciate your support,
+        <br/>
+        The Brave Rewards | Creator team
     uphold_kyc_incomplete:
       subject: Please verify your Uphold identity
       body_html: |

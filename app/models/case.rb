@@ -17,12 +17,22 @@ class Case < ApplicationRecord
   has_many_attached :files
 
   before_save :updated_status, if: :assignee_id_changed?
+  after_save :send_out_emails, if: :saved_change_to_status?
 
   def updated_status
-    if assignee_id.present?
+    if assignee_id.present? && self.status == OPEN
       self.status = ASSIGNED
-    else
-      self.status = OPEN
+    end
+  end
+
+  def send_out_emails
+    case self.status
+    when OPEN
+      PublisherMailer.submit_appeal(self.publisher).deliver_later
+    when ACCEPTED
+      PublisherMailer.accept_appeal(self.publisher).deliver_later
+    when REJECTED
+      PublisherMailer.reject_appeal(self.publisher).deliver_later
     end
   end
 

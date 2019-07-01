@@ -88,4 +88,16 @@ class PublisherMailerPreview < ActionMailer::Preview
   def update_to_tos
     PublisherMailer.update_to_tos(Publisher.first)
   end
+
+  def submit_appeal
+    PublisherMailer.submit_appeal(Publisher.first)
+  end
+
+  def accept_appeal
+    PublisherMailer.accept_appeal(Publisher.first)
+  end
+
+  def reject_appeal
+    PublisherMailer.reject_appeal(Publisher.first)
+  end
 end
