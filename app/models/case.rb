@@ -20,19 +20,19 @@ class Case < ApplicationRecord
   after_save :send_out_emails, if: :saved_change_to_status?
 
   def updated_status
-    if assignee_id.present? && self.status == OPEN
+    if assignee_id.present? && status == OPEN
       self.status = ASSIGNED
     end
   end
 
   def send_out_emails
-    case self.status
+    case status
     when OPEN
-      PublisherMailer.submit_appeal(self.publisher).deliver_later
+      PublisherMailer.submit_appeal(publisher).deliver_later
     when ACCEPTED
-      PublisherMailer.accept_appeal(self.publisher).deliver_later
+      PublisherMailer.accept_appeal(publisher).deliver_later
     when REJECTED
-      PublisherMailer.reject_appeal(self.publisher).deliver_later
+      PublisherMailer.reject_appeal(publisher).deliver_later
     end
   end
 
