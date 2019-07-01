@@ -3,7 +3,7 @@ export default {
   admin: {
     promo_registrations: {
       show: {
-        path: "/admin/promo_registrations/for_referral_code?referral_code={referral_code}&publisher_id={publisher_id}"
+        path: "/publishers/{publisher_id}/promo_registrations/for_referral_code?referral_code={referral_code}"
       }
     }
   },
