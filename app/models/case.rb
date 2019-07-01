@@ -1,13 +1,13 @@
 class Case < ApplicationRecord
   has_paper_trail
 
-  NEW = "new"
-  OPEN = "open"
-  ASSIGNED = "assigned"
-  ACCEPTED = "accepted"
-  REJECTED = "rejected"
+  NEW = "new".freeze
+  OPEN = "open".freeze
+  ASSIGNED = "assigned".freeze
+  ACCEPTED = "accepted".freeze
+  REJECTED = "rejected".freeze
 
-  ALL_STATUSES = [NEW, OPEN, ACCEPTED, ASSIGNED, REJECTED]
+  ALL_STATUSES = [NEW, OPEN, ACCEPTED, ASSIGNED, REJECTED].freeze
 
   belongs_to :assignee, class_name: "Publisher"
   belongs_to :publisher

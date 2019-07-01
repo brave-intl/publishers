@@ -25,7 +25,7 @@ module Publishers
 
       respond_to do |format|
         format.html { redirect_to new_case_path }
-        format.js   { }
+        format.js   {}
         format.json { render :new, status: :updated, location: @case }
       end
     end
