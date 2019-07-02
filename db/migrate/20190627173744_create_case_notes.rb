@@ -5,7 +5,7 @@ class CreateCaseNotes < ActiveRecord::Migration[5.2]
 
       t.belongs_to :created_by, index: true, type: :uuid
 
-      t.string :type
+      t.boolean :public, default: true, null: false
       t.text :note
       t.timestamps
     end

@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2019_06_27_173744) do
   create_table "case_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "case_id", null: false
     t.uuid "created_by_id"
-    t.string "type"
+    t.boolean "public", default: true, null: false
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
