@@ -1,0 +1,45 @@
+.col-md.mb-4
+  .promo-panel
+    - if current_publisher.promo_status(promo_running?) == :inactive
+      .promo-panel-item.promo-panel-item-info
+        #promo-limited-time= t("promo.activate.sub_header_one")
+        h3#promo-header= t("promo.activate.header")
+        #promo-referring-fans= t("promo.activate.sub_header_two")
+      .promo-panel-item.promo-panel-item-button
+        = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
+          = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
+    - elsif current_publisher.only_user_funds?
+
+      .promo-panel-item.promo-panel-item-alert
+        #promo-panel-alert
+          == t("promo.dashboard.violation")
+
+    - elsif current_publisher.has_verified_channel?
+      - publisher_referral_totals = publisher_referral_totals(current_publisher)
+      .promo-flex-col
+        .promo-flex-row.promo-flex-row-main
+          .promo-flex-col.promo-panel-title
+            .promo-panel-title-item
+              =t("promo.dashboard.referral")
+            .promo-flex-row.promo-flex-row-sub
+              =t("promo.dashboard.check_statement")
+        .promo-flex-stats
+          .promo-flex-col.promo-flex-col-downloaded
+            .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
+              =t("promo.dashboard.downloaded").upcase
+            .promo-panel-number
+              = publisher_referral_totals[PromoRegistration::RETRIEVALS]
+          .promo-flex-col.promo-flex-col-installed
+            .promo-panel-header title=t("promo.dashboard.tooltip.installed")
+              =t("promo.dashboard.installed").upcase
+            .promo-panel-number
+              = publisher_referral_totals[PromoRegistration::FIRST_RUNS]
+          .promo-flex-col.promo-flex-col-confirmed
+            .promo-panel-header title=t("promo.dashboard.tooltip.confirmed")
+              =t("promo.dashboard.confirmed").upcase
+            .promo-panel-number
+              = publisher_referral_totals[PromoRegistration::FINALIZED]
+    - else
+      .promo-panel-item.promo-panel-item-alert
+        #promo-panel-alert
+          = t("promo.dashboard.add_channel")

@@ -11,6 +11,8 @@ class PublisherStatusUpdate < ApplicationRecord
 
   ALL_STATUSES = [CREATED, ONBOARDING, ACTIVE, SUSPENDED, LOCKED, NO_GRANTS, DELETED, HOLD, ONLY_USER_FUNDS].freeze
 
+  USER_SELECTABLE = [ACTIVE, SUSPENDED, NO_GRANTS, HOLD, ONLY_USER_FUNDS].freeze
+
   DESCRIPTIONS = {
     CREATED => "User has signed up but not signed in.",
     ONBOARDING => "User has signed in but not completed entering their information",
@@ -29,6 +31,20 @@ class PublisherStatusUpdate < ApplicationRecord
   validates :status, presence: true, :inclusion => { in: ALL_STATUSES }
 
   validates :publisher_id, presence: true
+
+  # After a user creates a new status then we should check to see the previous staus and call backing server
+  after_create :update_services, if: :should_update?
+
+  # Queues a job to call the promo server to update the owner state for the publisher based on the status
+  #
+  # @return [nil]
+  def update_services
+    Promo::UpdateStatus.perform_later(id: publisher_id, status: status)
+  end
+
+  def should_update?
+    [ACTIVE, SUSPENDED, ONLY_USER_FUNDS].include?(status)
+  end
 
   def to_s
     status

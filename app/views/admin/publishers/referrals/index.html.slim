@@ -1,0 +1,9 @@
+- if @publisher.promo_registrations.present?
+  = hidden_field_tag 'referrals-hidden-tags', @publisher.promo_registrations.has_stats.pluck(:referral_code).to_json
+  = hidden_field_tag 'publisher_id', @publisher.id
+.row
+  .col.bot-marg
+    .dashboard-panel--wrapper
+      #channel-referrals-stats-chart
+        canvas id="channel-referrals-stats-chart-canvas"
+= javascript_pack_tag 'views/admin/referrals/Referrals'

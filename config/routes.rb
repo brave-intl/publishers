@@ -163,7 +163,6 @@ Rails.application.routes.draw do
         get :duplicates
       end
     end
-
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do
@@ -184,11 +183,11 @@ Rails.application.routes.draw do
         get :cancel_two_factor_authentication_removal
       end
       resources :publisher_notes
-      resources :reports
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
+      resources :referrals, controller: 'publishers/referrals'
+      resources :reports
     end
     resources :channel_transfers
-    resources :referrals
     resources :payments
     resources :channel_approvals
     resources :security

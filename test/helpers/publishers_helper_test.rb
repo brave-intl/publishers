@@ -45,6 +45,10 @@ class PublishersHelperTest < ActionView::TestCase
     def partner?
       false
     end
+
+    def only_user_funds?
+      false
+    end
   end
 
   test "publisher_converted_overall_balance should return `CURRENCY unavailable` when no wallet is set" do

@@ -1,6 +1,7 @@
 export default {
   admin: {
     userNavbar: {
+      // TODO: These routes aren't RESTful and should be fixed
       channels: {
         path: "/admin/channels/{id}"
       },
@@ -11,7 +12,7 @@ export default {
         path: "/admin/payments/{id}"
       },
       referrals: {
-        path: "/admin/referrals/{id}"
+        path: "/admin/publishers/{id}/referrals"
       }
     }
   },

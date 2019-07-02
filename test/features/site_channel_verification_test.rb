@@ -151,6 +151,6 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
     visit verification_public_file_site_channel_path(channel)
     click_link(I18n.t("site_channels.shared.finish_verification_later"))
 
-    assert_content (I18n.t("publishers.home.channel.one_more_step"))
+    assert_content (I18n.t("publishers.channel.one_more_step"))
   end
 end

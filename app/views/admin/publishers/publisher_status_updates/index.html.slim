@@ -2,52 +2,60 @@
 
 
 h5.admin-header Change current status for #{@publisher.name}
-- if @publisher.suspended?
-  .my-3
-    p.alert.alert-warning
-      = "If you are planning on unsuspending this user please provide evidence and justification for your actions. "
-      br
-      br
-      = "If you believe this user is a potential outlier please contact the appropriate group and alert them."
+
+- if @publisher.only_user_funds?
+  p.alert.alert-warning
+    = "This user has been placed into an #{@publisher.last_status_update} status. Once a user has been placed into this status it is not possible to remove."
+    br
+    br
+    = "If you believe this was a mistake please contact the appropriate product owners and engage the engineering team."
+
 - else
-  .my-3
-    p.alert.alert-warning
-      = "If you are planning on suspending this user please provide evidence and justification for your actions. This may come in the form of excel, git, or a reasonable explaination of the users misdeeds."
-      br
-      br
-      = "Please view more information about the publisher guidelines here."
-      br
-      = link_to "https://community.brave.com/t/a-note-to-publishers/48733", "https://community.brave.com/t/a-note-to-publishers/48733"
+  - if @publisher.suspended?
+    .my-3
+      p.alert.alert-warning
+        = "If you are planning on unsuspending this user please provide evidence and justification for your actions. "
+        br
+        br
+        = "If you believe this user is a potential outlier please contact the appropriate group and alert them."
+  - else
+    .my-3
+      p.alert.alert-warning
+        = "If you are planning on suspending this user please provide evidence and justification for your actions. This may come in the form of excel, git, or a reasonable explaination of the users misdeeds."
+        br
+        br
+        = "Please view more information about the publisher guidelines here."
+        br
+        = link_to "https://community.brave.com/t/a-note-to-publishers/48733", "https://community.brave.com/t/a-note-to-publishers/48733"
+  = form_for(@publisher, url: admin_publisher_publisher_status_updates_path(@publisher.id), method: :create) do |f|
+    .form-group
+      = label_tag(:status_label, "Status")
+      = select_tag(:publisher_status, options_for_select(PublisherStatusUpdate::USER_SELECTABLE, @publisher.last_status_update), class: "form-control")
 
-= form_for(@publisher, url: admin_publisher_publisher_status_updates_path(@publisher.id), method: :create) do |f|
-  .form-group
-    = label_tag(:status_label, "Status")
-    = select_tag(:publisher_status, options_for_select(PublisherStatusUpdate::ALL_STATUSES, @publisher.last_status_update), class: "form-control")
-
-  .form-group
-    = label_tag(:note_label, "Include a note: ")
-    = text_area_tag(:note, '', class: 'form-control', rows: 5, required: true)
-  .form-group
-    label
-      = check_box_tag("send_email", true)
-      = " Send email (suspended & hold only)"
-  = f.submit("Update Status", class: 'btn btn-primary')
+    .form-group
+      = label_tag(:note_label, "Include a note: ")
+      = text_area_tag(:note, '', class: 'form-control', rows: 5, required: true)
+    .form-group
+      label
+        = check_box_tag("send_email", true)
+        = " Send email (suspended & hold only)"
+    = f.submit("Update Status", class: 'btn btn-primary')
 
 
-.legend.my-5
-  h2.mb-0 Legend
-  table.table
-    thead
-      tr
-        th Status
-        th Description
-    tbody
-      - PublisherStatusUpdate::DESCRIPTIONS.each do |description|
+  .legend.my-5
+    h2.mb-0 Legend
+    table.table
+      thead
         tr
-          td
-            span class=status_badge_class(description.first)
-              = description.first
-          td= description.second
+          th Status
+          th Description
+      tbody
+        - PublisherStatusUpdate::DESCRIPTIONS.each do |description|
+          tr
+            td
+              span class=status_badge_class(description.first)
+                = description.first
+            td= description.second
 
 hr
 

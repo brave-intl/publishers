@@ -1,5 +1,12 @@
 /* tslint:disable:object-literal-sort-keys */
 export default {
+  admin: {
+    promo_registrations: {
+      show: {
+        path: "/publishers/{publisher_id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+      }
+    }
+  },
   payments: {
     path: "/partners/payments",
     invoices: {
@@ -18,8 +25,7 @@ export default {
   publishers: {
     promo_registrations: {
       show: {
-        path:
-          "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+        path: "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
       }
     }
   }

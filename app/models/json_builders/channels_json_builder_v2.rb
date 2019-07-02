@@ -57,7 +57,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
       verified_channel.details.channel_identifier,
       true,
       false,
-      "00000000-0000-0000-0000-000000000000",
+      Rails.env.development? || Rails.env.staging? ? verified_channel.publisher.uphold_connection.address : "00000000-0000-0000-0000-000000000000",
       site_banner_details(verified_channel),
     ])
   end

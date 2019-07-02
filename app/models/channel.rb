@@ -373,7 +373,7 @@ class Channel < ApplicationRecord
   end
 
   def register_channel_for_promo
-    RegisterChannelForPromoJob.new.perform(channel: self)
+    Promo::RegisterChannelForPromoJob.new.perform(channel: self)
   end
 
   def notify_slack
