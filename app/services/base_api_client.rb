@@ -1,4 +1,5 @@
 class BaseApiClient < BaseService
+  private
   # Make a GET request.
   #
   # path    - [String] the path relative to the endpoint
@@ -47,13 +48,18 @@ class BaseApiClient < BaseService
     request(:delete, path, form: options)
   end
 
-  private
-
   def api_base_uri
     raise "specify me"
   end
 
+  def perform_offline?
+    false
+  end
+
   def request(method, path, payload = {})
+    # Mock out the request
+    return Struct.new(:body).new("{}") if perform_offline?
+
     @connection.send(method) do |req|
       req.url [api_base_uri, path].join('')
       req.headers["Authorization"] = api_authorization_header

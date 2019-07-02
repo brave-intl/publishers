@@ -14,7 +14,7 @@ module Channels
         suspended: @channel.publisher.suspended?
       )
 
-      raise SuspendedPublisherError if @channel.publisher.suspended?
+      raise SuspendedPublisherError if @channel.publisher.suspended? || @channel.publisher.only_user_funds?
 
       ActiveRecord::Base.transaction do
         @contested_by.verified = false

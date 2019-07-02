@@ -10,8 +10,8 @@ module Promo
 
     private
 
-    def perform_offline
-      true
+    def perform_offline?
+      Rails.application.secrets[:api_promo_base_uri].blank?
     end
 
     def api_base_uri

@@ -37,7 +37,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               = image_tag("bat-logo@2x.png", class: "", width: 60, height: 60)
             .amounts
               h4.balance-header
-                span = t ".balance_pending"
+                span = t(".balance_pending")
               .bat
                 span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
                 span.bat-code= " BAT"
@@ -46,51 +46,14 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               - if payout_in_progress?
                 .payout_in_progress
                   span
-                    i = t ".payout_in_progress"
+                    i = t(".payout_in_progress")
               - else
                 .next_deposit_date
-                  span = t ".next_deposit_date"
+                  span = t(".next_deposit_date")
                   span = next_deposit_date
+
       - if promo_running?
-        .col-md.mb-4
-          .promo-panel
-            - if current_publisher.promo_status(promo_running?) == :inactive
-              .promo-panel-item.promo-panel-item-info
-                #promo-limited-time= t("promo.activate.sub_header_one")
-                h3#promo-header= t("promo.activate.header")
-                #promo-referring-fans= t("promo.activate.sub_header_two")
-              .promo-panel-item.promo-panel-item-button
-                = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
-                  = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
-            - elsif current_publisher.has_verified_channel?
-              - publisher_referral_totals = publisher_referral_totals(current_publisher)
-              .promo-flex-col
-                .promo-flex-row.promo-flex-row-main
-                  .promo-flex-col.promo-panel-title
-                    .promo-panel-title-item
-                      =t("promo.dashboard.referral")
-                    .promo-flex-row.promo-flex-row-sub
-                      =t("promo.dashboard.check_statement")
-                .promo-flex-stats
-                  .promo-flex-col.promo-flex-col-downloaded
-                    .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
-                      =t("promo.dashboard.downloaded").upcase
-                    .promo-panel-number
-                      = publisher_referral_totals[PromoRegistration::RETRIEVALS]
-                  .promo-flex-col.promo-flex-col-installed
-                    .promo-panel-header title=t("promo.dashboard.tooltip.installed")
-                      =t("promo.dashboard.installed").upcase
-                    .promo-panel-number
-                      = publisher_referral_totals[PromoRegistration::FIRST_RUNS]
-                  .promo-flex-col.promo-flex-col-confirmed
-                    .promo-panel-header title=t("promo.dashboard.tooltip.confirmed")
-                      =t("promo.dashboard.confirmed").upcase
-                    .promo-panel-number
-                      = publisher_referral_totals[PromoRegistration::FINALIZED]
-            - else
-              .promo-panel-item.promo-panel-item-alert
-                #promo-panel-alert
-                  = t("promo.dashboard.add_channel")
+        = render partial: 'promo_panel'
       - elsif current_publisher.channels.empty?
         .col-md.mb-4
           .add-channel-cta
@@ -190,100 +153,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
 
     / Don't show if none of the promo registrations has a valid stat
-    - if current_publisher.promo_registrations.present? && current_publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
+    - if !current_publisher.only_user_funds? && current_publisher.promo_registrations.present? && current_publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
       = render "publishers/referral_charts", current_publisher: current_publisher
 
     - current_publisher.channels.visible.each do |channel|
-      .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
-        .col.mb-4
-          div class=("channel-panel channel-#{channel_verification_status(channel)}")
-            .channel-panel--intro
-              .channel-panel--intro-icon
-                img src=(channel_type_icon_url(channel)) width=16 height=16
-              .channel-panel--intro-body
-                = channel_type(channel).upcase
-            - if channel.verified?
-              - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled? && !current_publisher.only_user_funds?
-                .channel--promo-info-container
-                  = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
-                  = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
-                  .referral-link-url.promo-info-item
-                    span= https_referral_url(channel.promo_registration.referral_code)
-                  .referral-link-button.referral-link-button-desktop.promo-info-item
-                    span= t("promo.shared.referral_link")
-                  .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
-                    span= t("promo.shared.referral_link")
-                  .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
-                    span= t("promo.shared.copy")
-                / Need to tell the users that it will take 48 hours for their verified channel to appear in the web browser
-                - if channel.created_at > 2.days.ago
-                  .channel-info
-                    .info-popup
-                      .info--details
-                        // JS will break if the next two elements aren't siblings
-                        span.info--what-happened=t(".channel.verification_status_title")
-                        span.info--explanation
-                          span.verification-failed-explanation--content
-                            = t(".channel.verification_status")
-              - else
-                .channel-status.float-right
-                  .bat-channel
-                    h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
-                      = publisher_channel_bat_balance(current_publisher, channel.details.channel_identifier)
-                    span.bat-channel--currency= " BAT"
-                    .bat-channel--period
-                      = t(".channel_balance_period")
-              .channel-summary
-                h3= channel.publication_title
-                .channel-details
-                  .added-date
-                    = t ".channel.added", date: channel.created_at.to_date.iso8601
-                  span.separator
-                    = ' | '
-                  a.remove-channel href="#" data-channel-id=(channel.id)
-                    = t ".channel.remove_verified"
-                  script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-                    = render "publishers/remove_channel_modal", channel: channel
-                  = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-            - elsif channel.verification_failed?
-              .channel-status.float-right
-                .verification-failed
-                  .verification-failed--header
-                    = t("helpers.channels.verification_failure")
-                  .verification-failed--details
-                    // JS will break if the next two elements aren't siblings
-                    span.verification-failed--what-happened=t("helpers.channels.verification_failure_what_happened")
-                    span.verification-failed--explanation
-                      span.verification-failed-explanation--content
-                        = channel_verification_details(channel).upcase_first
-                    span.separator
-                      = ' | '
-                    a.remove-channel href="#" data-channel-id=(channel.id)
-                      = t ".channel.remove_verified"
-                    script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-                      = render "publishers/remove_channel_modal", channel: channel
-                    = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-                = link_to(t(".channel.try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
-            - elsif channel.verification_pending?
-              .channel-status.float-right
-                = t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
-            - elsif channel.verification_awaiting_admin_approval?
-              .channel-status.float-right
-                = t("helpers.channels.verification_awaiting_admin_approval")
-            - else
-              .channel-status.float-right
-                = link_to(t(".channel.lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
-              .channel-progress.float-right
-                .one-more-step= t ".channel.one_more_step"
-            - unless channel.verified
-              .channel-summary
-                h3.unverified = channel.publication_title
-            - if channel.contested_by_channel
-              .channel-contested
-                p = t "shared.channel_contested_by", time_until_transfer: time_until_transfer(channel.contested_by_channel),
-                        verified_by_email: channel.contested_by_channel.publisher.email
-                a.reject_transfer href=token_reject_transfer_url(channel, channel.contest_token)
-                  = t ".channel.reject_transfer"
+      = render partial: 'channel', locals: { channel: channel }
 
     .row id="add_channel_placeholder"
       .col.mb-4

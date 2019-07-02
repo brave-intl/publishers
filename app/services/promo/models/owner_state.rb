@@ -45,7 +45,7 @@ module Promo
       # Removes the state for the specified owner
       #
       # @param [String] id The publisher id
-      # @state [Promo::Models::OwnerState::State] state The state to remove from the owner.
+      # @param [Promo::Models::OwnerState::State] state The state to remove from the owner.
       #
       # @return [true] if destroy was a success
       def destroy(id:, state:)
