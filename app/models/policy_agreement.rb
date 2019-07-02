@@ -5,6 +5,7 @@ class PolicyAgreement < ActiveRecord::Base
   validates_presence_of :user_id
   attribute :accepted_publisher_tos, :boolean, default: false
   attribute :accepted_publisher_privacy_policy, :boolean, default: false
+  attribute :accepted_publisher_list_policy, :boolean, default: false
 
   def accepted?
     accepted_publisher_tos && accepted_publisher_privacy_policy

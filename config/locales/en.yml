@@ -588,6 +588,7 @@ en:
         heading_html: Please review our Terms of Services and Privacy Policy
         user_reviewed_tos: " By checking here, I have reviewed and accept the Brave Publisher's "
         user_reviewed_privacy_policy: " By checking here, I have reviewed and accept the Brave Publisher's "
+        user_reviewed_publisher_list_policy: " By checking here, I want to be on the official verified Brave Publisher's list. I'm aware that my Uphold wallet address will be identical across all my channels. I acknowledge I will be able to withdraw at anytime."
         privacy_policy: Privacy Policy
         terms_of_service: Terms of Service
         proceed: Proceed

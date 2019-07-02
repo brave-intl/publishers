@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_10_195530) do
+ActiveRecord::Schema.define(version: 2019_06_27_173744) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -257,6 +256,7 @@ ActiveRecord::Schema.define(version: 2019_06_10_195530) do
     t.uuid "user_id", null: false
     t.boolean "accepted_publisher_tos", default: false, null: false
     t.boolean "accepted_publisher_privacy_policy", default: false, null: false
+    t.boolean "accepted_publisher_list_policy", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_policy_agreements_on_user_id"
