@@ -442,19 +442,21 @@ en:
           We saw something unexpected in the pattern of contributions to your account. For now, we've suspended payouts of the BAT which Brave owns. This doesn't affect self-owned BAT which people have contributed to you using Brave — only BAT belonging to Brave.
           <br/>
           <br/>
-          If you want to receive this BAT, someone on our team will have to manually review the transactions on your account. We need to hear from you about the pattern of activity that you expected on your account. We'll begin the review as soon as you let us know what you think happened.
+          If you want to receive this BAT, someone on our team will have to manually review the transactions on your account. We'll begin the review as soon as you let us know what you think happened.
+        solicit_question: |
+          Please describe how you solicit tips / contributions / referrals? What were your methods for doing so?
+        accident_question: |
+          Do you believe that there's anything you did that may have accidentally triggered our security checks?
         alert: You can only file this appeal once. Please include everything which might be relevant.
-        question: |
-          Please describe how you solicit tips and contributions from people using Brave, and how you refer people to download and use Brave.
-          Please describe all the methods you use. Make special note of anything which could have accidentally triggered our alerts.
-        placeholder: Describe how you solicit tips and contributions from people using Brave
-        evidence: Make sure to attach any screenshots or other supporting materials to help substantiate and support your answers above.
+        placeholder: Describe how you solicit tips and all the methods you use.
+        evidence: Attach any screenshots or other supporting materials to help support your answers above.
         save: "Save"
         saved: "Saved"
         saving: "Saving..."
       new:
-        title: Create an appeal
+        title: Create your appeal
         submit: Submit appeal
+        cancel: "Cancel"
       show:
         title: Your Appeal
         status: "Status:"

@@ -22,8 +22,13 @@
     .my-3.alert.alert-primary= t(".notice")
     .form-group
       label
-        strong= t('publishers.cases.shared.question')
-      p=simple_format(@case.description, sanitize: true)
+        strong= t('publishers.cases.shared.solicit_question')
+      p=simple_format(@case.solicit_question, sanitize: true)
+
+    .form-group
+      label
+        strong= t('publishers.cases.shared.accident_question')
+      p=simple_format(@case.accident_question, sanitize: true)
 
     .form-group
       label

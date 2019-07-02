@@ -148,6 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const element = document.querySelector("#fileUploadSection");
   ReactDOM.render(<FileUpload />, element);
 
+  // Autosave every minute
+  setInterval(autoSave, 60000);
+
   const button = document.querySelector("#open-case");
   if (button) {
     button.onclick = openCase;

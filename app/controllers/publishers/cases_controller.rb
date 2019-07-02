@@ -39,7 +39,7 @@ module Publishers
     private
 
     def case_params
-      params.require(:case).permit(:description, files: [])
+      params.require(:case).permit(:solicit_question, :accident_question, files: [])
     end
 
     def authorize

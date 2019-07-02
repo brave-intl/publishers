@@ -49,7 +49,8 @@ ActiveRecord::Schema.define(version: 2019_06_27_173744) do
   end
 
   create_table "cases", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.text "description"
+    t.text "solicit_question"
+    t.text "accident_question"
     t.string "status", default: "new"
     t.uuid "publisher_id"
     t.uuid "assignee_id"

@@ -11,21 +11,26 @@
   = render partial: "choose_channel_button"
 
 .container.container-panel
-  .p-3
-    h2 Create an Appeal
-    == t('publishers.cases.shared.description')
+  .p-4
+    h2= t('.title')
+    / span.warning-icon.mr-2
+    /   = render 'icon_circled_bang_warning'
+    .pr-5
+      == t('publishers.cases.shared.description')
 
-    .alert.alert-primary.my-4= t('publishers.cases.shared.alert')
-
-    = form_with model: @case, local: false, id: "case-form", class: "mt-3" do |f|
+    = form_with model: @case, local: false, id: "case-form", class: "mt-4" do |f|
       .form-group
         label
-          strong== t('publishers.cases.shared.question')
-        = f.text_area :description, { class:'form-control', rows:'6',  minlength: "50", placeholder: t('publishers.cases.shared.placeholder') }
+         strong== t('publishers.cases.shared.solicit_question')
+        = f.text_area :solicit_question, { class:'form-control', rows:'7',  minlength: "50", placeholder: t('publishers.cases.shared.placeholder') }
+      .form-group
+        label
+         strong== t('publishers.cases.shared.accident_question')
+        = f.text_area :accident_question, { class:'form-control', rows:'7',  minlength: "50", placeholder: t('publishers.cases.shared.alert') }
+
       .form-group
         label
           strong= t('publishers.cases.shared.evidence')
-
 
         = f.file_field :files, multiple: true, direct_upload: true, class: 'd-none'
         #fileUploadSection
@@ -37,9 +42,8 @@
 
 
       .d-flex.align-items-center
-        = submit_tag t('publishers.cases.shared.save'), class: 'btn btn-secondary mr-3'
-
         a.btn.btn-primary#open-case href="#" =t('.submit')
+        = link_to t('.cancel'), home_publishers_path, class: 'ml-4 btn btn-secondary'
 
         .autosave.ml-3.d-flex
           h5.d-none#saving
