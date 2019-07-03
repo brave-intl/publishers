@@ -116,6 +116,7 @@ document.body.addEventListener("ajax:before", function(event) {
 
 // Let the user know when errors happen
 document.body.addEventListener("ajax:error", function(event) {
+  console.log(event);
   const errorMessage = document.createElement("div");
   errorMessage.classList = "mt-3 alert alert-warning";
   errorMessage.innerHTML =

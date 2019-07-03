@@ -1,3 +1,15 @@
+
+
+if(<%= @case.errors.full_messages.length.positive? %>) {
+
+  const errorMessage = document.createElement("div");
+  errorMessage.classList = "mt-3 alert alert-warning";
+  errorMessage.innerHTML = "<%=@case.errors.full_messages.join(", ") %>";
+  const form = document.querySelector("form");
+  form.appendChild(errorMessage);
+}
+console.log("<%= @case.errors.full_messages %>")
+
 document.getElementById("saved").classList.toggle("visible");
 document.getElementById("saving").classList.toggle("d-none");
 

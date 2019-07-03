@@ -12,13 +12,13 @@ module Publishers
       @case = Case.find_by(publisher: current_publisher)
       @notes = CaseNote.where(case: @case)
 
-      redirect_to new_case_path if @case.blank? || @case.new?
+      # redirect_to new_case_path if @case.blank? || @case.new?
     end
 
     def update
       # Publisher only allowed one case
       @case = Case.find_by(publisher: current_publisher)
-      redirect_to new_case_path and return if @case.open?
+      redirect_to new_case_path and return unless @case.new?
 
       @case.status = Case::OPEN if params[:status].present?
       @case.update(case_params)
