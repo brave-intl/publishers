@@ -6,7 +6,7 @@ class CreateCases < ActiveRecord::Migration[5.2]
       t.text :solicit_question
       t.text :accident_question
 
-      t.string :status, default: 'new'
+      t.string :status, default: 'new', index: true
 
       # The person the case belongs to
       t.belongs_to :publisher, index: { unique: true }, type: :uuid

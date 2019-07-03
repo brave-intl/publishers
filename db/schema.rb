@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2019_06_27_173744) do
     t.datetime "updated_at", null: false
     t.index ["assignee_id"], name: "index_cases_on_assignee_id"
     t.index ["publisher_id"], name: "index_cases_on_publisher_id", unique: true
+    t.index ["status"], name: "index_cases_on_status"
   end
 
   create_table "channel_transfers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
