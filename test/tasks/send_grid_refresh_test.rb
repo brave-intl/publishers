@@ -2,6 +2,7 @@ require 'test_helper'
 
 class SendGridRefreshTest < ActiveJob::TestCase
   test "upserts all email verified publishers to SendGrid with paginated requests" do
+    Rails.application.secrets[:sendgrid_api_offline] = false
     VCR.use_cassette("send_grid_refresh_test") do
       # Remove all but a subset of publishers so new fixtures do not break the test
       Publisher.where.not(email: "alice@default.org").
