@@ -12,7 +12,7 @@ module Publishers
       @case = Case.find_by(publisher: current_publisher)
       @notes = CaseNote.where(case: @case)
 
-      # redirect_to new_case_path if @case.blank? || @case.new?
+      redirect_to new_case_path if @case.blank? || @case.new?
     end
 
     def update

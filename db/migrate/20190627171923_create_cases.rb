@@ -13,6 +13,7 @@ class CreateCases < ActiveRecord::Migration[5.2]
       # Person working the case
       t.references :assignee, index: true, foreign_key: { to_table: :publishers }, type: :uuid
 
+      t.datetime :open_at
       t.timestamps
     end
   end

@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2019_06_27_173744) do
     t.string "status", default: "new"
     t.uuid "publisher_id"
     t.uuid "assignee_id"
+    t.datetime "open_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["assignee_id"], name: "index_cases_on_assignee_id"

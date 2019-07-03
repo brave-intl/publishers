@@ -1,14 +1,23 @@
+# frozen_string_literal: true
+
 class Case < ApplicationRecord
   has_paper_trail ignore: [:solicit_question, :accident_question]
 
-  NEW = "new".freeze
-  OPEN = "open".freeze
-  ASSIGNED = "assigned".freeze
-  ACCEPTED = "accepted".freeze
-  REJECTED = "rejected".freeze
+  NEW = "new"
+  OPEN = "open"
+  ASSIGNED = "assigned"
+  ACCEPTED = "accepted"
+  REJECTED = "rejected"
 
   ALL_STATUSES = [NEW, OPEN, ACCEPTED, ASSIGNED, REJECTED].freeze
+
   FILE_SIZE = 2.megabyte
+  FILE_TYPES = [
+    "application/vnd",
+    "image",
+    "application/pdf",
+    "application/msword",
+  ].freeze
 
   belongs_to :assignee, class_name: "Publisher"
   belongs_to :publisher
@@ -18,6 +27,8 @@ class Case < ApplicationRecord
   has_many_attached :files
 
   before_save :updated_status, if: :assignee_id_changed?
+  before_save :add_open_at, if: Proc.new { |_| will_save_change_to_status?(from: NEW) }
+
   after_save :send_out_emails, if: :saved_change_to_status?
 
   validate :file_attachment_validation
@@ -27,8 +38,23 @@ class Case < ApplicationRecord
       if file.blob.byte_size > FILE_SIZE
         file.purge
         errors[:base] << "File #{file.blob.filename} must be less than 2 MB"
+      elsif invalid_file_type?(file)
+        file.purge
+        errors[:base] << "#{file.blob.content_type} is not a supported filetype"
       end
     end
+  end
+
+  def invalid_file_type?(file)
+    valid = Case::FILE_TYPES.any? do |type|
+      file.blob.content_type.starts_with?(type)
+    end
+
+    !valid
+  end
+
+  def add_open_at
+    self.open_at = DateTime.now
   end
 
   def updated_status
