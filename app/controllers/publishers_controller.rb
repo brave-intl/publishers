@@ -37,11 +37,17 @@ class PublishersController < ApplicationController
   before_action :prompt_for_two_factor_setup, only: %i(home)
 
   before_action :require_verified_email, only: %i(email_verified complete_signup)
+  before_action :require_non_expired_token
 
   def log_out
     path = after_sign_out_path_for(current_publisher)
     sign_out(current_publisher)
     redirect_to(path)
+  end
+
+  def require_non_expired_token
+    current_publisher.reload
+    log_out if current_publisher.user_authentication_token.authentication_token_expires_at < Time.now
   end
 
   def email_verified
