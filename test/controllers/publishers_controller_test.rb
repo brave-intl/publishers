@@ -177,14 +177,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to home_publishers_path
 
     # fast forward time to simulate timeout
-    travel 1.day do
-      publisher.save!
-      publisher.reload
-      get(home_publishers_path)
-    end
+    publisher.user_authentication_token.update(authentication_token_expires_at: 1.day.ago)
+    publisher.reload
+    get(home_publishers_path)
 
     # verify publisher is redirected to login page
-    assert_redirected_to log_in_publishers_path
+    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id)
   end
 
   test "an unauthenticated html request redirects to home" do
@@ -900,7 +898,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "#balance returns the wallet as json" do
     publisher = publishers(:completed)
     sign_in publisher
-
     stub_all_eyeshade_wallet_responses(publisher: publisher)
     get wallet_publishers_path
     assert_equal publisher.wallet.to_json, response.body

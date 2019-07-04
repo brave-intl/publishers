@@ -1,6 +1,6 @@
 <% salt = SecureRandom.random_bytes(12) %>
 
-completed:
+default_user_authentication_token: &default_user_authentication_token
   authentication_token_expires_at: "<%= DateTime.now + PublisherTokenGenerator::TOKEN_TTL %>"
   encrypted_authentication_token_iv: "<%= Base64.encode64(salt) %>"
   encrypted_authentication_token: "<%= UserAuthenticationToken.encrypt_authentication_token(
@@ -8,4 +8,20 @@ completed:
     key: UserAuthenticationToken.encryption_key,
     iv: salt
   ) %>"
-  user: publishers(:completed)
+  user: default
+
+completed_user_authentication_token:
+  <<: *default_user_authentication_token
+  user: completed
+
+uphold_connected_currency_unconfirmed_user_authentication_token:
+  <<: *default_user_authentication_token
+  user: uphold_connected_currency_unconfirmed
+
+uphold_connected_user_authentication_token:
+  <<: *default_user_authentication_token
+  user: uphold_connected
+
+verified_user_authentication_token:
+  <<: *default_user_authentication_token
+  user: verified

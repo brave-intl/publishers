@@ -24,6 +24,7 @@ class PublishersController < ApplicationController
     confirm_two_factor_authentication_removal
     cancel_two_factor_authentication_removal
   )
+  before_action :require_non_expired_token
 
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 except: %i(update_email change_email)
@@ -37,7 +38,6 @@ class PublishersController < ApplicationController
   before_action :prompt_for_two_factor_setup, only: %i(home)
 
   before_action :require_verified_email, only: %i(email_verified complete_signup)
-  before_action :require_non_expired_token
 
   def log_out
     path = after_sign_out_path_for(current_publisher)
@@ -47,7 +47,11 @@ class PublishersController < ApplicationController
 
   def require_non_expired_token
     current_publisher.reload
-    log_out if current_publisher.user_authentication_token.authentication_token_expires_at < Time.now
+    if current_publisher.user_authentication_token.authentication_token_expires_at < Time.now
+      current_publisher_id = current_publisher.id
+      sign_out(current_publisher)
+      redirect_to expired_authentication_token_publishers_path(id: current_publisher_id)
+    end
   end
 
   def email_verified
