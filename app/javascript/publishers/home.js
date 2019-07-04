@@ -43,14 +43,9 @@ function updateOverallBalance(balance) {
   batAmount.innerText = formatAmount(balance.amount_bat);
   let convertedAmount = document.getElementById("converted_amount");
 
-  if (
-    !(balance.default_currency === "BAT" || balance.default_currency === null)
-  ) {
+  if (!(balance.default_currency === "BAT" || balance.default_currency === null)) {
     convertedAmount.style.display = "block";
-    convertedAmount.innerText = formatConvertedBalance(
-      balance.amount_default_currency,
-      balance.default_currency
-    );
+    convertedAmount.innerText = formatConvertedBalance(balance.amount_default_currency, balance.default_currency);
   }
 }
 
@@ -58,22 +53,17 @@ function updateLastSettlement(lastSettlementBalance) {
   let lastSettlement = document.getElementById("last_settlement");
   let lastDepositDate = document.getElementById("last_deposit_date");
   let lastDepositBatAmount = document.getElementById("last_deposit_bat_amount");
-  let lastDepositConvertedAmount = document.getElementById(
-    "last_deposit_converted_amount"
-  );
+  let lastDepositConvertedAmount = document.getElementById("last_deposit_converted_amount");
 
   if (lastSettlementBalance.timestamp) {
     lastSettlement.classList.remove("no-settlement-made");
     lastSettlement.classList.add("settlement-made");
 
-    lastDepositDate.innerText = formatFullDate(
-      new Date(lastSettlementBalance.timestamp * 1000)
-    ); // Convert to milliseconds
+    lastDepositDate.innerText = formatFullDate(new Date(lastSettlementBalance.timestamp * 1000)); // Convert to milliseconds
 
     lastDepositBatAmount.innerText = lastSettlementBalance.amount_bat;
     lastDepositConvertedAmount.style.display =
-      lastSettlementBalance.settlement_currency === "BAT" ||
-      lastSettlementBalance.settlement_currency === null
+      lastSettlementBalance.settlement_currency === "BAT" || lastSettlementBalance.settlement_currency === null
         ? "none"
         : "block";
     lastDepositConvertedAmount.innerText = formatConvertedBalance(
@@ -92,43 +82,30 @@ function updateLastSettlement(lastSettlementBalance) {
 
 function updateChannelBalances(wallet) {
   for (let channelId in wallet.channelBalances) {
-    let channelAmount = document.getElementById(
-      "channel_amount_bat_" + channelId
-    );
+    let channelAmount = document.getElementById("channel_amount_bat_" + channelId);
     if (channelAmount) {
-      channelAmount.innerText = formatAmount(
-        wallet.channelBalances[channelId].amount_bat
-      );
+      channelAmount.innerText = formatAmount(wallet.channelBalances[channelId].amount_bat);
     }
   }
 }
 
 function updateDefaultCurrencyValue(wallet) {
   let upholdStatusElement = document.getElementById("uphold_status");
-  upholdStatusElement.setAttribute(
-    "data-default-currency",
-    wallet.defaultCurrency || ""
-  );
+  upholdStatusElement.setAttribute("data-default-currency", wallet.defaultCurrency || "");
 
   let defaultCurrencyDisplay = document.getElementById("default_currency_code");
-  defaultCurrencyDisplay.innerText =
-    wallet.defaultCurrency || NO_CURRENCY_SELECTED;
+  defaultCurrencyDisplay.innerText = wallet.defaultCurrency || NO_CURRENCY_SELECTED;
 }
 
 function updatePossibleCurrencies(wallet) {
   let possibleCurrencies = wallet.possibleCurrencies;
   let upholdStatusElement = document.getElementById("uphold_status");
-  upholdStatusElement.setAttribute(
-    "data-possible-currencies",
-    JSON.stringify(possibleCurrencies)
-  );
+  upholdStatusElement.setAttribute("data-possible-currencies", JSON.stringify(possibleCurrencies));
 }
 
 function getPossibleCurrencies() {
   let upholdStatusElement = document.getElementById("uphold_status");
-  return JSON.parse(
-    upholdStatusElement.getAttribute("data-possible-currencies")
-  );
+  return JSON.parse(upholdStatusElement.getAttribute("data-possible-currencies"));
 }
 
 function populateCurrencySelect(select, possibleCurrencies, selectedCurrency) {
@@ -146,10 +123,7 @@ function populateCurrencySelect(select, possibleCurrencies, selectedCurrency) {
     let option = document.createElement("option");
     option.value = currency;
     option.innerHTML = currency;
-    if (
-      (!selectedCurrency || selectedCurrency.length === 0) &&
-      currency === BASIC_ATTENTION_TOKEN
-    ) {
+    if ((!selectedCurrency || selectedCurrency.length === 0) && currency === BASIC_ATTENTION_TOKEN) {
       option.selected = true;
     } else {
       option.selected = currency === selectedCurrency;
@@ -195,20 +169,14 @@ function refreshBalance() {
 }
 
 function removeChannel(channelId) {
-  submitForm("remove_channel_" + channelId, "DELETE", true).then(function(
-    response
-  ) {
+  submitForm("remove_channel_" + channelId, "DELETE", true).then(function(response) {
     let channelRow = document.getElementById("channel_row_" + channelId);
     channelRow.classList.add("channel-hidden");
 
     // Show channel placeholder if no channels are still visible
-    let visibleChannelRows = document.querySelectorAll(
-      "div.channel-row:not(.channel-hidden)"
-    );
+    let visibleChannelRows = document.querySelectorAll("div.channel-row:not(.channel-hidden)");
     if (visibleChannelRows.length === 0) {
-      let addChannelPlaceholder = document.getElementById(
-        "add_channel_placeholder"
-      );
+      let addChannelPlaceholder = document.getElementById("add_channel_placeholder");
       addChannelPlaceholder.classList.remove("hidden");
     }
     flash.clear();
@@ -237,12 +205,8 @@ function checkUpholdStatus() {
     })
     .then(function(body) {
       let upholdStatus = document.getElementById("uphold_status");
-      let upholdStatusSummary = document.querySelector(
-        "#uphold_status_display .status-summary .text"
-      );
-      let upholdStatusDescription = document.querySelector(
-        "#uphold_connect .status-description"
-      );
+      let upholdStatusSummary = document.querySelector("#uphold_status_display .status-summary .text");
+      let upholdStatusDescription = document.querySelector("#uphold_connect .status-description");
       let timedOut = checkUpholdStatusCount >= 15;
 
       if (timedOut) {
@@ -250,8 +214,7 @@ function checkUpholdStatus() {
         body = {
           uphold_status_class: "uphold-timeout",
           uphold_status_summary: "Connection problems",
-          uphold_status_description:
-            "We are experiencing communication problems. Please check back later."
+          uphold_status_description: "We are experiencing communication problems. Please check back later."
         };
       }
 
@@ -270,9 +233,7 @@ function checkUpholdStatus() {
 
         if (
           checkUpholdStatusInterval != null &&
-          (timedOut ||
-            body.uphold_status === "verified" ||
-            body.uphold_status === "restricted")
+          (timedOut || body.uphold_status === "verified" || body.uphold_status === "restricted")
         ) {
           hideReconnectButton();
 
@@ -306,26 +267,16 @@ function disconnectUphold() {
 }
 
 function openDefaultCurrencyModal() {
-  let template = document.querySelector(
-    "#confirm_default_currency_modal_wrapper"
-  );
+  let template = document.querySelector("#confirm_default_currency_modal_wrapper");
   let closeFn = openModal(template.innerHTML);
 
   let form = document.getElementById("confirm_default_currency_form");
 
   // Sync default currency selected in modal with options and value from dashboard
   let upholdStatusElement = document.getElementById("uphold_status");
-  let currentDefaultCurrency = upholdStatusElement.getAttribute(
-    "data-default-currency"
-  );
-  let currencySelectInModal = document.getElementById(
-    "publisher_default_currency"
-  );
-  populateCurrencySelect(
-    currencySelectInModal,
-    getPossibleCurrencies(),
-    currentDefaultCurrency || ""
-  );
+  let currentDefaultCurrency = upholdStatusElement.getAttribute("data-default-currency");
+  let currencySelectInModal = document.getElementById("publisher_default_currency");
+  populateCurrencySelect(currencySelectInModal, getPossibleCurrencies(), currentDefaultCurrency || "");
 
   form.addEventListener(
     "submit",
@@ -333,9 +284,7 @@ function openDefaultCurrencyModal() {
       event.preventDefault();
 
       let modal = document.getElementById("confirm_default_currency_modal");
-      let status = document.querySelector(
-        "#confirm_default_currency_modal .status"
-      );
+      let status = document.querySelector("#confirm_default_currency_modal .status");
 
       if (!currencySelectInModal.value) {
         closeFn();
@@ -378,11 +327,7 @@ function toggleDialog(event, elements) {
     // Do not hide if the clicked element is supposed to show the bubble
     // Or if the clicked element is the bubble
     let e = elements[i];
-    if (
-      e === event.target ||
-      e.nextSibling == event.target ||
-      e.nextSibling.firstChild == event.target
-    ) {
+    if (e === event.target || e.nextSibling == event.target || e.nextSibling.firstChild == event.target) {
       continue;
     } else {
       hideVerificationFailureWhatHappened(e);
@@ -399,11 +344,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   if (upholdStatusElement.classList.contains("uphold-processing")) {
     checkUpholdStatusInterval = window.setInterval(checkUpholdStatus, 2000);
-  } else if (
-    upholdStatusElement.getAttribute(
-      "data-open-confirm-default-currency-modal"
-    ) === "true"
-  ) {
+  } else if (upholdStatusElement.getAttribute("data-open-confirm-default-currency-modal") === "true") {
     openDefaultCurrencyModal();
   }
 
@@ -413,9 +354,7 @@ document.addEventListener("DOMContentLoaded", function() {
       "click",
       function(event) {
         let channelId = event.target.getAttribute("data-channel-id");
-        let template = document.querySelector(
-          '[data-js-channel-removal-confirmation-template="' + channelId + '"]'
-        );
+        let template = document.querySelector('[data-js-channel-removal-confirmation-template="' + channelId + '"]');
         openModal(
           template.innerHTML,
           function() {
@@ -457,9 +396,7 @@ document.addEventListener("DOMContentLoaded", function() {
     false
   );
 
-  let changeDefaultCurrencyLink = document.getElementById(
-    "change_default_currency"
-  );
+  let changeDefaultCurrencyLink = document.getElementById("change_default_currency");
   if (changeDefaultCurrencyLink) {
     changeDefaultCurrencyLink.addEventListener(
       "click",
@@ -485,25 +422,15 @@ document.addEventListener("DOMContentLoaded", function() {
   let editContact = document.getElementById("edit_contact");
   let cancelEditContact = document.getElementById("cancel_edit_contact");
 
-  let verificationFailureWhatHappenedElements = document.getElementsByClassName(
-    "verification-failed--what-happened"
-  );
+  let verificationFailureWhatHappenedElements = document.getElementsByClassName("verification-failed--what-happened");
 
   for (let i = 0; i < verificationFailureWhatHappenedElements.length; i++) {
-    verificationFailureWhatHappenedElements[i].addEventListener(
-      "click",
-      showWhatHappenedVerificationFailure,
-      false
-    );
+    verificationFailureWhatHappenedElements[i].addEventListener("click", showWhatHappenedVerificationFailure, false);
   }
 
   let infoText = document.getElementsByClassName("info--what-happened");
   for (let i = 0; i < infoText.length; i++) {
-    infoText[i].addEventListener(
-      "click",
-      showWhatHappenedVerificationFailure,
-      false
-    );
+    infoText[i].addEventListener("click", showWhatHappenedVerificationFailure, false);
   }
 
   // Hide all verification failed bubbles when anywhere on DOM is clicked
@@ -512,16 +439,13 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleDialog(event, infoText);
   });
 
-  let instantDonationButton = document.getElementById(
-    "instant-donation-button"
-  );
+  let instantDonationButton = document.getElementById("instant-donation-button");
 
   editContact.addEventListener(
     "click",
     function(event) {
       updateContactName.value = showContactName.innerText;
-      updateContactEmail.value =
-        pendingContactEmail.innerText || showContactEmail.innerText;
+      updateContactEmail.value = pendingContactEmail.innerText || showContactEmail.innerText;
       showContact.classList.add("hidden");
       updateContactForm.classList.remove("hidden");
       editContact.classList.add("hidden");
@@ -547,10 +471,8 @@ document.addEventListener("DOMContentLoaded", function() {
     async function(event) {
       document.getElementById("intro-container").style.padding = "50px";
       document.getElementsByClassName("modal-panel")[0].style.padding = "0px";
-      document.getElementsByClassName("modal-panel--content")[0].style.padding =
-        "0px";
-      let preferredCurrency = document.getElementById("preferred_currency")
-        .value;
+      document.getElementsByClassName("modal-panel--content")[0].style.padding = "0px";
+      let preferredCurrency = document.getElementById("preferred_currency").value;
       let conversionRate = document.getElementById("conversion_rate").value;
 
       let url = "/publishers/get_site_banner_data";
@@ -561,8 +483,7 @@ document.addEventListener("DOMContentLoaded", function() {
         headers: {
           Accept: "text/html",
           "X-Requested-With": "XMLHttpRequest",
-          "X-CSRF-Token": document.head.querySelector("[name=csrf-token]")
-            .content
+          "X-CSRF-Token": document.head.querySelector("[name=csrf-token]").content
         }
       };
 
@@ -600,16 +521,10 @@ document.addEventListener("DOMContentLoaded", function() {
         );
       };
 
-      document.getElementsByClassName(
-        "modal-panel--close js-deny"
-      )[0].onclick = function(e) {
-        document.getElementsByClassName("modal-panel")[0].style.maxWidth =
-          "40rem";
-        document.getElementsByClassName("modal-panel")[0].style.padding =
-          "2rem 2rem";
-        document.getElementsByClassName(
-          "modal-panel--content"
-        )[0].style.padding = "1rem 1rem 0 1rem";
+      document.getElementsByClassName("modal-panel--close js-deny")[0].onclick = function(e) {
+        document.getElementsByClassName("modal-panel")[0].style.maxWidth = "40rem";
+        document.getElementsByClassName("modal-panel")[0].style.padding = "2rem 2rem";
+        document.getElementsByClassName("modal-panel--content")[0].style.padding = "1rem 1rem 0 1rem";
       };
     },
     false
@@ -627,15 +542,11 @@ document.addEventListener("DOMContentLoaded", function() {
           showPendingContactEmail(updatedEmail);
 
           let currentUserName = document.querySelector(".js-current-user-name");
-          let userNameDropDown = document.querySelector(
-            ".js-user-name-dropdown"
-          );
+          let userNameDropDown = document.querySelector(".js-user-name-dropdown");
           currentUserName.innerText = updateContactName.value;
           userNameDropDown.innerText = updateContactName.value;
         } else {
-          let pendingEmailNotice = document.getElementById(
-            "pending_email_notice"
-          );
+          let pendingEmailNotice = document.getElementById("pending_email_notice");
           pendingEmailNotice.innerHTML =
             "Unable to change email; the email address may be in use. Please enter a different email address.";
           pendingEmailNotice.classList.remove("hidden");
@@ -646,9 +557,7 @@ document.addEventListener("DOMContentLoaded", function() {
         editContact.classList.remove("hidden");
 
         // Re-enable submit button to allow form to be resubmitted
-        let submitButton = updateContactForm.querySelector(
-          "input[type=submit][disabled]"
-        );
+        let submitButton = updateContactForm.querySelector("input[type=submit][disabled]");
         if (submitButton) {
           submitButton.removeAttribute("disabled");
           submitButton.blur();
@@ -658,5 +567,5 @@ document.addEventListener("DOMContentLoaded", function() {
     false
   );
 
-  renderReferralCharts();
+  renderReferralCharts("publisher");
 });

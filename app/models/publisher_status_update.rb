@@ -35,23 +35,11 @@ class PublisherStatusUpdate < ApplicationRecord
   # After a user creates a new status then we should check to see the previous staus and call backing server
   after_create :update_services, if: :should_update?
 
-  # Calls the promo server to update the owner state for the publisher based on the status
+  # Queues a job to call the promo server to update the owner state for the publisher based on the status
   #
-  # @return [true] if the services successfully update
+  # @return [nil]
   def update_services
-    client = Promo::Client.new
-
-    # Remove previous states, this prevents from any unique index constraints from being violated
-    states = client.owner_state.find(id: publisher_id)
-    states.each do |state|
-      client.owner_state.destroy(id: publisher_id, state: state)
-    end
-
-    if status == SUSPENDED
-      client.owner_state.create(id: publisher_id, state: Promo::Models::OwnerState::State::SUSPEND)
-    elsif status == ONLY_USER_FUNDS
-      client.owner_state.create(id: publisher_id, state: Promo::Models::OwnerState::State::NO_UGP)
-    end
+    Promo::UpdateStatus.perform_later(id: publisher_id, status: status)
   end
 
   def should_update?

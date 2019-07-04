@@ -757,7 +757,7 @@ en:
       confirmed: "confirmed"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
-      violation: We regret to inform you that we've suspended your right to participate in Brave Rewards Referral Program due to violation of our <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a>. However, you can still earn and redeem rewards from from participating in our other programs.
+      violation: We regret to inform you that we've suspended your ability to participate in Brave Rewards Program due to violation of our <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a>. However, you can still earn and redeem rewards from participating in our other programs.
       referral: "Referral Promo Stats"
       check_statement: "Check your statement for this period's payout."
       tooltip:
