@@ -1,0 +1,54 @@
+- content_for(:navbar_content_right) do
+  = link_to( \
+    t("shared.dashboard"), \
+    home_publishers_path, \
+    class: 'title' \
+  )
+  - if current_publisher.partner?
+    = link_to(t("shared.referrals"), partners_referrals_path, class: 'title-partner')
+    = link_to(t("shared.payments"), partners_payments_path, class: 'title-partner' )
+
+  = render partial: "choose_channel_button"
+
+.container.container-panel
+  .p-4
+    h2= t('.title')
+    / span.warning-icon.mr-2
+    /   = render 'icon_circled_bang_warning'
+    .pr-5
+      == t('publishers.cases.shared.description')
+
+    = form_with model: @case, local: false, id: "case-form", class: "mt-4" do |f|
+      .form-group
+        label
+         strong== t('publishers.cases.shared.solicit_question')
+        = f.text_area :solicit_question, { class:'form-control', rows:'7',  minlength: "50", placeholder: t('publishers.cases.shared.placeholder') }
+      .form-group
+        label
+         strong== t('publishers.cases.shared.accident_question')
+        = f.text_area :accident_question, { class:'form-control', rows:'7',  minlength: "50", placeholder: t('publishers.cases.shared.alert') }
+
+      .form-group
+        label
+          strong= t('publishers.cases.shared.evidence')
+
+        = f.file_field :files, multiple: true, direct_upload: true, class: 'd-none'
+        #fileUploadSection
+        .row
+          - @case.files.each do |file|
+            .c-4.m-3.shadow-sm.rounded.p-3
+              =link_to file.blob.filename, url_for(file)
+              = link_to "(x)", delete_file_case_path(id: file.id), method: :delete, class: 'ml-2 text-danger'
+
+
+      .d-flex.align-items-center
+        a.btn.btn-primary#open-case href="#" =t('.submit')
+        = link_to t('.cancel'), home_publishers_path, class: 'ml-4 btn btn-secondary'
+
+        .autosave.ml-3.d-flex
+          h5.d-none#saving
+            .badge.badge-light =t('publishers.cases.shared.saving')
+          h5.fade#saved
+            .badge.badge-success =t('publishers.cases.shared.saved')
+
+=javascript_pack_tag 'case'

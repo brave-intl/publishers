@@ -286,6 +286,8 @@ class PublishersController < ApplicationController
     # ToDo: rework this process?
     @wallet = current_publisher.wallet
 
+    @case = Case.find_by(publisher: current_publisher)
+
     create_uphold_card_for_default_currency_if_needed
   end
 

@@ -11,6 +11,13 @@ Rails.application.routes.draw do
         resource :registrations, only: [:create, :update]
       end
 
+      scope module: 'publishers' do
+        resource :case do
+          delete :delete_file
+        end
+        resources :case_notes
+      end
+
       get :log_out
       get :home
       get :change_email

@@ -44,6 +44,8 @@ module PublishersHelper
         amount = publisher.balance
       elsif publisher.only_user_funds?
         amount = publisher.wallet&.contribution_balance&.amount_bat
+      elsif publisher.no_grants?
+        amount = publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
       else
         amount = publisher.wallet&.overall_balance&.amount_bat
       end
@@ -63,6 +65,9 @@ module PublishersHelper
       balance = publisher.balance_in_currency
     elsif publisher.only_user_funds?
       balance = publisher.wallet&.contribution_balance&.amount_default_currency
+    elsif publisher.no_grants?
+      amount =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+
     else
       balance = publisher.wallet&.overall_balance&.amount_default_currency
     end
