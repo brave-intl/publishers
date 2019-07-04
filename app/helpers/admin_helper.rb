@@ -41,13 +41,31 @@ module AdminHelper
     value || "--"
   end
 
-  def nav_link(text, path)
+  def nav_link(text, path, &block)
     be_active = request.fullpath.start_with?(path) && path != '/admin'
-    options =  be_active ? { class: "active" } : {}
+    options =  be_active ? { class: "active w-100" } : { class: 'w-100'}
+
+    text = content_tag(:span) do
+      concat text
+      block&.call
+    end
 
     content_tag(:li) do
-      link_to text, path, options
+      link_to(text, path, options)
     end
+  end
+
+  def case_link(text, path, badge= nil)
+    be_active = request.fullpath.eql?(path)
+
+    options =  be_active ? { class: "active" } : { class: "text-muted"}
+    badge_class = be_active ? "badge-primary" : "badge-dark"
+
+    concat link_to(text, path, options)
+    content_tag(
+      :div,
+      content_tag(:div, badge, class: "badge badge-pill #{badge_class}")
+    )
   end
 
   def publisher_link(publisher)

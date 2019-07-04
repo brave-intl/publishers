@@ -1,0 +1,38 @@
+.row
+  .col-2.shadow-sm.pb-3
+    .mb-3
+      = fa_icon "inbox", class:'mr-2'
+      strong CASES
+
+    .d-flex.justify-content-between.mb-2
+      =case_link("Unassigned", admin_cases_path(status: Case::OPEN), @open_cases.size)
+    .d-flex.justify-content-between.mb-2
+      =case_link("Yours", admin_cases_path(assigned: current_publisher.id), @assigned_cases.size)
+    .d-flex.justify-content-between.mb-2
+      = case_link("All", admin_cases_path(status: ''))
+    .d-flex.justify-content-between.mb-2
+      = case_link("Accepted", admin_cases_path(status: Case::ACCEPTED))
+    .d-flex.justify-content-between
+      = case_link("Rejected", admin_cases_path(status: Case::REJECTED))
+
+  .col-10
+    - if @assigned.present?
+      h3= "#{@assigned.name}'s cases"
+    - else
+      h3= "#{params[:status]} cases".titleize
+
+    - if params[:assigneed].present?
+      =render partial: 'assigned', locals: { cases: @cases }
+    - else
+      =render partial: 'table', locals: { cases: @cases }
+
+    = will_paginate @cases
+
+    - if @answered.present?
+      .mt-5.border-top
+        .my-3.p-2
+          =fa_icon "check", class: 'mx-2'
+          span.text-dark.font-weight-bold Answered
+
+        =render partial: 'assigned', locals: { cases: @answered }
+

@@ -165,6 +165,7 @@ hr
                   .db-field = "Approx. amount"
                   .db-value = "#{potential_contribution_payment.amount.to_d * 1/1E18} BAT"
 
+
   hr
   h3.admin-header = "Notes"
   = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
@@ -175,9 +176,13 @@ hr
     - @publisher.history.each do |h|
       - if h.is_a?(PublisherNote)
         = render partial: 'note', locals: { note: h, publisher: @publisher, current_user: @current_user}
+        hr
       - elsif h.is_a?(PublisherStatusUpdate)
         = render partial: 'status', locals: { status: h, publisher: @publisher, current_user: @current_user}
-      hr
+        hr
+      - elsif h.instance_of?(PaperTrail::Version)
+        - if h.item_type.eql?("Case")
+          = render partial: 'case', locals: { history: h }
 
 
 

@@ -1,3 +1,5 @@
+@import "colors";
+
 /* header */
 #header {
   background: #32323a;
@@ -300,6 +302,13 @@ a.logo span {
   }
 }
 
+.u-avatar {
+  @extend .user-avatar;
+}
+.screenshot {
+  width: 100px;
+}
+
 .user-avatar-dropdown {
   border: solid 1px rgba(0, 0, 0, 0.2);
   border-radius: 50%;
@@ -332,4 +341,102 @@ a.logo span {
 }
 .tribute-container li {
   border-bottom: 1px solid #e9e9e9;
+}
+
+#assignee {
+  cursor: pointer;
+}
+
+#assignee:hover * {
+  color: $braveBrand;
+}
+
+.private-message {
+  background: #f3f3f6;
+}
+
+#dynamic-table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.popup {
+  position: absolute;
+}
+
+.search_thing {
+  width: 0;
+  transition: width 0.1s;
+  overflow: hidden;
+}
+.case-table {
+  max-width: 25em !important;
+}
+
+.accordion {
+  .panel {
+    position: relative;
+    width: 100%;
+    color: #212222;
+    overflow: hidden;
+  }
+  #panel_id {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+  .panel > label {
+    position: relative;
+    display: block;
+    padding-left: 2em;
+    min-height: 30px;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  .panel-content {
+    max-height: 0;
+    overflow: hidden;
+    -webkit-transition: max-height 0.25s;
+    -o-transition: max-height 0.25s;
+    transition: max-height 0.25s;
+  }
+
+  #panel_id:checked ~ .panel-content {
+    max-height: 50em;
+  }
+  #panel_id:not(:checked) ~ .panel-content {
+    border-style: none;
+  }
+
+  /* Icon */
+  .panel > label::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: -2px;
+    display: block;
+    height: 30px;
+    width: 30px;
+    background-image: url(asset-path("select-down-arrow.svg"));
+    transform: rotate(270deg);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: 5px;
+    -webkit-transition: all 0.35s;
+    -o-transition: all 0.35s;
+    transition: all 0.35s;
+  }
+  .panel > input[type="checkbox"]:checked + label::before {
+    transform: rotate(360deg);
+  }
+
+  /* question and answer content styles
+     define styles for the questions and answers here
+  */
+  .question,
+  .answer {
+    p {
+      line-height: 1.9em;
+    }
+  }
 }

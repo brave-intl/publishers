@@ -1,0 +1,20 @@
+table.display.table.table-hover.dynamic-table id="dynamic-table"
+  tr
+    td ID
+    th Publisher
+    th Assigned
+    th Time Open
+  tbody
+    - cases.each do |case_model|
+      tr.gradeX
+        td= link_to("Case ##{case_model.id.last(5)}", admin_case_path(case_model))
+        td= case_model.publisher
+        td= case_model.assignee
+        td= distance_of_time_in_words_to_now(case_model.created_at)
+
+    - if cases.size.zero?
+      tr
+        td.text-muted colspan="6"
+          = fa_icon "smile-o", class: 'mx-3'
+          span All done. You're ready to conquer the day!
+

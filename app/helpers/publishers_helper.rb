@@ -115,6 +115,16 @@ module PublishersHelper
     balance
   end
 
+  def publisher_bat_percent(publisher)
+    contribution = publisher.wallet&.contribution_balance&.amount_bat
+    referrals = publisher.wallet&.referral_balance&.amount_bat
+    total = contribution + referrals
+    {
+      contribution: number_to_percentage(contribution / total * 100, precision: 1),
+      referrals: number_to_percentage(referrals / total * 100, precision: 1)
+    }
+  end
+
   def publisher_last_settlement_bat_balance(publisher)
     last_settlement_balance = publisher.wallet&.last_settlement_balance
     if last_settlement_balance&.amount_bat.present?

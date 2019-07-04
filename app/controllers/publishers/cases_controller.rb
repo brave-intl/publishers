@@ -20,7 +20,11 @@ module Publishers
       @case = Case.find_by(publisher: current_publisher)
       redirect_to new_case_path and return unless @case.new?
 
-      @case.status = Case::OPEN if params[:status].present?
+      if params[:status].present?
+        @case.status = Case::OPEN
+        raise unless case_params[:solicit_question]&.strip.present? && case_params[:accident_question]&.strip.present?
+      end
+
       @case.update(case_params)
 
       respond_to do |format|

@@ -10,8 +10,6 @@
 
   = render partial: "choose_channel_button"
 
-
-
 .container.container-panel.mb-4
   = render "panel_flash_messages"
   .p-3
@@ -22,7 +20,8 @@
       small= t(".last_updated_at", time: time_ago_in_words(@case.updated_at))
     hr
 
-    .my-3.alert.alert-primary= t(".notice")
+    - unless @case.rejected? || @case.accepted?
+      .my-3.alert.alert-primary= t(".notice")
     .form-group
       label
         strong= t('publishers.cases.shared.solicit_question')

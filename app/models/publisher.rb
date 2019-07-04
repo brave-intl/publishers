@@ -21,6 +21,7 @@ class Publisher < ApplicationRecord
   has_one :totp_registration
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
+  has_one :case
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -197,13 +198,15 @@ class Publisher < ApplicationRecord
     # Then we can merge and sort by the key to get history
     notes = self.notes.where(thread_id: nil)
     status = status_updates.map { |s| { s.created_at => s } }
+    cases = []
+    cases = self.case.versions.map { |n| { n.created_at => n } } if self.case.present?
 
     statuses_with_notes = status_updates.select { |s| s.publisher_note_id.present? }.map(&:publisher_note_id)
     notes = notes.to_a.delete_if { |n| statuses_with_notes.include?(n.id) }
 
     notes.map! { |n| { n.created_at => n } }
 
-    combined = notes + status
+    combined = notes + status + cases
     combined = combined.sort { |x, y| x.keys.first <=> y.keys.first }.reverse
 
     combined.map { |c| c.values.first }

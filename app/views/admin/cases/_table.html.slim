@@ -1,0 +1,50 @@
+
+= javascript_pack_tag "tribute"
+= stylesheet_pack_tag "tribute"
+= javascript_pack_tag "admin_case"
+
+table.display.table.table-hover.dynamic-table id="dynamic-table"
+  tr
+    td ID
+    th Publisher
+    -if params[:status] != Case::OPEN
+      th Assigned
+    - if params[:status].blank? && params[:assigned].blank?
+      th Status
+    th Opened
+    - if params[:assigned].blank?
+      th width="275" Actions
+  tbody
+    - cases.each do |case_model|
+      tr.gradeX
+        td= link_to("Case ##{case_model.id.last(5)}", admin_case_path(case_model))
+        td= case_model.publisher
+        -if params[:status] != Case::OPEN
+          td= case_model.assignee
+        - if params[:status].blank? && params[:assigned].blank?
+          td= case_badge(case_model.status)
+        td
+          = distance_of_time_in_words_to_now(case_model.created_at)
+          = " ago"
+
+        - if params[:assigned].blank?
+          td
+            - if case_model.assignee.blank?
+              .btn.border id= case_model.id
+                .d-flex.align-items-center
+                  =fa_icon "user", class: 'p-1'
+                  .search_thing.bg-white id="search_#{case_model.id}"
+                    = form_tag admin_case_assign_path(case_model), method: :patch, remote: true, id: "assign-form"
+                      input.assignee-input id="assignee_#{case_model.id}" placeholder="User" type="text" name="email" autocomplete="off"
+              javascript:
+                document.getElementById("#{case_model.id}").onclick = function() {
+                  document.getElementById("search_#{case_model.id}").classList.toggle("w-100");
+                  document.getElementById("assignee_#{case_model.id}").focus();
+                };
+
+    - if cases.size.zero?
+      tr
+        td.text-muted colspan="6"
+          = fa_icon "smile-o", class: 'mx-3'
+          span All done. You're ready to conquer the day!
+

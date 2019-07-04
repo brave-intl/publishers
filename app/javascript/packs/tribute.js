@@ -3,7 +3,11 @@ import "tributejs/dist/tribute.css";
 import Avatar from "../views/admin/components/userNavbar/components/TopNav/Avatar.svg";
 
 document.addEventListener("DOMContentLoaded", function() {
-  if (window.location.href.indexOf("admin/publishers/") !== -1) {
+  if (
+    window.location.href.indexOf("admin/publishers/") !== -1 ||
+    window.location.href.indexOf("admin/cases") !== -1
+  ) {
+    console.log("runnin");
     fetch("/admin/publishers?role=admin")
       .then(function(response) {
         return response.json();
@@ -30,10 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
               `${item.string}` +
               `</div>`
             );
-          }
+          },
+          autocompleteMode: window.location.href.indexOf("admin/cases") !== -1
         });
 
         tribute.attach(document.querySelectorAll(".note-form"));
+        tribute.attach(document.querySelectorAll(".assignee-input"));
       });
   }
 });

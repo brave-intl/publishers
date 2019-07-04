@@ -22,6 +22,8 @@ class Case < ApplicationRecord
   belongs_to :assignee, class_name: "Publisher"
   belongs_to :publisher
 
+  has_many :case_notes
+
   validates :status, presence: true, :inclusion => { in: ALL_STATUSES }
 
   has_many_attached :files
@@ -60,6 +62,8 @@ class Case < ApplicationRecord
   def updated_status
     if assignee_id.present? && status == OPEN
       self.status = ASSIGNED
+    elsif assignee_id.blank?
+      self.status = OPEN
     end
   end
 
@@ -80,6 +84,10 @@ class Case < ApplicationRecord
 
   def assigned?
     status == ASSIGNED
+  end
+
+  def accepted?
+    status == ACCEPTED
   end
 
   def rejected?

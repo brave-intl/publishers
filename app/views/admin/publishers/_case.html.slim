@@ -1,0 +1,35 @@
+
+- if history.object_changes.present? && (changes = YAML.load(history.object_changes)) && changes.keys.any? { |k| ["assignee_id", "status"].include? k }
+  .note-header
+    span.mr-2= link_to("Case ##{history.item_id.last(5)}", admin_case_path(history.item_id), class:'font-weight-bold text-dark')
+    small.text-muted.mx-2 &#149;
+    span.date data-tooltip=history.created_at.strftime("%B %d, %Y %k:%M %Z")
+      = time_ago_in_words(history.created_at)
+      span= " ago"
+
+    .my-3
+      - if changes["status"].present?
+        div.bigger
+          = "Status changed from "
+          = case_badge(changes["status"].first)
+          = " to "
+          = case_badge(changes["status"].second)
+      .mt-3
+        - if changes["assignee_id"]
+          - if changes["assignee_id"].first.present?
+            - unassigned = Publisher.find(changes["assignee_id"].first)
+            span= "Unassigned "
+            = link_to unassigned.name, admin_publisher_path(unassigned), class: 'text-dark font-weight-bold'
+
+          - if changes["assignee_id"].second.present?
+            - assigned = Publisher.find(changes["assignee_id"].second)
+            - if changes["assignee_id"].compact.length > 1
+              = " and "
+            = "Assigned "
+            = link_to assigned.name, admin_publisher_path(assigned), class: 'text-dark font-weight-bold'
+
+    - if history.whodunnit.present?
+      - user = Publisher.find(history.whodunnit)
+      small.text-muted = "initiated by #{user.name}"
+
+    hr
