@@ -8,7 +8,12 @@ function selected(e) {
   console.log("Matched item:", e.detail.item);
 
   const form = event.target.closest("form");
-  Rails.fire(form, "submit");
+  if (event.target.id == "tableheader") {
+    event.target.value = "assigned:" + e.detail.item.original.value;
+    form.submit();
+  } else {
+    Rails.fire(form, "submit");
+  }
 
   event.target.value = "";
 
@@ -31,6 +36,13 @@ function selected(e) {
     assigned.innerHTML = assignedHTML;
   }
 }
+
+function toggleForm(event) {
+  const form = event.target.parentElement.parentElement.querySelector("form");
+  form.classList.toggle("d-none");
+  form.querySelector(".assignee-input").focus();
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   document
     .querySelectorAll(".assignee-input")
@@ -43,4 +55,8 @@ document.addEventListener("DOMContentLoaded", function() {
       document.querySelector(".assignee-input").focus();
     };
   }
+
+  document
+    .querySelectorAll(".filter")
+    .forEach(element => element.addEventListener("click", toggleForm));
 });

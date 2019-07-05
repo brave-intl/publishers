@@ -1,31 +1,33 @@
-
-= javascript_pack_tag "tribute"
-= stylesheet_pack_tag "tribute"
-= javascript_pack_tag "admin_case"
-
 table.display.table.table-hover.dynamic-table id="dynamic-table"
   tr
-    td ID
-    th Publisher
+    th Case ID
+    th width="20%" Publisher
     -if params[:status] != Case::OPEN
-      th Assigned
+      th width="20%"
+        .d-flex.align-items-center
+          = sort_link(:assignee_id, "Assigned")
+          =fa_icon "filter", class: 'filter px-2'
+        = form_tag admin_cases_path, method: :get, remote: false, class: 'd-none'
+          input.w-75.p-1.mt-1.assignee-input#tableheader placeholder="User" type="text" name="q" autocomplete="off"
     - if params[:status].blank? && params[:assigned].blank?
       th Status
-    th Opened
+    th= sort_link(:open_at, "Opened")
     - if params[:assigned].blank?
       th width="275" Actions
   tbody
     - cases.each do |case_model|
-      tr.gradeX
+      tr.gradeX height="70px"
         td= link_to("Case ##{case_model.id.last(5)}", admin_case_path(case_model))
-        td= case_model.publisher
+        td.text-break= case_model.publisher
         -if params[:status] != Case::OPEN
           td= case_model.assignee
         - if params[:status].blank? && params[:assigned].blank?
           td= case_badge(case_model.status)
         td
-          = distance_of_time_in_words_to_now(case_model.created_at)
-          = " ago"
+          - if case_model.open_at.present?
+            = distance_of_time_in_words_to_now(case_model.open_at)
+          - else
+           = "-"
 
         - if params[:assigned].blank?
           td
@@ -44,7 +46,13 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
 
     - if cases.size.zero?
       tr
-        td.text-muted colspan="6"
-          = fa_icon "smile-o", class: 'mx-3'
-          span All done. You're ready to conquer the day!
+        td.text-muted.text-center colspan="6"
+          - if params[:q].present?
+            = fa_icon "frown-o 2x", class: 'mx-3'
+            big Nothing found
+            br
+            small= "We couldn't find any results for #{params[:q]}."
+          - else
+            = fa_icon "smile-o", class: 'mx-3'
+            span All done. You're ready to conquer the day!
 

@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function() {
     window.location.href.indexOf("admin/publishers/") !== -1 ||
     window.location.href.indexOf("admin/cases") !== -1
   ) {
-    console.log("runnin");
     fetch("/admin/publishers?role=admin")
       .then(function(response) {
         return response.json();

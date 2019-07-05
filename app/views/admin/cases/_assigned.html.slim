@@ -1,13 +1,21 @@
 table.display.table.table-hover.dynamic-table id="dynamic-table"
   tr
-    td ID
+    th ID
     th Publisher
-    th Assigned
+    th width="20%"
+      .d-flex.align-items-center
+        = sort_link(:assignee_id, "Assigned")
+        =fa_icon "filter", class: 'filter px-2'
+      = form_tag admin_cases_path, method: :get, remote: false, class: 'd-none'
+        input.w-75.p-1.mt-1.assignee-input#tableheader placeholder="User" type="text" name="q" autocomplete="off"
     th Time Open
   tbody
     - cases.each do |case_model|
-      tr.gradeX
-        td= link_to("Case ##{case_model.id.last(5)}", admin_case_path(case_model))
+      tr.gradeX class="#{case_model.answered? ? 'bg-light' : 'font-weight-bold' }"
+        td
+          = link_to("Case ##{case_model.id.last(5)}", admin_case_path(case_model))
+          - if case_model.answered?
+            = fa_icon "check", class: 'ml-2 text-muted'
         td= case_model.publisher
         td= case_model.assignee
         td= distance_of_time_in_words_to_now(case_model.created_at)

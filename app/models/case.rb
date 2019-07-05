@@ -3,6 +3,9 @@
 class Case < ApplicationRecord
   has_paper_trail ignore: [:solicit_question, :accident_question]
 
+  self.per_page = 15
+
+
   NEW = "new"
   OPEN = "open"
   ASSIGNED = "assigned"
@@ -96,5 +99,9 @@ class Case < ApplicationRecord
 
   def open?
     status == OPEN
+  end
+
+  def answered?
+    @answered ||= case_notes.where(public: true).order(created_at: :asc).last&.created_by&.admin?
   end
 end
