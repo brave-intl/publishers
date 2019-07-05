@@ -1,0 +1,30 @@
+.row
+  .col-2.shadow-sm.pb-3
+    =render partial: 'sidebar'
+  .col-10
+    h3 Overview
+    hr
+    h5 Cases
+    table.table
+      tr
+        th Case Status
+        th Count
+      - @case_status.each do |key, value|
+        tr
+          td= key
+          td= value
+
+    h5 Assigned
+    table.table.w-50
+      tr
+        th Name
+        th Status
+        th Count
+      - @assigned.each_with_index do |h, index|
+        tr
+          - name = h.first.first
+          - status = h.first.second
+          - count = h.second
+          td= name
+          td= case_badge(status)
+          td= count

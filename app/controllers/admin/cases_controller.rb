@@ -20,19 +20,6 @@ module Admin
         @cases = @cases.where(status: status)
       end
 
-      # if params[:assigned].present?
-      #   @assigned = Publisher.find(params[:assigned])
-      #   @cases = Case.where(assignee: @assigned, status: Case::ASSIGNED)
-
-      #   @answered = @cases.select do |c|
-      #     note = c.case_notes.where(public: true).order(created_at: :asc).last
-
-      #     note&.created_by&.admin?
-      #   end
-
-      #   @cases = @cases.where.not(id: @answered.pluck(:id))
-      # end
-
       @cases = search if params[:q].present?
       @cases = @cases.order(open_at: :asc).paginate(page: params[:page])
 
@@ -69,6 +56,18 @@ module Admin
       search_case
     end
 
+    def overview
+      @open_cases = Case.where(status: Case::OPEN)
+      @assigned_cases = Case.where(assignee: current_user, status: Case::ASSIGNED)
+
+      @case_status = Case.all.group(:status).count
+      @assigned = Case.all.joins(:assignee).group('publishers.name', :status).count
+
+      @assigned = @assigned.sort_by { |x, y| y }.reverse
+
+      @assigned = @assigned.to_a
+    end
+
     def show
       @case = Case.find(params[:id])
       @notes = @case.case_notes.order(created_at: :desc)
@@ -80,7 +79,6 @@ module Admin
     def assign
       @case = Case.find(params[:case_id])
       assignee = current_user
-
       assignee = Publisher.where("email LIKE ? AND role='admin'", "#{params[:email].strip}%").first if params[:email].present?
 
       @case.update(assignee: assignee)

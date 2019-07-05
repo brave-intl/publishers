@@ -173,6 +173,9 @@ Rails.application.routes.draw do
 
     resources :cases do
       patch :assign
+      collection do
+        get :overview
+      end
     end
     resources :case_notes
 
