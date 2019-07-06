@@ -166,25 +166,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "expired session redirects to login page" do
-    # login the publisher
-    publisher = publishers(:completed)
-    request_login_email(publisher: publisher)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
-    get(url)
-
-    # assert redirected to dashboard
-    assert_redirected_to home_publishers_path
-
-    # fast forward time to simulate timeout
-    publisher.user_authentication_token.update(authentication_token_expires_at: 1.day.ago)
-    publisher.reload
-    get(home_publishers_path)
-
-    # verify publisher is redirected to login page
-    assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id)
-  end
-
   test "an unauthenticated html request redirects to home" do
     get home_publishers_path
     assert_response 302
