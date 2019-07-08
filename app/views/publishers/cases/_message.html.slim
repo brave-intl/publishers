@@ -26,6 +26,10 @@
           = time_ago_in_words(message.created_at)
           span= t(".ago")
 
+        - if current_publisher.admin? && message.public? && message.created_by.admin?
+          small.text-muted.mx-2 &#149;
+          = link_to fa_icon("eye-slash", text: 'Make internal'), admin_case_note_path(message), method: :patch, class: 'text-dark font-weight-bold'
+
       / Actual content of the note
       div id="content_#{message.id}" class="my-3"
         = simple_format(message.note, sanitize: true)
@@ -37,9 +41,6 @@
               = render partial: 'publishers/cases/file', locals: { file: file}
 
 
-      - if current_publisher.admin? && message.public? && message.created_by.admin?
-        hr
-        = link_to "Make note private", admin_case_note_path(message), method: :patch
 
 
     - unless message.public?

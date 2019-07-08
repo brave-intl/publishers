@@ -13,7 +13,7 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
     - cases.each do |case_model|
       tr.gradeX class="#{case_model.answered? ? 'bg-light' : 'font-weight-bold' }"
         td
-          = link_to("Case ##{case_model.id.last(5)}", admin_case_path(case_model))
+          = link_to("Case ##{case_model.number}", admin_case_path(case_model))
           - if case_model.answered?
             = fa_icon "check", class: 'ml-2 text-muted'
         td= case_model.publisher

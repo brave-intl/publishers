@@ -36,7 +36,7 @@ module Admin
       if query.include?("#") || query.length == 5
         case_id = query.split('#').second
         case_id = query if case_id.blank?
-        search_case = Case.where("id::text LIKE ?", "%#{ case_id }")
+        search_case = Case.where("case_number = ?", case_id)
       elsif query.include?(":")
         # Search for each type on the db model, like assignee = ""
         query.split(' ').each do |term|

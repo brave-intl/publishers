@@ -17,7 +17,7 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
   tbody
     - cases.each do |case_model|
       tr.gradeX height="70px"
-        td= link_to("Case ##{case_model.id.last(5)}", admin_case_path(case_model))
+        td= link_to("Case ##{case_model.number}", admin_case_path(case_model))
         td.text-break= case_model.publisher
         -if params[:status] != Case::OPEN
           td= case_model.assignee

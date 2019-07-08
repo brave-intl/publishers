@@ -25,12 +25,3 @@
 = javascript_pack_tag "tribute"
 = stylesheet_pack_tag "tribute"
 = javascript_pack_tag "admin_case"
-
-    / - if @answered.present?
-    /   .mt-5
-    /     h5.text-dark.bg-light.p-3.border
-    /       = fa_icon "check", text: 'Answered', class: 'mx-2 text-dark'
-    /       / h3.text-dark.font-weight-bold Answered
-
-    /     =render partial: 'assigned', locals: { cases: @answered }
-

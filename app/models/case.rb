@@ -103,4 +103,8 @@ class Case < ApplicationRecord
   def answered?
     @answered ||= case_notes.where(public: true).order(created_at: :asc).last&.created_by&.admin?
   end
+
+  def number
+    case_number.to_s.rjust(5, "0")
+  end
 end

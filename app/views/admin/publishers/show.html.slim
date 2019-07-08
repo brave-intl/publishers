@@ -167,22 +167,33 @@ hr
 
 
   hr
-  h3.admin-header = "Notes"
-  = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
-  hr
 
-  #notes-section
-    #create-note
-    - @publisher.history.each do |h|
-      - if h.is_a?(PublisherNote)
-        = render partial: 'note', locals: { note: h, publisher: @publisher, current_user: @current_user}
-        hr
-      - elsif h.is_a?(PublisherStatusUpdate)
-        = render partial: 'status', locals: { status: h, publisher: @publisher, current_user: @current_user}
-        hr
-      - elsif h.instance_of?(PaperTrail::Version)
-        - if h.item_type.eql?("Case")
-          = render partial: 'case', locals: { history: h }
+  .c-4.shadow-sm.rounded.p-3.accordion.mb-4
+    .panel
+      input type="checkbox" name="panels" id="panel_id"
+        label for="panel_id"
+          h3.text-dark Add Note
+      .panel-content
+        = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
+
+
+  .c-4.shadow-sm.rounded.p-3.mt-4
+    h3.text-dark
+      small=fa_icon "hourglass-half", class: 'mx-2 text-muted'
+      = "History"
+    hr
+    #notes-section
+      #create-note
+      - @publisher.history.each do |h|
+        - if h.is_a?(PublisherNote)
+          = render partial: 'note', locals: { note: h, publisher: @publisher, current_user: @current_user}
+          hr
+        - elsif h.is_a?(PublisherStatusUpdate)
+          = render partial: 'status', locals: { status: h, publisher: @publisher, current_user: @current_user}
+          hr
+        - elsif h.instance_of?(PaperTrail::Version)
+          - if h.item_type.eql?("Case")
+            = render partial: 'case', locals: { history: h }
 
 
 

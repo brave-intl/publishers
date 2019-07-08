@@ -198,18 +198,31 @@ class Publisher < ApplicationRecord
     # Then we can merge and sort by the key to get history
     notes = self.notes.where(thread_id: nil)
     status = status_updates.map { |s| { s.created_at => s } }
-    cases = []
-    cases = self.case.versions.map { |n| { n.created_at => n } } if self.case.present?
 
     statuses_with_notes = status_updates.select { |s| s.publisher_note_id.present? }.map(&:publisher_note_id)
     notes = notes.to_a.delete_if { |n| statuses_with_notes.include?(n.id) }
 
     notes.map! { |n| { n.created_at => n } }
 
-    combined = notes + status + cases
+    combined = notes + status + case_history
     combined = combined.sort { |x, y| x.keys.first <=> y.keys.first }.reverse
 
     combined.map { |c| c.values.first }
+  end
+
+  def case_history
+    return [] if self.case.blank?
+    case_number = self.case.number
+
+    self.case.versions.map do |c|
+      # Dynamically add the case_number to this
+      class << c
+        attr_accessor :number
+      end
+      c.number = case_number
+
+      { c.created_at => c }
+    end
   end
 
   def deleted?

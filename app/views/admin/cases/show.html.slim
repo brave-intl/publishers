@@ -34,10 +34,8 @@
   .col-10
     .c-4.rounded.p-3.mb-p5.shadow
       h3
-        span= "Case ##{@case.id.last(5)}"
+        span= "Case ##{@case.number}"
         small.ml-4= case_badge(@case.status)
-
-        / = link_to "Payments", admin_payment_path(@case.publisher)
       .my-4
         .mx-3
 
