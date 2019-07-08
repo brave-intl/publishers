@@ -5,7 +5,6 @@ class Case < ApplicationRecord
 
   self.per_page = 15
 
-
   NEW = "new"
   OPEN = "open"
   ASSIGNED = "assigned"
