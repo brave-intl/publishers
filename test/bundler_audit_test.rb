@@ -5,7 +5,7 @@ class BundlerAuditTest < ActiveSupport::TestCase
     require "bundler/audit/cli"
     Bundler::Audit::CLI.start(["update", "--quiet"])
     begin
-      Bundler::Audit::CLI.start(["check", "--quiet"])
+      Bundler::Audit::CLI.start(["check", "--quiet --ignore CVE-2015-9284"])
     rescue SystemExit
       assert false
     end
