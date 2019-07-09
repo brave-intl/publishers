@@ -1,35 +1,46 @@
 unconnected:
   created_at: 2019-01-01
   publisher: completed
+  is_member: true
+  address: "abcdabcd-0000-0000-0000-abcd00000001"
 
 verified_connection:
   publisher: verified
+  is_member: true
+  address: "abcdabcd-0000-0000-0000-abcd00000002"
 
 default_connection:
   created_at: 2019-01-01
   publisher: default
+  address: "abcdabcd-0000-0000-0000-abcd00000003"
 
 unprompted_connection:
   created_at: 2019-01-01
   publisher: unpromted
+  address: "abcdabcd-0000-0000-0000-abcd00000004"
 
 created_connection:
   publisher: created
+  address: "abcdabcd-0000-0000-0000-abcd00000005"
 
 connected_connection:
   uphold_verified: true
   publisher: uphold_connected
   is_member: true
+  address: "abcdabcd-0000-0000-0000-abcd00000006"
 
 verified_no_currency:
   uphold_verified: true
   uphold_state_token:
   publisher: uphold_connected_currency_unconfirmed
+  address: "abcdabcd-0000-0000-0000-abcd00000007"
 
 small_media_group_connection:
   publisher: small_media_group
+  address: "abcdabcd-0000-0000-0000-abcd00000008"
 
 unprompted_connection:
   created_at: 2019-01-01
   publisher: unprompted
+  address: "abcdabcd-0000-0000-0000-abcd00000009"
 
