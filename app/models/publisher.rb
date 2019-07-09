@@ -21,6 +21,7 @@ class Publisher < ApplicationRecord
   has_one :totp_registration
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
+  has_one :case
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -203,10 +204,25 @@ class Publisher < ApplicationRecord
 
     notes.map! { |n| { n.created_at => n } }
 
-    combined = notes + status
+    combined = notes + status + case_history
     combined = combined.sort { |x, y| x.keys.first <=> y.keys.first }.reverse
 
     combined.map { |c| c.values.first }
+  end
+
+  def case_history
+    return [] if self.case.blank?
+    case_number = self.case.number
+
+    self.case.versions.map do |c|
+      # Dynamically add the case_number to this
+      class << c
+        attr_accessor :number
+      end
+      c.number = case_number
+
+      { c.created_at => c }
+    end
   end
 
   def deleted?

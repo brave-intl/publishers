@@ -1,0 +1,22 @@
+.mb-3
+  = fa_icon "inbox", class:'mr-2'
+  strong CASES
+
+.d-flex.justify-content-between.mb-2
+  = case_link("Unassigned", admin_cases_path(q: "status:#{Case::OPEN}"), @open_cases.size)
+.d-flex.justify-content-between.mb-2
+  =case_link("Yours", admin_cases_path(q: "assigned:#{current_publisher.email.sub('@brave.com', '')} status:#{Case::IN_PROGRESS}"), @assigned_cases.size)
+.d-flex.justify-content-between.mb-2
+  = case_link("All", admin_cases_path(q: 'status:""'))
+.d-flex.justify-content-between.mb-2
+  = case_link("Resolved", admin_cases_path(q: "status:#{Case::RESOLVED}"))
+.d-flex.justify-content-between
+  = case_link("Closed", admin_cases_path(q: "status:#{Case::CLOSED}"))
+
+.mt-5
+.mb-3
+  = fa_icon "bar-chart", class:'mr-2'
+  strong REPORTS
+
+.d-flex.justify-content-between.mb-2
+  = case_link("Overview", overview_admin_cases_path)

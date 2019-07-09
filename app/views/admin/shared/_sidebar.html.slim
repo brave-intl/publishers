@@ -33,6 +33,12 @@ aside
           - if params[:partner_id] && (params[:id] || params[:invoice_id])
               ul.sub-menu
                 = nav_link "Invoice", admin_partner_invoice_path(params[:partner_id], (params[:id] || params[:invoice_id]))
+
+        = nav_link "Cases", admin_cases_path
+          - cases = Case.where(status: Case::OPEN).size
+          - if cases.positive?
+            span.ml-3.badge.badge-light.badge-pill= cases
+
         li
           a href='#' class="sidebar-toggle pull-right"
             = fa_icon "chevron-down"

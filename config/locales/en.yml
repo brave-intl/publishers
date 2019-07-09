@@ -471,8 +471,7 @@ en:
       message:
         ago: " ago"
         support: "Brave Rewards Support"
-
-
+        attachments: "Attachments"
 
     change_email:
       login_email: Login Email

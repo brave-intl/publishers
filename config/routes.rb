@@ -170,6 +170,15 @@ Rails.application.routes.draw do
         get :duplicates
       end
     end
+
+    resources :cases do
+      patch :assign
+      collection do
+        get :overview
+      end
+    end
+    resources :case_notes
+
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
     resources :payout_reports, only: %i(index show create) do

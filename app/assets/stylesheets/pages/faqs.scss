@@ -55,9 +55,9 @@
     border-width: 0 2px 2px 2px;
     border-color: $braveGray-8;
     color: $braveGray-4;
-    -webkit-transition: max-height .35s;
-    -o-transition: max-height .35s;
-    transition: max-height .35s;
+    -webkit-transition: max-height 0.35s;
+    -o-transition: max-height 0.35s;
+    transition: max-height 0.35s;
   }
 
   .answer {
@@ -86,21 +86,21 @@
     background-size: 30px;
     background-repeat: no-repeat;
     background-position: 5px;
-    -webkit-transition: all .35s;
-    -o-transition: all .35s;
-    transition: all .35s;
+    -webkit-transition: all 0.35s;
+    -o-transition: all 0.35s;
+    transition: all 0.35s;
   }
-  input[type=checkbox]:checked + label::after {
+  input[type="checkbox"]:checked + label::after {
     transform: rotate(180deg);
   }
 
   /* question and answer content styles
      define styles for the questions and answers here
   */
-  .question, .answer {
+  .question,
+  .answer {
     p {
       line-height: 1.9em;
     }
   }
-
 }

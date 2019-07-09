@@ -3,13 +3,15 @@
 class Case < ApplicationRecord
   has_paper_trail ignore: [:solicit_question, :accident_question]
 
+  self.per_page = 15
+
   NEW = "new"
   OPEN = "open"
-  ASSIGNED = "assigned"
-  ACCEPTED = "accepted"
-  REJECTED = "rejected"
+  IN_PROGRESS = "in_progress"
+  RESOLVED = "resolved"
+  CLOSED = "closed"
 
-  ALL_STATUSES = [NEW, OPEN, ACCEPTED, ASSIGNED, REJECTED].freeze
+  ALL_STATUSES = [NEW, OPEN, RESOLVED, IN_PROGRESS, CLOSED].freeze
 
   FILE_SIZE = 2.megabyte
   FILE_TYPES = [
@@ -21,6 +23,8 @@ class Case < ApplicationRecord
 
   belongs_to :assignee, class_name: "Publisher"
   belongs_to :publisher
+
+  has_many :case_notes
 
   validates :status, presence: true, :inclusion => { in: ALL_STATUSES }
 
@@ -59,7 +63,9 @@ class Case < ApplicationRecord
 
   def updated_status
     if assignee_id.present? && status == OPEN
-      self.status = ASSIGNED
+      self.status = IN_PROGRESS
+    elsif assignee_id.blank?
+      self.status = OPEN
     end
   end
 
@@ -67,9 +73,9 @@ class Case < ApplicationRecord
     case status
     when OPEN
       PublisherMailer.submit_appeal(publisher).deliver_later
-    when ACCEPTED
+    when RESOLVED
       PublisherMailer.accept_appeal(publisher).deliver_later
-    when REJECTED
+    when CLOSED
       PublisherMailer.reject_appeal(publisher).deliver_later
     end
   end
@@ -78,15 +84,27 @@ class Case < ApplicationRecord
     status == NEW
   end
 
-  def assigned?
-    status == ASSIGNED
+  def in_progress?
+    status == IN_PROGRESS
   end
 
-  def rejected?
-    status == REJECTED
+  def resolved?
+    status == RESOLVED
+  end
+
+  def closed?
+    status == CLOSED
   end
 
   def open?
     status == OPEN
+  end
+
+  def answered?
+    @answered ||= case_notes.where(public: true).order(created_at: :asc).last&.created_by&.admin?
+  end
+
+  def number
+    case_number.to_s.rjust(5, "0")
   end
 end

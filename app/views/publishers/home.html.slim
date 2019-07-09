@@ -71,9 +71,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                         span.withheld-color.bat-code= " BAT"
                   .small.my-2
                     .d-flex
-                      - if @case&.open?.present? || @case&.assigned?&.present?
+                      - if @case&.open?.present? || @case&.in_progress?&.present?
                         span== t('.open_case_description')
-                      - elsif @case && @case.rejected?
+                      - elsif @case && @case.closed?
                         span == t('.rejected_funds_description')
                       -else
                         span.warning-icon.mr-2

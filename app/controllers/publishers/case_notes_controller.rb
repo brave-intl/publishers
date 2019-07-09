@@ -6,7 +6,7 @@ module Publishers
     def create
       @case = Case.find_by(publisher: current_publisher)
 
-      if @case.open? || @case.assigned?
+      if @case.open? || @case.in_progress?
         note = CaseNote.create(case_notes_params.merge(case_id: @case.id, created_by_id: current_publisher.id))
       end
 
