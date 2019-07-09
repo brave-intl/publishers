@@ -95,7 +95,7 @@ module Admin
         @case.publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE, publisher_note: note)
       end
 
-      redirect_to admin_case_path(@case)
+      redirect_to admin_cases_path
     end
 
     def has_filter?
