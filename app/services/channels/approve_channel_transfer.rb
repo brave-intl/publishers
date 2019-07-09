@@ -17,14 +17,10 @@ module Channels
         original_owner_name = @channel.publisher.name
         channel_name = @channel.publication_title
 
-        # Delete the channel from eyeshade and clean up the promo registration
-        is_deleted = DeletePublisherChannelJob.perform_now(channel_id: @channel.id)
-        # If couldn't delete the channel roll back the transaction
-        raise ActiveRecord::Rollback unless is_deleted
-
         contested_by.verified = true
         contested_by.verification_pending = false
         contested_by.save! # Automatically initiates the Promo::PublisherChannelsRegistrar
+        @channel.destroy
 
         # Email the original owner
         PublisherMailer.channel_transfer_approved_primary(channel_name, original_owner_name, original_owner_email).deliver_later
@@ -39,7 +35,7 @@ module Channels
 
         # Notify Slack
         SlackMessenger.new(message: "#{@channel.details.channel_identifier} has been successfully contested by #{@channel.publisher.owner_identifier}.").perform
-      end
+     end
     end
   end
 end

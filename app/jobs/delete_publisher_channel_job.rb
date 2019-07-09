@@ -12,11 +12,9 @@ class DeletePublisherChannelJob < ApplicationJob
 
     # If channel is being contested, approve the channel which will also delete
     if @channel.contested_by_channel.present?
-      return Channels::ApproveChannelTransfer.new(channel: @channel).perform
+      Channels::ApproveChannelTransfer.new(channel: @channel).perform
+    else
+      @channel.destroy!
     end
-
-    channel_is_verified = @channel.verified?
-
-    @channel.destroy!
   end
 end
