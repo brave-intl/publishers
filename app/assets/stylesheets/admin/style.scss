@@ -365,6 +365,7 @@ a.logo span {
 
 .search_thing {
   width: 0;
+  max-width: 180px;
   transition: width 0.1s;
   overflow: hidden;
 }
@@ -439,4 +440,9 @@ a.logo span {
       line-height: 1.9em;
     }
   }
+}
+
+.search-icon {
+  left: 35px;
+  position: absolute;
 }

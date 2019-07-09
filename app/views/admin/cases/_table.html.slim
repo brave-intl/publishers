@@ -1,15 +1,15 @@
 table.display.table.table-hover.dynamic-table id="dynamic-table"
   tr
-    th Case ID
-    th width="20%" Publisher
+    th width="20%" Case ID
+    th width="25%" Publisher
     -if params[:status] != Case::OPEN
-      th width="20%"
+      th width="25%"
         .d-flex.align-items-center
           = sort_link(:assignee_id, "Assigned")
           =fa_icon "filter", class: 'filter px-2'
         = form_tag admin_cases_path, method: :get, remote: false, class: 'd-none'
           input.w-75.p-1.mt-1.assignee-input#tableheader placeholder="User" type="text" name="q" autocomplete="off"
-    th= sort_link(:status, "Status")
+    th width="15%"= sort_link(:status, "Status")
     th= sort_link(:open_at, "Open")
 
   tbody
@@ -21,15 +21,17 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
           td
             = case_model.assignee
             - if case_model.assignee.blank?
-              .btn.border id= case_model.id
+
+              .btn.border.bg-white id= case_model.id
                 .d-flex.align-items-center
                   =fa_icon "user", class: 'p-1'
-                  .search_thing.bg-white id="search_#{case_model.id}"
-                    = form_tag admin_case_assign_path(case_model), method: :patch, remote: true, id: "assign-form"
+                  .search_thing id="search_#{case_model.id}"
+                    = form_tag admin_case_assign_path(case_model), method: :patch, remote: true, class:'w-100 d-flex'
                       input.assignee-input id="assignee_#{case_model.id}" placeholder="User" type="text" name="email" autocomplete="off"
               javascript:
                 document.getElementById("#{case_model.id}").onclick = function() {
                   document.getElementById("search_#{case_model.id}").classList.toggle("w-100");
+                  document.getElementById("search_#{case_model.id}").classList.toggle("pl-1");
                   document.getElementById("assignee_#{case_model.id}").focus();
                 };
 

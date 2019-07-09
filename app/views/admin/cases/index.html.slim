@@ -6,10 +6,9 @@
       h3= "#{status_query} cases".titleize
 
       = form_tag(admin_cases_path, method: "get", class: 'col-5')
-        .input-group
-            = text_field_tag(:q, params[:q], placeholder: "Search", class:'form-control')
-            .input-group-append
-                = submit_tag("Search", class: 'btn btn-default')
+        .d-flex.align-items-center
+          big.mr-2.text-muted.search-icon=fa_icon "search"
+          = text_field_tag(:q, params[:q], placeholder: "Search", class:'form-control pl-5 rounded-pill')
 
     - if @assigned.present?
       =render partial: 'assigned', locals: { cases: @cases }
