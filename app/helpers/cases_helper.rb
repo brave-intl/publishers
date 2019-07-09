@@ -17,7 +17,7 @@ module CasesHelper
   end
 
   def status_query
-    search_params = params[:q].split(' ')
+    search_params = params[:q]&.split(' ') || []
     index = search_params.index { |x| x.include?("status") }
     status = nil
     status = search_params[index].split(':')[1].gsub('"', "") if index.present?
