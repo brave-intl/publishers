@@ -4,6 +4,7 @@ class PublisherRemovalJob < ApplicationJob
   def perform(publisher_id:)
     publisher = Publisher.find_by(id: publisher_id)
     return if publisher.suspended?
+    SendGrid::DeleteEmailJob.perform_later(email: publisher.email)
     publisher.status_updates.create(status: PublisherStatusUpdate::DELETED)
     publisher.reload
     ActiveRecord::Base.transaction do

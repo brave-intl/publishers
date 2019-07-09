@@ -54,6 +54,10 @@ module SendGrid
         result[0]
       end
 
+      def delete_contact(contact_id:)
+        result = sg.client.contactdb.recipients._(contact_id).delete
+      end
+
       def add_contact_to_list(list_id:, contact_id:)
         result = sg.client.contactdb.lists._(list_id).recipients._(contact_id).post()
         check_result(result: result, success: '201')
