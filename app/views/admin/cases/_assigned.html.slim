@@ -18,7 +18,7 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
           = link_to("Case ##{case_model.number}", admin_case_path(case_model))
           - if case_model.answered?
             = fa_icon "check", class: 'ml-2 text-muted'
-        td= case_model.publisher
+        td= link_to(case_model.publisher, admin_publisher_path(case_model.publisher), target: "_blank", class: "text-body text-break")
         td= case_model.assignee
         - if status_query == 'All'
           td= case_badge(case_model.status)
