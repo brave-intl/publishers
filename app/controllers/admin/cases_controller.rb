@@ -112,7 +112,7 @@ module Admin
       if Case.where(assignee: current_user, status: Case::IN_PROGRESS).size.positive?
         redirect_to admin_cases_path(q: "status:#{Case::IN_PROGRESS} assigned:#{current_user.email.sub("@brave.com", '')}") and return
       else
-        redirect_to admin_cases_path(status: Case::OPEN)
+        redirect_to admin_cases_path(q: "status:#{Case::OPEN}")
       end
     end
   end
