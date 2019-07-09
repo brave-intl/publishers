@@ -17,7 +17,7 @@ module Admin
       @cases = @cases.paginate(page: params[:page])
 
       @open_cases = Case.where(status: Case::OPEN)
-      @assigned_cases = Case.where(assignee: current_user, status: Case::ASSIGNED)
+      @assigned_cases = Case.where(assignee: current_user, status: Case::IN_PROGRESS)
     end
 
     def search
@@ -40,7 +40,7 @@ module Admin
             search_case = search_case.joins(:assignee).where('publishers.email LIKE ?', "%#{value}%")
           when 'status'
             # Remove all non-alphanumeric values from the status field
-            value = value.gsub(/[^0-9a-z]/i, '')
+            value = value.gsub(/[^0-9a-z_]/i, '')
             search_case = search_case.where('status LIKE ?', "%#{value}%") if value.present?
           end
         end
@@ -56,7 +56,7 @@ module Admin
 
     def overview
       @open_cases = Case.where(status: Case::OPEN)
-      @assigned_cases = Case.where(assignee: current_user, status: Case::ASSIGNED)
+      @assigned_cases = Case.where(assignee: current_user, status: Case::IN_PROGRESS)
 
       @case_status = Case.all.group(:status).count
       @assigned = Case.all.joins(:assignee).group('publishers.name', :status).count
@@ -86,11 +86,11 @@ module Admin
     def update
       @case = Case.find(params[:id])
 
-      if @case.update(status: params[:status])
+      if @case.update(status: params[:status]) && params[:status] == Case::RESOLVED
         note = PublisherNote.create(
           publisher: @case.publisher,
           created_by: current_user,
-          note: "The case was marked as 'Accepted' which triggered this state change to Active."
+          note: "The case was marked as 'Resolved' which triggered this state change to Active."
         )
         @case.publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE, publisher_note: note)
       end
@@ -109,8 +109,8 @@ module Admin
     def redirect_on_no_filter
       return if  has_filter?
 
-      if Case.where(assignee: current_user, status: Case::ASSIGNED).size.positive?
-        redirect_to admin_cases_path(q: "status:#{Case::ASSIGNED} assigned:#{current_user.email.sub("@brave.com", '')}") and return
+      if Case.where(assignee: current_user, status: Case::IN_PROGRESS).size.positive?
+        redirect_to admin_cases_path(q: "status:#{Case::IN_PROGRESS} assigned:#{current_user.email.sub("@brave.com", '')}") and return
       else
         redirect_to admin_cases_path(status: Case::OPEN)
       end

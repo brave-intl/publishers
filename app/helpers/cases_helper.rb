@@ -1,20 +1,19 @@
 module CasesHelper
   def case_badge(status)
     label = case status
-    when Case::REJECTED
-      "badge-danger"
-      "badge-danger"
-    when Case::OPEN
+    when Case::CLOSED
       "badge-dark"
-    when Case::ACCEPTED
+    when Case::OPEN
+      "badge-secondary text-white"
+    when Case::RESOLVED
       "badge-success"
-    when Case::ASSIGNED
+    when Case::IN_PROGRESS
       "badge-primary"
     else
       "badge-secondary"
     end
 
-    content_tag(:span, status, class: "badge #{label}")
+    content_tag(:span, status.sub('_', ' ').titleize, class: "badge #{label}")
   end
 
   def status_query

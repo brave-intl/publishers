@@ -20,7 +20,7 @@
       small= t(".last_updated_at", time: time_ago_in_words(@case.updated_at))
     hr
 
-    - unless @case.rejected? || @case.accepted?
+    - unless @case.closed? || @case.resolved?
       .my-3.alert.alert-primary= t(".notice")
     .form-group
       label
@@ -48,7 +48,7 @@
         = render partial: 'message', locals: { message: message }
 
 
-- if @case.open? || @case.assigned?
+- if @case.open? || @case.in_progress?
   .container.container-panel
     .p-3
       h3 = t('.new_message_title')

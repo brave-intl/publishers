@@ -7,11 +7,11 @@ class Case < ApplicationRecord
 
   NEW = "new"
   OPEN = "open"
-  ASSIGNED = "assigned"
-  ACCEPTED = "accepted"
-  REJECTED = "rejected"
+  IN_PROGRESS = "in_progress"
+  RESOLVED = "resolved"
+  CLOSED = "closed"
 
-  ALL_STATUSES = [NEW, OPEN, ACCEPTED, ASSIGNED, REJECTED].freeze
+  ALL_STATUSES = [NEW, OPEN, RESOLVED, IN_PROGRESS, CLOSED].freeze
 
   FILE_SIZE = 2.megabyte
   FILE_TYPES = [
@@ -63,7 +63,7 @@ class Case < ApplicationRecord
 
   def updated_status
     if assignee_id.present? && status == OPEN
-      self.status = ASSIGNED
+      self.status = IN_PROGRESS
     elsif assignee_id.blank?
       self.status = OPEN
     end
@@ -73,9 +73,9 @@ class Case < ApplicationRecord
     case status
     when OPEN
       PublisherMailer.submit_appeal(publisher).deliver_later
-    when ACCEPTED
+    when RESOLVED
       PublisherMailer.accept_appeal(publisher).deliver_later
-    when REJECTED
+    when CLOSED
       PublisherMailer.reject_appeal(publisher).deliver_later
     end
   end
@@ -84,16 +84,16 @@ class Case < ApplicationRecord
     status == NEW
   end
 
-  def assigned?
-    status == ASSIGNED
+  def in_progress?
+    status == IN_PROGRESS
   end
 
-  def accepted?
-    status == ACCEPTED
+  def resolved?
+    status == RESOLVED
   end
 
-  def rejected?
-    status == REJECTED
+  def closed?
+    status == CLOSED
   end
 
   def open?
