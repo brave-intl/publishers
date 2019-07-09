@@ -22,6 +22,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
     @excluded_verified_channel_ids = []
     @channels = []
+    @appended_wallet_addresses = {}
   end
 
   def build
@@ -38,13 +39,13 @@ class JsonBuilders::ChannelsJsonBuilderV2
 
   def joined_verified_channels
     [
-      Channel.verified.site_channels.includes(:site_banner).includes(publisher: :site_banners),
-      Channel.verified.youtube_channels.includes(:site_banner).includes(publisher: :site_banners),
-      Channel.verified.twitch_channels.includes(:site_banner).includes(publisher: :site_banners),
-      Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners),
-      Channel.verified.vimeo_channels.includes(:site_banner).includes(publisher: :site_banners),
-      Channel.verified.reddit_channels.includes(:site_banner).includes(publisher: :site_banners),
-      Channel.verified.github_channels.includes(:site_banner).includes(publisher: :site_banners),
+      Channel.verified.site_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.youtube_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.twitch_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.vimeo_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.reddit_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.github_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
     ]
   end
 
@@ -53,13 +54,19 @@ class JsonBuilders::ChannelsJsonBuilderV2
     return if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
     # Skip if channel publisher has not yet KYC'd
     return unless verified_channel.publisher&.uphold_connection&.is_member
+
+    wallet_address_id = verified_channel.publisher&.uphold_connection&.address
+    return if wallet_address_id.nil?
+    return if existing_wallet_address?(wallet_address_id)
+
     @channels.push([
       verified_channel.details.channel_identifier,
       true,
       false,
-      Rails.env.development? || Rails.env.staging? ? verified_channel.publisher.uphold_connection.address : "00000000-0000-0000-0000-000000000000",
+      wallet_address_id,
       site_banner_details(verified_channel),
     ])
+    append_wallet_address(wallet_address_id)
   end
 
   def site_banner_details(channel)
@@ -71,6 +78,14 @@ class JsonBuilders::ChannelsJsonBuilderV2
     else
       {}
     end
+  end
+
+  def append_wallet_address(wallet_address_id)
+    @appended_wallet_addresses[wallet_address_id] = true
+  end
+
+  def existing_wallet_address?(wallet_address_id)
+    @appended_wallet_addresses.key?(wallet_address_id)
   end
 
   # (Albert Wang): Note: Ordering is different from v1
