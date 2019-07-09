@@ -16,4 +16,12 @@ module CasesHelper
 
     content_tag(:span, status, class: "badge #{label}")
   end
+
+  def status_query
+    search_params = params[:q].split(' ')
+    index = search_params.index { |x| x.include?("status") }
+    status = search_params[index].split(':')[1].gsub('"', "")
+
+    status.present? ? status : 'All'
+  end
 end

@@ -2,26 +2,19 @@ module Admin
   class CasesController < AdminController
     include ActiveRecord::Sanitization::ClassMethods
 
+    before_action :redirect_on_no_filter, only: [:index]
+
     def index
       @cases = Case.all
-      @cases = Case.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
-
-      unless has_filter?
-        if Case.where(assignee: current_user, status: Case::ASSIGNED).size.positive?
-          redirect_to admin_cases_path(status: Case::ASSIGNED, assigned: current_user.id) and return
-        else
-          redirect_to admin_cases_path(status: Case::OPEN)
-        end
-      end
-
-      if params[:status].present? && Case::ALL_STATUSES.include?(params[:status])
-        # Effectively sanitizes the users input
-        status = Case::ALL_STATUSES.detect { |x| x == params[:status] }
-        @cases = @cases.where(status: status)
-      end
-
       @cases = search if params[:q].present?
-      @cases = @cases.order(open_at: :asc).paginate(page: params[:page])
+
+      if sort_column == :id
+        @cases = @cases.order(open_at: :asc)
+      else
+        @cases = @cases.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
+      end
+
+      @cases = @cases.paginate(page: params[:page])
 
       @open_cases = Case.where(status: Case::OPEN)
       @assigned_cases = Case.where(assignee: current_user, status: Case::ASSIGNED)
@@ -46,11 +39,16 @@ module Admin
             @assigned = Publisher.where('email like ? AND role = ?', "%#{value}%", 'admin').first
             search_case = search_case.joins(:assignee).where('publishers.email LIKE ?', "%#{value}%")
           when 'status'
-            search_case = search_case.where('status LIKE ?', "%#{value}%")
+            # Remove all non-alphanumeric values from the status field
+            value = value.gsub(/[^0-9a-z]/i, '')
+            search_case = search_case.where('status LIKE ?', "%#{value}%") if value.present?
           end
         end
       else
-        search_case = Case.joins(:publisher).where('publishers.name LIKE ?', "%#{query}%")
+        search_query = "%#{query}%"
+        search_case = Case.joins(:publisher).where('publishers.name LIKE ?', search_query).or(
+          Case.joins(:publisher).where('publishers.email LIKE ?', search_query)
+        )
       end
 
       search_case
@@ -87,17 +85,35 @@ module Admin
 
     def update
       @case = Case.find(params[:id])
-      @case.update(status: params[:status])
+
+      if @case.update(status: params[:status])
+        note = PublisherNote.create(
+          publisher: @case.publisher,
+          created_by: current_user,
+          note: "The case was marked as 'Accepted' which triggered this state change to Active."
+        )
+        @case.publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE, publisher_note: note)
+      end
 
       redirect_to admin_case_path(@case)
     end
 
     def has_filter?
-      params[:status].present? || params[:assigned].present? || params[:q].present? || sort_column != :id
+      !params[:status].nil? || params[:assigned].present? || params[:q].present? || sort_column != :id
     end
 
     def sortable_columns
-      [:open_at, :assignee_id]
+      [:open_at, :assignee_id, :status]
+    end
+
+    def redirect_on_no_filter
+      return if  has_filter?
+
+      if Case.where(assignee: current_user, status: Case::ASSIGNED).size.positive?
+        redirect_to admin_cases_path(q: "status:#{Case::ASSIGNED} assigned:#{current_user.email.sub("@brave.com", '')}") and return
+      else
+        redirect_to admin_cases_path(status: Case::OPEN)
+      end
     end
   end
 end

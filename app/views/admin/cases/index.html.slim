@@ -3,10 +3,7 @@
     =render partial: 'sidebar'
   .col-10
     .d-flex.justify-content-between.mb-3
-      - if @assigned.present?
-        h3= "#{@assigned.name}'s cases"
-      - else
-        h3= "#{params[:status]} cases".titleize
+      h3= "#{status_query} cases".titleize
 
       = form_tag(admin_cases_path, method: "get", class: 'col-5')
         .input-group

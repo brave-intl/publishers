@@ -9,7 +9,9 @@ function selected(e) {
 
   const form = event.target.closest("form");
   if (event.target.id == "tableheader") {
-    event.target.value = "assigned:" + e.detail.item.original.value;
+    const existingSearch = document.getElementsByName("q")[0].value;
+    event.target.value =
+      existingSearch + " assigned:" + e.detail.item.original.value;
     form.submit();
   } else {
     Rails.fire(form, "submit");

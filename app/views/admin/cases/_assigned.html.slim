@@ -1,6 +1,6 @@
 table.display.table.table-hover.dynamic-table id="dynamic-table"
   tr
-    th ID
+    th Case ID
     th Publisher
     th width="20%"
       .d-flex.align-items-center
@@ -8,7 +8,9 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
         =fa_icon "filter", class: 'filter px-2'
       = form_tag admin_cases_path, method: :get, remote: false, class: 'd-none'
         input.w-75.p-1.mt-1.assignee-input#tableheader placeholder="User" type="text" name="q" autocomplete="off"
-    th Time Open
+    - if status_query == 'All'
+      th= sort_link(:status, "Status")
+    th= sort_link(:open_at, "Open")
   tbody
     - cases.each do |case_model|
       tr.gradeX class="#{case_model.answered? ? 'bg-light' : 'font-weight-bold' }"
@@ -18,6 +20,8 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
             = fa_icon "check", class: 'ml-2 text-muted'
         td= case_model.publisher
         td= case_model.assignee
+        - if status_query == 'All'
+          td= case_badge(case_model.status)
         td= distance_of_time_in_words_to_now(case_model.created_at)
 
     - if cases.size.zero?

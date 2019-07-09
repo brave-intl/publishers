@@ -93,11 +93,11 @@
         strong Created
       = " #{time_ago_in_words(@case.created_at)} ago"
     div
-      .d-flex.text-dark.justify-content-between.mb-2.align-items-center
-        strong Actions
-      = link_to "Accept", admin_case_path(@case, status: Case::ACCEPTED), method: :patch, class: 'btn btn-success mx-1'
-      = link_to "Reject", admin_case_path(@case, status: Case::REJECTED), method: :patch, class: 'btn btn-dark mx-1'
-
+      - if @case.assigned?
+        .d-flex.text-dark.justify-content-between.mb-2.align-items-center
+          strong Actions
+        = link_to "Accept", admin_case_path(@case, status: Case::ACCEPTED), method: :patch, class: 'btn btn-success mx-1 mb-2'
+        = link_to "Reject", admin_case_path(@case, status: Case::REJECTED), method: :patch, class: 'btn btn-dark mx-1 mb-2'
 
 .c-4.shadow-sm.rounded.p-3
   .accordion
