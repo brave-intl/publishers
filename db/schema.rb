@@ -299,8 +299,6 @@ ActiveRecord::Schema.define(version: 2019_07_10_170355) do
     t.uuid "invoice_id"
     t.uuid "finalized_by_id"
     t.jsonb "channel_stats", default: {}
-    t.text "verdict"
-    t.text "notes"
     t.text "channel_type"
     t.string "status"
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
