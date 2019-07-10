@@ -32,8 +32,8 @@
         label
           strong= t('publishers.cases.shared.evidence')
 
-        = f.file_field :files, multiple: true, direct_upload: true, class: 'd-none'
         #fileUploadSection
+        = f.file_field :files, multiple: true, class: 'd-none'
         .row
           - @case.files.each do |file|
             .c-4.m-3.shadow-sm.rounded.p-3

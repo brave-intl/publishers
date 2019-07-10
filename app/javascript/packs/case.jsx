@@ -18,53 +18,11 @@ export default class FileUpload extends React.Component {
 
     if (!file) return;
 
-    this.uploadFile(file);
+    const form = document.querySelector("form");
+    Rails.fire(form, "submit");
+
     this.setState({
       filesToUpload: [...this.state.filesToUpload, file]
-    });
-  };
-
-  directUploadWillStoreFileWithXHR(request) {
-    request.upload.addEventListener("progress", event =>
-      this.directUploadDidProgress(event)
-    );
-  }
-
-  directUploadDidProgress = event => {
-    this.setState({ progress: (event.loaded / event.total) * 100 });
-    // Use event.loaded and event.total to update the progress bar
-  };
-
-  uploadFile = file => {
-    // your form needs the file_field direct_upload: true, which
-    //  provides data-direct-upload-url
-    const input = document.querySelector("input[type=file]");
-
-    const url = input.dataset.directUploadUrl;
-    const upload = new DirectUpload(file, url, this);
-
-    upload.create((error, blob) => {
-      if (error) {
-        this.setState({ error: error });
-        // Handle the error
-      } else {
-        // Add an appropriately-named hidden input to the form with a
-        //  value of blob.signed_id so that the blob ids will be
-        //  transmitted in the normal upload flow
-        const hiddenField = document.createElement("input");
-        hiddenField.setAttribute("class", "upload-blob");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("value", blob.signed_id);
-        hiddenField.name = input.name;
-        const form = document.querySelector("form");
-        form.appendChild(hiddenField);
-        Rails.fire(form, "submit");
-        // After form has submitted remove the entry
-        setTimeout(() => {
-          form.removeChild(hiddenField);
-          this.setState({ progress: 0 });
-        }, 1000);
-      }
     });
   };
 
@@ -86,7 +44,7 @@ export default class FileUpload extends React.Component {
 
     return (
       <div>
-        <input type="file" onChange={this.onChange} />
+        <input type="file" name="case[files][]" onChange={this.onChange} />
         {this.state.progress > 0 && (
           <div className="progress mt-2">
             <div
@@ -116,7 +74,6 @@ document.body.addEventListener("ajax:before", function(event) {
 
 // Let the user know when errors happen
 document.body.addEventListener("ajax:error", function(event) {
-  console.log(event);
   const errorMessage = document.createElement("div");
   errorMessage.classList = "mt-3 alert alert-warning";
   errorMessage.innerHTML =
