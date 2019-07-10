@@ -56,6 +56,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
+    "activestorage": "^5.2",
     "@rails/webpacker": "^4.0.2",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.4.7",

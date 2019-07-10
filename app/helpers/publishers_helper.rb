@@ -44,6 +44,8 @@ module PublishersHelper
         amount = publisher.balance
       elsif publisher.only_user_funds?
         amount = publisher.wallet&.contribution_balance&.amount_bat
+      elsif publisher.no_grants?
+        amount = publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
       else
         amount = publisher.wallet&.overall_balance&.amount_bat
       end
@@ -63,6 +65,9 @@ module PublishersHelper
       balance = publisher.balance_in_currency
     elsif publisher.only_user_funds?
       balance = publisher.wallet&.contribution_balance&.amount_default_currency
+    elsif publisher.no_grants?
+      amount =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+
     else
       balance = publisher.wallet&.overall_balance&.amount_default_currency
     end
@@ -108,6 +113,16 @@ module PublishersHelper
     end
 
     balance
+  end
+
+  def publisher_bat_percent(publisher)
+    contribution = publisher.wallet&.contribution_balance&.amount_bat
+    referrals = publisher.wallet&.referral_balance&.amount_bat
+    total = contribution + referrals
+    {
+      contribution: number_to_percentage(contribution / total * 100, precision: 1),
+      referrals: number_to_percentage(referrals / total * 100, precision: 1)
+    }
   end
 
   def publisher_last_settlement_bat_balance(publisher)

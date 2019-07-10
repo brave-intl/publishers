@@ -1,5 +1,5 @@
-.col-md.mb-4
-  .promo-panel
+.col class="#{current_publisher.no_grants? ? 'col-md-5' : '' }"
+  .promo-panel.mb-4
     - if current_publisher.promo_status(promo_running?) == :inactive
       .promo-panel-item.promo-panel-item-info
         #promo-limited-time= t("promo.activate.sub_header_one")

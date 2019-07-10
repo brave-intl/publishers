@@ -16,6 +16,7 @@ AllCops:
     - app/controllers/admin/publisher_notes_controller.rb
     - app/controllers/admin/publishers_controller.rb
     - app/controllers/admin/publishers/publisher_status_updates_controller.rb
+    - app/controllers/publishers/cases_controller.rb
   Exclude:
     - bin/**/*
     - db/**/*

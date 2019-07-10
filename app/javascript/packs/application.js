@@ -1,13 +1,13 @@
-import 'analytics';
-import 'modal';
-import 'copyButton';
-import 'userMenu';
-import 'utils/request';
-import 'u2f/registrationPage';
-import 'u2f/authenticationPage';
-import 'publishers/home';
-import 'site_channels/siteChannels'
-import Rails from 'rails-ujs';
+import "analytics";
+import "modal";
+import "copyButton";
+import "userMenu";
+import "utils/request";
+import "u2f/registrationPage";
+import "u2f/authenticationPage";
+import "publishers/home";
+import "site_channels/siteChannels";
+import Rails from "rails-ujs";
 
 /*
  * Override the default way Rails picks an href for a data-method link. This

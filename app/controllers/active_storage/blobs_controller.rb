@@ -26,7 +26,11 @@ class ActiveStorage::BlobsController < ActiveStorage::BaseController
 
     # Allow users to access if they uploaded the file
     attachment = @blob.attachments&.first
-    return if attachment.record.uploaded_by == current_publisher
+    if attachment.record.respond_to?(:uploaded_by)
+      return if attachment.record.uploaded_by == current_publisher
+    else
+      return
+    end
 
     redirect_to root_path, flash: {  alert: I18n.t('devise.failure.unauthorized') }
   end

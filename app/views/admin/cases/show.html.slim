@@ -1,0 +1,146 @@
+
+= javascript_pack_tag 'tribute'
+= stylesheet_pack_tag 'tribute'
+= javascript_pack_tag 'admin_case'
+
+
+.row.p-3.mb-4.shadow-sm.mx-1.rounded
+  .col-4
+    span.mr-2.text-dark Publisher Email:
+    span.font-weight-bold= link_to(@case.publisher.email, admin_publisher_path(@case.publisher), target: "_blank")
+
+  .col-4
+    span.mr-2.text-dark Contributions:
+    span.font-weight-bold
+      = publisher_contribution_bat_balance(@case.publisher)
+      small.text-muted.font-weight-bold= " BAT"
+
+      small.text-muted
+        span.mx-2= " — "
+        =publisher_bat_percent(@case.publisher)[:contribution]
+
+  .col-4
+    span.mr-2.text-dark Referrals:
+    span.font-weight-bold
+      = publisher_referral_bat_balance(@case.publisher)
+      small.text-muted.font-weight-bold= " BAT"
+      small.text-muted
+        span.mx-2= " — "
+        =publisher_bat_percent(@case.publisher)[:referrals]
+
+.row.mb-4
+
+
+  .col-10
+    .c-4.rounded.p-3.mb-p5.shadow
+      h3
+        span= "Case ##{@case.number}"
+        small.ml-4= case_badge(@case.status)
+      .my-4
+        .mx-3
+
+          .my-4
+            .text-dark.mb-2.font-weight-bold== t('publishers.cases.shared.solicit_question')
+            =simple_format(@case.solicit_question, sanitize: true)
+          .my-4
+            .text-dark.mb-2.font-weight-bold== t('publishers.cases.shared.accident_question')
+            =simple_format(@case.accident_question, sanitize: true)
+
+
+      - if @case.files.size.positive?
+        .my-4
+          h6
+            =fa_icon "paperclip", class: "mr-2"
+            span= pluralize(@case.files.size, "Attachment")
+          - @case.files.each do |file|
+            .c-4.m-3.border.rounded.p-3
+              - if file.blob.image?
+                =fa_icon "file-image-o", class: 'mx-3'
+              - else
+                =fa_icon "fa-file-text-o", class: 'mx-3'
+              =link_to(file.blob.filename, url_for(file), target: "_blank")
+
+  .col-2
+    .border-bottom.pb-2.mb-2
+      #assignee.d-flex.text-dark.justify-content-between.mb-2.align-items-center
+        strong Assignee
+        =fa_icon "cog"
+
+      #assignSearch.d-none
+        = form_tag admin_case_assign_path(@case), method: :patch, remote: true, id: "assign-form"
+          .input-group.mb-3
+            .input-group-prepend
+              =fa_icon "search", class: 'bg-white p-2 border rounded-left'
+            input.form-control.assignee-input placeholder="User" type="text" name="email" autocomplete="off"
+
+      #assigned
+        - if @case.assignee_id.blank?
+          .text-dark
+            span No one—
+            = link_to "assign yourself", admin_case_assign_path(@case), method: :patch
+        - else
+          .d-flex.justify-content-between
+            .text-dark= @case.assignee
+            .text-danger
+              =link_to fa_icon("times"), admin_case_assign_path(@case, email: 'nil'), method: :patch, class: "text-danger p-1"
+
+    .border-bottom.pb-2.mb-2
+      .d-flex.text-dark.justify-content-between.mb-2.align-items-center
+        strong Updated
+      = " #{time_ago_in_words(@case.updated_at)} ago"
+    .border-bottom.pb-2.mb-2
+      .d-flex.text-dark.justify-content-between.mb-2.align-items-center
+        strong Created
+      = " #{time_ago_in_words(@case.created_at)} ago"
+    div
+      - if @case.in_progress?
+        .text-dark.justify-content-between.mb-2.align-items-center
+          strong Actions
+        = link_to "Resolve", admin_case_path(@case, status: Case::RESOLVED), method: :patch, class: 'btn btn-success mx-1 mb-2'
+        = link_to "Close", admin_case_path(@case, status: Case::CLOSED), method: :patch, class: 'btn btn-dark mx-1 mb-2'
+
+.c-4.shadow-sm.rounded.p-3
+  .accordion
+    .panel
+      - if @answered.present?
+        input type="checkbox" name="panels" id="panel_id"
+          label for="panel_id"
+            .question
+              h3.text-dark  Send a message
+      - else
+        input type="checkbox" name="panels" id="panel_id" checked="checked"
+          label for="panel_id"
+            .question
+              h3.text-dark  Send a message
+
+      .panel-content
+        - if @case.assignee_id.blank?
+          .mb-2
+            span.text-muted Don't forget to assign yourself to the case
+            =fa_icon "smile-o", class: 'mx-2 text-muted'
+
+        = form_with model: [:admin, CaseNote.new(case: @case)], local: true, id: "case-form" do |f|
+          = f.hidden_field :case_id
+          .form-group
+            = f.text_area :note, { class:'form-control', rows:'6', minlength: "5", }
+          .form-group
+            = f.file_field :files, multiple: true
+
+          .form-group
+            label
+              = f.check_box :public, checked: true, class: 'mx-2'
+              = "Public note "
+              span.text-muted — All users will be able to see this
+
+          =submit_tag("Send Message", class: "btn btn-primary")
+
+- if @notes.present?
+  .c-4.shadow-sm.rounded.p-3.mt-4
+      - @notes.each do |message|
+        .border-top.mt-3
+          = render partial: 'publishers/cases/message', locals: { message: message }
+- else
+  .m-4
+    = fa_icon "meh-o "
+    i.mx-2 No messages yet
+

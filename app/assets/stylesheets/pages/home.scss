@@ -152,7 +152,7 @@
     .promo-panel-header {
       text-align: center;
       font-weight: 600;
-      font-size: 16px;
+      font-size: 1em;
     }
 
     .promo-panel-number {
@@ -223,6 +223,11 @@
           background-repeat: no-repeat;
         }
       }
+    }
+  }
+  .col-md-5 {
+    .promo-panel-header {
+      font-size: 0.75em;
     }
   }
 
@@ -624,9 +629,6 @@
     font-size: $font-size-base;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
-    padding: 24px;
-    width: 100%;
     color: $braveText-2;
 
     & img {
@@ -636,6 +638,7 @@
     .amounts {
       display: flex;
       flex-direction: column;
+      min-width: 12em;
 
       .bat-amount {
         font-size: 48px;
@@ -1148,9 +1151,8 @@
 }
 
 .balance-panel {
-  display: flex;
-  align-items: center;
   background: white;
+  display: flex;
   width: 100%;
   height: 100%;
   border-radius: 8px;
@@ -1174,4 +1176,68 @@ h6 {
 
 #cancel_edit_contact {
   padding: 8px;
+}
+
+.grayscale {
+  filter: grayscale(100%);
+}
+
+.withheld-color {
+  color: $braveGray-3;
+}
+
+.line {
+  height: 8em;
+  width: 1px;
+  align-self: center;
+  background: $braveGray-7;
+}
+.h-line {
+  width: 80%;
+  height: 1px;
+  align-self: center;
+  background: $braveGray-7;
+}
+
+.warning-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.container-panel {
+  background: white;
+  border-radius: 8px;
+  box-shadow: $defaultBoxShadow;
+}
+
+.fade {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.5s, opacity 0.5s linear;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.u-avatar {
+  margin: 4px;
+  width: 42px;
+  height: 42px;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  overflow: hidden;
+
+  svg {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
+    filter: brightness(5) grayscale(1)
+      drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.3));
+  }
+}
+
+.screenshot {
+  max-width: 300px;
 }

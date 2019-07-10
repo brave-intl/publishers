@@ -367,6 +367,31 @@ en:
       body_html: We have noticed some unusual or suspicious contributions to your Brave Rewards account. As a result we have temporarily frozen payments made to your account.<br /><br />Suspicious contributions can include unreasonably large contributions for small channels and/or contribution that solely originate from the user growth pool.<br /><br />Please contact us at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
       closing_html: Thank you.<br/>The Brave Rewards Team
       contact_support: If you did not make this change yourself, please contact support ASAP
+    submit_appeal:
+      subject: Brave Rewards Appeal — Under Review
+      body: |
+        Thank you for submitting your appeal. We’re reviewing it and will get back to you as soon as we can.
+        <br/><br/>
+        In the meantime, we appreciate your support,
+        <br/>
+        The Brave Rewards | Creator team
+    accept_appeal:
+      subject: Brave Rewards Appeal — Accepted
+      body: |
+        We read your appeal, and we’ve approved it. Your suspended BAT should be with you in the next payout cycle.
+        <br/><br/>
+        We appreciate your support,
+        <br/>
+        The Brave Rewards | Creator team
+    reject_appeal:
+      subject: Brave Rewards Appeal — Denied
+      body: |
+        We have concluded that the activity on your account was not in line with the Brave Rewards rules so we have denied your appeal.
+        While you remain able to receive BAT owned by people using Brave when they send it as tips or attention-based contributions, you are no longer eligible to receive BAT owned by Brave itself.
+        <br/><br/>
+        We appreciate your support,
+        <br/>
+        The Brave Rewards | Creator team
     uphold_kyc_incomplete:
       subject: Please verify your Uphold identity
       body_html: |
@@ -411,6 +436,43 @@ en:
     show:
       email_confirmed: Your updated email address %{email} has been confirmed.
       token_invalid: Authentication failed. Your login link may have expired; please send yourself a new sign in link.
+    cases:
+      shared:
+        description: |
+          We saw something unexpected in the pattern of contributions to your account. For now, we've suspended payouts of the BAT which Brave owns. This doesn't affect self-owned BAT which people have contributed to you using Brave — only BAT belonging to Brave.
+          <br/>
+          <br/>
+          If you want to receive this BAT, someone on our team will have to manually review the transactions on your account. We'll begin the review as soon as you let us know what you think happened.
+        solicit_question: |
+          Please describe how you solicit tips / contributions / referrals? What were your methods for doing so?
+        accident_question: |
+          Do you believe that there's anything you did that may have accidentally triggered our security checks?
+        alert: You can only file this appeal once. Please include everything which might be relevant.
+        placeholder: Describe how you solicit tips and all the methods you use.
+        evidence: Attach any screenshots or other supporting materials to help support your answers above.
+        save: "Save"
+        saved: "Saved"
+        saving: "Saving..."
+      new:
+        title: Create your appeal
+        submit: Submit appeal
+        cancel: "Cancel"
+      show:
+        title: Your Appeal
+        status: "Status:"
+        response: Response
+        edit: Edit
+        messages: Messages
+        new_message_title: Message
+        send_message: "Send Message"
+        note_description: "Messages allow you to easy communicate to the Brave Rewards team."
+        notice: Thanks for letting us know — we've received your appeal. We'll take a look as soon as we can, and then get back to you.
+        last_updated_at: "Last updated about %{time} ago"
+      message:
+        ago: " ago"
+        support: "Brave Rewards Support"
+        attachments: "Attachments"
+
     change_email:
       login_email: Login Email
       login_email_message: We need your valid email address for account access and recovery purposes.
@@ -511,6 +573,16 @@ en:
       next_deposit_date: "Next Deposit Date: "
       payout_in_progress: "Payout In Progress"
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
+      held_funds: SUSPENDED BAT
+      held_funds_description: |
+        These funds have been flagged for irregular activity. Appeal this action by <a href="/publishers/case/new">following these steps.</a>
+      rejected_funds_description: |
+        <a href="/publishers/case">Your appeal was rejected</a>. This decision is final.
+      open_case_description:
+        <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
+      closed_case_description:
+        <a href="/publishers/case">Your appeal case </a> has been rejected.
+
       uphold:
         heading: Your Uphold Wallet
         deposit_currency_label: "Deposit Currency: "
@@ -578,7 +650,7 @@ en:
     suspended_error:
       heading_html: Your account is under review
       body: >
-        We've noticed some unusual activity on your account. For that reason, we've suspended access while we take a closer look. Reasons may include violations of the <a href="https://community.brave.com/t/a-note-to-publishers/48733"> BAT grant guidelines.</a>
+        We've noticed some unusual activity on your account. For that reason, we've suspended access while we take a closer look. Reasons may include violations of the <a href="https://support.brave.com/hc/en-us/articles/360029235132"> BAT grant guidelines.</a>
         <br/><br/>
         We know that this is inconvenient and we're sorry about that but we'd rather play it safe than sorry when it comes to protecting your account and Brave Rewards.
         <br/><br/>
