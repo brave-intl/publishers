@@ -49,6 +49,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     it "does generate a report noting publisher is suspended" do
       assert_equal 2, PotentialPayment.count
+      PotentialPayment.all.each { |pp| assert_equal "suspended", pp.status }
     end
   end
 
