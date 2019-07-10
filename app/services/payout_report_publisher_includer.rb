@@ -35,6 +35,7 @@ class PayoutReportPublisherIncluder < BaseService
                               reauthorization_needed: reauthorization_needed,
                               uphold_member: uphold_member,
                               suspended: suspended,
+                              status: @publisher.last_status_update&.status,
                               uphold_id: uphold_id)
     end
 
@@ -59,6 +60,7 @@ class PayoutReportPublisherIncluder < BaseService
                                 reauthorization_needed: reauthorization_needed,
                                 uphold_member: uphold_member,
                                 suspended: suspended,
+                                status: @publisher.last_status_update&.status,
                                 uphold_id: uphold_id,
                                 channel_stats: channel.details.stats,
                                 channel_type: channel.details_type)
