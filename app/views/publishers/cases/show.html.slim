@@ -58,7 +58,7 @@
         .form-group
           = f.text_area :note, { class:'form-control', rows:'6', minlength: "5", }
         .form-group
-          = f.file_field :files, multiple: true, direct_upload: true
+          = f.file_field :files, multiple: true
 
         =submit_tag(t('.send_message'), class: "btn btn-primary")
 

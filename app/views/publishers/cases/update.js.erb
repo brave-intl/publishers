@@ -10,6 +10,9 @@ if(<%= @case.errors.full_messages.length.positive? %>) {
 }
 console.log("<%= @case.errors.full_messages %>")
 
+const inputFile = document.getElementsByName("case[files][]")[0]
+inputFile.value = null;
+
 document.getElementById("saved").classList.toggle("visible");
 document.getElementById("saving").classList.toggle("d-none");
 
