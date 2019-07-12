@@ -1,20 +1,25 @@
 table.display.table.table-hover.dynamic-table id="dynamic-table"
-  tr
-    th width="20%" Case ID
-    th width="25%" Publisher
-    -if params[:status] != Case::OPEN
-      th width="25%"
-        .d-flex.align-items-center
-          = sort_link(:assignee_id, "Assigned")
-          =fa_icon "filter", class: 'filter px-2'
-        = form_tag admin_cases_path, method: :get, remote: false, class: 'd-none'
-          input.w-75.p-1.mt-1.assignee-input#tableheader placeholder="User" type="text" name="q" autocomplete="off"
-    th width="15%"= sort_link(:status, "Status")
-    th= sort_link(:open_at, "Open")
+  thead
+    tr
+      th width="1%"
+      th width="20%" Case ID
+      th width="25%" Publisher
+      -if params[:status] != Case::OPEN
+        th width="25%"
+          .d-flex.align-items-center
+            = sort_link(:assignee_id, "Assigned")
+            =fa_icon "filter", class: 'filter px-2'
+          = form_tag admin_cases_path, method: :get, remote: false, class: 'd-none'
+            input.w-75.p-1.mt-1.assignee-input#tableheader placeholder="User" type="text" name="q" autocomplete="off"
+      th width="15%"= sort_link(:status, "Status")
+      th= sort_link(:open_at, "Open")
 
   tbody
     - cases.each do |case_model|
       tr.gradeX height="70px"
+        td.checkbox_1
+          input type="checkbox"
+          span
         td= link_to("Case ##{case_model.number}", admin_case_path(case_model))
         td= link_to(case_model.publisher, admin_publisher_path(case_model.publisher), target: "_blank", class: "text-break text-body")
         -if params[:status] != Case::OPEN
