@@ -8,6 +8,7 @@ class PublishersController < ApplicationController
     :balance,
     :disconnect_uphold,
     :edit_payment_info,
+    :show,
     :home,
     :statement,
     :statements,
@@ -18,13 +19,11 @@ class PublishersController < ApplicationController
 
   before_action :authenticate_via_token, only: %i(show)
   before_action :authenticate_publisher!, except: %i(
-    show
     two_factor_authentication_removal
     request_two_factor_authentication_removal
     confirm_two_factor_authentication_removal
     cancel_two_factor_authentication_removal
   )
-
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 except: %i(update_email change_email)
 
@@ -427,7 +426,7 @@ class PublishersController < ApplicationController
 
   def require_verified_publisher
     return if current_publisher.verified?
-    redirect_to(publisher_next_step_path(current_publisher), alert: t(".verification_required"))
+    redirect_to publisher_next_step_path(current_publisher)
   end
 
   def require_publisher_email_not_verified_through_youtube_auth
