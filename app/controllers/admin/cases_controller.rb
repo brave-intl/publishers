@@ -72,6 +72,8 @@ module Admin
 
       last_note = @notes.where(public: true).first
       @answered = last_note&.created_by&.admin?
+
+      @replies = CaseReply.all
     end
 
     def assign

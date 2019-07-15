@@ -1,5 +1,5 @@
 .mb-3
-  = fa_icon "inbox", class:'mr-2'
+  = fa_icon "inbox fw", class:'mr-2'
   strong CASES
 
 .d-flex.justify-content-between.mb-2
@@ -15,8 +15,18 @@
 
 .mt-5
 .mb-3
-  = fa_icon "bar-chart", class:'mr-2'
+  = fa_icon "bar-chart fw", class:'mr-2'
   strong REPORTS
 
 .d-flex.justify-content-between.mb-2
   = case_link("Overview", overview_admin_cases_path)
+
+
+
+.mt-5
+.mb-3
+  = fa_icon "cog fw", class:'mr-2'
+  strong SETTINGS
+
+.d-flex.justify-content-between.mb-2
+  = case_link("Saved replies", admin_case_replies_path)

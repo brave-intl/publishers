@@ -498,3 +498,18 @@ a.logo span {
   outline: #fb542b solid 1px;
   box-shadow: 0 0px 8px #7e47a8;
 }
+
+.reply:hover {
+  background: $braveBrand-Light;
+  cursor: pointer;
+  * {
+    color: $braveGray-10 !important;
+  }
+}
+
+#replySection {
+  left: 300px;
+  top: 0;
+  position: absolute;
+  z-index: 999999999;
+}

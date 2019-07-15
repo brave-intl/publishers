@@ -2,7 +2,7 @@
 = javascript_pack_tag 'tribute'
 = stylesheet_pack_tag 'tribute'
 = javascript_pack_tag 'admin_case'
-
+= javascript_pack_tag 'admin_case_replies'
 
 .row.p-3.mb-4.shadow-sm.mx-1.rounded
   .col-4
@@ -107,12 +107,15 @@
           label for="panel_id"
             .question
               h3.text-dark  Send a message
+        #replySection data-replies="#{@replies.to_json}"
       - else
         input type="checkbox" name="panels" id="panel_id" checked="checked"
           label for="panel_id"
             .question
-              h3.text-dark  Send a message
+              .d-flex
+                h3.text-dark  Send a message
 
+        #replySection data-replies="#{@replies.to_json}"
       .panel-content
         - if @case.assignee_id.blank?
           .mb-2
@@ -122,7 +125,7 @@
         = form_with model: [:admin, CaseNote.new(case: @case)], local: true, id: "case-form" do |f|
           = f.hidden_field :case_id
           .form-group
-            = f.text_area :note, { class:'form-control', rows:'6', minlength: "5", }
+            = f.text_area :note, { class:'form-control', rows:'7', minlength: "5", }
           .form-group
             = f.file_field :files, multiple: true
 

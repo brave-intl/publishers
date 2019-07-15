@@ -1,0 +1,29 @@
+.row
+  .col-2.shadow-sm.pb-3
+    =render partial: 'admin/cases/sidebar'
+  .col-10
+    .mb-3
+      h3 Saved replies
+      p Saved replies are re-usable text snippets that you can use throughout the Case workflow. Saved replies can save you time if you’re often typing similar responses.
+
+    - @replies.each do |reply|
+      .border.rounded.my-2.d-flex.justify-content-between.align-items-center
+        .ml-2.p-2
+          strong=reply.title
+          .text-muted.text-truncate style="max-width: 500px;"= reply.body
+
+        .btn-group
+          = link_to fa_icon("pencil"), edit_admin_case_reply_path(id: reply.id), class: 'btn border-right'
+          = link_to fa_icon("times"), admin_case_reply_path(id: reply.id), method: :delete, class: 'btn text-danger'
+
+
+    - if @replies.size.zero?
+      .text-muted No saved replies
+
+
+    .mt-5
+      h4 Add a saved reply
+      hr
+      = render partial: 'form', locals: { reply: CaseReply.new }
+
+
