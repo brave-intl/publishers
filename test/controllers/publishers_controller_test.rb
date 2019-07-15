@@ -166,27 +166,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "expired session redirects to login page" do
-    # login the publisher
-    publisher = publishers(:completed)
-    request_login_email(publisher: publisher)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
-    get(url)
-
-    # assert redirected to dashboard
-    assert_redirected_to home_publishers_path
-
-    # fast forward time to simulate timeout
-    travel 1.day do
-      publisher.save!
-      publisher.reload
-      get(home_publishers_path)
-    end
-
-    # verify publisher is redirected to login page
-    assert_redirected_to log_in_publishers_path
-  end
-
   test "an unauthenticated html request redirects to home" do
     get home_publishers_path
     assert_response 302
@@ -900,7 +879,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "#balance returns the wallet as json" do
     publisher = publishers(:completed)
     sign_in publisher
-
     stub_all_eyeshade_wallet_responses(publisher: publisher)
     get wallet_publishers_path
     assert_equal publisher.wallet.to_json, response.body

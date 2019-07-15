@@ -75,13 +75,4 @@ class PublisherMailerTest < ActionMailer::TestCase
       PublisherMailer.verify_email(publisher).deliver_now
     end
   end
-
-  test "login_email verify_email verification_done and confirm_email_change raise unless token fresh" do
-    publisher = publishers(:default)
-
-    assert_raise do PublisherMailer.login_email(publisher).deliver end
-    assert_raise do PublisherMailer.verify_email(publisher).deliver end
-    assert_raise do PublisherMailer.confirm_email_change(publisher).deliver end
-    assert_raise do PublisherMailer.verification_done(publisher.channels.first).deliver end
-  end
 end
