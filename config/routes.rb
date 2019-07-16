@@ -16,6 +16,12 @@ Rails.application.routes.draw do
           delete :delete_file
         end
         resources :case_notes
+
+        scope controller: 'uphold'  do
+          get :uphold_status
+          get :uphold_verified, action: :create
+          patch :disconnect_uphold, action: :destroy
+        end
       end
 
       get :log_out
@@ -26,16 +32,13 @@ Rails.application.routes.draw do
       patch :confirm_default_currency
       get :email_verified
       get :wallet
-      get :uphold_verified
       get :suspended_error
       get :statement
       get :statements
-      get :uphold_status
       get :get_site_banner_data
       patch :verify
       patch :update
       patch :complete_signup
-      patch :disconnect_uphold
       get :choose_new_channel_type
       get :two_factor_authentication_removal
       post :request_two_factor_authentication_removal

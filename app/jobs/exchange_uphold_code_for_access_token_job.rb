@@ -12,10 +12,9 @@ class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
       # it should now be cleared
       publisher.uphold_connection.update!(
         uphold_access_parameters: parameters,
+        uphold_verified: true,
         uphold_code: nil
       )
-
-      UploadUpholdAccessParametersJob.perform_later(publisher_id: publisher.id)
     end
 
   rescue UpholdRequestAccessParameters::InvalidGrantError => e

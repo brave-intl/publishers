@@ -25,10 +25,6 @@ class UpholdConnection < ActiveRecord::Base
   # and should be cleared once it has been used to get uphold_access_parameters
   validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
 
-  # uphold_access_parameters should be cleared once uphold_verified has been set
-  # (see `verify_uphold` method below)
-  validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
-
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
   scope :has_stale_uphold_code, -> {
@@ -59,14 +55,6 @@ class UpholdConnection < ActiveRecord::Base
     save!
   end
 
-  def verify_uphold
-    self.uphold_state_token = nil
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = true
-    save!
-  end
-
   def disconnect_uphold
     self.uphold_code = nil
     self.uphold_access_parameters = nil
@@ -93,8 +81,6 @@ class UpholdConnection < ActiveRecord::Base
       UpholdAccountState::RESTRICTED
     elsif uphold_verified? && wallet&.is_a_member?
       UpholdAccountState::VERIFIED
-    elsif uphold_access_parameters.present?
-      :access_parameters_acquired
     elsif uphold_code.present?
       :code_acquired
     else
@@ -117,6 +103,17 @@ class UpholdConnection < ActiveRecord::Base
 
   def wallet
     @wallet ||= publisher&.wallet
+  end
+
+  def create_uphold_card_for_default_currency
+    # TODO Figure out how to store wallet address
+    return unless can_create_uphold_cards? && publisher.default_currency_confirmed_at.present? && wallet.address.blank?
+
+    CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
+  end
+
+  def missing_card?
+    # TODO explore this, might need to check with Uphold
   end
 
   def encryption_key
