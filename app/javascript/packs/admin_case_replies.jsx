@@ -20,10 +20,11 @@ export default class CaseReply extends React.Component {
     }
 
     return this.props.replies.filter(reply => {
-      let title = reply.title.toLowerCase();
       let query = this.state.filterText.toLowerCase();
+      let title = reply.title.toLowerCase();
+      let body = reply.body.toLowerCase();
 
-      return title.includes(query);
+      return title.includes(query) || body.includes(query);
     });
   };
 

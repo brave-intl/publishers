@@ -52,13 +52,14 @@
           h6
             =fa_icon "paperclip", class: "mr-2"
             span= pluralize(@case.files.size, "Attachment")
-          - @case.files.each do |file|
-            .c-4.m-3.border.rounded.p-3
-              - if file.blob.image?
-                =fa_icon "file-image-o", class: 'mx-3'
-              - else
-                =fa_icon "fa-file-text-o", class: 'mx-3'
-              =link_to(file.blob.filename, url_for(file), target: "_blank")
+          .d-flex.flex-wrap.p-4
+            - @case.files.each do |file|
+              .p-3 style="max-width: 175px;"
+                - unless file.blob.image?
+                  =fa_icon "fa-file-text-o", class: 'mx-3'
+                a href=url_for(file) target="_blank" class="d-flex flex-column justify-content-between"
+                  = image_tag file, class: 'img-thumbnail'
+                  .mt-auto.font-weight-bold.text-dark.text-truncate.py-2= file.blob.filename
 
   .col-2
     .border-bottom.pb-2.mb-2
