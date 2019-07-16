@@ -569,7 +569,7 @@ DEPENDENCIES
   pry-byebug
   pry-stack_explorer (~> 0.4.9.3)
   public_suffix (~> 3.0.2)
-  puma
+  puma (~> 4.0.1)
   rack-attack (~> 5.0)
   rails (~> 5.2.3)
   rails-controller-testing
