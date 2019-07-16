@@ -12,18 +12,18 @@ module Eyeshade
                 :address,
                 :provider,
                 :scope,
-                :default_currency,
-                :possible_currencies,
+                # :default_currency,
+                # :possible_currencies,
                 :channel_balances,
                 :rates,
-                :status,
+                # :status,
                 :contribution_balance,
                 :referral_balance,
                 :overall_balance,
                 :last_settlement_balance,
                 :last_settlement_date,
-                :uphold_id,
-                :uphold_account_status
+                # :uphold_id,
+                # :uphold_account_status
 
     def initialize(wallet_info:, accounts: [], transactions: [])
       # Wallet information
@@ -50,20 +50,20 @@ module Eyeshade
       @last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates, @default_currency, transactions)
     end
 
-    def authorized?
-      @authorized == true
-    end
+    # def authorized?
+    #   @authorized == true
+    # end
 
-    def blocked?
-      @uphold_account_status == 'blocked'
-    end
+    # def blocked?
+    #   @uphold_account_status == 'blocked'
+    # end
 
-    def is_a_member?
-      @uphold_account_status.present? && @is_member
-    end
+    # def is_a_member?
+    #   @uphold_account_status.present? && @is_member
+    # end
 
-    def not_a_member?
-      !is_a_member?
-    end
+    # def not_a_member?
+    #   !is_a_member?
+    # end
   end
 end

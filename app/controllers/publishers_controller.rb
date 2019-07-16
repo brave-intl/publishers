@@ -200,6 +200,10 @@ class PublishersController < ApplicationController
 
     @case = Case.find_by(publisher: current_publisher)
 
+    uphold_client = Uphold::Client.new
+    Rails.logger.info '✨ initialized the client'
+    uphold_client.user.find(current_publisher.uphold_connection)
+
     # TODO Add an if statement so it's more obvious
     current_publisher.uphold_connection.create_uphold_card_for_default_currency
   end
