@@ -190,8 +190,10 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
-    if current_publisher.uphold_connection.blank?
+    uphold_connection = current_publisher.uphold_connection
+    if uphold_connection.blank?
       UpholdConnection.create!(publisher: current_publisher)
+      uphold_connection.reload
     end
 
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
@@ -200,12 +202,19 @@ class PublishersController < ApplicationController
 
     @case = Case.find_by(publisher: current_publisher)
 
-    uphold_client = Uphold::Client.new
-    Rails.logger.info '✨ initialized the client'
-    uphold_client.user.find(current_publisher.uphold_connection)
 
-    # TODO Add an if statement so it's more obvious
-    current_publisher.uphold_connection.create_uphold_card_for_default_currency
+    # TODO Refactor this
+    @possible_currencies = []
+    if uphold_connection.uphold_verified?
+      @possible_currencies = uphold_connection.uphold_details.currencies
+
+      # every request let's sync from uphodl
+      uphold_connection.sync_from_uphold!
+
+      # Handles legacy case where user is missing an Uphold card
+      uphold_connection.create_uphold_card_for_default_currency if uphold_connection.missing_card?
+    end
+
   end
 
   def statements
@@ -315,10 +324,6 @@ class PublishersController < ApplicationController
 
   def publisher_update_email_params
     params.require(:publisher).permit(:pending_email)
-  end
-
-  def publisher_confirm_default_currency_params
-    params.require(:publisher).permit(:default_currency)
   end
 
   def require_verified_publisher

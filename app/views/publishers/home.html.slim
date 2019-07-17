@@ -1,12 +1,13 @@
 noscript
   div.noscript-warning = t ".noscript"
 
+p==current_publisher.uphold_connection.to_json.gsub(',', ',<br/>')
+
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
     current_publisher.uphold_connection.uphold_verified? && \
-    current_publisher.wallet.present? && current_publisher.wallet.authorized? && \
-    (current_publisher.default_currency_confirmed_at.nil? || !current_publisher.default_currency.present?)
+    (current_publisher.uphold_connection.default_currency_confirmed_at.blank? || current_publisher.uphold_connection.default_currency.blank?)
 script type="text/html" id="confirm_default_currency_modal_wrapper"
-  = render :partial => 'confirm_default_currency_modal'
+  = render partial: 'confirm_default_currency_modal', locals: { possible_currencies: @possible_currencies }
 
 - content_for(:navbar_content_right) do
   = link_to( \
@@ -27,8 +28,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 .dashboard
   #uphold_status { class=uphold_status_class(current_publisher)
                    data-open-confirm-default-currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
-                   data-possible-currencies=possible_currencies(current_publisher)
-                   data-default-currency=current_publisher.default_currency }
+                   data-possible-currencies=@possible_currencies
+                   data-default-currency=current_publisher.uphold_connection.default_currency }
     .row
       .col.mb-4.payouts class="#{current_publisher.no_grants? ? 'col-md-7' : '' }"
         .balance-panel.align-items-center
@@ -123,7 +124,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             .dashboard-panel--content#uphold_dashboard
               .deposit-currency.field
                 label= t ".uphold.deposit_currency_label"
-                .value#default_currency_code= current_publisher.default_currency.present? ? current_publisher.default_currency : t(".uphold.no_currency_selected")
+                .value#default_currency_code= current_publisher.uphold_connection.default_currency.present? ? current_publisher.uphold_connection.default_currency : t(".uphold.no_currency_selected")
                 .action
                   span= "("
                   a#change_default_currency href="#"
@@ -260,4 +261,4 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     })();
 
 script id="instant-donation-modal" type="text/html"
-  = render "instant_donation_modal", wallet: @wallet
+  = render "instant_donation_modal", wallet: @wallet, uphold_connection: current_publisher.uphold_connection

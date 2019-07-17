@@ -47,6 +47,10 @@ class UpholdConnection < ActiveRecord::Base
     save!
   end
 
+  def scope
+    JSON.parse(uphold_access_parameters)['scope']
+  end
+
   def receive_uphold_code(code)
     self.uphold_state_token = nil
     self.uphold_code = code
@@ -63,23 +67,28 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def uphold_reauthorization_needed?
-    uphold_verified? &&
-      wallet.present? &&
-      ['re-authorize', 'authorize'].include?(wallet.action)
+    # TODO Let's make sure that if we can't access the user's information then we set uphold_verified? to false
+    # Perhaps through a rescue on 401
+
+    uphold_verified? && uphold_access_parameters.present? && uphold_details.nil?
+  end
+
+  # Makes a remote HTTP call to Uphold to get more details
+  # TODO should we actually call uphold_user?
+  def uphold_details
+    @user ||= Uphold::Client.new.user.find(self)
   end
 
   def uphold_status
-    uphold_account_status = wallet&.uphold_account_status&.to_sym
+    send_blocked_message if status == UpholdAccountState::BLOCKED
 
-    send_blocked_message if uphold_account_status == UpholdAccountState::BLOCKED
-
-    if uphold_account_status == UpholdAccountState::RESTRICTED
+    if status == UpholdAccountState::RESTRICTED
       UpholdAccountState::RESTRICTED
     elsif uphold_reauthorization_needed?
       UpholdAccountState::REAUTHORIZATION_NEEDED
-    elsif uphold_verified? && wallet&.not_a_member?
+    elsif uphold_verified? && !is_member?
       UpholdAccountState::RESTRICTED
-    elsif uphold_verified? && wallet&.is_a_member?
+    elsif uphold_verified? && is_member?
       UpholdAccountState::VERIFIED
     elsif uphold_code.present?
       :code_acquired
@@ -94,10 +103,8 @@ class UpholdConnection < ActiveRecord::Base
 
   def can_create_uphold_cards?
     uphold_verified? &&
-      wallet.present? &&
-      wallet.authorized? &&
-      wallet.scope &&
-      wallet.scope.include?("cards:write") &&
+      uphold_access_parameters.present? &&
+      scope.include?("cards:write") &&
       !publisher.excluded_from_payout
   end
 
@@ -107,14 +114,25 @@ class UpholdConnection < ActiveRecord::Base
 
   def create_uphold_card_for_default_currency
     # TODO Figure out how to store wallet address
-    return unless can_create_uphold_cards? && publisher.default_currency_confirmed_at.present? && wallet.address.blank?
+    return unless missing_card?
 
-    CreateUpholdCardsJob.perform_now(publisher_id: current_publisher.id)
+    # CreateUpholdCardsJob.perform_now(publisher_id: publisher_id)
   end
 
   def missing_card?
-    # TODO explore this, might need to check with Uphold
+    !(can_create_uphold_cards? && default_currency_confirmed_at.present? && address.blank?)
+    # TODO explore this, might need to check with Uphold about the missing address?
   end
+
+
+  def sync_from_uphold!
+    self.update(
+      is_member: uphold_details.memberAt.present?,
+      status: uphold_details.status,
+      uphold_id: uphold_details.id
+    )
+  end
+
 
   def encryption_key
     # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.

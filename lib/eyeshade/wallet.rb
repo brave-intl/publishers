@@ -7,8 +7,7 @@ require "eyeshade/last_settlement_balance"
 
 module Eyeshade
   class Wallet
-    attr_reader :action,
-                :rates,
+    attr_reader :rates,
                 :address,
                 :provider,
                 :scope,
@@ -21,7 +20,7 @@ module Eyeshade
                 :referral_balance,
                 :overall_balance,
                 :last_settlement_balance,
-                :last_settlement_date,
+                :last_settlement_date
                 # :uphold_id,
                 # :uphold_account_status
 
@@ -37,7 +36,7 @@ module Eyeshade
       @is_member = wallet_info.dig("wallet", "isMember") || false
       @uphold_id = wallet_info.dig("wallet", "id")
       @uphold_account_status = wallet_info.dig("wallet", "status")
-      @action = wallet_info.dig("status","action")
+      # @action = wallet_info.dig("status","action")
       @channel_balances = {}
       accounts.select { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.each do |account|
         @channel_balances[account["account_id"]] = Eyeshade::ChannelBalance.new(rates, @default_currency, account)

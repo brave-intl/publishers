@@ -21,6 +21,7 @@ Rails.application.routes.draw do
           get :uphold_status
           get :uphold_verified, action: :create
           patch :disconnect_uphold, action: :destroy
+          patch :confirm_default_currency
         end
       end
 
@@ -29,7 +30,6 @@ Rails.application.routes.draw do
       get :change_email
       get :change_email_confirm
       patch :update_email
-      patch :confirm_default_currency
       get :email_verified
       get :wallet
       get :suspended_error

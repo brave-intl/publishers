@@ -57,7 +57,7 @@ module PublishersHelper
   end
 
   def publisher_converted_overall_balance(publisher)
-    return if publisher.default_currency == "BAT" || publisher.default_currency.blank?
+    return if publisher.uphold_connection.default_currency == "BAT" || publisher.uphold_connection.default_currency.blank?
 
     publisher = publisher&.become_subclass
 
@@ -67,7 +67,6 @@ module PublishersHelper
       balance = publisher.wallet&.contribution_balance&.amount_default_currency
     elsif publisher.no_grants?
       amount =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
-
     else
       balance = publisher.wallet&.overall_balance&.amount_default_currency
     end
@@ -75,9 +74,9 @@ module PublishersHelper
     if balance.present?
       I18n.t("helpers.publisher.balance_pending_approximate",
              amount: '%.2f' % balance,
-             code: publisher.default_currency)
+             code: publisher&.uphold_connection.default_currency)
     else
-      I18n.t("helpers.publisher.conversion_unavailable", code: publisher.default_currency)
+      I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
     end
   end
 
@@ -191,7 +190,7 @@ module PublishersHelper
     when :unconnected, nil
       I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
     when UpholdConnection::UpholdAccountState::RESTRICTED
-      publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
+      publisher.uphold_connection.is_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
     else
       I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
     end
@@ -203,10 +202,6 @@ module PublishersHelper
 
   def terms_of_service_url
     Rails.application.secrets[:terms_of_service_url]
-  end
-
-  def possible_currencies(publisher)
-    publisher.wallet.present? ? publisher.wallet.possible_currencies : []
   end
 
   def uphold_status_class(publisher)
@@ -261,7 +256,7 @@ module PublishersHelper
     when :unconnected
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
     when UpholdConnection::UpholdAccountState::RESTRICTED
-      publisher.wallet.is_a_member? ? I18n.t("helpers.publisher.uphold_status_description.restricted_member") : I18n.t("helpers.publisher.uphold_status_description.non_member")
+      publisher.uphold_connection.is_member? ? I18n.t("helpers.publisher.uphold_status_description.restricted_member") : I18n.t("helpers.publisher.uphold_status_description.non_member")
     else
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
     end

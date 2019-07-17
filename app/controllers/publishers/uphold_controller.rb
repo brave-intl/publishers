@@ -18,29 +18,28 @@ module Publishers
       end
     end
 
+    def confirm_default_currency_params
+      params.require(:publisher).permit(:default_currency)
+    end
+
     # Records default currency preference
     # If user does not have Uphold's `cards:write` scope, we redirect to Uphold to get authorization
     # Card creation is done in #home
     def confirm_default_currency
-      confirm_default_currency_params = publisher_confirm_default_currency_params
-      selected_currency = confirm_default_currency_params[:default_currency]
+      # TODO Consider refactoring this
+      uphold_connection = current_publisher.uphold_connection
 
-      current_publisher.default_currency_confirmed_at = Time.now
-      current_publisher.save!
+      uphold_connection.update(confirm_default_currency_params.merge(default_currency_confirmed_at: Time.now))
 
-      default_currency_changed = current_publisher.default_currency != selected_currency
+      if uphold_connection.can_create_uphold_cards?
+        uphold_connection.create_uphold_card_for_default_currency
 
-      if default_currency_changed
-        current_publisher.default_currency = selected_currency
-        current_publisher.save!
-
-        UploadDefaultCurrencyJob.perform_now(publisher_id: current_publisher.id)
-      end
-
-      # Check if the publisher is currently missing the ability to create cards
-      publisher_missing_write_scope = current_publisher.wallet.scope.exclude? "cards:write"
-
-      if publisher_missing_write_scope
+        render(json: {
+          action: 'refresh',
+          status: t("publishers.confirm_default_currency_modal.refreshing"),
+          timeout: 2000,
+        }, status: 200)
+      else
         # Redirect the publisher to Uphold in order to authorize card creation.
         # Card will be created in #home when they return.
         render(json: {
@@ -48,14 +47,6 @@ module Publishers
           status: t("publishers.confirm_default_currency_modal.redirecting"),
           redirectURL: uphold_authorization_endpoint(current_publisher),
           timeout: 3000,
-        }, status: 200)
-      else
-        create_uphold_card_for_default_currency_if_needed
-
-        render(json: {
-          action: 'refresh',
-          status: t("publishers.confirm_default_currency_modal.refreshing"),
-          timeout: 2000,
         }, status: 200)
       end
     end

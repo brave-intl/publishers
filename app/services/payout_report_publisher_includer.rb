@@ -9,7 +9,11 @@ class PayoutReportPublisherIncluder < BaseService
     return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold?
 
     publisher_has_unsettled_balance = false
-    create_uphold_card_for_default_currency_if_needed
+
+    if publisher.uphold_connection.missing_card?
+      publisher.uphold_connection.create_uphold_card_for_default_currency
+    end
+
     publisher_has_unsettled_balance = false
     wallet = PublisherWalletGetter.new(publisher: @publisher).perform
 
@@ -89,14 +93,6 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   private
-
-  def create_uphold_card_for_default_currency_if_needed
-    if @publisher.uphold_connection&.can_create_uphold_cards? &&
-      @publisher.default_currency_confirmed_at.present? &&
-      @publisher.wallet.address.blank?
-      CreateUpholdCardsJob.perform_now(publisher_id: @publisher.id)
-    end
-  end
 
   def should_only_notify?
     @payout_report.nil?

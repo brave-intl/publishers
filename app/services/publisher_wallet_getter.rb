@@ -52,7 +52,7 @@ class PublisherWalletGetter < BaseApiClient
         },
         "contributions" => {
           "amount" => "9001.00",
-          "currency" => @publisher.default_currency,
+          "currency" => @publisher.uphold_connection.default_currency,
           "altcurrency" => "BAT",
           "probi" => "38077497398351695427000"
         },
@@ -73,7 +73,7 @@ class PublisherWalletGetter < BaseApiClient
         "wallet" => {
             "provider" => "uphold",
             "authorized" => true,
-            "defaultCurrency" => @publisher.default_currency,
+            "defaultCurrency" => @publisher.uphold_connection.default_currency,
             "isMember" => true,
             "status" => "ok",
             "possibleCurrencies"=> ["BAT", "AED", "ARS", "AUD", "BRL", "CAD", "CHF", "CNY", "DKK", "EUR", "GBP", "HKD", "ILS", "INR", "JPY", "KES", "MXN", "NOK", "NZD", "PHP", "PLN", "SEK", "SGD", "USD", "XAG", "XAU", "XPD", "XPT"],

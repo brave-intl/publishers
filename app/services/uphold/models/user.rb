@@ -7,7 +7,7 @@ module Uphold
 
       PATH = "/v0/me"
 
-      attr_accessor :address, :birthdate, :country, :currencies, :email, :firstName, :lastName,
+      attr_accessor :id, :address, :birthdate, :country, :currencies, :email, :firstName, :lastName,
         :settings, :memberAt, :status, :state, :verifications, :balances
 
       def initialize(params = {})
