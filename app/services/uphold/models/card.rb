@@ -8,7 +8,7 @@ module Uphold
 
       # For more information about how these URI templates are structured read the explaination in the RFC
       # https://www.rfc-editor.org/rfc/rfc6570.txt
-      PATH = "/v0/me/cards{?q}"
+      PATH = "/v0/me/cards".freeze
 
       attr_accessor :address, :available, :balance, :currency, :id, :label, :lastTransactionAt, :normalized, :settings
 
@@ -16,16 +16,43 @@ module Uphold
         super
       end
 
-      # Finds a card given the uphold_connection and a currency
+      # Finds a card given an id
+      #
+      # @param [UpholdConnection] connection The uphold connection to find.
+      # @param [string] iid The id of the card you want to find. By default searches for the address on UpholdConnection
+      #
+      # @return [Uphold::Models::Card] the card
+      def find(uphold_connection, id = nil)
+        id = uphold_connection.address if id.blank?
+
+        endpoint = PATH + "/" + id
+        response = get(endpoint, {}, authorization(uphold_connection))
+
+        Uphold::Models::Card.new(JSON.parse(response.body))
+      end
+
+      # Searches for a card given the uphold_connection and a currency
       #
       # @param [UpholdConnection] connection The uphold connection to find.
       # @param [string] currency The currency you want to find. By default searches for default_currency on UpholdConnection
       #
-      # @return [Uphold::Models::Card] the card
-      def find(uphold_connection, currency = nil)
-        response = get(PATH.expand(q: currency || uphold_connection.default_currency), {}, authorization(uphold_connection))
+      # @return [Uphold::Models::Card[]] an array of found cards
+      def where(uphold_connection, currency = nil)
+        query = "currency:" + (currency || uphold_connection.default_currency)
+        response = get(PATH, { q: query }, authorization(uphold_connection))
 
-        Uphold::Models::Card.new(JSON.parse(response.body))
+        cards = []
+        if response.headers['Content-Encoding'].eql?('gzip')
+          sio = StringIO.new( response.body )
+          gz = Zlib::GzipReader.new( sio )
+          cards = JSON.parse(gz.read())
+        else
+          cards = JSON.parse(response.body)
+        end
+
+        cards = cards.map { |c| Uphold::Models::Card.new(c) } if cards.present?
+
+        cards
       end
 
       # Finds a card given the uphold_connection and a currency
@@ -40,10 +67,10 @@ module Uphold
           currency: currency || uphold_connection.default_currency,
           label: label || "Brave Rewards"
         }
+        puts "Creating #{currency}"
 
-        response = post(PATH, params, authorization(uphold_connection)))
-
-
+        response = post(PATH, params, authorization(uphold_connection))
+        Uphold::Models::Card.new(JSON.parse(response.body))
       end
 
       def authorization(uphold_connection)

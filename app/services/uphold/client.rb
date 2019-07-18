@@ -4,7 +4,8 @@ module Uphold
       @connection = connection
     end
 
-    def cards
+    def card
+      @card ||= Uphold::Models::Card.new
     end
 
     def user

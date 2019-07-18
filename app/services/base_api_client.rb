@@ -7,7 +7,7 @@ class BaseApiClient < BaseService
   #
   # returns  the response
   def get(path, options = {}, authorization = nil)
-    request(:get, path, { params: options }, authorization)
+    request(:get, path, options, authorization)
   end
 
   # Make a POST request.
@@ -16,8 +16,8 @@ class BaseApiClient < BaseService
   # options - [Hash] the parameters to supply
   #
   # returns - [Response] the response
-  def post(path, options = {})
-    request(:post, path, form: options)
+  def post(path, options = {}, authorization = nil)
+    request(:post, path, options, authorization)
   end
 
   # Make a PUT request.
