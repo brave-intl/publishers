@@ -19,7 +19,7 @@ module Admin
     end
 
     def update
-      CaseReply.update(reply_params)
+      CaseReply.find(params[:id]).update(reply_params)
       redirect_to admin_case_replies_path, flash: { notice: "Your saved reply was updated successfully."}
     end
 
