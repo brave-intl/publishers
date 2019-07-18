@@ -50,7 +50,7 @@ export default class CaseReply extends React.Component {
           className="small ml-0 mr-2 fa fa-caret-down"
           style={{ top: "5px", position: "relative" }}
         />
-        Saved replies
+        Saved templates
       </div>
     );
     let replies = (

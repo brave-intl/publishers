@@ -3,8 +3,8 @@
     =render partial: 'admin/cases/sidebar'
   .col-10
     .mb-3
-      h3 Saved replies
-      p Saved replies are re-usable text snippets that you can use throughout the Case workflow. Saved replies can save you time if you’re often typing similar responses.
+      h3 Saved templates
+      p Saved templates are re-usable text snippets that you can use throughout the Case workflow. Saved templates can save you time if you’re often typing similar responses.
 
     - @replies.each do |reply|
       .border.rounded.my-2.d-flex.justify-content-between.align-items-center
@@ -18,7 +18,7 @@
 
 
     - if @replies.size.zero?
-      .text-muted No saved replies
+      .text-muted No saved templates
 
 
     .mt-5
