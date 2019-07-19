@@ -7,7 +7,9 @@ module Admin
     end
 
     def update
-      CaseNote.find(params[:id]).update(public: false)
+      note = CaseNote.find(params[:id])
+      note.update(public: false)
+      redirect_to admin_case_path(note.case)
     end
 
     private

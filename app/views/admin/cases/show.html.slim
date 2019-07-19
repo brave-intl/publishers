@@ -2,7 +2,7 @@
 = javascript_pack_tag 'tribute'
 = stylesheet_pack_tag 'tribute'
 = javascript_pack_tag 'admin_case'
-
+= javascript_pack_tag 'admin_case_replies'
 
 .row.p-3.mb-4.shadow-sm.mx-1.rounded
   .col-4
@@ -52,13 +52,14 @@
           h6
             =fa_icon "paperclip", class: "mr-2"
             span= pluralize(@case.files.size, "Attachment")
-          - @case.files.each do |file|
-            .c-4.m-3.border.rounded.p-3
-              - if file.blob.image?
-                =fa_icon "file-image-o", class: 'mx-3'
-              - else
-                =fa_icon "fa-file-text-o", class: 'mx-3'
-              =link_to(file.blob.filename, url_for(file), target: "_blank")
+          .d-flex.flex-wrap.p-4
+            - @case.files.each do |file|
+              .p-3 style="max-width: 175px;"
+                - unless file.blob.image?
+                  =fa_icon "fa-file-text-o", class: 'mx-3'
+                a href=url_for(file) target="_blank" class="d-flex flex-column justify-content-between"
+                  = image_tag file, class: 'img-thumbnail'
+                  .mt-auto.font-weight-bold.text-dark.text-truncate.py-2= file.blob.filename
 
   .col-2
     .border-bottom.pb-2.mb-2
@@ -107,12 +108,15 @@
           label for="panel_id"
             .question
               h3.text-dark  Send a message
+        #replySection data-replies="#{@replies.to_json}"
       - else
         input type="checkbox" name="panels" id="panel_id" checked="checked"
           label for="panel_id"
             .question
-              h3.text-dark  Send a message
+              .d-flex
+                h3.text-dark  Send a message
 
+        #replySection data-replies="#{@replies.to_json}"
       .panel-content
         - if @case.assignee_id.blank?
           .mb-2
@@ -122,7 +126,7 @@
         = form_with model: [:admin, CaseNote.new(case: @case)], local: true, id: "case-form" do |f|
           = f.hidden_field :case_id
           .form-group
-            = f.text_area :note, { class:'form-control', rows:'6', minlength: "5", }
+            = f.text_area :note, { class:'form-control', rows:'7', minlength: "5", }
           .form-group
             = f.file_field :files, multiple: true
 

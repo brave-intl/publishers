@@ -1,7 +1,7 @@
 
 - if history.object_changes.present? && (changes = YAML.load(history.object_changes)) && changes.keys.any? { |k| ["assignee_id", "status"].include? k }
   .note-header
-    span.mr-2= link_to("Case ##{history.number}", class:'font-weight-bold text-dark')
+    span.mr-2= link_to("Case ##{history.number}", admin_case_path(history.item_id), class:'font-weight-bold text-dark')
     small.text-muted.mx-2 &#149;
     span.date data-tooltip=history.created_at.strftime("%B %d, %Y %k:%M %Z")
       = time_ago_in_words(history.created_at)
