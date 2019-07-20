@@ -89,7 +89,8 @@
                   span.tf-tooltip-content-heading= t ".u2f.device.heading"
                   span.tf-tooltip-content-content== t ".u2f.device.content_html"
           - if @u2f_registrations.any?
-            p= render @u2f_registrations
+            - @u2f_registrations.each do |u2f_registration|
+              = render partial: "u2f_registrations/u2f_registration", locals: { u2f_registration: u2f_registration }
           - else
             p.two-factor-method-disabled
               == "&bull; "
@@ -97,3 +98,25 @@
         .col-two-factor--action
           p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "CreateU2FClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "2FA"
           p.icon= render "usb"
+
+br
+.single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
+  .single-panel--padded-content
+    .row
+      .col-two-factor--content
+        h5= t ".delete_account.heading"
+        p= t ".delete_account.intro"
+      .col-two-factor--action
+        p= link_to \
+            t(".delete_account.button"),
+            publisher_path(current_publisher.id),
+            method: :delete,
+            class: "btn btn-block btn-danger",
+            data: { "js-confirm-with-modal": "delete-account-prompt" }
+        script#delete-account-prompt type="text/html"
+          h4= t ".delete_account.prompt.header"
+          p= t ".delete_account.prompt.final_confirmation"
+          .modal-buttons
+            = link_to t(".delete_account.prompt.deny"), "#", class: "js-deny btn btn-wide btn-outline-secondary"
+            = link_to t(".delete_account.prompt.confirm"), "#", class: "js-confirm btn btn-wide btn-danger"
+

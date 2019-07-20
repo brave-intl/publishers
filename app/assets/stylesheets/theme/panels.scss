@@ -21,6 +21,10 @@ $brave-panels-borderRadius: 8px;
       min-height: $spacer * 10;
     }
 
+    &--short {
+      min-height: $spacer * 16;
+    }
+
     &--medium {
       max-width: $spacer * 45;
     }

@@ -21,7 +21,7 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
                   .user-name.js-user-name-dropdown= current_publisher.name
                   .user-email= current_publisher.email
                 ul.user-links
-                  li= link_to two_factor_registrations_path do
+                  li= link_to security_publishers_path(current_publisher) do
                     span.user-links-lock
                       .user-links-lock-icon= render two_factor_enabled?(current_publisher) ? "locked_svg" : "unlocked_svg"
                       = t ".security"
