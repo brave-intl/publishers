@@ -169,7 +169,6 @@ class PublishersController < ApplicationController
     end
   end
 
-
   def change_email
     @publisher = current_publisher
   end
@@ -202,7 +201,6 @@ class PublishersController < ApplicationController
 
     @case = Case.find_by(publisher: current_publisher)
 
-
     # TODO Refactor this
     @possible_currencies = []
     if uphold_connection.uphold_verified?
@@ -214,7 +212,6 @@ class PublishersController < ApplicationController
       # Handles legacy case where user is missing an Uphold card
       uphold_connection.create_uphold_card_for_default_currency if uphold_connection.missing_card?
     end
-
   end
 
   def statements
@@ -248,7 +245,7 @@ class PublishersController < ApplicationController
       render(json: {
         wallet: wallet,
         uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
-        possible_currencies: uphold_connection.uphold_details.currencies
+        possible_currencies: uphold_connection.uphold_details.currencies,
       })
     else
       head 404
@@ -305,7 +302,6 @@ class PublishersController < ApplicationController
       redirect_to expired_authentication_token_publishers_path(id: publisher.id)
     end
   end
-
 
   def prepare_site_banner_data
     if current_publisher.default_site_banner_id.nil?

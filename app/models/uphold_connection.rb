@@ -52,15 +52,16 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def receive_uphold_code(code)
-    self.uphold_state_token = nil
-    self.uphold_code = code
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
+    update(
+      uphold_code: code,
+      uphold_state_token: nil,
+      uphold_access_parameters: nil,
+      uphold_verified: false,
+    )
   end
 
   def disconnect_uphold
-    self.update(
+    update(
       address: nil,
       is_member: false,
       status: nil,
@@ -133,7 +134,7 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def sync_from_uphold!
-    self.update(
+    update(
       is_member: uphold_details.memberAt.present?,
       status: uphold_details.status,
       uphold_id: uphold_details.id

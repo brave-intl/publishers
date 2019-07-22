@@ -1,5 +1,6 @@
 class BaseApiClient < BaseService
   private
+
   # Make a GET request.
   #
   # path    - [String] the path relative to the endpoint

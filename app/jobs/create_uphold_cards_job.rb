@@ -10,14 +10,12 @@ class CreateUpholdCardsJob < ApplicationJob
       return
     end
 
-    default_currency = uphold_connection.default_currency
-
     # Search for an existing card
-    card = uphold_connection.uphold_client.card.where(uphold_connection, default_currency).first
+    card = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection).first
 
+    # If the card doesn't exist so we should create it
     if card.blank?
-      # The card didn't exist so we should create it
-      card = uphold_connection.uphold_client.card.create(uphold_connection, default_currency)
+      card = uphold_connection.uphold_client.card.create(uphold_connection: uphold_connection)
     end
 
     # Finally let's update the address with the id of the card

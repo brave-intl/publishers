@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'addressable/template'
 
 module Uphold
@@ -8,7 +9,7 @@ module Uphold
 
       # For more information about how these URI templates are structured read the explaination in the RFC
       # https://www.rfc-editor.org/rfc/rfc6570.txt
-      PATH = "/v0/me/cards".freeze
+      PATH = "/v0/me/cards"
 
       attr_accessor :address, :available, :balance, :currency, :id, :label, :lastTransactionAt, :normalized, :settings
 
@@ -22,7 +23,7 @@ module Uphold
       # @param [string] iid The id of the card you want to find. By default searches for the address on UpholdConnection
       #
       # @return [Uphold::Models::Card] the card
-      def find(uphold_connection, id = nil)
+      def find(uphold_connection:, id: nil)
         Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
         id = uphold_connection.address if id.blank?
 
@@ -38,7 +39,7 @@ module Uphold
       # @param [string] currency The currency you want to find. By default searches for default_currency on UpholdConnection
       #
       # @return [Uphold::Models::Card[]] an array of found cards
-      def where(uphold_connection, currency = nil)
+      def where(uphold_connection:, currency: nil)
         Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
 
         query = "currency:" + (currency || uphold_connection.default_currency)
@@ -47,9 +48,9 @@ module Uphold
 
         cards = []
         if response.headers['Content-Encoding'].eql?('gzip')
-          sio = StringIO.new( response.body )
-          gz = Zlib::GzipReader.new( sio )
-          cards = JSON.parse(gz.read())
+          sio = StringIO.new(response.body)
+          gz = Zlib::GzipReader.new(sio)
+          cards = JSON.parse(gz.read)
         else
           cards = JSON.parse(response.body)
         end
@@ -66,12 +67,12 @@ module Uphold
       # @param [string] label The label for the card
       #
       # @return [Uphold::Models::Card] the newly created card
-      def create(uphold_connection, currency = nil, label = nil)
+      def create(uphold_connection:, currency: nil, label: nil)
         Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
 
         params = {
           currency: currency || uphold_connection.default_currency,
-          label: label || "Brave Rewards"
+          label: label || "Brave Rewards",
         }
         puts "Creating #{currency}"
 

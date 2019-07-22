@@ -32,7 +32,7 @@ module Publishers
       uphold_connection.update(confirm_default_currency_params.merge(default_currency_confirmed_at: Time.now))
 
       if uphold_connection.can_create_uphold_cards?
-       uphold_connection.create_uphold_card_for_default_currency
+        uphold_connection.create_uphold_card_for_default_currency
 
         # TODO do we need this refresh?
         render(json: {
@@ -51,7 +51,6 @@ module Publishers
         }, status: 200)
       end
     end
-
 
     # This creates the uphold connection
     # The route for this is by default publisher/uphold_verified
