@@ -23,6 +23,7 @@ module Uphold
       #
       # @return [Uphold::Models::Card] the card
       def find(uphold_connection, id = nil)
+        Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
         id = uphold_connection.address if id.blank?
 
         endpoint = PATH + "/" + id
@@ -38,7 +39,10 @@ module Uphold
       #
       # @return [Uphold::Models::Card[]] an array of found cards
       def where(uphold_connection, currency = nil)
+        Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
+
         query = "currency:" + (currency || uphold_connection.default_currency)
+
         response = get(PATH, { q: query }, authorization(uphold_connection))
 
         cards = []
@@ -63,6 +67,8 @@ module Uphold
       #
       # @return [Uphold::Models::Card] the newly created card
       def create(uphold_connection, currency = nil, label = nil)
+        Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
+
         params = {
           currency: currency || uphold_connection.default_currency,
           label: label || "Brave Rewards"

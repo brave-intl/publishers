@@ -60,10 +60,17 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def disconnect_uphold
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
+    self.update(
+      address: nil,
+      is_member: false,
+      status: nil,
+      uphold_id: nil,
+      uphold_code: nil,
+      uphold_access_parameters: nil,
+      uphold_verified: false,
+      default_currency_confirmed_at: nil,
+      default_currency: nil,
+    )
   end
 
   def uphold_reauthorization_needed?
@@ -75,8 +82,13 @@ class UpholdConnection < ActiveRecord::Base
 
   # Makes a remote HTTP call to Uphold to get more details
   # TODO should we actually call uphold_user?
+
+  def uphold_client
+    @uphold_client ||= Uphold::Client.new
+  end
+
   def uphold_details
-    @user ||= Uphold::Client.new.user.find(self)
+    @user ||= uphold_client.user.find(self)
   end
 
   def uphold_status
@@ -113,17 +125,12 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def create_uphold_card_for_default_currency
-    # TODO Figure out how to store wallet address
-    return unless missing_card?
-
-    # CreateUpholdCardsJob.perform_now(publisher_id: publisher_id)
+    CreateUpholdCardsJob.perform_now(uphold_connection: self)
   end
 
   def missing_card?
-    !(can_create_uphold_cards? && default_currency_confirmed_at.present? && address.blank?)
-    # TODO explore this, might need to check with Uphold about the missing address?
+    default_currency_confirmed_at.present? && address.blank?
   end
-
 
   def sync_from_uphold!
     self.update(
@@ -132,7 +139,6 @@ class UpholdConnection < ActiveRecord::Base
       uphold_id: uphold_details.id
     )
   end
-
 
   def encryption_key
     # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.

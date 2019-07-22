@@ -34,6 +34,7 @@ module Publishers
       if uphold_connection.can_create_uphold_cards?
         uphold_connection.create_uphold_card_for_default_currency
 
+        # TODO do we need this refresh?
         render(json: {
           action: 'refresh',
           status: t("publishers.confirm_default_currency_modal.refreshing"),

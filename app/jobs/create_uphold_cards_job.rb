@@ -2,25 +2,25 @@
 class CreateUpholdCardsJob < ApplicationJob
   queue_as :default
 
-  def perform(publisher_id:)
-    publisher = Publisher.find(publisher_id)
-
-    unless publisher.uphold_connection.can_create_uphold_cards?
-      Rails.logger.info("Could not create uphold card for publisher #{publisher.id}.")
-      SlackMessenger.new(message: "Could not create uphold card for publisher #{publisher.id}.", channel: SlackMessenger::ALERTS).perform
+  def perform(uphold_connection:)
+    unless uphold_connection.can_create_uphold_cards?
+      # Reasons might include that they are not in a district which allows for crypto, like tennesse
+      Rails.logger.info("Could not create uphold card for publisher #{uphold_connection.publisher_id}.")
+      SlackMessenger.new(message: "Could not create uphold card for publisher #{uphold_connection.publisher_id}.", channel: SlackMessenger::ALERTS).perform
       return
     end
 
-    default_currency = publisher.uphold_connection.default_currency
+    default_currency = uphold_connection.default_currency
 
-    if publisher.uphold_connection.address.blank?
-      UpholdServices::CardCreationService.new(publisher: publisher,
-                                              currency_code: default_currency).perform
+    # Search for an existing card
+    card = uphold_connection.uphold_client.card.where(uphold_connection, default_currency).first
+
+    if card.blank?
+      # The card didn't exist so we should create it
+      card = uphold_connection.uphold_client.card.create(uphold_connection, default_currency)
     end
 
-    # TODO We shouldn't have to worry about mismatched default currencies now
-    # if default_currency != publisher.wallet.default_currency
-    #   PublisherDefaultCurrencySetter.new(publisher: publisher).perform
-    # end
+    # Finally let's update the address with the id of the card
+    uphold_connection.update(address: card.id)
   end
 end
