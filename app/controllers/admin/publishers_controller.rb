@@ -34,7 +34,7 @@ class Admin::PublishersController < AdminController
     @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
 
     respond_to do |format|
-      format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
+      format.json { render json: @publishers.to_json(only: [:default_currency], methods: :avatar_color) }
       format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
     end
   end

@@ -103,20 +103,18 @@ function updateChannelBalances(wallet) {
   }
 }
 
-function updateDefaultCurrencyValue(wallet) {
+function updateDefaultCurrencyValue(defaultCurrency) {
   let upholdStatusElement = document.getElementById("uphold_status");
   upholdStatusElement.setAttribute(
     "data-default-currency",
-    wallet.defaultCurrency || ""
+    defaultCurrency || ""
   );
 
   let defaultCurrencyDisplay = document.getElementById("default_currency_code");
-  defaultCurrencyDisplay.innerText =
-    wallet.defaultCurrency || NO_CURRENCY_SELECTED;
+  defaultCurrencyDisplay.innerText = defaultCurrency || NO_CURRENCY_SELECTED;
 }
 
-function updatePossibleCurrencies(wallet) {
-  let possibleCurrencies = wallet.possibleCurrencies;
+function updatePossibleCurrencies(possibleCurrencies) {
   let upholdStatusElement = document.getElementById("uphold_status");
   upholdStatusElement.setAttribute(
     "data-possible-currencies",
@@ -174,11 +172,10 @@ function refreshBalance() {
       }
     })
     .then(function(body) {
-      let wallet = new Wallet(body);
+      let wallet = new Wallet(body.wallet);
 
-      updateDefaultCurrencyValue(wallet);
-
-      updatePossibleCurrencies(wallet);
+      updateDefaultCurrencyValue(body.uphold_connection.default_currency);
+      updatePossibleCurrencies(body.possible_currencies);
 
       let overallBalance = wallet.overallBalance;
       updateOverallBalance(overallBalance);
@@ -188,7 +185,10 @@ function refreshBalance() {
 
       updateChannelBalances(wallet);
 
-      if (!wallet.defaultCurrency && wallet.authorized) {
+      if (
+        !body.uphold_connection.default_currency &&
+        body.uphold_connection["can_create_uphold_cards?"]
+      ) {
         openDefaultCurrencyModal();
       }
     });

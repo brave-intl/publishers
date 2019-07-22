@@ -241,8 +241,15 @@ class PublishersController < ApplicationController
 
   def wallet
     wallet = current_publisher.wallet
+
+    uphold_connection = current_publisher.uphold_connection
+
     if wallet
-      render(json: wallet.to_json)
+      render(json: {
+        wallet: wallet,
+        uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
+        possible_currencies: uphold_connection.uphold_details.currencies
+      })
     else
       head 404
     end

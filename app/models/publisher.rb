@@ -154,28 +154,7 @@ class Publisher < ApplicationRecord
 
   # API call to eyeshade
   def wallet
-    return @_wallet if @_wallet
-
-    @_wallet = PublisherWalletGetter.new(publisher: self).perform
-
-    # if the wallet call fails the wallet will be nil
-    if @_wallet
-      # Sync the default_currency to eyeshade, if they are mismatched
-      # ToDo: This can be eliminated once eyeshade no longer maintains a default_currency
-      # (which should be after publishers is driving payout report generation)
-
-      # if default_currency.present? && @_wallet.address.present? && default_currency != @_wallet.default_currency
-      #   UploadDefaultCurrencyJob.perform_later(publisher_id: id)
-      # end
-
-      # uphold_connection&.update_attributes(
-      #   is_member: @_wallet.is_a_member?,
-      #   uphold_id:  @_wallet.uphold_id,
-      #   address: @_wallet.address
-      # )
-    end
-
-    @_wallet
+    @wallet ||= PublisherWalletGetter.new(publisher: self).perform
   end
 
   def encryption_key

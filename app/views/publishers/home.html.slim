@@ -1,8 +1,6 @@
 noscript
   div.noscript-warning = t ".noscript"
 
-p==current_publisher.uphold_connection.to_json.gsub(',', ',<br/>')
-
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
     current_publisher.uphold_connection.uphold_verified? && \
     (current_publisher.uphold_connection.default_currency_confirmed_at.blank? || current_publisher.uphold_connection.default_currency.blank?)
