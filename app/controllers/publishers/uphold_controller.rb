@@ -1,7 +1,7 @@
 module Publishers
   class UpholdController < ApplicationController
     # TODO Refactor Uphold Status to not actually need helper
-    # Tradational usage of helpers should really only be for views
+    # Traditional usage of helpers should really only be for views
     include PublishersHelper
 
     def uphold_status
