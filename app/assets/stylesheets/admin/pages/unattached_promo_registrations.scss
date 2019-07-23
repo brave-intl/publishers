@@ -10,7 +10,7 @@
   }
 
   .panel {
-    background: aliceblue;
+    background: Lavender;
     flex: 1;
     border-width: 1px;
     border-radius: 15px;
@@ -19,6 +19,10 @@
 
     &--white{
       background: white;
+    }
+
+    &--gray{
+      background: whitesmoke;
     }
 
     .panel--header {
