@@ -60,19 +60,19 @@ module Uphold
         cards
       end
 
-      # Finds a card given the uphold_connection and a currency
+      # Creates a card given the uphold_connection, currency, annd a label
       #
       # @param [UpholdConnection] connection The uphold connection to find.
       # @param [string] currency The currency you want to find. By default searches for default_currency on UpholdConnection
-      # @param [string] label The label for the card
+      # @param [string] label The label for the card, defaults to "Brave Rewards"
       #
       # @return [Uphold::Models::Card] the newly created card
-      def create(uphold_connection:, currency: nil, label: nil)
+      def create(uphold_connection:, currency: nil, label: "Brave Rewards")
         Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
 
         params = {
           currency: currency || uphold_connection.default_currency,
-          label: label || "Brave Rewards",
+          label: label,
         }
         puts "Creating #{currency}"
 
