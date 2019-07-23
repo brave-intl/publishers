@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       get :two_factor_authentication_removal
       get :security, to: 'publishers/security#index'
       get :prompt_security, to: 'publishers/security#prompt'
+      get :settings, to: 'publishers/settings#index'
       post :request_two_factor_authentication_removal
       get :confirm_two_factor_authentication_removal
       get :cancel_two_factor_authentication_removal
