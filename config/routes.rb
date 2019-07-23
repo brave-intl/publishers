@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         scope controller: 'uphold'  do
           get :uphold_status
           get :uphold_verified, action: :create
+          patch :connect_uphold
           patch :disconnect_uphold, action: :destroy
           patch :confirm_default_currency
         end

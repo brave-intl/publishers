@@ -98,7 +98,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               .status-summary
                 .text= uphold_status_summary(current_publisher)
                 .action
-                  = link_to(t(".uphold.connect"), uphold_authorization_endpoint(current_publisher), class: "connect-uphold", :"data-piwik-action" => "UpholdConnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+                  = link_to(t(".uphold.connect"), connect_uphold_publishers_path, method: :patch, class: "connect-uphold", :"data-piwik-action" => "UpholdConnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
                   a.disconnect-uphold href="#"
                     = t ".uphold.disconnect"
                   script type="text/html" id="disconnect-uphold-js"
@@ -111,13 +111,13 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                         uphold_dashboard_url,
                         id: "go_to_uphold", class: "btn btn-primary", :"data-piwik-action" => "GoToUpholdHomeClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard", style: "display:none")
               = link_to(uphold_authorization_description(current_publisher),
-                        uphold_authorization_endpoint(current_publisher),
-                        id: "reconnect_to_uphold", class: "btn btn-primary", :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+                        connect_uphold_publishers_path,
+                        id: "reconnect_to_uphold", class: "btn btn-primary", method: :patch, :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
               .reconnect-instructions
                 = "Having trouble with Uphold registration?"
                 br
-                = link_to(t(".uphold.connect_to_a_new_account"), uphold_authorization_endpoint(current_publisher),
-                      :"data-piwik-action" => "ConnectNewUpholdAccountClicked",
+                = link_to(t(".uphold.connect_to_a_new_account"), connect_uphold_publishers_path,
+                      :"data-piwik-action" => "ConnectNewUpholdAccountClicked", method: :patch,
                       :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
             .dashboard-panel--content#uphold_dashboard
               .deposit-currency.field

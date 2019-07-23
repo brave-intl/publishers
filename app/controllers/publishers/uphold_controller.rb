@@ -46,10 +46,20 @@ module Publishers
         render(json: {
           action: 'redirect',
           status: t("publishers.confirm_default_currency_modal.redirecting"),
-          redirectURL: uphold_authorization_endpoint(current_publisher),
+          redirectURL: connect_uphold_publishers_path,
           timeout: 3000,
         }, status: 200)
       end
+    end
+
+    # Generates an Uphold State Token for the user
+    def connect_uphold
+      current_publisher.uphold_connection&.prepare_uphold_state_token
+
+      redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
+        gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
+        gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
+        gsub('<STATE>', current_publisher.uphold_connection&.uphold_state_token)
     end
 
     # This creates the uphold connection
@@ -92,6 +102,7 @@ module Publishers
       redirect_to(home_publishers_path)
     end
 
+    # publishers/disconnect_uphold
     def destroy
       publisher = current_publisher
       publisher.uphold_connection.disconnect_uphold

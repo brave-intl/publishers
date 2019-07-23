@@ -40,9 +40,7 @@ class UpholdConnection < ActiveRecord::Base
   }
 
   # This state token is generated and must be unique when connecting to uphold.
-  # It is used to navigate to Uphold, therefore on GET request this state token must be there.
   def prepare_uphold_state_token
-    return if uphold_state_token.present?
     self.uphold_state_token = SecureRandom.hex(64).to_s
     save!
   end
