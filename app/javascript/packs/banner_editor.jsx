@@ -325,7 +325,10 @@ export default class BannerEditor extends React.Component {
   }
 
   updateCurrentLink(event) {
-    this.setState({ currentLink: event.target.value });
+    var hostname = (new URL(event.target.value)).hostname;
+    if (["www.youtube.com", "www.twitch.tv", "www.twitter.com"].includes(hostname)) {
+      this.setState({ currentLink: event.target.value });
+    }
   }
 
   updateTitle(event) {
