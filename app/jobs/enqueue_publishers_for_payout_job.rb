@@ -6,11 +6,11 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     Rails.logger.info("Enqueuing publishers for payment.")
 
     if publisher_ids.present?
-      publishers = Publisher.where(id: publisher_ids)
+      publishers = Publisher.joins(:uphold_connection).where(id: publisher_ids)
     elsif manual
       publishers = Publisher.partner
     else
-      publishers = Publisher.with_verified_channel
+      publishers = Publisher.joins(:uphold_connection).with_verified_channel
     end
 
     if payout_report_id.present?
@@ -23,8 +23,8 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     end
 
     publishers.find_each do |publisher|
-      if manual 
-        # We can consider using a job here if n is sufficiently large 
+      if manual
+        # We can consider using a job here if n is sufficiently large
         ManualPayoutReportPublisherIncluder.new(publisher: publisher,
                                                 payout_report: payout_report,
                                                 should_send_notifications: should_send_notifications).perform

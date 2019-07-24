@@ -191,8 +191,7 @@ class PublishersController < ApplicationController
   def home
     uphold_connection = current_publisher.uphold_connection
     if uphold_connection.blank?
-      UpholdConnection.create!(publisher: current_publisher)
-      uphold_connection.reload
+      uphold_connection = UpholdConnection.create!(publisher: current_publisher)
     end
 
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized

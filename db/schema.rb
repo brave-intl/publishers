@@ -48,6 +48,13 @@ ActiveRecord::Schema.define(version: 2019_07_17_030948) do
     t.index ["created_by_id"], name: "index_case_notes_on_created_by_id"
   end
 
+  create_table "case_replies", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "cases", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.text "solicit_question"
     t.text "accident_question"

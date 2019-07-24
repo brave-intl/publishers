@@ -137,7 +137,7 @@ class UpholdConnection < ActiveRecord::Base
       is_member: uphold_details.memberAt.present?,
       status: uphold_details.status,
       uphold_id: uphold_details.id,
-      country: uphohld_details.country
+      country: uphold_details.country
     )
   end
 

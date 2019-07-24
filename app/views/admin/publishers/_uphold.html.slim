@@ -21,6 +21,9 @@ h3.text-dark.d-flex.align-items-center
         td Uphold ID
         td= link_to @publisher.uphold_connection.uphold_id, admin_publishers_path(q: @publisher.uphold_connection.uphold_id)
       tr
+        td Country
+        td= @publisher.uphold_connection.country
+      tr
         td Default currency
         td
           span data-tooltip=@publisher.uphold_connection.default_currency_confirmed_at
