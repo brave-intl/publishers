@@ -78,7 +78,7 @@ h4 {
 .top-swoop {
   position: absolute;
   top: -2px;
-  width: 100vw !important;
+  width: 100% !important;
 }
 
 .bottom-swoop {
