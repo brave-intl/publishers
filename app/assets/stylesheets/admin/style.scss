@@ -447,6 +447,69 @@ a.logo span {
   position: absolute;
 }
 
-.shadow-md {
-  box-shadow: $defaultBoxShadow;
+.checkbox_1 {
+  height: 70px;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.9;
+  cursor: pointer;
+  position: relative;
+}
+
+.checkbox_1 > input {
+  width: 21px;
+  height: 21px;
+
+  appearance: none;
+
+  /* custom styling */
+  background-color: #fff;
+  border: 2px solid $braveGray-8;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+
+  transition-duration: 0.1s;
+}
+
+.checkbox_1 > input:checked {
+  border: 3px solid #4c54d2;
+  background-color: #f3f3f6;
+}
+
+/* style checkmark symbol */
+.checkbox_1 > input:checked + span::before {
+  color: #343546;
+  content: "\2713";
+
+  text-align: center;
+
+  display: block;
+  position: absolute;
+  left: 16px;
+  top: 22px;
+}
+
+.checkbox_1 > input:active {
+  border: 2px solid #7e47a8;
+}
+
+.checkbox_1 > input:focus + label::before {
+  outline: #fb542b solid 1px;
+  box-shadow: 0 0px 8px #7e47a8;
+}
+
+.reply:hover {
+  background: $braveBrand-Light;
+  cursor: pointer;
+  * {
+    color: $braveGray-10 !important;
+  }
+}
+
+#replySection {
+  left: 300px;
+  top: 0;
+  position: absolute;
+  z-index: 999999999;
 }

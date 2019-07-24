@@ -179,8 +179,10 @@ Rails.application.routes.draw do
       patch :assign
       collection do
         get :overview
+        resources :case_replies
       end
     end
+
     resources :case_notes
 
     resources :faq_categories, except: [:show]
