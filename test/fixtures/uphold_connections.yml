@@ -49,6 +49,7 @@ connected_connection:
 details_connection:
   uphold_verified: true
   publisher: uphold_connected_details
+  default_currency: "USD"
   is_member: true
   address: "abcdabcd-0000-0000-0000-abcd00000006"
   status: "ok"

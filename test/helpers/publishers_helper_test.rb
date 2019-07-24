@@ -31,11 +31,12 @@ class PublishersHelperTest < ActionView::TestCase
   end
 
   class FakePublisher
-    attr_reader :default_currency, :wallet
+    attr_reader :default_currency, :wallet, :uphold_connection
 
-    def initialize(wallet_info:, accounts: [], transactions: [])
+    def initialize(wallet_info:, accounts: [], transactions: [], uphold_connection: nil)
       @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions) if wallet_info
       @default_currency = 'USD'
+      @uphold_connection = UpholdConnection.new(uphold_connection)
     end
 
     def become_subclass
@@ -56,42 +57,10 @@ class PublishersHelperTest < ActionView::TestCase
   end
 
   test "publisher_converted_overall_balance should return `CURRENCY unavailable` when no wallet is set" do
-
-    publisher = FakePublisher.new(
-      wallet_info: {
-        "status" => {
-          "provider" => "uphold"
-        },
-        "contributions" => {
-          "amount" => "9001.00",
-          "currency" => "USD",
-          "altcurrency" => "BAT",
-          "probi" => "38077497398351695427000"
-        },
-        "rates" => {
-          "BTC" => 0.00005418424016883016,
-          "ETH" => 0.000795331082073117,
-          "USD" => 0.2363863335301452,
-          "EUR" => 0.20187818378874756,
-          "GBP" => 0.1799810085548496
-        },
-        "wallet" => {
-          "provider" => "uphold",
-          "authorized" => true,
-          "defaultCurrency" => 'USD',
-        }
-      }
-    )
+    publisher = publishers(:uphold_connected_details)
 
     assert_not_nil publisher.wallet
-    assert_dom_equal %{~ 0.00 USD}, publisher_converted_overall_balance(publisher)
-
-    publisher = FakePublisher.new(
-      wallet_info: nil
-    )
-
-    assert_nil publisher.wallet
-    assert_equal "USD unavailable", publisher_converted_overall_balance(publisher)
+    assert_dom_equal %{~ 268.13 USD}, publisher_converted_overall_balance(publisher)
   end
 
   test "can extract the uuid from an owner_identifier" do
@@ -100,6 +69,9 @@ class PublishersHelperTest < ActionView::TestCase
 
   test "publishers_last_settlement_balance should return a formatted & converted wallet balance, last settlement balances do not apply fee" do
     publisher = FakePublisher.new(
+      uphold_connection: {
+        default_currency: 'USD'
+      },
       wallet_info: {
         "status" => {
           "provider" => "uphold"
