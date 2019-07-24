@@ -76,7 +76,7 @@ export default class BannerEditor extends React.Component {
       scale: 1,
       linkSelection: false,
       linkOption: "Youtube",
-      currentLink: "",
+      currentUsername: "",
       youtube: this.props.values.youtube || "",
       twitter: this.props.values.twitter || "",
       twitch: this.props.values.twitch || "",
@@ -294,16 +294,16 @@ export default class BannerEditor extends React.Component {
   addLink() {
     switch (this.state.linkOption) {
       case "Youtube":
-        this.setState({ youtube: this.state.currentLink });
+        this.setState({ youtube: "https://www.youtube.com/" + this.state.currentUsername });
         break;
       case "Twitter":
-        this.setState({ twitter: this.state.currentLink });
+        this.setState({ twitter: "https://www.twitter.com/" + this.state.currentUsername });
         break;
       case "Twitch":
-        this.setState({ twitch: this.state.currentLink });
+        this.setState({ twitch: "https://www.twitch.tv/" + this.state.currentUsername });
         break;
     }
-    this.setState({ currentLink: "" });
+    this.setState({ currentUsername: "" });
   }
 
   handleLinkDelete(option) {
@@ -324,11 +324,8 @@ export default class BannerEditor extends React.Component {
     this.setState({ linkOption: value });
   }
 
-  updateCurrentLink(event) {
-    var hostname = (new URL(event.target.value)).hostname;
-    if (["www.youtube.com", "www.twitch.tv", "www.twitter.com"].includes(hostname)) {
-      this.setState({ currentLink: event.target.value });
-    }
+  updateCurrentUsername(event) {
+    this.setState({ currentUsername: event.target.value.replace("/\W/g", '') });
   }
 
   updateTitle(event) {
@@ -978,13 +975,13 @@ export default class BannerEditor extends React.Component {
                   </DropdownToggle>
                   <TextInput
                     link
-                    onChange={e => this.updateCurrentLink(e)}
-                    value={this.state.currentLink}
+                    onChange={e => this.updateCurrentUsername(e)}
+                    value={this.state.currentUsername}
                     maxLength={80}
                   />
                   {this.renderDropdown()}
                   <Text add onClick={() => this.addLink()}>
-                    + Add Link
+                    + Add User Name or Handle
                   </Text>
                 </LinkInputWrapper>
               )}
