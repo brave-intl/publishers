@@ -8,13 +8,13 @@ class ManualPayoutReportPublisherIncluder < BaseService
   def perform
     return if @publisher.suspended? || @publisher.no_grants? || @publisher.hold? || @publisher.locked? || @publisher.excluded_from_payout?
 
-    wallet = @publisher.wallet
+    uphold_connection = @publisher.uphold_connection
 
-    uphold_status = wallet.uphold_account_status
-    uphold_member = wallet.is_a_member?
-    reauthorization_needed = wallet.action == "re-authorize"
+    uphold_status = uphold_connection.status
+    uphold_member = uphold_connection.is_member?
+    reauthorization_needed = uphold_connection.uphold_access_parameters.present?
+    uphold_id = uphold_connection.uphold_id
     suspended = @publisher.suspended?
-    uphold_id = wallet.uphold_id
 
     invoices = Invoice.where(partner_id: @publisher.id, status: Invoice::IN_PROGRESS)
     invoices.each do |invoice|
@@ -25,7 +25,7 @@ class ManualPayoutReportPublisherIncluder < BaseService
                               fees: "0",
                               publisher_id: @publisher.id,
                               kind: PotentialPayment::MANUAL,
-                              address: wallet.address.to_s,
+                              address: uphold_connection.address.to_s,
                               uphold_status: uphold_status,
                               reauthorization_needed: reauthorization_needed,
                               uphold_member: uphold_member,

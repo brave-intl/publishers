@@ -131,11 +131,13 @@ class UpholdConnection < ActiveRecord::Base
     default_currency_confirmed_at.present? && address.blank?
   end
 
+  # Makes an HTTP Request to Uphold and sychronizes
   def sync_from_uphold!
     update(
       is_member: uphold_details.memberAt.present?,
       status: uphold_details.status,
-      uphold_id: uphold_details.id
+      uphold_id: uphold_details.id,
+      country: uphohld_details.country
     )
   end
 

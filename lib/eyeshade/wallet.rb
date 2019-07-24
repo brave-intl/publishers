@@ -35,7 +35,7 @@ module Eyeshade
       @address = wallet_info.dig("wallet", "address") || ""
       @is_member = wallet_info.dig("wallet", "isMember") || false
       @uphold_id = wallet_info.dig("wallet", "id")
-      @uphold_account_status = wallet_info.dig("wallet", "status")
+      # @uphold_account_status = wallet_info.dig("wallet", "status")
       # @action = wallet_info.dig("status","action")
       @channel_balances = {}
       accounts.select { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.each do |account|

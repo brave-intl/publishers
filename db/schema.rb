@@ -512,8 +512,9 @@ ActiveRecord::Schema.define(version: 2019_07_17_030948) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
+    t.string "country"
     t.string "default_currency"
-    t.string "default_currency_confirmed_at"
+    t.datetime "default_currency_confirmed_at"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 

@@ -4,7 +4,7 @@ class CreateUpholdCardsJob < ApplicationJob
 
   def perform(uphold_connection:)
     unless uphold_connection.can_create_uphold_cards?
-      # Reasons might include that they are not in a district which allows for crypto, like tennesse
+      # Not sure
       Rails.logger.info("Could not create uphold card for publisher #{uphold_connection.publisher_id}.")
       SlackMessenger.new(message: "Could not create uphold card for publisher #{uphold_connection.publisher_id}.", channel: SlackMessenger::ALERTS).perform
       return

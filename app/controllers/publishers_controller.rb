@@ -206,7 +206,7 @@ class PublishersController < ApplicationController
     if uphold_connection.uphold_verified?
       @possible_currencies = uphold_connection.uphold_details.currencies
 
-      # every request let's sync from uphodl
+      # every request to the homepage let's sync from uphold
       uphold_connection.sync_from_uphold!
 
       # Handles legacy case where user is missing an Uphold card

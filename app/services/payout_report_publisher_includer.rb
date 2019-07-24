@@ -9,19 +9,17 @@ class PayoutReportPublisherIncluder < BaseService
     return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold?
 
     publisher_has_unsettled_balance = false
+    uphold_connection = @publisher.uphold_connection
 
-    if publisher.uphold_connection.missing_card?
-      publisher.uphold_connection.create_uphold_card_for_default_currency
+    if uphold_connection.missing_card?
+      uphold_connection.create_uphold_card_for_default_currency
     end
 
     publisher_has_unsettled_balance = false
     wallet = PublisherWalletGetter.new(publisher: @publisher).perform
 
-    uphold_status = wallet.uphold_account_status
-    uphold_member = wallet.is_a_member?
-    reauthorization_needed = wallet.action == "re-authorize"
+    reauthorization_needed = uphold_connection.uphold_access_parameters.blank?
     suspended = @publisher.suspended?
-    uphold_id = wallet.uphold_id
 
     probi = wallet.referral_balance.amount_probi # probi = balance
     publisher_has_unsettled_balance = probi.to_i.positive?
@@ -34,13 +32,13 @@ class PayoutReportPublisherIncluder < BaseService
                               fees: "0",
                               publisher_id: @publisher.id,
                               kind: PotentialPayment::REFERRAL,
-                              address: "#{wallet.address}",
-                              uphold_status: uphold_status,
+                              address: "#{uphold_connection.address}",
+                              uphold_status: uphold_connection.status,
                               reauthorization_needed: reauthorization_needed,
-                              uphold_member: uphold_member,
+                              uphold_member: uphold_connection.is_member?,
+                              uphold_id: uphold_connection.uphold_id,
                               suspended: suspended,
-                              status: @publisher.last_status_update&.status,
-                              uphold_id: uphold_id)
+                              status: @publisher.last_status_update&.status)
     end
 
     # Create potential payments for channel contributions
@@ -58,14 +56,14 @@ class PayoutReportPublisherIncluder < BaseService
                                 publisher_id: @publisher.id,
                                 channel_id: channel.id,
                                 kind: PotentialPayment::CONTRIBUTION,
-                                address: "#{wallet.address}",
+                                address: "#{uphold_connection.address}",
                                 url: "#{channel.details.url}",
-                                uphold_status: uphold_status,
+                                uphold_status: uphold_connection.status,
                                 reauthorization_needed: reauthorization_needed,
-                                uphold_member: uphold_member,
+                                uphold_member: uphold_connection.is_member?,
+                                uphold_id: uphold_connection.uphold_id,
                                 suspended: suspended,
                                 status: @publisher.last_status_update&.status,
-                                uphold_id: uphold_id,
                                 channel_stats: channel.details.stats,
                                 channel_type: channel.details_type)
       end
@@ -73,19 +71,19 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Notify publishers that have money waiting, but will not will not receive funds
     if publisher_has_unsettled_balance && @should_send_notifications
-      if !@publisher.uphold_connection&.uphold_verified? || wallet.uphold_account_status.nil?
+      if !uphold_connection.uphold_verified? || uphold_connection.status.blank?
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are disconnected from Uphold.")
         PublisherMailer.wallet_not_connected(@publisher).deliver_later
       end
 
       # eyeshade omits the wallet address if the status is not ok
       # means that the transaction limits have been exceeded
-      if wallet.is_a_member? && wallet.address.blank?
+      if uphold_connection.is_member? && uphold_connection.status != "ok"
         PublisherMailer.uphold_member_restricted(@publisher).deliver_later
       end
 
       # The wallet's uphold account status has to exist because otherwise their wallet is just not connected
-      if @publisher.uphold_connection&.uphold_verified? && wallet.uphold_account_status.present? && wallet.not_a_member?
+      if uphold_connection.uphold_verified? && uphold_connection.status.present? && !uphold_connection.is_member?
         Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
         PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later
       end
