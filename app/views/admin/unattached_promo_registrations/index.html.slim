@@ -18,7 +18,7 @@
           = text_field_tag "campaign_name", nil, placeholder: "Campaign name"
           = submit_tag "Create", class: "btn btn-info", style: "float: right"
   .row
-  .panel.panel--white.panel--table
+  .panel.panel--gray.panel--table
     .panel--header = "Manage"
     . style="color: darkgrey; font-size: 14px; margin-bottom: 5px;"
       - if Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at').nil?
@@ -31,7 +31,7 @@
     = form_tag admin_unattached_promo_registrations_path, method: :patch, id: "unattached-referral-code-form" do
       table.table
         tr
-          th 
+          th
           th = "Code"
           th = "Campaign"
           th = "Installer Type"
@@ -70,6 +70,8 @@
               td = promo_registration_aggregate_stats[PromoRegistration::RETRIEVALS] || 0
               td = promo_registration_aggregate_stats[PromoRegistration::FIRST_RUNS] || 0
               td = promo_registration_aggregate_stats[PromoRegistration::FINALIZED] || 0
+      = will_paginate @promo_registrations
+      hr
       .flex
         .unattached-referral-code-form--submissions
           .panel
