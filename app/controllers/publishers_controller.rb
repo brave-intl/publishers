@@ -244,7 +244,7 @@ class PublishersController < ApplicationController
       render(json: {
         wallet: wallet,
         uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
-        possible_currencies: uphold_connection.uphold_details.currencies,
+        possible_currencies: uphold_connection.uphold_details&.currencies || [],
       })
     else
       head 404

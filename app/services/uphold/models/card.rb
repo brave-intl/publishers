@@ -74,7 +74,6 @@ module Uphold
           currency: currency || uphold_connection.default_currency,
           label: label,
         }
-        puts "Creating #{currency}"
 
         response = post(PATH, params, authorization(uphold_connection))
         Uphold::Models::Card.new(JSON.parse(response.body))

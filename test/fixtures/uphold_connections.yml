@@ -46,6 +46,21 @@ connected_connection:
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
 
+basic_connection:
+  uphold_verified: true
+  publisher: uphold_connected
+  default_currency: "USD"
+  is_member: true
+  address: "abcdabcd-0000-0000-0000-abcd00000006"
+  status: "ok"
+  uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
+  encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
+
 details_connection:
   uphold_verified: true
   publisher: uphold_connected_details
@@ -55,7 +70,7 @@ details_connection:
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    '{}',
+    { scope: 'cards:write' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
@@ -65,7 +80,7 @@ blocked_connection:
   status: blocked
   publisher: uphold_connected_blocked
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    '{}',
+    { scope: 'cards:write' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
@@ -79,7 +94,7 @@ restricted_member:
   status: "restricted"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
   encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    '{}',
+    { scope: 'cards:write' }.to_json,
     key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
     iv: salt
   ) %>"
@@ -87,6 +102,12 @@ restricted_member:
 
 verified_no_currency:
   uphold_verified: true
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
+  encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
   uphold_state_token:
   publisher: uphold_connected_currency_unconfirmed
   address: "abcdabcd-0000-0000-0000-abcd00000007"
