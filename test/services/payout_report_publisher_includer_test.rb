@@ -3,6 +3,7 @@ require "webmock/minitest"
 
 class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
   include EyeshadeHelper
+  let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
 
   before do
     ActionMailer::Base.deliveries.clear
@@ -154,6 +155,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
 
       stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+      stub_request(:get, uphold_url).to_return(body: { status: "blocked", memberAt: "2019" }.to_json)
+
       subject
     end
 
@@ -214,6 +217,8 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       before do
         Rails.application.secrets[:api_eyeshade_offline] = false
         stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+        stub_request(:get, uphold_url).to_return(body: { }.to_json)
+
         subject
       end
 
@@ -240,103 +245,6 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       end
     end
   end
-
-  # Edge case when user has reached uphold transaction limits
-  # describe "when is a member and restricted" do
-  #   let(:wallet_response) do
-  #     { wallet: { authorized: false, status: "restricted", "isMember": true } }
-  #   end
-
-  #   before do
-  #     Rails.application.secrets[:fee_rate] = 0.05
-  #     @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
-  #     Rails.application.secrets[:api_eyeshade_offline] = false
-  #     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
-  #     subject
-  #   end
-
-  #   describe "when should_send_notifications is false" do
-  #     let(:should_send_notifications) { false }
-
-  #     it "creates potential payments" do
-  #       assert_equal 4, PotentialPayment.count
-  #       assert_equal 0, @payout_report.amount
-  #     end
-
-  #     it "does not include any potential payments in payout report" do
-  #       @payout_report.update_report_contents
-  #       assert_equal 0, JSON.parse(@payout_report.contents).length
-  #     end
-
-  #     it "sends no emails" do
-  #       assert_empty ActionMailer::Base.deliveries
-  #     end
-  #   end
-
-  #   describe "when should_send_notifications is true" do
-  #     let(:should_send_notifications) { true }
-
-  #     it "does not include in report" do
-  #       assert_equal 4, PotentialPayment.count
-  #       assert_equal 0, @payout_report.amount
-  #     end
-
-  #     it "sends an email notifying restricted" do
-  #       assert ActionMailer::Base.deliveries.present?
-  #     end
-  #   end
-  # end
-
-
-#   describe "not a member" do
-#     # Possible that user
-#     let(:wallet_response) do
-#       { wallet: { authorized: false, address: "ae42daaa-69d8-4400-a0f4-d359279cd3d2", status: "restricted", "isMember": false, id: "fake uphold id" } }
-#     end
-
-#     before do
-#       Rails.application.secrets[:api_eyeshade_offline] = false
-#       stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
-#       subject
-#     end
-
-#     describe "should_send_notifications is true" do
-#       let(:should_send_notifications) { true }
-
-#       it "does not create potential payments" do
-#         assert_equal 4, PotentialPayment.count
-#         assert_equal 0, @payout_report.amount
-
-#         PotentialPayment.all.each do |potential_payment|
-#           refute potential_payment.uphold_member
-#         end
-#       end
-
-#       it "does not include in report" do
-#         assert_equal 4, PotentialPayment.count
-#         assert_equal 0, @payout_report.amount
-#       end
-
-#       it "receives KYC email" do
-#         email = ActionMailer::Base.deliveries.last
-#         assert_equal email.subject, I18n.t("publisher_mailer.uphold_kyc_incomplete.subject")
-#       end
-#     end
-
-#     describe "should_send_notifications is false" do
-#       let(:should_send_notifications) { false }
-
-#       it "does not include in report" do
-#         assert_equal 4, PotentialPayment.count
-#         assert_equal 0, @payout_report.amount
-#       end
-
-#       it "recieves no emails" do
-#         assert_empty ActionMailer::Base.deliveries
-#       end
-#     end
-#   end
-# end
 
   describe "when uphold verified" do
     let(:should_send_notifications) { true }
@@ -379,6 +287,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
           Rails.application.secrets[:fee_rate] = 0.05
           @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
           stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+          stub_request(:get, uphold_url).to_return(body: { status: "ok", memberAt: "2019" }.to_json)
         end
 
         describe "when is a member" do
@@ -391,6 +300,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
               before do
                 Rails.application.secrets[:api_eyeshade_offline] = false
                 stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+                stub_request(:get, uphold_url).to_return(body: { status: "ok", memberAt: "2019", id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
                 subject
               end
 
@@ -567,6 +477,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
           before do
             stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+            stub_request(:get, uphold_url).to_return(body: { status: "restricted", memberAt: "2019" }.to_json)
           end
 
           describe "should_send_notifications is true" do

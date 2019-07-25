@@ -22,6 +22,7 @@ AllCops:
     - app/jobs/create_uphold_cards_job.rb
     - app/jobs/exchange_uphold_code_for_access_token_job.rb
     - app/jobs/clean_stale_uphold_data_job.rb
+    - app/services/payout_report_publisher_includer.rb
   Exclude:
     - bin/**/*
     - db/**/*

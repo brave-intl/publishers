@@ -133,11 +133,17 @@ class UpholdConnection < ActiveRecord::Base
 
   # Makes an HTTP Request to Uphold and sychronizes
   def sync_from_uphold!
+    # Set uphold_details to a variable, if uphold_access_parameters is nil
+    # we will end up makes N service calls everytime we call uphold_details
+    # this is a side effect of the memoization
+    uphold_information = uphold_details
+    return if uphold_information.blank?
+
     update(
-      is_member: uphold_details.memberAt.present?,
-      status: uphold_details.status,
-      uphold_id: uphold_details.id,
-      country: uphold_details.country
+      is_member: uphold_information.memberAt.present?,
+      status: uphold_information.status,
+      uphold_id: uphold_information.id,
+      country: uphold_information.country
     )
   end
 
