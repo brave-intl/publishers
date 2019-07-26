@@ -224,6 +224,5 @@ class WalletTest < ActiveSupport::TestCase
   test "parses wallet status and details" do
     assert_equal "uphold", test_wallet.provider
     assert_equal 'cards:write', test_wallet.scope
-    assert_equal "USD", test_wallet.default_currency
   end
 end

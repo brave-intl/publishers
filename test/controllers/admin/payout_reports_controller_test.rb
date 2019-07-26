@@ -241,7 +241,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   test "#notify sends emails to" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     admin = publishers(:admin)
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:completed)
     delete_publishers_except([admin.id, publisher.id])
     sign_in admin
 

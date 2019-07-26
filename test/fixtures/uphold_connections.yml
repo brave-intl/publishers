@@ -3,8 +3,7 @@
 unconnected:
   created_at: 2019-01-01
   publisher: completed
-  is_member: true
-  address: "abcdabcd-0000-0000-0000-abcd00000001"
+  is_member: false
 
 suspended_connection:
   publisher: suspended
@@ -63,6 +62,21 @@ completed_partner_connection:
   address: "abcdabcd-0000-0000-0000-abcd00000006"
   status: "ok"
   uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
+
+google_connection:
+  uphold_verified: true
+  publisher: google_verified
+  default_currency: BAT
+  is_member: true
+  address: "abcdabcd-0000-0000-0000-abcd00000006"
+  status: "ok"
+  uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
+  encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 basic_connection:
   uphold_verified: true
