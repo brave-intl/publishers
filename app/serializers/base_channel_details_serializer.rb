@@ -26,6 +26,6 @@ class BaseChannelDetailsSerializer < ActiveModel::Serializer
   end
 
   def preferred_currency
-    object.channel.publisher.uphold_connection.default_currency
+    object.channel.publisher&.uphold_connection&.default_currency
   end
 end

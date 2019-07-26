@@ -8,6 +8,8 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
 
   before(:example) do
     @prev_offline = Rails.application.secrets[:api_eyeshade_offline]
+    stub_request(:get, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards?q=currency:USD").to_return(body: [].to_json)
+    stub_request(:post, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards").to_return(body: {id: '123e4567-e89b-12d3-a456-426655440000'}.to_json)
   end
 
   after(:example) do
@@ -17,7 +19,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
   test "creates default currency card if wallet address missing" do
     Rails.application.secrets[:api_eyeshade_offline] = false
 
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:uphold_connected_details)
     publisher.default_currency = "BAT"
     publisher.save!
 
@@ -34,24 +36,15 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
-    CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
+    CreateUpholdCardsJob.perform_now(uphold_connection: publisher.uphold_connection)
 
-    # ensure request to create BAT card was made
-    assert_requested :post,
-      "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-      body: '{"currency":"BAT","label":"Brave Rewards"}',
-      times: 1
-
-    # ensure only one request to update eyeshade default currency was made
-    assert_requested :patch,
-      "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
-      times: 1
+    assert_equal publisher.uphold_connection.address, '123e4567-e89b-12d3-a456-426655440000'
   end
 
   test "does not create default currency card if wallet address present" do
     Rails.application.secrets[:api_eyeshade_offline] = false
 
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:uphold_connected_details)
     publisher.default_currency = "BAT"
     publisher.save!
 
@@ -69,18 +62,8 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
-    CreateUpholdCardsJob.perform_now(publisher_id: publisher.id)
+    CreateUpholdCardsJob.perform_now(uphold_connection: publisher.uphold_connection)
 
-    # ensure request to create BAT card was not made
-    assert_requested :post,
-      "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v3/owners/#{URI.escape(publisher.owner_identifier)}/wallet/card",
-      body: '{"currency":"BAT","label":"Brave Rewards"}',
-      times: 0
-
-    # ensure only one request to update eyeshade default currency was made
-    assert_requested :patch,
-      "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet",
-      body: "{\n  \"defaultCurrency\": \"BAT\" \n}\n",
-      times: 1
+    assert_equal publisher.uphold_connection.address, '123e4567-e89b-12d3-a456-426655440000'
   end
 end

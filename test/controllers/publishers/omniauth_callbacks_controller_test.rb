@@ -492,7 +492,7 @@ module Publishers
     end
 
     test "a publisher who adds a twitter channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:uphold_connected_detaili)
+      publisher = publishers(:uphold_connected_details)
       verified_details = twitter_channel_details(:uphold_connected_twitter_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)

@@ -11,7 +11,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    stub_request(:get, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards?q=currency:BAT").to_return(body: [].to_json)
+    stub_request(:get, /cards\?q/).to_return(body: [].to_json)
     stub_request(:post, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards").to_return(body: {id: '123e4567-e89b-12d3-a456-426655440000'}.to_json)
   end
 
@@ -535,6 +535,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "a publisher's wallet can be polled via ajax" do
     publisher = publishers(:uphold_connected)
     sign_in publisher
+    stub_request(:get, /me/).to_return(body: { currencies: [] }.to_json)
 
     get wallet_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
@@ -542,7 +543,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     wallet_response = JSON.parse(response.body)
 
-    assert wallet_response["channel_balances"].present?
+    assert wallet_response["wallet"]["channel_balances"].present?
   end
 
   test "a publisher's uphold status can be polled via ajax" do
@@ -677,16 +678,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
 
     assert_response 200
-    assert_equal(
-      { action: 'redirect',
-        status: 'Redirecting to Uphold for authorization ...',
-        redirectURL: connect_uphold_publishers_path,
-        timeout: 3000 }.to_json,
-      response.body)
 
     # assert_redirected_to uphold_authorization_endpoint(publisher)
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BAT"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BAT"
   end
 
   test "#confirm_default_currency sets new default currency, initiates CreateUpholdCardsJob if not currency in available currency" do
@@ -756,8 +751,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         timeout: 2000 }.to_json,
       response.body)
 
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BTC"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BTC"
   end
 
   test "#confirm_default_currency does not create new card after new publisher confirms available default currency" do
@@ -790,13 +785,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         timeout: 2000 }.to_json,
       response.body)
 
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BAT"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BAT"
   end
 
   test "after an existing publisher confirms default currency and gets cards:write scope, #home will create the cards" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_currency_unconfirmed)
+    stub_request(:get, /v0\/me/).to_return(body: { status: "ok", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
+
     sign_in publisher
 
     confirm_default_currency_params = {
@@ -818,15 +815,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
 
     assert_response 200
-    assert_equal(
-      { action: 'redirect',
-        status: 'Redirecting to Uphold for authorization ...',
-        redirectURL: connect_uphold_publishers_path,
-        timeout: 3000 }.to_json,
-      response.body)
 
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BAT"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BAT"
 
     wallet = { "wallet" => { "defaultCurrency" => "BAT",
                              "authorized" => true,
@@ -839,14 +830,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
     get home_publishers_path
-  end
-
-  test "#balance returns the wallet as json" do
-    publisher = publishers(:completed)
-    sign_in publisher
-    stub_all_eyeshade_wallet_responses(publisher: publisher)
-    get wallet_publishers_path
-    assert_equal publisher.wallet.to_json, response.body
   end
 
   describe 'publisher integration with uphold' do

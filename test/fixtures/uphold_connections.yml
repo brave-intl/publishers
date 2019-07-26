@@ -38,9 +38,27 @@ created_connection:
   publisher: created
   address: "abcdabcd-0000-0000-0000-abcd00000005"
 
-connected_connection:
+connected_reauthorize:
   uphold_verified: true
   publisher: uphold_connected_reauthorize
+  is_member: true
+  address: "abcdabcd-0000-0000-0000-abcd00000006"
+  status: "ok"
+  uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
+
+partner_connection:
+  uphold_verified: true
+  publisher: default_partner
+  default_currency: BAT
+  is_member: true
+  address: "abcdabcd-0000-0000-0000-abcd00000006"
+  status: "ok"
+  uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
+
+completed_partner_connection:
+  uphold_verified: true
+  publisher: completed_partner
+  default_currency: USD
   is_member: true
   address: "abcdabcd-0000-0000-0000-abcd00000006"
   status: "ok"

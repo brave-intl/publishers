@@ -94,11 +94,12 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
       Rails.application.secrets[:api_eyeshade_offline] = false
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
       stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
+      stub_request(:get, uphold_url).to_return(body: {}.to_json)
 
       subject
     end
 
-    it "creates the potential payments" do
+   it "creates the potential payments" do
       assert_equal 4, PotentialPayment.count
     end
 
