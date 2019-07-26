@@ -1,14 +1,17 @@
 class PromoRegistrationsController < ApplicationController
   include PromosHelper
-
-  before_action :find_publisher
+  before_action :authenticate_publisher!
   before_action :require_publisher_promo_disabled, only: %(create)
   before_action :require_promo_running, only: %i(create)
 
   def index
+    @publisher = current_publisher
+    @publisher_promo_status = @publisher.promo_status(promo_running?)
+    @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
   end
 
   def create
+    @publisher = current_publisher
     @publisher.promo_enabled_2018q1 = true
     @publisher.save!
     @publisher_has_verified_channel = @publisher.has_verified_channel?
@@ -36,34 +39,8 @@ class PromoRegistrationsController < ApplicationController
   end
 
   def require_publisher_promo_disabled
-    if @publisher.promo_enabled_2018q1
+    if current_publisher.promo_enabled_2018q1
       render(:index)
     end
-  end
-
-  def find_publisher
-    if current_publisher
-      @publisher = current_publisher
-    else
-      if params[:promo_token].present?
-        promo_token = params[:promo_token]
-      elsif params.dig(:publisher).dig(:promo_token).present?
-        promo_token = params[:publisher][:promo_token]
-      else
-        return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
-      end
-      if publisher = Publisher.find_by(promo_token_2018q1: promo_token)
-        @publisher = publisher
-      else
-        return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
-      end
-    end
-
-    @publisher_promo_status = @publisher.promo_status(promo_running?)
-    @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    return redirect_to(root_path, alert: I18n.t("promo.publisher_not_found"))
   end
 end
