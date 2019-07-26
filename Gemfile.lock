@@ -116,6 +116,7 @@ GEM
       sassc-rails (>= 2.0.0)
     brakeman (4.5.1)
     browser (2.5.3)
+    bson (4.5.0)
     builder (3.2.3)
     bundler-audit (0.6.1)
       bundler (>= 1.2.0, < 3)
@@ -249,6 +250,8 @@ GEM
       minitest-rails (~> 3.0)
     mocha (1.8.0)
       metaclass (~> 0.0.1)
+    mongo (2.9.0)
+      bson (>= 4.4.2, < 5.0.0)
     msgpack (1.2.10)
     multi_json (1.13.1)
     multi_xml (0.6.0)
@@ -553,6 +556,7 @@ DEPENDENCIES
   mini_magick
   minitest-rails-capybara (~> 3.0.1)
   mocha
+  mongo
   newrelic_rpm (~> 3.16)
   nokogiri
   omniauth-github

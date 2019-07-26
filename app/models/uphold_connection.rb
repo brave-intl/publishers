@@ -75,8 +75,7 @@ class UpholdConnection < ActiveRecord::Base
   def uphold_reauthorization_needed?
     # TODO Let's make sure that if we can't access the user's information then we set uphold_verified? to false
     # Perhaps through a rescue on 401
-
-    uphold_verified? && uphold_access_parameters.present? && uphold_details.nil?
+    uphold_verified? && (uphold_access_parameters.blank? || uphold_details.nil?)
   end
 
   # Makes a remote HTTP call to Uphold to get more details
@@ -88,6 +87,13 @@ class UpholdConnection < ActiveRecord::Base
 
   def uphold_details
     @user ||= uphold_client.user.find(self)
+  rescue Faraday::ClientError => e
+    if e.response[:status] == 401
+      update(uphold_access_parameters: nil)
+      nil
+    else
+      raise
+    end
   end
 
   def uphold_status
