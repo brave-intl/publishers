@@ -217,8 +217,8 @@ class UpholdConnectionTest < ActiveSupport::TestCase
         uphold_connection.uphold_verified = true
       end
 
-      it 'returns access_parameters_acquired' do
-        assert_equal :verified, uphold_connection.uphold_status
+      it 'returns reauthorize' do
+        assert_equal :reauthorization_needed, uphold_connection.uphold_status
       end
     end
   end
