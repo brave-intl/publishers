@@ -261,4 +261,6 @@ Rails.application.routes.draw do
     end
   end
   mount Sidekiq::Web, at: "/magic"
+  require 'sidekiq/api'
+  match "queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new.size < 100 ? "OK" : "UHOH" ]] }, via: :get
 end
