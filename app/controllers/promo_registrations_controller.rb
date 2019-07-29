@@ -34,13 +34,13 @@ class PromoRegistrationsController < ApplicationController
 
   def require_promo_running
     unless promo_running?
-      render(:index)
+      redirect_to promo_registrations_path, action: "index"
     end
   end
 
   def require_publisher_promo_disabled
     if current_publisher.promo_enabled_2018q1
-      render(:index)
+      redirect_to promo_registrations_path, action: "index"
     end
   end
 end

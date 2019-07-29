@@ -52,6 +52,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     # verify _over is rendered
     post promo_registrations_path
+    follow_redirect!
     assert_select("[data-test=promo-active]")
 
     # verify publisher has not enabled promo
