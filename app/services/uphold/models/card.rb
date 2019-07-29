@@ -45,9 +45,6 @@ module Uphold
 
         query = "currency:" + (currency || uphold_connection.default_currency)
 
-        puts '🙌🙌🙌🙌🙌🙌🙌🙌🙌🙌'
-        puts query
-
         response = get(PATH, { q: query }, authorization(uphold_connection))
 
         cards = []
