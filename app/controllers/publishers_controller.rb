@@ -203,7 +203,7 @@ class PublishersController < ApplicationController
     # TODO Refactor this
     @possible_currencies = []
     if uphold_connection.uphold_verified?
-      @possible_currencies = uphold_connection.uphold_details.currencies
+      @possible_currencies = uphold_connection.uphold_details&.currencies
 
       # every request to the homepage let's sync from uphold
       uphold_connection.sync_from_uphold!

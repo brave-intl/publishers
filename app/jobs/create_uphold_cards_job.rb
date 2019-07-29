@@ -10,7 +10,7 @@ class CreateUpholdCardsJob < ApplicationJob
     end
 
     # Search for an existing card
-    card = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection).first
+    card = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)&.first
 
     # If the card doesn't exist so we should create it
     if card.blank?

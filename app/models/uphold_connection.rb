@@ -32,6 +32,9 @@ class UpholdConnection < ActiveRecord::Base
       where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
 
+  # If the user became KYC'd let's create the uphold card for them
+  after_save :create_uphold_card_for_default_currency, if: -> { saved_change_to_is_member? && is_member? }
+
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
   scope :has_stale_uphold_access_parameters, -> {
@@ -89,6 +92,7 @@ class UpholdConnection < ActiveRecord::Base
     @user ||= uphold_client.user.find(self)
   rescue Faraday::ClientError => e
     if e.response[:status] == 401
+      Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
       update(uphold_access_parameters: nil)
       nil
     else
@@ -122,6 +126,8 @@ class UpholdConnection < ActiveRecord::Base
     uphold_verified? &&
       uphold_access_parameters.present? &&
       scope.include?("cards:write") &&
+      status != "pending" &&
+      status != "blocked" &&
       !publisher.excluded_from_payout
   end
 

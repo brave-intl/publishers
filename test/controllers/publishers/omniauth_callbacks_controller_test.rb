@@ -22,7 +22,7 @@ module Publishers
       @active_promo_id_original = Rails.application.secrets[:active_promo_id]
       Rails.application.secrets[:active_promo_id] = ""
       uphold_url = Rails.application.secrets[:uphold_api_uri] + "/v0/me"
-      stub_request(:get, uphold_url).to_return(body: { status: "ok", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
+      stub_request(:get, uphold_url).to_return(body: { status: "pending", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
     end
 
     after(:example) do

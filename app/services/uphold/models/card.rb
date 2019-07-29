@@ -41,8 +41,12 @@ module Uphold
       # @return [Uphold::Models::Card[]] an array of found cards
       def where(uphold_connection:, currency: nil)
         Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
+        Rails.logger.info("Connection #{uphold_connection.id} is missing a default currency and no currency was provided") and return if uphold_connection.default_currency.blank? && currency.blank?
 
         query = "currency:" + (currency || uphold_connection.default_currency)
+
+        puts '🙌🙌🙌🙌🙌🙌🙌🙌🙌🙌'
+        puts query
 
         response = get(PATH, { q: query }, authorization(uphold_connection))
 

@@ -103,6 +103,15 @@ class Admin::PublishersController < AdminController
     redirect_to(admin_publisher_path(publisher), flash: { alert: "2fa removal was cancelled" })
   end
 
+  def refresh_uphold
+    connection = UpholdConnection.find_by(publisher: params[:publisher_id])
+    if connection.present?
+      connection.sync_from_uphold!
+      CreateUpholdCardsJob.perform_now(uphold_connection: connection)
+    end
+    redirect_to admin_publisher_path(@publisher.id)
+  end
+
   private
 
   def get_publisher

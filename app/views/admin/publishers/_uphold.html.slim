@@ -2,16 +2,26 @@ h3.text-dark.d-flex.align-items-center
   small.mx-2=image_tag 'uphold.svg'
   = "Uphold Connection"
 
+  small.ml-3= link_to fa_icon("refresh"), admin_publisher_refresh_uphold_path(@publisher.id), method: :patch
+
 .mx-3.mt-3
   - if @publisher.uphold_connection&.uphold_verified?.present?
     table.table
       tr
         td Status
         td
-          #uphold_status class=uphold_status_class(@publisher) data-tooltip= @publisher.uphold_connection.status
+          #uphold_status class=uphold_status_class(@publisher)
             #uphold_status_display
               .status-summary
                 .text= uphold_status_summary(@publisher)
+                - unless @publisher.uphold_connection.status == "ok"
+                  span.ml-2= "(#{@publisher.uphold_connection.status})"
+          - if @publisher.uphold_connection.status.eql?("pending")
+            small Uphold status is pending - the user is in the process of creating an account.
+          - elsif @publisher.uphold_connection.status.eql?("restricted")
+            small This user is restricted - they are allowed to login to Uphold and receive money, but they are not permitted to initiate transactions.
+          - elsif @publisher.uphold_connection.status.eql?("blocked")
+            small This user has violated Uphold's terms of service. In this state users are unable to login or access Uphold.
       tr
         td User has completed KYC
         td

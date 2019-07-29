@@ -204,6 +204,9 @@ Rails.application.routes.draw do
         get :statement
         get :cancel_two_factor_authentication_removal
       end
+
+      patch :refresh_uphold
+
       resources :publisher_notes
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
       resources :referrals, controller: 'publishers/referrals'
