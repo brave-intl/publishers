@@ -37,6 +37,9 @@ export default {
     },
     security: {
       path: "/publishers/two_factor_registrations"
+    },
+    settings: {
+      path: "/publishers/settings"
     }
   }
 };
