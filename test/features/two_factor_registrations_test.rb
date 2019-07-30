@@ -7,7 +7,7 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
     publisher = publishers(:verified)
     sign_in publisher
 
-    visit security_publishers_path
+    visit two_factor_registrations_path
     assert_content page, "Enabled"
     refute_content page, "Set Up" # TOTP setup is not available
 
@@ -34,7 +34,7 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
     publisher = publishers(:verified)
     sign_in publisher
 
-    visit security_publishers_path
+    visit two_factor_registrations_path
     assert_content page, "Enabled"
     assert_content page, "My U2F Key" # Key is present
     refute_content page, "No keys have been added" # "No key" warning is not visible

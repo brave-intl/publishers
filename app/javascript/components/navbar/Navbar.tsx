@@ -132,11 +132,6 @@ function Dropdown(props) {
         {locale.navbar.security}
       </DropdownItem>
       <DropdownItem
-        onClick={() => (window.location.href = routes.navbar.settings.path)}
-      >
-        {locale.navbar.settings}
-      </DropdownItem>
-      <DropdownItem
         onClick={() => (window.location.href = routes.navbar.help.path)}
       >
         {locale.navbar.help}

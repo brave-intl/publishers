@@ -15,7 +15,7 @@ module TwoFactorRegistration
       end
     end
 
-    redirect_to security_publishers_path
+    redirect_to two_factor_registrations_path
   end
 
   def flag_2fa_registration_during_signup

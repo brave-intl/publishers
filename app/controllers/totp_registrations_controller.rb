@@ -29,7 +29,7 @@ class TotpRegistrationsController < ApplicationController
 
   def destroy
     current_publisher.totp_registration.destroy! if current_publisher.totp_registration.present?
-    redirect_to security_publishers_path
+    redirect_to two_factor_registrations_path
   end
 
   private

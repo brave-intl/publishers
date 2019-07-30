@@ -9,7 +9,7 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     publisher.update_attribute(:totp_registration, totp_registration)
 
     sign_in publisher
-    get security_publishers_path
+    get two_factor_registrations_path
 
     assert_response :success
     assert_match "Enabled", response.body
@@ -23,7 +23,7 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     publisher.u2f_registrations << u2f_registration
 
     sign_in publisher
-    get security_publishers_path
+    get two_factor_registrations_path
 
     assert_response :success
     assert_match u2f_registration.name, response.body
@@ -41,7 +41,7 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     publisher.u2f_registrations << additional_u2f_registration
 
     sign_in publisher
-    get security_publishers_path
+    get two_factor_registrations_path
 
     assert_response :success
     assert_match u2f_registration.name, response.body
@@ -55,11 +55,11 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:completed)
 
     sign_in publisher
-    get prompt_security_publishers_path
+    get prompt_two_factor_registrations_path
 
     assert_response :success
     assert_select "a[href=?]", home_publishers_path
-    assert_select "a[href=?]", security_publishers_path
+    assert_select "a[href=?]", two_factor_registrations_path
 
     assert @request.session[:prompted_for_two_factor_registration_at_signup]
   end

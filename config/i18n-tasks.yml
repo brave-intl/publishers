@@ -15,27 +15,25 @@ data:
 
   # Locale files or `File.find` patterns where translations are read from:
   read:
-    ## Default:
-    # - config/locales/%{locale}.yml
+    # Default:
+     - config/locales/%{locale}.yml
+
     ## More files:
     # - config/locales/**/*.%{locale}.yml
+    # Another gem (replace %#= with %=):
+     - "<%= %x[bundle show recaptcha].chomp %>/templates/locales/%{locale}.yml"
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
   write:
-    ## For example, write devise and simple form keys to their respective files:
-    # - ['{devise, simple_form}.*', 'config/locales/\1.%{locale}.yml']
+    # For example, write devise and simple form keys to their respective files:
+     - ['{devise}.*', 'config/locales/\1.%{locale}.yml']
+
     ## Catch-all default:
     # - config/locales/%{locale}.yml
 
-  # External locale data (e.g. gems).
-  # This data is not considered unused and is never written to.
-  external:
-    ## Example (replace %#= with %=):
-    # - "<%#= %x[bundle show vagrant].chomp %>/templates/locales/%{locale}.yml"
-
   ## Specify the router (see Readme for details). Valid values: conservative_router, pattern_router, or a custom class.
-  # router: conservative_router
+  # router: convervative_router
 
   yaml:
     write:
@@ -82,14 +80,10 @@ search:
   ## The options specified above are passed down to each scanner. Per-scanner options can be specified as well.
   ## See this example of a custom scanner: https://github.com/glebm/i18n-tasks/wiki/A-custom-scanner-example
 
-## Translation Services
+## Google Translate
 # translation:
-#   # Google Translate
 #   # Get an API key and set billing info at https://code.google.com/apis/console to use Google Translate
-#   google_translate_api_key: "AbC-dEf5"
-#   # DeepL Pro Translate
-#   # Get an API key and subscription at https://www.deepl.com/pro to use DeepL Pro
-#   deepl_api_key: "48E92789-57A3-466A-9959-1A1A1A1A1A1A"
+#   api_key: "AbC-dEf5"
 
 ## Do not consider these keys missing:
 # ignore_missing:
@@ -97,8 +91,8 @@ search:
 # - '{devise,simple_form}.*'
 
 ## Consider these keys used:
-# ignore_unused:
-# - 'activerecord.attributes.*'
+  ignore_unused:
+   - 'activerecord.attributes.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
@@ -110,10 +104,6 @@ search:
 #     - common.ok
 #   fr,es:
 #     - common.brand
-
-## Exclude these keys from the `i18n-tasks check-consistent-interpolations` report:
-# ignore_inconsistent_interpolations:
-# - 'activerecord.attributes.*'
 
 ## Ignore these keys completely:
 # ignore:
