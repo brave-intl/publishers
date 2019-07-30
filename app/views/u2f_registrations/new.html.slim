@@ -67,7 +67,7 @@
             .col-half
               = f.submit t(".submit_value"), class: "btn btn-primary", :"data-piwik-action" => "U2FLoginClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Authentication"
             .col-half.text-right
-              = link_to t("shared.cancel"), security_publishers_path, class: "btn btn-link"
+              = link_to t("shared.cancel"), two_factor_registrations_path, class: "btn btn-link"
 
           .mt-3.js-u2f-is-working
             h5= t ".waiting_heading"

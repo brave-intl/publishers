@@ -2,17 +2,17 @@
   .single-panel--content
     .single-panel--padded-content
       .row
-        .col-left-aligned--content
+        .col-two-factor--content
           h3.single-panel--headline= t ".heading"
           p= t ".intro"
-        .col-left-aligned--action.two-factor-enabled-status
+        .col-two-factor--action.two-factor-enabled-status
           - if two_factor_enabled?(current_publisher)
             span.two-factor-enabled= t ".enabled_yes"
           - else
             span.two-factor-disabled= t ".enabled_no"
 
         br
-        .col-left-aligned--content
+        .col-two-factor--content
           h5= t ".totp.heading"
           p= t ".totp.intro"
           - if totp_enabled?(current_publisher)
@@ -32,7 +32,7 @@
               p.two-factor-method-disabled
                 == "&bull; "
                 = t ".totp.disabled"
-        .col-left-aligned--action
+        .col-two-factor--action
           - if totp_enabled?(current_publisher)
             p= link_to \
                 t(".totp.destroy"),
@@ -68,7 +68,7 @@
             p= link_to t(".totp.button"), new_totp_registration_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "CreateTOTPClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "2FA"
           p.icon= render "smartphone_with_code"
 
-        .col-left-aligned--content
+        .col-two-factor--content
           h5= t ".u2f.heading"
           p
             = t ".u2f.intro"
@@ -89,12 +89,11 @@
                   span.tf-tooltip-content-heading= t ".u2f.device.heading"
                   span.tf-tooltip-content-content== t ".u2f.device.content_html"
           - if @u2f_registrations.any?
-            - @u2f_registrations.each do |u2f_registration|
-              = render partial: "u2f_registrations/u2f_registration", locals: { u2f_registration: u2f_registration }
+            p= render @u2f_registrations
           - else
             p.two-factor-method-disabled
               == "&bull; "
               = t ".u2f.disabled"
-        .col-left-aligned--action
+        .col-two-factor--action
           p= link_to t(".u2f.button"), new_u2f_registration_path, class: "btn btn-block btn-primary", :"data-piwik-action" => "CreateU2FClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "2FA"
           p.icon= render "usb"

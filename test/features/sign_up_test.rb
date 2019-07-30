@@ -23,7 +23,7 @@ class SignUpTest < Capybara::Rails::TestCase
     fill_in "publisher_name", with: name
     click_button("Sign Up")
 
-    assert_current_path(prompt_security_publishers_path)
+    assert_current_path(prompt_two_factor_registrations_path)
     click_link("Skip for now")
 
     assert_current_path(home_publishers_path)

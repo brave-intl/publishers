@@ -47,7 +47,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to security_publishers_path, "redirects to two_factor_registrations"
+    assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
     refute @request.flash[:modal_partial]
   end
 
@@ -56,7 +56,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift).returns(true)
 
-    get prompt_security_publishers_path
+    get prompt_two_factor_registrations_path
 
     assert_difference("TotpRegistration.count") do
       post totp_registrations_path, params: {
@@ -89,6 +89,6 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to security_publishers_path, "redirects to two_factor_registrations"
+    assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
   end
 end

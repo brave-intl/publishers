@@ -53,7 +53,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to security_publishers_path, "redirects to two_factor_registrations"
+    assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
     refute @request.flash[:modal_partial]
   end
 
@@ -68,7 +68,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     )
     U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(:register! => mock_u2f_registration))
 
-    get prompt_security_publishers_path
+    get prompt_two_factor_registrations_path
 
     assert_difference("U2fRegistration.count") do
       post u2f_registrations_path, params: {
@@ -93,7 +93,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     delete u2f_registration_path(u2f_registration)
 
-    assert_redirected_to security_publishers_path, "redirects to two_factor_registrations"
+    assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
     follow_redirect!
     assert_response :success
     assert_no_match u2f_registration.name, response.body, "page does not show deleted u2f_registration"

@@ -613,7 +613,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     get home_publishers_path
 
-    assert_redirected_to prompt_security_publishers_path, "redirects on first visit"
+    assert_redirected_to prompt_two_factor_registrations_path, "redirects on first visit"
     follow_redirect!
 
     get home_publishers_path

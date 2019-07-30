@@ -270,12 +270,6 @@ class PublishersController < ApplicationController
     redirect_to(publisher_next_step_path(current_publisher))
   end
 
-  def destroy
-    PublisherRemovalJob.perform_later(publisher_id: current_publisher.id)
-    sign_out(current_publisher)
-    redirect_to(root_path)
-  end
-
   def redirect_if_suspended
     # Redirect to suspended page if they're logged in
     redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
@@ -448,7 +442,7 @@ class PublishersController < ApplicationController
   def prompt_for_two_factor_setup
     return if current_publisher.two_factor_prompted_at.present? || two_factor_enabled?(current_publisher)
     current_publisher.update! two_factor_prompted_at: Time.now
-    redirect_to prompt_security_publishers_path
+    redirect_to prompt_two_factor_registrations_path
   end
 
   def update_sendgrid(publisher:, prior_email: nil)
