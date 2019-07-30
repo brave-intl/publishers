@@ -556,7 +556,7 @@ DEPENDENCIES
   mini_magick
   minitest-rails-capybara (~> 3.0.1)
   mocha
-  mongo
+  mongo (~> 2.2, >= 2.2.5)
   newrelic_rpm (~> 3.16)
   nokogiri
   omniauth-github

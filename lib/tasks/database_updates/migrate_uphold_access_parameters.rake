@@ -1,5 +1,4 @@
 require 'mongo'
-require 'pry'
 
 namespace :database_updates do
   task :migrate_uphold_access_parameters => :environment do

@@ -64,7 +64,7 @@ gem "meta-tags"
 # Image conversion library
 gem 'mini_magick'
 
-gem "mongo"
+gem 'mongo', '~> 2.2', '>= 2.2.5'
 
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
