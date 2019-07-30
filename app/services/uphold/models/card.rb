@@ -81,7 +81,7 @@ module Uphold
       end
 
       def authorization(uphold_connection)
-        token = JSON.parse(uphold_connection.uphold_access_parameters)["access_token"]
+        token = JSON.parse(uphold_connection.uphold_access_parameters || "{}").try(:[], "access_token")
         "Authorization: Bearer #{token}"
       end
     end

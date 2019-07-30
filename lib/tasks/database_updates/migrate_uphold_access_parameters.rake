@@ -3,33 +3,31 @@ require 'pry'
 
 namespace :database_updates do
   task :migrate_uphold_access_parameters => :environment do
-    mongo_uri = `heroku config:get -a bat-eyeshade-staging MONGODB_URI`.strip
+    index = 0
+    mongo_uri = `heroku config:get -a bat-eyeshade MONGODB_URI`.strip
+
+    Mongo::Logger.logger.level = Logger::FATAL
 
     client = Mongo::Client.new(mongo_uri)
     owners = client[:owners]
 
+    iterations = owners.count
+    puts "Anticipating queueing #{iterations} entries"
+
     owners.find.each do |row|
       publisher_id = row["owner"].sub('publishers#uuid:', '')
-      parameters = row["parameters"]
 
-      connection = UpholdConnection.find_by(publisher_id: publisher_id)
-      if connection.present?
-        updated = connection.update(
-          uphold_access_parameters: parameters.to_json,
-          default_currency: connection.publisher.default_currency || row["defaultCurrency"] ,
-          default_currency_confirmed_at: connection.publisher.default_currency_confirmed_at || Time.now
-        )
-        connection.sync_from_uphold!
-        connection.reload
+      MigrateUpholdAccessParametersJob.perform_later(publisher_id: publisher_id, parameters: row["parameters"], default_currency: row["defaultCurrency"])
 
-        # Sync the uphold card or create it if the card is missing
-        CreateUpholdCardsJob.perform_later(uphold_connection: connection)
-      else
-        puts "Couldn't find publisher #{publisher_id} in creator's database but exists on mongo owner's database (Probably not a big deal)"
+      index += 1
+      if index % 1000 == 0
+        remaining = (iterations - index) * 0.2
+        puts "Estimated time left: #{remaining.round} seconds | #{((index.to_f/iterations.to_f)*100).round(2)}% done"
+        break
       end
-
-      client.close
     end
+    puts "Estimated time left: 0 seconds | 100% done"
+    client.close
   end
 
   task :migrate_individual_uphold_access_parameters => :environment do
@@ -40,10 +38,10 @@ namespace :database_updates do
     puts 'Migrating the following ids'
     puts publisher_ids
 
-    mongo_uri = `heroku config:get -a bat-eyeshade-staging MONGODB_URI`.strip
+    mongo_uri = `heroku config:get -a bat-eyeshade MONGODB_URI`.strip
 
+    Mongo::Logger.logger.level = Logger::FATAL
     client = Mongo::Client.new(mongo_uri)
-    owners =
 
     publisher_ids.each do |id|
       publisher = Publisher.find_by(id: id)
@@ -51,19 +49,8 @@ namespace :database_updates do
 
       row = client[:owners].find({ owner: publisher.owner_identifier }).to_a.first
 
-      connection = publisher.uphold_connection
-      if connection.present? && row.present?
-        parameters = row["parameters"]
-        updated = connection.update(
-          uphold_access_parameters: parameters.to_json,
-          default_currency: connection.publisher.default_currency || row["defaultCurrency"] ,
-          default_currency_confirmed_at: connection.publisher.default_currency_confirmed_at || Time.now
-        )
-        connection.sync_from_uphold!
-        connection.reload
-
-        # Sync the uphold card or create it if the card is missing
-        CreateUpholdCardsJob.perform_later(uphold_connection: connection)
+      if row.present?
+        MigrateUpholdAccessParametersJob.perform_later(publisher_id: publisher.id, parameters: row["parameters"], default_currency: row["defaultCurrency"])
       end
     end
 

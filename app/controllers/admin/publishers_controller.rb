@@ -28,9 +28,14 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.where(role: params[:role])
     end
 
+    if params[:uphold_status].present?
+      @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
+    end
+
     if params[:two_factor_authentication_removal].present?
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
+
     @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
 
     respond_to do |format|

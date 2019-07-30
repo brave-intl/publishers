@@ -20,9 +20,10 @@ module Uphold
       #
       # @return [array] of owner states
       def find(uphold_connection)
-        Rails.logger.info("Connection is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank? || uphold_connection.uphold_access_parameters == "{}"
+        token = JSON.parse(uphold_connection.uphold_access_parameters || "{}").try(:[], "access_token")
 
-        token = JSON.parse(uphold_connection.uphold_access_parameters)["access_token"]
+        Rails.logger.info("Connection #{uphold_connection.id} is missing access_token in uphold_access_parameters") and return if token.blank?
+
         response = get(PATH, {}, "Authorization: Bearer #{token}")
 
         Uphold::Models::User.new(JSON.parse(response.body))

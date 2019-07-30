@@ -49,7 +49,7 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def scope
-    JSON.parse(uphold_access_parameters)['scope']
+    JSON.parse(uphold_access_parameters).try(:[], 'scope') || []
   end
 
   def receive_uphold_code(code)
@@ -93,7 +93,6 @@ class UpholdConnection < ActiveRecord::Base
   rescue Faraday::ClientError => e
     if e.response[:status] == 401
       Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
-      update(uphold_access_parameters: nil)
       nil
     else
       raise
