@@ -36,6 +36,10 @@
     cron: "0 1 * * *"
     description: "Syncs the channel stats via youtube and twitch apis"
     queue: low
+  Sync::Zendesk::StartJob:
+    cron: "0 1 * * *"
+    description: "Syncs zendesk tickets"
+    queue: low
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
     description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"

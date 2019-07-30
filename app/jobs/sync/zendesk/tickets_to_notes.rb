@@ -9,14 +9,14 @@ class Sync::Zendesk::TicketsToNotes
       config.url = "#{Rails.application.secrets[:zendesk_url]}/api/v2" # e.g. https://mydesk.zendesk.com/api/v2
 
       # Basic / Token Authentication
-      config.username = Rails.application.secrets[:zendesk_username]
+      config.username = "#{Rails.application.secrets[:zendesk_username]}/token"
 
       # Choose one of the following depending on your authentication choice
-      # config.token = "your zendesk token"
+      config.token = Rails.application.secrets[:zendesk_access_token]
       # config.password = "your zendesk password"
 
       # OAuth Authentication
-      config.access_token = Rails.application.secrets[:zendesk_access_token]
+      # config.access_token = ""
 
       # Optional:
 
