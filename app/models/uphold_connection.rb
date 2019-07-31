@@ -19,6 +19,11 @@ class UpholdConnection < ActiveRecord::Base
     BLOCKED         = :blocked
   end
 
+  OK = "ok"
+  PENDING = "pending"
+  BLOCKED = "blocked"
+  RESTRICTED = "restricted"
+
   belongs_to :publisher
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
@@ -125,8 +130,8 @@ class UpholdConnection < ActiveRecord::Base
     uphold_verified? &&
       uphold_access_parameters.present? &&
       scope.include?("cards:write") &&
-      status != "pending" &&
-      status != "blocked" &&
+      status != UpholdConnection::BLOCKED &&
+      status != UpholdConnection::RESTRICTED &&
       !publisher.excluded_from_payout
   end
 
