@@ -975,7 +975,7 @@ export default class BannerEditor extends React.Component {
                   </DropdownToggle>
                   <TextInput
                     link
-                    onChange={e => this.updateCurrentUsername(e)}
+                    onChange={this.updateCurrentUsername}
                     value={this.state.currentUsername}
                     maxLength={80}
                   />
