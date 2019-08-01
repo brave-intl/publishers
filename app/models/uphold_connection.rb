@@ -131,7 +131,8 @@ class UpholdConnection < ActiveRecord::Base
       uphold_access_parameters.present? &&
       scope.include?("cards:write") &&
       status != UpholdConnection::BLOCKED &&
-      status != UpholdConnection::RESTRICTED &&
+      status != UpholdConnection::PENDING &&
+      default_currency.present? &&
       !publisher.excluded_from_payout
   end
 
@@ -140,7 +141,7 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def create_uphold_card_for_default_currency
-    return if default_currency.blank?
+    return unless can_create_uphold_cards?
     CreateUpholdCardsJob.perform_now(uphold_connection_id: id)
   end
 
