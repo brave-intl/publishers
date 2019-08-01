@@ -98,6 +98,7 @@ class UpholdConnection < ActiveRecord::Base
   rescue Faraday::ClientError => e
     if e.response[:status] == 401
       Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
+      update(uphold_access_parameters: nil)
       nil
     else
       raise
