@@ -1,5 +1,31 @@
 @import "colors";
 
+// Heading and button row
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 20px 0;
+}
+
+.action-group {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 32px;
+  align-items: center;
+}
+  
+// Bootstrap overrides. Could be refined
+.btn-default {
+  color: $braveGray-2 !important;
+  border: 1px solid $braveGray-7 !important;
+  margin: 0 8px;
+}
+
+.btn-primary {
+  margin: 0 4px;
+}
+
 /* header */
 #header {
   background: $braveGray-1;
