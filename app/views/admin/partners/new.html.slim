@@ -3,7 +3,8 @@
     .notifications
         .alert.alert-warning.flash = msg
 
-h1 Add a new partner
+header.panel-heading
+  h4 Add a new partner
 
 = form_with url: admin_partners_path, method: :post do |f|
   .form-group
