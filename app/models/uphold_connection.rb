@@ -141,7 +141,7 @@ class UpholdConnection < ActiveRecord::Base
 
   def create_uphold_card_for_default_currency
     return if default_currency.blank?
-    CreateUpholdCardsJob.perform_now(uphold_connection: self)
+    CreateUpholdCardsJob.perform_now(uphold_connection_id: id)
   end
 
   def missing_card?

@@ -2,7 +2,8 @@
 class CreateUpholdCardsJob < ApplicationJob
   queue_as :default
 
-  def perform(uphold_connection:)
+  def perform(uphold_connection_id:)
+    uphold_connection = UpholdConnection.find(uphold_connection_id)
     unless uphold_connection.can_create_uphold_cards?
       Rails.logger.info("Could not create uphold card for publisher #{uphold_connection.publisher_id}. Uphold Verified: #{uphold_connection.uphold_verified}")
       SlackMessenger.new(message: "Could not create uphold card for publisher #{uphold_connection.publisher_id}.", channel: SlackMessenger::ALERTS).perform

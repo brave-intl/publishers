@@ -16,7 +16,7 @@ class MigrateUpholdAccessParametersJob < ApplicationJob
       connection.reload
 
       # Sync the uphold card or create it if the card is missing
-      CreateUpholdCardsJob.perform_later(uphold_connection: connection)
+      CreateUpholdCardsJob.perform_later(uphold_connection_id: connection.id)
     else
       Rails.logger.info("Couldn't find publisher #{publisher_id} in creator's database but exists on mongo owner's database (Probably not a big deal)")
     end

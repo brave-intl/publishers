@@ -112,7 +112,7 @@ class Admin::PublishersController < AdminController
     connection = UpholdConnection.find_by(publisher: params[:publisher_id])
     if connection.present?
       connection.sync_from_uphold!
-      CreateUpholdCardsJob.perform_now(uphold_connection: connection)
+      CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
     end
     redirect_to admin_publisher_path(@publisher.id)
   end
