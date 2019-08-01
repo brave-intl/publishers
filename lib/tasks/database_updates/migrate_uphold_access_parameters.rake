@@ -3,7 +3,7 @@ require 'mongo'
 namespace :database_updates do
   task :migrate_uphold_access_parameters => :environment do
     index = 0
-    mongo_uri = `heroku config:get -a bat-eyeshade MONGODB_URI`.strip
+    mongo_uri = ENV['MONGODB_URI']
 
     Mongo::Logger.logger.level = Logger::FATAL
 
@@ -37,7 +37,7 @@ namespace :database_updates do
     puts 'Migrating the following ids'
     puts publisher_ids
 
-    mongo_uri = `heroku config:get -a bat-eyeshade MONGODB_URI`.strip
+    mongo_uri = ENV['MONGODB_URI']
 
     Mongo::Logger.logger.level = Logger::FATAL
     client = Mongo::Client.new(mongo_uri)

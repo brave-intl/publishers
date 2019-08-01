@@ -716,7 +716,7 @@ en:
       skip: Skip for now
       preview: Preview Banner
       customize: Customize
-    uphold_verified:
+    create:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
