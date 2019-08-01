@@ -80,8 +80,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                         span
                           == t('.held_funds_description')
 
-
-
       - if promo_running?
         = render partial: 'promo_panel'
       - elsif current_publisher.channels.empty?

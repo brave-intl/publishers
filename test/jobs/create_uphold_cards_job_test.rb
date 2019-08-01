@@ -37,6 +37,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
     CreateUpholdCardsJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
+    publisher.uphold_connection.reload
 
     assert_equal publisher.uphold_connection.address, '123e4567-e89b-12d3-a456-426655440000'
   end
@@ -63,6 +64,7 @@ class CreateUpholdCardsJobTest < ActiveJob::TestCase
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
     CreateUpholdCardsJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
+    publisher.uphold_connection.reload
 
     assert_equal publisher.uphold_connection.address, '123e4567-e89b-12d3-a456-426655440000'
   end
