@@ -124,7 +124,38 @@ uphold_connected:
   name: "Alice the uphold_connected"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
-  default_currency: "USD"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_reauthorize:
+  email: "alice_reauthorize@upholdconnected.org"
+  name: "Alice the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_details:
+  email: "alice@upholdconnecteddetails.org"
+  name: "Alice the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_blocked:
+  email: "alice@upholdconnectedandblocked.org"
+  name: "Alice the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_restricted_member:
+  email: "restricted@upholdconnected.org"
+  name: "restricted the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
 

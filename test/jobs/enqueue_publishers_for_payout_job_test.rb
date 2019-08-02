@@ -3,7 +3,7 @@ require 'test_helper'
 class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
   test "launches 1 job per publisher" do
     assert_difference -> { PayoutReport.count } do
-      assert_enqueued_jobs(Publisher.with_verified_channel.count) do
+      assert_enqueued_jobs(Publisher.joins(:uphold_connection).with_verified_channel.count) do
         EnqueuePublishersForPayoutJob.perform_now(should_send_notifications: false,
                                                   final: false)
       end
@@ -20,7 +20,7 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
   end
 
   test "can supply a list of publisher ids" do
-    publishers = Publisher.where.not(email: "priscilla@potentiallypaid.org")
+    publishers = Publisher.where.not(email: "priscilla@potentiallypaid.org").joins(:uphold_connection)
 
     assert_enqueued_jobs(publishers.count) do
       EnqueuePublishersForPayoutJob.perform_now(should_send_notifications: false,

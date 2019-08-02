@@ -21,6 +21,8 @@ module Publishers
       OmniAuth.config.test_mode = true
       @active_promo_id_original = Rails.application.secrets[:active_promo_id]
       Rails.application.secrets[:active_promo_id] = ""
+      uphold_url = Rails.application.secrets[:uphold_api_uri] + "/v0/me"
+      stub_request(:get, uphold_url).to_return(body: { status: "pending", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
     end
 
     after(:example) do
@@ -71,6 +73,7 @@ module Publishers
         },
       }.deep_merge(options)
     end
+
 
     test "a publisher can add a youtube channel" do
       publisher = publishers(:uphold_connected)
@@ -379,7 +382,7 @@ module Publishers
     end
 
     test "a publisher who adds a twitch channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:uphold_connected)
+      publisher = publishers(:uphold_connected_details)
       verified_details = twitch_channel_details(:uphold_connected_twitch_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)
@@ -489,7 +492,7 @@ module Publishers
     end
 
     test "a publisher who adds a twitter channel taken by themselves will see .channel_already_registered" do
-      publisher = publishers(:uphold_connected)
+      publisher = publishers(:uphold_connected_details)
       verified_details = twitter_channel_details(:uphold_connected_twitter_details)
       request_login_email(publisher: publisher)
       url = publisher_url(publisher, token: publisher.reload.authentication_token)

@@ -175,8 +175,8 @@ class WalletTest < ActiveSupport::TestCase
                    "settlement_currency"=>"ETH",
                    "type"=>"contribution"}]
 
-  test_wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions)
-  empty_wallet = Eyeshade::Wallet.new(wallet_info: {}, accounts: {})
+  test_wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions, uphold_connection: UpholdConnection.new(default_currency: 'USD'))
+  empty_wallet = Eyeshade::Wallet.new(wallet_info: {}, accounts: {}, uphold_connection: nil)
 
   test "channel_balances have correct BAT and probi amounts" do
     assert_equal test_wallet.channel_balances.count, 2
@@ -217,21 +217,12 @@ class WalletTest < ActiveSupport::TestCase
     assert_equal last_settlement_balance.amount_settlement_currency.to_s, "151.24"
   end
 
-  test "supports action" do
-    assert_equal('re-authorize', test_wallet.action)
-  end
-
   test "handles initialization with empty wallet details" do
-    assert empty_wallet.possible_currencies.is_a?(Array)
     assert empty_wallet.address.is_a?(String)
   end
 
   test "parses wallet status and details" do
-    assert_equal "re-authorize", test_wallet.action
-    assert_equal true, test_wallet.authorized?
     assert_equal "uphold", test_wallet.provider
     assert_equal 'cards:write', test_wallet.scope
-    assert_equal "USD", test_wallet.default_currency
-    assert_equal [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ], test_wallet.possible_currencies
   end
 end

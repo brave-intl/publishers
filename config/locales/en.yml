@@ -567,6 +567,7 @@ en:
       name_placeholder: First and last name
       tos_html: By clicking '%{action}', you're agreeing to our %{tos_link}
     home:
+      migration: We are currently performing scheduled maintenance. During this time you may see some issues with your uphold wallet. We should be fully functional shortly.
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       title: Dashboard
       balance_pending: PENDING PAYOUTS
@@ -716,7 +717,7 @@ en:
       skip: Skip for now
       preview: Preview Banner
       customize: Customize
-    uphold_verified:
+    create:
       uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."

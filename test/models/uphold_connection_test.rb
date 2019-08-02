@@ -112,20 +112,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
           assert uphold_connection.valid?
         end
 
-        describe 'when uphold_verified is true' do
-          before do
-            uphold_connection.uphold_verified = true
-          end
-
-          it 'access_parameters cannot be set with uphold_verified' do
-            refute uphold_connection.valid?
-          end
-
-          it 'has a key with errors' do
-            uphold_connection.valid?
-            assert_equal [:uphold_access_parameters], uphold_connection.errors.keys
-          end
-        end
       end
     end
   end
@@ -161,37 +147,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
     end
   end
 
-
-  describe 'verify_uphold' do
-    uphold_connection = nil
-
-    before do
-      uphold_connection = uphold_connections(:verified_connection)
-      uphold_connection.uphold_code = "foo"
-      uphold_connection.uphold_access_parameters = "bar"
-      uphold_connection.uphold_verified = false
-
-      assert uphold_connection.uphold_processing?
-      uphold_connection.verify_uphold
-    end
-
-    it 'sets uphold_verified to true' do
-      refute uphold_connection.uphold_processing?
-    end
-
-    it 'has uphold_verified?' do
-      assert uphold_connection.uphold_verified?
-    end
-
-    it 'is valid' do
-      assert uphold_connection.valid?
-    end
-
-    it 'is not uphold_processing' do
-      refute uphold_connection.uphold_processing?
-    end
-  end
-
   describe 'disconnect upholds' do
     let(:uphold_connection) { uphold_connections(:verified_connection) }
 
@@ -211,7 +166,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       assert uphold_connection.valid?
     end
   end
-  
+
   describe 'verify_uphold_status' do
     uphold_connection = nil
 
@@ -226,7 +181,7 @@ class UpholdConnectionTest < ActiveSupport::TestCase
         uphold_connection.uphold_verified = false
       end
 
-      it 'sets the status to unconnected' do 
+      it 'sets the status to unconnected' do
         assert_equal :unconnected, uphold_connection.uphold_status
       end
     end
@@ -243,27 +198,27 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       end
     end
 
-    describe 'when uphold_code is nil but there are access parameters' do 
-      before do 
+    describe 'when uphold_code is nil but there are access parameters' do
+      before do
         uphold_connection.uphold_code = nil
         uphold_connection.uphold_access_parameters = "foo"
         uphold_connection.uphold_verified = false
       end
 
-      it 'returns access_parameters_acquired' do
-        assert_equal :access_parameters_acquired, uphold_connection.uphold_status
+      it 'returns unconnected' do
+        assert_equal :unconnected, uphold_connection.uphold_status
       end
     end
 
-    describe 'when uphold_code and access_parameters are nil' do 
-      before do 
+    describe 'when uphold_code and access_parameters are nil' do
+      before do
         uphold_connection.uphold_code = nil
         uphold_connection.uphold_access_parameters = nil
         uphold_connection.uphold_verified = true
       end
 
-      it 'returns access_parameters_acquired' do
-        assert_equal :verified, uphold_connection.uphold_status
+      it 'returns reauthorize' do
+        assert_equal :reauthorization_needed, uphold_connection.uphold_status
       end
     end
   end

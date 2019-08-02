@@ -73,7 +73,7 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 0],
-      [0.days.ago.to_date.to_s, 0]
+      [0.days.ago.to_date.to_s, 5]
     ], JSON.parse(response.body)
 
     get "/api/v1/stats/publishers/channel_and_kyc_uphold_and_email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
@@ -92,7 +92,7 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 0],
-      [0.days.ago.to_date.to_s, 0]
+      [0.days.ago.to_date.to_s, 4]
     ], JSON.parse(response.body)
   end
 

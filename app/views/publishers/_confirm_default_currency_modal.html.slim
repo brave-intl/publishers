@@ -5,7 +5,7 @@
     p=t(".leadin")
 
     = form_for current_publisher, url: confirm_default_currency_publishers_path, html: { id: "confirm_default_currency_form" } do |f|
-      = f.select(:default_currency, options_for_select(possible_currencies(current_publisher)))
+      = f.select(:default_currency, options_for_select(possible_currencies))
       = f.submit(t(".confirm"), class: "btn btn-primary btn-wide")
 
     br

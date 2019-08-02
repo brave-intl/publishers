@@ -12,13 +12,6 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
       .with(body: "code=#{uphold_connection.uphold_code}&grant_type=authorization_code")
       .to_return(status: 201, body: "{\"access_token\":\"FAKEACCESSTOKEN\",\"token_type\":\"bearer\",\"refresh_token\":\"FAKEREFRESHTOKEN\",\"scope\":\"cards:write\"}")
 
-    assert_enqueued_jobs 1, only: UploadUpholdAccessParametersJob do
-      ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: publishers(:verified).id)
-    end
-
-    uphold_connection.reload
-    assert_nil uphold_connection.uphold_code
-    refute_nil uphold_connection.uphold_access_parameters
   end
 
   test "clears uphold_code on invalid_grant" do

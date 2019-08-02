@@ -6,8 +6,11 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
   include EyeshadeHelper
 
+  let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
+
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    stub_request(:get, uphold_url).to_return(body: { status: "ok", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
   end
 
   after do
@@ -238,7 +241,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   test "#notify sends emails to" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     admin = publishers(:admin)
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:completed)
     delete_publishers_except([admin.id, publisher.id])
     sign_in admin
 

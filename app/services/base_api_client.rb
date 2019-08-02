@@ -1,13 +1,14 @@
 class BaseApiClient < BaseService
   private
+
   # Make a GET request.
   #
   # path    - [String] the path relative to the endpoint
   # options - [Hash] the parameters to supply
   #
   # returns  the response
-  def get(path, options = {})
-    request(:get, path, params: options)
+  def get(path, options = {}, authorization = nil)
+    request(:get, path, options, authorization)
   end
 
   # Make a POST request.
@@ -16,8 +17,8 @@ class BaseApiClient < BaseService
   # options - [Hash] the parameters to supply
   #
   # returns - [Response] the response
-  def post(path, options = {})
-    request(:post, path, form: options)
+  def post(path, options = {}, authorization = nil)
+    request(:post, path, options, authorization)
   end
 
   # Make a PUT request.
@@ -56,13 +57,13 @@ class BaseApiClient < BaseService
     false
   end
 
-  def request(method, path, payload = {})
+  def request(method, path, payload = {}, authorization = nil)
     # Mock out the request
     return Struct.new(:body).new("{}") if perform_offline?
 
-    @connection.send(method) do |req|
+    connection.send(method) do |req|
       req.url [api_base_uri, path].join('')
-      req.headers["Authorization"] = api_authorization_header
+      req.headers["Authorization"] = authorization || api_authorization_header
       req.headers['Content-Type'] = 'application/json'
       req.body = payload.to_json if method.to_sym.eql?(:post)
       req.params = payload if method.to_sym.eql?(:get)

@@ -11,6 +11,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+    stub_request(:get, /cards\?q/).to_return(body: [].to_json)
+    stub_request(:post, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards").to_return(body: {id: '123e4567-e89b-12d3-a456-426655440000'}.to_json)
   end
 
   after do
@@ -460,42 +462,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "after redirection back from uphold, a missing publisher's `uphold_state_token` redirects back to home" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    publisher.two_factor_prompted_at = 1.day.ago
-    publisher.save!
-
-    url = uphold_verified_publishers_path
-    get(url, params: { code: 'ebb18043eb2e106fccb9d13d82bec119d8cd016c' })
-    assert_redirected_to '/publishers/home'
-
-    # Check that failure message is displayed
-    follow_redirect!
-    assert_match(I18n.t("publishers.uphold_verified.uphold_error"), response.body)
-  end
-
-  test "after redirection back from uphold, a mismatched publisher's `uphold_state_token` redirects back to home" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    uphold_state_token = SecureRandom.hex(64)
-    publisher.uphold_connection.uphold_state_token = uphold_state_token
-
-    publisher.two_factor_prompted_at = 1.day.ago
-    publisher.save!
-
-    spoofed_uphold_state_token = SecureRandom.hex(64)
-    url = uphold_verified_publishers_path
-    get(url, params: { code: 'ebb18043eb2e106fccb9d13d82bec119d8cd016c', state: spoofed_uphold_state_token })
-    assert_redirected_to '/publishers/home'
-
-    # Check that failure message is displayed
-    follow_redirect!
-    assert_match(I18n.t("publishers.uphold_verified.uphold_error"), response.body)
-  end
-
   test "when uphold fails to return uphold_access_parameters, publisher has option to reconnect with uphold" do
     # Turn off promo
     active_promo_id_original = Rails.application.secrets[:active_promo_id]
@@ -569,6 +535,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   test "a publisher's wallet can be polled via ajax" do
     publisher = publishers(:uphold_connected)
     sign_in publisher
+    stub_request(:get, /me/).to_return(body: { currencies: [] }.to_json)
 
     get wallet_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
 
@@ -576,7 +543,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     wallet_response = JSON.parse(response.body)
 
-    assert wallet_response["channel_balances"].present?
+    assert wallet_response["wallet"]["channel_balances"].present?
   end
 
   test "a publisher's uphold status can be polled via ajax" do
@@ -594,9 +561,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "a publisher can be disconnected from uphold" do
-    publisher = publishers(:verified)
-    publisher.uphold_connection.verify_uphold
-    assert publisher.uphold_connection.uphold_verified?
+    publisher = publishers(:uphold_connected_details)
     sign_in publisher
 
     patch disconnect_uphold_publishers_path, headers: { 'HTTP_ACCEPT' => "application/json" }
@@ -713,21 +678,16 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
 
     assert_response 200
-    assert_equal(
-      { action: 'redirect',
-        status: 'Redirecting to Uphold for authorization ...',
-        redirectURL: uphold_authorization_endpoint(publisher),
-        timeout: 3000 }.to_json,
-      response.body)
 
     # assert_redirected_to uphold_authorization_endpoint(publisher)
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BAT"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BAT"
   end
 
   test "#confirm_default_currency sets new default currency, initiates CreateUpholdCardsJob if not currency in available currency" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_currency_unconfirmed)
+
     sign_in publisher
 
     confirm_default_currency_params = {
@@ -756,8 +716,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         timeout: 2000 }.to_json,
       response.body)
 
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BAT"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BAT"
   end
 
   test "#confirm_default_currency creates BTC & BAT card, sets new default currency to BTC" do
@@ -791,8 +751,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         timeout: 2000 }.to_json,
       response.body)
 
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BTC"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BTC"
   end
 
   test "#confirm_default_currency does not create new card after new publisher confirms available default currency" do
@@ -825,13 +785,15 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         timeout: 2000 }.to_json,
       response.body)
 
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BAT"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BAT"
   end
 
   test "after an existing publisher confirms default currency and gets cards:write scope, #home will create the cards" do
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected_currency_unconfirmed)
+    stub_request(:get, /v0\/me/).to_return(body: { status: "ok", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
+
     sign_in publisher
 
     confirm_default_currency_params = {
@@ -853,15 +815,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     patch(confirm_default_currency_publishers_path(publisher), params: confirm_default_currency_params)
 
     assert_response 200
-    assert_equal(
-      { action: 'redirect',
-        status: 'Redirecting to Uphold for authorization ...',
-        redirectURL: uphold_authorization_endpoint(publisher),
-        timeout: 3000 }.to_json,
-      response.body)
 
-    assert publisher.default_currency_confirmed_at.present?
-    assert publisher.default_currency == "BAT"
+    assert publisher.uphold_connection.default_currency_confirmed_at.present?
+    assert publisher.uphold_connection.default_currency == "BAT"
 
     wallet = { "wallet" => { "defaultCurrency" => "BAT",
                              "authorized" => true,
@@ -876,14 +832,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
   end
 
-  test "#balance returns the wallet as json" do
-    publisher = publishers(:completed)
-    sign_in publisher
-    stub_all_eyeshade_wallet_responses(publisher: publisher)
-    get wallet_publishers_path
-    assert_equal publisher.wallet.to_json, response.body
-  end
-
   describe 'publisher integration with uphold' do
     let(:publisher) { publishers(:completed) }
     before(:example) do
@@ -892,28 +840,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       # skip 2FA prompt
       publisher.two_factor_prompted_at = 1.day.ago
       publisher.save!
-    end
-
-    test "after verification, a publisher's `uphold_state_token` is set and will be used for Uphold authorization" do
-      # verify that the state token has not yet been set
-      assert_nil(publisher.uphold_connection.uphold_state_token)
-
-      # move right to `dashboard`
-      url = home_publishers_url
-      get(url)
-
-      # verify that a state token has been set
-      publisher.reload
-      assert_not_nil(publisher.uphold_connection.uphold_state_token)
-
-      # assert that the state token is included in the uphold authorization url
-      endpoint = Rails.application.secrets[:uphold_authorization_endpoint]
-                     .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
-                     .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-                     .gsub('<STATE>', publisher.uphold_connection.uphold_state_token)
-
-      assert_select "a[href='#{endpoint}']", text: "Connect", count: 1
-      assert_select "a[href='#{endpoint}']", text: "Connect to Uphold", count: 1
     end
 
     test "after redirection back from uphold and uphold_api is offline, a publisher's code is still set" do

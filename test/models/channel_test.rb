@@ -323,7 +323,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     channel = channels(:potentially_paid_site)
     assert channel.most_recent_potential_payment.present?
 
-    channel = channels(:uphold_connected)
+    channel = channels(:uphold_connected_details)
     refute channel.most_recent_potential_payment.present?
   end
 
@@ -351,7 +351,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
         channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'asc')
         channels.each_with_index do |channel, index|
           next if index == 0 || channel.details.stats["view_count"].nil?
-          assert channel.details.stats["view_count"] > channels[index-1].details.stats["view_count"]
+          assert channel.details.stats["view_count"] >= channels[index-1].details.stats["view_count"]
         end
       end
 
@@ -359,7 +359,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
         channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'desc')
         channels.each_with_index do |channel, index|
           next if index == 0 || channel.details.stats["view_count"].nil?
-          assert channel.details.stats["view_count"] < channels[index-1].details.stats["view_count"]
+          assert channel.details.stats["view_count"] <= channels[index-1].details.stats["view_count"]
         end
       end
     end
@@ -369,7 +369,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
         channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'asc')
         channels.each_with_index do |channel, index|
           next if index == 0 || channel.details.stats["followers_count"].nil?
-          assert channel.details.stats["followers_count"] > channels[index-1].details.stats["followers_count"]
+          assert channel.details.stats["followers_count"] >= channels[index-1].details.stats["followers_count"]
         end
       end
 
@@ -377,7 +377,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
         channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'desc')
         channels.each_with_index do |channel, index|
           next if index == 0 || channel.details.stats["followers_count"].nil?
-          assert channel.details.stats["followers_count"] < channels[index-1].details.stats["followers_count"]
+          assert channel.details.stats["followers_count"] <= channels[index-1].details.stats["followers_count"]
         end
       end
     end

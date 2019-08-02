@@ -12,7 +12,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
 
   test "fills in empty balances only for channels that eyeshade does not return balance info" do
     Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:uphold_connected_details)
 
     # Only include owner account in response
     stubbed_response_body = [{
@@ -22,11 +22,11 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     }]
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
+    stub_request(:get, /v1\/accounts\/balances/).
       to_return(status: 200, body: stubbed_response_body.to_json)
 
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform
-    assert accounts.length == 4
+    assert_equal 4, accounts.length
 
     account_ids = accounts.map { |account| account["account_id"] }
     publisher.channels.verified.each do |verified_channel|
@@ -36,7 +36,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
 
   test "fills in empty owner balance if not included in eyeshade response" do
     Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:uphold_connected_details)
 
     # Owner balance not included in response
     stubbed_response_body = publisher.channels.verified.map do |channel|
@@ -48,7 +48,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     end
 
     # stub empty response is returned by eyeshade for only one channel
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
+    stub_request(:get, /v1\/accounts\/balances/).
       to_return(status: 200, body: stubbed_response_body.to_json)
 
     accounts = PublisherBalanceGetter.new(publisher: publisher).perform

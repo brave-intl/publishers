@@ -16,6 +16,14 @@ Rails.application.routes.draw do
           delete :delete_file
         end
         resources :case_notes
+
+        scope controller: 'uphold'  do
+          get :uphold_status
+          get :uphold_verified, action: :create
+          patch :connect_uphold
+          patch :disconnect_uphold, action: :destroy
+          patch :confirm_default_currency
+        end
       end
 
       get :log_out
@@ -23,19 +31,15 @@ Rails.application.routes.draw do
       get :change_email
       get :change_email_confirm
       patch :update_email
-      patch :confirm_default_currency
       get :email_verified
       get :wallet
-      get :uphold_verified
       get :suspended_error
       get :statement
       get :statements
-      get :uphold_status
       get :get_site_banner_data
       patch :verify
       patch :update
       patch :complete_signup
-      patch :disconnect_uphold
       get :choose_new_channel_type
       get :two_factor_authentication_removal
       post :request_two_factor_authentication_removal
@@ -200,6 +204,9 @@ Rails.application.routes.draw do
         get :statement
         get :cancel_two_factor_authentication_removal
       end
+
+      patch :refresh_uphold
+
       resources :publisher_notes
       resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
       resources :referrals, controller: 'publishers/referrals'

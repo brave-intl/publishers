@@ -51,48 +51,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       }
     }
 
-    describe "uphold states" do
-      test "verified if authorized and isMember" do
-        eyeshade_response[:wallet][:authorized] = true
-        eyeshade_response[:wallet][:isMember] = true
-        eyeshade_response[:wallet][:status] = "ok"
-        publisher = publishers(:uphold_connected)
-        publisher.channels.delete_all
-        stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-        PublisherWalletGetter.new(publisher: publisher).perform
-        assert_equal UpholdConnection::UpholdAccountState::VERIFIED, publisher.uphold_connection.uphold_status
-      end
-
-      test "not a member yet ok" do
-        eyeshade_response[:wallet][:authorized] = true
-        eyeshade_response[:wallet][:isMember] = false
-        eyeshade_response[:wallet][:status] = "ok"
-        publisher = publishers(:uphold_connected)
-        publisher.channels.delete_all
-        stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-        assert_equal UpholdConnection::UpholdAccountState::RESTRICTED, publisher.uphold_connection.uphold_status
-      end
-
-      test "unconnected" do
-        eyeshade_response.delete(:wallet)
-        publisher = publishers(:verified)
-        publisher.channels.delete_all
-        stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-        assert_equal UpholdConnection::UpholdAccountState::UNCONNECTED, publisher.uphold_connection.uphold_status
-      end
-
-      test "has an action" do
-        publisher = publishers(:uphold_connected)
-        publisher.channels.delete_all
-        ["re-authorize", "authorize"].each do |action|
-          eyeshade_response[:status][:action] = action
-          stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: eyeshade_response)
-          PublisherWalletGetter.new(publisher: publisher).perform
-          assert_equal UpholdConnection::UpholdAccountState::REAUTHORIZATION_NEEDED, publisher.uphold_connection.uphold_status
-        end
-      end
-    end
-
     it "returns a wallet with channel data" do
       publisher = publishers(:completed)
 
@@ -114,7 +72,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       result = PublisherWalletGetter.new(publisher: publisher).perform
 
       assert result.kind_of?(Eyeshade::Wallet)
-      assert_equal "USD", result.default_currency
 
       assert_equal(
         25.0,
@@ -141,7 +98,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       result = PublisherWalletGetter.new(publisher: publisher).perform
 
       assert result.kind_of?(Eyeshade::Wallet)
-      assert_equal "USD", result.default_currency
     end
 
     test "overall balance is sum of channel and owner accounts" do
@@ -200,7 +156,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
     assert result.kind_of?(Eyeshade::Wallet)
-    assert_equal "USD", result.default_currency
   end
 
   test "when online returns a wallet with channel data" do
@@ -235,7 +190,6 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     result = PublisherWalletGetter.new(publisher: publisher).perform
 
     assert result.kind_of?(Eyeshade::Wallet)
-    assert_equal "USD", result.default_currency
     assert_equal "23.75", result.channel_balances["completed.org"].amount_bat.to_s
   end
 
@@ -304,7 +258,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
 
   test "uses the PublisherTransactionsGetter to get last settlement information" do
     Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:uphold_connected_details)
 
     wallet = {
       "rates" => {

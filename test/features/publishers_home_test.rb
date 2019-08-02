@@ -4,8 +4,11 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include EyeshadeHelper
 
+  let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
+
+    stub_request(:get, uphold_url).to_return(body: { status: "restricted", uphold_id: "123e4567-e89b-12d3-a456-426655440000", currencies: [] }.to_json)
   end
 
   after do
@@ -129,7 +132,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   end
 
   test "confirm default currency modal does not appear for non uphold verified publishers" do
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:completed)
     sign_in publisher
 
     visit home_publishers_path
@@ -138,7 +141,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
   test "confirm default currency modal does not appear for non uphold authorized publishers" do
     Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    publisher = publishers(:completed)
     sign_in publisher
 
     wallet = { "wallet" => { "authorized" => false }}
