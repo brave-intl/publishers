@@ -24,19 +24,19 @@ module Eyeshade
                 # :uphold_id,
                 # :uphold_account_status
 
-    def initialize(wallet_info:, accounts: [], transactions: [])
+    def initialize(wallet_info:, accounts: [], transactions: [], uphold_connection: nil)
       # Wallet information
       @rates = wallet_info["rates"] || {}
       @authorized = wallet_info.dig("wallet", "authorized")
       @provider = wallet_info.dig("wallet", "provider") # Wallet provider e.g. Uphold
       @scope = wallet_info.dig("wallet", "scope") # Permissions e.g. cards:read, cards:write
-      @default_currency = wallet_info.dig("wallet", "defaultCurrency")
       @possible_currencies = wallet_info.dig("wallet", "possibleCurrencies") || []
       @address = wallet_info.dig("wallet", "address") || ""
       @is_member = wallet_info.dig("wallet", "isMember") || false
       @uphold_id = wallet_info.dig("wallet", "id")
       # @uphold_account_status = wallet_info.dig("wallet", "status")
       # @action = wallet_info.dig("status","action")
+      @default_currency = uphold_connection&.default_currency
       @channel_balances = {}
       accounts.select { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.each do |account|
         @channel_balances[account["account_id"]] = Eyeshade::ChannelBalance.new(rates, @default_currency, account)

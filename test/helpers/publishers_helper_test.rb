@@ -31,9 +31,8 @@ class PublishersHelperTest < ActionView::TestCase
     attr_reader :default_currency, :wallet, :uphold_connection
 
     def initialize(wallet_info:, accounts: [], transactions: [], uphold_connection: nil)
-      @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions) if wallet_info
-      @default_currency = 'USD'
       @uphold_connection = UpholdConnection.new(uphold_connection)
+      @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions, uphold_connection: @uphold_connection) if wallet_info
     end
 
     def become_subclass

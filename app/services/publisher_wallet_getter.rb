@@ -32,9 +32,12 @@ class PublisherWalletGetter < BaseApiClient
       accounts = []
     end
 
-    Eyeshade::Wallet.new(wallet_info: wallet_info,
-                         accounts: accounts,
-                         transactions: PublisherTransactionsGetter.new(publisher: @publisher).perform)
+    Eyeshade::Wallet.new(
+      wallet_info: wallet_info,
+      accounts: accounts,
+      transactions: PublisherTransactionsGetter.new(publisher: @publisher).perform,
+      uphold_connection: publisher.uphold_connection
+    )
 
   rescue Faraday::Error => e
     Rails.logger.warn("PublisherWalletGetter #perform error: #{e}")
@@ -90,7 +93,8 @@ class PublisherWalletGetter < BaseApiClient
     Eyeshade::Wallet.new(
       wallet_info: wallet_info,
       accounts: accounts,
-      transactions: PublisherTransactionsGetter.new(publisher: @publisher).perform
+      transactions: PublisherTransactionsGetter.new(publisher: @publisher).perform,
+      uphold_connection: @publisher.uphold_connection
     )
   end
 
