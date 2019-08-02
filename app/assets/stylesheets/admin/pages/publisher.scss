@@ -159,3 +159,12 @@
     }
   }
 }
+
+.not-verified {
+  color: $braveGray-6;
+
+  filter: grayscale(100%);
+  a {
+    color: $braveGray-6;
+  }
+}

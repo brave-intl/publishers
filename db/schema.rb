@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_17_030948) do
+ActiveRecord::Schema.define(version: 2019_07_30_162819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -503,6 +503,19 @@ ActiveRecord::Schema.define(version: 2019_07_17_030948) do
     t.datetime "updated_at", null: false
     t.index ["key_handle"], name: "index_u2f_registrations_on_key_handle"
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
+  end
+
+  create_table "uphold_connection_for_channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "uphold_connection_id", null: false
+    t.uuid "channel_id", null: false
+    t.string "currency"
+    t.string "channel_identifier"
+    t.string "card_id"
+    t.string "address"
+    t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
+    t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"
+    t.index ["currency"], name: "index_uphold_connection_for_channels_on_currency"
+    t.index ["uphold_connection_id"], name: "index_uphold_connection_for_channels_on_uphold_connection_id"
   end
 
   create_table "uphold_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

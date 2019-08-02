@@ -48,6 +48,7 @@ class Channel < ApplicationRecord
   }, foreign_key: 'details_id'
 
   has_one :promo_registration, dependent: :destroy
+  has_many :uphold_connection_for_channel
 
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
@@ -76,7 +77,7 @@ class Channel < ApplicationRecord
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
-  after_save :notify_slack, if: :saved_change_to_verified?
+  after_save :create_channel_card, :notify_slack, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
 
@@ -360,6 +361,10 @@ class Channel < ApplicationRecord
     PayoutReport.most_recent_final_report&.potential_payments&.where(channel_id: id)&.first
   end
 
+  def uphold_connection
+    @uphold_connection ||= UpholdConnectionForChannel.joins(:uphold_connection).where(channel_id: id).where("uphold_connections.default_currency = uphold_connection_for_channels.currency").first
+  end
+
   private
 
   def should_register_channel_for_promo
@@ -374,6 +379,10 @@ class Channel < ApplicationRecord
 
   def register_channel_for_promo
     Promo::RegisterChannelForPromoJob.new.perform(channel: self)
+  end
+
+  def create_channel_card
+    CreateUpholdChannelCardJob.perform_now(uphold_connection_id: publisher.uphold_connection.id, channel_id: id)
   end
 
   def notify_slack

@@ -212,7 +212,7 @@ class PublishersController < ApplicationController
       uphold_connection.sync_from_uphold!
 
       # Handles legacy case where user is missing an Uphold card
-      uphold_connection.create_uphold_card_for_default_currency if uphold_connection.missing_card?
+      uphold_connection.create_uphold_cards if uphold_connection.missing_card?
     end
   end
 

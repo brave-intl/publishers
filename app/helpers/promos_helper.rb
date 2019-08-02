@@ -51,6 +51,25 @@ module PromosHelper
     }
   end
 
+  def channel_referral_totals(channel)
+    return if channel.promo_registration.blank?
+
+    retrievals = 0
+    first_runs = 0
+    finalized = 0
+    JSON.parse(channel.promo_registration.stats).each do |stat|
+      retrievals += stat["retrievals"]
+      first_runs += stat["first_runs"]
+      finalized += stat["finalized"]
+    end
+    {
+      PromoRegistration::RETRIEVALS => retrievals,
+      PromoRegistration::FIRST_RUNS => first_runs,
+      PromoRegistration::FINALIZED => finalized,
+    }
+  end
+
+
   def referral_url(referral_code)
     base_referral_url + referral_code.downcase
   end

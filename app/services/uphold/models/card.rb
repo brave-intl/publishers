@@ -74,10 +74,27 @@ module Uphold
         params = {
           currency: currency || uphold_connection.default_currency,
           label: label,
+          settings: { starred: true }
         }
 
         response = post(PATH, params, authorization(uphold_connection))
         Uphold::Models::Card.new(JSON.parse(response.body))
+      end
+
+
+      # Creates an address for a given card
+      #
+      # @param [string] network Network for the card, must be one of ["anonymous", "bitcoin", "bitcoin-cash", "bitcoin-gold", "dash", "ethereum", "litecoin", "voxel", "xrp-ledger"]
+      #
+      # @returns the id for the address
+      def create_address(uphold_connection:, card_id:, network: "anonymous")
+        Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
+
+        path = Addressable::Template.new("/v0/me/cards/{id}/addresses").expand(id: card_id)
+
+        response = post(path, { network: network }, authorization(uphold_connection))
+
+        JSON.parse(response.body).dig('id')
       end
 
       def authorization(uphold_connection)

@@ -31,7 +31,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
         include_verified_channel(verified_channel)
       end
     end
-    append_excluded
+    # append_excluded
     @channels.to_json
   end
 
@@ -55,9 +55,9 @@ class JsonBuilders::ChannelsJsonBuilderV2
     # Skip if channel publisher has not yet KYC'd
     return unless verified_channel.publisher&.uphold_connection&.is_member
 
-    wallet_address_id = verified_channel.publisher&.uphold_connection&.address
+    wallet_address_id = verified_channel.uphold_connection&.address
+
     return if wallet_address_id.nil?
-    return if existing_wallet_address?(wallet_address_id)
 
     @channels.push([
       verified_channel.details.channel_identifier,

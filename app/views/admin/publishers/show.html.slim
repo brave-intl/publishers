@@ -108,50 +108,13 @@ hr
     hr
     =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
 
-  h3.admin-header = "Channels (#{@publisher.channels.count})"
-  #channels-section
-    - @publisher.channels.each do |channel|
-      .channel
-        .channel-link
-          = link_to(on_channel_type(channel), channel.details.url)
-        .channel-info
-          - if channel.verification_awaiting_admin_approval?
-            .admin-approval
-              span.admin-approval-warning = "Admin approval required"
-              span.admin-approval-button
-                = form_for channel, as: :channel, method: :patch, url: approve_channel_admin_publishers_path(channel_id: channel.id) do |f|
-                  = f.submit("Approve", class: "btn btn-primary")
-            hr
-          - elsif channel.verification_approved_by_admin?
-            .admin-approval
-              span.admin-approval-success = "Admin approved"
-            hr
-          .db-info-row
-            .db-field = "Channel BAT balance"
-            .db-value = publisher_channel_bat_balance(@publisher, channel.details.channel_identifier)
-          - if channel.details.is_a?(SiteChannelDetails)
-            .db-info-row
-              .db-field = "Verified"
-              .db-value = channel.verified?
-            .db-info-row
-              .db-field = "Verification Method"
-              .db-value = channel.details.verification_method
-            .db-info-row
-              .db-field = "Token"
-              .db-value.token = channel.details.verification_token
-          - if channel.promo_registration.present?
-            .db-info-row
-              .db-field = "Referral code:"
-              .db-value = channel.promo_registration.referral_code
-          - if channel.verified?
-            .payout-report-status-section
-              - potential_contribution_payment = channel.most_recent_potential_payment
-              - if potential_contribution_payment.present?
-                h4= payout_report_status_header('channel')
-                .db-info-row
-                  .db-field = "Approx. amount"
-                  .db-value = "#{potential_contribution_payment.amount.to_d * 1/1E18} BAT"
-
+  .c-4.shadow-sm.rounded.p-3.my-4
+    h3.text-dark Channels
+    #channels-section
+      - @publisher.channels.each do |channel|
+        = render partial: 'channel', locals: { channel: channel }
+        - unless channel == @publisher.channels.last
+          hr
 
   hr
 
