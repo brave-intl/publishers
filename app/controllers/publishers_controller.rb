@@ -203,6 +203,8 @@ class PublishersController < ApplicationController
 
     @possible_currencies = []
 
+    @migration_present = Sidekiq::Queue.new("low").any? { |job| job.args.first.dig("job_class").eql? "MigrateUpholdAccessParametersJob" }
+
     if uphold_connection.can_create_uphold_cards?
       @possible_currencies = uphold_connection.uphold_details&.currencies
 

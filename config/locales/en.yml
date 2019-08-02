@@ -567,6 +567,7 @@ en:
       name_placeholder: First and last name
       tos_html: By clicking '%{action}', you're agreeing to our %{tos_link}
     home:
+      migration: We are currently performing scheduled maintenance. During this time you may see some issues with your uphold wallet. We should be fully functional shortly.
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       title: Dashboard
       balance_pending: PENDING PAYOUTS
