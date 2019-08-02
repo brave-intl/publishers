@@ -201,9 +201,9 @@ class PublishersController < ApplicationController
 
     @case = Case.find_by(publisher: current_publisher)
 
-    # TODO Refactor this
     @possible_currencies = []
-    if uphold_connection.uphold_verified?
+
+    if uphold_connection.can_create_uphold_cards?
       @possible_currencies = uphold_connection.uphold_details&.currencies
 
       # every request to the homepage let's sync from uphold
