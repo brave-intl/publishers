@@ -2,8 +2,8 @@ noscript
   div.noscript-warning = t ".noscript"
 
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
-    current_publisher.uphold_connection.uphold_verified? && \
-    (current_publisher.uphold_connection.default_currency_confirmed_at.blank? || current_publisher.uphold_connection.default_currency.blank?)
+    @publisher.uphold_connection.uphold_verified? && \
+    (@publisher.uphold_connection.default_currency_confirmed_at.blank? || @publisher.uphold_connection.default_currency.blank?)
 script type="text/html" id="confirm_default_currency_modal_wrapper"
   = render partial: 'confirm_default_currency_modal', locals: { possible_currencies: @possible_currencies || []}
 
@@ -13,7 +13,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     home_publishers_path, \
     class: 'title' \
   )
-  - if current_publisher.partner?
+  - if @publisher.partner?
     = link_to(t("shared.referrals"), partners_referrals_path, class: 'title-partner')
     = link_to(t("shared.payments"), partners_payments_path, class: 'title-partner' )
 
@@ -21,15 +21,15 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
   = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
 
 
-= hidden_field_tag 'publisher_id', current_publisher.id
+= hidden_field_tag 'publisher_id', @publisher.id
 
 .dashboard
-  #uphold_status { class=uphold_status_class(current_publisher)
+  #uphold_status { class=uphold_status_class(@publisher)
                    data-open-confirm-default-currency-modal=(open_confirm_default_currency_modal ? "true" : "false")
                    data-possible-currencies=(@possible_currencies || [])
-                   data-default-currency=current_publisher.uphold_connection.default_currency }
+                   data-default-currency=@publisher.uphold_connection.default_currency }
     .row
-      .col.mb-4.payouts class="#{current_publisher.no_grants? ? 'col-md-7' : '' }"
+      .col.mb-4.payouts class="#{@publisher.no_grants? ? 'col-md-7' : '' }"
         .balance-panel.align-items-center
           .row
             .col
@@ -40,10 +40,10 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   h4.balance-header
                     span = t(".balance_pending")
                   .bat
-                    span.bat-amount#bat_amount = publisher_overall_bat_balance(current_publisher)
+                    span.bat-amount#bat_amount = publisher_overall_bat_balance(@publisher)
                     span.bat-code= " BAT"
                   .converted#converted_amount
-                    = publisher_converted_overall_balance(current_publisher)
+                    = publisher_converted_overall_balance(@publisher)
                   - if payout_in_progress?
                     .payout_in_progress
                       span
@@ -52,7 +52,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     .next_deposit_date.small.mt-2
                       span = t(".next_deposit_date")
                       span = next_deposit_date
-            - if current_publisher.no_grants?
+            - if @publisher.no_grants?
               .d-none.d-xl-block
                 .line
 
@@ -66,7 +66,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                       h4.balance-header
                           span = t('.held_funds')
                       .bat
-                        span.withheld-color.bat-amount#bat_amount= publisher_contribution_bat_balance(current_publisher)
+                        span.withheld-color.bat-amount#bat_amount= publisher_contribution_bat_balance(@publisher)
                         span.withheld-color.bat-code= " BAT"
                   .small.my-2
                     .d-flex
@@ -82,33 +82,33 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
       - if promo_running?
         = render partial: 'promo_panel'
-      - elsif current_publisher.channels.empty?
+      - elsif @publisher.channels.empty?
         .col-md.mb-4
           .add-channel-cta
             = t ".add_channel_cta"
     .row
-      - unless current_publisher.excluded_from_payout?
+      - unless @publisher.excluded_from_payout?
         .col-md.mb-4
           .dashboard-panel--wrapper.uphold-panel
             .dashboard-panel--header#dashboard_uphold_header
               = t ".uphold.heading"
             .dashboard-panel--content#uphold_status_display
               .status-summary
-                .text= uphold_status_summary(current_publisher)
+                .text= uphold_status_summary(@publisher)
                 .action
                   = link_to(t(".uphold.connect"), connect_uphold_publishers_path, method: :patch, class: "connect-uphold", :"data-piwik-action" => "UpholdConnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
                   a.disconnect-uphold href="#"
                     = t ".uphold.disconnect"
                   script type="text/html" id="disconnect-uphold-js"
                     = render "publishers/disconnect_uphold_modal"
-                  = form_for(current_publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|
+                  = form_for(@publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|
             .dashboard-panel--content#uphold_connect
               .status-description
-                = uphold_status_description(current_publisher).html_safe
-              = link_to(uphold_authorization_description(current_publisher),
+                = uphold_status_description(@publisher).html_safe
+              = link_to(uphold_authorization_description(@publisher),
                         uphold_dashboard_url,
                         id: "go_to_uphold", class: "btn btn-primary", :"data-piwik-action" => "GoToUpholdHomeClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard", style: "display:none")
-              = link_to(uphold_authorization_description(current_publisher),
+              = link_to(uphold_authorization_description(@publisher),
                         connect_uphold_publishers_path,
                         id: "reconnect_to_uphold", class: "btn btn-primary", method: :patch, :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
               .reconnect-instructions
@@ -120,7 +120,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             .dashboard-panel--content#uphold_dashboard
               .deposit-currency.field
                 label= t ".uphold.deposit_currency_label"
-                .value#default_currency_code= current_publisher.uphold_connection.default_currency.present? ? current_publisher.uphold_connection.default_currency : t(".uphold.no_currency_selected")
+                .value#default_currency_code= @publisher.uphold_connection.default_currency.present? ? @publisher.uphold_connection.default_currency : t(".uphold.no_currency_selected")
                 .action
                   span= "("
                   a#change_default_currency href="#"
@@ -128,18 +128,18 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   span= ")"
               .last-deposit-date.field
                 label= t ".uphold.last_deposit_date"
-                .value.deposit-date#last_deposit_date=publisher_last_settlement_date(current_publisher)
-            .dashboard-panel--content#last_settlement class=last_settlement_class(current_publisher)
+                .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher)
+            .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
               .last-deposit
                 = t ".uphold.last_deposit"
                 .amounts
                   .bat
-                    - last_deposit_balance = publisher_last_settlement_bat_balance(current_publisher)
+                    - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
                     span.bat-amount#last_deposit_bat_amount= last_deposit_balance
                     - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
                       span.bat-code= " BAT"
                   .converted#last_deposit_converted_amount
-                    = publisher_converted_last_settlement_balance(current_publisher)
+                    = publisher_converted_last_settlement_balance(@publisher)
                 = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
                         id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                         :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
@@ -158,11 +158,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
               = t ".contact.edit"
           .dashboard-panel--content.contact-person
             #show_contact
-              #show_contact_name= current_publisher.name
-              span.email#show_contact_email= current_publisher.email
-              span.hidden#pending_contact_email= current_publisher.pending_email
+              #show_contact_name= @publisher.name
+              span.email#show_contact_email= @publisher.email
+              span.hidden#pending_contact_email= @publisher.pending_email
 
-            = form_for(current_publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit hidden" }) do |f|
+            = form_for(@publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit hidden" }) do |f|
               .form-group
                 = f.label(:name, class: "control-label", for: "update_contact_name")
                 = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
@@ -175,16 +175,16 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                   = t "shared.cancel"
             p#pending_email_notice class="block-note hidden"
 
-            = form_for(current_publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
+            = form_for(@publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
               = f.check_box(:visible, class: "form-check-input")
               = f.label(:visible, class: "form-check-label", for: "publisher_visible")
 
 
     / Don't show if none of the promo registrations has a valid stat
-    - if !current_publisher.only_user_funds? && current_publisher.promo_registrations.present? && current_publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
-      = render "publishers/referral_charts", current_publisher: current_publisher
+    - if !@publisher.only_user_funds? && @publisher.promo_registrations.present? && @publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
+      = render "publishers/referral_charts", current_publisher: @publisher
 
-    - current_publisher.channels.visible.each do |channel|
+    - @publisher.channels.visible.each do |channel|
       = render partial: 'channel', locals: { channel: channel }
 
     .row id="add_channel_placeholder"
@@ -198,14 +198,14 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
     .row.tos-row
       .col.mb-4
-        - if current_publisher.promo_enabled_2018q1
+        - if @publisher.promo_enabled_2018q1
           .promo--tos
             = t("promo.shared.tos_2_html")
         - else
           .terms-of-service
             = link_to(t("shared.terms_of_service"), terms_of_service_url)
 
-- if current_publisher.promo_status(promo_running?) == :active
+- if @publisher.promo_status(promo_running?) == :active
   javascript:
     (function() {
       function closeReferralLinkAnimation() {
@@ -257,4 +257,4 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     })();
 
 script id="instant-donation-modal" type="text/html"
-  = render "instant_donation_modal", wallet: @wallet, uphold_connection: current_publisher.uphold_connection
+  = render "instant_donation_modal", wallet: @wallet, uphold_connection: @publisher.uphold_connection

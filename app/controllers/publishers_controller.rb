@@ -189,6 +189,7 @@ class PublishersController < ApplicationController
 
   # Domain verified. See balance and submit payment info.
   def home
+    @publisher = current_publisher
     uphold_connection = current_publisher.uphold_connection
     if uphold_connection.blank?
       uphold_connection = UpholdConnection.create!(publisher: current_publisher)
