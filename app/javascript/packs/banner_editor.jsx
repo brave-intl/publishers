@@ -96,6 +96,8 @@ export default class BannerEditor extends React.Component {
     );
     this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
     this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
+    this.currentPlaceholder = this.currentPlaceholder.bind(this);
+    this.updateCurrentUsername = this.updateCurrentUsername.bind(this);
     this.updateYoutube = this.updateYoutube.bind(this);
     this.updateTwitter = this.updateTwitter.bind(this);
     this.updateTwitch = this.updateTwitch.bind(this);
@@ -304,6 +306,18 @@ export default class BannerEditor extends React.Component {
         break;
     }
     this.setState({ currentUsername: "" });
+  }
+
+  currentPlaceholder() {
+    switch (this.state.linkOption) {
+      case "Youtube":
+        return "Youtube user name";
+      case "Twitter":
+        return "Twitter handle";
+      case "Twitch":
+        return "Twitch handle";
+    }
+    return "";
   }
 
   handleLinkDelete(option) {
@@ -975,6 +989,8 @@ export default class BannerEditor extends React.Component {
                   </DropdownToggle>
                   <TextInput
                     link
+                    placeholder={this.currentPlaceholder()}
+                    placeholderTextColor="#707070"
                     onChange={this.updateCurrentUsername}
                     value={this.state.currentUsername}
                     maxLength={80}
