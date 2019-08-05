@@ -22,7 +22,6 @@ namespace :database_updates do
       if index % 1000 == 0
         remaining = (iterations - index) * 0.2
         puts "Estimated time left: #{remaining.round} seconds | #{((index.to_f/iterations.to_f)*100).round(2)}% done"
-        break
       end
     end
     puts "Estimated time left: 0 seconds | 100% done"
