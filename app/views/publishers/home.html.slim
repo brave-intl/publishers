@@ -2,7 +2,7 @@ noscript
   div.noscript-warning = t ".noscript"
 
 - open_confirm_default_currency_modal = !flash[:taken_channel_id] && \
-    @publisher.uphold_connection.uphold_verified? && \
+    @publisher.uphold_connection.uphold_verified? && @publisher.uphold_connection.status != UpholdConnection::PENDING && \
     (@publisher.uphold_connection.default_currency_confirmed_at.blank? || @publisher.uphold_connection.default_currency.blank?)
 script type="text/html" id="confirm_default_currency_modal_wrapper"
   = render partial: 'confirm_default_currency_modal', locals: { possible_currencies: @possible_currencies || []}
