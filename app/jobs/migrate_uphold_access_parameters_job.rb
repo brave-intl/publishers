@@ -14,7 +14,7 @@ class MigrateUpholdAccessParametersJob < ApplicationJob
 
       was_successful = connection.sync_from_uphold!
       # Let's not queue up a job that will ultimately not work due to invalid access_parameters
-      next unless was_successful
+      return unless was_successful
 
       connection.reload
 
