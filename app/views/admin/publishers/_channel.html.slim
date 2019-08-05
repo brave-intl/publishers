@@ -7,12 +7,13 @@
 .m-3 class=(channel.verified? ? '' : 'not-verified')
   / This is information for this
   div
-    .d-flex.align-items-center.justify-content-between
+    / Container for the title, contributions and referrals
+    div
       / Title
       div
-        small TITLE
+        small.text-muted TITLE
         .d-flex
-          h4.m-0.font-weight-bold
+          h5.m-0.font-weight-bold
             img src=(channel_type_icon_url(channel)) width=16 height=16 class="mr-3"
             = link_to(channel.publication_title, channel.details.url, target: '_blank')
 
@@ -29,19 +30,74 @@
               span.text-muted.ml-2 data-tooltip="Verification method"
                 = channel.details.verification_method
 
+        - if channel.uphold_connection.blank?
+          .mt-3
+            .rounded.p-3.alert-warning
+              .d-flex.align-items-center.mb-2
+                =fa_icon "exclamation-circle", class: 'mr-2'
+                .font-weight-bold This channel does not have an associated Uphold card.
+              div In newer versions of Brave this channel will no longer appear has verified. In order to resolve this the creator must verify their identity with Uphold.
+
+
+      / This is the details and statistics information
       - if channel.verified?
-        .d-flex
-          - if channel.promo_registration.present?
-            div.mr-5.text-center
-              small.text-mute REFERRAL CODE
-              h3.m-0.text-center.font-weight-bold= channel.promo_registration.referral_code
+        .d-flex.mt-3
+          div
+            div
+              small.text-muted CONTRIBUTIONS
+              .d-flex
+                h6.font-weight-bold= publisher_channel_bat_balance(@publisher, channel.details.channel_identifier)
+                small.ml-1 BAT
 
-          div.text-center
-            small.text-mute CONTRIBUTIONS
-            .d-flex
-              h3.font-weight-bold= publisher_channel_bat_balance(@publisher, channel.details.channel_identifier)
-              small.mt-2.ml-1 BAT
+            - if channel.promo_registration.present?
+              div
+                div.mr-5
+                  small.text-muted REFERRAL CODE
+                  h6.m-0.font-weight-bold= channel.promo_registration.referral_code
 
+
+          .d-flex
+            - potential_contribution_payment = channel.most_recent_potential_payment
+            - if potential_contribution_payment.present?
+              .border-right.mx-3
+              .d-flex.flex-column.d-inline-flex
+                span.mb-1.text-wrap=payout_report_status_header('channel')
+                small.text-muted AMOUNT
+                div
+                  span.font-weight-bold= "#{(potential_contribution_payment.amount.to_d * 1/1E18).round(2)}"
+                  small.mt-1.ml-1 BAT
+
+          .d-flex
+            - if channel.promo_registration.present?
+              .border-right.mx-3
+              div
+                span Referral Statistics
+                - totals = channel.promo_registration.aggregate_stats
+                - if totals.present?
+                  .d-flex
+                    div.mr-3
+                      small.text-muted DOWNLOADED
+                      .font-weight-bold.text-center= totals[PromoRegistration::RETRIEVALS]
+                    div.mx-3
+                      small.text-muted INSTALLED
+                      .font-weight-bold.text-center= totals[PromoRegistration::FIRST_RUNS]
+                    div.mx-3
+                      small.text-muted CONFIRMED
+                      .font-weight-bold.text-center= totals[PromoRegistration::FINALIZED]
+
+
+          div
+          - if channel.details.stats.is_a?(Hash)
+            .border-right.mx-3
+            div
+              span Channel Statistics
+              .d-flex
+                - channel.details.stats.keys.each do |key|
+                  - if channel.details.stats[key].present? && key.exclude?("comment")
+                    div.mx-3.text-center
+                      small.text-muted= "#{key.upcase.gsub("_", " ")}"
+                      .font-weight-bold
+                        = number_with_delimiter(channel.details.stats[key])
 
     / When the channel is being contested
     - if channel.verification_pending?
@@ -54,55 +110,13 @@
 
 
     - if channel.verification_awaiting_admin_approval?
-      .admin-approval
-        span.admin-approval-warning = "Admin approval required"
-        span.admin-approval-button
+      .d-flex.align-items-center
+        span.text-danger= "Admin approval required"
+        .admin-approval-button.ml-2
           = form_for channel, as: :channel, method: :patch, url: approve_channel_admin_publishers_path(channel_id: channel.id) do |f|
             = f.submit("Approve", class: "btn btn-primary")
     - elsif channel.verification_approved_by_admin?
-      .admin-approval
-        span.admin-approval-success = "Admin approved"
+      .mt-3
+        small.text-muted= "Admin approved"
 
-
-    .d-flex.mt-3
-      - if channel.promo_registration.present?
-        div
-          .font-weight-bold Referral Statistics
-          - totals = channel_referral_totals(channel)
-          - if totals.present?
-            .d-flex
-              div.mr-3
-                small DOWNLOADED
-                .font-weight-bold.text-center= totals[PromoRegistration::RETRIEVALS]
-              div.mx-3
-                small INSTALLED
-                .font-weight-bold.text-center= totals[PromoRegistration::FIRST_RUNS]
-              div.mx-3
-                small CONFIRMED
-                .font-weight-bold.text-center= totals[PromoRegistration::FINALIZED]
-        .border-right.mx-3
-
-      div
-        - potential_contribution_payment = channel.most_recent_potential_payment
-        - if potential_contribution_payment.present?
-          .font-weight-bold=payout_report_status_header('channel')
-          div
-            small AMOUNT
-            div
-              span.font-weight-bold= "#{(potential_contribution_payment.amount.to_d * 1/1E18).round(2)}"
-              small.mt-1.ml-1 BAT
-
-      div
-      - if channel.details.stats.is_a?(Hash)
-        - if potential_contribution_payment.present?
-          .border-right.mx-3
-        div
-          .font-weight-bold Channel Statistics
-          .d-flex
-            - channel.details.stats.keys.each do |key|
-              - if channel.details.stats[key].present?
-                div.mx-3.text-center
-                  small= "#{key.upcase.gsub("_", " ")}"
-                  .font-weight-bold
-                    = number_with_delimiter(channel.details.stats[key])
 

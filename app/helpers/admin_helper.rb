@@ -77,12 +77,13 @@ module AdminHelper
   end
 
   def payout_report_status_header(account_type)
-    report_date = PayoutReport.most_recent_final_report.created_at.strftime("%B %d")
+    report_date = PayoutReport.most_recent_final_report.created_at
+    report_date = report_date.strftime("%B #{report_date.day.ordinalize}")
 
     if account_type == 'owner'
-      "#{report_date}'s Payout (Referrals)"
+      "#{report_date} Payout (Referrals)"
     else account_type == 'channel'
-      "#{report_date}'s Payout Contributions"
+      "#{report_date} Payout Contributions"
     end
   end
 end
