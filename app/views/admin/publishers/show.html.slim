@@ -11,7 +11,6 @@ hr
   #publisher-section
     = render partial: 'admin/shared/publisher_header', locals: { navigation_view: @navigation_view }
 
-
     .rounded-box.split-row-container
       .split-row
         .db-info-row
@@ -36,26 +35,12 @@ hr
           .db-info-row
             .db-field = "Organization:"
             .db-value = link_to partner.organization, admin_organization_path(partner.organization)
-        - if @publisher.wallet&.uphold_account_status.present?
-          .db-info-row
-            .db-field = "Uphold status:"
-            .db-value = @publisher.wallet.uphold_account_status
-        .db-info-row
-          .db-field = "Uphold member (KYC):"
-          .db-value = @publisher.wallet&.is_a_member?
-        -if @publisher.uphold_connection&.uphold_id.present?
-          .db-info-row
-            .db-field = "Uphold account id:"
-            .db-value = link_to @publisher.uphold_connection.uphold_id, admin_publishers_path(q: @publisher.uphold_connection.uphold_id)
-        .db-info-row
-          .db-field = "Uphold widget enabled:"
-          .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
         .db-info-row
           .db-field = "Overall BAT balance:"
           .db-value = "#{publisher_overall_bat_balance(@publisher)}"
-        - if @publisher.default_currency.present?
+        - if @publisher.uphold_connection&.default_currency.present?
           .db-info-row
-            .db-field = "Overall #{@publisher.default_currency} balance:"
+            .db-field = "Overall #{@publisher.uphold_connection.default_currency} balance:"
             .db-value = "#{publisher_converted_overall_balance(@publisher)}"
         .db-info-row
           .db-field = "Last settlement balance:"
@@ -116,11 +101,13 @@ hr
               .db-field = "Approx. amount"
               .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"
 
+  .c-4.shadow-sm.rounded.p-3.my-4
+    = render partial: 'uphold'
+
   -if @publisher.partner?
     hr
     =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
 
-  hr
   h3.admin-header = "Channels (#{@publisher.channels.count})"
   #channels-section
     - @publisher.channels.each do |channel|
@@ -178,8 +165,8 @@ hr
 
 
   .c-4.shadow-sm.rounded.p-3.mt-4
-    h3.text-dark
-      small=fa_icon "hourglass-half", class: 'mx-2 text-muted'
+    h3.text-dark.d-flex.align-items-center
+      small=fa_icon "hourglass-half", class: 'mx-2'
       = "History"
     hr
     #notes-section

@@ -90,20 +90,27 @@ stats_test:
   details: stats_details (SiteChannelDetails)
   verified: true
 
-uphold_connected:
+uphold_connected_channel:
   publisher: uphold_connected
-  details: uphold_connected_details (SiteChannelDetails)
+  details: uphold_connected_site_channel (SiteChannelDetails)
   verified: true
 
-uphold_connected_twitch:
-  publisher: uphold_connected
-  details: uphold_connected_twitch_details (TwitchChannelDetails)
+<% ["details", "blocked", "restricted_member", "reauthorize"].each do |item| %>
+uphold_connected_<%= item %>:
+  publisher: uphold_connected_<%= item %>
+  details: uphold_connected_<%= item %> (SiteChannelDetails)
   verified: true
 
-uphold_connected_twitter:
-  publisher: uphold_connected
-  details: uphold_connected_twitter_details (TwitterChannelDetails)
+uphold_connected_twitch_<%=item%>:
+  publisher: uphold_connected_<%= item %>
+  details: uphold_connected_twitch_<%=item%> (TwitchChannelDetails)
   verified: true
+
+uphold_connected_twitter_<%= item %>:
+  publisher: uphold_connected_<%=item%>
+  details: uphold_connected_twitter_<%=item%> (TwitterChannelDetails)
+  verified: true
+<%end%>
 
 youtube_initial:
   publisher: youtube_initial

@@ -19,15 +19,16 @@ class UpholdConnection < ActiveRecord::Base
     BLOCKED         = :blocked
   end
 
+  OK = "ok"
+  PENDING = "pending"
+  BLOCKED = "blocked"
+  RESTRICTED = "restricted"
+
   belongs_to :publisher
 
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
   validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
-
-  # uphold_access_parameters should be cleared once uphold_verified has been set
-  # (see `verify_uphold` method below)
-  validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
 
   # publishers that have uphold codes that have been sitting for five minutes
   # can be cleared if publishers do not create wallet within 5 minute window
@@ -35,6 +36,9 @@ class UpholdConnection < ActiveRecord::Base
     where.not(encrypted_uphold_code: nil).
       where("updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
   }
+
+  # If the user became KYC'd let's create the uphold card for them
+  after_save :create_uphold_card_for_default_currency, if: -> { saved_change_to_is_member? && is_member? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
@@ -44,57 +48,74 @@ class UpholdConnection < ActiveRecord::Base
   }
 
   # This state token is generated and must be unique when connecting to uphold.
-  # It is used to navigate to Uphold, therefore on GET request this state token must be there.
   def prepare_uphold_state_token
-    return if uphold_state_token.present?
     self.uphold_state_token = SecureRandom.hex(64).to_s
     save!
   end
 
-  def receive_uphold_code(code)
-    self.uphold_state_token = nil
-    self.uphold_code = code
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
+  def scope
+    JSON.parse(uphold_access_parameters).try(:[], 'scope') || []
   end
 
-  def verify_uphold
-    self.uphold_state_token = nil
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = true
-    save!
+  def receive_uphold_code(code)
+    update(
+      uphold_code: code,
+      uphold_state_token: nil,
+      uphold_access_parameters: nil,
+      uphold_verified: false,
+    )
   end
 
   def disconnect_uphold
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
+    update(
+      address: nil,
+      is_member: false,
+      status: nil,
+      uphold_id: nil,
+      uphold_code: nil,
+      uphold_access_parameters: nil,
+      uphold_verified: false,
+      default_currency_confirmed_at: nil,
+      default_currency: nil,
+    )
   end
 
   def uphold_reauthorization_needed?
-    uphold_verified? &&
-      wallet.present? &&
-      ['re-authorize', 'authorize'].include?(wallet.action)
+    # TODO Let's make sure that if we can't access the user's information then we set uphold_verified? to false
+    # Perhaps through a rescue on 401
+    uphold_verified? && (uphold_access_parameters.blank? || uphold_details.nil?)
+  end
+
+  # Makes a remote HTTP call to Uphold to get more details
+  # TODO should we actually call uphold_user?
+
+  def uphold_client
+    @uphold_client ||= Uphold::Client.new
+  end
+
+  def uphold_details
+    @user ||= uphold_client.user.find(self)
+  rescue Faraday::ClientError => e
+    if e.response[:status] == 401
+      Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
+      update(uphold_access_parameters: nil)
+      nil
+    else
+      raise
+    end
   end
 
   def uphold_status
-    uphold_account_status = wallet&.uphold_account_status&.to_sym
+    send_blocked_message if status == UpholdAccountState::BLOCKED
 
-    send_blocked_message if uphold_account_status == UpholdAccountState::BLOCKED
-
-    if uphold_account_status == UpholdAccountState::RESTRICTED
+    if status == UpholdAccountState::RESTRICTED
       UpholdAccountState::RESTRICTED
     elsif uphold_reauthorization_needed?
       UpholdAccountState::REAUTHORIZATION_NEEDED
-    elsif uphold_verified? && wallet&.not_a_member?
+    elsif uphold_verified? && !is_member?
       UpholdAccountState::RESTRICTED
-    elsif uphold_verified? && wallet&.is_a_member?
+    elsif uphold_verified? && is_member?
       UpholdAccountState::VERIFIED
-    elsif uphold_access_parameters.present?
-      :access_parameters_acquired
     elsif uphold_code.present?
       :code_acquired
     else
@@ -108,15 +129,41 @@ class UpholdConnection < ActiveRecord::Base
 
   def can_create_uphold_cards?
     uphold_verified? &&
-      wallet.present? &&
-      wallet.authorized? &&
-      wallet.scope &&
-      wallet.scope.include?("cards:write") &&
+      uphold_access_parameters.present? &&
+      scope.include?("cards:write") &&
+      status != UpholdConnection::BLOCKED &&
+      status != UpholdConnection::PENDING &&
+      default_currency.present? &&
       !publisher.excluded_from_payout
   end
 
   def wallet
     @wallet ||= publisher&.wallet
+  end
+
+  def create_uphold_card_for_default_currency
+    return unless can_create_uphold_cards?
+    CreateUpholdCardsJob.perform_now(uphold_connection_id: id)
+  end
+
+  def missing_card?
+    default_currency_confirmed_at.present? && address.blank?
+  end
+
+  # Makes an HTTP Request to Uphold and sychronizes
+  def sync_from_uphold!
+    # Set uphold_details to a variable, if uphold_access_parameters is nil
+    # we will end up makes N service calls everytime we call uphold_details
+    # this is a side effect of the memoization
+    uphold_information = uphold_details
+    return if uphold_information.blank?
+
+    update(
+      is_member: uphold_information.memberAt.present?,
+      status: uphold_information.status,
+      uphold_id: uphold_information.id,
+      country: uphold_information.country
+    )
   end
 
   def encryption_key

@@ -17,13 +17,15 @@ twitch_verified_details:
     :view_count: 400
     :followers_count: 400
 
-uphold_connected_twitch_details:
-  auth_user_id: "abc124"
+<% ["details", "blocked", "restricted_member", "reauthorize"].each do |item| %>
+uphold_connected_twitch_<%= item %>:
+  auth_user_id: "<%= item %>"
   auth_provider: "twitch"
   twitch_channel_id: "78033"
-  name: "ucTw"
+  name: "<%= item %>"
   display_name: "UCTW"
   thumbnail_url: "https://some_image_host.com/some_image.png"
   stats:
     :view_count: 40000
     :followers_count: 40000
+<% end %>

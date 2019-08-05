@@ -28,13 +28,18 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.where(role: params[:role])
     end
 
+    if params[:uphold_status].present?
+      @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
+    end
+
     if params[:two_factor_authentication_removal].present?
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
+
     @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
 
     respond_to do |format|
-      format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
+      format.json { render json: @publishers.to_json(only: [:default_currency], methods: :avatar_color) }
       format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
     end
   end
@@ -101,6 +106,15 @@ class Admin::PublishersController < AdminController
     publisher = Publisher.find(params[:id])
     publisher.two_factor_authentication_removal.destroy
     redirect_to(admin_publisher_path(publisher), flash: { alert: "2fa removal was cancelled" })
+  end
+
+  def refresh_uphold
+    connection = UpholdConnection.find_by(publisher: params[:publisher_id])
+    if connection.present?
+      connection.sync_from_uphold!
+      CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+    end
+    redirect_to admin_publisher_path(@publisher.id)
   end
 
   private

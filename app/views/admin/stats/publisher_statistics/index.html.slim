@@ -7,3 +7,15 @@ h1= "Publisher Stats"
 = hidden_field_tag id="email_verified", value=@email_verified.to_json
 = hidden_field_tag id="email_verified_with_a_channel", value=@email_verified_with_a_channel.to_json
 = hidden_field_tag id="email_verified_with_a_verified_channel", value=@email_verified_with_a_verified_channel.to_json
+
+
+
+hr
+.col-md-3
+  h3 Publisher Countries
+  table.table
+    - @countries.each do |key, value|
+      tr
+        td=key
+        td=value
+

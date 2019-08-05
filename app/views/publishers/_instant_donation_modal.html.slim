@@ -10,9 +10,9 @@
         h5.banner-intro-tagline = t ".tagline"
         = link_to(t(".preview"), "#", class: 'preview-link', id: "open-preview-button")
         = link_to(t(".customize"), "#", class: 'btn btn-primary', id: "open-banner-button")
-        - if wallet.present? && wallet&.default_currency.present? && wallet&.rates.present? && wallet&.default_currency.eql?('BAT')
-          = hidden_field_tag 'preferred_currency', wallet.default_currency
-          = hidden_field_tag 'conversion_rate', wallet.rates[wallet.default_currency]
+        - if wallet&.rates.present? && uphold_connection&.uphold_verified.present? && uphold_connection&.default_currency.present?
+          = hidden_field_tag 'preferred_currency', uphold_connection.default_currency
+          = hidden_field_tag 'conversion_rate', wallet.rates[uphold_connection.default_currency]
         - else
           = hidden_field_tag 'preferred_currency', 'USD'
           = hidden_field_tag 'conversion_rate', 0.18

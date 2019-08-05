@@ -14,19 +14,5 @@ class CleanStaleUpholdDataJob < ApplicationJob
       Raven.capture_message("Cleaned stalled uphold code for #{connection.publisher.owner_identifier}.")
     end
     Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold codes.")
-
-    # clear uphold access params sitting for over 2 hours
-    connections = UpholdConnection.has_stale_uphold_access_parameters
-    n = 0
-    connections.each do |connection|
-      raise if connection.uphold_status != :access_parameters_acquired
-      connection.uphold_access_parameters = nil
-      connection.save!
-      n += 1
-      Rails.logger.info("Cleaned stalled uphold access parameters for #{connection.publisher.owner_identifier}.")
-      SlackMessenger.new(message: "Cleaned stalled uphold access parameters for #{connection.publisher.owner_identifier}.", channel: SlackMessenger::ALERTS).perform
-    end
-    Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.")
-    SlackMessenger.new(message: "CleanStaleUpholdDataJob cleared #{n} stalled uphold access parameters.", channel: SlackMessenger::ALERTS).perform if n.positive?
   end
 end

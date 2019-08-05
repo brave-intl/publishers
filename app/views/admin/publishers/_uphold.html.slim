@@ -1,0 +1,54 @@
+h3.text-dark.d-flex.align-items-center
+  small.mx-2=image_tag 'uphold.svg'
+  = "Uphold Connection"
+
+  small.ml-3= link_to fa_icon("refresh"), admin_publisher_refresh_uphold_path(@publisher.id), method: :patch
+
+.mx-3.mt-3
+  - if @publisher.uphold_connection&.uphold_verified?.present?
+    table.table
+      tr
+        td Status
+        td
+          #uphold_status class=uphold_status_class(@publisher)
+            #uphold_status_display
+              .status-summary
+                .text= uphold_status_summary(@publisher)
+                - unless @publisher.uphold_connection.status == "ok"
+                  span.ml-2= "(#{@publisher.uphold_connection.status})"
+          - if @publisher.uphold_connection.status.eql?("pending")
+            small Uphold status is pending - the user is in the process of creating an account.
+          - elsif @publisher.uphold_connection.status.eql?("restricted")
+            small This user is restricted - they are allowed to login to Uphold and receive money, but they are not permitted to initiate transactions.
+          - elsif @publisher.uphold_connection.status.eql?("blocked")
+            small This user has violated Uphold's terms of service. In this state users are unable to login or access Uphold.
+      tr
+        td User has completed KYC
+        td
+          span class=(@publisher.uphold_connection.is_member? ? 'text-success' : 'text-danger')
+            = @publisher.uphold_connection.is_member? ? fa_icon("check", text: "Yes") : fa_icon("times", text: "No")
+      tr
+        td Uphold ID
+        td= link_to @publisher.uphold_connection.uphold_id, admin_publishers_path(q: @publisher.uphold_connection.uphold_id)
+      tr
+        td Country
+        td= @publisher.uphold_connection.country
+      tr
+        td Default currency
+        td
+          span data-tooltip=@publisher.uphold_connection.default_currency_confirmed_at
+            = @publisher.uphold_connection.default_currency
+      tr
+        td Publisher wallet address
+        td= @publisher.uphold_connection.address
+      tr
+        td Uphold widget enabled
+        td= @publisher.excluded_from_payout? ? "No" : "Yes"
+
+    small.text-muted= "Updated #{time_ago_in_words(@publisher.uphold_connection.updated_at)} ago"
+  - else
+    #uphold_status class='uphold-unconnected'
+      #uphold_status_display
+        .status-summary
+          .text= uphold_status_summary(@publisher)
+

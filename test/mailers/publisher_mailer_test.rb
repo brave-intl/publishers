@@ -11,7 +11,7 @@ class PublisherMailerTest < ActionMailer::TestCase
   end
 
   test "wallet_not_connected" do
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:youtube_initial)
     email = PublisherMailer.wallet_not_connected(publisher)
 
     assert_emails 1 do
@@ -20,21 +20,6 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     assert_equal ['brave-publishers@localhost.local'], email.from
     assert_equal [publisher.email], email.to
-  end
-
-  test "wallet_not_connected raises error if publisher has address and is uphold_connected" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-
-    publisher = publishers(:uphold_connected)
-    email = PublisherMailer.wallet_not_connected(publisher)
-
-    wallet_response = {"wallet" => {"address" => "123ABC" }}.to_json
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-      to_return(status: 200, body: wallet_response, headers: {})
-
-    assert_raises do
-      email.deliver_now
-    end
   end
 
   test "confirm_email_change" do
