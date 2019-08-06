@@ -104,7 +104,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     visit home_publishers_path
 
     assert_content page, channel.publication_title
-    find("#channel_row_#{channel.id}").click_link('Remove Channel')
+    find("#channel_row_#{channel.id}").click_link('Remove channel')
     assert_content page, "Are you sure you want to remove this channel?"
     find('[data-test-modal-container]').click_link("Remove Channel")
     wait_until { !page.find('.cssload-container', visible: :all).visible? }

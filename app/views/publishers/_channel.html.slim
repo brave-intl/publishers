@@ -57,7 +57,7 @@
 
 
           - if channel.verification_pending?
-            = t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
+            span.channel-contested= t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
           - elsif channel.verification_awaiting_admin_approval?
             = t("helpers.channels.verification_awaiting_admin_approval")
           - elsif !channel.verified? && !channel.verification_failed?
