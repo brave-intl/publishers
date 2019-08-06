@@ -154,7 +154,7 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def missing_card?
-    missing_publisher_card = default_currency_confirmed_at.present? && address.blank?
+    default_currency_confirmed_at.present? && address.blank?
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
