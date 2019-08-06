@@ -382,7 +382,7 @@ class Channel < ApplicationRecord
   end
 
   def create_channel_card
-    CreateUpholdChannelCardJob.perform_now(uphold_connection_id: publisher.uphold_connection&.id, channel_id: id)
+    CreateUpholdChannelCardJob.perform_later(uphold_connection_id: publisher.uphold_connection&.id, channel_id: id)
   end
 
   def notify_slack

@@ -9,4 +9,6 @@ class UpholdConnectionForChannel < ApplicationRecord
   belongs_to :channel
 
   NETWORK = 'anonymous'
+
+  validates :channel_identifier, uniqueness: { scope: [:uphold_connection_id, :channel_identifier, :currency]  }
 end

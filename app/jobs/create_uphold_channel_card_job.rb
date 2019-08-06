@@ -12,11 +12,11 @@ class CreateUpholdChannelCardJob < ApplicationJob
       return
     end
 
-    upfc = UpholdConnectionForChannel.where(
+    upfc = UpholdConnectionForChannel.find_by(
       uphold_connection: uphold_connection,
       currency: uphold_connection.default_currency,
       channel_identifier: channel.details.channel_identifier
-    ).first
+    )
 
     if upfc.present?
       card_id = upfc.card_id
