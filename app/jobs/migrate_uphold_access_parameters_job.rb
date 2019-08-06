@@ -12,7 +12,10 @@ class MigrateUpholdAccessParametersJob < ApplicationJob
         default_currency_confirmed_at: connection.publisher.default_currency_confirmed_at || Time.now
       )
 
-      connection.sync_from_uphold!
+      was_successful = connection.sync_from_uphold!
+      # Let's not queue up a job that will ultimately not work due to invalid access_parameters
+      return unless was_successful
+
       connection.reload
 
       # Sync the uphold card or create it if the card is missing
