@@ -9,5 +9,7 @@ class CreateUpholdConnectionForChannel < ActiveRecord::Migration[5.2]
       t.string :card_id
       t.string :address
     end
+
+    add_index :uphold_connection_for_channels, [:channel_identifier, :currency, :uphold_connection_id], unique: true, name: 'unique_uphold_connection_for_channels'
   end
 end

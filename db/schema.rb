@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.string "card_id"
     t.string "address"
     t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
+    t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"
     t.index ["currency"], name: "index_uphold_connection_for_channels_on_currency"
     t.index ["uphold_connection_id"], name: "index_uphold_connection_for_channels_on_uphold_connection_id"
