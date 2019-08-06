@@ -53,7 +53,7 @@ module ChannelsHelper
   end
 
   def channel_verification_status(channel)
-    if channel.verified? && channel.publisher.uphold_connection.is_member?
+    if channel.verified?
       'verified'
     elsif channel.verification_status.present?
       channel.verification_status
