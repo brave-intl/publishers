@@ -47,6 +47,10 @@ class UpholdConnection < ActiveRecord::Base
       where("updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
+  def initial_funnel_by_country
+    ActiveRecord::Base.connection.execute("select count(id), country from uphold_connections group by country")
+  end
+
   # This state token is generated and must be unique when connecting to uphold.
   def prepare_uphold_state_token
     self.uphold_state_token = SecureRandom.hex(64).to_s
