@@ -8,11 +8,13 @@ div.row
                 = submit_tag("Search", class: 'btn btn-default')
 hr
 #publisher
-  #publisher-section
+  #publisher-section.shadow-sm
     = render partial: 'admin/shared/publisher_header', locals: { navigation_view: @navigation_view }
+    .border-top
 
-    .rounded-box.split-row-container
+    .p-4.split-row-container.bg-white
       .split-row
+        h5= "Overview"
         .db-info-row
           .db-field = "ID:"
           .db-value = @publisher.id
@@ -69,7 +71,7 @@ hr
             .db-value= @referral_owner_status
 
       #statement-section.split-row
-        h3.admin-header = "Statements"
+        h5.admin-header = "Statements"
         .statement
           = link_to("this month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "this_month"))
         .statement
@@ -78,7 +80,7 @@ hr
           = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
         .payout-report-status-section
           - if @potential_referral_payment.present?
-            h4= payout_report_status_header('owner')
+            h5= payout_report_status_header('owner')
             .db-info-row
               .db-field = "Uphold status"
               .db-value = @potential_referral_payment.uphold_status || 'unavailable'
@@ -101,14 +103,14 @@ hr
               .db-field = "Approx. amount"
               .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"
 
-  .c-4.shadow-sm.rounded.p-3.my-4
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     = render partial: 'uphold'
 
   -if @publisher.partner?
-    hr
-    =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
+    .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+      =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
 
-  .c-4.shadow-sm.rounded.p-3.my-4
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     h3.text-dark Channels
     #channels-section
       - @publisher.channels.each do |channel|
@@ -116,9 +118,7 @@ hr
         - unless channel == @publisher.channels.last
           hr
 
-  hr
-
-  .c-4.shadow-sm.rounded.p-3.accordion.mb-4
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     .panel
       input type="checkbox" name="panels" id="panel_id"
         label for="panel_id"
@@ -127,7 +127,7 @@ hr
         = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
 
 
-  .c-4.shadow-sm.rounded.p-3.mt-4
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     h3.text-dark.d-flex.align-items-center
       small=fa_icon "hourglass-half", class: 'mx-2'
       = "History"
@@ -146,6 +146,13 @@ hr
             = render partial: 'case', locals: { history: h }
 
 
+
+javascript:
+  window.addEventListener("keydown",function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 70) {
+        document.querySelectorAll('.toggle').forEach((i) => i.classList.toggle('d-none'))
+      }
+  })
 
 = javascript_pack_tag 'tribute'
 = stylesheet_pack_tag 'tribute'

@@ -25,7 +25,7 @@
               span.text-muted.ml-2 data-tooltip="Verification method"
                 = channel.details.verification_method
 
-        - if channel.uphold_connection.blank?
+        - if channel.uphold_connection.blank? && channel.verified?
           .mt-3
             .rounded.p-3.alert-warning
               .d-flex.align-items-center.mb-2
@@ -114,4 +114,22 @@
       .mt-3
         small.text-muted= "Admin approved"
 
+    - if channel.uphold_connection.present?
+
+      small
+        a id="view_more_#{channel.id}" href="#" View More
+      div.toggle.d-none id="more_info_#{channel.id}"
+        small.text-muted= "UPHOLD CARD"
+        table.table.small.d-inline-flex
+          tr
+            td Card ID
+            td= channel.uphold_connection.card_id
+          tr
+            td Address
+            td= channel.uphold_connection.address
+          tr
+            td Currency
+            td= channel.uphold_connection.currency
+      javascript:
+        document.getElementById("view_more_#{channel.id}").onclick = function anonymous() { document.getElementById("more_info_#{channel.id}").classList.toggle("d-none"); return false; }
 
