@@ -1,4 +1,5 @@
-h2= "Top Balances for #{params[:type].titleize}"
+.panel-heading
+  h4= "Top Balances for #{params[:type].titleize}"
 
 = form_tag nil, method: :get do
   = hidden_field_tag "type", @type
