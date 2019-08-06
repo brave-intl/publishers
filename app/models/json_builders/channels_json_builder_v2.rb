@@ -31,7 +31,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
         include_verified_channel(verified_channel)
       end
     end
-    # append_excluded
+    append_excluded
     @channels.to_json
   end
 
