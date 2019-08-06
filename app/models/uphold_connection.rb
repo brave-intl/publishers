@@ -155,14 +155,6 @@ class UpholdConnection < ActiveRecord::Base
 
   def missing_card?
     missing_publisher_card = default_currency_confirmed_at.present? && address.blank?
-    return missing_publisher_card if missing_publisher_card
-
-    # Find all verified channels
-    # verified_channels = Channel.where(publisher_id: publisher_id, verified: true).count
-    verified_channel_count = publisher.channels.verified.count
-    channel_cards_count = UpholdConnectionForChannel.where(uphold_connection_id: id).count
-
-    channel_cards_count < verified_channel_count
   end
 
   # Makes an HTTP Request to Uphold and sychronizes
