@@ -4,6 +4,10 @@ module Uphold
       @connection = connection
     end
 
+    def address
+      @address ||= Uphold::Models::Address.new
+    end
+
     def card
       @card ||= Uphold::Models::Card.new
     end
