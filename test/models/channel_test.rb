@@ -89,7 +89,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
 
     # verify RegisterChannelForPromoJob is called
     channel.verified = true
-    assert_enqueued_jobs(1) do
+    assert_enqueued_with(job: ActionMailer::DeliveryJob) do
       channel.save!
     end
 
@@ -119,7 +119,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     # check that RegisterChannelForPromoJob is called when it is verified
     # channel_copy.verified = true
     channel_copy = Channel.new(details: channel_details_copy, verified: true, publisher: publisher)
-    assert_enqueued_jobs(1) do
+    assert_enqueued_with(job: ActionMailer::DeliveryJob) do
       channel_copy.save!
     end
 
