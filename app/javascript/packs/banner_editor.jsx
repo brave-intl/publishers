@@ -339,7 +339,7 @@ export default class BannerEditor extends React.Component {
   }
 
   updateCurrentUsername(event) {
-    this.setState({ currentUsername: event.target.value.replace("/\W/g", '') });
+    this.setState({ currentUsername: event.target.value.replace("/^a-zA-Z0-9._/g", '') });
   }
 
   updateTitle(event) {
