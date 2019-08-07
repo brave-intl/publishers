@@ -32,7 +32,8 @@ export default {
     logOut: "Log Out",
     payments: "Payments",
     referrals: "Referrals",
-    security: "Security"
+    security: "Security",
+    settings: "Settings"
   },
   notEnoughTokens: "Not enough tokens",
   off: " ",
