@@ -8,7 +8,6 @@ class CreateUpholdChannelCardJob < ApplicationJob
 
     unless uphold_connection.can_create_uphold_cards?
       Rails.logger.info("Could not create uphold card for channel #{uphold_connection.publisher_id}. Uphold Verified: #{uphold_connection.uphold_verified}")
-      SlackMessenger.new(message: "Could not create uphold card for the channel #{uphold_connection.publisher_id}.", channel: SlackMessenger::ALERTS).perform
       return
     end
 
