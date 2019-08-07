@@ -266,6 +266,8 @@ class PublishersController < ApplicationController
   private
 
   def authenticate_via_token
+    sign_out(current_publisher) if current_publisher
+
     publisher_id = params[:id]
     token = params[:token]
     confirm_email = params[:confirm_email]
