@@ -76,7 +76,7 @@ export default class BannerEditor extends React.Component {
       scale: 1,
       linkSelection: false,
       linkOption: "Youtube",
-      currentLink: "",
+      currentUsername: "",
       youtube: this.props.values.youtube || "",
       twitter: this.props.values.twitter || "",
       twitch: this.props.values.twitch || "",
@@ -96,6 +96,8 @@ export default class BannerEditor extends React.Component {
     );
     this.incrementChannelIndex = this.incrementChannelIndex.bind(this);
     this.decrementChannelIndex = this.decrementChannelIndex.bind(this);
+    this.currentPlaceholder = this.currentPlaceholder.bind(this);
+    this.updateCurrentUsername = this.updateCurrentUsername.bind(this);
     this.updateYoutube = this.updateYoutube.bind(this);
     this.updateTwitter = this.updateTwitter.bind(this);
     this.updateTwitch = this.updateTwitch.bind(this);
@@ -294,16 +296,28 @@ export default class BannerEditor extends React.Component {
   addLink() {
     switch (this.state.linkOption) {
       case "Youtube":
-        this.setState({ youtube: this.state.currentLink });
+        this.setState({ youtube: "https://www.youtube.com/" + this.state.currentUsername });
         break;
       case "Twitter":
-        this.setState({ twitter: this.state.currentLink });
+        this.setState({ twitter: "https://www.twitter.com/" + this.state.currentUsername });
         break;
       case "Twitch":
-        this.setState({ twitch: this.state.currentLink });
+        this.setState({ twitch: "https://www.twitch.tv/" + this.state.currentUsername });
         break;
     }
-    this.setState({ currentLink: "" });
+    this.setState({ currentUsername: "" });
+  }
+
+  currentPlaceholder() {
+    switch (this.state.linkOption) {
+      case "Youtube":
+        return "Youtube user name";
+      case "Twitter":
+        return "Twitter handle";
+      case "Twitch":
+        return "Twitch handle";
+    }
+    return "";
   }
 
   handleLinkDelete(option) {
@@ -324,8 +338,8 @@ export default class BannerEditor extends React.Component {
     this.setState({ linkOption: value });
   }
 
-  updateCurrentLink(event) {
-    this.setState({ currentLink: event.target.value });
+  updateCurrentUsername(event) {
+    this.setState({ currentUsername: event.target.value.replace("/^a-zA-Z0-9._/g", '') });
   }
 
   updateTitle(event) {
@@ -975,13 +989,15 @@ export default class BannerEditor extends React.Component {
                   </DropdownToggle>
                   <TextInput
                     link
-                    onChange={e => this.updateCurrentLink(e)}
-                    value={this.state.currentLink}
+                    placeholder={this.currentPlaceholder()}
+                    placeholderTextColor="#707070"
+                    onChange={this.updateCurrentUsername}
+                    value={this.state.currentUsername}
                     maxLength={80}
                   />
                   {this.renderDropdown()}
                   <Text add onClick={() => this.addLink()}>
-                    + Add Link
+                    + Add User Name or Handle
                   </Text>
                 </LinkInputWrapper>
               )}
