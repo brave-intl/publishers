@@ -5,12 +5,11 @@ div.row
     section.panel
       header.panel-heading
         h4 Publishers
-      .action-group
-        = form_tag(admin_publishers_path, method: "get")
-          .input-group
-              = text_field_tag(:q, params[:q], class:'form-control')
-              .input-group-btn
-                  = submit_tag("Search", class: 'btn btn-default', name: nil)
+      = form_tag(admin_publishers_path, method: "get")
+        .input-group
+            = text_field_tag(:q, params[:q], class:'form-control')
+            .input-group-btn
+                = submit_tag("Search", class: 'btn btn-default', name: nil)
         .form-inline.mt-1
           = select_tag(:status, options_for_select(PublisherStatusUpdate::ALL_STATUSES, params[:status]), include_blank: "Filter by status" , class: "form-control mr-2", onchange:"this.form.submit()")
           = select_tag(:role, options_for_select(Publisher::ROLES, params[:role]), include_blank: "Filter by role" , class: "form-control",  onchange: "this.form.submit()")

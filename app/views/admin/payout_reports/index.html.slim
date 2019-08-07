@@ -1,13 +1,14 @@
-.panel-heading
-  h4 Payout Reports
+.d-flex
+  h1 Payout Reports
   .ml-4
     = form_tag upload_settlement_report_admin_payout_reports_path, id: "settlementForm", multipart: :true
       label
         = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
         .btn.btn-primary Upload Settlement Report
-      - toggle_text = Rails.cache.fetch('payout_in_progress') ? "Remove payout in progress" : "Set payout in progress"
-      = form_tag toggle_payout_in_progress_admin_payout_reports_path
-        = submit_tag("#{toggle_text}", class: "btn btn-primary")
+  .ml-4
+    - toggle_text = Rails.cache.fetch('payout_in_progress') ? "Remove payout in progress" : "Set payout in progress"
+    = form_tag toggle_payout_in_progress_admin_payout_reports_path
+      = submit_tag("#{toggle_text}", class: "btn btn-primary")
 
 javascript:
   document.getElementById('settlementFile').addEventListener("change", function() {

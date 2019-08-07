@@ -3,17 +3,17 @@ div.row
     section.panel
       header.panel-heading
         h4= "#{params[:type]&.titlecase} Channels"
-      .action-group  
-        = form_tag(admin_channels_path, method: "get")
-          .input-group
-              = text_field_tag(:q, params[:q], class:'form-control')
-              .input-group-btn
-                  = submit_tag("Search", class: 'btn btn-default')
+      = form_tag(admin_channels_path, method: "get")
+        .input-group
+            = text_field_tag(:q, params[:q], class:'form-control')
+            .input-group-btn
+                = submit_tag("Search", class: 'btn btn-default')
 
         = hidden_field_tag(:type, params[:type])
         label
             = check_box_tag('verified', 1, params[:verified].present?, class: 'checkbox')
             = "Verified"
+
       br
       div.panel-body
         div.adv-table
