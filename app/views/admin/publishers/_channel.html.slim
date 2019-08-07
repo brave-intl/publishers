@@ -1,0 +1,135 @@
+
+.m-3 class=(channel.verified? ? '' : 'not-verified')
+  / This is information for this
+  div
+    / Container for the title, contributions and referrals
+    div
+      / Title
+      div
+        small.text-muted TITLE
+        .d-flex
+          h5.m-0.font-weight-bold
+            img src=(channel_type_icon_url(channel)) width=16 height=16 class="mr-3"
+            = link_to(channel.publication_title, channel.details.url, target: '_blank')
+
+          - if channel.details.is_a?(SiteChannelDetails)
+            .d-flex.align-items-center
+              .text-muted.mx-3= "|"
+              - case channel.details.verification_method
+              - when "dns_record"
+                = fa_icon "server", class: 'text-muted'
+              - when "public_file"
+                = fa_icon "file-o", class: 'text-muted'
+              - when "wordpress"
+                = fa_icon "wordpress", class: 'text-muted'
+              span.text-muted.ml-2 data-tooltip="Verification method"
+                = channel.details.verification_method
+
+        - if channel.uphold_connection.blank? && channel.verified?
+          .mt-3
+            .rounded.p-3.alert-warning
+              .d-flex.align-items-center.mb-2
+                =fa_icon "exclamation-circle", class: 'mr-2'
+                .font-weight-bold This channel does not have an associated Uphold card.
+              div In newer versions of Brave this channel will no longer appear has verified. In order to resolve this the creator must verify their identity with Uphold.
+
+
+      / This is the details and statistics information
+      - if channel.verified?
+        .d-flex.mt-3
+          div
+            div
+              small.text-muted CONTRIBUTIONS
+              .d-flex
+                h6.font-weight-bold= publisher_channel_bat_balance(@publisher, channel.details.channel_identifier)
+                small.ml-1 BAT
+
+            - if channel.promo_registration.present?
+              div
+                div.mr-5
+                  small.text-muted REFERRAL CODE
+                  h6.m-0.font-weight-bold= channel.promo_registration.referral_code
+
+
+          .d-flex
+            - potential_contribution_payment = channel.most_recent_potential_payment
+            - if potential_contribution_payment.present?
+              .border-right.mx-3
+              .d-flex.flex-column.d-inline-flex
+                span.mb-1.text-wrap=payout_report_status_header('channel')
+                small.text-muted AMOUNT
+                div
+                  span.font-weight-bold= "#{(potential_contribution_payment.amount.to_d * 1/1E18).round(2)}"
+                  small.mt-1.ml-1 BAT
+
+          .d-flex
+            - if channel.promo_registration.present?
+              .border-right.mx-3
+              div
+                span Referral Statistics
+                - totals = channel.promo_registration.aggregate_stats
+                - if totals.present?
+                  .d-flex
+                    div.mr-3
+                      small.text-muted DOWNLOADED
+                      .font-weight-bold.text-center= totals[PromoRegistration::RETRIEVALS]
+                    div.mx-3
+                      small.text-muted INSTALLED
+                      .font-weight-bold.text-center= totals[PromoRegistration::FIRST_RUNS]
+                    div.mx-3
+                      small.text-muted CONFIRMED
+                      .font-weight-bold.text-center= totals[PromoRegistration::FINALIZED]
+
+
+          div
+          - if channel.details.stats.is_a?(Hash)
+            .border-right.mx-3
+            div
+              span Channel Statistics
+              .d-flex
+                - channel.details.stats.keys.each do |key|
+                  - if channel.details.stats[key].present? && key.exclude?("comment")
+                    div.mx-3.text-center
+                      small.text-muted= "#{key.upcase.gsub("_", " ")}"
+                      .font-weight-bold
+                        = number_with_delimiter(channel.details.stats[key])
+
+    / When the channel is being contested
+    - if channel.verification_pending?
+      small= link_to "Channel is being contested", admin_channel_transfer_path(@publisher)
+    - elsif !channel.verified?
+      / Unverified channel, let the admins know
+      .mt-2
+        = fa_icon "exclamation-circle", class: 'mr-2'
+        span Unverified
+
+
+    - if channel.verification_awaiting_admin_approval?
+      .d-flex.align-items-center
+        span.text-danger= "Admin approval required"
+        .admin-approval-button.ml-2
+          = form_for channel, as: :channel, method: :patch, url: approve_channel_admin_publishers_path(channel_id: channel.id) do |f|
+            = f.submit("Approve", class: "btn btn-primary")
+    - elsif channel.verification_approved_by_admin?
+      .mt-3
+        small.text-muted= "Admin approved"
+
+    - if channel.uphold_connection.present?
+
+      small
+        a id="view_more_#{channel.id}" href="#" View More
+      div.toggle.d-none id="more_info_#{channel.id}"
+        small.text-muted= "UPHOLD CARD"
+        table.table.small.d-inline-flex
+          tr
+            td Card ID
+            td= channel.uphold_connection.card_id
+          tr
+            td Address
+            td= channel.uphold_connection.address
+          tr
+            td Currency
+            td= channel.uphold_connection.currency
+      javascript:
+        document.getElementById("view_more_#{channel.id}").onclick = function anonymous() { document.getElementById("more_info_#{channel.id}").classList.toggle("d-none"); return false; }
+

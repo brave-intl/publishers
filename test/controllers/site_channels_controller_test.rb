@@ -265,7 +265,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       new_channel = publisher.channels.order(created_at: :asc).last
 
       # Triggering an update to test if the promo was created
-      assert_no_enqueued_jobs do
+      assert_enqueued_jobs(1) do
         new_channel.update(verified: true)
       end
     ensure

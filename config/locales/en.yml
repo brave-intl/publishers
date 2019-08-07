@@ -609,13 +609,15 @@ en:
         update: Update
     channel:
       added: added %{date}
-      remove_verified: Remove Channel
+      remove_verified: Remove channel
       one_more_step: One more step to complete...
-      lets_finish: Let's Finish
-      try_again: Try Again
+      lets_finish: Let's finish
+      try_again: Try again
       verification_status: Verification status will be displayed in the Brave browser within the next 24-48 hours
       verification_status_title: Verification Information
       channel_balance_period: CURRENT PERIOD
+      uphold: Uphold
+      reject_transfer: Reject transfer
     omniauth_callbacks:
       register_youtube_channel:
         channel_already_registered: You have already registered this YouTube channel.

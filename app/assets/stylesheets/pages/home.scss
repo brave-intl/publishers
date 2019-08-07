@@ -232,9 +232,6 @@
   }
 
   .channel--promo-info-container {
-    position: absolute;
-    right: 24px;
-
     @media only screen and (max-width: 520px) {
       margin: 8px 0;
       display: flex;
@@ -700,6 +697,11 @@
     .channel-summary {
       width: 100%;
 
+      // Apply a max width when the screen gets smaller to trim long channel names
+      @media only screen and (max-width: 768px) {
+        max-width: 10rem;
+      }
+
       h3 {
         font-size: 20px;
       }
@@ -715,6 +717,13 @@
 
       .separator {
         padding: 0 8px;
+      }
+    }
+
+    .channel-secondary-information {
+      @media only screen and (max-width: 560px) {
+        width: 100%;
+        margin: 0.5em 0;
       }
     }
 
@@ -870,7 +879,6 @@
     }
 
     &--intro {
-      margin-bottom: 8px;
       display: flex;
       align-items: center;
     }
@@ -901,7 +909,6 @@
   .bat-channel {
     &--amount {
       font-size: 28px;
-      font-weight: bolder;
       display: inline;
       line-height: 1;
     }
@@ -1057,9 +1064,6 @@
       justify-content: center;
       overflow-y: auto;
       max-height: calc(100vh - 150px);
-    }
-    &--icon {
-      margin: 0;
     }
   }
 
