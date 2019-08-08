@@ -110,6 +110,30 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  describe 'index' do
+    let(:subject) { get admin_publishers_path(format: :json, params: { role: 'admin' }) }
+
+    before do
+      admin = publishers(:admin)
+      sign_in admin
+      subject
+    end
+
+    it 'returns json' do
+      body = JSON.parse(response.body)
+      assert body
+    end
+
+    it 'returns the id, and email of publishers' do
+      body = JSON.parse(response.body)
+      body.each do |entry|
+        assert entry.dig('id')
+        assert entry.dig('email')
+        assert entry.dig('name')
+      end
+    end
+  end
+
   test "raises error unless admin has u2f enabled" do
     admin = publishers(:admin)
     admin.u2f_registrations.each { |r| r.destroy } # remove all u2f registrations

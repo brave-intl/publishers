@@ -73,6 +73,7 @@ suspended_partner:
 admin:
   email: "hello@brave.com"
   role: "admin"
+  name: Mr. Admin
   two_factor_prompted_at: "<%= 1.day.ago %>"
 
 zendesk_admin:
