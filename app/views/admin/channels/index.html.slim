@@ -10,10 +10,10 @@ div.row
               .input-group-btn
                   = submit_tag("Search", class: 'btn btn-default')
 
-        = hidden_field_tag(:type, params[:type])
-        label
-            = check_box_tag('verified', 1, params[:verified].present?, class: 'checkbox')
-            = "Verified"
+          = hidden_field_tag(:type, params[:type])
+          label
+              = check_box_tag('verified', 1, params[:verified].present?, class: 'checkbox')
+              = "Verified"
       br
       div.panel-body
         div.adv-table

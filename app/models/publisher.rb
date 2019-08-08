@@ -77,11 +77,13 @@ class Publisher < ApplicationRecord
 
   scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
   scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
+  scope :active, -> { filter_status(PublisherStatusUpdate::ACTIVE) }
   scope :suspended, -> { filter_status(PublisherStatusUpdate::SUSPENDED) }
   scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED) }
   scope :deleted, -> { filter_status(PublisherStatusUpdate::DELETED) }
   scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS) }
   scope :hold, -> { filter_status(PublisherStatusUpdate::HOLD) }
+  scope :only_user_funds, -> { filter_status(PublisherStatusUpdate::ONLY_USER_FUNDS) }
 
   scope :not_suspended, -> {
     where.not(id: suspended)
