@@ -26,8 +26,6 @@ class UpholdConnection < ActiveRecord::Base
 
   belongs_to :publisher
 
-  has_many :uphold_connection_for_channels
-
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
   validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
@@ -40,7 +38,7 @@ class UpholdConnection < ActiveRecord::Base
   }
 
   # If the user became KYC'd let's create the uphold card for them
-  after_save :create_uphold_cards, if: -> { saved_change_to_is_member? && uphold_verified? }
+  after_save :create_uphold_card_for_default_currency, if: -> { saved_change_to_is_member? && is_member? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
@@ -143,14 +141,9 @@ class UpholdConnection < ActiveRecord::Base
     @wallet ||= publisher&.wallet
   end
 
-  def create_uphold_cards
+  def create_uphold_card_for_default_currency
     return unless can_create_uphold_cards?
-
     CreateUpholdCardsJob.perform_now(uphold_connection_id: id)
-
-    publisher.channels.each do |channel|
-      CreateUpholdChannelCardJob.perform_now(uphold_connection_id: id, channel_id: channel.id)
-    end
   end
 
   def missing_card?

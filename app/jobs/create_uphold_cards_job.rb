@@ -9,17 +9,8 @@ class CreateUpholdCardsJob < ApplicationJob
       return
     end
 
-    card = nil
-
     # Search for an existing card
-    cards = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)
-    existing_private_cards = UpholdConnectionForChannel.select(:card_id).where(uphold_connection: uphold_connection).to_a
-
-    cards.each do |c|
-      # We don't want to accidentally set the Publisher's card used for auto contribute and referral deposits into a channel card
-      # So we should check the address for the card and make sure that we haven't already used it
-      card = c and break if existing_private_cards.exclude?(c.id)
-    end
+    card = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)&.first
 
     # If the card doesn't exist so we should create it
     if card.blank?

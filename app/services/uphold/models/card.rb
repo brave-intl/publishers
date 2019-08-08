@@ -74,7 +74,6 @@ module Uphold
         params = {
           currency: currency || uphold_connection.default_currency,
           label: label,
-          settings: { starred: true },
         }
 
         response = post(PATH, params, authorization(uphold_connection))

@@ -11,11 +11,6 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     stub_request(:get, uphold_url).to_return(body: { status: "ok", memberAt: "2019", uphold_id: "123e4567-e89b-12d3-a456-426655440000" }.to_json)
-
-    # Mock out the creation of cards
-    stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
-    stub_request(:post, /cards/).to_return(body: { id: "fb25048b-79df-4e64-9c4e-def07c8f5c04" }.to_json)
-    stub_request(:get, /address/).to_return(body: [{ formats: [{ format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1" }], type: "anonymous" }].to_json)
   end
 
   after do

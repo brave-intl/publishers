@@ -1,92 +1,90 @@
 .row.channel-row id=("channel_row_#{channel.id}") data-remove-message=(t("shared.channel_removed"))
   .col.mb-4
     div class=("channel-panel channel-#{channel_verification_status(channel)}")
-      .channel-panel--intro.mb-1
+      .channel-panel--intro
         .channel-panel--intro-icon
           img src=(channel_type_icon_url(channel)) width=16 height=16
         .channel-panel--intro-body
           = channel_type(channel).upcase
-
-      .d-flex.justify-content-between.align-items-center.flex-wrap
-        / Channel name
-        div.my-1
-          .channel-summary
-            h3.text-truncate= channel.publication_title
-
-        / The secondary information on the tile, balance, etc
-        div.channel-secondary-information.d-flex.justify-content-between
-          / Show the balance if the channel has been verified
-          - if channel.verified?
+      - if channel.verified?
+        - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled? && !current_publisher.only_user_funds?
+          .channel--promo-info-container
+            = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
+            = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
+            .referral-link-url.promo-info-item
+              span= https_referral_url(channel.promo_registration.referral_code)
+            .referral-link-button.referral-link-button-desktop.promo-info-item
+              span= t("promo.shared.referral_link")
+            .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
+              span= t("promo.shared.referral_link")
+            .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
+              span= t("promo.shared.copy")
+          / Need to tell the users that it will take 48 hours for their verified channel to appear in the web browser
+          - if channel.created_at > 2.days.ago
+            .channel-info
+              .info-popup
+                .info--details
+                  // JS will break if the next two elements aren't siblings
+                  span.info--what-happened=t(".verification_status_title")
+                  span.info--explanation
+                    span.verification-failed-explanation--content
+                      = t(".verification_status")
+        - else
+          .channel-status.float-right
             .bat-channel
               h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
                 = publisher_channel_bat_balance(current_publisher, channel.details.channel_identifier)
               span.bat-channel--currency= " BAT"
               .bat-channel--period
-              small= t(".channel_balance_period")
-
-          / Show the promo registration if the promo is running
-          - if current_publisher.promo_status(promo_running?) == :active && channel.promo_enabled? && !current_publisher.only_user_funds?
-            .d-flex.channel--promo-info-container.ml-3
-              .d-none.d-sm-block
-                = link_to("", tweet_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-twitter")
-                = link_to("", facebook_url(channel.promo_registration.referral_code), target: :_blank, class: "promo-share-button promo-share-button-facebook")
-              div
-                .referral-link-url.promo-info-item
-                  span= https_referral_url(channel.promo_registration.referral_code)
-                .referral-link-button.referral-link-button-desktop.promo-info-item
-                  span= t("promo.shared.referral_link")
-                .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
-                  span= t("promo.shared.referral_link")
-                .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(channel.promo_registration.referral_code)}"
-                  span= t("promo.shared.copy")
-
-          /  If the verification failed we should tell the user
-          - if channel.verification_failed?
-            .channel-status
-              .verification-failed
-                .verification-failed--header
-                  = t("helpers.channels.verification_failure")
-                .verification-failed--details
-                  // JS will break if the next two elements aren't siblings
-                  span.verification-failed--what-happened=t("helpers.channels.verification_failure_what_happened")
-                  span.verification-failed--explanation
-                    span.verification-failed-explanation--content
-                      = channel_verification_details(channel).upcase_first
-            .ml-2
-              = link_to(t(".try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
-
-
-          - if channel.verification_pending?
-            span.channel-contested= t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
-          - elsif channel.verification_awaiting_admin_approval?
-            = t("helpers.channels.verification_awaiting_admin_approval")
-          - elsif !channel.verified? && !channel.verification_failed?
-            .channel-progress
-              .one-more-step= t(".one_more_step")
-            .channel-status
-              = link_to(t(".lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
-
-      .d-flex.flex-wrap
-        .added-date.d-none.d-sm-block
-          = t(".added", date: channel.created_at.to_date.iso8601)
-          span.mx-2= ' | '
-        - if channel.uphold_connection.present?
-          =image_tag 'uphold.svg', style: "width: 18px; height: 18px; margin-top: 3px;"
-          =link_to(t('.uphold'), "#{uphold_dashboard_url}/cards/#{channel.uphold_connection.card_id}", class: 'px-1', target: "_blank")
-          span.mx-2
-            = ' | '
-        a.remove-channel href="#" data-channel-id=(channel.id)
-          = t(".remove_verified")
-        script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
-          = render "publishers/remove_channel_modal", channel: channel
-        = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-
-
-
+                = t(".channel_balance_period")
+        .channel-summary
+          h3= channel.publication_title
+          .channel-details
+            .added-date
+              = t(".added", date: channel.created_at.to_date.iso8601)
+            span.separator
+              = ' | '
+            a.remove-channel href="#" data-channel-id=(channel.id)
+              = t(".remove_verified")
+            script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+              = render "publishers/remove_channel_modal", channel: channel
+            = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+      - elsif channel.verification_failed?
+        .channel-status.float-right
+          .verification-failed
+            .verification-failed--header
+              = t("helpers.channels.verification_failure")
+            .verification-failed--details
+              // JS will break if the next two elements aren't siblings
+              span.verification-failed--what-happened=t("helpers.channels.verification_failure_what_happened")
+              span.verification-failed--explanation
+                span.verification-failed-explanation--content
+                  = channel_verification_details(channel).upcase_first
+              span.separator
+                = ' | '
+              a.remove-channel href="#" data-channel-id=(channel.id)
+                = t(".remove_verified")
+              script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
+                = render "publishers/remove_channel_modal", channel: channel
+              = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
+          = link_to(t(".try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
+      - elsif channel.verification_pending?
+        .channel-status.float-right
+          = t("shared.channel_contested", time_until_transfer: time_until_transfer(channel))
+      - elsif channel.verification_awaiting_admin_approval?
+        .channel-status.float-right
+          = t("helpers.channels.verification_awaiting_admin_approval")
+      - else
+        .channel-status.float-right
+          = link_to(t(".lets_finish"), channel_next_step_path(channel), class: "btn btn-primary")
+        .channel-progress.float-right
+          .one-more-step= t(".one_more_step")
+      - unless channel.verified
+        .channel-summary
+          h3.unverified = channel.publication_title
       - if channel.contested_by_channel
         .channel-contested
           p = t "shared.channel_contested_by", time_until_transfer: time_until_transfer(channel.contested_by_channel),
                   verified_by_email: channel.contested_by_channel.publisher.email
           a.reject_transfer href=token_reject_transfer_url(channel, channel.contest_token)
             = t ".reject_transfer"
-

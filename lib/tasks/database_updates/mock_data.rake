@@ -9,19 +9,6 @@ namespace :database_updates do
       PromoRegistration.find_each do |promo|
         stats = [REFERRAL_CODES_1, REFERRAL_CODES_2].sample
         stats = stats.each { |x| x["referral_code"] = promo.referral_code }
-
-        date = Date.today
-        entry = stats.reverse.each_slice(2).map do |a, b|
-          next if a.nil?
-          a["ymd"] = date
-          next if b.nil?
-          b["ymd"] = date
-
-          date -= 1.day
-
-          [a, b]
-        end.flatten
-
         promo.stats = stats.to_json
         if promo.save
           puts "Saved stats to promo #{promo.referral_code}"

@@ -14,7 +14,7 @@ class PayoutReportPublisherIncluder < BaseService
 
     uphold_connection.sync_from_uphold!
     if uphold_connection.missing_card?
-      uphold_connection.create_uphold_cards
+      uphold_connection.create_uphold_card_for_default_currency
     end
 
     probi = wallet.referral_balance.amount_probi # probi = balance
