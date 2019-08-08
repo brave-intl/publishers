@@ -77,7 +77,6 @@ class Publisher < ApplicationRecord
 
   scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
   scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
-  scope :active, -> { filter_status(PublisherStatusUpdate::ACTIVE) }
   scope :suspended, -> { filter_status(PublisherStatusUpdate::SUSPENDED) }
   scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED) }
   scope :deleted, -> { filter_status(PublisherStatusUpdate::DELETED) }
