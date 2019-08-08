@@ -10,10 +10,6 @@ class ManualPayoutReportPublisherIncluder < BaseService
 
     uphold_connection = @publisher.uphold_connection
 
-    uphold_status = uphold_connection.status
-    uphold_member = uphold_connection.is_member?
-    reauthorization_needed = uphold_connection.uphold_access_parameters.present?
-    uphold_id = uphold_connection.uphold_id
     suspended = @publisher.suspended?
 
     invoices = Invoice.where(partner_id: @publisher.id, status: Invoice::IN_PROGRESS)
@@ -26,11 +22,11 @@ class ManualPayoutReportPublisherIncluder < BaseService
                               publisher_id: @publisher.id,
                               kind: PotentialPayment::MANUAL,
                               address: uphold_connection.address.to_s,
-                              uphold_status: uphold_status,
-                              reauthorization_needed: reauthorization_needed,
-                              uphold_member: uphold_member,
+                              uphold_status: uphold_connection.status,
+                              reauthorization_needed: uphold_connection.uphold_access_parameters.blank?,
+                              uphold_member: uphold_connection.is_member,
                               suspended: suspended,
-                              uphold_id: uphold_id,
+                              uphold_id: uphold_connection.uphold_id,
                               invoice_id: invoice.id,
                               finalized_by_id: invoice.finalized_by_id)
     end
