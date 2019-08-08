@@ -41,7 +41,8 @@ table.display.table.table-bordered.table-striped
         td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
         td = form_tag refresh_admin_payout_report_path(report.id), method: :patch do
              = submit_tag "refresh", class: "btn btn-info"
-        td = link_to "download", download_admin_payout_report_path(report.id), class: "btn btn-primary"
+        / (Albert Wang) Check encrypted_contents_iv since encrypted_contents is a large fetch.
+        td = report.encrypted_contents_iv.present? ? (link_to "download", download_admin_payout_report_path(report.id), class: "btn btn-primary") : "Please click 'refresh' on the left to create the contents"
 
 hr
 
