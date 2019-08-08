@@ -56,18 +56,12 @@ module Publishers
 
     # Generates an Uphold State Token for the user
     def connect_uphold
-      uphold_connection = current_publisher.uphold_connection
-
-      # For some reason sometimes the uphold connection doesn't always create in the home controller.
-      # If they click the button we should ensure that the
-      uphold_connection = UpholdConnection.create(publisher: current_publisher) if uphold_connection.blank?
-
-      uphold_connection.prepare_uphold_state_token
+      current_publisher.uphold_connection.prepare_uphold_state_token
 
       redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
         gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
         gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
-        gsub('<STATE>', uphold_connection.uphold_state_token)
+        gsub('<STATE>', current_publisher.uphold_connection.uphold_state_token)
     end
 
     # This creates the uphold connection
