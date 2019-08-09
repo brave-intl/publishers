@@ -47,8 +47,23 @@ class UpholdConnection < ActiveRecord::Base
       where("updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
-  def initial_funnel_by_country
-    ActiveRecord::Base.connection.execute("select count(id), country from uphold_connections group by country")
+  def self.initial_funnel_by_country
+    ActiveRecord::Base.connection.execute("
+      select count(id), country
+      from uphold_connections
+      group by country
+      order by count(*) desc
+    ")
+  end
+
+  def self.kycd_by_country
+    ActiveRecord::Base.connection.execute("
+      select count(id), country
+      from uphold_connections
+      where is_member = true
+      group by country
+      order by count(*) desc
+    ")
   end
 
   # This state token is generated and must be unique when connecting to uphold.
