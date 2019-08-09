@@ -96,4 +96,20 @@ class Api::V1::Stats::PublishersController < Api::V1::StatsController
     end
     render(json: Publisher.statistical_totals(up_to_date: up_to_date.respond_to?(:strftime) ? up_to_date : 1.day.from_now), status: 200)
   end
+
+  def has_an_uphold_address_count
+    UpholdConnection.where.not(address: nil).count
+  end
+
+  def not_kyc_count
+    UpholdConnection.where(is_member: false).where.not(address: nil).count
+  end
+
+  def kyc_count
+    UpholdConnection.where(is_member: true).where.not(address: nil).count
+  end
+
+  def suspended_count
+    Publisher.suspended.count
+  end
 end

@@ -147,6 +147,10 @@ Rails.application.routes.draw do
           get :channel_and_kyc_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
           get :totals
+          get :has_an_uphold_address_count
+          get :kyc_count
+          get :not_kyc_count
+          get :suspended_count
         end
       end
       # /api/v1/public/
