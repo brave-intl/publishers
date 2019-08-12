@@ -4,6 +4,8 @@ module Publishers
     # Traditional usage of helpers should really only be for views
     include PublishersHelper
 
+    before_action :authenticate_publisher!
+
     def uphold_status
       publisher = current_publisher
       respond_to do |format|
@@ -54,12 +56,12 @@ module Publishers
 
     # Generates an Uphold State Token for the user
     def connect_uphold
-      current_publisher.uphold_connection&.prepare_uphold_state_token
+      current_publisher.uphold_connection.prepare_uphold_state_token
 
       redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
         gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
         gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
-        gsub('<STATE>', current_publisher.uphold_connection&.uphold_state_token)
+        gsub('<STATE>', current_publisher.uphold_connection.uphold_state_token)
     end
 
     # This creates the uphold connection

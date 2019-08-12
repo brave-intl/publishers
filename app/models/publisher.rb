@@ -82,6 +82,7 @@ class Publisher < ApplicationRecord
   scope :deleted, -> { filter_status(PublisherStatusUpdate::DELETED) }
   scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS) }
   scope :hold, -> { filter_status(PublisherStatusUpdate::HOLD) }
+  scope :only_user_funds, -> { filter_status(PublisherStatusUpdate::ONLY_USER_FUNDS) }
 
   scope :not_suspended, -> {
     where.not(id: suspended)
@@ -116,6 +117,8 @@ class Publisher < ApplicationRecord
   def self.statistical_totals(up_to_date: 1.day.from_now)
     # TODO change this
     {
+      email_verified_with_a_verified_channel_and_uphold_kycd: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.is_member': true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_and_uphold_kycd: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.is_member': true).email_verified.distinct(:id).count,
       email_verified_with_a_verified_channel_and_uphold_verified: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.uphold_verified': true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
       email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
