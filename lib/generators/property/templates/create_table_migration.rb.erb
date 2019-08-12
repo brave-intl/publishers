@@ -1,0 +1,14 @@
+<% property = table_name.split('_').first %>
+class <%= table_name.classify %> < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
+  def change
+    create_table :<%= table_name %>, id: :uuid, default: -> { "uuid_generate_v4()"}, force: :cascade do |t|
+      t.string   "<%= property %>_channel_id", index: true
+      t.string   "auth_provider"
+      t.string   "name"
+      t.string   "channel_url"
+      t.string   "nickname"
+      t.string   "thumbnail_url"
+      t.jsonb    "stats"
+    end
+  end
+end

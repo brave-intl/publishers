@@ -332,18 +332,18 @@ top of the repo. For example you can expose ports on your system for the databas
 `docker-compose.override.yml`:
 
 ```yaml
-version: '2.1'
+version: "2.1"
 
 services:
   mongo:
     ports:
-      - '27017:27017'
+      - "27017:27017"
   redis:
     ports:
-      - '6379:6379'
+      - "6379:6379"
   postgres:
     ports:
-      - '5432:5432'
+      - "5432:5432"
 ```
 
 to start with docker build the app and eyeshade images
@@ -381,6 +381,17 @@ rails "docker:add_referral_balance_to_account[publishers#uuid:967a9919-34f4-4ce6
 ```
 
 The new balance should be reflected on the dashboard.
+
+### Adding a new type of channel
+
+The easiest possible way to add a new channel is to find the Omniauth gem for the specified integration.
+
+1. Add the gem to the [Gemfile](https://github.com/brave-intl/publishers/blob/staging/Gemfile#L73)
+1. Run bundle install
+1. Run `rails generate property WEBSITE_channel_details` (Note: replace `WEBSITE` with the name of the integration, e.g. github, reddit, vimeo, etc)
+1. Run `rails db:migrate`
+1. Add a new controller method in `app/controllers/publishers/omniauth_callbacks_controller.rb` similar to `register_github_channel` or `register_reddit_channel`
+1. Add the link and icon to `/app/views/application/_choose_channel_type.html.slim`
 
 ### Run Tests
 
