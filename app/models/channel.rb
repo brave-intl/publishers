@@ -99,19 +99,20 @@ class Channel < ApplicationRecord
   end
 
   def self.duplicates
-    entries = [
-      TwitchChannelDetails.joins(:channel).where("channels.verified = true").select(:name).group(:name),
-      YoutubeChannelDetails.joins(:channel).where("channels.verified = true").select(:youtube_channel_id).group(:youtube_channel_id),
-      TwitterChannelDetails.joins(:channel).where("channels.verified = true").select(:twitter_channel_id).group(:twitter_channel_id),
-      SiteChannelDetails.joins(:channel).where("channels.verified = true").select(:brave_publisher_id).group(:brave_publisher_id),
-      VimeoChannelDetails.joins(:channel).where("channels.verified = true").select(:vimeo_channel_id).group(:vimeo_channel_id),
-    ]
+    duplicates = []
 
-    duplicates = entries.map do |entry|
-      entry.having("count(*) >1").map { |x, y| x.channel_identifier }
+    entries = PROPERTIES.map do |channel|
+      Channel.public_send("#{channel}_channels").verified.select("#{channel}_channel_id").group("#{channel}_channel_id")
     end
 
-    @duplicates ||= duplicates.flatten
+    entries.map do |entry|
+      entry.having("count(*) >1").each do |x, y|
+        key = x.as_json.keys.detect { |x| x.include? "channel_id" }
+        duplicates << x[key]
+      end
+    end
+
+    duplicates.flatten
   end
 
   def publication_title
