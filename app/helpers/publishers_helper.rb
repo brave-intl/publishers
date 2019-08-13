@@ -417,14 +417,7 @@ module PublishersHelper
   end
 
   def channel_thumbnail_url(channel)
-    url = case channel.details
-          when YoutubeChannelDetails
-            channel.details.thumbnail_url
-          when TwitchChannelDetails
-            channel.details.thumbnail_url
-          when TwitterChannelDetails
-            channel.details.thumbnail_url
-          end
+    url = channel.details.thumbnail_url if channel.details.respond_to?(:thumbnail_url)
 
     url || asset_url('default-channel.png')
   end

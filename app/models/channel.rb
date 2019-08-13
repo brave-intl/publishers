@@ -102,12 +102,13 @@ class Channel < ApplicationRecord
     duplicates = []
 
     entries = PROPERTIES.map do |channel|
-      Channel.public_send("#{channel}_channels").verified.select("#{channel}_channel_id").group("#{channel}_channel_id")
+      channel_id = ActiveRecord::Base.sanitize_sql("#{channel}_channel_id")
+      public_send("#{channel}_channels").verified.select(channel_id).group(channel_id)
     end
 
     entries.map do |entry|
       entry.having("count(*) >1").each do |x, y|
-        key = x.as_json.keys.detect { |x| x.include? "channel_id" }
+        key = x.as_json.keys.detect { |z| z.include? "channel_id" }
         duplicates << x[key]
       end
     end

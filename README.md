@@ -384,7 +384,7 @@ The new balance should be reflected on the dashboard.
 
 ### Adding a new type of channel
 
-The easiest possible way to add a new channel is to find the Omniauth gem for the specified integration.
+The easiest possible way to add a new channel is to find the Omniauth gem for the specified integration. A few examples include [omniauth-soundcloud](https://github.com/soundcloud/omniauth-soundcloud), [omniauth-github](https://github.com/omniauth/omniauth-github), or [omniauth-facebook](https://github.com/mkdynamic/omniauth-facebook)
 
 1. Add the gem to the [Gemfile](https://github.com/brave-intl/publishers/blob/staging/Gemfile#L73)
 2. Run bundle install
