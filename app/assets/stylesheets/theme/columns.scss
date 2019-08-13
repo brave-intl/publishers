@@ -62,7 +62,7 @@
   }
 }
 
-.col-two-factor {
+.col-left-aligned {
   &--content {
     @include make-col-ready();
     text-align: left;

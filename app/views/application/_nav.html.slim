@@ -21,12 +21,13 @@ nav.navbar.navbar-default.navbar-static-top.top-nav-collapse
                   .user-name.js-user-name-dropdown= current_publisher.name
                   .user-email= current_publisher.email
                 ul.user-links
-                  li= link_to two_factor_registrations_path do
+                  li= link_to security_publishers_path do
                     span.user-links-lock
                       .user-links-lock-icon= render two_factor_enabled?(current_publisher) ? "locked_svg" : "unlocked_svg"
                       = t ".security"
                   - if show_faq_link?
                     li= link_to t(".faqs"), faqs_path
+                  li= link_to t(".settings"), settings_publishers_path
                   li= link_to t(".help"), "https://support.brave.com/hc/en-us/"
                   li= link_to t(".log_out"), log_out_publishers_path
           - else
