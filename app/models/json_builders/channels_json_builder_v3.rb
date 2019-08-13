@@ -1,9 +1,10 @@
-# V2 Version of Channels list
+require "publishers/excluded_channels"
+# V3 Version of Channels list
 #
 # Each channel is an array:
 # [
 #   channel_identifier (string),
-#   verified (boolean),
+#   "", "connected", "verified", (string),
 #   excluded (boolean),
 #   wallet address
 #   site_banner details
@@ -11,18 +12,16 @@
 #
 # ex.
 # [
-#   ["brave.com", true, false, {title: 'Hello', description: 'world'...}, 1234-abcd-5678-efgh],
+#   ["brave.com", "verified", false, {title: 'Hello', description: 'world'...}, 1234-abcd-5678-efgh],
 #   ["google.com", false, true, {}, 1234-abcd-5678-efgh],
 #   ["us.gov", false, false, {}, 1234-abcd-5678-efgh]
 # ]
 
-class JsonBuilders::ChannelsJsonBuilderV2
+class JsonBuilders::ChannelsJsonBuilderV3
   def initialize
-    require "publishers/excluded_channels"
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
-    @excluded_verified_channel_ids = []
+    @excluded_verified_channel_ids = Set.new
     @channels = []
-    @appended_wallet_addresses = {}
   end
 
   def build
@@ -31,7 +30,7 @@ class JsonBuilders::ChannelsJsonBuilderV2
         include_verified_channel(verified_channel)
       end
     end
-    append_excluded
+    # append_excluded!
     @channels.to_json
   end
 
@@ -50,23 +49,33 @@ class JsonBuilders::ChannelsJsonBuilderV2
   end
 
   def include_verified_channel(verified_channel)
-    # Skip if channel is on exclusion list
-    return if @excluded_channel_ids.include?(verified_channel.details.channel_identifier)
-    # Skip if channel publisher has not yet KYC'd
-    return unless verified_channel.publisher&.uphold_connection&.is_member
+    identifier = verified_channel.details.channel_identifier
 
+    # Maintain a list of the verified sites that are excluded so we don't have to add them again
+    @excluded_verified_channel_ids.add(identifier) if @excluded_channel_ids.include?(identifier)
+
+    # TODO Get rid of n+1 query
     wallet_address_id = verified_channel.uphold_connection&.address
 
-    return if wallet_address_id.nil?
-
     @channels.push([
-      verified_channel.details.channel_identifier,
-      true,
-      false,
+      identifier,
+      status(verified_channel, wallet_address_id),
+      @excluded_channel_ids.include?(identifier),
       wallet_address_id,
       site_banner_details(verified_channel),
     ])
-    append_wallet_address(wallet_address_id)
+  end
+
+  def status(verified_channel, address)
+    connection = verified_channel.publisher&.uphold_connection
+
+    if connection&.is_member && address.present?
+      "verified"
+    elsif connection&.uphold_verified?
+      "connected"
+    else
+      ""
+    end
   end
 
   def site_banner_details(channel)
@@ -80,17 +89,11 @@ class JsonBuilders::ChannelsJsonBuilderV2
     end
   end
 
-  def append_wallet_address(wallet_address_id)
-    @appended_wallet_addresses[wallet_address_id] = true
-  end
-
-  def existing_wallet_address?(wallet_address_id)
-    @appended_wallet_addresses.key?(wallet_address_id)
-  end
-
   # (Albert Wang): Note: Ordering is different from v1
-  def append_excluded
+  def append_excluded!
     @excluded_channel_ids.each do |excluded_channel_id|
+      next if @excluded_verified_channel_ids.include?(excluded_channel_id)
+
       @channels.push([excluded_channel_id, false, true, "", {}])
     end
   end
