@@ -969,50 +969,6 @@
   }
 }
 
-#channel_taken_modal {
-  .taken-channel {
-    margin: $spacer * 2;
-
-    .summary {
-      margin-bottom: 20px;
-
-      img {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        border-radius: 20px;
-        margin-right: 10px;
-      }
-
-      .title {
-        display: inline-block;
-      }
-    }
-
-    .registration-date {
-      label {
-        display: inline-block;
-        margin-right: 8px;
-      }
-
-      .value {
-        display: inline-block;
-      }
-    }
-
-    .registered-by {
-      label {
-        display: inline-block;
-        margin-right: 8px;
-      }
-
-      .value {
-        display: inline-block;
-      }
-    }
-  }
-}
-
 .modal-container--modal-identifier--choose-channel-type {
   max-width: 960px;
   width: 100%;
