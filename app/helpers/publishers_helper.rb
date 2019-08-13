@@ -372,20 +372,8 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       I18n.t("helpers.publisher.channel_type.website")
-    when YoutubeChannelDetails
-      I18n.t("helpers.publisher.channel_type.youtube")
-    when TwitchChannelDetails
-      I18n.t("helpers.publisher.channel_type.twitch")
-    when TwitterChannelDetails
-      I18n.t("helpers.publisher.channel_type.twitter")
-    when VimeoChannelDetails
-      I18n.t("helpers.publisher.channel_type.vimeo")
-    when RedditChannelDetails
-      I18n.t("helpers.publisher.channel_type.reddit")
-    when GithubChannelDetails
-      I18n.t("helpers.publisher.channel_type.github")
     else
-      I18n.t("helpers.publisher.channel_type.unknown")
+      I18n.t("helpers.publisher.channel_type.#{channel.type_display.downcase}")
     end
   end
 
@@ -393,18 +381,8 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       I18n.t("helpers.publisher.channel_name.website")
-    when YoutubeChannelDetails
-      I18n.t("helpers.publisher.channel_name.youtube")
-    when TwitchChannelDetails
-      I18n.t("helpers.publisher.channel_name.twitch")
-    when VimeoChannelDetails
-      I18n.t("helpers.publisher.channel_name.vimeo")
-    when RedditChannelDetails
-      I18n.t("helpers.publisher.channel_name.reddit")
-    when GithubChannelDetails
-      I18n.t("helpers.publisher.channel_name.github")
     else
-      I18n.t("helpers.publisher.channel_name.unknown")
+      I18n.t("helpers.publisher.channel_name.#{channel.type_display.downcase}")
     end
   end
 
@@ -431,20 +409,10 @@ module PublishersHelper
 
   def channel_type_icon_url(channel)
     case channel&.details
-    when YoutubeChannelDetails
-      asset_url('publishers-home/youtube-icon_32x32.png')
-    when TwitchChannelDetails
-      asset_url('publishers-home/twitch-icon_32x32.png')
-    when TwitterChannelDetails
-      asset_url('publishers-home/twitter-icon_32x32.png')
-    when VimeoChannelDetails
-      asset_url('publishers-home/vimeo-icon_32x32.png')
-    when RedditChannelDetails
-      asset_url('publishers-home/reddit-icon_32x32.png')
-    when GithubChannelDetails
-      asset_url('publishers-home/github-icon_32x32.png')
-    else
+    when SiteChannelDetails
       asset_url('publishers-home/website-icon_32x32.png')
+    else
+      asset_url("publishers-home/#{channel.type_display.downcase}-icon_32x32.png")
     end
   end
 
