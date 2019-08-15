@@ -26,11 +26,20 @@ class JsonBuilders::ChannelsJsonBuilderV3
 
   def build
     joined_verified_channels.each do |verified_channels|
+      verified_channels = verified_channels.
+        preload(:details).
+        eager_load(:uphold_connection_for_channel).
+        eager_load(publisher: :uphold_connection).
+        eager_load(publisher: :site_banners).
+        eager_load(:site_banner).
+        includes(site_banner: { logo_attachment: :blob }).
+        includes(site_banner: { background_image_attachment: :blob })
+
       verified_channels.find_each do |verified_channel|
         include_verified_channel(verified_channel)
       end
     end
-    # append_excluded!
+    append_excluded!
     @channels.to_json
   end
 
@@ -38,29 +47,29 @@ class JsonBuilders::ChannelsJsonBuilderV3
 
   def joined_verified_channels
     [
-      Channel.verified.site_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.youtube_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.twitch_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.twitter_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.vimeo_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.reddit_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
-      Channel.verified.github_channels.includes(:site_banner).includes(publisher: :site_banners).includes(publisher: :uphold_connection),
+      Channel.verified.site_channels,
+      Channel.verified.youtube_channels,
+      Channel.verified.twitch_channels,
+      Channel.verified.twitter_channels,
+      Channel.verified.vimeo_channels,
+      Channel.verified.reddit_channels,
+      Channel.verified.github_channels,
     ]
   end
 
   def include_verified_channel(verified_channel)
     identifier = verified_channel.details.channel_identifier
+    in_exclusion_list = @excluded_channel_ids.include?(identifier)
 
     # Maintain a list of the verified sites that are excluded so we don't have to add them again
-    @excluded_verified_channel_ids.add(identifier) if @excluded_channel_ids.include?(identifier)
+    @excluded_verified_channel_ids.add(identifier) if in_exclusion_list
 
-    # TODO Get rid of n+1 query
     wallet_address_id = verified_channel.uphold_connection&.address
 
     @channels.push([
       identifier,
       status(verified_channel, wallet_address_id),
-      @excluded_channel_ids.include?(identifier),
+      in_exclusion_list,
       wallet_address_id,
       site_banner_details(verified_channel),
     ])

@@ -23,4 +23,4 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       Rails.logger.info("CacheBrowserChannelsJsonJob V3 could not update the channels JSON.")
     end
   end
-  end
+end

@@ -1,9 +1,6 @@
 class ApplicationJob < ActiveJob::Base
   # Send handled exceptions to Sentry (which normally only sends unhandled exceptions).
   require "error_handler_delegator"
-
-  include Bullet::ActiveJob if Rails.env.development?
-
   def self.new(*args, &block)
     ErrorHandlerDelegator.new(super)
   end
