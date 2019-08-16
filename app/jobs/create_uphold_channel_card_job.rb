@@ -20,7 +20,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
     if upfc.present?
       card_id = upfc.card_id
     else
-      (card_id, upfc) = create_card(uphold_connection, channel)
+      (card_id, upfc) = find_or_create_card(uphold_connection, channel)
     end
 
     # If the channel was deleted and then recreated we should update this to be the new channel id
@@ -30,15 +30,21 @@ class CreateUpholdChannelCardJob < ApplicationJob
     )
   end
 
-  def create_card(uphold_connection, channel)
+  def find_or_create_card(uphold_connection, channel)
     card_label = "#{channel.type_display} - #{channel.details.publication_title} - Brave Rewards"
 
-    # If the card doesn't exist so we should create it
-    card_id = uphold_connection.uphold_client.card.create(
-      uphold_connection: uphold_connection,
-      currency: uphold_connection.default_currency,
-      label: card_label
-    ).id
+    # If a user transfers their channel then we should try not to create duplicate uphold cards
+    cards = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)
+    card_id = cards.detect { |c| c.label.eql?(card_label) }.id
+
+    if card_id.blank?
+      # If the card doesn't exist so we should create it
+      card_id = uphold_connection.uphold_client.card.create(
+        uphold_connection: uphold_connection,
+        currency: uphold_connection.default_currency,
+        label: card_label
+      ).id
+    end
 
     upfc = UpholdConnectionForChannel.create(
       uphold_connection: uphold_connection,

@@ -65,7 +65,7 @@ class CreateUpholdCardsJob < ApplicationJob
   # Returns true if the card has a private address
   def has_private_address?(uphold_connection, card_id)
     @existing_private_cards ||= UpholdConnectionForChannel.select(:card_id).where(uphold_connection: uphold_connection).to_a
-    return true if existing_private_cards.include?(c.id)
+    return true if @existing_private_cards.include?(card_id)
 
     addresses = uphold_connection.uphold_client.address.all(uphold_connection: uphold_connection, id: card_id)
 
