@@ -362,7 +362,7 @@ class Channel < ApplicationRecord
   end
 
   def uphold_connection
-    @uphold_connection ||= UpholdConnectionForChannel.joins(:uphold_connection).where(channel_id: id).where("uphold_connections.default_currency = uphold_connection_for_channels.currency").first
+    @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher.uphold_connection.default_currency }
   end
 
   private

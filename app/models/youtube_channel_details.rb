@@ -7,12 +7,12 @@ class YoutubeChannelDetails < BaseChannelDetails
 
   alias_attribute :name, :title
 
-  YOUTUBE_PREFIX = "youtube#channel:".freeze
+  PREFIX = "youtube#channel:".freeze
 
   ## Begin methods to satisfy the Eyeshade integration
 
   def channel_identifier
-    "#{YOUTUBE_PREFIX}#{youtube_channel_id}"
+    "#{PREFIX}#{youtube_channel_id}"
   end
 
   def authorizer_email
