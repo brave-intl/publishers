@@ -14,6 +14,7 @@ class Api::V3::Public::ChannelsController < Api::V3::Public::BaseController
 
     results = JSON.parse(channels_json)
 
+    # This generates a list of the prefixes for channels ["youtube#channel:", "twitter#channel:", "twitch#:channel:"]
     prefixes = [
       TwitchChannelDetails,
       GithubChannelDetails,
@@ -27,29 +28,33 @@ class Api::V3::Public::ChannelsController < Api::V3::Public::BaseController
     counts = { site: {}, all_channels: {} }
     prefixes.each { |x| counts[x] = {} }
 
-    results.each do |c|
-      status = c[1]
+    results.each do |channel|
+      status = channel.second
       next unless status.present?
 
-      entry = c.first.split(':').first + ":"
+      entry = channel.first.split(':').first + ":"
       entry = :site if counts.keys.exclude?(entry)
 
+      # Essentially this is doing the following
+      # counts["reddit#channel:"]["connected"] = 0
+      # counts["github#channel:"]["verified"] = 0
       counts[entry][status] = 0 if counts[entry][status].blank?
 
       counts[entry][status] += 1
+
+      # Initialize if nil
       counts[:all_channels][status] = 0 if counts[:all_channels][status].blank?
-      counts[:all_channels][status] +=1
+      counts[:all_channels][status] += 1
     end
 
+    # Remove the #channel: from youtube#channel: so it's formatted in a readable way
     statistical_totals = counts.transform_keys { |k| k.to_s.split('#')[0] }
 
+    # Generates the totals for each property
     statistical_totals.keys.map do |k|
       statistical_totals[k][:total] = statistical_totals[k].sum { |k, v| v }
     end
+
     render(json: statistical_totals, status: 200)
   end
-
-  # def totals
-  #   render(json: Channel.statistical_totals, status: 200)
-  # end
 end
