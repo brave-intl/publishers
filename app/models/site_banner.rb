@@ -10,7 +10,6 @@ class SiteBanner < ApplicationRecord
 
   has_one_public_s3 :background_image
   belongs_to :publisher
-  belongs_to :channel
 
   LOGO = "logo".freeze
   LOGO_DIMENSIONS = [480, 480].freeze

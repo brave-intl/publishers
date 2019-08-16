@@ -271,7 +271,7 @@ class Publisher < ApplicationRecord
   end
 
   def default_site_banner
-    site_banners.detect { |sb| sb.id == default_site_banner_id }
+    site_banners.find_by(id: default_site_banner_id)
   end
 
   def inferred_status

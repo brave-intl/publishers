@@ -12,10 +12,10 @@ div.panel-body
         - @result.each do |entry|
           - publisher_id = entry['account_id'].split(":")[1]
           - publisher = @publishers.find { |publisher| publisher.id == publisher_id }
-          - channel_detail = @youtube_channel_details.find { |youtube_channel_detail| youtube_channel_detail.youtube_channel_id == entry['channel'].remove(YoutubeChannelDetails::PREFIX) }
+          - channel_detail = @youtube_channel_details.find { |youtube_channel_detail| youtube_channel_detail.youtube_channel_id == entry['channel'].remove(YoutubeChannelDetails::YOUTUBE_PREFIX) }
           tr.gradeX
-            - if entry['channel'].starts_with?(YoutubeChannelDetails::PREFIX)
-              td = link_to channel_detail&.title, "https://youtube.com/channel/" + entry['channel'].remove(YoutubeChannelDetails::PREFIX)
+            - if entry['channel'].starts_with?(YoutubeChannelDetails::YOUTUBE_PREFIX)
+              td = link_to channel_detail&.title, "https://youtube.com/channel/" + entry['channel'].remove(YoutubeChannelDetails::YOUTUBE_PREFIX)
             - else
               td = entry['channel']
             td = channel_detail&.stats
