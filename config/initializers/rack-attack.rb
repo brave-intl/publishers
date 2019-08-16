@@ -58,6 +58,12 @@ class Rack::Attack
     end
   end
 
+  throttle("2fa_sign_in", limit: 10, period: 15.minutes) do |req|
+    if req.path.start_with?("/publishers/two_factor_authentications")
+      req.ip
+    end
+  end
+
   # Throttle resend auth emails for a publisher
   throttle("resend_authentication_email/publisher_id", limit: 20, period: 20.minutes) do |req|
     if req.path == "/publishers/resend_authentication_email" && req.post?
@@ -125,7 +131,7 @@ class Rack::Attack
     [
       420, # status
       {"Content-Type" => "text/plain; charset=UTF-8"}, # headers
-      ["🎷"] # body
+      ["🎷 Try again in a bit"] # body
     ]
   end
 end
