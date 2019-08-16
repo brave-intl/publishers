@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :publishers, only: %i(create update new show) do
+  resources :publishers, only: %i(create update new show destroy) do
     collection do
       # Registrations, eventually we should consider refactoring these routes into something a little more restful
       scope controller: 'registrations', module: 'publishers' do
@@ -42,15 +42,13 @@ Rails.application.routes.draw do
       patch :complete_signup
       get :choose_new_channel_type
       get :two_factor_authentication_removal
+      get :security, to: 'publishers/security#index'
+      get :prompt_security, to: 'publishers/security#prompt'
+      get :settings, to: 'publishers/settings#index'
       post :request_two_factor_authentication_removal
       get :confirm_two_factor_authentication_removal
       get :cancel_two_factor_authentication_removal
       resources :two_factor_authentications, only: %i(index)
-      resources :two_factor_registrations, only: %i(index) do
-        collection do
-          get :prompt
-        end
-      end
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)
       resources :totp_registrations, only: %i(new create destroy)

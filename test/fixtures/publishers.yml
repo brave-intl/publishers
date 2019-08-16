@@ -8,37 +8,31 @@ default: &default
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  last_sign_in_ip: "192.168.1.1"
+  current_sign_in_ip: "192.168.1.1"
 
 verified:
+  <<: *default
+  default_site_banner_id: "00000000-0000-0000-0000-000000000005"
+  default_site_banner_mode: true
   email: "alice@verified.org"
   name: "Alice the Verified"
-  default_site_banner_mode: true
-  default_site_banner_id: "00000000-0000-0000-0000-000000000005"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 notes:
+  <<: *default
   email: "alice@notes.org"
   name: "Alice the Notes"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 just_notes:
+  <<: *default
   email: "only@notes.org"
   name: "Only the Notes"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
   role: 'admin'
 
 verified_totp_only:
+  <<: *default
   email: "alice_totp@verified.org"
   name: "Alice the Verified TOTP User"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 # A publisher that has received an authentication email
 completed:
@@ -180,24 +174,19 @@ youtube_new:
   visible: true
 
 google_verified:
+  <<: *default
   email: "alice2@verified.org"
   name: "Alice the Verified"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
-  default_currency: "BAT"
 
 twitch_new:
+  <<: *default
   email: "aliceTwitch@spud.com"
   name: "Alice the Twitcher"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 twitch_verified:
+  <<: *default
   email: "aliceTwitch@verified.org"
   name: "Alice the Verified"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
-  default_currency: "BAT"
 
 channel_publisher:
   email: "channel_publisher@gmail.com"

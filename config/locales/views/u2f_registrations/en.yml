@@ -1,0 +1,50 @@
+en:
+  u2f_registrations:
+    new:
+      heading: Register Security Key
+      name_placeholder: Enter a nickname for the key
+      submit_value: Add
+      waiting_heading: Waiting for your security key...
+      waiting_description: |
+        Insert the new hardware key into your computer and press the button when
+        it's blinking.
+      u2f-unavailable: |
+        Your browser doesn't look like it supports U2F, the two factor auth
+        platform supported by Brave. Please use the latest version of Brave, Chrome
+        or Opera to register your U2F-compatible device, for example a YubiKey.
+      u2f-error:
+        bad-request: |
+          There was an unexpected error in the registration request made by
+          Brave. Please reload this page and re-attempt registration.
+          (BAD_REQUEST)
+        configuration-unsupported: |
+          Client configuration is not supported. (CONFIGURATION_UNSUPPORTED)
+        device-ineligible: |
+          The presented security key is not eligible for registration. This may mean
+          that the token is already registered. (DEVICE_INELIGIBLE)
+        other-error: |
+          There was an unexpected error registering your security key. Re-attempting
+          registration may resolve this issue. (OTHER_ERROR)
+        timeout: |
+          There was an unexpected timeout waiting for your security key to respond to
+          the registration request. Please re-attempt registration and activate
+          the security key when it is blinking. (TIMEOUT)
+        implementation-incomplete: |
+          Please insert your security key and re-attempt registration. Some
+          browsers have an incomplete implementation of this
+          protocol. Please use a current release of Brave, Google Chrome or Opera.
+          (IMPLEMENTATION_INCOMPLETE)
+    u2f_registration:
+      name_default: Anonymous Key
+      confirm_disable:
+        header: Remove Security Key?
+        intro: "Your remaining two-factor authentication method:"
+        remaining_totp: Authenticator app on your phone
+        none: None
+        no_2fa_warning_html: |
+          Removing this security key will effectively
+          <strong>turn off the two-factor authentication</strong>
+          for your account.
+        final_confirmation: Are you sure you want to remove this security key?
+        deny: Do Not Remove
+        confirm: Remove Security Key
