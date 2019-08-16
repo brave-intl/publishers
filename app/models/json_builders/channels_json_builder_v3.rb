@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "publishers/excluded_channels"
 # V3 Version of Channels list
 #
@@ -18,6 +20,9 @@ require "publishers/excluded_channels"
 # ]
 
 class JsonBuilders::ChannelsJsonBuilderV3
+  VERIFEID = "verified"
+  CONNECTED = "connected"
+
   def initialize
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
     @excluded_verified_channel_ids = Set.new
@@ -79,9 +84,9 @@ class JsonBuilders::ChannelsJsonBuilderV3
     connection = verified_channel.publisher&.uphold_connection
 
     if connection&.is_member && address.present?
-      "verified"
+      VERIFEID
     elsif connection&.uphold_verified?
-      "connected"
+      CONNECTED
     else
       ""
     end

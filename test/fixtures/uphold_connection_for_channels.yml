@@ -1,4 +1,4 @@
-default: &default
+default_uphold_connection_for_channel: &default_uphold_connection_for_channel
   currency: USD
   card_id: a012caf7-6fab-472d-a4d2-de6d04a54d1d
   address: 6dfe6c26-e83b-4c5d-833f-3ad95a0e2f93
@@ -6,5 +6,5 @@ default: &default
   channel: uphold_connected_twitch_details
 
 uphold_connected_for_channels_twitch_details:
-  <<: *default
+  <<: *default_uphold_connection_for_channel
   channel_identifier: "twitch#author:details"
