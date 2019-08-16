@@ -1,7 +1,7 @@
 class GithubChannelDetails < BaseChannelDetails
   has_paper_trail
 
-  PREFIX = "github#channel:".freeze
+  GITHUB_PREFIX = "github#channel:".freeze
 
   validates :github_channel_id, presence: true
   validates :thumbnail_url, presence: true
@@ -9,7 +9,7 @@ class GithubChannelDetails < BaseChannelDetails
   validates :channel_url, presence: true
 
   def channel_identifier
-    "#{PREFIX}#{github_channel_id}"
+    "#{GITHUB_PREFIX}#{github_channel_id}"
   end
 
   def authorizer_name

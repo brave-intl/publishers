@@ -5,12 +5,12 @@ class TwitterChannelDetails < BaseChannelDetails
   validates :name, presence: true
   validates :screen_name, presence: true
 
-  PREFIX = "twitter#channel:".freeze
+  TWITTER_PREFIX = "twitter#channel:".freeze
 
   # TODO: Figure out why eyeshade needs the email and name
   ## Begin methods to satisfy the Eyeshade integration
   def channel_identifier
-    "#{PREFIX}#{twitter_channel_id}"
+    "#{TWITTER_PREFIX}#{twitter_channel_id}"
   end
 
   def authorizer_email

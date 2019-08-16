@@ -5,12 +5,12 @@ class TwitchChannelDetails < BaseChannelDetails
   validates :auth_user_id, presence: true
   validates :display_name, presence: true
 
-  PREFIX = "twitch#author:".freeze
+  TWITCH_PREFIX = "twitch#author:".freeze
 
   ## Begin methods to satisfy the Eyeshade integration
 
   def channel_identifier
-    "#{PREFIX}#{name}"
+    "#{TWITCH_PREFIX}#{name}"
   end
 
   def authorizer_email
