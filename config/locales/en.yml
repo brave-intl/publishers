@@ -36,6 +36,7 @@ en:
     continue: Continue
     dashboard: Dashboard
     referrals: Referrals
+    payments: Payments
     download: Download
     existing_account: Already have an account?
     error: Oh no! Something went wrong, please contact support.
@@ -437,6 +438,18 @@ en:
     show:
       email_confirmed: Your updated email address %{email} has been confirmed.
       token_invalid: Authentication failed. Your login link may have expired; please send yourself a new sign in link.
+    statements:
+      index:
+        title: Statements
+        description: Statements contain the details of deposit history.
+        create_statement: Create Statement
+        no_transactions: No transactions this period.
+        this_month: This month
+        last_month: Last month
+        all: All
+        period: Period
+        download: Download
+        statement_file_name: BravePaymentsStatement
     cases:
       shared:
         description: |
@@ -640,17 +653,6 @@ en:
       already_logged_in: You can't do that because you have an active session. Please exit or clear your cookies.
     require_verified_publisher:
       verification_required: To continue please confirm your email address and name.
-    statements:
-      title: Statements
-      description: Statements contain the details of deposit history.
-      create_statement: Create Statement
-      no_transactions: No transactions this period.
-      this_month: This month
-      last_month: Last month
-      all: All
-      period: Period
-      download: Download
-      statement_file_name: BravePaymentsStatement
     suspended_error:
       heading_html: Your account is under review
       body: >

@@ -24,6 +24,8 @@ Rails.application.routes.draw do
           patch :disconnect_uphold, action: :destroy
           patch :confirm_default_currency
         end
+
+        resources :statements
       end
 
       get :log_out
@@ -34,8 +36,6 @@ Rails.application.routes.draw do
       get :email_verified
       get :wallet
       get :suspended_error
-      get :statement
-      get :statements
       get :get_site_banner_data
       patch :verify
       patch :update

@@ -222,11 +222,6 @@ class PublishersController < ApplicationController
     end
   end
 
-  def statements
-    statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
-    @statement_has_content = statement_contents.length > 0
-  end
-
   def choose_new_channel_type
   end
 
