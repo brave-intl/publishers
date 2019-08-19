@@ -108,7 +108,7 @@ class JsonBuilders::ChannelsJsonBuilderV3
     @excluded_channel_ids.each do |excluded_channel_id|
       next if @excluded_verified_channel_ids.include?(excluded_channel_id)
 
-      @channels.push([excluded_channel_id, false, true, "", {}])
+      @channels.push([excluded_channel_id, "", true, "", {}])
     end
   end
 end
