@@ -20,7 +20,8 @@ require "publishers/excluded_channels"
 # ]
 
 class JsonBuilders::ChannelsJsonBuilderV3
-  VERIFEID = "verified"
+  UNVERIFIED = ""
+  VERIFIED = "verified"
   CONNECTED = "connected"
 
   def initialize
@@ -84,11 +85,11 @@ class JsonBuilders::ChannelsJsonBuilderV3
     connection = verified_channel.publisher&.uphold_connection
 
     if connection&.is_member && address.present?
-      VERIFEID
+      VERIFIED
     elsif connection&.uphold_verified?
       CONNECTED
     else
-      ""
+      UNVERIFIED
     end
   end
 
@@ -108,7 +109,7 @@ class JsonBuilders::ChannelsJsonBuilderV3
     @excluded_channel_ids.each do |excluded_channel_id|
       next if @excluded_verified_channel_ids.include?(excluded_channel_id)
 
-      @channels.push([excluded_channel_id, "", true, "", {}])
+      @channels.push([excluded_channel_id, UNVERIFIED, true, "", {}])
     end
   end
 end
