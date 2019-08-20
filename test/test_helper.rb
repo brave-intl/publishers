@@ -6,17 +6,11 @@ require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "webpacker"
 require "selenium/webdriver"
-require "minitest/rails/capybara"
 require "webmock/minitest"
 require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
 
-
-# https://github.com/rails/rails/issues/31324
-if ActionPack::VERSION::STRING >= "5.2.0"
-  Minitest::Rails::TestUnit = Rails::TestUnit
-end
 
 Webpacker.compile
 

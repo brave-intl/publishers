@@ -23,7 +23,7 @@ gem "api-pagination"
 gem "attr_encrypted", "~> 3.1.0"
 
 # Integration with Matomo Piwik
-gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
+gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/yachtcaptain23/piwik-ruby-api.git", branch: "feature/rails_6_support"
 
 # Use AWS gem for s3 uploads
 gem 'aws-sdk-s3', require: false
@@ -37,7 +37,7 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.6.1"
+gem "devise", "~> 4.7.0"
 gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
@@ -45,7 +45,7 @@ gem "dnsruby", "~> 1.60.0", require: false
 gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
-gem "faraday", "~> 0.9.2", require: false
+gem "faraday", "~> 0.15.4"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
@@ -85,16 +85,16 @@ gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git'
 gem "omniauth-github"
 
 # Model record auditing
-gem "paper_trail", "~> 10.1.0"
+gem "paper_trail", "~> 10.3.1"
 
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
 
 # Easy CSS-sthled emails
-gem "premailer-rails", "~> 1.9.4", require: false
+gem "premailer-rails", "~> 1.10.3", require: false
 
 # Implementation of PublicSuffix
-gem 'public_suffix', '~> 3.0.2'
+gem 'public_suffix', '~> 3.1.1'
 
 # Puma as app server
 gem "puma", "~> 4.0.1"
@@ -102,9 +102,9 @@ gem "puma", "~> 4.0.1"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 5.2.3"
+gem 'railties', "~> 6.0.0"
 
-gem "rails", "~> 5.2.3"
+gem "rails", "~> 6.0.0"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -201,8 +201,9 @@ group :development, :test do
   gem "brakeman"
   # Vulnerabilities
   gem "bundler-audit", require: false
+  gem 'capybara'
+  gem 'minitest'
   gem "mocha"
-  gem 'minitest-rails-capybara', '~> 3.0.1'
   gem "capybara-selenium"
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test
