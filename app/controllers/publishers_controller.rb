@@ -211,7 +211,7 @@ class PublishersController < ApplicationController
 
     @migration_present = Sidekiq::Queue.new("low").any? { |job| job.args.first.dig("job_class").eql? "MigrateUpholdAccessParametersJob" }
 
-    if uphold_connection.uphold_access_parameters.present?
+    if uphold_connection.uphold_details.present?
       @possible_currencies = uphold_connection.uphold_details&.currencies
 
       # every request to the homepage let's sync from uphold
