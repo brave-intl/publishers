@@ -1,6 +1,6 @@
 doctype html
 html
-  head data-piwik-host=Rails.application.secrets[:piwik_host]
+  head data-piwik-host=piwik_domain
     title= t "shared.app_title"
     = csrf_meta_tags
     = stylesheet_link_tag('application', media: 'all')
