@@ -74,12 +74,12 @@ class BaseApiClient < BaseService
     @connection ||= begin
       require "faraday"
       Faraday.new(url: api_base_uri) do |faraday|
-        faraday.adapter Faraday.default_adapter
         faraday.proxy(proxy_url) if proxy_url.present?
         # Log level info: Brief summaries
         # Log level debug: Detailed bodies and headers
         faraday.response(:logger, Rails.logger, bodies: true, headers: true)
         faraday.use(Faraday::Response::RaiseError)
+        faraday.adapter Faraday.default_adapter
       end
     end
   end

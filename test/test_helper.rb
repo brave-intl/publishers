@@ -6,17 +6,13 @@ require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "webpacker"
 require "selenium/webdriver"
-require "minitest/rails/capybara"
 require "webmock/minitest"
 require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
-
-
-# https://github.com/rails/rails/issues/31324
-if ActionPack::VERSION::STRING >= "5.2.0"
-  Minitest::Rails::TestUnit = Rails::TestUnit
-end
+require 'capybara/rails'
+require 'capybara/minitest'
+require 'minitest/rails'
 
 Webpacker.compile
 
@@ -47,12 +43,6 @@ end
 
 Capybara.default_driver = "chrome"
 
-class Capybara::Rails::TestCase
-  def setup
-    Capybara.current_driver = "chrome"
-  end
-end
-
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
   config.hook_into :webmock
@@ -82,13 +72,14 @@ module Capybara
   module Rails
     class TestCase < ::ActiveSupport::TestCase
       self.use_transactional_tests = false
-
-      setup do
-        DatabaseCleaner.start
-      end
+      # Make the Capybara DSL available in all integration tests
+      include Capybara::DSL
+      # Make `assert_*` methods behave like Minitest assertions
+      include Capybara::Minitest::Assertions
 
       teardown do
-        DatabaseCleaner.clean
+        Capybara.reset_sessions!
+        Capybara.use_default_driver
       end
 
       def js_logs
@@ -108,6 +99,7 @@ end
 
 module ActionDispatch
   class IntegrationTest
+
     self.use_transactional_tests = true
 
     setup do
@@ -144,5 +136,15 @@ Publishers::Application.load_tasks
 # One time test suite setup.
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean_with(:truncation)
+
+class Minitest::Spec
+  before :each do
+    DatabaseCleaner.start
+  end
+
+  after :each do
+    DatabaseCleaner.clean
+  end
+end
 
 require 'mocha/minitest'

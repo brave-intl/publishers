@@ -6,11 +6,7 @@ class YoutubeChannelGetterTest < ActiveJob::TestCase
     token = 'token123'
     channel_data = { 'id' => 'yt123' }
 
-    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                       'Authorization' => "Bearer #{token}",
-                       'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
+    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
 
     assert_equal channel_data, YoutubeChannelGetter.new(token: token).perform
   end
@@ -18,11 +14,7 @@ class YoutubeChannelGetterTest < ActiveJob::TestCase
   test "returns nil when channels are requested for a YouTube user has no channels" do
     token = 'token123'
 
-    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                     'Authorization' => "Bearer #{token}",
-                     'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 200, body: {}.to_json, headers: {})
+    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: {}.to_json, headers: {})
 
     assert_nil YoutubeChannelGetter.new(token: token).perform
   end
@@ -32,11 +24,7 @@ class YoutubeChannelGetterTest < ActiveJob::TestCase
     channel_id = 'yt123'
     channel_data = { 'id' => channel_id }
 
-    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                     'Authorization' => "Bearer #{token}",
-                     'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
+    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
 
     assert_equal channel_data, YoutubeChannelGetter.new(token: token, channel_id: channel_id).perform
   end
@@ -46,11 +34,7 @@ class YoutubeChannelGetterTest < ActiveJob::TestCase
     channel_id = 'yt123'
     channel_data = { 'id' => channel_id }
 
-    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                     'Authorization' => "Bearer #{token}",
-                     'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 403, headers: {})
+    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").to_return(status: 403, headers: {})
 
     assert_raises(YoutubeChannelGetter::ChannelForbiddenError) do
       YoutubeChannelGetter.new(token: token, channel_id: channel_id).perform
@@ -62,11 +46,7 @@ class YoutubeChannelGetterTest < ActiveJob::TestCase
     channel_id = 'yt123'
     channel_data = { 'id' => channel_id }
 
-    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                     'Authorization' => "Bearer #{token}",
-                     'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 404, headers: {})
+    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").to_return(status: 404, headers: {})
 
     assert_raises(YoutubeChannelGetter::ChannelNotFoundError) do
       YoutubeChannelGetter.new(token: token, channel_id: channel_id).perform
@@ -78,11 +58,7 @@ class YoutubeChannelGetterTest < ActiveJob::TestCase
     channel_id = 'yt123'
     channel_data = { 'id' => channel_id }
 
-    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                     'Authorization' => "Bearer #{token}",
-                     'User-Agent'=>'Faraday v0.9.2'}).
-      to_return(status: 400, headers: {})
+    stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet").to_return(status: 400, headers: {})
 
     assert_raises(YoutubeChannelGetter::ChannelBadRequestError) do
       YoutubeChannelGetter.new(token: token, channel_id: channel_id).perform

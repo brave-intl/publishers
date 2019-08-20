@@ -2,6 +2,7 @@ require "test_helper"
 
 class SiteChannelVerificationTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
 
   before(:example) do
     @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
