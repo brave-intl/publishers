@@ -72,6 +72,12 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       statistical_totals[k][:total] = statistical_totals[k].sum { |k, v| v }
     end
 
-    Rails.cache.write(TOTALS_CACHE_KEY, statistical_totals.to_json)
+    loop do
+      result = Rails.cache.write(TOTALS_CACHE_KEY, statistical_totals.to_json)
+      break if result || retry_count > MAX_RETRY
+
+      retry_count += 1
+      Rails.logger.info("CacheBrowserChannelsJsonJob V3 could not write to totals: #{result}. Retrying: #{retry_count}/#{MAX_RETRY}")
+    end
   end
 end
