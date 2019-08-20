@@ -390,9 +390,10 @@ The easiest possible way to add a new channel is to find the Omniauth gem for th
 2. Run bundle install
 3. Run `rails generate property INTEGRATION_channel_details` (Note: replace `INTEGRATION` with the name of the integration, e.g. github, soundcloud, vimeo, etc)
 4. Run `rails db:migrate`
-5. Add a new controller method in `app/controllers/publishers/omniauth_callbacks_controller.rb` similar to `register_github_channel` or `register_reddit_channel`
-6. Add the link and icon to `/app/views/application/_choose_channel_type.html.slim`
-7. Add translations in [en.yml](https://github.com/brave-intl/publishers/blob/staging/config/locales/en.yml) for `helpers.publisher.channel_type` and `helpers.publisher.channel_name`
+5. Register a new route in [config/initializers/devise.rb](https://github.com/brave-intl/publishers/blob/2019_05_29/config/initializers/devise.rb#L243)
+6. Add a new controller method in `app/controllers/publishers/omniauth_callbacks_controller.rb` similar to `register_github_channel` or `register_reddit_channel`
+7. Add the link and icon to `/app/views/application/_choose_channel_type.html.slim`
+8. Add translations in [en.yml](https://github.com/brave-intl/publishers/blob/staging/config/locales/en.yml) for `helpers.publisher.channel_type` and `helpers.publisher.channel_name`
 
    ```yaml
    channel_type:
@@ -405,7 +406,7 @@ The easiest possible way to add a new channel is to find the Omniauth gem for th
       <INTEGRATION>: <INTEGRATION> Name
    ```
 
-8. Add assets for the new integration. Both a [32x32 png](https://github.com/brave-intl/publishers/tree/staging/app/assets/images/publishers-home) and a [SVG of the logo](https://github.com/brave-intl/publishers/tree/staging/app/assets/images/choose-channel).
+9. Add assets for the new integration. Both a [32x32 png](https://github.com/brave-intl/publishers/tree/staging/app/assets/images/publishers-home) and a [SVG of the logo](https://github.com/brave-intl/publishers/tree/staging/app/assets/images/choose-channel).
 
 ### Run Tests
 
