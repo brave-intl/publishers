@@ -78,7 +78,7 @@ module Publishers
 
       redirect_to(home_publishers_path)
     rescue UpholdError, Faraday::Error => e
-      Rail.logger.info("Uphold Error: #{e.message}")
+      Rails.logger.info("Uphold Error: #{e.message}")
       redirect_to(home_publishers_path, alert: t(".uphold_error", message: e.message))
     end
 
@@ -97,15 +97,15 @@ module Publishers
 
     def validate_uphold!(connection)
       # Ensure the uphold_state_token has been set. If not send back to try again
-      raise UpholdError.new(t('.missing_state')) if connection&.uphold_state_token.blank? && !connection.uphold_verified?
+      raise UpholdError.new, t('.missing_state') if connection&.uphold_state_token.blank? && !connection.uphold_verified?
 
       # Alert for any errors from Uphold
-      raise UpholdError.new(params[:error]) if params[:error].present?
+      raise UpholdError.new, params[:error] if params[:error].present?
     end
 
     def validate_state!(connection)
       state_token = params[:state]
-      raise UpholdError.new(t('.state_mismatch')) if connection.uphold_state_token != state_token
+      raise UpholdError.new, t('.state_mismatch') if connection.uphold_state_token != state_token
     end
   end
 end
