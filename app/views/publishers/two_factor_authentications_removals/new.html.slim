@@ -1,0 +1,18 @@
+
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+
+      h4.single-panel--headline= t("publishers.two_factor_authentication_removal.heading")
+
+      p= t("publishers.two_factor_authentication_removal.leadin")
+
+      == t("publishers.two_factor_authentication_removal.note")
+      .my-3.text-left
+        == t("publishers.two_factor_authentication_removal.removals")
+
+
+      = submit_tag t("publishers.two_factor_authentication_removal.request_2fa_removal"), class: "btn btn-block btn-primary"
+
+

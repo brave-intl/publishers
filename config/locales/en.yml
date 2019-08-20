@@ -36,6 +36,7 @@ en:
     continue: Continue
     dashboard: Dashboard
     referrals: Referrals
+    payments: Payments
     download: Download
     existing_account: Already have an account?
     error: Oh no! Something went wrong, please contact support.
@@ -664,7 +665,14 @@ en:
     two_factor_authentication_removal:
       heading: Having trouble with 2-factor authentication?
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
-      note: Please note, for your security, we require a 2 week waiting period for the 2-factor authentication removal to complete. Additionally, once it is completed you will need to reverify your channels and uphold wallet.
+      note: Please note, for your security, we require a <strong>2 week waiting period</strong> for the 2-factor authentication removal to complete
+      removals: >
+        <ul>
+          <li>The account channels will need to be re-verified.</li>
+          <li>The account wallet will need to be re-verified.</li>
+          <li>There will be a 30-day waiting period on payments.</li>
+        </ul>
+
       reminder_body_html: >
         This is a friendly reminder that the requested changes to your security settings are in progress. In %{remainder}, 2-factor authentication will be removed from your account. Please note, once your 2-factor authentication is removed:
         <ul>

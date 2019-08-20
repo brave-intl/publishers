@@ -63,7 +63,7 @@
         = render "totp"
     .single-panel--footer
       span = t(".lost_account.lost_2fa")
-      span = link_to(" " + t(".lost_account.lost_2fa_link"), two_factor_authentication_removal_publishers_path)
+      span.ml-1 = link_to(t(".lost_account.lost_2fa_link"), new_two_factor_authentications_removal_path)
       br
       br
       p = t(".lost_account.lost_2fa_note_html")
