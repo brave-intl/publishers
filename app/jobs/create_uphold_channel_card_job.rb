@@ -35,7 +35,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
 
     # If a user transfers their channel then we should try not to create duplicate uphold cards
     cards = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)
-    card_id = cards.detect { |c| c.label.eql?(card_label) }.id
+    card_id = cards.detect { |c| c.label.eql?(card_label) }&.id
 
     if card_id.blank?
       # If the card doesn't exist so we should create it
