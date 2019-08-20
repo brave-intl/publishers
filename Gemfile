@@ -42,8 +42,6 @@ gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
-gem "email_validator", "~> 1.6"
-
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
 
