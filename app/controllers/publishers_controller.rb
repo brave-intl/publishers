@@ -294,7 +294,7 @@ class PublishersController < ApplicationController
         # Register the new email address with sendgrid, and clear the publisher interests on the old member
         update_sendgrid(publisher: publisher, prior_email: prior_email)
 
-        flash[:alert] = t(".email_confirmed", email: publisher.email)
+        flash[:notice] = t(".email_confirmed", email: publisher.email)
       end
 
       if two_factor_enabled?(publisher)
