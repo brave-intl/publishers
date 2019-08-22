@@ -24,7 +24,7 @@ class PublisherWalletGetter < BaseApiClient
     rescue Faraday::ResourceNotFound
       wallet_info = {}
     end
-
+    
     if publisher.channels.verified.present?
       accounts = PublisherBalanceGetter.new(publisher: publisher).perform
       return if accounts == :unavailable

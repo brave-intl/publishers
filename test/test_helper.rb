@@ -10,7 +10,9 @@ require "webmock/minitest"
 require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
-
+require 'capybara/rails'
+require 'capybara/minitest'
+require 'minitest/rails'
 
 Webpacker.compile
 
@@ -40,12 +42,6 @@ Capybara.register_driver "chrome" do |app|
 end
 
 Capybara.default_driver = "chrome"
-
-class Capybara::Rails::TestCase
-  def setup
-    Capybara.current_driver = "chrome"
-  end
-end
 
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
@@ -102,6 +98,11 @@ end
 
 module ActionDispatch
   class IntegrationTest
+    # Make the Capybara DSL available in all integration tests
+    include Capybara::DSL
+    # Make `assert_*` methods behave like Minitest assertions
+    include Capybara::Minitest::Assertions
+
     self.use_transactional_tests = true
 
     setup do
@@ -110,6 +111,8 @@ module ActionDispatch
 
     teardown do
       WebMock.allow_net_connect!
+      Capybara.reset_sessions!
+      Capybara.use_default_driver
     end
 
     def visit_authentication_url(publisher)

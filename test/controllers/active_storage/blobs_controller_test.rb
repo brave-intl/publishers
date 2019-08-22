@@ -2,7 +2,7 @@ require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
 
-class Admin::BlobsControllerTest < ActionDispatch::IntegrationTest
+class ActiveStorage::BlobsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   let(:file) { fixture_file_upload(Rails.root.join('test','fixtures', '1x1.png')) }

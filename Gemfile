@@ -49,9 +49,6 @@ gem "faraday", "~> 0.15.4"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
-# For building complex JSON objects
-gem 'jbuilder', '~> 2.7.0'
-
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 

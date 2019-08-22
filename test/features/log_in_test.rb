@@ -3,6 +3,10 @@ require "test_helper"
 class LogInTest < Capybara::Rails::TestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
+  # Make the Capybara DSL available in all integration tests
+  include Capybara::DSL
+  # Make `assert_*` methods behave like Minitest assertions
+  include Capybara::Minitest::Assertions
 
   def canned_u2f_response(registration)
     return ActiveSupport::JSON.encode({
