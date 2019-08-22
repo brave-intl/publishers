@@ -12,7 +12,7 @@ namespace :database_updates do
       connection.publisher.channels.each do |channel|
         CreateUpholdChannelCardJob.perform_later(uphold_connection_id: connection.id, channel_id: channel.id)
       end
-      puts "Changed for connection_id: connection.id"
+      puts "Changed for connection_id: #{connection.id}"
     end
     puts 'Done!'
   end
