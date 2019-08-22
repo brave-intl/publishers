@@ -203,6 +203,7 @@ group :development, :test do
   gem "bundler-audit", require: false
   gem 'capybara'
   gem 'minitest'
+  gem 'minitest-rails'
   gem "mocha"
   gem "capybara-selenium"
   gem "chromedriver-helper"
