@@ -77,7 +77,9 @@ class Channel < ApplicationRecord
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
-  after_save :create_channel_card, :notify_slack, if: -> { :saved_change_to_verified? && verified? }
+  after_save :notify_slack, if: -> { :saved_change_to_verified? && verified? }
+
+  after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
 
