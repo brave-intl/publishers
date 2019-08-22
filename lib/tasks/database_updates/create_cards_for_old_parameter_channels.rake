@@ -1,7 +1,7 @@
 namespace :database_updates do
   task :create_cards_for_old_parameter_channels, [:start_id] => :environment do |t, args|
     p args[:start_id]
-    completed_kyc = UpholdConnection.where(is_member: true).where("id > ?", args[:start_id]).order(id: :asc)
+    completed_kyc = UpholdConnection.where(is_member: true).where.not(encrypted_uphold_access_parameters: nil).where("id > ?", args[:start_id]).order(id: :asc)
 
     puts "Queueing up create cards for #{completed_kyc.size} users"
     completed_kyc.each do |connection|
