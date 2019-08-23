@@ -1,8 +1,19 @@
 module Publishers
   class StatementsController < ApplicationController
+    before_action :authenticate_publisher!
+
     def index
-      statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
+      @uphold_connection = current_publisher.uphold_connection
+
+      statement_contents = []
       @statement_has_content = statement_contents.length > 0
+
+      respond_to do |format|
+        format.html {}
+        format.json {
+          render json: Views::User::Statements.new(current_publisher)
+        }
+      end
     end
 
     def statement

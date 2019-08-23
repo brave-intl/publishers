@@ -71,6 +71,7 @@ module Publishers
 
       # Ensure the uphold_state_token has been set. If not send back to try again
       if @publisher.uphold_connection&.uphold_state_token.blank?
+        Rails.logger.debug("Uphold error: state token is blank. Rendering error")
         redirect_to(home_publishers_path, alert: t(".uphold_error"))
         return
       end
@@ -78,6 +79,7 @@ module Publishers
       # Catch uphold errors
       uphold_error = params[:error]
       if uphold_error.present?
+        Rails.logger.debug("Uphold error: #{uphold_error}")
         redirect_to(home_publishers_path, alert: t(".uphold_error"))
         return
       end
@@ -85,6 +87,7 @@ module Publishers
       # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
       state_token = params[:state]
       if @publisher.uphold_connection&.uphold_state_token != state_token
+        Rails.logger.debug("Uphold error: State token doesn't match")
         redirect_to(home_publishers_path, alert: t(".uphold_error"))
         return
       end
@@ -96,7 +99,7 @@ module Publishers
         @publisher.reload
         @publisher.uphold_connection.reload
       rescue Faraday::Error
-        Rails.logger.error("Unable to exchange Uphold access token with uphold")
+        Rails.logger.error("Uphold error: Unable to exchange Uphold access token with uphold")
         redirect_to(home_publishers_path, alert: t(".uphold_error"))
         return
       end

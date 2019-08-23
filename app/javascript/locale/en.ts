@@ -138,6 +138,32 @@ export default {
     totalReferralCodes: "Total Referral Codes"
   },
   sendDonation: "Send my donation",
+  statements: {
+    overview: {
+      amountDeposited: "Amount Deposited",
+      brand: "Brave Creators",
+      confirmedEarning: "Confirmed Earning (BAT)",
+      depositAccount: "Deposit Account",
+      depositDate: "Deposit Date",
+      description: "Statements contain the details of deposit history.",
+      details: {
+        amount: "Amount",
+        description: "Description",
+        title: "Details",
+        total: "Total Deposited",
+        type: "Type"
+      },
+      download: "Download",
+      earningPeriod: "Earning Period",
+      noStatements: "There aren't any statements yet.",
+      paymentDate: "Payment Date",
+      statement: "Statement",
+      title: "Statements",
+      totalDeposited: "Total Deposited",
+      totalEarned: "Total Earned",
+      view: "View"
+    }
+  },
   thirtyDay: "30-Day Use",
   tokens: "tokens",
   totalNumber: "Total Number of Codes",

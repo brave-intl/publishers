@@ -56,7 +56,11 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def scope
-    JSON.parse(uphold_access_parameters).try(:[], 'scope') || []
+    @scope ||= JSON.parse(uphold_access_parameters).try(:[], 'scope') || []
+  end
+
+  def can_read_transactions?
+    scope.include?('transactions:read')
   end
 
   def receive_uphold_code(code)
@@ -123,10 +127,6 @@ class UpholdConnection < ActiveRecord::Base
     else
       UpholdAccountState::UNCONNECTED
     end
-  end
-
-  def uphold_processing?
-    uphold_access_parameters.present? || uphold_code.present?
   end
 
   def can_create_uphold_cards?

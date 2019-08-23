@@ -450,6 +450,12 @@ en:
         period: Period
         download: Download
         statement_file_name: BravePaymentsStatement
+        missing_scope: "It looks like we're unable to read transactions from your Uphold account. This affects the ability to generate statements for direct contributions. "
+        reauthorize: Click here to re-authorize with Uphold.
+        contribution_settlement:  Total Contributions
+        referral_settlement:  Referral Promo Earnings
+        fees: Processing Fee
+        account: Publisher Account
     cases:
       shared:
         description: |
@@ -722,8 +728,9 @@ en:
       skip: Skip for now
       preview: Preview Banner
       customize: Customize
-    create:
-      uphold_error: There was a problem connecting with Uphold. Please try again.
+    uphold:
+      create:
+        uphold_error: There was a problem connecting with Uphold. Please try again.
   promo:
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
     activate:
