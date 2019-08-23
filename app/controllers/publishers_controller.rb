@@ -211,7 +211,7 @@ class PublishersController < ApplicationController
 
     @migration_present = Sidekiq::Queue.new("low").any? { |job| job.args.first.dig("job_class").eql? "MigrateUpholdAccessParametersJob" }
 
-    if uphold_connection.uphold_access_parameters.present?
+    if uphold_connection.uphold_details.present?
       @possible_currencies = uphold_connection.uphold_details&.currencies
 
       # every request to the homepage let's sync from uphold
@@ -275,7 +275,7 @@ class PublishersController < ApplicationController
         # Register the new email address with sendgrid, and clear the publisher interests on the old member
         update_sendgrid(publisher: publisher, prior_email: prior_email)
 
-        flash[:alert] = t(".email_confirmed", email: publisher.email)
+        flash[:notice] = t(".email_confirmed", email: publisher.email)
       end
 
       if two_factor_enabled?(publisher)
