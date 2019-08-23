@@ -25,7 +25,6 @@ export const Amount = styled.h1`
 
 export const Details = styled.div`
   margin-top: 4.5rem;
-  margin-bottom: 1rem;
   color: #4b4c5c;
   font-family: "Poppins", sans-serif;
 `;

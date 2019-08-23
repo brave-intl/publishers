@@ -8,10 +8,11 @@ module Publishers
       statement_contents = []
       @statement_has_content = statement_contents.length > 0
 
+      # render json: Views::User::Statements.new(current_publisher)
       respond_to do |format|
         format.html {}
         format.json {
-          render json: Views::User::Statements.new(current_publisher)
+          render json: Views::User::Statements.new(publisher_id)
         }
       end
     end
@@ -28,6 +29,12 @@ module Publishers
         statement_string = render_to_string :layout => "statement"
         send_data statement_string, filename: statement_file_name, type: "application/html"
       end
+    end
+
+
+    def publisher_id
+      return params[:id] if current_publisher.admin?
+      current_publisher.id
     end
   end
 end

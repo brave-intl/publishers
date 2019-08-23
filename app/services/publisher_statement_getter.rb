@@ -1,53 +1,53 @@
 class PublisherStatementGetter < BaseApiClient
   attr_reader :publisher
-  attr_reader :statement_period
 
-  def initialize(publisher:, statement_period:)
+  class Statement
+    include ActiveModel::Model
+    attr_accessor :channel, :created_at, :description, :transaction_type, :amount, :settlement_currency, :settlement_amount, :settlement_destination_type, :settlement_destination
+  end
+
+  def initialize(publisher:)
     @publisher = publisher
-    @statement_period = statement_period
   end
 
   def perform
     transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
     transactions = replace_account_identifiers_with_titles(transactions)
-    transactions = filter_transactions_by_period(transactions, @statement_period)
     transactions
   end
 
   private
 
-  def filter_transactions_by_period(transactions, period)
-    case period
-      when "all"
-        transactions
-      when "this_month"
-        cutoff = Date.today.beginning_of_month
-        transactions.select { |transaction|
-          transaction["created_at"].to_date.at_beginning_of_month == cutoff
-        }
-      when "last_month"
-        cutoff = (Date.today - 1.month).at_beginning_of_month
-        transactions.select { |transaction|
-          transaction["created_at"].to_date.at_beginning_of_month == cutoff
-        }
-      else
-        transactions
-    end
-  end
-
   def replace_account_identifiers_with_titles(transactions)
-    transactions.map { |transaction|
+    channels = {}
+
+    transactions.map do |transaction|
       account_identifier = transaction["channel"]
       if account_identifier.starts_with?(Publisher::OWNER_PREFIX)
-        transaction["channel"] = "All"
+        transaction["channel"] = I18n.t("publishers.statements.index.account")
       elsif account_identifier.blank?
         transaction["channel"] = "Manual"
       else
-        channel = Channel.find_by_channel_identifier(account_identifier)
+        channel ||= channels[account_identifier]
+        if channel.blank?
+          channels[account_identifier] = Channel.find_by_channel_identifier(account_identifier)
+          channel = channels[account_identifier]
+        end
         transaction["channel"] = channel&.publication_title || account_identifier
       end
-      transaction
-    }
+
+      Statement.new(
+        channel: transaction["channel"],
+        description: transaction["description"],
+        transaction_type: transaction["transaction_type"],
+        amount: transaction["amount"]&.to_d,
+        settlement_currency: transaction["settlement_currency"],
+        settlement_amount: transaction["settlement_amount"]&.to_d,
+        settlement_destination_type: transaction["settlement_destination_type"],
+        settlement_destination: transaction["settlement_destination"],
+        created_at: transaction["created_at"].to_date
+      )
+    end
   end
 
   def api_base_uri

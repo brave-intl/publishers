@@ -5,11 +5,6 @@ module Views
 
       attr_accessor :channel, :created_at, :description, :transaction_type, :amount, :settlement_currency,
         :settlement_amount, :settlement_destination_type, :settlement_destination, :transactions
-
-      # def as_json(*)
-      #   {
-      #   }
-      # end
     end
   end
 end

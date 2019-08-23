@@ -52,7 +52,7 @@ export default class StatementDetails extends React.Component<
               <div>{locale.statements.overview.amountDeposited}</div>
               <div>
                 <Amount>
-                  {this.props.statement.deposited}{" "}
+                  {parseFloat(this.props.statement.deposited).toFixed(2)}{" "}
                   <small>{this.props.statement.currency}</small>
                 </Amount>
               </div>
@@ -79,7 +79,7 @@ export default class StatementDetails extends React.Component<
           </div>
         </div>
 
-        <div className="mb-3">
+        <div className="">
           <h5 className="px-5 mb-3">
             {locale.statements.overview.totalEarned}
             <span className="text-muted ml-2 font-weight-light">
@@ -97,7 +97,10 @@ export default class StatementDetails extends React.Component<
 
 const StatementChannel = props => (
   <div
-    style={{ background: props.index % 2 === 0 ? "#F3F3F6" : "" }}
+    style={{
+      background: props.index % 2 === 0 ? "#F3F3F6" : "",
+      borderRadius: "6px"
+    }}
     className="px-5 py-4"
   >
     <div className="d-flex justify-content-between">

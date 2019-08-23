@@ -28,7 +28,7 @@ export interface IStatementOverview {
   isOpen: boolean;
 }
 
-export default class Payments extends React.Component<any, IStatementsState> {
+export default class Statements extends React.Component<any, IStatementsState> {
   public readonly state: IStatementsState = {
     isLoading: true,
     statements: undefined
