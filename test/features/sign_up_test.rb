@@ -3,6 +3,7 @@ require "test_helper"
 class SignUpTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
+  include Rails.application.routes.url_helpers
 
   test "can navigate to sign up from landing page" do
     visit root_path

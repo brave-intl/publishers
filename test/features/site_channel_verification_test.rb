@@ -3,10 +3,6 @@ require "test_helper"
 class SiteChannelVerificationTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include Rails.application.routes.url_helpers
-  # Make the Capybara DSL available in all integration tests
-  include Capybara::DSL
-  # Make `assert_*` methods behave like Minitest assertions
-  include Capybara::Minitest::Assertions
 
   before(:example) do
     @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]

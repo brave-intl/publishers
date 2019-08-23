@@ -88,13 +88,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
-        with(headers: {
-          'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization' => "Bearer #{token}",
-          'User-Agent' => 'Faraday v0.9.2',
-        }).
-        to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data] }.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -120,13 +114,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
-        with(headers: {
-          'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization' => "Bearer #{token}",
-          'User-Agent' => 'Faraday v0.9.2',
-        }).
-        to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -149,13 +137,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
-        with(headers: {
-          'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization' => "Bearer #{token}",
-          'User-Agent' => 'Faraday v0.9.2',
-        }).
-        to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data("id" => "323541525412313421")] }.to_json, headers: {})
 
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -209,13 +191,7 @@ module Publishers
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = auth_hash
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
-        with(headers: {
-          'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization' => "Bearer #{token}",
-          'User-Agent' => 'Faraday v0.9.2',
-        }).
-        to_return(status: 200, body: { items: [channel_data("id" => "78032")] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [channel_data("id" => "78032")] }.to_json, headers: {})
 
       assert_difference("Channel.count", 0) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
@@ -319,13 +295,7 @@ module Publishers
         },
       }
 
-      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").
-        with(headers: {
-          'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization' => "Bearer #{token}",
-          'User-Agent' => 'Faraday v0.9.2',
-        }).
-        to_return(status: 200, body: { items: [register_youtube_channel_data] }.to_json, headers: {})
+      stub_request(:get, "https://www.googleapis.com/youtube/v3/channels?mine=true&part=statistics,snippet").to_return(status: 200, body: { items: [register_youtube_channel_data] }.to_json, headers: {})
 
       assert_difference("Channel.count", 0) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)

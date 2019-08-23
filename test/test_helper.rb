@@ -72,6 +72,10 @@ module Capybara
   module Rails
     class TestCase < ::ActiveSupport::TestCase
       self.use_transactional_tests = false
+      # Make the Capybara DSL available in all integration tests
+      include Capybara::DSL
+      # Make `assert_*` methods behave like Minitest assertions
+      include Capybara::Minitest::Assertions
 
       setup do
         DatabaseCleaner.start
@@ -79,6 +83,8 @@ module Capybara
 
       teardown do
         DatabaseCleaner.clean
+        Capybara.reset_sessions!
+        Capybara.use_default_driver
       end
 
       def js_logs
@@ -98,10 +104,6 @@ end
 
 module ActionDispatch
   class IntegrationTest
-    # Make the Capybara DSL available in all integration tests
-    include Capybara::DSL
-    # Make `assert_*` methods behave like Minitest assertions
-    include Capybara::Minitest::Assertions
 
     self.use_transactional_tests = true
 
@@ -111,8 +113,6 @@ module ActionDispatch
 
     teardown do
       WebMock.allow_net_connect!
-      Capybara.reset_sessions!
-      Capybara.use_default_driver
     end
 
     def visit_authentication_url(publisher)
