@@ -8,6 +8,9 @@ module Publishers
       statement_contents = []
       @statement_has_content = statement_contents.length > 0
 
+      puts '🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑'
+      puts params
+      puts '🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑🥑'
       # render json: Views::User::Statements.new(current_publisher)
       respond_to do |format|
         format.html {}

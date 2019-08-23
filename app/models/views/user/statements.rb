@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Views
   module User
     class Statements
@@ -14,7 +16,7 @@ module Views
 
       def as_json(*)
         {
-          overviews: overviews
+          overviews: overviews,
         }
       end
 
@@ -47,13 +49,12 @@ module Views
             currency: payout_entry.settlement_currency,
             amount: total_amount,
             deposited: settlement_amount,
-            transactions: entries
+            transactions: entries,
           )
         end
 
         @overviews
       end
-
     end
   end
 end

@@ -23,10 +23,9 @@ module Views
           details: details,
           name: name,
           email: email,
-          isOpen: false
+          isOpen: false,
         }
       end
-
 
       def build_details
         details = []

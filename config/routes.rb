@@ -212,6 +212,7 @@ Rails.application.routes.draw do
         get :cancel_two_factor_authentication_removal
       end
 
+      resources :payments
       patch :refresh_uphold
 
       resources :publisher_notes
@@ -220,7 +221,6 @@ Rails.application.routes.draw do
       resources :reports
     end
     resources :channel_transfers
-    resources :payments
     resources :channel_approvals
     resources :security
 

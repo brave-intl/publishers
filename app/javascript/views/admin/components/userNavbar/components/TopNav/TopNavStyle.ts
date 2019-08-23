@@ -62,7 +62,6 @@ export const Nav = styled.div`
   color: #222326;
   margin-right: 40px;
   text-transform: uppercase;
-  user-select: none;
   cursor: pointer;
 
   ${(props: Partial<INavProps>) =>
@@ -78,7 +77,6 @@ export const Name = styled.a`
   align-items: center;
   font-size: 30px;
   color: #222326;
-  user-select: none;
 `;
 
 export const Link = styled.a`

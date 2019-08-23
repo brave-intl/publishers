@@ -46,7 +46,9 @@ export default class Statements extends React.Component<any, IStatementsState> {
 
   public async reloadTable() {
     this.setState({ isLoading: true });
-    const result = await fetch(routes.publishers.statements.index.path, {
+    const id = `?id=${this.props.publisher_id}` || "";
+
+    const result = await fetch(routes.publishers.statements.index.path + id, {
       headers: {
         Accept: "application/json",
         "X-CSRF-Token": document.head

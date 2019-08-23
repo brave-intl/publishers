@@ -1,7 +1,11 @@
 import { LoaderIcon } from "brave-ui/components/icons";
 import styled from "styled-components";
 
-export const Header = styled.h2``;
+export const Header = styled.h2`
+  font-size: 24px;
+  margin-bottom: 0;
+`;
+
 export const TableHeader = styled.td`
   text-transform: uppercase;
   text-align: left;
