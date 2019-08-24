@@ -77,12 +77,7 @@ module Capybara
       # Make `assert_*` methods behave like Minitest assertions
       include Capybara::Minitest::Assertions
 
-      setup do
-        DatabaseCleaner.start
-      end
-
       teardown do
-        DatabaseCleaner.clean
         Capybara.reset_sessions!
         Capybara.use_default_driver
       end
@@ -141,5 +136,15 @@ Publishers::Application.load_tasks
 # One time test suite setup.
 DatabaseCleaner.strategy = :transaction
 DatabaseCleaner.clean_with(:truncation)
+
+class Minitest::Spec
+  before :each do
+    DatabaseCleaner.start
+  end
+
+  after :each do
+    DatabaseCleaner.clean
+  end
+end
 
 require 'mocha/minitest'
