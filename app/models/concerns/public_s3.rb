@@ -47,7 +47,7 @@ module PublicS3
     def self.has_one_public_s3(name, dependent: :purge_later)
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{name}
-          @active_storage_attached_#{name} ||= ActiveStorage::Attached::One.new("#{name}", self, dependent: #{dependent == :purge_later ? ":purge_later" : "false"})
+          @active_storage_attached_#{name} ||= ActiveStorage::Attached::One.new("#{name}", self)
         end
 
         def #{name}=(attachable)
@@ -93,7 +93,7 @@ module PublicS3
             # Supports both DiskService and the PublicS3 Service
             public_s3_service.url(
               #{name}.blob.key,
-              expires_in: public_s3_service.url_expires_in,
+              expires_in: 1.hour,
               filename: filename,
               content_type: #{name}.blob.content_type,
               disposition: #{name}.blob.send(:forcibly_serve_as_binary?) ? :attachment : :inline
