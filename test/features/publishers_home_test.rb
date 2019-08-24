@@ -3,6 +3,7 @@ require "test_helper"
 class PublishersHomeTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
   include EyeshadeHelper
+  include Rails.application.routes.url_helpers
 
   let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
   before do

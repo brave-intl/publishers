@@ -3,6 +3,7 @@ require "test_helper"
 class LogInTest < Capybara::Rails::TestCase
   include ActionMailer::TestHelper
   include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
   # Make the Capybara DSL available in all integration tests
   include Capybara::DSL
   # Make `assert_*` methods behave like Minitest assertions
@@ -33,7 +34,7 @@ class LogInTest < Capybara::Rails::TestCase
 
     click_button('Log In')
 
-    assert_content page, "An email is on its way! We just sent an access link to #{email}"
+    assert_content page, "We just sent an access link to #{email}"
   end
 
   test "after failed login, user can create an account instead" do
