@@ -76,7 +76,7 @@ class JsonBuilders::ChannelsJsonBuilderV3
       identifier,
       status(verified_channel, wallet_address_id),
       in_exclusion_list,
-      wallet_address_id,
+      wallet_address_id || "",
       site_banner_details(verified_channel),
     ])
   end
