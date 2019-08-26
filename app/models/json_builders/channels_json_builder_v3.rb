@@ -86,10 +86,8 @@ class JsonBuilders::ChannelsJsonBuilderV3
 
     if connection&.is_member && address.present?
       VERIFIED
-    elsif connection&.uphold_verified?
-      CONNECTED
     else
-      UNVERIFIED
+      CONNECTED
     end
   end
 
