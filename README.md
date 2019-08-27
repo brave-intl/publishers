@@ -332,18 +332,18 @@ top of the repo. For example you can expose ports on your system for the databas
 `docker-compose.override.yml`:
 
 ```yaml
-version: '2.1'
+version: "2.1"
 
 services:
   mongo:
     ports:
-      - '27017:27017'
+      - "27017:27017"
   redis:
     ports:
-      - '6379:6379'
+      - "6379:6379"
   postgres:
     ports:
-      - '5432:5432'
+      - "5432:5432"
 ```
 
 to start with docker build the app and eyeshade images
@@ -381,6 +381,32 @@ rails "docker:add_referral_balance_to_account[publishers#uuid:967a9919-34f4-4ce6
 ```
 
 The new balance should be reflected on the dashboard.
+
+### Adding a new type of channel
+
+The easiest possible way to add a new channel is to find the Omniauth gem for the specified integration. A few examples include [omniauth-soundcloud](https://github.com/soundcloud/omniauth-soundcloud), [omniauth-github](https://github.com/omniauth/omniauth-github), or [omniauth-facebook](https://github.com/mkdynamic/omniauth-facebook)
+
+1. Add the gem to the [Gemfile](https://github.com/brave-intl/publishers/blob/staging/Gemfile#L73)
+2. Run bundle install
+3. Run `rails generate property INTEGRATION_channel_details` (Note: replace `INTEGRATION` with the name of the integration, e.g. github, soundcloud, vimeo, etc)
+4. Run `rails db:migrate`
+5. Register a new route in [config/initializers/devise.rb](https://github.com/brave-intl/publishers/blob/2019_05_29/config/initializers/devise.rb#L243)
+6. Add a new controller method in `app/controllers/publishers/omniauth_callbacks_controller.rb` similar to `register_github_channel` or `register_reddit_channel`
+7. Add the link and icon to `/app/views/application/_choose_channel_type.html.slim`
+8. Add translations in [en.yml](https://github.com/brave-intl/publishers/blob/staging/config/locales/en.yml) for `helpers.publisher.channel_type` and `helpers.publisher.channel_name`
+
+   ```yaml
+   channel_type:
+     youtube: YouTube channel
+     website: Websiite
+     <INTEGRATION>: Your <INTEGRATION> Name
+    channel_name:
+      youtube: YouTube
+      website: the website
+      <INTEGRATION>: <INTEGRATION> Name
+   ```
+
+9. Add assets for the new integration. Both a [32x32 png](https://github.com/brave-intl/publishers/tree/staging/app/assets/images/publishers-home) and a [SVG of the logo](https://github.com/brave-intl/publishers/tree/staging/app/assets/images/choose-channel).
 
 ### Run Tests
 
