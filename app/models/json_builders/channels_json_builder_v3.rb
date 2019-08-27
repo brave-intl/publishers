@@ -22,7 +22,7 @@ require "publishers/excluded_channels"
 class JsonBuilders::ChannelsJsonBuilderV3
   UPHOLD_CONNECTED = "uphold_connected"
   PUBLISHER_VERIFIED = "publisher_verified"
-  UNVERIFIED = ""
+  NOT_VERIFIED = ""
 
   def initialize
     @excluded_channel_ids = Publishers::ExcludedChannels.brave_publisher_id_list
@@ -89,7 +89,7 @@ class JsonBuilders::ChannelsJsonBuilderV3
     elsif verified_channel.present?
       PUBLISHER_VERIFIED
     else
-      UNVERIFIED
+      NOT_VERIFIED
     end
   end
 
@@ -109,7 +109,7 @@ class JsonBuilders::ChannelsJsonBuilderV3
     @excluded_channel_ids.each do |excluded_channel_id|
       next if @excluded_verified_channel_ids.include?(excluded_channel_id)
 
-      @channels.push([excluded_channel_id, UNVERIFIED, true, "", {}])
+      @channels.push([excluded_channel_id, NOT_VERIFIED, true, "", {}])
     end
   end
 end
