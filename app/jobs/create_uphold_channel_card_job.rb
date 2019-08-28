@@ -58,11 +58,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
   end
 
   def get_address(uphold_connection, card_id)
-    addresses = uphold_connection.uphold_client.address.all(
-      uphold_connection: uphold_connection,
-      id: card_id
-    )
-    address = addresses.detect { |a| a.type == UpholdConnectionForChannel::NETWORK }
+    address = addresses(uphold_connection, card_id).detect { |a| a.type == UpholdConnectionForChannel::NETWORK }
     address = address.formats.first.dig('value') if address.present?
 
     return address if address.present?
@@ -72,5 +68,14 @@ class CreateUpholdChannelCardJob < ApplicationJob
       id: card_id,
       network: UpholdConnectionForChannel::NETWORK
     )
+  end
+
+  def addresses(uphold_connection, card_id)
+    uphold_connection.uphold_client.address.all(
+      uphold_connection: uphold_connection,
+      id: card_id
+    )
+  rescue Faraday::ResourceNotFound
+    []
   end
 end
