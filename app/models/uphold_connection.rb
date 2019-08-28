@@ -96,7 +96,7 @@ class UpholdConnection < ActiveRecord::Base
   # TODO should we actually call uphold_user?
 
   def uphold_client
-    @uphold_client ||= Uphold::Client.new
+    @uphold_client ||= Uphold::Client.new(uphold_connection: self)
   end
 
   def uphold_details

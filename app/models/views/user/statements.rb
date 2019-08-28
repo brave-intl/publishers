@@ -9,9 +9,8 @@ module Views
       MONTH_FORMAT = "%b %Y"
       YEAR_FORMAT = "%b %e, %Y"
 
-      def initialize(publisher_id)
-        publisher = Publisher.find(publisher_id)
-        build_statements(publisher)
+      def initialize(publisher:, details_date: nil)
+        build_statements(publisher, details_date)
       end
 
       def as_json(*)
@@ -20,26 +19,34 @@ module Views
         }
       end
 
-      def build_statements(publisher)
+      def build_statements(publisher, details_date)
         @overviews = []
         statements = PublisherStatementGetter.new(publisher: publisher).perform
 
         # Here's the problem, sometimes users don't get paid out every month.
         # Because of this user's statements must be grouped in such a way where we aggregate all the previous values until the first payment gets found
-        # So here we select all the negative amounts which are when we subtracted from the Eyeshade balance
-        payouts = statements.select { |x| x.amount.negative? }.sort_by { |x| x.created_at }
-        # Then we group by the month
-        grouped = payouts.group_by { |x| x.created_at.at_beginning_of_month }
+        # An easy way to do this is to look at the statements which have a negative amount, signifying that we paid them out and subtracted it from their balance.
+        payouts = statements.select { |x| x.amount.negative? }
 
-        grouped.each do |payment_month, entries|
+        # Then we can group the payouts into monthly periods for the statemen
+        periods = payouts.group_by { |x| x.created_at }
+
+        periods.each do |payment_month, payout_entries|
           # We find the previous month that was paid, or the first statement that was generated
-          period_start = grouped.keys.reverse.detect { |k| k < payment_month } || statements.first.created_at.at_beginning_of_month
+          period_start = periods.keys.reverse.detect { |k| k < payment_month } || statements.first.created_at.at_beginning_of_month
+
+          if details_date.present? && details_date.include?(period_start.strftime(MONTH_FORMAT))
+            entries = statements.select { |x| x.created_at > period_start.at_beginning_of_month && x.created_at <= payout_entries.last.created_at}
+            # Trick for making a deep clone of the object
+            entries = Marshal.load(Marshal.dump(entries))
+          end
 
           # Sum all the BAT amounts
-          total_amount = entries.sum { |x| x.amount.abs }
-          settlement_amount = entries.sum { |x| x.settlement_amount || 0 }
+          total_amount = payout_entries.sum { |x| x.amount.abs }
+          settlement_amount = payout_entries.sum { |x| x.settlement_amount || 0 }
 
-          payout_entry = entries.detect { |x| x.settlement_currency.present? }
+          payout_entry = payout_entries.detect { |x| x.settlement_currency.present? }
+
 
           @overviews << StatementOverview.new(
             name: publisher.name,
@@ -49,12 +56,14 @@ module Views
             currency: payout_entry.settlement_currency,
             amount: total_amount,
             deposited: settlement_amount,
-            transactions: entries,
+            settled_transactions: payout_entries,
+            raw_transactions: entries
           )
         end
 
         @overviews
       end
+
     end
   end
 end

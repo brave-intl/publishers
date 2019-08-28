@@ -13,6 +13,9 @@ class PublisherStatementGetter < BaseApiClient
   def perform
     transactions = PublisherTransactionsGetter.new(publisher: publisher).perform
     transactions = replace_account_identifiers_with_titles(transactions)
+
+    transactions += get_uphold_transactions
+    transactions.sort_by { |x| x.created_at }
     transactions
   end
 
@@ -30,10 +33,10 @@ class PublisherStatementGetter < BaseApiClient
       else
         channel ||= channels[account_identifier]
         if channel.blank?
-          channels[account_identifier] = Channel.find_by_channel_identifier(account_identifier)
-          channel = channels[account_identifier]
+          channels[account_identifier] = Channel.find_by_channel_identifier(account_identifier)&.publication_title
+          channel = channels[account_identifier] || account_identifier
         end
-        transaction["channel"] = channel&.publication_title || account_identifier
+        transaction["channel"] = channel
       end
 
       Statement.new(
@@ -48,6 +51,29 @@ class PublisherStatementGetter < BaseApiClient
         created_at: transaction["created_at"].to_date
       )
     end
+  end
+
+  def get_uphold_transactions
+    uphold = []
+
+    publisher.uphold_connection.uphold_connection_for_channels.each do |card_connection|
+      transactions = card_connection.uphold_connection.uphold_client.transaction.all(id: card_connection.card_id)
+      next if transactions.blank?
+
+      transactions.each do |transaction|
+        puts JSON.pretty_generate(transaction.as_json)
+        uphold << Statement.new(
+          channel: card_connection.channel.details.publication_title,
+          transaction_type: "uphold_contribution",
+          amount: -transaction.origin.dig('amount')&.to_d,
+          settlement_currency: transaction.destination.dig('currency'),
+          settlement_amount: transaction.destination.dig('amount')&.to_d,
+          created_at: transaction.createdAt.to_date,
+        )
+      end
+    end
+
+    uphold
   end
 
   def api_base_uri

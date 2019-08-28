@@ -16,6 +16,7 @@ module Uphold
 
       def initialize(params = {})
         super
+        @uphold_connection = params[:uphold_connection]
       end
 
       # Lists all the addresses a specified card has
@@ -24,17 +25,27 @@ module Uphold
       # @param [string] iid The id of the card you want to find.
       #
       # @return [Uphold::Models::Address[]] an array of th addresses
-      def all(uphold_connection:, id:)
-        Rails.logger.info("Connection #{uphold_connection.id} is missing uphold_access_parameters") and return if uphold_connection.uphold_access_parameters.blank?
+      def all(id:)
+        Rails.logger.info("Connection #{@uphold_connection.id} is missing uphold_access_parameters") and return if @uphold_connection.uphold_access_parameters.blank?
 
-        response = get(PATH.expand(id: id), {}, authorization(uphold_connection))
+        response = get(PATH.expand(id: id), {}, authorization(@uphold_connection))
 
-        JSON.parse(response.body).map { |a| Transaction.new(a) }
+        parse_response(response).map { |a| Transaction.new(a) }
       end
 
       def authorization(uphold_connection)
         token = JSON.parse(uphold_connection.uphold_access_parameters || "{}").try(:[], "access_token")
         "Authorization: Bearer #{token}"
+      end
+
+      def parse_response(response)
+        if response.headers['Content-Encoding'].eql?('gzip')
+          sio = StringIO.new(response.body)
+          gz = Zlib::GzipReader.new(sio)
+          JSON.parse(gz.read)
+        else
+          JSON.parse(response.body)
+        end
       end
     end
   end

@@ -12,8 +12,11 @@ import {
   TableCell
 } from "./StatementDetailsStyle";
 
+import routes from "../../routes";
+
 interface IStatementProps {
   statement: IStatementOverview;
+  showPage?: boolean;
 }
 
 export default class StatementDetails extends React.Component<
@@ -83,13 +86,31 @@ export default class StatementDetails extends React.Component<
           <h5 className="px-5 mb-3">
             {locale.statements.overview.totalEarned}
             <span className="text-muted ml-2 font-weight-light">
-              {locale.statements.overview.details.title}
+              {locale.statements.overview.details.details}
             </span>
           </h5>
           {this.props.statement.details.map((detail, index) => (
             <StatementChannel detail={detail} index={index} />
           ))}
         </div>
+
+        {!this.props.showPage && (
+          <div className="px-5 py-3">
+            <a
+              href={routes.publishers.statements.show.path.replace(
+                "{period}",
+                this.props.statement.earning_period
+              )}
+            >
+              {locale.statements.overview.viewMore}
+            </a>
+          </div>
+        )}
+        {this.props.showPage && (
+          <RawTransactions
+            transactions={this.props.statement.rawTransactions}
+          />
+        )}
       </Details>
     );
   }
@@ -142,5 +163,50 @@ const StatementChannel = props => (
         </tr>
       </tbody>
     </Table>
+  </div>
+);
+
+const RawTransactions = props => (
+  <div
+    style={{
+      borderRadius: "6px"
+    }}
+    className="px-5 py-4"
+  >
+    <h5 className="mb-3">
+      {locale.statements.overview.totalEarned}
+      <span className="text-muted ml-2 font-weight-light">
+        {locale.statements.overview.details.title}
+      </span>
+    </h5>
+    <Table className="table">
+      <thead>
+        <tr>
+          <TableHeader className="text-uppercase font-weight-bold">
+            {locale.statements.overview.details.date}
+          </TableHeader>
+          <TableHeader className="text-uppercase font-weight-bold">
+            {locale.statements.overview.details.description}
+          </TableHeader>
+          <TableHeader className="text-uppercase font-weight-bold">
+            {locale.statements.overview.details.amount}
+          </TableHeader>
+          <TableHeader className="text-uppercase font-weight-bold">
+            {locale.statements.overview.details.type}
+          </TableHeader>
+        </tr>
+      </thead>
+      <tbody>
+        {props.transactions.map((transaction, index) => (
+          <tr key={`${transaction.created_at} ${index}`}>
+            <TableCell>{transaction.created_at}</TableCell>
+            <TableCell>{transaction.channel}</TableCell>
+            <TableCell>{transaction.amount}</TableCell>
+            <TableCell>{transaction.transaction_type}</TableCell>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+    {locale.statements.overview.details.remainingBalance}
   </div>
 );

@@ -148,8 +148,12 @@ export default {
       description: "Statements contain the details of deposit history.",
       details: {
         amount: "Amount",
+        date: "Date",
         description: "Description",
-        title: "Details",
+        details: "Details",
+        remainingBalance:
+          "* Note - these are the transactions which exist during this statement time period. Some transactions may have been on the pervious statement or rolled over to the next statement.",
+        title: "Summary",
         total: "Total Deposited",
         type: "Type"
       },
@@ -161,7 +165,8 @@ export default {
       title: "Statements",
       totalDeposited: "Total Deposited",
       totalEarned: "Total Earned",
-      view: "View"
+      view: "View",
+      viewMore: "View More"
     }
   },
   thirtyDay: "30-Day Use",

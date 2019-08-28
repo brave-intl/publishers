@@ -26,6 +26,7 @@ export interface IStatementOverview {
   currency: string;
   details: any;
   isOpen: boolean;
+  rawTransactions: any;
 }
 
 export default class Statements extends React.Component<any, IStatementsState> {

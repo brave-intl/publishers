@@ -33,6 +33,9 @@ export default {
     statements: {
       index: {
         path: "/publishers/statements"
+      },
+      show: {
+        path: "/publishers/statements/{period}"
       }
     }
   }

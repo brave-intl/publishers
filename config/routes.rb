@@ -25,7 +25,7 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
-        resources :statements
+        resources :statements, only: [:index, :show]
       end
 
       get :log_out

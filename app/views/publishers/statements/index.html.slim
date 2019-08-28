@@ -11,15 +11,6 @@ noscript
 
 / .single-panel--wrapper.single-panel--wrapper--xlarge#statements_panel
 /   = render "panel_flash_messages"
-
-/   - unless @uphold_connection.can_read_transactions?
-/     .single-panel--content.icon-and-text--wrapper class="single-panel--content--warning"
-/       .icon-and-text--icon
-/         = render 'icon_circled_bang_warning'
-/       .icon-and-text--text data-test-flash-message=""
-/         = t('publishers.statements.index.missing_scope')
-/         = link_to(I18n.t('publishers.statements.index.reauthorize'), connect_uphold_publishers_path, method: :patch)
-
 /   .single-panel--content
 /     .single-panel--padded-content.text-left
 /       h3= t ".title"
@@ -42,5 +33,12 @@ noscript
 /         - else
 /           .content.empty
 .container.p-4.bg-white.shadow.rounded
+  - unless @uphold_connection.can_read_transactions?
+    .alert.alert-warning.d-flex.mb-4.align-items-center
+      .p-2= render 'icon_circled_bang_warning'
+      .p-2
+        = t('publishers.statements.index.missing_scope')
+        = link_to(I18n.t('publishers.statements.index.reauthorize'), connect_uphold_publishers_path, method: :patch)
+
   .statements
 =javascript_pack_tag('Statements')
