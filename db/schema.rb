@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_162819) do
+ActiveRecord::Schema.define(version: 2019_08_28_175151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -512,6 +512,7 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.string "channel_identifier"
     t.string "card_id"
     t.string "address"
+    t.uuid "uphold_id"
     t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"

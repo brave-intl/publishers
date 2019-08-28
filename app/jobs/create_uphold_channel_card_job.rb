@@ -17,16 +17,20 @@ class CreateUpholdChannelCardJob < ApplicationJob
       channel_identifier: channel.details.channel_identifier
     )
 
+    # In the past if a user disconnects and reconnects to a different uphold account then the connection for the channel might have an out of date card address
     if upfc.present?
-      card_id = upfc.card_id
-    else
+      card_id = find_card(uphold_connection, upfc.card_id)&.id
+    end
+
+    if card_id.blank?
       (card_id, upfc) = find_or_create_card(uphold_connection, channel)
     end
 
     # If the channel was deleted and then recreated we should update this to be the new channel id
     upfc.update(
       address: get_address(uphold_connection, card_id),
-      channel_id: channel.id
+      channel_id: channel.id,
+      uphold_id: uphold_connection.uphold_id
     )
   end
 
@@ -48,6 +52,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
 
     upfc = UpholdConnectionForChannel.create(
       uphold_connection: uphold_connection,
+      uphold_id: uphold_connection.uphold_id,
       channel: channel,
       card_id: card_id,
       currency: uphold_connection.default_currency,
@@ -55,6 +60,13 @@ class CreateUpholdChannelCardJob < ApplicationJob
     )
 
     [card_id, upfc]
+  end
+
+  def find_card(uphold_connection, card_id)
+    uphold_connection.uphold_client.card.find(uphold_connection: uphold_connection, id: card_id)
+
+  rescue Faraday::ResourceNotFound
+    nil
   end
 
   def get_address(uphold_connection, card_id)
