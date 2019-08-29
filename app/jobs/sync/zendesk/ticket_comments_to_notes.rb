@@ -30,27 +30,40 @@ class Sync::Zendesk::TicketCommentsToNotes
 
     publisher_notes = []
     publisher = nil
-    admin_id = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email]).id
+    admin = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email])
     zendesk_comments = client.ticket.find(id: zendesk_ticket_id).comments
     for index in (0...zendesk_comments.count)
-      comment = zendesk_comments[index]
-      publisher_email = comment&.via&.source&.from&.address
+      from_email = nil
+      to_email = nil
 
-      if publisher_email.present? && publisher.nil?
-        publisher = Publisher.find_by(email: publisher_email)
+      # The first email should be the publisher's email. Would be surprising otherwise
+      comment = zendesk_comments[index]
+      from_email = comment&.via&.source&.from&.address
+      to_email = comment&.via&.source&.to&.address
+
+      if (from_email.present? || to_email.present?) && publisher.nil?
+        publisher = Publisher.find_by(email: from_email)
+        publisher = Publisher.find_by(email: to_email) if publisher.nil?
       end
-      publisher_notes << PublisherNote.new(note: comment.plain_body, zendesk_ticket_id: zendesk_ticket_id, zendesk_comment_id: comment.id, created_at: comment.created_at)
+
+      publisher_note = PublisherNote.find_or_initialize_by(zendesk_ticket_id: zendesk_ticket_id, zendesk_comment_id: comment.id)
+      publisher_note.created_at = comment.created_at
+      publisher_note.created_by_id = admin.id
+      publisher_note.note = comment.plain_body
+      publisher_note.zendesk_from_email = from_email
+      publisher_note.zendesk_to_email = to_email
+      publisher_notes << publisher_note
     end
-    return if publisher.nil?
+
     # Don't lock this in a transaction as we might need to parse over to update the ticket
-    publisher_notes.each do |publisher_note|
+    publisher_notes.each do |pn|
       begin
-        publisher_note.publisher_id = publisher.id
-        publisher_note.created_by_id = admin_id
-        publisher_note.save
+        pn.publisher_id = publisher.id
+        pn.save
       rescue ActiveRecord::RecordNotUnique
       end
     end
+
     Rails.logger.info "Done with zendesk ticket #{zendesk_ticket_id}"
   end
 end
