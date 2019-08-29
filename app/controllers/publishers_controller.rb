@@ -83,9 +83,9 @@ class PublishersController < ApplicationController
 
   def update
     if publisher_update_params[:pending_email]
-      if updated_email == current_publisher.email
+      if publisher_update_params[:pending_email] == current_publisher.email
         publisher_update_params[:pending_email] = nil
-      elsif publisher_update_params[:pending_email] == publisher.pending_email
+      elsif publisher_update_params[:pending_email] == current_publisher.pending_email
         publisher_update_params.delete(:pending_email)
       end
     end
@@ -93,7 +93,7 @@ class PublishersController < ApplicationController
     success = current_publisher.update(publisher_update_params)
 
     if success && publisher_update_params[:pending_email]
-      MailerServices::ConfirmEmailChangeEmailer.new(publisher: publisher).perform
+      MailerServices::ConfirmEmailChangeEmailer.new(publisher: current_publisher).perform
     end
 
     respond_to do |format|
