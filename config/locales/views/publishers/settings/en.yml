@@ -2,6 +2,9 @@ en:
   publishers:
     settings:
       index:
+        header: Account Settings
+        extended_login:
+          intro: Set login duration to 30 days
         delete_account:
           heading: Account Deletion
           intro: |

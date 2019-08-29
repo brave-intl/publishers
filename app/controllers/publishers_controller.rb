@@ -82,24 +82,17 @@ class PublishersController < ApplicationController
   end
 
   def update
-    publisher = current_publisher
-    update_params = publisher_update_params
-
-    current_email = publisher.email
-    pending_email = publisher.pending_email
-    updated_email = update_params[:pending_email]
-
-    if updated_email
-      if updated_email == current_email
-        update_params[:pending_email] = nil
-      elsif updated_email == pending_email
-        update_params.delete(:pending_email)
+    if publisher_update_params[:pending_email]
+      if updated_email == current_publisher.email
+        publisher_update_params[:pending_email] = nil
+      elsif publisher_update_params[:pending_email] == publisher.pending_email
+        publisher_update_params.delete(:pending_email)
       end
     end
 
-    success = publisher.update(update_params)
+    success = current_publisher.update(publisher_update_params)
 
-    if success && update_params[:pending_email]
+    if success && publisher_update_params[:pending_email]
       MailerServices::ConfirmEmailChangeEmailer.new(publisher: publisher).perform
     end
 
@@ -328,7 +321,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :name, :visible)
+    params.require(:publisher).permit(:pending_email, :name, :visible, :thirty_day_login)
   end
 
   def publisher_update_email_params
