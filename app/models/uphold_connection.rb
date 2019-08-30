@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UpholdConnection < ActiveRecord::Base
+  has_paper_trail only: [:is_member, :uphold_id, :address, :status, :default_currency]
+
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
 
