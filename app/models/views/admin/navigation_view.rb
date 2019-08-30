@@ -14,12 +14,7 @@ module Views
         url = nil
 
         @publisher.channels.each do |channel|
-          if channel.details_type == "YoutubeChannelDetails"
-            url = channel.details.thumbnail_url
-          elsif channel.details_type == "TwitchChannelDetails"
-            url = channel.details.thumbnail_url
-
-          end
+          url = channel.details.thumbnail_url if channel.details.respond_to?(:thumbnail_url)
           break if url.present?
         end
 
