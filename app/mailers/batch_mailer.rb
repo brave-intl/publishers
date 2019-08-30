@@ -7,4 +7,12 @@ class BatchMailer < ApplicationMailer
       subject: default_i18n_subject
     )
   end
+
+  def update_to_rates(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email || @publisher.pending_email,
+      subject: default_i18n_subject
+    )
+  end
 end
