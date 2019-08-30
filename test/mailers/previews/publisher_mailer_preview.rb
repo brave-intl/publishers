@@ -86,7 +86,11 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def update_to_tos
-    PublisherMailer.update_to_tos(Publisher.first)
+    BatchMailer.update_to_tos(Publisher.first)
+  end
+
+  def update_to_rates
+    BatchMailer.update_to_rates(Publisher.first)
   end
 
   def submit_appeal

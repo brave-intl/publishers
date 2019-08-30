@@ -205,6 +205,8 @@ en:
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
       button: Log in to Brave Rewards
   batch_mailer:
+    update_to_rates:
+      subject: Brave Referral Rate Changes - Please Read
     update_to_tos:
       subject: Updates to the Brave Rewards Terms of Service for Creators
       body: >
