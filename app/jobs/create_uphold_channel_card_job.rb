@@ -61,10 +61,11 @@ class CreateUpholdChannelCardJob < ApplicationJob
   end
 
   def card_exists?(uphold_connection, card_id)
-    return if card_id.blank?
+    return false if card_id.blank?
 
     uphold_connection.uphold_client.card.find(uphold_connection: uphold_connection, id: card_id).present?
   rescue Faraday::ResourceNotFound
+    false
   end
 
   def get_address(uphold_connection, card_id)
