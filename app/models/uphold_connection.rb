@@ -42,7 +42,7 @@ class UpholdConnection < ActiveRecord::Base
   }
 
   # If the user became KYC'd let's create the uphold card for them
-  after_save :create_uphold_cards, if: -> { saved_change_to_is_member? && uphold_verified? }
+  after_commit :create_uphold_cards, if: -> { saved_change_to_is_member? && is_member? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
