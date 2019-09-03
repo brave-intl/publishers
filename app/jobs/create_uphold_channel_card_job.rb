@@ -11,18 +11,17 @@ class CreateUpholdChannelCardJob < ApplicationJob
       return
     end
 
-    upfc = UpholdConnectionForChannel.find_or_create_by(
+    upfc = UpholdConnectionForChannel.where(
       uphold_connection: uphold_connection,
       currency: uphold_connection.default_currency,
       channel_identifier: channel.details.channel_identifier
-    )
+    ).first_or_create(channel_id: channel_id)
 
     card_id = find_or_create_card(uphold_connection, channel, upfc)
 
     # If the channel was deleted and then recreated we should update this to be the new channel id
     upfc.update(
       address: get_address(uphold_connection, card_id),
-      channel_id: channel.id,
       card_id: card_id,
       uphold_id: uphold_connection.uphold_id
     )
@@ -46,7 +45,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
       ).id
     end
 
-   card_id
+    card_id
   end
 
   def card_exists?(uphold_connection, card_id)
