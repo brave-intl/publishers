@@ -11,31 +11,28 @@ class CreateUpholdChannelCardJob < ApplicationJob
       return
     end
 
-    upfc = UpholdConnectionForChannel.find_by(
+    upfc = UpholdConnectionForChannel.where(
       uphold_connection: uphold_connection,
       currency: uphold_connection.default_currency,
       channel_identifier: channel.details.channel_identifier
-    )
+    ).first_or_create(channel_id: channel_id)
 
-    # In the past if a user disconnects and reconnects to a different uphold account then the connection for the channel might have an out of date card address
-    card_id = upfc.card_id if card_exists?(uphold_connection, upfc&.card_id)
-
-    if card_id.blank?
-      (card_id, upfc) = create_uphold_connection_for_channel(uphold_connection, channel)
-    end
+    card_id = find_or_create_card(uphold_connection, channel, upfc)
 
     # If the channel was deleted and then recreated we should update this to be the new channel id
     upfc.update(
       address: get_address(uphold_connection, card_id),
-      channel_id: channel.id,
+      card_id: card_id,
       uphold_id: uphold_connection.uphold_id
     )
   end
 
-  def create_uphold_connection_for_channel(uphold_connection, channel)
-    card_label = "#{channel.type_display} - #{channel.details.publication_title} - Brave Rewards"
+  def find_or_create_card(uphold_connection, channel, upfc)
+    # In the past if a user disconnects and reconnects to a different uphold account then the connection for the channel might have an out of date card address
+    return upfc.card_id if card_exists?(uphold_connection, upfc.card_id)
 
     # If a user transfers their channel then we should try not to create duplicate uphold cards
+    card_label = "#{channel.type_display} - #{channel.details.publication_title} - Brave Rewards"
     cards = uphold_connection.uphold_client.card.where(uphold_connection: uphold_connection)
     card_id = cards.detect { |c| c.label.eql?(card_label) }&.id
 
@@ -48,16 +45,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
       ).id
     end
 
-    upfc = UpholdConnectionForChannel.create(
-      uphold_connection: uphold_connection,
-      uphold_id: uphold_connection.uphold_id,
-      channel: channel,
-      card_id: card_id,
-      currency: uphold_connection.default_currency,
-      channel_identifier: channel.details.channel_identifier
-    )
-
-    [card_id, upfc]
+    card_id
   end
 
   def card_exists?(uphold_connection, card_id)
