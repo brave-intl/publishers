@@ -16,17 +16,18 @@ br
       .col-left-aligned--content
         h5= t ".delete_account.heading"
         p= t ".delete_account.intro"
-      .col-left-aligned--action
-        p= link_to \
-            t(".delete_account.button"),
-            publisher_path(current_publisher.id),
-            method: :delete,
-            class: "btn btn-block btn-danger",
-            data: { "js-confirm-with-modal": "delete-account-prompt" }
-        script#delete-account-prompt type="text/html"
-          h4= t ".delete_account.prompt.header"
-          p= t ".delete_account.prompt.final_confirmation"
-          .modal-buttons
-            = link_to t(".delete_account.prompt.deny"), "#", class: "js-deny btn btn-wide btn-outline-secondary"
-            = link_to t(".delete_account.prompt.confirm"), "#", class: "js-confirm btn btn-wide btn-danger"
+    .row
+      .col-small-centered
+          p= link_to \
+              t(".delete_account.button"),
+              publisher_path(current_publisher.id),
+              method: :delete,
+              class: "btn btn-block btn-danger",
+              data: { "js-confirm-with-modal": "delete-account-prompt" }
+          script#delete-account-prompt type="text/html"
+            h4= t ".delete_account.prompt.header"
+            p= t ".delete_account.prompt.final_confirmation"
+            .modal-buttons
+              = link_to t(".delete_account.prompt.deny"), "#", class: "js-deny btn btn-wide btn-outline-secondary"
+              = link_to t(".delete_account.prompt.confirm"), "#", class: "js-confirm btn btn-wide btn-danger"
 

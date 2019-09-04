@@ -8,8 +8,7 @@ en:
         delete_account:
           heading: Account Deletion
           intro: |
-            We'll disconnect your channels and delete all personally identifiable information
-            from our databases and connected providers.
+            Your channels and all account related information will be permanently deleted from our database as well as from connected providers. This cannot be undone.
           button: Delete My Account
           prompt:
             header: Are you sure you want to delete your account?
