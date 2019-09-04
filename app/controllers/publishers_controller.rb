@@ -96,12 +96,13 @@ class PublishersController < ApplicationController
       MailerServices::ConfirmEmailChangeEmailer.new(publisher: current_publisher).perform
     end
 
+    flash[:notice] = I18n.t("publishers.settings.update.alert")
     respond_to do |format|
       if success
         format.json { head :no_content }
         format.html { redirect_to home_publishers_path }
       else
-        format.json { render(json: { errors: publisher.errors }, status: 400) }
+        format.json { render(json: { errors: current_publisher.errors }, status: 400) }
         format.html { render(status: 400) }
       end
     end

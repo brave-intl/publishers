@@ -2,12 +2,13 @@
   .single-panel--padded-content--short-padding
     h5= t ".header"
     = form_for(current_publisher, url: publisher_path(current_publisher.id), method: :patch) do |f|
-      .col-medium-centered
-        .row
+      .row
+        .col-left-aligned--content
           p= t ".extended_login.intro"
-          = f.check_box 'thirty_day_login', checked: current_publisher.thirty_day_login?, class: "form-check-input"
-      .col-right-aligned
-          = f.submit "Save", class: "btn btn-primary", style: "float: right;"
+        .col-left-aligned--action
+          label.switch
+            = f.check_box 'thirty_day_login', checked: current_publisher.thirty_day_login?, class: "form-check-input", onchange: "this.form.submit()"
+            span.slider.round
 br
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
   .single-panel--padded-content--short-padding
