@@ -36,6 +36,19 @@ class PayoutReport < ApplicationRecord
     potential_payments.to_be_paid.count
   end
 
+  def missing_addresses
+    potential_payments.to_be_paid.unscope(where: :address).count - potential_payments.to_be_paid.count
+  end
+
+  def manage_expectations
+    publishers = Publisher.joins(:uphold_connection).with_verified_channel
+    channels = Channel.where(publisher_id: publishers.pluck(:id), verified: true)
+
+    missing_channels = channels.pluck(:id) -  potential_payments.pluck(:channel_id)
+    missing_publishers = publishers.pluck(:id) - potential_payments.where(channel_id: nil).pluck(:publisher_id)
+    { channels: missing_channels, publishers: missing_publishers }
+  end
+
   # Updates the JSON summary of the report downloaded by admins
   def update_report_contents
     # Do not update json contents for legacy reports

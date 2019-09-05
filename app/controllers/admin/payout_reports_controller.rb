@@ -7,7 +7,13 @@ class Admin::PayoutReportsController < AdminController
 
   def show
     @payout_report = PayoutReport.find(params[:id])
-    render(json: @payout_report.contents, status: 200)
+    @previous_report = PayoutReport.where(
+      manual: @payout_report.manual,
+      final: @payout_report.final
+    ).where("created_at < ?", @payout_report.created_at).order(created_at: :desc).take
+
+
+    # render(json: @previous_report, status: 200)
   end
 
   def download
