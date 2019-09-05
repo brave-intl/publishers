@@ -82,12 +82,8 @@ class PublishersController < ApplicationController
   end
 
   def update
-    if publisher_update_params[:pending_email]
-      if publisher_update_params[:pending_email] == current_publisher.email
-        publisher_update_params[:pending_email] = nil
-      elsif publisher_update_params[:pending_email] == current_publisher.pending_email
-        publisher_update_params.delete(:pending_email)
-      end
+    if publisher_update_params[:pending_email] && publisher_update_params[:pending_email].in?([current_publisher.email, current_publisher.pending_email])
+      params[:publisher].delete(:pending_email)
     end
 
     success = current_publisher.update(publisher_update_params)
