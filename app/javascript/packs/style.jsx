@@ -40,7 +40,6 @@ export const Dialogue = styled.div`
     props.save &&
     `
     width: 550px;
-    height: 350px;
     margin-left: -275px;
     margin-top: -200px;
     `}

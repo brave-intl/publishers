@@ -1,5 +1,4 @@
-require 'rubygems'
-require 'json'
+require 'addressable'
 
 class SiteBanner < ApplicationRecord
   include Rails.application.routes.url_helpers
@@ -24,6 +23,10 @@ class SiteBanner < ApplicationRecord
   DONATION_AMOUNT_PRESETS = ['1,5,10', '5,10,20', '10,20,50', '20,50,100'].freeze
   MAX_DONATION_AMOUNT = 999
 
+  DEFAULT_TITLE = I18n.t('banner.headline')
+  DEFAULT_DESCRIPTION = I18n.t('banner.tagline')
+  DEFAULT_AMOUNTS = [1, 5, 10].freeze
+
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
   validate :donation_amounts_in_scope
   before_save :clear_invalid_social_links
@@ -36,7 +39,6 @@ class SiteBanner < ApplicationRecord
   # (Albert Wang) Until the front end can properly handle errors, let's not block save and only clear invalid domains
   def clear_invalid_social_links
     return if errors.present? || social_links.nil?
-    require 'addressable'
     self.social_links = social_links.select { |key, _| key.in?(["twitch", "youtube", "twitter"]) }
 
     unless social_links["twitch"].blank? || Addressable::URI.parse(social_links["twitch"]).to_s.starts_with?('https://www.twitch.tv/', 'https://twitch.tv/', 'www.twitch.tv/', 'twitch.tv/')
@@ -57,14 +59,12 @@ class SiteBanner < ApplicationRecord
   #####################################################
 
   def self.new_helper(publisher_id, channel_id)
-    headline = I18n.t 'banner.headline'
-    tagline = I18n.t 'banner.tagline'
     SiteBanner.create(
       publisher_id: publisher_id,
       channel_id: channel_id,
-      title: headline,
-      description: tagline,
-      donation_amounts: [1, 5, 10],
+      title: DEFAULT_TITLE,
+      description: DEFAULT_DESCRIPTION,
+      donation_amounts: DEFAULT_AMOUNTS,
       default_donation: 5,
       social_links: { youtube: '', twitter: '', twitch: '' }
     )
@@ -81,8 +81,7 @@ class SiteBanner < ApplicationRecord
   end
 
   def read_only_react_property
-    {
-      channel_id: channel_id,
+    properties = {
       title: title,
       description: description,
       backgroundUrl: public_background_image_url,
@@ -90,5 +89,15 @@ class SiteBanner < ApplicationRecord
       donationAmounts: donation_amounts,
       socialLinks: social_links,
     }
+
+    # Remove properties that are considered the "Default". The client will handle parsing for this.
+    properties.delete(:description) if properties[:description].eql?(DEFAULT_DESCRIPTION)
+    properties.delete(:title) if properties[:title].eql?(DEFAULT_TITLE)
+    properties.delete(:donationAmounts) if properties[:donationAmounts].eql?(DEFAULT_AMOUNTS)
+    properties[:socialLinks]&.delete_if { |k, v| v.blank? }
+
+    properties.delete_if { |k, v| v.blank? }
+
+    properties
   end
 end
