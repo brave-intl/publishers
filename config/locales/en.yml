@@ -38,6 +38,7 @@ en:
     referrals: Referrals
     payments: Payments
     download: Download
+    payments: Payments
     existing_account: Already have an account?
     error: Oh no! Something went wrong, please contact support.
     get_started: Get Started
@@ -206,6 +207,8 @@ en:
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
       button: Log in to Brave Rewards
   batch_mailer:
+    update_to_rates:
+      subject: Brave Referral Rate Changes - Please Read
     update_to_tos:
       subject: Updates to the Brave Rewards Terms of Service for Creators
       body: >
@@ -484,22 +487,6 @@ en:
       login_email_changed: Great!
       login_email_verified_html: |
         <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Rewards.
-    channel_taken_modal:
-      default_registerer: A channel manager
-      noscript_with_registration_html: |
-        The %{channel_type} "%{channel_title}" was added and verified by %{channel_registered_by} on %{channel_registration_date}.
-        Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
-      noscript_without_registration_html: |
-        The %{channel_type} "%{channel_title}" was previously added and verified by another user.
-        Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
-      modal:
-        title: Channel taken
-        leadin: The following %{channel_type} has already been added to a different account.
-        registration_date: Date
-        registered_by: Added by
-        contact_support_html: Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
-        try_logging_out: If this account is not the one you wanted to claim, please log out of %{channel_name} and try again.
-        ok: OK
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
       website:
