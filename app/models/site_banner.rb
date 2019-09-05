@@ -81,7 +81,7 @@ class SiteBanner < ApplicationRecord
   end
 
   def read_only_react_property
-    properties = {
+    {
       title: title,
       description: description,
       backgroundUrl: public_background_image_url,
@@ -89,7 +89,10 @@ class SiteBanner < ApplicationRecord
       donationAmounts: donation_amounts,
       socialLinks: social_links,
     }
+  end
 
+  def non_default_properties
+    properties = read_only_react_property
     # Remove properties that are considered the "Default". The client will handle parsing for this.
     properties.delete(:description) if properties[:description].eql?(DEFAULT_DESCRIPTION)
     properties.delete(:title) if properties[:title].eql?(DEFAULT_TITLE)
