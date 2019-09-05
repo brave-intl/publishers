@@ -2,10 +2,10 @@
   .single-panel--padded-content--short-padding
     h5= t ".header"
     = form_for(current_publisher, url: publisher_path(current_publisher.id), method: :patch) do |f|
-      .row
-        .col-left-aligned--content
+      .d-flex
+        .mr-auto.p-2
           p= t ".extended_login.intro"
-        .col-left-aligned--action
+        .p-2
           label.switch
             = f.check_box 'thirty_day_login', checked: current_publisher.thirty_day_login?, class: "form-check-input", onchange: "this.form.submit()"
             span.slider.round
