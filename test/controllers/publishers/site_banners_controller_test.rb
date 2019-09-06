@@ -11,7 +11,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       site_banner = JSON.parse(response.body)
       assert_equal("Hello World", site_banner["title"])
       assert_equal("Lorem Ipsum", site_banner["description"])
-      assert_equal([1, 5, 10], site_banner["donationAmounts"])
   end
 
   test "Show method returns nil if site_banner not found" do

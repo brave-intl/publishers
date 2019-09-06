@@ -57,16 +57,19 @@ import "../../assets/stylesheets/components/banner-editor.scss";
 import "../../assets/stylesheets/components/spinner.scss";
 import "../../assets/stylesheets/components/slider.scss";
 
+const DEFAULT_TITLE = "Brave Rewards";
+const DEFAULT_DESCRIPTION =
+  "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content"
+const DEFAULT_AMOUNTS = [1, 5, 10];
+
 export default class BannerEditor extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       loading: true,
-      title: this.props.values.title || "Brave Rewards",
-      description:
-        this.props.values.description ||
-        "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be. \n \nYour tip is much appreciated and it encourages us to continue to improve our content.",
+      title: this.props.values.title || DEFAULT_TITLE,
+      description: this.props.values.description || DEFAULT_DESCRIPTION,
       logo: this.props.values.logo || { url: null, data: null },
       cover: this.props.values.cover || { url: null, data: null },
       channelIndex: this.props.values.channelIndex || 0,
@@ -80,7 +83,7 @@ export default class BannerEditor extends React.Component {
       youtube: this.props.values.youtube || "",
       twitter: this.props.values.twitter || "",
       twitch: this.props.values.twitch || "",
-      donationAmounts: this.props.values.donationAmounts || [1, 5, 10],
+      donationAmounts: this.props.values.donationAmounts || DEFAULT_AMOUNTS,
       conversionRate: this.props.conversionRate,
       preferredCurrency: "USD",
       mode: "Edit",
@@ -262,15 +265,16 @@ export default class BannerEditor extends React.Component {
       //500ms timeout prevents quick flash when load times are fast.
       setTimeout(async () => {
         if (banner) {
+          banner.socialLinks = banner.socialLinks || {}
           that.setState({
-            title: banner.title,
-            description: banner.description,
-            youtube: banner.socialLinks.youtube,
-            twitter: banner.socialLinks.twitter,
-            twitch: banner.socialLinks.twitch,
-            donationAmounts: banner.donationAmounts,
-            logo: { url: banner.logoImage, data: null },
-            cover: { url: banner.backgroundImage, data: null },
+            title: banner.title || DEFAULT_TITLE,
+            description: banner.description || DEFAULT_DESCRIPTION,
+            youtube: banner.socialLinks.youtube || "",
+            twitter: banner.socialLinks.twitter || "",
+            twitch: banner.socialLinks.twitch || "",
+            donationAmounts: banner.donationAmounts || DEFAULT_AMOUNTS,
+            logo: { url: banner.logoUrl || null, data: null },
+            cover: { url: banner.backgroundUrl || null, data: null },
             loading: false,
             fetch: false
           });
@@ -296,13 +300,19 @@ export default class BannerEditor extends React.Component {
   addLink() {
     switch (this.state.linkOption) {
       case "Youtube":
-        this.setState({ youtube: "https://www.youtube.com/" + this.state.currentUsername });
+        this.setState({
+          youtube: "https://www.youtube.com/" + this.state.currentUsername
+        });
         break;
       case "Twitter":
-        this.setState({ twitter: "https://www.twitter.com/" + this.state.currentUsername });
+        this.setState({
+          twitter: "https://www.twitter.com/" + this.state.currentUsername
+        });
         break;
       case "Twitch":
-        this.setState({ twitch: "https://www.twitch.tv/" + this.state.currentUsername });
+        this.setState({
+          twitch: "https://www.twitch.tv/" + this.state.currentUsername
+        });
         break;
     }
     this.setState({ currentUsername: "" });
@@ -339,7 +349,9 @@ export default class BannerEditor extends React.Component {
   }
 
   updateCurrentUsername(event) {
-    this.setState({ currentUsername: event.target.value.replace("/^a-zA-Z0-9._/g", '') });
+    this.setState({
+      currentUsername: event.target.value.replace("/^a-zA-Z0-9._/g", "")
+    });
   }
 
   updateTitle(event) {
@@ -488,10 +500,6 @@ export default class BannerEditor extends React.Component {
                 <div>
                   <Text dialogueHeader>
                     Your banner will be updated within 24 hours
-                  </Text>
-                  <Text dialogueSubtext>
-                    Please note, for V0.58 of the Brave Browser, the custom tip
-                    amounts for the banner will show up as 1, 5, 10 BAT.
                   </Text>
                   <Button dialoguePrimary onClick={this.setEditMode}>
                     OK
