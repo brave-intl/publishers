@@ -6,10 +6,7 @@ class Publishers::SiteBannersController < ApplicationController
 
   def show
     if site_banner
-      data = site_banner.read_only_react_property
-      data[:backgroundImage] = data[:backgroundUrl]
-      data[:logoImage] = data[:logoUrl]
-      render(json: data.to_json)
+      render json:site_banner.read_only_react_property
     else
       render(json: nil.to_json)
     end

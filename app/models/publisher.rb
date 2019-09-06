@@ -323,7 +323,7 @@ class Publisher < ApplicationRecord
 
   def timeout_in
     return 2.hours if admin?
-    30.minutes
+    thirty_day_login? ? 30.days : 30.minutes
   end
 
   private

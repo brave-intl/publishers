@@ -82,33 +82,23 @@ class PublishersController < ApplicationController
   end
 
   def update
-    publisher = current_publisher
-    update_params = publisher_update_params
-
-    current_email = publisher.email
-    pending_email = publisher.pending_email
-    updated_email = update_params[:pending_email]
-
-    if updated_email
-      if updated_email == current_email
-        update_params[:pending_email] = nil
-      elsif updated_email == pending_email
-        update_params.delete(:pending_email)
-      end
+    if publisher_update_params[:pending_email] && publisher_update_params[:pending_email].in?([current_publisher.email, current_publisher.pending_email])
+      params[:publisher].delete(:pending_email)
     end
 
-    success = publisher.update(update_params)
+    success = current_publisher.update(publisher_update_params)
 
-    if success && update_params[:pending_email]
-      MailerServices::ConfirmEmailChangeEmailer.new(publisher: publisher).perform
+    if success && publisher_update_params[:pending_email]
+      MailerServices::ConfirmEmailChangeEmailer.new(publisher: current_publisher).perform
     end
 
+    flash[:notice] = I18n.t("publishers.settings.update.alert")
     respond_to do |format|
       if success
         format.json { head :no_content }
         format.html { redirect_to home_publishers_path }
       else
-        format.json { render(json: { errors: publisher.errors }, status: 400) }
+        format.json { render(json: { errors: current_publisher.errors }, status: 400) }
         format.html { render(status: 400) }
       end
     end
@@ -328,7 +318,7 @@ class PublishersController < ApplicationController
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :name, :visible)
+    params.require(:publisher).permit(:pending_email, :name, :visible, :thirty_day_login)
   end
 
   def publisher_update_email_params

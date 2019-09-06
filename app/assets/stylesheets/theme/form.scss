@@ -6,3 +6,61 @@
   height: fit-content;
   padding: $spacer*0.75;
 }
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  margin-top: 8px;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #A7ACB2;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: -2px;
+  top: -8px;
+  background-color: #F6F6FA;
+  -webkit-transition: .4s;
+  border-radius: 50%;
+  transition: .4s;
+}
+
+input:checked + .slider:before{
+  background-color: #6D73D2;
+}
+
+input:checked + .slider.round:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 3px;
+  height: 8px;
+}
