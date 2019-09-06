@@ -1,0 +1,11 @@
+
+.d-flex
+  h2.m-0
+    = "Edit Payout Report #{@payout_report.id[0..6]}"
+
+
+= form_for [:admin, @payout_report], class: 'form' do |f|
+  .form-check.form-group
+    = f.check_box :final, class: 'form-check-input'
+    = f.label :final, class: 'form-check-label'
+  = submit_tag("Upate", class:' btn btn-primary')

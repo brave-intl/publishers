@@ -74,6 +74,8 @@ module AdminHelper
 
     value = (numerator / denominator) * 100
 
+    return if value.zero?
+
     icon = value.positive? ? 'level-up' : 'level-down'
     class_name = value.positive? ? 'text-success' : 'text-danger'
 

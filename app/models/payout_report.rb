@@ -40,6 +40,14 @@ class PayoutReport < ApplicationRecord
     potential_payments.to_be_paid.unscope(where: :address).count - potential_payments.to_be_paid.count
   end
 
+  def contribution_count
+    potential_payments.pluck(:channel_id).compact.count
+  end
+
+  def referral_count
+    potential_payments.count - contribution_count
+  end
+
   def manage_expectations
     publishers = Publisher.joins(:uphold_connection).with_verified_channel
     channels = Channel.where(publisher_id: publishers.pluck(:id), verified: true)

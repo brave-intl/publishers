@@ -16,7 +16,7 @@
 h6 Payout Details
 
 .row
-  .col-6
+  .col-8
     table.table
       tr
         td
@@ -64,26 +64,28 @@ h6 Payout Details
       tr
         td.font-weight-bold Missing addresses
         td= @payout_report.missing_addresses
-
-  .col-6
-    table.table
       tr
         td.font-weight-bold Amount
         td
           .d-flex.align-items-baseline
-            = "#{number_with_delimiter(@payout_report.amount.to_d / 1E18)} BAT"
-            small.ml-2 data-tooltip="percentage difference compared to previous report"
-              = percentage_difference(@payout_report.amount.to_d, @previous_report.amount.to_d)
+            = "#{number_with_delimiter((@payout_report.amount.to_d / 1E18).round(2))} BAT"
+            - if @previous_report.present?
+              small.ml-2 data-tooltip="percentage difference compared to previous report"
+                = percentage_difference(@payout_report.amount.to_d, @previous_report.amount.to_d)
 
-      tr
-        td
-          span.font-weight-bold Previous Payout Report
-          .small.w-75
-            =link_to(@previous_report.id[0..6], admin_payout_report_path(@previous_report))
-            span= " run on #{@previous_report.created_at.strftime("%B %d, %Y, %H:%M")}"
-        td
-          = "#{number_with_delimiter(@previous_report.amount.to_d / 1E18)} BAT"
+      - if @previous_report.present?
+        tr
+          td
+            span.font-weight-bold Previous Payout Report
+            .small.w-75
+              =link_to(@previous_report.id[0..6], admin_payout_report_path(@previous_report))
+              span= " run on #{@previous_report.created_at.strftime("%B %d, %Y, %H:%M")}"
+          td
+            = "#{number_with_delimiter((@previous_report.amount.to_d / 1E18).round(2))} BAT"
 
+  .col-4
+    #current-chart data-props="#{{contributionBalance: @payout_report.contribution_count, referralBalance: @payout_report.referral_count}.to_json}"
+    table.table
 
 
 
@@ -139,15 +141,5 @@ h6 Payout Details
       tr
         td.small= link_to(publisher_id, admin_publisher_path(publisher_id))
 
-/ td = @payout_report.created_at.strftime("%B %d, %Y, %H:%M")
-/ td = report.final ? "Final" : "Temp"
-/ td = report.manual ? "Yes" : "No"
-/ td = "#{report.expected_num_payments} - #{report.num_payments}"
-/ td = report.num_payments_to_be_paid
-/ td = report.potential_payments.to_be_paid.unscope(where: :address).count - report.potential_payments.to_be_paid.count
-/ td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
-/ td = form_tag refresh_admin_payout_report_path(report.id), method: :patch do
-/ = submit_tag "refresh", class: "btn btn-info"
-/ / (Albert Wang) Check encrypted_contents_iv since encrypted_contents is a large fetch.
 
-
+=javascript_pack_tag 'PayoutReports'
