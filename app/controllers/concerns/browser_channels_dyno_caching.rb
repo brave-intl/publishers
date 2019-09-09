@@ -16,16 +16,17 @@ module BrowserChannelsDynoCaching
   end
 
   def invalid_dyno_cache?
-    !klass_dyno_cache.present? || !klass_dyno_cache.is_a?(String)
+    cached_dyno_value = self.class.class_variable_get(klass_dyno_cache)
+    cached_dyno_value.nil? || !cached_dyno_value.is_a?(String)
   end
 
   def update_dyno_cache
-    redis_value = Rails.cache.fetch('browser_channels_json', race_condition_ttl: 30) do
+    redis_value = Rails.cache.fetch(self.class::REDIS_KEY, race_condition_ttl: 30) do
       require 'sentry-raven'
       Raven.capture_message("Failed to use redis cache for Dyno cache: #{klass_dyno_cache}, continuing to read from cache instead")
     end
     if redis_value.present?
-      self.class.class_variable_set(klass_dyno_cache.to_sym, redis_value)
+      self.class.class_variable_set(klass_dyno_cache, redis_value)
       Rails.cache.write(dyno_expiration_key, 1.hour.from_now.to_s, expires_in: 1.hour.from_now )
     end
   end
@@ -35,6 +36,6 @@ module BrowserChannelsDynoCaching
   end
 
   def klass_dyno_cache
-    "@@cached_payload"
+    :@@cached_payload
   end
 end
