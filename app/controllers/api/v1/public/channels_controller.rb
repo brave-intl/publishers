@@ -11,8 +11,4 @@ class Api::V1::Public::ChannelsController < Api::V1::Public::BaseController
   def dyno_expiration_key
     "browser_v1_channels_expiration:#{ENV['DYNO']}"
   end
-
-  def klass_dyno_cache
-    "@@api_v1_public_channels_cache"
-  end
 end

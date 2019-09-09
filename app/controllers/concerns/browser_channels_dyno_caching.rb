@@ -5,7 +5,7 @@ module BrowserChannelsDynoCaching
     if dyno_cache_expired? || invalid_dyno_cache?
       update_dyno_cache
     end
-    render(json: klass_dyno_cache, status: 200)
+    render(json: self.class.class_variable_get(klass_dyno_cache), status: 200)
   end
 
   private
@@ -25,13 +25,9 @@ module BrowserChannelsDynoCaching
       Raven.capture_message("Failed to use redis cache for Dyno cache: #{klass_dyno_cache}, continuing to read from cache instead")
     end
     if redis_value.present?
-      self.class_variable_set(klass_dyno_cache.to_sym, updated_key)
-      Redis.new.set(key: dyno_expiration_key, value: 1.hour.from_now.to_s, options: { ex: 1.hour.from_now.to_i } )
+      self.class.class_variable_set(klass_dyno_cache.to_sym, redis_value)
+      Rails.cache.write(dyno_expiration_key, 1.hour.from_now.to_s, expires_in: 1.hour.from_now )
     end
-  end
-
-  def current_klass
-    raise 
   end
 
   def dyno_expiration_key
@@ -39,6 +35,6 @@ module BrowserChannelsDynoCaching
   end
 
   def klass_dyno_cache
-    raise "Define me for klass_dyno_cache!"
+    "@@cached_payload"
   end
 end
