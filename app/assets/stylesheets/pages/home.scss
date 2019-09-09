@@ -1199,3 +1199,16 @@ h6 {
 .screenshot {
   max-width: 300px;
 }
+
+.progress-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  &.active {
+    background: $braveBrand;
+  }
+  &.inactive {
+    background: $braveGray-4;
+  }
+}

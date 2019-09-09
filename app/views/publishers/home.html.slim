@@ -93,6 +93,9 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           .add-channel-cta
             = t ".add_channel_cta"
     .row
+      .col-md.mb-4
+        = render partial: 'payout_status'
+    .row
       - unless @publisher.excluded_from_payout?
         .col-md.mb-4
           .dashboard-panel--wrapper.uphold-panel

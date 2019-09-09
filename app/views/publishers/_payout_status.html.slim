@@ -1,0 +1,7 @@
+.dashboard-panel--wrapper
+  .dashboard-panel--header Payout Progress
+  .row
+    - ["Reviewed", "Prepared", "In Progress", "Done"].each do |status|
+      .col
+        .progress-icon class="#{status == "Reviewed" ? 'active' : 'inactive'}"
+        =status
