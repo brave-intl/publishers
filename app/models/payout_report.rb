@@ -52,7 +52,7 @@ class PayoutReport < ApplicationRecord
     publishers = Publisher.joins(:uphold_connection).with_verified_channel
     channels = Channel.where(publisher_id: publishers.pluck(:id), verified: true)
 
-    missing_channels = channels.pluck(:id) -  potential_payments.pluck(:channel_id)
+    missing_channels = channels.pluck(:id) - potential_payments.pluck(:channel_id)
     missing_publishers = publishers.pluck(:id) - potential_payments.where(channel_id: nil).pluck(:publisher_id)
     { channels: missing_channels, publishers: missing_publishers }
   end
