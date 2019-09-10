@@ -26,7 +26,13 @@ h3.text-dark.d-flex.align-items-center
         td User has completed KYC
         td
           span class=(@publisher.uphold_connection.is_member? ? 'text-success' : 'text-danger')
-            = @publisher.uphold_connection.is_member? ? fa_icon("check", text: "Yes") : fa_icon("times", text: "No")
+            - if @publisher.uphold_connection.is_member?
+              = fa_icon("check", text: "Yes")
+              span.text-muted
+                span.mx-2= " – "
+                = @publisher.uphold_connection.member_at.strftime("%B %d, %Y %k:%M %Z")
+            - else
+              = fa_icon("times", text: "No")
       tr
         td Uphold ID
         td= link_to_if @publisher.uphold_connection.uphold_id, @publisher.uphold_connection.uphold_id, admin_publishers_path(q: @publisher.uphold_connection.uphold_id)
