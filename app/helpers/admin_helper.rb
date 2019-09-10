@@ -70,7 +70,7 @@ module AdminHelper
 
   def percentage_difference(x,y)
     numerator = (x-y).to_f
-    denominator = ((x+y)/2).to_f
+    denominator = y
 
     value = (numerator / denominator) * 100
 
