@@ -3,7 +3,10 @@ module BrowserChannelsDynoCaching
 
   def channels
     if dyno_cache_expired? || invalid_dyno_cache?
+      p "Updating cache for #{self.class.to_s}"
       update_dyno_cache
+    else
+      p "cache hit on #{self.class.to_s}"
     end
     render(json: self.class.class_variable_get(klass_dyno_cache), status: 200)
   end
