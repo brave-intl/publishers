@@ -72,17 +72,11 @@ module PublicS3
           end
           blob.save
 
-          p "albert public_s3 1 #{name}"
           if self.public_send("#{name}_attachment").present?
-            p "albert public_s3 2 #{name}"
             self.public_send("#{name}_attachment").purge_later
-            p "albert public_s3 3 #{name}"
           end
-          p "albert public_s3 4"
           attachment = ActiveStorage::Attachment.new(record: self, name: "#{name}", blob: blob)
-          p "albert public_s3 5"
           self.public_send("#{name}_attachment=", attachment)
-          p "albert public_s3 6"
         end
 
         def public_#{name}_url
