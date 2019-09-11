@@ -16,6 +16,7 @@ class Publishers::SiteBannersController < ApplicationController
   end
 
   def update
+    p "albert: #{params}"
     if site_banner
       site_banner.update_helper(params[:title], params[:description], params[:donation_amounts], params[:social_links])
       if params[:logo] && params[:logo].length < MAX_IMAGE_SIZE
@@ -33,8 +34,8 @@ class Publishers::SiteBannersController < ApplicationController
     head :ok
   rescue MiniMagick::Error
     render status: 400, json: { message: I18n.t('.shared.oh_no') }.to_json
-  rescue StandardError => e
-    render status: 400, json: { message: e.message }.to_json
+#  rescue StandardError => e
+#    render status: 400, json: { message: e.message }.to_json
   end
 
   def set_default_site_banner_mode
