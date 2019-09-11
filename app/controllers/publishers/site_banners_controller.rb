@@ -26,9 +26,11 @@ class Publishers::SiteBannersController < ApplicationController
       end
 
       if params[:cover] && params[:cover].length < MAX_IMAGE_SIZE
+        p "albert uploading background image"
         site_banner.upload_public_background_image(
           image_properties(attachment_type: SiteBanner::BACKGROUND)
         )
+        p "albert uploaded background image"
       end
     end
     head :ok
