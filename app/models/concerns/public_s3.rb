@@ -75,7 +75,7 @@ module PublicS3
           p "albert public_s3 1 #{name}"
           if self.public_send("#{name}_attachment").present?
             p "albert public_s3 2 #{name}"
-            self.public_send("#{name}_attachment").purge
+            self.public_send("#{name}_attachment").purge_later
             p "albert public_s3 3 #{name}"
           end
           p "albert public_s3 4"
