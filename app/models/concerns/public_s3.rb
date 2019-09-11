@@ -72,13 +72,18 @@ module PublicS3
           end
           blob.save
 
+          p "albert public_s3 1"
           transaction do
             if self.public_send("#{name}_attachment").present?
+              p "albert public_s3 2"
               self.public_send("#{name}_attachment").destroy
-              self.public_send("#{name}_attachment=", nil)
+              p "albert public_s3 3"
             end
+            p "albert public_s3 4"
             attachment = ActiveStorage::Attachment.new(record: self, name: "#{name}", blob: blob)
+            p "albert public_s3 5"
             self.public_send("#{name}_attachment=", attachment)
+            p "albert public_s3 6"
           end
         end
 
