@@ -1,10 +1,12 @@
-FROM ruby:2.4.5
+FROM ruby:2.5.5
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
 
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs libxml2 iceweasel xvfb fonts-liberation \
- libappindicator3-1 libnspr4 libnss3 libxss1 xdg-utils gdb chromium chromium-l10n
+RUN apt-get update
+RUN apt install nodejs
+RUN node --version
+RUN npm --version
 
 # Install Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
