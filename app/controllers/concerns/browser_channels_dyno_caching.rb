@@ -1,12 +1,10 @@
 module BrowserChannelsDynoCaching
   extend ActiveSupport::Concern
+  require 'sentry-raven'
 
   def channels
     if dyno_cache_expired? || invalid_dyno_cache?
-      p "Updating cache for #{self.class.to_s}"
       update_dyno_cache
-    else
-      p "cache hit on #{self.class.to_s}"
     end
     render(json: self.class.class_variable_get(klass_dyno_cache), status: 200)
   end
@@ -25,7 +23,6 @@ module BrowserChannelsDynoCaching
 
   def update_dyno_cache
     redis_value = Rails.cache.fetch(self.class::REDIS_KEY, race_condition_ttl: 30) do
-      require 'sentry-raven'
       Raven.capture_message("Failed to use redis cache for Dyno cache: #{klass_dyno_cache}, continuing to read from cache instead")
     end
     if redis_value.present?
