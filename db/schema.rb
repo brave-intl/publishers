@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_29_141054) do
+ActiveRecord::Schema.define(version: 2019_09_12_193357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -340,6 +340,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_141054) do
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
+    t.index ["referral_code"], name: "index_promo_registrations_on_referral_code"
   end
 
   create_table "publisher_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -394,6 +395,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_141054) do
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
+    t.index ["name"], name: "index_publishers_on_name"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
   end
 
@@ -446,6 +448,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_141054) do
     t.datetime "updated_at", null: false
     t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
+    t.index ["brave_publisher_id"], name: "index_site_channel_details_on_brave_publisher_id"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -469,6 +472,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_141054) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "stats", default: "{}", null: false
+    t.index ["name"], name: "index_twitch_channel_details_on_name"
     t.index ["twitch_channel_id"], name: "index_twitch_channel_details_on_twitch_channel_id"
   end
 
@@ -586,6 +590,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_141054) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "stats", default: "{}", null: false
+    t.index ["title"], name: "index_youtube_channel_details_on_title"
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end
 

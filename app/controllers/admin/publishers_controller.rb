@@ -36,11 +36,18 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
 
-    @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
+    @publishers = @publishers.where.not(name: PublisherStatusUpdate::DELETED)
 
-    respond_to do |format|
-      format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
-      format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
+    if @publishers.present?
+      respond_to do |format|
+        format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
+        format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: [] }
+        format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
+      end
     end
   end
 
