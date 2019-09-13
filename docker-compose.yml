@@ -15,8 +15,6 @@ services:
       - postgres
       - redis
       - mailcatcher
-      - eyeshade-web
-      - eyeshade-worker
     environment:
       - CHROME_BINARY=/usr/bin/chrome
       - ADDRESS=0.0.0.0
@@ -36,52 +34,6 @@ services:
       - UPHOLD_CLIENT_ID
       - UPHOLD_CLIENT_SECRET
       - UPHOLD_DASHBOARD_URL
-  eyeshade-worker:
-    container_name: eyeshade-worker-publishers
-    command: "npm run eyeshade-worker"
-    extends:
-      file: ../bat-ledger/base.yml
-      service: ledger
-    environment:
-      - MONGODB_URI=mongodb://mongo/eyeshade
-      - SERVICE=eyeshade
-      - PUBLISHERS_URL=http://app:3000
-      - TOKEN_LIST=b7747761-0656-48a1-8cb9-7b1b0315d054
-      - UPHOLD_ACCESS_TOKEN
-      - UPHOLD_CLIENT_ID
-      - UPHOLD_CLIENT_SECRET
-      - UPHOLD_ENVIRONMENT
-      - DATABASE_URL=postgres://eyeshade:password@eyeshade-postgres/eyeshade
-      - BAT_RATIOS_TOKEN
-    depends_on:
-      - mongo
-      - redis
-      - eyeshade-postgres
-
-  eyeshade-web:
-    container_name: eyeshade-web-publishers
-    ports:
-      - 3002
-    command: "npm run eyeshade-server"
-    extends:
-      file: ../bat-ledger/base.yml
-      service: ledger
-    environment:
-      - MONGODB_URI=mongodb://mongo/eyeshade
-      - SERVICE=eyeshade
-      - PUBLISHERS_URL=http://app:3000
-      - TOKEN_LIST=b7747761-0656-48a1-8cb9-7b1b0315d054
-      - UPHOLD_ACCESS_TOKEN
-      - UPHOLD_CLIENT_ID
-      - UPHOLD_CLIENT_SECRET
-      - UPHOLD_ENVIRONMENT
-      - DATABASE_URL=postgres://eyeshade:password@eyeshade-postgres/eyeshade
-      - BAT_RATIOS_TOKEN
-    depends_on:
-      - mongo
-      - redis
-      - eyeshade-postgres
-
   proxy:
     image: "dockercloud/haproxy"
     ports:
@@ -111,17 +63,3 @@ services:
     image: redis
     ports:
       - 6379
-
-  mongo:
-    image: mongo
-    ports:
-      - 27017
-
-  eyeshade-postgres:
-    container_name: eyeshade-postgres
-    image: postgres:10.4
-    ports:
-      - 5432
-    environment:
-      - "POSTGRES_USER=eyeshade"
-      - "POSTGRES_PASSWORD=password"
