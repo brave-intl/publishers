@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_162819) do
+ActiveRecord::Schema.define(version: 2019_08_29_141054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -390,6 +390,7 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.uuid "created_by_id"
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
+    t.boolean "thirty_day_login", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
@@ -512,11 +513,13 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.string "channel_identifier"
     t.string "card_id"
     t.string "address"
+    t.uuid "uphold_id"
     t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"
     t.index ["currency"], name: "index_uphold_connection_for_channels_on_currency"
     t.index ["uphold_connection_id"], name: "index_uphold_connection_for_channels_on_uphold_connection_id"
+    t.index ["uphold_id"], name: "index_uphold_connection_for_channels_on_uphold_id"
   end
 
   create_table "uphold_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

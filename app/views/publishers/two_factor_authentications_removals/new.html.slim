@@ -12,7 +12,6 @@
       .my-3.text-left
         == t("publishers.two_factor_authentication_removal.removals")
 
-
-      = submit_tag t("publishers.two_factor_authentication_removal.request_2fa_removal"), class: "btn btn-block btn-primary"
+      = link_to(t("publishers.two_factor_authentication_removal.request_2fa_removal"), two_factor_authentications_removal_path, method: :post, class: "btn btn-block btn-primary")
 
 

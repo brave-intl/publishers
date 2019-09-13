@@ -1,0 +1,11 @@
+
+h3.single-panel--headline = t(".heading")
+
+
+p == t(".body", time: removal.two_factor_authentication_removal_days_remaining)
+.my-3.text-left
+  == t("publishers.two_factor_authentication_removal.removals")
+
+= link_to(t('.cancel'), two_factor_authentications_removal_path, method: :delete, class: 'btn btn-danger')
+
+

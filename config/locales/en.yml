@@ -38,6 +38,7 @@ en:
     referrals: Referrals
     payments: Payments
     download: Download
+    payments: Payments
     existing_account: Already have an account?
     error: Oh no! Something went wrong, please contact support.
     get_started: Get Started
@@ -206,6 +207,8 @@ en:
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
       button: Log in to Brave Rewards
   batch_mailer:
+    update_to_rates:
+      subject: Brave Referral Rate Changes - Please Read
     update_to_tos:
       subject: Updates to the Brave Rewards Terms of Service for Creators
       body: >
@@ -484,22 +487,6 @@ en:
       login_email_changed: Great!
       login_email_verified_html: |
         <strong>'%{login_email}'</strong> has been verified. Please use this email as a login to access your account with Brave Rewards.
-    channel_taken_modal:
-      default_registerer: A channel manager
-      noscript_with_registration_html: |
-        The %{channel_type} "%{channel_title}" was added and verified by %{channel_registered_by} on %{channel_registration_date}.
-        Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
-      noscript_without_registration_html: |
-        The %{channel_type} "%{channel_title}" was previously added and verified by another user.
-        Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
-      modal:
-        title: Channel taken
-        leadin: The following %{channel_type} has already been added to a different account.
-        registration_date: Date
-        registered_by: Added by
-        contact_support_html: Contact <a href='mailto:%{support_email}'>our support</a> if this was processed in error.
-        try_logging_out: If this account is not the one you wanted to claim, please log out of %{channel_name} and try again.
-        ok: OK
     choose_new_channel_type:
       intro: Let's start with choosing where you're publishing your content.
       website:
@@ -665,7 +652,7 @@ en:
     two_factor_authentication_removal:
       heading: Having trouble with 2-factor authentication?
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
-      note: Please note, for your security, we require a <strong>2 week waiting period</strong> for the 2-factor authentication removal to complete
+      note: Please note, for your security, we require a <strong>2 day waiting period</strong> for the 2-factor authentication removal to complete
       removals: >
         <ul>
           <li>The account channels will need to be re-verified.</li>
@@ -693,7 +680,7 @@ en:
         </ul>
         <br></br>
       request_note:
-      request_success: You have requested a 2-factor security removal. Please check your e-mail to confirm and initiate the process.
+      request_success: You have successfully requested a 2-factor security removal.
       request_not_found: Publisher not found. Please ensure you have entered the correct e-mail
       request_2fa_removal: Request 2-factor Security Removal
       confirm_2fa_removal: Confirm 2-factor Security Removal
@@ -728,8 +715,11 @@ en:
       skip: Skip for now
       preview: Preview Banner
       customize: Customize
-    create:
-      uphold_error: There was a problem connecting with Uphold. Please try again.
+    uphold:
+      create:
+        uphold_error: There was a problem connecting with Uphold. %{message}
+        state_mismatch: Specifically, there was a mismatch between our state and Uphold.
+        missing_state: There is no state token, this might have happened if you clicked the back button.
   promo:
     publisher_not_found: "No publisher found for this promo, please contact support+publishers@basicattentiontoken.org."
     activate:
@@ -962,6 +952,11 @@ en:
       totp_alternative_link: Use authentication code instead.
       u2f_unavailable_totp_alternative_link: Use Authentication Code Instead
       submit_value: Try Again
+    removal:
+      heading: Two-factor Authentication
+      body: Your two-factor authentication is in the process of being removed. <br/><strong>%{time} remaining.</strong>
+      cancel: Cancel removal
+
     index:
       u2f_unavailable_html: |
         <strong>Security key not supported by your browser.</strong><br>

@@ -31,7 +31,7 @@ function showPendingContactEmail(pendingEmail) {
   let pendingEmailNotice = document.getElementById("pending_email_notice");
   let showContactEmail = document.getElementById("show_contact_email");
   if (pendingEmail && pendingEmail != showContactEmail.innerText) {
-    pendingEmailNotice.innerHTML = `Pending: Email address has been updated to: <strong>${pendingEmail}</strong>. An email has been sent to this address to confirm this change.`;
+    pendingEmailNotice.innerText = `Pending: Email address has been updated to: ${pendingEmail}. An email has been sent to this address to confirm this change.`;
     pendingEmailNotice.classList.remove("hidden");
   } else {
     pendingEmailNotice.classList.add("hidden");
@@ -636,7 +636,7 @@ document.addEventListener("DOMContentLoaded", function() {
           let pendingEmailNotice = document.getElementById(
             "pending_email_notice"
           );
-          pendingEmailNotice.innerHTML =
+          pendingEmailNotice.innerText =
             "Unable to change email; the email address may be in use. Please enter a different email address.";
           pendingEmailNotice.classList.remove("hidden");
         }

@@ -1,12 +1,10 @@
+require "publishers/restricted_channels"
+
 class Channel < ApplicationRecord
+  include ChannelProperties
+
   has_paper_trail
 
-  YOUTUBE = "youtube".freeze
-  TWITCH = "twitch".freeze
-  TWITTER = "twitter".freeze
-  VIMEO = "vimeo".freeze
-  REDDIT = "reddit".freeze
-  GITHUB = "github".freeze
   CONTEST_TIMEOUT = 10.days
 
   YOUTUBE_VIEW_COUNT = :youtube_view_count
@@ -19,33 +17,13 @@ class Channel < ApplicationRecord
   belongs_to :publisher
   belongs_to :details, polymorphic: true, validate: true, autosave: true, optional: false, dependent: :delete
 
-  belongs_to :site_channel_details, -> {
-    where(channels: { details_type: 'SiteChannelDetails' }).includes(:channels)
-  }, foreign_key: 'details_id'
-
-  belongs_to :youtube_channel_details, -> {
-    where(channels: { details_type: 'YoutubeChannelDetails' }).includes(:channels)
-  }, foreign_key: 'details_id'
-
-  belongs_to :twitch_channel_details, -> {
-    where(channels: { details_type: 'TwitchChannelDetails' }).includes(:channels)
-  }, foreign_key: 'details_id'
-
-  belongs_to :twitter_channel_details, -> {
-    where(channels: { details_type: 'TwitterChannelDetails' }).includes(:channels)
-  }, foreign_key: 'details_id'
-
-  belongs_to :vimeo_channel_details, -> {
-    where(channels: { details_type: 'VimeoChannelDetails' }).includes(:channels)
-  }, foreign_key: 'details_id'
-
-  belongs_to :reddit_channel_details, -> {
-    where(channels: { details_type: 'RedditChannelDetails' }).includes(:channels)
-  }, foreign_key: 'details_id'
-
-  belongs_to :github_channel_details, -> {
-    where(channels: { details_type: 'GithubChannelDetails' }).includes(:channels)
-  }, foreign_key: 'details_id'
+  # Defined in app/models/concerns/channel_properties
+  has_property :youtube
+  has_property :twitch
+  has_property :twitter
+  has_property :vimeo
+  has_property :reddit
+  has_property :github
 
   has_one :promo_registration, dependent: :destroy
   has_many :uphold_connection_for_channel
@@ -77,32 +55,20 @@ class Channel < ApplicationRecord
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
   after_save :register_channel_for_promo, if: :should_register_channel_for_promo
-  after_save :create_channel_card, :notify_slack, if: -> { :saved_change_to_verified? && verified? }
+  after_save :notify_slack, if: -> { :saved_change_to_verified? && verified? }
+
+  after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
 
   before_destroy :preserve_contested_by_channels
 
+  belongs_to :site_channel_details, -> {
+    where(channels: { details_type: 'SiteChannelDetails' }).includes(:channels)
+  }, foreign_key: 'details_id'
+
   scope :site_channels, -> { joins(:site_channel_details) }
   scope :other_verified_site_channels, -> (id:) { site_channels.where(verified: true).where.not(id: id) }
-
-  scope :youtube_channels, -> { joins(:youtube_channel_details) }
-  scope :other_verified_youtube_channels, -> (id:) { youtube_channels.where(verified: true).where.not(id: id) }
-
-  scope :twitch_channels, -> { joins(:twitch_channel_details) }
-  scope :other_verified_twitch_channels, -> (id:) { twitch_channels.where(verified: true).where.not(id: id) }
-
-  scope :twitter_channels, -> { joins(:twitter_channel_details) }
-  scope :other_verified_twitter_channels, -> (id:) { twitter_channels.where(verified: true).where.not(id: id) }
-
-  scope :vimeo_channels, -> { joins(:vimeo_channel_details) }
-  scope :other_verified_vimeo_channels, -> (id:) { vimeo_channels.where(verified: true).where.not(id: id) }
-
-  scope :reddit_channels, -> { joins(:reddit_channel_details) }
-  scope :other_verified_reddit_channels, -> (id:) { reddit_channels.where(verified: true).where.not(id: id) }
-
-  scope :github_channels, -> { joins(:github_channel_details) }
-  scope :other_verified_github_channels, -> (id:) { github_channels.where(verified: true).where.not(id: id) }
 
   # Once the verification_method has been set it shows we have presented the publisher with the token. We need to
   # ensure this site_channel will be preserved so the publisher cna come back to it.
@@ -111,24 +77,6 @@ class Channel < ApplicationRecord
   }
   scope :not_visible_site_channels, -> {
     site_channels.where(verified: [false, nil]).where(site_channel_details: { verification_method: nil })
-  }
-  scope :visible_youtube_channels, -> {
-    youtube_channels.where.not('youtube_channel_details.youtube_channel_id': nil)
-  }
-  scope :visible_twitch_channels, -> {
-    twitch_channels.where.not('twitch_channel_details.twitch_channel_id': nil)
-  }
-  scope :visible_twitter_channels, -> {
-    twitch_channels.where.not('twitter_channel_details.twitter_channel_id': nil)
-  }
-  scope :visible_vimeo_channels, -> {
-    twitch_channels.where.not('vimeo_channel_details.vimeo_channel_id': nil)
-  }
-  scope :visible_reddit_channels, -> {
-    reddit_channels.where.not('reddit_channel_details.reddit_channel_id': nil)
-  }
-  scope :visible_github_channels, -> {
-    github_channels.where.not('github_channel_details.github_channel_id': nil)
   }
 
   scope :visible, -> {
@@ -142,52 +90,32 @@ class Channel < ApplicationRecord
 
   scope :verified, -> { where(verified: true) }
 
-  scope :by_channel_identifier, -> (identifier) {
-    case identifier.split("#")[0]
-    when "twitch"
-      visible_twitch_channels.where('twitch_channel_details.twitch_channel_id': identifier.split(":").last)
-    when "youtube"
-      visible_youtube_channels.where('youtube_channel_details.youtube_channel_id': identifier.split(":").last)
-    when "twitter"
-      visible_twitter_channels.where('twitch_channel_details.twitter_channel_id': identifier.split(":").last)
-    when "vimeo"
-      visible_vimeo_channels.where('vimeo_channel_details.vimeo_channel_id': identifier.split(":").last)
-    when "reddit"
-      visible_reddit_channels.where('reddit_channel_details.reddit_channel_id': identifier.split(":").last)
-    when "github"
-      visible_github_channels.where('github_channel_details.github_channel_id': identifier.split(":").last)
-    else
-      visible_site_channels.where('site_channel_details.brave_publisher_id': identifier)
-    end
-  }
-
   def self.statistical_totals
-    {
+    properties = {}
+    PROPERTIES.each { |p| properties[p] = Channel.verified.send("#{p}_channels").count }
+
+    properties.merge({
       all_channels: Channel.verified.count,
-      twitch: Channel.verified.twitch_channels.count,
-      youtube:  Channel.verified.youtube_channels.count,
       site:  Channel.verified.site_channels.count,
-      twitter:  Channel.verified.twitter_channels.count,
-      reddit: Channel.verified.reddit_channels.count,
-      github: Channel.verified.github_channels.count,
-      vimeo: Channel.verified.vimeo_channels.count,
-    }
+    })
   end
 
   def self.duplicates
-    entries = [
-      TwitchChannelDetails.joins(:channel).where("channels.verified = true").select(:name).group(:name),
-      YoutubeChannelDetails.joins(:channel).where("channels.verified = true").select(:youtube_channel_id).group(:youtube_channel_id),
-      TwitterChannelDetails.joins(:channel).where("channels.verified = true").select(:twitter_channel_id).group(:twitter_channel_id),
-      SiteChannelDetails.joins(:channel).where("channels.verified = true").select(:brave_publisher_id).group(:brave_publisher_id),
-      VimeoChannelDetails.joins(:channel).where("channels.verified = true").select(:vimeo_channel_id).group(:vimeo_channel_id),
-    ]
+    duplicates = []
 
-    duplicates = entries.map do |entry|
-      entry.having("count(*) >1").map { |x, y| x.channel_identifier }
+    entries = PROPERTIES.map do |channel|
+      channel_id = ActiveRecord::Base.sanitize_sql("#{channel}_channel_id")
+      public_send("#{channel}_channels").verified.select(channel_id).group(channel_id)
     end
 
-    @duplicates ||= duplicates.flatten
+    entries.map do |entry|
+      entry.having("count(*) >1").each do |x, y|
+        key = x.as_json.keys.detect { |z| z.include? "channel_id" }
+        duplicates << x[key]
+      end
+    end
+
+    duplicates.flatten
   end
 
   def publication_title
@@ -217,46 +145,21 @@ class Channel < ApplicationRecord
   # e.g.
   # Channel.find_by_channel_identifier(channel.details.channel_identifier)
   # => <Channel id: "55ecd577-0425-420f-8796-78598b06c8a0",...,>
-  def self.find_by_channel_identifier(channel_identifier)
-    channel_id_split_on_prefix = channel_identifier.split(":", 2)
-    channel_is_site_channel = channel_id_split_on_prefix.length == 1 # hack to identify site channels
+  def self.find_by_channel_identifier(identifier)
+    name, property = identifier.split("#")
+    _, value = property&.split(':')
 
-    if channel_is_site_channel
-      channel_details_type_identifier = channel_id_split_on_prefix.first
-      return SiteChannelDetails.where(brave_publisher_id: channel_details_type_identifier).
-          joins(:channel).
-          where('channels.verified = true').first&.channel
-    end
-
-    prefix = channel_id_split_on_prefix.first
-    channel_details_type_identifier = channel_id_split_on_prefix.second
-    case prefix
-    when "youtube#channel"
-      YoutubeChannelDetails.where(youtube_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
-    when "twitter#channel"
-      TwitterChannelDetails.where(twitter_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
-    when "vimeo#channel"
-      VimeoChannelDetails.where(vimeo_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
-    when "reddit#channel"
-      RedditChannelDetails.where(reddit_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
-    when "github#channel"
-      GithubChannelDetails.where(github_channel_id: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
-    when "twitch#channel"
-    when "twitch#author"
-      TwitchChannelDetails.where(name: channel_details_type_identifier).joins(:channel).where('channels.verified = true').first&.channel
+    if name == 'twitch'
+      Channel.twitch_channels.verified.where("twitch_channel_details.name": value).first
+    elsif PROPERTIES.include?(name)
+      public_send("#{name}_channels").verified.where("#{name}_channel_details.#{name}_channel_id": value).first
     else
-      Rails.logger.info("Unable to find channel for channel identifier #{channel_identifier}")
-      nil
+      visible_site_channels.where('site_channel_details.brave_publisher_id': identifier).first
     end
   end
 
   def promo_enabled?
-    if promo_registration.present?
-      if promo_registration.referral_code.present?
-        return true
-      end
-    end
-    false
+    promo_registration&.referral_code&.present?
   end
 
   def verification_failed!(details = nil) # rubocop:disable Airbnb/OptArgParameters
@@ -290,7 +193,6 @@ class Channel < ApplicationRecord
   end
 
   def needs_admin_approval?
-    require "publishers/restricted_channels"
     Publishers::RestrictedChannels.restricted?(self)
   end
 
@@ -425,29 +327,12 @@ class Channel < ApplicationRecord
   end
 
   def verified_duplicate_channels_must_be_contested
-    duplicate_verified_channels = case details_type
-                                  when "SiteChannelDetails"
-                                    Channel.other_verified_site_channels(id: id).
-                                      where(site_channel_details: { brave_publisher_id: details.brave_publisher_id })
-                                  when "YoutubeChannelDetails"
-                                    Channel.other_verified_youtube_channels(id: id).
-                                      where(youtube_channel_details: { youtube_channel_id: details.youtube_channel_id })
-                                  when "TwitchChannelDetails"
-                                    Channel.other_verified_twitch_channels(id: id).
-                                      where(twitch_channel_details: { twitch_channel_id: details.twitch_channel_id })
-                                  when "TwitterChannelDetails"
-                                    Channel.other_verified_twitter_channels(id: id).
-                                      where(twitter_channel_details: { twitter_channel_id: details.twitter_channel_id })
-                                  when "VimeoChannelDetails"
-                                    Channel.other_verified_vimeo_channels(id: id).
-                                      where(vimeo_channel_details: { vimeo_channel_id: details.vimeo_channel_id })
-                                  when "RedditChannelDetails"
-                                    Channel.other_verified_reddit_channels(id: id).
-                                      where(reddit_channel_details: { reddit_channel_id: details.reddit_channel_id })
-                                  when "GithubChannelDetails"
-                                    Channel.other_verified_github_channels(id: id).
-                                      where(github_channel_details: { github_channel_id: details.github_channel_id })
-                                  end
+    name = type_display.downcase
+    if PROPERTIES.include?(name)
+      duplicate_verified_channels = Channel.send("other_verified_#{name}_channels", id: id).where("#{name}_channel_details": { "#{name}_channel_id": details.send("#{name}_channel_id") })
+    elsif details_type == "SiteChannelDetails"
+      duplicate_verified_channels = Channel.other_verified_site_channels(id: id).where(site_channel_details: { brave_publisher_id: details.brave_publisher_id })
+    end
 
     if duplicate_verified_channels.any?
       if duplicate_verified_channels.count > 1

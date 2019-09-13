@@ -44,9 +44,20 @@ class Publisher < ApplicationRecord
 
   attr_encrypted :authentication_token, key: :encryption_key
 
-  validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? || deleted? }
-  validates :email, uniqueness: { case_sensitive: false }, allow_nil: true, unless: -> { deleted? }
-  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? && !deleted? }
+  validates :email,
+    format: { with: URI::MailTo::EMAIL_REGEXP },
+    presence: true,
+    allow_nil: true,
+    uniqueness: { case_sensitive: false },
+    unless: -> { deleted? }
+
+  validates :pending_email,
+    format: { with: URI::MailTo::EMAIL_REGEXP },
+    presence: true,
+    allow_nil: true,
+    uniqueness: { case_sensitive: false },
+    unless: -> { deleted? }
+
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change, unless: -> { deleted? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
@@ -312,7 +323,7 @@ class Publisher < ApplicationRecord
 
   def timeout_in
     return 2.hours if admin?
-    30.minutes
+    thirty_day_login? ? 30.days : 30.minutes
   end
 
   private
