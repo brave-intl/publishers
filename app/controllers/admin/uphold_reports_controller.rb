@@ -1,9 +1,9 @@
 require 'csv'
 
 module Admin
-  class UpholdReportsController < AdminController
+  class UpholdStatusReportsController < AdminController
     def index
-      @uphold_report = UpholdReport.
+      @uphold_report = UpholdStatusReport.
         group('(EXTRACT(YEAR FROM created_at))::integer').
         group('(EXTRACT(MONTH FROM created_at))::integer').
         order('2 DESC, 3 DESC').count
@@ -14,7 +14,7 @@ module Admin
       start_date = date.at_beginning_of_month
       end_date = date.at_end_of_month
 
-      @uphold_report = UpholdReport.where("created_at >= :start AND created_at <= :finish", start: start_date, finish: end_date)
+      @uphold_report = UpholdStatusReport.where("created_at >= :start AND created_at <= :finish", start: start_date, finish: end_date)
 
       generated = []
       generated << ["publisher id", "publisher created at", "uphold id", "uphold connected time"].to_csv

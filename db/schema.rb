@@ -543,13 +543,14 @@ ActiveRecord::Schema.define(version: 2019_09_10_163930) do
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 
-  create_table "uphold_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "uphold_status_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id"
     t.uuid "uphold_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["created_at"], name: "index_uphold_reports_on_created_at"
-    t.index ["publisher_id"], name: "index_uphold_reports_on_publisher_id"
+    t.index ["created_at"], name: "index_uphold_status_reports_on_created_at"
+    t.index ["publisher_id"], name: "index_uphold_status_reports_on_publisher_id"
+    t.index ["uphold_id"], name: "index_uphold_status_reports_on_uphold_id"
   end
 
   create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

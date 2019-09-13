@@ -102,9 +102,9 @@ module Publishers
       uphold_id = connection.uphold_details&.id
       return if uphold_id.blank?
       # Return if we've already created a report for this id
-      return if UpholdReport.find_by(uphold_id: uphold_id).present?
+      return if UpholdStatusReport.find_by(uphold_id: uphold_id).present?
 
-      UpholdReport.create(
+      UpholdStatusReport.create(
         publisher: current_publisher,
         uphold_id: uphold_id
       )

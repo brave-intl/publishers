@@ -252,7 +252,7 @@ Rails.application.routes.draw do
     resources :promo_campaigns, only: %i(create)
     root to: "dashboard#index" # <--- Root route
 
-    resources :uphold_reports, only: [:index, :show]
+    resources :uphold_status_reports, only: [:index, :show]
   end
 
   resources :errors, only: [], path: "/" do
