@@ -37,7 +37,7 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.6.1"
+gem "devise", "~> 4.7.1"
 gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
