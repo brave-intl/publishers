@@ -15,7 +15,6 @@ module Publishers
       redirect_to two_factor_authentications_path, flash: { notice: t("publishers.two_factor_authentication_removal.request_success") }
     end
 
-
     def destroy
       publisher = pending_2fa_current_publisher
 
