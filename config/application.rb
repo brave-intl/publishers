@@ -32,10 +32,14 @@ module Publishers
     end
 
     config.lograge.enabled = true
+    config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
     config.active_record.belongs_to_required_by_default = false
 
     config.time_zone = "Pacific Time (US & Canada)"
     config.active_record.default_timezone = :local
+
+    config.active_storage.queues.analysis = :low
+    config.active_storage.queues.purge    = :low
     # config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 #    config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
 #    config.i18n.default_locale = :en
