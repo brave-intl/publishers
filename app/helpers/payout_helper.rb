@@ -3,8 +3,7 @@ module PayoutHelper
     selected = index <= statuses.find_index(current)
 
     return 'inactive' unless selected
-
-    "animated" if selected == current && current != I18n.t(".publishers.payout_status.statuses.done")
+    return "animated" if  statuses[index] == current && current != I18n.t(".publishers.payout_status.statuses.done")
 
     "active"
   end
