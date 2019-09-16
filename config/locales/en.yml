@@ -488,10 +488,10 @@ en:
       amount: Amount
       amount_description: "* The amount to be paid is based on our report generated at %{time}."
       information:
-        not_found: At the time we generated the payout report there were no pending payouts for your account.
-        connect_uphold: At the time we generated the payout report you did not have your Uphold account connected.
-        reauthorize_uphold: At the time we generated the payout report your Uphold account needed to be reconnected.
-        kyc_required: At the time we generated the payout report your identity was not yet verified through Uphold.
+        not_found: At the time we generated the payout report, there were no pending payouts for your account.
+        connect_uphold: At the time we generated the payout report, you did not have your Uphold account connected.
+        reauthorize_uphold: At the time we generated the payout report, your Uphold account needed to be reconnected.
+        kyc_required: At the time we generated the payout report, your identity was not yet verified through Uphold.
         no_payment: You will not be able to receive payment for this cycle.
     change_email:
       login_email: Login Email
