@@ -191,7 +191,7 @@ class PublishersController < ApplicationController
       uphold_connection = UpholdConnection.create!(publisher: current_publisher)
     end
 
-    @payout_report = PayoutReport.where(final: true).order(created_at: :desc).first if payout_in_progress?
+    @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first if payout_in_progress?
 
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
