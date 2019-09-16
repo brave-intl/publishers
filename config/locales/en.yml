@@ -486,7 +486,7 @@ en:
         in_progress: In Progress
         done: Done
       amount: Amount
-      amount_description: "* The amount to be paid is based our report generated at %{time}."
+      amount_description: "* The amount to be paid is based on our report generated at %{time}."
       information:
         not_found: At the time we generated the payout report there were no pending payouts for your account.
         connect_uphold: At the time we generated the payout report you did not have your Uphold account connected.
