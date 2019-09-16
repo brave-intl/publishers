@@ -275,4 +275,9 @@ Rails.application.routes.draw do
     end
   end
   mount Sidekiq::Web, at: "/magic"
+  require 'sidekiq/api'
+  match "mailer-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('mailer').size < 100 ? "OK" : "UHOH" ]] }, via: :get
+  match "default-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('default').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
+  match "scheduler-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('scheduler').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
+  match "transactional-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('transactional').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
 end
