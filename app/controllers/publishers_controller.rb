@@ -191,6 +191,8 @@ class PublishersController < ApplicationController
       uphold_connection = UpholdConnection.create!(publisher: current_publisher)
     end
 
+    @payout_report = PayoutReport.where(final: true).order(created_at: :desc).first if payout_in_progress?
+
     # ensure the wallet has been fetched, which will check if Uphold needs to be re-authorized
     # ToDo: rework this process?
     @wallet = current_publisher.wallet
@@ -353,5 +355,9 @@ class PublishersController < ApplicationController
   def require_verified_email
     return if current_publisher.email_verified?
     redirect_to(publisher_next_step_path(current_publisher), alert: t(".email_verification_required"))
+  end
+
+  def payout_in_progress?
+    !!Rails.cache.fetch('payout_in_progress')
   end
 end

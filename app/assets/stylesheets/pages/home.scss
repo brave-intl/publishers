@@ -1200,15 +1200,47 @@ h6 {
   max-width: 300px;
 }
 
-.progress-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+.payout-progress {
+  display: flex;
+  align-items: center;
 
-  &.active {
+  .icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+
+    &.active {
+      background: $braveBrand;
+    }
+
+    &.inactive {
+      border: 1px solid $braveGray-8;
+    }
+
+    &.animated {
+      animation: colorchange 3s linear infinite;
+
+      @keyframes colorchange
+      {
+        0%   {background: $braveBrand;}
+        50%   {background: $braveBrand-Light;}
+        100%   {background: $braveBrand;}
+      }
+    }
+  }
+
+  progress {
+    width: auto;
+    flex-grow: 1;
+    height: 1px;
+    background: $braveGray-8;
+    -webkit-appearance: none;
+  }
+  progress::-webkit-progress-bar {
+    background: $braveGray-8;
+  }
+  progress::-webkit-progress-value {
     background: $braveBrand;
   }
-  &.inactive {
-    background: $braveGray-4;
-  }
+
 }
