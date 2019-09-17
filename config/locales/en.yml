@@ -652,7 +652,14 @@ en:
     two_factor_authentication_removal:
       heading: Having trouble with 2-factor authentication?
       leadin: If you've lost your authenticator app or device, access can be restored by removing your 2-factor security settings.
-      note: Please note, for your security, we require a 2 week waiting period for the 2-factor authentication removal to complete. Additionally, once it is completed you will need to reverify your channels and uphold wallet.
+      note: Please note, for your security, we require a <strong>2 day waiting period</strong> for the 2-factor authentication removal to complete
+      removals: >
+        <ul>
+          <li>The account channels will need to be re-verified.</li>
+          <li>The account wallet will need to be re-verified.</li>
+          <li>There will be a 30-day waiting period on payments.</li>
+        </ul>
+
       reminder_body_html: >
         This is a friendly reminder that the requested changes to your security settings are in progress. In %{remainder}, 2-factor authentication will be removed from your account. Please note, once your 2-factor authentication is removed:
         <ul>
@@ -673,7 +680,7 @@ en:
         </ul>
         <br></br>
       request_note:
-      request_success: You have requested a 2-factor security removal. Please check your e-mail to confirm and initiate the process.
+      request_success: You have successfully requested a 2-factor security removal.
       request_not_found: Publisher not found. Please ensure you have entered the correct e-mail
       request_2fa_removal: Request 2-factor Security Removal
       confirm_2fa_removal: Confirm 2-factor Security Removal
@@ -945,6 +952,11 @@ en:
       totp_alternative_link: Use authentication code instead.
       u2f_unavailable_totp_alternative_link: Use Authentication Code Instead
       submit_value: Try Again
+    removal:
+      heading: Two-factor Authentication
+      body: Your two-factor authentication is in the process of being removed. <br/><strong>%{time} remaining.</strong>
+      cancel: Cancel removal
+
     index:
       u2f_unavailable_html: |
         <strong>Security key not supported by your browser.</strong><br>

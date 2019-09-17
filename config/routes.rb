@@ -24,6 +24,8 @@ Rails.application.routes.draw do
           patch :disconnect_uphold, action: :destroy
           patch :confirm_default_currency
         end
+
+        resource :two_factor_authentications_removal
       end
 
       get :log_out
@@ -41,13 +43,10 @@ Rails.application.routes.draw do
       patch :update
       patch :complete_signup
       get :choose_new_channel_type
-      get :two_factor_authentication_removal
       get :security, to: 'publishers/security#index'
       get :prompt_security, to: 'publishers/security#prompt'
       get :settings, to: 'publishers/settings#index'
-      post :request_two_factor_authentication_removal
-      get :confirm_two_factor_authentication_removal
-      get :cancel_two_factor_authentication_removal
+
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)

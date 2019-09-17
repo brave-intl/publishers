@@ -1,6 +1,4 @@
 class PublishersController < ApplicationController
-  # Number of requests to #create before we present a captcha.
-
   include PublishersHelper
   include PromosHelper
 
@@ -13,17 +11,11 @@ class PublishersController < ApplicationController
     :statement,
     :statements,
     :update,
-    :uphold_status,
-    :uphold_verified,
   ].freeze
 
   before_action :authenticate_via_token, only: %i(show)
-  before_action :authenticate_publisher!, except: %i(
-    two_factor_authentication_removal
-    request_two_factor_authentication_removal
-    confirm_two_factor_authentication_removal
-    cancel_two_factor_authentication_removal
-  )
+  before_action :authenticate_publisher!
+
   before_action :require_publisher_email_not_verified_through_youtube_auth,
                 except: %i(update_email change_email)
 
@@ -101,53 +93,6 @@ class PublishersController < ApplicationController
         format.json { render(json: { errors: current_publisher.errors }, status: 400) }
         format.html { render(status: 400) }
       end
-    end
-  end
-
-  def request_two_factor_authentication_removal
-    publisher = Publisher.by_email_case_insensitive(params[:email]).first
-    flash[:notice] = t("publishers.two_factor_authentication_removal.request_success")
-    if publisher
-      if publisher.two_factor_authentication_removal.blank?
-        MailerServices::TwoFactorAuthenticationRemovalRequestEmailer.new(publisher: publisher).perform
-      elsif !publisher.two_factor_authentication_removal.removal_completed
-        MailerServices::TwoFactorAuthenticationRemovalCancellationEmailer.new(publisher: publisher).perform
-      end
-    end
-    redirect_to two_factor_authentication_removal_publishers_path
-  end
-
-  def cancel_two_factor_authentication_removal
-    sign_out(current_publisher) if current_publisher
-
-    publisher = Publisher.find(params[:id])
-    token = params[:token]
-
-    if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: publisher.email).perform
-      publisher.two_factor_authentication_removal.destroy if publisher.two_factor_authentication_removal.present?
-      flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_cancel_flash")
-      redirect_to(root_path)
-    else
-      flash[:notice] = t("publishers.shared.error")
-      redirect_to(root_path)
-    end
-  end
-
-  def confirm_two_factor_authentication_removal
-    sign_out(current_publisher) if current_publisher
-
-    publisher = Publisher.find(params[:id])
-    token = params[:token]
-
-    if PublisherTokenAuthenticator.new(publisher: publisher, token: token, confirm_email: publisher.email).perform
-      publisher.register_for_2fa_removal if publisher.two_factor_authentication_removal.blank?
-      publisher.reload
-      MailerServices::TwoFactorAuthenticationRemovalReminderEmailer.new(publisher: publisher).perform
-      flash[:notice] = t("publishers.two_factor_authentication_removal.confirm_login_flash")
-      redirect_to(root_path)
-    else
-      flash[:notice] = t("publishers.shared.error")
-      redirect_to(root_path)
     end
   end
 

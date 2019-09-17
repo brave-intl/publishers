@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one: &one
-  publisher: verified
+  publisher: uphold_connected
   removal_completed: false
 
 two: &two
-  publisher: verified
+  publisher: uphold_connected
+  removal_completed: false
+
+three: &three
+  publisher: admin
   removal_completed: false
