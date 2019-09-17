@@ -19,6 +19,13 @@ class ApplicationController < ActionController::Base
     render file: "admin/errors/whitelist.html", layout: false
   end
 
+  around_action :switch_locale
+
+  def switch_locale(&action)
+    locale = params[:locale] || I18n.default_locale
+    I18n.with_locale(locale, &action)
+  end
+
   def no_cache
     return if controller_name == 'static' # We want to cache on the homepage
     response.headers['Cache-Control'] = 'no-cache, no-store'
