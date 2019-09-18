@@ -12,7 +12,7 @@ table.table
       td Number of users
       td
   tbody
-    - @uphold_report.each do |report|
+    - @uphold_status_reports.each do |report|
       tr
         td
           - date = report.as_json.first
