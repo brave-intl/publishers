@@ -3,7 +3,7 @@ require 'csv'
 module Admin
   class UpholdStatusReportsController < AdminController
     def index
-      @uphold_report = UpholdStatusReport.
+      @uphold_status_reports = UpholdStatusReport.
         group('(EXTRACT(YEAR FROM created_at))::integer').
         group('(EXTRACT(MONTH FROM created_at))::integer').
         order('2 DESC, 3 DESC').count
