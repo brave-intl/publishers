@@ -14,12 +14,12 @@ module Admin
       start_date = date.at_beginning_of_month
       end_date = date.at_end_of_month
 
-      @uphold_report = UpholdStatusReport.where("created_at >= :start AND created_at <= :finish", start: start_date, finish: end_date)
+      uphold_status_reports = UpholdStatusReport.where("created_at >= :start AND created_at <= :finish", start: start_date, finish: end_date)
 
       generated = []
       generated << ["publisher id", "publisher created at", "uphold id", "uphold connected time"].to_csv
 
-      @uphold_report.each do |report|
+      uphold_status_reports.each do |report|
         generated << [report.publisher_id, report.publisher.created_at, report.uphold_id, report.created_at].to_csv
       end
 
