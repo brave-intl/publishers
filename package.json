@@ -110,7 +110,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-react": "^3.6.0",
-    "webpack-dev-server": "3.7.1"
+    "webpack-dev-server": "3.8.1"
   },
   "resolutions": {
     "js-yaml": "3.13.1",
