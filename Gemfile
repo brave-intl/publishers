@@ -114,7 +114,7 @@ gem "sass-rails", "~> 5.0"
 gem "sendgrid-ruby"
 
 # Exception logging
-gem "sentry-raven", "~> 2.1", require: false
+gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
 gem "sidekiq"
@@ -133,7 +133,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', '~> 4.0.0.rc.2'
+gem 'webpacker', '~> 4.0.7'
 
 # pagination support for models
 gem "will_paginate"
@@ -142,6 +142,7 @@ gem "will_paginate"
 gem 'yt'
 
 gem "zendesk_api"
+gem "zeitwerk", '~> 2.1.10'
 
 group :development, :staging do
   # Offline domain normalization
@@ -181,7 +182,7 @@ end
 
 group :production do
   # App monitoring
-  gem "newrelic_rpm", "~> 3.16"
+  gem "newrelic_rpm", "~> 6.6.0.358"
 end
 
 group :development, :test do

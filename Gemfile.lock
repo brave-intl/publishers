@@ -258,7 +258,7 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.0.3)
     netrc (0.11.0)
-    newrelic_rpm (3.18.1.330)
+    newrelic_rpm (6.6.0.358)
     nio4r (2.4.0)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
@@ -432,7 +432,7 @@ GEM
       rubyzip (~> 1.2, >= 1.2.2)
     sendgrid-ruby (6.0.0)
       ruby_http_client (~> 3.3.0)
-    sentry-raven (2.11.0)
+    sentry-raven (2.11.2)
       faraday (>= 0.7.6, < 1.0)
     sidekiq (5.2.7)
       connection_pool (~> 2.2, >= 2.2.2)
@@ -514,7 +514,7 @@ GEM
       nokogiri (~> 1.8)
     yt (0.32.4)
       activesupport
-    zeitwerk (2.1.9)
+    zeitwerk (2.1.10)
     zendesk_api (1.19.0)
       faraday (~> 0.9)
       hashie (>= 3.5.2, < 4.0.0)
@@ -560,7 +560,7 @@ DEPENDENCIES
   minitest-rails
   mocha
   mongo (~> 2.2, >= 2.2.5)
-  newrelic_rpm (~> 3.16)
+  newrelic_rpm (~> 6.6.0.358)
   nokogiri
   omniauth-github
   omniauth-google-oauth2 (~> 0.5.2)
@@ -588,7 +588,7 @@ DEPENDENCIES
   rubocop-airbnb
   sass-rails (~> 5.0)
   sendgrid-ruby
-  sentry-raven (~> 2.1)
+  sentry-raven (~> 2.11.2)
   sidekiq
   sidekiq-scheduler (~> 2.2.2)
   simplecov
@@ -600,9 +600,10 @@ DEPENDENCIES
   vcr
   web-console
   webmock (~> 3.0)
-  webpacker (~> 4.0.0.rc.2)
+  webpacker (~> 4.0.7)
   will_paginate
   yt
+  zeitwerk (~> 2.1.10)
   zendesk_api
 
 RUBY VERSION
