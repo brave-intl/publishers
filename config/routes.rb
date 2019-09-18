@@ -24,6 +24,8 @@ Rails.application.routes.draw do
           patch :disconnect_uphold, action: :destroy
           patch :confirm_default_currency
         end
+
+        resource :two_factor_authentications_removal
       end
 
       get :log_out
@@ -41,13 +43,10 @@ Rails.application.routes.draw do
       patch :update
       patch :complete_signup
       get :choose_new_channel_type
-      get :two_factor_authentication_removal
       get :security, to: 'publishers/security#index'
       get :prompt_security, to: 'publishers/security#prompt'
       get :settings, to: 'publishers/settings#index'
-      post :request_two_factor_authentication_removal
-      get :confirm_two_factor_authentication_removal
-      get :cancel_two_factor_authentication_removal
+
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)
@@ -194,7 +193,7 @@ Rails.application.routes.draw do
 
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
-    resources :payout_reports, only: %i(index show create) do
+    resources :payout_reports do
       collection do
         post :notify
         post :upload_settlement_report
@@ -277,4 +276,9 @@ Rails.application.routes.draw do
     end
   end
   mount Sidekiq::Web, at: "/magic"
+  require 'sidekiq/api'
+  match "mailer-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('mailer').size < 100 ? "OK" : "UHOH" ]] }, via: :get
+  match "default-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('default').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
+  match "scheduler-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('scheduler').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
+  match "transactional-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('transactional').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
 end
