@@ -19,5 +19,4 @@ table.table
           = Date::MONTHNAMES[date.second]
           = " #{date.first}"
         td= report.as_json.second
-        td= link_to("Download", admin_uphold_report_path(date.join('-')), class:'btn btn-default')
-
+        td= link_to("Download", admin_uphold_status_report_path(date.join('-')), class:'btn btn-default')
