@@ -2,7 +2,7 @@ import "utils/request";
 import "admin/dashboard/index";
 import "admin/stats/index";
 import "admin/dashboard/unattached_promo_registration";
-import Rails from "rails-ujs";
+import Rails from "@rails/ujs";
 
 /*
  * Override the default way Rails picks an href for a data-method link. This

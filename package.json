@@ -57,6 +57,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
     "@rails/activestorage": "^6.0.0",
+    "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "^4.0.2",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.4.7",
@@ -72,7 +73,6 @@
     "js-yaml": "3.13.1",
     "moment": "^2.24.0",
     "prop-types": "^15.6.2",
-    "rails-ujs": "^5.1.4",
     "react": "^16.6.3",
     "react-avatar-editor": "^11.0.4",
     "react-dom": "^16.6.3",

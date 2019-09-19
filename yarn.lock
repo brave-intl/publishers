@@ -1021,6 +1021,11 @@
   dependencies:
     spark-md5 "^3.0.0"
 
+"@rails/ujs@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-6.0.0.tgz#6c1957870ba075f7e82fdf875f5ed2181ff9355e"
+  integrity sha512-0oh/MnpZzluItU/vgaxZv+JtMXxOtA0HPK6ZiMoPd2sLH06q58QdCKPVlC36YMnP4451rcrvxO6xns3w97C1og==
+
 "@rails/webpacker@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-4.0.2.tgz#2c2e96527500b060a84159098449ddb1615c65e8"
@@ -8289,11 +8294,6 @@ railroad-diagrams@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/railroad-diagrams/-/railroad-diagrams-1.0.0.tgz#eb7e6267548ddedfb899c1b90e57374559cddb7e"
   integrity sha1-635iZ1SN3t+4mcG5Dlc3RVnN234=
-
-rails-ujs@^5.1.4:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/rails-ujs/-/rails-ujs-5.2.2.tgz#ab01dd087a323975637b50e93e7afcc0f9068568"
-  integrity sha512-tJl7MdysGrQEKmwF7BJkz5XwUOkdnI9E7SvSbT39yO7pdFc96D4hWKm6Sb15pU4n5mt4rLPb/6kkyTQujP1k7Q==
 
 randexp@0.4.6:
   version "0.4.6"
