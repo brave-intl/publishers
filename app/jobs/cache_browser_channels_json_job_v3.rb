@@ -2,7 +2,6 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
   queue_as :heavy
 
   MAX_RETRY = 10
-  CACHE_KEY = 'browser_channels_json_v3'
   TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'
 
   def perform
@@ -11,7 +10,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
     result = nil
 
     loop do
-      result = Rails.cache.write(CACHE_KEY, @channels_json)
+      result = Rails.cache.write(Api::V3::Public::ChannelsController::REDIS_KEY, @channels_json)
       break if result || retry_count > MAX_RETRY
 
       retry_count += 1

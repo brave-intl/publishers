@@ -9,7 +9,7 @@ class CacheBrowserChannelsJsonJobV2 < ApplicationJob
     result = nil
 
     loop do
-      result = Rails.cache.write('browser_channels_json_v2', channels_json)
+      result = Rails.cache.write(Api::V2::Public::ChannelsController::REDIS_KEY, channels_json)
       break if result || retry_count > MAX_RETRY
 
       retry_count += 1
@@ -23,4 +23,4 @@ class CacheBrowserChannelsJsonJobV2 < ApplicationJob
       Rails.logger.info("CacheBrowserChannelsJsonJob V2 could not update the channels JSON.")
     end
   end
-  end
+end

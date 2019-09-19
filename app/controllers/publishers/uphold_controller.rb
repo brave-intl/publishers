@@ -76,6 +76,9 @@ module Publishers
 
       ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: current_publisher.id)
 
+      connection.reload
+      create_uphold_report!(connection)
+
       redirect_to(home_publishers_path)
     rescue UpholdError, Faraday::Error => e
       Rails.logger.info("Uphold Error: #{e.message}")
@@ -94,6 +97,18 @@ module Publishers
     private
 
     class UpholdError < StandardError; end
+
+    def create_uphold_report!(connection)
+      uphold_id = connection.uphold_details&.id
+      return if uphold_id.blank?
+      # Return if we've already created a report for this id
+      return if UpholdStatusReport.find_by(uphold_id: uphold_id).present?
+
+      UpholdStatusReport.create(
+        publisher: current_publisher,
+        uphold_id: uphold_id
+      )
+    end
 
     def validate_uphold!(connection)
       # Ensure the uphold_state_token has been set. If not send back to try again

@@ -6,6 +6,8 @@ class TwoFactorAuthenticationsController < ApplicationController
 
   def index
     @u2f_enabled = u2f_enabled?(pending_2fa_current_publisher)
+    @removal = pending_2fa_current_publisher.two_factor_authentication_removal
+
     if !params[:request_totp] && @u2f_enabled
       challenge = u2f.challenge
       session[:challenge] = challenge
