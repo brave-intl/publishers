@@ -16,9 +16,6 @@ gem 'activerecord-session_store'
 # Allowing for URI templates, for HTTP clients
 gem 'addressable', '~> 2.6'
 
-# Pagination
-gem "api-pagination"
-
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
 
@@ -37,12 +34,10 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.7.0"
+gem "devise", "~> 4.7.1"
 gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
-
-gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
 gem "faraday", "~> 0.15.4"
