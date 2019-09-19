@@ -1,4 +1,10 @@
 module PayoutHelper
+
+  PREPARING = I18n.t('.publishers.payout_status.statuses.preparing')
+  REVIEWING = I18n.t('.publishers.payout_status.statuses.reviewing')
+  IN_PROGRESS = I18n.t('.publishers.payout_status.statuses.in_progress')
+  DONE = I18n.t('.publishers.payout_status.statuses.done')
+
   def icon_class(statuses, current, index)
     selected = index <= statuses.find_index(current)
 
@@ -9,33 +15,27 @@ module PayoutHelper
   end
 
   def current_status_and_percent(report_created_at)
-    today = DateTime.now
+    status = nil
+    progress_percentage = nil
 
-    difference = (today.to_time - report_created_at.to_time) / 1.day
+    status = DONE if !Rails.cache.fetch('payout_in_progress')
+    days_ago = (Date.today - report_created_at.to_date).to_i if status.blank?
 
-    transitions = {
-      3 => "preparing",
-      7 => "reviewing",
-      11 => "in_progress",
-    }
-
-    current = transitions.keys.detect { |k| difference < k }
-
-    status = transitions[current]
-    status = 'done' if status.blank? || !Rails.cache.fetch('payout_in_progress')
-
-    if current.present?
-      transition_index = transitions.keys.find_index(current) - 1
-      base = transitions.keys[transition_index]
-      base = 0 if transition_index < 0
-
-      percent = ((difference - base).to_f / (current - base).to_f).to_f
+    if days_ago < 3
+      status = PREPARING
+      progress_percentage = days_ago / 3.to_f
+    elsif days_ago < 7
+      status = REVIEWING
+      progress_percentage = ((days_ago - 3.to_f) / 4)
+    elsif days_ago < 11
+      status = IN_PROGRESS
+      progress_percentage = (((days_ago - 7.to_f) / 4))
+    else
+      progress_percentage = 1
+      status = DONE
     end
 
-    [
-      I18n.t(".publishers.payout_status.statuses.#{status}"),
-      percent
-    ]
+    [status, progress_percentage]
   end
 
   def percent_complete(created, selected_status, index)
