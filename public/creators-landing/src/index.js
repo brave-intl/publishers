@@ -10,7 +10,11 @@ import en from './locale/en';
 import ja from './locale/ja';
 
 // Initizalize all locales for react-intl.
-// const locale = "ja";
+let locale = window.location.search.split('locale=')[1];
+let locale_package = en;
+if (locale != null && locale == 'ja') {
+  locale_package = ja;
+}
 
 const App = () => (
   <Router>
@@ -40,4 +44,4 @@ export const flattenMessages = ((nestedMessages, prefix = '') => {
   }, {})
 })
 
-ReactDOM.render(<IntlProvider locale={'ja'} messages={flattenMessages(ja)}><App /></IntlProvider>, document.getElementById("root"));
+ReactDOM.render(<IntlProvider locale={locale} messages={flattenMessages(locale_package)}><App /></IntlProvider>, document.getElementById("root"));
