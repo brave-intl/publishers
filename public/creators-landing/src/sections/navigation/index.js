@@ -8,6 +8,7 @@ import batPill from "../../components/img/built-with-bat-pill.svg";
 import locale from "../../locale/en";
 import { NavWrapper, NavContainer } from "../../components/styled/container";
 import MobileNav from "./mobileNav";
+import { FormattedMessage } from 'react-intl';
 
 const logAction = (action, value) => {
   if (window._paq) {
@@ -26,41 +27,41 @@ const DefaultNav = () => (
       role="navigation"
     >
       <Box direction="row" gap="medium" align="center">
-        <Link to={locale.nav.logoHref} name="Home">
+        <Link to={<FormattedMessage id="nav.logoHref"/>} name="Home">
           <Box as="span">
-            <Image src={logo} height="32px" alt={locale.nav.logoAlt} />
+            <Image src={logo} height="32px" alt={<FormattedMessage id="nav.logoAlt"/>} />
           </Box>
         </Link>
         <Box
           as="a"
-          href={locale.nav.batPillHref}
-          name={locale.nav.batPillHref}
-          aria-label={locale.nav.batPillAlt}
+          href={<FormattedMessage id="nav.batPillHref"/>}
+          name={<FormattedMessage id="nav.batPillHref"/>}
+          aria-label={<FormattedMessage id="nav.batPillAlt"/>}
         >
-          <Image src={batPill} height="24px" alt={locale.nav.batPillAlt} />
+          <Image src={batPill} height="24px" alt={<FormattedMessage id="nav.batPillAlt"/>} />
         </Box>
       </Box>
       <Box direction="row" align="center" gap="large">
         <Link
-          to={locale.nav.signupHref}
+          to={<FormattedMessage id="nav.signupHref"/>}
           onClick={() => logAction("LandingSignUpClicked", "Landing")}
         >
           <Anchor
             as="span"
             a11yTitle="Sign up to be a Brave Rewards Creator"
             color="white"
-            label={locale.nav.signup}
-            name={locale.nav.signup}
+            label={<FormattedMessage id="nav.signup"/>}
+            name={<FormattedMessage id="nav.signup"/>}
           />
         </Link>
         <Link
-          to={locale.nav.loginHref}
+          to={<FormattedMessage id="nav.loginHref"/>}
           onClick={() => logAction("LandingLoginClicked", "Landing")}
         >
           <SecondaryButton
             a11yTitle="Log in to your Brave Creator dashboard"
-            label={locale.nav.login}
-            name={locale.nav.login}
+            label={<FormattedMessage id="nav.login"/>}
+            name={<FormattedMessage id="nav.login"/>}
             primary
           />
         </Link>
