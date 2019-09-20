@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import SignComponent from "./signComponent";
 import batPill from "../../components/img/built-with-bat-pill.svg";
 import { Heading, Box, Image, Anchor } from "grommet";
-import locale from '../../locale/en'
+import locale from '../../locale/en';
 import { FormattedMessage } from 'react-intl';
 
 
@@ -43,10 +43,10 @@ export const MainHome = () => {
             <Image src={batPill} />
           </Box>
           <Heading level="1" color="white" margin={{ vertical: "small" }}>
-            {locale.main.home.headline}
+            {<FormattedMessage id="main.home.headline"/>}
           </Heading>
           <H2 level="2" size="small" color="#E9E9F4">
-            {locale.main.home.subhead}
+            {<FormattedMessage id="main.home.subhead"/>}
           </H2>
           <Box direction="row" pad={{ vertical: "24px" }} width="100%" className="main-btns">
             <Link
@@ -64,27 +64,27 @@ export const MainHome = () => {
               onClick={() => logAction("StartSignupClicked", "Landing")}
             >
               <Anchor
-                label={locale.main.home.btn.login}
+                label={<FormattedMessage id="main.home.btn.login" />}
                 name={locale.main.home.btn.login}
                 color="white"
               />
             </Link>
           </Box>
           <Heading level="3" size="small" color="#E9E9F4">
-            {locale.main.home.examples.headline}
+            {<FormattedMessage id="main.home.examples.headline" />}
           </Heading>
           <Box direction="row-responsive" gap="24px">
             <Box direction="column">
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>
                 <UserIcon />
                 <Heading level="3" color="#E9E9F4" size="small" margin="0">
-                  {locale.main.home.examples.website}
+                  {<FormattedMessage id="main.home.examples.website" />}
                 </Heading>
               </Box>
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>
                 <YouTubeIcon />
                 <Heading level="3" color="#E9E9F4" size="small" margin="0">
-                  {locale.main.home.examples.youtube}
+                  {<FormattedMessage id="main.home.examples.youtube" />}
                 </Heading>
               </Box>
             </Box>
@@ -92,13 +92,13 @@ export const MainHome = () => {
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>
                 <PublicationIcon />
                 <Heading level="3" color="#E9E9F4" size="small" margin="0">
-                  {locale.main.home.examples.publication}
+                  {<FormattedMessage id="main.home.examples.publication" />}
                 </Heading>
               </Box>
               <Box direction="row" gap="small" margin={{ vertical: "8px" }}>
                 <TwitchIcon />
                 <Heading level="3" color="#E9E9F4" size="small" margin="0">
-                  {locale.main.home.examples.Twitch}
+                  {<FormattedMessage id="main.home.examples.Twitch" />}
                 </Heading>
               </Box>
             </Box>
