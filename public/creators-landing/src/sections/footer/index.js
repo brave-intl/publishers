@@ -15,20 +15,20 @@ const FooterComponent = props => (
     wrap
   >
     <Box direction="row" gap="small" pad={props.padded}>
-      <FooterLegal label={<FormattedMessage id="footer.one" /> } href={<FormattedMessage id="footer.oneHref" /> } />
+      <FooterLegal label={<FormattedMessage id="footer.one" /> } href={locale.footer.oneHref} />
       <Text color="grey" size="small">
         |
       </Text>
-      <FooterLegal label={<FormattedMessage id="footer.two" /> } href={<FormattedMessage id="footer.twoHref"/>} />
+      <FooterLegal label={<FormattedMessage id="footer.two" /> } href={locale.footer.twoHref} />
       <Text color="grey" size="small">
         |
       </Text>
-      <FooterLegal label={<FormattedMessage id="footer.three" /> } href={<FormattedMessage id="footer.threeHref"/>} />
+      <FooterLegal label={<FormattedMessage id="footer.three" /> } href={locale.footer.threeHref} />
     </Box>
     <Box
       as="a"
       direction="row"
-      href={<FormattedMessage id="footer.fourHref"/>}
+      href={locale.footer.fourHref}
       aria-label={<FormattedMessage id="nav.batPillAlt"/>}
       pad={props.padded}
     >

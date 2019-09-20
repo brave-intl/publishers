@@ -27,7 +27,7 @@ const DefaultNav = () => (
       role="navigation"
     >
       <Box direction="row" gap="medium" align="center">
-        <Link to={<FormattedMessage id="nav.logoHref"/>} name="Home">
+        <Link to={locale.nav.logoHref} name="Home">
           <Box as="span">
             <Image src={logo} height="32px" alt={<FormattedMessage id="nav.logoAlt"/>} />
           </Box>
@@ -43,7 +43,7 @@ const DefaultNav = () => (
       </Box>
       <Box direction="row" align="center" gap="large">
         <Link
-          to={<FormattedMessage id="nav.signupHref"/>}
+          to={locale.nav.signupHref}
           onClick={() => logAction("LandingSignUpClicked", "Landing")}
         >
           <Anchor
@@ -55,7 +55,7 @@ const DefaultNav = () => (
           />
         </Link>
         <Link
-          to={<FormattedMessage id="nav.loginHref"/>}
+          to={locale.nav.loginHref}
           onClick={() => logAction("LandingLoginClicked", "Landing")}
         >
           <SecondaryButton

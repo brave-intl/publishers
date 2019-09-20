@@ -59,14 +59,14 @@ export const Spotlight = () => {
           <Carousel play={9000}>
             <Slide
               card={BakerCard}
-              link={<FormattedMessage id="spotlight.bakerHref"/>}
+              link={locale.spotlight.bakerHref}
               text={<FormattedMessage id="spotlight.bakerCredit"/>}
               quote={<FormattedMessage id="spotlight.bakerQuote"/>}
               alt={<FormattedMessage id="spotlight.bakerAlt"/>}
             />
             <Slide
               card={DefrancoCard}
-              link={<FormattedMessage id="spotlight.defrancoHref"/>}
+              link={locale.spotlight.defrancoHref}
               text={<FormattedMessage id="spotlight.defrancoCredit"/>}
               quote={<FormattedMessage id="spotlight.defrancoQuote"/>}
               backwards="row-reverse"
@@ -74,14 +74,14 @@ export const Spotlight = () => {
             />
             <Slide
               card={BobbyCard}
-              link={<FormattedMessage id="spotlight.bobbyHref"/>}
+              link={locale.spotlight.bobbyHref}
               text={<FormattedMessage id="spotlight.bobbyCredit"/>}
               quote={<FormattedMessage id="spotlight.bobbyQuote"/>}
               alt={<FormattedMessage id="spotlight.bobbyAlt"/>}
             />
             <Slide
               card={CiccoCard}
-              link={<FormattedMessage id="spotlight.deciccoHref"/>}
+              link={locale.spotlight.deciccoHref}
               text={<FormattedMessage id="spotlight.deciccoCredit"/>}
               quote={<FormattedMessage id="spotlight.deciccoQuote"/>}
               backwards="row-reverse"

@@ -37,7 +37,7 @@ export const Signoff = () => {
         <PrimaryButton
           label={<FormattedMessage id="signoff.btn"/>}
           margin='large'
-          href={<FormattedMessage id="signoff.btnHref"/>}
+          href={locale.signoff.btnHref}
           name={<FormattedMessage id="signoff.btn"/>}
         />
       </Container>
