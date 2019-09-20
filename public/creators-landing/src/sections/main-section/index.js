@@ -15,7 +15,9 @@ import { Link } from "react-router-dom";
 import SignComponent from "./signComponent";
 import batPill from "../../components/img/built-with-bat-pill.svg";
 import { Heading, Box, Image, Anchor } from "grommet";
-import locale from "../../locale/en";
+import locale from '../../locale/en'
+import { FormattedMessage } from 'react-intl';
+
 
 const logAction = (action, value) => {
   if (window._paq) {
@@ -35,7 +37,7 @@ export const MainHome = () => {
           <Box
             className="bat-pill"
             as="a"
-            href={locale.nav.batPillHref}
+            href={<FormattedMessage id="nav.batPillHref"/>}
             aria-label={locale.nav.batPillAlt}
           >
             <Image src={batPill} />
@@ -52,7 +54,7 @@ export const MainHome = () => {
               onClick={() => logAction("StartSignupClicked", "Landing")}
             >
               <PrimaryButton
-                label={locale.main.home.btn.signup}
+                label={<FormattedMessage id="main.home.btn.signup" />}
                 name={locale.main.home.btn.signup}
                 margin={{right: "medium"}}
               />
