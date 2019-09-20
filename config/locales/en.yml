@@ -208,7 +208,7 @@ en:
       button: Log in to Brave Rewards
   batch_mailer:
     notification_for_kyc:
-      subject: "Brave Creators : Upcoming changes regarding referrals and KYC"
+      subject: "Upcoming changes regarding referrals and Uphold Verified Membership"
 
   publisher_mailer:
     shared:

@@ -89,8 +89,8 @@ class PublisherMailerPreview < ActionMailer::Preview
     BatchMailer.update_to_tos(Publisher.first)
   end
 
-  def update_to_rates
-    BatchMailer.update_to_rates(Publisher.first)
+  def kyc_and_referral_update
+    BatchMailer.notification_for_kyc(Publisher.first)
   end
 
   def submit_appeal
