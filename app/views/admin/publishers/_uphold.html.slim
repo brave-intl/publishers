@@ -30,7 +30,7 @@ h3.text-dark.d-flex.align-items-center
               = fa_icon("check", text: "Yes")
               span.text-muted
                 span.mx-2= " – "
-                = @publisher.uphold_connection.member_at.strftime("%B %d, %Y %k:%M %Z")
+                = @publisher.uphold_connection.member_at&.try(:strftime, "%B %d, %Y %k:%M %Z")
             - else
               = fa_icon("times", text: "No")
       tr
