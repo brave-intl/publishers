@@ -4,6 +4,7 @@ import { Container, PrimaryButton } from '../../components'
 import CreatorsWide from '../../components/img/creator-logos-wide.webp'
 import CreatorsMobile from '../../components/img/creator-logos-mobile.webp'
 import locale from '../../locale/en'
+import { FormattedMessage } from 'react-intl';
 
 export const Signoff = () => {
   return (
@@ -11,9 +12,9 @@ export const Signoff = () => {
       <Container align='center' pad='large'>
         <Box pad={{ horizontal: 'large' }}>
           <Heading alignSelf='center' level='4' textAlign='center'>
-            {locale.signoff.headlineOne}
+            {<FormattedMessage id="signoff.headlineOne"/>}
             <strong>28,000</strong>
-            {locale.signoff.headlineTwo}
+            {<FormattedMessage id="signoff.headlineTwo"/>}
           </Heading>
           <ResponsiveContext.Consumer>
             {size => {
@@ -34,10 +35,10 @@ export const Signoff = () => {
           </ResponsiveContext.Consumer>
         </Box>
         <PrimaryButton
-          label={locale.signoff.btn}
+          label={<FormattedMessage id="signoff.btn"/>}
           margin='large'
           href={locale.signoff.btnHref}
-          name={locale.signoff.btn}
+          name={<FormattedMessage id="signoff.btn"/>}
         />
       </Container>
     </Box>
