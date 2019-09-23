@@ -6,6 +6,7 @@ import CiccoCard from "../../components/img/card-decicco.webp";
 import BobbyCard from "../../components/img/card-bobby.webp";
 import DefrancoCard from "../../components/img/card-defranco.webp";
 import locale from "../../locale/en";
+import { FormattedMessage } from 'react-intl';
 
 const Slide = props => (
   <Box
@@ -48,10 +49,10 @@ export const Spotlight = () => {
       <Container align="center">
         <Box align="center" pad="medium">
           <Heading level="3" textAlign="center">
-            {locale.spotlight.heading}
+            {<FormattedMessage id="spotlight.heading"/>}
           </Heading>
           <Text as="p" textAlign="center" color="grey">
-            {locale.spotlight.subhead}
+            {<FormattedMessage id="spotlight.subhead"/>}
           </Text>
         </Box>
         <Box width="100%">
@@ -59,32 +60,32 @@ export const Spotlight = () => {
             <Slide
               card={BakerCard}
               link={locale.spotlight.bakerHref}
-              text={locale.spotlight.bakerCredit}
-              quote={locale.spotlight.bakerQuote}
-              alt={locale.spotlight.bakerAlt}
+              text={<FormattedMessage id="spotlight.bakerCredit"/>}
+              quote={<FormattedMessage id="spotlight.bakerQuote"/>}
+              alt={<FormattedMessage id="spotlight.bakerAlt"/>}
             />
             <Slide
               card={DefrancoCard}
               link={locale.spotlight.defrancoHref}
-              text={locale.spotlight.defrancoCredit}
-              quote={locale.spotlight.defrancoQuote}
+              text={<FormattedMessage id="spotlight.defrancoCredit"/>}
+              quote={<FormattedMessage id="spotlight.defrancoQuote"/>}
               backwards="row-reverse"
-              alt={locale.spotlight.defrancoAlt}
+              alt={<FormattedMessage id="spotlight.defrancoAlt"/>}
             />
             <Slide
               card={BobbyCard}
               link={locale.spotlight.bobbyHref}
-              text={locale.spotlight.bobbyCredit}
-              quote={locale.spotlight.bobbyQuote}
-              alt={locale.spotlight.bobbyAlt}
+              text={<FormattedMessage id="spotlight.bobbyCredit"/>}
+              quote={<FormattedMessage id="spotlight.bobbyQuote"/>}
+              alt={<FormattedMessage id="spotlight.bobbyAlt"/>}
             />
             <Slide
               card={CiccoCard}
               link={locale.spotlight.deciccoHref}
-              text={locale.spotlight.deciccoCredit}
-              quote={locale.spotlight.deciccoQuote}
+              text={<FormattedMessage id="spotlight.deciccoCredit"/>}
+              quote={<FormattedMessage id="spotlight.deciccoQuote"/>}
               backwards="row-reverse"
-              alt={locale.spotlight.deciccoAlt}
+              alt={<FormattedMessage id="spotlight.deciccoAlt"/>}
             />
           </Carousel>
         </Box>
