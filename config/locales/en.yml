@@ -411,7 +411,22 @@ en:
         ago: " ago"
         support: "Brave Rewards Support"
         attachments: "Attachments"
-
+    payout_status:
+      heading: Payout Progress
+      description: We're working hard to get your pending balance paid out. Please be patient while we prepare, review, and send your payouts.
+      statuses:
+        preparing: Preparing
+        reviewing: Reviewing
+        in_progress: In Progress
+        done: Done
+      amount: Amount
+      amount_description: "* The amount to be paid is based on our report generated at %{time}."
+      information:
+        not_found: At the time we generated the payout report, there were no pending payouts for your account.
+        connect_uphold: At the time we generated the payout report, you did not have your Uphold account connected.
+        reauthorize_uphold: At the time we generated the payout report, your Uphold account needed to be reconnected.
+        kyc_required: At the time we generated the payout report, your identity was not yet verified through Uphold.
+        no_payment: You will not be able to receive payment for this cycle.
     change_email:
       login_email: Login Email
       login_email_message: We need your valid email address for account access and recovery purposes.
