@@ -113,18 +113,18 @@ export const MainHome = () => {
 export const MainSignIn = () => {
   return (
     <SignComponent
-      heading={locale.main.signin.heading}
-      subhead={locale.main.signin.subhead}
-      inputPlaceholder={locale.main.signin.inputPlaceholder}
-      btn={locale.main.signin.btn}
-      tinyOne={locale.main.signin.tinyOne}
-      tinyOneHref={locale.main.signin.tinyOneHref}
-      tinyTwo={locale.main.signin.tinyTwo}
-      tinyTwoHref={locale.main.signin.tinyTwoHref}
-      footerOne={locale.main.footerOne}
-      footerOneHref={locale.main.footerOneHref}
-      footerTwo={locale.main.footerTwo}
-      footerTwoHref={locale.main.footerTwoHref}
+      heading={<FormattedMessage id="main.signin.heading"/>}
+      subhead={<FormattedMessage id="main.signin.subhead"/>}
+      inputPlaceholder={<FormattedMessage id="main.signin.inputPlaceholder"/>}
+      btn={<FormattedMessage id="main.signin.btn"/>}
+      tinyOne={<FormattedMessage id="main.signin.tinyOne"/>}
+      tinyOneHref={<FormattedMessage id="main.signin.tinyOneHref"/>}
+      tinyTwo={<FormattedMessage id="main.signin.tinyTwo"/>}
+      tinyTwoHref={<FormattedMessage id="main.signin.tinyTwoHref"/>}
+      footerOne={<FormattedMessage id="main.footerOne"/>}
+      footerOneHref={<FormattedMessage id="main.footerOneHref"/>}
+      footerTwo={<FormattedMessage id="main.footerTwo"/>}
+      footerTwoHref={<FormattedMessage id="main.footerTwoHref"/>}
       formId="signInForm"
       method="PUT"
     />
@@ -134,16 +134,16 @@ export const MainSignIn = () => {
 export const MainSignUp = () => {
   return (
     <SignComponent
-      heading={locale.main.signup.heading}
-      subhead={locale.main.signup.subhead}
-      inputPlaceholder={locale.main.signup.inputPlaceholder}
-      btn={locale.main.signup.btn}
-      tinyOne={locale.main.signup.tinyOne}
-      tinyOneHref={locale.main.signup.tinyOneHref}
-      footerOne={locale.main.footerOne}
-      footerOneHref={locale.main.footerOneHref}
-      footerTwo={locale.main.footerTwo}
-      footerTwoHref={locale.main.footerTwoHref}
+      heading={<FormattedMessage id="main.signup.heading"/>}
+      subhead={<FormattedMessage id="main.signup.subhead"/>}
+      inputPlaceholder={<FormattedMessage id="main.signup.inputPlaceholder"/>}
+      btn={<FormattedMessage id="main.signup.btn"/>}
+      tinyOne={<FormattedMessage id="main.signup.tinyOne"/>}
+      tinyOneHref={<FormattedMessage id="main.signup.tinyOneHref"/>}
+      footerOne={<FormattedMessage id="main.footerOne"/>}
+      footerOneHref={<FormattedMessage id="main.footerOneHref"/>}
+      footerTwo={<FormattedMessage id="main.footerTwo"/>}
+      footerTwoHref={<FormattedMessage id="main.footerTwoHref"/>}
       formId="signUpForm"
       method="POST"
     />

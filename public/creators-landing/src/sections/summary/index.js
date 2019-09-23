@@ -134,7 +134,7 @@ export const Summary = () => {
           description={<FormattedMessage id="summary.fourDesc"/>}
           description_link={
             <Anchor
-              href={<FormattedMessage id="summary.fourLinkHref"/>}
+              href={locale.summary.fourLinkHref}
               label={<FormattedMessage id="summary.fourLink"/>}
               color="white"
             />
@@ -148,17 +148,18 @@ export const Summary = () => {
           width="100%"
           justify="center">
           <CardButton
-            href={<FormattedMessage id="summary.cardBusinessHref"/>}
+            href={locale.summary.cardBusinessHref}
             icon={<ChatIcon />}
             title={<FormattedMessage id="summary.cardBusiness"/>}
           />
           <CardButton
-            href={<FormattedMessage id="summary.cardHelpHref"/>}
+            href={locale.summary.cardHelpHref}
             icon={<HelpIcon />}
             title={<FormattedMessage id="summary.cardHelp"/>}
           />
           <CardButton
-            href={<FormattedMessage id="summary.cardGenHref"/>}
+            href={locale.summary.cardGenHref}
+            icon={<HelpIcon />}
             icon={<MailIcon />}
             title={<FormattedMessage id="summary.cardGen"/>}
           />

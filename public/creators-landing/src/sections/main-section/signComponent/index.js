@@ -13,6 +13,8 @@ import { Loading } from "../../../components/icons/Loading";
 
 import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
+import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Heading, Text, Box, Anchor, Form, Image } from "grommet";
 
 import SentEmail from "../sentEmail";
@@ -129,15 +131,16 @@ const WrappedSignComponent = props => {
   const [loading, setLoading] = useState(false);
   const [confetti, setConfetti] = useState(false);
   const [words, setWords] = useState({});
+  const intl = useIntl();
 
   const successSignInWords = {
-    headline: locale.sign.signinSuccess,
-    body: locale.sign.signinSuccessBody
+    headline: intl.formatMessage({id: 'sign.signinSuccess'}),
+    body: intl.formatMessage({id: 'sign.signinSuccessBody'})
   };
 
   const successSignUpWords = {
-    headline: locale.sign.signupSuccess,
-    body: locale.sign.signupSuccessBody
+    headline: intl.formatMessage({id: 'sign.signupSuccess'}),
+    body: intl.formatMessage({id: 'sign.signupSuccessBody'})
   };
 
   const submitForm = event => {
@@ -167,7 +170,7 @@ const WrappedSignComponent = props => {
 
   const tryAgain = event => {
     event.preventDefault();
-    setNotification({ show: true, text: locale.sign.sentAgain });
+    setNotification({ show: true, text: <FormattedMessage id="sign.sentAgain "/>});
   };
 
   async function sendToServer(body) {
