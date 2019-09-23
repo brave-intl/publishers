@@ -12,7 +12,7 @@ import ja from './locale/ja';
 // Initizalize all locales for react-intl.
 let locale = window.location.search.split('locale=')[1];
 let locale_package = en;
-if (locale != null && locale == 'ja') {
+if (locale != null && locale === 'ja') {
   locale_package = ja;
 }
 
