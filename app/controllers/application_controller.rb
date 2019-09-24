@@ -44,6 +44,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
+    p "albert #{request.headers}"
+    p "albert #{request.headers['Fastly-GeoIP-CountryCode']}"
     I18n.locale = params[:locale] || I18n.default_locale
   end
 
