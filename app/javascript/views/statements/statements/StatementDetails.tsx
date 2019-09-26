@@ -90,7 +90,7 @@ export default class StatementDetails extends React.Component<
             </span>
           </h5>
           {this.props.statement.details.map((detail, index) => (
-            <StatementChannel detail={detail} index={index} />
+            <StatemenDetail detail={detail} index={index} />
           ))}
         </div>
 
@@ -116,7 +116,7 @@ export default class StatementDetails extends React.Component<
   }
 }
 
-const StatementChannel = props => (
+const StatemenDetail = props => (
   <div
     style={{
       background: props.index % 2 === 0 ? "#F3F3F6" : "",
@@ -125,7 +125,7 @@ const StatementChannel = props => (
     className="px-5 py-4"
   >
     <div className="d-flex justify-content-between">
-      <ChannelHeader>{props.detail.channel}</ChannelHeader>
+      <ChannelHeader>{props.detail.title}</ChannelHeader>
     </div>
     <Table className="table m-0">
       <thead>
@@ -145,7 +145,7 @@ const StatementChannel = props => (
       <tbody>
         {props.detail.transactions.map(transaction => (
           <tr key={transaction.amount}>
-            <TableCell>{transaction.transaction_type}</TableCell>
+            <TableCell>{transaction.channel}</TableCell>
             <TableCell className="text-right">
               {transaction.amount} {locale.bat}
             </TableCell>

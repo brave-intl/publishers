@@ -31,29 +31,18 @@ module Views
 
       def build_details
         details = []
-        grouped_channels = settled_transactions.group_by { |x| x.channel }
+        grouped_transactions = settled_transactions.group_by { |x| x.transaction_type }
 
-        grouped_channels.each do |channel, results|
-          results = results.sort_by { |x| x.transaction_type }
-          contribution = results.detect { |x| x.transaction_type == "contribution_settlement" }
+        grouped_transactions.each do |type, results|
           total_amount = 0
-
-          if contribution
-            fees = results.detect { |x| x.transaction_type == "fees" }
-            total = contribution.amount.abs + fees.amount.abs
-
-            # Swapping the eyeshaded settled with the actual total that was contributed ()
-            contribution.amount = total
-          end
 
           results = results.each do |x|
             x.amount = x.amount.abs unless x.transaction_type == "fees"
-            x.transaction_type = I18n.t("publishers.statements.index.#{x.transaction_type}")
-            total_amount += x.amount
+            total_amount += x.amount.abs
           end
 
           details << StatementDetail.new(
-            channel: channel,
+            title: I18n.t("publishers.statements.index.#{type}"),
             amount: total_amount,
             transactions: results
           )

@@ -454,8 +454,8 @@ en:
         reauthorize: Click here to re-authorize with Uphold.
         contribution_settlement: Aggregated Contributions
         referral_settlement:  Referral Promo Earnings
-        uphold_contribution: Direct Contribution
-        fees: Processing Fee
+        uphold_contribution: Direct Contributions
+        fees: Fees
         account: Publisher Account
     cases:
       shared:

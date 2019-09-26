@@ -26,6 +26,8 @@ module Publishers
         statement_string = render_to_string :layout => "statement"
         send_data statement_string, filename: file_name, type: "application/html"
       end
+
+      render json: @overview
       # render layout: 'statement'
     end
 
