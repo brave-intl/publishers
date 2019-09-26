@@ -27,7 +27,7 @@ module Admin
         end
 
         it 'redirects to the publisher page' do
-          assert_redirected_to admin_publisher_path(publishers(:verified))
+          assert_redirected_to controller: '/admin/publishers', action: 'show', id: publishers(:verified).id
         end
       end
 
@@ -119,7 +119,7 @@ module Admin
         end
 
         it 'redirects to the publisher page' do
-          assert_redirected_to admin_publisher_path(publishers(:verified))
+          assert_redirected_to controller: '/admin/publishers', action: 'show', id: publishers(:verified).id
         end
       end
     end
@@ -170,7 +170,7 @@ module Admin
           end
 
           it 'redirects to the publisher page' do
-            assert_redirected_to admin_publisher_path(publishers(:verified))
+            assert_redirected_to controller: '/admin/publishers', action: 'show', id: publishers(:verified).id
           end
         end
       end
@@ -229,7 +229,7 @@ module Admin
         before { subject }
 
         it 'redirects to the publisher page' do
-          assert_redirected_to admin_publisher_path(publishers(:just_notes).id)
+          assert_redirected_to controller: '/admin/publishers', action: 'show', id: publishers(:just_notes).id
         end
 
         it 'deletes the note' do

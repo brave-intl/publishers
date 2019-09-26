@@ -36,11 +36,11 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
 
     click_button("Continue")
     channel = publisher.channels.order("created_at").last
-    assert_current_path verification_choose_method_site_channel_path(channel)
+    assert_current_path verification_choose_method_site_channel_path(channel, locale: :en)
     assert_content "Cancel"
 
     click_link "I'll use a trusted file"
-    assert_current_path verification_public_file_site_channel_path(channel)
+    assert_current_path verification_public_file_site_channel_path(channel, locale: :en)
     assert_content "Choose Different Verification Method"
     refute_content "Cancel"
 
@@ -68,11 +68,11 @@ class SiteChannelVerificationTest < Capybara::Rails::TestCase
 
     click_button("Continue")
     channel = publisher.channels.order("created_at").last
-    assert_current_path verification_choose_method_site_channel_path(channel)
+    assert_current_path verification_choose_method_site_channel_path(channel, locale: :en)
     assert_content "Cancel"
 
     click_link "I'll use a trusted file"
-    assert_current_path verification_public_file_site_channel_path(channel)
+    assert_current_path verification_public_file_site_channel_path(channel, locale: :en)
     assert_content "Choose Different Verification Method"
     refute_content "Cancel"
 
