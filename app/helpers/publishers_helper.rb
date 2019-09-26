@@ -59,25 +59,27 @@ module PublishersHelper
   def publisher_converted_overall_balance(publisher)
     return if publisher.uphold_connection.default_currency == "BAT" || publisher.uphold_connection.default_currency.blank?
 
-    publisher = publisher&.become_subclass
+    result = I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
+    sentry_catcher do
+      publisher = publisher&.become_subclass
 
-    if publisher.partner?
-      balance = publisher.balance_in_currency
-    elsif publisher.only_user_funds?
-      balance = publisher.wallet&.contribution_balance&.amount_default_currency
-    elsif publisher.no_grants?
-      amount =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
-    else
-      balance = publisher.wallet&.overall_balance&.amount_default_currency
-    end
+      if publisher.partner?
+        balance = publisher.balance_in_currency
+      elsif publisher.only_user_funds?
+        balance = publisher.wallet&.contribution_balance&.amount_default_currency
+      elsif publisher.no_grants?
+        balance =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+      else
+        balance = publisher.wallet&.overall_balance&.amount_default_currency
+      end
 
-    if balance.present?
-      I18n.t("helpers.publisher.balance_pending_approximate",
-             amount: '%.2f' % balance,
-             code: publisher&.uphold_connection.default_currency)
-    else
-      I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
+      if balance.present?
+        result = I18n.t("helpers.publisher.balance_pending_approximate",
+               amount: '%.2f' % balance,
+               code: publisher&.uphold_connection.default_currency)
+      end
     end
+    result
   end
 
   def publisher_referral_bat_balance(publisher)
