@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
   def switch_locale(&action)
     locale = if params[:locale] == 'ja'
       params[:locale]
+    elsif extract_locale_from_accept_language_header == 'ja'
+      redirect_to(request.original_url + "?locale=ja") and return
     else
       I18n.default_locale
     end
@@ -65,6 +67,6 @@ class ApplicationController < ActionController::Base
   end
 
   def extract_locale_from_accept_language_header
-    request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+    request.env['HTTP_ACCEPT_LANGUAGE']&.scan(/^[a-z]{2}/)&.first
   end
 end
