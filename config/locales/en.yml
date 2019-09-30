@@ -452,10 +452,14 @@ en:
         statement_file_name: BravePaymentsStatement
         missing_scope: "It looks like we're unable to read transactions from your Uphold account. This affects the ability to generate statements for direct contributions. "
         reauthorize: Click here to re-authorize with Uphold.
-        contribution_settlement: Aggregated Contributions
+        contribution_settlement: Contributions
+        contribution_settlement_description: The total amount of contributions paid through Brave managed systems, including auto-contribute and custodial wallets.
         referral_settlement:  Referral Promo Earnings
-        uphold_contribution: Direct Contributions
+        referral_settlement_description: The total amount paid for users who have installed and used Brave Browser for more than 30 days.
+        uphold_contribution_settlement: Direct Contributions
+        uphold_contribution_settlement_description: The total amount of contributions which were sent directly to your Uphold account from a user with a Brave Rewards connected wallet.
         fees: Fees
+        fees_description: The total amount of the fees taken to support Brave Rewards, and infrastructure costs.
         account: Publisher Account
     cases:
       shared:

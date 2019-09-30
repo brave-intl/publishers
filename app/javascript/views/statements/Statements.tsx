@@ -117,36 +117,49 @@ export default class Statements extends React.Component<any, IStatementsState> {
                 <tr key={statement.earning_period}>
                   <td>{statement.earning_period}</td>
                   <td>{statement.payment_date}</td>
-                  <td>{statement.amount}</td>
                   <td>
-                    {statement.deposited} {statement.currency}
+                    {Number.parseFloat(statement.amount).toFixed(4)}{" "}
+                    <small>{locale.bat}</small>
                   </td>
                   <td>
-                    <a
-                      onClick={() => this.modalClick(statement.earning_period)}
-                      href="#"
-                      className="mr-4"
-                    >
-                      {locale.statements.overview.view}
-                    </a>
-                    <a href="#">
-                      <DownloadIcon style={{ width: "18px", height: "18px" }} />
-                      <span className="ml-1">
-                        {locale.statements.overview.download}
-                      </span>
-                    </a>
-                    {this.state.statements && (
-                      <Modal
-                        show={statement.isOpen}
-                        size={ModalSize.Small}
-                        handleClose={() =>
+                    {Number.parseFloat(statement.deposited).toFixed(2)}{" "}
+                    <small>{statement.currency}</small>
+                  </td>
+                  <td>
+                    <div className="d-flex">
+                      <a
+                        onClick={() =>
                           this.modalClick(statement.earning_period)
                         }
-                        padding={false}
+                        href="#"
+                        className="mr-4"
                       >
-                        <StatementDetails statement={statement} />
-                      </Modal>
-                    )}
+                        {locale.statements.overview.view}
+                      </a>
+                      <a
+                        href="#"
+                        className="d-none d-md-block d-lg-block d-xl-block"
+                      >
+                        <DownloadIcon
+                          style={{ width: "18px", height: "18px" }}
+                        />
+                        <span className="ml-1">
+                          {locale.statements.overview.download}
+                        </span>
+                      </a>
+                      {this.state.statements && (
+                        <Modal
+                          show={statement.isOpen}
+                          size={ModalSize.Medium}
+                          handleClose={() =>
+                            this.modalClick(statement.earning_period)
+                          }
+                          padding={false}
+                        >
+                          <StatementDetails statement={statement} />
+                        </Modal>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

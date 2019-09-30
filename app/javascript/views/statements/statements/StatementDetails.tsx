@@ -5,9 +5,11 @@ import { IStatementOverview } from "../Statements";
 import { TableHeader } from "../StatementsStyle";
 import {
   Amount,
+  ChannelDescription,
   ChannelHeader,
   Date,
   Details,
+  HideOverflow,
   Table,
   TableCell
 } from "./StatementDetailsStyle";
@@ -68,7 +70,8 @@ export default class StatementDetails extends React.Component<
                     <strong>{locale.statements.overview.totalEarned}</strong>
                   </td>
                   <td>
-                    {this.props.statement.amount} {locale.bat}
+                    {Number.parseFloat(this.props.statement.amount).toFixed(2)}{" "}
+                    {locale.bat}
                   </td>
                 </tr>
                 <tr>
@@ -86,31 +89,13 @@ export default class StatementDetails extends React.Component<
           <h5 className="px-5 mb-3">
             {locale.statements.overview.totalEarned}
             <span className="text-muted ml-2 font-weight-light">
-              {locale.statements.overview.details.details}
+              {locale.statements.overview.details.summary}
             </span>
           </h5>
           {this.props.statement.details.map((detail, index) => (
             <StatemenDetail detail={detail} index={index} />
           ))}
         </div>
-
-        {!this.props.showPage && (
-          <div className="px-5 py-3">
-            <a
-              href={routes.publishers.statements.show.path.replace(
-                "{period}",
-                this.props.statement.earning_period
-              )}
-            >
-              {locale.statements.overview.viewMore}
-            </a>
-          </div>
-        )}
-        {this.props.showPage && (
-          <RawTransactions
-            transactions={this.props.statement.rawTransactions}
-          />
-        )}
       </Details>
     );
   }
@@ -124,8 +109,9 @@ const StatemenDetail = props => (
     }}
     className="px-5 py-4"
   >
-    <div className="d-flex justify-content-between">
+    <div className="">
       <ChannelHeader>{props.detail.title}</ChannelHeader>
+      <ChannelDescription>{props.detail.description}</ChannelDescription>
     </div>
     <Table className="table m-0">
       <thead>
@@ -145,7 +131,9 @@ const StatemenDetail = props => (
       <tbody>
         {props.detail.transactions.map(transaction => (
           <tr key={transaction.amount}>
-            <TableCell>{transaction.channel}</TableCell>
+            <TableCell>
+              <HideOverflow>{transaction.channel}</HideOverflow>
+            </TableCell>
             <TableCell className="text-right">
               {transaction.amount} {locale.bat}
             </TableCell>
@@ -153,7 +141,12 @@ const StatemenDetail = props => (
         ))}
         <tr>
           <td>
-            <strong>{locale.statements.overview.details.total}</strong>
+            <strong>
+              {props.detail.type === "fees" &&
+                locale.statements.overview.details.totalFees}
+              {props.detail.type !== "fees" &&
+                locale.statements.overview.details.total}
+            </strong>
           </td>
           <td className="text-right">
             <strong>
@@ -163,50 +156,5 @@ const StatemenDetail = props => (
         </tr>
       </tbody>
     </Table>
-  </div>
-);
-
-const RawTransactions = props => (
-  <div
-    style={{
-      borderRadius: "6px"
-    }}
-    className="px-5 py-4"
-  >
-    <h5 className="mb-3">
-      {locale.statements.overview.totalEarned}
-      <span className="text-muted ml-2 font-weight-light">
-        {locale.statements.overview.details.title}
-      </span>
-    </h5>
-    <Table className="table">
-      <thead>
-        <tr>
-          <TableHeader className="text-uppercase font-weight-bold">
-            {locale.statements.overview.details.date}
-          </TableHeader>
-          <TableHeader className="text-uppercase font-weight-bold">
-            {locale.statements.overview.details.description}
-          </TableHeader>
-          <TableHeader className="text-uppercase font-weight-bold">
-            {locale.statements.overview.details.amount}
-          </TableHeader>
-          <TableHeader className="text-uppercase font-weight-bold">
-            {locale.statements.overview.details.type}
-          </TableHeader>
-        </tr>
-      </thead>
-      <tbody>
-        {props.transactions.map((transaction, index) => (
-          <tr key={`${transaction.created_at} ${index}`}>
-            <TableCell>{transaction.created_at}</TableCell>
-            <TableCell>{transaction.channel}</TableCell>
-            <TableCell>{transaction.amount}</TableCell>
-            <TableCell>{transaction.transaction_type}</TableCell>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-    {locale.statements.overview.details.remainingBalance}
   </div>
 );

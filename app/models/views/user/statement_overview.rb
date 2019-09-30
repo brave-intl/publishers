@@ -18,14 +18,14 @@ module Views
           earning_period: earning_period,
           payment_date: payment_date,
           destination: destination,
-          amount: amount.round(2),
+          amount: amount,
           deposited: deposited,
           currency: currency,
           details: details,
           name: name,
           email: email,
           isOpen: false,
-          rawTransactions: raw_transactions
+          rawTransactions: raw_transactions,
         }
       end
 
@@ -38,17 +38,24 @@ module Views
 
           results = results.each do |x|
             x.amount = x.amount.abs unless x.transaction_type == "fees"
-            total_amount += x.amount.abs
+
+            if x.amount.positive?
+              total_amount += x.amount.abs
+            else
+              total_amount -= x.amount.abs
+            end
           end
 
           details << StatementDetail.new(
             title: I18n.t("publishers.statements.index.#{type}"),
+            description: I18n.t("publishers.statements.index.#{type}_description"),
             amount: total_amount,
-            transactions: results
+            transactions: results,
+            type: type,
           )
         end
 
-        @details = details
+        @details = details.sort_by { |x| x.title }
       end
     end
   end

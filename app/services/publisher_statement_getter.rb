@@ -5,18 +5,13 @@ class PublisherStatementGetter < BaseApiClient
     include ActiveModel::Model
     attr_accessor :channel, :created_at, :description, :transaction_type, :amount, :settlement_currency, :settlement_amount, :settlement_destination_type, :settlement_destination
 
-    UPHOLD_CONTRIBUTION = "uphold_contribution_settlement".freeze
-
-    def uphold_transaction?
-      transaction_type == UPHOLD_CONTRIBUTION
-    end
+    UPHOLD_CONTRIBUTION = "uphold_contribution".freeze
+    UPHOLD_CONTRIBUTION_SETTLEMENT = "uphold_contribution_settlement".freeze
   end
 
   def initialize(publisher:)
     @publisher = publisher
-    @channel_identifiers = {
-      "youtube#channel:UCRzqHl5MGQ97NBfOPTS2Yrw" => "Youtube FunOnTheRide"
-    }
+    @channel_identifiers = {}
   end
 
   def perform
@@ -49,31 +44,13 @@ class PublisherStatementGetter < BaseApiClient
         settlement_amount: transaction["settlement_amount"]&.to_d,
         settlement_destination_type: transaction["settlement_destination_type"],
         settlement_destination: transaction["settlement_destination"],
-        created_at: transaction["created_at"].to_date
+        created_at: transaction["created_at"].to_date,
       )
     end
   end
 
   def get_uphold_transactions
     uphold = []
-
-    (1...1000).each do |num|
-      amount = rand * 1 * (rand * 10)
-      date = "2019-01-#{(rand*30).ceil(0)}"
-      puts '‼️‼️‼️‼️‼️‼️‼️‼️‼️‼️'
-      puts date
-      puts date.to_date
-      puts '----------'
-
-      uphold << Statement.new(
-        channel: channel_name('youtube#channel:UCRzqHl5MGQ97NBfOPTS2Yrw'),
-        transaction_type: Statement::UPHOLD_CONTRIBUTION,
-        amount: -amount,
-        settlement_currency: 'BAT',
-        settlement_amount: amount,
-        created_at: date.to_date,
-      )
-    end
 
     publisher.uphold_connection.uphold_connection_for_channels.each do |card_connection|
       transactions = card_connection.uphold_connection.uphold_client.transaction.all(id: card_connection.card_id)
@@ -83,10 +60,26 @@ class PublisherStatementGetter < BaseApiClient
         uphold << Statement.new(
           channel: card_connection.channel.details.publication_title,
           transaction_type: Statement::UPHOLD_CONTRIBUTION,
-          amount: -transaction.origin.dig('amount')&.to_d,
-          settlement_currency: transaction.destination.dig('currency'),
-          settlement_amount: transaction.destination.dig('amount')&.to_d,
+          amount: transaction.origin.dig("amount")&.to_d,
+          settlement_currency: transaction.destination.dig("currency"),
+          settlement_amount: transaction.destination.dig("amount")&.to_d,
           created_at: transaction.createdAt.to_date,
+        )
+      end
+    end
+
+    # Replicate the similar behavior of Eyeshade. Aggregates all the contribution amounts for the month, and puts them into one entry
+    uphold.group_by { |u| u.created_at.at_end_of_month }.each do |date, entries|
+      entries.group_by { |e| e.channel }.each do |channel, channel_entries|
+        amount = channel_entries.sum { |x| x.amount }
+
+        uphold << Statement.new(
+          channel: channel,
+          transaction_type: Statement::UPHOLD_CONTRIBUTION_SETTLEMENT,
+          amount: -amount,
+          settlement_currency: "BAT",
+          settlement_amount: amount,
+          created_at: date,
         )
       end
     end
