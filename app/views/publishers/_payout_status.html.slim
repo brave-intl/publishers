@@ -1,6 +1,6 @@
 .dashboard-panel--wrapper
   .dashboard-panel--header= t('.heading')
-  - if Sidekiq::Queue.new("scheduler").any? { |job| job.args.first.dig("job_class").eql? "IncludePublisherInPayoutReportJob" }
+  - if Rails.cache.fetch("payout_report_generating")
     .alert.alert-info
       .font-weight-bold=t('.information.generating')
   - else
