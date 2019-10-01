@@ -37,7 +37,7 @@ export const MainHome = () => {
           <Box
             className="bat-pill"
             as="a"
-            href={locale.nav.batPillHref}
+            href={<FormattedMessage id="nav.batPillHref"/>}
             aria-label={locale.nav.batPillAlt}
           >
             <Image src={batPill} />
@@ -118,13 +118,13 @@ export const MainSignIn = () => {
       inputPlaceholder={<FormattedMessage id="main.signin.inputPlaceholder"/>}
       btn={<FormattedMessage id="main.signin.btn"/>}
       tinyOne={<FormattedMessage id="main.signin.tinyOne"/>}
-      tinyOneHref={locale.main.signin.tinyOneHref}
+      tinyOneHref={<FormattedMessage id="main.signin.tinyOneHref"/>}
       tinyTwo={<FormattedMessage id="main.signin.tinyTwo"/>}
-      tinyTwoHref={locale.main.signin.tinyTwoHref}
+      tinyTwoHref={<FormattedMessage id="main.signin.tinyTwoHref"/>}
       footerOne={<FormattedMessage id="main.footerOne"/>}
-      footerOneHref={locale.main.footerOneHref}
+      footerOneHref={<FormattedMessage id="main.footerOneHref"/>}
       footerTwo={<FormattedMessage id="main.footerTwo"/>}
-      footerTwoHref={locale.main.footerTwoHref}
+      footerTwoHref={<FormattedMessage id="main.footerTwoHref"/>}
       formId="signInForm"
       method="PUT"
     />
@@ -139,11 +139,11 @@ export const MainSignUp = () => {
       inputPlaceholder={<FormattedMessage id="main.signup.inputPlaceholder"/>}
       btn={<FormattedMessage id="main.signup.btn"/>}
       tinyOne={<FormattedMessage id="main.signup.tinyOne"/>}
-      tinyOneHref={locale.main.signup.tinyOneHref}
+      tinyOneHref={<FormattedMessage id="main.signup.tinyOneHref"/>}
       footerOne={<FormattedMessage id="main.footerOne"/>}
-      footerOneHref={locale.main.footerOneHref}
+      footerOneHref={<FormattedMessage id="main.footerOneHref"/>}
       footerTwo={<FormattedMessage id="main.footerTwo"/>}
-      footerTwoHref={locale.main.footerTwoHref}
+      footerTwoHref={<FormattedMessage id="main.footerTwoHref"/>}
       formId="signUpForm"
       method="POST"
     />
