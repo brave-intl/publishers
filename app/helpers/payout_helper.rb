@@ -20,7 +20,7 @@ module PayoutHelper
     status = DONE if !Rails.cache.fetch("payout_in_progress")
     days_ago = (Date.today - report_created_at.to_date) if status.blank?
 
-    return [status, 1] if days_ago.blank?
+    return [status, 1] if status.present?
 
     if days_ago < 3
       status = PREPARING
