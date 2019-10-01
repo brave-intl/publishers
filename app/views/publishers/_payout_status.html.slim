@@ -1,38 +1,42 @@
 .dashboard-panel--wrapper
   .dashboard-panel--header= t('.heading')
-  div
-    .d-flex
-      = t('.amount')
-      small *
-    h4.font-weight-light
-      span= payout_amount(payout_report)
-      small.font-weight-light= " BAT"
+  - if Sidekiq::Queue.new("scheduler").any? { |job| job.args.first.dig("job_class").eql? "IncludePublisherInPayoutReportJob" }
+    .alert.alert-info
+      .font-weight-bold=t('.information.generating')
+  - else
+    div
+      .d-flex
+        = t('.amount')
+        small *
+      h4.font-weight-light
+        span= payout_amount(payout_report)
+        small.font-weight-light= " BAT"
 
-  - payout_warning = payout_warning(payout_report)
-  - if payout_warning
-    .alert.alert-warning
-      = payout_warning
-      .font-weight-bold=t('.information.no_payment')
+    - payout_warning = payout_warning(payout_report)
+    - if payout_warning
+      .alert.alert-warning
+        = payout_warning
+        .font-weight-bold=t('.information.no_payment')
 
-  - if payout_warning.blank?
-    / We're going to do some magic to make the user feel like things are actually happening
+    - if payout_warning.blank?
+      / We're going to do some magic to make the user feel like things are actually happening
 
-    .d-flex.my-3
-      - statuses = t('.statuses').values
-      - current = current_status_and_percent(payout_report.created_at)[0]
-      - statuses.each_with_index do |status, index|
-        - last = index == (statuses.size - 1)
-        - selected = status == current
-        .payout-progress class=(last ? "" : "flex-grow-1")
-          .icon class=icon_class(statuses, current, index)
-          .px-2 class=(selected ? "" : "d-sm-block d-none")
-            = status
-          - unless last
-            progress.connector value=percent_complete(payout_report.created_at, current, index) class=icon_class(statuses, current, index)
+      .d-flex.my-3
+        - statuses = t('.statuses').values
+        - current = current_status_and_percent(payout_report.created_at)[0]
+        - statuses.each_with_index do |status, index|
+          - last = index == (statuses.size - 1)
+          - selected = status == current
+          .payout-progress class=(last ? "" : "flex-grow-1")
+            .icon class=icon_class(statuses, current, index)
+            .px-2 class=(selected ? "" : "d-sm-block d-none")
+              = status
+            - unless last
+              progress.connector value=percent_complete(payout_report.created_at, current, index) class=icon_class(statuses, current, index)
 
-    .pt-2
-      = t('.description')
+      .pt-2
+        = t('.description')
 
 
-  .mt-4
-    small=t('.amount_description', time: payout_report.created_at.strftime("%Y-%m-%d"))
+    .mt-4
+      small=t('.amount_description', time: payout_report.created_at.strftime("%Y-%m-%d"))
