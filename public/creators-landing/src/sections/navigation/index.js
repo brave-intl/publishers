@@ -34,7 +34,7 @@ const DefaultNav = () => (
         </Link>
         <Box
           as="a"
-          href={<FormattedMessage id="nav.batPillHref"/>}
+          href={locale.nav.batPillHref}
           name={<FormattedMessage id="nav.batPillHref"/>}
           aria-label={<FormattedMessage id="nav.batPillAlt"/>}
         >
