@@ -136,7 +136,7 @@ class PublishersController < ApplicationController
       uphold_connection = UpholdConnection.create!(publisher: current_publisher)
     end
 
-    if payout_in_progress? || Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
+    if payout_in_progress? && Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
       @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
     end
 
@@ -190,10 +190,10 @@ class PublishersController < ApplicationController
 
     if wallet
       render(json: {
-        wallet: wallet,
-        uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
-        possible_currencies: uphold_connection.uphold_details&.currencies || [],
-      })
+               wallet: wallet,
+               uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
+               possible_currencies: uphold_connection.uphold_details&.currencies || [],
+             })
     else
       head 404
     end
@@ -305,6 +305,6 @@ class PublishersController < ApplicationController
   end
 
   def payout_in_progress?
-    !!Rails.cache.fetch('payout_in_progress')
+    !!Rails.cache.fetch("payout_in_progress")
   end
 end
