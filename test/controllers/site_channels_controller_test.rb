@@ -38,7 +38,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
       new_channel = publisher.channels.order(created_at: :asc).last
 
-      assert_redirected_to verification_choose_method_site_channel_path(new_channel)
+      assert_redirected_to controller: "/site_channels", action: "verification_choose_method", id: new_channel.id
     ensure
       Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end
@@ -65,7 +65,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
     assert channel.verified?
-    assert_redirected_to home_publishers_path
+    assert_redirected_to controller: "/publishers", action: "home"
   end
 
   test "verify can fail verification" do
@@ -88,7 +88,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
     patch(verify_site_channel_path(channel.id, verification_method: channel.details.verification_method))
     channel.reload
     refute channel.verified?
-    assert_redirected_to verification_wordpress_site_channel_path(channel.id)
+    assert_redirected_to controller: "/site_channels", action: "verification_wordpress", id: channel.id
   end
 
   test "can't create verified Site Channel with an existing verified Site Channel with the same brave_publisher_id" do
@@ -192,7 +192,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
       post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
-      assert_redirected_to change_email_publishers_path
+      assert_redirected_to controller: "/publishers", action: "change_email"
 
       create_params = {
           channel: {
@@ -204,9 +204,9 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
 
       assert_difference("Channel.count", 0) do
         post site_channels_url, params: create_params
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
-        assert_redirected_to change_email_publishers_path
+        assert_redirected_to controller: "/publishers", action: "change_email"
       end
     end
   end

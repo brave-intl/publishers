@@ -23,10 +23,10 @@ class SignUpTest < Capybara::Rails::TestCase
     fill_in "publisher_name", with: name
     click_button("Sign Up")
 
-    assert_current_path(prompt_security_publishers_path)
+    assert_current_path(prompt_security_publishers_path(locale: :en))
     click_link("Skip for now")
 
-    assert_current_path(home_publishers_path)
+    assert_current_path(home_publishers_path(locale: :en))
   end
 
   test "a user can resend a log in email" do

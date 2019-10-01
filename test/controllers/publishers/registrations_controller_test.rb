@@ -85,7 +85,7 @@ module Publishers
         end
 
         it 'redirects back to the sign up page' do
-          assert_redirected_to sign_up_publishers_path
+          assert_redirected_to controller: '/publishers/registrations', action: 'sign_up'
         end
       end
 

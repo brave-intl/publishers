@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery prepend: true, with: :exception
 
-  before_action :set_locale
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
 
@@ -20,10 +19,21 @@ class ApplicationController < ActionController::Base
   end
 
   around_action :switch_locale
-
   def switch_locale(&action)
-    locale = params[:locale] || I18n.default_locale
+    locale = nil
+    locale = params[:locale] if params[:locale].present?
+
+    if locale.nil? && extract_locale_from_accept_language_header == 'ja'
+      new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
+      redirect_to(request.original_url + new_query) and return
+    end
+
+    locale = I18n.default_locale if locale.nil?
     I18n.with_locale(locale, &action)
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
   end
 
   def no_cache
@@ -43,10 +53,6 @@ class ApplicationController < ActionController::Base
     @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
 
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
-  end
-
   def handle_unverified_request
     respond_to do |format|
       format.html {
@@ -60,5 +66,9 @@ class ApplicationController < ActionController::Base
 
   def u2f
     @u2f ||= U2F::U2F.new(request.base_url)
+  end
+
+  def extract_locale_from_accept_language_header
+    request.env['HTTP_ACCEPT_LANGUAGE']&.scan(/^[a-z]{2}/)&.first
   end
 end
