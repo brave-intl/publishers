@@ -189,11 +189,12 @@ class PublishersController < ApplicationController
     uphold_connection = current_publisher.uphold_connection
 
     if wallet
-      render(json: {
-               wallet: wallet,
-               uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
-               possible_currencies: uphold_connection.uphold_details&.currencies || [],
-             })
+      render(json:
+              {
+                wallet: wallet,
+                uphold_connection: uphold_connection.as_json(only: [:default_currency], methods: :can_create_uphold_cards?),
+                possible_currencies: uphold_connection.uphold_details&.currencies || [],
+              })
     else
       head 404
     end
