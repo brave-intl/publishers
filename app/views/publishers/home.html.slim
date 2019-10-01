@@ -93,10 +93,10 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           .add-channel-cta
             = t ".add_channel_cta"
 
-    - if @payout_report.present?
-      .row
-        .col-md.mb-4
-          = render partial: 'payout_status', locals: { payout_report: @payout_report }
+    / - if @payout_report.present?
+    /   .row
+    /     .col-md.mb-4
+    /       = render partial: 'payout_status', locals: { payout_report: @payout_report }
     .row
       - unless @publisher.excluded_from_payout?
         .col-md.mb-4
