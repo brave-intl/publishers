@@ -20,13 +20,15 @@ class ApplicationController < ActionController::Base
 
   around_action :switch_locale
   def switch_locale(&action)
-    locale = if params[:locale] == 'ja'
-      params[:locale]
-    elsif extract_locale_from_accept_language_header == 'ja'
-      redirect_to(request.original_url + "?locale=ja") and return
-    else
-      I18n.default_locale
+    locale = nil
+    locale = params[:locale] if params[:locale].present?
+
+    if locale.nil? && extract_locale_from_accept_language_header == 'ja'
+      new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
+      redirect_to(request.original_url + new_query) and return
     end
+
+    locale = I18n.default_locale if locale.nil?
     I18n.with_locale(locale, &action)
   end
 
