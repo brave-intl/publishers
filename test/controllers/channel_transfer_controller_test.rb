@@ -17,7 +17,7 @@ class ChannelTransferControllerTest < ActionDispatch::IntegrationTest
       get token_reject_transfer_path(channel, channel.contest_token)
     end
 
-    assert_redirected_to home_publishers_path
+    assert_redirected_to controller: '/publishers', action: 'home'
     assert_equal I18n.t("shared.channel_transfer_rejected"), flash[:notice]
   end
 
@@ -30,7 +30,7 @@ class ChannelTransferControllerTest < ActionDispatch::IntegrationTest
     get token_reject_transfer_path(channel, "fake token")
 
     assert response.status, 404
-    assert_redirected_to home_publishers_path
+    assert_redirected_to controller: '/publishers', action: 'home'
     assert_equal I18n.t("shared.channel_not_found"), flash[:notice]
   end
 end

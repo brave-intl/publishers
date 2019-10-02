@@ -99,7 +99,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
       end
       channel = Channel.order(created_at: :asc).last
 
@@ -131,7 +131,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -160,7 +160,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -178,7 +178,7 @@ module Publishers
 
       post(publisher_register_youtube_channel_omniauth_authorize_url)
       follow_redirect!
-      assert_redirected_to home_publishers_path
+      assert_redirected_to controller: "/publishers", action: "home"
       follow_redirect!
 
       # Channel was transferred
@@ -220,7 +220,7 @@ module Publishers
       assert_difference("Channel.count", 0) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -260,7 +260,7 @@ module Publishers
 
       post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
-      assert_redirected_to change_email_publishers_path
+      assert_redirected_to controller: "/publishers", action: "change_email"
     end
 
     test "a publisher who does not have a google plus email can not login using their login channel" do
@@ -275,7 +275,7 @@ module Publishers
 
       post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
-      assert_redirected_to log_in_publishers_path
+      assert_redirected_to controller: "registrations", action: "log_in"
     end
 
     test "a publisher who was registered by youtube channel signup can't add additional youtube channels" do
@@ -283,7 +283,7 @@ module Publishers
 
       post(publisher_youtube_login_omniauth_authorize_url)
       follow_redirect!
-      assert_redirected_to change_email_publishers_path
+      assert_redirected_to controller: "/publishers", action: "change_email"
 
       OmniAuth.config.mock_auth[:register_youtube_channel] = OmniAuth::AuthHash.new(
         {
@@ -330,9 +330,9 @@ module Publishers
       assert_difference("Channel.count", 0) do
         post(publisher_register_youtube_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
-        assert_redirected_to change_email_publishers_path
+        assert_redirected_to controller: "/publishers", action: "change_email"
       end
     end
   end
@@ -374,7 +374,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_twitch_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
       end
       channel = Channel.order(created_at: :asc).last
 
@@ -398,7 +398,7 @@ module Publishers
       assert_difference("Channel.count", 0) do
         post(publisher_register_twitch_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -456,7 +456,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
       end
 
       channel = Channel.order(created_at: :asc).last
@@ -485,7 +485,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -508,7 +508,7 @@ module Publishers
       assert_difference("Channel.count", 0) do
         post(publisher_register_twitter_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -565,7 +565,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_vimeo_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
       end
 
       channel = Channel.order(created_at: :asc).last
@@ -592,7 +592,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_vimeo_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -619,7 +619,7 @@ module Publishers
       assert_difference("Channel.count", 0) do
         post(publisher_register_vimeo_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -663,7 +663,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_reddit_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
       end
 
       channel = Channel.order(created_at: :asc).last
@@ -690,7 +690,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_reddit_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -716,7 +716,7 @@ module Publishers
       assert_difference("Channel.count", 0) do
         post(publisher_register_reddit_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -759,7 +759,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_github_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
       end
 
       channel = Channel.order(created_at: :asc).last
@@ -786,7 +786,7 @@ module Publishers
       assert_difference("Channel.count", 1) do
         post(publisher_register_github_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 
@@ -812,7 +812,7 @@ module Publishers
       assert_difference("Channel.count", 0) do
         post(publisher_register_github_channel_omniauth_authorize_url)
         follow_redirect!
-        assert_redirected_to home_publishers_path
+        assert_redirected_to controller: "/publishers", action: "home"
         follow_redirect!
       end
 

@@ -5,7 +5,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   test "new requires authentication" do
     get new_totp_registration_path
-    assert_redirected_to root_path
+    assert_redirected_to root_path, locale: 'en'
   end
 
   test "new renders when authenticated with new key form" do
@@ -13,7 +13,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     get new_totp_registration_path
 
     assert_response :success
-    assert_select "form[method=post][action=?]", totp_registrations_path do
+    assert_select "form[method=post][action=?]", totp_registrations_path(locale: :en) do
       assert_select "input[name=totp_password]:not([value])"
       assert_select "input[type=submit]"
     end
@@ -28,7 +28,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
     get new_totp_registration_path
 
     assert_response :success
-    assert_select "form[method=post][action=?]", totp_registrations_path do
+    assert_select "form[method=post][action=?]", totp_registrations_path(locale: :en) do
       assert_select "input[name=totp_password]:not([value])"
       assert_select "input[type=submit]"
     end
@@ -47,7 +47,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to security_publishers_path, "redirects to two_factor_registrations"
+    assert_redirected_to controller: "/publishers/security"
     refute @request.flash[:modal_partial]
   end
 
@@ -65,7 +65,7 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to home_publishers_path, "redirects to dashboard"
+    assert_redirected_to controller: "/publishers", action: "home"
     assert @request.flash[:modal_partial]
 
     follow_redirect!
@@ -89,6 +89,6 @@ class TotpRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to security_publishers_path, "redirects to two_factor_registrations"
+    assert_redirected_to controller: "/publishers/security"
   end
 end
