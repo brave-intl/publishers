@@ -1,6 +1,7 @@
 module Publishers
   class StatementsController < ApplicationController
     before_action :authenticate_publisher!
+    before_action :protect
 
     def index
       @uphold_connection = publisher.uphold_connection
@@ -26,9 +27,15 @@ module Publishers
       end
     end
 
+    private
+
     def publisher
       return Publisher.find(params[:id]) if current_publisher.admin?
       current_publisher
+    end
+
+    def protect
+      redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
     end
   end
 end

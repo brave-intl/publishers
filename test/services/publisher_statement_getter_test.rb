@@ -18,37 +18,31 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
       to_return(status: 200, body: [].to_json, headers: {})
 
     # This will raise an error if the stubbed request format isn't correct
-    PublisherStatementGetter.new(publisher: publisher, statement_period: "all").perform
+    PublisherStatementGetter.new(publisher: publisher).perform
   end
 
   test "filters transactions by period" do
     Rails.application.secrets[:api_eyeshade_offline] = true
     publisher = publishers(:verified) # Has one channel
 
-    statement_data = PublisherStatementGetter.new(publisher: publisher, statement_period: "last_month").perform
-    assert_equal 1, number_of_unique_settlement_dates(statement_data)
-
-    statement_data = PublisherStatementGetter.new(publisher: publisher, statement_period: "this_month").perform
-    assert_equal 1, number_of_unique_settlement_dates(statement_data)
-
-    statement_data = PublisherStatementGetter.new(publisher: publisher, statement_period: "all").perform
+    statement_data = PublisherStatementGetter.new(publisher: publisher).perform
     assert_equal PublisherTransactionsGetter::OFFLINE_NUMBER_OF_SETTLEMENTS, number_of_unique_settlement_dates(statement_data)
   end
 
   test "replaces account identifiers with channel title if channel or 'All' if publisher" do
     Rails.application.secrets[:api_eyeshade_offline] = true
     publisher = publishers(:uphold_connected)
-    statement_data = PublisherStatementGetter.new(publisher: publisher, statement_period: "this_month").perform
+    statement_data = PublisherStatementGetter.new(publisher: publisher).perform
 
     # Ensure all channel identifiers have been replaced
     statement_data.each do |transaction|
-      assert_nil transaction["channel"].match("youtube#channel")
-      assert_nil transaction["channel"].match("twitch#channel")
-      assert_nil transaction["channel"].match("twitch#author")
-      assert_nil transaction["channel"].match("twitter#channel")
+      assert_nil transaction.channel.match("youtube#channel")
+      assert_nil transaction.channel.match("twitch#channel")
+      assert_nil transaction.channel.match("twitch#author")
+      assert_nil transaction.channel.match("twitter#channel")
 
-      if transaction["description"] == "payout for referrals"
-        assert_equal transaction["channel"], "All"
+      if transaction.description == "payout for referrals"
+        assert_equal I18n.t("publishers.statements.index.account"), transaction.channel
       end
     end
   end
@@ -60,8 +54,8 @@ class PublisherStatementGetterTest < ActiveJob::TestCase
     current_settlement_date = ""
 
     statement_data.each do |transaction|
-      if transaction["created_at"] != current_settlement_date
-        current_settlement_date = transaction["created_at"]
+      if transaction.created_at != current_settlement_date
+        current_settlement_date = transaction.created_at
         num_different_settlement_dates += 1
       end
     end

@@ -58,7 +58,7 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def scope
-    @scope ||= JSON.parse(uphold_access_parameters).try(:[], 'scope') || []
+    @scope ||= JSON.parse(uphold_access_parameters || '{}').try(:[], 'scope') || []
   end
 
   def can_read_transactions?
