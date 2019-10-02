@@ -93,7 +93,7 @@ export default class StatementDetails extends React.Component<
             </span>
           </h5>
           {this.props.statement.details.map((detail, index) => (
-            <StatemenDetail detail={detail} index={index} />
+            <StatementDetail detail={detail} index={index} />
           ))}
         </div>
       </Details>
@@ -101,7 +101,7 @@ export default class StatementDetails extends React.Component<
   }
 }
 
-const StatemenDetail = props => (
+const StatementDetail = props => (
   <div
     style={{
       background: props.index % 2 === 0 ? "#F3F3F6" : "",

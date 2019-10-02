@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'addressable/template'
+require "addressable/template"
 
 module Uphold
   module Models
@@ -22,7 +22,7 @@ module Uphold
       # Lists all the addresses a specified card has
       #
       # @param [UpholdConnection] connection The uphold connection to find.
-      # @param [string] iid The id of the card you want to find.
+      # @param [string] id The id of the card you want to find.
       #
       # @return [Uphold::Models::Address[]] an array of th addresses
       def all(id:)
@@ -39,7 +39,7 @@ module Uphold
       end
 
       def parse_response(response)
-        if response.headers['Content-Encoding'].eql?('gzip')
+        if response.headers["Content-Encoding"].eql?("gzip")
           sio = StringIO.new(response.body)
           gz = Zlib::GzipReader.new(sio)
           JSON.parse(gz.read)

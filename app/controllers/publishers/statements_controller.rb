@@ -9,10 +9,8 @@ module Publishers
       @statement_has_content = statement_contents.length > 0
 
       respond_to do |format|
-        format.html { }
-        format.json {
-          render json: Views::User::Statements.new(publisher: publisher)
-        }
+        format.html {}
+        format.json { render json: Views::User::Statements.new(publisher: publisher) }
       end
     end
 
