@@ -62,8 +62,7 @@ module ChannelsHelper
     end
   end
 
-  def channel_verification_details(channel)
-    return if channel.verified? || channel.details_type != "SiteChannelDetails"
+  def failed_verification_details(channel)
     case channel.verification_details
       when "domain_not_found"
         I18n.t("helpers.channels.verification_failure_explanation.domain_not_found")
