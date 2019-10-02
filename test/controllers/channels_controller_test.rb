@@ -106,7 +106,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_match(
       '{"status":"verified",' +
-        '"details":null}',
+      '"details":"Of an unknown reason. "}',
       response.body)
   end
 end
