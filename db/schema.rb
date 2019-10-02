@@ -2,17 +2,18 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_30_162819) do
+ActiveRecord::Schema.define(version: 2019_09_13_151449) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -221,17 +222,6 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.index ["publisher_id"], name: "index_legacy_totp_registrations_on_publisher_id"
   end
 
-  create_table "legacy_versions", id: :serial, force: :cascade do |t|
-    t.string "item_type", null: false
-    t.integer "item_id", null: false
-    t.string "event", null: false
-    t.string "whodunnit"
-    t.text "object"
-    t.datetime "created_at"
-    t.text "object_changes"
-    t.index ["item_type", "item_id"], name: "index_legacy_versions_on_item_type_and_item_id"
-  end
-
   create_table "legacy_youtube_channels", id: :string, force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -390,6 +380,7 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.uuid "created_by_id"
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
+    t.boolean "thirty_day_login", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
@@ -512,11 +503,13 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.string "channel_identifier"
     t.string "card_id"
     t.string "address"
+    t.uuid "uphold_id"
     t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
     t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
     t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"
     t.index ["currency"], name: "index_uphold_connection_for_channels_on_currency"
     t.index ["uphold_connection_id"], name: "index_uphold_connection_for_channels_on_uphold_connection_id"
+    t.index ["uphold_id"], name: "index_uphold_connection_for_channels_on_uphold_id"
   end
 
   create_table "uphold_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -536,7 +529,18 @@ ActiveRecord::Schema.define(version: 2019_07_30_162819) do
     t.string "country"
     t.string "default_currency"
     t.datetime "default_currency_confirmed_at"
+    t.datetime "member_at"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
+  end
+
+  create_table "uphold_status_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id"
+    t.uuid "uphold_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_uphold_status_reports_on_created_at"
+    t.index ["publisher_id"], name: "index_uphold_status_reports_on_publisher_id"
+    t.index ["uphold_id"], name: "index_uphold_status_reports_on_uphold_id"
   end
 
   create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

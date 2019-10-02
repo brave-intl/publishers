@@ -14,7 +14,7 @@
   grid-gap: 32px;
   align-items: center;
 }
-  
+
 // Bootstrap overrides. Could be refined
 .btn-default {
   color: $braveGray-2 !important;
@@ -58,7 +58,6 @@
   bottom: 0;
   background: $braveGray-2;
   margin: 60px 0 0 0;
-  padding: 24px 0;
   overflow: auto;
 
   .sidebar-menu {

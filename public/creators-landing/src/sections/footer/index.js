@@ -3,6 +3,7 @@ import { Box, Text, Image, ResponsiveContext } from "grommet";
 import { FooterLegal } from "../../components";
 import BuiltWithBat from "../../components/img/built-with-bat.svg";
 import locale from "../../locale/en";
+import { FormattedMessage } from 'react-intl';
 
 const FooterComponent = props => (
   <Box
@@ -14,21 +15,21 @@ const FooterComponent = props => (
     wrap
   >
     <Box direction="row" gap="small" pad={props.padded}>
-      <FooterLegal label={locale.footer.one} href={locale.footer.oneHref} />
+      <FooterLegal label={<FormattedMessage id="footer.one" /> } href={locale.footer.oneHref} />
       <Text color="grey" size="small">
         |
       </Text>
-      <FooterLegal label={locale.footer.two} href={locale.footer.twoHref} />
+      <FooterLegal label={<FormattedMessage id="footer.two" /> } href={locale.footer.twoHref} />
       <Text color="grey" size="small">
         |
       </Text>
-      <FooterLegal label={locale.footer.three} href={locale.footer.threeHref} />
+      <FooterLegal label={<FormattedMessage id="footer.three" /> } href={locale.footer.threeHref} />
     </Box>
     <Box
       as="a"
       direction="row"
       href={locale.footer.fourHref}
-      aria-label={locale.nav.batPillAlt}
+      aria-label={<FormattedMessage id="nav.batPillAlt"/>}
       pad={props.padded}
     >
       <Image src={BuiltWithBat} />

@@ -64,10 +64,10 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher.status_updates.create(status: PublisherStatusUpdate::SUSPENDED)
 
     get home_publishers_path
-    assert_redirected_to(suspended_error_publishers_path)
+    assert_redirected_to controller: "/publishers", action: "suspended_error"
 
     get statement_publishers_path
-    assert_redirected_to(suspended_error_publishers_path)
+    assert_redirected_to controller: "/publishers", action: "suspended_error"
 
     # Go back to active
     publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
@@ -114,12 +114,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         message.to.first == SIGNUP_PARAMS[:email]
       end
       assert_not_nil(email)
-      url = publisher_url(publisher, token: publisher.authentication_token)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token).gsub("locale=en&", "")
       assert_email_body_matches(matcher: url, email: email)
     end
 
     get url
-    assert_redirected_to email_verified_publishers_path
+    assert_redirected_to controller: "/publishers", action: "email_verified"
   end
 
   test "re-used access link is rejected and send publisher to the expired auth token page" do
@@ -128,7 +128,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.authentication_token)
 
     get url
-    assert_redirected_to home_publishers_url, "precond - publisher is logged in"
+    assert_redirected_to controller: "/publishers", action: "home"
 
     get url
     assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id), "re-used URL is rejected, publisher not logged in"
@@ -202,7 +202,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       message.to.first == publisher.email
     end
     assert_not_nil(email)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token).gsub("locale=en&", "")
     assert_email_body_matches(matcher: url, email: email)
   end
 
@@ -226,42 +226,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_not_nil(email)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token).gsub("locale=en&", "")
     assert_email_body_matches(matcher: url, email: email)
   end
-
-  # test "relogin for unverified publishers requires email" do
-  #   publisher = publishers(:default)
-  #   assert_enqueued_jobs(0) do
-  #     get(log_in_publishers_path)
-  #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
-  #     post(create_authentication_token_publishers_path, params: params)
-  #   end
-  # end
-
-  # test "relogin for unverified publishers fails with the wrong email" do
-  #   publisher = publishers(:default)
-  #   assert_enqueued_jobs(0) do
-  #     get(log_in_publishers_path)
-  #     params = { publisher: { "brave_publisher_id" => publisher.brave_publisher_id, "email" => "anon@cock.li" } }
-  #     post(create_authentication_token_publishers_path, params: params)
-  #   end
-  # end
-
-  # test "relogin for verified publishers without an email sends to the publisher's email" do
-  #   publisher = publishers(:verified)
-  #   perform_enqueued_jobs do
-  #     get(log_in_publishers_path)
-  #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
-  #     post(create_authentication_token_publishers_path, params: params)
-  #   end
-  #   email = ActionMailer::Base.deliveries.find do |message|
-  #     message.to.first == publisher.email
-  #   end
-  #   assert_not_nil(email)
-  #   url = publisher_url(publisher, token: publisher.reload.authentication_token)
-  #   assert_email_body_matches(matcher: url, email: email)
-  # end
 
   test "publisher completing signup will agree to TOS" do
     perform_enqueued_jobs do
@@ -459,7 +426,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       # verify that the uphold_access_parameters has been set
       assert_match('FAKEACCESSTOKEN', publisher.uphold_connection.uphold_access_parameters)
 
-      assert_redirected_to '/publishers/home'
+      assert_redirected_to controller: "/publishers", action: "home"
     end
   end
 
@@ -578,8 +545,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in publisher
     get home_publishers_path
-
-    assert_redirected_to prompt_security_publishers_path, "redirects on first visit"
+    assert_redirected_to controller: "/publishers/security", action: "prompt"
     follow_redirect!
 
     get home_publishers_path

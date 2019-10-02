@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UpholdConnection < ActiveRecord::Base
+  has_paper_trail only: [:is_member, :member_at, :uphold_id, :address, :status, :default_currency]
+
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
 
@@ -102,7 +104,7 @@ class UpholdConnection < ActiveRecord::Base
   def uphold_details
     @user ||= uphold_client.user.find(self)
   rescue Faraday::ClientError => e
-    if e.response[:status] == 401
+    if e.response&.dig(:status) == 401
       Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
       update(uphold_access_parameters: nil)
       nil
@@ -167,6 +169,7 @@ class UpholdConnection < ActiveRecord::Base
 
     update(
       is_member: uphold_information.memberAt.present?,
+      member_at: uphold_information.memberAt,
       status: uphold_information.status,
       uphold_id: uphold_information.id,
       country: uphold_information.country

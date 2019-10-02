@@ -15,6 +15,7 @@ import {
 
 import batPill from "../../../components/img/built-with-bat-pill.svg";
 import locale from "../../../locale/en";
+import { FormattedMessage } from 'react-intl';
 import { Heading, Text, Box, Anchor, Image } from "grommet";
 
 // Sign up and sign in shared this component since
@@ -67,7 +68,7 @@ const SentEmail = props => {
           >
             {props.words.body}
             <Anchor color="rgba(255, 255, 255, .8)" onClick={props.tryAgain}>
-              <strong>{locale.sign.signTryAgain}</strong>
+              <strong>{<FormattedMessage id="sign.signTryAgain"/>}</strong>
             </Anchor>
           </Text>
           <Box
@@ -81,28 +82,28 @@ const SentEmail = props => {
             <a
               href={locale.sign.iconHelpHref}
               className="sign-icon"
-              title={locale.sign.iconHelpTitle}
+              title={<FormattedMessage id="sign.iconHelpTitle"/>}
             >
               <SignInfoIcon />
             </a>
             <a
               href={locale.sign.iconMessageHref}
               className="sign-icon"
-              title={locale.sign.iconMessageTitle}
+              title={<FormattedMessage id="sign.iconMessageTitle"/>}
             >
               <SignMessageIcon />
             </a>
             <a
               href={locale.sign.iconRedditHref}
               className="sign-icon"
-              title={locale.sign.iconRedditTitle}
+              title={<FormattedMessage id="sign.iconRedditTitle"/>}
             >
               <SignRedditIcon />
             </a>
             <a
               href={locale.sign.iconCommunityHref}
               className="sign-icon"
-              title={locale.sign.iconCommunityTitle}
+              title={<FormattedMessage id="sign.iconCommunityTitle"/>}
             >
               <SignCommunityIcon />
             </a>
@@ -120,7 +121,7 @@ const SentEmail = props => {
             <Box
               as="a"
               href={locale.nav.batPillHref}
-              aria-label={locale.nav.batPillAlt}
+              aria-label={<FormattedMessage id="nav.batPillAlt"/>}
             >
               <Image src={batPill} height="28px" />
             </Box>

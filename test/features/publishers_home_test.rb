@@ -1,4 +1,5 @@
 require "test_helper"
+require "webmock/minitest"
 
 class PublishersHomeTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
@@ -124,7 +125,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
 
     find('[data-test-choose-channel-website]').click
 
-    assert_current_path(new_site_channel_path)
+    assert_current_path(/site_channels\/new/)
   end
 
   test "confirm default currency modal appears after uphold signup" do

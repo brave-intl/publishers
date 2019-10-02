@@ -6,10 +6,7 @@ class Publishers::SiteBannersController < ApplicationController
 
   def show
     if site_banner
-      data = site_banner.read_only_react_property
-      data[:backgroundImage] = data[:backgroundUrl]
-      data[:logoImage] = data[:logoUrl]
-      render(json: data.to_json)
+      render json: site_banner.read_only_react_property
     else
       render(json: nil.to_json)
     end
@@ -89,8 +86,8 @@ class Publishers::SiteBannersController < ApplicationController
       )
     rescue OutsidePaddingRangeError => e
       logger.error "Outside padding range #{e.message}"
-      LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: {publisher_id: current_publisher.id})
-      raise StandardError.new("File size too big for #{attachment_type}")
+      LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: { publisher_id: current_publisher.id })
+      raise StandardError.new("File size too big for #{attachment_type}") # rubocop:disable Style/RaiseArgs
     end
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)
@@ -98,7 +95,7 @@ class Publishers::SiteBannersController < ApplicationController
     {
       io: open(padded_resized_jpg_path),
       filename: new_filename + ".jpg",
-      content_type: "image/jpg"
+      content_type: "image/jpg",
     }
   end
 end

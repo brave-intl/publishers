@@ -7,7 +7,23 @@ class Admin::PayoutReportsController < AdminController
 
   def show
     @payout_report = PayoutReport.find(params[:id])
-    render(json: @payout_report.contents, status: 200)
+    @previous_report = PayoutReport.where(
+      manual: @payout_report.manual,
+      final: @payout_report.final
+    ).where("created_at < ?", @payout_report.created_at).order(created_at: :desc).take
+  end
+
+  def edit
+    @payout_report = PayoutReport.find(params[:id])
+  end
+
+  def update
+    @payout_report = PayoutReport.find(params[:id])
+    if @payout_report.update(payout_params)
+      redirect_to admin_payout_report_path(@payout_report), flash: { notice: "Saved"}
+    else
+      redirect_to admin_payout_report_path(@payout_report), flash: { alert: "Could not save"}
+    end
   end
 
   def download
@@ -73,6 +89,10 @@ class Admin::PayoutReportsController < AdminController
   end
 
   private
+
+  def payout_params
+    params.require(:payout_report).permit(:final)
+  end
 
   def assign_authority(report_contents)
     report_contents = JSON.parse(report_contents)

@@ -86,7 +86,11 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def update_to_tos
-    PublisherMailer.update_to_tos(Publisher.first)
+    BatchMailer.update_to_tos(Publisher.first)
+  end
+
+  def kyc_and_referral_update
+    BatchMailer.notification_for_kyc(Publisher.first)
   end
 
   def submit_appeal
