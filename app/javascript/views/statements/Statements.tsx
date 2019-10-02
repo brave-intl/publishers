@@ -136,17 +136,6 @@ export default class Statements extends React.Component<any, IStatementsState> {
                       >
                         {locale.statements.overview.view}
                       </a>
-                      <a
-                        href="#"
-                        className="d-none d-md-block d-lg-block d-xl-block"
-                      >
-                        <DownloadIcon
-                          style={{ width: "18px", height: "18px" }}
-                        />
-                        <span className="ml-1">
-                          {locale.statements.overview.download}
-                        </span>
-                      </a>
                       {this.state.statements && (
                         <Modal
                           show={statement.isOpen}

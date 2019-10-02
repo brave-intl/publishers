@@ -96,6 +96,18 @@ export default class StatementDetails extends React.Component<
             <StatementDetail detail={detail} index={index} />
           ))}
         </div>
+        {!this.props.showPage && (
+          <div className="px-5 py-3">
+            <a
+              href={routes.publishers.statements.show.path.replace(
+                "{period}",
+                this.props.statement.earning_period
+              )}
+            >
+              {locale.statements.overview.viewMore}
+            </a>
+          </div>
+        )}
       </Details>
     );
   }

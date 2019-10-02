@@ -18,13 +18,6 @@ module Publishers
     def show
       overviews = Views::User::Statements.new(publisher: publisher, details_date: params[:id]).overviews
       @overview = overviews.detect { |x| x.earning_period == params[:id] }
-
-      if params[:download]
-        file_name = "#{@overview.name} - #{@overview.earning_period} statement"
-
-        statement_string = render_to_string :layout => "statement"
-        send_data statement_string, filename: file_name, type: "application/html"
-      end
     end
 
     private
