@@ -23,21 +23,11 @@ class ErrorsController < ActionController::Base
 
   def render_page
     @status = status
-    respond_to do |format|
-      format.all do
-        render(
-          nothing: true,
-          status: @status
-        )
-      end
-      format.html do
-        render(
-          layout: "error",
-          status: @status,
-          template: "errors/shared"
-        )
-      end
-    end
+    render(
+      layout: "error",
+      status: @status,
+      template: "errors/shared"
+    )
   end
 
   def status
