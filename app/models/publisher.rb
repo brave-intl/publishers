@@ -22,6 +22,7 @@ class Publisher < ApplicationRecord
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
   has_one :case
+  has_one :paypal_connection, -> { where(hidden: false) }, foreign_key: :user_id, class_name: "PaypalConnection"
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -46,6 +47,7 @@ class Publisher < ApplicationRecord
 
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? && !deleted? }
+
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change, unless: -> { deleted? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
@@ -312,6 +314,10 @@ class Publisher < ApplicationRecord
   def timeout_in
     return 2.hours if admin?
     thirty_day_login? ? 30.days : 30.minutes
+  end
+
+  def paypal_locale?(locale)
+    locale == 'ja'
   end
 
   private

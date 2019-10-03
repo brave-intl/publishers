@@ -29,6 +29,12 @@ Rails.application.routes.draw do
         resource :two_factor_authentications_removal
       end
 
+      resources :paypal_accounts, controller: "publishers/paypal_accounts", only: [] do
+        get :connect_callback, on: :collection
+        get :refresh
+        patch :disconnect
+      end
+
       get :log_out
       get :home
       get :change_email
@@ -45,7 +51,6 @@ Rails.application.routes.draw do
       get :security, to: "publishers/security#index"
       get :prompt_security, to: "publishers/security#prompt"
       get :settings, to: "publishers/settings#index"
-
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)

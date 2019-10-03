@@ -14,7 +14,7 @@ module Publishers
             uphold_status: publisher.uphold_connection&.uphold_status.to_s,
             uphold_status_summary: uphold_status_summary(publisher),
             uphold_status_description: uphold_status_description(publisher),
-            uphold_status_class: uphold_status_class(publisher),
+            payout_account_status_class: payout_account_status_class(publisher),
           }, status: 200)
         end
       end

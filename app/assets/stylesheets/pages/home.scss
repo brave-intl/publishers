@@ -399,6 +399,36 @@
       border-radius: $brave-panels-borderRadius;
       box-shadow: $defaultBoxShadow;
       height: 100%;
+
+      .wide-action {
+        margin-left: 15px;
+      }
+
+      .minor-action {
+        font-size: 13px;
+        margin-top: 5px;
+      }
+    }
+
+    &--header-with-image {
+      margin-left: -10px;
+      padding: 4px 0 4px;
+      font-size: 20px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-basis: 50%;
+      font-weight: 600;
+    }
+
+    &--header-image {
+      margin-top: -10px;
+      margin-right: 15px;
+    }
+
+    &--header-right-aligned-image {
+      margin-top: -15px;
+      margin-left: auto;
     }
 
     &--header {
@@ -444,8 +474,10 @@
     font-size: 13px;
   }
 
-  #uphold_status {
-    #uphold_status_display {
+
+
+  #payout_account_status {
+    #payout_account_status_display {
       vertical-align: top;
       margin-bottom: 5px;
     }
@@ -468,7 +500,9 @@
           content: "\25CF\00a0";
         }
       }
-
+      .reload-paypal {
+        margin-left: 15px;
+      }
       .action {
         display: inline-block;
         margin-left: 15px;
@@ -505,6 +539,24 @@
 
       &.no-settlement-made {
         display: none;
+      }
+
+      .last-deposit-v2 {
+        font-size: 13px;
+        font-family: $headings-font-family;
+        margin-left: 20px;
+        &--label {
+          font-size: 16px;
+        }
+        &--amount {
+          font-size: 16px;
+        }
+        &--date {
+          color: $braveGray-6;
+        }
+        &--no-payout-account {
+          color: #ff3f3f;
+        }
       }
 
       .last-deposit {
@@ -629,6 +681,7 @@
         color: darken(#2aeaa1, 10%);
       }
     }
+
 
     &.uphold-reauthorization-needed,
     &.uphold-timeout {
@@ -1243,8 +1296,26 @@ h6 {
   }
 }
 
+.deposit-date-explanation {
+  color: $braveGray-5;
+  font-size: 13px;
+  margin-left: 20px;
+  margin-right: 40px;
+  margin-bottom: 5px;
+}
+
 .screenshot {
   max-width: 300px;
+}
+
+.payout-connected-highlight {
+  margin-left: 20px;
+  font-size: 14px;
+  color: #14cd86;
+}
+
+.payout-account-disconnect-button {
+  font-size: 14px;
 }
 
 .payout-progress {

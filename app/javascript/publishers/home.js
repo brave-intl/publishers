@@ -237,7 +237,7 @@ function checkUpholdStatus() {
       if (timedOut) {
         // TODO - use resource strings for summary + description text
         body = {
-          uphold_status_class: "uphold-timeout",
+          payout_account_status_class: "uphold-timeout",
           uphold_status_summary: "Connection problems",
           uphold_status_description:
             "We are experiencing communication problems. Please check back later."
@@ -245,8 +245,8 @@ function checkUpholdStatus() {
       }
 
       if (body) {
-        if (body.uphold_status_class) {
-          upholdStatus.className = body.uphold_status_class;
+        if (body.payout_account_status_class) {
+          upholdStatus.className = body.payout_account_status_class;
         }
 
         if (body.uphold_status_summary) {

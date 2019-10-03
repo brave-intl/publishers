@@ -131,6 +131,7 @@ module PublishersHelper
     if last_settlement_balance&.amount_bat.present?
       '%.2f' % last_settlement_balance.amount_bat
     else
+      I18n.t("helpers.publisher.no_deposit")
     end
   rescue => e
     require "sentry-raven"
@@ -190,20 +191,28 @@ module PublishersHelper
     Rails.application.secrets[:terms_of_service_url]
   end
 
-  def uphold_status_class(publisher)
-    case publisher.uphold_connection&.uphold_status
-    when :verified, UpholdConnection::UpholdAccountState::BLOCKED
-      # (Albert Wang): We notify Brave when we detect a login of someone with a blocked
-      # Uphold account
-      'uphold-complete'
-    when :code_acquired, :access_parameters_acquired
-      'uphold-processing'
-    when :reauthorization_needed
-      'uphold-reauthorization-needed'
-    when UpholdConnection::UpholdAccountState::RESTRICTED
-      'uphold-' + UpholdConnection::UpholdAccountState::RESTRICTED.to_s
-    else
-      'uphold-unconnected'
+  def payout_account_status_class(publisher)
+    if publisher.uphold_connection.present?
+      case publisher.uphold_connection&.uphold_status
+      when :verified, UpholdConnection::UpholdAccountState::BLOCKED
+        # (Albert Wang): We notify Brave when we detect a login of someone with a blocked
+        # Uphold account
+        'uphold-complete'
+      when :code_acquired, :access_parameters_acquired
+        'uphold-processing'
+      when :reauthorization_needed
+        'uphold-reauthorization-needed'
+      when UpholdConnection::UpholdAccountState::RESTRICTED
+        'uphold-' + UpholdConnection::UpholdAccountState::RESTRICTED.to_s
+      else
+        'uphold-unconnected'
+      end
+    elsif publisher.paypal_connection.present?
+      if publisher.paypal_connection.verified_account?
+        'uphold-complete'
+      else
+        'uphold-unconnected'
+      end
     end
   end
 
@@ -228,6 +237,15 @@ module PublishersHelper
       I18n.t("helpers.publisher.uphold_status_summary.connection_problems")
     else
       I18n.t("helpers.publisher.uphold_status_summary.unconnected")
+    end
+  end
+
+  # Albert Wang: It seems there's only 2 states: true or false
+  def paypal_status_summary(publisher)
+    if publisher.paypal_connection&.verified_account
+      I18n.t("publishers.paypal_account_panel.connected")
+    else
+      I18n.t("publishers.paypal_account_panel.unconnected_bank_account")
     end
   end
 
