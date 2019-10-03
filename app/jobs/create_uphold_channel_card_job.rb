@@ -23,6 +23,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
     upfc.update(
       address: get_address(uphold_connection, card_id),
       card_id: card_id,
+      channel_id: channel_id,
       uphold_id: uphold_connection.uphold_id
     )
   end
