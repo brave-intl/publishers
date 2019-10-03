@@ -9,6 +9,14 @@
           label.switch
             = f.check_box 'thirty_day_login', checked: current_publisher.thirty_day_login?, class: "form-check-input", onchange: "this.form.submit()"
             span.slider.round
+      .d-flex
+        .mr-auto.p-2
+          p= t ".stripe_payout.intro"
+        .p-2
+          label.switch
+            = f.check_box 'uses_stripe_for_payout', checked: current_publisher.uses_stripe_for_payout?, class: "form-check-input", onchange: "this.form.submit()"
+            span.slider.round
+
 br
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
   .single-panel--padded-content--short-padding

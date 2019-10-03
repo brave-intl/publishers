@@ -46,6 +46,8 @@ class Publisher < ApplicationRecord
 
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
   validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? && !deleted? }
+
+  before_save :has_japanese_email_for_stripe_payout, if: -> { :uses_stripe_for_payout_changed? }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change, unless: -> { deleted? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
@@ -312,6 +314,10 @@ class Publisher < ApplicationRecord
   def timeout_in
     return 2.hours if admin?
     thirty_day_login? ? 30.days : 30.minutes
+  end
+
+  def has_japanese_email_for_stripe_payout
+    errors.add(:base, "Not using a japanese email") unless email.present? && email.ends_with?("jp")
   end
 
   private
