@@ -14,7 +14,7 @@ module PublishersHelper
       charset: "utf-8",
       og: {
         title: :title,
-        image: image_url("open-graph-preview.png", host: root_url),
+        image: image_url("open-graph-preview.png"),
         description: t("shared.app_description"),
         url: request.url,
         type: "website",

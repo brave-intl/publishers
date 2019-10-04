@@ -64,6 +64,8 @@ gem 'mini_magick'
 
 gem 'mongo', '~> 2.2', '>= 2.2.5'
 
+gem "newrelic_rpm", "~> 6.7.0.359"
+
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
 
@@ -183,11 +185,6 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
-end
-
-group :production do
-  # App monitoring
-  gem "newrelic_rpm", "~> 3.16"
 end
 
 group :development, :test do
