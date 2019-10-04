@@ -259,7 +259,7 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.0.3)
     netrc (0.11.0)
-    newrelic_rpm (3.18.1.330)
+    newrelic_rpm (6.7.0.359)
     nio4r (2.4.0)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
@@ -559,7 +559,7 @@ DEPENDENCIES
   minitest-rails-capybara (~> 3.0.1)
   mocha
   mongo (~> 2.2, >= 2.2.5)
-  newrelic_rpm (~> 3.16)
+  newrelic_rpm (~> 6.7.0.359)
   nokogiri
   omniauth-github
   omniauth-google-oauth2 (~> 0.5.2)
