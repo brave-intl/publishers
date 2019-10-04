@@ -23,6 +23,7 @@ class CreateUpholdChannelCardJob < ApplicationJob
     upfc.update(
       address: get_address(uphold_connection, card_id),
       card_id: card_id,
+      # It's possible a channel can be removed, so this covers re-linking an existing UCFC to the re-added channel.
       channel_id: channel_id,
       uphold_id: uphold_connection.uphold_id
     )
