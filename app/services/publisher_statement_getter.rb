@@ -73,6 +73,8 @@ class PublisherStatementGetter < BaseApiClient
       entries.group_by { |e| e.channel }.each do |channel, channel_entries|
         amount = channel_entries.sum { |x| x.amount }
 
+        # We're specifying a negative amount because we group by transactions already paid out.
+        # This gives us the ability to aggregate and show one Uphold transaction, rather than 300 or so tips that might have been sent.
         uphold << Statement.new(
           channel: channel,
           transaction_type: Statement::UPHOLD_CONTRIBUTION_SETTLEMENT,
@@ -81,7 +83,7 @@ class PublisherStatementGetter < BaseApiClient
           settlement_amount: amount,
           created_at: date,
         )
-      end
+      endout ai
     end
 
     uphold
