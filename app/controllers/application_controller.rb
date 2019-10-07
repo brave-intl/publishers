@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
 
+  newrelic_ignore_enduser
+
   rescue_from Ability::AdminNotOnIPWhitelistError do |e|
     render file: "admin/errors/whitelist.html", layout: false
   end

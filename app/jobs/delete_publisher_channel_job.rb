@@ -13,6 +13,10 @@ class DeletePublisherChannelJob < ApplicationJob
     # If channel is being contested, approve the channel which will also delete
     if @channel.contested_by_channel.present?
       Channels::ApproveChannelTransfer.new(channel: @channel).perform
+    elsif Channel.find_by(contested_by_channel: @channel)
+      # Reject the transfer if the account which is having their 2fa removed has channels transferring to their account
+      contested_channel = Channel.find_by(contested_by_channel: @channel)
+      Channels::RejectChannelTransfer.new(channel: contested_channel).perform
     else
       @channel.destroy!
     end

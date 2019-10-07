@@ -51,7 +51,7 @@
                   span.verification-failed--what-happened=t("helpers.channels.verification_failure_what_happened")
                   span.verification-failed--explanation
                     span.verification-failed-explanation--content
-                      = channel_verification_details(channel).upcase_first
+                      = failed_verification_details(channel).upcase_first
             .ml-2
               = link_to(t(".try_again"), channel_next_step_path(channel), class: "btn btn-primary try-again")
 
