@@ -194,6 +194,7 @@ group :development, :test do
   # Vulnerabilities
   gem "bundler-audit", require: false
   gem 'capybara'
+  gem 'listen', '~> 3.2'
   gem 'minitest'
   gem 'minitest-rails'
   gem "mocha"

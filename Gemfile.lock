@@ -218,6 +218,9 @@ GEM
     json (2.2.0)
     jsonapi-renderer (0.2.2)
     jwt (2.2.1)
+    listen (3.2.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     lograge (0.11.2)
       actionpack (>= 4)
       activesupport (>= 4)
@@ -549,6 +552,7 @@ DEPENDENCIES
   faraday (~> 0.15.4)
   font-awesome-rails (~> 4.7.0.4)
   i18n-tasks (~> 0.9.12)
+  listen (~> 3.2)
   lograge (~> 0.4)
   meta-tags
   mini_magick
