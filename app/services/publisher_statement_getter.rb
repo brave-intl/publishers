@@ -83,7 +83,7 @@ class PublisherStatementGetter < BaseApiClient
           settlement_amount: amount,
           created_at: date,
         )
-      endout ai
+      end
     end
 
     uphold
