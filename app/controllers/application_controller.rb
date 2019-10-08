@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
       redirect_to(request.original_url + new_query) and return
     end
 
-    locale = I18n.default_locale if locale.nil?
+    locale = I18n.default_locale if locale.nil? || !locale.in?(I18n.available_locales)
     I18n.with_locale(locale, &action)
   end
 
