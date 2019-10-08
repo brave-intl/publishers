@@ -15,6 +15,8 @@ class ApplicationController < ActionController::Base
   before_action :no_cache
   before_action :redirect_if_suspended
 
+  newrelic_ignore_enduser
+
   rescue_from Ability::AdminNotOnIPWhitelistError do |e|
     render file: "admin/errors/whitelist.html", layout: false
   end
@@ -29,7 +31,7 @@ class ApplicationController < ActionController::Base
       redirect_to(request.original_url + new_query) and return
     end
 
-    locale = I18n.default_locale if locale.nil?
+    locale = I18n.default_locale if locale.nil? || !locale.in?(I18n.available_locales)
     I18n.with_locale(locale, &action)
   end
 
