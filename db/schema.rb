@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_08_233405) do
+ActiveRecord::Schema.define(version: 2019_10_03_195738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,10 +105,11 @@ ActiveRecord::Schema.define(version: 2019_08_08_233405) do
 
   create_table "daily_metrics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
-    t.json "result"
+    t.jsonb "result"
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["result"], name: "index_daily_metrics_on_result"
   end
 
   create_table "faq_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
