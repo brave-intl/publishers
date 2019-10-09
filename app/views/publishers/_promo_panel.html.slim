@@ -23,22 +23,45 @@
               =t("promo.dashboard.referral")
             .promo-flex-row.promo-flex-row-sub
               =t("promo.dashboard.check_statement")
-        .promo-flex-stats
-          .promo-flex-col.promo-flex-col-downloaded
-            .promo-panel-header title=t("promo.dashboard.tooltip.downloaded")
-              =t("promo.dashboard.downloaded").upcase
-            .promo-panel-number
-              = publisher_referral_totals[PromoRegistration::RETRIEVALS]
-          .promo-flex-col.promo-flex-col-installed
-            .promo-panel-header title=t("promo.dashboard.tooltip.installed")
-              =t("promo.dashboard.installed").upcase
-            .promo-panel-number
-              = publisher_referral_totals[PromoRegistration::FIRST_RUNS]
-          .promo-flex-col.promo-flex-col-confirmed
-            .promo-panel-header title=t("promo.dashboard.tooltip.confirmed")
-              =t("promo.dashboard.confirmed").upcase
-            .promo-panel-number
-              = publisher_referral_totals[PromoRegistration::FINALIZED]
+
+        .row
+          .col-md
+            table.w-100.promo-table.font-weight-bold
+              tr
+                td title=t("promo.dashboard.tooltip.confirmed")
+                  =t("promo.dashboard.confirmed").upcase
+                td
+                  .promo-panel-number
+                    = publisher_referral_totals[PromoRegistration::FINALIZED]
+              tr
+                td title=t("promo.dashboard.tooltip.installed")
+                  =t("promo.dashboard.installed").upcase
+                td
+                  .promo-panel-number
+                    = publisher_referral_totals[PromoRegistration::FIRST_RUNS]
+              tr
+                td title=t("promo.dashboard.tooltip.downloaded")
+                  =t("promo.dashboard.downloaded").upcase
+                td
+                  .promo-panel-number
+                    = publisher_referral_totals[PromoRegistration::RETRIEVALS]
+
+
+          .col-md
+            table.w-100.promo-table
+              - (1..5).each do |number|
+                tr.font-weight-bold
+                  td
+                    span Group
+                    span= " #{number}"
+                    span= " ($7.50)"
+                  td 0
+              tr.font-weight-bold
+                td
+                  span Legacy Group
+                  span= " ($5)"
+                td 0
+
     - else
       .promo-panel-item.promo-panel-item-alert
         #promo-panel-alert
