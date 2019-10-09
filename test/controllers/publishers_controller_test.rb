@@ -57,7 +57,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_response 200
 
-    get statements_publishers_path
+    get statements_path
     assert_response 200
 
     # Get suspended
@@ -66,7 +66,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_redirected_to controller: "/publishers", action: "suspended_error"
 
-    get statement_publishers_path
+    get statements_path
     assert_redirected_to controller: "/publishers", action: "suspended_error"
 
     # Go back to active
@@ -75,7 +75,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_response 200
 
-    get statements_publishers_path
+    get statements_path
     assert_response 200
   end
 
@@ -471,33 +471,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:uphold_connected)
     sign_in publisher
 
-    get statement_publishers_path(publisher)
+    get statements_path
     assert_equal response.status, 200
-    assert_equal response.header["Content-Type"], "application/html"
-  end
-
-  test "no statements are displayed if there are no transactions" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
-    sign_in publisher
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher)
-
-    get statements_publishers_path(publisher)
-
-    assert_match "content empty", response.body # This div displays the "No statements" message.
-  end
-
-  test "flashes 'no transactions' message when attempting to download a statement with no contents" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
-    sign_in publisher
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher)
-
-    get statement_publishers_path(publisher)
-
-    assert_equal flash[:alert], I18n.t("publishers.statements.no_transactions")
   end
 
   test "a publisher's wallet can be polled via ajax" do

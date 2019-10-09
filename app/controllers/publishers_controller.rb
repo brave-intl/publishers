@@ -24,7 +24,6 @@ class PublishersController < ApplicationController
 
   before_action :protect, only: %i(show home)
   before_action :require_verified_publisher, only: VERIFIED_PUBLISHER_ROUTES
-  before_action :redirect_if_suspended, only: VERIFIED_PUBLISHER_ROUTES
   before_action :prompt_for_two_factor_setup, only: %i(home)
 
   before_action :require_verified_email, only: %i(email_verified complete_signup)
@@ -123,11 +122,6 @@ class PublishersController < ApplicationController
     redirect_to(root_path)
   end
 
-  def redirect_if_suspended
-    # Redirect to suspended page if they're logged in
-    redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
-  end
-
   # Domain verified. See balance and submit payment info.
   def home
     @publisher = current_publisher
@@ -161,26 +155,7 @@ class PublishersController < ApplicationController
     end
   end
 
-  def statements
-    statement_contents = PublisherStatementGetter.new(publisher: current_publisher, statement_period: "all").perform
-    @statement_has_content = statement_contents.length > 0
-  end
-
   def choose_new_channel_type
-  end
-
-  def statement
-    statement_period = params[:statement_period]
-    @transactions = PublisherStatementGetter.new(publisher: current_publisher, statement_period: statement_period).perform
-
-    if @transactions.length == 0
-      redirect_to statements_publishers_path, :flash => { :alert => t("publishers.statements.no_transactions") }
-    else
-      @statement_period = publisher_statement_period(@transactions)
-      statement_file_name = publishers_statement_file_name(@statement_period)
-      statement_string = render_to_string :layout => "statement"
-      send_data statement_string, filename: statement_file_name, type: "application/html"
-    end
   end
 
   def wallet

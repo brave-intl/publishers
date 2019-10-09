@@ -29,11 +29,11 @@ export default {
       }
     },
     signin: {
-      heading: "Sign in to your account",
+      heading: "Log in to your account",
       subhead:
         "You will receive an email momentarily with a secure login link.",
       inputPlaceholder: "Enter your email",
-      btn: "Sign in",
+      btn: "Log in",
       tinyOne: "Don't have an account? Sign up",
       tinyOneHref: "/sign-up",
       tinyTwo: "Legacy YouTube Login",

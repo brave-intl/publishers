@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'addressable/template'
+require "addressable/template"
 
 module Uphold
   module Models
@@ -20,7 +20,7 @@ module Uphold
       # Lists all the addresses a specified card has
       #
       # @param [UpholdConnection] connection The uphold connection to find.
-      # @param [string] iid The id of the card you want to find.
+      # @param [string] id The id of the card you want to find.
       #
       # @return [Uphold::Models::Address[]] an array of th addresses
       def all(uphold_connection:, id: nil)
@@ -42,7 +42,7 @@ module Uphold
 
         response = post(PATH.expand(id: id), { network: network }, authorization(uphold_connection))
 
-        JSON.parse(response.body).dig('id')
+        JSON.parse(response.body).dig("id")
       end
 
       def authorization(uphold_connection)

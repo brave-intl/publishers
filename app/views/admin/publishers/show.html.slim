@@ -71,13 +71,6 @@ hr
             .db-value= @referral_owner_status
 
       #statement-section.split-row
-        h5.admin-header = "Statements"
-        .statement
-          = link_to("this month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "this_month"))
-        .statement
-          = link_to("last month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "last_month"))
-        .statement
-          = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
         .payout-report-status-section
           - if @potential_referral_payment.present?
             h5= payout_report_status_header('owner')
