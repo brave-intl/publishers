@@ -34,17 +34,9 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
 
     registrar = Promo::PublisherChannelsRegistrar.new(publisher: publisher)
 
-    # verify we make the call once
-    make_first_api_call = registrar.instance_eval { should_register_channel?(channel) }
-    assert make_first_api_call
-
     # actually register the channel
     registrar.perform
     channel.reload
-
-    # verify that we do not attempt a second api call
-    make_second_api_call = registrar.instance_eval { should_register_channel?(channel) }
-    assert !make_second_api_call
 
     # verify no registrations created for good measure
     assert_no_difference "PromoRegistration.count" do
