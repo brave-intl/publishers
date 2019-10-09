@@ -5,11 +5,8 @@ module Promo
     queue_as :default
 
     def perform(channel:)
-      if Promo::PublisherChannelsRegistrar.new(publisher: channel.publisher).perform
-        PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_later
-      else
-        Rails.logger.warn("Failed to register newly verified channel #{channel} with promo server")
-      end
+      Promo::PublisherChannelsRegistrar.new(publisher: channel.publisher).perform
+      Rails.logger.warn("Failed to register newly verified channel #{channel} with promo server")
     end
   end
 end

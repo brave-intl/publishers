@@ -1,4 +1,4 @@
-# Registers each verified channel for a publisher
+# Registers a promo registration for each verified channel for a publisher
 class Promo::PublisherChannelsRegistrar < BaseApiClient
   include PromosHelper
 
@@ -8,10 +8,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
   end
 
   def perform
-    channels = @publisher.channels.where(verified: true)
-    channels.each do |channel|
-      next unless should_register_channel?(channel)
-
+    @publisher.channels.left_joins(:promo_registration).where(promo_registrations: {channel_id: nil}).where(verified: true).each do |channel|
       result = register_channel(channel)
       next if result.nil?
 
@@ -27,8 +24,9 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
                                                      referral_code: referral_code)
 
           success = promo_registration.save!
-          if success && should_update_promo_server
-            Promo::ChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform
+          if success
+            PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_later
+            Promo::ChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform if should_update_promo_server
           end
         end
       rescue ActiveRecord::RecordInvalid => e
@@ -73,7 +71,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
 
     {
       referral_code: registration["referral_code"],
-      should_update_promo_server: registration["owner_id"] != @publisher.id ? true : false
+      should_update_promo_server: registration["owner_id"] != @publisher.id
     }
   rescue Faraday::Error::ClientError => e
     nil
@@ -126,9 +124,5 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
       "title": channel.publication_title,
       "channel_type": "website",
     }.to_json
-  end
-
-  def should_register_channel?(channel)
-    channel.promo_registration.blank?
   end
 end
