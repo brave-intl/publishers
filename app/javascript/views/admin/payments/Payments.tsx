@@ -4,10 +4,14 @@ import { Cell, Container, Grid } from "../../../components/grid/Grid";
 import UserNavbar from "../components/userNavbar/UserNavbar";
 import { templateAreas, templateRows } from "./PaymentsStyle";
 
+import Card from "../../../components/card/Card";
+import Statements from "../../statements/Statements";
 import CurrentChart from "./components/currentChart/CurrentChart";
 import CurrentTable from "./components/currentTable/CurrentTable";
 import EarningsChart from "./components/earningsChart/EarningsChart";
 import TotalTable from "./components/totalTable/TotalTable";
+
+import routes from "../../../routes/routes";
 
 interface IPaymentsProps {
   data: any;
@@ -15,6 +19,7 @@ interface IPaymentsProps {
 
 interface IPaymentsState {
   data: any;
+  isLoading: boolean;
 }
 
 export enum NavbarSelection {
@@ -30,6 +35,43 @@ export default class Payments extends React.Component<
 > {
   constructor(props) {
     super(props);
+    this.state = {
+      data: this.props.data,
+      isLoading: false
+    };
+  }
+
+  public componentDidMount() {
+    if (this.state.data.current === undefined) {
+      this.loadData();
+    }
+  }
+
+  public async loadData() {
+    this.setState({ isLoading: true });
+
+    const result = await fetch(
+      routes.admin.userNavbar.payments.path.replace(
+        "{id}",
+        this.props.data.publisher.id
+      ),
+      {
+        headers: {
+          Accept: "application/json",
+          "X-CSRF-Token": document.head
+            .querySelector("[name=csrf-token]")
+            .getAttribute("content"),
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        method: "GET"
+      }
+    ).then(response => {
+      response.json().then(json => {
+        this.setState({ data: json });
+      });
+    });
+
+    this.setState({ isLoading: false });
   }
 
   public render() {
@@ -46,41 +88,21 @@ export default class Payments extends React.Component<
             style={{ marginTop: "30px", marginBottom: "30px" }}
           >
             <Cell gridArea={"a"}>
-              <CurrentChart
-                referralBalance={this.props.data.current.referralBalance}
-                contributionBalance={
-                  this.props.data.current.contributionBalance
-                }
-              />
+              <CurrentChart current={this.state.data.current} />
             </Cell>
             <Cell gridArea={"b"}>
-              <EarningsChart
-                transactions={this.props.data.historic.transactions}
-              />
+              <EarningsChart historic={this.state.data.historic} />
             </Cell>
             <Cell gridArea={"c"}>
-              <TotalTable
-                downloads={this.props.data.historic.downloads}
-                installs={this.props.data.historic.installs}
-                confirmations={this.props.data.historic.confirmations}
-                channelBalances={this.props.data.current.channelBalances}
-                transactions={this.props.data.historic.transactions}
-              />
+              <TotalTable historic={this.state.data.historic} />
             </Cell>
             <Cell gridArea={"d"}>
-              <CurrentTable
-                referralBalance={this.props.data.current.referralBalance}
-                contributionBalance={
-                  this.props.data.current.contributionBalance
-                }
-                channelBalances={this.props.data.current.channelBalances}
-                totalBalance={this.props.data.current.overallBalance}
-                currentDownloads={this.props.data.current.downloads}
-                currentInstalls={this.props.data.current.installs}
-                currentConfirmations={this.props.data.current.confirmations}
-              />
+              <CurrentTable current={this.state.data.current} />
             </Cell>
           </Grid>
+          <Card>
+            <Statements publisher_id={this.props.data.publisher.id} />
+          </Card>
         </Container>
       </React.Fragment>
     );

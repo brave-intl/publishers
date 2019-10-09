@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :publishers, only: %i(create update new show destroy) do
     collection do
       # Registrations, eventually we should consider refactoring these routes into something a little more restful
-      scope controller: 'registrations', module: 'publishers' do
+      scope controller: "registrations", module: "publishers" do
         get :sign_up
         get :log_in
         get :expired_authentication_token
@@ -11,13 +11,13 @@ Rails.application.routes.draw do
         resource :registrations, only: [:create, :update]
       end
 
-      scope module: 'publishers' do
+      scope module: "publishers" do
         resource :case do
           delete :delete_file
         end
         resources :case_notes
 
-        scope controller: 'uphold'  do
+        scope controller: "uphold" do
           get :uphold_status
           get :uphold_verified, action: :create
           patch :connect_uphold
@@ -25,6 +25,7 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
+        resources :statements, only: [:index, :show]
         resource :two_factor_authentications_removal
       end
 
@@ -36,16 +37,14 @@ Rails.application.routes.draw do
       get :email_verified
       get :wallet
       get :suspended_error
-      get :statement
-      get :statements
       get :get_site_banner_data
       patch :verify
       patch :update
       patch :complete_signup
       get :choose_new_channel_type
-      get :security, to: 'publishers/security#index'
-      get :prompt_security, to: 'publishers/security#prompt'
-      get :settings, to: 'publishers/settings#index'
+      get :security, to: "publishers/security#index"
+      get :prompt_security, to: "publishers/security#prompt"
+      get :settings, to: "publishers/settings#index"
 
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
@@ -54,13 +53,13 @@ Rails.application.routes.draw do
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
     end
-    resources :site_banners, controller: 'publishers/site_banners' do
+    resources :site_banners, controller: "publishers/site_banners" do
       collection do
         post :set_default_site_banner_mode
       end
     end
     # (Albert Wang): Need to factor the above promo_registrations, as they should be in Publishers::PromoRegistrationsController rather than in the PromoRegistrationsController
-    resources :promo_registrations, controller: 'publishers/promo_registrations', only: [] do
+    resources :promo_registrations, controller: "publishers/promo_registrations", only: [] do
       collection do
         get :for_referral_code
       end
@@ -89,7 +88,7 @@ Rails.application.routes.draw do
       get :cancel_add
       delete :destroy
       resources :tokens, only: %() do
-        get :reject_transfer, to: 'channel_transfer#reject_transfer'
+        get :reject_transfer, to: "channel_transfer#reject_transfer"
       end
     end
   end
@@ -117,9 +116,9 @@ Rails.application.routes.draw do
   resources :faqs, only: [:index]
 
   root "static#index"
-  get 'no_js', controller: "static"
-  get 'sign-up', to: "static#index"
-  get 'log-in', to: "static#index"
+  get "no_js", controller: "static"
+  get "sign-up", to: "static#index"
+  get "log-in", to: "static#index"
 
   namespace :api, defaults: { format: :json } do
     # /api/v1/
@@ -211,15 +210,15 @@ Rails.application.routes.draw do
         get :cancel_two_factor_authentication_removal
       end
 
+      resources :payments
       patch :refresh_uphold
 
       resources :publisher_notes
-      resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
-      resources :referrals, controller: 'publishers/referrals'
+      resources :publisher_status_updates, controller: "publishers/publisher_status_updates"
+      resources :referrals, controller: "publishers/referrals"
       resources :reports
     end
     resources :channel_transfers
-    resources :payments
     resources :channel_approvals
     resources :security
 
@@ -276,9 +275,9 @@ Rails.application.routes.draw do
     end
   end
   mount Sidekiq::Web, at: "/magic"
-  require 'sidekiq/api'
-  match "mailer-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('mailer').size < 100 ? "OK" : "UHOH" ]] }, via: :get
-  match "default-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('default').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
-  match "scheduler-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('scheduler').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
-  match "transactional-queue-status" => proc { [200, {"Content-Type" => "text/plain"}, [Sidekiq::Queue.new('transactional').size < 5000 ? "OK" : "UHOH" ]] }, via: :get
+  require "sidekiq/api"
+  match "mailer-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("mailer").size < 100 ? "OK" : "UHOH"]] }, via: :get
+  match "default-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("default").size < 5000 ? "OK" : "UHOH"]] }, via: :get
+  match "scheduler-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("scheduler").size < 5000 ? "OK" : "UHOH"]] }, via: :get
+  match "transactional-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("transactional").size < 5000 ? "OK" : "UHOH"]] }, via: :get
 end

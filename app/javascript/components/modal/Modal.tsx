@@ -10,6 +10,7 @@ import {
   LargeContainer,
   MediumContainer,
   ModalDiv,
+  Section,
   SmallContainer
 } from "./ModalStyle";
 
@@ -23,13 +24,14 @@ export enum ModalSize {
 
 interface IModalProps {
   show: boolean;
+  padding: boolean;
   size: ModalSize;
   handleClose: any;
   children?: any;
 }
 
 export default class Modal extends React.Component<IModalProps> {
-  public static defaultProps = { size: ModalSize.Auto };
+  public static defaultProps = { size: ModalSize.Auto, padding: true };
   public el: Element;
   public modalRoot = document.getElementById("modal-root");
 
@@ -63,12 +65,12 @@ export default class Modal extends React.Component<IModalProps> {
 
   public render() {
     const childElements = (
-      <React.Fragment>
+      <div style={this.props.padding ? { padding: "50px" } : {}}>
         <CloseIcon>
           <CloseStrokeIcon onClick={this.props.handleClose} />
         </CloseIcon>
-        <section className="modal-main">{this.props.children}</section>
-      </React.Fragment>
+        <Section className="modal-main">{this.props.children}</Section>
+      </div>
     );
 
     let container = <Container>{childElements}</Container>;

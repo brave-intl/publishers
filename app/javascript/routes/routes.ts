@@ -9,7 +9,7 @@ export default {
         path: "/admin/publishers/{id}"
       },
       payments: {
-        path: "/admin/payments/{id}"
+        path: "/admin/publishers/{id}/payments"
       },
       referrals: {
         path: "/admin/publishers/{id}/referrals"

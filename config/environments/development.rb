@@ -76,6 +76,7 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  config.log_level = :debug
   config.after_initialize do
     Bullet.enable = true
     Bullet.rails_logger = true

@@ -3,12 +3,10 @@ import * as React from "react";
 import Table from "brave-ui/components/dataTables/table";
 import Card from "../../../../../components/card/Card";
 
+import { LoaderIcon } from "brave-ui/components/icons";
+
 interface ITotalTableProps {
-  downloads: any;
-  installs: any;
-  confirmations: any;
-  channelBalances: any;
-  transactions: any;
+  historic: any;
 }
 
 export default class TotalTable extends React.Component<ITotalTableProps, {}> {
@@ -17,12 +15,24 @@ export default class TotalTable extends React.Component<ITotalTableProps, {}> {
   }
 
   public render() {
+    if (this.props.historic) {
+      return <React.Fragment>{this.createTable()}</React.Fragment>;
+    } else {
+      return (
+        <Card>
+          <LoaderIcon style={{ width: "32px", height: "32px" }} />
+        </Card>
+      );
+    }
+  }
+
+  public createTable() {
     let contributionsBalance = 0;
     let referralsBalance = 0;
     let totalBalance = 0;
 
-    if (this.props.transactions) {
-      this.props.transactions.forEach(transaction => {
+    if (this.props.historic.transactions) {
+      this.props.historic.transactions.forEach(transaction => {
         switch (transaction.transaction_type) {
           case "contribution_settlement":
             contributionsBalance += Math.abs(transaction.amount);
@@ -118,7 +128,7 @@ export default class TotalTable extends React.Component<ITotalTableProps, {}> {
             content: "Downloads"
           },
           {
-            content: this.props.downloads
+            content: this.props.historic.downloads
           }
         ]
       },
@@ -128,7 +138,7 @@ export default class TotalTable extends React.Component<ITotalTableProps, {}> {
             content: "Installs"
           },
           {
-            content: this.props.installs
+            content: this.props.historic.installs
           }
         ]
       },
@@ -138,7 +148,7 @@ export default class TotalTable extends React.Component<ITotalTableProps, {}> {
             content: "Confirmations"
           },
           {
-            content: this.props.confirmations
+            content: this.props.historic.confirmations
           }
         ]
       },
@@ -179,11 +189,11 @@ export default class TotalTable extends React.Component<ITotalTableProps, {}> {
         ]
       }
     ];
-    if (this.props.channelBalances) {
-      this.props.channelBalances.forEach((channel, index) => {
+    if (this.props.historic.channelBalances) {
+      this.props.historic.channelBalances.forEach((channel, index) => {
         let channelBalance = 0;
-        if (this.props.transactions) {
-          this.props.transactions.forEach(transaction => {
+        if (this.props.historic.transactions) {
+          this.props.historic.transactions.forEach(transaction => {
             if (
               transaction.transaction_type === "contribution" &&
               transaction.channel === channel.title

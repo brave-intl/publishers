@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
+  before_action :redirect_if_suspended
 
   newrelic_ignore_enduser
 
@@ -49,6 +50,11 @@ class ApplicationController < ActionController::Base
 
   def user_for_paper_trail
     current_user.try(:id)
+  end
+
+  def redirect_if_suspended
+    # Redirect to suspended page if they're logged in
+    redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
   end
 
   def current_ability

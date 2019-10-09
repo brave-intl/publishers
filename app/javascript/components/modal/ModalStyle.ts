@@ -45,7 +45,6 @@ export const Container = styled.div`
   transform: translateY(-25%);
   background-color: white;
   border-radius: 6px;
-  padding: 50px;
   z-index: 2;
 `;
 
@@ -76,4 +75,9 @@ export const CloseIcon = styled.div`
   cursor: pointer;
   width: 24px;
   height: 24px;
+`;
+
+export const Section = styled.section`
+  max-height: 80vh;
+  overflow-y: auto;
 `;

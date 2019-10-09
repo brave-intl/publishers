@@ -69,16 +69,6 @@ class Admin::PublishersController < AdminController
     redirect_to admin_publisher_path(@publisher)
   end
 
-  def statement
-    statement_period = params[:statement_period]
-    @transactions = PublisherStatementGetter.new(publisher: @publisher, statement_period: statement_period).perform
-    @statement_period = publisher_statement_period(@transactions)
-    statement_file_name = publishers_statement_file_name(@statement_period)
-
-    statement_string = render_to_string layout: "statement", template: "publishers/statement"
-    send_data statement_string, filename: statement_file_name, type: "application/html"
-  end
-
   def create_note
     publisher = Publisher.find(publisher_create_note_params[:publisher])
     admin = current_user
