@@ -26,13 +26,22 @@ class ApplicationController < ActionController::Base
     locale = nil
     locale = params[:locale] if params[:locale].present?
 
+
     if locale.nil? && extract_locale_from_accept_language_header == 'ja'
-      new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
-      redirect_to(request.original_url + new_query) and return
+      if on_homepage?
+        new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
+        redirect_to(request.original_url + new_query) and return
+      end
+      locale = :ja
     end
 
     locale = I18n.default_locale if locale.nil? || !locale.in?(I18n.available_locales)
     I18n.with_locale(locale, &action)
+  end
+
+  def on_homepage?
+    # On dev root_url is https://localhost:3000/?locale=en
+    request.original_url.chomp == root_url.split("?")[0].chomp
   end
 
   def default_url_options
