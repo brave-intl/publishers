@@ -16,7 +16,9 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
     publisher = publishers(:completed) # has one verified channel
 
     assert_difference "PromoRegistration.count", 1 do
-      Promo::PublisherChannelsRegistrar.new(publisher: publisher).perform
+      publisher.channels.find_each do |channel|
+        Promo::AssignPromoToChannelService.new(channel: channel).perform
+      end
     end
   end
 
@@ -24,7 +26,9 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
     publisher = publishers(:default) # has two unverified channels
 
     assert_no_difference "PromoRegistration.count" do
-      Promo::PublisherChannelsRegistrar.new(publisher: publisher).perform
+      publisher.channels.find_each do |channel|
+        Promo::AssignPromoToChannelService.new(channel: channel).perform
+      end
     end
   end
 
@@ -32,15 +36,14 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
     publisher = publishers(:completed)
     channel = publisher.channels.first
 
-    registrar = Promo::PublisherChannelsRegistrar.new(publisher: publisher)
+    assigning_service = Promo::AssignPromoToChannelService.new(channel: channel)
 
-    # actually register the channel
-    registrar.perform
+    assigning_service.perform
     channel.reload
 
     # verify no registrations created for good measure
     assert_no_difference "PromoRegistration.count" do
-      registrar.perform
+      assigning_service.perform
     end
   end
 
@@ -61,7 +64,9 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
       .to_return(status: 200, body: [].to_json)
 
     assert_difference "PromoRegistration.count", 1 do
-      Promo::PublisherChannelsRegistrar.new(publisher: publisher).perform
+      publisher.channels.find_each do |channel|
+        Promo::AssignPromoToChannelService.new(channel: channel).perform
+      end
     end
 
     assert_equal PromoRegistration.order("created_at").last.referral_code, "COM001"

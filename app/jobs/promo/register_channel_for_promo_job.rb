@@ -5,7 +5,7 @@ module Promo
     queue_as :default
 
     def perform(channel:)
-      Promo::PublisherChannelsRegistrar.new(publisher: channel.publisher).perform
+      Promo::AssignPromoToChannelService.new(channel: channel).perform
       Rails.logger.warn("Failed to register newly verified channel #{channel} with promo server")
     end
   end

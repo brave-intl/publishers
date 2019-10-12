@@ -1,40 +1,40 @@
 # Registers a promo registration for each verified channel for a publisher
-class Promo::PublisherChannelsRegistrar < BaseApiClient
+class Promo::AssignPromoToChannelService < BaseApiClient
   include PromosHelper
 
-  def initialize(publisher:, promo_id: active_promo_id)
-    @publisher = publisher
+  attr_reader :channel
+
+  def initialize(channel:, promo_id: active_promo_id)
+    @channel = channel
     @promo_id = promo_id
   end
 
   def perform
-    @publisher.channels.left_joins(:promo_registration).where(promo_registrations: {channel_id: nil}).where(verified: true).each do |channel|
-      result = register_channel(channel)
-      next if result.nil?
+    return if !channel.verified? || channel.promo_registration.present?
+    result = register_channel(channel)
 
-      referral_code = result[:referral_code]
-      should_update_promo_server = result[:should_update_promo_server]
+    referral_code = result[:referral_code]
+    should_update_promo_server = result[:should_update_promo_server]
 
-      begin
-        if referral_code.present?
-          promo_registration = PromoRegistration.new(channel_id: channel.id,
-                                                     promo_id: @promo_id,
-                                                     kind: PromoRegistration::CHANNEL,
-                                                     publisher_id: @publisher.id,
-                                                     referral_code: referral_code)
+    begin
+      if referral_code.present?
+        promo_registration = PromoRegistration.new(channel_id: channel.id,
+                                                   promo_id: @promo_id,
+                                                   kind: PromoRegistration::CHANNEL,
+                                                   publisher_id: channel.publisher_id,
+                                                   referral_code: referral_code)
 
-          success = promo_registration.save!
-          if success
-            PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_later
-            Promo::ChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform if should_update_promo_server
-          end
+        success = promo_registration.save!
+        if success
+          PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_later
+          Promo::ChannelOwnerUpdater.new(publisher_id: channel.publisher_id, referral_code: referral_code).perform if should_update_promo_server
         end
-      rescue ActiveRecord::RecordInvalid => e
-        require "sentry-raven"
-        Rails.logger.error("PublisherChannelsRegistrar perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
-        Raven.extra_context referral_code: referral_code
-        Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
       end
+    rescue ActiveRecord::RecordInvalid => e
+      require "sentry-raven"
+      Rails.logger.error("#{self.name} perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
+      Raven.extra_context referral_code: referral_code
+      Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
     end
   rescue Faraday::Error::ClientError => e
     # When the owner is "no-ugp" the promo server will return 409.
@@ -67,13 +67,13 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
     Rails.logger.warn("Promo::PublisherChannelsRegistrar #register_channel returned 409, channel already registered.  Using Promo::RegistrationGetter to get the referral_code.")
 
     # Get the referral code
-    registration = Promo::RegistrationGetter.new(publisher: @publisher, channel: channel).perform
+    registration = Promo::RegistrationGetter.new(publisher: channel.publisher, channel: channel).perform
 
     {
       referral_code: registration["referral_code"],
-      should_update_promo_server: registration["owner_id"] != @publisher.id
+      should_update_promo_server: registration["owner_id"] != channel.publisher_id
     }
-  rescue Faraday::Error::ClientError => e
+  rescue Faraday::Error::ClientError
     nil
   end
 
@@ -106,7 +106,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
 
   def channel_request_body(channel)
     {
-      "owner_id": @publisher.id,
+      "owner_id": channel.publisher_id,
       "promo": @promo_id,
       "channel": channel.channel_id,
       "title": channel.publication_title,
@@ -118,7 +118,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
 
   def site_request_body(channel)
     {
-      "owner_id": @publisher.id,
+      "owner_id": channel.publisher_id,
       "promo": @promo_id,
       "channel": channel.channel_id,
       "title": channel.publication_title,
