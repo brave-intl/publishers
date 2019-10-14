@@ -5,7 +5,6 @@ import flash from "../utils/flash";
 import { Wallet } from "../wallet";
 import { formatFullDate } from "../utils/dates";
 import { renderBannerEditor } from "../packs/banner_editor";
-import { renderReferralCharts } from "../packs/referral_charts";
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = "None selected";
@@ -657,6 +656,4 @@ document.addEventListener("DOMContentLoaded", function() {
     },
     false
   );
-
-  renderReferralCharts("publisher");
 });

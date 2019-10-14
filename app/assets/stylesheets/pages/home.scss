@@ -143,7 +143,6 @@
 
     .promo-flex-row {
       display: flex;
-      align-items: center;
       justify-content: space-between;
 
       &-sub {
@@ -162,15 +161,41 @@
     .promo-table {
       color: #326183;
       letter-spacing: 0.5px;
+      font-size: 14px;
+
       tr {
         border-bottom: solid 1px rgba(0, 0, 0, 0.2);
         border-top: solid 1px rgba(0, 0, 0, 0.2);
 
         td {
-          padding: 5px 0;
+          padding: 5px 3px;
         }
       }
+    }
 
+    .promo-info {
+      margin-top: 5px;
+
+      img {
+        width: 18px;
+        height: 18px;
+        margin: 0 10px 0 0;
+      }
+
+      a {
+        color: #fff !important;
+      }
+    }
+
+    .promo-selected {
+      color: rgb(27, 29, 47);
+    }
+
+    .promo-period {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 10px;
+      font-weight: 600;
     }
 
     .promo-panel-number {

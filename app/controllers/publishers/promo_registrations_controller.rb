@@ -9,4 +9,8 @@ class Publishers::PromoRegistrationsController < PublishersController
     render :unauthorized and return if promo_registration.nil?
     render json: promo_registration.stats_by_date.to_json
   end
+
+  def groups
+    render json: Eyeshade::Referrals.new.groups
+  end
 end

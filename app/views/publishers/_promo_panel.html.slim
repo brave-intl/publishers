@@ -23,11 +23,13 @@
               =t("promo.dashboard.referral")
             .promo-flex-row.promo-flex-row-sub
               =t("promo.dashboard.check_statement")
+          div
+            span.promo-period Oct 1 - Oct 31
 
         .row
           .col-md
             table.w-100.promo-table.font-weight-bold
-              tr
+              tr.promo-selected
                 td title=t("promo.dashboard.tooltip.confirmed")
                   =t("promo.dashboard.confirmed").upcase
                 td
@@ -47,21 +49,13 @@
                     = publisher_referral_totals[PromoRegistration::RETRIEVALS]
 
 
-          .col-md
-            table.w-100.promo-table
-              - (1..5).each do |number|
-                tr.font-weight-bold
-                  td
-                    span Group
-                    span= " #{number}"
-                    span= " ($7.50)"
-                  td 0
-              tr.font-weight-bold
-                td
-                  span Legacy Group
-                  span= " ($5)"
-                td 0
 
+          .col-md.d-flex#promo-groups
+          = javascript_pack_tag('referrals/ReferralGroups')
+
+        .promo-info
+          = image_tag "icn-info.svg"
+          ==t("promo.dashboard.details")
     - else
       .promo-panel-item.promo-panel-item-alert
         #promo-panel-alert
