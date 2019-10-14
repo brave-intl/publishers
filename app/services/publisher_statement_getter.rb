@@ -87,6 +87,9 @@ class PublisherStatementGetter < BaseApiClient
     end
 
     uphold
+  rescue Faraday::ClientError
+    Rails.logger.info("Couldn't access publisher #{@publisher.id} Uphold Transaction History")
+    []
   end
 
   def channel_name(identifier)
