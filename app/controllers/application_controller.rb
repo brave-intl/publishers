@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
+  before_action :redirect_if_suspended
 
   newrelic_ignore_enduser
 
@@ -23,9 +24,11 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
   def switch_locale(&action)
     locale = nil
+    return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == 'admin'
+
     locale = params[:locale] if params[:locale].present?
 
-    if locale.nil? && extract_locale_from_accept_language_header == 'ja'
+    if locale.nil? && extract_locale_from_accept_language_header == 'ja' && request.get?
       new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
       redirect_to(request.original_url + new_query) and return
     end
@@ -49,6 +52,15 @@ class ApplicationController < ActionController::Base
 
   def user_for_paper_trail
     current_user.try(:id)
+  end
+
+  def redirect_if_suspended
+    # Redirect to suspended page if they're logged in
+    redirect_to(suspended_error_publishers_path) and return if current_publisher&.suspended? && !request.fullpath.split("?")[0].in?(valid_suspended_paths)
+  end
+
+  def valid_suspended_paths
+    [suspended_error_publishers_path.split("?")[0], log_out_publishers_path.split("?")[0]]
   end
 
   def current_ability

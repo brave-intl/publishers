@@ -12,10 +12,7 @@ html
         }
       }
   body
-    center
-      .statement
-        .statement-header
-          h1 = "Brave Rewards Publisher Statement"
-          .= current_publisher.name
-          .= @statement_period
-        = yield
+    .container.bg-white.shadow-sm.p-4.rounded
+      #statement_details data-statement=@overview.to_json
+    =javascript_pack_tag('StatementDetails')
+

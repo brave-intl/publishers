@@ -26,7 +26,7 @@ class Invoice < ActiveRecord::Base
 
   # Ensure these two values are numbers even though field is a string
   validates :amount, numericality: true, allow_nil: true
-  validates :finalized_amount, numericality: true, allow_nil: true
+  validates :finalized_amount, numericality: true, allow_blank: true
 
   def human_date
     if date.day == 1

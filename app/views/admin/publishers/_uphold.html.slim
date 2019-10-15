@@ -50,6 +50,11 @@ h3.text-dark.d-flex.align-items-center
       tr
         td Uphold widget enabled
         td= @publisher.excluded_from_payout? ? "No" : "Yes"
+      tr
+        td Scope
+        td
+          - @publisher.uphold_connection.scope.split(' ').each do |s|
+            code.text-body= "#{s} "
 
     small.text-muted= "Updated #{time_ago_in_words(@publisher.uphold_connection.updated_at)} ago"
   - else

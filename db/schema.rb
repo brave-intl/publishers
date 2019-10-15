@@ -338,9 +338,11 @@ ActiveRecord::Schema.define(version: 2019_09_13_151449) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
+    t.uuid "thread_id"
     t.bigint "zendesk_ticket_id"
     t.bigint "zendesk_comment_id"
-    t.uuid "thread_id"
+    t.string "zendesk_to_email"
+    t.string "zendesk_from_email"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id"
     t.index ["thread_id"], name: "index_publisher_notes_on_thread_id"

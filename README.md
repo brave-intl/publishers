@@ -398,7 +398,7 @@ The easiest possible way to add a new channel is to find the Omniauth gem for th
    ```yaml
    channel_type:
      youtube: YouTube channel
-     website: Websiite
+     website: Website
      <INTEGRATION>: Your <INTEGRATION> Name
     channel_name:
       youtube: YouTube

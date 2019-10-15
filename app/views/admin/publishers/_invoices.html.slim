@@ -10,7 +10,7 @@ table.display.table.table-bordered.table-striped
     th Brave Calculated Total Amount (BAT)
     th Payment Date
   tbody
-  - partner.invoices.order(created_at: :desc).limit(limit).each do |invoice|
+  - partner.invoices.order(date: :desc).limit(limit).each do |invoice|
     tr.gradeX
       td = link_to invoice.human_date, admin_partner_invoice_path(partner_id: partner.id, id: invoice.id)
       td = invoice.status

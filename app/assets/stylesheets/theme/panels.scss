@@ -9,7 +9,7 @@ $brave-panels-borderRadius: 8px;
     max-width: $spacer * 40;
     min-height: $spacer * 32;
     margin: 0 auto;
-    padding: 0 10px;
+    // padding: 0 10px;
     display: flex;
     flex-direction: column;
 
@@ -188,6 +188,7 @@ $brave-panels-borderRadius: 8px;
 
 .icon-and-text {
   &--wrapper {
+    margin: 0;
     display: flex;
     justify-content: flex-start;
     flex-direction: row;

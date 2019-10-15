@@ -3,7 +3,8 @@ export default {
   admin: {
     promo_registrations: {
       show: {
-        path: "/publishers/{publisher_id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+        path:
+          "/publishers/{publisher_id}/promo_registrations/for_referral_code?referral_code={referral_code}"
       }
     }
   },
@@ -29,6 +30,14 @@ export default {
       },
       groups: {
         path: "{id}/promo_registrations/groups"
+      }
+    },
+    statements: {
+      index: {
+        path: "/publishers/statements"
+      },
+      show: {
+        path: "/publishers/statements/{period}"
       }
     },
     update: {
