@@ -7,6 +7,7 @@ export default {
   campaign: "Campaign",
   campaignName: "Campaign Name",
   campaigns: "Campaigns",
+  cancel: "Cancel",
   channels: "Channels",
   common: {
     unexpectedError: "An unexpected error has occurred. Please try again later."
@@ -138,8 +139,37 @@ export default {
     totalReferralCodes: "Total Referral Codes"
   },
   sendDonation: "Send my donation",
+  settings: {
+    contact: {
+      edit: "Edit Contact",
+      email: 'Email',
+      error: "Unable to change email; the email address may be in use. Please enter a different email address.",
+      heading: "Contact",
+      name: 'Your Name',
+      pendingEmail: "Email address has been updated to: {email}. An email has been sent to this address to confirm this change.",
+    }
+  },
   thirtyDay: "30-Day Use",
   tokens: "tokens",
   totalNumber: "Total Number of Codes",
   walletBalance: "Wallet balance"
 };
+
+
+export const flattenMessages = ((nestedMessages, prefix = '') => {
+  if (nestedMessages === null) {
+    return {}
+  }
+  return Object.keys(nestedMessages).reduce((messages, key) => {
+    const value       = nestedMessages[key]
+    const prefixedKey = prefix ? `${prefix}.${key}` : key
+
+    if (typeof value === 'string') {
+      Object.assign(messages, { [prefixedKey]: value })
+    } else {
+      Object.assign(messages, flattenMessages(value, prefixedKey))
+    }
+
+    return messages
+  }, {})
+})

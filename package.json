@@ -76,6 +76,7 @@
     "react": "^16.6.3",
     "react-avatar-editor": "^11.0.4",
     "react-dom": "^16.6.3",
+    "react-intl": "^3.3.2",
     "styled-components": "^4.0.3",
     "tributejs": "^3.7.1",
     "ts-loader": "^5.3.0",

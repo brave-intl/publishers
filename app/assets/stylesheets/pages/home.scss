@@ -124,6 +124,7 @@
 
     .promo-flex-col {
       display: flex;
+      justify-content: space-evenly;
       flex-direction: column;
       color: #fff;
     }
@@ -174,7 +175,7 @@
     }
 
     .promo-info {
-      margin-top: 5px;
+      margin-top: 15px;
 
       img {
         width: 18px;
@@ -408,16 +409,6 @@
     padding: 10px 15px;
     color: $braveText-2;
     border-radius: $brave-panels-borderRadius;
-  }
-
-  .in-place-edit {
-    background: $braveGray-9;
-    border-radius: $brave-panels-borderRadius;
-    padding: 18px;
-
-    .button.form-group a {
-      display: inline-block;
-    }
   }
 
   .form-group {

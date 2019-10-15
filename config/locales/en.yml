@@ -715,7 +715,7 @@ en:
         downloaded: "Downloads - Intent to download the browser"
         installed: "Installed - Browser installed and opened for the first time"
         confirmed: "Confirmations -  Browser is active for 30+ days"
-      details: <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">See details for the area in each group</a>
+      details: <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">See details for the areas in each group</a>
     shared:
       tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
       tweet: "Share on Twitter"

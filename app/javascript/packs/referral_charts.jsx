@@ -17,14 +17,9 @@ export default class ReferralCharts extends React.Component {
       referralCodes: this.props.referralCodes
     };
     this.selectMenuRef = React.createRef();
-    this.bindFunctions();
   }
 
-  bindFunctions() {
-    this.viewReferralCodeStats = this.viewReferralCodeStats.bind(this);
-  }
-
-  async viewReferralCodeStats() {
+  viewReferralCodeStats = async () => {
     const node = this.selectMenuRef.current;
     var url =
       this.props.scope === "admin"
@@ -47,6 +42,12 @@ export default class ReferralCharts extends React.Component {
         }
       });
     });
+  }
+
+  componentDidMount = () => {
+    if(this.state.referralCodes.length > 0) {
+      this.viewReferralCodeStats();
+    }
   }
 
   render() {

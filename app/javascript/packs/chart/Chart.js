@@ -12,19 +12,19 @@ export default class ReactChart extends React.Component {
     this.state = {};
 
     Chart.defaults.global.defaultFontFamily = "Muli";
-    Chart.scaleService.updateScaleDefaults("logarithmic", {
-      ticks: {
-        callback: function(...args) {
-          // new default function here
-          const value = Chart.Ticks.formatters.logarithmic.call(this, ...args);
-          if (value.length) {
-            var numericalValue = Number(value);
-            return numericalValue >= 1 ? numericalValue.toLocaleString() : "";
-          }
-          return value;
-        }
-      }
-    });
+    // Chart.scaleService.updateScaleDefaults("logarithmic", {
+    //   ticks: {
+    //     callback: function(...args) {
+    //       // new default function here
+    //       const value = Chart.Ticks.formatters.logarithmic.call(this, ...args);
+    //       if (value.length) {
+    //         var numericalValue = Number(value);
+    //         return numericalValue >= 1 ? numericalValue.toLocaleString() : "";
+    //       }
+    //       return value;
+    //     }
+    //   }
+    // });
   }
 
   componentDidUpdate(prevProps) {
@@ -104,7 +104,7 @@ export default class ReactChart extends React.Component {
         ],
         yAxes: [
           {
-            type: "logarithmic",
+            type: "linear",
             ticks: {
               suggestedMax: suggestedMax
             }

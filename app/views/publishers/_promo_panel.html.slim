@@ -1,5 +1,5 @@
-.col class="#{current_publisher.no_grants? ? 'col-md-5' : '' }"
-  .promo-panel.mb-4
+.col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
+  .promo-panel.h-100
     - if current_publisher.promo_status(promo_running?) == :inactive
       .promo-panel-item.promo-panel-item-info
         #promo-limited-time= t("promo.activate.sub_header_one")
@@ -16,7 +16,7 @@
 
     - elsif current_publisher.has_verified_channel?
       - publisher_referral_totals = publisher_referral_totals(current_publisher)
-      .promo-flex-col
+      .promo-flex-col.h-100
         .promo-flex-row.promo-flex-row-main
           .promo-flex-col.promo-panel-title
             .promo-panel-title-item
@@ -50,6 +50,8 @@
 
 
 
+          .col-xs.d-none.d-lg-block.d-xl-block
+            = image_tag "icn-arrow.svg", class: 'mt-3'
           .col-md.d-flex#promo-groups
           = javascript_pack_tag('referrals/ReferralGroups')
 

@@ -30,6 +30,9 @@ export default {
       groups: {
         path: "{id}/promo_registrations/groups"
       }
+    },
+    update: {
+      path: "/publishers"
     }
   }
 };

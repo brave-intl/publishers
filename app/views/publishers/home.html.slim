@@ -86,12 +86,16 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                         span
                           == t('.held_funds_description')
 
-      - if promo_running?
-        = render partial: 'promo_panel'
-      - elsif @publisher.channels.empty?
-        .col-md.mb-4
-          .add-channel-cta
-            = t ".add_channel_cta"
+
+      .col-md.mb-4
+        .dashboard-panel--wrapper
+          .dashboard-panel--header#publishers_statements
+            = t ".statements.heading"
+          .dashboard-panel--content
+            .statements-available
+              = link_to(t(".statements.view_statements"), statements_publishers_path)
+            .statements-unavailable
+              = t ".statements.unavailable"
 
     / - if @payout_report.present?
     /   .row
@@ -154,42 +158,13 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                 = link_to(t(".uphold.check_balance"), uphold_dashboard_url, class: "btn btn-primary",
                         id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
                         :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
-      .col-md.mb-4
-        .dashboard-panel--wrapper
-          .dashboard-panel--header#publishers_statements
-            = t ".statements.heading"
-          .dashboard-panel--content
-            .statements-available
-              = link_to(t(".statements.view_statements"), statements_publishers_path)
-            .statements-unavailable
-              = t ".statements.unavailable"
-          .dashboard-panel--header#publishers_contact
-            = t ".contact.heading"
-            a.header-link#edit_contact href="#"
-              = t ".contact.edit"
-          .dashboard-panel--content.contact-person
-            #show_contact
-              #show_contact_name= @publisher.name
-              span.email#show_contact_email= @publisher.email
-              span.hidden#pending_contact_email= @publisher.pending_email
 
-            = form_for(@publisher, url: publishers_path, html: { id: "update_contact", class: "in-place-edit hidden" }) do |f|
-              .form-group
-                = f.label(:name, class: "control-label", for: "update_contact_name")
-                = f.text_field(:name, class: "form-control", id: "update_contact_name", placeholder: "Alice Bloglette", required: true)
-              .form-group
-                = f.label(:email, class: "control-label", for: "update_contact_email")
-                = f.email_field(:pending_email, class: "form-control", id: "update_contact_email", placeholder: "alice@example.com", required: true)
-              .button.form-group
-                = f.submit(translate(".contact.update"), class: "btn btn-primary", :"data-piwik-action" => "SubmitContactUpdateClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
-                a#cancel_edit_contact href="#"
-                  = t "shared.cancel"
-            p#pending_email_notice class="block-note hidden"
-
-            = form_for(@publisher, url: publishers_path, html: { id: "update_publisher_visible_form" }) do |f|
-              = f.check_box(:visible, class: "form-check-input")
-              = f.label(:visible, class: "form-check-label", for: "publisher_visible")
-
+      - if promo_running?
+          = render partial: 'promo_panel'
+      - elsif @publisher.channels.empty?
+        .col-md.mb-4
+          .add-channel-cta
+            = t ".add_channel_cta"
 
     / Don't show if none of the promo registrations has a valid stat
     - if !@publisher.only_user_funds? && @publisher.promo_registrations.present? && @publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
