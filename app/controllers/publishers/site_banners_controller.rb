@@ -81,7 +81,7 @@ class Publishers::SiteBannersController < ApplicationController
 
     padded_resized_jpg_path = nil
     quality = 50
-    while padded_resized_jpg_path == nil
+    while padded_resized_jpg_path.nil?
       begin
         padded_resized_jpg_path = add_padding_to_image(
           source_image_path: resized_jpg_path,
@@ -96,7 +96,7 @@ class Publishers::SiteBannersController < ApplicationController
         end
       end
       if quality > 5
-        quality = quality - 5
+        quality -= 5
       else
         break
       end
