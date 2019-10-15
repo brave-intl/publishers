@@ -69,7 +69,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("publisher.channels.count", -1) do
       assert_difference("SiteChannelDetails.count", -1) do
         get cancel_add_channel_path(channel)
-        assert_redirected_to '/publishers/home'
+        assert_redirected_to controller: "/publishers", action: "home"
       end
     end
   end
@@ -82,7 +82,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("publisher.channels.count", 0) do
       assert_difference("SiteChannelDetails.count", 0) do
         get cancel_add_channel_path(channel)
-        assert_redirected_to '/publishers/home'
+        assert_redirected_to controller: "/publishers", action: "home"
       end
     end
   end
@@ -106,7 +106,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
     assert_match(
       '{"status":"verified",' +
-        '"details":null}',
+      '"details":"Of an unknown reason. "}',
       response.body)
   end
 end

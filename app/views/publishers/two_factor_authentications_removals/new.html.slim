@@ -1,0 +1,17 @@
+
+.single-panel--wrapper
+  = render "panel_flash_messages"
+  .single-panel--content
+    .single-panel--padded-content
+
+      h4.single-panel--headline= t("publishers.two_factor_authentication_removal.heading")
+
+      p= t("publishers.two_factor_authentication_removal.leadin")
+
+      == t("publishers.two_factor_authentication_removal.note")
+      .my-3.text-left
+        == t("publishers.two_factor_authentication_removal.removals")
+
+      = link_to(t("publishers.two_factor_authentication_removal.request_2fa_removal"), two_factor_authentications_removal_path, method: :post, class: "btn btn-block btn-primary")
+
+

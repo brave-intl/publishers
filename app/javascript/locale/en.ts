@@ -32,7 +32,8 @@ export default {
     logOut: "Log Out",
     payments: "Payments",
     referrals: "Referrals",
-    security: "Security"
+    security: "Security",
+    settings: "Settings"
   },
   notEnoughTokens: "Not enough tokens",
   off: " ",
@@ -137,6 +138,38 @@ export default {
     totalReferralCodes: "Total Referral Codes"
   },
   sendDonation: "Send my donation",
+  statements: {
+    overview: {
+      amountDeposited: "Amount Deposited",
+      brand: "Brave Creators",
+      confirmedEarning: "Confirmed Earning (BAT)",
+      depositAccount: "Deposit Account",
+      depositDate: "Deposit Date",
+      description: "Statements contain the details of deposit history.",
+      details: {
+        amount: "Amount",
+        date: "Date",
+        description: "Description",
+        details: "Details",
+        remainingBalance:
+          "* Note - these are the transactions which exist during this statement time period. Some transactions may have been on the pervious statement or rolled over to the next statement.",
+        summary: "Summary",
+        total: "Total Deposited",
+        totalFees: "Total Fees",
+        type: "Type"
+      },
+      download: "Download",
+      earningPeriod: "Earning Period",
+      noStatements: "There aren't any statements yet.",
+      paymentDate: "Payment Date",
+      statement: "Statement",
+      title: "Statements",
+      totalDeposited: "Total Deposited",
+      totalEarned: "Total Earned",
+      view: "View",
+      viewMore: "View More"
+    }
+  },
   thirtyDay: "30-Day Use",
   tokens: "tokens",
   totalNumber: "Total Number of Codes",

@@ -1,0 +1,145 @@
+
+.d-flex
+  h2.m-0
+    = "Payout Report #{@payout_report.id[0..6]}"
+    br
+    small.text-muted= @payout_report.created_at.strftime("%B %d, %Y, %H:%M")
+
+  .ml-3
+    = link_to "Edit", edit_admin_payout_report_path(@payout_report.id), class: 'btn btn-dark mr-1'
+    = link_to "Refresh", refresh_admin_payout_report_path(@payout_report.id), method: :patch, class: 'btn btn-info'
+    - if  @payout_report.encrypted_contents_iv.present?
+      = link_to("Download", download_admin_payout_report_path(@payout_report.id), class: "btn btn-primary")
+    - else
+      span.ml-2.p-2.rounded.alert-info Click 'refresh' to create the contents
+
+h6 Payout Details
+
+.row
+  .col-8
+    table.table
+      tr
+        td
+          .font-weight-bold Report type
+          .small.w-75 This type determines the purpose of the report. There are 2 primary. Final and Temp. Manual or Automated
+
+        td
+          .d-flex
+            - if @payout_report.final
+              .badge.badge-primary data-tooltip="Indicates that the report is used as a source to pay out users during settlement." Final
+            - else
+              .badge.badge-light data-tooltip="Generated only for testing or informative purposes. Should not be used to pay users out" Temp
+
+            - if @payout_report.manual
+              .badge.badge-dark.ml-2 data-tooltip="Payments from manually entered invoices. Partners only." Manual
+            - else
+              .badge.badge-light.ml-2 data-tooltip="Standard payout report - all normal publishers are included." Automated
+      tr
+        td
+          span.font-weight-bold Expected number of payouts
+          .small.w-75
+            span When the payout report is first generated we expect there to be the same number of payments as there are publishers and verified channels
+        td= @payout_report.expected_num_payments
+
+      tr
+        td
+          span.font-weight-bold Actual number of payouts
+          .small.w-75 When the report has finished this represents the number of payments that we actually found available. This should almost always be equal to the expectated.
+        td
+          = @payout_report.num_payments
+          - unless (@payout_report.expected_num_payments - @payout_report.num_payments).zero?
+            .small
+              span
+                = @payout_report.expected_num_payments - @payout_report.num_payments
+                = " payments missing - "
+              = link_to "why?", why: true
+
+      tr
+        td
+          span.font-weight-bold Payments to be made
+          .small.w-75
+            span Represents the number of payments that can be paid out. Meaning, user has completed kyc, and has a balance.
+
+        td= @payout_report.num_payments_to_be_paid
+      tr
+        td.font-weight-bold Missing addresses
+        td= @payout_report.missing_addresses
+      tr
+        td.font-weight-bold Amount
+        td
+          .d-flex.align-items-baseline
+            = "#{number_with_delimiter((@payout_report.amount.to_d / 1E18).round(2))} BAT"
+            - if @previous_report.present?
+              small.ml-2 data-tooltip="percentage difference compared to previous report"
+                = percentage_difference(@payout_report.amount.to_d, @previous_report.amount.to_d)
+
+      - if @previous_report.present?
+        tr
+          td
+            span.font-weight-bold Previous Payout Report
+            .small.w-75
+              =link_to(@previous_report.id[0..6], admin_payout_report_path(@previous_report))
+              span= " run on #{@previous_report.created_at.strftime("%B %d, %Y, %H:%M")}"
+          td
+            = "#{number_with_delimiter((@previous_report.amount.to_d / 1E18).round(2))} BAT"
+
+  .col-4
+    #current-chart data-props="#{{contributionBalance: @payout_report.contribution_count, referralBalance: @payout_report.referral_count}.to_json}"
+    table.table
+
+
+
+- if @payout_report.missing_addresses > 0
+  hr
+  h6 Missing Addresses
+  .alert.alert-warning.mb-2
+    = fa_icon "warning"
+    span There are missing addresses. This may cause some publishers to not get paid.
+  table.table
+    thead
+      tr
+        td Potential Payment ID
+        td Publisher
+        td Channel ID
+        td Uphold ID
+    tbody
+    - @payout_report.potential_payments.to_be_paid.unscope(where: :address).where(address: '').each do |x|
+      tr
+        td= x.id
+        td= link_to(x.publisher, admin_publisher_path(x.publisher_id))
+        td= x.channel_id
+        td= x.uphold_id
+
+
+
+- if params[:why]
+  h6 Payout Expectations vs. Reality
+  p There are some possibilities why users might be on this report. For example, we assume that we're going to have a publisher amount. The publisher account status might be restricted, or locked state. This section is intended to assist in determining the cause.
+
+  - expectations =  @payout_report.manage_expectations
+  .font-weight-bold Channels not incuded
+  table.table
+    thead
+      tr
+        td Channel ID
+    - if expectations[:channels].length.zero?
+      tr
+        td All channels were included.
+    - expectations[:channels].each do |channel_id|
+      tr
+        td.small= channel_id
+
+  .font-weight-bold Publishers not incuded
+  table.table
+    thead
+      tr
+        td Publisher ID
+    - if expectations[:publishers].length.zero?
+      tr
+        td All publishers were included.
+    - expectations[:publishers].each do |publisher_id|
+      tr
+        td.small= link_to(publisher_id, admin_publisher_path(publisher_id))
+
+
+=javascript_pack_tag 'PayoutReports'

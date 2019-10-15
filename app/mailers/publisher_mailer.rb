@@ -145,16 +145,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def two_factor_authentication_removal_request(publisher)
-    @publisher = publisher
-    @publisher_private_two_factor_removal_url = publisher_private_two_factor_removal_url(publisher: @publisher)
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject,
-      template_name: "two_factor_authentication_removal_request"
-    )
-  end
-
   def two_factor_authentication_removal_cancellation(publisher)
     @publisher = publisher
     @publisher_private_two_factor_cancellation_url = publisher_private_two_factor_cancellation_url(publisher: @publisher)

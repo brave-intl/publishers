@@ -11,12 +11,34 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery prepend: true, with: :exception
 
-  before_action :set_locale
   before_action :set_paper_trail_whodunnit
   before_action :no_cache
+  before_action :redirect_if_suspended
+
+  newrelic_ignore_enduser
+
 
   rescue_from Ability::AdminNotOnIPWhitelistError do |e|
     render file: "admin/errors/whitelist.html", layout: false
+  end
+
+  around_action :switch_locale
+  def switch_locale(&action)
+    locale = nil
+    return I18n.with_locale(I18n.default_locale, &action) if params['controller'].split("/")[0] == 'admin'
+    locale = params[:locale] if params[:locale].present?
+
+    if locale.nil? && extract_locale_from_accept_language_header == 'ja' && request.get?
+      new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
+      redirect_to(request.original_url + new_query) and return
+    end
+
+    locale = I18n.default_locale if locale.nil? || !locale.to_sym.in?(I18n.available_locales)
+    I18n.with_locale(locale, &action)
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
   end
 
   def no_cache
@@ -32,12 +54,17 @@ class ApplicationController < ActionController::Base
     current_user.try(:id)
   end
 
-  def current_ability
-    @current_ability ||= Ability.new(current_user, request.remote_ip)
+  def redirect_if_suspended
+    # Redirect to suspended page if they're logged in
+    redirect_to(suspended_error_publishers_path) and return if current_publisher&.suspended? && !request.fullpath.split("?")[0].in?(valid_suspended_paths)
   end
 
-  def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+  def valid_suspended_paths
+    [suspended_error_publishers_path.split("?")[0], log_out_publishers_path.split("?")[0]]
+  end
+
+  def current_ability
+    @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
 
   def handle_unverified_request
@@ -53,5 +80,9 @@ class ApplicationController < ActionController::Base
 
   def u2f
     @u2f ||= U2F::U2F.new(request.base_url)
+  end
+
+  def extract_locale_from_accept_language_header
+    request.env['HTTP_ACCEPT_LANGUAGE']&.scan(/^[a-z]{2}/)&.first
   end
 end

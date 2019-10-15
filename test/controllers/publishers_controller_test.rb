@@ -12,6 +12,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   before do
     @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     stub_request(:get, /cards\?q/).to_return(body: [].to_json)
+    stub_request(:get, /v0\/me\/cards/).to_return(body: '{}')
     stub_request(:post, Rails.application.secrets[:uphold_api_uri] + "/v0/me/cards").to_return(body: {id: '123e4567-e89b-12d3-a456-426655440000'}.to_json)
   end
 
@@ -56,17 +57,17 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_response 200
 
-    get statements_publishers_path
+    get statements_path
     assert_response 200
 
     # Get suspended
     publisher.status_updates.create(status: PublisherStatusUpdate::SUSPENDED)
 
     get home_publishers_path
-    assert_redirected_to(suspended_error_publishers_path)
+    assert_redirected_to controller: "/publishers", action: "suspended_error"
 
-    get statement_publishers_path
-    assert_redirected_to(suspended_error_publishers_path)
+    get statements_path
+    assert_redirected_to controller: "/publishers", action: "suspended_error"
 
     # Go back to active
     publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
@@ -74,7 +75,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     get home_publishers_path
     assert_response 200
 
-    get statements_publishers_path
+    get statements_path
     assert_response 200
   end
 
@@ -113,12 +114,12 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
         message.to.first == SIGNUP_PARAMS[:email]
       end
       assert_not_nil(email)
-      url = publisher_url(publisher, token: publisher.authentication_token)
+      url = publisher_url(publisher, token: publisher.reload.authentication_token).gsub("locale=en&", "")
       assert_email_body_matches(matcher: url, email: email)
     end
 
     get url
-    assert_redirected_to email_verified_publishers_path
+    assert_redirected_to controller: "/publishers", action: "email_verified"
   end
 
   test "re-used access link is rejected and send publisher to the expired auth token page" do
@@ -127,7 +128,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.authentication_token)
 
     get url
-    assert_redirected_to home_publishers_url, "precond - publisher is logged in"
+    assert_redirected_to controller: "/publishers", action: "home"
 
     get url
     assert_redirected_to expired_authentication_token_publishers_path(id: publisher.id), "re-used URL is rejected, publisher not logged in"
@@ -201,7 +202,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       message.to.first == publisher.email
     end
     assert_not_nil(email)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token).gsub("locale=en&", "")
     assert_email_body_matches(matcher: url, email: email)
   end
 
@@ -225,42 +226,9 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_not_nil(email)
-    url = publisher_url(publisher, token: publisher.reload.authentication_token)
+    url = publisher_url(publisher, token: publisher.reload.authentication_token).gsub("locale=en&", "")
     assert_email_body_matches(matcher: url, email: email)
   end
-
-  # test "relogin for unverified publishers requires email" do
-  #   publisher = publishers(:default)
-  #   assert_enqueued_jobs(0) do
-  #     get(log_in_publishers_path)
-  #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
-  #     post(create_authentication_token_publishers_path, params: params)
-  #   end
-  # end
-
-  # test "relogin for unverified publishers fails with the wrong email" do
-  #   publisher = publishers(:default)
-  #   assert_enqueued_jobs(0) do
-  #     get(log_in_publishers_path)
-  #     params = { publisher: { "brave_publisher_id" => publisher.brave_publisher_id, "email" => "anon@cock.li" } }
-  #     post(create_authentication_token_publishers_path, params: params)
-  #   end
-  # end
-
-  # test "relogin for verified publishers without an email sends to the publisher's email" do
-  #   publisher = publishers(:verified)
-  #   perform_enqueued_jobs do
-  #     get(log_in_publishers_path)
-  #     params = { publisher: publisher.attributes.slice(*%w(brave_publisher_id)) }
-  #     post(create_authentication_token_publishers_path, params: params)
-  #   end
-  #   email = ActionMailer::Base.deliveries.find do |message|
-  #     message.to.first == publisher.email
-  #   end
-  #   assert_not_nil(email)
-  #   url = publisher_url(publisher, token: publisher.reload.authentication_token)
-  #   assert_email_body_matches(matcher: url, email: email)
-  # end
 
   test "publisher completing signup will agree to TOS" do
     perform_enqueued_jobs do
@@ -458,7 +426,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
       # verify that the uphold_access_parameters has been set
       assert_match('FAKEACCESSTOKEN', publisher.uphold_connection.uphold_access_parameters)
 
-      assert_redirected_to '/publishers/home'
+      assert_redirected_to controller: "/publishers", action: "home"
     end
   end
 
@@ -503,33 +471,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     publisher = publishers(:uphold_connected)
     sign_in publisher
 
-    get statement_publishers_path(publisher)
+    get statements_path
     assert_equal response.status, 200
-    assert_equal response.header["Content-Type"], "application/html"
-  end
-
-  test "no statements are displayed if there are no transactions" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
-    sign_in publisher
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher)
-
-    get statements_publishers_path(publisher)
-
-    assert_match "content empty", response.body # This div displays the "No statements" message.
-  end
-
-  test "flashes 'no transactions' message when attempting to download a statement with no contents" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:uphold_connected)
-    sign_in publisher
-
-    stub_all_eyeshade_wallet_responses(publisher: publisher)
-
-    get statement_publishers_path(publisher)
-
-    assert_equal flash[:alert], I18n.t("publishers.statements.no_transactions")
   end
 
   test "a publisher's wallet can be polled via ajax" do
@@ -577,8 +520,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in publisher
     get home_publishers_path
-
-    assert_redirected_to prompt_two_factor_registrations_path, "redirects on first visit"
+    assert_redirected_to controller: "/publishers/security", action: "prompt"
     follow_redirect!
 
     get home_publishers_path

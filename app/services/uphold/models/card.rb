@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'addressable/template'
+require "addressable/template"
 
 module Uphold
   module Models
@@ -20,7 +20,7 @@ module Uphold
       # Finds a card given an id
       #
       # @param [UpholdConnection] connection The uphold connection to find.
-      # @param [string] iid The id of the card you want to find. By default searches for the address on UpholdConnection
+      # @param [string] id The id of the card you want to find. By default searches for the address on UpholdConnection
       #
       # @return [Uphold::Models::Card] the card
       def find(uphold_connection:, id: nil)
@@ -48,7 +48,7 @@ module Uphold
         response = get(PATH, { q: query }, authorization(uphold_connection))
 
         cards = []
-        if response.headers['Content-Encoding'].eql?('gzip')
+        if response.headers["Content-Encoding"].eql?("gzip")
           sio = StringIO.new(response.body)
           gz = Zlib::GzipReader.new(sio)
           cards = JSON.parse(gz.read)
@@ -74,6 +74,7 @@ module Uphold
         params = {
           currency: currency || uphold_connection.default_currency,
           label: label,
+          settings: { starred: true },
         }
 
         response = post(PATH, params, authorization(uphold_connection))

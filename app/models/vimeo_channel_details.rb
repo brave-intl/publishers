@@ -1,7 +1,7 @@
 class VimeoChannelDetails < BaseChannelDetails
   has_paper_trail
 
-  VIMEO_PREFIX = "vimeo#channel:".freeze
+  PREFIX = "vimeo#channel:".freeze
 
   validates :vimeo_channel_id, presence: true
   validates :thumbnail_url, presence: true
@@ -9,7 +9,7 @@ class VimeoChannelDetails < BaseChannelDetails
   validates :channel_url, presence: true
 
   def channel_identifier
-    "#{VIMEO_PREFIX}#{vimeo_channel_id}"
+    "#{PREFIX}#{vimeo_channel_id}"
   end
 
   def omniauth_url

@@ -9,7 +9,7 @@ $brave-panels-borderRadius: 8px;
     max-width: $spacer * 40;
     min-height: $spacer * 32;
     margin: 0 auto;
-    padding: 0 15px;
+    // padding: 0 10px;
     display: flex;
     flex-direction: column;
 
@@ -19,6 +19,10 @@ $brave-panels-borderRadius: 8px;
 
     @include media-breakpoint-down(xs) {
       min-height: $spacer * 10;
+    }
+
+    &--short {
+      min-height: $spacer * 8;
     }
 
     &--medium {
@@ -134,6 +138,10 @@ $brave-panels-borderRadius: 8px;
     margin-top: auto;
     margin-bottom: auto;
 
+    &--short-padding {
+      padding: $spacer * 3 $spacer * 2;
+    }
+
     &--email-sent {
       padding-top: 125px;
       margin-top: 30px;
@@ -180,6 +188,7 @@ $brave-panels-borderRadius: 8px;
 
 .icon-and-text {
   &--wrapper {
+    margin: 0;
     display: flex;
     justify-content: flex-start;
     flex-direction: row;

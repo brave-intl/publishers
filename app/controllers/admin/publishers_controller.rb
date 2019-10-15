@@ -39,7 +39,7 @@ class Admin::PublishersController < AdminController
     @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
 
     respond_to do |format|
-      format.json { render json: @publishers.to_json(only: [:default_currency], methods: :avatar_color) }
+      format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
       format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
     end
   end
@@ -67,16 +67,6 @@ class Admin::PublishersController < AdminController
     PublisherRemovalJob.perform_later(publisher_id: @publisher.id)
     flash[:alert] = "Deletion job enqueued. This usually takes a few seconds to complete"
     redirect_to admin_publisher_path(@publisher)
-  end
-
-  def statement
-    statement_period = params[:statement_period]
-    @transactions = PublisherStatementGetter.new(publisher: @publisher, statement_period: statement_period).perform
-    @statement_period = publisher_statement_period(@transactions)
-    statement_file_name = publishers_statement_file_name(@statement_period)
-
-    statement_string = render_to_string layout: "statement", template: "publishers/statement"
-    send_data statement_string, filename: statement_file_name, type: "application/html"
   end
 
   def create_note
@@ -112,7 +102,7 @@ class Admin::PublishersController < AdminController
     connection = UpholdConnection.find_by(publisher: params[:publisher_id])
     if connection.present?
       connection.sync_from_uphold!
-      CreateUpholdCardsJob.perform_now(uphold_connection_id: connection.id)
+      connection.create_uphold_cards
     end
     redirect_to admin_publisher_path(@publisher.id)
   end

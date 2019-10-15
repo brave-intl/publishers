@@ -4,7 +4,7 @@ import Chart from "chart.js";
 import Card from "../../../../../components/card/Card";
 
 interface IEarningsChartProps {
-  transactions: any;
+  historic: any;
 }
 
 export default class EarningsChart extends React.Component<
@@ -16,8 +16,10 @@ export default class EarningsChart extends React.Component<
     super(props);
   }
 
-  public componentDidMount() {
-    this.createEarningsChart(this.props.transactions);
+  public componentDidUpdate() {
+    if (this.props.historic) {
+      this.createEarningsChart(this.props.historic.transactions);
+    }
   }
 
   public createEarningsChart(transactions) {

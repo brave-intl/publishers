@@ -14,6 +14,6 @@ h2= "Request Invoice for #{@invoice.partner}"
       = select_year Date.today, {field_name: 'year', prefix: 'invoice', start_year: Date.today.year}, class: 'form-control'
   .form-group
     label Brave Calculated Total Amount (BAT)
-    = form.number_field :finalized_amount, placeholder: "Optional", class: 'form-control'
+    = form.text_field :finalized_amount, placeholder: "Optional", class: 'form-control', optional: true
 
   =submit_tag "Request Invoice", class: 'btn btn-primary'

@@ -66,6 +66,8 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
+  config.i18n.default_locale = :en
 
   # Raises error for missing translations
   config.action_view.raise_on_missing_translations = true
@@ -73,4 +75,10 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  config.log_level = :debug
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true
+  end
 end

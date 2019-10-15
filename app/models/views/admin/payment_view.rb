@@ -42,7 +42,7 @@ module Views
             downloads: publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS],
             installs: publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS],
             confirmations: publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED],
-            transactions: PublisherStatementGetter.new(publisher: @publisher, statement_period: "all").perform,
+            transactions: PublisherStatementGetter.new(publisher: @publisher).perform,
           },
         }.merge(NavigationView.new(@publisher).as_json)
       end

@@ -68,6 +68,22 @@ module AdminHelper
     )
   end
 
+  def percentage_difference(x,y)
+    numerator = (x-y).to_f
+    denominator = y
+
+    value = (numerator / denominator) * 100
+
+    return if value.zero?
+
+    icon = value.positive? ? 'level-up' : 'level-down'
+    class_name = value.positive? ? 'text-success' : 'text-danger'
+
+    content_tag :div, class: class_name do
+      fa_icon icon, text: number_to_percentage(value), right: true, class: class_name
+    end
+  end
+
   def publisher_link(publisher)
     link = link_to(publisher.email || publisher.pending_email, admin_publisher_path(publisher))
     badge = nil
@@ -77,12 +93,13 @@ module AdminHelper
   end
 
   def payout_report_status_header(account_type)
-    report_date = PayoutReport.most_recent_final_report.created_at.strftime("%b %d")
+    report_date = PayoutReport.most_recent_final_report.created_at
+    report_date = report_date.strftime("%B #{report_date.day.ordinalize}")
 
     if account_type == 'owner'
-      "#{report_date}'s Payout Report Status (Referrals)"
+      "#{report_date} Payout (Referrals)"
     else account_type == 'channel'
-      "#{report_date}'s Payout Report Status (Contributions)"
+      "#{report_date} Payout Contributions"
     end
   end
 end

@@ -1,14 +1,14 @@
-.d-flex
-  h1 Payout Reports
-  .ml-4
+.panel-heading
+  h4 Payout Reports
+  .d-flex
     = form_tag upload_settlement_report_admin_payout_reports_path, id: "settlementForm", multipart: :true
       label
         = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
         .btn.btn-primary Upload Settlement Report
-  .ml-4
-    - toggle_text = Rails.cache.fetch('payout_in_progress') ? "Remove payout in progress" : "Set payout in progress"
+
     = form_tag toggle_payout_in_progress_admin_payout_reports_path
-      = submit_tag("#{toggle_text}", class: "btn btn-primary")
+      - toggle_text = Rails.cache.fetch('payout_in_progress') ? "Remove payout in progress" : "Set payout in progress"
+      = submit_tag(toggle_text, class: "btn btn-primary")
 
 javascript:
   document.getElementById('settlementFile').addEventListener("change", function() {
@@ -38,11 +38,12 @@ table.display.table.table-bordered.table-striped
         td = report.manual ? "Yes" : "No"
         td = "#{report.expected_num_payments} - #{report.num_payments}"
         td = report.num_payments_to_be_paid
-        td = report.potential_payments.to_be_paid.unscope(where: :address).count - report.potential_payments.to_be_paid.count
+        td = report.missing_addresses
         td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
         td = form_tag refresh_admin_payout_report_path(report.id), method: :patch do
              = submit_tag "refresh", class: "btn btn-info"
-        td = link_to "download", download_admin_payout_report_path(report.id), class: "btn btn-primary"
+        / (Albert Wang) Check encrypted_contents_iv since encrypted_contents is a large fetch.
+        td = report.encrypted_contents_iv.present? ? (link_to "download", download_admin_payout_report_path(report.id), class: "btn btn-primary") : "Please click 'refresh' on the left to create the contents"
 
 hr
 

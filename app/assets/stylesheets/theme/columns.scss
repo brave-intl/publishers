@@ -62,7 +62,7 @@
   }
 }
 
-.col-two-factor {
+.col-left-aligned {
   &--content {
     @include make-col-ready();
     text-align: left;
@@ -86,5 +86,24 @@
         display: block;
       }
     }
+  }
+}
+
+.col-right-aligned {
+  &--content {
+    @include make-col-ready();
+    text-align: right;
+
+    @include media-breakpoint-up(md) {
+      @include make-col(9);
+      margin-bottom: $spacer*2;
+    }
+  }
+  &--action {
+    @include make-col-ready();
+    @include media-breakpoint-up(md) {
+      @include make-col(3);
+    }
+    text-align: right;
   }
 }

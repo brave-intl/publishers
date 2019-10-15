@@ -14,7 +14,7 @@ module PublishersHelper
       charset: "utf-8",
       og: {
         title: :title,
-        image: image_url("open-graph-preview.png", host: root_url),
+        image: image_url("open-graph-preview.png"),
         description: t("shared.app_description"),
         url: request.url,
         type: "website",
@@ -59,25 +59,27 @@ module PublishersHelper
   def publisher_converted_overall_balance(publisher)
     return if publisher.uphold_connection.default_currency == "BAT" || publisher.uphold_connection.default_currency.blank?
 
-    publisher = publisher&.become_subclass
+    result = I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
+    sentry_catcher do
+      publisher = publisher&.become_subclass
 
-    if publisher.partner?
-      balance = publisher.balance_in_currency
-    elsif publisher.only_user_funds?
-      balance = publisher.wallet&.contribution_balance&.amount_default_currency
-    elsif publisher.no_grants?
-      amount =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
-    else
-      balance = publisher.wallet&.overall_balance&.amount_default_currency
-    end
+      if publisher.partner?
+        balance = publisher.balance_in_currency
+      elsif publisher.only_user_funds?
+        balance = publisher.wallet&.contribution_balance&.amount_default_currency
+      elsif publisher.no_grants?
+        balance =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+      else
+        balance = publisher.wallet&.overall_balance&.amount_default_currency
+      end
 
-    if balance.present?
-      I18n.t("helpers.publisher.balance_pending_approximate",
-             amount: '%.2f' % balance,
-             code: publisher&.uphold_connection.default_currency)
-    else
-      I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
+      if balance.present?
+        result = I18n.t("helpers.publisher.balance_pending_approximate",
+               amount: '%.2f' % balance,
+               code: publisher&.uphold_connection.default_currency)
+      end
     end
+    result
   end
 
   def publisher_referral_bat_balance(publisher)
@@ -372,20 +374,8 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       I18n.t("helpers.publisher.channel_type.website")
-    when YoutubeChannelDetails
-      I18n.t("helpers.publisher.channel_type.youtube")
-    when TwitchChannelDetails
-      I18n.t("helpers.publisher.channel_type.twitch")
-    when TwitterChannelDetails
-      I18n.t("helpers.publisher.channel_type.twitter")
-    when VimeoChannelDetails
-      I18n.t("helpers.publisher.channel_type.vimeo")
-    when RedditChannelDetails
-      I18n.t("helpers.publisher.channel_type.reddit")
-    when GithubChannelDetails
-      I18n.t("helpers.publisher.channel_type.github")
     else
-      I18n.t("helpers.publisher.channel_type.unknown")
+      I18n.t("helpers.publisher.channel_type.#{channel.type_display.downcase}")
     end
   end
 
@@ -393,18 +383,8 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       I18n.t("helpers.publisher.channel_name.website")
-    when YoutubeChannelDetails
-      I18n.t("helpers.publisher.channel_name.youtube")
-    when TwitchChannelDetails
-      I18n.t("helpers.publisher.channel_name.twitch")
-    when VimeoChannelDetails
-      I18n.t("helpers.publisher.channel_name.vimeo")
-    when RedditChannelDetails
-      I18n.t("helpers.publisher.channel_name.reddit")
-    when GithubChannelDetails
-      I18n.t("helpers.publisher.channel_name.github")
     else
-      I18n.t("helpers.publisher.channel_name.unknown")
+      I18n.t("helpers.publisher.channel_name.#{channel.type_display.downcase}")
     end
   end
 
@@ -431,32 +411,15 @@ module PublishersHelper
 
   def channel_type_icon_url(channel)
     case channel&.details
-    when YoutubeChannelDetails
-      asset_url('publishers-home/youtube-icon_32x32.png')
-    when TwitchChannelDetails
-      asset_url('publishers-home/twitch-icon_32x32.png')
-    when TwitterChannelDetails
-      asset_url('publishers-home/twitter-icon_32x32.png')
-    when VimeoChannelDetails
-      asset_url('publishers-home/vimeo-icon_32x32.png')
-    when RedditChannelDetails
-      asset_url('publishers-home/reddit-icon_32x32.png')
-    when GithubChannelDetails
-      asset_url('publishers-home/github-icon_32x32.png')
-    else
+    when SiteChannelDetails
       asset_url('publishers-home/website-icon_32x32.png')
+    else
+      asset_url("publishers-home/#{channel.type_display.downcase}-icon_32x32.png")
     end
   end
 
   def channel_thumbnail_url(channel)
-    url = case channel.details
-          when YoutubeChannelDetails
-            channel.details.thumbnail_url
-          when TwitchChannelDetails
-            channel.details.thumbnail_url
-          when TwitterChannelDetails
-            channel.details.thumbnail_url
-          end
+    url = channel.details.thumbnail_url if channel.details.respond_to?(:thumbnail_url)
 
     url || asset_url('default-channel.png')
   end

@@ -1,17 +1,13 @@
 import * as React from "react";
 
+import { LoaderIcon } from "brave-ui/components/icons";
+
 import Card from "../../../../../components/card/Card";
 
 import Table from "brave-ui/components/dataTables/table";
 
 interface ICurrentTableProps {
-  referralBalance: any;
-  contributionBalance: any;
-  channelBalances: any;
-  currentDownloads: any;
-  currentInstalls: any;
-  currentConfirmations: any;
-  totalBalance: any;
+  current: any;
 }
 
 export default class CurrentTable extends React.Component<
@@ -26,6 +22,18 @@ export default class CurrentTable extends React.Component<
   }
 
   public render() {
+    if (this.props.current) {
+      return <React.Fragment>{this.createTable()}</React.Fragment>;
+    } else {
+      return (
+        <Card>
+          <LoaderIcon style={{ width: "32px", height: "32px" }} />
+        </Card>
+      );
+    }
+  }
+
+  public createTable() {
     const header = [
       {
         content: "Key",
@@ -77,7 +85,7 @@ export default class CurrentTable extends React.Component<
             content: "Contributions Balance"
           },
           {
-            content: this.props.contributionBalance + " BAT"
+            content: this.props.current.contributionBalance + " BAT"
           }
         ]
       },
@@ -102,7 +110,7 @@ export default class CurrentTable extends React.Component<
             content: "Downloads"
           },
           {
-            content: this.props.currentDownloads
+            content: this.props.current.currentDownloads
           }
         ]
       },
@@ -112,7 +120,7 @@ export default class CurrentTable extends React.Component<
             content: "Installs"
           },
           {
-            content: this.props.currentInstalls
+            content: this.props.current.currentInstalls
           }
         ]
       },
@@ -122,7 +130,7 @@ export default class CurrentTable extends React.Component<
             content: "Confirmations"
           },
           {
-            content: this.props.currentConfirmations
+            content: this.props.current.currentConfirmations
           }
         ]
       },
@@ -132,7 +140,7 @@ export default class CurrentTable extends React.Component<
             content: "Referrals Balance"
           },
           {
-            content: this.props.referralBalance + " BAT"
+            content: this.props.current.referralBalance + " BAT"
           }
         ]
       },
@@ -157,13 +165,13 @@ export default class CurrentTable extends React.Component<
             content: "Total Balance"
           },
           {
-            content: this.props.totalBalance + " BAT"
+            content: this.props.current.totalBalance + " BAT"
           }
         ]
       }
     ];
-    if (this.props.channelBalances) {
-      this.props.channelBalances.forEach((channel, index) => {
+    if (this.props.current.channelBalances) {
+      this.props.current.channelBalances.forEach((channel, index) => {
         rows.splice(index + 2, 0, {
           content: [
             { content: channel.title },

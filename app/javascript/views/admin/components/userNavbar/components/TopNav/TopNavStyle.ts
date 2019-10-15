@@ -17,7 +17,6 @@ export const Container = styled.div`
     display: none;
   }
   background-color: white;
-  box-shadow: rgba(99, 105, 110, 0.18) 0px 1px 12px 0px;
   padding: 28px;
   margin-top: -53px;
 `;
@@ -63,7 +62,6 @@ export const Nav = styled.div`
   color: #222326;
   margin-right: 40px;
   text-transform: uppercase;
-  user-select: none;
   cursor: pointer;
 
   ${(props: Partial<INavProps>) =>
@@ -79,7 +77,6 @@ export const Name = styled.a`
   align-items: center;
   font-size: 30px;
   color: #222326;
-  user-select: none;
 `;
 
 export const Link = styled.a`

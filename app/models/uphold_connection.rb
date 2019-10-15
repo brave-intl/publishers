@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UpholdConnection < ActiveRecord::Base
+  has_paper_trail only: [:is_member, :member_at, :uphold_id, :address, :status, :default_currency]
+
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
 
@@ -26,6 +28,8 @@ class UpholdConnection < ActiveRecord::Base
 
   belongs_to :publisher
 
+  has_many :uphold_connection_for_channels
+
   # uphold_code is an intermediate step to acquiring uphold_access_parameters
   # and should be cleared once it has been used to get uphold_access_parameters
   validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
@@ -38,7 +42,7 @@ class UpholdConnection < ActiveRecord::Base
   }
 
   # If the user became KYC'd let's create the uphold card for them
-  after_save :create_uphold_card_for_default_currency, if: -> { saved_change_to_is_member? && is_member? }
+  after_save :create_uphold_cards, if: -> { saved_change_to_is_member? && uphold_verified? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
@@ -54,7 +58,11 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def scope
-    JSON.parse(uphold_access_parameters).try(:[], 'scope') || []
+    @scope ||= JSON.parse(uphold_access_parameters || '{}').try(:[], 'scope') || []
+  end
+
+  def can_read_transactions?
+    scope.include?('transactions:read')
   end
 
   def receive_uphold_code(code)
@@ -90,13 +98,13 @@ class UpholdConnection < ActiveRecord::Base
   # TODO should we actually call uphold_user?
 
   def uphold_client
-    @uphold_client ||= Uphold::Client.new
+    @uphold_client ||= Uphold::Client.new(uphold_connection: self)
   end
 
   def uphold_details
     @user ||= uphold_client.user.find(self)
   rescue Faraday::ClientError => e
-    if e.response[:status] == 401
+    if e.response&.dig(:status) == 401
       Rails.logger.info("#{e.response[:body]} for uphold connection #{id}")
       update(uphold_access_parameters: nil)
       nil
@@ -123,10 +131,6 @@ class UpholdConnection < ActiveRecord::Base
     end
   end
 
-  def uphold_processing?
-    uphold_access_parameters.present? || uphold_code.present?
-  end
-
   def can_create_uphold_cards?
     uphold_verified? &&
       uphold_access_parameters.present? &&
@@ -141,9 +145,14 @@ class UpholdConnection < ActiveRecord::Base
     @wallet ||= publisher&.wallet
   end
 
-  def create_uphold_card_for_default_currency
+  def create_uphold_cards
     return unless can_create_uphold_cards?
+
     CreateUpholdCardsJob.perform_now(uphold_connection_id: id)
+
+    publisher.channels.each do |channel|
+      CreateUpholdChannelCardJob.perform_now(uphold_connection_id: id, channel_id: channel.id)
+    end
   end
 
   def missing_card?
@@ -160,6 +169,7 @@ class UpholdConnection < ActiveRecord::Base
 
     update(
       is_member: uphold_information.memberAt.present?,
+      member_at: uphold_information.memberAt,
       status: uphold_information.status,
       uphold_id: uphold_information.id,
       country: uphold_information.country

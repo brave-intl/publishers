@@ -80,7 +80,7 @@ class PublisherTransactionsGetter < BaseApiClient
           "description" => "settlement fees for contributions",
           "channel" => "#{channel.details.channel_identifier}",
           "amount" => "#{contribution_fees_amount}",
-          "transaction_type" => "fee",
+          "transaction_type" => "fees",
           "settlement_currency" => "ETH",
         })
 

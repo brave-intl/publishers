@@ -2,6 +2,11 @@ module Uphold
   class Client < BaseApiClient
     def initialize(params = {})
       @connection = connection
+      @uphold_connection = params[:uphold_connection]
+    end
+
+    def address
+      @address ||= Uphold::Models::Address.new
     end
 
     def card
@@ -10,6 +15,10 @@ module Uphold
 
     def user
       @user ||= Uphold::Models::User.new
+    end
+
+    def transaction
+      @transaction ||= Uphold::Models::Transaction.new(uphold_connection: @uphold_connection)
     end
 
     private

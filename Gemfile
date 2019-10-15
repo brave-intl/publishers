@@ -37,12 +37,10 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.6.1"
+gem "devise", "~> 4.7.1"
 gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
-
-gem "email_validator", "~> 1.6"
 
 # HTTP library wrapper
 gem "faraday", "~> 0.9.2", require: false
@@ -65,6 +63,8 @@ gem "meta-tags"
 gem 'mini_magick'
 
 gem 'mongo', '~> 2.2', '>= 2.2.5'
+
+gem "newrelic_rpm", "~> 6.7.0.359"
 
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
@@ -165,6 +165,8 @@ group :development do
   gem "byebug"
   gem "pry-byebug", require: false
 
+  gem 'bullet'
+
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
   gem "listen", "~> 3.0.5"
@@ -183,11 +185,6 @@ group :test do
   gem "vcr"
   gem "webmock", "~> 3.0"
   gem "rails-controller-testing"
-end
-
-group :production do
-  # App monitoring
-  gem "newrelic_rpm", "~> 3.16"
 end
 
 group :development, :test do

@@ -4,8 +4,7 @@ import Chart from "chart.js";
 import Card from "../../../../../components/card/Card";
 
 interface ICurrentChartProps {
-  referralBalance: any;
-  contributionBalance: any;
+  current: any;
 }
 
 export default class CurrentChart extends React.Component<
@@ -17,11 +16,13 @@ export default class CurrentChart extends React.Component<
     super(props);
   }
 
-  public componentDidMount() {
-    this.createCurrentChart(
-      this.props.contributionBalance,
-      this.props.referralBalance
-    );
+  public componentDidUpdate() {
+    if (this.props.current) {
+      this.createCurrentChart(
+        this.props.current.contributionBalance,
+        this.props.current.referralBalance
+      );
+    }
   }
 
   public createCurrentChart(contributionBalance, referralBalance) {

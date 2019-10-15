@@ -48,7 +48,7 @@ class U2fRegistrationsController < ApplicationController
     u2f_registration = current_publisher.u2f_registrations.find(params[:id])
     u2f_registration.destroy
 
-    redirect_to two_factor_registrations_path
+    redirect_to security_publishers_path
   end
 
 end

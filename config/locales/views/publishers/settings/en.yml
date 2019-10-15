@@ -1,0 +1,19 @@
+en:
+  publishers:
+    settings:
+      index:
+        header: Account Settings
+        extended_login:
+          intro: Keep my login active for 30 days
+        delete_account:
+          heading: Account Deletion
+          intro: |
+            Your channels and all account related information will be permanently deleted from our database as well as from connected providers. This cannot be undone.
+          button: Delete My Account
+          prompt:
+            header: Are you sure you want to delete your account?
+            final_confirmation: It'll take a few minutes for the purge to complete.
+            deny: No, keep my account active
+            confirm: Yes, I'm certain
+      update:
+        alert: Account settings updated

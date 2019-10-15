@@ -130,10 +130,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
       subject
     end
 
-    it 'uphold_processing? returns true' do
-      assert uphold_connection.uphold_processing?
-    end
-
     it 'it sets uphold_code' do
       assert uphold_connection.uphold_code
     end
@@ -156,10 +152,6 @@ class UpholdConnectionTest < ActiveSupport::TestCase
 
     it 'not uphold_verified?' do
       refute uphold_connection.uphold_verified?
-    end
-
-    it 'not uphold_processing?' do
-      refute uphold_connection.uphold_processing?
     end
 
     it 'uphold_connection is valid?' do

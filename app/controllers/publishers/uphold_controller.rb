@@ -4,6 +4,8 @@ module Publishers
     # Traditional usage of helpers should really only be for views
     include PublishersHelper
 
+    before_action :authenticate_publisher!
+
     def uphold_status
       publisher = current_publisher
       respond_to do |format|
@@ -32,7 +34,7 @@ module Publishers
       uphold_connection.update(confirm_default_currency_params.merge(default_currency_confirmed_at: Time.now))
 
       if uphold_connection.can_create_uphold_cards?
-        uphold_connection.create_uphold_card_for_default_currency
+        uphold_connection.create_uphold_cards
 
         # TODO do we need this refresh?
         render(json: {
@@ -54,52 +56,33 @@ module Publishers
 
     # Generates an Uphold State Token for the user
     def connect_uphold
-      current_publisher.uphold_connection&.prepare_uphold_state_token
+      current_publisher.uphold_connection.prepare_uphold_state_token
 
       redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
         gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id]).
         gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
-        gsub('<STATE>', current_publisher.uphold_connection&.uphold_state_token)
+        gsub('<STATE>', current_publisher.uphold_connection.uphold_state_token)
     end
 
     # This creates the uphold connection
     # The route for this is by default publisher/uphold_verified
     def create
-      @publisher = current_publisher
+      connection = current_publisher.uphold_connection
 
-      # Ensure the uphold_state_token has been set. If not send back to try again
-      if @publisher.uphold_connection&.uphold_state_token.blank?
-        redirect_to(home_publishers_path, alert: t(".uphold_error"))
-        return
-      end
+      validate_uphold!(connection)
+      validate_state!(connection)
 
-      # Catch uphold errors
-      uphold_error = params[:error]
-      if uphold_error.present?
-        redirect_to(home_publishers_path, alert: t(".uphold_error"))
-        return
-      end
+      connection.receive_uphold_code(params[:code])
 
-      # Ensure the state token from Uphold matches the uphold_state_token last sent to uphold. If not send back to try again
-      state_token = params[:state]
-      if @publisher.uphold_connection&.uphold_state_token != state_token
-        redirect_to(home_publishers_path, alert: t(".uphold_error"))
-        return
-      end
+      ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: current_publisher.id)
 
-      @publisher.uphold_connection.receive_uphold_code(params[:code])
-
-      begin
-        ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: @publisher.id)
-        @publisher.reload
-        @publisher.uphold_connection.reload
-      rescue Faraday::Error
-        Rails.logger.error("Unable to exchange Uphold access token with uphold")
-        redirect_to(home_publishers_path, alert: t(".uphold_error"))
-        return
-      end
+      connection.reload
+      create_uphold_report!(connection)
 
       redirect_to(home_publishers_path)
+    rescue UpholdError, Faraday::Error => e
+      Rails.logger.info("Uphold Error: #{e.message}")
+      redirect_to(home_publishers_path, alert: t(".uphold_error", message: e.message))
     end
 
     # publishers/disconnect_uphold
@@ -109,6 +92,35 @@ module Publishers
       DisconnectUpholdJob.perform_later(publisher_id: publisher.id)
 
       head :no_content
+    end
+
+    private
+
+    class UpholdError < StandardError; end
+
+    def create_uphold_report!(connection)
+      uphold_id = connection.uphold_details&.id
+      return if uphold_id.blank?
+      # Return if we've already created a report for this id
+      return if UpholdStatusReport.find_by(uphold_id: uphold_id).present?
+
+      UpholdStatusReport.create(
+        publisher: current_publisher,
+        uphold_id: uphold_id
+      )
+    end
+
+    def validate_uphold!(connection)
+      # Ensure the uphold_state_token has been set. If not send back to try again
+      raise UpholdError.new, t('.missing_state') if connection&.uphold_state_token.blank? && !connection.uphold_verified?
+
+      # Alert for any errors from Uphold
+      raise UpholdError.new, params[:error] if params[:error].present?
+    end
+
+    def validate_state!(connection)
+      state_token = params[:state]
+      raise UpholdError.new, t('.state_mismatch') if connection.uphold_state_token != state_token
     end
   end
 end

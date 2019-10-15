@@ -68,7 +68,8 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
       it "redirects to organization when saved" do
         organization = controller.instance_variable_get("@organization")
-        assert_redirected_to admin_organization_path(Organization.find_by(name: organization_name))
+#        assert_redirected_to admin_organization_path(Organization.find_by(name: organization_name))
+        assert_redirected_to controller: '/admin/organizations', action: :show, id: organization.id
       end
     end
   end

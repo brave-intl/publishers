@@ -9,12 +9,12 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     publisher.update_attribute(:totp_registration, totp_registration)
 
     sign_in publisher
-    get two_factor_registrations_path
+    get security_publishers_path
 
     assert_response :success
     assert_match "Enabled", response.body
     assert_match "Authenticator app has been set up", response.body
-    assert_select "a[href=?]:contains(Reconfigure)", new_totp_registration_path
+    assert_select "a[href=?]:contains(Reconfigure)", new_totp_registration_path(locale: :en)
   end
 
   test "index renders a registered U2F key" do
@@ -23,12 +23,12 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     publisher.u2f_registrations << u2f_registration
 
     sign_in publisher
-    get two_factor_registrations_path
+    get security_publishers_path
 
     assert_response :success
     assert_match u2f_registration.name, response.body
     assert_match /Set up an authenticator as\sthe secondary 2FA/, response.body
-    assert_select "a[data-method=delete][href=?]", u2f_registration_path(u2f_registration)
+    assert_select "a[data-method=delete][href=?]", u2f_registration_path(id: u2f_registration.id, locale: :en)
   end
 
   test "index renders many registered U2F keys" do
@@ -41,25 +41,25 @@ class TwoFactorRegistrationsControllerTest < ActionDispatch::IntegrationTest
     publisher.u2f_registrations << additional_u2f_registration
 
     sign_in publisher
-    get two_factor_registrations_path
+    get security_publishers_path
 
     assert_response :success
     assert_match u2f_registration.name, response.body
     assert_match additional_u2f_registration.name, response.body
     assert_match "Authenticator app has not been set up", response.body
-    assert_select "a[data-method=delete][href=?]", u2f_registration_path(u2f_registration)
-    assert_select "a[data-method=delete][href=?]", u2f_registration_path(additional_u2f_registration)
+    assert_select "a[data-method=delete][href=?]", u2f_registration_path(id: u2f_registration.id, locale: :en)
+    assert_select "a[data-method=delete][href=?]", u2f_registration_path(id: additional_u2f_registration.id, locale: :en)
   end
 
   test "prompt renders links" do
     publisher = publishers(:completed)
 
     sign_in publisher
-    get prompt_two_factor_registrations_path
+    get prompt_security_publishers_path
 
     assert_response :success
-    assert_select "a[href=?]", home_publishers_path
-    assert_select "a[href=?]", two_factor_registrations_path
+    assert_select "a[href=?]", home_publishers_path(locale: :en)
+    assert_select "a[href=?]", security_publishers_path(locale: :en)
 
     assert @request.session[:prompted_for_two_factor_registration_at_signup]
   end

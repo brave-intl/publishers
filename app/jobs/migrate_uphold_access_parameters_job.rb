@@ -14,12 +14,12 @@ class MigrateUpholdAccessParametersJob < ApplicationJob
 
       was_successful = connection.sync_from_uphold!
       # Let's not queue up a job that will ultimately not work due to invalid access_parameters
-      next unless was_successful
+      return unless was_successful
 
       connection.reload
 
       # Sync the uphold card or create it if the card is missing
-      CreateUpholdCardsJob.perform_later(uphold_connection_id: connection.id)
+      connection.create_uphold_cards
     else
       Rails.logger.info("Couldn't find publisher #{publisher_id} in creator's database but exists on mongo owner's database (Probably not a big deal)")
     end

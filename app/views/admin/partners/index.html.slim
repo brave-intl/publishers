@@ -4,19 +4,20 @@ div.row
       header.panel-heading.partner-container
         h4 Partners
         = link_to "Add a Partner", new_admin_partner_path, class: "btn btn-primary btn-partner"
-      = form_tag(admin_partners_path, method: "get")
-        .input-group
-            = text_field_tag(:q, params[:q], class:'form-control')
-            .input-group-btn
-                = submit_tag("Search", class: 'btn btn-default')
+      .action-group
+        = form_tag(admin_partners_path, method: "get")
+          .input-group
+              = text_field_tag(:q, params[:q], class:'form-control')
+              .input-group-btn
+                  = submit_tag("Search", class: 'btn btn-default')
 
-        .partner-filters
-          label
-              = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
-              = "Suspended"
-          label
-              = check_box_tag('created_by_me', 1, params[:created_by_me].present?, class: 'checkbox')
-              = "Created by me"
+          .partner-filters
+            label
+                = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
+                = "Suspended"
+            label
+                = check_box_tag('created_by_me', 1, params[:created_by_me].present?, class: 'checkbox')
+                = "Created by me"
       br
       div.panel-body
         div.adv-table

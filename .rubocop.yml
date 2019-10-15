@@ -17,9 +17,10 @@ AllCops:
     - app/controllers/admin/publishers_controller.rb
     - app/controllers/admin/publishers/publisher_status_updates_controller.rb
     - app/controllers/publishers/cases_controller.rb
-    - app/controllers/publishers/uphold_controller.rb
+    - app/controllers/publishers/**
     - app/services/uphold/**/*
     - app/jobs/create_uphold_cards_job.rb
+    - app/jobs/create_uphold_channel_card_job.rb
     - app/jobs/exchange_uphold_code_for_access_token_job.rb
     - app/jobs/clean_stale_uphold_data_job.rb
     - app/services/payout_report_publisher_includer.rb

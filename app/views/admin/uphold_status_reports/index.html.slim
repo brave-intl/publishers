@@ -1,0 +1,22 @@
+.panel-heading
+  h4 Uphold Reports
+
+div
+  .font-weight-bold How this works:
+  p Anytime a publisher connects their uphold account we create an entry in our database that logs this. If an uphold id has already been reported we do not create an entry. This data is then aggregated and grouped by month and displayed here.
+
+table.table
+  thead
+    tr
+      td Period
+      td Number of users
+      td
+  tbody
+    - @uphold_status_reports.each do |report|
+      tr
+        td
+          - date = report.as_json.first
+          = Date::MONTHNAMES[date.second]
+          = " #{date.first}"
+        td= report.as_json.second
+        td= link_to("Download", admin_uphold_status_report_path(date.join('-')), class:'btn btn-default')

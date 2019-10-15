@@ -11,7 +11,11 @@
       - unless condense
         .note-header
           / The name of the person
-          strong= note.created_by.name
+          strong= note.zendesk_from_email.present? ? note.zendesk_from_email : note.created_by.name
+
+          - if note.zendesk_ticket_id.present?
+            .text-muted.mx-2 Note ported from Zendesk
+
           / Bullet point
           small.text-muted.mx-2 &#149;
 

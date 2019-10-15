@@ -232,9 +232,6 @@
   }
 
   .channel--promo-info-container {
-    position: absolute;
-    right: 24px;
-
     @media only screen and (max-width: 520px) {
       margin: 8px 0;
       display: flex;
@@ -700,6 +697,11 @@
     .channel-summary {
       width: 100%;
 
+      // Apply a max width when the screen gets smaller to trim long channel names
+      @media only screen and (max-width: 768px) {
+        max-width: 10rem;
+      }
+
       h3 {
         font-size: 20px;
       }
@@ -715,6 +717,13 @@
 
       .separator {
         padding: 0 8px;
+      }
+    }
+
+    .channel-secondary-information {
+      @media only screen and (max-width: 560px) {
+        width: 100%;
+        margin: 0.5em 0;
       }
     }
 
@@ -870,7 +879,6 @@
     }
 
     &--intro {
-      margin-bottom: 8px;
       display: flex;
       align-items: center;
     }
@@ -901,7 +909,6 @@
   .bat-channel {
     &--amount {
       font-size: 28px;
-      font-weight: bolder;
       display: inline;
       line-height: 1;
     }
@@ -962,50 +969,6 @@
   }
 }
 
-#channel_taken_modal {
-  .taken-channel {
-    margin: $spacer * 2;
-
-    .summary {
-      margin-bottom: 20px;
-
-      img {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        border-radius: 20px;
-        margin-right: 10px;
-      }
-
-      .title {
-        display: inline-block;
-      }
-    }
-
-    .registration-date {
-      label {
-        display: inline-block;
-        margin-right: 8px;
-      }
-
-      .value {
-        display: inline-block;
-      }
-    }
-
-    .registered-by {
-      label {
-        display: inline-block;
-        margin-right: 8px;
-      }
-
-      .value {
-        display: inline-block;
-      }
-    }
-  }
-}
-
 .modal-container--modal-identifier--choose-channel-type {
   max-width: 960px;
   width: 100%;
@@ -1057,9 +1020,6 @@
       justify-content: center;
       overflow-y: auto;
       max-height: calc(100vh - 150px);
-    }
-    &--icon {
-      margin: 0;
     }
   }
 
@@ -1238,4 +1198,49 @@ h6 {
 
 .screenshot {
   max-width: 300px;
+}
+
+.payout-progress {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+
+    &.active {
+      background: $braveBrand;
+    }
+
+    &.inactive {
+      border: 1px solid $braveGray-8;
+    }
+
+    &.animated {
+      animation: colorchange 3s linear infinite;
+
+      @keyframes colorchange
+      {
+        0%   {background: $braveBrand;}
+        50%   {background: $braveBrand-Light;}
+        100%   {background: $braveBrand;}
+      }
+    }
+  }
+
+  progress {
+    width: auto;
+    flex-grow: 1;
+    height: 1px;
+    background: $braveGray-8;
+    -webkit-appearance: none;
+  }
+  progress::-webkit-progress-bar {
+    background: $braveGray-8;
+  }
+  progress::-webkit-progress-value {
+    background: $braveBrand;
+  }
+
 }

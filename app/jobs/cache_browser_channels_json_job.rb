@@ -9,7 +9,7 @@ class CacheBrowserChannelsJsonJob < ApplicationJob
     result = nil
 
     loop do
-      result = Rails.cache.write('browser_channels_json', channels_json)
+      result = Rails.cache.write(Api::V1::Public::ChannelsController::REDIS_KEY, channels_json)
       break if result || retry_count > MAX_RETRY
 
       retry_count += 1
