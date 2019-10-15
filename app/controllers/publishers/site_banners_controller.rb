@@ -79,15 +79,27 @@ class Publishers::SiteBannersController < ApplicationController
       filename: filename
     )
 
-    begin
-      padded_resized_jpg_path = add_padding_to_image(
-        source_image_path: resized_jpg_path,
-        attachment_type: attachment_type
-      )
-    rescue OutsidePaddingRangeError => e
-      logger.error "Outside padding range #{e.message}"
-      LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: { publisher_id: current_publisher.id })
-      raise StandardError.new("File size too big for #{attachment_type}") # rubocop:disable Style/RaiseArgs
+    padded_resized_jpg_path = nil
+    quality = 50
+    while padded_resized_jpg_path.nil?
+      begin
+        padded_resized_jpg_path = add_padding_to_image(
+          source_image_path: resized_jpg_path,
+          attachment_type: attachment_type,
+          quality: quality
+        )
+      rescue OutsidePaddingRangeError => e
+        if quality <= 5
+          logger.error "Outside padding range #{e.message}"
+          LogException.perform(StandardError.new("File size too big for #{attachment_type}"), params: { publisher_id: current_publisher.id })
+          raise StandardError.new("File size too big for #{attachment_type}") # rubocop:disable Style/RaiseArgs
+        end
+      end
+      if quality > 5
+        quality -= 5
+      else
+        break
+      end
     end
 
     new_filename = generate_filename(source_image_path: padded_resized_jpg_path)

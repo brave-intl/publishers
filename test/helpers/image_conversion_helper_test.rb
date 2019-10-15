@@ -43,7 +43,8 @@ class ImageConversionHelperTest < ActionView::TestCase
 
     add_padding_to_image(
       source_image_path: temp_file_path,
-      attachment_type: SiteBanner::LOGO
+      attachment_type: SiteBanner::LOGO,
+      quality: ImageConversionHelper::IMAGE_QUALITY
     )
 
     assert_equal SiteBanner::LOGO_UNIVERSAL_FILE_SIZE, File.open(temp_file_path, 'r').size
@@ -65,7 +66,8 @@ class ImageConversionHelperTest < ActionView::TestCase
 
     add_padding_to_image(
       source_image_path: temp_file_path,
-      attachment_type: SiteBanner::BACKGROUND
+      attachment_type: SiteBanner::BACKGROUND,
+      quality: ImageConversionHelper::IMAGE_QUALITY
     )
 
     assert_equal SiteBanner::BACKGROUND_UNIVERSAL_FILE_SIZE, File.open(temp_file_path, 'r').size
@@ -82,7 +84,8 @@ class ImageConversionHelperTest < ActionView::TestCase
     assert_raise ImageConversionHelper::OutsidePaddingRangeError do
       add_padding_to_image(
         source_image_path: temp_file.path,
-        attachment_type: SiteBanner::LOGO
+        attachment_type: SiteBanner::LOGO,
+        quality: ImageConversionHelper::IMAGE_QUALITY
       )
     end
   end
