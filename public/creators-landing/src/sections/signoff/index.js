@@ -13,7 +13,7 @@ export const Signoff = () => {
         <Box pad={{ horizontal: 'large' }}>
           <Heading alignSelf='center' level='4' textAlign='center'>
             {<FormattedMessage id="signoff.headlineOne"/>}
-            <strong>28,000</strong>
+            <strong>280,000</strong>
             {<FormattedMessage id="signoff.headlineTwo"/>}
           </Heading>
           <ResponsiveContext.Consumer>
