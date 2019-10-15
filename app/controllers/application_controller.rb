@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
 
   newrelic_ignore_enduser
 
+
   rescue_from Ability::AdminNotOnIPWhitelistError do |e|
     render file: "admin/errors/whitelist.html", layout: false
   end
@@ -55,7 +56,11 @@ class ApplicationController < ActionController::Base
 
   def redirect_if_suspended
     # Redirect to suspended page if they're logged in
-    redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
+    redirect_to(suspended_error_publishers_path) and return if current_publisher&.suspended? && !request.fullpath.split("?")[0].in?(valid_suspended_paths)
+  end
+
+  def valid_suspended_paths
+    [suspended_error_publishers_path.split("?")[0], log_out_publishers_path.split("?")[0]]
   end
 
   def current_ability
