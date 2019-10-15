@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
 
   newrelic_ignore_enduser
 
+
   rescue_from Ability::AdminNotOnIPWhitelistError do |e|
     render file: "admin/errors/whitelist.html", layout: false
   end
@@ -24,14 +25,15 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
   def switch_locale(&action)
     locale = nil
+    return I18n.with_locale(I18n.default_locale, &action) if params['controller'].split("/")[0] == 'admin'
     locale = params[:locale] if params[:locale].present?
 
-    if locale.nil? && extract_locale_from_accept_language_header == 'ja'
+    if locale.nil? && extract_locale_from_accept_language_header == 'ja' && request.get?
       new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
       redirect_to(request.original_url + new_query) and return
     end
 
-    locale = I18n.default_locale if locale.nil? || !locale.in?(I18n.available_locales)
+    locale = I18n.default_locale if locale.nil? || !locale.to_sym.in?(I18n.available_locales)
     I18n.with_locale(locale, &action)
   end
 
@@ -54,7 +56,11 @@ class ApplicationController < ActionController::Base
 
   def redirect_if_suspended
     # Redirect to suspended page if they're logged in
-    redirect_to(suspended_error_publishers_path) and return if current_publisher.present? && current_publisher.suspended?
+    redirect_to(suspended_error_publishers_path) and return if current_publisher&.suspended? && !request.fullpath.split("?")[0].in?(valid_suspended_paths)
+  end
+
+  def valid_suspended_paths
+    [suspended_error_publishers_path.split("?")[0], log_out_publishers_path.split("?")[0]]
   end
 
   def current_ability

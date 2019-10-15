@@ -8,4 +8,6 @@ class PublisherNote < ApplicationRecord
   has_many :comments, class_name: "PublisherNote", foreign_key: "thread_id"
 
   validates :note, presence: true, allow_blank: false
+
+  UNKNOWN_PUBLISHER_ID = "00000000-0000-0000-0000-000000000000".freeze
 end
