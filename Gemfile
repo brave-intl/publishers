@@ -143,12 +143,8 @@ gem "will_paginate"
 # YouTube API client
 gem 'yt'
 
+gem "zeitwerk", '~> 2.1.10'
 gem "zendesk_api"
-
-group :development, :staging do
-  # Offline domain normalization
-  gem "domain_name", require: false
-end
 
 group :development do
   gem "better_errors"
@@ -170,7 +166,6 @@ group :development do
 
   # i18n-tasks helps you find and manage missing and unused translations.
   gem "i18n-tasks", "~> 0.9.12"
-  gem "zeitwerk", '~> 2.1.10'
 end
 
 group :test do

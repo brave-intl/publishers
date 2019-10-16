@@ -548,7 +548,6 @@ DEPENDENCIES
   database_cleaner
   devise (~> 4.7.1)
   dnsruby (~> 1.60.0)
-  domain_name
   faraday (~> 0.15.4)
   font-awesome-rails (~> 4.7.0.4)
   i18n-tasks (~> 0.9.12)
