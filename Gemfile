@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "2.5.5"
+ruby "2.5.7"
 
 source "https://rubygems.org"
 
@@ -20,7 +20,7 @@ gem 'addressable', '~> 2.6'
 gem "attr_encrypted", "~> 3.1.0"
 
 # Integration with Matomo Piwik
-gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/yachtcaptain23/piwik-ruby-api.git", branch: "feature/rails_6_support"
+gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/piwik-ruby-api.git", branch: "master"
 
 # Use AWS gem for s3 uploads
 gem 'aws-sdk-s3', require: false

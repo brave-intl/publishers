@@ -7,11 +7,12 @@ GIT
       omniauth-oauth2 (~> 1.1)
 
 GIT
-  remote: https://github.com/yachtcaptain23/piwik-ruby-api.git
-  revision: a9fd568544262ea782d532066cef7f503ba62f53
-  branch: feature/rails_6_support
+  remote: https://github.com/matomo-org/piwik-ruby-api.git
+  revision: fa9197ec4005c738731135da64f97d530cfcba19
+  branch: master
   specs:
     autometal-piwik (1.0.3)
+      activesupport (>= 3.0, < 7.0)
       rest-client
       xml-simple
 
@@ -606,7 +607,7 @@ DEPENDENCIES
   zendesk_api
 
 RUBY VERSION
-   ruby 2.5.5p157
+   ruby 2.5.7p206
 
 BUNDLED WITH
    2.0.2
