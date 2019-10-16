@@ -302,6 +302,9 @@ GEM
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
+    paypal-sdk-rest (1.7.3)
+      multi_json (~> 1.0)
+      xml-simple
     pg (0.21.0)
     popper_js (1.14.5)
     powerpack (0.1.2)
@@ -569,6 +572,7 @@ DEPENDENCIES
   omniauth-twitter
   omniauth-vimeo
   paper_trail (~> 10.3.1)
+  paypal-sdk-rest
   pg (~> 0.18)
   premailer-rails (~> 1.10.3)
   pry

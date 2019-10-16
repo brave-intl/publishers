@@ -81,6 +81,8 @@ gem "omniauth-github"
 # Model record auditing
 gem "paper_trail", "~> 10.3.1"
 
+gem 'paypal-sdk-rest'
+
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
 
