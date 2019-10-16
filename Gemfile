@@ -144,7 +144,6 @@ gem "will_paginate"
 gem 'yt'
 
 gem "zendesk_api"
-gem "zeitwerk", '~> 2.1.10'
 
 group :development, :staging do
   # Offline domain normalization
@@ -154,6 +153,7 @@ end
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
+  gem 'listen', '~> 3.2'
 
   gem "pry"
   gem 'pry-stack_explorer', '~> 0.4.9.3'
@@ -170,6 +170,7 @@ group :development do
 
   # i18n-tasks helps you find and manage missing and unused translations.
   gem "i18n-tasks", "~> 0.9.12"
+  gem "zeitwerk", '~> 2.1.10'
 end
 
 group :test do
@@ -191,7 +192,6 @@ group :development, :test do
   # Vulnerabilities
   gem "bundler-audit", require: false
   gem 'capybara'
-  gem 'listen', '~> 3.2'
   gem 'minitest'
   gem 'minitest-rails'
   gem "mocha"
