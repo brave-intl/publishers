@@ -1,8 +1,8 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
-import Rails from "rails-ujs";
+import Rails from "@rails/ujs";
 
-import { DirectUpload } from "activestorage";
+import { DirectUpload } from "@rails/activestorage";
 
 export default class FileUpload extends React.Component {
   constructor(props) {

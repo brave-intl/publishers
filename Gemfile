@@ -16,9 +16,6 @@ gem 'activerecord-session_store'
 # Allowing for URI templates, for HTTP clients
 gem 'addressable', '~> 2.6'
 
-# Pagination
-gem "api-pagination"
-
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
 
@@ -43,12 +40,9 @@ gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 gem "dnsruby", "~> 1.60.0", require: false
 
 # HTTP library wrapper
-gem "faraday", "~> 0.9.2", require: false
+gem "faraday", "~> 0.15.4"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
-
-# For building complex JSON objects
-gem 'jbuilder', '~> 2.7.0'
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
@@ -85,16 +79,16 @@ gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git'
 gem "omniauth-github"
 
 # Model record auditing
-gem "paper_trail", "~> 10.1.0"
+gem "paper_trail", "~> 10.3.1"
 
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
 
 # Easy CSS-sthled emails
-gem "premailer-rails", "~> 1.9.4", require: false
+gem "premailer-rails", "~> 1.10.3", require: false
 
 # Implementation of PublicSuffix
-gem 'public_suffix', '~> 3.0.2'
+gem 'public_suffix', '~> 3.1.1'
 
 # Puma as app server
 gem "puma", "~> 4.0.1"
@@ -102,9 +96,9 @@ gem "puma", "~> 4.0.1"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 5.2.3"
+gem 'railties', "~> 6.0.0"
 
-gem "rails", "~> 5.2.3"
+gem "rails", "~> 6.0.0"
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -122,7 +116,7 @@ gem "sass-rails", "~> 5.0"
 gem "sendgrid-ruby"
 
 # Exception logging
-gem "sentry-raven", "~> 2.1", require: false
+gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
 gem "sidekiq"
@@ -141,7 +135,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker', '~> 4.0.0.rc.2'
+gem 'webpacker', '~> 4.0.7'
 
 # pagination support for models
 gem "will_paginate"
@@ -149,16 +143,13 @@ gem "will_paginate"
 # YouTube API client
 gem 'yt'
 
+gem "zeitwerk", '~> 2.1.10'
 gem "zendesk_api"
-
-group :development, :staging do
-  # Offline domain normalization
-  gem "domain_name", require: false
-end
 
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
+  gem 'listen', '~> 3.2'
 
   gem "pry"
   gem 'pry-stack_explorer', '~> 0.4.9.3'
@@ -169,7 +160,6 @@ group :development do
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
-  gem "listen", "~> 3.0.5"
 
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
@@ -196,8 +186,10 @@ group :development, :test do
   gem "brakeman"
   # Vulnerabilities
   gem "bundler-audit", require: false
+  gem 'capybara'
+  gem 'minitest'
+  gem 'minitest-rails'
   gem "mocha"
-  gem 'minitest-rails-capybara', '~> 3.0.1'
   gem "capybara-selenium"
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test

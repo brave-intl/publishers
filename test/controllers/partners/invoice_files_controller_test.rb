@@ -37,6 +37,7 @@ class Partners::InvoicesControllerTest < ActionDispatch::IntegrationTest
 
 
   describe '#destroy' do
+    let(:file) { fixture_file_upload(Rails.root.join('test','fixtures', '1x1.png')) }
     before do
       partner = partners(:default_partner)
       sign_in partner
@@ -44,9 +45,9 @@ class Partners::InvoicesControllerTest < ActionDispatch::IntegrationTest
       InvoiceFile.destroy_all
 
       invoice = Invoice.create(partner: partner, date: "2019-01-01")
-      file = InvoiceFile.create(invoice: invoice)
+      invoice_file = InvoiceFile.create(invoice: invoice, file: file)
 
-      delete partners_payments_invoice_invoice_file_path(id: file.id, invoice_id: '_')
+      delete partners_payments_invoice_invoice_file_path(id: invoice_file.id, invoice_id: '_')
     end
 
     it 'renders json' do
