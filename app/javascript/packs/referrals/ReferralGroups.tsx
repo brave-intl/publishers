@@ -38,7 +38,7 @@ export default class ReferralGroups extends React.Component<
   };
 
   public async loadGroups() {
-    await fetch(routes.publishers.promo_registrations.groups.path, {
+    await fetch(routes.publishers.promo_registrations.overview.path, {
       headers: {
         Accept: "application/json",
         "X-CSRF-Token": document.head
@@ -49,7 +49,7 @@ export default class ReferralGroups extends React.Component<
       method: "GET"
     }).then(response => {
       response.json().then(json => {
-        this.setState({ groups: json, isLoading: false });
+        this.setState({ groups: json.groups, isLoading: false });
       });
     });
   }
@@ -63,7 +63,7 @@ export default class ReferralGroups extends React.Component<
         {!this.state.isLoading && (
           <table className="promo-table w-100 promo-selected">
             {this.state.groups.map(group => (
-              <tr>
+              <tr key={group.id}>
                 <td>
                   <span className="font-weight-bold">{group.name} </span>
                   <span className="ml-2">

@@ -28,8 +28,8 @@ export default {
       show: {
         path: "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
       },
-      groups: {
-        path: "{id}/promo_registrations/groups"
+      overview: {
+        path: "{id}/promo_registrations/overview"
       }
     },
     statements: {

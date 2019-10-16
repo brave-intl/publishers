@@ -10,7 +10,16 @@ class Publishers::PromoRegistrationsController < PublishersController
     render json: promo_registration.stats_by_date.to_json
   end
 
-  def groups
-    render json: Eyeshade::Referrals.new.groups
+  def overview
+    aggregate_stats = PromoRegistration.aggregate_stats(current_publisher.promo_registrations)
+
+    render json: {
+      groups: Eyeshade::Referrals.new.groups,
+      totals: {
+        downloaded: aggregate_stats[PromoRegistration::RETRIEVALS],
+        installed: aggregate_stats[PromoRegistration::FIRST_RUNS],
+        confirmed: aggregate_stats[PromoRegistration::FINALIZED],
+      },
+    }
   end
 end

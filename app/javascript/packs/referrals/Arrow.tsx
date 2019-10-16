@@ -11,12 +11,12 @@ export default function Arrow() {
         stroke-width="1"
         fill="none"
         fill-rule="evenodd"
-        fill-opacity="0.543323864"
+        fill-opacity="1"
       >
         <g
           id="Publisher-Dashboard"
           transform="translate(-935.000000, -419.000000)"
-          fill="#4C54D2"
+          fill="#326183"
         >
           <g id="promo-ad-layout" transform="translate(676.000000, 272.000000)">
             <g

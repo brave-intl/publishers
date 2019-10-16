@@ -23,6 +23,16 @@ export default {
   downloads: "Downloads",
   edit: "Edit",
   estimatedEarnings: "Estimated Earnings",
+  homepage: {
+    referral: {
+      confirmed: "CONFIRMED",
+      details: 'See details for the areas in each group',
+      downloaded: "DOWNLOADED",
+      installed: "INSTALLED",
+      statement: "Check your statement for this period's payout.",
+      title: "Referral Promo Stats",
+    }
+  },
   installs: "Installs",
   makeMonthly: "Make this monthly",
   move: "Move",
@@ -66,6 +76,7 @@ export default {
       title: "Payment History",
       totalDeposited: "Total Deposited"
     },
+
     invoices: {
       amount: "Amount (BAT)",
       createdAt: "Created At",
@@ -136,7 +147,7 @@ export default {
     referrals: "Referrals",
     thirtyDay: "30-Day Use",
     totalNumber: "Total Number of Codes",
-    totalReferralCodes: "Total Referral Codes"
+    totalReferralCodes: "Total Referral Codes",
   },
   sendDonation: "Send my donation",
   settings: {
