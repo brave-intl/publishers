@@ -21,7 +21,7 @@ module PromosHelper
   end
 
   def publisher_referral_totals(publisher)
-    aggregate_stats = PromoRegistration.aggregate_stats(publisher.promo_registrations)
+    aggregate_stats = PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations)
 
     {
       PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
@@ -31,23 +31,15 @@ module PromosHelper
   end
 
   def publisher_current_referral_totals(publisher)
-    retrievals = 0
-    first_runs = 0
-    finalized = 0
-    cutoff = Date.today.beginning_of_month
-    publisher.promo_registrations.each do |promo_registration|
-      JSON.parse(promo_registration.stats).each do |stat|
-        if Date.parse(stat["ymd"]) > cutoff
-          retrievals += stat["retrievals"]
-          first_runs += stat["first_runs"]
-          finalized += stat["finalized"]
-        end
-      end
-    end
+    aggregate_stats = PromoRegistration.stats_for_registrations(
+      promo_registrations: publisher.promo_registrations,
+      start: Date.today.beginning_of_month
+    )
+
     {
-      PromoRegistration::RETRIEVALS => retrievals,
-      PromoRegistration::FIRST_RUNS => first_runs,
-      PromoRegistration::FINALIZED => finalized,
+      PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
+      PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
+      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED],
     }
   end
 

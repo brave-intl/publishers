@@ -25,6 +25,8 @@ class PromoRegistration < ApplicationRecord
   MOBILE = "mobile".freeze
   STANDARD = "standard".freeze
 
+  BASE_STATS = { RETRIEVALS => 0, FIRST_RUNS => 0, FINALIZED => 0 }.freeze
+
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
   belongs_to :publisher
@@ -51,16 +53,16 @@ class PromoRegistration < ApplicationRecord
   # Parses the events associated with a promo registration and returns
   # the aggregate totals for each event type
   def aggregate_stats
-    JSON.parse(stats).reduce({
-      RETRIEVALS => 0,
-      FIRST_RUNS => 0,
-      FINALIZED => 0,
-    }) do |aggregate_stats, event|
-      aggregate_stats[RETRIEVALS] += event[RETRIEVALS]
-      aggregate_stats[FIRST_RUNS] += event[FIRST_RUNS]
-      aggregate_stats[FINALIZED] += event[FINALIZED]
-      aggregate_stats.slice(RETRIEVALS, FIRST_RUNS, FINALIZED)
+    JSON.parse(stats).reduce(BASE_STATS.deep_dup)
+  end
+
+  def aggregate_stats_by_period(period_start, period_end)
+    parsed = JSON.parse(stats).select do |event|
+      date = event['ymd'].to_date
+      date > period_start && date < period_end
     end
+
+    parsed.reduce(BASE_STATS.deep_dup, &PromoRegistration.sum_stats)
   end
 
   # the stats are currently organized by platform.
@@ -102,16 +104,18 @@ class PromoRegistration < ApplicationRecord
   class << self
     # Returns the aggregate totals for each event type given a
     # ActiveRecord::Association of PromoRegistrations
-    def aggregate_stats(promo_registrations)
-      promo_registrations.reduce({
-        RETRIEVALS => 0,
-        FIRST_RUNS => 0,
-        FINALIZED => 0,
-      }) do |aggregate_stats, promo_registration|
-        promo_registration_aggregate_stats = promo_registration.aggregate_stats
-        aggregate_stats[RETRIEVALS] += promo_registration_aggregate_stats[RETRIEVALS]
-        aggregate_stats[FIRST_RUNS] += promo_registration_aggregate_stats[FIRST_RUNS]
-        aggregate_stats[FINALIZED] += promo_registration_aggregate_stats[FINALIZED]
+    def stats_for_registrations(promo_registrations:, start_date: Date.new, end_date: Date.today.at_end_of_day)
+      promo_registrations.
+        map { |p| p.aggregate_stats_by_period(start_date, end_date) }.
+        reduce(PromoRegistration::BASE_STATS.deep_dup, &PromoRegistration.sum_stats)
+    end
+
+    def sum_stats
+      Proc.new do |aggregate_stats, event|
+        aggregate_stats[RETRIEVALS] += event[RETRIEVALS]
+        aggregate_stats[FIRST_RUNS] += event[FIRST_RUNS]
+        aggregate_stats[FINALIZED] += event[FINALIZED]
+
         aggregate_stats
       end
     end

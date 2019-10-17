@@ -18,10 +18,11 @@ interface IReferralGroupsState {
     amount: string;
     currency: string;
   }>;
+  month: string;
   totals: {
-    confirmed: number;
-    downloaded: number;
-    installed: number;
+    finalized: number;
+    first_runs: number;
+    retrievals: number;
   };
 }
 
@@ -38,10 +39,11 @@ export default class ReferralPanel extends React.Component<
     this.state = {
       groups: [],
       isLoading: true,
+      month: "",
       totals: {
-        confirmed: 0,
-        downloaded: 0,
-        installed: 0
+        finalized: 0,
+        first_runs: 0,
+        retrievals: 0
       }
     };
   }
@@ -50,8 +52,12 @@ export default class ReferralPanel extends React.Component<
     this.loadGroups();
   };
 
+  public setMonth = (e) => {
+    this.setState({ month: e.target.value, isLoading: true }, this.loadGroups)
+  }
+
   public async loadGroups() {
-    await fetch(routes.publishers.promo_registrations.overview.path, {
+    await fetch(routes.publishers.promo_registrations.overview.path + `?month=${this.state.month}`, {
       headers: {
         Accept: "application/json",
         "X-CSRF-Token": document.head
@@ -62,7 +68,11 @@ export default class ReferralPanel extends React.Component<
       method: "GET"
     }).then(response => {
       response.json().then(json => {
-        this.setState({ groups: json.groups, totals: json.totals, isLoading: false });
+        this.setState({
+          groups: json.groups,
+          isLoading: false,
+          totals: json.totals,
+        });
       });
     });
   }
@@ -75,9 +85,9 @@ export default class ReferralPanel extends React.Component<
             <FormattedMessage id="homepage.referral.title" />
           </h1>
           <div className="promo-period">
-            <select>
-              <option>October 2019</option>
-              <option>November 2019</option>
+            <select onChange={this.setMonth} value={this.state.month}>
+              <option value="October 2019">October 2019</option>
+              <option value="November 2019">November 2019</option>
             </select>
           </div>
         </div>
@@ -118,24 +128,21 @@ const Stats = props => (
   <table className="promo-table w-100 font-weight-bold">
     <tr className="promo-selected">
       <td>
-        {" "}
-        <FormattedMessage id="homepage.referral.confirmed" />{" "}
+        <FormattedMessage id="homepage.referral.confirmed" />
       </td>
-      <td className="promo-panel-number">{props.totals.confirmed}</td>
+      <td className="promo-panel-number">{props.totals.finalized}</td>
     </tr>
     <tr>
       <td>
-        {" "}
-        <FormattedMessage id="homepage.referral.installed" />{" "}
+        <FormattedMessage id="homepage.referral.installed" />
       </td>
-      <td className="promo-panel-number">{props.totals.installed}</td>
+      <td className="promo-panel-number">{props.totals.first_runs}</td>
     </tr>
     <tr>
       <td>
-        {" "}
-        <FormattedMessage id="homepage.referral.downloaded" />{" "}
+        <FormattedMessage id="homepage.referral.downloaded" />
       </td>
-      <td className="promo-panel-number">{props.totals.downloaded}</td>
+      <td className="promo-panel-number">{props.totals.retrievals}</td>
     </tr>
   </table>
 );

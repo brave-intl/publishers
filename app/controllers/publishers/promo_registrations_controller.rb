@@ -11,15 +11,18 @@ class Publishers::PromoRegistrationsController < PublishersController
   end
 
   def overview
-    aggregate_stats = PromoRegistration.aggregate_stats(current_publisher.promo_registrations)
+    start_date = (params[:month]&.to_date || Date.today).at_beginning_of_month
+    end_date = start_date.at_end_of_month
+
+    aggregate_stats = PromoRegistration.stats_for_registrations(
+      promo_registrations: current_publisher.promo_registrations,
+      start_date: start_date,
+      end_date: end_date
+    )
 
     render json: {
       groups: Eyeshade::Referrals.new.groups,
-      totals: {
-        downloaded: aggregate_stats[PromoRegistration::RETRIEVALS],
-        installed: aggregate_stats[PromoRegistration::FIRST_RUNS],
-        confirmed: aggregate_stats[PromoRegistration::FINALIZED],
-      },
+      totals: aggregate_stats,
     }
   end
 end

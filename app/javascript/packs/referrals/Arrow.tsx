@@ -8,10 +8,10 @@ export default function Arrow() {
       <g
         id="rate-card-(10/3)"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
-        fill-rule="evenodd"
-        fill-opacity="1"
+        fillRule="evenodd"
+        fillOpacity="1"
       >
         <g
           id="Publisher-Dashboard"

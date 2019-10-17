@@ -8,9 +8,9 @@ export default function Arrow() {
       <g
         id="rate-card-(10/3)"
         stroke="none"
-        stroke-width="1"
+        strokeWidth="1"
         fill="none"
-        fill-rule="evenodd"
+        fillRule="evenodd"
       >
         <g
           id="Publisher-Dashboard"
