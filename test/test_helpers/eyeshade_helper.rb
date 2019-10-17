@@ -1,7 +1,6 @@
 module EyeshadeHelper
   def stub_eyeshade_wallet_response(publisher:, wallet: {})
     stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-      with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
       to_return(status: 200, body: wallet.to_json, headers: {})
   end
 

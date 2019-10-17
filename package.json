@@ -55,12 +55,14 @@
     "preset": "ts-jest/presets/js-with-babel"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
-    "@rails/webpacker": "^4.0.2",
+    "@rails/activestorage": "^6.0.0",
+    "@rails/ujs": "^6.0.0",
+    "@rails/webpacker": "^4.0.7",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
-    "activestorage": "^5.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
@@ -72,7 +74,6 @@
     "js-yaml": "3.13.1",
     "moment": "^2.24.0",
     "prop-types": "^15.6.2",
-    "rails-ujs": "^5.1.4",
     "react": "^16.6.3",
     "react-avatar-editor": "^11.0.4",
     "react-dom": "^16.6.3",
@@ -83,7 +84,6 @@
     "webpack-cli": "^3.1.2"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.2.3",
     "@types/jest": "^24.0.6",
     "@types/styled-components": "^4.1.6",
     "autoprefixer": "^9.4.3",
@@ -110,7 +110,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-react": "^3.6.0",
-    "webpack-dev-server": "3.7.1"
+    "webpack-dev-server": "3.8.1"
   },
   "resolutions": {
     "js-yaml": "3.13.1",

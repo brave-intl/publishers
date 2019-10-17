@@ -2,6 +2,7 @@ require "test_helper"
 
 class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
 
   test "Disabling TOTP prompts for confirmation" do
     publisher = publishers(:verified)

@@ -44,20 +44,8 @@ class Publisher < ApplicationRecord
 
   attr_encrypted :authentication_token, key: :encryption_key
 
-  validates :email,
-    format: { with: URI::MailTo::EMAIL_REGEXP },
-    presence: true,
-    allow_nil: true,
-    uniqueness: { case_sensitive: false },
-    unless: -> { deleted? }
-
-  validates :pending_email,
-    format: { with: URI::MailTo::EMAIL_REGEXP },
-    presence: true,
-    allow_nil: true,
-    uniqueness: { case_sensitive: false },
-    unless: -> { deleted? }
-
+  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? && !deleted? }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change, unless: -> { deleted? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? }

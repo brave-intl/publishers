@@ -14,10 +14,8 @@ class CaseNote < ApplicationRecord
   def file_attachment_validation
     files.each do |file|
       if file.blob.byte_size > Case::FILE_SIZE
-        file.purge
         errors[:base] << "File #{file.blob.filename} must be less than 2 MB"
       elsif invalid_file_type?(file)
-        file.purge
         errors[:base] << "#{file.blob.content_type} is not a supported filetype"
       end
     end
