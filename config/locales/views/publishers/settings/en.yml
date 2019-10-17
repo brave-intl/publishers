@@ -5,8 +5,8 @@ en:
         header: Account Settings
         extended_login:
           intro: Keep my login active for 30 days
-        stripe_payout:
-          intro: Use stripe for payout. You must reside in Japan, have a Japanese email, and a Japanese bank account to receive payout. Turning on this flag will prevent you from receiving payout if you violate any of the above.
+        paypal_payout:
+          intro: Use PayPal for payout. You must reside in Japan, have a Japanese email, and a Japanese bank account to receive payout. Turning on this flag will prevent you from receiving payout if you violate any of the above.
         delete_account:
           heading: Account Deletion
           intro: |

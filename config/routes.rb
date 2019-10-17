@@ -46,6 +46,10 @@ Rails.application.routes.draw do
       get :prompt_security, to: "publishers/security#prompt"
       get :settings, to: "publishers/settings#index"
 
+      scope controller: "publishers/paypal_accounts" do
+        get :start_connect
+        patch :connect_callback
+      end
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)

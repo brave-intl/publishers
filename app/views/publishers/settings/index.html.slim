@@ -1,7 +1,7 @@
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
   .single-panel--padded-content--short-padding
     h5= t ".header"
-    = form_for(current_publisher, url: publisher_path(current_publisher.id), method: :patch) do |f|
+    = form_for(current_publisher, url: publishers_path(current_publisher.id), method: :patch) do |f|
       .d-flex
         .mr-auto.p-2
           p= t ".extended_login.intro"
@@ -9,13 +9,14 @@
           label.switch
             = f.check_box 'thirty_day_login', checked: current_publisher.thirty_day_login?, class: "form-check-input", onchange: "this.form.submit()"
             span.slider.round
-      .d-flex
-        .mr-auto.p-2
-          p= t ".stripe_payout.intro"
-        .p-2
-          label.switch
-            = f.check_box 'uses_stripe_for_payout', checked: current_publisher.uses_stripe_for_payout?, class: "form-check-input", onchange: "this.form.submit()"
-            span.slider.round
+br
+.single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
+  .single-panel--padded-content--short-padding
+    .d-flex
+      .mr-auto.p-2
+        p= t ".paypal_payout.intro"
+      .p-2
+        = link_to image_tag("https://www.paypalobjects.com/webstatic/en_US/developer/docs/login/connectwithpaypalbutton.png"), "https://www.sandbox.paypal.com/connect?flowEntry=static&client_id=#{ENV['PAYPAL_CLIENT_ID']}&scope=openid profile email address&redirect_uri=https%3A%2F%2Flocalhost:3000%2Fpublishers%2Fconnect_callback"
 
 br
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
