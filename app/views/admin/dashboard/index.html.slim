@@ -7,13 +7,17 @@ div.row
             tbody
               tr
                 td Contributions processed
-                td = PayoutReport.total_amount
+                td Info removed. Please ask on #publishers for latest info
               tr
                 td Piwik data (updated daily) last updated
                 td = Rails.cache.fetch(Cache::PiwikDataJob::PIWIK_CACHE_LAST_UPDATED)
               tr
                 td publishers.basicattentiontoken.org Global Alexa Rank
-                td = Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO)&.select{|d| d["label"] == "Alexa Rank" }[0]["rank"]
+                td
+                  - begin
+                    = Rails.cache.fetch(Cache::PiwikDataJob::SEO_INFO)&.select{|d| d["label"] == "Alexa Rank" }[0]["rank"]
+                  - rescue
+                    = "N/A"
               tr
                 td Total # of verified publishers with channels
                 td = sanitize Publisher.statistical_totals.map { |scope, amount| "#{scope}=#{amount}"}.join("<br/>").html_safe
