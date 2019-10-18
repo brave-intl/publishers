@@ -21,6 +21,9 @@ test: &default
   # # HTTP Proxy
   # http_proxy: http://proxy-ipaddress:3129/
 
+staging:
+  <<: *default
+
 development:
   <<: *default
 
