@@ -17,6 +17,7 @@ interface IReferralGroupsState {
     name: string;
     amount: string;
     currency: string;
+    count: number;
   }>;
   month: string;
   totals: {
@@ -160,7 +161,7 @@ const Groups = props => (
             {group.currency}
           </span>
         </td>
-        <td className="font-weight-bold">0</td>
+        <td className="font-weight-bold">{group.count}</td>
       </tr>
     ))}
   </table>

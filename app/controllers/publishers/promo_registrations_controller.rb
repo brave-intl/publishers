@@ -20,8 +20,24 @@ class Publishers::PromoRegistrationsController < PublishersController
       end_date: end_date
     )
 
+    groups = Eyeshade::Referrals.new.groups
+    statement = Eyeshade::Referrals.new.statement(publisher: current_publisher, start_date: start_date, end_date: end_date)
+
+    groups.each do |group|
+      group[:count] = statement.select { |s| s[:groupId] == group[:id] }.length
+    end
+
+    # TODO Remove this in November 2019
+    groups << {
+      id: SecureRandom.uuid,
+      name: 'Previous Rate',
+      amount: "5.00",
+      currency: "USD",
+      count: aggregate_stats[PromoRegistration::FINALIZED] - statement.length,
+    }
+
     render json: {
-      groups: Eyeshade::Referrals.new.groups,
+      groups: groups,
       totals: aggregate_stats,
     }
   end
