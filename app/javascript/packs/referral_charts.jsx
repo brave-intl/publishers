@@ -38,7 +38,7 @@ export default class ReferralCharts extends React.Component {
     }).then(response => {
       response.json().then(json => {
         if (json !== undefined && json.length != 0) {
-          this.setState({ data: json, title: node.state.value });
+          this.setState({ stats: json.stats, data: json.data, title: node.state.value });
         }
       });
     });

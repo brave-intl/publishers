@@ -7,7 +7,10 @@ class Publishers::PromoRegistrationsController < PublishersController
         current_publisher.promo_registrations.find_by(referral_code: params[:referral_code])
       end
     render :unauthorized and return if promo_registration.nil?
-    render json: promo_registration.stats_by_date.to_json
+    render json: {
+      stats: promo_registration.aggregate_stats,
+      data: promo_registration.stats_by_date,
+    }
   end
 
   def overview
@@ -27,7 +30,7 @@ class Publishers::PromoRegistrationsController < PublishersController
       group[:count] = statement.select { |s| s[:groupId] == group[:id] }.length
     end
 
-    # TODO Remove this in November 2019
+    # TODO Remove this after November 1st, 2019
     groups << {
       id: SecureRandom.uuid,
       name: 'Previous Rate',

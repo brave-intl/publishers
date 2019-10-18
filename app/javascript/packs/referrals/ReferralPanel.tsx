@@ -53,26 +53,30 @@ export default class ReferralPanel extends React.Component<
     this.loadGroups();
   };
 
-  public setMonth = (e) => {
-    this.setState({ month: e.target.value, isLoading: true }, this.loadGroups)
-  }
+  public setMonth = e => {
+    this.setState({ month: e.target.value, isLoading: true }, this.loadGroups);
+  };
 
   public async loadGroups() {
-    await fetch(routes.publishers.promo_registrations.overview.path + `?month=${this.state.month}`, {
-      headers: {
-        Accept: "application/json",
-        "X-CSRF-Token": document.head
-          .querySelector("[name=csrf-token]")
-          .getAttribute("content"),
-        "X-Requested-With": "XMLHttpRequest"
-      },
-      method: "GET"
-    }).then(response => {
+    await fetch(
+      routes.publishers.promo_registrations.overview.path +
+        `?month=${this.state.month}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "X-CSRF-Token": document.head
+            .querySelector("[name=csrf-token]")
+            .getAttribute("content"),
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        method: "GET"
+      }
+    ).then(response => {
       response.json().then(json => {
         this.setState({
           groups: json.groups,
           isLoading: false,
-          totals: json.totals,
+          totals: json.totals
         });
       });
     });
@@ -127,43 +131,47 @@ export default class ReferralPanel extends React.Component<
 }
 const Stats = props => (
   <table className="promo-table w-100 font-weight-bold">
-    <tr className="promo-selected">
-      <td>
-        <FormattedMessage id="homepage.referral.confirmed" />
-      </td>
-      <td className="promo-panel-number">{props.totals.finalized}</td>
-    </tr>
-    <tr>
-      <td>
-        <FormattedMessage id="homepage.referral.installed" />
-      </td>
-      <td className="promo-panel-number">{props.totals.first_runs}</td>
-    </tr>
-    <tr>
-      <td>
-        <FormattedMessage id="homepage.referral.downloaded" />
-      </td>
-      <td className="promo-panel-number">{props.totals.retrievals}</td>
-    </tr>
+    <tbody>
+      <tr className="promo-selected">
+        <td>
+          <FormattedMessage id="homepage.referral.confirmed" />
+        </td>
+        <td className="promo-panel-number">{props.totals.finalized}</td>
+      </tr>
+      <tr>
+        <td>
+          <FormattedMessage id="homepage.referral.installed" />
+        </td>
+        <td className="promo-panel-number">{props.totals.first_runs}</td>
+      </tr>
+      <tr>
+        <td>
+          <FormattedMessage id="homepage.referral.downloaded" />
+        </td>
+        <td className="promo-panel-number">{props.totals.retrievals}</td>
+      </tr>
+    </tbody>
   </table>
 );
 
 const Groups = props => (
   <table className="promo-table w-100 promo-selected">
-    {props.groups.map(group => (
-      <tr key={group.id}>
-        <td>
-          <span className="font-weight-bold">{group.name} </span>
-          <span className="ml-2">
-            {Number.parseFloat(group.amount)
-              .toFixed(2)
-              .toString()}{" "}
-            {group.currency}
-          </span>
-        </td>
-        <td className="font-weight-bold">{group.count}</td>
-      </tr>
-    ))}
+    <tbody>
+      {props.groups.map(group => (
+        <tr key={group.id}>
+          <td>
+            <span className="font-weight-bold">{group.name} </span>
+            <span className="ml-2">
+              {Number.parseFloat(group.amount)
+                .toFixed(2)
+                .toString()}{" "}
+              {group.currency}
+            </span>
+          </td>
+          <td className="font-weight-bold">{group.count}</td>
+        </tr>
+      ))}
+    </tbody>
   </table>
 );
 

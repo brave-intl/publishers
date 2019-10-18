@@ -53,7 +53,7 @@ class PromoRegistration < ApplicationRecord
   # Parses the events associated with a promo registration and returns
   # the aggregate totals for each event type
   def aggregate_stats
-    JSON.parse(stats).reduce(BASE_STATS.deep_dup)
+    aggregate_stats_by_period(Date.new, Date.tomorrow)
   end
 
   def aggregate_stats_by_period(period_start, period_end)
