@@ -28,9 +28,28 @@ module Uphold
       def all(id:)
         Rails.logger.info("Connection #{@uphold_connection.id} is missing uphold_access_parameters") and return if @uphold_connection.uphold_access_parameters.blank?
 
-        response = get(PATH.expand(id: id), {}, authorization(@uphold_connection))
+        index = 1
+        batch_size = 50
 
-        parse_response(response).map { |a| Transaction.new(a) }
+        transactions = []
+
+        loop do
+          start = (batch_size * index) - batch_size
+          ending = start + batch_size
+
+          response = get(PATH.expand(id: id), {}, authorization(@uphold_connection), { "Range" => "items=#{start}-#{ending}" })
+
+          transactions << parse_response(response).map { |a| Uphold::Models::Transaction.new(a) }
+
+          range = response.headers["content-range"]
+          total_pages = range.split('/').second.to_i
+
+          break if total_pages < ending
+
+          index += 1
+        end
+
+        transactions.flatten
       end
 
       def authorization(uphold_connection)

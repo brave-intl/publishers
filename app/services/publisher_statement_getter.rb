@@ -7,6 +7,23 @@ class PublisherStatementGetter < BaseApiClient
 
     UPHOLD_CONTRIBUTION = "uphold_contribution".freeze
     UPHOLD_CONTRIBUTION_SETTLEMENT = "uphold_contribution_settlement".freeze
+
+    def fee?
+      transaction_type == 'fees'
+    end
+
+    def eyeshade?
+      transaction_type == 'contribution_settlement' || transaction_type == 'referral_settlement' || fee?
+    end
+
+    def earning_period
+      # If the transaction_type is from Eyeshade this means the period was for the previous month
+      if eyeshade?
+        (created_at - 1.month).at_beginning_of_month
+      else
+        created_at.at_beginning_of_month
+      end
+    end
   end
 
   def initialize(publisher:)
@@ -70,19 +87,23 @@ class PublisherStatementGetter < BaseApiClient
 
     # Replicate the similar behavior of Eyeshade. Aggregates all the contribution amounts for the month, and puts them into one entry
     uphold.group_by { |u| u.created_at.at_end_of_month }.each do |date, entries|
+      # Group by channels so we can show tips per channel
       entries.group_by { |e| e.channel }.each do |channel, channel_entries|
-        amount = channel_entries.sum { |x| x.amount }
+        # Finally group by currency, the currency can change in the middle of the month for direct tips but likely it will just be 1.
+        channel_entries.group_by { |c| c.settlement_currency }.each do |currency, currency_entries|
+          amount = channel_entries.sum { |x| x.amount }
 
-        # We're specifying a negative amount because we group by transactions already paid out.
-        # This gives us the ability to aggregate and show one Uphold transaction, rather than 300 or so tips that might have been sent.
-        uphold << Statement.new(
-          channel: channel,
-          transaction_type: Statement::UPHOLD_CONTRIBUTION_SETTLEMENT,
-          amount: -amount,
-          settlement_currency: "BAT",
-          settlement_amount: amount,
-          created_at: date,
-        )
+          # We're specifying a negative amount because we group by transactions already paid out.
+          # This gives us the ability to aggregate and show one Uphold transaction, rather than 300 or so tips that might have been sent.
+          uphold << Statement.new(
+            channel: channel,
+            transaction_type: Statement::UPHOLD_CONTRIBUTION_SETTLEMENT,
+            amount: -amount,
+            settlement_currency: currency,
+            settlement_amount: amount,
+            created_at: date,
+          )
+        end
       end
     end
 
