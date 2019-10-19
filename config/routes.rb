@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
       scope controller: "publishers/paypal_accounts" do
         get :start_connect
-        patch :connect_callback
+        post :connect_callback
       end
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
