@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -40,7 +41,7 @@ export default class ReferralPanel extends React.Component<
     this.state = {
       groups: [],
       isLoading: true,
-      month: "",
+      month: moment().format("MMMM YYYY"),
       totals: {
         finalized: 0,
         first_runs: 0,
@@ -82,6 +83,20 @@ export default class ReferralPanel extends React.Component<
     });
   }
 
+  public monthOptions = () => {
+    const dateStart = moment("2019-10-01");
+    const dateEnd = moment();
+    const interim = dateStart.clone();
+    const timeValues = [];
+
+    while (dateEnd > interim || interim.format("M") === dateEnd.format("M")) {
+      timeValues.push(interim.format("MMMM YYYY"));
+      interim.add(1, "month");
+    }
+
+    return timeValues;
+  };
+
   public render() {
     const content = (
       <>
@@ -91,12 +106,15 @@ export default class ReferralPanel extends React.Component<
           </h1>
           <div className="promo-period">
             <select onChange={this.setMonth} value={this.state.month}>
-              <option value="October 2019">October 2019</option>
-              <option value="November 2019">November 2019</option>
+              {this.monthOptions().map(month => (
+                <option key={month} value={month}>{month}</option>
+              ))}
             </select>
           </div>
         </div>
-        <FormattedMessage id="homepage.referral.statement" />
+        <div className="py-2">
+          <FormattedMessage id="homepage.referral.statement" />
+        </div>
         <div className="row">
           <div className="col-md">
             <Stats totals={this.state.totals} />
@@ -176,6 +194,7 @@ const Groups = props => (
 );
 
 document.addEventListener("DOMContentLoaded", () => {
+  moment.locale(document.body.dataset.locale);
   ReactDOM.render(
     <IntlProvider
       locale={document.body.dataset.locale}

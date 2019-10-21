@@ -31,12 +31,13 @@ class Publishers::PromoRegistrationsController < PublishersController
     end
 
     # TODO Remove this after November 1st, 2019
+    legacy_count = aggregate_stats[PromoRegistration::FINALIZED] - statement.length
     groups << {
       id: SecureRandom.uuid,
       name: 'Previous Rate',
       amount: "5.00",
       currency: "USD",
-      count: aggregate_stats[PromoRegistration::FINALIZED] - statement.length,
+      count: legacy_count.negative? ? 0 : legacy_count,
     }
 
     render json: {

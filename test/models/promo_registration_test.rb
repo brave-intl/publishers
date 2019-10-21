@@ -216,11 +216,11 @@ class PromoRegistrationTest < ActiveSupport::TestCase
 
     # Ensure promo registrations with default stats e.g. "{}" has correct format
     publisher = publishers(:promo_enabled)
-    assert_equal PromoRegistration.aggregate_stats(publisher.promo_registrations), {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
+    assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations), {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
 
     # Ensure promo registrations with empty stats e.g. "[]" has correct format
     publisher.promo_registrations.first.update(stats: [].to_json)
-    assert_equal PromoRegistration.aggregate_stats(publisher.promo_registrations),
+    assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations),
                  {PromoRegistration::RETRIEVALS => 0, PromoRegistration::FIRST_RUNS => 0, PromoRegistration::FINALIZED => 0}
 
     # Ensure promo registrations with stats present has correct format
@@ -236,7 +236,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
                                                                                    "finalized"=>0}].to_json)
 
     publisher.reload
-    assert_equal PromoRegistration.aggregate_stats(publisher.promo_registrations),
+    assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations),
                  {PromoRegistration::RETRIEVALS => 2, PromoRegistration::FIRST_RUNS => 2, PromoRegistration::FINALIZED => 0}
 
     # Ensure we aggregate stats for multiple promo registrations
@@ -251,7 +251,7 @@ class PromoRegistrationTest < ActiveSupport::TestCase
                                                                                    "first_runs"=>1,
                                                                                    "finalized"=>1}].to_json)
     publisher.reload
-    assert_equal PromoRegistration.aggregate_stats(publisher.promo_registrations),
+    assert_equal PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations),
                  {PromoRegistration::RETRIEVALS => 6, PromoRegistration::FIRST_RUNS => 6, PromoRegistration::FINALIZED => 3}
   end
 end

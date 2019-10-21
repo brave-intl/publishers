@@ -20,68 +20,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
-  test "name can be changed using 'edit contact' form" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    visit home_publishers_path
-    assert_content page, publisher.name
-    assert_content page, publisher.email
-
-    click_link('Edit Contact')
-
-    new_name = 'Bob the Builder'
-    fill_in 'update_contact_name', with: new_name
-
-    click_button('Update')
-    wait_until { !page.find('.cssload-container', visible: :all).visible? }
-
-    assert_content page, new_name
-    refute_content 'Update'
-
-    # Ensure that form has been reset and can be resubmitted
-    click_link('Edit Contact')
-
-    new_name = 'Thomas the Tank Engine'
-    fill_in 'update_contact_name', with: new_name
-
-    click_button('Update')
-    wait_until { !page.find('.cssload-container', visible: :all).visible? }
-
-    assert_content page, new_name
-    refute_content 'Update'
-  end
-
-  test "email can be changed using 'edit contact' form" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    visit home_publishers_path
-    assert_content publisher.name
-    assert_content publisher.email
-
-    original_email = publisher.email
-    new_email = 'jane.doe@example.com'
-
-    # Update email. A "pending" change message should be displayed.
-    click_link 'Edit Contact'
-    fill_in 'update_contact_email', with: new_email
-    click_button 'Update'
-
-    wait_until { !page.find('.cssload-container', visible: :all).visible? }
-
-    assert_content "Pending: Email address has been updated to: #{new_email}"
-    refute_content 'Update'
-
-    page.evaluate_script 'window.location.reload()' # Refresh to remove spinner overlay to make button visible
-    # Let's change it back to the original. The "pending" message should be removed.
-    click_link 'Edit Contact'
-    fill_in 'update_contact_email', with: original_email
-    click_button 'Update'
-
-    refute_content page, 'Pending: Email address has been updated'
-  end
-
   # TODO Uncomment when channel removal is enabled
   # test "unverified channel can be removed after confirmation" do
   #   publisher = publishers(:small_media_group)
@@ -166,7 +104,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
     visit home_publishers_path
 
     assert publisher.wallet.present?
-    assert_content page, publisher.name
   end
 
   test "dashboard can still load even when publisher's balance cannot be fetched from eyeshade" do
@@ -184,7 +121,6 @@ class PublishersHomeTest < Capybara::Rails::TestCase
       visit home_publishers_path
 
       refute publisher.wallet.present?
-      assert_content page, publisher.name
       assert_content page, "Unavailable"
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline

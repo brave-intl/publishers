@@ -73,6 +73,29 @@ export default class ReferralCharts extends React.Component {
           </PrimaryButton>
         </div>
         <ReactChart data={this.state.data} title={this.state.title} />
+
+        <h5>Statistics</h5>
+        <div className="d-flex">
+          <div className="mr-3">
+            <small>DOWNLOADED</small>
+            <div className="font-weight-bold text-center">
+              {this.state.stats && this.state.stats.retrievals}
+            </div>
+          </div>
+          <div className="mr-3">
+            <small>INSTALLED</small>
+            <div className="font-weight-bold text-center">
+              {this.state.stats && this.state.stats.first_runs}
+            </div>
+          </div>
+          <div className="mr-3">
+            <small>CONFIRMED</small>
+            <div className="font-weight-bold text-center">
+              {this.state.stats && this.state.stats.finalized}
+            </div>
+          </div>
+        </div>
+
       </React.Fragment>
     );
   }
