@@ -130,13 +130,12 @@
   .promo--activate-button {
     color: white;
     background: #03375D;
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 600;
-    width: 100%;
     display: inline-block;
     border: none;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    margin-top: 1em;
+    padding: 10px 30px;
     &:hover,
     &focus {
       background-color: #00223B;
@@ -180,7 +179,7 @@
       }
     }
     .promo--activate-body-container {
-      margin: 0px 25%;
+      margin: 0px 10%;
     }
     .promo--body-text {
       color: white;
@@ -189,7 +188,6 @@
       &-alternative {
         margin: 0px;
         opacity: 1;
-        line-height: 20px;
         letter-spacing: 1px;
         font-size: 16px;
         padding-bottom: 15px;

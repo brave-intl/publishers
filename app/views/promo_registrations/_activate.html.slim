@@ -4,7 +4,6 @@
   h4.promo--subtitle-alternative = t("promo.activate.sub_header_two")
   .promo--activate-body-container
     p.promo--body-text-alternative= t("promo.activate.description")
-    #referral-reward = t("promo.activate.referral_reward")
     = form_for @publisher, {method: :post, url: promo_registrations_path} do |f|
       = f.hidden_field(:promo_token, :value => params[:promo_token])
       .text-center

@@ -1,7 +1,7 @@
 .promo-content {
   &--background {
     min-height: 100vh;
-    background: #0a2d35;
+    background: linear-gradient(154deg,#2a1fad 19%,#a91b78 100%);
     padding-top: 90px;
     padding-bottom: 40px;
     background-position: center;
@@ -17,7 +17,7 @@
 .footer--promo {
   display: table;
   width: 100%;
-  color: $bravePromo-DarkBlue;
+  color: white;
   font-size: 12px;
   text-align: center;
   padding: 0px;

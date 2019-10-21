@@ -1,6 +1,6 @@
 .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
-  .promo-panel.h-100
-    - if current_publisher.promo_status(promo_running?) == :inactive
+  - if current_publisher.promo_status(promo_running?) == :inactive
+    .promo-panel
       .promo-panel-item.promo-panel-item-info
         #promo-limited-time= t("promo.activate.sub_header_one")
         h3#promo-header= t("promo.activate.header")
@@ -8,17 +8,19 @@
       .promo-panel-item.promo-panel-item-button
         = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
           = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
-    - elsif current_publisher.only_user_funds?
-
+  - elsif current_publisher.only_user_funds?
+    .promo-panel
       .promo-panel-item.promo-panel-item-alert
         #promo-panel-alert
           == t("promo.dashboard.violation")
 
-    - elsif current_publisher.has_verified_channel?
+  - elsif current_publisher.has_verified_channel?
+    .promo-panel.h-100
       .promo-flex-col.h-100#react-promo-panel
       = javascript_pack_tag('referrals/ReferralPanel')
 
-    - else
+  - else
+    .promo-panel
       .promo-panel-item.promo-panel-item-alert
         #promo-panel-alert
           = t("promo.dashboard.add_channel")
