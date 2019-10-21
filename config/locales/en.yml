@@ -568,6 +568,19 @@ en:
       last_deposit_date: "Last Deposit Date: "
       change: Change
       no_currency_selected: None selected
+    paypal_account_panel:
+      heading: Your Paypal account
+      deposit_currency_label: "Deposit Currency: "
+      deposit_currency: "BAT to "
+      check_balance: Check Balance
+      connect_to_a_new_account: Connect to a new Uphold account
+      no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
+      connect: Connect
+      disconnect: Disconnect
+      last_deposit: LAST DEPOSIT
+      last_deposit_date: "Last Deposit Date: "
+      change: Change
+      no_currency_selected: None selected
     channel:
       added: added %{date}
       remove_verified: Remove channel
