@@ -1,0 +1,54 @@
+.dashboard-panel--wrapper.uphold-panel
+  .dashboard-panel--header#dashboard_uphold_header
+    = t ".heading"
+  .dashboard-panel--content#uphold_status_display
+    .status-summary
+      .text= uphold_status_summary(@publisher)
+      .action
+        = link_to(t(".connect"), connect_uphold_publishers_path, method: :patch, class: "connect-uphold", :"data-piwik-action" => "UpholdConnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+        a.disconnect-uphold href="#"
+          = t ".disconnect"
+        script type="text/html" id="disconnect-uphold-js"
+          = render "publishers/disconnect_uphold_modal"
+        = form_for(@publisher, url: disconnect_uphold_publishers_path, html: {id: "disconnect_uphold"}) do |f|
+  .dashboard-panel--content#uphold_connect
+    .status-description
+      = uphold_status_description(@publisher).html_safe
+    = link_to(uphold_authorization_description(@publisher),
+              uphold_dashboard_url,
+              id: "go_to_uphold", class: "btn btn-primary", :"data-piwik-action" => "GoToUpholdHomeClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard", style: "display:none")
+    = link_to(uphold_authorization_description(@publisher),
+              connect_uphold_publishers_path,
+              id: "reconnect_to_uphold", class: "btn btn-primary", method: :patch, :"data-test" => "reconnect-button" , :"data-piwik-action" => "UpholdReconnectClicked", :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+    .reconnect-instructions
+      = "Having trouble with Uphold registration?"
+      br
+      = link_to(t(".connect_to_a_new_account"), connect_uphold_publishers_path,
+            :"data-piwik-action" => "ConnectNewUpholdAccountClicked", method: :patch,
+            :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
+  .dashboard-panel--content#uphold_dashboard
+    .deposit-currency.field
+      label= t ".deposit_currency_label"
+      .value#default_currency_code= @publisher.uphold_connection.default_currency.present? ? @publisher.uphold_connection.default_currency : t(".uphold.no_currency_selected")
+      .action
+        span= "("
+        a#change_default_currency href="#"
+          = t ".change"
+        span= ")"
+    .last-deposit-date.field
+      label= t ".last_deposit_date"
+      .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher)
+  .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
+    .last-deposit
+      = t ".last_deposit"
+      .amounts
+        .bat
+          - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
+          span.bat-amount#last_deposit_bat_amount= last_deposit_balance
+          - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
+            span.bat-code= " BAT"
+        .converted#last_deposit_converted_amount
+          = publisher_converted_last_settlement_balance(@publisher)
+      = link_to(t(".check_balance"), uphold_dashboard_url, class: "btn btn-primary",
+              id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
+              :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")
