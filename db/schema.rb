@@ -277,7 +277,7 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
   end
 
   create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "publisher_id", null: false
+    t.uuid "user_id", null: false
     t.text "refresh_token"
     t.text "email"
     t.text "country"
@@ -285,7 +285,9 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.text "paypal_account_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["publisher_id"], name: "index_paypal_connections_on_publisher_id"
+    t.index ["user_id"], name: "index_paypal_connections_on_user_id"
+  end
+
   end
 
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

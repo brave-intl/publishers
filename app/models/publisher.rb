@@ -22,6 +22,7 @@ class Publisher < ApplicationRecord
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
   has_one :case
+  has_one :paypal_connection, foreign_key: :user_id
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -321,7 +322,7 @@ class Publisher < ApplicationRecord
   end
 
   def paypal_locale?
-    false
+    true
   end
 
   private
