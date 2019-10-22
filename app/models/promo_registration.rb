@@ -106,7 +106,7 @@ class PromoRegistration < ApplicationRecord
     # ActiveRecord::Association of PromoRegistrations
     def stats_for_registrations(promo_registrations:, start_date: Date.new, end_date: Date.today.at_end_of_day)
       promo_registrations.
-        map { |p| p.aggregate_stats_by_period(start_date, end_date) }.
+        map { |pr| pr.aggregate_stats_by_period(start_date, end_date) }.
         reduce(PromoRegistration::BASE_STATS.deep_dup, &PromoRegistration.sum_stats)
     end
 
