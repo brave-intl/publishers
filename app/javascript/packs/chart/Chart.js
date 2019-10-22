@@ -6,25 +6,11 @@ export default class ReactChart extends React.Component {
   constructor(props) {
     super(props);
     this.chartRef = React.createRef();
-    this.getData = this.getData.bind(this);
     this.getOptions = this.getOptions.bind(this);
     this.getSuggestedMax = this.getSuggestedMax.bind(this);
     this.state = {};
 
     Chart.defaults.global.defaultFontFamily = "Muli";
-    Chart.scaleService.updateScaleDefaults("logarithmic", {
-      ticks: {
-        callback: function(...args) {
-          // new default function here
-          const value = Chart.Ticks.formatters.logarithmic.call(this, ...args);
-          if (value.length) {
-            var numericalValue = Number(value);
-            return numericalValue >= 1 ? numericalValue.toLocaleString() : "";
-          }
-          return value;
-        }
-      }
-    });
   }
 
   componentDidUpdate(prevProps) {
@@ -45,7 +31,7 @@ export default class ReactChart extends React.Component {
     }
   }
 
-  getData(data) {
+  getData = (data) => {
     return {
       labels: this.createLabels(data[0]["ymd"]),
       datasets: [
@@ -104,7 +90,7 @@ export default class ReactChart extends React.Component {
         ],
         yAxes: [
           {
-            type: "logarithmic",
+            type: "linear",
             ticks: {
               suggestedMax: suggestedMax
             }

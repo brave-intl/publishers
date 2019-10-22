@@ -3,15 +3,14 @@
 
 - content_for(:nav) do
   .nav.nav--promo
-    = link_to(root_path) do
-      .brave-logo
-        = render "logo_wordmark_white_svg"
+
 
 - content_for(:content) do
   .promo-content--background
     #content.container
       = yield
       = render "promo_footer"
+
 = render \
   template: "layouts/application",
   locals: { \

@@ -1,6 +1,9 @@
 = hidden_field_tag 'all-channels-referral-stats-starting-month', current_publisher.promo_registrations.has_stats.order(created_at: :asc).first.created_at.strftime("%Y-%m-%d")
 = hidden_field_tag 'referrals-hidden-tags', current_publisher.promo_registrations.has_stats.pluck(:referral_code).to_json
 
+= javascript_pack_tag 'referrals/ReferralCharts'
+= stylesheet_pack_tag 'referrals/ReferralCharts'
+
 .row
   .col.bot-marg
     .dashboard-panel--wrapper

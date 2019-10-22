@@ -18,7 +18,7 @@ html
 
     link rel="icon" type="image/png" href=image_path("favicon.ico")
 
-  body data-action=params[:action] data-controller=params[:controller]
+  body data-action=params[:action] data-controller=params[:controller] data-locale=I18n.locale
     javascript:
       // The script tag here runs after the body element has been created
       // on the DOM but before layout/paint. This allows us to set the class

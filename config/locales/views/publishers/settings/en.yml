@@ -15,5 +15,9 @@ en:
             final_confirmation: It'll take a few minutes for the purge to complete.
             deny: No, keep my account active
             confirm: Yes, I'm certain
+        contact:
+          heading: Contact
+          edit: Edit Contact
+          update: Update
       update:
         alert: Account settings updated

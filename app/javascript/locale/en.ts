@@ -7,6 +7,7 @@ export default {
   campaign: "Campaign",
   campaignName: "Campaign Name",
   campaigns: "Campaigns",
+  cancel: "Cancel",
   channels: "Channels",
   common: {
     unexpectedError: "An unexpected error has occurred. Please try again later."
@@ -22,6 +23,16 @@ export default {
   downloads: "Downloads",
   edit: "Edit",
   estimatedEarnings: "Estimated Earnings",
+  homepage: {
+    referral: {
+      confirmed: "CONFIRMED",
+      details: 'See details for the areas in each group',
+      downloaded: "DOWNLOADED",
+      installed: "INSTALLED",
+      statement: "Check your statement for this period's payout.",
+      title: "Referral Promo Stats",
+    }
+  },
   installs: "Installs",
   makeMonthly: "Make this monthly",
   move: "Move",
@@ -65,6 +76,7 @@ export default {
       title: "Payment History",
       totalDeposited: "Total Deposited"
     },
+
     invoices: {
       amount: "Amount (BAT)",
       createdAt: "Created At",
@@ -135,9 +147,19 @@ export default {
     referrals: "Referrals",
     thirtyDay: "30-Day Use",
     totalNumber: "Total Number of Codes",
-    totalReferralCodes: "Total Referral Codes"
+    totalReferralCodes: "Total Referral Codes",
   },
   sendDonation: "Send my donation",
+  settings: {
+    contact: {
+      edit: "Edit Contact",
+      email: 'Email',
+      error: "Unable to change email; the email address may be in use. Please enter a different email address.",
+      heading: "Contact",
+      name: 'Your Name',
+      pendingEmail: "Email address has been updated to: {email}. An email has been sent to this address to confirm this change.",
+    },
+  },
   statements: {
     overview: {
       amountDeposited: "Amount Deposited",
@@ -175,3 +197,22 @@ export default {
   totalNumber: "Total Number of Codes",
   walletBalance: "Wallet balance"
 };
+
+
+export const flattenMessages = ((nestedMessages, prefix = '') => {
+  if (nestedMessages === null) {
+    return {}
+  }
+  return Object.keys(nestedMessages).reduce((messages, key) => {
+    const value       = nestedMessages[key]
+    const prefixedKey = prefix ? `${prefix}.${key}` : key
+
+    if (typeof value === 'string') {
+      Object.assign(messages, { [prefixedKey]: value })
+    } else {
+      Object.assign(messages, flattenMessages(value, prefixedKey))
+    }
+
+    return messages
+  }, {})
+})
