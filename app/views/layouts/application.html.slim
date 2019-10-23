@@ -118,8 +118,11 @@ html
       / The postfix is available for all three flash names and for rendering
       / below the navigation bar or in a panel.
       /
-      .main-content#main-content
-        = content_for?(:content) ? yield(:content) : yield
+      -if content_for?(:headless)
+        = yield(:headless)
+      - else
+        .main-content#main-content
+          = content_for?(:content) ? yield(:content) : yield
 
 
       = render("footer")
