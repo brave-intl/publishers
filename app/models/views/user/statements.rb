@@ -53,7 +53,7 @@ module Views
             total_bat_deposited: total_amount - total_fees.abs,
             deposited: settlement_amount,
             settled_transactions: payout_entries.deep_dup,
-            raw_transactions: entries(period_start.at_beginning_of_month, payout_entries.last.created_at.at_beginning_of_month),
+            raw_transactions: entries(period_start.at_beginning_of_month, payout_date.at_beginning_of_month),
           )
         end
 
@@ -61,7 +61,7 @@ module Views
       end
 
       def entries(period_start, period_end)
-        @statements.select { |x| x.created_at > period_start && x.created_at <= period_end }
+        @statements.select { |x| x.created_at >= period_start && x.created_at <= period_end }
       end
     end
   end
