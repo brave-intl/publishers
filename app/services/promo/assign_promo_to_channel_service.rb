@@ -15,7 +15,6 @@ class Promo::AssignPromoToChannelService < BaseApiClient
 
     referral_code = result[:referral_code]
     should_update_promo_server = result[:should_update_promo_server]
-
     begin
       if referral_code.present?
         promo_registration = PromoRegistration.new(channel_id: channel.id,

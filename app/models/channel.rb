@@ -267,6 +267,10 @@ class Channel < ApplicationRecord
     @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher.uphold_connection.default_currency }
   end
 
+  def register_channel_for_promo
+    Promo::RegisterChannelForPromoJob.perform_later(channel_id: self.id)
+  end
+
   private
 
   def should_register_channel_for_promo
@@ -277,10 +281,6 @@ class Channel < ApplicationRecord
 
   def clear_verified_at_if_necessary
     self.verified_at = nil if verified == false && verified_at.present?
-  end
-
-  def register_channel_for_promo
-    Promo::RegisterChannelForPromoJob.new.perform(channel: self)
   end
 
   def create_channel_card

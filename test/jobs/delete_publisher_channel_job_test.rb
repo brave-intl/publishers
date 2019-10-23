@@ -30,6 +30,9 @@ class DeletePublisherChannelJobTest < ActionDispatch::IntegrationTest
 
     # enable the promo
     post promo_registrations_path
+    assert_enqueued_jobs(1) do
+      Promo::RegisterChannelForPromoJob.perform_now(channel_id: publisher.channels.first.id)
+    end
     assert_not_nil publisher.channels.first.promo_registration.referral_code
     assert_nothing_raised do
       DeletePublisherChannelJob.perform_now(channel_id: publisher.channels.first.id)
