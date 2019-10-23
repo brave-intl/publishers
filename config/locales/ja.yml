@@ -761,10 +761,6 @@ ja:
       ad_banner_title: "プロモーション広告バナー"
       ad_banner_message: "以下のプロモーション広告バナーを紹介リンクと合わせて利用できます"
       download: "ダウンロード"
-    promo_activated_2018q1_unverified:
-      subject: "もう少しで紹介リンクを獲得できます"
-      cta: "チャネルを承認する"
-      body_one: "Brave Rewards紹介プロモーションにご参加いただきありがとうございます。 プロセスを完了して紹介リンクを取得するには、チャンネルを承認する必要があります。 チャンネルが承認されると、ダッシュボードの紹介リンクにアクセスして、トークンを受け取ることが可能になります。"
     new_channel_registered_2018q1:
       subject: "％{publication_title}の紹介コードの準備ができました"
   banner:

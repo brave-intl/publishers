@@ -762,10 +762,6 @@ en:
       ad_banner_title: "Promo Ad Banner"
       ad_banner_message: "Here is the promo ad banner you can use with the referral link."
       download: "Download"
-    promo_activated_2018q1_unverified:
-      subject: "One more step to receive your referral link"
-      cta: "Verify channel"
-      body_one: "Thanks for joining the Brave Rewards referral promotion. To complete the process and get your referral link, you'll need to verify your channel. Once your channel is verified, you will be able to access your referral link in the dashboard and start collecting tokens."
     new_channel_registered_2018q1:
       subject: "Your referral code for %{publication_title} is ready"
   banner:

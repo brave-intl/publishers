@@ -60,7 +60,6 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     # assert_equal publisher.promo_enabled_2018q1, false
   end
 
-=begin TODO: Albert to test sending after channel gets verified
   test "#create renders _activated_verified and enables promo for verfied publisher, sends email" do
     publisher = publishers(:completed)
     sign_in publisher
@@ -70,6 +69,15 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
       post promo_registrations_path
     end
 
+    channel = publisher.channels.first
+
+    assert_enqueued_jobs(1) do
+      Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel.id)
+    end
+
+    perform_enqueued_jobs do
+      PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_now
+    end
     email = ActionMailer::Base.deliveries.last
 
     # verify email is sent to correct publisher
@@ -84,33 +92,6 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     # verify promo is enabled for publisher
     assert_equal publisher.promo_enabled_2018q1, true
   end
-=end
-
-=begin
-  test "#create activates the promo, renders _activated_unverified and enables promo for unverified publisher, sends email" do
-    publisher = publishers(:default) # has one unverified channel
-    sign_in publisher
-
-    # verify no promo-activated email is sent
-    assert_difference("ActionMailer::Base.deliveries.count" , 0) do
-      post promo_registrations_path
-    end
-
-    email = ActionMailer::Base.deliveries.last
-
-    # verify email is sent to correct publisher
-    assert email.to, publisher.email
-
-    # verify email has the "Login to Add Channel" call to action
-    assert_email_body_matches(matcher: I18n.t("promo_mailer.promo_activated_2018q1_unverified.cta").to_s, email: email)
-
-    # verify create is rendered
-    assert_select("[data-test=promo-activated-unverified]")
-
-    # verify promo is enabled for publisher
-    assert_equal publisher.promo_enabled_2018q1, true
-  end
-=end
 
   test "#create redirects to #index if publisher promo enabled and renders _active" do
     publisher = publishers(:completed)

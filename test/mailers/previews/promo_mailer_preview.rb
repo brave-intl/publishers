@@ -22,11 +22,6 @@ class PromoMailerPreview < ActionMailer::Preview
     PromoMailer.promo_activated_2018q1_verified(publisher, promo_enabled_channels)
   end
 
-  def promo_activated_2018q1_unverified
-    publisher = Publisher.first
-    PromoMailer.promo_activated_2018q1_unverified(publisher)
-  end
-  
   def new_channel_registered_2018q1
     publisher = Publisher.first
     channel = publisher.channels.first
