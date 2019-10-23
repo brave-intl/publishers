@@ -123,7 +123,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     channel_copy = Channel.new(details: channel_details_copy, verified: true, publisher: publisher)
     assert_enqueued_with(job: Promo::RegisterChannelForPromoJob) do
       channel_copy.save!
-      Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel.id)
+      Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel_copy.id)
     end
 
     channel_copy.reload
