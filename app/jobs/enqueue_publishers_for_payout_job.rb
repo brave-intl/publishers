@@ -3,6 +3,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
   queue_as :scheduler
 
   def perform(should_send_notifications: false, final: true, manual: false, payout_report_id: "", publisher_ids: [])
+    return if Rails.env.development?
     Rails.logger.info("Enqueuing publishers for payment.")
 
     if publisher_ids.present?
