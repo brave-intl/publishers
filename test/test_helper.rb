@@ -4,17 +4,17 @@ SimpleCov.start 'rails'
 
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
+require "webpacker"
+require "selenium/webdriver"
 require "webmock/minitest"
+require "chromedriver/helper"
 require "sidekiq/testing"
 require "test_helpers/eyeshade_helper"
-# require "webpacker"
-# require "selenium/webdriver"
-# require "chromedriver/helper"
-# require 'capybara/rails'
-# require 'capybara/minitest'
+require 'capybara/rails'
+require 'capybara/minitest'
 require 'minitest/rails'
 
-# Webpacker.compile
+Webpacker.compile
 
 Sidekiq::Testing.fake!
 
@@ -24,24 +24,24 @@ WebMock.allow_net_connect!
 # Capybara.enable_aria_label = true
 # Capybara.default_driver = :selenium_chrome_headless
 
-# Chromedriver.set_version "2.38"
+Chromedriver.set_version "2.38"
 
-# Capybara.register_driver "chrome" do |app|
-#   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-#       chromeOptions: {
-#           binary: ENV["CHROME_BINARY"],
-#           args: %w{headless no-sandbox disable-gpu window-size=1680,1050}
-#       }.compact,
-#       loggingPrefs: { browser: 'ALL' }
-#   )
-#   driver = Capybara::Selenium::Driver.new(
-#       app,
-#       browser: :chrome,
-#       desired_capabilities: capabilities
-#   )
-# end
+Capybara.register_driver "chrome" do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+      chromeOptions: {
+          binary: ENV["CHROME_BINARY"],
+          args: %w{headless no-sandbox disable-gpu window-size=1680,1050}
+      }.compact,
+      loggingPrefs: { browser: 'ALL' }
+  )
+  driver = Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      desired_capabilities: capabilities
+  )
+end
 
-# Capybara.default_driver = "chrome"
+Capybara.default_driver = "chrome"
 
 VCR.configure do |config|
   config.cassette_library_dir = "./test/cassettes"
@@ -68,34 +68,34 @@ module ActiveSupport
   end
 end
 
-# module Capybara
-#   module Rails
-#     class TestCase < ::ActiveSupport::TestCase
-#       self.use_transactional_tests = false
-#       # Make the Capybara DSL available in all integration tests
-#       include Capybara::DSL
-#       # Make `assert_*` methods behave like Minitest assertions
-#       include Capybara::Minitest::Assertions
+module Capybara
+  module Rails
+    class TestCase < ::ActiveSupport::TestCase
+      self.use_transactional_tests = false
+      # Make the Capybara DSL available in all integration tests
+      include Capybara::DSL
+      # Make `assert_*` methods behave like Minitest assertions
+      include Capybara::Minitest::Assertions
 
-#       teardown do
-#         Capybara.reset_sessions!
-#         Capybara.use_default_driver
-#       end
+      teardown do
+        Capybara.reset_sessions!
+        Capybara.use_default_driver
+      end
 
-#       def js_logs
-#         page.driver.browser.manage.logs.get(:browser)
-#       end
+      def js_logs
+        page.driver.browser.manage.logs.get(:browser)
+      end
 
-#       def wait_until
-#         require "timeout"
-#         Timeout.timeout(Capybara.default_max_wait_time) do
-#           sleep(0.1) until value = yield
-#           value
-#         end
-#       end
-#     end
-#   end
-# end
+      def wait_until
+        require "timeout"
+        Timeout.timeout(Capybara.default_max_wait_time) do
+          sleep(0.1) until value = yield
+          value
+        end
+      end
+    end
+  end
+end
 
 module ActionDispatch
   class IntegrationTest
