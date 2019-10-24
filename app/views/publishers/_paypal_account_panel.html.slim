@@ -6,7 +6,7 @@
       - if @publisher.paypal_connection.present?
         .text = "Paypal account: #{paypal_connection.paypal_account_id}"
       .action
-        = link_to image_tag("https://www.paypalobjects.com/webstatic/en_US/developer/docs/login/connectwithpaypalbutton.png"), "https://www.sandbox.paypal.com/connect?flowEntry=static&client_id=#{ENV['PAYPAL_CLIENT_ID']}&scope=openid profile email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fconnect_callback"
+        = link_to image_tag("https://www.paypalobjects.com/webstatic/en_US/developer/docs/login/connectwithpaypalbutton.png"), "https://www.sandbox.paypal.com/connect?flowEntry=static&client_id=#{ENV['PAYPAL_CLIENT_ID']}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fconnect_callback"
   .dashboard-panel--content
     .last-deposit-date.field
       label= t ".last_deposit_date"

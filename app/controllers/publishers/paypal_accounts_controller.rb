@@ -20,6 +20,9 @@ module Publishers
       access_token = JSON.parse(result.body)["access_token"]
       refresh_token = JSON.parse(result.body)["refresh_token"]
 
+      p access_token
+      p refresh_token
+
       user_info_response = Faraday.get("https://api.sandbox.paypal.com/v1/identity/oauth2/userinfo") do |req|
         req.headers['Authorization'] = "Bearer #{access_token}"
         req.headers['Accept'] = 'application/json'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_21_181359) do
+ActiveRecord::Schema.define(version: 2019_10_23_190550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -278,7 +278,8 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
 
   create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
-    t.text "refresh_token"
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
     t.text "email"
     t.text "country"
     t.text "verification_status"
