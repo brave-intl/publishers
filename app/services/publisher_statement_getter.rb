@@ -69,7 +69,7 @@ class PublisherStatementGetter < BaseApiClient
   def get_uphold_transactions
     uphold = []
 
-    publisher.uphold_connection.uphold_connection_for_channels.each do |card_connection|
+    publisher.uphold_connection&.uphold_connection_for_channels&.each do |card_connection|
       transactions = card_connection.uphold_connection.uphold_client.transaction.all(id: card_connection.card_id)
       next if transactions.blank?
 

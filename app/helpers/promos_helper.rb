@@ -33,7 +33,7 @@ module PromosHelper
   def publisher_current_referral_totals(publisher)
     aggregate_stats = PromoRegistration.stats_for_registrations(
       promo_registrations: publisher.promo_registrations,
-      start: Date.today.beginning_of_month
+      start_date: Date.today.beginning_of_month
     )
 
     {
