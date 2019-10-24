@@ -36,9 +36,9 @@ module Publishers
       paypal_connection.update(
         refresh_token: refresh_token,
         email: user_info['email'],
-        country: user_info['country'],
-        verification_status: user_info['verification_status'],
-        paypal_account_id: user_info['paypal_account_id']
+        country: user_info['address']['country'],
+        verification_status: user_info['verified_account'],
+        paypal_account_id: user_info['user_id']
       )
     end
   end
