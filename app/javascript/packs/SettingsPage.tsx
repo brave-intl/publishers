@@ -23,7 +23,7 @@ class ContactForm extends React.Component<any, IContactFormState> {
     this.state = {
       isEditMode: false,
       name: this.props.name,
-      pendingEmail: this.props.pending_email,
+      pendingEmail: this.props.pending_email
     };
   }
 
@@ -36,8 +36,12 @@ class ContactForm extends React.Component<any, IContactFormState> {
   };
 
   public save = (name, email) => {
-    this.setState({ name, pendingEmail: email, isEditMode: false })
-  }
+    let pendingEmail = this.state.pendingEmail;
+    if (email !== this.props.email) {
+      pendingEmail = email;
+    }
+    this.setState({ name, pendingEmail, isEditMode: false });
+  };
 
   public render() {
     return (
@@ -52,7 +56,11 @@ class ContactForm extends React.Component<any, IContactFormState> {
         </div>
 
         {this.state.isEditMode && (
-          <EditForm {...this.props} cancelEdit={this.cancelEdit} save={this.save} />
+          <EditForm
+            {...this.props}
+            cancelEdit={this.cancelEdit}
+            save={this.save}
+          />
         )}
 
         {!this.state.isEditMode && (
@@ -168,11 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
     element
   );
 
-
   const publisherVisibleCheckbox = document.getElementById("publisher_visible");
   publisherVisibleCheckbox.addEventListener(
     "click",
-    (event) => {
+    event => {
       submitForm("update_publisher_visible_form", "PATCH", true);
     },
     false
