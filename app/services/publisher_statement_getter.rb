@@ -19,7 +19,7 @@ class PublisherStatementGetter < BaseApiClient
     def earning_period
       # If the transaction_type is from Eyeshade this means the period was for the previous month
       if eyeshade?
-        (created_at - 1.month).at_beginning_of_month
+        created_at.prev_month.at_beginning_of_month
       else
         created_at.at_beginning_of_month
       end
