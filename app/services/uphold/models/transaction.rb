@@ -11,6 +11,8 @@ module Uphold
       # https://www.rfc-editor.org/rfc/rfc6570.txt
       PATH = Addressable::Template.new("/v0/me/cards/{id}/transactions")
 
+      BATCH_SIZE = 50
+
       attr_accessor :application, :createdAt, :denomination, :destination, :fees, :id, :message, :network,
         :normalized, :origin, :params, :priority, :reference, :status, :type
 
@@ -28,9 +30,27 @@ module Uphold
       def all(id:)
         Rails.logger.info("Connection #{@uphold_connection.id} is missing uphold_access_parameters") and return if @uphold_connection.uphold_access_parameters.blank?
 
-        response = get(PATH.expand(id: id), {}, authorization(@uphold_connection))
+        page_index = 1
 
-        parse_response(response).map { |a| Transaction.new(a) }
+        transactions = []
+
+        loop do
+          start = (BATCH_SIZE * page_index) - BATCH_SIZE
+          ending_index = start + BATCH_SIZE
+
+          response = get(PATH.expand(id: id), {}, authorization(@uphold_connection), { "Range" => "items=#{start}-#{ending_index}" })
+
+          transactions << parse_response(response).map { |a| Uphold::Models::Transaction.new(a) }
+
+          range = response.headers["content-range"]
+          total_items = range.split('/').second.to_i
+
+          break if ending_index > total_items
+
+          page_index += 1
+        end
+
+        transactions.flatten
       end
 
       def authorization(uphold_connection)

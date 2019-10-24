@@ -176,7 +176,7 @@ export default {
         remainingBalance:
           "* Note - these are the transactions which exist during this statement time period. Some transactions may have been on the pervious statement or rolled over to the next statement.",
         summary: "Summary",
-        total: "Total Deposited",
+        total: "Total",
         totalFees: "Total Fees",
         type: "Type"
       },

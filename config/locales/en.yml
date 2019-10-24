@@ -396,7 +396,7 @@ en:
         uphold_contribution_settlement: Direct Contributions
         uphold_contribution_settlement_description: The total amount of contributions which were sent directly to your Uphold account from a user with a Brave Rewards connected wallet.
         fees: Fees
-        fees_description: The total amount of the fees taken to support Brave Rewards, and infrastructure costs.
+        fees_description: The total amount of the fees taken from contributions to support Brave Rewards, and infrastructure costs.
         account: Publisher Account
     cases:
       shared:
