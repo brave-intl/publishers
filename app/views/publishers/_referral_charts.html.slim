@@ -2,7 +2,6 @@
 = hidden_field_tag 'referrals-hidden-tags', current_publisher.promo_registrations.has_stats.pluck(:referral_code).to_json
 
 = javascript_pack_tag 'referrals/ReferralCharts'
-= stylesheet_pack_tag 'referrals/ReferralCharts'
 
 .row
   .col.bot-marg
