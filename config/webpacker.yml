@@ -5,7 +5,6 @@ default: &default
   source_entry_path: packs
   public_output_path: packs
   cache_path: tmp/cache/webpacker
-  compile: true
   webpack_compile_output: true
 
   # Additional paths webpack should lookup modules
@@ -64,6 +63,7 @@ test:
 
 production:
   <<: *default
+  compile: false
 
   # Cache manifest.json for performance
   cache_manifest: true
