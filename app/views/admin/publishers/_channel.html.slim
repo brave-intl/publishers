@@ -1,9 +1,9 @@
 
-.m-3 class=(channel.verified? ? '' : 'not-verified')
+.m-3 id=(channel.id) class=(channel.verified? ? '' : 'not-verified')
   / This is information for this
   div
     / Container for the title, contributions and referrals
-    div
+    div.mb-2
       / Title
       div
         small.text-muted TITLE
@@ -93,6 +93,9 @@
                       small.text-muted= "#{key.upcase.gsub("_", " ")}"
                       .font-weight-bold
                         = number_with_delimiter(channel.details.stats[key])
+
+    small.mr-3
+      = link_to(fa_icon("trash", text: "Remove Channel"), admin_channel_path(channel.id), method: :delete, remote: true, data: { confirm: 'WARNING. This will remove this channel. Please only do this if this is a duplicate channel.' })
 
     / When the channel is being contested
     - if channel.verification_pending?

@@ -175,7 +175,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :channels, only: [:index] do
+    resources :channels, only: [:index, :destroy] do
       collection do
         get :duplicates
       end
