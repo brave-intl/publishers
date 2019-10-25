@@ -1,0 +1,2 @@
+class Paypal::RefreshIdentity
+end

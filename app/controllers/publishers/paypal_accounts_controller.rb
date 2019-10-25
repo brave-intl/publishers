@@ -40,6 +40,8 @@ module Publishers
         verification_status: user_info['verified_account'],
         paypal_account_id: user_info['user_id']
       )
+
+      redirect_to home_publishers_path
     end
   end
 end
