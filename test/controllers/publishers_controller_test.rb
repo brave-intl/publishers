@@ -212,7 +212,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     url = publisher_url(publisher, token: publisher.reload.authentication_token)
     get(url)
     follow_redirect!
-    assert_select("span.email", publisher.email)
     sign_out(:publisher)
     get(url)
     assert_empty(css_select("span.email"))

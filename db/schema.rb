@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_13_151449) do
+ActiveRecord::Schema.define(version: 2019_10_03_195738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -102,6 +102,15 @@ ActiveRecord::Schema.define(version: 2019_09_13_151449) do
     t.datetime "contest_timesout_at"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
+  end
+
+  create_table "daily_metrics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.jsonb "result"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["result"], name: "index_daily_metrics_on_result"
   end
 
   create_table "faq_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

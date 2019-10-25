@@ -1,4 +1,7 @@
 class PayoutReportPublisherIncluder < BaseService
+  # 5 BAT
+  PROBI_THRESHOLD = (5 * 1E18).freeze
+
   def initialize(payout_report:, publisher:, should_send_notifications:)
     @publisher = publisher
     @payout_report = payout_report
@@ -18,7 +21,7 @@ class PayoutReportPublisherIncluder < BaseService
     end
 
     probi = wallet.referral_balance.amount_probi # probi = balance
-    publisher_has_unsettled_balance = probi.to_i.positive?
+    total_probi = probi
 
     # Create the referral payment for the owner
     unless should_only_notify?
@@ -41,10 +44,9 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Create potential payments for channel contributions
     @publisher.channels.verified.each do |channel|
-      publisher_has_unsettled_balance ||= probi.positive?
-
       probi = wallet.channel_balances[channel.details.channel_identifier].amount_probi # probi = balance - fee
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fees_probi # fee = balance - probi
+      total_probi += probi
 
       unless should_only_notify?
         PotentialPayment.create(
@@ -70,7 +72,7 @@ class PayoutReportPublisherIncluder < BaseService
     end
 
     # Notify publishers that have money waiting, but will not will not receive funds
-    if publisher_has_unsettled_balance && @should_send_notifications
+    if total_probi > PROBI_THRESHOLD && @should_send_notifications
       send_emails(uphold_connection)
     end
   end

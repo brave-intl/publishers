@@ -282,7 +282,7 @@ ja:
       erroneous_email_help: このリクエストを行って以内場合は、このメールを無視するか、次のURLからお問い合わせください。
       erroneous_email_ignore: このメッセージを誤って受け取ったと思われる場合は、無視しても問題ありません。
       post_script: |
-        <p>質問がありますか？ マイクロペイメントの仕組みの詳細については、<a href="https://basicattentiontoken.org/"> basicattentiontoken.org </a>をご覧ください。</p><p>既に数千のサイトがユーザから支援を受け取っています。ぜひご参加いただけることを楽しみにしています。</p> 
+        <p>質問がありますか？ マイクロペイメントの仕組みの詳細については、<a href="https://basicattentiontoken.org/"> basicattentiontoken.org </a>をご覧ください。</p><p>既に数千のサイトがユーザから支援を受け取っています。ぜひご参加いただけることを楽しみにしています。</p>
       previous_email: 前のメール
       private_access_link: プライベートログイン
       private_email_notice: |
@@ -352,7 +352,7 @@ ja:
       body_html: |
         Brave Rewardsのパートナーとして追加されました
         下のプライベートリンクをクリックしてアカウントにログインしてください。
-        <strong>Brave Rewards</strong> 
+        <strong>Brave Rewards</strong>
         このリンクは一度だけ使用できます
       button: Brave Rewardsにログイン
     notify_email_change:
@@ -377,13 +377,13 @@ ja:
     reject_appeal:
       subject: Brave Rewardsへの異議申し立て — 否認されました
       body: |
-        お客様のアカウントでのアクティビティはBrave Rewardsのルールに沿っていなかったため、申し立てを却下しました。Braveユーザからチップや自動支援などで送られるBATを受け取ることはできますが、Braveが所有するBATを受け取ることはできません。 
+        お客様のアカウントでのアクティビティはBrave Rewardsのルールに沿っていなかったため、申し立てを却下しました。Braveユーザからチップや自動支援などで送られるBATを受け取ることはできますが、Braveが所有するBATを受け取ることはできません。
          <br/> <br/>引き続きのご支援・ご協力のほどよろしくお願いいたします。<br/>Brave Rewards | クリエイターチーム
 
     uphold_kyc_incomplete:
       subject: Upholdで本人確認を行ってください
       body_html: |
-        <p> Brave Rewardsのセキュリティ向上と、不正行為を防止するため、Upholdで本人確認を行う必要があります。</p> <p> Upholdで本人確認が完了すると、次回支払いサイクルで収益が支払われます。 それまでの間、収益はアカウントに安全に保留されます。</p> <p> Braveのクリエイターの皆様、出金プロセスの正確性・整合性の向上にご理解・ご協力いただきありがとうございます。</p>    
+        <p> Brave Rewardsのセキュリティ向上と、不正行為を防止するため、Upholdで本人確認を行う必要があります。</p> <p> Upholdで本人確認が完了すると、次回支払いサイクルで収益が支払われます。 それまでの間、収益はアカウントに安全に保留されます。</p> <p> Braveのクリエイターの皆様、出金プロセスの正確性・整合性の向上にご理解・ご協力いただきありがとうございます。</p>
     button: ウォレットを認証する
     uphold_member_restricted:
       subject: Upholdアカウントでの資金の受け取りに失敗しました
@@ -393,7 +393,7 @@ ja:
       subject: "％{publication_title}がBrave Rewardsで承認されました"
       title: 承認が完了しました
       intro_html: |
-        <p>おめでとうございます！ これで認証済みBrave Rewardsクリエイターとして登録されました。</p> <p>資金を受け取る準備はできましたか？ Brave Rewardsダッシュボードにアクセスして、支払い設定を完了してください。</p>     
+        <p>おめでとうございます！ これで認証済みBrave Rewardsクリエイターとして登録されました。</p> <p>資金を受け取る準備はできましたか？ Brave Rewardsダッシュボードにアクセスして、支払い設定を完了してください。</p>
     button: Brave Rewardsにログインする
     wallet_not_connected:
       subject: ウォレットを接続して資金を受け取る
@@ -578,10 +578,6 @@ ja:
         view_statements: ステートメントを表示
         view_recent_statement: ％{statement_link}の準備ができました。
         unavailable: 利用可能なステートメントはありません。
-      contact:
-        heading: 連絡先
-        edit: 連絡先を編集
-        update: 編集
     channel:
       added: "%{date}に追加"
       remove_verified: チャネルを削除
@@ -910,10 +906,10 @@ ja:
     index:
       u2f_unavailable_html: |
         <strong>ブラウザでセキュリティキーがサポートされていません</strong><br>
-        ログインするには、Brave、Google Chrome、またはOperaブラウザに切り替えてください。同時に二要素のバックアップとして認証アプリを設定することをお勧めします。      
+        ログインするには、Brave、Google Chrome、またはOperaブラウザに切り替えてください。同時に二要素のバックアップとして認証アプリを設定することをお勧めします。
       u2f-error:
         bad-request: |
-          Braveの認証リクエスト時に予期しないエラーがありました。 
+          Braveの認証リクエスト時に予期しないエラーがありました。
           新しいメールで再度ログインしてみてください。
           （BAD_REQUEST）
         configuration-unsupported: |

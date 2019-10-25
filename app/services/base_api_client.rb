@@ -7,8 +7,8 @@ class BaseApiClient < BaseService
   # options - [Hash] the parameters to supply
   #
   # returns  the response
-  def get(path, options = {}, authorization = nil)
-    request(:get, path, options, authorization)
+  def get(path, options = {}, authorization = nil, headers = {})
+    request(:get, path, options, authorization, headers)
   end
 
   # Make a POST request.
@@ -57,7 +57,7 @@ class BaseApiClient < BaseService
     false
   end
 
-  def request(method, path, payload = {}, authorization = nil)
+  def request(method, path, payload = {}, authorization = nil, headers = {})
     # Mock out the request
     return Struct.new(:body).new("{}") if perform_offline?
 
@@ -65,6 +65,8 @@ class BaseApiClient < BaseService
       req.url [api_base_uri, path].join('')
       req.headers["Authorization"] = authorization || api_authorization_header
       req.headers['Content-Type'] = 'application/json'
+      req.headers.merge!(headers)
+
       req.body = payload.to_json if method.to_sym.eql?(:post)
       req.params = payload if method.to_sym.eql?(:get)
     end

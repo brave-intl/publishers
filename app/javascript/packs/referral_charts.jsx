@@ -17,14 +17,9 @@ export default class ReferralCharts extends React.Component {
       referralCodes: this.props.referralCodes
     };
     this.selectMenuRef = React.createRef();
-    this.bindFunctions();
   }
 
-  bindFunctions() {
-    this.viewReferralCodeStats = this.viewReferralCodeStats.bind(this);
-  }
-
-  async viewReferralCodeStats() {
+  viewReferralCodeStats = async () => {
     const node = this.selectMenuRef.current;
     var url =
       this.props.scope === "admin"
@@ -43,10 +38,16 @@ export default class ReferralCharts extends React.Component {
     }).then(response => {
       response.json().then(json => {
         if (json !== undefined && json.length != 0) {
-          this.setState({ data: json, title: node.state.value });
+          this.setState({ stats: json.stats, data: json.data, title: node.state.value });
         }
       });
     });
+  }
+
+  componentDidMount = () => {
+    if(this.state.referralCodes.length > 0) {
+      this.viewReferralCodeStats();
+    }
   }
 
   render() {
@@ -72,6 +73,29 @@ export default class ReferralCharts extends React.Component {
           </PrimaryButton>
         </div>
         <ReactChart data={this.state.data} title={this.state.title} />
+
+        <h5>Statistics</h5>
+        <div className="d-flex">
+          <div className="mr-3">
+            <small>DOWNLOADED</small>
+            <div className="font-weight-bold text-center">
+              {this.state.stats && this.state.stats.retrievals}
+            </div>
+          </div>
+          <div className="mr-3">
+            <small>INSTALLED</small>
+            <div className="font-weight-bold text-center">
+              {this.state.stats && this.state.stats.first_runs}
+            </div>
+          </div>
+          <div className="mr-3">
+            <small>CONFIRMED</small>
+            <div className="font-weight-bold text-center">
+              {this.state.stats && this.state.stats.finalized}
+            </div>
+          </div>
+        </div>
+
       </React.Fragment>
     );
   }

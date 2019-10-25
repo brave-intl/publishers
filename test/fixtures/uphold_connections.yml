@@ -4,6 +4,7 @@ unconnected:
   created_at: 2019-01-01
   publisher: completed
   is_member: false
+  country: "usa"
 
 suspended_connection:
   publisher: suspended

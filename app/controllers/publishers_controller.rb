@@ -86,7 +86,7 @@ class PublishersController < ApplicationController
     flash[:notice] = I18n.t("publishers.settings.update.alert")
     respond_to do |format|
       if success
-        format.json { head :no_content }
+        format.json { render json: {} }
         format.html { redirect_to home_publishers_path }
       else
         format.json { render(json: { errors: current_publisher.errors }, status: 400) }
