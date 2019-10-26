@@ -280,10 +280,12 @@ ActiveRecord::Schema.define(version: 2019_10_23_190550) do
     t.uuid "user_id", null: false
     t.string "encrypted_refresh_token"
     t.string "encrypted_refresh_token_iv"
+    t.text "full_name"
     t.text "email"
     t.text "country"
-    t.text "verification_status"
+    t.boolean "verified_account"
     t.text "paypal_account_id"
+    t.boolean "hidden", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_paypal_connections_on_user_id"

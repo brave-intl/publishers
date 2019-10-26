@@ -25,6 +25,11 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
+        scope controller: "paypal_accounts" do
+          get :connect_callback
+          patch :disconnect_paypal, action: :destroy
+        end
+
         resources :statements, only: [:index, :show]
         resource :two_factor_authentications_removal
       end
@@ -45,11 +50,6 @@ Rails.application.routes.draw do
       get :security, to: "publishers/security#index"
       get :prompt_security, to: "publishers/security#prompt"
       get :settings, to: "publishers/settings#index"
-
-      scope controller: "publishers/paypal_accounts" do
-        get :start_connect
-        get :connect_callback
-      end
       resources :two_factor_authentications, only: %i(index)
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)

@@ -231,21 +231,13 @@ module PublishersHelper
     end
   end
 
+  # Albert Wang: It seems there's only 2 states: true or false
   def paypal_status_summary(publisher)
-    # TODO
-    "Connected"
-=begin
-    case publisher.paypal_connection&.paypal_verification_status
-    when :verified, UpholdConnection::UpholdAccountState::RESTRICTED, UpholdConnection::UpholdAccountState::BLOCKED
-      I18n.t("helpers.publisher.uphold_status_summary.connected")
-    when :code_acquired, :access_parameters_acquired
-      I18n.t("helpers.publisher.uphold_status_summary.connecting")
-    when :reauthorization_needed
-      I18n.t("helpers.publisher.uphold_status_summary.connection_problems")
+    if publisher.paypal_connection&.verified_account
+      I18n.t("helpers.publisher.paypal_status_summary.connected")
     else
-      I18n.t("helpers.publisher.uphold_status_summary.unconnected")
+      I18n.t("helpers.publisher.paypal_status_summary.unconnected_bank_account")
     end
-=end
   end
 
   def uphold_status_description(publisher)

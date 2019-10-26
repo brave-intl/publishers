@@ -4,7 +4,8 @@ module Publishers
   class PaypalAccountsController < ApplicationController
     before_action :authenticate_publisher!
 
-    def start_connect
+    def destroy
+      current_publisher.paypal_connections.active.update_all(hidden: true)
     end
 
     def connect_callback
@@ -20,9 +21,6 @@ module Publishers
       access_token = JSON.parse(result.body)["access_token"]
       refresh_token = JSON.parse(result.body)["refresh_token"]
 
-      p access_token
-      p refresh_token
-
       user_info_response = Faraday.get("https://api.sandbox.paypal.com/v1/identity/oauth2/userinfo") do |req|
         req.headers['Authorization'] = "Bearer #{access_token}"
         req.headers['Accept'] = 'application/json'
@@ -31,14 +29,16 @@ module Publishers
 
       user_info = JSON.parse(user_info_response.body)
       paypal_connection = PaypalConnection.find_or_initialize_by(
-        user_id: current_publisher.id
+        user_id: current_publisher.id,
+        email: user_info['emails'][0]['value']
       )
       paypal_connection.update(
         refresh_token: refresh_token,
         email: user_info['emails'][0]['value'],
         country: user_info['address']['country'],
-        verification_status: user_info['verified_account'],
-        paypal_account_id: user_info['user_id']
+        verified_account: user_info['verified_account'] == 'true',
+        paypal_account_id: user_info['user_id'],
+        hidden: false
       )
 
       redirect_to home_publishers_path
