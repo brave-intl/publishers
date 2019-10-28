@@ -268,7 +268,7 @@ class Channel < ApplicationRecord
   end
 
   def register_channel_for_promo
-    Promo::RegisterChannelForPromoJob.perform_later(channel_id: self.id)
+    Promo::RegisterChannelForPromoJob.perform_now(channel_id: id)
   end
 
   private
