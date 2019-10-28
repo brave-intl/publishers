@@ -1,14 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FormattedMessage, IntlProvider } from "react-intl";
+import { FormattedMessage, IntlProvider, useIntl } from "react-intl";
 import { submitForm } from "../utils/request";
 
 import { LoaderIcon } from "brave-ui/components/icons";
 import en, { flattenMessages } from "../locale/en";
+import ja from "../locale/ja";
+
 import routes from "../views/routes";
 
 interface IContactFormState {
   isEditMode: boolean;
+  email: string;
   name: string;
   pendingEmail: string;
 }
@@ -21,6 +24,7 @@ class ContactForm extends React.Component<any, IContactFormState> {
     super(props);
 
     this.state = {
+      email: this.props.pending_email || this.props.email,
       isEditMode: false,
       name: this.props.name,
       pendingEmail: this.props.pending_email
@@ -57,7 +61,7 @@ class ContactForm extends React.Component<any, IContactFormState> {
 
         {this.state.isEditMode && (
           <EditForm
-            {...this.props}
+            {...this.state}
             cancelEdit={this.cancelEdit}
             save={this.save}
           />
@@ -86,6 +90,7 @@ class ContactForm extends React.Component<any, IContactFormState> {
 }
 
 const EditForm = props => {
+  const intl = useIntl();
   const [name, setName] = React.useState(props.name);
   const [email, setEmail] = React.useState(props.pending_email || props.email);
   const [error, setError] = React.useState(null);
@@ -152,9 +157,13 @@ const EditForm = props => {
         />
       </div>
       <div className="button form-group">
-        <input type="submit" className="btn btn-primary" />
+        <input
+          type="submit"
+          className="btn btn-primary"
+          value={intl.formatMessage({ id: "shared.save" })}
+        />
         <a href="#" onClick={props.cancelEdit} className="btn btn-link">
-          <FormattedMessage id="cancel" />
+          <FormattedMessage id="shared.cancel" />
         </a>
         {isLoading && <LoaderIcon style={{ width: "48px" }} />}
       </div>
@@ -166,11 +175,15 @@ const EditForm = props => {
 document.addEventListener("DOMContentLoaded", () => {
   const element = document.getElementById("contact_section");
   const props = JSON.parse(element.dataset.props);
+
+  const locale = document.body.dataset.locale;
+  let localePackage: object = en;
+  if (locale === "ja") {
+    localePackage = ja;
+  }
+
   ReactDOM.render(
-    <IntlProvider
-      locale={document.body.dataset.locale}
-      messages={flattenMessages(en)}
-    >
+    <IntlProvider locale={locale} messages={flattenMessages(localePackage)}>
       <ContactForm {...props} />
     </IntlProvider>,
     element
