@@ -4,8 +4,14 @@ module Publishers
   class PaypalAccountsController < ApplicationController
     before_action :authenticate_publisher!
 
-    def destroy
+    def disconnect
       current_publisher.paypal_connections.active.update_all(hidden: true)
+    end
+
+    def refresh
+      # (Albert Wang): I don't think Paypal will go down that often, but we can change this into perform_later
+      # if this is a long running call.
+      Paypal::RefreshIdentity.new(publisher_id: @publisher.id).perform_now
     end
 
     def connect_callback

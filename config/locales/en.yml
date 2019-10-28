@@ -581,6 +581,8 @@ en:
       last_deposit_date: "Last Deposit Date: "
       change: Change
       no_currency_selected: None selected
+      connected: Connected Bank Account
+      unconnected_bank_account: Bank account isn't verified with Paypal. Please add and click to refresh.
     channel:
       added: added %{date}
       remove_verified: Remove channel

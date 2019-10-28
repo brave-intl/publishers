@@ -234,9 +234,9 @@ module PublishersHelper
   # Albert Wang: It seems there's only 2 states: true or false
   def paypal_status_summary(publisher)
     if publisher.paypal_connection&.verified_account
-      I18n.t("helpers.publisher.paypal_status_summary.connected")
+      I18n.t("publishers.paypal_account_panel.connected")
     else
-      I18n.t("helpers.publisher.paypal_status_summary.unconnected_bank_account")
+      I18n.t("publishers.paypal_account_panel.unconnected_bank_account")
     end
   end
 

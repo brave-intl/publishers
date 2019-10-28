@@ -15,7 +15,8 @@ class Paypal::RefreshIdentity < BaseService
 
     user_info = JSON.parse(user_info_response.body)
     paypal_connection = PaypalConnection.find_by(
-      user_id: @publisher.id
+      user_id: @publisher.id,
+      hidden: false
     )
     paypal_connection.update(
       email: user_info['emails'][0]['value'],

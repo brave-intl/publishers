@@ -4,33 +4,28 @@
   .dashboard-panel--content
     .status-summary
       - if @publisher.paypal_connection.present?
-        = " #{@publisher.paypal_connection.email}"
+        = @publisher.paypal_connection.email
         br
-        .text = paypal_status_summary(@publisher)
-        a.disconnect-paypal href="#"
-          = t ".disconnect"
-        script type="text/html" id="disconnect-paypal-js"
-          = render "publishers/disconnect_paypal_modal"
-        = form_for(@publisher, url: disconnect_paypal_publishers_path, html: {id: "disconnect_paypal"}) do |f|
+        - if @publisher.paypal_connection.verified_account?
+          .text = t(".connected")
+        - else
+          = link_to t(".unconnected_bank_account"), paypal_account_refresh_path(@publisher.paypal_connection.id)
       - else
         .action
           = link_to image_tag("https://www.paypalobjects.com/webstatic/en_US/developer/docs/login/connectwithpaypalbutton.png"), "https://www.sandbox.paypal.com/connect?flowEntry=static&client_id=#{ENV['PAYPAL_CLIENT_ID']}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fconnect_callback"
-  .dashboard-panel--content
-    .last-deposit-date.field
-      label= t ".last_deposit_date"
-      / TODO: Make sure this works
-      .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher)
-  .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
-    .last-deposit
-      = t ".last_deposit"
-      .amounts
-        .bat
-          / TODO: Make sure this works
-          - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
-          span.bat-amount#last_deposit_bat_amount= last_deposit_balance
-          - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
-            span.bat-code= " BAT"
-        .converted#last_deposit_converted_amount
-          / TODO: Make sure this works
-          = publisher_converted_last_settlement_balance(@publisher)
-          / TODO: Find a way to do linking
+  - if @publisher.paypal_connection.present? && @publisher.paypal_connection.verified_account?
+    .dashboard-panel--content
+      .last-deposit-date.field
+        label= t ".last_deposit_date"
+        .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher)
+    .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
+      .last-deposit
+        = t ".last_deposit"
+        .amounts
+          .bat
+            - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
+            span.bat-amount#last_deposit_bat_amount= last_deposit_balance
+            - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
+              span.bat-code= " BAT"
+          .converted#last_deposit_converted_amount
+            = publisher_converted_last_settlement_balance(@publisher)

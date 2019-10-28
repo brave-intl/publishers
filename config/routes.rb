@@ -25,13 +25,14 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
-        scope controller: "paypal_accounts" do
-          get :connect_callback
-          patch :disconnect_paypal, action: :destroy
-        end
-
         resources :statements, only: [:index, :show]
         resource :two_factor_authentications_removal
+      end
+
+      resources :paypal_accounts, controller: "publishers/paypal_accounts", only: [] do
+        get :connect_callback, on: :collection
+        get :refresh
+        patch :disconnect
       end
 
       get :log_out
