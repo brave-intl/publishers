@@ -569,19 +569,20 @@ en:
       change: Change
       no_currency_selected: None selected
     paypal_account_panel:
-      heading: Your Paypal account
-      deposit_currency_label: "Deposit Currency: "
-      deposit_currency: "BAT to "
+      change: Change
       check_balance: Check Balance
       connect_to_a_new_account: Connect to a new Uphold account
-      no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
       connect: Connect
+      connected: Connected Bank Account
+      deposit_currency_label: "Deposit Currency: "
+      deposit_currency: "BAT to "
       disconnect: Disconnect
+      heading: Your Paypal account
       last_deposit: LAST DEPOSIT
       last_deposit_date: "Last Deposit Date: "
-      change: Change
+      no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
       no_currency_selected: None selected
-      connected: Connected Bank Account
+      still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
       unconnected_bank_account: Bank account isn't verified with Paypal. Please add and click to refresh.
     channel:
       added: added %{date}
