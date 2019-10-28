@@ -73,7 +73,7 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Notify publishers that have money waiting, but will not will not receive funds
     if total_probi > PROBI_THRESHOLD && @should_send_notifications
-      send_emails(uphold_connection, probi_to_bat(total_amount))
+      send_emails(uphold_connection, probi_to_bat(total_probi).round(1))
     end
   end
 

@@ -352,7 +352,8 @@ en:
     wallet_not_connected:
       subject: Connect a wallet to claim your %{total_amount} BAT.
       body_html: |
-        <p>Your <strong>%{total_amount} BAT</strong> worth of earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
+        <p><span style="font-size: 18px">You've earned <strong>%{total_amount} BAT</strong> from Brave Rewards!</span></p>
+        <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
       button: Log in to Brave Rewards
     verify_email:
       subject: Verify your Brave Rewards email address

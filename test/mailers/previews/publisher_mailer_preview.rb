@@ -25,11 +25,11 @@ class PublisherMailerPreview < ActionMailer::Preview
   end
 
   def wallet_not_connected
-    PublisherMailer.wallet_not_connected(Publisher.first, 232.43179)
+    PublisherMailer.wallet_not_connected(Publisher.first, 232.4)
   end
 
   def uphold_kyc_incomplete
-    PublisherMailer.uphold_kyc_incomplete(Publisher.first, 232.43179)
+    PublisherMailer.uphold_kyc_incomplete(Publisher.first, 232.4)
   end
 
   def uphold_member_restricted
