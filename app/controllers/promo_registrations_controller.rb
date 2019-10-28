@@ -14,7 +14,7 @@ class PromoRegistrationsController < ApplicationController
     @publisher = current_publisher
     @publisher.promo_enabled_2018q1 = true
     @publisher.save!
-    current_publisher.channels.left_joins(:promo_registration).where(promo_registrations: {id: nil}).find_each do |channel|
+    current_publisher.channels.find_each do |channel|
       channel.register_channel_for_promo # Callee does a check
     end
     @promo_enabled_channels = @publisher.channels.joins(:promo_registration)
