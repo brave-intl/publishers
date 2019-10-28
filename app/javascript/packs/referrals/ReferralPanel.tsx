@@ -2,7 +2,7 @@ import * as moment from "moment";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { FormattedMessage, IntlProvider, useIntl, injectIntl } from "react-intl";
+import { FormattedMessage, injectIntl, IntlProvider } from "react-intl";
 import en, { flattenMessages } from "../../locale/en";
 import ja from "../../locale/ja";
 
