@@ -332,9 +332,11 @@ en:
         <br/>
         The Brave Rewards | Creator team
     uphold_kyc_incomplete:
-      subject: Please verify your Uphold identity
+      subject: Please verify your Uphold identity to claim your %{total_amount} BAT
       body_html: |
-        <p>To improve the security of Brave Rewards and protect against fraud, we require that creators verify their identity with Uphold.</p> <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will be safely held in your account.</p> <p>Thank you for being a Brave Creator and helping us improve the integrity of the payout system.</p>
+        <p>You have <strong>%{total_amount} BAT</strong> worth of earnings waiting for you to verify your identity with Uphold.
+        <p>To improve the security of Brave Rewards and protect against fraud, we require that creators verify their identity with Uphold.</p>
+        <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will be safely held in your account.</p> <p>Thank you for being a Brave Creator and helping us improve the integrity of the payout system.</p>
       button: Verify wallet
     uphold_member_restricted:
       subject: Uphold account unable to receive funds
@@ -348,9 +350,9 @@ en:
         <p>Congratulations! You are now a verified Brave Rewards creator.</p> <p>Ready to claim your funds? Visit your Brave Rewards dashboard to submit your payment information using the button below.</p>
       button: Log in to Brave Rewards
     wallet_not_connected:
-      subject: Connect a wallet to claim your funds
+      subject: Connect a wallet to claim your %{total_amount} BAT.
       body_html: |
-        <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
+        <p>Your <strong>%{total_amount} BAT</strong> worth of earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
       button: Log in to Brave Rewards
     verify_email:
       subject: Verify your Brave Rewards email address

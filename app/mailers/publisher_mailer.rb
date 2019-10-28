@@ -121,11 +121,12 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def uphold_kyc_incomplete(publisher)
+  def uphold_kyc_incomplete(publisher, total_amount)
     @publisher = publisher
+    @total_amount = total_amount
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject
+      subject: default_i18n_subject(total_amount: total_amount)
     )
   end
 
@@ -285,9 +286,10 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def wallet_not_connected(publisher)
+  def wallet_not_connected(publisher, total_amount)
     @publisher = publisher
     @publisher_log_in_url = log_in_publishers_url
+    @total_amount = total_amount
 
     connection = @publisher.uphold_connection
     if connection&.uphold_verified? && connection&.address.present?
@@ -300,7 +302,7 @@ class PublisherMailer < ApplicationMailer
     else
       mail(
         to: @publisher.email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(total_amount: total_amount)
       )
     end
   end
