@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: true
+    t.boolean "verified", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -290,8 +290,6 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.index ["user_id"], name: "index_paypal_connections_on_user_id"
   end
 
-  end
-
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -354,9 +352,9 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
-    t.uuid "thread_id"
     t.bigint "zendesk_ticket_id"
     t.bigint "zendesk_comment_id"
+    t.uuid "thread_id"
     t.string "zendesk_to_email"
     t.string "zendesk_from_email"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
@@ -399,7 +397,6 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
     t.boolean "thirty_day_login", default: false, null: false
-    t.boolean "uses_stripe_for_payout", default: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
