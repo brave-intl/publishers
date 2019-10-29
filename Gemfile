@@ -35,7 +35,6 @@ gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.7.1"
-gem "draper", "~> 3.1.0"
 gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
 
 gem "dnsruby", "~> 1.60.0", require: false
