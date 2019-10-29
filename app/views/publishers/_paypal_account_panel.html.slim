@@ -12,7 +12,7 @@
           = link_to t(".unconnected_bank_account"), paypal_account_refresh_path(@publisher.paypal_connection.id)
       - else
         .action
-          = link_to image_tag("https://www.paypalobjects.com/webstatic/en_US/developer/docs/login/connectwithpaypalbutton.png"), "https://www.sandbox.paypal.com/connect?flowEntry=static&client_id=#{ENV['PAYPAL_CLIENT_ID']}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fconnect_callback"
+          = link_to image_tag("https://www.paypalobjects.com/webstatic/en_US/developer/docs/login/connectwithpaypalbutton.png"), "#{Rails.application.secrets[:paypal_api_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fconnect_callback"
   - if @publisher.paypal_connection.present? && @publisher.paypal_connection.verified_account?
     .dashboard-panel--content
       .last-deposit-date.field
