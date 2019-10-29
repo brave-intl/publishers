@@ -73,16 +73,16 @@ class PayoutReportPublisherIncluder < BaseService
 
     # Notify publishers that have money waiting, but will not will not receive funds
     if total_probi > PROBI_THRESHOLD && @should_send_notifications
-      send_emails(uphold_connection)
+      send_emails(uphold_connection, probi_to_bat(total_probi).round(1))
     end
   end
 
   private
 
-  def send_emails(uphold_connection)
+  def send_emails(uphold_connection, total_amount)
     if !uphold_connection.uphold_verified? || uphold_connection.status.blank?
       Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are disconnected from Uphold.")
-      PublisherMailer.wallet_not_connected(@publisher).deliver_later
+      PublisherMailer.wallet_not_connected(@publisher, total_amount).deliver_later
     end
 
     # eyeshade omits the wallet address if the status is not ok
@@ -95,11 +95,16 @@ class PayoutReportPublisherIncluder < BaseService
     # The wallet's uphold account status has to exist because otherwise their wallet is just not connected
     if uphold_connection.uphold_verified? && uphold_connection.status.present? && !uphold_connection.is_member?
       Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
-      PublisherMailer.uphold_kyc_incomplete(@publisher).deliver_later
+      PublisherMailer.uphold_kyc_incomplete(@publisher, total_amount).deliver_later
     end
   end
 
   def should_only_notify?
     @payout_report.nil?
+  end
+
+  # Converts Probi to BAT, original implementation Eyeshade::BaseBalance
+  def probi_to_bat(probi)
+    probi.to_d / 1E18
   end
 end

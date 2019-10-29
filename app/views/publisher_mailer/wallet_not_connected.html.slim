@@ -1,6 +1,6 @@
 p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name
 
-== t ".body_html"
+== t ".body_html", total_amount: @total_amount
 
 div.btn-container= link_to t(".button"), @publisher_log_in_url, class: "btn-primary btn-login"
 

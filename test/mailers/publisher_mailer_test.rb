@@ -12,7 +12,7 @@ class PublisherMailerTest < ActionMailer::TestCase
 
   test "wallet_not_connected" do
     publisher = publishers(:youtube_initial)
-    email = PublisherMailer.wallet_not_connected(publisher)
+    email = PublisherMailer.wallet_not_connected(publisher, 750.0)
 
     assert_emails 1 do
       email.deliver_now
