@@ -15,7 +15,7 @@ class Paypal::RefreshIdentity < BaseService
       Raven.capture_exception(e)
     end
 
-    user_info_response = Faraday.get("https://api.sandbox.paypal.com/v1/identity/oauth2/userinfo") do |req|
+    user_info_response = Faraday.get("#{Rails.application.secrets[:paypal_api_uri]}/v1/identity/oauth2/userinfo") do |req|
       req.headers['Authorization'] = "Bearer #{access_token}"
       req.headers['Accept'] = 'application/json'
       req.params['schema'] = "paypalv1.1"
@@ -41,7 +41,7 @@ class Paypal::RefreshIdentity < BaseService
   end
 
   def fetch_access_token
-    result = Faraday.post("https://api.sandbox.paypal.com/v1/oauth2/token") do |req|
+    result = Faraday.post("#{Rails.application.secrets[:paypal_api_uri]}/v1/oauth2/token") do |req|
       req.headers['Authorization'] = "Basic " + Base64.encode64("#{Rails.application.secrets[:paypal_client_id]}:#{Rails.application.secrets[:paypal_client_secret]}").rstrip.tr("\n", "")
       req.headers['Accept'] = 'application/json'
       req.headers['Accept-Language'] = "en_US"

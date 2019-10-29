@@ -18,7 +18,7 @@ module Publishers
 
     def connect_callback
       authorization_code = params[:code]
-      result = Faraday.post("https://api.sandbox.paypal.com/v1/oauth2/token") do |req|
+      result = Faraday.post("#{Rails.application.secrets[:paypal_api_uri]}/v1/oauth2/token") do |req|
         req.headers['Authorization'] = "Basic " + Base64.encode64("#{Rails.application.secrets[:paypal_client_id]}:#{Rails.application.secrets[:paypal_client_secret]}").rstrip.tr("\n", "")
         req.headers['Accept'] = 'application/json'
         req.headers['Accept-Language'] = "en_US"
@@ -29,7 +29,7 @@ module Publishers
       access_token = JSON.parse(result.body)["access_token"]
       refresh_token = JSON.parse(result.body)["refresh_token"]
 
-      user_info_response = Faraday.get("https://api.sandbox.paypal.com/v1/identity/oauth2/userinfo") do |req|
+      user_info_response = Faraday.get("#{Rails.application.secrets[:paypal_api_uri]}/v1/identity/oauth2/userinfo") do |req|
         req.headers['Authorization'] = "Bearer #{access_token}"
         req.headers['Accept'] = 'application/json'
         req.params['schema'] = "paypalv1.1"
