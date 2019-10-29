@@ -1,5 +1,4 @@
 class Paypal::RefreshIdentity < BaseService
-
   def initialize(publisher_id:)
     @publisher = Publisher.find(publisher_id)
     @paypal_connection = @publisher.paypal_connection
@@ -8,8 +7,8 @@ class Paypal::RefreshIdentity < BaseService
   def perform
     return if @paypal_connection.nil? || @paypal_connection.refresh_token.nil?
     begin
-    access_token = fetch_access_token
-    raise_token_exception if access_token.nil?
+      access_token = fetch_access_token
+      raise_token_exception if access_token.nil?
     rescue => e
       require 'sentry-raven'
       Raven.capture_exception(e)
