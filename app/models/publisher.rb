@@ -321,8 +321,8 @@ class Publisher < ApplicationRecord
     errors.add(:base, "Not using a japanese email") unless email.present? && email.ends_with?("jp")
   end
 
-  def paypal_locale?
-    true
+  def paypal_locale?(locale)
+    locale == 'ja'
   end
 
   private
