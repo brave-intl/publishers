@@ -68,12 +68,12 @@ class PayoutReport < ApplicationRecord
     # Do not update json contents for legacy reports
     return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
     payout_report_hash = if paypal_report?
-      JsonBuilders::PaypalPayoutReportJsonBuilder.new(payout_report: self).build
-    elsif manual
-      JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
-    else
-      JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
-    end
+                           JsonBuilders::PaypalPayoutReportJsonBuilder.new(payout_report: self).build
+                         elsif manual
+                           JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
+                         else
+                           JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
+                         end
     self.contents = payout_report_hash.to_json
     save!
   end
