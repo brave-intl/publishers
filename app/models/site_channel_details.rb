@@ -27,15 +27,16 @@ class SiteChannelDetails < BaseChannelDetails
   before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
 
   scope :recent_unverified_site_channels, -> (max_age: 6.weeks) {
-    joins(:channel).
-      where.not(brave_publisher_id: SiteChannelDetails.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true)).
+    SiteChannelDetails.unscoped.joins(:channel).
+      where.not(brave_publisher_id: SiteChannelDetails.unscoped.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true)).
       where("channels.created_at": max_age.ago..Time.now)
   }
 
   scope :recent_ready_to_verify_site_channels, -> (max_age: 6.weeks) {
-    joins(:channel).
+    SiteChannelDetails.unscoped.joins(:channel).
       where.not(
         brave_publisher_id: SiteChannelDetails.
+                            unscoped.
                             joins(:channel).
                             select(:brave_publisher_id).
                             distinct.
