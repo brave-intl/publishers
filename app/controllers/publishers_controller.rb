@@ -272,7 +272,7 @@ class PublishersController < ApplicationController
   end
 
   def update_sendgrid(publisher:, prior_email: nil)
-    RegisterPublisherWithSendGridJob.perform_later(publisher.id, prior_email)
+    RegisterPublisherWithSendGridJob.perform_later(publisher_id: publisher.id, prior_email: prior_email)
   end
 
   def require_verified_email

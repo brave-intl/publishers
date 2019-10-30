@@ -6,6 +6,12 @@ class PayoutReport < ApplicationRecord
 
   attr_encrypted :contents, key: :encryption_key, marshal: true
 
+  PAYPAL = "paypal".freeze
+  UPHOLD = "uphold".freeze
+  KINDS = [PAYPAL, UPHOLD].freeze
+
+  validates_inclusion_of :kind, in: KINDS
+
   has_many :potential_payments
 
   validates_presence_of :expected_num_payments
@@ -61,13 +67,19 @@ class PayoutReport < ApplicationRecord
   def update_report_contents
     # Do not update json contents for legacy reports
     return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
-    if manual
-      payout_report_hash = JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
+    payout_report_hash = if paypal_report?
+      JsonBuilders::PaypalPayoutReportJsonBuilder.new(payout_report: self).build
+    elsif manual
+      JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
     else
-      payout_report_hash = JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
+      JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
     end
     self.contents = payout_report_hash.to_json
     save!
+  end
+
+  def paypal_report?
+    kind == PAYPAL
   end
 
   class << self

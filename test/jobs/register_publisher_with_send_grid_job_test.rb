@@ -18,12 +18,12 @@ class RegisterPublisherWithSendGridJobTest < ActiveJob::TestCase
       start_time = Time.now.to_f
 
       perform_enqueued_jobs do
-        assert RegisterPublisherWithSendGridJob.perform_later(publisher.id)
-        assert RegisterPublisherWithSendGridJob.perform_later(publisher.id)
-        assert RegisterPublisherWithSendGridJob.perform_later(publisher.id)
-        assert RegisterPublisherWithSendGridJob.perform_later(publisher.id)
-        assert RegisterPublisherWithSendGridJob.perform_later(publisher.id)
-        assert RegisterPublisherWithSendGridJob.perform_later(publisher.id)
+        assert RegisterPublisherWithSendGridJob.perform_later(publisher_id: publisher.id)
+        assert RegisterPublisherWithSendGridJob.perform_later(publisher_id: publisher.id)
+        assert RegisterPublisherWithSendGridJob.perform_later(publisher_id: publisher.id)
+        assert RegisterPublisherWithSendGridJob.perform_later(publisher_id: publisher.id)
+        assert RegisterPublisherWithSendGridJob.perform_later(publisher_id: publisher.id)
+        assert RegisterPublisherWithSendGridJob.perform_later(publisher_id: publisher.id)
       end
 
       end_time = Time.now.to_f

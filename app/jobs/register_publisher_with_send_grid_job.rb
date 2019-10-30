@@ -7,7 +7,7 @@ class RegisterPublisherWithSendGridJob < ApplicationJob
   # Using positional arguments for issue with activejob-traffic_control
   def perform(publisher_id:, prior_email: nil)
     publisher = Publisher.find(publisher_id)
-    SendGridRegistrar.new(publisher: publisher, prior_email: prior_email).perform
+    SendGridRegistrar.new(publisher, prior_email).perform
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
