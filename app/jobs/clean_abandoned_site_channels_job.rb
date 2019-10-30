@@ -11,8 +11,8 @@ class CleanAbandonedSiteChannelsJob < ApplicationJob
     channels.joins(:site_channel_details).each do |channel|
       raise if channel.details.verification_method.present?
       channel.destroy
-      n = n + 1
-      Rails.logger.info("Cleaned abandoned site channel #{ channel.details.brave_publisher_id } for publisher #{ channel.publisher_id }.")
+      n += 1
+      Rails.logger.info("Cleaned abandoned site channel #{channel.details.brave_publisher_id} for publisher #{channel.publisher_id}.")
     end
     Rails.logger.info("CleanAbandonedSiteChannelsJob cleared #{n} abandoned site channels.")
   end

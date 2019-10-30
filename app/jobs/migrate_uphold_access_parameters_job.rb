@@ -6,7 +6,7 @@ class MigrateUpholdAccessParametersJob < ApplicationJob
     connection = UpholdConnection.find_by(publisher_id: publisher_id)
     if connection.present?
 
-      updated = connection.update(
+      connection.update(
         uphold_access_parameters: parameters.to_json,
         default_currency: connection.publisher.default_currency || default_currency,
         default_currency_confirmed_at: connection.publisher.default_currency_confirmed_at || Time.now

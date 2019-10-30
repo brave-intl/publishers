@@ -2,7 +2,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
   queue_as :heavy
 
   MAX_RETRY = 10
-  TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'
+  TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'.freeze
 
   def perform
     @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
@@ -38,7 +38,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       SiteChannelDetails,
       RedditChannelDetails,
       VimeoChannelDetails,
-      TwitterChannelDetails
+      TwitterChannelDetails,
     ].map { |x| x.const_get('PREFIX') if x.const_defined?('PREFIX') }.compact
 
     counts = { site: {}, all_channels: {} }
@@ -46,7 +46,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
 
     results.each do |channel|
       status = channel.second
-      next unless status.present?
+      next if status.blank?
 
       entry = channel.first.split(':').first + ":"
       entry = :site if counts.keys.exclude?(entry)
@@ -68,7 +68,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
 
     # Generates the totals for each property
     statistical_totals.keys.map do |k|
-      statistical_totals[k][:total] = statistical_totals[k].sum { |k, v| v }
+      statistical_totals[k][:total] = statistical_totals[k].sum { |_, v| v }
     end
 
     loop do

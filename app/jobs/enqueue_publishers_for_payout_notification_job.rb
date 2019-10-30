@@ -9,7 +9,7 @@ class EnqueuePublishersForPayoutNotificationJob < ApplicationJob
     else
       publishers = Publisher.with_verified_channel.not_suspended
     end
-    
+
     publishers.find_each do |publisher|
       IncludePublisherInPayoutReportJob.perform_later(payout_report_id: nil,
                                                       publisher_id: publisher.id,
