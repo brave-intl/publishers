@@ -89,7 +89,6 @@ module Publishers
     def destroy
       publisher = current_publisher
       publisher.uphold_connection.disconnect_uphold
-      DisconnectUpholdJob.perform_later(publisher_id: publisher.id)
 
       head :no_content
     end

@@ -30,9 +30,9 @@ class PublishersHelperTest < ActionView::TestCase
   class FakePublisher
     attr_reader :default_currency, :wallet, :uphold_connection
 
-    def initialize(wallet_info:, accounts: [], transactions: [], uphold_connection: nil)
+    def initialize(rates: {}, accounts: [], transactions: [], uphold_connection: nil)
       @uphold_connection = UpholdConnection.new(uphold_connection)
-      @wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions, uphold_connection: @uphold_connection) if wallet_info
+      @wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, uphold_connection: @uphold_connection)
     end
 
     def become_subclass
@@ -68,51 +68,31 @@ class PublishersHelperTest < ActionView::TestCase
       uphold_connection: {
         default_currency: 'USD'
       },
-      wallet_info: {
-        "status" => {
-          "provider" => "uphold"
-        },
-        "contributions" => {
-          "amount" => "9001.00",
-          "currency" => "USD",
-          "altcurrency" => "BAT",
-          "probi" => "38077497398351695427000"
-        },
-        "rates" => {
+      rates: {
+        "payload" => {
           "BTC" => 0.00005418424016883016,
           "ETH" => 0.000795331082073117,
           "USD" => 0.2363863335301452,
           "EUR" => 0.20187818378874756,
-          "GBP" => 0.1799810085548496
+          "GBP" => 0.1799810085548496,
         },
-        "lastSettlement"=>
-          {"altcurrency"=>"BAT",
-           "currency"=>"USD",
-           "probi"=>"405520562799219044167",
-           "amount"=>"69.78",
-           "timestamp"=>1536361540000},
-        "wallet" => {
-          "provider" => "uphold",
-          "authorized" => true,
-          "defaultCurrency" => 'USD',
-        }
       },
       accounts: [
         {
           "account_id" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
           "account_type" => "owner",
-          "balance" => "58.217204799751874334"
+          "balance" => "58.217204799751874334",
         }
       ],
       transactions:[
         {
           "created_at" => "2018-11-07 00:00:00 -0800",
-          "description"=>"payout for referrals",
-          "channel"=>"publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
-          "amount"=>"-94.617182149806375904",
-          "settlement_currency"=>"ETH",
-          "settlement_amount"=>"18.81",
-          "type"=>"referral_settlement"
+          "description" => "payout for referrals",
+          "channel" => "publishers#uuid:0a16cdb5-90c4-437a-b4fd-1445f82b2f6b",
+          "amount" => "-94.617182149806375904",
+          "settlement_currency" => "ETH",
+          "settlement_amount" => "18.81",
+          "type" => "referral_settlement"
         }
       ]
     )
@@ -127,13 +107,12 @@ class PublishersHelperTest < ActionView::TestCase
     assert_equal publisher_converted_last_settlement_balance(publisher), "~ 18.81 ETH"
 
     publisher = FakePublisher.new(
-      wallet_info: nil,
+      rates: {},
       accounts: [],
       transactions: [],
       uphold_connection: { default_currency: 'USD' }
     )
 
-    assert_nil publisher.wallet
     assert_equal "USD unavailable", publisher_converted_overall_balance(publisher)
   end
 

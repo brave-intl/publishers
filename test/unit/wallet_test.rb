@@ -7,24 +7,13 @@ require "eyeshade/referral_balance"
 require "eyeshade/last_settlement_balance"
 
 class WalletTest < ActiveSupport::TestCase
-  wallet_info = {
-      "rates" => {
+  rate_info = {
+      "payload" => {
           "BTC" => 0.00005418424016883016,
           "ETH" => 0.000795331082073117,
           "USD" => 0.2363863335301452,
           "EUR" => 0.20187818378874756,
           "GBP" => 0.1799810085548496
-      },
-      "status" => {
-          "provider" => "uphold",
-          "action" => "re-authorize"
-      },
-      "wallet" => {
-          "provider" => "uphold",
-          "authorized" => true,
-          "defaultCurrency" => 'USD',
-          "possibleCurrencies" => [ 'USD', 'EUR', 'BTC', 'ETH', 'BAT' ],
-          "scope" => 'cards:write'
       }
   }
 
@@ -175,8 +164,7 @@ class WalletTest < ActiveSupport::TestCase
                    "settlement_currency"=>"ETH",
                    "type"=>"contribution"}]
 
-  test_wallet = Eyeshade::Wallet.new(wallet_info: wallet_info, accounts: accounts, transactions: transactions, uphold_connection: UpholdConnection.new(default_currency: 'USD'))
-  empty_wallet = Eyeshade::Wallet.new(wallet_info: {}, accounts: {}, uphold_connection: nil)
+  test_wallet = Eyeshade::Wallet.new(rates: rate_info, accounts: accounts, transactions: transactions, uphold_connection: UpholdConnection.new(default_currency: 'USD'))
 
   test "channel_balances have correct BAT and probi amounts" do
     assert_equal test_wallet.channel_balances.count, 2
@@ -215,14 +203,5 @@ class WalletTest < ActiveSupport::TestCase
     assert_equal last_settlement_balance.timestamp, 1544169600
     assert_equal last_settlement_balance.amount_bat.to_s, "749.007010384244866026"
     assert_equal last_settlement_balance.amount_settlement_currency.to_s, "151.24"
-  end
-
-  test "handles initialization with empty wallet details" do
-    assert empty_wallet.address.is_a?(String)
-  end
-
-  test "parses wallet status and details" do
-    assert_equal "uphold", test_wallet.provider
-    assert_equal 'cards:write', test_wallet.scope
   end
 end

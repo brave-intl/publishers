@@ -1,9 +1,4 @@
 module EyeshadeHelper
-  def stub_eyeshade_wallet_response(publisher:, wallet: {})
-    stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-      to_return(status: 200, body: wallet.to_json, headers: {})
-  end
-
   def stub_eyeshade_transactions_response(publisher:, transactions: [])
     stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions").
       to_return(status: 200, body: transactions.to_json, headers: {})
@@ -21,7 +16,6 @@ module EyeshadeHelper
   end
 
   def stub_all_eyeshade_wallet_responses(publisher:, wallet: {}, balances: [], transactions: [])
-    stub_eyeshade_wallet_response(publisher: publisher, wallet: wallet)
     stub_eyeshade_transactions_response(publisher: publisher, transactions: transactions)
     stub_eyeshade_balances_response(publisher: publisher, balances: balances)
   end
