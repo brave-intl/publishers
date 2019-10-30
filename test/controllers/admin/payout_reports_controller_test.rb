@@ -85,7 +85,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
       to_return(status: 200, body: balance_response)
-    assert_difference("PayoutReport.count", 1) do
+    assert_difference("PayoutReport.count", 2) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do
         perform_enqueued_jobs do
           post admin_payout_reports_path
@@ -136,7 +136,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456&pending=true").
       to_return(status: 200, body: balance_response)
 
-    assert_difference("PayoutReport.count", 1) do
+    assert_difference("PayoutReport.count", 2) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do
         perform_enqueued_jobs do
           post admin_payout_reports_path(final: true)
@@ -224,7 +224,7 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
 
     stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balances)
 
-    assert_difference("PayoutReport.count", 1) do
+    assert_difference("PayoutReport.count", 2) do
       assert_difference("ActionMailer::Base.deliveries.count", 0) do
         perform_enqueued_jobs do
           post admin_payout_reports_path(final: true, should_send_notifications: true)

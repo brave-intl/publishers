@@ -4,7 +4,7 @@ require 'send_grid/api_helper'
 # Registers each email address with SendGrid
 class SendGridRegistrar < BaseService
 
-  def initialize(publisher, prior_email = nil)
+  def initialize(publisher:, prior_email: nil)
     @publisher = publisher
     @prior_email = prior_email
   end

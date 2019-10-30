@@ -1,4 +1,4 @@
-class JsonBuilders::PaypalPayoutJsonBuilder
+class JsonBuilders::PaypalPayoutReportJsonBuilder
   def initialize(payout_report:)
     @payout_report = payout_report
   end
