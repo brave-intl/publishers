@@ -24,10 +24,10 @@ class ContactForm extends React.Component<any, IContactFormState> {
     super(props);
 
     this.state = {
-      email: this.props.pending_email || this.props.email,
+      email: this.props.email,
       isEditMode: false,
       name: this.props.name,
-      pendingEmail: this.props.pending_email
+      pendingEmail: this.props.pending_email || this.props.email
     };
   }
 
@@ -35,16 +35,20 @@ class ContactForm extends React.Component<any, IContactFormState> {
     this.setState({ isEditMode: true });
   };
 
+  public setName = (e) => {
+    this.setState({ name: e.target.value });
+  };
+
+  public setPendingEmail = (e) => {
+    this.setState({ pendingEmail: e.target.value });
+  };
+
   public cancelEdit = () => {
     this.setState({ isEditMode: false });
   };
 
-  public save = (name, email) => {
-    let pendingEmail = this.state.pendingEmail;
-    if (email !== this.props.email) {
-      pendingEmail = email;
-    }
-    this.setState({ name, pendingEmail, isEditMode: false });
+  public save = () => {
+    this.setState({ isEditMode: false });
   };
 
   public render() {
@@ -63,6 +67,8 @@ class ContactForm extends React.Component<any, IContactFormState> {
           <EditForm
             {...this.state}
             cancelEdit={this.cancelEdit}
+            setPendingEmail={this.setPendingEmail}
+            setName={this.setName}
             save={this.save}
           />
         )}
@@ -72,7 +78,7 @@ class ContactForm extends React.Component<any, IContactFormState> {
             <div>{this.state.name}</div>
             <div>{this.props.email}</div>
 
-            {this.state.pendingEmail && (
+            {this.state.pendingEmail && this.state.pendingEmail !== this.props.email && (
               <div className="alert alert-warning mt-2">
                 <FormattedMessage
                   id="settings.contact.pendingEmail"
@@ -89,20 +95,18 @@ class ContactForm extends React.Component<any, IContactFormState> {
   }
 }
 
+
 const EditForm = props => {
   const intl = useIntl();
-  const [name, setName] = React.useState(props.name);
-  const [email, setEmail] = React.useState(props.pending_email || props.email);
   const [error, setError] = React.useState(null);
   const [isLoading, setLoading] = React.useState(false);
 
   const submit = async event => {
     setLoading(true);
-    event.preventDefault();
 
     const data = new FormData();
-    data.append("publisher[name]", name);
-    data.append("publisher[pending_email]", email);
+    data.append("publisher[name]", props.name);
+    data.append("publisher[pending_email]", props.pendingEmail);
     data.append("_method", "patch");
 
     await fetch(routes.publishers.update.path, {
@@ -126,10 +130,10 @@ const EditForm = props => {
       response
         .json()
         .then(json => {
-          props.save(name, email);
+          props.save();
         })
         .catch(e => {
-          setError(e);
+          setError(e.message);
         });
     });
   };
@@ -141,8 +145,8 @@ const EditForm = props => {
           <FormattedMessage id="settings.contact.name" />
         </label>
         <input
-          value={name}
-          onChange={e => setName(e.target.value)}
+          value={props.name}
+          onChange={props.setName}
           className="form-control"
         />
       </div>
@@ -151,11 +155,13 @@ const EditForm = props => {
           <FormattedMessage id="settings.contact.email" />
         </label>
         <input
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          type="email"
+          value={props.pendingEmail}
+          onChange={props.setPendingEmail}
           className="form-control"
         />
       </div>
+
       <div className="button form-group">
         <input
           type="submit"
