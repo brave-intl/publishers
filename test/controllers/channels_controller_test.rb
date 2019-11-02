@@ -51,9 +51,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
 
     post promo_registrations_path
 
-    assert_enqueued_jobs(1) do
-      Promo::RegisterChannelForPromoJob.perform_now(channel_id: publisher.channels.first.id)
-    end
+    Promo::RegisterChannelForPromoJob.perform_now(channel_id: publisher.channels.first.id)
     assert_not_nil publisher.channels.first.promo_registration.referral_code
 
     assert_difference("publisher.channels.count", 0) do

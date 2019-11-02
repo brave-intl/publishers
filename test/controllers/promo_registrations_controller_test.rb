@@ -71,9 +71,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     channel = publisher.channels.first
 
-    assert_enqueued_jobs(1) do
-      Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel.id)
-    end
+    Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel.id)
 
     perform_enqueued_jobs do
       PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_now
