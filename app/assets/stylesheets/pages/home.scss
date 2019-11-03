@@ -344,6 +344,20 @@
       height: 100%;
     }
 
+    &--header-with-image {
+      padding: 4px 0 4px;
+      font-size: 20px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-basis: 50%;
+      font-weight: 600;
+    }
+
+    &--header-image {
+      margin-right: 10px;
+    }
+
     &--header {
       padding: 4px 0 4px;
       font-size: 20px;

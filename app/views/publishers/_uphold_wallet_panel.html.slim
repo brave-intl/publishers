@@ -29,7 +29,7 @@
   .dashboard-panel--content#uphold_dashboard
     .deposit-currency.field
       label= t ".deposit_currency_label"
-      .value#default_currency_code= @publisher.uphold_connection.default_currency.present? ? @publisher.uphold_connection.default_currency : t(".uphold.no_currency_selected")
+      .value#default_currency_code= @publisher.uphold_connection.default_currency.present? ? @publisher.uphold_connection.default_currency : t(".no_currency_selected")
       .action
         span= "("
         a#change_default_currency href="#"

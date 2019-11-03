@@ -1,5 +1,7 @@
 .dashboard-panel--wrapper
-  .dashboard-panel--header
+  .dashboard-panel--header-with-image
+    .dashboard-panel--header-image
+      = image_tag("wallet@2x.png", width: 30, height: 30)
     = t ".heading"
   .dashboard-panel--content
     .status-summary
