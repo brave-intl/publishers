@@ -10,6 +10,7 @@ import Arrow from "./Arrow";
 import Information from "./Information";
 
 import routes from "../../views/routes";
+import { nullLiteral } from "@babel/types";
 
 interface IReferralGroupsState {
   isLoading: boolean;
@@ -20,6 +21,7 @@ interface IReferralGroupsState {
     currency: string;
     count: number;
   }>;
+  lastUpdated: string;
   month: string;
   totals: {
     finalized: number;
@@ -42,6 +44,7 @@ export default class ReferralPanel extends React.Component<
       groups: [],
       isLoading: true,
       month: moment().format("MMMM YYYY"),
+      lastUpdated: null,
       totals: {
         finalized: 0,
         first_runs: 0,
@@ -60,8 +63,10 @@ export default class ReferralPanel extends React.Component<
 
   public async loadGroups() {
     await fetch(
-      routes.publishers.promo_registrations.overview.path +
-        `?month=${this.state.month}`,
+      routes.publishers.promo_registrations.overview.path.replace(
+        "{id}",
+        this.props.publisherId
+      ) + `?month=${this.state.month}`,
       {
         headers: {
           Accept: "application/json",
@@ -76,6 +81,7 @@ export default class ReferralPanel extends React.Component<
       response.json().then(json => {
         this.setState({
           groups: json.groups,
+          lastUpdated: json.lastUpdated,
           isLoading: false,
           totals: json.totals
         });
@@ -107,7 +113,9 @@ export default class ReferralPanel extends React.Component<
           <div className="promo-period">
             <select onChange={this.setMonth} value={this.state.month}>
               {this.monthOptions().map(month => (
-                <option key={month} value={month}>{month}</option>
+                <option key={month} value={month}>
+                  {month}
+                </option>
               ))}
             </select>
           </div>
@@ -128,12 +136,22 @@ export default class ReferralPanel extends React.Component<
             <Groups groups={this.state.groups} />
           </div>
         </div>
-        <div className="promo-info">
+        <div className="row promo-info mb-2">
           <Information />
           <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">
             <FormattedMessage id="homepage.referral.details" />
           </a>
         </div>
+        <small
+          style={{
+            position: "absolute",
+            right: "1.5rem",
+            bottom: "0.5rem",
+            color: "rgba(255,255,255, 0.7)"
+          }}
+        >
+          {this.state.lastUpdated}
+        </small>
       </>
     );
 
@@ -194,14 +212,17 @@ const Groups = props => (
 );
 
 document.addEventListener("DOMContentLoaded", () => {
+  const element = document.getElementById("react-promo-panel");
+  const props = JSON.parse(element.dataset.props);
+
   moment.locale(document.body.dataset.locale);
   ReactDOM.render(
     <IntlProvider
       locale={document.body.dataset.locale}
       messages={flattenMessages(en)}
     >
-      <ReferralPanel />
+      <ReferralPanel {...props} />
     </IntlProvider>,
-    document.getElementById("react-promo-panel")
+    element
   );
 });

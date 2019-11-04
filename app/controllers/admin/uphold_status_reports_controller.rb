@@ -19,7 +19,7 @@ module Admin
       generated = []
       generated << ["publisher id", "publisher created at", "uphold id", "uphold connected time"].to_csv
 
-      uphold_status_reports.each do |report|
+      uphold_status_reports.find_each do |report|
         generated << [report.publisher_id, report.publisher.created_at, report.uphold_id, report.created_at].to_csv
       end
 
@@ -27,4 +27,3 @@ module Admin
     end
   end
 end
-
