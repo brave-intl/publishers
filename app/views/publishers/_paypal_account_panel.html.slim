@@ -9,36 +9,36 @@
     .deposit-date-explanation
       = t ".deposit_date_explanation"
     - if @publisher.paypal_connection.verified_account?
-      .d-flex
+      .d-flex.justify-content-between
         .payout-connected-highlight
           span &#9679;&nbsp
           = t(".connected")
           span &nbsp&#8226;&nbsp
           = @publisher.paypal_connection.email
         .payout-account-disconnect-button
-          span &nbsp&#124&nbsp
           = link_to t(".disconnect"), paypal_account_disconnect_path(@publisher.paypal_connection.id)
       br
   - if @publisher.paypal_connection.present? && @publisher.paypal_connection.verified_account?
-    .dashboard-panel--content
-      .last-deposit-date.field
-        label= t ".last_deposit_date"
-        .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher)
     .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
-      .last-deposit
-        = t ".last_deposit"
-        .amounts
-          .bat
+      .last-deposit-v2.d-flex.justify-content-between
+        .last-deposit-v2--label
+          = t ".last_deposit"
+        .d-flex.justify-content-start.flex-column
+          div.last-deposit-v2--amount
             - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
-            span.bat-amount#last_deposit_bat_amount= last_deposit_balance
+            span = last_deposit_balance
             - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
-              span.bat-code= " BAT"
-          .converted#last_deposit_converted_amount
-            = publisher_converted_last_settlement_balance(@publisher)
+              span = " BAT POINT"
+          div.last-deposit-v2--date
+            label = t(".last_deposit_date") + publisher_last_settlement_date(@publisher)
   .wide-action
     - if @publisher.paypal_connection.nil?
       = link_to t(".connect_with_paypal"),
         "#{Rails.application.secrets[:paypal_api_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fconnect_callback",
+        class: "btn btn-block btn-primary"
+    - elsif @publisher.paypal_connection.verified_account?
+      = link_to t(".view_account_summary"),
+        "https://www.paypal.com/myaccount/summary",
         class: "btn btn-block btn-primary"
 
   - if @publisher.paypal_connection.present? && !@publisher.paypal_connection.verified_account?

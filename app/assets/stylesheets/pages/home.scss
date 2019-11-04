@@ -488,6 +488,21 @@
         display: none;
       }
 
+      .last-deposit-v2 {
+        font-size: 13px;
+        font-family: $headings-font-family;
+        margin-left: 20px;
+        &--label {
+          font-size: 16px;
+        }
+        &--amount {
+          font-size: 16px;
+        }
+        &--date {
+          color: $braveGray-6;
+        }
+      }
+
       .last-deposit {
         font-size: $font-size-base;
         vertical-align: top;
@@ -1230,6 +1245,7 @@ h6 {
   font-size: 13px;
   margin-left: 20px;
   margin-right: 40px;
+  margin-bottom: 5px;
 }
 
 .screenshot {
