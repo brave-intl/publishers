@@ -345,6 +345,7 @@
     }
 
     &--header-with-image {
+      margin-left: -10px;
       padding: 4px 0 4px;
       font-size: 20px;
       display: flex;
@@ -1236,6 +1237,7 @@ h6 {
 }
 
 .payout-connected-highlight {
+  margin-left: 20px;
   font-size: 14px;
   color: #14cd86;
 }
