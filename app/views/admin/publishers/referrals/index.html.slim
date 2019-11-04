@@ -1,6 +1,9 @@
+.mt-5#publisherHeader data-props=@navigation_view
+
 - if @publisher.promo_registrations.present?
   = hidden_field_tag 'referrals-hidden-tags', @publisher.promo_registrations.has_stats.pluck(:referral_code).to_json
   = hidden_field_tag 'publisher_id', @publisher.id
+
 .row
   .col.bot-marg
     .dashboard-panel--wrapper
