@@ -250,6 +250,20 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert contested_by_channel.valid?
   end
 
+  test 'if the same channel is trying to be registered twice' do
+    channel = channels(:twitch_verified)
+
+    new_channel = Channel.new(publisher: publishers(:twitch_verified), verified: true)
+    new_channel.details = TwitchChannelDetails.new(
+      twitch_channel_id: channel.details.twitch_channel_id,
+      name: channel.details.name,
+      display_name: channel.details.display_name,
+    )
+
+    refute new_channel.valid?
+    assert_equal "already exists on your account", new_channel.errors.messages[:base][0]
+  end
+
   test "if channel is a duplicate of a verified channel it must be contested youtube" do
     channel = channels(:youtube_new)
     contested_by_channel = Channel.new(publisher: publishers(:small_media_group))

@@ -151,7 +151,7 @@ class Admin::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     get admin_publishers_path, headers: { 'REMOTE_ADDR' => '1.2.3.4' } # not on whitelist
 
-    assert_template "admin/errors/whitelist.html"
+    assert_template "admin/errors/whitelist"
   end
 
   test "admins can approve channels waiting for admin approval" do
