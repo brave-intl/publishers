@@ -1,11 +1,13 @@
 .dashboard-panel--wrapper
   .dashboard-panel--header-with-image
     .dashboard-panel--header-image
-      = image_tag("wallet@2x.png", width: 40, height: 40)
+      = image_tag("wallet@2x.png", width: 35, height: 35)
     = t ".heading"
     .dashboard-panel--header-right-aligned-image
       = image_tag("paypal-logo.jpg", width: 55, height: 55)
   .dashboard-panel--content
+    .deposit-date-explanation
+      = t ".deposit_date_explanation"
     .status-summary
       - if @publisher.paypal_connection.present?
         = @publisher.paypal_connection.email

@@ -355,7 +355,13 @@
     }
 
     &--header-image {
-      margin-right: 10px;
+      margin-top: -10px;
+      margin-right: 15px;
+    }
+
+    &--header-right-aligned-image {
+      margin-top: -15px;
+      margin-left: auto;
     }
 
     &--header {
@@ -410,6 +416,8 @@
   h4.balance-header {
     font-size: 13px;
   }
+
+
 
   #uphold_status {
     #uphold_status_display {
@@ -1210,6 +1218,11 @@ h6 {
     filter: brightness(5) grayscale(1)
       drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.3));
   }
+}
+
+.deposit-date-explanation {
+  color: $braveGray-5;
+  margin-left: 20px
 }
 
 .screenshot {
