@@ -419,8 +419,8 @@
 
 
 
-  #uphold_status {
-    #uphold_status_display {
+  #payout_account_status {
+    #payout_account_status_display {
       vertical-align: top;
       margin-bottom: 5px;
     }
@@ -453,6 +453,9 @@
         .disconnect-uphold {
           color: $braveText-4;
         }
+      }
+      .wide-action {
+
       }
     }
 
@@ -1222,6 +1225,7 @@ h6 {
 
 .deposit-date-explanation {
   color: $braveGray-5;
+  font-size: 14px;
   margin-left: 20px
 }
 

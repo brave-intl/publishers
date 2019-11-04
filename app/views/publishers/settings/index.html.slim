@@ -10,15 +10,7 @@
             = f.check_box 'thirty_day_login', checked: current_publisher.thirty_day_login?, class: "form-check-input", onchange: "this.form.submit()"
             span.slider.round
 br
-.single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
-  .single-panel--padded-content--short-padding
-    .d-flex
-      .mr-auto.p-2
-        p= t ".paypal_payout.intro"
-      .p-2
-        = link_to image_tag("https://www.paypalobjects.com/webstatic/en_US/developer/docs/login/connectwithpaypalbutton.png"), "https://www.sandbox.paypal.com/connect?flowEntry=static&client_id=#{ENV['PAYPAL_CLIENT_ID']}&scope=openid&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fconnect_callback"
 
-br
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
   .single-panel--padded-content--short-padding
     .row

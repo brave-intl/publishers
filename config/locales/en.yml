@@ -571,13 +571,14 @@ en:
     paypal_account_panel:
       change: Change
       check_balance: Check Balance
-      connect_to_a_new_account: Connect to a new Uphold account
+      connect_with_paypal: Connect with Paypal
       connect: Connect
       connected: Connected Bank Account
       deposit_currency_label: "Deposit Currency: "
       deposit_currency: "BAT to "
+      deposit_date_explanation: Contribution balance gets deposited into your connected account at the 8th of every month.
       disconnect: Disconnect
-      heading: Your Paypal account
+      heading: Your Deposit Account
       last_deposit: LAST DEPOSIT
       last_deposit_date: "Last Deposit Date: "
       no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
