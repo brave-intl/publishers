@@ -5,15 +5,20 @@
     = t ".heading"
     .dashboard-panel--header-right-aligned-image
       = image_tag("paypal-logo.jpg", width: 55, height: 55)
-  .dashboard-panel--content
+  .dashboard-panel--content#payout_account_status_display
     .deposit-date-explanation
       = t ".deposit_date_explanation"
-    .status-summary
-      - if @publisher.paypal_connection.verified_account?
-        .text = t(".connected")
-        - if @publisher.paypal_connection.present?
+    - if @publisher.paypal_connection.verified_account?
+      .d-flex
+        .payout-connected-highlight
+          span &#9679;&nbsp
+          = t(".connected")
+          span &nbsp&#8226;&nbsp
           = @publisher.paypal_connection.email
-        br
+        .payout-account-disconnect-button
+          span &nbsp&#124&nbsp
+          = link_to t(".disconnect"), paypal_account_disconnect_path(@publisher.paypal_connection.id)
+      br
   - if @publisher.paypal_connection.present? && @publisher.paypal_connection.verified_account?
     .dashboard-panel--content
       .last-deposit-date.field

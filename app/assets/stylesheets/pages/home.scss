@@ -610,6 +610,7 @@
       }
     }
 
+
     &.uphold-reauthorization-needed,
     &.uphold-timeout {
       .status-summary .text {
@@ -1225,12 +1226,22 @@ h6 {
 
 .deposit-date-explanation {
   color: $braveGray-5;
-  font-size: 14px;
-  margin-left: 20px
+  font-size: 13px;
+  margin-left: 20px;
+  margin-right: 40px;
 }
 
 .screenshot {
   max-width: 300px;
+}
+
+.payout-connected-highlight {
+  font-size: 14px;
+  color: #14cd86;
+}
+
+.payout-account-disconnect-button {
+  font-size: 14px;
 }
 
 .payout-progress {
