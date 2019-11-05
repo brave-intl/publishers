@@ -240,15 +240,6 @@ module PublishersHelper
     end
   end
 
-  # Albert Wang: It seems there's only 2 states: true or false
-  def paypal_status_summary(publisher)
-    if publisher.paypal_connection&.verified_account
-      I18n.t("publishers.paypal_account_panel.connected")
-    else
-      I18n.t("publishers.paypal_account_panel.unconnected_bank_account")
-    end
-  end
-
   def uphold_status_description(publisher)
     case publisher.uphold_connection&.uphold_status
     when :verified
