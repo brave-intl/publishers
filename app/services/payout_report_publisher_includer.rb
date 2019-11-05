@@ -9,7 +9,6 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if Rails.env.development?
     return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold?
     uphold_connection = @publisher.uphold_connection
     return if uphold_connection.japanese_account?

@@ -3,7 +3,6 @@ class IncludePublisherInPayoutReportJob < ApplicationJob
 
   def perform(payout_report_id:, publisher_id:, should_send_notifications:)
 
-    return if Rails.env.development?
     # If payout_report_id is not present, we only want to send notifications
     # not create payments
     if payout_report_id.present?
