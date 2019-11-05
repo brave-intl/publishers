@@ -581,10 +581,13 @@ en:
       heading: Your Deposit Account
       last_deposit: "Last Deposit:"
       last_deposit_date: "made on "
-      view_account_summary: "Check Balance"
+      link_bank_account: Link Bank Account
+      need_bank_account: At least one bank account needs to be linked to your Paypal account in order to receive payments.
       no_deposit_made_yet: "No deposit has been made yet"
+      refresh_account_label: I've linked one already.
+      refresh_account_button: Check again.
       still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
-      unconnected_bank_account: Bank account isn't verified with Paypal. Please add and click to refresh.
+      view_account_summary: "Check Balance"
     channel:
       added: added %{date}
       remove_verified: Remove channel

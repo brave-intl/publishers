@@ -342,6 +342,15 @@
       border-radius: $brave-panels-borderRadius;
       box-shadow: $defaultBoxShadow;
       height: 100%;
+
+      .wide-action {
+        margin-left: 15px;
+      }
+
+      .minor-action {
+        font-size: 13px;
+        margin-top: 5px;
+      }
     }
 
     &--header-with-image {
@@ -455,9 +464,6 @@
           color: $braveText-4;
         }
       }
-      .wide-action {
-
-      }
     }
 
     .field {
@@ -500,6 +506,9 @@
         }
         &--date {
           color: $braveGray-6;
+        }
+        &--no-payout-account {
+          color: #ff3f3f;
         }
       }
 
