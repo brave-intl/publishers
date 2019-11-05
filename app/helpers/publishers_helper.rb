@@ -131,6 +131,7 @@ module PublishersHelper
     if last_settlement_balance&.amount_bat.present?
       '%.2f' % last_settlement_balance.amount_bat
     else
+      I18n.t("helpers.publisher.no_deposit")
     end
   rescue => e
     require "sentry-raven"

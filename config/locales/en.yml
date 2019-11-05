@@ -582,8 +582,7 @@ en:
       last_deposit: "Last Deposit:"
       last_deposit_date: "made on "
       view_account_summary: "Check Balance"
-      no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
-      no_currency_selected: None selected
+      no_deposit_made_yet: "No deposit has been made yet"
       still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
       unconnected_bank_account: Bank account isn't verified with Paypal. Please add and click to refresh.
     channel:
