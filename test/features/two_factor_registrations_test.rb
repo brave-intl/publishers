@@ -40,7 +40,6 @@ class TwoFactorRegistrationsTest < Capybara::Rails::TestCase
     assert_content page, "My U2F Key" # Key is present
     refute_content page, "No keys have been added" # "No key" warning is not visible
 
-    puts "Cory - These deprecations are a race condition on the page, learn more in TwoFactorRegistrationsTest"
     click_link('Remove') # Disable TOTP
 
     wait_until { page.find('.js-shared-modal :first-child', match: :first, visible: :all).visible? }

@@ -247,7 +247,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
       it "sends email to connect uphold" do
         email = ActionMailer::Base.deliveries.last
-        assert_equal email&.subject, I18n.t("publisher_mailer.wallet_not_connected.subject")
+        assert_equal email&.subject, I18n.t("publisher_mailer.wallet_not_connected.subject", total_amount: 975.0)
       end
     end
   end

@@ -355,7 +355,7 @@ class Publisher < ApplicationRecord
   end
 
   def pending_email_can_not_be_in_use
-    if pending_email && self.class.where(email: pending_email).count > 0
+    if pending_email && Publisher.unscoped.where(email: pending_email).count > 0
       errors.add(:pending_email, "is taken")
     end
   end

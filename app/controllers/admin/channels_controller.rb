@@ -19,14 +19,27 @@ module Admin
 
       case params[:type]
       when 'website'
-          @channels = @channels.site_channels
+        @channels = @channels.site_channels
       when 'youtube'
-          @channels = @channels.youtube_channels
+        @channels = @channels.youtube_channels
       when 'twitch'
-          @channels = @channels.twitch_channels
+        @channels = @channels.twitch_channels
       end
 
       @channels = @channels.paginate(page: params[:page])
+    end
+
+    def destroy
+      channel = Channel.find(params[:id])
+
+      PublisherNote.create(
+        publisher: channel.publisher,
+        created_by: channel.publisher,
+        note: "The channel #{channel.publication_title} at #{channel.details&.url} was deleted by #{current_user.email}"
+      )
+
+      @channel_id = channel.id
+      DeletePublisherChannelJob.perform_now(channel_id: @channel_id)
     end
 
     def duplicates
