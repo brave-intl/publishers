@@ -2,7 +2,7 @@ export default {
   homepage: {
     referral: {
       confirmed: "確認済み",
-      details: 'See details for the areas in each group',
+      details: '各グループのエリアの詳細を見る',
       downloaded: "ダウンロード済み",
       group: 'グループ',
       installed: "インストール済み",
@@ -14,10 +14,10 @@ export default {
     contact: {
       edit: "編集",
       email: '新しいメール',
-      error: "Unable to change email; the email address may be in use. Please enter a different email address.",
-      heading: "Contact",
-      name: '指名',
-      pendingEmail: "Email address has been updated to: {email}. An email has been sent to this address to confirm this change.",
+      error: "メールアドレスを変更できません。 メールアドレスが既に使用されている可能性があります。 別のメールアドレスを入力してください。",
+      heading: "コンタクト",
+      name: '氏名',
+      pendingEmail: "メールアドレスが {email} に更新されました。 この変更を確認するために、このアドレスにメールが送信されました。",
     },
   },
   shared: {
