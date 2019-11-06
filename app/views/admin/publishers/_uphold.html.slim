@@ -10,8 +10,8 @@ h3.text-dark.d-flex.align-items-center
       tr
         td Status
         td
-          #payout_account_status class=payout_account_status_class(@publisher)
-            #payout_account_status_display
+          #uphold_status class=uphold_status_class(@publisher)
+            #uphold_status_display
               .status-summary
                 .text= uphold_status_summary(@publisher)
                 - unless @publisher.uphold_connection.status == "ok"

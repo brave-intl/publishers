@@ -5,7 +5,7 @@
     = t ".heading"
     .dashboard-panel--header-right-aligned-image
       = image_tag("paypal-logo.jpg", width: 55, height: 55)
-  .dashboard-panel--content#payout_account_status_display
+  .dashboard-panel--content#uphold_status_display
     .deposit-date-explanation
       = t ".deposit_date_explanation"
     - if @publisher.paypal_connection.present?
