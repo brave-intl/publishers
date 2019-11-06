@@ -20,6 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  bat_in_locale: BAT
   shared:
     add_channel: Add Channel
     app_title: Brave Rewards | Creators
@@ -572,6 +573,7 @@ en:
       change: Change
       no_currency_selected: None selected
     paypal_account_panel:
+      bat_points: BAT Points
       change: Change
       check_balance: Check Balance
       connect_with_paypal: Connect with Paypal
