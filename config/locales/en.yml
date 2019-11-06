@@ -577,8 +577,6 @@ en:
       connect_with_paypal: Connect with Paypal
       connect: Connect
       connected: Connected
-      deposit_currency_label: "Deposit Currency: "
-      deposit_currency: "BAT to "
       deposit_date_explanation: Contribution balance gets deposited into your connected account at the 8th of every month.
       disconnect: Disconnect
       heading: Your Deposit Account
