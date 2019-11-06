@@ -5,8 +5,8 @@ module Views
       # include PromosHelper
       # include PublishersHelper
 
-      attr_accessor :earning_period, :payment_date, :destination, :amount, :deposited,
-        :currency, :details, :settled_transactions, :raw_transactions, :name, :email
+      attr_accessor :earning_period, :payment_date, :destination, :total_earned, :deposited,
+        :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :total_bat_deposited
 
       def initialize(attributes = {})
         super
@@ -18,7 +18,6 @@ module Views
           earning_period: earning_period,
           payment_date: payment_date,
           destination: destination,
-          amount: amount,
           deposited: deposited,
           currency: currency,
           details: details,
@@ -26,6 +25,9 @@ module Views
           email: email,
           isOpen: false,
           rawTransactions: raw_transactions,
+          totalEarned: total_earned,
+          totalFees: total_fees,
+          totalBATDeposited: total_bat_deposited,
         }
       end
 

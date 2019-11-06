@@ -45,7 +45,7 @@ class Publisher < ApplicationRecord
   attr_encrypted :authentication_token, key: :encryption_key
 
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
-  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? && !deleted? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !deleted? }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
   validate :pending_email_must_be_a_change, unless: -> { deleted? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
@@ -355,7 +355,7 @@ class Publisher < ApplicationRecord
   end
 
   def pending_email_can_not_be_in_use
-    if pending_email && self.class.where(email: pending_email).count > 0
+    if pending_email && Publisher.unscoped.where(email: pending_email).count > 0
       errors.add(:pending_email, "is taken")
     end
   end

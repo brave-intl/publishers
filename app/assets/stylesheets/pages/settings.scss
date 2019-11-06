@@ -1,0 +1,10 @@
+
+.in-place-edit {
+  background: $braveGray-9;
+  border-radius: $brave-panels-borderRadius;
+  padding: 18px;
+
+  .button.form-group a {
+    display: inline-block;
+  }
+}

@@ -332,9 +332,11 @@ en:
         <br/>
         The Brave Rewards | Creator team
     uphold_kyc_incomplete:
-      subject: Please verify your Uphold identity
+      subject: Please verify your Uphold identity to claim your %{total_amount} BAT
       body_html: |
-        <p>To improve the security of Brave Rewards and protect against fraud, we require that creators verify their identity with Uphold.</p> <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will be safely held in your account.</p> <p>Thank you for being a Brave Creator and helping us improve the integrity of the payout system.</p>
+        <p>You have <strong>%{total_amount} BAT</strong> worth of earnings waiting for you to verify your identity with Uphold.
+        <p>To improve the security of Brave Rewards and protect against fraud, we require that creators verify their identity with Uphold.</p>
+        <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will be safely held in your account.</p> <p>Thank you for being a Brave Creator and helping us improve the integrity of the payout system.</p>
       button: Verify wallet
     uphold_member_restricted:
       subject: Uphold account unable to receive funds
@@ -348,8 +350,9 @@ en:
         <p>Congratulations! You are now a verified Brave Rewards creator.</p> <p>Ready to claim your funds? Visit your Brave Rewards dashboard to submit your payment information using the button below.</p>
       button: Log in to Brave Rewards
     wallet_not_connected:
-      subject: Connect a wallet to claim your funds
+      subject: Connect a wallet to claim your %{total_amount} BAT.
       body_html: |
+        <p><span style="font-size: 18px">You've earned <strong>%{total_amount} BAT</strong> from Brave Rewards!</span></p>
         <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
       button: Log in to Brave Rewards
     verify_email:
@@ -396,7 +399,7 @@ en:
         uphold_contribution_settlement: Direct Contributions
         uphold_contribution_settlement_description: The total amount of contributions which were sent directly to your Uphold account from a user with a Brave Rewards connected wallet.
         fees: Fees
-        fees_description: The total amount of the fees taken to support Brave Rewards, and infrastructure costs.
+        fees_description: The total amount of the fees taken from contributions to support Brave Rewards, and infrastructure costs.
         account: Publisher Account
     cases:
       shared:
@@ -687,9 +690,9 @@ en:
     activate:
       header: "Refer Your Fans"
       limited_time_offer: "Limited Time Offer"
-      sub_header_one: "Referral Promo"
+      sub_header_one: "Creator Referral Promo"
       sub_header_two: "and Earn Tokens"
-      description: "Bring your fans to the Brave browser and grow your revenue!"
+      description: "Earn up to $7.50 USD in Basic Attention Tokens for qualified referrals* that download and use Brave with your referral code."
       referral_reward: "1 referral = about 5 USD in tokens"
       button: "Activate promo"
       button-dashboard: "Get Started"
@@ -727,6 +730,7 @@ en:
         downloaded: "Downloads - Intent to download the browser"
         installed: "Installed - Browser installed and opened for the first time"
         confirmed: "Confirmations -  Browser is active for 30+ days"
+      details: <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">See details for the areas in each group</a>
     shared:
       tweet_content: "Hey! If you use the new Brave browser for 30 days, they’ll fund my channel with a bonus! Here’s the link:"
       tweet: "Share on Twitter"
@@ -734,7 +738,7 @@ en:
       promo_period: "Promo period:"
       promo_period_description: "Jan 1 - Feb 1"
       reward: "Reward:"
-      reward_description: "about 5 USD per referral"
+      reward_description: "Up to $7.50 USD in Basic Attention Tokens."
       referral_links: "Share the link to increase referrals"
       referral_link: "Referral Link"
       copy: "Copy"
@@ -745,7 +749,7 @@ en:
       on_vimeo: "on Vimeo"
       on_reddit: "on Reddit"
       on_github: "on GitHub"
-      tos_1: "This referral promo is capped at $1 million in tokens. A qualified referral is a user who downloads the Brave browser using the promo link specific to your channel or web site and uses the browser (minimally) over a 30 day period."
+      tos_1: "* A qualified referral is any user who downloads Brave from your referral page, and proceeds to use the browser for a minimum of 30 days since the browser was first opened."
       tos_2_html: |
         The promotional offers set forth the current terms and conditions for your participation in the Brave Referral Program and are hereby incorporated by reference into the <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service.</a>
   promo_mailer:

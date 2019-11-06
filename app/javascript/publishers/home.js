@@ -5,7 +5,6 @@ import flash from "../utils/flash";
 import { Wallet } from "../wallet";
 import { formatFullDate } from "../utils/dates";
 import { renderBannerEditor } from "../packs/banner_editor";
-import { renderReferralCharts } from "../packs/referral_charts";
 
 // ToDo - import resource strings
 const NO_CURRENCY_SELECTED = "None selected";
@@ -27,16 +26,6 @@ function formatAmount(amount) {
   return (Math.round(parseFloat(amount) * 100) / 100).toFixed(2);
 }
 
-function showPendingContactEmail(pendingEmail) {
-  let pendingEmailNotice = document.getElementById("pending_email_notice");
-  let showContactEmail = document.getElementById("show_contact_email");
-  if (pendingEmail && pendingEmail != showContactEmail.innerText) {
-    pendingEmailNotice.innerText = `Pending: Email address has been updated to: ${pendingEmail}. An email has been sent to this address to confirm this change.`;
-    pendingEmailNotice.classList.remove("hidden");
-  } else {
-    pendingEmailNotice.classList.add("hidden");
-  }
-}
 
 function updateOverallBalance(balance) {
   let batAmount = document.getElementById("bat_amount");
@@ -448,15 +437,6 @@ document.addEventListener("DOMContentLoaded", function() {
     );
   }
 
-  let publisherVisibleCheckbox = document.getElementById("publisher_visible");
-  publisherVisibleCheckbox.addEventListener(
-    "click",
-    function(event) {
-      submitForm("update_publisher_visible_form", "PATCH", true);
-    },
-    false
-  );
-
   let changeDefaultCurrencyLink = document.getElementById(
     "change_default_currency"
   );
@@ -470,21 +450,6 @@ document.addEventListener("DOMContentLoaded", function() {
       false
     );
   }
-
-  let showContact = document.getElementById("show_contact");
-  let showContactName = document.getElementById("show_contact_name");
-  let showContactEmail = document.getElementById("show_contact_email");
-
-  let pendingContactEmail = document.getElementById("pending_contact_email");
-  showPendingContactEmail(pendingContactEmail.innerText);
-
-  let updateContactForm = document.getElementById("update_contact");
-  let updateContactName = document.getElementById("update_contact_name");
-  let updateContactEmail = document.getElementById("update_contact_email");
-
-  let editContact = document.getElementById("edit_contact");
-  let cancelEditContact = document.getElementById("cancel_edit_contact");
-
   let verificationFailureWhatHappenedElements = document.getElementsByClassName(
     "verification-failed--what-happened"
   );
@@ -516,31 +481,6 @@ document.addEventListener("DOMContentLoaded", function() {
     "instant-donation-button"
   );
 
-  editContact.addEventListener(
-    "click",
-    function(event) {
-      updateContactName.value = showContactName.innerText;
-      updateContactEmail.value =
-        pendingContactEmail.innerText || showContactEmail.innerText;
-      showContact.classList.add("hidden");
-      updateContactForm.classList.remove("hidden");
-      editContact.classList.add("hidden");
-      updateContactName.focus();
-      event.preventDefault();
-    },
-    false
-  );
-
-  cancelEditContact.addEventListener(
-    "click",
-    function(event) {
-      showContact.classList.remove("hidden");
-      updateContactForm.classList.add("hidden");
-      editContact.classList.remove("hidden");
-      event.preventDefault();
-    },
-    false
-  );
 
   instantDonationButton.addEventListener(
     "click",
@@ -615,48 +555,4 @@ document.addEventListener("DOMContentLoaded", function() {
     false
   );
 
-  updateContactForm.addEventListener(
-    "submit",
-    function(event) {
-      event.preventDefault();
-      submitForm("update_contact", "PATCH", true).then(function(response) {
-        if (response.ok === true) {
-          let updatedEmail = updateContactEmail.value;
-          showContactName.innerText = updateContactName.value;
-          pendingContactEmail.innerText = updatedEmail;
-          showPendingContactEmail(updatedEmail);
-
-          let currentUserName = document.querySelector(".js-current-user-name");
-          let userNameDropDown = document.querySelector(
-            ".js-user-name-dropdown"
-          );
-          currentUserName.innerText = updateContactName.value;
-          userNameDropDown.innerText = updateContactName.value;
-        } else {
-          let pendingEmailNotice = document.getElementById(
-            "pending_email_notice"
-          );
-          pendingEmailNotice.innerText =
-            "Unable to change email; the email address may be in use. Please enter a different email address.";
-          pendingEmailNotice.classList.remove("hidden");
-        }
-
-        updateContactForm.classList.add("hidden");
-        showContact.classList.remove("hidden");
-        editContact.classList.remove("hidden");
-
-        // Re-enable submit button to allow form to be resubmitted
-        let submitButton = updateContactForm.querySelector(
-          "input[type=submit][disabled]"
-        );
-        if (submitButton) {
-          submitButton.removeAttribute("disabled");
-          submitButton.blur();
-        }
-      });
-    },
-    false
-  );
-
-  renderReferralCharts("publisher");
 });

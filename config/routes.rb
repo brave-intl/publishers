@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     resources :promo_registrations, controller: "publishers/promo_registrations", only: [] do
       collection do
         get :for_referral_code
+        get :overview
       end
     end
   end
@@ -174,7 +175,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :channels, only: [:index] do
+    resources :channels, only: [:index, :destroy] do
       collection do
         get :duplicates
       end

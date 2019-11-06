@@ -335,6 +335,10 @@ class Channel < ApplicationRecord
     end
 
     if duplicate_verified_channels.any?
+      duplicate_verified_channels.each do |channel|
+        errors.add(:base, "already exists on your account") if channel.publisher_id == publisher_id
+      end
+
       if duplicate_verified_channels.count > 1
         errors.add(:base, "can only contest one channel")
       end

@@ -70,7 +70,25 @@ export default class StatementDetails extends React.Component<
                     <strong>{locale.statements.overview.totalEarned}</strong>
                   </td>
                   <td>
-                    {Number.parseFloat(this.props.statement.amount).toFixed(2)}{" "}
+                    {Number.parseFloat(this.props.statement.totalEarned).toFixed(2)}{" "}
+                    {locale.bat}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{locale.statements.overview.details.totalFees}</strong>
+                  </td>
+                  <td>
+                    {Number.parseFloat(this.props.statement.totalFees).toFixed(2)}{" "}
+                    {locale.bat}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>{locale.statements.overview.totalDeposited}</strong>
+                  </td>
+                  <td>
+                    {Number.parseFloat(this.props.statement.totalBATDeposited).toFixed(2)}{" "}
                     {locale.bat}
                   </td>
                 </tr>

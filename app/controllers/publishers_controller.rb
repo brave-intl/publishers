@@ -73,20 +73,21 @@ class PublishersController < ApplicationController
   end
 
   def update
-    if publisher_update_params[:pending_email] && publisher_update_params[:pending_email].in?([current_publisher.email, current_publisher.pending_email])
-      params[:publisher].delete(:pending_email)
-    end
+    update_params = publisher_update_params
 
-    success = current_publisher.update(publisher_update_params)
+    # If user enters current email address delete the pending email attribute
+    update_params[:pending_email] = nil if update_params[:pending_email] == current_publisher.email
 
-    if success && publisher_update_params[:pending_email]
+    success = current_publisher.update(update_params)
+
+    if success && update_params[:pending_email]
       MailerServices::ConfirmEmailChangeEmailer.new(publisher: current_publisher).perform
     end
 
     flash[:notice] = I18n.t("publishers.settings.update.alert")
     respond_to do |format|
       if success
-        format.json { head :no_content }
+        format.json { render json: {} }
         format.html { redirect_to home_publishers_path }
       else
         format.json { render(json: { errors: current_publisher.errors }, status: 400) }

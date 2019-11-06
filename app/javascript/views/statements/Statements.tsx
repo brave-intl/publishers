@@ -21,11 +21,13 @@ export interface IStatementOverview {
   earning_period: string;
   payment_date: string;
   destination: string;
-  amount: string;
   deposited: string;
   currency: string;
   details: any;
   isOpen: boolean;
+  totalFees: string;
+  totalEarned: string;
+  totalBATDeposited: string;
   rawTransactions: any;
 }
 
@@ -118,7 +120,7 @@ export default class Statements extends React.Component<any, IStatementsState> {
                   <td>{statement.earning_period}</td>
                   <td>{statement.payment_date}</td>
                   <td>
-                    {Number.parseFloat(statement.amount).toFixed(4)}{" "}
+                    {Number.parseFloat(statement.totalBATDeposited).toFixed(4)}{" "}
                     <small>{locale.bat}</small>
                   </td>
                   <td>

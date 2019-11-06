@@ -99,6 +99,7 @@ gem "rack-attack", "~> 5.0"
 gem 'railties', "~> 6.0.0"
 
 gem "rails", "~> 6.0.0"
+gem 'rails-i18n', '~> 6.0'
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"

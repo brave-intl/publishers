@@ -26,8 +26,10 @@ export default {
   publishers: {
     promo_registrations: {
       show: {
-        path:
-          "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+        path: "{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+      },
+      overview: {
+        path: "{id}/promo_registrations/overview"
       }
     },
     statements: {
@@ -37,6 +39,9 @@ export default {
       show: {
         path: "/publishers/statements/{period}"
       }
+    },
+    update: {
+      path: "/publishers"
     }
   }
 };
