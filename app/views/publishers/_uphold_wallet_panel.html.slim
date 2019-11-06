@@ -37,7 +37,7 @@
         span= ")"
     .last-deposit-date.field
       label= t ".last_deposit_date"
-      .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher)
+      .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher, :en)
   .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
     .last-deposit
       = t ".last_deposit"
