@@ -681,12 +681,6 @@ en:
       confirmation: Are you sure you want to disconnect your account with Uphold?
       deny: Cancel
       confirm: Disconnect
-    disconnect_paypal_modal:
-      headline: Disconnect Paypal Account?
-      intro: You won't be able to receive the monthly contributions from your fans until your Paypal account is connected to us.
-      confirmation: Are you sure you want to disconnect your account with Paypal?
-      deny: Cancel
-      confirm: Disconnect
     confirm_default_currency_modal:
       headline: Confirm your preferred deposit currency
       leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
