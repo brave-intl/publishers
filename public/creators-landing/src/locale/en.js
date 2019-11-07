@@ -85,26 +85,20 @@ export default {
     heading: "You create content and we get you paid.",
     subhead:
       "Brave Rewards helps you earn more for doing what you do best and get back some of that revenue lost for when your viewers use ad blocking. Get paid directly by your audience for your content, instead of relying on ad revenue.",
+    bakerAlt: "Bart Baker Brave Rewards",
+    bakerCredit: "- Bart Baker",
     bakerHref: "https://www.youtube.com/BartBaKer",
     bakerQuote:
       "“Brave is basically free crowdfunding. It is like Patreon but without having to spend any of your hard earned money.”",
-    bakerCredit: "- Bart Baker",
+    defrancoAlt: "Philip DeFranco Brave Rewards",
     defrancoCredit: "- Philip DeFranco",
     defrancoHref: "https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw",
     defrancoQuote:
       "“There are also so many other ways just coming out that you can make new money and people can support other creators.”",
-    deciccoCredit: "- Tom DeCicco",
-    deciccoHref: "https://www.youtube.com/channel/UCj2x0OA-aFd3q4r3V975ccA",
-    deciccoQuote:
-      "“Thanks, @brave.... because of you guys, making videos on YouTube and pursuing a creative life is working.”",
-    bobbyCredit: "- Crypto Bobby",
-    bobbyHref: "https://www.youtube.com/channel/UCt_oM56Ui0BCCgi0Yc-Wh3Q",
-    bobbyQuote:
-      "\"Thanks to anyone who uses the Brave Browser and helps me out. It's not millions, but it's not peanuts either and it's cool to see a crypto project actually working as intended!\"",
-    bakerAlt: "Bart Baker Brave Rewards",
-    defrancoAlt: "Philip DeFranco Brave Rewards",
-    deciccoAlt: "Tom DeCicco Brave Rewards",
-    bobbyAlt: "Crypto Bobby Brave Rewards"
+    scottyAlt: "Scotty Allen Strange Parts",
+    scottyCredit: "- Scotty Allen",
+    scottyHref: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw",
+    scottyQuote: "\"Brave is a great frictionless way for fans to support the creators they watch.\"",
   },
   summary: {
     heading: "How does Brave Rewards work?",
