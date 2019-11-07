@@ -11,10 +11,8 @@ import Arrow from "./Arrow";
 import Information from "./Information";
 
 import routes from "../../views/routes";
-import { nullLiteral } from "@babel/types";
 
 interface IReferralGroupsState {
-  isLoading: boolean;
   groups: Array<{
     id: string;
     name: string;
@@ -22,8 +20,9 @@ interface IReferralGroupsState {
     currency: string;
     count: number;
   }>;
-  lastUpdated: string;
+  isLoading: boolean;
   month: string;
+  lastUpdated: string;
   totals: {
     finalized: number;
     first_runs: number;
@@ -34,20 +33,17 @@ interface IReferralGroupsState {
 // This react component is used on the promo panel for the homepage.
 // This displays a listing of group, price, and confirmed count to the end user
 
- class ReferralPanel extends React.Component<
-  any,
-  IReferralGroupsState
-> {
+class ReferralPanel extends React.Component<any, IReferralGroupsState> {
   constructor(props) {
     super(props);
 
     this.state = {
       groups: [],
       isLoading: true,
+      lastUpdated: null,
       month: moment()
         .locale("en")
         .format("MMMM YYYY"),
-      lastUpdated: null,
       totals: {
         finalized: 0,
         first_runs: 0,
@@ -82,16 +78,19 @@ interface IReferralGroupsState {
       }
     ).then(response => {
       response.json().then(json => {
-        const groups = json.groups
-        groups.map((g) =>  {
-          g.name = g.name.replace('Group', this.props.intl.formatMessage({id: 'homepage.referral.group'}))
+        const groups = json.groups;
+        groups.map(g => {
+          g.name = g.name.replace(
+            "Group",
+            this.props.intl.formatMessage({ id: "homepage.referral.group" })
+          );
           return g;
-        })
+        });
 
         this.setState({
-          groups: groups,
-          lastUpdated: json.lastUpdated,
+          groups,
           isLoading: false,
+          lastUpdated: json.lastUpdated,
           totals: json.totals
         });
       });
@@ -156,10 +155,10 @@ interface IReferralGroupsState {
         </div>
         <small
           style={{
+            bottom: "0.5rem",
+            color: "rgba(255,255,255, 0.7)",
             position: "absolute",
             right: "1.5rem",
-            bottom: "0.5rem",
-            color: "rgba(255,255,255, 0.7)"
           }}
         >
           {this.state.lastUpdated}
@@ -240,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
       locale={document.body.dataset.locale}
       messages={flattenMessages(localePackage)}
     >
-      <ReferralPanelWrapped {...props}  />
+      <ReferralPanelWrapped {...props} />
     </IntlProvider>,
     element
   );
