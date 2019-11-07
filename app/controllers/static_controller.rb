@@ -14,7 +14,7 @@ class StaticController < ApplicationController
   private
 
   def redirect_if_current_publisher
-    return if !current_publisher
+    return if !current_publisher || current_publisher.deleted?
     redirect_to publisher_next_step_path(current_publisher)
   end
 
