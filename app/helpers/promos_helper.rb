@@ -25,7 +25,7 @@ module PromosHelper
   end
 
   def publisher_referral_totals(publisher)
-    aggregate_stats ||= PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations)
+    aggregate_stats = PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations)
 
     {
       PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
