@@ -31,6 +31,9 @@ module PayoutHelper
     elsif days_ago < 11
       status = IN_PROGRESS
       progress_percentage = (((days_ago - 7.to_f) / 4))
+    else
+      status = IN_PROGRESS
+      progress_percentage = 1
     end
 
     [status, progress_percentage]
