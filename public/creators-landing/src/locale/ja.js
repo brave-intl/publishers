@@ -98,7 +98,7 @@ export default {
     scottyAlt: "Scotty Allen Strange Parts",
     scottyCredit: "- Scotty Allen",
     scottyHref: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw",
-    scottyQuote: "\"Brave is a great frictionless way for fans to support the creators they watch.\"",
+    scottyQuote: "\"Braveを使うだけで、ファンはクリエイターを簡単に支援することができます\"",
   },
   summary: {
     heading: "Brave Rewardsの仕組み",
