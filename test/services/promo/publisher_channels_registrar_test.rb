@@ -71,4 +71,23 @@ class Promo::PublisherChannelsRegistrarTest < ActiveJob::TestCase
 
     assert_equal PromoRegistration.order("created_at").last.referral_code, "COM001"
   end
+
+  test "reenqueue getting a new referral code if promo server doesn't give back a referral code" do
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    publisher = publishers(:completed)
+
+    # Stub Promo response with the referral code and current code owner
+    stub_request(:put, "#{Rails.application.secrets[:api_promo_base_uri]}/api/1/promo/publishers")
+      .to_return(status: 500)
+
+    assert_difference "PromoRegistration.count", 0 do
+      publisher.channels.find_each do |channel|
+        Promo::AssignPromoToChannelService.new(channel: channel).perform
+        assert_enqueued_with(job: Promo::RegisterChannelForPromoJob, args: [{channel_id: channel.id, attempt_count: 1 }])
+      end
+    end
+    assert_performed_jobs 0
+    perform_enqueued_jobs(only: Promo::RegisterChannelForPromoJob)
+    assert_performed_jobs Promo::AssignPromoToChannelService::MAX_ATTEMPTS
+  end
 end

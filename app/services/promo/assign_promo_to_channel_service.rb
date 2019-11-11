@@ -15,10 +15,14 @@ class Promo::AssignPromoToChannelService < BaseApiClient
   def perform
     return if !channel.verified? || channel.promo_registration.present?
     result = register_channel(channel)
+    if result.nil? && @attempt_count < MAX_ATTEMPTS
+      Promo::RegisterChannelForPromoJob.set(wait: 30.minutes).perform_later(channel_id: @channel.id, attempt_count: @attempt_count + 1) and return
+    elsif result.nil? && @attempt_count >= MAX_ATTEMPTS
+      return
+    end
 
     referral_code = result[:referral_code]
     should_update_promo_server = result[:should_update_promo_server]
-    Promo::RegisterChannelForPromoJob.new(channel_id: @channel.id, attempt_count: @attempt_count + 1).set(wait: 30.minutes).perform_later and return if referral_code.nil? && attempt_count < MAX_ATTEMPTS
     begin
       if referral_code.present?
         promo_registration = PromoRegistration.new(channel_id: channel.id,
@@ -58,7 +62,11 @@ class Promo::AssignPromoToChannelService < BaseApiClient
       should_update_promo_server: false
     }
   rescue Faraday::Error::ClientError => e
-    change_ownership(channel)
+    if e.response[:status] == 409
+      change_ownership(channel)
+    else
+      nil
+    end
   rescue Faraday::Error => e
     require "sentry-raven"
     Rails.logger.error("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
