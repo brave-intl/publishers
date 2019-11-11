@@ -4,9 +4,12 @@ class Promo::AssignPromoToChannelService < BaseApiClient
 
   attr_reader :channel
 
-  def initialize(channel:, promo_id: active_promo_id)
+  MAX_ATTEMPTS = 3
+
+  def initialize(channel:, promo_id: active_promo_id, attempt_count: 0)
     @channel = channel
     @promo_id = promo_id
+    @attempt_count = attempt_count
   end
 
   def perform
@@ -15,6 +18,7 @@ class Promo::AssignPromoToChannelService < BaseApiClient
 
     referral_code = result[:referral_code]
     should_update_promo_server = result[:should_update_promo_server]
+    Promo::RegisterChannelForPromoJob.new(channel_id: @channel.id, attempt_count: @attempt_count + 1).set(wait: 30.minutes).perform_later and return if referral_code.nil? && attempt_count < MAX_ATTEMPTS
     begin
       if referral_code.present?
         promo_registration = PromoRegistration.new(channel_id: channel.id,
