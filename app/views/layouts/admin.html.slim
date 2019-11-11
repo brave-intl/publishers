@@ -5,7 +5,7 @@ html
     = stylesheet_link_tag 'admin/main'
     = javascript_pack_tag 'admin'
     = csrf_meta_tags
-  body data-action=params[:action] data-controller=params[:controller]
+  body data-action=params[:action] data-controller=params[:controller] data-locale=I18n.locale
     section id='container'
       = render 'admin/shared/header'
       = render 'admin/shared/sidebar'
