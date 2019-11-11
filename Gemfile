@@ -35,7 +35,7 @@ gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.7.1"
-gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
+gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -99,6 +99,7 @@ gem "rack-attack", "~> 5.0"
 gem 'railties', "~> 6.0.0"
 
 gem "rails", "~> 6.0.0"
+gem 'rails-i18n', '~> 6.0'
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"

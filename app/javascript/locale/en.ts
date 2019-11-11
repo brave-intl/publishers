@@ -28,6 +28,7 @@ export default {
       confirmed: "CONFIRMED",
       details: 'See details for the areas in each group',
       downloaded: "DOWNLOADED",
+      group: "Group",
       installed: "INSTALLED",
       statement: "Check your statement for this period's payout.",
       title: "Referral Promo Stats",
@@ -159,6 +160,10 @@ export default {
       name: 'Your Name',
       pendingEmail: "Email address has been updated to: {email}. An email has been sent to this address to confirm this change.",
     },
+  },
+  shared: {
+    cancel: "Cancel",
+    save: "Save"
   },
   statements: {
     overview: {

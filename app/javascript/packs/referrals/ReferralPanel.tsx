@@ -2,8 +2,9 @@ import * as moment from "moment";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { FormattedMessage, IntlProvider } from "react-intl";
+import { FormattedMessage, injectIntl, IntlProvider } from "react-intl";
 import en, { flattenMessages } from "../../locale/en";
+import ja from "../../locale/ja";
 
 import { LoaderIcon } from "brave-ui/components/icons";
 import Arrow from "./Arrow";
@@ -12,7 +13,6 @@ import Information from "./Information";
 import routes from "../../views/routes";
 
 interface IReferralGroupsState {
-  isLoading: boolean;
   groups: Array<{
     id: string;
     name: string;
@@ -20,7 +20,9 @@ interface IReferralGroupsState {
     currency: string;
     count: number;
   }>;
+  isLoading: boolean;
   month: string;
+  lastUpdated: string;
   totals: {
     finalized: number;
     first_runs: number;
@@ -31,17 +33,17 @@ interface IReferralGroupsState {
 // This react component is used on the promo panel for the homepage.
 // This displays a listing of group, price, and confirmed count to the end user
 
-export default class ReferralPanel extends React.Component<
-  any,
-  IReferralGroupsState
-> {
+class ReferralPanel extends React.Component<any, IReferralGroupsState> {
   constructor(props) {
     super(props);
 
     this.state = {
       groups: [],
       isLoading: true,
-      month: moment().format("MMMM YYYY"),
+      lastUpdated: null,
+      month: moment()
+        .locale("en")
+        .format("MMMM YYYY"),
       totals: {
         finalized: 0,
         first_runs: 0,
@@ -60,8 +62,10 @@ export default class ReferralPanel extends React.Component<
 
   public async loadGroups() {
     await fetch(
-      routes.publishers.promo_registrations.overview.path +
-        `?month=${this.state.month}`,
+      routes.publishers.promo_registrations.overview.path.replace(
+        "{id}",
+        this.props.publisherId
+      ) + `?month=${this.state.month}&locale=${document.body.dataset.locale}`,
       {
         headers: {
           Accept: "application/json",
@@ -74,9 +78,19 @@ export default class ReferralPanel extends React.Component<
       }
     ).then(response => {
       response.json().then(json => {
+        const groups = json.groups;
+        groups.map(g => {
+          g.name = g.name.replace(
+            "Group",
+            this.props.intl.formatMessage({ id: "homepage.referral.group" })
+          );
+          return g;
+        });
+
         this.setState({
-          groups: json.groups,
+          groups,
           isLoading: false,
+          lastUpdated: json.lastUpdated,
           totals: json.totals
         });
       });
@@ -90,7 +104,10 @@ export default class ReferralPanel extends React.Component<
     const timeValues = [];
 
     while (dateEnd > interim || interim.format("M") === dateEnd.format("M")) {
-      timeValues.push(interim.format("MMMM YYYY"));
+      timeValues.push({
+        key: interim.locale(document.body.dataset.locale).format("MMMM YYYY"),
+        value: interim.locale("en").format("MMMM YYYY")
+      });
       interim.add(1, "month");
     }
 
@@ -107,7 +124,9 @@ export default class ReferralPanel extends React.Component<
           <div className="promo-period">
             <select onChange={this.setMonth} value={this.state.month}>
               {this.monthOptions().map(month => (
-                <option key={month} value={month}>{month}</option>
+                <option key={month.value} value={month.value}>
+                  {month.key}
+                </option>
               ))}
             </select>
           </div>
@@ -128,12 +147,22 @@ export default class ReferralPanel extends React.Component<
             <Groups groups={this.state.groups} />
           </div>
         </div>
-        <div className="promo-info">
+        <div className="row promo-info mb-2">
           <Information />
           <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">
             <FormattedMessage id="homepage.referral.details" />
           </a>
         </div>
+        <small
+          style={{
+            bottom: "0.5rem",
+            color: "rgba(255,255,255, 0.7)",
+            position: "absolute",
+            right: "1.5rem",
+          }}
+        >
+          {this.state.lastUpdated}
+        </small>
       </>
     );
 
@@ -193,15 +222,25 @@ const Groups = props => (
   </table>
 );
 
+const ReferralPanelWrapped = injectIntl(ReferralPanel);
+
 document.addEventListener("DOMContentLoaded", () => {
-  moment.locale(document.body.dataset.locale);
+  const element = document.getElementById("react-promo-panel");
+  const props = JSON.parse(element.dataset.props);
+  const locale = document.body.dataset.locale;
+  let localePackage: object = en;
+  if (locale === "ja") {
+    localePackage = ja;
+  }
+
+  moment.locale(locale);
   ReactDOM.render(
     <IntlProvider
       locale={document.body.dataset.locale}
-      messages={flattenMessages(en)}
+      messages={flattenMessages(localePackage)}
     >
-      <ReferralPanel />
+      <ReferralPanelWrapped {...props} />
     </IntlProvider>,
-    document.getElementById("react-promo-panel")
+    element
   );
 });
