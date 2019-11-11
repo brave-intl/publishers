@@ -16,7 +16,7 @@
 
   - elsif current_publisher.has_verified_channel?
     .promo-panel.h-100
-      .promo-flex-col.h-100#react-promo-panel
+      .promo-flex-col.h-100#react-promo-panel data-props={publisherId: current_publisher.id}.to_json
       = javascript_pack_tag('referrals/ReferralPanel')
 
   - else
