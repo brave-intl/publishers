@@ -15,6 +15,7 @@ class ManualPayoutReportPublisherIncluder < BaseService
     invoices = Invoice.where(partner_id: @publisher.id, status: Invoice::IN_PROGRESS)
     invoices.each do |invoice|
       amount = invoice.finalized_amount_to_probi
+      next if uphold_connection.japanese_account?
       PotentialPayment.create(payout_report_id: @payout_report.id,
                               name: @publisher.name,
                               amount: amount,
