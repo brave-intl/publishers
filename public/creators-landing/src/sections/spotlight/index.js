@@ -2,9 +2,8 @@ import React from "react";
 import { Box, Heading, Text, Carousel, Image } from "grommet";
 import { Container } from "../../components";
 import BakerCard from "../../components/img/card-baker.webp";
-import CiccoCard from "../../components/img/card-decicco.webp";
-import BobbyCard from "../../components/img/card-bobby.webp";
 import DefrancoCard from "../../components/img/card-defranco.webp";
+import ScottyCard from "../../components/img/card-scotty.webp";
 import locale from "../../locale/en";
 import { FormattedMessage } from 'react-intl';
 
@@ -58,6 +57,13 @@ export const Spotlight = () => {
         <Box width="100%">
           <Carousel play={9000}>
             <Slide
+              card={ScottyCard}
+              link={locale.spotlight.scottyHref}
+              text={<FormattedMessage id="spotlight.scottyCredit"/>}
+              quote={<FormattedMessage id="spotlight.scottyQuote"/>}
+              alt={<FormattedMessage id="spotlight.scottyAlt"/>}
+            />
+            <Slide
               card={BakerCard}
               link={locale.spotlight.bakerHref}
               text={<FormattedMessage id="spotlight.bakerCredit"/>}
@@ -71,21 +77,6 @@ export const Spotlight = () => {
               quote={<FormattedMessage id="spotlight.defrancoQuote"/>}
               backwards="row-reverse"
               alt={<FormattedMessage id="spotlight.defrancoAlt"/>}
-            />
-            <Slide
-              card={BobbyCard}
-              link={locale.spotlight.bobbyHref}
-              text={<FormattedMessage id="spotlight.bobbyCredit"/>}
-              quote={<FormattedMessage id="spotlight.bobbyQuote"/>}
-              alt={<FormattedMessage id="spotlight.bobbyAlt"/>}
-            />
-            <Slide
-              card={CiccoCard}
-              link={locale.spotlight.deciccoHref}
-              text={<FormattedMessage id="spotlight.deciccoCredit"/>}
-              quote={<FormattedMessage id="spotlight.deciccoQuote"/>}
-              backwards="row-reverse"
-              alt={<FormattedMessage id="spotlight.deciccoAlt"/>}
             />
           </Carousel>
         </Box>
