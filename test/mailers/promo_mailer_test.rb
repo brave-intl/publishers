@@ -55,19 +55,6 @@ class PromoMailerTest < ActionMailer::TestCase
     assert_email_body_matches(matcher: referral_link, email: email)
   end
 
-  test "promo_activated_2018q1_unverified" do
-    publisher = publishers(:default)
-    email = PromoMailer.promo_activated_2018q1_unverified(publisher)
-
-    # Send the email, then test that it got queued
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal [publisher.email], email.to
-  end
-
   test "new_channel_registered_2018q1" do
     publisher = publishers(:completed)
     channel = publisher.channels.first
