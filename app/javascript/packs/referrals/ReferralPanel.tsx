@@ -13,7 +13,6 @@ import Information from "./Information";
 import routes from "../../views/routes";
 
 interface IReferralGroupsState {
-  isLoading: boolean;
   groups: Array<{
     id: string;
     name: string;
@@ -21,7 +20,9 @@ interface IReferralGroupsState {
     currency: string;
     count: number;
   }>;
+  isLoading: boolean;
   month: string;
+  lastUpdated: string;
   totals: {
     finalized: number;
     first_runs: number;
@@ -32,16 +33,14 @@ interface IReferralGroupsState {
 // This react component is used on the promo panel for the homepage.
 // This displays a listing of group, price, and confirmed count to the end user
 
- class ReferralPanel extends React.Component<
-  any,
-  IReferralGroupsState
-> {
+class ReferralPanel extends React.Component<any, IReferralGroupsState> {
   constructor(props) {
     super(props);
 
     this.state = {
       groups: [],
       isLoading: true,
+      lastUpdated: null,
       month: moment()
         .locale("en")
         .format("MMMM YYYY"),
@@ -63,8 +62,10 @@ interface IReferralGroupsState {
 
   public async loadGroups() {
     await fetch(
-      routes.publishers.promo_registrations.overview.path +
-        `?month=${this.state.month}`,
+      routes.publishers.promo_registrations.overview.path.replace(
+        "{id}",
+        this.props.publisherId
+      ) + `?month=${this.state.month}&locale=${document.body.dataset.locale}`,
       {
         headers: {
           Accept: "application/json",
@@ -77,15 +78,19 @@ interface IReferralGroupsState {
       }
     ).then(response => {
       response.json().then(json => {
-        const groups = json.groups
-        groups.map((g) =>  {
-          g.name = g.name.replace('Group', this.props.intl.formatMessage({id: 'homepage.referral.group'}))
+        const groups = json.groups;
+        groups.map(g => {
+          g.name = g.name.replace(
+            "Group",
+            this.props.intl.formatMessage({ id: "homepage.referral.group" })
+          );
           return g;
-        })
+        });
 
         this.setState({
           groups,
           isLoading: false,
+          lastUpdated: json.lastUpdated,
           totals: json.totals
         });
       });
@@ -142,12 +147,22 @@ interface IReferralGroupsState {
             <Groups groups={this.state.groups} />
           </div>
         </div>
-        <div className="promo-info">
+        <div className="row promo-info mb-2">
           <Information />
           <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">
             <FormattedMessage id="homepage.referral.details" />
           </a>
         </div>
+        <small
+          style={{
+            bottom: "0.5rem",
+            color: "rgba(255,255,255, 0.7)",
+            position: "absolute",
+            right: "1.5rem",
+          }}
+        >
+          {this.state.lastUpdated}
+        </small>
       </>
     );
 
@@ -210,6 +225,8 @@ const Groups = props => (
 const ReferralPanelWrapped = injectIntl(ReferralPanel);
 
 document.addEventListener("DOMContentLoaded", () => {
+  const element = document.getElementById("react-promo-panel");
+  const props = JSON.parse(element.dataset.props);
   const locale = document.body.dataset.locale;
   let localePackage: object = en;
   if (locale === "ja") {
@@ -222,8 +239,8 @@ document.addEventListener("DOMContentLoaded", () => {
       locale={document.body.dataset.locale}
       messages={flattenMessages(localePackage)}
     >
-      <ReferralPanelWrapped />
+      <ReferralPanelWrapped {...props} />
     </IntlProvider>,
-    document.getElementById("react-promo-panel")
+    element
   );
 });

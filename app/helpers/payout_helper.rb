@@ -17,7 +17,7 @@ module PayoutHelper
     status = nil
     progress_percentage = nil
 
-    status = DONE if !Rails.cache.fetch("payout_in_progress")
+    status = DONE unless Rails.cache.fetch("payout_in_progress")
     days_ago = (Date.today - report_created_at.to_date) if status.blank?
 
     return [status, 1] if status.present?
@@ -31,6 +31,9 @@ module PayoutHelper
     elsif days_ago < 11
       status = IN_PROGRESS
       progress_percentage = (((days_ago - 7.to_f) / 4))
+    else
+      status = IN_PROGRESS
+      progress_percentage = 1
     end
 
     [status, progress_percentage]
