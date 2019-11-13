@@ -155,7 +155,7 @@ class PublishersController < ApplicationController
       uphold_connection.create_uphold_cards if uphold_connection.missing_card?
     end
 
-    flash[:notice] = "Payouts will be coming soon. Keep an eye on this space to connect your wallet." if current_publisher.japanese_locale?(params[:locale])
+    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.japanese_locale?(params[:locale])
   end
 
   def choose_new_channel_type
