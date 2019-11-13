@@ -102,7 +102,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
        .col-md.mb-4
          = render partial: 'payout_status', locals: { payout_report: @payout_report }
     .row
-      - unless @publisher.excluded_from_payout? || @publisher.uphold_connection.japanese_account? || @publisher.japanese_locale?(params[:locale])
+      - unless @publisher.excluded_from_payout? || @publisher.uphold_connection&.japanese_account? || @publisher.japanese_locale?(params[:locale])
         .col-md.mb-4
           .dashboard-panel--wrapper.uphold-panel
             .dashboard-panel--header#dashboard_uphold_header
