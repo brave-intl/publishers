@@ -31,10 +31,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                    data-possible-currencies=(@possible_currencies || [])
                    data-default-currency=@publisher.uphold_connection.default_currency }
     .row
-      -if @migration_present
-        .col.mb-4
-          .rounded.p-4.shadow.alert-warning= t('.migration')
-    .row
       .col.mb-4.payouts class="#{@publisher.no_grants? ? 'col-md-7' : '' }"
         .balance-panel.align-items-center
           .row
