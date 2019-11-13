@@ -25,16 +25,6 @@ class PromoMailer < ApplicationMailer
     )
   end
 
-  def promo_activated_2018q1_unverified(publisher)
-    @publisher = publisher
-
-    mail(
-      to: @publisher.email,
-      subject: default_i18n_subject
-    )
-  end
-
-
   def new_channel_registered_2018q1(publisher, channel)
     @publisher = publisher
     @channel = channel

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_03_195738) do
+ActiveRecord::Schema.define(version: 2019_10_22_191206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -335,7 +335,7 @@ ActiveRecord::Schema.define(version: 2019_10_03_195738) do
     t.uuid "publisher_id"
     t.string "installer_type"
     t.string "description"
-    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
+    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", unique: true
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"

@@ -207,6 +207,10 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def japanese_locale?(locale)
+    locale == "ja"
+  end
+
   def deleted?
     last_status_update&.status == PublisherStatusUpdate::DELETED
   end

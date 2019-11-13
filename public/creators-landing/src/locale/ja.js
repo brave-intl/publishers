@@ -85,26 +85,20 @@ export default {
     heading: "あなたのコンテンツをBrave Rewardsで収益化できます",
     subhead:
       "Brave Rewardsは、作品やコンテンツからより多くの収益を上げ、広告ブロック等で減ってしまった収益を取り戻すことをサポートします。広告収益だけに依存する代わりに、ユーザからコンテンツへの直接支払いを受けることができるようになります。",
+    bakerAlt: "Bart Baker Brave Rewards",
+    bakerCredit: "- Bart Baker",
     bakerHref: "https://www.youtube.com/BartBaKer",
     bakerQuote:
       "“Braveはいわば無料で参加できるクラウドファウンディングのようなものです。支援者は自分の財布を傷めずにあなたの活動を支援することができるのです！",
-    bakerCredit: "- Bart Baker",
+    defrancoAlt: "Philip DeFranco Brave Rewards",
     defrancoCredit: "- Philip DeFranco",
     defrancoHref: "https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw",
     defrancoQuote:
       "“Braveを通じて、クリエイターは収益を上げることができ、ユーザは支援することが可能なのです！”",
-    deciccoCredit: "- Tom DeCicco",
-    deciccoHref: "https://www.youtube.com/channel/UCj2x0OA-aFd3q4r3V975ccA",
-    deciccoQuote:
-      "“@braveに感謝！おかげでYoutubeの動画を制作できてクリエイティブな生活をおくれているよ！”",
-    bobbyCredit: "- Crypto Bobby",
-    bobbyHref: "https://www.youtube.com/channel/UCt_oM56Ui0BCCgi0Yc-Wh3Q",
-    bobbyQuote:
-      "\"Braveをお使いの皆さん、ありがとう！！大金を稼げているわけではないけど、ピーナッツ代にしかならない感じでもないよ。何よりクリプトのプロジェクトがちゃんと動いているのが素晴らしい！\"",
-    bakerAlt: "Bart Baker Brave Rewards",
-    defrancoAlt: "Philip DeFranco Brave Rewards",
-    deciccoAlt: "Tom DeCicco Brave Rewards",
-    bobbyAlt: "Crypto Bobby Brave Rewards"
+    scottyAlt: "Scotty Allen Strange Parts",
+    scottyCredit: "- Scotty Allen",
+    scottyHref: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw",
+    scottyQuote: "\"Braveを使うだけで、ファンはクリエイターを簡単に支援することができます\"",
   },
   summary: {
     heading: "Brave Rewardsの仕組み",

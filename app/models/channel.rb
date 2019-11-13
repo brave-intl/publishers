@@ -54,7 +54,7 @@ class Channel < ApplicationRecord
 
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
-  after_save :register_channel_for_promo, if: :should_register_channel_for_promo
+  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_save :notify_slack, if: -> { :saved_change_to_verified? && verified? }
 
   after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
@@ -267,6 +267,10 @@ class Channel < ApplicationRecord
     @uphold_connection ||= uphold_connection_for_channel.detect { |connection| connection.currency == publisher.uphold_connection.default_currency }
   end
 
+  def register_channel_for_promo
+    Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
+  end
+
   private
 
   def should_register_channel_for_promo
@@ -277,10 +281,6 @@ class Channel < ApplicationRecord
 
   def clear_verified_at_if_necessary
     self.verified_at = nil if verified == false && verified_at.present?
-  end
-
-  def register_channel_for_promo
-    Promo::RegisterChannelForPromoJob.new.perform(channel: self)
   end
 
   def create_channel_card
