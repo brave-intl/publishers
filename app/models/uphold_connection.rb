@@ -26,7 +26,7 @@ class UpholdConnection < ActiveRecord::Base
   BLOCKED = "blocked"
   RESTRICTED = "restricted"
 
-  JAPAN = "JP".freeze
+  JAPAN = "JP"
 
   belongs_to :publisher
 
