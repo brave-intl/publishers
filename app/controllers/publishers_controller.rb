@@ -154,6 +154,8 @@ class PublishersController < ApplicationController
       # Handles legacy case where user is missing an Uphold card
       uphold_connection.create_uphold_cards if uphold_connection.missing_card?
     end
+
+    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.japanese_locale?(params[:locale])
   end
 
   def choose_new_channel_type

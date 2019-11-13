@@ -26,6 +26,8 @@ class UpholdConnection < ActiveRecord::Base
   BLOCKED = "blocked"
   RESTRICTED = "restricted"
 
+  JAPAN = "JP"
+
   belongs_to :publisher
 
   has_many :uphold_connection_for_channels
@@ -174,6 +176,10 @@ class UpholdConnection < ActiveRecord::Base
       uphold_id: uphold_information.id,
       country: uphold_information.country
     )
+  end
+
+  def japanese_account?
+    country == JAPAN
   end
 
   def encryption_key

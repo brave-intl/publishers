@@ -546,6 +546,7 @@ ja:
       name_placeholder: 氏名
       tos_html: 「％{action}」をクリックすると、％{tos_link}に同意したことになります
     home:
+      disabled_payouts: 近日中に支払いが行われます。こちらからウォレットの接続設定が可能です。
       migration: 現在、定期メンテナンスを実施しています。 この間、Upholdウォレットに問題が発生する場合があります。 まもなく復旧する予定です。
       noscript: ダッシュボードを操作する場合は、ブラウザーでJavaScriptを有効にしてください。
       title: ダッシュボード
