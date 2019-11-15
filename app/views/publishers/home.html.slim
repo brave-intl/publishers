@@ -58,6 +58,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     .next_deposit_date.small.mt-2
                       span = t(".next_deposit_date")
                       span = next_deposit_date
+                  small.my-1.text-muted= publisher_balance_last_update(@publisher)
             - if @publisher.no_grants?
               .d-none.d-xl-block
                 .line

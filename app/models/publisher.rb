@@ -318,6 +318,24 @@ class Publisher < ApplicationRecord
     thirty_day_login? ? 30.days : 30.minutes
   end
 
+  def transactions_cache=(value)
+    super(value)
+    write_attribute(:transactions_cache_updated_at, current_time_from_proper_timezone)
+  end
+
+  def balance_cache=(value)
+    super(value)
+    write_attribute(:balance_cache_updated_at, current_time_from_proper_timezone)
+  end
+
+  def balance_cache_expired?
+    balance_cache_updated_at.blank? || 30.minutes.ago > balance_cache_updated_at
+  end
+
+  def transactions_cache_expired?
+    transactions_cache_updated_at.blank? || 30.minutes.ago > transactions_cache_updated_at
+  end
+
   private
 
   def set_created_status

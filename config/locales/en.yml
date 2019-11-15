@@ -129,6 +129,7 @@ en:
         no_https: "Please enable HTTPS on your domain, or choose another verification method."
         generic: "If this verification failure continues to occur, please reach us at %{support_email}."
     publisher:
+      last_updated_at: "Last updated about %{time} ago"
       balance_unavailable: "Unavailable"
       conversion_unavailable: "%{code} unavailable"
       no_deposit: No deposit made yet

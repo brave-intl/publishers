@@ -4,7 +4,7 @@ require "eyeshade/wallet"
 class PublisherWalletGetter < BaseApiClient
   attr_reader :publisher
 
-  CACHE_TIME = 1.hours
+  CACHE_TIME = 1.hour
 
   def initialize(publisher:)
     @publisher = publisher
@@ -35,15 +35,19 @@ class PublisherWalletGetter < BaseApiClient
   end
 
   def balance
-    Rails.cache.fetch("#{publisher.owner_identifier}/balance", expires_in: CACHE_TIME) do
-      PublisherBalanceGetter.new(publisher: publisher).perform
+    if publisher.balance_cache_expired?
+      publisher.update(balance_cache: PublisherBalanceGetter.new(publisher: publisher).perform)
     end
+
+    publisher.balance_cache
   end
 
   def transactions
-    Rails.cache.fetch("#{publisher.owner_identifier}/transactions", expires_in: CACHE_TIME) do
-      PublisherTransactionsGetter.new(publisher: @publisher).perform
+    if publisher.transactions_cache_expired?
+      publisher.update(transactions_cache: PublisherTransactionsGetter.new(publisher: publisher).perform)
     end
+
+    publisher.transactions_cache
   end
 
   def api_base_uri

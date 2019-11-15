@@ -22,6 +22,15 @@ module PublishersHelper
     }
   end
 
+  def publisher_balance_last_update(publisher)
+    return if publisher.balance_cache_updated_at.blank?
+
+    I18n.t(
+      "helpers.publisher.last_updated_at",
+      time: time_ago_in_words(publisher.balance_cache_updated_at)
+    )
+  end
+
   def publisher_can_receive_funds?(publisher)
     publisher.uphold_connection&.uphold_status == :verified
   end
