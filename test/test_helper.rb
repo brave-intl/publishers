@@ -104,6 +104,7 @@ module ActionDispatch
 
     setup do
       WebMock.disable_net_connect!
+      Rails.cache.clear
     end
 
     teardown do
@@ -140,6 +141,7 @@ DatabaseCleaner.clean_with(:truncation)
 class Minitest::Spec
   before :each do
     DatabaseCleaner.start
+    Rails.cache.clear
   end
 
   after :each do

@@ -2,6 +2,8 @@
 class PublisherBalanceGetter < BaseApiClient
   attr_reader :publisher
 
+  class UnavailableBalance < StandardError; end
+
   def initialize(publisher:)
     @publisher = publisher
   end
@@ -23,11 +25,11 @@ class PublisherBalanceGetter < BaseApiClient
 
   rescue Faraday::ClientError => e
     Rails.logger.info("Error receiving eyeshade balance #{e.message}")
-    :unavailable
+    raise UnavailableBalance.new(message: e.message)
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    :unavailable
+    raise UnavailableBalance.new(message: e.message)
   end
 
   def perform_offline
