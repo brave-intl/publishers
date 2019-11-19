@@ -32,7 +32,7 @@ module PublishersHelper
 
   def next_deposit_date(today = DateTime.now)
     today += 1.month if today.day > 8
-    today.strftime("%B 8th")
+    today.strftime(I18n.t("helpers.publisher.next_deposit"))
   end
 
   def publisher_overall_bat_balance(publisher)
