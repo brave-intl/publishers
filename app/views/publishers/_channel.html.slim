@@ -20,7 +20,7 @@
             .bat-channel
               h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
                 = publisher_channel_bat_balance(current_publisher, channel.details.channel_identifier)
-              span.bat-channel--currency= " BAT"
+              span.bat-channel--currency= " " + I18n.t(".bat_in_locale")
               .bat-channel--period
               small= t(".channel_balance_period")
 

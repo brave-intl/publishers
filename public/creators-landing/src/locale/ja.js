@@ -104,7 +104,7 @@ export default {
     heading: "Brave Rewardsの仕組み",
     oneTitle: "Braveブラウザを使っているとトークンを獲得できます",
     oneDesc:
-      "Brave RewardsはBasic Attention Token (BAT)を基盤に作られています。Braveのプライバシーを重視した広告を見るとトークンを獲得することができます。",
+      "Brave RewardsはBATポイントからを基盤に作られています。Braveのプライバシーを重視した広告を見るとトークンを獲得することができます。",
     twoTitle: "そういったユーザがあなたのようなクリエイターやその作品に対してトークンをチップとして送ります",
     twoDesc:
       "定期購読者、フォロワー、読者は毎月決まった金額分のチップを自動的に送ることや、都度任意の金額を送ることができます",
