@@ -34,14 +34,16 @@ export const MainHome = () => {
           pad="large"
           margin={{ top: "80px", bottom: "90px" }}
         >
-          <Box
-            className="bat-pill"
-            as="a"
-            href={locale.nav.batPillHref}
-            aria-label={locale.nav.batPillAlt}
-          >
-            <Image src={batPill} />
-          </Box>
+          {window.location.search.split('locale=')[1] !== 'ja' &&
+            <Box
+              className="bat-pill"
+              as="a"
+              href={locale.nav.batPillHref}
+              aria-label={locale.nav.batPillAlt}
+            >
+              <Image src={batPill} />
+            </Box>
+          }
           <Heading level="1" color="white" margin={{ vertical: "small" }}>
             {<FormattedMessage id="main.home.headline"/>}
           </Heading>
