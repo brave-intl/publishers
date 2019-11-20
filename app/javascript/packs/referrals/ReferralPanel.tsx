@@ -13,6 +13,7 @@ import Information from "./Information";
 import routes from "../../views/routes";
 
 interface IReferralGroupsState {
+  errorMessage: string;
   groups: Array<{
     id: string;
     name: string;
@@ -38,6 +39,7 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
     super(props);
 
     this.state = {
+      errorMessage: null,
       groups: [],
       isLoading: true,
       lastUpdated: null,
@@ -77,23 +79,33 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
         method: "GET"
       }
     ).then(response => {
-      response.json().then(json => {
-        const groups = json.groups;
-        groups.map(g => {
-          g.name = g.name.replace(
-            "Group",
-            this.props.intl.formatMessage({ id: "homepage.referral.group" })
-          );
-          return g;
-        });
+      response
+        .json()
+        .then(json => {
+          const groups = json.groups;
+          groups.map(g => {
+            g.name = g.name.replace(
+              "Group",
+              this.props.intl.formatMessage({ id: "homepage.referral.group" })
+            );
+            return g;
+          });
 
-        this.setState({
-          groups,
-          isLoading: false,
-          lastUpdated: json.lastUpdated,
-          totals: json.totals
+          this.setState({
+            groups,
+            isLoading: false,
+            lastUpdated: json.lastUpdated,
+            totals: json.totals
+          });
+        })
+        .catch(() => {
+          this.setState({
+            errorMessage: this.props.intl.formatMessage({
+              id: "common.unexpectedError"
+            }),
+            isLoading: false
+          });
         });
-      });
     });
   }
 
@@ -116,7 +128,7 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
 
   public render() {
     const content = (
-      <>
+      <React.Fragment>
         <div className="d-flex align-items-center justify-content-between flex-wrap">
           <h1 className="promo-panel-title-item m-0 p-0">
             <FormattedMessage id="homepage.referral.title" />
@@ -131,39 +143,50 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
             </select>
           </div>
         </div>
+
         <div className="py-2">
           <FormattedMessage id="homepage.referral.statement" />
         </div>
-        <div className="row">
-          <div className="col-md">
-            <Stats totals={this.state.totals} />
+
+        {this.state.errorMessage && (
+          <div className="h-100">
+            <strong>{this.state.errorMessage}</strong>
           </div>
-          <div className="col-xs d-none d-lg-block d-xl-block">
-            <div className="mt-3">
-              <Arrow />
+        )}
+
+        {!this.state.errorMessage && (
+          <React.Fragment>
+            <div className="row">
+              <Stats totals={this.state.totals} />
+
+              <div className="col-xs d-none d-lg-block d-xl-block">
+                <div className="mt-3">
+                  <Arrow />
+                </div>
+              </div>
+
+              <Groups groups={this.state.groups} />
             </div>
-          </div>
-          <div className="col-md">
-            <Groups groups={this.state.groups} />
-          </div>
-        </div>
-        <div className="row promo-info mb-2">
-          <Information />
-          <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">
-            <FormattedMessage id="homepage.referral.details" />
-          </a>
-        </div>
-        <small
-          style={{
-            bottom: "0.5rem",
-            color: "rgba(255,255,255, 0.7)",
-            position: "absolute",
-            right: "1.5rem",
-          }}
-        >
-          {this.state.lastUpdated}
-        </small>
-      </>
+
+            <div className="row promo-info mb-2">
+              <Information />
+              <a href="https://support.brave.com/hc/en-us/articles/360025284131-What-do-the-referral-metrics-on-my-dashboard-mean-">
+                <FormattedMessage id="homepage.referral.details" />
+              </a>
+            </div>
+            <small
+              style={{
+                bottom: "0.5rem",
+                color: "rgba(255,255,255, 0.7)",
+                position: "absolute",
+                right: "1.5rem"
+              }}
+            >
+              {this.state.lastUpdated}
+            </small>
+          </React.Fragment>
+        )}
+      </React.Fragment>
     );
 
     return (
@@ -177,49 +200,53 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
   }
 }
 const Stats = props => (
-  <table className="promo-table w-100 font-weight-bold">
-    <tbody>
-      <tr className="promo-selected">
-        <td>
-          <FormattedMessage id="homepage.referral.confirmed" />
-        </td>
-        <td className="promo-panel-number">{props.totals.finalized}</td>
-      </tr>
-      <tr>
-        <td>
-          <FormattedMessage id="homepage.referral.installed" />
-        </td>
-        <td className="promo-panel-number">{props.totals.first_runs}</td>
-      </tr>
-      <tr>
-        <td>
-          <FormattedMessage id="homepage.referral.downloaded" />
-        </td>
-        <td className="promo-panel-number">{props.totals.retrievals}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div className="col-md">
+    <table className="promo-table w-100 font-weight-bold">
+      <tbody>
+        <tr className="promo-selected">
+          <td>
+            <FormattedMessage id="homepage.referral.confirmed" />
+          </td>
+          <td className="promo-panel-number">{props.totals.finalized}</td>
+        </tr>
+        <tr>
+          <td>
+            <FormattedMessage id="homepage.referral.installed" />
+          </td>
+          <td className="promo-panel-number">{props.totals.first_runs}</td>
+        </tr>
+        <tr>
+          <td>
+            <FormattedMessage id="homepage.referral.downloaded" />
+          </td>
+          <td className="promo-panel-number">{props.totals.retrievals}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 );
 
 const Groups = props => (
-  <table className="promo-table w-100 promo-selected">
-    <tbody>
-      {props.groups.map(group => (
-        <tr key={group.id}>
-          <td>
-            <span className="font-weight-bold">{group.name} </span>
-            <span className="ml-2">
-              {Number.parseFloat(group.amount)
-                .toFixed(2)
-                .toString()}{" "}
-              {group.currency}
-            </span>
-          </td>
-          <td className="font-weight-bold">{group.count}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  <div className="col-md">
+    <table className="promo-table w-100 promo-selected">
+      <tbody>
+        {props.groups.map(group => (
+          <tr key={group.id}>
+            <td>
+              <span className="font-weight-bold">{group.name} </span>
+              <span className="ml-2">
+                {Number.parseFloat(group.amount)
+                  .toFixed(2)
+                  .toString()}{" "}
+                {group.currency}
+              </span>
+            </td>
+            <td className="font-weight-bold">{group.count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 );
 
 const ReferralPanelWrapped = injectIntl(ReferralPanel);
