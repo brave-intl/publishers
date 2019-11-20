@@ -100,10 +100,10 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
         })
         .catch(() => {
           this.setState({
-            isLoading: false,
             errorMessage: this.props.intl.formatMessage({
               id: "common.unexpectedError"
-            })
+            }),
+            isLoading: false
           });
         });
     });
