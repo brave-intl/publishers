@@ -20,7 +20,7 @@
             .bat-channel
               h4.bat-channel--amount id=("channel_amount_bat_#{channel.details.channel_identifier}")
                 = publisher_channel_bat_balance(current_publisher, channel.details.channel_identifier)
-              span.bat-channel--currency= " BAT"
+              span.bat-channel--currency= " " + I18n.t(".bat_in_locale")
               .bat-channel--period
               small= t(".channel_balance_period")
 
@@ -70,7 +70,7 @@
         .added-date.d-none.d-sm-block
           = t(".added", date: channel.created_at.to_date.iso8601)
           span.mx-2= ' | '
-        - if channel.uphold_connection.present?
+        - if channel.uphold_connection.present? && !current_publisher.uphold_connection.japanese_account?
           =image_tag 'uphold.svg', style: "width: 18px; height: 18px; margin-top: 3px;"
           =link_to(t('.uphold'), "#{uphold_dashboard_url}/cards/#{channel.uphold_connection.card_id}", class: 'px-1', target: "_blank")
           span.mx-2

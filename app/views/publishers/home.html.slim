@@ -18,7 +18,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     = link_to(t("shared.payments"), partners_payments_path, class: 'title-partner' )
 
   = render partial: "choose_channel_button"
-  = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
+  - if params[:locale] != 'ja'
+    = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
 
 
 = hidden_field_tag 'publisher_id', @publisher.id
@@ -43,7 +44,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                     span = t(".balance_pending")
                   .bat
                     span.bat-amount#bat_amount = publisher_overall_bat_balance(@publisher)
-                    span.bat-code= " BAT"
+                    span.bat-code= " " + I18n.t(".bat_in_locale")
                   .converted#converted_amount
                     = publisher_converted_overall_balance(@publisher)
                   - if payout_in_progress?
@@ -69,7 +70,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
                           span = t('.held_funds')
                       .bat
                         span.withheld-color.bat-amount#bat_amount= publisher_contribution_bat_balance(@publisher)
-                        span.withheld-color.bat-code= " BAT"
+                        span.withheld-color.bat-code= " " + I18n.t(".bat_in_locale")
                   .small.my-2
                     .d-flex
                       - if @case&.open?.present? || @case&.in_progress?&.present?

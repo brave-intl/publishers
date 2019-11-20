@@ -118,11 +118,11 @@ class Rack::Attack
   if Rails.env.production?
     # Throttle requests to public api, /api/public
     throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
-      req.ip if req.path.start_with?("/api/v1/public")
+      req.ip if ["/api/v1/public", "api/v2/public", "api/v3/public"].any? { |endpoint| req.path.start_with?(endpoint) }
     end
   else
     throttle("public-api-request/ip", limit: 60, period: 1.hour) do |req|
-      req.ip if req.path.start_with?("/api/v1/public")
+      req.ip if ["/api/v1/public", "api/v2/public", "api/v3/public"].any? { |endpoint| req.path.start_with?(endpoint) }
     end
   end
 
