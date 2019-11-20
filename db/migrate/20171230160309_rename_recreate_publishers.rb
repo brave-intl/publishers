@@ -26,7 +26,6 @@ class RenameRecreatePublishers < ActiveRecord::Migration[5.0]
       t.string :encrypted_uphold_access_parameters
       t.string :encrypted_uphold_access_parameters_iv
       t.datetime :uphold_updated_at
-      t.boolean :uphold_verified, default: false
 
       t.timestamps
       t.index :email, unique: true

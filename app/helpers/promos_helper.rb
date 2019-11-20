@@ -21,7 +21,13 @@ module PromosHelper
   end
 
   def publisher_referrals_last_update(publisher)
-    time_ago_in_words(publisher.promo_registrations.order(updated_at: :desc).first&.updated_at)
+    promos = publisher.promo_registrations.order(updated_at: :desc)
+    return if promos.blank?
+
+    I18n.t(
+      "promo.dashboard.last_updated_at",
+      time: time_ago_in_words(promos.first&.updated_at)
+    )
   end
 
   def publisher_referral_totals(publisher)
