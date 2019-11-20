@@ -364,6 +364,10 @@ class Publisher < ApplicationRecord
     end
   end
 
+  def subscribed_to_marketing_emails?
+    visible
+  end
+
   class << self
     def encryption_key
       # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
