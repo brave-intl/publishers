@@ -20,6 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  bat_in_locale: BAT
   shared:
     add_channel: Add Channel
     app_title: Brave Rewards | Creators

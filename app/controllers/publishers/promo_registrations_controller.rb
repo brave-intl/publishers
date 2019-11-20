@@ -33,7 +33,7 @@ class Publishers::PromoRegistrationsController < PublishersController
     render json: {
       groups: groups.compact,
       totals: aggregate_stats,
-      lastUpdated: I18n.t("promo.dashboard.last_updated_at", time: publisher_referrals_last_update(user)),
+      lastUpdated: publisher_referrals_last_update(user),
     }
   end
 
