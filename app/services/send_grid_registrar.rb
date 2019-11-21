@@ -38,6 +38,10 @@ class SendGridRegistrar < BaseService
       SendGrid::ApiHelper.add_contact_to_list(
           list_id:  Rails.application.secrets[:sendgrid_marketing_list_id],
           contact_id: id)
+    else
+      result = SendGrid::ApiHelper.remove_contact_by_email_from_list(
+          list_id:  Rails.application.secrets[:sendgrid_marketing_list_id],
+          email: publisher.email)
     end
   end
 end
