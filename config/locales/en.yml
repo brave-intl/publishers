@@ -288,6 +288,7 @@ en:
       body_html: |
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
       button: Log in to Brave Rewards
+      explicit_url: If the above button doesn't work, paste this link in your browser %{url}
     login_partner_email:
       salutation: Howdy %{name},
       subject: You've been added as a partner on Brave Rewards

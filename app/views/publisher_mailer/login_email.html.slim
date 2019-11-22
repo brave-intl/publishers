@@ -8,5 +8,6 @@ p= t ".body_html"
 
 div.btn-container= link_to(t(".button"), @private_reauth_url, class: "btn-primary btn-login")
 
-.notice= t "shared.warning_note_html"
-  
+.notice
+  p= t ".explicit_url", url: @private_reauth_url
+  p= t "shared.warning_note_html"
