@@ -10,9 +10,6 @@ class CleanStaleUpholdDataJob < ApplicationJob
       connection.uphold_code = nil
       connection.save!
       n += 1
-      Rails.logger.info("Cleaned stalled uphold code for #{connection.publisher.owner_identifier}.")
-      Raven.capture_message("Cleaned stalled uphold code for #{connection.publisher.owner_identifier}.")
     end
-    Rails.logger.info("CleanStaleUpholdDataJob cleared #{n} stalled uphold codes.")
   end
 end
