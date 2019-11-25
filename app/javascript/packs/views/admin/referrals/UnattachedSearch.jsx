@@ -12,14 +12,15 @@ document.addEventListener("DOMContentLoaded", function() {
       label: x
     }));
 
-    const defaultValue = optionsMap.find(x => x.label == props.defaultValue);
+    const defaultValue = optionsMap.filter(x => (props.defaultValue || []).includes(x.label));
 
     let select = undefined;
 
     const selectProps = {
       options: optionsMap,
       name: props.name || "filter",
-      defaultValue: defaultValue
+      defaultValue: defaultValue,
+      isMulti: props.isMulti
     };
 
     if (props.creatable) {

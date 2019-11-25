@@ -122,6 +122,8 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   end
 
   def group_by_country(events)
+    return { nil => events } unless broken_down_by_country?
+
     events.sort_by do |event|
       event[PromoRegistration::COUNTRY] || ""
     end.group_by do |event|

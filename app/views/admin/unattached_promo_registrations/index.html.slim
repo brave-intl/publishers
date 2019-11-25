@@ -28,7 +28,7 @@
 
     .d-flex.justify-content-between
       = form_tag admin_unattached_promo_registrations_path, method: :get, class: 'd-flex' do
-        .searchForm.w-50 data-props={ options: (@campaigns + ["Not assigned", "All codes"]), defaultValue: @current_campaign }.to_json
+        .searchForm.w-50 data-props={ options: (@campaigns + ["Not assigned", "All codes"]), defaultValue: params[:filter], isMulti: true, name: 'filter[]' }.to_json
         = submit_tag "Filter by campaign", class: "btn btn-success m-0 ml-2"
 
       = form_tag admin_unattached_promo_registrations_path, method: :get, class: 'd-flex' do

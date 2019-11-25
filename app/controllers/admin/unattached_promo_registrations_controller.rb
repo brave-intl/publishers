@@ -5,15 +5,15 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     promo_registrations = PromoRegistration.unattached_only.includes(:promo_campaign)
 
     if params[:referral_code].present?
-      params[:filter] = promo_registrations.find_by(referral_code: params[:referral_code].strip)&.promo_campaign&.name
+      params[:filter] = [promo_registrations.find_by(referral_code: params[:referral_code].upcase.strip)&.promo_campaign&.name].compact
       flash[:alert] = "No campaigns found for #{params[:referral_code]}." if params[:filter].blank?
     end
 
-    filter = params[:filter]
+    filter = params[:filter]&.reject { |c| c.blank? }
     case filter
-    when "All codes", nil, ""
+    when ["All codes"], []
       @promo_registrations = promo_registrations.paginate(page: params[:page])
-    when "Not assigned"
+    when ["Not assigned"]
       @promo_registrations = promo_registrations.where(promo_campaign_id: nil).paginate(page: params[:page])
     else
       @promo_registrations = promo_registrations.where(promo_campaigns: { name: filter })
@@ -26,11 +26,12 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
 
   def create
     codes = create_params[:number_of_codes_to_create].to_i
+    return redirect_to admin_unattached_promo_registrations_path, alert: "Can't create more than 50 codes at a time." if codes > 50
 
     campaign = PromoCampaign.find_or_create_by(name: create_params[:campaign_name])
     Promo::UnattachedRegistrar.new(number: codes, campaign: campaign).perform
 
-    redirect_to admin_unattached_promo_registrations_path(filter: campaign.name), notice: "Sucessfully created #{codes} codes #{campaign.name}!"
+    redirect_to admin_unattached_promo_registrations_path(filter: [campaign.name]), notice: "Sucessfully created #{codes} codes #{campaign.name}!"
   end
 
   def report
@@ -66,7 +67,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
 
     PromoRegistration.where(referral_code: referral_codes).update_all(promo_campaign_id: promo_campaign&.id)
 
-    redirect_to admin_unattached_promo_registrations_path(filter: promo_campaign&.name),
+    redirect_to admin_unattached_promo_registrations_path(filter: [promo_campaign&.name]),
                 notice: "Assigned #{referral_codes.count} codes to campaign '#{params[:promo_campaign_target]}'."
   end
 
