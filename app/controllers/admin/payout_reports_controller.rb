@@ -80,7 +80,7 @@ class Admin::PayoutReportsController < AdminController
     redirect_to admin_payout_reports_path, flash: { alert: "Could not parse JSON. #{e.message}" }
   rescue Faraday::ClientError
     redirect_to admin_payout_reports_path, flash: { alert: "Eyeshade responded with a 400 🤷‍️" }
-  rescue StandardError
+  rescue StandardError => e
     redirect_to admin_payout_reports_path, flash: { alert: "Something bad happened!" }
   end
 
