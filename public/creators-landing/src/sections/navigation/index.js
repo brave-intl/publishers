@@ -32,14 +32,16 @@ const DefaultNav = () => (
             <Image src={logo} height="32px" alt={<FormattedMessage id="nav.logoAlt"/>} />
           </Box>
         </Link>
-        <Box
-          as="a"
-          href={locale.nav.batPillHref}
-          name={<FormattedMessage id="nav.batPillHref"/>}
-          aria-label={<FormattedMessage id="nav.batPillAlt"/>}
-        >
-          <Image src={batPill} height="24px" alt={<FormattedMessage id="nav.batPillAlt"/>} />
-        </Box>
+        {window.location.search.split('locale=')[1] !== 'ja' &&
+          <Box
+            as="a"
+            href={locale.nav.batPillHref}
+            name={<FormattedMessage id="nav.batPillHref"/>}
+            aria-label={<FormattedMessage id="nav.batPillAlt"/>}
+          >
+            <Image src={batPill} height="24px" alt={<FormattedMessage id="nav.batPillAlt"/>} />
+          </Box>
+        }
       </Box>
       <Box direction="row" align="center" gap="large">
         <Link

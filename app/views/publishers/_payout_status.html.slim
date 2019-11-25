@@ -10,7 +10,7 @@
         small *
       h4.font-weight-light
         span= payout_amount(payout_report)
-        small.font-weight-light= " BAT"
+        small.font-weight-light= " " + I18n.t(".bat_in_locale")
 
     - payout_warning = payout_warning(payout_report)
     - if payout_warning
