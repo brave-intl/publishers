@@ -11,7 +11,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
 
     filter = params[:filter]&.reject { |c| c.blank? }
     case filter
-    when ["All codes"], []
+    when ["All codes"], [], nil
       @promo_registrations = promo_registrations.paginate(page: params[:page])
     when ["Not assigned"]
       @promo_registrations = promo_registrations.where(promo_campaign_id: nil).paginate(page: params[:page])
