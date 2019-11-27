@@ -1,39 +1,67 @@
+= javascript_pack_tag 'views/admin/referrals/UnattachedSearch'
+
 .unattached-promo-registrations
   .flex
     h4 Referral Promo
-  .flex
-    .panel.panel--double
-      = form_tag admin_unattached_promo_registrations_path, id: "create-referral-codes" do
-        .panel--header = "Create codes"
-        hr
-        .
-          = number_field_tag "number_of_codes_to_create", nil, placeholder: "# of codes"
-          = submit_tag "Create", class: "btn btn-info", style: "float:right;"
-    .panel.panel--double
-      = form_tag admin_promo_campaigns_path, id: "create-promo-campaign" do
-        .panel--header = "Create campaigns"
-        hr
-        .
-          = text_field_tag "campaign_name", nil, placeholder: "Campaign name"
-          = submit_tag "Create", class: "btn btn-info", style: "float: right"
-  .row
-  .panel.panel--gray.panel--table
+  .panel
+    = form_tag admin_unattached_promo_registrations_path, id: "create-referral-codes" do
+      .panel--header = "Create codes"
+      hr
+      .row
+        .col-5
+          strong Codes
+          = number_field_tag "number_of_codes_to_create", nil, placeholder: "# of codes", class: 'form-control', max: "50", min: "1", required: true
+        .col-6
+          strong Campaign
+          .searchForm data-props={ name: "campaign_name", options: @campaigns, creatable: true}.to_json
+        .col-1
+          .d-flex.align-items-end.w-100.h-100
+            = submit_tag "Create", class: "btn btn-primary m-0"
+
+  .panel.panel--gray.panel--table.mt-3
     .panel--header = "Manage"
     . style="color: darkgrey; font-size: 14px; margin-bottom: 5px;"
       - if Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at').nil?
         = "Stats have not been refreshed."
-      - else 
+      - else
         = "Stats last refreshed #{distance_of_time_in_words(Time.now - Rails.cache.fetch('unattached_promo_registration_stats_last_synced_at'))} ago. Stats in reports are always up-to-date."
-    = form_tag admin_unattached_promo_registrations_path, method: :get, id: "filter-by-campaign" do
-      = select_tag :filter, options_for_select(@campaigns + ["Not assigned", "All codes"], @current_campaign)
-      = submit_tag "Filter by campaign", class: "btn btn-success"
+
+    .d-flex.justify-content-between
+      = form_tag admin_unattached_promo_registrations_path, method: :get, class: 'd-flex' do
+        .searchForm.w-50 data-props={ options: (@campaigns + ["Not assigned", "All codes"]), defaultValue: params[:filter], isMulti: true, name: 'filter[]' }.to_json
+        = submit_tag "Filter by campaign", class: "btn btn-success m-0 ml-2"
+
+      = form_tag admin_unattached_promo_registrations_path, method: :get, class: 'd-flex' do
+        = text_field_tag "referral_code", params[:referral_code], placeholder: "Referral Code", class: 'form-control'
+        = submit_tag "Search by code", class: "btn btn-success m-0 ml-2"
+
+      div
+        .m-0.btn.btn-info#copyRefCodes
+          = fa_icon "copy", text: 'Copy'
+
     = form_tag admin_unattached_promo_registrations_path, method: :patch, id: "unattached-referral-code-form" do
       table.table
         tr
           th
+            input type="checkbox" checked="true" onClick="toggle(this)"
+
+            javascript:
+              function toggle(source) {
+                checkboxes = document.getElementsByName('referral_codes[]');
+                for(var i=0, n=checkboxes.length;i<n;i++) {
+                  checkboxes[i].checked = source.checked;
+                }
+              }
+
           th = "Code"
           th = "Campaign"
-          th = "Installer Type"
+          th
+            = "Installer Type"
+            span.tf-tooltip
+              span.icon= render "icon_help"
+              span.tf-tooltip-content
+                span.tf-tooltip-content-heading= "Installer Type"
+                span.tf-tooltip-content-content Mobile codes will redirect to brave.com if from a desktop browser. A Google Adsense Requirement.
           th
             = "Status"
             span.tf-tooltip
@@ -42,7 +70,7 @@
                 span.tf-tooltip-content-heading= "Status"
                 span.tf-tooltip-content-content== "#{event_type_column_header(PromoRegistration::RETRIEVALS)} and #{event_type_column_header(PromoRegistration::FIRST_RUNS)} will not be tracked when a code is 'paused'."
           th = event_type_column_header(PromoRegistration::RETRIEVALS)
-          th 
+          th
             = event_type_column_header(PromoRegistration::FIRST_RUNS)
             span.tf-tooltip
               span.icon= render "icon_help"
@@ -58,7 +86,7 @@
                 span.tf-tooltip-content-heading= event_type_column_header(PromoRegistration::FINALIZED)
                 span.tf-tooltip-content-content== "A #{event_type_column_header(PromoRegistration::FIRST_RUNS)} is counted when a user downloads the browser and uses in minimally for a month."
         tbody
-          - @promo_registrations.each do |promo_registration| 
+          - @promo_registrations.each do |promo_registration|
             - promo_registration_aggregate_stats = promo_registration.aggregate_stats
             tr
               td = check_box_tag "referral_codes[]", "#{promo_registration.referral_code}", 1
@@ -69,7 +97,8 @@
               td = promo_registration_aggregate_stats[PromoRegistration::RETRIEVALS] || 0
               td = promo_registration_aggregate_stats[PromoRegistration::FIRST_RUNS] || 0
               td = promo_registration_aggregate_stats[PromoRegistration::FINALIZED] || 0
-      = will_paginate @promo_registrations
+      - if  @promo_registrations.respond_to?(:total_pages)
+        = will_paginate @promo_registrations
       hr
       .flex
         .unattached-referral-code-form--submissions
@@ -77,50 +106,46 @@
             .panel--sub-panel-header = "Assign codes to campaign"
             hr
             .flex.flex-one
-              .flex-one = select_tag :promo_campaign_target, options_for_select(@campaigns)
+              .flex-one.searchForm data-props={ name: "promo_campaign_target", options: @campaigns, defaultValue: "Not assigned" }.to_json
               = hidden_field_tag :filter, params[:filter]
-              = submit_tag "Assign", id: "assign-to-campaign", class: "btn btn-primary"
+              = submit_tag "Assign", id: "assign-to-campaign", class: "btn btn-primary",  data: { confirm: 'Are you sure you want to re-assign these codes? There is no way to undo this.' }
           .panel
-            .panel--sub-panel-header = "Assign installer type to codes"
+            .panel--sub-panel-header
+              = "Assign installer type to codes"
+              span.tf-tooltip
+                span.icon= render "icon_help"
+                span.tf-tooltip-content
+                  span.tf-tooltip-content-heading= "Installer Type"
+                  span.tf-tooltip-content-content Mobile codes will redirect to brave.com if from a desktop browser. A Google Adsense Requirement.
             hr
             .flex.flex-one
-              .flex-one = select_tag :installer_type, options_for_select([["Mobile", PromoRegistration::MOBILE], ["Silent", PromoRegistration::SILENT], ["Standard", PromoRegistration::STANDARD]])
+              .flex-one = select_tag :installer_type, options_for_select([["Mobile", PromoRegistration::MOBILE], ["Silent", PromoRegistration::SILENT], ["Standard", PromoRegistration::STANDARD]]), class: 'form-control'
               = hidden_field_tag :filter, params[:filter]
               = submit_tag "Assign", id: "assign-installer-type", class: "btn btn-primary"
           .panel
             .panel--sub-panel-header = "Update code statuses"
             hr
             .flex
-              .flex-one = select_tag :referral_code_status, options_for_select([["Active", "active"], ["Paused", "paused"]])
+              .flex-one = select_tag :referral_code_status, options_for_select([["Active", "active"], ["Paused", "paused"]]), class: 'form-control'
               = hidden_field_tag :filter, params[:filter]
               = submit_tag "Update", id: "update-referral-code-statuses", class: "btn btn-primary"
       .flex
         .panel
           .panel--sub-panel-header = "Report generation (dates are in UTC)"
           hr
-          .flex
-            .flex-two.align-self-flex-center
+          .d-flex.justify-content-between
+            .mr-3.align-self-flex-center
               . = label_tag "Report period start"
-              . = date_select :referral_code_report_period, :start
-            .flex-two.align-self-flex-center
+              . = date_select :start_date, :date
+            .mx-3.align-self-flex-center
               . = label_tag "Report period end"
-              . = date_select :referral_code_report_period, :end, default: Time.now.utc.to_date
-            .flex-two.align-self-flex-center
-              . = label_tag "Reporting interval"
+              . = date_select :end_date, :date, default: Time.now.utc.to_date
+            .mx-3.align-self-flex-center
+              . = label_tag "Interval"
               . = select_tag :reporting_interval, options_for_select([["Daily",PromoRegistration::DAILY], ["Weekly",PromoRegistration::WEEKLY], ["Monthly",PromoRegistration::MONTHLY], ["Running total", PromoRegistration::RUNNING_TOTAL]])
-            .flex-one.align-self-flex-center
-              . style="font-weight: bold" = label_tag = "Event types"
-              .
-                = check_box_tag "event_types[]", PromoRegistration::RETRIEVALS, checked: true
-                = label_tag = " " + event_type_column_header(PromoRegistration::RETRIEVALS)
-              .
-                = check_box_tag "event_types[]", PromoRegistration::FIRST_RUNS, checked: true
-                = label_tag = " " + event_type_column_header(PromoRegistration::FIRST_RUNS)
-              .
-                = check_box_tag "event_types[]", PromoRegistration::FINALIZED, checked: true
-                = label_tag = " " + event_type_column_header(PromoRegistration::FINALIZED)
-            .flex-one.align-self-flex-center
-              . style="font-weight: bold" = label_tag = "Break down by country"
-              . = check_box_tag "geo"
-            .flex-one.align-self-flex-end
+            .mx-3.d-flex.align-items-center
+              label
+                . Break down by country
+                = check_box_tag "geo", nil, false, class: 'mr-2'
+            .ml-auto.align-self-flex-end
               = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }
