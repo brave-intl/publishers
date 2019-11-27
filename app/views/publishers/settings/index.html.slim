@@ -17,9 +17,9 @@
 
     #show_contact
 
-    = form_for(@publisher, url: publishers_path, html: { id: "update_publisher_visible_form", class: 'mt-4 ml-4'}) do |f|
-      = f.check_box(:visible, class: "form-check-input")
-      = f.label(:visible, class: "form-check-label", for: "publisher_visible")
+    = form_for(@publisher, url: publishers_path, html: { id: "update_publisher_marketing_email_form", class: 'mt-4 ml-4'}) do |f|
+      = f.check_box(:subscribed_to_marketing_emails, class: "form-check-input")
+      = f.label(:marketing_emails, class: "form-check-label", for: "marketing_emails")
 
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
   .single-panel--padded-content--short-padding

@@ -61,7 +61,7 @@ en:
       errors: "There were errors saving your request:"
     attributes:
       publisher:
-        visible: By checking here, I consent to be informed of new features and promotions via email.
+        marketing_emails: By checking here, I consent to be informed of new features and promotions via email.
         name: Your Name
       site_channel_details:
         brave_publisher_id: Website Domain

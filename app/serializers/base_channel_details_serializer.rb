@@ -13,10 +13,6 @@ class BaseChannelDetailsSerializer < ActiveModel::Serializer
     visible
   end
 
-  def visible
-    object.channel.publisher.visible
-  end
-
   def name
     object.channel.publisher.name
   end
