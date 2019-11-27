@@ -24,5 +24,7 @@ class GenerateReferralReportJob < ApplicationJob
         "Reporting Interval: #{interval} \n" \
         "Range: #{start_date} through #{end_date} "
     ).deliver_now
+
+    File.delete(filename)
   end
 end
