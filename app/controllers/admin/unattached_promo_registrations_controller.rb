@@ -48,7 +48,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
       break_down_by_country: break_down_by_country
     )
 
-    redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
+    redirect_to admin_unattached_promo_registrations_path(filter: [params[:filter]]),
       flash: { notice: "Generating the report, we'll email #{current_publisher.email} when it's done" }
   end
 
@@ -57,7 +57,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     referral_code_status = params[:referral_code_status]
     promo_registrations = PromoRegistration.where(referral_code: referral_codes)
     Promo::UnattachedRegistrationStatusUpdater.new(promo_registrations: promo_registrations, status: referral_code_status).perform
-    redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
+    redirect_to admin_unattached_promo_registrations_path(filter: [params[:filter]]),
                 notice: "#{referral_codes.count} codes updated to '#{referral_code_status}' status."
   end
 
@@ -79,7 +79,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
       promo_registrations: promo_registrations,
       installer_type: installer_type
     ).perform
-    redirect_to admin_unattached_promo_registrations_path(filter: params[:filter]),
+    redirect_to admin_unattached_promo_registrations_path(filter: [params[:filter]]),
                 notice: "Assigned installer type '#{installer_type}' to #{referral_codes.count} codes."
   end
 
