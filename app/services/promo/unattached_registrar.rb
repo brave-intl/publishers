@@ -5,7 +5,7 @@ class Promo::UnattachedRegistrar < BaseApiClient
   def initialize(number:, promo_id: active_promo_id, campaign: nil)
     @number = number
     @promo_id = promo_id
-    @campaign
+    @campaign = campaign
   end
 
   def perform
@@ -19,17 +19,23 @@ class Promo::UnattachedRegistrar < BaseApiClient
 
     promo_registrations = JSON.parse(response.body)
     promo_registrations.each do |promo_registration|
-      PromoRegistration.create!(referral_code: promo_registration["referral_code"],
-                                promo_id: active_promo_id,
-                                kind: PromoRegistration::UNATTACHED)
+      PromoRegistration.create!(
+        referral_code: promo_registration["referral_code"],
+        promo_id: active_promo_id,
+        kind: PromoRegistration::UNATTACHED,
+        promo_campaign: @campaign
+      )
     end
   end
 
   def perform_offline
     @number.times do
-      PromoRegistration.create!(referral_code: offline_referral_code,
-                                promo_id: active_promo_id,
-                                kind: PromoRegistration::UNATTACHED)
+      PromoRegistration.create!(
+        referral_code: offline_referral_code,
+        promo_id: active_promo_id,
+        kind: PromoRegistration::UNATTACHED,
+        promo_campaign: @campaign
+      )
     end
   end
 

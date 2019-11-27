@@ -78,8 +78,12 @@ class Admin::PayoutReportsController < AdminController
     redirect_to admin_payout_reports_path, flash: { notice: "Successfully uploaded settlement report" }
   rescue JSON::ParserError => e
     redirect_to admin_payout_reports_path, flash: { alert: "Could not parse JSON. #{e.message}" }
-  rescue Faraday::ClientError => eyeshade_error
+  rescue Faraday::ClientError
     redirect_to admin_payout_reports_path, flash: { alert: "Eyeshade responded with a 400 🤷‍️" }
+  rescue StandardError => e
+    redirect_to admin_payout_reports_path, flash: { alert: "Something bad happened! Please check Sentry for more details" }
+    require "sentry-raven"
+    Raven.capture_exception(e)
   end
 
   def toggle_payout_in_progress

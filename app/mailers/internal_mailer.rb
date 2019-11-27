@@ -16,6 +16,13 @@ class InternalMailer < ApplicationMailer
     )
   end
 
+  def email_report(email:, subject:, body:, filename:)
+    name = filename.split('/').last
+    attachments[name] = File.read(filename)
+
+    mail(to: email, subject: subject, body: body)
+  end
+
   def tagged_in_note(tagged_user:, note:)
     return unless tagged_user.admin?
 
