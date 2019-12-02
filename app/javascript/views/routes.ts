@@ -26,10 +26,10 @@ export default {
   publishers: {
     promo_registrations: {
       show: {
-        path: "/publishers/{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+        path: "/publishers/promo_registrations/for_referral_code?referral_code={referral_code}"
       },
       overview: {
-        path: "/publishers/{id}/promo_registrations/overview"
+        path: "/publishers/promo_registrations/overview"
       }
     },
     statements: {

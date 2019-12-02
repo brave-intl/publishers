@@ -1,4 +1,6 @@
 module PromosHelper
+  include ActionView::Helpers::DateHelper
+
   def active_promo_id
     Rails.application.secrets[:active_promo_id]
   end
