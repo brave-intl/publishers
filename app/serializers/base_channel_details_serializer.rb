@@ -1,16 +1,11 @@
 class BaseChannelDetailsSerializer < ActiveModel::Serializer
-  attributes :id, :show_verification_status, :method, :visible, :name, :email, :preferred_currency
+  attributes :id, :method, :name, :email, :preferred_currency
   def id
     object.channel_identifier
   end
 
   def method
     object.verification_method
-  end
-
-  # roll up the channel and select owner details without using the AMS includes
-  def show_verification_status
-    visible
   end
 
   def name

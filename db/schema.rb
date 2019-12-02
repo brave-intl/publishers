@@ -381,7 +381,6 @@ ActiveRecord::Schema.define(version: 2019_11_27_001627) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
-    t.boolean "visible", default: true
     t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
