@@ -336,6 +336,7 @@ ActiveRecord::Schema.define(version: 2019_11_27_001627) do
     t.string "installer_type"
     t.string "description"
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", unique: true
+    t.index ["created_at"], name: "index_promo_registrations_on_created_at"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"

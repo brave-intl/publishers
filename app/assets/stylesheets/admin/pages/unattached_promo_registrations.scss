@@ -1,8 +1,11 @@
 
+.searchForm {
+  min-width: 500px;
+}
 .unattached-promo-registrations {
 
   hr {
-    margin: 5px 0px 10px 0px; 
+    margin: 5px 0px 10px 0px;
   }
 
   .flex {
@@ -64,7 +67,7 @@
   .btn {
     margin: 0px 5px 5px 5px;
   }
-  
+
   .unattached-referral-code-form--submissions {
     display: flex;
     width: 100%;

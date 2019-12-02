@@ -76,7 +76,6 @@ Rails.application.routes.draw do
     resources :referrals do
       collection do
         resources :promo_registrations
-        resources :promo_campaigns
       end
     end
   end

@@ -1,6 +1,6 @@
 class PromoCampaign < ApplicationRecord
   has_many :promo_registrations
-  validates :name, :uniqueness => { :case_sensitive => false }
+  validates :name, :uniqueness => { :case_sensitive => false }, presence: true
   belongs_to :partner, foreign_key: :publisher_id
 
   def build_campaign_json

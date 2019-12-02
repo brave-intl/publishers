@@ -152,11 +152,6 @@ group :development do
   gem "binding_of_caller"
   gem 'listen', '~> 3.2'
 
-  gem "pry"
-  gem 'pry-stack_explorer', '~> 0.4.9.3'
-  gem "byebug"
-  gem "pry-byebug", require: false
-
   gem 'bullet'
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
@@ -182,6 +177,11 @@ group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
   gem 'rubocop-airbnb'
+
+  gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
+  gem "byebug"
+  gem "pry-byebug", require: false
 
   # Static security vulnerability scanner
   gem "brakeman"
