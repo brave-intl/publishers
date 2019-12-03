@@ -29,7 +29,7 @@
           - selected = status == current
           .payout-progress class=(last ? "" : "flex-grow-1")
             .icon class=icon_class(statuses, current, index)
-            .px-2 class=(selected ? "" : "d-sm-block d-ng one")
+            .px-2 class=(selected ? "" : "d-sm-block d-none")
               = status
             - unless last
               progress.connector value=percent_complete(payout_report.created_at, current, index) class=icon_class(statuses, current, index)
