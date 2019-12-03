@@ -5,24 +5,15 @@ class Api::V1::Stats::ChannelsController < Api::V1::StatsController
 
   def show
     channel = Channel.find(params[:id])
+    channel_details = channel.details
 
     case channel.details_type
-
       when "SiteChannelDetails"
         channel_details = SiteChannelDetails.find_by_id(channel.details_id)
         channel_type = "website"
         channel_name = channel_details.url
-      when "YoutubeChannelDetails"
-        channel_details = YoutubeChannelDetails.find_by_id(channel.details_id)
-        channel_type = "youtube"
-        channel_name = channel_details.name
-      when "TwitterChannelDetails"
-        channel_details = TwitterChannelDetails.find_by_id(channel.details_id)
-        channel_type = "twitter"
-        channel_name = channel_details.name
-      when "TwitchChannelDetails"
-        channel_details = TwitchChannelDetails.find_by_id(channel.details_id)
-        channel_type = "twitch"
+      else
+        channel_type = channel.type_display.downcase
         channel_name = channel_details.name
       end
 

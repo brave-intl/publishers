@@ -79,12 +79,4 @@ class SendGridHelperTest < ActiveSupport::TestCase
     end
     assert_equal "{\"errors\":[{\"message\":\"List ID does not exist\"}]}\n", exp.message
   end
-
-  test "can add multiple contacts to a list" do
-    publishers = Publisher.where(email: "alice@completed.org").or(Publisher.where(email: "aliceTwitch@spud.com"))
-    ids = SendGrid::ApiHelper.upsert_contacts(publishers: publishers)
-
-    assert_equal 2, ids.length
-    assert SendGrid::ApiHelper.add_contacts_to_list(list_id: '3986776', contact_ids: ids)
-  end
 end

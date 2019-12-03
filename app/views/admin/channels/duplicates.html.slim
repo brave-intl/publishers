@@ -1,0 +1,15 @@
+div.row
+  div.col-sm-12
+    section.panel
+      header.panel-heading
+        h4= "Duplicate Channels"
+      br
+      div.panel-body
+        table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+          tr
+            th Channel
+          tbody
+            - @channels.each do |channel|
+              tr.gradeX
+                td
+                  = link_to(channel, admin_publishers_path(q: channel))

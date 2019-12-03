@@ -18,23 +18,6 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test "new renders when authenticated with new key form" do
-    sign_in publishers(:verified)
-    get new_u2f_registration_path
-
-    assert_response :success
-    assert_select "form[method=post][action=?]", u2f_registrations_path do
-      assert_select "input[name='u2f_registration[name]']:not([value])"
-      assert_select "input[name=u2f_app_id][value=?]", @controller.u2f.app_id
-      # Check that registration_requests has JSON array value
-      assert_select "input[name=u2f_registration_requests][value^='[']"
-      assert_select "input[name=u2f_sign_requests][value^='[']"
-      # Check that response field is provided but not assigned a value
-      assert_select "input[name=u2f_response]:not([value])"
-      assert_select "input[type=submit]"
-    end
-  end
-
   test "U2F registration creation" do
     sign_in publishers(:verified)
 
@@ -53,7 +36,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
+    assert_redirected_to controller: '/publishers/security', action: 'index'
     refute @request.flash[:modal_partial]
   end
 
@@ -68,7 +51,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     )
     U2fRegistrationsController.any_instance.stubs(:u2f).returns(mock(:register! => mock_u2f_registration))
 
-    get prompt_two_factor_registrations_path
+    get prompt_security_publishers_path
 
     assert_difference("U2fRegistration.count") do
       post u2f_registrations_path, params: {
@@ -77,7 +60,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to home_publishers_path, "redirects to dashboard"
+    assert_redirected_to controller: '/publishers', action: 'home'
     assert @request.flash[:modal_partial]
 
     follow_redirect!
@@ -93,7 +76,7 @@ class U2fRegistrationsControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
     delete u2f_registration_path(u2f_registration)
 
-    assert_redirected_to two_factor_registrations_path, "redirects to two_factor_registrations"
+    assert_redirected_to controller: '/publishers/security', action: 'index'
     follow_redirect!
     assert_response :success
     assert_no_match u2f_registration.name, response.body, "page does not show deleted u2f_registration"

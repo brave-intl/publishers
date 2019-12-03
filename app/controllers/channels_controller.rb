@@ -34,7 +34,7 @@ class ChannelsController < ApplicationController
     respond_to do |format|
       format.json {
         render(json: { status: channel_verification_status(current_channel),
-                       details: channel_verification_details(current_channel).nil? ? nil : channel_verification_details(current_channel).upcase_first },
+                       details: failed_verification_details(current_channel).nil? ? nil : failed_verification_details(current_channel).upcase_first },
                status: 200)
       }
     end

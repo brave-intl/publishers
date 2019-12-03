@@ -1,13 +1,13 @@
 ---
-:concurrency: 2
+:concurrency: 5
 :timeout: 8
 :max_retries: 3
 :queues:
   - mailers
-  - transactional
-  - scheduler
   - default
+  - scheduler
   - low
+:enabled: <%= !(ENV["RAILS_ENV"] == 'development') %>
 :schedule:
   EnqueueSiteChannelVerifications:
     cron: "42 * * * *"
@@ -23,14 +23,12 @@
   TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
-  Sync::PublisherPromoStatsJob:
-    cron: "15 3 * * *"
-    description: "For Publishers who have enabled a promo, sync their referral stats with the promo server once a day."
-    queue: scheduler
   Sync::ChannelPromoRegistrationsStatsJob:
-    cron: "0 */8 * * *"
-    description: "Sync stats for channel owned referral codes with the promo server every 8 hours."
-    queue: scheduler
+    cron: "0 * * * *"
+    description: "Sync stats for channel owned referral codes with the promo server every hour."
+  TwoFactorAuthenticationRemovalJob:
+    cron: "0 12 * * *"
+    description: "Handle two factor authentication removal requests, send reminder e-mails, process 2fa removals, remove channels/wallets when required"
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
@@ -39,20 +37,42 @@
     cron: "0 1 * * *"
     description: "Syncs the channel stats via youtube and twitch apis"
     queue: low
-  CacheBrowserChannelsJsonJob:
-    cron: "0 */2 * * *"
-    description: "Refreshes the redis cache for browser channel json"
-    queue: transactional
+  Sync::Zendesk::StartJob:
+    cron: "0 1 * * *"
+    description: "Syncs zendesk tickets"
+    queue: low
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
     description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"
-    queue: transactional
+    queue: scheduler
   Cache::EyeshadeStatsJob:
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
-    queue: transactional
-  GeneratePayoutReportJob:
+    queue: scheduler
+  CleanAbandonedSiteChannelsJob:
+    cron: "0 3 * * *"
+    description: "Remove abandoned site channels."
+  CleanStaleUpholdDataJob:
+    cron: "0 4 * * *"
+    description: "For Publishers who have stale uphold codes or access parameters, clean out uphold codes or access parameter."
+    queue: scheduler
+  TransferChannelsJob:
+    cron: "0 8 * * *"
+    description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
+  EnqueuePublishersForPayoutNotificationJob:
+    cron: "0 0 23 * *"
+    description: "Notifies publishers their wallet is disconnected on the 23rd of every month."
+    queue: scheduler
+  EnqueuePublishersForPayoutJob:
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"
-    queue: low
+    queue: scheduler
+  SetPayoutInProgressJob:
+    cron: "0 0 1 * *"
+    description: "Sets a flag in redis which tells the app to display 'payout in progress' at the beginning of the month."
+    queue: scheduler
+  UpdatePayoutReportContentsJob:
+    cron: "0 3 1 * *"
+    description: "Refreshes the json version of the report that's built from the potential payments table on the first of every month."
+    queue: scheduler
 :verbose: true

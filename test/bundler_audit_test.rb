@@ -1,14 +1,21 @@
 require "test_helper"
+require "bundler/audit/database"
+require "bundler/audit/scanner"
 
 class BundlerAuditTest < ActiveSupport::TestCase
   test "no gem vulnerabilities" do
-    require "bundler/audit/cli"
-    Bundler::Audit::CLI.start(["update", "--quiet"])
-    begin
-      Bundler::Audit::CLI.start(["check", "--quiet"])
-    rescue SystemExit
+    Bundler::Audit::Database.update!(quiet: true)
+    vulnerabilities = []
+    scanner = Bundler::Audit::Scanner.new
+    scanner.scan(ignore: ["CVE-2015-9284"]) do |result|
+      vulnerabilities << "#{result.gem.name} #{result.gem.version} CVE #{result.advisory.cve}"
+    end
+
+    if vulnerabilities.present?
+      puts vulnerabilities
       assert false
     end
+
     assert true
   end
 end

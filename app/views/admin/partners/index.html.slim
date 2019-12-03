@@ -1,0 +1,37 @@
+div.row
+  div.col-sm-12
+    section.panel
+      header.panel-heading.partner-container
+        h4 Partners
+        = link_to "Add a Partner", new_admin_partner_path, class: "btn btn-primary btn-partner"
+      .action-group
+        = form_tag(admin_partners_path, method: "get")
+          .input-group
+              = text_field_tag(:q, params[:q], class:'form-control')
+              .input-group-btn
+                  = submit_tag("Search", class: 'btn btn-default')
+
+          .partner-filters
+            label
+                = check_box_tag('suspended', 1, params[:suspended].present?, class: 'checkbox')
+                = "Suspended"
+            label
+                = check_box_tag('created_by_me', 1, params[:created_by_me].present?, class: 'checkbox')
+                = "Created by me"
+      br
+      div.panel-body
+        div.adv-table
+          table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+            tr
+              th Name
+              th Email
+              th ID
+              th Organization
+            tbody
+              - @partners.each do |partner|
+                tr.gradeX
+                  td = link_to partner.name, admin_publisher_path(partner.id)
+                  td = partner.email
+                  td.small = partner.id
+                  td = partner&.membership&.organization&.name
+          = will_paginate @partners

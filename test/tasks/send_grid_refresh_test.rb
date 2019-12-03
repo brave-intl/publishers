@@ -16,6 +16,8 @@ class SendGridRefreshTest < ActiveJob::TestCase
         where.not(email: "alice_totp@verified.org").
         where.not(email: "alice@completed.org").
         where.not(email: "alice@spud.com").
+        where.not(email: "hello@brave.com").
+        where.not(email: "only@notes.org").
         where.not(email: "alice2@verified.org").
         where.not(email: "fred@vglobal.org").
         where.not(email: "fred@small.org").delete_all

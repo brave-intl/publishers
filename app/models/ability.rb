@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
   include PublishersHelper
 
-  ROLES = %i(admin partner publisher)
+  ROLES = %i(admin partner publisher).freeze
   if Rails.application.secrets[:admin_ip_whitelist]
     ADMIN_IP_WHITELIST = Rails.application.secrets[:admin_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
   else
@@ -36,9 +36,9 @@ class Ability
   end
 
   def admin
-    raise AdminNotOnIPWhitelistError.new("Administrator must be IP whitelisted") unless admin_ip_whitelisted?
+    raise AdminNotOnIPWhitelistError, "Administrator must be IP whitelisted" unless admin_ip_whitelisted?
     if Rails.env.production? || Rails.env.test?
-      raise U2fDisabledError.new("U2F must be enabled for administrators") unless u2f_enabled?(@publisher)
+      raise U2fDisabledError, "U2F must be enabled for administrators" unless u2f_enabled?(@publisher)
     end
     can :manage, :all
     can :access, :all

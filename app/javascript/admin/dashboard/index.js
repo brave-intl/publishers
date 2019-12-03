@@ -80,5 +80,7 @@ function loadPiwikData() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  loadPiwikData();
+  if (window.location.pathname === '/admin') {
+    loadPiwikData();
+  }
 });

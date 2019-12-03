@@ -4,6 +4,7 @@ module Publishers
   module Fetch
     class RedirectError < StandardError; end
     class ConnectionFailedError < StandardError; end
+    class NotFoundError < StandardError; end
 
     # Based on Net::HTTP::get_response
     def get_response(uri)
@@ -55,6 +56,8 @@ module Publishers
       rescue OpenSSL::SSL::SSLError, RedirectError, Errno::ECONNREFUSED, Net::OpenTimeout
         raise
       rescue => e
+        # Handle recursion
+        raise NotFoundError.new(e.to_s) if response&.code.to_i == 404 || e.is_a?(SocketError) || e.is_a?(NotFoundError)
         raise ConnectionFailedError.new(e.to_s)
       end
     end

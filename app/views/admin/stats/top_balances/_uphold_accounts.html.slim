@@ -1,0 +1,13 @@
+br
+div.panel-body
+  div.adv-table
+    table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+      tr
+        th Account ID
+        th Balance
+      tbody
+        - @result.each do |entry|
+          tr.gradeX
+            td = entry["account_id"]
+            td = entry["balance"].to_f.round(2)
+

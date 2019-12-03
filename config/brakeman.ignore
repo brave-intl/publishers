@@ -1,25 +1,6 @@
 {
   "ignored_warnings": [
     {
-      "warning_type": "Cross-Site Request Forgery",
-      "warning_code": 7,
-      "fingerprint": "81654be028fa219953df42b67b1eb44466ef3d69b9400695b411bec8755e5bff",
-      "check_name": "ForgerySetting",
-      "message": "'protect_from_forgery' should be called in ErrorsController",
-      "file": "app/controllers/errors_controller.rb",
-      "line": 1,
-      "link": "https://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
-      "code": null,
-      "render_path": null,
-      "location": {
-        "type": "controller",
-        "controller": "ErrorsController"
-      },
-      "user_input": null,
-      "confidence": "High",
-      "note": "The ErrorsController only responds to GET requests."
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "f80a3232956f28402148bcc46b7fae2255679f00a0582bbd2c374846e97cbb03",

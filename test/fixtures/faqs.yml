@@ -2,7 +2,7 @@ one:
   question: First Q
   answer: My answer
   rank: 1
-  faq_category: brave_payments
+  faq_category: brave_rewards
   published: true
 
 verification100:

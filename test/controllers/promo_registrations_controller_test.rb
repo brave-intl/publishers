@@ -37,6 +37,7 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     # verify _over is rendered
     post promo_registrations_path
+    follow_redirect!
     assert_select("[data-test=promo-over]")
 
     # verify publisher has not enabled promo
@@ -52,21 +53,29 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     # verify _over is rendered
     post promo_registrations_path
+    follow_redirect!
     assert_select("[data-test=promo-active]")
 
     # verify publisher has not enabled promo
     # assert_equal publisher.promo_enabled_2018q1, false
   end
 
-  test "#create activates the promo, renders _activated_verified and enables promo for verfied publisher, sends email" do
+  test "#create renders _activated_verified and enables promo for verfied publisher, sends email" do
     publisher = publishers(:completed)
     sign_in publisher
 
     # verify promo-activated email is sent
-    assert_difference("ActionMailer::Base.deliveries.count" , 1) do
+    assert_difference("ActionMailer::Base.deliveries.count" , 0) do
       post promo_registrations_path
     end
 
+    channel = publisher.channels.first
+
+    Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel.id)
+
+    perform_enqueued_jobs do
+      PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_now
+    end
     email = ActionMailer::Base.deliveries.last
 
     # verify email is sent to correct publisher
@@ -77,30 +86,6 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     # verify create is rendered
     assert_select("[data-test=promo-activated-verified]")
-
-    # verify promo is enabled for publisher
-    assert_equal publisher.promo_enabled_2018q1, true
-  end
-
-  test "#create activates the promo, renders _activated_unverified and enables promo for unverified publisher, sends email" do
-    publisher = publishers(:default) # has one unverified channel
-    sign_in publisher
-
-    # verify no promo-activated email is sent
-    assert_difference("ActionMailer::Base.deliveries.count" , 1) do
-      post promo_registrations_path
-    end
-
-    email = ActionMailer::Base.deliveries.last
-
-    # verify email is sent to correct publisher
-    assert email.to, publisher.email
-
-    # verify email has the "Login to Add Channel" call to action
-    assert_email_body_matches(matcher: I18n.t("promo_mailer.promo_activated_2018q1_unverified.cta").to_s, email: email)
-
-    # verify create is rendered
-    assert_select("[data-test=promo-activated-unverified]")
 
     # verify promo is enabled for publisher
     assert_equal publisher.promo_enabled_2018q1, true
@@ -131,38 +116,6 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select("[data-test=promo-active]")
   end
 
-  test "publisher can activate/visit promo without being signed in using promo token from email" do
-    publisher = publishers(:completed)
-
-    # ensure we use token, not session for promo auth
-    sign_out publisher
-
-    promo_token = PublisherPromoTokenGenerator.new(publisher: publisher).perform
-
-    # verify promo token auth takes you to _activate page
-    url = promo_registrations_path(promo_token: promo_token)
-    get url
-    assert_response 200
-    assert_select("[data-test=promo-activate]")
-
-    # verify the above does not enable the promo
-    assert_equal publisher.promo_enabled_2018q1, false
-
-    # verify promo auth allows promo activation, takes publisher to _activated_verified
-    post url
-    publisher.reload
-    assert_equal publisher.promo_enabled_2018q1, true
-    assert_select("[data-test=promo-activated-verified]")
-
-    # verify promo auth allows users to view active page once authorized
-    get url
-    assert_select("[data-test=promo-active]")
-
-    # verify publisher is not must reauth to visit dashboard
-    get home_publishers_path(publisher)
-    assert_response 401 # Unauthorized # TO DO: See screen this takes you to, ideally dashboard
-  end
-
   test "all requests with no promo_token in params or publisher in the session redirect homepage" do
     publisher = publishers(:completed)
     sign_out publisher
@@ -173,6 +126,6 @@ class PromoRegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     # verify #index redirects to home if no token is supplied
     get promo_registrations_path
-    assert_redirected_to root_path    
+    assert_redirected_to root_path
   end
 end

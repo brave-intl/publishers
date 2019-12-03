@@ -1,0 +1,9 @@
+= form_with model: [:admin, reply], local: true do |f|
+  .form-group
+    label.font-weight-bold Saved reply title
+    = f.text_field :title, { class:'form-control', placeholder: "Add a short title to your reply"}
+  .form-group
+    = f.text_area :body, { class:'form-control', rows:'4', placeholder: "Add your saved reply" }
+  =submit_tag(reply.persisted? ? "Update saved reply" : "Add saved reply", class: "btn btn-primary")
+  - if reply.persisted?
+    =link_to "Cancel", admin_case_replies_path, class: 'btn btn-dark ml-3'

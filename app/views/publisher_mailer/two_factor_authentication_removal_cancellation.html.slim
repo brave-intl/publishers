@@ -1,0 +1,12 @@
+/ Sent when user requests a login link via Publishers #create_auth_token
+- content_for(:title) do
+  h3= t ".subject"
+
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name || name_from_email(@publisher.email)
+
+p= t "publishers.two_factor_authentication_removal.cancellation_body"
+
+div.btn-container= link_to(t("publishers.two_factor_authentication_removal.cancel_2fa_removal"), @publisher_private_two_factor_cancellation_url, class: "btn-primary btn-login")
+
+.notice= t "shared.warning_note_html"
+  

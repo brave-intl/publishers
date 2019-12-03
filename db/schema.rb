@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_15_160802) do
+ActiveRecord::Schema.define(version: 2019_11_25_222810) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -20,11 +20,11 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.bigint "record_id", null: false
+    t.bigint "legacy_record_id"
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
+    t.uuid "record_id"
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -36,6 +36,53 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "case_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "case_id", null: false
+    t.uuid "created_by_id"
+    t.boolean "public", default: true, null: false
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["case_id"], name: "index_case_notes_on_case_id"
+    t.index ["created_by_id"], name: "index_case_notes_on_created_by_id"
+  end
+
+  create_table "case_replies", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cases", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "solicit_question"
+    t.text "accident_question"
+    t.string "status", default: "new"
+    t.uuid "publisher_id"
+    t.uuid "assignee_id"
+    t.datetime "open_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.serial "case_number", null: false
+    t.index ["assignee_id"], name: "index_cases_on_assignee_id"
+    t.index ["publisher_id"], name: "index_cases_on_publisher_id", unique: true
+    t.index ["status"], name: "index_cases_on_status"
+  end
+
+  create_table "channel_transfers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "transfer_from_id"
+    t.uuid "transfer_to_id"
+    t.uuid "channel_id"
+    t.boolean "suspended"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "transfer_to_channel_id"
+    t.index ["channel_id"], name: "index_channel_transfers_on_channel_id"
+    t.index ["transfer_from_id"], name: "index_channel_transfers_on_transfer_from_id"
+    t.index ["transfer_to_channel_id"], name: "index_channel_transfers_on_transfer_to_channel_id"
+    t.index ["transfer_to_id"], name: "index_channel_transfers_on_transfer_to_id"
   end
 
   create_table "channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -55,6 +102,15 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.datetime "contest_timesout_at"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
+  end
+
+  create_table "daily_metrics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name"
+    t.jsonb "result"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["result"], name: "index_daily_metrics_on_result"
   end
 
   create_table "faq_categories", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -79,16 +135,43 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.index ["rank"], name: "index_faqs_on_rank"
   end
 
-  create_table "legacy_publisher_statements", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "publisher_id", null: false
-    t.string "period"
-    t.string "source_url"
-    t.text "encrypted_contents"
-    t.string "encrypted_contents_iv"
-    t.datetime "expires_at"
+  create_table "github_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "github_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["publisher_id"], name: "index_legacy_publisher_statements_on_publisher_id"
+    t.index ["github_channel_id"], name: "index_github_channel_details_on_github_channel_id"
+  end
+
+  create_table "invoice_files", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "invoice_id"
+    t.uuid "uploaded_by_id"
+    t.boolean "archived", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_invoice_files_on_invoice_id"
+    t.index ["uploaded_by_id"], name: "index_invoice_files_on_uploaded_by_id"
+  end
+
+  create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "partner_id"
+    t.date "date"
+    t.string "amount", default: "0"
+    t.string "finalized_amount"
+    t.uuid "paid_by_id"
+    t.date "payment_date"
+    t.uuid "finalized_by_id"
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["finalized_by_id"], name: "index_invoices_on_finalized_by_id"
+    t.index ["paid_by_id"], name: "index_invoices_on_paid_by_id"
+    t.index ["partner_id"], name: "index_invoices_on_partner_id"
   end
 
   create_table "legacy_publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -96,7 +179,7 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: false
+    t.boolean "verified", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -148,19 +231,6 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.index ["publisher_id"], name: "index_legacy_totp_registrations_on_publisher_id"
   end
 
-  create_table "legacy_u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.text "certificate"
-    t.string "key_handle"
-    t.string "public_key"
-    t.integer "counter", null: false
-    t.string "name"
-    t.uuid "publisher_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["key_handle"], name: "index_legacy_u2f_registrations_on_key_handle"
-    t.index ["publisher_id"], name: "index_legacy_u2f_registrations_on_publisher_id"
-  end
-
   create_table "legacy_youtube_channels", id: :string, force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -181,22 +251,74 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.index ["publisher_id"], name: "index_login_activities_on_publisher_id"
   end
 
+  create_table "memberships", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.uuid "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_memberships_on_organization_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "organization_permissions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "organization_id"
+    t.boolean "uphold_wallet", default: false, null: false
+    t.boolean "offline_reporting", default: false, null: false
+    t.boolean "referral_codes", default: false, null: false
+    t.index ["organization_id"], name: "index_organization_permissions_on_organization_id", unique: true
+  end
+
+  create_table "organizations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
-    t.string "amount"
-    t.string "fees"
-    t.integer "num_payments"
     t.text "encrypted_contents"
     t.string "encrypted_contents_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "expected_num_payments"
+    t.boolean "manual", default: false
+  end
+
+  create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.uuid "channel_id"
+    t.string "kind", null: false
+    t.string "name", null: false
+    t.string "address", null: false
+    t.string "amount", null: false
+    t.string "fees", null: false
+    t.string "url"
+    t.string "uphold_status"
+    t.boolean "reauthorization_needed"
+    t.boolean "uphold_member"
+    t.boolean "suspended"
+    t.string "uphold_id"
+    t.uuid "invoice_id"
+    t.uuid "finalized_by_id"
+    t.jsonb "channel_stats", default: {}
+    t.text "channel_type"
+    t.string "status"
+    t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
+    t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
+    t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
+    t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
+    t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "publisher_id"
     t.index ["name"], name: "index_promo_campaigns_on_name", unique: true
   end
 
@@ -211,7 +333,10 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.uuid "promo_campaign_id"
     t.boolean "active", default: true, null: false
     t.uuid "publisher_id"
-    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
+    t.string "installer_type"
+    t.string "description"
+    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", unique: true
+    t.index ["created_at"], name: "index_promo_registrations_on_created_at"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
@@ -223,26 +348,30 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
+    t.uuid "thread_id"
+    t.bigint "zendesk_ticket_id"
+    t.bigint "zendesk_comment_id"
+    t.string "zendesk_to_email"
+    t.string "zendesk_from_email"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
     t.index ["publisher_id"], name: "index_publisher_notes_on_publisher_id"
+    t.index ["thread_id"], name: "index_publisher_notes_on_thread_id"
+    t.index ["zendesk_ticket_id", "zendesk_comment_id"], name: "index_publisher_notes_zendesk_ids", unique: true
   end
 
   create_table "publisher_status_updates", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "publisher_id", null: false
     t.string "status", null: false
     t.datetime "created_at", null: false
+    t.uuid "publisher_note_id"
     t.index ["publisher_id", "created_at"], name: "index_publisher_status_updates_on_publisher_id_and_created_at"
+    t.index ["publisher_note_id"], name: "index_publisher_status_updates_on_publisher_note_id"
   end
 
   create_table "publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name"
+    t.string "name", default: "", null: false
     t.string "email"
     t.string "pending_email"
-    t.string "phone"
-    t.string "phone_normalized"
-    t.string "encrypted_authentication_token"
-    t.string "encrypted_authentication_token_iv"
-    t.datetime "authentication_token_expires_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -250,13 +379,6 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.inet "last_sign_in_ip"
     t.boolean "created_via_api", default: false, null: false
     t.string "default_currency"
-    t.string "uphold_state_token"
-    t.boolean "uphold_verified", default: false
-    t.string "encrypted_uphold_code"
-    t.string "encrypted_uphold_code_iv"
-    t.string "encrypted_uphold_access_parameters"
-    t.string "encrypted_uphold_access_parameters_iv"
-    t.datetime "uphold_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
@@ -264,15 +386,30 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
-    t.jsonb "promo_stats_2018q1", default: {}, null: false
-    t.datetime "promo_stats_updated_at_2018q1"
     t.text "role", default: "publisher"
     t.datetime "default_currency_confirmed_at"
-    t.datetime "javascript_last_detected_at"
     t.boolean "excluded_from_payout", default: false, null: false
+    t.uuid "created_by_id"
+    t.uuid "default_site_banner_id"
+    t.boolean "default_site_banner_mode", default: false, null: false
+    t.boolean "thirty_day_login", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
+    t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
     t.index ["pending_email"], name: "index_publishers_on_pending_email"
+  end
+
+  create_table "reddit_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "reddit_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reddit_channel_id"], name: "index_reddit_channel_details_on_reddit_channel_id"
   end
 
   create_table "sessions", id: :serial, force: :cascade do |t|
@@ -284,7 +421,8 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "site_banners", force: :cascade do |t|
+  create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.bigint "legacy_id"
     t.uuid "publisher_id", null: false
     t.text "title", null: false
     t.text "description", null: false
@@ -293,6 +431,7 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.json "social_links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "channel_id"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
 
@@ -307,8 +446,8 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "stats", default: "{}", null: false
     t.string "https_error"
+    t.jsonb "stats", default: "{}", null: false
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -348,6 +487,14 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.index ["twitter_channel_id"], name: "index_twitter_channel_details_on_twitter_channel_id"
   end
 
+  create_table "two_factor_authentication_removals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id", null: false
+    t.boolean "removal_completed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publisher_id"], name: "index_two_factor_authentication_removals_on_publisher_id"
+  end
+
   create_table "u2f_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.text "certificate"
     t.string "key_handle"
@@ -361,15 +508,82 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.index ["publisher_id"], name: "index_u2f_registrations_on_publisher_id"
   end
 
-  create_table "versions", id: :serial, force: :cascade do |t|
+  create_table "uphold_connection_for_channels", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "uphold_connection_id", null: false
+    t.uuid "channel_id", null: false
+    t.string "currency"
+    t.string "channel_identifier"
+    t.string "card_id"
+    t.string "address"
+    t.uuid "uphold_id"
+    t.index ["channel_id"], name: "index_uphold_connection_for_channels_on_channel_id"
+    t.index ["channel_identifier", "currency", "uphold_connection_id"], name: "unique_uphold_connection_for_channels", unique: true
+    t.index ["channel_identifier"], name: "index_uphold_connection_for_channels_on_channel_identifier"
+    t.index ["currency"], name: "index_uphold_connection_for_channels_on_currency"
+    t.index ["uphold_connection_id"], name: "index_uphold_connection_for_channels_on_uphold_connection_id"
+    t.index ["uphold_id"], name: "index_uphold_connection_for_channels_on_uphold_id"
+  end
+
+  create_table "uphold_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "uphold_state_token"
+    t.boolean "uphold_verified", default: false
+    t.boolean "is_member", default: false
+    t.uuid "uphold_id"
+    t.uuid "address"
+    t.uuid "publisher_id"
+    t.string "encrypted_uphold_code"
+    t.string "encrypted_uphold_code_iv"
+    t.string "encrypted_uphold_access_parameters"
+    t.string "encrypted_uphold_access_parameters_iv"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status"
+    t.string "country"
+    t.string "default_currency"
+    t.datetime "default_currency_confirmed_at"
+    t.datetime "member_at"
+    t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
+  end
+
+  create_table "uphold_status_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "publisher_id"
+    t.uuid "uphold_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_uphold_status_reports_on_created_at"
+    t.index ["publisher_id"], name: "index_uphold_status_reports_on_publisher_id"
+    t.index ["uphold_id"], name: "index_uphold_status_reports_on_uphold_id"
+  end
+
+  create_table "user_authentication_tokens", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "encrypted_authentication_token"
+    t.string "encrypted_authentication_token_iv"
+    t.datetime "authentication_token_expires_at"
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_user_authentication_tokens_on_user_id", unique: true
+  end
+
+  create_table "versions", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "item_type", null: false
-    t.integer "item_id", null: false
+    t.uuid "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
     t.text "object_changes"
+    t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "vimeo_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "vimeo_channel_id"
+    t.string "auth_provider"
+    t.string "name"
+    t.string "channel_url"
+    t.string "nickname"
+    t.string "thumbnail_url"
+    t.jsonb "stats"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "youtube_channel_details", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -388,6 +602,12 @@ ActiveRecord::Schema.define(version: 2018_11_15_160802) do
     t.index ["youtube_channel_id"], name: "index_youtube_channel_details_on_youtube_channel_id"
   end
 
+  add_foreign_key "cases", "publishers", column: "assignee_id"
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_from_id"
+  add_foreign_key "channel_transfers", "publishers", column: "transfer_to_id"
   add_foreign_key "channels", "channels", column: "contested_by_channel_id"
+  add_foreign_key "invoice_files", "publishers", column: "uploaded_by_id"
+  add_foreign_key "invoices", "publishers", column: "finalized_by_id"
+  add_foreign_key "invoices", "publishers", column: "paid_by_id"
   add_foreign_key "publisher_notes", "publishers", column: "created_by_id"
 end

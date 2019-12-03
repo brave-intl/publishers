@@ -21,8 +21,12 @@ services:
       - BASIC_AUTH_PASSWORD
       - BASIC_AUTH_USER
       - BAT_MEDIUM_URL
+      - BAT_RATIOS_URL
+      - BAT_RATIOS_TOKEN
       - BAT_REDDIT_URL
       - BAT_ROCKETCHAT_URL
+      - BRAVE_WEBSITE_URL
+      - BAT_WEBSITE_URL
       - BAT_TWITTER_URL
       - FEE_RATE
       - DATABASE_URL

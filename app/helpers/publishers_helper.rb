@@ -1,31 +1,136 @@
 module PublishersHelper
   include ChannelsHelper
 
+  def sentry_catcher
+    yield
+  rescue => e
+    require "sentry-raven"
+    Raven.capture_exception(e)
+  end
+
   def publishers_meta_tags
     {
       title: t("shared.app_title"),
       charset: "utf-8",
       og: {
         title: :title,
-        image: image_url("open-graph-preview.png", host: root_url),
+        image: image_url("open-graph-preview.png"),
         description: t("shared.app_description"),
         url: request.url,
-        type: "website"
-      }
+        type: "website",
+      },
     }
   end
 
   def publisher_can_receive_funds?(publisher)
-    publisher.uphold_status == :verified
+    publisher.uphold_connection&.uphold_status == :verified
   end
 
-  def publisher_humanize_balance(publisher, currency)
-    if balance = publisher.wallet &&
-        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.contribution_balance
-      '%.2f' % balance.convert_to(currency)
+  def payout_in_progress?
+    !!Rails.cache.fetch('payout_in_progress')
+  end
+
+  def next_deposit_date(today = DateTime.now)
+    today += 1.month if today.day > 8
+    today.strftime("%B 8th")
+  end
+
+  def publisher_overall_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+
+      if publisher.partner?
+        amount = publisher.balance
+      elsif publisher.only_user_funds?
+        amount = publisher.wallet&.contribution_balance&.amount_bat
+      elsif publisher.no_grants?
+        amount = publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
+      else
+        amount = publisher.wallet&.overall_balance&.amount_bat
+      end
+
+      balance = '%.2f' % amount if amount.present?
+    end
+
+    balance
+  end
+
+  def publisher_converted_overall_balance(publisher)
+    return if publisher.uphold_connection.default_currency == "BAT" || publisher.uphold_connection.default_currency.blank?
+
+    result = I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
+    sentry_catcher do
+      publisher = publisher&.become_subclass
+
+      if publisher.partner?
+        balance = publisher.balance_in_currency
+      elsif publisher.only_user_funds?
+        balance = publisher.wallet&.contribution_balance&.amount_default_currency
+      elsif publisher.no_grants?
+        balance =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
+      else
+        balance = publisher.wallet&.overall_balance&.amount_default_currency
+      end
+
+      if balance.present?
+        result = I18n.t("helpers.publisher.balance_pending_approximate",
+               amount: '%.2f' % balance,
+               code: publisher&.uphold_connection.default_currency)
+      end
+    end
+    result
+  end
+
+  def publisher_referral_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+      amount = publisher.wallet&.referral_balance&.amount_bat
+      amount = publisher.balance if publisher.partner?
+      balance = '%.2f' % amount if amount.present?
+    end
+
+    balance
+  end
+
+  def publisher_contribution_bat_balance(publisher)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      publisher = publisher.become_subclass
+      amount = publisher.wallet&.contribution_balance&.amount_bat
+      amount = publisher.balance if publisher.partner?
+      balance = '%.2f' % amount if amount.present?
+    end
+
+    balance
+  end
+
+  def publisher_channel_bat_balance(publisher, channel_identifier)
+    balance = I18n.t("helpers.publisher.balance_unavailable")
+    sentry_catcher do
+      channel_balance = publisher.wallet&.channel_balances&.dig(channel_identifier)
+      balance = '%.2f' % channel_balance.amount_bat if channel_balance&.amount_bat.present?
+    end
+
+    balance
+  end
+
+  def publisher_bat_percent(publisher)
+    contribution = publisher.wallet&.contribution_balance&.amount_bat
+    referrals = publisher.wallet&.referral_balance&.amount_bat
+    total = contribution + referrals
+    {
+      contribution: number_to_percentage(contribution / total * 100, precision: 1),
+      referrals: number_to_percentage(referrals / total * 100, precision: 1)
+    }
+  end
+
+  def publisher_last_settlement_bat_balance(publisher)
+    last_settlement_balance = publisher.wallet&.last_settlement_balance
+    if last_settlement_balance&.amount_bat.present?
+      '%.2f' % last_settlement_balance.amount_bat
     else
-      I18n.t("helpers.publisher.balance_unavailable")
     end
   rescue => e
     require "sentry-raven"
@@ -33,64 +138,26 @@ module PublishersHelper
     I18n.t("helpers.publisher.balance_unavailable")
   end
 
-  def next_deposit_date(today = DateTime.now)
-    if today.day > 8
-      today = today + 1.month
-    end
-    today.strftime("%B 8th")
-  end
+  def publisher_converted_last_settlement_balance(publisher)
+    last_settlement_balance = publisher.wallet&.last_settlement_balance
 
-  def publisher_converted_balance(publisher)
-    currency = publisher.default_currency
-    return if currency == "BAT" || currency.blank?
-    if balance = publisher.wallet &&
-        publisher.wallet.contribution_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.contribution_balance
-      converted_amount = '%.2f' % balance.convert_to(currency)
-      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
-    else
-      I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+    if last_settlement_balance&.amount_settlement_currency.present?
+      settlement_currency = last_settlement_balance.settlement_currency
+      return if settlement_currency == "BAT"
+      I18n.t("helpers.publisher.balance_pending_approximate",
+             amount: '%.2f' % last_settlement_balance.amount_settlement_currency,
+             code: settlement_currency)
     end
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
+    I18n.t("helpers.publisher.conversion_unavailable", code: settlement_currency)
   end
 
-  def publisher_humanize_last_settlement(publisher, currency)
-    if balance = publisher.wallet &&
-        publisher.wallet.last_settlement_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.last_settlement_balance
-      '%.2f' % balance.convert_to(currency)
-    else
-      I18n.t("helpers.publisher.no_deposit")
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
-  end
-
-  def publisher_converted_last_settlement(publisher)
-    currency = publisher.default_currency
-    return if currency == "BAT" || currency.blank?
-    if balance = publisher.wallet &&
-        publisher.wallet.last_settlement_balance.is_a?(Eyeshade::Balance) &&
-        publisher.wallet.last_settlement_balance
-      converted_amount = '%.2f' % balance.convert_to(currency)
-      I18n.t("helpers.publisher.balance_pending_approximate", amount: converted_amount, code: currency)
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
-  end
-
-  def publisher_humanize_last_settlement_date(publisher)
-    if settlement_date = publisher.wallet &&
-        publisher.wallet.last_settlement_date.is_a?(Date) &&
-        publisher.wallet.last_settlement_date
-      settlement_date.strftime("%B %d, %Y")
+  def publisher_last_settlement_date(publisher)
+    last_settlement_balance = publisher.wallet&.last_settlement_balance
+    if last_settlement_balance&.timestamp.present?
+      Time.at(last_settlement_balance.timestamp).to_datetime.strftime("%B %d, %Y")
     else
       I18n.t("helpers.publisher.no_deposit")
     end
@@ -100,44 +167,16 @@ module PublishersHelper
     I18n.t("helpers.publisher.no_deposit")
   end
 
-  def publisher_channel_balance(publisher, channel_identifier, currency)
-    if balance = (
-        publisher.wallet &&
-        publisher.wallet.channel_balances &&
-        publisher.wallet.channel_balances[channel_identifier]
-    )
-      '%.2f' % balance.convert_to(currency)
-    else
-      I18n.t("helpers.publisher.balance_unavailable")
-    end
-  rescue => e
-    require "sentry-raven"
-    Raven.capture_exception(e)
-    I18n.t("helpers.publisher.conversion_unavailable", code: currency)
-  end
-
   def publisher_uri(publisher)
     "https://#{publisher.brave_publisher_id}"
   end
 
-  # def link_to_brave_publisher_id(publisher)
-  #   uri = URI::HTTP.build(host: publisher.brave_publisher_id)
-  #   link_to(publisher.brave_publisher_id, uri.to_s)
-  # end
-
-  def uphold_authorization_endpoint(publisher)
-    publisher.prepare_uphold_state_token
-
-    Rails.application.secrets[:uphold_authorization_endpoint]
-        .gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_client_id])
-        .gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope])
-        .gsub('<STATE>', publisher.uphold_state_token.to_s)
-  end
-
   def uphold_authorization_description(publisher)
-    case publisher.uphold_status
-    when :unconnected
+    case publisher.uphold_connection&.uphold_status
+    when :unconnected, nil
       I18n.t("helpers.publisher.uphold_authorization_description.connect_to_uphold")
+    when UpholdConnection::UpholdAccountState::RESTRICTED
+      publisher.uphold_connection.is_member? ? I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_support") : I18n.t("helpers.publisher.uphold_authorization_description.visit_uphold_dashboard")
     else
       I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold")
     end
@@ -151,27 +190,28 @@ module PublishersHelper
     Rails.application.secrets[:terms_of_service_url]
   end
 
-  def possible_currencies(publisher)
-    publisher.wallet.present? ? publisher.wallet.possible_currencies : []
-  end
-
   def uphold_status_class(publisher)
-    case publisher.uphold_status
-    when :verified
+    case publisher.uphold_connection&.uphold_status
+    when :verified, UpholdConnection::UpholdAccountState::BLOCKED
+      # (Albert Wang): We notify Brave when we detect a login of someone with a blocked
+      # Uphold account
       'uphold-complete'
     when :code_acquired, :access_parameters_acquired
       'uphold-processing'
     when :reauthorization_needed
       'uphold-reauthorization-needed'
-    when :incomplete
-      'uphold-incomplete'
+    when UpholdConnection::UpholdAccountState::RESTRICTED
+      'uphold-' + UpholdConnection::UpholdAccountState::RESTRICTED.to_s
     else
       'uphold-unconnected'
     end
   end
 
   def last_settlement_class(publisher)
-    if publisher.wallet.present? && publisher.wallet.last_settlement_date
+    if publisher.wallet.present? &&
+       publisher.wallet.last_settlement_balance &&
+       publisher.wallet.last_settlement_balance.amount_bat.present?
+
       'settlement-made'
     else
       'no-settlement-made'
@@ -179,47 +219,47 @@ module PublishersHelper
   end
 
   def uphold_status_summary(publisher)
-    case publisher.uphold_status
-    when :verified
+    case publisher.uphold_connection&.uphold_status
+    when :verified, UpholdConnection::UpholdAccountState::RESTRICTED, UpholdConnection::UpholdAccountState::BLOCKED
       I18n.t("helpers.publisher.uphold_status_summary.connected")
     when :code_acquired, :access_parameters_acquired
       I18n.t("helpers.publisher.uphold_status_summary.connecting")
     when :reauthorization_needed
       I18n.t("helpers.publisher.uphold_status_summary.connection_problems")
-    when :incomplete
-      I18n.t("helpers.publisher.uphold_status_summary.incomplete")
     else
       I18n.t("helpers.publisher.uphold_status_summary.unconnected")
     end
   end
 
   def uphold_status_description(publisher)
-    case publisher.uphold_status
+    case publisher.uphold_connection&.uphold_status
     when :verified
       I18n.t("helpers.publisher.uphold_status_description.verified")
     when :code_acquired, :access_parameters_acquired
       I18n.t("helpers.publisher.uphold_status_description.connecting")
     when :reauthorization_needed
       I18n.t("helpers.publisher.uphold_status_description.reauthorization_needed")
-    when :incomplete
-      I18n.t("helpers.publisher.uphold_status_description.incomplete")
     when :unconnected
+      I18n.t("helpers.publisher.uphold_status_description.unconnected")
+    when UpholdConnection::UpholdAccountState::RESTRICTED
+      publisher.uphold_connection.is_member? ? I18n.t("helpers.publisher.uphold_status_description.restricted_member") : I18n.t("helpers.publisher.uphold_status_description.non_member")
+    else
       I18n.t("helpers.publisher.uphold_status_description.unconnected")
     end
   end
 
   def publisher_last_verification_method_path(publisher)
     case publisher.verification_method
-      when "dns_record"
-        verification_dns_record_publishers_path
-      when "public_file"
-        verification_public_file_publishers_path
-      when "github"
-        verification_github_publishers_path
-      when "wordpress"
-        verification_wordpress_publishers_path
-      else
-        verification_choose_method_publishers_path
+    when "dns_record"
+      verification_dns_record_publishers_path
+    when "public_file"
+      verification_public_file_publishers_path
+    when "github"
+      verification_github_publishers_path
+    when "wordpress"
+      verification_wordpress_publishers_path
+    else
+      verification_choose_method_publishers_path
     end
   end
 
@@ -252,8 +292,22 @@ module PublishersHelper
   def publisher_private_reauth_url(publisher:, confirm_email: nil)
     token = publisher.authentication_token
     options = { token: token }
-    options[:confirm_email] = confirm_email if (confirm_email)
+    options[:confirm_email] = confirm_email if confirm_email
     publisher_url(publisher, options)
+  end
+
+  def publisher_private_two_factor_removal_url(publisher:, confirm_email: nil)
+    token = publisher.authentication_token
+    options = { id: publisher.id, token: token }
+    options[:confirm_email] = confirm_email if confirm_email
+    confirm_two_factor_authentication_removal_publishers_url(nil, options)
+  end
+
+  def publisher_private_two_factor_cancellation_url(publisher:, confirm_email: nil)
+    token = publisher.authentication_token
+    options = { id: publisher.id, token: token }
+    options[:confirm_email] = confirm_email if confirm_email
+    cancel_two_factor_authentication_removal_publishers_url(nil, options)
   end
 
   def publisher_verification_dns_record(publisher)
@@ -271,7 +325,7 @@ module PublishersHelper
   def publishers_statement_file_name(publisher_statement_period)
     "#{t("publishers.statements.statement_file_name")}-#{publisher_statement_period}.html"
   end
-  
+
   def publisher_filtered_verification_token(publisher)
     if publisher.supports_https?
       publisher.verification_token
@@ -320,14 +374,8 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       I18n.t("helpers.publisher.channel_type.website")
-    when YoutubeChannelDetails
-      I18n.t("helpers.publisher.channel_type.youtube")
-    when TwitchChannelDetails
-      I18n.t("helpers.publisher.channel_type.twitch")
-    when TwitterChannelDetails
-      I18n.t("helpers.publisher.channel_type.twitter")
     else
-      I18n.t("helpers.publisher.channel_type.unknown")
+      I18n.t("helpers.publisher.channel_type.#{channel.type_display.downcase}")
     end
   end
 
@@ -335,12 +383,8 @@ module PublishersHelper
     case channel.details
     when SiteChannelDetails
       I18n.t("helpers.publisher.channel_name.website")
-    when YoutubeChannelDetails
-      I18n.t("helpers.publisher.channel_name.youtube")
-    when TwitchChannelDetails
-      I18n.t("helpers.publisher.channel_name.twitch")
     else
-      I18n.t("helpers.publisher.channel_name.unknown")
+      I18n.t("helpers.publisher.channel_name.#{channel.type_display.downcase}")
     end
   end
 
@@ -355,44 +399,33 @@ module PublishersHelper
 
   def channel_edit_link(channel)
     case channel.details
-      when SiteChannelDetails
-        link_to(home_publishers_path)
+    when SiteChannelDetails
+      link_to(home_publishers_path)
 
-      when YoutubeChannelDetails
+    when YoutubeChannelDetails
 
-      else
-        link_to(home_publishers_path)
+    else
+      link_to(home_publishers_path)
     end
   end
 
   def channel_type_icon_url(channel)
-    case channel.details
-    when YoutubeChannelDetails
-      asset_url('publishers-home/youtube-icon_32x32.png')
-    when TwitchChannelDetails
-      asset_url('publishers-home/twitch-icon_32x32.png')
-    when TwitterChannelDetails
-      asset_url('publishers-home/twitter-icon_32x32.png')
-    else
+    case channel&.details
+    when SiteChannelDetails
       asset_url('publishers-home/website-icon_32x32.png')
+    else
+      asset_url("publishers-home/#{channel.type_display.downcase}-icon_32x32.png")
     end
   end
 
   def channel_thumbnail_url(channel)
-    url = case channel.details
-          when YoutubeChannelDetails
-            channel.details.thumbnail_url
-          when TwitchChannelDetails
-            channel.details.thumbnail_url
-          when TwitterChannelDetails
-            channel.details.thumbnail_url
-          end
+    url = channel.details.thumbnail_url if channel.details.respond_to?(:thumbnail_url)
 
-    return url || asset_url('default-channel.png')
+    url || asset_url('default-channel.png')
   end
 
   def publisher_id_from_owner_identifier(owner_identifier)
-    owner_identifier[/publishers#uuid:(.*)/,1]
+    owner_identifier[/publishers#uuid:(.*)/, 1]
   end
 
   def email_is_youtube_format?(email)

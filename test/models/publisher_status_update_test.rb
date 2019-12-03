@@ -20,6 +20,7 @@ class PublisherStatusUpdateTest < ActiveSupport::TestCase
     status_update = PublisherStatusUpdate.new(status: "created", publisher: publisher)
     status_update.save!
 
+    publisher.reload
     assert_equal publisher, status_update.publisher
     assert_equal publisher.status_updates.first, status_update
   end

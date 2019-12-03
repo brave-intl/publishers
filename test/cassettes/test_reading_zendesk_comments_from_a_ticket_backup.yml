@@ -1,0 +1,357 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 07 May 2019 21:06:07 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2305.35
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '699'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ec679fe792f93f9f938f69b65570c784"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app16.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4d3627ec9d507722-LAX
+      X-Runtime:
+      - '0.268564'
+      X-Zendesk-Request-Id:
+      - 884bf806484eea23241e
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4d3627ec9d507722-LAX
+    body:
+      encoding: UTF-8
+      string: '{"ticket":{"url":"https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2.json","id":2,"external_id":null,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","updated_at":"2019-04-16T02:52:22Z","type":null,"subject":"Trouble
+        logging in","raw_subject":"Trouble logging in","description":"Lorem Ipsum","priority":null,"status":"new","recipient":null,"requester_id":379569843751,"submitter_id":379518079912,"assignee_id":null,"organization_id":null,"group_id":360004379911,"collaborator_ids":[],"follower_ids":[],"email_cc_ids":[],"forum_topic_id":null,"problem_id":null,"has_incidents":false,"is_public":true,"due_at":null,"tags":[],"custom_fields":[],"satisfaction_rating":null,"sharing_agreement_ids":[],"fields":[],"followup_ids":[],"ticket_form_id":360000245511,"brand_id":360001861011,"satisfaction_probability":null,"allow_channelback":false,"allow_attachments":true}}'
+    http_version: 
+  recorded_at: Tue, 07 May 2019 21:06:07 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 07 May 2019 21:06:08 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2305.35
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - W/"32665c74063e8a911f7b37a3a0206df6"
+      Last-Modified:
+      - Tue, 16 Apr 2019 02:52:22 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '698'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app45.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4d3627effcfc20fa-PDX
+      X-Runtime:
+      - '0.264234'
+      X-Zendesk-Request-Id:
+      - 68a33a130f9628c019af
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4d3627effcfc20fa-LAX
+    body:
+      encoding: UTF-8
+      string: '{"comments":[{"id":593375872551,"type":"Comment","author_id":379518079912,"body":"Lorem
+        Ipsum","html_body":"<div class=\"zd-comment\" dir=\"auto\">Lorem Ipsum<br>\n</div>","plain_body":"Lorem
+        Ipsum","public":true,"attachments":[],"audit_id":593375872511,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","metadata":{"system":{"client":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/73.0.3683.75 Safari/537.36","ip_address":"104.174.10.139","location":"Van
+        Nuys, CA, United States","latitude":34.17930000000001,"longitude":-118.432},"custom":{}}},{"id":593834223792,"type":"Comment","author_id":379518079912,"body":"Comment
+        Reply Here\n\nThis is rendered has a new line","html_body":"<div class=\"zd-comment\"
+        dir=\"auto\">Comment Reply Here<br><br>This is rendered has a new line<br>\n</div>","plain_body":"Comment
+        Reply Here\n\nThis is rendered has a new line","public":true,"attachments":[],"audit_id":593834223732,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T05:00:27Z","metadata":{"system":{"client":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/73.0.3683.75 Safari/537.36","ip_address":"104.174.10.139","location":"Van
+        Nuys, CA, United States","latitude":34.17930000000001,"longitude":-118.432},"custom":{}}},{"id":593688279551,"type":"Comment","author_id":379569843751,"body":"This
+        response is sent via email","html_body":"<div class=\"zd-comment zd-comment-pre-styled\"
+        dir=\"auto\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</div>","plain_body":"This
+        response is sent via email","public":true,"attachments":[],"audit_id":593688279511,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-06T17:02:44Z","metadata":{"system":{"message_id":"<CAGV6rryh5_dk3zZLn7Mm+54PMVHGhfFs_e3TYDBwwBNTZ3KZ1A@mail.gmail.com>","raw_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.eml","json_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.json"},"custom":{},"suspension_type_id":null}},{"id":598673813271,"type":"Comment","author_id":379569843751,"body":"This
+        should update updated_at\n\n\nOn Sat, Apr 6, 2019 at 10:02 AM Al <albot.admin@gmail.com>
+        wrote:\n\n> This response is sent via email","html_body":"<div class=\"zd-comment
+        zd-comment-pre-styled\" dir=\"auto\">\n<div dir=\"ltr\">This should update
+        updated_at</div>\n<br><div>\n<div dir=\"ltr\">On Sat, Apr 6, 2019 at 10:02
+        AM Al &lt;<a href=\"mailto:albot.admin@gmail.com\" rel=\"noreferrer\">albot.admin@gmail.com</a>&gt;
+        wrote:<br>\n</div>\n<blockquote style=\"border-left-color: rgb(204,204,204);
+        border-left-style: solid; border-left-width: 1px; margin: 0px 0px 0px 0.8ex;
+        padding-left: 1ex\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</blockquote>\n</div>\n</div>","plain_body":"This
+        should update updated_at \n\n \n On Sat, Apr 6, 2019 at 10:02 AM Al &lt;albot.admin@gmail.com&gt;
+        wrote:\n\n \n \n This response is sent via email","public":true,"attachments":[],"audit_id":598673813211,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-11T17:32:57Z","metadata":{"system":{"message_id":"<CAGV6rrwh=WhmnrWFNuRY2DepJd3=pqcqp0GLctWtpWq9jcgTeg@mail.gmail.com>","raw_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.eml","json_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.json"},"custom":{},"suspension_type_id":null}},{"id":603111062332,"type":"Comment","author_id":379569843751,"body":"[No
+        content]","html_body":"<div class=\"zd-comment\" dir=\"auto\"><p dir=\"auto\">[No
+        content]</p></div>","plain_body":"[No content]","public":true,"attachments":[],"audit_id":603111062292,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-16T02:52:11Z","metadata":{"system":{"message_id":"<CAGV6rrw7y3ti3-U-WvgpBWbg+1jNf-uGPEz16-hW1ZUxoKPhTw@mail.gmail.com>","raw_email_identifier":"9056059/4f2e8566-cf0f-4960-ad55-8271e50d9b96.eml","json_email_identifier":"9056059/4f2e8566-cf0f-4960-ad55-8271e50d9b96.json"},"custom":{},"suspension_type_id":null}},{"id":603111158952,"type":"Comment","author_id":379569843751,"body":"[No
+        content]","html_body":"<div class=\"zd-comment\" dir=\"auto\"><p dir=\"auto\">[No
+        content]</p></div>","plain_body":"[No content]","public":true,"attachments":[],"audit_id":603111158852,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-16T02:52:22Z","metadata":{"system":{"message_id":"<CAGV6rrwQ6wrcAB_isq3_Vf+-F7o9dX=J+Uzepyj+y3yBFokduA@mail.gmail.com>","raw_email_identifier":"9056059/5f785db8-9dea-40f0-aec9-823553a58253.eml","json_email_identifier":"9056059/5f785db8-9dea-40f0-aec9-823553a58253.json"},"custom":{},"suspension_type_id":null}}],"next_page":null,"previous_page":null,"count":6}'
+    http_version: 
+  recorded_at: Tue, 07 May 2019 21:06:08 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 07 May 2019 21:06:08 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2305.35
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '697'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ec679fe792f93f9f938f69b65570c784"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app69.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4d3627f3fddc98b7-PDX
+      X-Runtime:
+      - '0.145942'
+      X-Zendesk-Request-Id:
+      - fdcb00709bbde22239d8
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4d3627f3fddc98b7-LAX
+    body:
+      encoding: UTF-8
+      string: '{"ticket":{"url":"https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2.json","id":2,"external_id":null,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","updated_at":"2019-04-16T02:52:22Z","type":null,"subject":"Trouble
+        logging in","raw_subject":"Trouble logging in","description":"Lorem Ipsum","priority":null,"status":"new","recipient":null,"requester_id":379569843751,"submitter_id":379518079912,"assignee_id":null,"organization_id":null,"group_id":360004379911,"collaborator_ids":[],"follower_ids":[],"email_cc_ids":[],"forum_topic_id":null,"problem_id":null,"has_incidents":false,"is_public":true,"due_at":null,"tags":[],"custom_fields":[],"satisfaction_rating":null,"sharing_agreement_ids":[],"fields":[],"followup_ids":[],"ticket_form_id":360000245511,"brand_id":360001861011,"satisfaction_probability":null,"allow_channelback":false,"allow_attachments":true}}'
+    http_version: 
+  recorded_at: Tue, 07 May 2019 21:06:08 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 07 May 2019 21:06:09 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2305.35
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - W/"32665c74063e8a911f7b37a3a0206df6"
+      Last-Modified:
+      - Tue, 16 Apr 2019 02:52:22 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '696'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app36.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4d3627f5dee87746-PDX
+      X-Runtime:
+      - '0.191890'
+      X-Zendesk-Request-Id:
+      - 42aca41b131b759e1133
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4d3627f5dee87746-LAX
+    body:
+      encoding: UTF-8
+      string: '{"comments":[{"id":593375872551,"type":"Comment","author_id":379518079912,"body":"Lorem
+        Ipsum","html_body":"<div class=\"zd-comment\" dir=\"auto\">Lorem Ipsum<br>\n</div>","plain_body":"Lorem
+        Ipsum","public":true,"attachments":[],"audit_id":593375872511,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","metadata":{"system":{"client":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/73.0.3683.75 Safari/537.36","ip_address":"104.174.10.139","location":"Van
+        Nuys, CA, United States","latitude":34.17930000000001,"longitude":-118.432},"custom":{}}},{"id":593834223792,"type":"Comment","author_id":379518079912,"body":"Comment
+        Reply Here\n\nThis is rendered has a new line","html_body":"<div class=\"zd-comment\"
+        dir=\"auto\">Comment Reply Here<br><br>This is rendered has a new line<br>\n</div>","plain_body":"Comment
+        Reply Here\n\nThis is rendered has a new line","public":true,"attachments":[],"audit_id":593834223732,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T05:00:27Z","metadata":{"system":{"client":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/73.0.3683.75 Safari/537.36","ip_address":"104.174.10.139","location":"Van
+        Nuys, CA, United States","latitude":34.17930000000001,"longitude":-118.432},"custom":{}}},{"id":593688279551,"type":"Comment","author_id":379569843751,"body":"This
+        response is sent via email","html_body":"<div class=\"zd-comment zd-comment-pre-styled\"
+        dir=\"auto\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</div>","plain_body":"This
+        response is sent via email","public":true,"attachments":[],"audit_id":593688279511,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-06T17:02:44Z","metadata":{"system":{"message_id":"<CAGV6rryh5_dk3zZLn7Mm+54PMVHGhfFs_e3TYDBwwBNTZ3KZ1A@mail.gmail.com>","raw_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.eml","json_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.json"},"custom":{},"suspension_type_id":null}},{"id":598673813271,"type":"Comment","author_id":379569843751,"body":"This
+        should update updated_at\n\n\nOn Sat, Apr 6, 2019 at 10:02 AM Al <albot.admin@gmail.com>
+        wrote:\n\n> This response is sent via email","html_body":"<div class=\"zd-comment
+        zd-comment-pre-styled\" dir=\"auto\">\n<div dir=\"ltr\">This should update
+        updated_at</div>\n<br><div>\n<div dir=\"ltr\">On Sat, Apr 6, 2019 at 10:02
+        AM Al &lt;<a href=\"mailto:albot.admin@gmail.com\" rel=\"noreferrer\">albot.admin@gmail.com</a>&gt;
+        wrote:<br>\n</div>\n<blockquote style=\"border-left-color: rgb(204,204,204);
+        border-left-style: solid; border-left-width: 1px; margin: 0px 0px 0px 0.8ex;
+        padding-left: 1ex\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</blockquote>\n</div>\n</div>","plain_body":"This
+        should update updated_at \n\n \n On Sat, Apr 6, 2019 at 10:02 AM Al &lt;albot.admin@gmail.com&gt;
+        wrote:\n\n \n \n This response is sent via email","public":true,"attachments":[],"audit_id":598673813211,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-11T17:32:57Z","metadata":{"system":{"message_id":"<CAGV6rrwh=WhmnrWFNuRY2DepJd3=pqcqp0GLctWtpWq9jcgTeg@mail.gmail.com>","raw_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.eml","json_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.json"},"custom":{},"suspension_type_id":null}},{"id":603111062332,"type":"Comment","author_id":379569843751,"body":"[No
+        content]","html_body":"<div class=\"zd-comment\" dir=\"auto\"><p dir=\"auto\">[No
+        content]</p></div>","plain_body":"[No content]","public":true,"attachments":[],"audit_id":603111062292,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-16T02:52:11Z","metadata":{"system":{"message_id":"<CAGV6rrw7y3ti3-U-WvgpBWbg+1jNf-uGPEz16-hW1ZUxoKPhTw@mail.gmail.com>","raw_email_identifier":"9056059/4f2e8566-cf0f-4960-ad55-8271e50d9b96.eml","json_email_identifier":"9056059/4f2e8566-cf0f-4960-ad55-8271e50d9b96.json"},"custom":{},"suspension_type_id":null}},{"id":603111158952,"type":"Comment","author_id":379569843751,"body":"[No
+        content]","html_body":"<div class=\"zd-comment\" dir=\"auto\"><p dir=\"auto\">[No
+        content]</p></div>","plain_body":"[No content]","public":true,"attachments":[],"audit_id":603111158852,"via":{"channel":"email","source":{"from":{"address":"albot.admin@gmail.com","name":"Test
+        Publisher","original_recipients":["albot.admin@gmail.com","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-16T02:52:22Z","metadata":{"system":{"message_id":"<CAGV6rrwQ6wrcAB_isq3_Vf+-F7o9dX=J+Uzepyj+y3yBFokduA@mail.gmail.com>","raw_email_identifier":"9056059/5f785db8-9dea-40f0-aec9-823553a58253.eml","json_email_identifier":"9056059/5f785db8-9dea-40f0-aec9-823553a58253.json"},"custom":{},"suspension_type_id":null}}],"next_page":null,"previous_page":null,"count":6}'
+    http_version: 
+  recorded_at: Tue, 07 May 2019 21:06:09 GMT
+recorded_with: VCR 4.0.0

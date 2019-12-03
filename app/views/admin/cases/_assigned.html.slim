@@ -1,0 +1,32 @@
+table.display.table.table-hover.dynamic-table id="dynamic-table"
+  tr
+    th Case ID
+    th Publisher
+    th width="20%"
+      .d-flex.align-items-center
+        = sort_link(:assignee_id, "Assigned")
+        =fa_icon "filter", class: 'filter px-2'
+      = form_tag admin_cases_path, method: :get, remote: false, class: 'd-none'
+        input.w-75.p-1.mt-1.assignee-input#tableheader placeholder="User" type="text" name="q" autocomplete="off"
+    - if status_query == 'All'
+      th= sort_link(:status, "Status")
+    th= sort_link(:open_at, "Open")
+  tbody
+    - cases.each do |case_model|
+      tr.gradeX class="#{case_model.answered? ? 'bg-light' : 'font-weight-bold' }"
+        td
+          = link_to("Case ##{case_model.number}", admin_case_path(case_model))
+          - if case_model.answered?
+            = fa_icon "check", class: 'ml-2 text-muted'
+        td= link_to(case_model.publisher, admin_publisher_path(case_model.publisher), target: "_blank", class: "text-body text-break")
+        td= case_model.assignee
+        - if status_query == 'All'
+          td= case_badge(case_model.status)
+        td= distance_of_time_in_words_to_now(case_model.created_at)
+
+    - if cases.size.zero?
+      tr
+        td.text-muted colspan="6"
+          = fa_icon "smile-o", class: 'mx-3'
+          span All done. You're ready to conquer the day!
+

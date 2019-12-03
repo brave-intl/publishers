@@ -1,68 +1,24 @@
 require "test_helper"
+require "webmock/minitest"
 
 class PublishersHomeTest < Capybara::Rails::TestCase
   include Devise::Test::IntegrationHelpers
+  include EyeshadeHelper
+  include Rails.application.routes.url_helpers
 
-  test "name can be changed using 'edit contact' form" do
-    active_promo_id_original = Rails.application.secrets[:active_promo_id]
-    Rails.application.secrets[:active_promo_id] = ""
-    publisher = publishers(:completed)
-    sign_in publisher
+  let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
+  before do
+    @prev_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
 
-    # Turn off promo
-    visit home_publishers_path
-    assert_content page, publisher.name
-    assert_content page, publisher.email
-
-    click_link('Edit Contact')
-
-    new_name = 'Bob the Builder'
-    fill_in 'update_contact_name', with: new_name
-
-    click_button('Update')
-
-    assert_content page, new_name
-    refute_content 'Update'
-
-    # Ensure that form has been reset and can be resubmitted
-
-    click_link('Edit Contact')
-
-    new_name = 'Thomas the Tank Engine'
-    fill_in 'update_contact_name', with: new_name
-
-    click_button('Update')
-
-    assert_content page, new_name
-    refute_content 'Update'
-    Rails.application.secrets[:active_promo_id] = active_promo_id_original
+    stub_request(:get, uphold_url).to_return(body: { status: "restricted", uphold_id: "123e4567-e89b-12d3-a456-426655440000", currencies: [] }.to_json)
+    # Mock out the creation of cards
+    stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
+    stub_request(:post, /cards/).to_return(body: { id: "fb25048b-79df-4e64-9c4e-def07c8f5c04" }.to_json)
+    stub_request(:get, /address/).to_return(body: [{ formats: [{ format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1" }], type: "anonymous" }].to_json)
   end
 
-  test "email can be changed using 'edit contact' form" do
-    publisher = publishers(:completed)
-    sign_in publisher
-
-    visit home_publishers_path
-    assert_content page, publisher.name
-    assert_content page, publisher.email
-
-    original_email = publisher.email
-    new_email = 'jane.doe@example.com'
-
-    # Update email. A "pending" change message should be displayed.
-    click_link 'Edit Contact'
-    fill_in 'update_contact_email', with: new_email
-    click_button 'Update'
-
-    assert_content page, 'Pending: Email address has been updated to: ' + new_email
-    refute_content 'Update'
-
-    # Let's change it back to the original. The "pending" message should be removed.
-    click_link 'Edit Contact'
-    fill_in 'update_contact_email', with: original_email
-    click_button 'Update'
-
-    refute_content page, 'Pending: Email address has been updated'
+  after do
+    Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
   # TODO Uncomment when channel removal is enabled
@@ -80,47 +36,35 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   #   refute_content page, channel.publication_title
   # end
 
-  # TODO Uncomment when channel removal is enabled
-  # test "verified channel can be removed after confirmation" do
-  #   publisher = publishers(:small_media_group)
-  #   channel = channels(:small_media_group_to_delete)
+  test "verified channel can be removed after confirmation" do
+    publisher = publishers(:small_media_group)
+    channel = channels(:small_media_group_to_delete)
 
-  #   sign_in publisher
-  #   visit home_publishers_path
+    sign_in publisher
+    visit home_publishers_path
 
-  #   assert_content page, channel.publication_title
-  #   find("#channel_row_#{channel.id}").click_link('Remove Channel')
-  #   assert_content page, "Are you sure you want to remove this channel?"
-  #   find('[data-test-modal-container]').click_link("Remove Channel")
-  #   refute_content page, channel.publication_title
-  # end
+    assert_content page, channel.publication_title
+    find("#channel_row_#{channel.id}").click_link('Remove channel')
+    assert_content page, "Are you sure you want to remove this channel?"
+    find('[data-test-modal-container]').click_link("Remove Channel")
+    wait_until { !page.find('.cssload-container', visible: :all).visible? }
+    refute_content channel.publication_title
+  end
 
   test "website channel type can be chosen" do
     publisher = publishers(:completed)
     sign_in publisher
-
-    # Turn off promo
     visit home_publishers_path
 
-    find('.navbar').click_link('+ Add Channel')
+    click_link('+ Add Channel', match: :first)
 
     assert_content page, 'Add Channel'
-    assert_content page, 'WEBSITE'
-    assert_content page, 'YOUTUBE CHANNEL'
+    assert_content page, 'Website'
+    assert_content page, 'YouTube'
 
     find('[data-test-choose-channel-website]').click
 
-    assert_current_path(new_site_channel_path)
-  end
-
-  test "javascript_last_detected_at is updated when visiting the dashboard" do
-    publisher = publishers(:completed)
-    assert_nil publisher.javascript_last_detected_at
-
-    sign_in publisher
-    visit home_publishers_path
-
-    wait_until { publisher.reload.javascript_last_detected_at != nil }
+    assert_current_path(/site_channels\/new/)
   end
 
   test "confirm default currency modal appears after uphold signup" do
@@ -132,7 +76,7 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   end
 
   test "confirm default currency modal does not appear for non uphold verified publishers" do
-    publisher = publishers(:uphold_connected)
+    publisher = publishers(:completed)
     sign_in publisher
 
     visit home_publishers_path
@@ -140,64 +84,44 @@ class PublishersHomeTest < Capybara::Rails::TestCase
   end
 
   test "confirm default currency modal does not appear for non uphold authorized publishers" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected_currency_unconfirmed)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:completed)
+    sign_in publisher
 
-      wallet = { "wallet" => { "authorized" => false }}.to_json
-      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 200, body: wallet, headers: {})
+    wallet = { "wallet" => { "authorized" => false }}
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
 
-      visit home_publishers_path
-      refute_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
-    ensure
-      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end
+    visit home_publishers_path
+    refute_content page, I18n.t("publishers.confirm_default_currency_modal.headline")
   end
 
   test "dashboard can still load even when publisher's wallet cannot be fetched from eyeshade" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
-    begin
-      Rails.application.secrets[:api_eyeshade_offline] = false
-      publisher = publishers(:uphold_connected_currency_unconfirmed)
-      sign_in publisher
+    Rails.application.secrets[:api_eyeshade_offline] = false
+    publisher = publishers(:uphold_connected_currency_unconfirmed)
+    sign_in publisher
 
-      wallet = { "wallet" => { "authorized" => false } }.to_json
-      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 404, headers: {})
+    wallet = { "wallet" => { "authorized" => false } }
+    stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet)
+    visit home_publishers_path
 
-      visit home_publishers_path
-
-      assert publisher.wallet.present?
-      assert_content page, publisher.name
-    ensure
-      Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline
-    end
+    assert publisher.wallet.present?
   end
 
   test "dashboard can still load even when publisher's balance cannot be fetched from eyeshade" do
-    prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
     begin
+      prev_api_eyeshade_offline = Rails.application.secrets[:api_eyeshade_offline]
       Rails.application.secrets[:api_eyeshade_offline] = false
       publisher = publishers(:uphold_connected)
       sign_in publisher
 
-      wallet = { "wallet" => { "authorized" => false } }.to_json
-      stub_request(:get, %r{v1/owners/#{URI.escape(publisher.owner_identifier)}/wallet}).
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'}).
-        to_return(status: 200, body: wallet, headers: {})
+      wallet = { "wallet" => { "authorized" => false } }
+      balances = "go away\nUser-agent: *\nDisallow:"
 
-      stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=publishers%23uuid:1a526190-7fd0-5d5e-aa4f-a04cd8550da8&account=uphold_connected.org&account=twitch%23channel:ucTw&account=twitter%23channel:def456").
-        to_return(status: 200, body: "go away\nUser-agent: *\nDisallow:")
+      stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, balances: balances)
 
       visit home_publishers_path
 
       refute publisher.wallet.present?
-      assert_content page, publisher.name
       assert_content page, "Unavailable"
     ensure
       Rails.application.secrets[:api_eyeshade_offline] = prev_api_eyeshade_offline

@@ -1,3 +1,4 @@
+=begin
 if %w(production staging).include?(Rails.env)
   require "raven"
   Raven.configure do |config|
@@ -6,3 +7,4 @@ if %w(production staging).include?(Rails.env)
     config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
   end
 end
+=end

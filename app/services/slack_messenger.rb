@@ -2,6 +2,8 @@
 class SlackMessenger < BaseApiClient
   attr_reader :channel, :message
 
+  ALERTS = "creator-alerts"
+
   def can_perform?
     !!api_base_uri
   end

@@ -12,20 +12,44 @@ module PromosHelper
   end
 
   def offline_referral_code
-    referral_code = "BATS-#{rand(0..1000)}"
+    referral_code = "BATS-#{rand(0..10000)}"
     referral_code
   end
 
   def offline_promo_stats
-    {"times"=>[Time.now.to_s], "series"=>{"name"=>"downloads", "values"=>[rand(0..1000)]}, "aggregate"=> {"downloads"=> 200, "finalized"=> 30}}
+    { "times" => [Time.now.to_s], "series" => { "name" => "downloads", "values" => [rand(0..1000)] }, "aggregate" => { "downloads" => 200, "finalized" => 30 } }
+  end
+
+  def publisher_referrals_last_update(publisher)
+    promos = publisher.promo_registrations.order(updated_at: :desc)
+    return if promos.blank?
+
+    I18n.t(
+      "promo.dashboard.last_updated_at",
+      time: time_ago_in_words(promos.first&.updated_at)
+    )
   end
 
   def publisher_referral_totals(publisher)
-    aggregate_stats = PromoRegistration.aggregate_stats(publisher.promo_registrations)
+    aggregate_stats = PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations)
 
     {
       PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
-      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED]
+      PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
+      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED],
+    }
+  end
+
+  def publisher_current_referral_totals(publisher)
+    aggregate_stats = PromoRegistration.stats_for_registrations(
+      promo_registrations: publisher.promo_registrations,
+      start_date: Date.today.beginning_of_month
+    )
+
+    {
+      PromoRegistration::RETRIEVALS => aggregate_stats[PromoRegistration::RETRIEVALS],
+      PromoRegistration::FIRST_RUNS => aggregate_stats[PromoRegistration::FIRST_RUNS],
+      PromoRegistration::FINALIZED => aggregate_stats[PromoRegistration::FINALIZED],
     }
   end
 
@@ -59,16 +83,10 @@ module PromosHelper
 
   def on_channel_type(channel)
     case channel.details_type
-    when "YoutubeChannelDetails"
-      "#{channel.publication_title.upcase} #{t("promo.shared.on_youtube")}"
-    when "TwitchChannelDetails"
-      "#{channel.publication_title.upcase} #{t("promo.shared.on_twitch")}"
-    when "TwitterChannelDetails"
-      "#{channel.publication_title.upcase} #{t("promo.shared.on_twitter")}"
     when "SiteChannelDetails"
       "#{channel.publication_title.upcase}"
     else
-      raise
+      "#{channel.publication_title.upcase} #{t("promo.shared.on_#{channel.type_display.downcase}")}"
     end
   end
 
@@ -81,9 +99,9 @@ module PromosHelper
     when PromoRegistration::MONTHLY
       "Month"
     when PromoRegistration::RUNNING_TOTAL
-      "Cumulative"
+      "Date"
     else
-      raise
+      raise "Invalid reporting interval #{reporting_interval}"
     end
   end
 
@@ -92,11 +110,19 @@ module PromosHelper
     when PromoRegistration::RETRIEVALS
       "Downloads"
     when PromoRegistration::FIRST_RUNS
-      "Installs"
+      "First opens"
     when PromoRegistration::FINALIZED
-      "Confirmations"
+      "30 days"
     else
       raise
+    end
+  end
+
+  def ratios_column_header(is_geo)
+    if is_geo
+      ["Referral code", "Country", "Downloads", "Installs", "Eligible Installs", "30 days", "Installs / Downloads", "30 days / Eligible Installs"]
+    else
+      ["Referral code", "Downloads", "Installs", "Eligible Installs", "30 days", "Installs / Downloads", "30 days / Eligible Installs"]
     end
   end
 

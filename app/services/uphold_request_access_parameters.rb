@@ -12,13 +12,13 @@ class UpholdRequestAccessParameters < BaseService
   def connection
     @connection ||= begin
       Faraday.new(url: api_base_uri) do |faraday|
-        faraday.adapter Faraday.default_adapter
         faraday.proxy(proxy_url) if proxy_url.present?
         # Log level info: Brief summaries
         # Log level debug: Detailed bodies and headers
         faraday.response(:logger, Rails.logger, bodies: true, headers: true)
         faraday.use(Faraday::Response::RaiseError)
         faraday.basic_auth(Rails.application.secrets[:uphold_client_id], Rails.application.secrets[:uphold_client_secret])
+        faraday.adapter Faraday.default_adapter
       end
     end
   end
@@ -30,7 +30,7 @@ class UpholdRequestAccessParameters < BaseService
   def perform
     response = connection.post do |request|
       request.url("#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-      request.body = "code=#{@publisher.uphold_code}&grant_type=authorization_code"
+      request.body = "code=#{@publisher.uphold_connection.uphold_code}&grant_type=authorization_code"
     end
 
     response.body

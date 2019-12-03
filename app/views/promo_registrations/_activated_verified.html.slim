@@ -10,7 +10,7 @@
       - if current_publisher
         span = link_to(t("promo.activated.description_two"), home_publishers_path)
       - else
-        span = link_to(t("promo.activated.description_two"), new_auth_token_publishers_path)
+        span = link_to(t("promo.activated.description_two"), log_in_publishers_path)
   .promo--item-container
     span.promo--item-label= t("promo.shared.referral_links")
   - n = 0
@@ -30,4 +30,4 @@
     - if current_publisher
       span = link_to(t("promo.activated.description_two"), home_publishers_path)
     - else
-      span = link_to(t("promo.activated.description_two"), new_auth_token_publishers_path)
+      span = link_to(t("promo.activated.description_two"), log_in_publishers_path)

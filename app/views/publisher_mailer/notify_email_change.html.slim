@@ -2,7 +2,9 @@
 - content_for(:title) do
   h3= t ".title"
 
-p= "#{t(".intro")}:"
+p.salutation= t "publisher_mailer.shared.salutation", name: @publisher.name || name_from_email(@publisher.email)
+
+p= "#{t(".intro")}"
 
 p
   div
@@ -12,8 +14,6 @@ p
     strong.attribute= "#{t("publisher_mailer.shared.updated_email")}:"
     = @publisher.pending_email
 
-p= t ".change_ok"
+p= t(".contact_support_html")
 
-p
-  span.attribute= "#{t(".contact_support")}:"
-  = mail_to(Rails.application.secrets[:support_email])
+.notice= t "shared.support_note_html"

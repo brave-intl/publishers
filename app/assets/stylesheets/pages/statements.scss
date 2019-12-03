@@ -11,7 +11,7 @@
     margin-top: 2.5rem;
 
     .btn-primary {
-      background-color: $braveAction;
+      background-color: $braveBrand;
       border: none;
       margin-left: 0.8rem;
       &:hover, &:active, &:focus {
@@ -19,7 +19,7 @@
         box-shadow: none;
       }
       &:hover {
-        background-color: lighten($braveAction, 5%);
+        background-color: lighten($braveBrand, 5%);
       }
     }
 

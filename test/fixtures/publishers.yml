@@ -1,47 +1,65 @@
-<% salt = ROTP::Base32.random_base32 %>
+<% salt = SecureRandom.random_bytes(12) %>
 
 # Just registered.
 default: &default
   email: "alice@default.org"
   name: "Alice the Pyramid"
-  phone: "4159001420"
-  phone_normalized: "+14159001420"
+  default_site_banner_id: "00000000-0000-0000-0000-000000000000"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
+  last_sign_in_ip: "192.168.1.1"
+  current_sign_in_ip: "192.168.1.1"
 
 verified:
+  <<: *default
+  default_site_banner_id: "00000000-0000-0000-0000-000000000005"
+  default_site_banner_mode: true
   email: "alice@verified.org"
   name: "Alice the Verified"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
+
+notes:
+  <<: *default
+  email: "alice@notes.org"
+  name: "Alice the Notes"
+
+just_notes:
+  <<: *default
+  email: "only@notes.org"
+  name: "Only the Notes"
+  role: 'admin'
 
 verified_totp_only:
+  <<: *default
   email: "alice_totp@verified.org"
   name: "Alice the Verified TOTP User"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
-  two_factor_prompted_at: "<%= 1.day.ago %>"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 # A publisher that has received an authentication email
 completed:
   email: "alice@completed.org"
   name: "Alice the Completed"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
-  authentication_token_expires_at: "<%= DateTime.now + PublisherTokenGenerator::TOKEN_TTL %>"
-  encrypted_authentication_token_iv: "<%= Base64.encode64(salt) %>"
-  encrypted_authentication_token: "<%= Publisher.encrypt_authentication_token(
-    "authentication_token",
-    key: Publisher.encryption_key,
-    iv: salt
-  ) %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  default_currency_confirmed_at: "<%= DateTime.now %>"
+
+completed_partner:
+  email: "partner@completed.org"
+  name: "Paul the Partner"
+  role: 'partner'
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  created_by: admin
+  default_currency: "USD"
+  default_currency_confirmed_at: "<%= DateTime.now %>"
+
+suspended_partner:
+  email: "suspended_partner@completed.org"
+  name: "Suspended"
+  role: 'partner'
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  created_by: admin
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   default_currency_confirmed_at: "<%= DateTime.now %>"
@@ -49,7 +67,17 @@ completed:
 admin:
   email: "hello@brave.com"
   role: "admin"
+  name: Mr. Admin
   two_factor_prompted_at: "<%= 1.day.ago %>"
+
+zendesk_admin:
+  email: <%= Rails.application.secrets[:zendesk_admin_email] %>
+  role: "admin"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+
+zendesk_end_user:
+  email: <%= Rails.application.secrets[:zendesk_end_user_email] %>
+  role: "publisher"
 
 partner:
   email: "partner@brave.com"
@@ -59,62 +87,76 @@ partner:
 unprompted:
   email: "alice@unprompted.org"
   name: "Alice the Unprompted"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
-  # two_factor_prompted_at: nil
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 stale:
   email: "alice@stale.org"
   name: "Alice the Stale"
-  phone: "4159001422"
-  phone_normalized: "+14159001422"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 fake1:
   email: "alice@fake.org"
   name: "Fake Alice"
-  phone: "4155551212"
-  phone_normalized: "+14155551212"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 fake2:
   email: "bob@fake.org"
   name: "Fake Bob"
-  phone: "4155551234"
-  phone_normalized: "+14155551234"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 stats:
   email: "test@stats.org"
   name: "Stats Test"
-  phone: "4155551234"
-  phone_normalized: "+14155551234"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 uphold_connected:
   email: "alice@upholdconnected.org"
   name: "Alice the uphold_connected"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
-  uphold_verified: true
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
-  default_currency: "USD"
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_reauthorize:
+  email: "alice_reauthorize@upholdconnected.org"
+  name: "Alice the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_details:
+  email: "alice@upholdconnecteddetails.org"
+  name: "Alice the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_blocked:
+  email: "alice@upholdconnectedandblocked.org"
+  name: "Alice the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
+  two_factor_prompted_at: "<%= 1.day.ago %>"
+  default_currency_confirmed_at: "<%= 1.day.ago %>"
+
+uphold_connected_restricted_member:
+  email: "restricted@upholdconnected.org"
+  name: "restricted the uphold_connected"
+  agreed_to_tos: "<%= 1.day.ago %>"
+  visible: true
   two_factor_prompted_at: "<%= 1.day.ago %>"
   default_currency_confirmed_at: "<%= 1.day.ago %>"
 
 uphold_connected_currency_unconfirmed:
   email: "carol@upholdconnected.org"
   name: "Carol the unconfirmed currency"
-  phone: "5555555555"
-  phone_normalized: "+15555555555"
-  uphold_verified: true
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   visible: true
@@ -122,66 +164,46 @@ uphold_connected_currency_unconfirmed:
 youtube_initial:
   email: "alice@spud.com"
   name: "Alice the Youtuber"
-  phone: "4159001420"
-  phone_normalized: "+14159001420"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 youtube_new:
   email: "alice2@spud.com"
   name: "Alice the Youtuber"
-  phone: "4159001420"
-  phone_normalized: "+14159001420"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 google_verified:
+  <<: *default
   email: "alice2@verified.org"
   name: "Alice the Verified"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
-  default_currency: "BAT"
 
 twitch_new:
+  <<: *default
   email: "aliceTwitch@spud.com"
   name: "Alice the Twitcher"
-  phone: "4159001420"
-  phone_normalized: "+14159001420"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 twitch_verified:
+  <<: *default
   email: "aliceTwitch@verified.org"
   name: "Alice the Verified"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
+
+channel_publisher:
+  email: "channel_publisher@gmail.com"
+  name: "Carlos the Channel Adder"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
   default_currency: "BAT"
-
-twitter_new:
-  email: "aliceTwitter@spud.com"
-  name: "Alice the Tweeter"
-  phone: "4159001420"
-  phone_normalized: "+14159001420"
-  agreed_to_tos: "<%= 1.day.ago %>"
-  visible: true
 
 global_media_group:
   email: "fred@vglobal.org"
   name: "Global Media Group"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
 
 small_media_group:
   email: "fred@small.org"
   name: "Small Media Group"
-  phone: "4159001421"
-  phone_normalized: "+14159001421"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
@@ -190,8 +212,6 @@ small_media_group:
 medium_media_group:
   email: "barney@medium.org"
   name: "Medium Media Group"
-  phone: "4159008921"
-  phone_normalized: "+14159008921"
   two_factor_prompted_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
   visible: true
@@ -199,8 +219,6 @@ medium_media_group:
 joe_the_only_yt_verified:
   email: "joes-great-channel@pages.plusgoogle.com"
   name: "Joe Schmoe"
-  phone: "6035551212"
-  phone_normalized: "+16035551212"
   visible: true
   agreed_to_tos: "<%= 1.day.ago %>"
   two_factor_prompted_at: "<%= 1.day.ago %>"
@@ -249,3 +267,14 @@ locked_out_verifier:
 promo_enabled:
   email: "enabled@promo.org"
   name: "peter promo"
+  promo_enabled_2018q1: true
+
+promo_enabled_but_only_user_funds:
+  email: "only user funds@promo.org"
+  name: "peter promo"
+  promo_enabled_2018q1: true
+
+potentially_paid:
+  email: "priscilla@potentiallypaid.org"
+
+

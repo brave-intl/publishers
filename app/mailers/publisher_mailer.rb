@@ -15,6 +15,18 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  # Best practice is to use the MailerServices::PartnerLoginLinkEmailer service
+  def login_partner_email(partner)
+    @partner = partner
+    @private_reauth_url = publisher_private_reauth_url(publisher: @partner)
+    # We should send the email out to people who have previously registered
+    # but not verified their account
+    mail(
+      to: @partner.email || @partner.pending_email,
+      subject: default_i18n_subject
+    )
+  end
+
   # Best practice is to use the MailerServices::VerificationDoneEmailer service
   def verification_done(channel)
     @channel = channel
@@ -109,17 +121,17 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def uphold_account_changed(publisher)
+  def uphold_kyc_incomplete(publisher, total_amount)
     @publisher = publisher
+    @total_amount = total_amount
     mail(
       to: @publisher.email,
-      subject: default_i18n_subject
+      subject: default_i18n_subject(total_amount: total_amount)
     )
   end
 
-  def statement_ready(publisher_statement)
-    @publisher_statement = publisher_statement
-    @publisher = publisher_statement.publisher
+  def uphold_member_restricted(publisher)
+    @publisher = publisher
     mail(
       to: @publisher.email,
       subject: default_i18n_subject
@@ -134,25 +146,23 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def unverified_domain_reached_threshold(domain, email)
-    @domain = domain
-    @email = email
-    @home_url = root_url
+  def two_factor_authentication_removal_cancellation(publisher)
+    @publisher = publisher
+    @publisher_private_two_factor_cancellation_url = publisher_private_two_factor_cancellation_url(publisher: @publisher)
     mail(
-      to: @email,
-      subject: default_i18n_subject(publication_title: @domain)
+      to: @publisher.email,
+      subject: default_i18n_subject,
+      template_name: "two_factor_authentication_removal_cancellation"
     )
   end
 
-  def unverified_domain_reached_threshold_internal(domain, email)
-    @domain = domain
-    @email = email
-    @home_url = root_url
+  def two_factor_authentication_removal_reminder(publisher, remainder)
+    @publisher = publisher
+    @remainder = remainder
     mail(
-      to: INTERNAL_EMAIL,
-      reply_to: @email,
-      subject: "<Internal> #{t("publisher_mailer.unverified_domain_reached_threshold.subject", publication_title: @domain)}",
-      template_name: "unverified_domain_reached_threshold"
+      to: @publisher.email,
+      subject: default_i18n_subject,
+      template_name: "two_factor_authentication_removal_reminder"
     )
   end
 
@@ -161,12 +171,12 @@ class PublisherMailer < ApplicationMailer
     @channel_name = @channel.publication_title
     @publisher_name = @channel.publisher.name
     @email = @channel.publisher.email
-    
+
     @transfer_url = token_reject_transfer_url(@channel, @channel.contest_token)
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel.publication_title)
     )
   end
 
@@ -192,7 +202,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -216,7 +226,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -240,7 +250,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: @email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -263,7 +273,7 @@ class PublisherMailer < ApplicationMailer
 
     mail(
         to: email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(channel_name: @channel_name)
     )
   end
 
@@ -276,11 +286,13 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  def wallet_not_connected(publisher)
+  def wallet_not_connected(publisher, total_amount)
     @publisher = publisher
-    @publisher_log_in_url = new_auth_token_publishers_url
+    @publisher_log_in_url = log_in_publishers_url
+    @total_amount = total_amount
 
-    if @publisher.uphold_verified? && publisher.wallet.address.present?
+    connection = @publisher.uphold_connection
+    if connection&.uphold_verified? && connection&.address.present?
       begin
         raise "#{@publisher.id}'s wallet is connected."
       rescue => e
@@ -290,9 +302,47 @@ class PublisherMailer < ApplicationMailer
     else
       mail(
         to: @publisher.email,
-        subject: default_i18n_subject
+        subject: default_i18n_subject(total_amount: total_amount)
       )
     end
+  end
+
+  def email_user_on_hold(publisher)
+    @publisher = publisher
+
+    mail(
+      to: @publisher.email,
+      from: ApplicationMailer::PAYOUT_CONTACT_EMAIL,
+      subject: default_i18n_subject
+    )
+  end
+
+
+  def submit_appeal(publisher)
+    @name = publisher.name
+    @body = I18n.t('.publisher_mailer.submit_appeal.body')
+
+    mail(to: publisher.email,
+      subject: I18n.t('.publisher_mailer.submit_appeal.subject'),
+      template_name: 'shared')
+  end
+
+  def accept_appeal(publisher)
+    @name = publisher.name
+    @body = I18n.t('.publisher_mailer.accept_appeal.body')
+
+    mail(to: publisher.email,
+      subject: I18n.t('.publisher_mailer.accept_appeal.subject'),
+      template_name: 'shared')
+  end
+
+  def reject_appeal(publisher)
+    @name = publisher.name
+    @body = I18n.t('.publisher_mailer.reject_appeal.body')
+
+    mail(to: publisher.email,
+      subject: I18n.t('.publisher_mailer.reject_appeal.subject'),
+      template_name: 'shared')
   end
 
   private

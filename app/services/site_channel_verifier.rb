@@ -29,7 +29,11 @@ class SiteChannelVerifier < BaseService
     elsif site_already_verified?(channel.details.brave_publisher_id)
       # Contest the channel
       existing_channel = contested_channel(channel.details.brave_publisher_id).channel
-      Channels::ContestChannel.new(channel: existing_channel, contested_by: channel).perform
+      begin
+        Channels::ContestChannel.new(channel: existing_channel, contested_by: channel).perform
+      rescue RuntimeError
+        SlackMessenger.new(message: "In SiteChannelVerifier, Publisher #{channel.publisher_id} tried contesting channel #{@channel.id}")
+      end
       return false
     else
       channel.verification_succeeded!(has_admin_approval)
@@ -51,7 +55,6 @@ class SiteChannelVerifier < BaseService
 
   def verified_channel_post_verify
     MailerServices::VerificationDoneEmailer.new(verified_channel: channel).perform
-    SlackMessenger.new(message: "*#{channel.publication_title}* verified by owner #{channel.publisher.owner_identifier}; id=#{channel.details.channel_identifier}").perform
   end
 
   def verify_site_channel
@@ -103,34 +106,33 @@ class SiteChannelVerifier < BaseService
     Rails.logger.debug("Dnsruby::NXDomain")
     @verification_details = "domain_not_found"
     return false
+  rescue Dnsruby::ServFail
+    @verification_details = "domain_not_found"
+    false
   end
 
   def verify_site_channel_public_file
     generator = SiteChannelVerificationFileGenerator.new(site_channel: channel)
-    uri = URI("https://#{channel.details.brave_publisher_id}/.well-known/#{generator.filename}")
-    response = fetch(uri: uri)
-    if response.code == "200"
-      token_match = /#{channel.details.verification_token}/.match(response.body)
-      if token_match
+
+    host_inspector = SiteChannelHostInspector.new(url: generator.url, response_body: true).perform
+
+    if host_inspector[:response].is_a?(Publishers::Fetch::NotFoundError)
+      host_inspector = SiteChannelHostInspector.new(url: generator.legacy_url, response_body: true).perform
+    end
+
+    if host_inspector[:https]
+      token_match = /#{channel.details.verification_token}/.match(host_inspector[:response_body])
+      if token_match.present?
         Rails.logger.debug("verify_site_channel_public_file: Token Found")
-        true
+        return true
       else
         Rails.logger.debug("verify_site_channel_public_file: Token Mismatch")
         @verification_details = "token_not_found_public_file"
-        false
+        return false
       end
-    else
-      Rails.logger.debug("verify_site_channel_public_file: Not Net::HTTPSuccess")
-      @verification_details = "no_https"
-      false
     end
-  rescue Publishers::Fetch::RedirectError => e
-    Rails.logger.debug("verify_site_channel_public_file: #{e.message}")
-    @verification_details = "too_many_redirects"
-    false
-  rescue Publishers::Fetch::ConnectionFailedError => e
-    Rails.logger.debug("verify_site_channel_public_file: #{e.message}")
-    @verification_details = "connection_failed"
+
+    @verification_details = host_inspector[:verification_details]
     false
   end
 

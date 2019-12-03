@@ -1,0 +1,1417 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:43 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '699'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app40.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa9179ed777e-SEA
+      X-Runtime:
+      - '0.124135'
+      X-Zendesk-Request-Id:
+      - 662410f23376d4ac99ed
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa9179ed777e-LAX
+    body:
+      encoding: UTF-8
+      string: '{"ticket":{"url":"https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2.json","id":2,"external_id":null,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","updated_at":"2019-04-11T17:32:57Z","type":null,"subject":"Trouble
+        logging in","raw_subject":"Trouble logging in","description":"Lorem Ipsum","priority":null,"status":"new","recipient":null,"requester_id":379569843751,"submitter_id":379518079912,"assignee_id":null,"organization_id":null,"group_id":360004379911,"collaborator_ids":[],"follower_ids":[],"email_cc_ids":[],"forum_topic_id":null,"problem_id":null,"has_incidents":false,"is_public":true,"due_at":null,"tags":[],"custom_fields":[],"satisfaction_rating":null,"sharing_agreement_ids":[],"fields":[],"followup_ids":[],"ticket_form_id":360000245511,"brand_id":360001861011,"satisfaction_probability":null,"allow_channelback":false,"allow_attachments":true}}'
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:43 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:44 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '698'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app31.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa934dfe7808-LAX
+      X-Runtime:
+      - '0.136667'
+      X-Zendesk-Request-Id:
+      - aa520046b76e0b3aebe7
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa934dfe7808-LAX
+    body:
+      encoding: UTF-8
+      string: '{"comments":[{"id":593375872551,"type":"Comment","author_id":379518079912,"body":"Lorem
+        Ipsum","html_body":"<div class=\"zd-comment\" dir=\"auto\">Lorem Ipsum<br>\n</div>","plain_body":"Lorem
+        Ipsum","public":true,"attachments":[],"audit_id":593375872511,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","metadata":{"system":{},"custom":{}}},{"id":593834223792,"type":"Comment","author_id":379518079912,"body":"Comment
+        Reply Here\n\nThis is rendered has a new line","html_body":"<div class=\"zd-comment\"
+        dir=\"auto\">Comment Reply Here<br><br>This is rendered has a new line<br>\n</div>","plain_body":"Comment
+        Reply Here\n\nThis is rendered has a new line","public":true,"attachments":[],"audit_id":593834223732,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T05:00:27Z","metadata":{"system":{},"custom":{}}},{"id":593688279551,"type":"Comment","author_id":379569843751,"body":"This
+        response is sent via email","html_body":"<div class=\"zd-comment zd-comment-pre-styled\"
+        dir=\"auto\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</div>","plain_body":"This
+        response is sent via email","public":true,"attachments":[],"audit_id":593688279511,"via":{"channel":"email","source":{"from":{"address":"alice@notes.org","name":"Test
+        Publisher","original_recipients":["alice@notes.org","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-06T17:02:44Z","metadata":{"system":{"message_id":"<CAGV6rryh5_dk3zZLn7Mm+54PMVHGhfFs_e3TYDBwwBNTZ3KZ1A@mail.gmail.com>","raw_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.eml","json_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.json"},"custom":{},"suspension_type_id":null}},{"id":598673813271,"type":"Comment","author_id":379569843751,"body":"This
+        should update updated_at\n\n\nOn Sat, Apr 6, 2019 at 10:02 AM Al <alice@notes.org>
+        wrote:\n\n> This response is sent via email","html_body":"<div class=\"zd-comment
+        zd-comment-pre-styled\" dir=\"auto\">\n<div dir=\"ltr\">This should update
+        updated_at</div>\n<br><div>\n<div dir=\"ltr\">On Sat, Apr 6, 2019 at 10:02
+        AM Al &lt;<a href=\"mailto:alice@notes.org\" rel=\"noreferrer\">alice@notes.org</a>&gt;
+        wrote:<br>\n</div>\n<blockquote style=\"border-left-color: rgb(204,204,204);
+        border-left-style: solid; border-left-width: 1px; margin: 0px 0px 0px 0.8ex;
+        padding-left: 1ex\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</blockquote>\n</div>\n</div>","plain_body":"This
+        should update updated_at \n\n \n On Sat, Apr 6, 2019 at 10:02 AM Al &lt;alice@notes.org&gt;
+        wrote:\n\n \n \n This response is sent via email","public":true,"attachments":[],"audit_id":598673813211,"via":{"channel":"email","source":{"from":{"address":"alice@notes.org","name":"Test
+        Publisher","original_recipients":["alice@notes.org","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-11T17:32:57Z","metadata":{"system":{"message_id":"<CAGV6rrwh=WhmnrWFNuRY2DepJd3=pqcqp0GLctWtpWq9jcgTeg@mail.gmail.com>","raw_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.eml","json_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.json"},"custom":{},"suspension_type_id":null}}],"next_page":null,"previous_page":null,"count":4}'
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:44 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:44 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '697'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app50.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa95895577fc-SEA
+      X-Runtime:
+      - '0.117168'
+      X-Zendesk-Request-Id:
+      - 5892ec37afc9a95e1673
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa95895577fc-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:44 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:44 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '696'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app48.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa9739c17808-SEA
+      X-Runtime:
+      - '0.076509'
+      X-Zendesk-Request-Id:
+      - 7bd0acb8dc11e5bc7191
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa9739c17808-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:44 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:44 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '695'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app62.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa98ac8c22a6-SEA
+      X-Runtime:
+      - '0.126741'
+      X-Zendesk-Request-Id:
+      - 2463c15864763ac8b4b1
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa98ac8c22a6-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:44 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:45 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '694'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app61.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa9a5d9877a2-LAX
+      X-Runtime:
+      - '0.078974'
+      X-Zendesk-Request-Id:
+      - e5e9efae80c38fce36cb
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa9a5d9877a2-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:45 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:45 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '693'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app29.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa9bea617790-SEA
+      X-Runtime:
+      - '0.119854'
+      X-Zendesk-Request-Id:
+      - 8a906eeea1de4516bc8e
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa9bea617790-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:45 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:45 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '692'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app44.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa9db8ea22ac-SEA
+      X-Runtime:
+      - '0.075379'
+      X-Zendesk-Request-Id:
+      - 567b80ffc6a4135c257f
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa9db8ea22ac-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:45 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:45 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '691'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app17.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaa9f1a7677a2-SEA
+      X-Runtime:
+      - '0.119537'
+      X-Zendesk-Request-Id:
+      - 7298795f2ba3a7824052
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaa9f1a7677a2-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:45 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:46 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '690'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app27.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaa0ea527808-SEA
+      X-Runtime:
+      - '0.073970'
+      X-Zendesk-Request-Id:
+      - 32bb54e7069284a42bee
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaa0ea527808-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:46 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:46 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '689'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app35.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaa26b32504d-SEA
+      X-Runtime:
+      - '0.113635'
+      X-Zendesk-Request-Id:
+      - 83a6c1a7b5a97a243d8e
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaa26b32504d-LAX
+    body:
+      encoding: UTF-8
+      string: '{"ticket":{"url":"https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2.json","id":2,"external_id":null,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","updated_at":"2019-04-11T17:32:57Z","type":null,"subject":"Trouble
+        logging in","raw_subject":"Trouble logging in","description":"Lorem Ipsum","priority":null,"status":"new","recipient":null,"requester_id":379569843751,"submitter_id":379518079912,"assignee_id":null,"organization_id":null,"group_id":360004379911,"collaborator_ids":[],"follower_ids":[],"email_cc_ids":[],"forum_topic_id":null,"problem_id":null,"has_incidents":false,"is_public":true,"due_at":null,"tags":[],"custom_fields":[],"satisfaction_rating":null,"sharing_agreement_ids":[],"fields":[],"followup_ids":[],"ticket_form_id":360000245511,"brand_id":360001861011,"satisfaction_probability":null,"allow_channelback":false,"allow_attachments":true}}'
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:46 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:46 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '688'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app56.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaa41fd27778-SEA
+      X-Runtime:
+      - '0.144393'
+      X-Zendesk-Request-Id:
+      - 0d1e295934834de0dd59
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaa41fd27778-LAX
+    body:
+      encoding: UTF-8
+      string: '{"comments":[{"id":593375872551,"type":"Comment","author_id":379518079912,"body":"Lorem
+        Ipsum","html_body":"<div class=\"zd-comment\" dir=\"auto\">Lorem Ipsum<br>\n</div>","plain_body":"Lorem
+        Ipsum","public":true,"attachments":[],"audit_id":593375872511,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T04:59:37Z","metadata":{"system":{},"custom":{}}},{"id":593834223792,"type":"Comment","author_id":379518079912,"body":"Comment
+        Reply Here\n\nThis is rendered has a new line","html_body":"<div class=\"zd-comment\"
+        dir=\"auto\">Comment Reply Here<br><br>This is rendered has a new line<br>\n</div>","plain_body":"Comment
+        Reply Here\n\nThis is rendered has a new line","public":true,"attachments":[],"audit_id":593834223732,"via":{"channel":"web","source":{"from":{},"to":{},"rel":null}},"created_at":"2019-04-06T05:00:27Z","metadata":{"system":{},"custom":{}}},{"id":593688279551,"type":"Comment","author_id":379569843751,"body":"This
+        response is sent via email","html_body":"<div class=\"zd-comment zd-comment-pre-styled\"
+        dir=\"auto\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</div>","plain_body":"This
+        response is sent via email","public":true,"attachments":[],"audit_id":593688279511,"via":{"channel":"email","source":{"from":{"address":"alice@notes.org","name":"Test
+        Publisher","original_recipients":["alice@notes.org","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-06T17:02:44Z","metadata":{"system":{"message_id":"<CAGV6rryh5_dk3zZLn7Mm+54PMVHGhfFs_e3TYDBwwBNTZ3KZ1A@mail.gmail.com>","raw_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.eml","json_email_identifier":"9056059/b8a8cb03-2e77-4f02-b33e-5d4c4f5a40e7.json"},"custom":{},"suspension_type_id":null}},{"id":598673813271,"type":"Comment","author_id":379569843751,"body":"This
+        should update updated_at\n\n\nOn Sat, Apr 6, 2019 at 10:02 AM Al <alice@notes.org>
+        wrote:\n\n> This response is sent via email","html_body":"<div class=\"zd-comment
+        zd-comment-pre-styled\" dir=\"auto\">\n<div dir=\"ltr\">This should update
+        updated_at</div>\n<br><div>\n<div dir=\"ltr\">On Sat, Apr 6, 2019 at 10:02
+        AM Al &lt;<a href=\"mailto:alice@notes.org\" rel=\"noreferrer\">alice@notes.org</a>&gt;
+        wrote:<br>\n</div>\n<blockquote style=\"border-left-color: rgb(204,204,204);
+        border-left-style: solid; border-left-width: 1px; margin: 0px 0px 0px 0.8ex;
+        padding-left: 1ex\">\n<div dir=\"ltr\">This response is sent via email</div>\n<br>\n</blockquote>\n</div>\n</div>","plain_body":"This
+        should update updated_at \n\n \n On Sat, Apr 6, 2019 at 10:02 AM Al &lt;alice@notes.org&gt;
+        wrote:\n\n \n \n This response is sent via email","public":true,"attachments":[],"audit_id":598673813211,"via":{"channel":"email","source":{"from":{"address":"alice@notes.org","name":"Test
+        Publisher","original_recipients":["alice@notes.org","support+id2@bravesoftware1543857346.zendesk.com"]},"to":{"name":"Brave
+        Software SANDBOX","address":null},"rel":null}},"created_at":"2019-04-11T17:32:57Z","metadata":{"system":{"message_id":"<CAGV6rrwh=WhmnrWFNuRY2DepJd3=pqcqp0GLctWtpWq9jcgTeg@mail.gmail.com>","raw_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.eml","json_email_identifier":"9056059/0f992606-40a6-4d8d-9705-5a33cfa163a1.json"},"custom":{},"suspension_type_id":null}}],"next_page":null,"previous_page":null,"count":4}'
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:46 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:47 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '687'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app21.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaa6193b7796-SEA
+      X-Runtime:
+      - '0.113276'
+      X-Zendesk-Request-Id:
+      - a0fa1f1234e1ea557698
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaa6193b7796-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:47 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:47 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '686'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app12.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaa7dac07796-SEA
+      X-Runtime:
+      - '0.078249'
+      X-Zendesk-Request-Id:
+      - 0b379fc3c3a55ba17543
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaa7dac07796-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:47 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:47 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '685'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app74.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaa97e48777e-SEA
+      X-Runtime:
+      - '0.118620'
+      X-Zendesk-Request-Id:
+      - d6f34ed6cce7e538349f
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaa97e48777e-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:47 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:47 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '684'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app50.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaab3e8677fc-SEA
+      X-Runtime:
+      - '0.074128'
+      X-Zendesk-Request-Id:
+      - 4ef2afb25bcfdd8520c5
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaab3e8677fc-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:47 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:48 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '683'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app20.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaacbbe822ac-SEA
+      X-Runtime:
+      - '0.115120'
+      X-Zendesk-Request-Id:
+      - c15edb9cc5705acb6ee8
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaacbbe822ac-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:48 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:48 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '682'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app57.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaae6f9a7796-SEA
+      X-Runtime:
+      - '0.083359'
+      X-Zendesk-Request-Id:
+      - 987fd70bd24c1e7458a9
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaae6f9a7796-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:48 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:48 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '681'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Etag:
+      - W/"ab5b1d787870feb349c5b4509fa7af6a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Zendesk-Origin-Server:
+      - app57.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaaafdc6d7790-SEA
+      X-Runtime:
+      - '0.130768'
+      X-Zendesk-Request-Id:
+      - f7937f3636248165c599
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaaafdc6d7790-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:48 GMT
+- request:
+    method: get
+    uri: https://bravesoftware1543857346.zendesk.com/api/v2/tickets/2/comments
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - ZendeskAPI Ruby 1.17.0
+      If-None-Match:
+      - W/"d1d0e6a0d4b08bd5744398dbd9ad0102"
+  response:
+    status:
+      code: 304
+      message: Not Modified
+    headers:
+      Date:
+      - Sat, 13 Apr 2019 04:23:48 GMT
+      Connection:
+      - keep-alive
+      X-Zendesk-Api-Version:
+      - v2
+      X-Zendesk-Application-Version:
+      - v2304.12
+      X-Frame-Options:
+      - SAMEORIGIN
+      Etag:
+      - '"d1d0e6a0d4b08bd5744398dbd9ad0102"'
+      Last-Modified:
+      - Thu, 11 Apr 2019 17:32:57 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - X-Zendesk-API-Warn
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Rate-Limit:
+      - '700'
+      X-Rate-Limit-Remaining:
+      - '680'
+      Strict-Transport-Security:
+      - max-age=31536000;
+      X-Zendesk-Origin-Server:
+      - app27.pod13.usw2.zdsys.com
+      X-Request-Id:
+      - 4c6aaab1a8d9779c-LAX
+      X-Runtime:
+      - '0.074541'
+      X-Zendesk-Request-Id:
+      - 3da531a291ecd9cb12a0
+      X-Content-Type-Options:
+      - nosniff
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 4c6aaab1a8d9779c-LAX
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sat, 13 Apr 2019 04:23:48 GMT
+recorded_with: VCR 4.0.0

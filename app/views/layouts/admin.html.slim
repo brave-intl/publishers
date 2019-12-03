@@ -4,15 +4,18 @@ html
     title Publisher Admin Dashboard
     = stylesheet_link_tag 'admin/main'
     = javascript_pack_tag 'admin'
-  body data-action=params[:action] data-controller=params[:controller]
+    = csrf_meta_tags
+  body data-action=params[:action] data-controller=params[:controller] data-locale=I18n.locale
     section id='container'
       = render 'admin/shared/header'
       = render 'admin/shared/sidebar'
       section id='main-content'
         section id='wrapper'
-          .notifications
+          .notifications.mb-2
             - if flash[:alert]
               .alert.alert-warning.flash= flash[:alert]
             - if flash[:notice]
               .alert.alert-success.flash= flash[:notice]
           = yield
+
+    #modal-root

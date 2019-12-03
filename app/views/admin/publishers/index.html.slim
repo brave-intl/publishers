@@ -1,28 +1,47 @@
+#duplicates
+= javascript_pack_tag 'views/admin/publishers/Duplicates'
 div.row
   div.col-sm-12
     section.panel
-      header.panel-heading
-        h4 Publishers
-      = form_tag(admin_publishers_path, method: "get")
-        = text_field_tag(:q)
-        = submit_tag("Search")
-        .filters
-          = label_tag('Suspended')
-          = check_box_tag('suspended', 1, params[:suspended].present?)
+      h4 Publishers
+      = form_tag(admin_publishers_path, method: "get", class: 'action-group')
+        .input-group.align-self-end
+          = text_field_tag(:q, params[:q], class:'form-control')
+          .input-group-btn
+            = submit_tag("Search", class: 'btn btn-default', name: nil)
+        .mt-1
+          small.text-muted FILTER
+          .d-flex
+            = select_tag(:status, options_for_select(PublisherStatusUpdate::ALL_STATUSES, params[:status]), include_blank: "Status" , class: "form-control mr-1", onchange:"this.form.submit()")
+            = select_tag(:role, options_for_select(Publisher::ROLES, params[:role]), include_blank: "Role" , class: "mx-1 form-control",  onchange: "this.form.submit()")
+            = select_tag(:uphold_status, options_for_select(["ok", "blocked", "restricted", "pending"], params[:uphold_status]), include_blank: "Uphold status" , class: "ml-1 form-control",  onchange: "this.form.submit()")
       br
       div.panel-body
         div.adv-table
           table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
             tr
-              th ID
-              th Name
               th Email
-              th Actions
+              th Name
+              th ID
+              th Status
+              th = sort_link(Publisher::VERIFIED_CHANNEL_COUNT, "Number of verified channels")
+              th Last note
+              th = sort_link(:created_at, "2FA removal time remaining")
+              th = sort_link(:created_at, "Account creation time")
+              th = sort_link(:last_sign_in_at, "Last sign in at")
             tbody
-              - @publishers.each do |publisher|
+              - @publishers.left_joins(:channels).each do |publisher|
                 tr.gradeX
-                  td = link_to publisher.id, admin_publisher_path(publisher.id)
+                  td = publisher_link(publisher)
                   td = publisher.name
-                  td = publisher.email
-                  td TODO
+                  td.small = publisher.id
+                  td = publisher_status(publisher)
+                  td = publisher.channels.verified.count
+                  td = publisher.notes.order(created_at: :desc).first&.note
+                  - if publisher.two_factor_authentication_removal
+                    td = publisher.two_factor_authentication_removal.total_time_remaining
+                  - else
+                     td = "N/A"
+                  td = publisher.created_at.strftime('%B %d, %Y')
+                  td = distance_of_time_in_words(publisher.last_sign_in_at, Time.now) if publisher.last_sign_in_at.present?
           = will_paginate @publishers

@@ -1,102 +1,151 @@
+div.row
+  div.col-sm-12
+    section.panel
+      = form_tag(admin_publishers_path, method: "get")
+        .input-group
+            = text_field_tag(:q, params[:q], class:'form-control')
+            .input-group-btn
+                = submit_tag("Search", class: 'btn btn-default')
+hr
 #publisher
-  #publisher-section
-    - if flash[:notice]
-      .alert.alert-success role="alert"
-        = flash[:notice]
-    - if flash[:alert]
-      .alert.alert-danger role="alert"
-        = flash[:alert]
-    h2 = @publisher.name
-    .rounded-box.split-row-container
+  #publisher-section.shadow-sm
+    = render partial: 'admin/shared/publisher_header', locals: { navigation_view: @navigation_view }
+    .border-top
+
+    .p-4.split-row-container.bg-white
       .split-row
+        h5= "Overview"
         .db-info-row
-          .db-field = "Email:"
-          .db-value = @publisher.email
+          .db-field = "ID:"
+          .db-value = @publisher.id
+        - if @publisher.email.present?
+          .db-info-row
+            .db-field = "Email:"
+            .db-value = @publisher.email
+        - else
+          .db-info-row
+            .db-field = "Pending email:"
+            .db-value = @publisher.pending_email
         .db-info-row
-          .db-field = "Status:"
-          .db-value = link_to(@publisher.last_status_update.present? ? @publisher.last_status_update.status : "active", admin_publisher_publisher_status_updates_path(@publisher), class: "btn btn-primary")
+          .db-field = "Role:"
+          .db-value = @publisher.role
         .db-info-row
-          .db-field = "Uphold connected:"
-          .db-value = @publisher.uphold_verified?
+          .db-field = "Created:"
+          .db-row = @publisher.created_at.strftime('%B %d, %Y')
+        - if @publisher.partner?
+          - partner = @publisher.becomes(Partner)
+          .db-info-row
+            .db-field = "Organization:"
+            .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
-          .db-field = "Uphold widget enabled?"
-          .db-value = @publisher.excluded_from_payout? ? "No" : "Yes"
+          .db-field = "Overall BAT balance:"
+          .db-value = "#{publisher_overall_bat_balance(@publisher)}"
+        - if @publisher.uphold_connection&.default_currency.present?
+          .db-info-row
+            .db-field = "Overall #{@publisher.uphold_connection.default_currency} balance:"
+            .db-value = "#{publisher_converted_overall_balance(@publisher)}"
         .db-info-row
-          .db-field = "Pending Payouts"
-          .db-value = "#{publisher_humanize_balance(@publisher, "BAT")} BAT, #{publisher_converted_balance(@publisher)}"
-        .db-info-row
-          .db-field = "Default currency:"
-          .db-value = @publisher.default_currency
+          .db-field = "Last settlement balance:"
+          .db-value = "#{publisher_converted_last_settlement_balance(@publisher)}"
+        - if @publisher.created_by.present?
+          .db-info-row
+            .db-field = "Created by:"
+            .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
         - if @publisher.promo_enabled_2018q1
           .db-info-row
             .db-field = "Referral downloads:"
-            .db-value = total_referral_downloads(@publisher)
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS]
+          .db-info-row
+            .db-field = "Referral installs:"
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
           .db-info-row
             .db-field = "Referral confirmations:"
-            .db-value = confirmed_referral_downloads(@publisher)
-      #statement-section.split-row
-        h3.admin-header = "Statements"
-        .statement
-          = link_to("this month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "this_month"))
-        .statement
-          = link_to("last month", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "last_month"))
-        .statement
-          = link_to("all", statement_admin_publishers_path(publisher_id: @publisher.id, statement_period: "all"))
-  hr
-    = link_to("Edit Settings", edit_admin_publisher_path(@publisher), class: "btn btn-primary")
-  hr
-
-  h3.admin-header = "Channels (#{@publisher.channels.count})"
-  #channels-section
-    - @publisher.channels.each do |channel|
-      .channel
-        .channel-link
-          = link_to(on_channel_type(channel), channel.details.url)
-        .channel-info
-          - if channel.verification_awaiting_admin_approval?
-            .admin-approval
-              span.admin-approval-warning = "Admin approval required"
-              span.admin-approval-button
-                = form_for channel, as: :channel, method: :patch, url: approve_channel_admin_publishers_path(channel_id: channel.id) do |f|
-                  = f.submit("Approve", class: "btn btn-primary")
-            hr
-          - elsif channel.verification_approved_by_admin?
-            .admin-approval
-              span.admin-approval-success = "Admin approved"
-            hr
+            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
           .db-info-row
-            .db-field = "Pending Payouts"
-            .db-value = publisher_channel_balance(current_publisher, channel.details.channel_identifier, "BAT")
-          - if channel.details.is_a?(SiteChannelDetails)
-            .db-info-row
-              .db-field = "Verified:"
-              .db-value = channel.verified?
-            .db-info-row
-              .db-field = "Verification Method:"
-              .db-value = channel.details.verification_method
-            .db-info-row
-              .db-field = "Token:"
-              .db-value.token = channel.details.verification_token
-          - if channel.promo_registration.present?
-            .db-info-row
-              .db-field = "Referral code:"
-              .db-value = channel.promo_registration.referral_code
+            .db-field
+              = "Referral owner status"
+              span data-tooltip="If the user is 'no-ugp' this means their promos will 404"
+                = fa_icon 'question-circle', class: 'mx-1'
+              = ": "
 
-  hr
-  h3.admin-header = "Notes"
-  #notes-section
-    #create-note.rounded-box
-      = form_for @note, { method: :post, url: create_note_admin_publishers_path } do |f|
-        = f.text_area(:note, id: "create-note-content")
-        = f.hidden_field(:publisher, :value => @publisher.id)
-        = f.submit("Add note", class: 'btn btn-primary')
-    - @publisher.notes.order(created_at: :desc).each do |note|
-      .note.rounded-box
-        .note-header
-          .note-created-by
-            = note.created_by.name
-          .note-created-at
-            = note.created_at.strftime("%B %d, %Y")
-        hr
-        .note-content
-          = note.note
+            .db-value= @referral_owner_status
+
+      #statement-section.split-row
+        .payout-report-status-section
+          - if @potential_referral_payment.present?
+            h5= payout_report_status_header('owner')
+            .db-info-row
+              .db-field = "Uphold status"
+              .db-value = @potential_referral_payment.uphold_status || 'unavailable'
+            - if @potential_referral_payment.reauthorization_needed
+              .db-info-row
+                .db-field = "Reauthorization status"
+                .db-value = @potential_referral_payment.reauthorization_needed
+            .db-info-row
+              .db-field = "Uphold membership status"
+              .db-value = @potential_referral_payment.uphold_member
+            - if @potential_referral_payment.suspended
+              .db-info-row
+                .db-field = "Suspension status"
+                .db-value = @potential_referral_payment.suspended
+            - if @potential_referral_payment.address.blank?
+              .db-info-row
+                .db-field = "Wallet address"
+                .db-value = "Missing"
+            .db-info-row
+              .db-field = "Approx. amount"
+              .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"
+
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+    = render partial: 'uphold'
+
+  -if @publisher.partner?
+    .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+      =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
+
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+    h3.text-dark Channels
+    #channels-section
+      - @publisher.channels.each do |channel|
+        = render partial: 'channel', locals: { channel: channel }
+        - unless channel == @publisher.channels.last
+          hr
+
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+    .panel
+      input type="checkbox" name="panels" id="panel_id"
+        label for="panel_id"
+          h3.text-dark Add Note
+      .panel-content
+        = render partial: 'admin/publisher_notes/form', locals: { note: PublisherNote.new, publisher: @publisher }
+
+
+  .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+    h3.text-dark.d-flex.align-items-center
+      small=fa_icon "hourglass-half", class: 'mx-2'
+      = "History"
+    hr
+    #notes-section
+      #create-note
+      - @publisher.history.each do |h|
+        - if h.is_a?(PublisherNote)
+          = render partial: 'note', locals: { note: h, publisher: @publisher, current_user: @current_user}
+          hr
+        - elsif h.is_a?(PublisherStatusUpdate)
+          = render partial: 'status', locals: { status: h, publisher: @publisher, current_user: @current_user}
+          hr
+        - elsif h.instance_of?(PaperTrail::Version)
+          - if h.item_type.eql?("Case")
+            = render partial: 'case', locals: { history: h }
+
+
+
+javascript:
+  window.addEventListener("keydown",function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 70) {
+        document.querySelectorAll('.toggle').forEach((i) => i.classList.toggle('d-none'))
+      }
+  })
+
+= javascript_pack_tag 'tribute'
+= stylesheet_pack_tag 'tribute'

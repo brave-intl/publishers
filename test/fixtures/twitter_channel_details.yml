@@ -11,11 +11,12 @@ twitter_new_details:
   created_at: <%= Time.now - 2.weeks %>
   updated_at: <%= Time.now - 2.weeks %>
 
-uphold_connected_twitter_details:
-  twitter_channel_id: "def456"
+<% ["details", "blocked", "restricted_member", "reauthorize"].each do |item| %>
+uphold_connected_twitter_<%=item%>:
+  twitter_channel_id: "<%=item%>"
   auth_provider: "register_twitter_channel"
   name: "Uphold Connected Twitter"
-  screen_name: "uphold_connected_twitter"
+  screen_name: "uphold_connected_<%=item%>"
   thumbnail_url: "https://some_image_host.com/some_image2.png"
   stats:
     :verified: false
@@ -23,3 +24,4 @@ uphold_connected_twitter_details:
     :status_count: 330
   created_at: <%= Time.now - 2.weeks %>
   updated_at: <%= Time.now - 2.weeks %>
+<%end%>

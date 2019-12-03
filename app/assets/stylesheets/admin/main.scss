@@ -1,12 +1,12 @@
 // Configuration
 @import "*";
-@import "breakpoints";
-@import "fonts";
-@import 'admin/bootstrap';
 @import "colors";
+@import "fonts";
+@import "admin/bootstrap";
 @import "bootstrap-config";
 
 // Vendor
+@import "font-awesome";
 @import "bootstrap-custom";
 
 // Application
@@ -14,3 +14,5 @@
 
 // Admin pages
 @import "pages/**/*";
+@import "../tooltip";
+@import "errors/whitelist";

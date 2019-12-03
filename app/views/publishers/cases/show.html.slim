@@ -1,0 +1,64 @@
+- content_for(:navbar_content_right) do
+  = link_to( \
+    t("shared.dashboard"), \
+    home_publishers_path, \
+    class: 'title' \
+  )
+  - if current_publisher.partner?
+    = link_to(t("shared.referrals"), partners_referrals_path, class: 'title-partner')
+    = link_to(t("shared.payments"), partners_payments_path, class: 'title-partner' )
+
+  = render partial: "choose_channel_button"
+
+.container.container-panel.mb-4
+  = render "panel_flash_messages"
+  .p-3
+    .d-flex.justify-content-between.align-items-center
+      h2
+        = t('.title')
+        small.ml-4= case_badge(@case.status)
+      small= t(".last_updated_at", time: time_ago_in_words(@case.updated_at))
+    hr
+
+    - unless @case.closed? || @case.resolved?
+      .my-3.alert.alert-primary= t(".notice")
+    .form-group
+      label
+        strong= t('publishers.cases.shared.solicit_question')
+      p=simple_format(@case.solicit_question, sanitize: true)
+
+    .form-group
+      label
+        strong= t('publishers.cases.shared.accident_question')
+      p=simple_format(@case.accident_question, sanitize: true)
+
+    .form-group
+      label
+        strong= t('publishers.cases.shared.evidence')
+      .row
+        - @case.files.each do |file|
+          = render partial: 'file', locals: { file: file}
+
+
+- if @notes.present?
+  .container.container-panel.mb-4
+    .p-3
+      h3 = t('.messages')
+      - @notes.each do |message|
+        = render partial: 'message', locals: { message: message }
+
+
+- if @case.open? || @case.in_progress?
+  .container.container-panel
+    .p-3
+      h3 = t('.new_message_title')
+      p =t(".note_description")
+
+      = form_with model: CaseNote.new, local: true, id: "case-form" do |f|
+        .form-group
+          = f.text_area :note, { class:'form-control', rows:'6', minlength: "5", }
+        .form-group
+          = f.file_field :files, multiple: true
+
+        =submit_tag(t('.send_message'), class: "btn btn-primary")
+

@@ -61,9 +61,9 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal 200, response.status
     assert_equal [
-      [6.days.ago.to_date.to_s, Publisher.distinct.joins(:channels)
+      [6.days.ago.to_date.to_s, Publisher.distinct.joins(:channels).joins(:uphold_connection)
                                          .where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day,
-                                                uphold_verified: true,
+                                                'uphold_connections.uphold_verified': true,
                                                 role: Publisher::PUBLISHER)
                                          .where.not(email: nil)
                                          .where(channels: { verified: true })
@@ -73,26 +73,33 @@ class Api::V1::Stats::PublishersControllerTest < ActionDispatch::IntegrationTest
       [3.days.ago.to_date.to_s, 0],
       [2.days.ago.to_date.to_s, 0],
       [1.days.ago.to_date.to_s, 0],
-      [0.days.ago.to_date.to_s, 0]
+      [0.days.ago.to_date.to_s, 5]
+    ], JSON.parse(response.body)
+
+    get "/api/v1/stats/publishers/channel_and_kyc_uphold_and_email_verified_signups_per_day", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+
+    assert_equal 200, response.status
+    assert_equal [
+      [6.days.ago.to_date.to_s, Publisher.distinct.joins(:channels).joins(:uphold_connection)
+                                         .where(created_at: 6.days.ago.beginning_of_day..6.days.ago.end_of_day,
+                                                'uphold_connections.uphold_verified': true, 'uphold_connections.is_member': true,
+                                                role: Publisher::PUBLISHER)
+                                         .where.not(email: nil)
+                                         .where(channels: { verified: true })
+                                         .count],
+      [5.days.ago.to_date.to_s, 0],
+      [4.days.ago.to_date.to_s, 0],
+      [3.days.ago.to_date.to_s, 0],
+      [2.days.ago.to_date.to_s, 0],
+      [1.days.ago.to_date.to_s, 0],
+      [0.days.ago.to_date.to_s, 4]
     ], JSON.parse(response.body)
   end
 
-  test 'counts number of users with javascript enabled and disabled' do
-    Publisher.update_all(last_sign_in_at: Time.now)
-    get "/api/v1/stats/publishers/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-    assert_equal response.status, 200
-    assert_equal response.body, {
-      active_users_with_javascript_enabled: 0,
-      active_users_with_javascript_disabled: Publisher.distinct.joins("inner join channels on channels.publisher_id = publishers.id").count
-    }.to_json
-
-    Publisher.joins("inner join channels on channels.publisher_id = publishers.id").last.update(javascript_last_detected_at: Time.now)
-
-    get "/api/v1/stats/publishers/javascript_enabled_usage", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
-    assert_equal response.status, 200
-    assert_equal response.body, {
-      active_users_with_javascript_enabled: 1,
-      active_users_with_javascript_disabled: Publisher.distinct.joins("inner join channels on channels.publisher_id = publishers.id").count - 1
-    }.to_json
+  test "totals endpoint has content" do
+    # (Albert Wang): TODO, move this to private API
+    get api_v1_stats_publishers_totals_path, headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
+    assert JSON.parse(response.body)
+    assert_response 200
   end
 end

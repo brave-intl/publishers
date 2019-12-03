@@ -1,9 +1,8 @@
 .main-content {
   position: relative;
   z-index: 0;
-  padding-top: $spacer*2;
-  padding-bottom: $spacer*2;
-  background: #eaedef;
-  background: $braveGradient-LegacyPink;
+  padding-top: $spacer;
+  padding-bottom: $spacer;
+  background: #eceff1;
   min-height: calc(100vh - #{$braveNavbarHeight});
 }

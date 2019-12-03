@@ -1,0 +1,15 @@
+h2 Channel Approvals
+table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+  tr
+    th ID
+    th Publisher
+    th Channel URL
+    th Created At
+  tbody
+    - @approvals.each do |approval|
+      tr.gradeX
+        td = approval.id
+        td = publisher_link(approval.publisher)
+        td = link_to(approval.details.url, approval.details.url)
+        td = approval.created_at
+

@@ -56,8 +56,17 @@
 
   .single-panel--content
     .single-panel--padded-content
-      - if @u2f_authentication_attempt
+      - if @removal.present?
+        = render partial: 'removal', locals: { removal: @removal }
+      - elsif @u2f_authentication_attempt
         = render partial: "u2f", locals: @u2f_authentication_attempt
-
       - elsif @totp_enabled
         = render "totp"
+    .single-panel--footer.mt-0
+      strong = t(".lost_account.lost_2fa")
+      strong.ml-1 = link_to(t(".lost_account.lost_2fa_link"), new_two_factor_authentications_removal_path)
+      br
+      br
+      p = t(".lost_account.lost_2fa_note_html")
+
+

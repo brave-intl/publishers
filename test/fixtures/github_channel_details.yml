@@ -1,0 +1,9 @@
+github_details:
+  github_channel_id: "12345678"
+  auth_provider: "register_github_channel"
+  name: "GitHub New"
+  nickname: "user12345678"
+  thumbnail_url: "https://some_image_host.com/some_image.png"
+  channel_url: "https://github.com/user/user12345678"
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

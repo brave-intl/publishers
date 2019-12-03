@@ -1,0 +1,20 @@
+doctype html
+html lang="en"
+  head
+    meta charset="UTF-8" /
+    meta content="width=device-width, initial-scale=1.0" name="viewport" /
+    meta content="ie=edge" http-equiv="X-UA-Compatible" /
+    = stylesheet_link_tag "admin/main"
+    title Check your IP Address
+  body
+    header.header
+      .logo
+        = render("logo_wordmark_white_svg")
+    content.page
+      .container
+        .box
+          =render("./admin/errors/construction.svg")
+        .box
+          h1 Check your IP Address
+        .box
+          h2 You might have have forgotten to connect to a VPN or a secure connection.

@@ -1,0 +1,30 @@
+h2 Channel Transfers
+table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+  tr
+    th Date
+    th Identifier
+    th From
+    th To
+  tbody
+    - @transfers.each do |transfer|
+      tr.gradeX
+        td = transfer.created_at.to_s(:long)
+        td
+          - if transfer.channel&.details
+            = transfer_details(transfer.channel.details, transfer.suspended?)
+            = image_tag(channel_type_icon_url(transfer.channel), size: "16x16", class: "mx-1")
+          - elsif transfer.transfer_to_channel
+            = image_tag(channel_type_icon_url(transfer.transfer_to_channel), size: "16x16", class: "mx-1")
+            = transfer.transfer_to_channel.details.channel_identifier
+          - else
+            .d-flex
+              span.mr-1 Channel was deleted (
+              div
+                code= transfer.channel_id
+              span.ml-1 )
+          - if transfer.suspended?
+            .badge.badge-danger.ml-3 Suspended Transfer
+        td = publisher_link(transfer.transfer_from)
+        td = publisher_link(transfer.transfer_to)
+
+= will_paginate @transfers

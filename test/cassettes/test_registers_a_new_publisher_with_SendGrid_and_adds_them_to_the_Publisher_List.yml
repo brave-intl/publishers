@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.sendgrid.com/v3/contactdb/recipients
     body:
       encoding: UTF-8
-      string: '[{"email":"alice@completed.org","name":"Alice the Completed","phone":"+14159001421"}]'
+      string: '[{"email":"alice@completed.org","name":"Alice the Completed"}]'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -61,7 +61,7 @@ http_interactions:
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0],"persisted_recipients":["YWxpY2VAY29tcGxldGVkLm9yZw=="],"errors":[]}
 
 '
-    http_version: 
+    http_version:
   recorded_at: Wed, 02 May 2018 12:23:48 GMT
 - request:
     method: post
@@ -122,7 +122,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Wed, 02 May 2018 12:23:48 GMT
 - request:
     method: post
@@ -183,6 +183,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
+    http_version:
   recorded_at: Fri, 14 Sep 2018 22:04:28 GMT
 recorded_with: VCR 4.0.0

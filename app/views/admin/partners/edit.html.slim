@@ -1,0 +1,22 @@
+- if @partner.errors.any?
+  - @partner.errors[:base].each do |msg|
+    .notifications
+        .alert.alert-warning.flash = msg
+
+h1 Make partner
+
+= form_with model: [:admin, @partner], url: admin_partner_path(@partner) do |f|
+  .form-group
+    label
+      strong= "Email"
+      br
+      = @partner.email
+  .form-group
+    label
+      = "Organization"
+    = select_tag :organization_name,
+        options_for_select(Organization.all, params[:organization]),
+        class: "form-control",
+        placeholder: "Enter Organization Name",
+        required: true
+  = submit_tag "Make Partner", class: "btn btn-block btn-primary"

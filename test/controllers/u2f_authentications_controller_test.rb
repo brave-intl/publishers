@@ -17,7 +17,7 @@ class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.u2f_registrations << registration
 
     visit_authentication_url publisher
-    assert_redirected_to two_factor_authentications_path, "precond - visiting authentication url redirects to 2fa page"
+    assert_redirected_to controller: 'two_factor_authentications'
 
     U2fAuthenticationsController.any_instance.stubs(:u2f).returns(mock(:authenticate!))
 
@@ -25,7 +25,7 @@ class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
       u2f_response: canned_u2f_response(registration)
     }
 
-    assert_redirected_to home_publishers_path, "after 2fa post user is directed to the home path"
+    assert_redirected_to controller: '/publishers', action: 'home'
   end
 
   test "U2F Authentication creation fails when pending_2fa_current_publisher_id" do
@@ -34,7 +34,7 @@ class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.u2f_registrations << registration
 
     visit_authentication_url publisher
-    assert_redirected_to two_factor_authentications_path, "precond - visiting authentication url redirects to 2fa page"
+    assert_redirected_to controller: 'two_factor_authentications'
 
     U2fAuthenticationsController.any_instance.stubs(:u2f).raises(U2F::Error.new)
 
@@ -42,6 +42,6 @@ class U2fAuthenticationsControllerTest < ActionDispatch::IntegrationTest
       u2f_response: canned_u2f_response(registration)
     }
 
-    assert_redirected_to two_factor_authentications_path, "after 2fa post failure user can try again"
+    assert_redirected_to controller: 'two_factor_authentications'
   end
 end

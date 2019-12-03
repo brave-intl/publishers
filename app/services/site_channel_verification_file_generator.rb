@@ -11,17 +11,20 @@ class SiteChannelVerificationFileGenerator < BaseService
   end
 
   def filename
-    "brave-payments-verification.txt"
+    "brave-rewards-verification.txt"
   end
 
-  # NOTE: Tell user http:// is acceptable but https:// is preferred
-  def generate_url
-    "https://#{site_channel.details.brave_publisher_id}/.well-known/#{filename}"
+  def url
+    "#{site_channel.details.brave_publisher_id}/.well-known/#{filename}"
+  end
+
+  def legacy_url
+    "#{site_channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
   end
 
   def generate_file_content
     <<~HEREDOC
-      This is a Brave Payments publisher verification file.
+      This is a Brave Rewards publisher verification file.
 
       Domain: #{site_channel.details.brave_publisher_id}
       Token: #{site_channel.details.verification_token}

@@ -1,73 +1,70 @@
+require 'digest/md5'
+
 class Publisher < ApplicationRecord
-  has_paper_trail
+  has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
-  UPHOLD_CODE_TIMEOUT = 5.minutes
-  UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
-  PROMO_STATS_UPDATE_DELAY = 10.minutes
-  ADMIN = "admin"
-  PARTNER = "partner"
-  PUBLISHER = "publisher"
-  ROLES = [ADMIN, PARTNER, PUBLISHER]
-  JAVASCRIPT_DETECTED_RELEASE_TIME = "2018-06-19 22:51:51".freeze
+  ADMIN = "admin".freeze
+  PARTNER = "partner".freeze
+  PUBLISHER = "publisher".freeze
+  ROLES = [ADMIN, PARTNER, PUBLISHER].freeze
+  MAX_PROMO_REGISTRATIONS = 500
 
-  OWNER_PREFIX = "publishers#uuid:"
+  VERIFIED_CHANNEL_COUNT = :verified_channel_count
+  ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT].freeze
+
+  OWNER_PREFIX = "publishers#uuid:".freeze
 
   devise :timeoutable, :trackable, :omniauthable
 
   has_many :u2f_registrations, -> { order("created_at DESC") }
   has_one :totp_registration
+  has_one :two_factor_authentication_removal
+  has_one :user_authentication_token, foreign_key: :user_id
+  has_one :case
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
   has_many :promo_registrations, dependent: :destroy
-  has_one :site_banner
+  has_many :promo_campaigns, dependent: :destroy
+  has_many :site_banners
   has_many :site_channel_details, through: :channels, source: :details, source_type: 'SiteChannelDetails'
   has_many :youtube_channel_details, through: :channels, source: :details, source_type: 'YoutubeChannelDetails'
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
+  has_many :potential_payments
 
   belongs_to :youtube_channel
 
+  has_one :uphold_connection
+
+  belongs_to :created_by, class_name: "Publisher"
+  has_many :created_users, class_name: "Publisher",
+                           foreign_key: "created_by_id"
+
   attr_encrypted :authentication_token, key: :encryption_key
-  attr_encrypted :uphold_code, key: :encryption_key
-  attr_encrypted :uphold_access_parameters, key: :encryption_key
 
-  # Normalizes attribute before validation and saves into other attribute
-  phony_normalize :phone, as: :phone_normalized, default_country_code: "US"
+  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !deleted? }
+  validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
+  validate :pending_email_must_be_a_change, unless: -> { deleted? }
+  validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
 
-  validates :email, email: { strict_mode: true }, presence: true, unless: -> { pending_email.present? }
-  validates :email, uniqueness: {case_sensitive: false}, allow_nil: true
-  validates :pending_email, email: { strict_mode: true }, presence: true, if: -> { email.blank? }
-  validate :pending_email_must_be_a_change
-  validate :pending_email_can_not_be_in_use
+  validates :name, presence: true, allow_blank: true
 
-  # validates :name, presence: true, if: -> { brave_publisher_id.present? }
-  validates :phone_normalized, phony_plausible: true
+  validates_inclusion_of :role, in: ROLES
 
-  # uphold_code is an intermediate step to acquiring uphold_access_parameters
-  # and should be cleared once it has been used to get uphold_access_parameters
-  validates :uphold_code, absence: true, if: -> { uphold_access_parameters.present? || uphold_verified? }
-  before_validation :set_uphold_updated_at, if: -> {
-    uphold_code_changed? || uphold_access_parameters_changed? || uphold_state_token_changed?
-  }
-
-  # uphold_access_parameters should be cleared once uphold_verified has been set
-  # (see `verify_uphold` method below)
-  validates :uphold_access_parameters, absence: true, if: -> { uphold_verified? }
-
-  validates :promo_token_2018q1, uniqueness: true,  allow_nil: true
+  validates :promo_token_2018q1, uniqueness: true, allow_nil: true
 
   before_create :build_default_channel
   before_destroy :dont_destroy_publishers_with_channels
 
-  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find.downcase) }
+  scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find&.downcase) }
+  scope :by_pending_email_case_insensitive, -> (email_to_find) { where('lower(publishers.pending_email) = :email_to_find', email_to_find: email_to_find&.downcase) }
 
   after_create :set_created_status
   after_update :set_onboarding_status, if: -> { email.present? && email_before_last_save.nil? }
   after_update :set_active_status, if: -> { saved_change_to_two_factor_prompted_at? && two_factor_prompted_at_before_last_save.nil? }
-
-  after_save :set_promo_stats_updated_at_2018q1, if: -> { saved_change_to_promo_stats_2018q1? }
 
   scope :created_recently, -> { where("created_at > :start_date", start_date: 1.week.ago) }
 
@@ -76,53 +73,90 @@ class Publisher < ApplicationRecord
   scope :not_admin, -> { where.not(role: ADMIN) }
   scope :partner, -> { where(role: PARTNER) }
   scope :not_partner, -> { where.not(role: PARTNER) }
-  scope :suspended, -> {
-    joins(:status_updates)
-    .where('publisher_status_updates.created_at =
-            (SELECT MAX(publisher_status_updates.created_at)
-            FROM publisher_status_updates
-            WHERE publisher_status_updates.publisher_id = publishers.id)')
-    .where("publisher_status_updates.status = 'suspended'")
-  }
+
+  scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
+  scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
+  scope :suspended, -> { filter_status(PublisherStatusUpdate::SUSPENDED) }
+  scope :locked, -> { filter_status(PublisherStatusUpdate::LOCKED) }
+  scope :deleted, -> { filter_status(PublisherStatusUpdate::DELETED) }
+  scope :no_grants, -> { filter_status(PublisherStatusUpdate::NO_GRANTS) }
+  scope :hold, -> { filter_status(PublisherStatusUpdate::HOLD) }
+  scope :only_user_funds, -> { filter_status(PublisherStatusUpdate::ONLY_USER_FUNDS) }
 
   scope :not_suspended, -> {
     where.not(id: suspended)
-  }
-
-  # publishers that have uphold codes that have been sitting for five minutes
-  # can be cleared if publishers do not create wallet within 5 minute window
-  scope :has_stale_uphold_code, -> {
-    where.not(encrypted_uphold_code: nil)
-    .where("uphold_updated_at < ?", UPHOLD_CODE_TIMEOUT.ago)
-  }
-
-  # publishers that have access params that havent accepted by eyeshade
-  # can be cleared after 2 hours
-  scope :has_stale_uphold_access_parameters, -> {
-    where.not(encrypted_uphold_access_parameters: nil)
-    .where("uphold_updated_at < ?", UPHOLD_ACCESS_PARAMS_TIMEOUT.ago)
   }
 
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
 
+  def self.filter_status(status)
+    joins(:status_updates).
+      where('publisher_status_updates.created_at =
+            (SELECT MAX(publisher_status_updates.created_at)
+            FROM publisher_status_updates
+            WHERE publisher_status_updates.publisher_id = publishers.id)').
+      where("publisher_status_updates.status = ?", status)
+  end
+
+  # Because the status_updates wasn't backfilled we also include those who have no status to be "Active"
+  def self.active
+    joins('LEFT OUTER JOIN publisher_status_updates ON publisher_status_updates.publisher_id = publishers.id').
+      where('publisher_status_updates.created_at =
+            (
+              SELECT MAX(publisher_status_updates.created_at)
+              FROM publisher_status_updates
+              WHERE publisher_status_updates.publisher_id = publishers.id
+            ) OR
+            publisher_status_updates.publisher_id is NULL').
+      where("publisher_status_updates.status = ? OR publisher_status_updates.status is NULL", PublisherStatusUpdate::ACTIVE)
+  end
+
+  def self.statistical_totals(up_to_date: 1.day.from_now)
+    # TODO change this
+    {
+      email_verified_with_a_verified_channel_and_uphold_kycd: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.is_member': true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_and_uphold_kycd: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.is_member': true).email_verified.distinct(:id).count,
+      email_verified_with_a_verified_channel_and_uphold_verified: Publisher.joins(:uphold_connection).where(role: Publisher::PUBLISHER, 'uphold_connections.uphold_verified': true).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_verified_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where(channels: { verified: true }).where("channels.verified_at <= ? or channels.verified_at is null", up_to_date).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified_with_a_channel: Publisher.where(role: Publisher::PUBLISHER).email_verified.joins(:channels).where("channels.created_at <= ?", up_to_date).distinct(:id).count,
+      email_verified: Publisher.where(role: Publisher::PUBLISHER).email_verified.where("created_at <= ?", up_to_date).distinct(:id).count,
+    }
+  end
+
+  def authentication_token
+    user_authentication_token&.authentication_token
+  end
+
+  def authentication_token_expires_at
+    user_authentication_token&.authentication_token_expires_at
+  end
+
+  def self.advanced_sort(column, sort_direction)
+    # Please update ADVANCED_SORTABLE_COLUMNS
+    case column
+    when VERIFIED_CHANNEL_COUNT
+      Publisher.
+        where(role: Publisher::PUBLISHER).
+        left_joins(:channels).
+        where(channels: { verified: true }).
+        group(:id).
+        select("publishers.*", "count(channels.id) channels_count").
+        order(sanitize_sql_for_order("channels_count #{sort_direction}"))
+    end
+  end
+
+  # This will convert the user to be a partner, or a publisher
+  def become_subclass
+    klass = self
+    klass = becomes(Partner) if partner?
+    klass
+  end
+
   # API call to eyeshade
   def wallet
-    return @_wallet if @_wallet
-
-    @_wallet = PublisherWalletGetter.new(publisher: self).perform
-
-    # if the wallet call fails the wallet will be nil
-    if @_wallet
-      # Sync the default_currency to eyeshade, if they are mismatched
-      # ToDo: This can be eliminated once eyeshade no longer maintains a default_currency
-      # (which should be after publishers is driving payout report generation)
-      if self.default_currency.present? && self.default_currency != @_wallet.default_currency
-        UploadDefaultCurrencyJob.perform_later(publisher_id: self.id)
-      end
-    end
-    @_wallet
+    @wallet ||= PublisherWalletGetter.new(publisher: self).perform
   end
 
   def encryption_key
@@ -133,8 +167,72 @@ class Publisher < ApplicationRecord
     email.present?
   end
 
+  # Silly method for showing a color for people's avatar
+  def avatar_color
+    Digest::MD5.hexdigest(email || pending_email)[0...6]
+  end
+
+  # Public: Show history of publisher's notes and statuses sorted by the created time
+  #
+  # Returns an array of PublisherNote and PublisherStatusUpdate
+  def history
+    # Create hash with created_at time as the key
+    # Then we can merge and sort by the key to get history
+    notes = self.notes.where(thread_id: nil)
+    status = status_updates.map { |s| { s.created_at => s } }
+
+    statuses_with_notes = status_updates.select { |s| s.publisher_note_id.present? }.map(&:publisher_note_id)
+    notes = notes.to_a.delete_if { |n| statuses_with_notes.include?(n.id) }
+
+    notes.map! { |n| { n.created_at => n } }
+
+    combined = notes + status + case_history
+    combined = combined.sort { |x, y| x.keys.first <=> y.keys.first }.reverse
+
+    combined.map { |c| c.values.first }
+  end
+
+  def case_history
+    return [] if self.case.blank?
+    case_number = self.case.number
+
+    self.case.versions.map do |c|
+      # Dynamically add the case_number to this
+      class << c
+        attr_accessor :number
+      end
+      c.number = case_number
+
+      { c.created_at => c }
+    end
+  end
+
+  def japanese_locale?(locale)
+    locale == "ja"
+  end
+
+  def deleted?
+    last_status_update&.status == PublisherStatusUpdate::DELETED
+  end
+
   def suspended?
-    last_status_update.present? && last_status_update.status == PublisherStatusUpdate::SUSPENDED
+    last_status_update&.status == PublisherStatusUpdate::SUSPENDED
+  end
+
+  def no_grants?
+    last_status_update&.status == PublisherStatusUpdate::NO_GRANTS
+  end
+
+  def hold?
+    last_status_update&.status == PublisherStatusUpdate::HOLD
+  end
+
+  def only_user_funds?
+    last_status_update&.status == PublisherStatusUpdate::ONLY_USER_FUNDS
+  end
+
+  def locked?
+    last_status_update&.status == PublisherStatusUpdate::LOCKED
   end
 
   def verified?
@@ -142,73 +240,7 @@ class Publisher < ApplicationRecord
   end
 
   def to_s
-    name
-  end
-
-  def prepare_uphold_state_token
-    if self.uphold_state_token.nil?
-      self.uphold_state_token = SecureRandom.hex(64)
-      save!
-    end
-  end
-
-  def receive_uphold_code(code)
-    self.uphold_state_token = nil
-    self.uphold_code = code
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
-  end
-
-  def verify_uphold
-    self.uphold_state_token = nil
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = true
-    save!
-  end
-
-  def disconnect_uphold
-    self.uphold_code = nil
-    self.uphold_access_parameters = nil
-    self.uphold_verified = false
-    save!
-  end
-
-  def uphold_reauthorization_needed?
-    self.uphold_verified? &&
-      self.wallet.present? &&
-      ['re-authorize', 'authorize'].include?(self.wallet.action)
-  end
-
-  def uphold_incomplete?
-    self.uphold_verified? && self.wallet.present? && !self.wallet.authorized?
-  end
-
-  def uphold_status
-    if self.uphold_verified?
-      if self.uphold_reauthorization_needed?
-        :reauthorization_needed
-      elsif self.uphold_incomplete?
-        :incomplete
-      else
-        :verified
-      end
-    elsif self.uphold_access_parameters.present?
-      :access_parameters_acquired
-    elsif self.uphold_code.present?
-      :code_acquired
-    else
-      :unconnected
-    end
-  end
-
-  def uphold_processing?
-    self.uphold_access_parameters.present? || self.uphold_code.present?
-  end
-
-  def set_uphold_updated_at
-    self.uphold_updated_at = Time.now
+    name || email
   end
 
   def owner_identifier
@@ -218,27 +250,11 @@ class Publisher < ApplicationRecord
   def promo_status(promo_running)
     if !promo_running
       :over
-    elsif self.promo_enabled_2018q1
+    elsif promo_enabled_2018q1
       :active
     else
       :inactive
     end
-  end
-
-  def promo_stats_status
-    promo_disabled = !self.promo_enabled_2018q1
-    has_no_promo_enabled_channels = !self.channels.joins(:promo_registration).where.not(promo_registrations: {referral_code: nil}).any?
-    if promo_disabled || has_no_promo_enabled_channels
-      :disabled
-    elsif self.promo_stats_updated_at_2018q1.nil? || self.promo_stats_updated_at_2018q1 < PROMO_STATS_UPDATE_DELAY.ago
-      :update
-    else
-      :updated
-    end
-  end
-
-  def set_promo_stats_updated_at_2018q1
-    update_column(:promo_stats_updated_at_2018q1, Time.now)
   end
 
   def has_verified_channel?
@@ -257,6 +273,10 @@ class Publisher < ApplicationRecord
     role == PUBLISHER
   end
 
+  def default_site_banner
+    site_banners.detect { |sb| sb.id == default_site_banner_id }
+  end
+
   def inferred_status
     return last_status_update.status if last_status_update.present?
     if verified?
@@ -271,16 +291,31 @@ class Publisher < ApplicationRecord
   end
 
   def last_login_activity
-    login_activity = login_activities.last
+    login_activities.last
   end
 
-  def can_create_uphold_cards?
-    uphold_verified? &&
-      wallet.present? &&
-      wallet.authorized? &&
-      wallet.scope &&
-      wallet.scope.include?("cards:write") &&
-      !excluded_from_payout
+  def register_for_2fa_removal
+    TwoFactorAuthenticationRemoval.create(
+      publisher_id: id
+    )
+  end
+
+  def registered_for_2fa_removal?
+    two_factor_authentication_removal.present?
+  end
+
+  # Remove when new dashboard is finished
+  def in_new_ui_whitelist?
+    partner?
+  end
+
+  def most_recent_potential_referral_payment
+    PayoutReport.most_recent_final_report&.potential_payments&.where(publisher_id: id, channel_id: nil)&.first
+  end
+
+  def timeout_in
+    return 2.hours if admin?
+    thirty_day_login? ? 30.days : 30.minutes
   end
 
   private
@@ -324,14 +359,16 @@ class Publisher < ApplicationRecord
   end
 
   def pending_email_can_not_be_in_use
-    if pending_email && self.class.where(email: pending_email).count > 0
+    if pending_email && Publisher.unscoped.where(email: pending_email).count > 0
       errors.add(:pending_email, "is taken")
     end
   end
 
   class << self
     def encryption_key
-      Rails.application.secrets[:attr_encrypted_key]
+      # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
+      # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
+      Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32)
     end
 
     def find_by_owner_identifier(owner_identifier)

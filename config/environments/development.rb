@@ -1,6 +1,6 @@
 Rails.application.configure do
     # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = true
+  config.webpacker.check_yarn_integrity = false
   # Allow images from CDN
   config.action_dispatch.default_headers = {
     'Access-Control-Allow-Origin' => "https://localhost:3000",
@@ -66,11 +66,20 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  config.i18n.load_path += Dir["#{Rails.root.to_s}/config/locales/**/*.{rb,yml}"]
+  config.i18n.default_locale = :en
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  config.logger = ActiveSupport::Logger.new(config.paths['log'].first, 1, 50.megabytes)
+  config.log_level = :debug
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.rails_logger = true
+  end
 end

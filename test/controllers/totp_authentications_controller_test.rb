@@ -9,7 +9,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.update_attribute(:totp_registration, registration)
 
     visit_authentication_url publisher
-    assert_redirected_to two_factor_authentications_path, "precond - visiting authentication url redirects to 2fa page"
+    assert_redirected_to controller: '/two_factor_authentications', action: 'index'
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(Time.now.to_i)
 
@@ -17,7 +17,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
       totp_password: "123456"
     }
 
-    assert_redirected_to home_publishers_path, "after 2fa post user is directed to the home path"
+    assert_redirected_to controller: "/publishers", action: "home"
   end
 
   test "TOTP Authentication creation error when pending_2fa_current_publisher_id" do
@@ -26,7 +26,7 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.update_attribute(:totp_registration, registration)
 
     visit_authentication_url publisher
-    assert_redirected_to two_factor_authentications_path, "precond - visiting authentication url redirects to 2fa page"
+    assert_redirected_to controller: '/two_factor_authentications', action: 'index'
 
     ROTP::TOTP.any_instance.stubs(:verify_with_drift_and_prior).returns(false)
 
@@ -35,5 +35,6 @@ class TotpAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to two_factor_authentications_path(request_totp: true), "error redirects to 2fa authentication forcing totp"
+    assert_redirected_to controller: '/two_factor_authentications', action: 'index', request_totp: true
   end
 end

@@ -90,20 +90,27 @@ stats_test:
   details: stats_details (SiteChannelDetails)
   verified: true
 
-uphold_connected:
+uphold_connected_channel:
   publisher: uphold_connected
-  details: uphold_connected_details (SiteChannelDetails)
+  details: uphold_connected_site_channel (SiteChannelDetails)
   verified: true
 
-uphold_connected_twitch:
-  publisher: uphold_connected
-  details: uphold_connected_twitch_details (TwitchChannelDetails)
+<% ["details", "blocked", "restricted_member", "reauthorize"].each do |item| %>
+uphold_connected_<%= item %>:
+  publisher: uphold_connected_<%= item %>
+  details: uphold_connected_<%= item %> (SiteChannelDetails)
   verified: true
 
-uphold_connected_twitter:
-  publisher: uphold_connected
-  details: uphold_connected_twitter_details (TwitterChannelDetails)
+uphold_connected_twitch_<%=item%>:
+  publisher: uphold_connected_<%= item %>
+  details: uphold_connected_twitch_<%=item%> (TwitchChannelDetails)
   verified: true
+
+uphold_connected_twitter_<%= item %>:
+  publisher: uphold_connected_<%=item%>
+  details: uphold_connected_twitter_<%=item%> (TwitterChannelDetails)
+  verified: true
+<%end%>
 
 youtube_initial:
   publisher: youtube_initial
@@ -131,8 +138,23 @@ twitch_verified:
   verified: true
 
 twitter_new:
-  publisher: twitter_new
+  publisher: channel_publisher
   details: twitter_new_details (TwitterChannelDetails)
+  verified: true
+
+vimeo_new:
+  publisher: channel_publisher
+  details: vimeo_details (VimeoChannelDetails)
+  verified: true
+
+reddit_new:
+  publisher: channel_publisher
+  details: reddit_details (RedditChannelDetails)
+  verified: true
+
+github_new:
+  publisher: channel_publisher
+  details: github_details (GithubChannelDetails)
   verified: true
 
 global_yt1:
@@ -234,6 +256,16 @@ promo_enabled_site:
   verified: true
 
 promo_enabled_youtube:
-  publisher: promo_enable
+  publisher: promo_enabled
   details: promo_enabled_youtube_details (YoutubeChannelDetails)
   verified: true
+
+potentially_paid_site:
+  publisher: potentially_paid
+  verified: true
+  details: potentially_paid_site_details (SiteChannelDetails)
+
+potentially_paid_youtube:
+  publisher: potentially_paid
+  verified: true
+  details: potentially_paid_youtube_details (YoutubeChannelDetails)

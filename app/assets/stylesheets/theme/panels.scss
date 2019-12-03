@@ -5,33 +5,36 @@ $brave-panels-borderRadius: 8px;
 }
 
 .single-panel {
-
   &--wrapper {
-    max-width: $spacer*40;
-    min-height: $spacer*32;
+    max-width: $spacer * 40;
+    min-height: $spacer * 32;
     margin: 0 auto;
-    padding: 0 15px;
+    // padding: 0 10px;
     display: flex;
     flex-direction: column;
 
     background-color: white;
     border-radius: $brave-panels-borderRadius;
-    box-shadow: 2px 2px 0px 0px rgba(47,48,50,0.15);
+    box-shadow: 2px 2px 0px 0px rgba(47, 48, 50, 0.15);
 
     @include media-breakpoint-down(xs) {
-      min-height: $spacer*10; 
+      min-height: $spacer * 10;
+    }
+
+    &--short {
+      min-height: $spacer * 8;
     }
 
     &--medium {
-      max-width: $spacer*45;
+      max-width: $spacer * 45;
     }
 
     &--large {
-      max-width: $spacer*50;
+      max-width: $spacer * 50;
     }
 
     &--xlarge {
-      max-width: $spacer*55;
+      max-width: $spacer * 55;
     }
 
     &--small {
@@ -39,10 +42,12 @@ $brave-panels-borderRadius: 8px;
         @include make-col(12);
         @include make-col-offset(0);
       }
+
       @include media-breakpoint-up(md) {
         @include make-col(10);
         @include make-col-offset(1);
       }
+
       @include media-breakpoint-up(lg) {
         @include make-col(7);
         @include make-col-offset(2.5);
@@ -62,53 +67,65 @@ $brave-panels-borderRadius: 8px;
     flex: 1;
 
     &--platforms {
-      padding-top: $spacer*2;
+      padding-top: $spacer * 2;
       padding-bottom: $spacer;
+
       @include media-breakpoint-up(md) {
         background-image: url(asset-path("img-brands.png"));
         background-position: top right;
         background-repeat: no-repeat;
-        padding-top: $spacer*7;
-        padding-bottom: $spacer*7;
+        padding-top: $spacer * 7;
+        padding-bottom: $spacer * 7;
       }
     }
+
     &--alert {
       flex: 0;
-      padding: $spacer*2 $spacer*2 $spacer*2;
+      padding: $spacer * 2 $spacer * 2 $spacer * 2;
       background: $braveError-Background;
       color: $braveError-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
-      b, strong {
+
+      b,
+      strong {
         color: inherit;
       }
     }
+
     &--warning {
       flex: 0;
-      padding: $spacer*2 $spacer*2 $spacer*2;
+      padding: $spacer * 2 $spacer * 2 $spacer * 2;
       background: $braveWarning-Background;
       color: $braveWarning-Foreground;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
-      b, strong {
+
+      b,
+      strong {
         color: inherit;
       }
     }
+
     &--notice {
       flex: 0;
-      padding: $spacer*2 $spacer*2 $spacer*2;
+      padding: $spacer * 2 $spacer * 2 $spacer * 2;
       background: $braveInfo-Background;
       color: $braveInfo-Foreground;
       border-bottom: 1px solid $braveInfo-Border;
       border-top-left-radius: $brave-panels-borderRadius;
       border-top-right-radius: $brave-panels-borderRadius;
+
       a {
         text-decoration: underline;
       }
-      b, strong {
+
+      b,
+      strong {
         color: inherit;
       }
     }
+
     > form,
     > div {
       width: 100%;
@@ -117,13 +134,18 @@ $brave-panels-borderRadius: 8px;
 
   &--padded-content {
     position: relative;
-    padding: $spacer*4 $spacer*2;
+    padding: $spacer * 4 $spacer * 2;
     margin-top: auto;
     margin-bottom: auto;
+
+    &--short-padding {
+      padding: $spacer * 3 $spacer * 2;
+    }
 
     &--email-sent {
       padding-top: 125px;
       margin-top: 30px;
+
       @include media-breakpoint-up(md) {
         background-image: url(asset-path("email-2@1x.png"));
         background-position: center 20px;
@@ -133,20 +155,18 @@ $brave-panels-borderRadius: 8px;
 
     align-items: center;
     justify-content: center;
-
-    @include media-breakpoint-down(xs) {
-      padding: $spacer;
-    }
   }
 
   &--headline {
     width: 100%;
-    margin-bottom: $spacer*2;
+    margin-bottom: $spacer * 2;
+
     @include media-breakpoint-down(xs) {
       margin-top: $spacer;
     }
+
     &--primary {
-      color: theme-color('primary');
+      color: theme-color("primary");
     }
   }
 
@@ -157,8 +177,9 @@ $brave-panels-borderRadius: 8px;
 
   &--footer {
     width: 100%;
-    margin-top: $spacer*2;
+    margin-top: $spacer * 2;
     margin-bottom: $spacer;
+
     &--secondary {
       text-align: center;
     }
@@ -167,23 +188,24 @@ $brave-panels-borderRadius: 8px;
 
 .icon-and-text {
   &--wrapper {
+    margin: 0;
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
     flex-wrap: nowrap;
   }
+
   &--icon {
     flex: 0 0 0;
     align-self: center;
     margin: 0 14px 0 6px;
     line-height: 0;
-    @include media-breakpoint-down(xs) {
-      display: none;
-    }
+
     &--top {
       align-self: flex-start;
     }
   }
+
   &--text {
     text-align: left;
     flex: 1 1 100%;

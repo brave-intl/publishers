@@ -7,10 +7,22 @@ module Channels
     end
 
     def perform
+      transfer = ChannelTransfer.create(
+        transfer_from: @channel.publisher,
+        transfer_to: @contested_by.publisher,
+        channel: @channel,
+        suspended: @channel.publisher.suspended?
+      )
+
+      raise SuspendedPublisherError if @channel.publisher.suspended? || @channel.publisher.only_user_funds?
+
       ActiveRecord::Base.transaction do
         @contested_by.verified = false
         @contested_by.verification_pending = true
         @contested_by.save!
+
+        # Update the transfer so that we have information about the channel that was transferred
+        transfer.update(transfer_to_channel_id: @contested_by.id)
 
         # Reject prior channels contesting the same channel
         if @channel.contested_by_channel_id
@@ -37,12 +49,8 @@ module Channels
       channel_ids_match = case @channel.details_type
         when "SiteChannelDetails"
           @channel.details.brave_publisher_id == @contested_by.details.brave_publisher_id
-        when "YoutubeChannelDetails"
-          @channel.details.youtube_channel_id == @contested_by.details.youtube_channel_id
-        when "TwitchChannelDetails"
-          @channel.details.twitch_channel_id == @contested_by.details.twitch_channel_id
-        when "TwitterChannelDetails"
-          @channel.details.twitter_channel_id == @contested_by.details.twitter_channel_id
+        else
+          @channel.details.channel_identifier == @contested_by.details.channel_identifier
       end
 
       raise ChannelIdMismatchError if !channel_ids_match
@@ -50,5 +58,6 @@ module Channels
 
     class ChannelTypeMismatchError < RuntimeError; end
     class ChannelIdMismatchError < RuntimeError; end
+    class SuspendedPublisherError < RuntimeError; end
   end
 end

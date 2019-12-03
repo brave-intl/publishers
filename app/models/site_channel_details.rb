@@ -1,6 +1,4 @@
 class SiteChannelDetails < BaseChannelDetails
-  has_paper_trail
-
   # brave_publisher_id is a normalized identifier provided by eyeshade API
   # It is like base domain (eTLD + left part) but may include additional
   # formats to support more publishers.
@@ -11,6 +9,8 @@ class SiteChannelDetails < BaseChannelDetails
 
   VERIFICATION_METHODS = %w(dns_record public_file github wordpress).freeze
   validates :verification_method, allow_blank: true, inclusion: { in: VERIFICATION_METHODS }
+
+  alias_attribute :site_channel_id, :brave_publisher_id
 
   class VerificationTokenValidator < ActiveModel::EachValidator
     def validate_each(record, attribute, value)
@@ -27,31 +27,23 @@ class SiteChannelDetails < BaseChannelDetails
   before_validation :clear_brave_publisher_id_error, if: -> { brave_publisher_id_unnormalized.present? && brave_publisher_id_unnormalized_changed? }
 
   scope :recent_unverified_site_channels, -> (max_age: 6.weeks) {
-    joins(:channel)
-        .where.not(brave_publisher_id: SiteChannelDetails.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true))
-        .where("channels.created_at": max_age.ago..Time.now)
+    SiteChannelDetails.unscoped.joins(:channel).
+      where.not(brave_publisher_id: SiteChannelDetails.unscoped.joins(:channel).select(:brave_publisher_id).distinct.where("channels.verified": true)).
+      where("channels.created_at": max_age.ago..Time.now)
   }
 
   scope :recent_ready_to_verify_site_channels, -> (max_age: 6.weeks) {
-    joins(:channel)
-        .where.not(
-          brave_publisher_id: SiteChannelDetails
-                              .joins(:channel)
-                              .select(:brave_publisher_id)
-                              .distinct
-                              .where("channels.verified": true)
-        )
-        .where.not(verification_method: nil)
-        .where("channels.updated_at": max_age.ago..Time.now)
-  }
-
-  # Channels with no verification_token will not be accessible once the user is no longer on the page, these
-  # are considered abandoned. If we wait a day we can be reasonable sure the users session will have timed out.
-  scope :abandoned, -> {
-    joins(:channel)
-        .where(verification_token: nil)
-        .where("channels.verified": [false, nil])
-        .where("site_channel_details.updated_at < :updated_at", updated_at: Time.now - 1.day)
+    SiteChannelDetails.unscoped.joins(:channel).
+      where.not(
+        brave_publisher_id: SiteChannelDetails.
+                            unscoped.
+                            joins(:channel).
+                            select(:brave_publisher_id).
+                            distinct.
+                            where("channels.verified": true)
+      ).
+      where.not(verification_method: nil).
+      where("channels.updated_at": max_age.ago..Time.now)
   }
 
   def initialized?
@@ -77,32 +69,27 @@ class SiteChannelDetails < BaseChannelDetails
   end
 
   def brave_publisher_id_error_description
-    case self.brave_publisher_id_error_code.to_sym
-      when :taken
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.taken")
-      when :exclusion_list_error
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.exclusion_list_error")
-      when :api_error_cant_normalize
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.api_error_cant_normalize")
-      when :invalid_uri
-        I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri")
-      else
-        raise "Unrecognized brave_publisher_id_error_code: #{self.brave_publisher_id_error_code}"
+    case brave_publisher_id_error_code.to_sym
+    when :taken
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.taken")
+    when :exclusion_list_error
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.exclusion_list_error")
+    when :api_error_cant_normalize
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.api_error_cant_normalize")
+    when :invalid_uri
+      I18n.t("activerecord.errors.models.site_channel_details.attributes.brave_publisher_id.invalid_uri")
+    else
+      raise "Unrecognized brave_publisher_id_error_code: #{brave_publisher_id_error_code}"
     end
   end
 
-  def inspect_brave_publisher_id
-    require "faraday"
-    result = SiteChannelHostInspector.new(brave_publisher_id: self.brave_publisher_id).perform
-    if result[:host_connection_verified]
-      self.supports_https = result[:https]
-      self.detected_web_host = result[:web_host]
-      self.host_connection_verified = true
-    else
-      self.supports_https = false
-      self.detected_web_host = nil
-      self.host_connection_verified = false
-    end
+  def inspect_host
+    return unless brave_publisher_id
+
+    result = SiteChannelHostInspector.new(url: brave_publisher_id).perform
+    self.supports_https = result[:https].present?
+    self.detected_web_host = result[:web_host]
+    self.host_connection_verified = result[:host_connection_verified]
     self.https_error = result[:https_error]
   end
 
@@ -117,9 +104,9 @@ class SiteChannelDetails < BaseChannelDetails
   end
 
   def register_brave_publisher_id_error
-    self.errors.add(
-        :brave_publisher_id_unnormalized,
-        self.brave_publisher_id_error_description
+    errors.add(
+      :brave_publisher_id_unnormalized,
+      brave_publisher_id_error_description
     )
   end
 

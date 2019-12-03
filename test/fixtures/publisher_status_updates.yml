@@ -6,6 +6,16 @@ verified:
   publisher: verified
   status: "active"
 
+verified_notes:
+  publisher: notes
+  status: "active"
+  created_at: "2018-12-01"
+
+verified_notes_to_suspended:
+  publisher: notes
+  status: "suspended"
+  created_at: "2018-12-03"
+
 completed:
   publisher: completed
   status: "active"
@@ -21,3 +31,15 @@ onboarding:
 suspended:
   publisher: suspended
   status: "suspended"
+
+suspended_partner:
+  publisher: suspended_partner
+  status: "suspended"
+
+partner:
+  publisher_id: ade27753-2327-40dc-a1f8-06d3339f08cf
+  status: "active"
+
+only_user_funds:
+  publisher: promo_enabled_but_only_user_funds
+  status: "only_user_funds"

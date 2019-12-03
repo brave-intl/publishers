@@ -1,43 +1,72 @@
 class Admin::PublishersController < AdminController
   before_action :get_publisher
+  include Search
+  include ActiveRecord::Sanitization::ClassMethods
 
   def index
-    @publishers = Publisher
+    @publishers = if sort_column&.to_sym&.in? Publisher::ADVANCED_SORTABLE_COLUMNS
+                    Publisher.advanced_sort(sort_column.to_sym, sort_direction)
+                  else
+                    Publisher.order(sanitize_sql_for_order("#{sort_column} #{sort_direction} NULLS LAST"))
+                  end
 
     if params[:q].present?
       # Returns an ActiveRecord::Relation of publishers for pagination
-      @publishers = Publisher.where("publishers.id IN (#{sql(params[:q])})").distinct
+      search_query = remove_prefix_if_necessary(params[:q])
+      search_query = "%#{search_query}%" unless is_a_uuid?(search_query)
+
+      @publishers = @publishers.where(search_sql, search_query: search_query)
     end
 
-    if params[:suspended].present?
-      @publishers = @publishers.suspended
+    if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
+      # Effectively sanitizes the users input
+      method = PublisherStatusUpdate::ALL_STATUSES.detect { |x| x == params[:status] }
+      @publishers = @publishers.send(method)
     end
 
-    @publishers = @publishers.paginate(page: params[:page])
+    if params[:role].present?
+      @publishers = @publishers.where(role: params[:role])
+    end
+
+    if params[:uphold_status].present?
+      @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
+    end
+
+    if params[:two_factor_authentication_removal].present?
+      @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
+    end
+
+    @publishers = @publishers.where.not(email: nil).or(@publishers.where.not(pending_email: nil)) # Don't include deleted users
+
+    respond_to do |format|
+      format.json { render json: @publishers.to_json(only: [:id, :name, :email], methods: :avatar_color) }
+      format.html { @publishers = @publishers.group(:id).paginate(page: params[:page]) }
+    end
   end
 
   def show
     @publisher = Publisher.find(params[:id])
-    @note = PublisherNote.new
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
+    @potential_referral_payment = @publisher.most_recent_potential_referral_payment
+    @referral_owner_status = Promo::Client.new.owner_state.find(id: params[:id])
+    @current_user = current_user
   end
 
   def edit
     @publisher = Publisher.find(params[:id])
+    @navigation_view = Views::Admin::NavigationView.new(@publisher).as_json.merge({ navbarSelection: "Dashboard" }).to_json
   end
 
   def update
     @publisher.update(update_params)
-    redirect_to admin_publisher_path(current_publisher)
+
+    redirect_to admin_publisher_path(@publisher)
   end
 
-  def statement
-    statement_period = params[:statement_period]
-    @transactions = PublisherStatementGetter.new(publisher: @publisher, statement_period: statement_period).perform
-    @statement_period = publisher_statement_period(@transactions)
-    statement_file_name = publishers_statement_file_name(@statement_period)
-
-    statement_string = render_to_string layout: "statement", template: "publishers/statement"
-    send_data statement_string, filename: statement_file_name, type: "application/html"
+  def destroy
+    PublisherRemovalJob.perform_later(publisher_id: @publisher.id)
+    flash[:alert] = "Deletion job enqueued. This usually takes a few seconds to complete"
+    redirect_to admin_publisher_path(@publisher)
   end
 
   def create_note
@@ -63,15 +92,26 @@ class Admin::PublishersController < AdminController
     redirect_to(admin_publisher_path(channel.publisher))
   end
 
+  def cancel_two_factor_authentication_removal
+    publisher = Publisher.find(params[:id])
+    publisher.two_factor_authentication_removal.destroy
+    redirect_to(admin_publisher_path(publisher), flash: { alert: "2fa removal was cancelled" })
+  end
+
+  def refresh_uphold
+    connection = UpholdConnection.find_by(publisher: params[:publisher_id])
+    if connection.present?
+      connection.sync_from_uphold!
+      connection.create_uphold_cards
+    end
+    redirect_to admin_publisher_path(@publisher.id)
+  end
+
   private
 
   def get_publisher
     return unless params[:id].present? || params[:publisher_id].present?
     @publisher = Publisher.find(params[:publisher_id] || params[:id])
-  end
-
-  def publisher_create_note_params
-    params.require(:publisher_note).permit(:publisher, :note)
   end
 
   def admin_approval_channel_params
@@ -84,48 +124,13 @@ class Admin::PublishersController < AdminController
     )
   end
 
-  private
-
-  def remove_prefix_if_necessary(query)
-    query = query.sub("publishers#uuid:", "")
-    query = query.sub("youtube#channel:", "")
-    query = query.sub("twitch#channel:", "")
-    query = query.sub("twitch#author:", "")
-    query = query.sub("twitter#channel:", "")
+  def sortable_columns
+    [:last_sign_in_at, :created_at, Publisher::VERIFIED_CHANNEL_COUNT]
   end
 
-  # Returns an array of publisher ids that match the query
-  def sql(query)
-    query = remove_prefix_if_necessary(query)
-    %{SELECT publishers.id
-      FROM   publishers
-             INNER JOIN(SELECT channels.*
-                        FROM   channels
-                               INNER JOIN site_channel_details
-                                       ON site_channel_details.id = channels.details_id
-                                          AND channels.details_type = 'SiteChannelDetails'
-                                          AND site_channel_details.brave_publisher_id ILIKE '%#{query}%'
-                        UNION ALL
-                        SELECT channels.*
-                        FROM   channels
-                               INNER JOIN youtube_channel_details
-                                       ON youtube_channel_details.id =
-                                          channels.details_id
-                                          AND youtube_channel_details.title ILIKE '%#{query}%'
-                                          OR youtube_channel_details.youtube_channel_id ILIKE '%#{query}%'
-                        UNION ALL
-                        SELECT channels.*
-                        FROM   channels
-                               INNER JOIN twitch_channel_details
-                                       ON twitch_channel_details.id = channels.details_id
-                                          AND twitch_channel_details.NAME ILIKE '%#{query}%')
-                                         c
-                     ON c.publisher_id = publishers.id
-      UNION ALL
-      SELECT publishers.id
-      FROM publishers
-      WHERE publishers.email ILIKE '%#{query}%'
-            OR publishers.name ILIKE '%#{query}%'
-            OR publishers.id::text = '#{query}'}
+  def is_a_uuid?(uuid)
+    # https://stackoverflow.com/questions/47508829/validate-uuid-string-in-ruby-rails
+    uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    uuid_regex.match?(uuid.to_s.downcase)
   end
 end

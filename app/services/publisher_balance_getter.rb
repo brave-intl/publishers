@@ -3,7 +3,7 @@ class PublisherBalanceGetter < BaseApiClient
   attr_reader :publisher
 
   def initialize(publisher:)
-    @publisher = publisher 
+    @publisher = publisher
   end
 
   def perform
@@ -13,7 +13,7 @@ class PublisherBalanceGetter < BaseApiClient
     accounts_response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.options.params_encoder = Faraday::FlatParamsEncoder
-      request.url("v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}")
+      request.url("v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}&pending=true")
     end
 
     accounts = JSON.parse(accounts_response.body)
@@ -21,6 +21,9 @@ class PublisherBalanceGetter < BaseApiClient
     complete_accounts = fill_in_missing_accounts(accounts)
     complete_accounts
 
+  rescue Faraday::ClientError => e
+    Rails.logger.info("Error receiving eyeshade balance #{e.message}")
+    :unavailable
   rescue => e
     require "sentry-raven"
     Raven.capture_exception(e)
@@ -28,11 +31,12 @@ class PublisherBalanceGetter < BaseApiClient
   end
 
   def perform_offline
-    fill_in_missing_accounts([])
+    accounts = fill_in_missing_accounts([])
+    accounts.each { |account| account["balance"] = "294.617182149806375904"}
   end
 
   private
-  
+
   def channels_query_string
     return "" if publisher.channels.verified.count == 0
     publisher.channels.verified.map { |channel| "&account=#{URI.escape(channel.details.channel_identifier)}"}.reduce(:+)

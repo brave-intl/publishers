@@ -1,0 +1,29 @@
+- if @organization.errors.any?
+  - @organization.errors.full_messages.each do |msg|
+    .alert.alert-warning.flash=msg
+= form_with model: [:admin, @organization] do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name,
+        autofocus: true,
+        class: "form-control",
+        placeholder: "Organization Name",
+        required: true
+  .form-group
+    label
+      strong Permissions
+    br
+    label
+      = check_box_tag('uphold', 1, @organization.permissions.uphold_wallet, class: 'checkbox')
+      = " Uphold wallet"
+    br
+    label
+      = check_box_tag('referral_codes', 1, @organization.permissions.referral_codes, class: 'checkbox')
+      = " Referral code creation"
+    br
+    label
+      = check_box_tag('offline_reporting', 1, @organization.permissions.offline_reporting, class: 'checkbox')
+      = " Offline reporting and billing"
+
+  = submit_tag "Save", class: "btn btn-block btn-primary"
+

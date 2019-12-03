@@ -1,48 +1,81 @@
 Rails.application.routes.draw do
-  resources :publishers, only: %i(create update new show) do
+  resources :publishers, only: %i(create update new show destroy) do
     collection do
-      get :sign_up
-      put :javascript_detected
-      get :create_done
-      post :resend_auth_email, action: :resend_auth_email
+      # Registrations, eventually we should consider refactoring these routes into something a little more restful
+      scope controller: "registrations", module: "publishers" do
+        get :sign_up
+        get :log_in
+        get :expired_authentication_token
+        post :resend_authentication_email
+
+        resource :registrations, only: [:create, :update]
+      end
+
+      scope module: "publishers" do
+        resource :case do
+          delete :delete_file
+        end
+        resources :case_notes
+
+        scope controller: "uphold" do
+          get :uphold_status
+          get :uphold_verified, action: :create
+          patch :connect_uphold
+          patch :disconnect_uphold, action: :destroy
+          patch :confirm_default_currency
+        end
+
+        resources :statements, only: [:index, :show]
+        resource :two_factor_authentications_removal
+      end
+
+      get :log_out
       get :home
-      get :log_in, action: :new_auth_token, as: :new_auth_token
-      post :log_in, action: :create_auth_token, as: :create_auth_token
       get :change_email
       get :change_email_confirm
       patch :update_email
-      patch :confirm_default_currency
-      get :expired_auth_token
-      get :log_out
       get :email_verified
-      get :balance
-      get :uphold_verified
+      get :wallet
       get :suspended_error
-      get :statement
-      get :statements
-      get :uphold_status
+      get :get_site_banner_data
       patch :verify
       patch :update
       patch :complete_signup
-      patch :disconnect_uphold
       get :choose_new_channel_type
+      get :security, to: "publishers/security#index"
+      get :prompt_security, to: "publishers/security#prompt"
+      get :settings, to: "publishers/settings#index"
+
       resources :two_factor_authentications, only: %i(index)
-      resources :two_factor_registrations, only: %i(index) do
-        collection do
-          get :prompt
-        end
-      end
       resources :u2f_registrations, only: %i(new create destroy)
       resources :u2f_authentications, only: %i(create)
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
       resources :promo_registrations, only: %i(index create)
     end
-    resources :site_banners, only: %i(new create), controller: 'publishers/site_banners' do
+    resources :site_banners, controller: "publishers/site_banners" do
       collection do
-        get :fetch
-        post :update_logo
-        post :update_background_image
+        post :set_default_site_banner_mode
+      end
+    end
+    # (Albert Wang): Need to factor the above promo_registrations, as they should be in Publishers::PromoRegistrationsController rather than in the PromoRegistrationsController
+    resources :promo_registrations, controller: "publishers/promo_registrations", only: [] do
+      collection do
+        get :for_referral_code
+        get :overview
+      end
+    end
+  end
+
+  namespace :partners do
+    resource :payments, only: [:show] do
+      resources :invoices do
+        resources :invoice_files, only: [:create, :update, :destroy]
+      end
+    end
+    resources :referrals do
+      collection do
+        resources :promo_registrations
       end
     end
   end
@@ -55,7 +88,7 @@ Rails.application.routes.draw do
       get :cancel_add
       delete :destroy
       resources :tokens, only: %() do
-        get :reject_transfer, to: 'channel_transfer#reject_transfer'
+        get :reject_transfer, to: "channel_transfer#reject_transfer"
       end
     end
   end
@@ -83,18 +116,16 @@ Rails.application.routes.draw do
   resources :faqs, only: [:index]
 
   root "static#index"
+  get "no_js", controller: "static"
+  get "sign-up", to: "static#index"
+  get "log-in", to: "static#index"
 
   namespace :api, defaults: { format: :json } do
-    resources :owners, only: %i(index create), constraints: { owner_id: %r{[^\/]+} } do
-      resources :channels, only: %i(create), constraints: { channel_id: %r{[^\/]+} } do
-        get "/", action: :show
-      end
-    end
-    resources :tokens, only: %i(index)
-    resources :channels, constraints: { channel_id: %r{[^\/]+} }
-
     # /api/v1/
     namespace :v1, defaults: { format: :json } do
+      resources :publishers, defaults: { format: :json } do
+        post "publisher_status_updates"
+      end
       # /api/v1/stats/
       namespace :stats, defaults: { format: :json } do
         namespace :channels, defaults: { format: :json } do
@@ -102,51 +133,124 @@ Rails.application.routes.draw do
           get :youtube_channels_by_view_count
         end
         resources :channels, defaults: { format: :json }, only: %i(show)
+        resources :promo_campaigns, defaults: { format: :json }, only: %i(index show)
+        resources :referral_codes, defaults: { format: :json }, only: %i(index show)
         namespace :publishers, defaults: { format: :json } do
           get :signups_per_day
           get :email_verified_signups_per_day
           get :channel_and_email_verified_signups_per_day
           get :channel_uphold_and_email_verified_signups_per_day
+          get :channel_and_kyc_uphold_and_email_verified_signups_per_day
           get :javascript_enabled_usage
+          get :totals
         end
       end
       # /api/v1/public/
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
+        namespace :channels, defaults: { format: :json } do
+          get "totals"
+        end
       end
-
+    end
+    # /api/v2/
+    namespace :v2, defaults: { format: :json } do
+      namespace :public, defaults: { format: :json } do
+        get "channels", controller: "channels"
+        namespace :channels, defaults: { format: :json } do
+          get "totals"
+        end
+      end
+    end
+    # /api/v3/
+    namespace :v3, defaults: { format: :json } do
+      namespace :public, defaults: { format: :json } do
+        get "channels", controller: "channels"
+        namespace :channels, defaults: { format: :json } do
+          get "totals"
+        end
+      end
     end
   end
 
   namespace :admin do
+    resources :channels, only: [:index, :destroy] do
+      collection do
+        get :duplicates
+      end
+    end
+
+    resources :cases do
+      patch :assign
+      collection do
+        get :overview
+        resources :case_replies
+      end
+    end
+
+    resources :case_notes
+
     resources :faq_categories, except: [:show]
     resources :faqs, except: [:show]
-    resources :payout_reports, only: %i(index show create) do
+    resources :payout_reports do
+      collection do
+        post :notify
+        post :upload_settlement_report
+        post :toggle_payout_in_progress
+      end
       member do
         get :download
+        patch :refresh
       end
     end
     resources :publishers do
       collection do
         patch :approve_channel
         get :statement
-        post :create_note
+        get :cancel_two_factor_authentication_removal
       end
-      resources :publisher_status_updates, controller: 'publishers/publisher_status_updates'
+
+      resources :payments
+      patch :refresh_uphold
+
+      resources :publisher_notes
+      resources :publisher_status_updates, controller: "publishers/publisher_status_updates"
+      resources :referrals, controller: "publishers/referrals"
+      resources :reports
     end
+    resources :channel_transfers
+    resources :channel_approvals
+    resources :security
+
+    resources :organizations, except: [:destroy]
+    resources :partners, except: [:destroy] do
+      get :generate_manual_payout
+      resources :invoices do
+        post :upload
+        get :finalize
+        patch :update_status
+      end
+    end
+
     namespace :stats do
       resources :contributions, only: [:index]
       resources :referrals, only: [:index]
+      resources :top_balances, only: [:index]
+      resources :top_youtube_channels, only: [:index]
+      resources :publisher_statistics, only: [:index]
     end
     resources :unattached_promo_registrations, only: %i(index create) do
       collection do
-        get :report
+        get :report, defaults: { format: :csv }
         patch :update_statuses
-        patch :assign
+        patch :assign_campaign
+        put :assign_installer_type
       end
     end
     resources :promo_campaigns, only: %i(create)
     root to: "dashboard#index" # <--- Root route
+
+    resources :uphold_status_reports, only: [:index, :show]
   end
 
   resources :errors, only: [], path: "/" do
@@ -171,4 +275,9 @@ Rails.application.routes.draw do
     end
   end
   mount Sidekiq::Web, at: "/magic"
+  require "sidekiq/api"
+  match "mailer-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("mailer").size < 100 ? "OK" : "UHOH"]] }, via: :get
+  match "default-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("default").size < 5000 ? "OK" : "UHOH"]] }, via: :get
+  match "scheduler-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("scheduler").size < 5000 ? "OK" : "UHOH"]] }, via: :get
+  match "transactional-queue-status" => proc { [200, { "Content-Type" => "text/plain" }, [Sidekiq::Queue.new("transactional").size < 5000 ? "OK" : "UHOH"]] }, via: :get
 end

@@ -1,55 +1,35 @@
-require "eyeshade/balance"
+require 'eyeshade/base_balance'
+require "eyeshade/contribution_balance"
+require "eyeshade/overall_balance"
+require "eyeshade/channel_balance"
+require "eyeshade/referral_balance"
+require "eyeshade/last_settlement_balance"
 
 module Eyeshade
   class Wallet
-    attr_reader :action,
-                :address,
-                :provider,
-                :scope,
-                :default_currency,
-                :available_currencies,
-                :possible_currencies,
-                :contribution_balance,
+    attr_reader :rates,
                 :channel_balances,
-                :rates,
-                :last_settlement_balance,
-                :last_settlement_date
+                :contribution_balance,
+                :referral_balance,
+                :overall_balance,
+                :last_settlement_balance
 
-    def initialize(wallet_json:, channel_json:)
-      details_json = wallet_json["wallet"] || {}
-      @authorized = details_json["authorized"]
-      @provider = details_json["provider"]
-      @scope = details_json["scope"]
-      @default_currency = details_json["defaultCurrency"]
-      @available_currencies = details_json["availableCurrencies"] || []
-      @possible_currencies = details_json["possibleCurrencies"] || []
-      @address = details_json["address"] || ""
+    def initialize(rates: {}, accounts: [], transactions: [], uphold_connection: nil)
+      # Wallet information
+      @rates = rates["payload"] || {}
 
-      status_json = wallet_json["status"] || {}
-      @action = status_json["action"]
-
-      balance_json = wallet_json["contributions"] || {}
-      @rates = balance_json["rates"] = wallet_json["rates"] || {}
-
-      @contribution_balance = Eyeshade::Balance.new(balance_json: balance_json)
+      @default_currency = uphold_connection&.default_currency
 
       @channel_balances = {}
-      channel_json.each do |identifier, json|
-        @channel_balances[identifier] = Eyeshade::Balance.new(balance_json: json)
+      accounts.select { |account| account["account_type"] == Eyeshade::BaseBalance::CHANNEL }.each do |account|
+        @channel_balances[account["account_id"]] = Eyeshade::ChannelBalance.new(@rates, @default_currency, account)
       end
 
-      if wallet_json["lastSettlement"]
-        @last_settlement_balance = Eyeshade::Balance.new(balance_json: wallet_json["lastSettlement"].merge({'rates' => @rates}), apply_fee: false)
-        @last_settlement_date = Time.at(wallet_json["lastSettlement"]["timestamp"]/1000).to_datetime
-      end
-    end
+      @referral_balance = Eyeshade::ReferralBalance.new(@rates, @default_currency, accounts)
+      @overall_balance = Eyeshade::OverallBalance.new(@rates, @default_currency, accounts)
+      @contribution_balance = Eyeshade::ContributionBalance.new(@rates, @default_currency, accounts)
 
-    def authorized?
-      @authorized == true
-    end
-
-    def currency_is_possible_but_not_available?(currency)
-      @available_currencies.exclude?(currency) && @possible_currencies.include?(currency)
+      @last_settlement_balance = Eyeshade::LastSettlementBalance.new(@rates, @default_currency, transactions)
     end
   end
 end

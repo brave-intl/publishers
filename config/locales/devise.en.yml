@@ -15,6 +15,7 @@ en:
       not_found_in_database: "Invalid %{authentication_keys} or password."
       timeout: "Your session has expired. To continue please initiate a new verification or resume an existing one."
       unauthenticated: "To view this please initiate a new verification or resume an existing one."
+      unauthorized: "You are not authorized to view that content. Please contact support for more information."
       unconfirmed: "To continue please confirm your email address."
     mailer:
       confirmation_instructions:
@@ -26,7 +27,7 @@ en:
       password_change:
         subject: "Password Changed"
     omniauth_callbacks:
-      failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
+      failure: 'Could not authenticate you from %{kind} because "%{reason}".'
       success: "Successfully authenticated from %{kind} account."
     passwords:
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."

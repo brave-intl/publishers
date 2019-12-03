@@ -10,3 +10,15 @@ youtube_promo_registration:
   referral_code: PRO456
   channel: promo_enabled_youtube
   publisher: promo_enabled
+owner_promo_registration:
+  kind: owner
+  promo_id: 1
+  referral_code: PRO789
+  publisher: promo_enabled
+  promo_campaign: test_promo_campaign
+unattached_promo_registration:
+  kind: owner
+  promo_id: 1
+  referral_code: PRO012
+  publisher: promo_enabled
+  promo_campaign: test_promo_campaign2

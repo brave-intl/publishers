@@ -1,5 +1,5 @@
 class Cache::PiwikDataJob < ApplicationJob
-  queue_as :transactional
+  queue_as :scheduler
 
   PIWIK_VISITS_SUMMARY = "piwikVisitsSummary".freeze
   PIWIK_EVENTS_CATEGORY = "piwikEventsCategory".freeze

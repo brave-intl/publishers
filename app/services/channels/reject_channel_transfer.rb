@@ -10,7 +10,7 @@ module Channels
     end
 
     def perform
-      ActiveRecord::Base.transaction do      
+      ActiveRecord::Base.transaction do
         # Remove contention from original verified channel
         @channel.contested_by_channel_id = nil
         @channel.contest_token = nil

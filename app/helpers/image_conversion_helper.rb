@@ -28,7 +28,7 @@ module ImageConversionHelper
   Adding an empty comment adds an arbitrary number of bytes
   Add a character to a comment adds 5 bytes (4 for padding)
 =end
-  def add_padding_to_image(source_image_path:, attachment_type:)
+  def add_padding_to_image(source_image_path:, attachment_type:, quality:)
     # Add initial conversion to get file size
     if attachment_type == SiteBanner::LOGO
       target_file_size = SiteBanner::LOGO_UNIVERSAL_FILE_SIZE
@@ -38,7 +38,7 @@ module ImageConversionHelper
       LogException.perform(StandardError.new("Unknown attachment_type:" + attachment_type), params: {})
     end
 
-    file_size_after_one_byte = calculate_image_size_after_pad_one_byte(source_image_path)
+    file_size_after_one_byte = calculate_image_size_after_pad_one_byte(source_image_path, quality)
 
     delta = target_file_size - file_size_after_one_byte
 
@@ -49,7 +49,7 @@ module ImageConversionHelper
     MiniMagick::Tool::Convert.new do |convert|
       convert << source_image_path
       convert.merge!(["-set", "comment", "a" * (delta + 1)])
-      convert.merge!(["-quality", IMAGE_QUALITY])
+      convert.merge!(["-quality", quality])
       convert << source_image_path
     end
 
@@ -64,7 +64,7 @@ module ImageConversionHelper
 
   private
 
-  def calculate_image_size_after_pad_one_byte(source_image_path)
+  def calculate_image_size_after_pad_one_byte(source_image_path, quality)
     mini_magick_image = MiniMagick::Image.open(source_image_path)
 
     new_filename = "_resized"
@@ -76,7 +76,7 @@ module ImageConversionHelper
     MiniMagick::Tool::Convert.new do |convert|
       convert << temp_file.path
       convert.merge!(["-set", "comment", "a"])
-      convert.merge!(["-quality", IMAGE_QUALITY])
+      convert.merge!(["-quality", quality])
       convert << temp_file.path
     end
 

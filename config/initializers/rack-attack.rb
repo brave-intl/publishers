@@ -58,16 +58,37 @@ class Rack::Attack
     end
   end
 
-  throttle("created-auth-tokens/ip", limit: 10, period: 20.minutes) do |req|
-    if req.path == "/publishers/log_in" && req.post?
+  throttle("2fa_sign_in", limit: 10, period: 15.minutes) do |req|
+    if req.path.start_with?("/publishers/two_factor_authentications")
       req.ip
     end
   end
 
   # Throttle resend auth emails for a publisher
-  throttle("resend_auth_email/publisher_id", limit: 20, period: 20.minutes) do |req|
-    if req.path == "/publishers/resend_auth_email" && req.post?
+  throttle("resend_authentication_email/publisher_id", limit: 20, period: 20.minutes) do |req|
+    if req.path == "/publishers/resend_authentication_email" && req.post?
       req['publisher_id']
+    end
+  end
+
+  # Throttle send 2fa disable emails for an IP address
+  throttle("request_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
+    if req.path == "/publishers/request_two_factor_authentication_removal" && req.post?
+      req.ip
+    end
+  end
+
+  # Throttle confirm 2fa disable emails for an IP address
+  throttle("confirm_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
+    if req.path == "/publishers/confirm_two_factor_authentication_removal" && req.get?
+      req.ip
+    end
+  end
+
+  # Throttle cancel 2fa disable emails for an IP address
+  throttle("cancel_two_factor_authentication_removal/publisher_id", limit: 2, period: 24.hours) do |req|
+    if req.path == "/publishers/cancel_two_factor_authentication_removal" && req.get?
+      req.ip
     end
   end
 
@@ -89,14 +110,20 @@ class Rack::Attack
   # In PublishersController we'll check the annotated request object
   # to apply additional Recaptcha.
   throttle("registrations/ip", limit: 60, period: 1.hour) do |req|
-    if req.path == "/publishers" && req.post?
+    if (req.path == "/publishers" || req.path == "/publishers/registrations") && (req.post? || req.patch?)
       req.ip
     end
   end
 
-  # Throttle requests to public api, /api/public
-  throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
-    req.ip if req.path.start_with?("/api/v1/public")
+  if Rails.env.production?
+    # Throttle requests to public api, /api/public
+    throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
+      req.ip if ["/api/v1/public", "api/v2/public", "api/v3/public"].any? { |endpoint| req.path.start_with?(endpoint) }
+    end
+  else
+    throttle("public-api-request/ip", limit: 60, period: 1.hour) do |req|
+      req.ip if ["/api/v1/public", "api/v2/public", "api/v3/public"].any? { |endpoint| req.path.start_with?(endpoint) }
+    end
   end
 
   ### Custom Throttle Response ###
@@ -104,7 +131,7 @@ class Rack::Attack
     [
       420, # status
       {"Content-Type" => "text/plain; charset=UTF-8"}, # headers
-      ["🎷"] # body
+      ["🎷 Try again in a bit"] # body
     ]
   end
 end

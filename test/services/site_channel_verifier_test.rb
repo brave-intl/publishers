@@ -8,7 +8,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   VERIFICATION_TOKEN = "6d660f14752f460b59dc62907bfe3ae1cb4727ae0645de74493d99bcf63ddb94"
 
   def stub_verification_public_file(channel, body: nil, status: 200)
-    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-payments-verification.txt"
+    url = "https://#{channel.details.brave_publisher_id}/.well-known/brave-rewards-verification.txt"
     headers = {
       'Accept' => '*/*',
       'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -18,6 +18,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     stub_request(:get, url).
       with(headers: headers).
       to_return(status: status, body: body, headers: {})
+  end
+
+  before do
+    @prev_host_inspector_offline = Rails.application.secrets[:host_inspector_offline]
+  end
+
+  after do
+    Rails.application.secrets[:host_inspector_offline] = @prev_host_inspector_offline
   end
 
   def assert_verification(channel)
@@ -39,12 +47,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "file method verifies with public file at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_file)
     stub_verification_public_file(c)
     assert_verification(c)
   end
 
   test "file method verifies with abridged public file with correct token at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_file)
     stub_verification_public_file(c, body: c.details.verification_token)
     assert_verification(c)
@@ -65,12 +75,14 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "github method verifies with public file at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_github)
     stub_verification_public_file(c)
     assert_verification(c)
   end
 
   test "wordpress method verifies with public file at .well-known URL" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_wordpress)
     stub_verification_public_file(c)
     assert_verification(c)
@@ -133,6 +145,8 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "restricted site channels do not verify" do
+    # Mocking out with stub_verification_public_file
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)
     refute c.verified?
@@ -144,6 +158,8 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "restricted site channels await admin approval" do
+    # Mocking out with stub_verification_public_file
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)
     refute c.verification_awaiting_admin_approval?
@@ -155,6 +171,7 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
   end
 
   test "restricted site channels verify with admin approval" do
+    Rails.application.secrets[:host_inspector_offline] = false
     c = channels(:to_verify_restricted)
     stub_verification_public_file(c)
     refute c.verification_awaiting_admin_approval?
@@ -164,5 +181,36 @@ class SiteChannelVerifierTest < ActiveSupport::TestCase
     assert c.verified?
     assert c.verification_details.nil?
     assert c.verification_status, "approved_by_admin"
+  end
+
+  test "successfully start contesting a channel with a publisher" do
+    Rails.application.secrets[:host_inspector_offline] = false
+    duplicate_channel = channels(:verified)
+    channel = channels(:to_verify_file)
+    channel.details.brave_publisher_id = duplicate_channel.details.brave_publisher_id
+    channel.details.save(validate: false)
+    stub_verification_public_file(channel)
+    refute channel.verified?
+    SiteChannelVerifier.new(channel: channel).perform
+    channel.reload
+    refute channel.verified?
+    duplicate_channel.reload
+    assert_equal duplicate_channel.contested_by_channel_id, channel.id
+  end
+
+  test "don't contest a channel with a suspended publisher" do
+    Rails.application.secrets[:host_inspector_offline] = false
+    duplicate_channel = channels(:verified)
+    duplicate_channel.publisher.status_updates.create(status: PublisherStatusUpdate::SUSPENDED)
+    channel = channels(:to_verify_file)
+    channel.details.brave_publisher_id = duplicate_channel.details.brave_publisher_id
+    channel.details.save(validate: false)
+    stub_verification_public_file(channel)
+    refute channel.verified?
+    SiteChannelVerifier.new(channel: channel).perform
+    channel.reload
+    refute channel.verified?
+    duplicate_channel.reload
+    assert_nil duplicate_channel.contested_by_channel_id
   end
 end

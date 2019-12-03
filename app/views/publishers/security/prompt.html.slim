@@ -1,0 +1,18 @@
+.single-panel--wrapper
+  .single-panel--content
+    .single-panel--padded-content
+
+      .col-small-centered
+        p= render "icon_security"
+
+      h3.single-panel--headline.mb-1= t".heading"
+
+      .col-small-centered
+        h4= t ".subheading"
+        p= t ".intro"
+
+        .col-buttons
+          .col-buttons-half
+            = link_to t(".skip"), home_publishers_path, class: "btn btn-link-primary btn-block"
+          .col-buttons-half
+            = link_to t(".setup"), security_publishers_path, class: "btn btn-primary btn-block"

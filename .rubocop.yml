@@ -1,3 +1,6 @@
+inherit_from:
+  - .rubocop_airbnb.yml
+
 AlignParameters:
   Enabled: false
 Documentation:
@@ -7,12 +10,34 @@ AllCops:
     - config.ru
     - Gemfile
     - Rakefile
+    - app/models/**/*
+    - app/controllers/publishers_controller.rb
+    - app/controllers/publishers/registrations_controller.rb
+    - app/controllers/admin/publisher_notes_controller.rb
+    - app/controllers/admin/publishers_controller.rb
+    - app/controllers/admin/publishers/publisher_status_updates_controller.rb
+    - app/controllers/admin/unattached_promo_registrations_controller.rb
+    - app/controllers/publishers/cases_controller.rb
+    - app/controllers/publishers/**
+    - app/services/uphold/**/*
+    - app/jobs/create_uphold_cards_job.rb
+    - app/jobs/create_uphold_channel_card_job.rb
+    - app/jobs/exchange_uphold_code_for_access_token_job.rb
+    - app/jobs/clean_stale_uphold_data_job.rb
+    - app/services/payout_report_publisher_includer.rb
+    - app/services/promo/unattached_registrar.rb
+    - app/services/promo/registrations_geo_stats_fetcher.rb
   Exclude:
     - bin/**/*
     - db/**/*
+    - vendor/**/*
 LineLength:
-  Max: 120
-StringLiterals:
-  EnforcedStyle: double_quotes
-Style/NegatedIf:
+  Max: 400
+Airbnb/SimpleModifierConditional:
+  Enabled: false
+Airbnb/DefaultScope:
+  Enabled: false
+Airbnb/SimpleUnless:
+  Enabled: false
+Style/AndOr:
   Enabled: false

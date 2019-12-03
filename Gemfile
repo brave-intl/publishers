@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+ruby "2.5.7"
+
 source "https://rubygems.org"
 
 # Rate limit ActiveJob
@@ -10,8 +13,8 @@ gem "active_model_serializers", "~> 0.10.0"
 # ActiveRecord Session store for server side storage of session data
 gem 'activerecord-session_store'
 
-# Pagination
-gem "api-pagination"
+# Allowing for URI templates, for HTTP clients
+gem 'addressable', '~> 2.6'
 
 # Encrypt DB data at rest
 gem "attr_encrypted", "~> 3.1.0"
@@ -22,7 +25,7 @@ gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/
 # Use AWS gem for s3 uploads
 gem 'aws-sdk-s3', require: false
 
-gem "bootstrap", "~> 4.1.1"
+gem "bootstrap", ">= 4.3.1"
 
 # browser details
 gem 'browser'
@@ -31,29 +34,31 @@ gem 'browser'
 gem 'cancancan'
 
 # Authentication
-gem "devise", "~> 4.4.3"
+gem "devise", "~> 4.7.1"
+gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
-gem "email_validator", "~> 1.6"
-
 # HTTP library wrapper
-gem "faraday", "~> 0.9.2", require: false
+gem "faraday", "~> 0.15.4"
 
-# For building complex JSON objects
-gem 'jbuilder', '~> 2.7.0'
+gem "font-awesome-rails", "~> 4.7.0.4"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri", "~> 1.8.4"
+gem "nokogiri"
 
 # Open Graph tag
 gem "meta-tags"
 
 # Image conversion library
 gem 'mini_magick'
+
+gem 'mongo', '~> 2.2', '>= 2.2.5'
+
+gem "newrelic_rpm", "~> 6.7.0.359"
 
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.5.2"
@@ -64,36 +69,43 @@ gem "omniauth-twitch"
 # Oauth client for twitter
 gem "omniauth-twitter"
 
+# OAuth client for Vimeo
+gem "omniauth-vimeo"
+
+# OAuth client for Reddit
+gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git', :branch => "master"
+
+# OAuth client for GitHub
+gem "omniauth-github"
+
 # Model record auditing
-gem "paper_trail", "~> 9.2.0"
+gem "paper_trail", "~> 10.3.1"
 
 # postgresql as database for Active Record
 gem "pg", "~> 0.18"
 
-# Phone number validation
-gem "phony_rails", "~> 0.14"
-
 # Easy CSS-sthled emails
-gem "premailer-rails", "~> 1.9.4", require: false
+gem "premailer-rails", "~> 1.10.3", require: false
 
 # Implementation of PublicSuffix
-gem 'public_suffix', '~> 3.0.2'
+gem 'public_suffix', '~> 3.1.1'
 
 # Puma as app server
-gem "puma", "3.10"
+gem "puma", "~> 4.0.1"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 5.2.0"
+gem 'railties', "~> 6.0.0"
 
-gem "rails", "~> 5.2.0"
+gem "rails", "~> 6.0.0"
+gem 'rails-i18n', '~> 6.0'
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
 # Cache with Redis
-gem 'redis', '~> 4.0.1'
+gem 'redis', '~> 4.1.2'
 
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"
@@ -105,7 +117,7 @@ gem "sass-rails", "~> 5.0"
 gem "sendgrid-ruby"
 
 # Exception logging
-gem "sentry-raven", "~> 2.1", require: false
+gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
 gem "sidekiq"
@@ -124,7 +136,7 @@ gem "u2f", "~> 1.0"
 # One-time passwords for 2fa
 gem "rotp", "~> 3.3"
 
-gem 'webpacker'
+gem 'webpacker', '~> 4.0.7'
 
 # pagination support for models
 gem "will_paginate"
@@ -132,22 +144,19 @@ gem "will_paginate"
 # YouTube API client
 gem 'yt'
 
-group :development, :staging do
-  # Offline domain normalization
-  gem "domain_name", require: false
-end
+gem "zeitwerk", '~> 2.1.10'
+gem "zendesk_api"
 
 group :development do
-  # Vulnerabilities
-  gem "bundler-audit", require: false
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem 'listen', '~> 3.2'
 
-  # Static security vulnerability scanner
-  gem "brakeman"
+  gem 'bullet'
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem "web-console"
-  gem "listen", "~> 3.0.5"
-  gem "rubocop", require: false
+
   # gem "spring"
   # gem "spring-watcher-listen", "~> 2.0.0"
 
@@ -158,32 +167,34 @@ end
 group :test do
   # Clean state in-between tests which modify the DB
   gem "database_cleaner"
-
   # API recording and playback
   gem "vcr"
-
   gem "webmock", "~> 3.0"
-
   gem "rails-controller-testing"
 end
 
-group :production do
-  # App monitoring
-  gem "newrelic_rpm", "~> 3.16"
-end
-
 group :development, :test do
+  # Create a temporary table-backed ActiveRecord model
+  gem 'temping'
+  gem 'rubocop-airbnb'
+
   gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
   gem "byebug"
   gem "pry-byebug", require: false
+
+  # Static security vulnerability scanner
+  gem "brakeman"
+  # Vulnerabilities
+  gem "bundler-audit", require: false
+  gem 'capybara'
+  gem 'minitest'
+  gem 'minitest-rails'
   gem "mocha"
-  gem 'minitest-rails-capybara', '~> 3.0.1'
-  gem 'rubyzip'
   gem "capybara-selenium"
   gem "chromedriver-helper"
+  gem 'simplecov', require: false, group: :test
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-ruby "2.3.8"

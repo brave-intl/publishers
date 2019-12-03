@@ -1,0 +1,5 @@
+
+default:
+  partner: partners(:default_partner)
+  date: "2019-01-01"
+

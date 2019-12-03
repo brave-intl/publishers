@@ -1,5 +1,4 @@
 require "test_helper"
-require "eyeshade/balance"
 
 class PublisherBalanceGetterTest < ActiveJob::TestCase
 
@@ -19,7 +18,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     assert result.first["description"]
     assert result.first["channel"]
     assert result.first["amount"]
-    assert result.first["type"]
+    assert result.first["transaction_type"]
   end
 
   test "when online has the correct response format" do

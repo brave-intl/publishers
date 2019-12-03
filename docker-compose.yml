@@ -52,6 +52,7 @@ services:
       - UPHOLD_CLIENT_SECRET
       - UPHOLD_ENVIRONMENT
       - DATABASE_URL=postgres://eyeshade:password@eyeshade-postgres/eyeshade
+      - BAT_RATIOS_TOKEN
     depends_on:
       - mongo
       - redis
@@ -75,6 +76,7 @@ services:
       - UPHOLD_CLIENT_SECRET
       - UPHOLD_ENVIRONMENT
       - DATABASE_URL=postgres://eyeshade:password@eyeshade-postgres/eyeshade
+      - BAT_RATIOS_TOKEN
     depends_on:
       - mongo
       - redis

@@ -1,3 +1,5 @@
+= render partial: 'admin/shared/publisher_header', locals: { navigation_view: @navigation_view }
+
 #publisher
   #publisher-section
     - if flash[:notice]
@@ -9,7 +11,10 @@
     h2 = @publisher.name
     = form_for(@publisher, url: admin_publisher_path, method: :patch) do |f|
       .form-group
-        = f.label "Uphold widget disabled"
-        = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
+        label
+          = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
+          = " Uphold widget disabled"
       .form-group
         = f.submit class: "btn btn-primary"
+    = form_tag admin_publisher_path, method: :delete
+      = submit_tag "Delete account", class: 'btn btn-danger', data: { confirm: "Are you sure you want to delete this account?" }

@@ -1,49 +1,69 @@
-h1 Payout Reports
+.panel-heading
+  h4 Payout Reports
+  .d-flex
+    = form_tag upload_settlement_report_admin_payout_reports_path, id: "settlementForm", multipart: :true
+      label
+        = file_field_tag :file, { class: 'd-none', id: "settlementFile",  accept: ".json,application/json" }
+        .btn.btn-primary Upload Settlement Report
+
+    = form_tag toggle_payout_in_progress_admin_payout_reports_path
+      - toggle_text = Rails.cache.fetch('payout_in_progress') ? "Remove payout in progress" : "Set payout in progress"
+      = submit_tag(toggle_text, class: "btn btn-primary")
+
+javascript:
+  document.getElementById('settlementFile').addEventListener("change", function() {
+    document.getElementById('settlementForm').submit();
+  })
+
 hr
 
-table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
+table.display.table.table-bordered.table-striped
   tr
     th Created
     th ID
     th Type
-    th # Payments
+    th Manual
+    th Expected - actual # of payments
+    th # Payments to be paid
+    th # Legit payments missing addresses
     th Amount
-    th Fees
+    th Refresh JSON
     th Download
   tbody
-    - @payout_reports.where.not(amount: nil).each do |report| 
+    - @payout_reports.each do |report|
       tr.gradeX
         td = report.created_at.strftime("%B %d, %Y, %H:%M")
-        td = link_to report.id, admin_payout_report_path(report.id)
-        td = report.final ? "final" : "temp"
-        td = report.num_payments
+        td = link_to report.id[0..6], admin_payout_report_path(report.id)
+        td = report.final ? "Final" : "Temp"
+        td = report.manual ? "Yes" : "No"
+        td = "#{report.expected_num_payments} - #{report.num_payments}"
+        td = report.num_payments_to_be_paid
+        td = report.missing_addresses
         td = "#{'%.2f' % (report.amount.to_d / 1E18)} BAT"
-        td = "#{'%.2f' % (report.fees.to_d / 1E18)} BAT"
-        td = link_to "download", download_admin_payout_report_path(report.id)
-
-table.display.table.table-bordered.table-striped.dynamic-table id="dynamic-table"
-  tr
-    th Total # Payments 
-    th Total Amount
-    th Total Fees
-  tbody
-      tr.gradeX
-        td = PayoutReport.total_payments
-        td = "#{'%.2f' % (PayoutReport.total_amount)} BAT"
-        td = "#{'%.2f' % (PayoutReport.total_fees)} BAT"
+        td = form_tag refresh_admin_payout_report_path(report.id), method: :patch do
+             = submit_tag "refresh", class: "btn btn-info"
+        / (Albert Wang) Check encrypted_contents_iv since encrypted_contents is a large fetch.
+        td = report.encrypted_contents_iv.present? ? (link_to "download", download_admin_payout_report_path(report.id), class: "btn btn-primary") : "Please click 'refresh' on the left to create the contents"
 
 hr
 
 h3 Generate Payout Report
 = form_tag admin_payout_reports_path do
-  .form_group
-    = check_box_tag :should_send_notifications, true
-    = label_tag "Send notifications (email publishers who aren't verified with or are not connected to Uphold"
-  .form_group
-    = check_box_tag :final, true
-    = label_tag "Final (this report will be used for settlement)"
-  .actions
+    p Final - the report will be used in settlement.
+    p Manual - the report will include only partners with finalized invoices. ** Note - A report can be both final and manual **
+    = check_box_tag :final
+    span = "   "
+    = label_tag "Final"
+    span = "   "
+    = check_box_tag :manual
+    span = "   "
+    = label_tag "Manual"
+    span = "   "
     = submit_tag("Generate", class: "btn btn-primary")
+br
 
-
+= form_tag notify_admin_payout_reports_path do
+    = label_tag "Send notifications to publishers"
+    span = "   "
+    = submit_tag("Notify publishers", class: "btn btn-primary")
 = will_paginate @payout_reports

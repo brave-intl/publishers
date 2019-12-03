@@ -4,6 +4,13 @@ class ChannelTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   include ActionMailer::TestHelper
 
+  before do
+    # Mock out the creation of cards
+    stub_request(:get, /cards/).to_return(body: [id: "fb25048b-79df-4e64-9c4e-def07c8f5c04"].to_json)
+    stub_request(:post, /cards/).to_return(body: { id: "fb25048b-79df-4e64-9c4e-def07c8f5c04" }.to_json)
+    stub_request(:get, /address/).to_return(body: [{ formats: [{ format: "uuid", value: "e306ec64-461b-4723-bf75-015ffc99ebe1" }], type: "anonymous" }].to_json)
+  end
+
   test "site channel must have details" do
     channel = channels(:verified)
     assert channel.valid?
@@ -58,6 +65,21 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert_equal 3, publishers(:global_media_group).channels.verified.length
   end
 
+  test "search returns right results" do
+    channel = channels(:verified)
+
+    assert Channel.search("verified.org").map(&:id).include? channel.id
+
+    channel = channels(:twitch_verified)
+    assert Channel.search("twtwtw2").map(&:id).include? channel.id
+
+    channel = channels(:twitch_verified)
+    assert Channel.search("twtwtw2").map(&:id).include? channel.id
+
+    channel = channels(:global_yt1)
+    assert Channel.search("global%").map(&:id).include? channel.id
+  end
+
   # Maybe put this in a RegisterChannelForPromoJobTest?
   test "verifying a channel calls register_channel_for_promo (site)" do
     channel = channels(:default)
@@ -67,11 +89,11 @@ class ChannelTest < ActionDispatch::IntegrationTest
 
     # verify RegisterChannelForPromoJob is called
     channel.verified = true
-    assert_enqueued_jobs(1) do
-      channel.save!
-    end
+    channel.save!
+    Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel.id)
 
     # verify it worked and the channel has a referral code
+    channel.reload
     assert channel.promo_registration.referral_code
 
     # verify nothing happens if verified_changed? to false, or to true but not saved
@@ -97,10 +119,10 @@ class ChannelTest < ActionDispatch::IntegrationTest
     # check that RegisterChannelForPromoJob is called when it is verified
     # channel_copy.verified = true
     channel_copy = Channel.new(details: channel_details_copy, verified: true, publisher: publisher)
-    assert_enqueued_jobs(1) do
-      channel_copy.save!
-    end
+    channel_copy.save!
+    Promo::RegisterChannelForPromoJob.perform_now(channel_id: channel_copy.id)
 
+    channel_copy.reload
     assert channel_copy.promo_registration.referral_code
   end
 
@@ -228,6 +250,20 @@ class ChannelTest < ActionDispatch::IntegrationTest
     assert contested_by_channel.valid?
   end
 
+  test 'if the same channel is trying to be registered twice' do
+    channel = channels(:twitch_verified)
+
+    new_channel = Channel.new(publisher: publishers(:twitch_verified), verified: true)
+    new_channel.details = TwitchChannelDetails.new(
+      twitch_channel_id: channel.details.twitch_channel_id,
+      name: channel.details.name,
+      display_name: channel.details.display_name,
+    )
+
+    refute new_channel.valid?
+    assert_equal "already exists on your account", new_channel.errors.messages[:base][0]
+  end
+
   test "if channel is a duplicate of a verified channel it must be contested youtube" do
     channel = channels(:youtube_new)
     contested_by_channel = Channel.new(publisher: publishers(:small_media_group))
@@ -249,7 +285,7 @@ class ChannelTest < ActionDispatch::IntegrationTest
     contested_by_channel.details = TwitchChannelDetails.new(twitch_channel_id: "78032",
                                                             auth_user_id: "abc123",
                                                             auth_provider: "twitch",
-                                                            name: "twtwtw",
+                                                            name: channel.details.name,
                                                             display_name: "TwTwTw",
                                                             thumbnail_url: "https://some_image_host.com/some_image.png")
 
@@ -297,4 +333,111 @@ class ChannelTest < ActionDispatch::IntegrationTest
     found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
     assert_equal channel, found_channel
   end
+
+  test "find_by_channel_identifier finds vimeo channels" do
+    channel = channels(:vimeo_new)
+    found_channel = Channel.find_by_channel_identifier(channel.details.channel_identifier)
+    assert_equal channel, found_channel
+  end
+
+  test "most_recent_potential_payment finds the most recent potential payment" do
+    channel = channels(:potentially_paid_site)
+    assert channel.most_recent_potential_payment.present?
+
+    channel = channels(:uphold_connected_details)
+    refute channel.most_recent_potential_payment.present?
+  end
+
+  describe "#advanced_sort" do
+    describe 'youtube view count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::YOUTUBE_VIEW_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] > channels[index-1].details.stats["view_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::YOUTUBE_VIEW_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] < channels[index-1].details.stats["view_count"]
+        end
+      end
+    end
+
+    describe 'twitch view count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] >= channels[index-1].details.stats["view_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::TWITCH_VIEW_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["view_count"].nil?
+          assert channel.details.stats["view_count"] <= channels[index-1].details.stats["view_count"]
+        end
+      end
+    end
+
+    describe 'follower count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["followers_count"].nil?
+          assert channel.details.stats["followers_count"] >= channels[index-1].details.stats["followers_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::FOLLOWER_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["followers_count"].nil?
+          assert channel.details.stats["followers_count"] <= channels[index-1].details.stats["followers_count"]
+        end
+      end
+    end
+
+    describe 'video count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::VIDEO_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["video_count"].nil?
+          assert channel.details.stats["video_count"] > channels[index-1].details.stats["video_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::VIDEO_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["video_count"].nil?
+          assert channel.details.stats["video_count"] < channels[index-1].details.stats["video_count"]
+        end
+      end
+    end
+
+    describe 'subscriber count' do
+      it 'sorts by ascending' do
+        channels = Channel.advanced_sort(Channel::SUBSCRIBER_COUNT, 'asc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["subscriber_count"].nil?
+          assert channel.details.stats["subscriber_count"] > channels[index-1].details.stats["subscriber_count"]
+        end
+      end
+
+      it 'sorts by descending' do
+        channels = Channel.advanced_sort(Channel::SUBSCRIBER_COUNT, 'desc')
+        channels.each_with_index do |channel, index|
+          next if index == 0 || channel.details.stats["subscriber_count"].nil?
+          assert channel.details.stats["subscriber_count"] < channels[index-1].details.stats["subscriber_count"]
+        end
+      end
+    end
+  end
+
 end

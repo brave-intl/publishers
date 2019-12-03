@@ -1,3 +1,5 @@
+require 'sentry-raven'
+
 Rails.application.configure do
     # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
@@ -7,7 +9,8 @@ Rails.application.configure do
     'Access-Control-Allow-Origin' => "https://rewards.bravesoftware.com",
     'Access-Control-Request-Method' => "GET",
     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    'Access-Control-Allow-Methods' => 'GET'
+    'Access-Control-Allow-Methods' => 'GET',
+    'X-Frame-Options' => 'deny'
   }
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -65,7 +68,18 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
-  config.cache_store = :redis_cache_store, { url: Rails.application.secrets[:redis_url] }
+  config.cache_store = :redis_cache_store, {
+    url: Rails.application.secrets[:redis_url],
+    connect_timeout: 30,  # Defaults to 20 seconds
+    read_timeout:    5, # Defaults to 1 second
+    write_timeout:   10, # Defaults to 1 second
+
+    error_handler: -> (method:, returning:, exception:) {
+      # Report errors to Sentry as warnings
+      Raven.capture_exception exception, level: 'warning',
+        tags: { method: method, returning: returning }
+    }
+  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
@@ -78,8 +92,8 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     port: Rails.application.secrets[:smtp_server_port],
     address: Rails.application.secrets[:smtp_server_address],
-    user_name: Rails.application.secrets[:smtp_server_login],
-    password: Rails.application.secrets[:smtp_server_password],
+    user_name: "apikey", # see https://sendgrid.com/docs/API_Reference/SMTP_API/integrating_with_the_smtp_api.html
+    password: Rails.application.secrets[:sendgrid_api_key],
     domain: Rails.application.secrets[:url_host],
     authentication: :plain,
     enable_starttls_auto: true

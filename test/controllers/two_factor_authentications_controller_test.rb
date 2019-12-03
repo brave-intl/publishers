@@ -5,7 +5,7 @@ class TwoFactorAuthenticationsControllerTest < ActionDispatch::IntegrationTest
 
   test "2FA page requires pending_2fa_current_publisher_id" do
     get(two_factor_authentications_path)
-    assert_redirected_to(root_path)
+    assert_redirected_to(/example.com\/\?locale/)
   end
 
   test "2FA page renders when pending_2fa_current_publisher_id and U2F registrations" do
@@ -13,7 +13,7 @@ class TwoFactorAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.u2f_registrations << u2f_registrations(:default)
 
     visit_authentication_url publisher
-    assert_redirected_to two_factor_authentications_path
+    assert_redirected_to controller: 'two_factor_authentications'
 
     follow_redirect!
     assert_select("input[name=u2f_app_id][value=?]", @controller.u2f.app_id)
@@ -30,7 +30,7 @@ class TwoFactorAuthenticationsControllerTest < ActionDispatch::IntegrationTest
     publisher.update_attribute(:totp_registration, registration)
 
     visit_authentication_url publisher
-    assert_redirected_to two_factor_authentications_path
+    assert_redirected_to controller: 'two_factor_authentications'
 
     follow_redirect!
     # Check that response field is provided but not assigned a value

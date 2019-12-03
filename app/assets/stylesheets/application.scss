@@ -1,7 +1,6 @@
 // Configuration
-@import "breakpoints";
-@import "fonts";
 @import "colors";
+@import "fonts";
 @import "bootstrap-config";
 
 // Vendor
@@ -12,3 +11,4 @@
 @import "components/**/*";
 @import "theme/**/*";
 @import "pages/**/*";
+@import "tooltip";

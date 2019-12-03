@@ -10,22 +10,9 @@ class PublisherMailerTest < ActionMailer::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = @prev_eyeshade_offline
   end
 
-  test "uphold_account_changed" do
-    publisher = publishers(:default)
-    email = PublisherMailer.uphold_account_changed(publisher)
-
-    # # Send the email, then test that it got queued
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal [publisher.email], email.to
-  end
-
   test "wallet_not_connected" do
-    publisher = publishers(:uphold_connected)
-    email = PublisherMailer.wallet_not_connected(publisher)
+    publisher = publishers(:youtube_initial)
+    email = PublisherMailer.wallet_not_connected(publisher, 750.0)
 
     assert_emails 1 do
       email.deliver_now
@@ -33,21 +20,6 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     assert_equal ['brave-publishers@localhost.local'], email.from
     assert_equal [publisher.email], email.to
-  end
-
-  test "wallet_not_connected raises error if publisher has address and is uphold_connected" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-  
-    publisher = publishers(:uphold_connected)
-    email = PublisherMailer.wallet_not_connected(publisher)
-
-    wallet_response = {"wallet" => {"address" => "123ABC" }}.to_json
-    stub_request(:get, /v1\/owners\/#{URI.escape(publisher.owner_identifier)}\/wallet/).
-      to_return(status: 200, body: wallet_response, headers: {})
-
-    assert_raises do
-      email.deliver_now
-    end
   end
 
   test "confirm_email_change" do
@@ -55,6 +27,8 @@ class PublisherMailerTest < ActionMailer::TestCase
     publisher.pending_email = "alice-pending@verified.com"
     publisher.save
 
+    # Same logic as ConfirmEmailChangeEmailer
+    PublisherTokenGenerator.new(publisher: publisher).perform
     email = PublisherMailer.confirm_email_change(publisher)
 
     assert_emails 1 do
@@ -73,62 +47,17 @@ class PublisherMailerTest < ActionMailer::TestCase
 
     # verify error raised if no pending email
     assert_nothing_raised do
+      # (Albert Wang): VerifyEmailEmailer should be tested but it simply runs the below statements
+      PublisherTokenGenerator.new(publisher: publisher).perform
       PublisherMailer.verify_email(publisher).deliver_now
     end
 
     publisher.pending_email = "alice_new@default.org"
     publisher.save
-    
+
     # verify nothing raised if pending email exists
     assert_nothing_raised do
       PublisherMailer.verify_email(publisher).deliver_now
     end
-  end
-
-  test "unverified_domain_reached_threshold" do
-    domain = "default.org"
-    email_address = "alice@default.org"
-    email = PublisherMailer.unverified_domain_reached_threshold(domain, email_address)
-    
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal [email_address], email.to
-
-    # verify the domain is in the subject
-    assert_match "#{domain}", email.subject
-  end
-
-  test "unverified_domain_reached_threshold_internal" do
-    domain = "default.org"
-    email_address = "alice@default.org"
-    email = PublisherMailer.unverified_domain_reached_threshold_internal(domain, email_address)
-    
-    assert_emails 1 do
-      email.deliver_now
-    end
-
-    assert_equal ['brave-publishers@localhost.local'], email.from
-    assert_equal ['brave-publishers@localhost.local'], email.from
-
-    # verify the domain is in the subject
-    assert_match "#{domain}", email.subject
-
-    # verify email is marked as internal
-    assert_match "<Internal>", email.subject
-  end
-
-  test "login_email verify_email verification_done and confirm_email_change raise unless token fresh" do
-    publisher = publishers(:default)
-
-    publisher.authentication_token = nil
-    publisher.authentication_token_expires_at = 1.hour.ago
-
-    assert_raise do PublisherMailer.login_email(publisher).deliver end
-    assert_raise do PublisherMailer.verify_email(publisher).deliver end
-    assert_raise do PublisherMailer.confirm_email_change(publisher).deliver end
-    assert_raise do PublisherMailer.verification_done(publisher.channels.first).deliver end
   end
 end
