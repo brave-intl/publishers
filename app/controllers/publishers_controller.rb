@@ -153,7 +153,10 @@ class PublishersController < ApplicationController
       uphold_connection.create_uphold_cards if uphold_connection.missing_card?
     end
 
-    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.japanese_locale?(params[:locale])
+    current_publisher.update(bat_points_ever_on: true) if current_publisher.japanese_locale?(params[:locale]) || current_publisher.uphold_connection&.japanese_account?
+    if current_publisher.bat_points_ever_on?
+      flash[:notice] = I18n.t("publishers.home.disabled_payouts")
+    end
   end
 
   def choose_new_channel_type
