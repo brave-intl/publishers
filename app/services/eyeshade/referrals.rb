@@ -14,7 +14,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
       }
     end
 
-    JSON.parse(response.body)
+    JSON.parse(response.body).map(&:symbolize_keys)
   end
 
   def statement(publisher:, start_date:, end_date:)
@@ -29,7 +29,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
       }
     end
 
-    JSON.parse(response.body)
+    JSON.parse(response.body).map(&:symbolize_keys)
   end
 
   private
