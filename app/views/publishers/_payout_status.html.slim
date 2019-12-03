@@ -1,10 +1,17 @@
 .dashboard-panel--wrapper
+  - payout_warning = payout_warning(payout_report)
   .dashboard-panel--header= t('.heading')
   - if Rails.cache.fetch("payout_report_generating")
     .alert.alert-info
       .font-weight-bold=t('.information.generating')
   - else
     div
+    - if payout_warning.present?
+      br
+      .alert.alert-warning
+        = payout_warning
+        .font-weight-bold=t('.information.no_payment')
+    - else
       .d-flex
         = t('.amount')
         small *
@@ -12,13 +19,6 @@
         span= payout_amount(payout_report)
         small.font-weight-light= " " + I18n.t(".bat_in_locale")
 
-    - payout_warning = payout_warning(payout_report)
-    - if payout_warning
-      .alert.alert-warning
-        = payout_warning
-        .font-weight-bold=t('.information.no_payment')
-
-    - if payout_warning.blank?
       / We're going to do some magic to make the user feel like things are actually happening
 
       .d-flex.my-3
@@ -36,7 +36,6 @@
 
       .pt-2
         = t('.description')
+      .mt-4
+        small=t('.amount_description', time: payout_report.created_at.strftime("%Y-%m-%d"))
 
-
-    .mt-4
-      small=t('.amount_description', time: payout_report.created_at.strftime("%Y-%m-%d"))
