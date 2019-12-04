@@ -75,6 +75,10 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
               <Link href={`/admin/channel_transfers/${this.props.userID}`}>
                 Transfers
               </Link>
+              <Link>|</Link>
+                <Link href={`/admin/publishers/${this.props.userID}/sign_in_as_user`}>
+                Sign in as user
+              </Link>
             </SectionGroup>
           </Section>
           <Section>

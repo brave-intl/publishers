@@ -209,6 +209,7 @@ Rails.application.routes.draw do
         get :statement
         get :cancel_two_factor_authentication_removal
       end
+      get :sign_in_as_user
 
       resources :payments
       patch :refresh_uphold
