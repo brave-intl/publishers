@@ -7,7 +7,6 @@ export default {
       confirmed: "確認済み",
       details: '各グループのエリアの詳細を見る',
       downloaded: "ダウンロード済み",
-      group: 'グループ',
       installed: "インストール済み",
       statement: "この期間の支払いについては、明細を確認してください。",
       title: "紹介プロモーションの統計"

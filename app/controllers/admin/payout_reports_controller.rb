@@ -53,7 +53,7 @@ class Admin::PayoutReportsController < AdminController
     content = File.read(params[:file].tempfile)
     json = JSON.parse(content)
 
-    Eyeshade::Publishers.new.create_settlement(body: json)
+    EyeshadeClient.publishers.new.create_settlement(body: json)
 
     json.each do |entry|
       next unless entry["type"] == MANUAL && entry["owner"] && entry["amount"]

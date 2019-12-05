@@ -10,7 +10,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
       request.headers["Authorization"] = api_authorization_header
       request.url(PATH + "/groups")
       request.params = {
-        fields: 'name, amount, currency, activeAt',
+        fields: 'name, amount, currency, activeAt, codes',
       }
     end
 
@@ -42,6 +42,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
         amount: "7.500000000000000000",
         currency: "USD",
         activeAt: "2019-10-01T00:00:00.000Z",
+        codes: ["US"],
       },
       {
         id: "6491bbe5-4d50-4c05-af5c-a2ac4a04d14e",
@@ -49,6 +50,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
         amount: "6.500000000000000000",
         currency: "USD",
         activeAt: "2019-10-01T00:00:00.000Z",
+        codes: ["AU", "CA", "FR", "DE", "IE", "JP", "NZ", "GB"],
       },
       {
         id: "bda04a7e-ffe9-487c-b472-4b6d30cb5b16",
@@ -56,6 +58,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
         amount: "5.000000000000000000",
         currency: "USD",
         activeAt: "2019-10-01T00:00:00.000Z",
+        codes: ["AT", "BE", "DK", "FI", "HK", "IL", "IT", "LU", "MT", "NL", "NO", "PT", "KR", "SG", "ES", "SE", "CH", "TW"],
       },
       {
         id: "cf70e666-0930-485e-8c66-05e5969622d3",
@@ -63,13 +66,15 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
         amount: "2.000000000000000000",
         currency: "USD",
         activeAt: "2019-10-01T00:00:00.000Z",
+        codes: ["AL", "AR", "AM", "AZ", "BY", "BZ", "BO", "BA", "BR", "BG", "CL", "CO", "CR", "HR", "CZ", "EC", "SV", "EE", "GE", "GT", "HN", "HU", "LV", "LT", "MK", "MX", "ME", "NI", "PA", "PY", "PE", "PL", "MD", "RO", "RU", "SA", "RS", "SK", "TR", "UA", "UY"],
       },
       {
-        id: "211e57d3-a490-4cf3-b885-47a85f2e1dc0",
-        name: "Group 5",
-        amount: "1.000000000000000000",
-        currency: "USD",
-        activeAt: "2019-10-01T00:00:00.000Z",
+        "id": "211e57d3-a490-4cf3-b885-47a85f2e1dc0",
+        "name": "Group 5",
+        "amount": "1.000000000000000000",
+        "currency": "USD",
+        "activeAt": "2019-10-01T00:00:00.000Z",
+        "codes": ["AF", "DZ", "AD", "AO", "AG", "BS", "BH", "BD", "BB", "BJ", "BT", "BW", "BN", "BF", "BI", "CI", "CV", "KH", "CM", "TD", "CN", "KM", "CD", "CY", "CG", "DJ", "DM", "DO", "EG", "GQ", "ER", "SZ", "ET", "FJ", "GA", "GM", "GH", "GR", "GD", "GN", "GW", "GY", "HT", "VA", "IS", "IN", "ID", "IQ", "JM", "JO", "KZ", "KE", "KI", "KW", "KG", "LA", "LB", "LS", "LR", "LI", "MG", "MW", "MY", "MV", "ML", "MH", "MR", "MU", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NR", "NP", "NE", "NG", "MK", "OM", "PK", "PW", "PS", "PG", "PH", "QA", "RO", "RW", "KN", "LC", "VC", "WS", "SM", "ST", "SA", "SN", "SC", "SL", "SI", "SB", "ZA", "LK", "SS", "SR", "TJ", "TZ", "TH", "TL", "TG", "TO", "TT", "TN", "TM", "TV", "UG", "AE", "UZ", "VU", "VE", "VN", "YE", "ZM", "ZW"],
       },
     ]
   end

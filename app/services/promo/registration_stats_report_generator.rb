@@ -142,7 +142,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   end
 
   def geo_stats
-    Promo::RegistrationsGeoStatsFetcher.new(
+    PromoClient.reporting.geo_stats_by_referral_code(
       referral_codes: @referral_codes,
       start_date: @start_date,
       end_date: @start_date,

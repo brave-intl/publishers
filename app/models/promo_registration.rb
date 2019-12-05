@@ -13,11 +13,12 @@ class PromoRegistration < ApplicationRecord
   FINALIZED = "finalized".freeze # Aliased as 'Confirmed'
 
   COUNTRY = "country".freeze
+  COUNTRY_CODE = "country_code".freeze
 
   # Reporting intervals
-  DAILY = "daily".freeze
-  WEEKLY = "weekly".freeze
-  MONTHLY = "monthly".freeze
+  DAILY = "day".freeze
+  WEEKLY = "week".freeze
+  MONTHLY = "month".freeze
   RUNNING_TOTAL = "running_total".freeze
 
   # Installer types
