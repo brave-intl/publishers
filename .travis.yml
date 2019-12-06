@@ -2,7 +2,7 @@ language:
   - ruby
   - node_js
 node_js:
-  - "11.15.0"
+  - 11
 bundler_args: "--jobs=3 --retry=3 --without production --without staging --without development --binstubs"
 dist: xenial
 sudo: required
