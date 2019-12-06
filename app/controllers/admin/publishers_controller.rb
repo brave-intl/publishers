@@ -109,12 +109,17 @@ class Admin::PublishersController < AdminController
 
   def sign_in_as_user
     if @publisher.admin?
-      flash[:alert] = "You cannot sign in as another admin"
-      redirect_to root_path and return
+      render status: 401, json: {
+        error: "You cannot sign in as another admin"
+      }
     end
-    sign_out
+
     authentication_token = PublisherTokenGenerator.new(publisher: @publisher).perform
-    redirect_to request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
+
+    login_url = request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
+    render json: {
+      login_url: login_url
+    }
   end
 
   private

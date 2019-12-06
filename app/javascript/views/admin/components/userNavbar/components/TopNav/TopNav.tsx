@@ -33,6 +33,24 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
     this.state = {};
   }
 
+  private modalClick = async () => {
+    let url = "/admin/publishers/" + this.props.userID + "/sign_in_as_user";
+    let options = {
+      method: "GET",
+      credentials: "same-origin",
+      headers: {
+        Accept: "text/html",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]")['content'] as string
+      }
+    } as RequestInit;
+    var response = await fetch(url, options);
+    const data = await response.json();
+    let signInButton = document.getElementById('sign_in_as_user_button');
+    signInButton['href']= data['login_url'];
+    signInButton.innerHTML = 'Right here and copy link.'
+  }
+
   public render() {
     return (
       <Container>
@@ -76,8 +94,13 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
                 Transfers
               </Link>
               <Link>|</Link>
-                <Link href={`/admin/publishers/${this.props.userID}/sign_in_as_user`}>
-                Sign in as user
+              <Link
+                id="sign_in_as_user_button"
+                onClick={this.modalClick}
+                href="#"
+                className="mr-4"
+              >
+                Generate sign in link
               </Link>
             </SectionGroup>
           </Section>
