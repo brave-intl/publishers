@@ -50,7 +50,7 @@ module Views
             currency: payout_entries.detect { |x| x.settlement_currency.present? }.settlement_currency,
             total_earned: total_amount,
             total_fees: total_fees,
-            total_bat_deposited: total_amount - total_fees.abs,
+            total_deposited: total_amount - total_fees.abs,
             deposited: settlement_amount,
             settled_transactions: payout_entries.deep_dup,
             raw_transactions: entries(period_start.at_beginning_of_month, payout_date.at_beginning_of_month),

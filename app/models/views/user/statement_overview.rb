@@ -6,7 +6,7 @@ module Views
       # include PublishersHelper
 
       attr_accessor :earning_period, :payment_date, :destination, :total_earned, :deposited,
-        :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :total_bat_deposited
+        :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :total_deposited
 
       def initialize(attributes = {})
         super
@@ -27,7 +27,7 @@ module Views
           rawTransactions: raw_transactions,
           totalEarned: total_earned,
           totalFees: total_fees,
-          totalBATDeposited: total_bat_deposited,
+          totalDeposited: total_deposited,
         }
       end
 

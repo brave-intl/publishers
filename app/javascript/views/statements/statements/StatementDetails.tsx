@@ -71,7 +71,7 @@ export default class StatementDetails extends React.Component<
                   </td>
                   <td>
                     {Number.parseFloat(this.props.statement.totalEarned).toFixed(2)}{" "}
-                    {locale.bat}
+                    {this.props.statement.currency}
                   </td>
                 </tr>
                 <tr>
@@ -80,7 +80,7 @@ export default class StatementDetails extends React.Component<
                   </td>
                   <td>
                     {Number.parseFloat(this.props.statement.totalFees).toFixed(2)}{" "}
-                    {locale.bat}
+                    {this.props.statement.currency}
                   </td>
                 </tr>
                 <tr>
@@ -88,8 +88,8 @@ export default class StatementDetails extends React.Component<
                     <strong>{locale.statements.overview.totalDeposited}</strong>
                   </td>
                   <td>
-                    {Number.parseFloat(this.props.statement.totalBATDeposited).toFixed(2)}{" "}
-                    {locale.bat}
+                    {Number.parseFloat(this.props.statement.totalDeposited).toFixed(2)}{" "}
+                    {this.props.statement.currency}
                   </td>
                 </tr>
                 <tr>
@@ -165,7 +165,7 @@ const StatementDetail = props => (
               <HideOverflow>{transaction.channel}</HideOverflow>
             </TableCell>
             <TableCell className="text-right">
-              {transaction.amount} {locale.bat}
+              {transaction.amount} {this.props.statement.currency}
             </TableCell>
           </tr>
         ))}
@@ -180,7 +180,7 @@ const StatementDetail = props => (
           </td>
           <td className="text-right">
             <strong>
-              {props.detail.amount} {locale.bat}
+              {props.detail.amount} {this.props.statement.currency}
             </strong>
           </td>
         </tr>

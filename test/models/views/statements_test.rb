@@ -12,7 +12,7 @@ class StatementsTest < ActiveSupport::TestCase
   describe "when there are eyeshade contribution statements" do
     let(:total_earned) { 94986.42173631497819143 }
     let(:total_fees) { -4749.321086815748909571 }
-    let(:total_bat_deposited) { 90237.100649499229281859 }
+    let(:total_deposited) { 90237.100649499229281859 }
 
     let(:statements) do
       [
@@ -69,7 +69,7 @@ class StatementsTest < ActiveSupport::TestCase
 
     it "correctly calculates the total BAT deposited" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_bat_deposited).must_equal(total_bat_deposited)
+        expect(subject.first.total_deposited).must_equal(total_deposited)
       end
     end
   end
@@ -77,7 +77,7 @@ class StatementsTest < ActiveSupport::TestCase
   describe "when there are eyeshade and uphold contribution statements" do
     let(:total_earned) { 95196.37173631498 }
     let(:total_fees) { -4749.321086815748909571 }
-    let(:total_bat_deposited) { 90447.05064949923 }
+    let(:total_deposited) { 90447.05064949923 }
 
     let(:statements) do
       [
@@ -542,7 +542,7 @@ class StatementsTest < ActiveSupport::TestCase
 
     it "correctly calculates the total BAT deposited" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_bat_deposited).must_equal(total_bat_deposited)
+        expect(subject.first.total_deposited).must_equal(total_deposited)
       end
     end
   end
@@ -550,7 +550,7 @@ class StatementsTest < ActiveSupport::TestCase
   describe "when there are eyeshade and uphold contribution statements" do
     let(:total_earned) { 48.679371409300686 }
     let(:total_fees) { -1.0 }
-    let(:total_bat_deposited) { 47.679371409300686 }
+    let(:total_deposited) { 47.679371409300686 }
 
     let(:statements) do
       [
@@ -618,7 +618,7 @@ class StatementsTest < ActiveSupport::TestCase
 
     it "correctly calculates the total BAT deposited" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_bat_deposited).must_equal(total_bat_deposited)
+        expect(subject.first.total_deposited).must_equal(total_deposited)
       end
     end
   end
