@@ -33,24 +33,6 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
     this.state = {};
   }
 
-  private modalClick = async () => {
-    let url = "/admin/publishers/" + this.props.userID + "/sign_in_as_user";
-    let options = {
-      method: "GET",
-      credentials: "same-origin",
-      headers: {
-        Accept: "text/html",
-        "X-Requested-With": "XMLHttpRequest",
-        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]")['content'] as string
-      }
-    } as RequestInit;
-    var response = await fetch(url, options);
-    const data = await response.json();
-    let signInButton = document.getElementById('sign_in_as_user_button');
-    signInButton['href']= data['login_url'];
-    signInButton.innerHTML = 'Right here and copy link.'
-  }
-
   public render() {
     return (
       <Container>
@@ -113,6 +95,24 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
         </InnerContainer>
       </Container>
     );
+  }
+
+  private modalClick = async () => {
+    const url = "/admin/publishers/" + this.props.userID + "/sign_in_as_user";
+    const options = {
+      credentials: "same-origin",
+      headers: {
+        Accept: "text/html",
+        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]")['content'] as string,
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      method: "GET"
+    } as RequestInit;
+    const response = await fetch(url, options);
+    const data = await response.json();
+    const signInButton = document.getElementById('sign_in_as_user_button');
+    signInButton['href']= data['login_url'];
+    signInButton.innerHTML = 'Right here and copy link.'
   }
 }
 
