@@ -110,7 +110,7 @@ class Admin::PublishersController < AdminController
   def sign_in_as_user
     if @publisher.admin?
       render status: 401, json: {
-        error: "You cannot sign in as another admin"
+        error: "You cannot sign in as another admin",
       }
     end
 
@@ -118,7 +118,7 @@ class Admin::PublishersController < AdminController
 
     login_url = request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
     render json: {
-      login_url: login_url
+      login_url: login_url,
     }
   end
 
