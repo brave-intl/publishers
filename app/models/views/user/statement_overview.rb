@@ -5,6 +5,8 @@ module Views
       # include PromosHelper
       # include PublishersHelper
 
+      GROUP_START_DATE = Date.new(2019, 10, 1)
+
       attr_accessor :earning_period, :payment_date, :destination, :total_earned, :deposited,
         :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :total_bat_deposited
 
@@ -28,6 +30,7 @@ module Views
           totalEarned: total_earned,
           totalFees: total_fees,
           totalBATDeposited: total_bat_deposited,
+          showRateCards: payment_date.to_date > GROUP_START_DATE,
         }
       end
 
