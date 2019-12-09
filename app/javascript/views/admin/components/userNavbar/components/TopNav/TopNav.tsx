@@ -14,6 +14,7 @@ import {
   StatusLink
 } from "./TopNavStyle";
 
+import Modal, { ModalSize } from "../../../../../../components/modal/Modal";
 import NavbarSelection from "../../UserNavbar";
 
 import locale from "../../../../../../locale/en";
@@ -25,15 +26,26 @@ interface ITopNavProps {
   userID: string;
   avatar: string;
   navbarSelection: string;
+  isOpen?: boolean;
 }
 
 export default class Referrals extends React.Component<ITopNavProps, {}> {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {isOpen: false};
+    if (props.isOpen) {
+      console.log("should show");
+    } else {
+      console.log("should not show");
+    }
   }
 
   public render() {
+    if (this.props.isOpen) {
+      console.log("should show");
+    } else {
+      console.log("should not show");
+    }
     return (
       <Container>
         <InnerContainer>
@@ -84,6 +96,25 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
               >
                 Generate sign in link
               </Link>
+              <a
+                onClick={() =>
+                  this.modalClick()
+                }
+                href="#"
+                className="mr-4"
+              >
+                Sign in as publisher
+              </a>
+              <Modal
+                show={this.props.isOpen}
+                size={ModalSize.Medium}
+                handleClose={() =>
+                  this.modalClick()
+                }
+                padding={false}
+              >
+                Hi
+              </Modal>
             </SectionGroup>
           </Section>
           <Section>
@@ -110,9 +141,11 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
     } as RequestInit;
     const response = await fetch(url, options);
     const data = await response.json();
+        /*
     const signInButton = document.getElementById('sign_in_as_user_button');
     signInButton['href']= data['login_url'];
-    signInButton.innerHTML = 'Right here and copy link.'
+        signInButton.innerHTML = 'Right here and copy link.'
+        */
   }
 }
 

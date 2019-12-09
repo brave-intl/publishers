@@ -37,6 +37,11 @@ export default class Modal extends React.Component<IModalProps> {
 
   constructor(props) {
     super(props);
+    if (props.show) {
+      console.log("should show");
+    } else {
+      console.log("should not show");
+    }
     this.el = document.createElement("div");
   }
 
@@ -95,14 +100,17 @@ export default class Modal extends React.Component<IModalProps> {
 
     // Effectively reseting the view due to how React reconcilliation works
     if (!this.props.show) {
+      console.log(" what!");
       container = <React.Fragment />;
     }
+
+    if 
 
     return (
       // Creating a portal to handle the z-index issue.
       // https://reactjs.org/docs/portals.html
       ReactDOM.createPortal(
-        <ModalDiv open={this.props.show}>
+        <ModalDiv open={false}>
           <Background onClick={this.props.handleClose} />
           {container}
         </ModalDiv>,

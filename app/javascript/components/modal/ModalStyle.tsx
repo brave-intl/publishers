@@ -14,7 +14,7 @@ export const ModalDiv = styled.div`
   z-index: 1;
 
   ${(props: Partial<IModalProps>) =>
-    props.open === false &&
+    props.open !== true &&
     `
     visibility: hidden;
   `}
