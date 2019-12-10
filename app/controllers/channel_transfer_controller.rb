@@ -14,7 +14,7 @@ class ChannelTransferController < ApplicationController
 
   def verify_token
     @current_channel = Channel.find(params[:id])
-    if @current_channel.nil? || @current_channel.contest_token.nil? || @current_channel.contest_token != params[:token_id]
+    if @current_channel.nil? || @current_channel.contest_token.blank? || @current_channel.contest_token != params[:token_id]
       respond_to do |format|
         format.json {
           head 404
