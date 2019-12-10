@@ -44,6 +44,7 @@ class Publisher < ApplicationRecord
 
   attr_encrypted :authentication_token, key: :encryption_key
 
+  attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
   validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
   validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !deleted? }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }

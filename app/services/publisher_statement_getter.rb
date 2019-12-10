@@ -92,6 +92,7 @@ class PublisherStatementGetter < BaseApiClient
         # Finally group by currency, the currency can change in the middle of the month for direct tips but likely it will just be 1.
         channel_entries.group_by { |c| c.settlement_currency }.each do |currency, currency_entries|
           amount = channel_entries.sum { |x| x.amount }
+          settlement_amount = channel_entries.sum { |x| x.settlement_amount }
 
           # We're specifying a negative amount because we group by transactions already paid out.
           # This gives us the ability to aggregate and show one Uphold transaction, rather than 300 or so tips that might have been sent.
@@ -100,7 +101,7 @@ class PublisherStatementGetter < BaseApiClient
             transaction_type: Statement::UPHOLD_CONTRIBUTION_SETTLEMENT,
             amount: -amount,
             settlement_currency: currency,
-            settlement_amount: amount,
+            settlement_amount: settlement_amount,
             created_at: date,
           )
         end

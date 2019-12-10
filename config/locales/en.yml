@@ -61,7 +61,7 @@ en:
       errors: "There were errors saving your request:"
     attributes:
       publisher:
-        visible: Yes, help me increase contributor awareness by listing my site in Brave’s marketing channels.
+        marketing_emails: By checking here, I consent to be informed of new features and promotions via email.
         name: Your Name
       site_channel_details:
         brave_publisher_id: Website Domain

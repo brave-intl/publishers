@@ -1,10 +1,5 @@
 class PublisherSerializer < ActiveModel::Serializer
-  attributes :owner_identifier, :email, :name, :channel_identifiers, :show_verification_status,
-             :default_currency
-
-  def show_verification_status
-    object.visible?
-  end
+  attributes :owner_identifier, :email, :name, :channel_identifiers, :default_currency
 
   def channel_identifiers
     object.channels.verified.collect do |channel|
