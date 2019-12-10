@@ -115,7 +115,7 @@ class PromoRegistration < ApplicationRecord
     def sum_stats
       Proc.new do |aggregate_stats, event|
         aggregate_stats.keys.each do |key|
-          aggregate_stats[key] += event[key]
+          aggregate_stats[key] += event[key].to_i
         end
 
         aggregate_stats

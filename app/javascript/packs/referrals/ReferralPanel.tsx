@@ -11,9 +11,9 @@ import Information from "./Information";
 
 import routes from "../../views/routes";
 
-import Stats from "./referralPanel/Stats";
 import ArrowPointer from "./referralPanel/ArrowPointer";
 import Groups from "./referralPanel/Groups";
+import Stats from "./referralPanel/Stats";
 
 export enum ReferralType {
   Finalized = "finalized",

@@ -1,15 +1,15 @@
 import * as React from "react";
 
-import { ReferralType, IReferralCounts } from "../ReferralPanel";
 import { FormattedMessage } from "react-intl";
+import { IReferralCounts, ReferralType } from "../ReferralPanel";
 
 interface IStatsProps {
   selected: ReferralType;
-  changeSelected: Function;
+  changeSelected: (ReferralType) => void;
   totals: IReferralCounts;
 }
 
-const Stats = ( props: IStatsProps ) => (
+const Stats = (props: IStatsProps) => (
   <div className="col-md">
     <table className="promo-table w-100 font-weight-bold">
       <tbody>
@@ -57,4 +57,4 @@ const Stats = ( props: IStatsProps ) => (
   </div>
 );
 
-export default Stats
+export default Stats;

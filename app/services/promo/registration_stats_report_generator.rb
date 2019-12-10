@@ -147,7 +147,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       start_date: @start_date,
       end_date: @start_date,
       interval: @reporting_interval
-    ).perform
+    )
   end
 
   def select_events_within_report_range(events)
