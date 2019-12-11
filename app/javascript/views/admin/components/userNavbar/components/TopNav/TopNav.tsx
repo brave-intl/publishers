@@ -19,6 +19,7 @@ import NavbarSelection from "../../UserNavbar";
 
 import locale from "../../../../../../locale/en";
 import routes from "../../../../../../routes/routes";
+import SimpleDialog from "../../../../../dialogs/SimpleDialog";
 
 interface ITopNavProps {
   name: string;
@@ -27,25 +28,21 @@ interface ITopNavProps {
   avatar: string;
   navbarSelection: string;
   isOpen?: boolean;
+  loginUrl?: string;
 }
 
-export default class Referrals extends React.Component<ITopNavProps, {}> {
+interface ITopNavState {
+  isOpen: boolean;
+  loginUrl: string;
+}
+
+export default class Referrals extends React.Component<ITopNavProps, ITopNavState> {
   constructor(props) {
     super(props);
-    this.state = {isOpen: false};
-    if (props.isOpen) {
-      console.log("should show");
-    } else {
-      console.log("should not show");
-    }
+    this.state = {isOpen: false, loginUrl: ""} ;
   }
 
   public render() {
-    if (this.props.isOpen) {
-      console.log("should show");
-    } else {
-      console.log("should not show");
-    }
     return (
       <Container>
         <InnerContainer>
@@ -96,24 +93,18 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
               >
                 Generate sign in link
               </Link>
-              <a
-                onClick={() =>
-                  this.modalClick()
-                }
-                href="#"
-                className="mr-4"
-              >
-                Sign in as publisher
-              </a>
               <Modal
-                show={this.props.isOpen}
+                show={this.state.isOpen}
                 size={ModalSize.Medium}
                 handleClose={() =>
-                  this.modalClick()
+                  this.closeModal()
                 }
                 padding={false}
               >
-                Hi
+                  <SimpleDialog
+                    header="Copy below"
+                    label={this.state.loginUrl}
+                  />
               </Modal>
             </SectionGroup>
           </Section>
@@ -128,25 +119,26 @@ export default class Referrals extends React.Component<ITopNavProps, {}> {
     );
   }
 
+  private closeModal = () => {
+    this.setState({ isOpen: false });
+  }
+
   private modalClick = async () => {
     const url = "/admin/publishers/" + this.props.userID + "/sign_in_as_user";
     const options = {
       credentials: "same-origin",
       headers: {
         Accept: "text/html",
-        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]")['content'] as string,
+        "X-CSRF-Token": document.head.querySelector("[name=csrf-token]").getAttribute('content') as string,
         "X-Requested-With": "XMLHttpRequest",
       },
       method: "GET"
     } as RequestInit;
     const response = await fetch(url, options);
     const data = await response.json();
-        /*
-    const signInButton = document.getElementById('sign_in_as_user_button');
-    signInButton['href']= data['login_url'];
-        signInButton.innerHTML = 'Right here and copy link.'
-        */
-  }
+    this.setState({ loginUrl: data['login_url']});
+    this.setState({ isOpen: !this.props.isOpen });
+  };
 }
 
 function Navigation(props) {
