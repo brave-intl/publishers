@@ -55,8 +55,8 @@
     "preset": "ts-jest/presets/js-with-babel"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.2.3",
     "@babel/core": "^7.0.0-0",
+    "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
