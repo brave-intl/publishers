@@ -55,6 +55,7 @@
     "preset": "ts-jest/presets/js-with-babel"
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-0",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "@rails/activestorage": "^6.0.0",
@@ -114,11 +115,5 @@
     "tslint-config-standard": "^8.0.1",
     "tslint-react": "^3.6.0",
     "webpack-dev-server": "3.8.1"
-  },
-  "resolutions": {
-    "js-yaml": "3.13.1",
-    "mixin-deep": "2.0.1",
-    "set-value": "3.0.1",
-    "node-gyp": "github:brave/node-gyp"
   }
 }
