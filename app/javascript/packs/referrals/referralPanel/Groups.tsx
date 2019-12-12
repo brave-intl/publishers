@@ -23,11 +23,11 @@ const Groups = (props: IGroupProps) => (
               </span>
             </td>
             <td className="font-weight-bold">
-              {props.selected === ReferralType.Finalized &&
+              {props.selected === ReferralType.FINALIZED &&
                 (group.counts.finalized || 0)}
-              {props.selected === ReferralType.FirstRuns &&
+              {props.selected === ReferralType.FIRST_RUNS &&
                 (group.counts.first_runs || 0)}
-              {props.selected === ReferralType.Retrievals &&
+              {props.selected === ReferralType.RETRIEVALS &&
                 (group.counts.retrievals || 0)}
             </td>
           </tr>

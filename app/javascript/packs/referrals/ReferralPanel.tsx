@@ -16,9 +16,9 @@ import Groups from "./referralPanel/Groups";
 import Stats from "./referralPanel/Stats";
 
 export enum ReferralType {
-  Finalized = "finalized",
-  FirstRuns = "first_runs",
-  Retrievals = "retrievals"
+  FINALIZED  = "finalized",
+  FIRST_RUNS = "first_runs",
+  RETRIEVALS = "retrievals"
 }
 
 export interface IReferralCounts {
@@ -62,7 +62,7 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
       month: moment()
         .locale("en")
         .format("MMMM YYYY"),
-      selected: ReferralType.Finalized,
+      selected: ReferralType.FINALIZED,
       totals: {
         finalized: 0,
         first_runs: 0,

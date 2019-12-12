@@ -8,17 +8,17 @@ const ArrowPointer = props => (
       <tbody>
         <tr>
           <td className="py-4">
-            {props.selected === ReferralType.Finalized && <Arrow />}
+            {props.selected === ReferralType.FINALIZED && <Arrow />}
           </td>
         </tr>
         <tr>
           <td className="py-4">
-            {props.selected === ReferralType.FirstRuns && <Arrow />}
+            {props.selected === ReferralType.FIRST_RUNS && <Arrow />}
           </td>
         </tr>
         <tr>
           <td className="py-4">
-            {props.selected === ReferralType.Retrievals && <Arrow />}
+            {props.selected === ReferralType.RETRIEVALS && <Arrow />}
           </td>
         </tr>
       </tbody>

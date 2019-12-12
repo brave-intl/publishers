@@ -15,11 +15,11 @@ const Stats = (props: IStatsProps) => (
       <tbody>
         <tr
           className={
-            props.selected === ReferralType.Finalized
+            props.selected === ReferralType.FINALIZED
               ? "promo-selected selectable"
               : "selectable"
           }
-          onClick={() => props.changeSelected(ReferralType.Finalized)}
+          onClick={() => props.changeSelected(ReferralType.FINALIZED)}
         >
           <td>
             <FormattedMessage id="homepage.referral.confirmed" />
@@ -28,11 +28,11 @@ const Stats = (props: IStatsProps) => (
         </tr>
         <tr
           className={
-            props.selected === ReferralType.FirstRuns
+            props.selected === ReferralType.FIRST_RUNS
               ? "promo-selected selectable"
               : "selectable"
           }
-          onClick={() => props.changeSelected(ReferralType.FirstRuns)}
+          onClick={() => props.changeSelected(ReferralType.FIRST_RUNS)}
         >
           <td>
             <FormattedMessage id="homepage.referral.installed" />
@@ -41,11 +41,11 @@ const Stats = (props: IStatsProps) => (
         </tr>
         <tr
           className={
-            props.selected === ReferralType.Retrievals
+            props.selected === ReferralType.RETRIEVALS
               ? "promo-selected selectable"
               : "selectable"
           }
-          onClick={() => props.changeSelected(ReferralType.Retrievals)}
+          onClick={() => props.changeSelected(ReferralType.RETRIEVALS)}
         >
           <td>
             <FormattedMessage id="homepage.referral.downloaded" />
