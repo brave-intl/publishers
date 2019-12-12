@@ -9,7 +9,7 @@ interface IStatsProps {
   totals: IReferralCounts;
 }
 
-const Stats = (props: IStatsProps) => (
+const ReferralStats = (props: IStatsProps) => (
   <div className="col-md">
     <table className="promo-table w-100 font-weight-bold">
       <tbody>
@@ -57,4 +57,4 @@ const Stats = (props: IStatsProps) => (
   </div>
 );
 
-export default Stats;
+export default ReferralStats;

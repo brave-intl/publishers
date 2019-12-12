@@ -13,7 +13,7 @@ import routes from "../../views/routes";
 
 import ArrowPointer from "./referralPanel/ArrowPointer";
 import Groups from "./referralPanel/Groups";
-import Stats from "./referralPanel/Stats";
+import ReferralStats from "./referralPanel/ReferralStats";
 
 export enum ReferralType {
   FINALIZED  = "finalized",
@@ -192,7 +192,7 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
         {!this.state.errorMessage && (
           <React.Fragment>
             <div className="row">
-              <Stats
+              <ReferralStats
                 totals={this.state.totals}
                 selected={this.state.selected}
                 changeSelected={this.changeSelected}
