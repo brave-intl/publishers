@@ -25,7 +25,10 @@ Rails.application.routes.draw do
           patch :confirm_default_currency
         end
 
-        resources :statements, only: [:index, :show]
+        resources :statements, only: [:index, :show] do
+          get :rate_card, on: :collection
+        end
+
         resource :two_factor_authentications_removal
       end
 

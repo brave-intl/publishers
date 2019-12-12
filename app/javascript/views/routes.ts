@@ -38,7 +38,10 @@ export default {
       },
       show: {
         path: "/publishers/statements/{period}"
-      }
+      },
+      rate_card: {
+        path: "/publishers/statements/rate_card"
+      },
     },
     update: {
       path: "/publishers"

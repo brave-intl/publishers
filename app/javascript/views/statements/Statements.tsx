@@ -29,6 +29,7 @@ export interface IStatementOverview {
   totalEarned: string;
   totalBATDeposited: string;
   rawTransactions: any;
+  showRateCards: boolean;
 }
 
 export default class Statements extends React.Component<any, IStatementsState> {
