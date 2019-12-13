@@ -145,7 +145,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     Promo::RegistrationsGeoStatsFetcher.new(
       referral_codes: @referral_codes,
       start_date: @start_date,
-      end_date: @start_date,
+      end_date: @end_date,
       interval: @reporting_interval
     ).perform
   end
