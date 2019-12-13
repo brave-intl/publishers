@@ -91,7 +91,7 @@ gem "premailer-rails", "~> 1.10.3", require: false
 gem 'public_suffix', '~> 3.1.1'
 
 # Puma as app server
-gem "puma", "~> 4.0.1"
+gem "puma", "~> 4.3.1"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"

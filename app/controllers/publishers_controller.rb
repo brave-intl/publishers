@@ -240,11 +240,11 @@ class PublishersController < ApplicationController
   end
 
   def publisher_complete_signup_params
-    params.require(:publisher).permit(:name, :visible)
+    params.require(:publisher).permit(:name, :subscribed_to_marketing_emails)
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :name, :visible, :thirty_day_login)
+    params.require(:publisher).permit(:pending_email, :name, :subscribed_to_marketing_emails, :thirty_day_login)
   end
 
   def publisher_update_email_params

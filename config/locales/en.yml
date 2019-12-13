@@ -61,7 +61,7 @@ en:
       errors: "There were errors saving your request:"
     attributes:
       publisher:
-        visible: Yes, help me increase contributor awareness by listing my site in Brave’s marketing channels.
+        marketing_emails: By checking here, I consent to be informed of new features and promotions via email.
         name: Your Name
       site_channel_details:
         brave_publisher_id: Website Domain
@@ -526,8 +526,6 @@ en:
       resend_authentication_email:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         done: The access email has been resent.
-    devise:
-      login_session_expired: Your session has expired. Please log in again.
     email_verified:
       heading: One last thing...
       intro: Finish signing up by entering below.
