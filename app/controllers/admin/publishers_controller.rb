@@ -107,6 +107,21 @@ class Admin::PublishersController < AdminController
     redirect_to admin_publisher_path(@publisher.id)
   end
 
+  def sign_in_as_user
+    if @publisher.admin?
+      render status: 401, json: {
+        error: "You cannot sign in as another admin",
+      }
+    end
+
+    authentication_token = PublisherTokenGenerator.new(publisher: @publisher).perform
+
+    login_url = request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
+    render json: {
+      login_url: login_url,
+    }
+  end
+
   private
 
   def get_publisher
