@@ -37,11 +37,6 @@ export default class Modal extends React.Component<IModalProps> {
 
   constructor(props) {
     super(props);
-    if (props.show) {
-      console.log("should show");
-    } else {
-      console.log("should not show");
-    }
     this.el = document.createElement("div");
   }
 
