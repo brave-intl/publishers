@@ -191,14 +191,13 @@ class ReferralPanel extends React.Component<any, IReferralGroupsState> {
 
         {!this.state.errorMessage && (
           <React.Fragment>
-            <div className="row">
+            <div className="row m-0">
               <ReferralStats
                 totals={this.state.totals}
                 selected={this.state.selected}
                 changeSelected={this.changeSelected}
               />
 
-              <ArrowPointer selected={this.state.selected} />
               <Groups groups={this.state.groups} selected={this.state.selected} />
             </div>
 

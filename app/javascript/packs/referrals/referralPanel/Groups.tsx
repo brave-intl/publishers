@@ -8,8 +8,8 @@ interface IGroupProps {
 }
 
 const Groups = (props: IGroupProps) => (
-  <div className="col-md">
-    <table className="promo-table w-100 promo-selected">
+  <div className="col-lg-5 p-0 pl-3">
+    <table className="promo-table h-100 w-100 promo-selected">
       <tbody>
         {props.groups.map(group => (
           <tr key={group.id}>
