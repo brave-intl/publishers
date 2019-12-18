@@ -18,6 +18,7 @@ module Publishers
 
     def connect_callback
       authorization_code = params[:code]
+      p "**** got authorization code #{authorization_code}"
       result = Faraday.post("#{Rails.application.secrets[:paypal_api_uri]}/v1/oauth2/token") do |req|
         req.headers['Authorization'] = "Basic " + Base64.encode64("#{Rails.application.secrets[:paypal_client_id]}:#{Rails.application.secrets[:paypal_client_secret]}").rstrip.tr("\n", "")
         req.headers['Accept'] = 'application/json'

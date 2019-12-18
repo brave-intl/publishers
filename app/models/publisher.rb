@@ -316,7 +316,8 @@ class Publisher < ApplicationRecord
   end
 
   def paypal_locale?(locale)
-    locale == 'ja'
+    true
+    # locale == 'ja'
   end
 
   private
