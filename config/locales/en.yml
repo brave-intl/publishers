@@ -523,6 +523,7 @@ en:
         legacy_youtube_login: Legacy YouTube Login
       sign_up:
         heading: Join Brave Rewards
+        terms_of_service: I agree to Brave's terms & conditions
       resend_authentication_email:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         done: The access email has been resent.

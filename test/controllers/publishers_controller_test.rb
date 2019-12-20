@@ -21,7 +21,8 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
   end
 
   SIGNUP_PARAMS = {
-    email: "alice@example.com"
+    email: "alice@example.com",
+    terms_of_service: true
   }
 
   COMPLETE_SIGNUP_PARAMS = {
@@ -239,8 +240,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     publisher.reload
-
-    refute publisher.agreed_to_tos.present?
 
     perform_enqueued_jobs do
       patch(complete_signup_publishers_path, params: COMPLETE_SIGNUP_PARAMS)

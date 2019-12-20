@@ -31,8 +31,9 @@ module Publishers
       # as a publisher in the middle of the change email flow
       @publisher = Publisher.find_or_create_by(pending_email: params[:email], email: nil)
       @publisher_email = @publisher.pending_email
+      @publisher.agreed_to_tos = Time.now if params[:terms_of_service].present?
 
-      if @publisher.save
+      if params[:terms_of_service] && @publisher.save
         MailerServices::VerifyEmailEmailer.new(publisher: @publisher).perform
 
         respond_to do |format|
