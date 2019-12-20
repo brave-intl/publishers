@@ -45,6 +45,12 @@ export const StyledInput = styled(FormField)`
     transition: all 400ms;
   }
 `
+export const StyledFormField = styled(FormField)`
+  margin: 24px 0;
+  > div {
+    border-bottom: none !important;
+  }
+`
 
 export const CardButtonContainer = styled(Box)`
   border: 1px solid rgba(255, 255, 255, 0.4);

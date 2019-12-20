@@ -8,15 +8,16 @@ import {
   YouTubeIcon,
   PublicationIcon,
   TwitchIcon,
-  SwoopBottom
+  SwoopBottom,
+  StyledFormField
 } from "../../components";
 
 import { Link } from "react-router-dom";
 import SignComponent from "./signComponent";
 import batPill from "../../components/img/built-with-bat-pill.svg";
-import { Heading, Box, Image, Anchor } from "grommet";
+import { Heading, Box, Image, Anchor, Text, CheckBox, FormField } from "grommet";
 import locale from '../../locale/en';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl} from 'react-intl';
 
 
 const logAction = (action, value) => {
@@ -133,6 +134,47 @@ export const MainSignIn = () => {
   );
 };
 
+const TermsOfService = props => {
+  const intl = useIntl();
+  const [checked, setChecked] = React.useState(false);
+
+  return (
+    <Text size="18px" color="rgba(255, 255, 255, .8)" textAlign="center">
+      <FormattedMessage
+        id="main.termsOfService.description"
+        values={{
+          a: msg => (
+            <Anchor
+              href="https://brave.com/publishers-creators-privacy/#brave-rewards"
+              label={msg}
+              style={{ textDecoration: "underline" }}
+              color="rgba(255, 255, 255, .8)"
+            />
+          )
+        }}
+      />
+
+      <StyledFormField
+        required
+        component={CheckBox}
+        name="terms_of_service"
+        justify="center"
+        pad={true}
+        checked={checked}
+        label={intl.formatMessage({ id: "main.termsOfService.agree" })}
+        validate={(fieldData, _) => {
+          if (!fieldData) {
+            return intl.formatMessage({ id: "main.termsOfService.invalid" })
+          }
+        }}
+        onChange={event => {
+          setChecked(event.target.checked);
+        }}
+      />
+    </Text>
+  );
+};
+
 export const MainSignUp = () => {
   return (
     <SignComponent
@@ -147,6 +189,7 @@ export const MainSignUp = () => {
       footerTwo={<FormattedMessage id="main.footerTwo"/>}
       footerTwoHref={locale.main.footerTwoHref}
       formId="signUpForm"
+      termsOfService={<TermsOfService />}
       method="POST"
     />
   );

@@ -64,6 +64,17 @@ export const theme = {
       }
     }
   },
+  checkBox: {
+    color: "white",
+    border: {
+      color: "rgba(255, 255, 255, 0.8)"
+    },
+    hover: {
+      border: {
+        color: "rgba(255, 255, 255, 0.5)"
+      }
+    }
+  },
   paragraph: {
     small: {
       maxWidth: '600px',

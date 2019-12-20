@@ -536,6 +536,7 @@ ja:
         legacy_youtube_login: (旧) YouTubeログイン
       sign_up:
         heading: Brave Rewardsに参加する
+        terms_of_service: "Braveの利用規約に同意します"
       resend_authentication_email:
         access_throttled: ログインしようとした回数が多すぎて、アクセスが制限されました。 あとでもう一度試してみてください。
         done: アクセス用のメールが再送されました。

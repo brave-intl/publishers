@@ -91,9 +91,9 @@ h4 {
 /* Terms in Signup and Signin */
 
 .terms-help {
-  position: absolute;
+  /* position: absolute;
   bottom: 60px;
-  left: 72px;
+  left: 72px; */
   color: rgb(182, 182, 182);
 }
 
@@ -150,6 +150,12 @@ h4 {
     display: flex;
     align-self: flex-start;
     margin: 0 0 18px;
+  }
+}
+
+@media (min-width: 576px) {
+  #zindex {
+    justify-content: center;
   }
 }
 
