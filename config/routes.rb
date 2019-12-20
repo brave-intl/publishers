@@ -32,7 +32,7 @@ Rails.application.routes.draw do
         resource :two_factor_authentications_removal
       end
 
-      resources :paypal_accounts, controller: "publishers/paypal_accounts", only: [] do
+      resources :paypal_connections, controller: "publishers/paypal_connections", only: [] do
         get :connect_callback, on: :collection
         get :refresh
         patch :disconnect

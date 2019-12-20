@@ -1,7 +1,7 @@
 require "faraday"
 
 module Publishers
-  class PaypalAccountsController < ApplicationController
+  class PaypalConnectionsController < ApplicationController
     before_action :authenticate_publisher!
 
     def disconnect
