@@ -51,7 +51,13 @@ export default {
     footerOneHref:
       "https://basicattentiontoken.org/publisher-terms-of-service/",
     footerTwo: "Help Center",
-    footerTwoHref: "https://support.brave.com/hc/en-us"
+    footerTwoHref: "https://support.brave.com/hc/en-us",
+    termsOfService: {
+      agree: "I agree to Brave's terms & conditions",
+      description: "Brave will <a>use your email</a> to contact you about your account and to update you about the service. Your settings page includes options for changing email notification permissions.",
+      invalid: "You must agree to Brave's terms & conditions to create an account"
+    },
+    validEmail: "Please enter a valid email."
   },
   signoff: {
     btn: "Sign up now",

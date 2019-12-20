@@ -18,6 +18,11 @@ export const GradientBackground = styled(Box)`
   -moz-animation: Gradient 5s ease infinite;
   animation: Gradient 5s ease infinite;
 
+
+  @media (max-height: 500px) and (max-width: 576px) {
+    height: 100%;
+  }
+
   @-webkit-keyframes Gradient {
     0% {
       background-position: 0% 50%;
