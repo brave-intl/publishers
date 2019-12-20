@@ -23,7 +23,7 @@
       .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
         .last-deposit-v2.d-flex.justify-content-between
           .last-deposit-v2--label
-            = t ".last_deposit"
+            = t(".last_deposit")
           .d-flex.justify-content-start.flex-column
             - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
             - if last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
