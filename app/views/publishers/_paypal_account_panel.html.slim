@@ -41,7 +41,7 @@
   .wide-action
     - if @publisher.paypal_connection.nil?
       = link_to t(".connect_with_paypal"),
-        "#{Rails.application.secrets[:paypal_connect_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fpaypal_accounts%2Fconnect_callback",
+        paypal_connect_url,
         class: "btn btn-block btn-primary"
     - elsif @publisher.paypal_connection.verified_account?
       = link_to t(".view_account_summary"),
