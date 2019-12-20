@@ -25,10 +25,10 @@ class Paypal::RefreshIdentity < BaseService
       hidden: false
     )
     paypal_connection.update(
-      email: user_info['emails'][0]['value'],
-      country: user_info['address']['country'],
-      verified_account: user_info['verified_account'],
-      paypal_account_id: user_info['user_id']
+      email: user_info.dig('emails')&.dig(0)&.dig('value'),
+      country: user_info.dig('address')&.dig('country'),
+      verified_account: user_info.dig('verified_account'),
+      paypal_account_id: user_info.dig('user_id')
     )
   end
 

@@ -39,14 +39,14 @@ module Publishers
       user_info = JSON.parse(user_info_response.body)
       paypal_connection = PaypalConnection.find_or_initialize_by(
         user_id: current_publisher.id,
-        email: user_info['emails'][0]['value']
+        email: user_info.dig('emails')&.dig(0)&.dig('value')
       )
       paypal_connection.update(
         refresh_token: refresh_token,
-        email: user_info['emails'][0]['value'],
-        country: user_info['address']['country'],
-        verified_account: user_info['verified_account'] == 'true',
-        paypal_account_id: user_info['user_id'],
+        email: user_info.dig('emails')&.dig(0)&.dig('value'),
+        country: user_info.dig('address')&.dig('country'),
+        verified_account: user_info.dig('verified_account') == 'true',
+        paypal_account_id: user_info.dig('user_id'),
         hidden: false
       )
 

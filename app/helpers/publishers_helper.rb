@@ -158,11 +158,7 @@ module PublishersHelper
   def publisher_last_settlement_date(publisher, locale)
     last_settlement_balance = publisher.wallet&.last_settlement_balance
     if last_settlement_balance&.timestamp.present?
-      if locale.to_sym == :ja
-        I18n.l(Time.at(last_settlement_balance.timestamp).to_date, format: :long, locale: :'ja')
-      else
-        Time.at(last_settlement_balance.timestamp).to_datetime.strftime("%B %d, %Y")
-      end
+      I18n.l(Time.at(last_settlement_balance.timestamp).to_date, format: :long, locale: locale)
     else
       I18n.t("helpers.publisher.no_deposit")
     end
