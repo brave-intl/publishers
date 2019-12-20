@@ -10,7 +10,6 @@ class Paypal::RefreshIdentity < BaseService
       access_token = fetch_access_token
       raise_token_exception if access_token.nil?
     rescue => e
-      require 'sentry-raven'
       Raven.capture_exception(e)
     end
 
