@@ -20,6 +20,16 @@ module PromosHelper
     { "times" => [Time.now.to_s], "series" => { "name" => "downloads", "values" => [rand(0..1000)] }, "aggregate" => { "downloads" => 200, "finalized" => 30 } }
   end
 
+  def publisher_referrals_last_update(publisher)
+    promos = publisher.promo_registrations.order(updated_at: :desc)
+    return if promos.blank?
+
+    I18n.t(
+      "promo.dashboard.last_updated_at",
+      time: time_ago_in_words(promos.first&.updated_at)
+    )
+  end
+
   def publisher_referral_totals(publisher)
     aggregate_stats = PromoRegistration.stats_for_registrations(promo_registrations: publisher.promo_registrations)
 

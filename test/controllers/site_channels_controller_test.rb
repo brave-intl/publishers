@@ -234,9 +234,7 @@ class SiteChannelsControllerTest < ActionDispatch::IntegrationTest
       new_channel = publisher.channels.order(created_at: :asc).last
 
       # Triggering an update to test if the promo was created
-      assert_enqueued_with(job: ActionMailer::MailDeliveryJob) do
-        new_channel.update(verified: true)
-      end
+      new_channel.update(verified: true)
     ensure
       Rails.application.secrets[:host_inspector_offline] = prev_host_inspector_offline
     end

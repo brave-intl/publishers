@@ -10,9 +10,10 @@ class PayoutReportPublisherIncluder < BaseService
 
   def perform
     return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold? || @publisher.paypal_connection.present?
+    uphold_connection = @publisher.uphold_connection
+    return if uphold_connection.japanese_account?
 
     wallet = PublisherWalletGetter.new(publisher: @publisher).perform
-    uphold_connection = @publisher.uphold_connection
     suspended = @publisher.suspended?
 
     uphold_connection.sync_from_uphold!

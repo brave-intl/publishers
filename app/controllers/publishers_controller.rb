@@ -143,8 +143,6 @@ class PublishersController < ApplicationController
 
     @possible_currencies = []
 
-    @migration_present = Sidekiq::Queue.new("low").any? { |job| job.args.first.dig("job_class").eql? "MigrateUpholdAccessParametersJob" }
-
     if uphold_connection.uphold_details.present?
       @possible_currencies = uphold_connection.uphold_details&.currencies
 
@@ -154,6 +152,8 @@ class PublishersController < ApplicationController
       # Handles legacy case where user is missing an Uphold card
       uphold_connection.create_uphold_cards if uphold_connection.missing_card?
     end
+
+    flash[:notice] = I18n.t("publishers.home.disabled_payouts") if current_publisher.japanese_locale?(params[:locale])
   end
 
   def choose_new_channel_type
@@ -240,11 +240,11 @@ class PublishersController < ApplicationController
   end
 
   def publisher_complete_signup_params
-    params.require(:publisher).permit(:name, :visible)
+    params.require(:publisher).permit(:name, :subscribed_to_marketing_emails)
   end
 
   def publisher_update_params
-    params.require(:publisher).permit(:pending_email, :name, :visible, :thirty_day_login)
+    params.require(:publisher).permit(:pending_email, :name, :subscribed_to_marketing_emails, :thirty_day_login)
   end
 
   def publisher_update_email_params

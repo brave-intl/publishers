@@ -1,42 +1,47 @@
-# Registers each verified channel for a publisher
-class Promo::PublisherChannelsRegistrar < BaseApiClient
+# Registers a promo registration for each verified channel for a publisher
+class Promo::AssignPromoToChannelService < BaseApiClient
   include PromosHelper
 
-  def initialize(publisher:, promo_id: active_promo_id)
-    @publisher = publisher
+  attr_reader :channel
+
+  MAX_ATTEMPTS = 3
+
+  def initialize(channel:, promo_id: active_promo_id, attempt_count: 0)
+    @channel = channel
     @promo_id = promo_id
+    @attempt_count = attempt_count
   end
 
   def perform
-    channels = @publisher.channels.where(verified: true)
-    channels.each do |channel|
-      next unless should_register_channel?(channel)
+    return if !channel.verified? || channel.promo_registration.present?
+    result = register_channel(channel)
+    if result.nil? && @attempt_count < MAX_ATTEMPTS
+      Promo::RegisterChannelForPromoJob.set(wait: 30.minutes).perform_later(channel_id: @channel.id, attempt_count: @attempt_count + 1) and return
+    elsif result.nil? && @attempt_count >= MAX_ATTEMPTS
+      return
+    end
 
-      result = register_channel(channel)
-      next if result.nil?
+    referral_code = result[:referral_code]
+    should_update_promo_server = result[:should_update_promo_server]
+    begin
+      if referral_code.present?
+        promo_registration = PromoRegistration.new(channel_id: channel.id,
+                                                   promo_id: @promo_id,
+                                                   kind: PromoRegistration::CHANNEL,
+                                                   publisher_id: channel.publisher_id,
+                                                   referral_code: referral_code)
 
-      referral_code = result[:referral_code]
-      should_update_promo_server = result[:should_update_promo_server]
-
-      begin
-        if referral_code.present?
-          promo_registration = PromoRegistration.new(channel_id: channel.id,
-                                                     promo_id: @promo_id,
-                                                     kind: PromoRegistration::CHANNEL,
-                                                     publisher_id: @publisher.id,
-                                                     referral_code: referral_code)
-
-          success = promo_registration.save!
-          if success && should_update_promo_server
-            Promo::ChannelOwnerUpdater.new(publisher_id: @publisher.id, referral_code: referral_code).perform
-          end
+        success = promo_registration.save!
+        if success
+          PromoMailer.new_channel_registered_2018q1(channel.publisher, channel).deliver_later
+          Promo::ChannelOwnerUpdater.new(publisher_id: channel.publisher_id, referral_code: referral_code).perform if should_update_promo_server
         end
-      rescue ActiveRecord::RecordInvalid => e
-        require "sentry-raven"
-        Rails.logger.error("PublisherChannelsRegistrar perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
-        Raven.extra_context referral_code: referral_code
-        Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
       end
+    rescue ActiveRecord::RecordInvalid => e
+      require "sentry-raven"
+      Rails.logger.error("#{self.name} perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
+      Raven.extra_context referral_code: referral_code
+      Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
     end
   rescue Faraday::Error::ClientError => e
     # When the owner is "no-ugp" the promo server will return 409.
@@ -57,7 +62,11 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
       should_update_promo_server: false
     }
   rescue Faraday::Error::ClientError => e
-    change_ownership(channel)
+    if e.response[:status] == 409
+      change_ownership(channel)
+    else
+      nil
+    end
   rescue Faraday::Error => e
     require "sentry-raven"
     Rails.logger.error("Promo::PublisherChannelsRegistrar #register_channel error: #{e}")
@@ -69,13 +78,13 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
     Rails.logger.warn("Promo::PublisherChannelsRegistrar #register_channel returned 409, channel already registered.  Using Promo::RegistrationGetter to get the referral_code.")
 
     # Get the referral code
-    registration = Promo::RegistrationGetter.new(publisher: @publisher, channel: channel).perform
+    registration = Promo::RegistrationGetter.new(publisher: channel.publisher, channel: channel).perform
 
     {
       referral_code: registration["referral_code"],
-      should_update_promo_server: registration["owner_id"] != @publisher.id ? true : false
+      should_update_promo_server: registration["owner_id"] != channel.publisher_id
     }
-  rescue Faraday::Error::ClientError => e
+  rescue Faraday::Error::ClientError
     nil
   end
 
@@ -108,7 +117,7 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
 
   def channel_request_body(channel)
     {
-      "owner_id": @publisher.id,
+      "owner_id": channel.publisher_id,
       "promo": @promo_id,
       "channel": channel.channel_id,
       "title": channel.publication_title,
@@ -120,15 +129,11 @@ class Promo::PublisherChannelsRegistrar < BaseApiClient
 
   def site_request_body(channel)
     {
-      "owner_id": @publisher.id,
+      "owner_id": channel.publisher_id,
       "promo": @promo_id,
       "channel": channel.channel_id,
       "title": channel.publication_title,
       "channel_type": "website",
     }.to_json
-  end
-
-  def should_register_channel?(channel)
-    channel.promo_registration.blank?
   end
 end

@@ -25,15 +25,17 @@ const FooterComponent = props => (
       </Text>
       <FooterLegal label={<FormattedMessage id="footer.three" /> } href={locale.footer.threeHref} />
     </Box>
-    <Box
-      as="a"
-      direction="row"
-      href={locale.footer.fourHref}
-      aria-label={<FormattedMessage id="nav.batPillAlt"/>}
-      pad={props.padded}
-    >
-      <Image src={BuiltWithBat} />
-    </Box>
+    {window.location.search.split('locale=')[1] !== 'ja' &&
+      <Box
+        as="a"
+        direction="row"
+        href={locale.footer.fourHref}
+        aria-label={<FormattedMessage id="nav.batPillAlt"/>}
+        pad={props.padded}
+      >
+        <Image src={BuiltWithBat} />
+      </Box>
+    }
   </Box>
 );
 

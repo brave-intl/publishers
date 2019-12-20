@@ -539,14 +539,13 @@ ja:
       resend_authentication_email:
         access_throttled: ログインしようとした回数が多すぎて、アクセスが制限されました。 あとでもう一度試してみてください。
         done: アクセス用のメールが再送されました。
-    devise:
-      login_session_expired: セッションの有効期限が切れました。 もう一度ログインしてください。
     email_verified:
       heading: 最後に一つだけ...
       intro: 以下を入力して、サインアップを完了します。
       name_placeholder: 氏名
       tos_html: 「％{action}」をクリックすると、％{tos_link}に同意したことになります
     home:
+      disabled_payouts: 近日中に支払いが行われます。こちらからウォレットの接続設定が可能です。
       migration: 現在、定期メンテナンスを実施しています。 この間、Upholdウォレットに問題が発生する場合があります。 まもなく復旧する予定です。
       noscript: ダッシュボードを操作する場合は、ブラウザーでJavaScriptを有効にしてください。
       title: ダッシュボード
@@ -734,6 +733,7 @@ ja:
       downloaded: "ダウンロード済み"
       installed: "インストール済み"
       confirmed: "確認済み"
+      last_updated_at: "約%{time}前に最終更新"
       active_referral: "アクティブ"
       add_channel: "紹介リンクを取得するには、ウェブサイトまたはチャンネルを確認してください。"
       violation: 残念ながら<a href="https://basicattentiontoken.org/publisher-terms-of-service/">利用規約</a>への違反が確認されたため、Brave Rewardsプログラムへの参加が停止されました。 ただし、他のプログラムに参加することで、報酬を獲得して引き換えることができます。
@@ -777,10 +777,6 @@ ja:
       ad_banner_title: "プロモーション広告バナー"
       ad_banner_message: "以下のプロモーション広告バナーを紹介リンクと合わせて利用できます"
       download: "ダウンロード"
-    promo_activated_2018q1_unverified:
-      subject: "もう少しで紹介リンクを獲得できます"
-      cta: "チャネルを承認する"
-      body_one: "Brave Rewards紹介プロモーションにご参加いただきありがとうございます。 プロセスを完了して紹介リンクを取得するには、チャンネルを承認する必要があります。 チャンネルが承認されると、ダッシュボードの紹介リンクにアクセスして、トークンを受け取ることが可能になります。"
     new_channel_registered_2018q1:
       subject: "％{publication_title}の紹介コードの準備ができました"
   banner:

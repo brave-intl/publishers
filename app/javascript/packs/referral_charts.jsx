@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import styled from "brave-ui/theme";
 import Select from "brave-ui/components/formControls/select";
 import ControlWrapper from "brave-ui/components/formControls/controlWrapper";
-import { PrimaryButton } from "../publishers/ReferralChartsStyle";
+import { PrimaryButton } from "./referrals/ReferralChartsStyle";
 // import "../publishers/dashboard_chart";
 import routes from "../views/routes";
 import ReactChart from "./chart/Chart";

@@ -61,7 +61,7 @@ en:
       errors: "There were errors saving your request:"
     attributes:
       publisher:
-        visible: Yes, help me increase contributor awareness by listing my site in Brave’s marketing channels.
+        marketing_emails: By checking here, I consent to be informed of new features and promotions via email.
         name: Your Name
       site_channel_details:
         brave_publisher_id: Website Domain
@@ -288,6 +288,7 @@ en:
       body_html: |
         Click the button below to log in to your Brave Rewards account. This email contains a private access link that can only be used once.
       button: Log in to Brave Rewards
+      explicit_url: If the above button doesn't work, paste this link in your browser %{url}
     login_partner_email:
       salutation: Howdy %{name},
       subject: You've been added as a partner on Brave Rewards
@@ -525,18 +526,17 @@ en:
       resend_authentication_email:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         done: The access email has been resent.
-    devise:
-      login_session_expired: Your session has expired. Please log in again.
     email_verified:
       heading: One last thing...
       intro: Finish signing up by entering below.
       name_placeholder: First and last name
       tos_html: By clicking '%{action}', you're agreeing to our %{tos_link}
     home:
+      disabled_payouts: Payouts will be coming soon. Keep an eye on this space to connect your wallet.
       migration: We are currently performing scheduled maintenance. During this time you may see some issues with your uphold wallet. We should be fully functional shortly.
       noscript: Please enable JavaScript in your browser if you wish to interact with the dashboard.
       title: Dashboard
-      balance_pending: PENDING PAYOUTS
+      balance_pending: BALANCE
       next_deposit_date: "Next Deposit Date: "
       payout_in_progress: "Payout In Progress"
       add_channel_cta: Add a website or YouTube channel to see how much your fans on Brave have contributed so far.
@@ -740,6 +740,7 @@ en:
       downloaded: "downloaded"
       installed: "installed"
       confirmed: "confirmed"
+      last_updated_at: "Last updated about %{time} ago"
       active_referral: "active"
       add_channel: "Add a web site or youtube channel below to get the promo link!"
       violation: We regret to inform you that we've suspended your ability to participate in Brave Rewards Program due to violation of our <a href="https://basicattentiontoken.org/publisher-terms-of-service/">Terms of Service</a>. However, you can still earn and redeem rewards from participating in our other programs.
@@ -785,10 +786,6 @@ en:
       ad_banner_title: "Promo Ad Banner"
       ad_banner_message: "Here is the promo ad banner you can use with the referral link."
       download: "Download"
-    promo_activated_2018q1_unverified:
-      subject: "One more step to receive your referral link"
-      cta: "Verify channel"
-      body_one: "Thanks for joining the Brave Rewards referral promotion. To complete the process and get your referral link, you'll need to verify your channel. Once your channel is verified, you will be able to access your referral link in the dashboard and start collecting tokens."
     new_channel_registered_2018q1:
       subject: "Your referral code for %{publication_title} is ready"
   banner:

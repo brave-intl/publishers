@@ -35,7 +35,7 @@ gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.7.1"
-gem 'omniauth-rails_csrf_protection', '~> 0.1.1'
+gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -91,7 +91,7 @@ gem "premailer-rails", "~> 1.10.3", require: false
 gem 'public_suffix', '~> 3.1.1'
 
 # Puma as app server
-gem "puma", "~> 4.0.1"
+gem "puma", "~> 4.3.1"
 
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
@@ -152,11 +152,6 @@ group :development do
   gem "binding_of_caller"
   gem 'listen', '~> 3.2'
 
-  gem "pry"
-  gem 'pry-stack_explorer', '~> 0.4.9.3'
-  gem "byebug"
-  gem "pry-byebug", require: false
-
   gem 'bullet'
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
@@ -182,6 +177,11 @@ group :development, :test do
   # Create a temporary table-backed ActiveRecord model
   gem 'temping'
   gem 'rubocop-airbnb'
+
+  gem "pry"
+  gem 'pry-stack_explorer', '~> 0.4.9.3'
+  gem "byebug"
+  gem "pry-byebug", require: false
 
   # Static security vulnerability scanner
   gem "brakeman"

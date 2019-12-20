@@ -85,41 +85,34 @@ export default {
     heading: "あなたのコンテンツをBrave Rewardsで収益化できます",
     subhead:
       "Brave Rewardsは、作品やコンテンツからより多くの収益を上げ、広告ブロック等で減ってしまった収益を取り戻すことをサポートします。広告収益だけに依存する代わりに、ユーザからコンテンツへの直接支払いを受けることができるようになります。",
+    bakerAlt: "Bart Baker Brave Rewards",
+    bakerCredit: "- Bart Baker",
     bakerHref: "https://www.youtube.com/BartBaKer",
     bakerQuote:
       "“Braveはいわば無料で参加できるクラウドファウンディングのようなものです。支援者は自分の財布を傷めずにあなたの活動を支援することができるのです！",
-    bakerCredit: "- Bart Baker",
+    defrancoAlt: "Philip DeFranco Brave Rewards",
     defrancoCredit: "- Philip DeFranco",
     defrancoHref: "https://www.youtube.com/channel/UClFSU9_bUb4Rc6OYfTt5SPw",
     defrancoQuote:
       "“Braveを通じて、クリエイターは収益を上げることができ、ユーザは支援することが可能なのです！”",
-    deciccoCredit: "- Tom DeCicco",
-    deciccoHref: "https://www.youtube.com/channel/UCj2x0OA-aFd3q4r3V975ccA",
-    deciccoQuote:
-      "“@braveに感謝！おかげでYoutubeの動画を制作できてクリエイティブな生活をおくれているよ！”",
-    bobbyCredit: "- Crypto Bobby",
-    bobbyHref: "https://www.youtube.com/channel/UCt_oM56Ui0BCCgi0Yc-Wh3Q",
-    bobbyQuote:
-      "\"Braveをお使いの皆さん、ありがとう！！大金を稼げているわけではないけど、ピーナッツ代にしかならない感じでもないよ。何よりクリプトのプロジェクトがちゃんと動いているのが素晴らしい！\"",
-    bakerAlt: "Bart Baker Brave Rewards",
-    defrancoAlt: "Philip DeFranco Brave Rewards",
-    deciccoAlt: "Tom DeCicco Brave Rewards",
-    bobbyAlt: "Crypto Bobby Brave Rewards"
+    scottyAlt: "Scotty Allen Strange Parts",
+    scottyCredit: "- Scotty Allen",
+    scottyHref: "https://www.youtube.com/channel/UCO8DQrSp5yEP937qNqTooOw",
+    scottyQuote: "\"Braveを使うだけで、ファンはクリエイターを簡単に支援することができます\"",
   },
   summary: {
     heading: "Brave Rewardsの仕組み",
-    oneTitle: "Braveブラウザを使っているとトークンを獲得できます",
+    oneTitle: "Braveブラウザを使っているとポイントを獲得できます",
     oneDesc:
-      "Brave RewardsはBasic Attention Token (BAT)を基盤に作られています。Braveのプライバシーを重視した広告を見るとトークンを獲得することができます。",
-    twoTitle: "そういったユーザがあなたのようなクリエイターやその作品に対してトークンをチップとして送ります",
+      "Brave RewardsはBATポイントからを基盤に作られています。Braveのプライバシーを重視した広告を見るとポイントを獲得することができます。",
+    twoTitle: "そういったユーザがあなたのようなクリエイターやその作品に対してポイントをチップとして送ります",
     twoDesc:
       "定期購読者、フォロワー、読者は毎月決まった金額分のチップを自動的に送ることや、都度任意の金額を送ることができます",
     threeTitle: "Brave Rewardsの認証済みコンテンツクリエイターになる",
     threeDesc:
-      "認証済みコンテンツクリエイターになると、クリエイター向けダッシュボードにアクセスすることが可能になります。ダッシュボードでは受け取ったチップを確認できる他、紹介用のURLを取得することが可能です。Braveを紹介することによってより多くのトークンを獲得することができます。",
+      "認証済みコンテンツクリエイターになると、クリエイター向けダッシュボードにアクセスすることが可能になります。ダッシュボードでは受け取ったチップを確認できる他、紹介用のURLを取得することが可能です。Braveを紹介することによってより多くのポイントを獲得することができます。",
     fourTitle: "クリエイターダッシュボードでチップを回収する",
-    fourDesc:
-      "登録・ログイン後のダッシュボードではパートナーサービスのUpholdとの連携設定が可能です。連携することによって受け取ったトークンを自動的に任意の通貨に変換することが可能です。",
+    fourDesc: "登録・ログイン後のダッシュボードでは明細書と残高を確認することが可能です。",
     fourLink_href: "https://basicattentiontoken.org/",
     fourLink: "BATについて、より詳しく",
     cardBusiness: "ビジネスに関するお問い合わせ",

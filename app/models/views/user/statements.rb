@@ -16,7 +16,7 @@ module Views
 
       def as_json(*)
         {
-          overviews: overviews,
+          overviews: overviews.reverse,
         }
       end
 

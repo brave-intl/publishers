@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_21_181359) do
+ActiveRecord::Schema.define(version: 2019_11_27_001627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -349,7 +349,8 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.uuid "publisher_id"
     t.string "installer_type"
     t.string "description"
-    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id"
+    t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", unique: true
+    t.index ["created_at"], name: "index_promo_registrations_on_created_at"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
@@ -395,7 +396,6 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
-    t.boolean "visible", default: true
     t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
     t.string "promo_token_2018q1"
@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(version: 2019_10_21_181359) do
     t.uuid "default_site_banner_id"
     t.boolean "default_site_banner_mode", default: false, null: false
     t.boolean "thirty_day_login", default: false, null: false
+    t.boolean "subscribed_to_marketing_emails", default: false, null: false
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
