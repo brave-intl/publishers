@@ -578,7 +578,7 @@ ja:
         view_statements: ステートメントを表示
         view_recent_statement: ％{statement_link}の準備ができました。
         unavailable: 利用可能なステートメントはありません。
-    paypal_account_panel:
+    paypal_connection_panel:
       bat_points: BATポイントポイント
       change: 変更
       check_balance: 残高を確認する

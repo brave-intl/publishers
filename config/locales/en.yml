@@ -572,7 +572,7 @@ en:
       last_deposit_date: "Last Deposit Date: "
       change: Change
       no_currency_selected: None selected
-    paypal_account_panel:
+    paypal_connection_panel:
       bat_points: BAT Points
       change: Change
       check_balance: Check Balance

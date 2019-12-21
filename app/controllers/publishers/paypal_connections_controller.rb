@@ -12,7 +12,7 @@ module Publishers
       # (Albert Wang): I don't think Paypal will go down that often, but we can change this into perform_later
       # if this is a long running call.
       Paypal::RefreshIdentity.new(publisher_id: current_publisher.id).perform
-      flash[:alert] = I18n.t('publishers.paypal_account_panel.still_not_verified') unless current_publisher.paypal_connection.verified_account?
+      flash[:alert] = I18n.t('publishers.paypal_connection_panel.still_not_verified') unless current_publisher.paypal_connection.verified_account?
       redirect_to home_publishers_path
     end
 

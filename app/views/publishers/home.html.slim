@@ -103,7 +103,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
         - if !(@publisher.excluded_from_payout? || @publisher.paypal_locale?(params[:locale]) || @publisher.uphold_connection&.japanese_account?)
           = render partial: "uphold_wallet_panel"
         - elsif @publisher.paypal_locale?(params[:locale])
-          = render partial: "paypal_account_panel"
+          = render partial: "paypal_connection_panel"
       - if promo_running?
           = render partial: 'promo_panel'
       - elsif @publisher.channels.empty?
