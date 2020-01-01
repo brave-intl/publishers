@@ -35,7 +35,6 @@ gem 'cancancan'
 
 # Authentication
 gem "devise", "~> 4.7.1"
-gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 
 gem "dnsruby", "~> 1.60.0", require: false
 
@@ -61,7 +60,7 @@ gem 'mongo', '~> 2.2', '>= 2.2.5'
 gem "newrelic_rpm", "~> 6.7.0.359"
 
 # Oauth client for google / youtube
-gem "omniauth-google-oauth2", "~> 0.5.2"
+gem "omniauth-google-oauth2", "~> 0.8.0"
 
 # Oauth client for twitch
 gem "omniauth-twitch"
