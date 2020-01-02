@@ -4,6 +4,14 @@ class Eyeshade::BaseApiClient < BaseApiClient
   def initialize
   end
 
+  def publishers
+    @publishers ||= Eyeshade::Publishers.new
+  end
+
+  def referrals
+    @referrals ||= Eyeshade::Referrals.new
+  end
+
   def perform
   end
 
@@ -18,4 +26,3 @@ class Eyeshade::BaseApiClient < BaseApiClient
     "Bearer #{Rails.application.secrets[:api_eyeshade_key]}"
   end
 end
-

@@ -265,7 +265,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for running total with geo information" do
-    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
@@ -301,7 +301,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
   end
 
   test "generates report for weekly with geo information" do
-    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
+    Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194/"
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
