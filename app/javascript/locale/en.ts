@@ -168,6 +168,7 @@ export default {
     overview: {
       amountDeposited: "Amount Deposited",
       brand: "Brave Creators",
+      breakdown: "Breakdown",
       confirmedEarning: "Confirmed Earning (BAT)",
       depositAccount: "Deposit Account",
       depositDate: "Deposit Date",
@@ -188,6 +189,8 @@ export default {
       earningPeriod: "Earning Period",
       noStatements: "There aren't any statements yet.",
       paymentDate: "Payment Date",
+      referrals: "Referral Promo",
+      referralsInfo: "The breakdown of regions for confirmations during this period. Some confirmations may appear on the previous statement or be rolled over to the next statement.",
       statement: "Statement",
       title: "Statements",
       totalDeposited: "Total Deposited",

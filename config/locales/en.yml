@@ -526,8 +526,6 @@ en:
       resend_authentication_email:
         access_throttled: You've attempted to sign in too many times and your access had been throttled. Try again later.
         done: The access email has been resent.
-    devise:
-      login_session_expired: Your session has expired. Please log in again.
     email_verified:
       heading: One last thing...
       intro: Finish signing up by entering below.

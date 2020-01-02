@@ -145,7 +145,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     PromoClient.reporting.geo_stats_by_referral_code(
       referral_codes: @referral_codes,
       start_date: @start_date,
-      end_date: @start_date,
+      end_date: @end_date,
       interval: @reporting_interval
     )
   end

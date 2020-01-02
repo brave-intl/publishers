@@ -539,8 +539,6 @@ ja:
       resend_authentication_email:
         access_throttled: ログインしようとした回数が多すぎて、アクセスが制限されました。 あとでもう一度試してみてください。
         done: アクセス用のメールが再送されました。
-    devise:
-      login_session_expired: セッションの有効期限が切れました。 もう一度ログインしてください。
     email_verified:
       heading: 最後に一つだけ...
       intro: 以下を入力して、サインアップを完了します。

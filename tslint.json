@@ -6,7 +6,9 @@
   "rules": {
     "jsx-no-multiline-js": false,
     "jsx-boolean-value": false,
+    "jsx-no-lambda": false,
     "no-submodule-imports": false,
-    "jsx-no-lambda": false
+    "no-string-literal": false,
+    "no-object-literal-type-assertion": false
   }
 }
