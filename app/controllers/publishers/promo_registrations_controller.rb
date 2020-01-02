@@ -82,7 +82,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
   def group_counts(groups, user, start_date, end_date)
     # Create a { country => group_id } mapping hash
     countries = groups.each_with_object({}) do |group, hash|
-      group[:codes].each { |code| hash[code] = group[:id] }
+      group[:codes]&.each { |code| hash[code] = group[:id] }
     end
 
     country_counts = PromoClient.reporting.geo_stats_by_referral_code(
