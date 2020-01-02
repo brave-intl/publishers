@@ -59,6 +59,7 @@ gem 'mongo', '~> 2.2', '>= 2.2.5'
 
 gem "newrelic_rpm", "~> 6.7.0.359"
 
+gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 # Oauth client for google / youtube
 gem "omniauth-google-oauth2", "~> 0.8.0"
 
