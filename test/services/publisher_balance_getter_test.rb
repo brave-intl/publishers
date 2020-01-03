@@ -66,13 +66,4 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     assert_equal owner_account["account_type"], "owner"
     assert_equal owner_account["balance"], "0.00"
   end
-
-  test "returns [] if publisher has no verified channels" do
-    Rails.application.secrets[:api_eyeshade_offline] = false
-    publisher = publishers(:created)
-
-    result = PublisherBalanceGetter.new(publisher: publisher).perform
-
-    assert_equal result, []
-  end
 end

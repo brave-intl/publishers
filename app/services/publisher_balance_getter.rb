@@ -7,7 +7,6 @@ class PublisherBalanceGetter < BaseApiClient
   end
 
   def perform
-    return [] if publisher.channels.verified.empty?
     return perform_offline if Rails.application.secrets[:api_eyeshade_offline]
 
     accounts_response = connection.get do |request|
