@@ -4,7 +4,7 @@ export default {
     promo_registrations: {
       show: {
         path:
-          "/publishers/{publisher_id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+          "/publishers/promo_registrations/for_referral_code?referral_code={referral_code}&publisher_id={publisher_id}"
       }
     }
   },
@@ -26,10 +26,10 @@ export default {
   publishers: {
     promo_registrations: {
       show: {
-        path: "/publishers/{id}/promo_registrations/for_referral_code?referral_code={referral_code}"
+        path: "/publishers/promo_registrations/for_referral_code?referral_code={referral_code}"
       },
       overview: {
-        path: "/publishers/{id}/promo_registrations/overview"
+        path: "/publishers/promo_registrations/overview?publisher_id={id}"
       }
     },
     statements: {

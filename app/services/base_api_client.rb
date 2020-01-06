@@ -76,7 +76,9 @@ class BaseApiClient < BaseService
     @connection ||= begin
       require "faraday"
       Faraday.new(url: api_base_uri) do |faraday|
-        faraday.proxy(proxy_url) if proxy_url.present?
+        faraday.proxy = proxy_url if proxy_url.present?
+        faraday.request :retry, max: retry_count, interval: 0.05, interval_randomness: 0.5, backoff_factor: 2
+
         # Log level info: Brief summaries
         # Log level debug: Detailed bodies and headers
         faraday.response(:logger, Rails.logger, bodies: true, headers: true)
@@ -84,6 +86,12 @@ class BaseApiClient < BaseService
         faraday.adapter Faraday.default_adapter
       end
     end
+  end
+
+  # The default retry count is 2. However, a subclass could introduce their own retry_count.
+  # https://github.com/lostisland/faraday/blob/0ebc233513d186bebb940ec0260278823f5d2a22/lib/faraday/request/retry.rb#L5-L24
+  def retry_count
+    2
   end
 
   def proxy_url

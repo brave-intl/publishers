@@ -716,6 +716,7 @@ ja:
       installed: "インストール済み"
       confirmed: "確認済み"
       last_updated_at: "約%{time}前に最終更新"
+      group: 'グループ %{number}'
       active_referral: "アクティブ"
       add_channel: "紹介リンクを取得するには、ウェブサイトまたはチャンネルを確認してください。"
       violation: 残念ながら<a href="https://basicattentiontoken.org/publisher-terms-of-service/">利用規約</a>への違反が確認されたため、Brave Rewardsプログラムへの参加が停止されました。 ただし、他のプログラムに参加することで、報酬を獲得して引き換えることができます。

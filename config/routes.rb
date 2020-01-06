@@ -30,6 +30,13 @@ Rails.application.routes.draw do
         end
 
         resource :two_factor_authentications_removal
+
+        resources :promo_registrations, only: [:index, :create] do
+          collection do
+            get :for_referral_code
+            get :overview
+          end
+        end
       end
 
       get :log_out
@@ -54,18 +61,11 @@ Rails.application.routes.draw do
       resources :u2f_authentications, only: %i(create)
       resources :totp_registrations, only: %i(new create destroy)
       resources :totp_authentications, only: %i(create)
-      resources :promo_registrations, only: %i(index create)
     end
+
     resources :site_banners, controller: "publishers/site_banners" do
       collection do
         post :set_default_site_banner_mode
-      end
-    end
-    # (Albert Wang): Need to factor the above promo_registrations, as they should be in Publishers::PromoRegistrationsController rather than in the PromoRegistrationsController
-    resources :promo_registrations, controller: "publishers/promo_registrations", only: [] do
-      collection do
-        get :for_referral_code
-        get :overview
       end
     end
   end

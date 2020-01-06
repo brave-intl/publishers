@@ -28,7 +28,6 @@ export default {
       confirmed: "CONFIRMED",
       details: 'See details for the areas in each group',
       downloaded: "DOWNLOADED",
-      group: "Group",
       installed: "INSTALLED",
       statement: "Check your statement for this period's payout.",
       title: "Referral Promo Stats",
