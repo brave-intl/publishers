@@ -24,8 +24,8 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       group_by_referral_code(events).each do |referral_code, referrals|
         group_by_country(referrals).each do |country, grouped_country|
           dates = group_by_date(grouped_country)
-          # Iterating through the dates so that if there's any missing ones then it'll populate with 0's
-          (@start_date..@end_date).each do |day|
+          # Iterating through the dates. Ensures there are no gaps within the dates.
+          (@start_date..@end_date).group_by(&date_interval).each do |day, _|
             csv << reduce_events(dates[day], referral_code, country, day)
           end
 
@@ -173,22 +173,26 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   #
   # Returns an array hash of the events
   def group_by_date(events)
-    events = events.sort_by { |event| event["ymd"].to_date }
-    events_by_interval = events.group_by do |event|
+    events.each { |event| event["ymd"] = event["ymd"].to_date }
+    events = events.sort_by { |event| event["ymd"] }
+
+    events.group_by { |event| date_interval.call(event["ymd"]) }
+  end
+
+  def date_interval
+    Proc.new do |date|
       case @reporting_interval
       when PromoRegistration::DAILY
-        event["ymd"].to_date
+        date
       when PromoRegistration::WEEKLY
-        event["ymd"].to_date.at_beginning_of_week
+        date.at_beginning_of_week
       when PromoRegistration::MONTHLY
-        event["ymd"].to_date.at_beginning_of_month
+        date.at_beginning_of_month
       when PromoRegistration::RUNNING_TOTAL
         @end_date
       else
         raise "Invalid reporting interval #{@reporting_interval}."
       end
     end
-
-    events_by_interval
   end
 end
