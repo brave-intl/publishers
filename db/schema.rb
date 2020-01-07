@@ -288,8 +288,6 @@ ActiveRecord::Schema.define(version: 2019_11_27_001627) do
     t.uuid "user_id", null: false
     t.string "encrypted_refresh_token"
     t.string "encrypted_refresh_token_iv"
-    t.text "full_name"
-    t.text "email"
     t.text "country"
     t.boolean "verified_account"
     t.text "paypal_account_id"
