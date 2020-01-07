@@ -18,8 +18,11 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     else
       @promo_registrations = promo_registrations.where(promo_campaigns: { name: filter })
     end
-
-    @promo_registrations = @promo_registrations.order("promo_registrations.created_at DESC")
+    if params[:column].present?
+      @promo_registrations = @promo_registrations.order(sanitize_sql_for_order("promo_registrations.#{params[:column]} #{params[:direction]}"))
+    else
+      @promo_registrations = @promo_registrations.order("promo_registrations.created_at DESC")
+    end
     @current_campaign = params[:filter] || "All codes"
     @campaigns = PromoCampaign.pluck(:name).sort
   end
@@ -84,6 +87,10 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
   end
 
   private
+
+  def sortable_columns
+    [:aggregate_downloads, :aggregate_installs, :aggregate_confirmations]
+  end
 
   def parse_report_dates
     start_date = Date.parse(params[:start_date].values.join("-"))
