@@ -69,7 +69,7 @@
               span.tf-tooltip-content
                 span.tf-tooltip-content-heading= "Status"
                 span.tf-tooltip-content-content== "#{event_type_column_header(PromoRegistration::RETRIEVALS)} and #{event_type_column_header(PromoRegistration::FIRST_RUNS)} will not be tracked when a code is 'paused'."
-          th =  sort_link(:aggregate_downloads, event_type_column_header(PromoRegistration::RETRIEVALS))
+          th = sort_link(:aggregate_downloads, event_type_column_header(PromoRegistration::RETRIEVALS))
           th
             = sort_link(:aggregate_installs, event_type_column_header(PromoRegistration::FIRST_RUNS))
             span.tf-tooltip
