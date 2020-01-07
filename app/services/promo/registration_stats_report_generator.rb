@@ -15,7 +15,6 @@ class Promo::RegistrationStatsReportGenerator < BaseService
   def perform
     events = fetch_stats
     events = select_events_within_report_range(events)
-    events = fill_in_events_with_no_activity(events)
 
     ratios = []
 
@@ -24,8 +23,10 @@ class Promo::RegistrationStatsReportGenerator < BaseService
 
       group_by_referral_code(events).each do |referral_code, referrals|
         group_by_country(referrals).each do |country, grouped_country|
-          group_by_date(grouped_country).each do |date, grouped_dates|
-            csv << reduce_events(grouped_dates, referral_code, country, date)
+          dates = group_by_date(grouped_country)
+          # Iterating through the dates so that if there's any missing ones then it'll populate with 0's
+          (@start_date..@end_date).each do |day|
+            csv << reduce_events(dates[day], referral_code, country, day)
           end
 
           ratios << calculate_ratios(referral_code, country, grouped_country)
@@ -110,7 +111,7 @@ class Promo::RegistrationStatsReportGenerator < BaseService
       finalized: 0,
     }
 
-    events.each do |event|
+    events&.each do |event|
       combined[:retrievals] += event[PromoRegistration::RETRIEVALS]
       combined[:first_runs] += event[PromoRegistration::FIRST_RUNS]
       combined[:finalized] += event[PromoRegistration::FINALIZED]
@@ -189,37 +190,5 @@ class Promo::RegistrationStatsReportGenerator < BaseService
     end
 
     events_by_interval
-  end
-
-  def fill_in_events_with_no_activity(events)
-    events_with_no_activity = []
-    grouped_referrals = group_by_referral_code(events)
-
-    (@start_date..@end_date).each do |day|
-      events.map { |e| e["referral_code"] }.each do |referral_code|
-        if broken_down_by_country?
-          countries = grouped_referrals[referral_code].map { |e| e[PromoRegistration::COUNTRY] }.uniq
-          countries.each do |country|
-            events_with_no_activity.push({
-              "referral_code" => referral_code,
-              "country" => country,
-              "ymd" => day.strftime("%Y-%m-%d"),
-              PromoRegistration::RETRIEVALS => 0,
-              PromoRegistration::FIRST_RUNS => 0,
-              PromoRegistration::FINALIZED => 0,
-            })
-          end
-        else
-          events_with_no_activity.push({
-            "referral_code" => referral_code,
-            "ymd" => day.strftime("%Y-%m-%d"),
-            PromoRegistration::RETRIEVALS => 0,
-            PromoRegistration::FIRST_RUNS => 0,
-            PromoRegistration::FINALIZED => 0,
-          })
-        end
-      end
-    end
-    events + events_with_no_activity
   end
 end
