@@ -553,7 +553,7 @@ ja:
       balance_pending: 保留中の支払い
       next_deposit_date: "次の入金日："
       payout_in_progress: "進行中の支払い"
-      payout_minimum_balance: "Minimum balance for payout is %{amount} %{currency}"
+      payout_minimum_balance: "最低出金金額は %{amount} %{currency}です"
       add_channel_cta: ウェブサイトまたはYouTubeチャンネルを追加して、Braveのファンがこれまでにどれだけ支援したかを確認してください。
       held_funds: 中断されたBATポイント支払い
       held_funds_description: これらの資金は、不審なアクティビティが確認されたため中断されている。こちらの<a href="/publishers/case/new">手順</a>にしたがって、異議申し立てを行ってください
