@@ -33,7 +33,7 @@ class Paypal::RefreshIdentity < BaseService
 
   private
 
-  def raise_token_exception
+  def raise_token_exception!
     raise "Access token is nil for publisher: #{@publisher.id}"
   end
 
