@@ -13,8 +13,6 @@
         .payout-connected-highlight
           span &#9679;&nbsp
           = t(".connected")
-          span &nbsp&#8226;&nbsp
-          = @publisher.paypal_connection.email
         .payout-account-disconnect-button
           = link_to t(".disconnect"), paypal_connection_disconnect_path(@publisher.paypal_connection.id), method: :patch
       br

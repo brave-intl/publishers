@@ -1,11 +1,10 @@
-require "faraday"
-
 module Publishers
   class PaypalConnectionsController < ApplicationController
     before_action :authenticate_publisher!
 
     def disconnect
-      current_publisher.paypal_connections.active.update_all(hidden: true)
+      current_publisher.paypal_connection.hide!
+      redirect_to home_publishers_path
     end
 
     def refresh
