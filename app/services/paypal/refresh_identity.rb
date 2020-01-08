@@ -8,7 +8,7 @@ class Paypal::RefreshIdentity < BaseService
     return if @paypal_connection.nil? || @paypal_connection.refresh_token.nil?
     begin
       access_token = fetch_access_token
-      raise_token_exception if access_token.nil?
+      raise_token_exception! if access_token.nil?
     rescue => e
       Raven.capture_exception(e)
     end
