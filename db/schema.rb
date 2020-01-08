@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_03_200608) do
+ActiveRecord::Schema.define(version: 2020_01_08_065840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -396,6 +396,7 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
     t.boolean "default_site_banner_mode", default: false, null: false
     t.boolean "thirty_day_login", default: false, null: false
     t.boolean "subscribed_to_marketing_emails", default: false, null: false
+    t.datetime "ads_enabled_at"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"

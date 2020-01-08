@@ -180,6 +180,7 @@ channel_publisher:
 global_media_group:
   email: "fred@vglobal.org"
   name: "Global Media Group"
+  ads_enabled_at: "<%= 1.day.ago %>"
   agreed_to_tos: "<%= 1.day.ago %>"
 
 small_media_group:
