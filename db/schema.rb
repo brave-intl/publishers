@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2019_11_27_001627) do
+ActiveRecord::Schema.define(version: 2020_01_08_065840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,6 +283,8 @@ ActiveRecord::Schema.define(version: 2019_11_27_001627) do
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
+    t.string "kind", default: "uphold"
+    t.index ["created_at"], name: "index_payout_reports_on_created_at"
   end
 
   create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -324,6 +327,30 @@ ActiveRecord::Schema.define(version: 2019_11_27_001627) do
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
+  end
+
+  create_table "potential_paypal_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.uuid "paypal_connection_id", null: false
+    t.uuid "channel_id"
+    t.string "name"
+    t.string "kind", null: false
+    t.string "amount", null: false
+    t.string "fees", null: false
+    t.string "derived_paypal_account_id", null: false
+    t.string "derived_paypal_verified_account", default: "f", null: false
+    t.string "status"
+    t.string "url"
+    t.boolean "suspended"
+    t.jsonb "derived_channel_stats", default: {}
+    t.text "channel_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["channel_id"], name: "index_potential_paypal_payments_on_channel_id"
+    t.index ["payout_report_id"], name: "index_potential_paypal_payments_on_payout_report_id"
+    t.index ["paypal_connection_id"], name: "index_potential_paypal_payments_on_paypal_connection_id"
+    t.index ["publisher_id"], name: "index_potential_paypal_payments_on_publisher_id"
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
