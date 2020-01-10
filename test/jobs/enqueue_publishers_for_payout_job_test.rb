@@ -11,7 +11,10 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
         should_send_notifications: false,
         final: false
       )
-      assert_equal Publisher.joins(:uphold_connection).with_verified_channel.count, IncludePublisherInPayoutReportJob.jobs.size
+      assert_equal(Publisher.joins(:uphold_connection).with_verified_channel.count + 
+                   Publisher.joins(:paypal_connection).where(paypal_connections: { verified_account: true, country: "Japan" }).count, 
+                   IncludePublisherInPayoutReportJob.jobs.size
+                  )
     end
   end
 
@@ -25,7 +28,7 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
   end
 
   test "can supply a list of publisher ids" do
-    publishers = Publisher.where.not(email: "priscilla@potentiallypaid.org").joins(:uphold_connection)
+    publishers = Publisher.where.not(email: "priscilla@potentiallypaid.org").joins(:uphold_connection) + Publisher.joins(:paypal_connection).where(paypal_connections: { verified_account: true, country: "Japan" })
 
     EnqueuePublishersForPayoutJob.perform_now(
       should_send_notifications: false,

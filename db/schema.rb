@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_14_035731) do
+ActiveRecord::Schema.define(version: 2020_01_17_010955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -330,6 +330,8 @@ ActiveRecord::Schema.define(version: 2020_01_14_035731) do
     t.jsonb "channel_stats", default: {}
     t.text "channel_type"
     t.string "status"
+    t.string "wallet_provider_id"
+    t.integer "wallet_provider", limit: 2, default: 0
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"

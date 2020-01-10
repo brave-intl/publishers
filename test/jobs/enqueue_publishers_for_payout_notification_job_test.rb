@@ -8,7 +8,11 @@ class EnqueuePublishersForPayoutNotificationJobTest < ActiveJob::TestCase
   test "launches 1 job per publisher" do
     assert_difference -> { PayoutReport.count } do
       EnqueuePublishersForPayoutJob.perform_now
-      assert_equal Publisher.joins(:uphold_connection).with_verified_channel.count, IncludePublisherInPayoutReportJob.jobs.size
+      assert_equal(
+                    Publisher.joins(:uphold_connection).with_verified_channel.count +
+                    Publisher.joins(:paypal_connection).where(paypal_connections: { verified_account: true, country: "Japan" }).count,
+                    IncludePublisherInPayoutReportJob.jobs.size
+                  )
     end
   end
 
@@ -16,6 +20,10 @@ class EnqueuePublishersForPayoutNotificationJobTest < ActiveJob::TestCase
     publishers = Publisher.where.not(email: "priscilla@potentiallypaid.org")
 
     EnqueuePublishersForPayoutJob.perform_now(publisher_ids: publishers.pluck(:id))
-    assert_equal publishers.joins(:uphold_connection).count, IncludePublisherInPayoutReportJob.jobs.size
+    assert_equal(
+                  publishers.joins(:uphold_connection).count +
+                  publishers.joins(:paypal_connection).count,
+                  IncludePublisherInPayoutReportJob.jobs.size
+                )
   end
 end

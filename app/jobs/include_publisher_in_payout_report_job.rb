@@ -16,8 +16,18 @@ class IncludePublisherInPayoutReportJob
     end
 
     publisher = Publisher.find(publisher_id)
-    PayoutReportPublisherIncluder.new(publisher: publisher,
-                                      payout_report: payout_report,
-                                      should_send_notifications: should_send_notifications).perform
+    if for_paypal
+      Paypal::PayoutReportPublisherIncluder.new(
+        publisher:                 publisher,
+        payout_report:             payout_report,
+        should_send_notifications: should_send_notifications
+      ).perform
+    else
+      PayoutReportPublisherIncluder.new(
+        publisher:                 publisher,
+        payout_report:             payout_report,
+        should_send_notifications: should_send_notifications
+      ).perform
+    end
   end
 end
