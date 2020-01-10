@@ -34,7 +34,7 @@ table.display.table.table-bordered.table-striped
       tr.gradeX
         td = report.created_at.strftime("%B %d, %Y, %H:%M")
         td = link_to report.id[0..6], admin_payout_report_path(report.id)
-        td = report.final ? "Final" : "Temp"
+        td = "#{report.final ? "Final" : "Temp"} #{report.paypal_report? ? "Paypal" : ""}"
         td = report.manual ? "Yes" : "No"
         td = "#{report.expected_num_payments} - #{report.num_payments}"
         td = report.num_payments_to_be_paid
@@ -58,6 +58,10 @@ h3 Generate Payout Report
     = check_box_tag :manual
     span = "   "
     = label_tag "Manual"
+    span = "   "
+    = check_box_tag :paypal
+    span = "   "
+    = label_tag "Paypal"
     span = "   "
     = submit_tag("Generate", class: "btn btn-primary")
 br
