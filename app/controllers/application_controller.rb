@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
     return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == 'admin'
 
     locale = params[:locale] if params[:locale].present?
+    locale = :ja if has_paypal_account?
 
     if locale.nil? && extract_locale_from_accept_language_header == 'ja' && request.get?
       new_query = URI(request.original_url).query.present? ? "&locale=ja" : "?locale=ja"
@@ -76,6 +77,10 @@ class ApplicationController < ActionController::Base
         render json: { message: 'Unverified request' }, status: 401
       }
     end
+  end
+
+  def has_paypal_account?
+    current_publisher.present? && current_publisher.paypal_connection.present?
   end
 
   def u2f
