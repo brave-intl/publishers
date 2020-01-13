@@ -551,20 +551,6 @@ en:
         <a href="/publishers/case">Your appeal case </a> has been opened. Check back regularly for any updates.
       closed_case_description:
         <a href="/publishers/case">Your appeal case </a> has been rejected.
-
-      uphold:
-        heading: Your Uphold Wallet
-        deposit_currency_label: "Deposit Currency: "
-        deposit_currency: "BAT to "
-        check_balance: Check Balance
-        connect_to_a_new_account: Connect to a new Uphold account
-        no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
-        connect: Connect
-        disconnect: Disconnect
-        last_deposit: LAST DEPOSIT
-        last_deposit_date: "Last Deposit Date: "
-        change: Change
-        no_currency_selected: None selected
       statements:
         heading: Statements
         statement_name: "%{created_at} statement - %{period}"
@@ -575,6 +561,38 @@ en:
         heading: Contact
         edit: Edit Contact
         update: Update
+    uphold_wallet_panel:
+      heading: Your Uphold Wallet
+      deposit_currency_label: "Deposit Currency: "
+      deposit_currency: "BAT to "
+      check_balance: Check Balance
+      connect_to_a_new_account: Connect to a new Uphold account
+      no_currencies_available: We're unable to load deposit currencies from Uphold at this time. Please check again later.
+      connect: Connect
+      disconnect: Disconnect
+      last_deposit: LAST DEPOSIT
+      last_deposit_date: "Last Deposit Date: "
+      change: Change
+      no_currency_selected: None selected
+    paypal_connection_panel:
+      bat_points: BAT Points
+      change: Change
+      check_balance: Check Balance
+      connect_with_paypal: Connect with Paypal
+      connect: Connect
+      connected: Connected
+      deposit_date_explanation: Contribution balance gets deposited into your connected account at the 8th of every month.
+      disconnect: Disconnect
+      heading: Your Deposit Account
+      last_deposit: "Last Deposit:"
+      last_deposit_date: "made on "
+      link_bank_account: Link Bank Account
+      need_bank_account: At least one bank account needs to be linked to your Paypal account in order to receive payments.
+      no_deposit_made_yet: "No deposit has been made yet"
+      refresh_account_label: I've linked one already.
+      refresh_account_button: Check again.
+      still_not_verified: Your Paypal account still isn't verified. Please try again when you link your bank account.
+      view_account_summary: "Check Balance"
     channel:
       added: added %{date}
       remove_verified: Remove channel

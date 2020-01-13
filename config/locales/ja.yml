@@ -580,6 +580,25 @@ ja:
         view_statements: ステートメントを表示
         view_recent_statement: ％{statement_link}の準備ができました。
         unavailable: 利用可能なステートメントはありません。
+    paypal_connection_panel:
+      bat_points: BATポイントポイント
+      change: 変更
+      check_balance: 残高を確認する
+      connect_with_paypal: Paypalに接続する
+      connect: 接続
+      connected: 接続済
+      deposit_date_explanation: 支援で受け取ったポイントは、毎月8日に接続したアカウントに入金されます。
+      disconnect: 接続解除
+      heading: あなたの口座
+      last_deposit: "最近の入金:"
+      last_deposit_date: "最終入金日時: "
+      link_bank_account: 登録済の銀行口座
+      need_bank_account: 支払いを受けるには、少なくとも1つの銀行口座をPaypalアカウントに登録する必要があります。
+      no_deposit_made_yet: "まだ入金は行われていません"
+      refresh_account_label: 銀行口座登録済みの方
+      refresh_account_button: 再度ステータスを確認
+      still_not_verified: Paypalアカウントはまだ認証されていません。 銀行口座を登録した後にもう一度お試しください。
+      view_account_summary: "残高を確認する"
     channel:
       added: "%{date}に追加"
       remove_verified: チャネルを削除

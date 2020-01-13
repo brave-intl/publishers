@@ -255,4 +255,6 @@ promo_enabled_but_only_user_funds:
 potentially_paid:
   email: "priscilla@potentiallypaid.org"
 
-
+paypal_connected:
+  <<: *default
+  email: "paypal_connected@example.org"
