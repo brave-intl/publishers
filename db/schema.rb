@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2019_11_27_001627) do
 ActiveRecord::Schema.define(version: 2020_01_08_065840) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -339,7 +340,6 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.string "amount", null: false
     t.string "fees", null: false
     t.string "derived_paypal_account_id", null: false
-    t.string "derived_paypal_verified_account", default: "f", null: false
     t.string "status"
     t.string "url"
     t.boolean "suspended"
