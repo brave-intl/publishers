@@ -37,7 +37,7 @@ class SiteChannelHostInspectorTest < ActiveJob::TestCase
     stub_request(:get, "https://www.expired.badssl.com").
         to_raise(OpenSSL::SSL::SSLError.new('SSL_connect returned=1 errno=0 state=error: certificate verify failed'))
 
-    result = SiteChannelHostInspector.new(url: "expired.badssl.com").perform
+    result = SiteChannelHostInspector.new(url: "expired.badssl.com", require_https: true).perform
 
     refute result[:host_connection_verified]
     refute result[:https]
