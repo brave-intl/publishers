@@ -396,7 +396,6 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.boolean "default_site_banner_mode", default: false, null: false
     t.boolean "thirty_day_login", default: false, null: false
     t.boolean "subscribed_to_marketing_emails", default: false, null: false
-    t.datetime "ads_enabled_at"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
@@ -452,6 +451,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.datetime "updated_at", null: false
     t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
+    t.datetime "ads_enabled_at"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

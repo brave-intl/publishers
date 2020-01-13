@@ -78,7 +78,7 @@ class JsonBuilders::ChannelsJsonBuilderV3P1
       identifier,
       status(verified_channel, wallet_address_id),
       in_exclusion_list,
-      verified_channel.publisher.ads_enabled_at.present?,
+      verified_channel.details.is_a?(SiteChannelDetails) ? verified_channel.details.ads_enabled_at.present? : false,
       wallet_address_id || "",
       site_banner_details(verified_channel),
     ])
