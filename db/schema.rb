@@ -292,7 +292,6 @@ ActiveRecord::Schema.define(version: 2019_10_30_183209) do
     t.index ["user_id"], name: "index_paypal_connections_on_user_id"
   end
 
-  end
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
