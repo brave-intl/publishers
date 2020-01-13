@@ -16,7 +16,7 @@ class JsonBuilders::PaypalPayoutReportJsonBuilder
           "transactionId" => "#{potential_payment.payout_report_id}",
           "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
           "type" => PotentialPayment::REFERRAL,
-          "address" => "#{potential_payment.derivied_paypal_account_id}",
+          "address" => "#{potential_payment.derived_paypal_account_id}",
         })
       else
         channel = Channel.find_by(id: potential_payment.channel_id)
@@ -32,7 +32,7 @@ class JsonBuilders::PaypalPayoutReportJsonBuilder
             "owner" => "#{Publisher.find(potential_payment.publisher_id).owner_identifier}",
             "type" => PotentialPayment::CONTRIBUTION,
             "URL" => "#{Channel.find(potential_payment.channel_id).details.url}",
-            "address" => "#{potential_payment.derivied_paypal_account_id}",
+            "address" => "#{potential_payment.derived_paypal_account_id}",
           })
         end
       end
