@@ -5,7 +5,7 @@ import { Container, BrandBar, ControlBar, BrandImage, BrandText, ToggleText, Tog
 
 import DonationJar from '../../assets/images/icn-donation-jar@1x.png'
 import Toggle from 'brave-ui/components/formControls/toggle'
-import { YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, CaratLeftIcon, CaratRightIcon, VerifiedFillIcon} from 'brave-ui/components/icons'
+import { YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, CaratLeftIcon, CaratRightIcon, VerifiedIcon} from 'brave-ui/components/icons'
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
 
@@ -48,7 +48,7 @@ export default class Navbar extends React.Component {
             }
             {
               this.props.channelBanners.length > 0 ?
-                <VerifiedFillIcon style={{height:'25px', width:'25px', marginBottom:'5px', marginRight:'5px', color: '#58CD92'}}/>
+                <VerifiedIcon style={{height:'25px', width:'25px', marginBottom:'5px', marginRight:'5px', color: '#58CD92'}}/>
                 : null
             }
             <Text channel style={{display:'inline'}}>
