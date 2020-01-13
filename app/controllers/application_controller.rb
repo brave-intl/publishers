@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
     return I18n.with_locale(I18n.default_locale, &action) if controller_path&.split("/")&.first == 'admin'
 
     locale = params[:locale] if params[:locale].present?
+    locale = :ja if has_paypal_account?
 
     if locale.nil? && extract_locale_from_accept_language_header == 'ja' && request.get?
       # (Albert Wang): When we get a callback from Youtube, don't try an internal redirect and cause a CSRF token error.
@@ -82,6 +83,10 @@ class ApplicationController < ActionController::Base
         render json: { message: 'Unverified request' }, status: 401
       }
     end
+  end
+
+  def has_paypal_account?
+    current_publisher.present? && current_publisher.paypal_connection.present?
   end
 
   def u2f

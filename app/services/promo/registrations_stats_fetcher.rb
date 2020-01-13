@@ -26,6 +26,9 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
         promo_registration.stats = referral_code_events_by_date.select { |referral_code_event_date|
           referral_code_event_date["referral_code"] == referral_code
         }.to_json
+        promo_registration.aggregate_downloads = promo_registration.aggregate_stats[PromoRegistration::RETRIEVALS]
+        promo_registration.aggregate_installs = promo_registration.aggregate_stats[PromoRegistration::FIRST_RUNS]
+        promo_registration.aggregate_confirmations = promo_registration.aggregate_stats[PromoRegistration::FINALIZED]
         promo_registration.save!
       end
       stats += referral_code_events_by_date unless @update_only

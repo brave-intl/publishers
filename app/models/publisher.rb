@@ -22,6 +22,7 @@ class Publisher < ApplicationRecord
   has_one :two_factor_authentication_removal
   has_one :user_authentication_token, foreign_key: :user_id
   has_one :case
+  has_one :paypal_connection, -> { where(hidden: false) }, foreign_key: :user_id, class_name: "PaypalConnection"
   has_many :login_activities
 
   has_many :channels, validate: true, autosave: true
@@ -208,10 +209,6 @@ class Publisher < ApplicationRecord
     end
   end
 
-  def japanese_locale?(locale)
-    locale == "ja"
-  end
-
   def deleted?
     last_status_update&.status == PublisherStatusUpdate::DELETED
   end
@@ -317,6 +314,10 @@ class Publisher < ApplicationRecord
   def timeout_in
     return 2.hours if admin?
     thirty_day_login? ? 30.days : 30.minutes
+  end
+
+  def paypal_locale?(locale)
+    locale == 'ja'
   end
 
   private

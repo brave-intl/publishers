@@ -8,6 +8,10 @@ module PublishersHelper
     Raven.capture_exception(e)
   end
 
+  def paypal_connect_url
+    "#{Rails.application.secrets[:paypal_connect_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fpaypal_connections%2Fconnect_callback"
+  end
+
   def publishers_meta_tags
     {
       title: t("shared.app_title"),
@@ -131,6 +135,7 @@ module PublishersHelper
     if last_settlement_balance&.amount_bat.present?
       '%.2f' % last_settlement_balance.amount_bat
     else
+      I18n.t("helpers.publisher.no_deposit")
     end
   rescue => e
     require "sentry-raven"
@@ -154,10 +159,10 @@ module PublishersHelper
     I18n.t("helpers.publisher.conversion_unavailable", code: settlement_currency)
   end
 
-  def publisher_last_settlement_date(publisher)
+  def publisher_last_settlement_date(publisher, locale)
     last_settlement_balance = publisher.wallet&.last_settlement_balance
     if last_settlement_balance&.timestamp.present?
-      Time.at(last_settlement_balance.timestamp).to_datetime.strftime("%B %d, %Y")
+      I18n.l(Time.at(last_settlement_balance.timestamp).to_date, format: :long, locale: locale)
     else
       I18n.t("helpers.publisher.no_deposit")
     end

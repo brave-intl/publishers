@@ -252,6 +252,22 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     end
   end
 
+  describe "for a paypal user" do
+    let(:should_send_notifications) { true }
+    let(:publisher) { publishers(:paypal_connected) }
+    before do
+      perform_enqueued_jobs do
+        PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+                                          publisher: publisher,
+                                          should_send_notifications: should_send_notifications).perform
+      end
+    end
+
+    it "account is not included in payout report" do
+      assert_empty PotentialPayment.where(publisher_id: publisher.id)
+    end
+  end
+
   describe "when uphold verified" do
     let(:should_send_notifications) { true }
     let(:subject) do

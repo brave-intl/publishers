@@ -69,9 +69,9 @@
               span.tf-tooltip-content
                 span.tf-tooltip-content-heading= "Status"
                 span.tf-tooltip-content-content== "#{event_type_column_header(PromoRegistration::RETRIEVALS)} and #{event_type_column_header(PromoRegistration::FIRST_RUNS)} will not be tracked when a code is 'paused'."
-          th = event_type_column_header(PromoRegistration::RETRIEVALS)
+          th = sort_link(:aggregate_downloads, event_type_column_header(PromoRegistration::RETRIEVALS))
           th
-            = event_type_column_header(PromoRegistration::FIRST_RUNS)
+            = sort_link(:aggregate_installs, event_type_column_header(PromoRegistration::FIRST_RUNS))
             span.tf-tooltip
               span.icon= render "icon_help"
               span.tf-tooltip-content
@@ -79,7 +79,7 @@
                 span.tf-tooltip-content-content== "A #{event_type_column_header(PromoRegistration::FIRST_RUNS)} is counted when a user downloads the browser and opens it the first time."
 
           th
-            = event_type_column_header(PromoRegistration::FINALIZED)
+            = sort_link(:aggregate_confirmations, event_type_column_header(PromoRegistration::FINALIZED))
             span.tf-tooltip
               span.icon= render "icon_help"
               span.tf-tooltip-content
@@ -94,9 +94,9 @@
               td = promo_registration.promo_campaign&.name
               td = promo_registration.installer_type.nil? ? PromoRegistration::STANDARD : promo_registration.installer_type
               td = promo_registration.active ? "active" : "paused"
-              td = promo_registration_aggregate_stats[PromoRegistration::RETRIEVALS] || 0
-              td = promo_registration_aggregate_stats[PromoRegistration::FIRST_RUNS] || 0
-              td = promo_registration_aggregate_stats[PromoRegistration::FINALIZED] || 0
+              td = promo_registration.aggregate_downloads || 0
+              td = promo_registration.aggregate_installs || 0
+              td = promo_registration.aggregate_confirmations || 0
       - if  @promo_registrations.respond_to?(:total_pages)
         = will_paginate @promo_registrations
       hr
