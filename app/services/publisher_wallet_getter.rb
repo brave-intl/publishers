@@ -35,7 +35,7 @@ class PublisherWalletGetter < BaseApiClient
 
   def rates
     # Cache the ratios every minute. Rates are used for display purposes only.
-    Rails.cache.fetch("RATES_CACHE_KEY", expires_in: 1.minute) do
+    Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.minute) do
       Ratio::Ratio.new.relative(currency: "BAT")
     end
   end

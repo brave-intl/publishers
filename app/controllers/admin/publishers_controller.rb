@@ -54,7 +54,6 @@ class Admin::PublishersController < AdminController
     if payout_in_progress? || Date.today.day < 12 # Let's display the payout for 5 days after it should complete (on the 8th)
       @payout_report = PayoutReport.where(final: true, manual: false).order(created_at: :desc).first
       @payout_message = PayoutMessage.find_by(payout_report: @payout_report, publisher: @publisher)
-      @payout_message = PayoutMessage.first
     end
   end
 
