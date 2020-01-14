@@ -29,7 +29,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                                 payout_report: payout_report,
                                                 should_send_notifications: should_send_notifications).perform
       else
-        IncludePublisherInPayoutReportJob.perform_later(payout_report_id: payout_report.id,
+        IncludePublisherInPayoutReportJob.perform_async(payout_report_id: payout_report.id,
                                                         publisher_id: publisher.id,
                                                         should_send_notifications: should_send_notifications)
       end
