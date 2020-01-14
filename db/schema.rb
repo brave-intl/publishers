@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_03_200608) do
+ActiveRecord::Schema.define(version: 2020_01_14_035731) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -273,6 +274,16 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "payout_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["payout_report_id"], name: "index_payout_messages_on_payout_report_id"
+    t.index ["publisher_id"], name: "index_payout_messages_on_publisher_id"
+  end
+
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
@@ -322,6 +333,7 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
+    t.index ["payout_report_id", "uphold_status", "reauthorization_needed", "uphold_member", "suspended", "address"], name: "to_be_paid_index"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
@@ -347,6 +359,7 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
     t.uuid "publisher_id"
     t.string "installer_type"
     t.string "description"
+    t.jsonb "stats_sum", default: "{}"
     t.integer "aggregate_downloads", default: 0, null: false
     t.integer "aggregate_installs", default: 0, null: false
     t.integer "aggregate_confirmations", default: 0, null: false
@@ -363,9 +376,9 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "created_by_id", null: false
+    t.uuid "thread_id"
     t.bigint "zendesk_ticket_id"
     t.bigint "zendesk_comment_id"
-    t.uuid "thread_id"
     t.string "zendesk_to_email"
     t.string "zendesk_from_email"
     t.index ["created_by_id"], name: "index_publisher_notes_on_created_by_id"
@@ -397,8 +410,8 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
-    t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
+    t.boolean "promo_enabled_2018q1", default: false
     t.string "promo_token_2018q1"
     t.text "role", default: "publisher"
     t.datetime "default_currency_confirmed_at"
@@ -430,8 +443,8 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
   create_table "sessions", id: :serial, force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -461,8 +474,8 @@ ActiveRecord::Schema.define(version: 2020_01_03_200608) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
+    t.string "https_error"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

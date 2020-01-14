@@ -2,6 +2,8 @@ class PayoutReportPublisherIncluder < BaseService
   # 5 BAT
   PROBI_THRESHOLD = (5 * 1E18).freeze
 
+  class WalletError < StandardError; end
+
   def initialize(payout_report:, publisher:, should_send_notifications:)
     @publisher = publisher
     @payout_report = payout_report
@@ -9,12 +11,13 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def perform
-    return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold? || @publisher.paypal_connection.present?
-    uphold_connection = @publisher.uphold_connection
-    return if uphold_connection.japanese_account?
+    return if skip_publisher?
 
-    wallet = PublisherWalletGetter.new(publisher: @publisher).perform
-    suspended = @publisher.suspended?
+    uphold_connection = @publisher.uphold_connection
+
+    wallet = PublisherWalletGetter.new(publisher: @publisher, include_transactions: false).perform
+
+    raise WalletError.new(message: "There was a problem fetching the wallet for #{@publisher.id}") if wallet.blank?
 
     uphold_connection.sync_from_uphold!
     if uphold_connection.missing_card?
@@ -38,7 +41,7 @@ class PayoutReportPublisherIncluder < BaseService
         reauthorization_needed: uphold_connection.uphold_access_parameters.blank?,
         uphold_member: uphold_connection.is_member?,
         uphold_id: uphold_connection.uphold_id,
-        suspended: suspended,
+        suspended: @publisher.suspended?,
         status: @publisher.last_status_update&.status
       )
     end
@@ -64,7 +67,7 @@ class PayoutReportPublisherIncluder < BaseService
           reauthorization_needed: uphold_connection.uphold_access_parameters.blank?,
           uphold_member: uphold_connection.is_member?,
           uphold_id: uphold_connection.uphold_id,
-          suspended: suspended,
+          suspended: @publisher.suspended?,
           status: @publisher.last_status_update&.status,
           channel_stats: channel.details.stats,
           channel_type: channel.details_type
@@ -76,9 +79,46 @@ class PayoutReportPublisherIncluder < BaseService
     if total_probi > PROBI_THRESHOLD && @should_send_notifications
       send_emails(uphold_connection, probi_to_bat(total_probi).round(1))
     end
+  rescue StandardError => e
+    Raven.capture_message("Unexpected error during payout report: #{e.message}", { publisher: @publisher.id })
+    PayoutMessage.create(payout_report: @payout_report, publisher: @publisher, message: e.message)
+
+    raise e
   end
 
   private
+
+  # Verbose way of creating messages for the publisher.
+  def skip_publisher?
+    payout_message = PayoutMessage.new(payout_report: @payout_report, publisher: @publisher)
+
+    if !@publisher.has_verified_channel?
+      payout_message.update(message: "Publisher has no verified channels.")
+      return true
+    end
+
+    if @publisher.excluded_from_payout?
+      payout_message.update(message: "Publisher has been marked as excluded from payout")
+      return true
+    end
+
+    if @publisher.hold?
+      payout_message.update(message: "Publisher is currently in hold status")
+      return true
+    end
+
+    if @publisher.paypal_connection.present?
+      payout_message.update(message: "Publisher currently has a Paypal Connection Present and therefore cannot be paid through Uphold.")
+      return true
+    end
+
+    if @publisher.uphold_connection&.japanese_account?
+      payout_message.update(message: "Publisher's account is located in Japan and is not paid out in this report")
+      return true
+    end
+
+    false
+  end
 
   def send_emails(uphold_connection, total_amount)
     if !uphold_connection.uphold_verified? || uphold_connection.status.blank?

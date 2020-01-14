@@ -96,6 +96,16 @@ hr
               .db-field = "Approx. amount"
               .db-value = "#{@potential_referral_payment.amount.to_d * 1/1E18} BAT"
 
+
+  - if @payout_report.present?
+    .c-4.shadow-sm.bg-white.rounded.p-3.my-4
+      = render partial: 'publishers/payout_status', locals: { payout_report: @payout_report, publisher: @publisher }
+      - if @payout_message.present?
+        .mt-4
+        h5.text-dark Payout Message
+        .alert.alert-dark
+          = @payout_message.message
+
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     = render partial: 'uphold'
 
