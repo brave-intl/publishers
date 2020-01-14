@@ -81,7 +81,7 @@ class PayoutReportPublisherIncluder < BaseService
     end
   rescue StandardError => e
     Raven.capture_message("Unexpected error during payout report: #{e.message}", { publisher: @publisher.id })
-    PayoutMessage.create(payout_report: @payout_report, publisher: @publisher, message: e.message)
+    PayoutMessage.create(payout_report: @payout_report, publisher: @publisher, message: e.message) unless should_only_notify?
 
     raise e
   end
@@ -93,27 +93,27 @@ class PayoutReportPublisherIncluder < BaseService
     payout_message = PayoutMessage.new(payout_report: @payout_report, publisher: @publisher)
 
     if !@publisher.has_verified_channel?
-      payout_message.update(message: "Publisher has no verified channels.")
+      payout_message.update(message: "Publisher has no verified channels.") unless should_only_notify?
       return true
     end
 
     if @publisher.excluded_from_payout?
-      payout_message.update(message: "Publisher has been marked as excluded from payout")
+      payout_message.update(message: "Publisher has been marked as excluded from payout") unless should_only_notify?
       return true
     end
 
     if @publisher.hold?
-      payout_message.update(message: "Publisher is currently in hold status")
+      payout_message.update(message: "Publisher is currently in hold status") unless should_only_notify?
       return true
     end
 
     if @publisher.paypal_connection.present?
-      payout_message.update(message: "Publisher currently has a Paypal Connection Present and therefore cannot be paid through Uphold.")
+      payout_message.update(message: "Publisher currently has a Paypal Connection Present and therefore cannot be paid through Uphold.") unless should_only_notify?
       return true
     end
 
     if @publisher.uphold_connection&.japanese_account?
-      payout_message.update(message: "Publisher's account is located in Japan and is not paid out in this report")
+      payout_message.update(message: "Publisher's account is located in Japan and is not paid out in this report") unless should_only_notify?
       return true
     end
 
