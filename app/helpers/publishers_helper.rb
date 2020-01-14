@@ -9,7 +9,7 @@ module PublishersHelper
   end
 
   def paypal_connect_url
-    "#{Rails.application.secrets[:paypal_connect_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2Fbat-publishers-dev.herokuapp.com%2Fpublishers%2Fpaypal_connections%2Fconnect_callback"
+    "#{Rails.application.secrets[:paypal_connect_uri]}/connect?flowEntry=static&client_id=#{Rails.application.secrets[:paypal_client_id]}&scope=openid email address https%3A%2F%2Furi.paypal.com%2Fservices%2Fpaypalattributes&redirect_uri=https%3A%2F%2F#{Rails.application.secrets[:base_url]}%2Fpublishers%2Fpaypal_connections%2Fconnect_callback"
   end
 
   def publishers_meta_tags
