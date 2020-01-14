@@ -1,5 +1,6 @@
 class IncludePublisherInPayoutReportJob
   include Sidekiq::Worker
+  sidekiq_options queue: 'scheduler'
 
   def perform(payout_report_id:, publisher_id:, should_send_notifications:)
     # If payout_report_id is not present, we only want to send notifications
