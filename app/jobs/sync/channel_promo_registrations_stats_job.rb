@@ -4,7 +4,15 @@ class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
 
   def perform
     active_publisher_ids = Publisher.not_suspended
-    promo_registrations = PromoRegistration.channels_only.where(publisher_id: active_publisher_ids)
-    Promo::RegistrationsStatsFetcher.new(promo_registrations: promo_registrations, update_only: true).perform
+    promo_registration_ids = PromoRegistration.channels_only.where(publisher_id: active_publisher_ids).pluck(:id)
+    ids = []
+    promo_registration_ids.each do |promo_registration_id|
+      ids << promo_registration_id
+      if ids.count >= 50
+        Sync::PromoRegistrationStats.perform_async(ids)
+        ids = []
+      end
+    end
+    Sync::PromoRegistrationStats.perform_async(ids).perform if ids.count >= 50
   end
 end
