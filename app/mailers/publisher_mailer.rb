@@ -121,6 +121,14 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
+  def paypal_missing_bank_account(publisher)
+    @publisher = publisher
+    mail(
+      to: @publisher.email,
+      subject: default_i18n_subject
+    )
+  end
+
   def uphold_kyc_incomplete(publisher, total_amount)
     @publisher = publisher
     @total_amount = total_amount
