@@ -13,6 +13,6 @@ class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
         ids = []
       end
     end
-    Sync::PromoRegistrationStats.perform_async(ids).perform if ids.count >= 50
+    Sync::PromoRegistrationStats.perform_async(ids).perform if ids.count > 0
   end
 end
