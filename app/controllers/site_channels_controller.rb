@@ -45,7 +45,8 @@ class SiteChannelsController < ApplicationController
 
   def create
     @current_channel = Channel.new(publisher: current_publisher)
-    @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params)
+    @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params.except(:ads_enabled))
+    @current_channel.details.ads_enabled_at = Time.now if ActiveModel::Type::Boolean.new.cast(channel_update_unverified_params[:ads_enabled])
     SiteChannelDomainSetter.new(channel_details: @current_channel.details).perform
 
     if @current_channel.save
@@ -108,7 +109,7 @@ class SiteChannelsController < ApplicationController
 
   private
   def channel_update_unverified_params
-    params.require(:channel).require(:details_attributes).permit(:brave_publisher_id_unnormalized)
+    params.require(:channel).require(:details_attributes).permit(:brave_publisher_id_unnormalized, :ads_enabled)
   end
 
   def setup_current_channel
