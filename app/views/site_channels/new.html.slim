@@ -18,8 +18,8 @@
                 = d.label(:brave_publisher_id_unnormalized, class: "control-label")
                 = d.text_field(:brave_publisher_id_unnormalized, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
                 = d.check_box(:ads_enabled, checked: false, class: 'checkbox')
-                = d.label(t(".ads_enable_question"))
-                = link_to t(".learn_more"), "www.google.com"
+                span#learn-more-label = t(".ads_enable_question")
+                = link_to(t(".learn_more"), '#', data: { "js-confirm-with-modal": "site-channel-ads-learn-more-modal" }, id: "site-channel-ads-learn-more-button")
               - if @should_throttle
                 .form-group
                   = recaptcha_tags
@@ -30,3 +30,6 @@
               "data-piwik-name": "Clicked", \
               "data-piwik-value": "ContactInfoFlow" \
             )
+
+script id="site-channel-ads-learn-more-modal" type="text/html"
+  = render "site_channel_ads_learn_more_modal"
