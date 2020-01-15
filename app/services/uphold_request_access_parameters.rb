@@ -12,7 +12,7 @@ class UpholdRequestAccessParameters < BaseService
   def connection
     @connection ||= begin
       Faraday.new(url: api_base_uri) do |faraday|
-        faraday.proxy(proxy_url) if proxy_url.present?
+        faraday.proxy = proxy_url if proxy_url.present?
         # Log level info: Brief summaries
         # Log level debug: Detailed bodies and headers
         faraday.response(:logger, Rails.logger, bodies: true, headers: true)

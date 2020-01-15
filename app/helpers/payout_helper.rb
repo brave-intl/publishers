@@ -48,8 +48,8 @@ module PayoutHelper
     100
   end
 
-  def payout_warning(payout_report)
-    found_payout = payout_report.potential_payments.where(publisher: current_publisher).first
+  def payout_warning(payout_report, publisher)
+    found_payout = payout_report.potential_payments.where(publisher: publisher).first
 
     return I18n.t(".publishers.payout_status.information.not_found") if found_payout.blank?
 
@@ -59,12 +59,14 @@ module PayoutHelper
       I18n.t(".publishers.payout_status.information.reauthorize_uphold")
     elsif found_payout.uphold_member.blank?
       I18n.t(".publishers.payout_status.information.kyc_required")
+    elsif found_payout.status.locked?
+      I18n.t(".publishers.payout_status.information.locked")
     end
   end
 
-  def payout_amount(payout_report)
+  def payout_amount(payout_report, publisher)
     amount = payout_report.potential_payments.
-      where(publisher: current_publisher).
+      where(publisher: publisher).
       select(&:amount).
       map { |x| x.amount.to_d }.
       sum

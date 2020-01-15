@@ -255,7 +255,9 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
   describe "for a paypal user" do
     let(:should_send_notifications) { true }
     let(:publisher) { publishers(:paypal_connected) }
+
     before do
+      @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
       perform_enqueued_jobs do
         PayoutReportPublisherIncluder.new(payout_report: @payout_report,
                                           publisher: publisher,

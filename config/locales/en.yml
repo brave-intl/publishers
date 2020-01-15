@@ -455,6 +455,7 @@ en:
         reauthorize_uphold: At the time we generated the payout report, your Uphold account needed to be reconnected.
         kyc_required: At the time we generated the payout report, your identity was not yet verified through Uphold.
         no_payment: You will not be able to receive payment for this cycle.
+        locked: At the time we generated the payout report your account was in locked status from removing your 2FA.
         generating: The payout report is currently generating. Please check back later.
     change_email:
       login_email: Login Email
