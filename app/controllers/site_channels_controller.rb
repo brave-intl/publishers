@@ -4,8 +4,7 @@ class SiteChannelsController < ApplicationController
 
   before_action :authenticate_publisher!
   before_action :setup_current_channel,
-                except: %i(new
-                           create)
+                except: %i(new update create)
   before_action :require_unverified_site,
                 only: %i(verification_choose_method
                          verification_dns_record
@@ -46,7 +45,7 @@ class SiteChannelsController < ApplicationController
   def create
     @current_channel = Channel.new(publisher: current_publisher)
     @current_channel.details = SiteChannelDetails.new(channel_update_unverified_params.except(:ads_enabled))
-    @current_channel.details.ads_enabled_at = Time.now if ActiveModel::Type::Boolean.new.cast(channel_update_unverified_params[:ads_enabled])
+    @current_channel.details.ads_enabled_at = ActiveModel::Type::Boolean.new.cast(channel_update_unverified_params[:ads_enabled]) ? Time.now : nil
     SiteChannelDomainSetter.new(channel_details: @current_channel.details).perform
 
     if @current_channel.save
@@ -63,7 +62,8 @@ class SiteChannelsController < ApplicationController
   end
 
   def update
-    # current_channel.details.update(channel_update_verified_params)
+    @current_channel = Channel.find(params[:id])
+    @current_channel.details.update(ads_enabled_at: ActiveModel::Type::Boolean.new.cast(channel_update_unverified_params[:ads_enabled]) ? Time.now : nil)
   end
 
   def download_verification_file
@@ -108,6 +108,7 @@ class SiteChannelsController < ApplicationController
   end
 
   private
+
   def channel_update_unverified_params
     params.require(:channel).require(:details_attributes).permit(:brave_publisher_id_unnormalized, :ads_enabled)
   end

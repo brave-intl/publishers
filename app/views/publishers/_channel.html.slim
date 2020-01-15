@@ -80,8 +80,17 @@
         script type="text/html" data-js-channel-removal-confirmation-template=(channel.id)
           = render "publishers/remove_channel_modal", channel: channel
         = form_for(channel, html: {id: "remove_channel_#{channel.id}"}) do |f|
-
-
+      - if channel.details_type == SiteChannelDetails.to_s
+        = form_for(channel, url: site_channel_path(channel.id), method: :patch) do |f|
+          fieldset
+            = f.fields_for :details, channel.details do |d|
+              .d-flex.flex-wrap
+                label.switch
+                  = d.check_box(:ads_enabled, checked: channel.details.ads_enabled_at.present?, onchange: "this.form.submit()")
+                  span.slider.round
+                .learn-more.extended
+                  span= t("site_channels.new.ads_enable_question")
+                  = link_to(t("site_channels.new.learn_more"), '#', data: { "js-confirm-with-modal": "site-channel-ads-learn-more-modal" }, id: "site-channel-ads-learn-more-button")
 
       - if channel.contested_by_channel
         .channel-contested
@@ -89,4 +98,5 @@
                   verified_by_email: channel.contested_by_channel.publisher.email
           a.reject_transfer href=token_reject_transfer_url(channel, channel.contest_token)
             = t ".reject_transfer"
-
+script id="site-channel-ads-learn-more-modal" type="text/html"
+  = render "site_channels/site_channel_ads_learn_more_modal"
