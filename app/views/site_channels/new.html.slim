@@ -17,6 +17,9 @@
               .form-group
                 = d.label(:brave_publisher_id_unnormalized, class: "control-label")
                 = d.text_field(:brave_publisher_id_unnormalized, autofocus: true, class: "form-control", placeholder: "example.com", required: true)
+                = d.check_box(:ads_enabled, checked: false, class: 'checkbox')
+                = d.label(t(".ads_enable_question"))
+                = link_to t(".learn_more"), "www.google.com"
               - if @should_throttle
                 .form-group
                   = recaptcha_tags

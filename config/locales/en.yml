@@ -810,6 +810,8 @@ en:
       https_error_encountered: "The following error was encountered: "
     new:
       heading: Enter Domain Info
+      ads_enable_question: Allow Brave to serve ads on my website
+      learn_more: Learn More
     progress:
       info: Domain Info
       verify: Verification Method
