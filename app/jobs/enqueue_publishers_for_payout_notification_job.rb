@@ -9,11 +9,13 @@ class EnqueuePublishersForPayoutNotificationJob < ApplicationJob
     else
       publishers = Publisher.with_verified_channel.not_suspended
     end
-    
+
     publishers.find_each do |publisher|
-      IncludePublisherInPayoutReportJob.perform_later(payout_report_id: nil,
-                                                      publisher_id: publisher.id,
-                                                      should_send_notifications: true)
+      IncludePublisherInPayoutReportJob.perform_async(
+        payout_report_id: nil,
+        publisher_id: publisher.id,
+        should_send_notifications: true
+      )
     end
     Rails.logger.info("Enuqueued #{publishers.count} publishers for payment notifications.")
   end

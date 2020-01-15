@@ -281,7 +281,9 @@ class PayoutReportsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("PayoutReport.count", 0) do # Ensure no payout report is created
       assert_difference("ActionMailer::Base.deliveries.count", 1) do # ensure notification is sent
         perform_enqueued_jobs do
-          post notify_admin_payout_reports_path
+          Sidekiq::Testing.inline! do
+            post notify_admin_payout_reports_path
+          end
         end
       end
     end

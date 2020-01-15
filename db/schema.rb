@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_08_065840) do
+ActiveRecord::Schema.define(version: 2020_01_14_035731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.string "name"
     t.string "email"
     t.string "verification_token"
-    t.boolean "verified", default: true
+    t.boolean "verified", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sign_in_count", default: 0, null: false
@@ -274,6 +274,16 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "payout_messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "payout_report_id", null: false
+    t.uuid "publisher_id", null: false
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["payout_report_id"], name: "index_payout_messages_on_payout_report_id"
+    t.index ["publisher_id"], name: "index_payout_messages_on_publisher_id"
+  end
+
   create_table "payout_reports", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.boolean "final"
     t.decimal "fee_rate"
@@ -283,6 +293,19 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
+  end
+
+  create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "encrypted_refresh_token"
+    t.string "encrypted_refresh_token_iv"
+    t.text "country"
+    t.boolean "verified_account"
+    t.text "paypal_account_id"
+    t.boolean "hidden", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_paypal_connections_on_user_id"
   end
 
   create_table "potential_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -310,6 +333,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.index ["channel_id"], name: "index_potential_payments_on_channel_id"
     t.index ["finalized_by_id"], name: "index_potential_payments_on_finalized_by_id"
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
+    t.index ["payout_report_id", "uphold_status", "reauthorization_needed", "uphold_member", "suspended", "address"], name: "to_be_paid_index"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
@@ -335,6 +359,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.uuid "publisher_id"
     t.string "installer_type"
     t.string "description"
+    t.jsonb "stats_sum", default: "{}"
     t.integer "aggregate_downloads", default: 0, null: false
     t.integer "aggregate_installs", default: 0, null: false
     t.integer "aggregate_confirmations", default: 0, null: false
@@ -385,8 +410,8 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "two_factor_prompted_at"
-    t.boolean "promo_enabled_2018q1", default: false
     t.datetime "agreed_to_tos"
+    t.boolean "promo_enabled_2018q1", default: false
     t.string "promo_token_2018q1"
     t.text "role", default: "publisher"
     t.datetime "default_currency_confirmed_at"
@@ -418,8 +443,8 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
   create_table "sessions", id: :serial, force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -449,9 +474,9 @@ ActiveRecord::Schema.define(version: 2020_01_08_065840) do
     t.string "detected_web_host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "https_error"
     t.jsonb "stats", default: "{}", null: false
     t.datetime "ads_enabled_at"
+    t.string "https_error"
   end
 
   create_table "totp_registrations", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

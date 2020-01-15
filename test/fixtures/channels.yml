@@ -269,3 +269,8 @@ potentially_paid_youtube:
   publisher: potentially_paid
   verified: true
   details: potentially_paid_youtube_details (YoutubeChannelDetails)
+
+paypal_connected_website:
+  publisher: paypal_connected
+  verified: true
+  details: paypal_connected_website_details
