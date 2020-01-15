@@ -9,7 +9,7 @@ class Sync::ChannelPromoRegistrationsStatsJob < ApplicationJob
     promo_registration_ids.each do |promo_registration_id|
       ids << promo_registration_id
       if ids.count >= 50
-        Sync::PromoRegistrationStats.perform_async(ids)
+        Sync::PromoRegistrationStatsJob.perform_async(ids)
         ids = []
       end
     end
