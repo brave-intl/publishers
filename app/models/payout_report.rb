@@ -10,6 +10,7 @@ class PayoutReport < ApplicationRecord
   attr_encrypted :contents, key: :encryption_key, marshal: true
 
   has_many :potential_payments
+  has_many :payout_messages
 
   validates_presence_of :expected_num_payments
 
