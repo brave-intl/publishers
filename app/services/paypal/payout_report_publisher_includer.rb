@@ -1,6 +1,6 @@
 class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
   def perform
-    return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold? || @publisher.uphold_connection.present?
+    return if !@publisher.has_verified_channel? || @publisher.locked? || @publisher.excluded_from_payout? || @publisher.hold?
 
     wallet = PublisherWalletGetter.new(publisher: @publisher).perform
     probi = wallet.referral_balance.amount_probi # probi = balance
@@ -17,7 +17,7 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
         kind: PotentialPayment::REFERRAL,
         address: @publisher.paypal_connection.paypal_account_id,
         wallet_provider_id: @publisher.paypal_connection.paypal_account_id,
-        wallet_provider: PotentialPayment::PAYPAL,
+        wallet_provider: PotentialPayment::wallet_providers['paypal'],
         suspended: suspended,
         status: @publisher.last_status_update&.status
       )
@@ -39,13 +39,13 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
           publisher_id: @publisher.id,
           channel_id: channel.id,
           kind: PotentialPayment::CONTRIBUTION,
-          derived_paypal_account_id: @publisher.paypal_connection.paypal_account_id,
+          address: @publisher.paypal_connection.paypal_account_id,
           wallet_provider_id: @publisher.paypal_connection.paypal_account_id,
-          wallet_provider: PotentialPayment::PAYPAL,
+          wallet_provider: PotentialPayment::wallet_providers['paypal'],
           url: "#{channel.details.url}",
           suspended: suspended,
           status: @publisher.last_status_update&.status,
-          dervied_channel_stats: channel.details.stats,
+          channel_stats: channel.details.stats,
           channel_type: channel.details_type
         )
       end
@@ -53,7 +53,7 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
 
     # Notify publishers that have money waiting, but will not will not receive funds
     if publisher_has_unsettled_balance && @should_send_notifications
-      send_emails(payal_connection)
+      send_emails(@publisher.paypal_connection)
     end
   end
 

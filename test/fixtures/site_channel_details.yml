@@ -146,7 +146,7 @@ promo_enabled_site_details:
   brave_publisher_id: "promotion.org"
 
 potentially_paid_site_details:
-  brave_publisher_id: pontiallypaid.org
+  brave_publisher_id: "pontiallypaid.org"
 
-payal_connected_website_details:
+paypal_connected_website_details:
   brave_publisher_id: "paypalconnected.org"

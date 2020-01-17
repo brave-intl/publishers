@@ -273,4 +273,4 @@ potentially_paid_youtube:
 paypal_connected_website:
   publisher: paypal_connected
   verified: true
-  details: paypal_connected_website_details
+  details: paypal_connected_website_details (SiteChannelDetails)
