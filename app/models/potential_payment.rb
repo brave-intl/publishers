@@ -3,6 +3,10 @@ class PotentialPayment < ApplicationRecord
   CONTRIBUTION = "contribution".freeze
   MANUAL = "manual".freeze
 
+  # valid wallet_providers
+  PAYPAL = "paypal".freeze
+  UPHOLD = "uphold".freeze
+
   belongs_to :payout_report
   belongs_to :publisher
   belongs_to :channel

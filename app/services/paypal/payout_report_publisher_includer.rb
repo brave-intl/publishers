@@ -8,7 +8,7 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
     suspended = @publisher.suspended?
 
     unless should_only_notify?
-      PotentialPaypalPayment.create(
+      PotentialPayment.create(
         payout_report_id: @payout_report.id,
         name: @publisher.name,
         amount: "#{probi}",
@@ -16,6 +16,8 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
         publisher_id: @publisher.id,
         kind: PotentialPayment::REFERRAL,
         address: @publisher.paypal_connection.paypal_account_id,
+        wallet_provider_id: @publisher.paypal_connection.paypal_account_id,
+        wallet_provider: PotentialPayment::PAYPAL,
         suspended: suspended,
         status: @publisher.last_status_update&.status
       )
@@ -29,7 +31,7 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
       fee_probi = wallet.channel_balances[channel.details.channel_identifier].fees_probi # fee = balance - probi
 
       unless should_only_notify?
-        PotentialPaypalPayment.create(
+        PotentialPayment.create(
           payout_report_id: @payout_report.id,
           name: "#{channel.publication_title}",
           amount: "#{probi}",
@@ -38,6 +40,8 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
           channel_id: channel.id,
           kind: PotentialPayment::CONTRIBUTION,
           derived_paypal_account_id: @publisher.paypal_connection.paypal_account_id,
+          wallet_provider_id: @publisher.paypal_connection.paypal_account_id,
+          wallet_provider: PotentialPayment::PAYPAL,
           url: "#{channel.details.url}",
           suspended: suspended,
           status: @publisher.last_status_update&.status,
