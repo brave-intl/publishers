@@ -19,7 +19,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
       @promo_registrations = promo_registrations.where(promo_campaigns: { name: filter })
     end
     if params[:column].present?
-      @promo_registrations = @promo_registrations.order(sanitize_sql_for_order("promo_registrations.#{params[:column]} #{params[:direction]}"))
+      @promo_registrations = @promo_registrations.order(ActiveRecord::Base.sanitize_sql_for_order("promo_registrations.#{params[:column]} #{params[:direction]}"))
     else
       @promo_registrations = @promo_registrations.order("promo_registrations.created_at DESC")
     end
