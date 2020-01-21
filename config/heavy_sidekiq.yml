@@ -47,6 +47,10 @@
     cron: "0 */2 * * *"
     description: "Refreshes the redis cache for browser channel json V3"
     queue: heavy
+  CacheBrowserChannelsJsonJobV3_1:
+    cron: "0 */2 30 * *"
+    description: "Refreshes the redis cache for browser channel json V3"
+    queue: heavy
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
     description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"
