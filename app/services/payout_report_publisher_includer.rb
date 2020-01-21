@@ -80,7 +80,6 @@ class PayoutReportPublisherIncluder < BaseService
       send_emails(uphold_connection, probi_to_bat(total_probi).round(1))
     end
   rescue StandardError => e
-    Raven.capture_message("Unexpected error during payout report: #{e.message}", { publisher: @publisher.id })
     PayoutMessage.create(payout_report: @payout_report, publisher: @publisher, message: e.message) unless should_only_notify?
 
     raise e
