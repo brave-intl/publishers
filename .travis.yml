@@ -10,6 +10,7 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
+  chrome: stable
 services:
   - postgresql
   - redis-server
