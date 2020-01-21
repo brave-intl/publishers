@@ -829,6 +829,8 @@ en:
       https_error_encountered: "The following error was encountered: "
     new:
       heading: Enter Domain Info
+      ads_enable_question: "Allow Brave to serve ads on my website."
+      learn_more: Learn More
     progress:
       info: Domain Info
       verify: Verification Method
@@ -839,6 +841,10 @@ en:
       alert: Your site is verified.
     setup_current_channel:
       alert: This page is not valid for this channel type
+    site_channel_ads_learn_more_modal: |
+      <p> Brave shares 70% of the revenue from our new privacy-preserving Publisher Ads with content providers. The project is currently in development and being tested with select partners. Brave’s Publisher Ads are available on an opt-in only basis, and you can cancel at any time. There is no obligation to sign up.</p>
+      <p>Read more about it <a href="https://basicattentiontoken.org/brave-previews-opt-in-ads-in-desktop-browser-developer-channel/">here</a>.</p>
+      <p>Publisher Ads will be available more widely soon. So, please keep an eye out for more information as it becomes available.</p>
     verification_background:
       heading: Now verifying your domain...
       help_html: |

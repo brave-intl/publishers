@@ -475,6 +475,7 @@ ActiveRecord::Schema.define(version: 2020_01_14_035731) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "stats", default: "{}", null: false
+    t.datetime "ads_enabled_at"
     t.string "https_error"
   end
 
