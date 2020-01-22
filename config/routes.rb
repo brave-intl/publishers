@@ -180,8 +180,8 @@ Rails.application.routes.draw do
       end
     end
 
-    # /api/v3_1/
-    namespace :v3_1, defaults: { format: :json } do
+    # /api/v3_p1/
+    namespace :v3_p1, defaults: { format: :json } do
       namespace :public, defaults: { format: :json } do
         get "channels", controller: "channels"
       end
