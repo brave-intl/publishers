@@ -1,8 +1,8 @@
-class CacheBrowserChannelsJsonJobV3_1 < ApplicationJob
+class CacheBrowserChannelsJsonJobV3P1 < ApplicationJob
   queue_as :heavy
 
   MAX_RETRY = 10
-  TOTALS_CACHE_KEY = 'browser_channels_json_v3_1_totals'
+  TOTALS_CACHE_KEY = 'browser_channels_json_v3_p1_totals'
 
   def perform
     @channels_json = JsonBuilders::ChannelsJsonBuilderV3_1.new.build
