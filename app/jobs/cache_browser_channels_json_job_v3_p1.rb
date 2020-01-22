@@ -5,7 +5,7 @@ class CacheBrowserChannelsJsonJobV3P1 < ApplicationJob
   TOTALS_CACHE_KEY = 'browser_channels_json_v3_p1_totals'
 
   def perform
-    @channels_json = JsonBuilders::ChannelsJsonBuilderV3_1.new.build
+    @channels_json = JsonBuilders::ChannelsJsonBuilderV3P1.new.build
     retry_count = 0
     result = nil
 
