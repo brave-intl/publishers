@@ -112,7 +112,7 @@ class JsonBuilders::ChannelsJsonBuilderV3P1
     @excluded_channel_ids.each do |excluded_channel_id|
       next if @excluded_verified_channel_ids.include?(excluded_channel_id)
 
-      @channels.push([excluded_channel_id, PUBLISHER_NOT_VERIFIED, true, "", {}])
+      @channels.push([excluded_channel_id, PUBLISHER_NOT_VERIFIED, true, false, "", {}])
     end
   end
 end
