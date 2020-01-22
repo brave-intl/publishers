@@ -6,12 +6,6 @@ class PayoutReport < ApplicationRecord
 
   attr_encrypted :contents, key: :encryption_key, marshal: true
 
-  PAYPAL = "paypal".freeze
-  UPHOLD = "uphold".freeze
-  KINDS = [PAYPAL, UPHOLD].freeze
-
-  validates_inclusion_of :kind, in: KINDS
-
   has_many :potential_payments
 
   validates_presence_of :expected_num_payments
@@ -64,22 +58,17 @@ class PayoutReport < ApplicationRecord
   end
 
   # Updates the JSON summary of the report downloaded by admins
+  # From @nvonpentz: We probably can remove the payout report JSON builders since we aren't using them anymore. Instead of downloading the JSON file from the admin dashboard, the antifraud system pulls the potential_payments table directly from the publishers database.
   def update_report_contents
     # Do not update json contents for legacy reports
     return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
-    payout_report_hash = if paypal_report?
-      JsonBuilders::PaypalPayoutReportJsonBuilder.new(payout_report: self).build
-    elsif manual
+    payout_report_hash = if manual
       JsonBuilders::ManualPayoutReportJsonBuilder.new(payout_report: self).build
     else
       JsonBuilders::PayoutReportJsonBuilder.new(payout_report: self).build
     end
     self.contents = payout_report_hash.to_json
     save!
-  end
-
-  def paypal_report?
-    kind == PAYPAL
   end
 
   class << self

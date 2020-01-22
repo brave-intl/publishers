@@ -1,13 +1,8 @@
 class EnqueuePublishersForPaypalPayoutJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(should_send_notifications: false, final: true, manual: false)
+  def perform(should_send_notifications: false, final: true, manual: false, payout_report_id:)
     publishers = Publisher.joins(:paypal_connection).where(paypal_connections: { verified_account: true, country: "Japan" })
-    payout_report = PayoutReport.create(final: final,
-                                        manual: manual,
-                                        fee_rate: fee_rate,
-                                        kind: PayoutReport::PAYPAL,
-                                        expected_num_payments: PayoutReport.expected_num_payments(publishers))
     publishers.find_each do |publisher|
       IncludePublisherInPayoutReportJob.perform_later(
         payout_report_id: payout_report.id,

@@ -283,8 +283,6 @@ ActiveRecord::Schema.define(version: 2020_01_17_010955) do
     t.datetime "updated_at", null: false
     t.integer "expected_num_payments"
     t.boolean "manual", default: false
-    t.string "kind", default: "uphold"
-    t.index ["created_at"], name: "index_payout_reports_on_created_at"
   end
 
   create_table "paypal_connections", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
