@@ -47,7 +47,7 @@
     cron: "0 */2 * * *"
     description: "Refreshes the redis cache for browser channel json V3"
     queue: heavy
-  CacheBrowserChannelsJsonJobV3_1:
+  CacheBrowserChannelsJsonJobV3P1:
     cron: "0 */2 30 * *"
     description: "Refreshes the redis cache for browser channel json V3"
     queue: heavy
