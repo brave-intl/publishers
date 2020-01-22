@@ -63,4 +63,7 @@ input:checked + .slider.round:before {
 .slider.round {
   border-radius: 3px;
   height: 8px;
+  &.extended {
+    margin-top: 3px;
+  }
 }
