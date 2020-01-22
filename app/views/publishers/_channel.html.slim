@@ -87,7 +87,7 @@
               .d-flex.flex-wrap
                 label.switch
                   = d.check_box(:ads_enabled, checked: channel.details.ads_enabled_at.present?, onchange: "this.form.submit()")
-                  span.slider.round
+                  span.slider.round.extended
                 .learn-more.extended
                   span= t("site_channels.new.ads_enable_question")
                   = link_to(t("site_channels.new.learn_more"), '#', data: { "js-confirm-with-modal": "site-channel-ads-learn-more-modal" }, id: "site-channel-ads-learn-more-button")
