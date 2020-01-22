@@ -2,7 +2,6 @@ class CacheBrowserChannelsJsonJobV3P1 < ApplicationJob
   queue_as :heavy
 
   MAX_RETRY = 10
-  REDIS_KEY = 'browser_channels_json_v3_p1'
 
   def perform
     @channels_json = JsonBuilders::ChannelsJsonBuilderV3P1.new.build
@@ -10,7 +9,7 @@ class CacheBrowserChannelsJsonJobV3P1 < ApplicationJob
     result = nil
 
     loop do
-      result = Rails.cache.write(REDIS_KEY, @channels_json)
+      result = Rails.cache.write(Api::V3P1::Public::ChannelsController::REDIS_KEY, @channels_json)
       break if result || retry_count > MAX_RETRY
 
       retry_count += 1
