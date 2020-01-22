@@ -61,7 +61,7 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
 
   def send_emails(paypal_connection)
     if paypal_connection.verified_account?
-      Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Uphold")
+      Rails.logger.info("Publisher #{@publisher.owner_identifier} will not be paid for their balance because they are not a verified member on Paypal")
       PublisherMailer.paypal_missing_bank_account(@publisher).deliver_later
     end
   end
