@@ -564,7 +564,7 @@ en:
         update: Update
     uphold_wallet_panel:
       heading: Your Uphold Wallet
-      deposit_currency_label: "Deposit Currency: "
+      deposit_currency_label: "Deposit Currency or Token: "
       deposit_currency: "BAT to "
       check_balance: Check Balance
       connect_to_a_new_account: Connect to a new Uphold account
@@ -687,7 +687,7 @@ en:
       deny: Cancel
       confirm: Disconnect
     confirm_default_currency_modal:
-      headline: Confirm your preferred deposit currency
+      headline: Confirm your preferred deposit currency or token
       leadin: You will receive monthly contributions from your Brave fans in this currency in your Uphold account.
       fee_disclaimer_html: Please note, for currency choices other than BAT, Uphold will charge an exchange fee upon deposit. <a href="https://uphold.com/en/pricing">Check fees</a>
       confirm: Confirm
