@@ -75,6 +75,7 @@
     "handlebars": "^4.5.3",
     "js-yaml": "3.13.1",
     "moment": "^2.24.0",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-avatar-editor": "^11.0.4",
