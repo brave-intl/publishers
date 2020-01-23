@@ -42,7 +42,7 @@ class PayoutReportPublisherIncluder < BaseService
         uphold_member: uphold_connection.is_member?,
         uphold_id: uphold_connection.uphold_id,
         wallet_provider_id: uphold_connection.uphold_id,
-        wallet_provider: PotentialPayment::wallet_providers['uphold'],
+        wallet_provider: PotentialPayment.wallet_providers['uphold'],
         suspended: @publisher.suspended?,
         status: @publisher.last_status_update&.status
       )
@@ -70,7 +70,7 @@ class PayoutReportPublisherIncluder < BaseService
           uphold_member: uphold_connection.is_member?,
           uphold_id: uphold_connection.uphold_id,
           wallet_provider_id: uphold_connection.uphold_id,
-          wallet_provider: PotentialPayment::wallet_providers['uphold'],
+          wallet_provider: PotentialPayment.wallet_providers['uphold'],
           suspended: @publisher.suspended?,
           status: @publisher.last_status_update&.status,
           channel_stats: channel.details.stats,
