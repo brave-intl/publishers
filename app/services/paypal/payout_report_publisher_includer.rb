@@ -18,6 +18,7 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
         address: @publisher.paypal_connection.paypal_account_id,
         wallet_provider_id: @publisher.paypal_connection.paypal_account_id,
         wallet_provider: PotentialPayment.wallet_providers['paypal'],
+        paypal_bank_account_attached: @publisher.paypal_connection.verified_account,
         suspended: suspended,
         status: @publisher.last_status_update&.status
       )
@@ -42,6 +43,7 @@ class Paypal::PayoutReportPublisherIncluder < PayoutReportPublisherIncluder
           address: @publisher.paypal_connection.paypal_account_id,
           wallet_provider_id: @publisher.paypal_connection.paypal_account_id,
           wallet_provider: PotentialPayment.wallet_providers['paypal'],
+          paypal_bank_account_attached: @publisher.paypal_connection.verified_account,
           url: "#{channel.details.url}",
           suspended: suspended,
           status: @publisher.last_status_update&.status,
