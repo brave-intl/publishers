@@ -11,13 +11,13 @@ class EnqueuePublishersForPayoutNotificationJob < ApplicationJob
     end
     publishers_with_paypal = PaypalConnection.pluck(:user_id)
     publishers.where.not(id: publishers_with_paypal).find_each do |publisher|
-      IncludePublisherInPayoutReportJob.perform_later(payout_report_id: nil,
+      IncludePublisherInPayoutReportJob.perform_async(payout_report_id: nil,
                                                       publisher_id: publisher.id,
                                                       should_send_notifications: true)
     end
 
     publishers.where(id: publishers_with_paypal).find_each do |publisher|
-      IncludePublisherInPayoutReportJob.perform_later(payout_report_id: nil,
+      IncludePublisherInPayoutReportJob.perform_async(payout_report_id: nil,
                                                       publisher_id: publisher.id,
                                                       should_send_notifications: true,
                                                       for_paypal: true)

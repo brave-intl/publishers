@@ -11,6 +11,7 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
         should_send_notifications: false,
         final: false
       )
+      perform_enqueued_jobs
       assert_equal(Publisher.joins(:uphold_connection).with_verified_channel.count + 
                    Publisher.joins(:paypal_connection).where(paypal_connections: { verified_account: true, country: "Japan" }).count, 
                    IncludePublisherInPayoutReportJob.jobs.size
@@ -35,6 +36,7 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
       final: false,
       publisher_ids: publishers.pluck(:id)
     )
+    perform_enqueued_jobs
     assert_equal publishers.count, IncludePublisherInPayoutReportJob.jobs.size
   end
 end
