@@ -62,7 +62,7 @@ class PayoutReport < ApplicationRecord
   end
 
   # Updates the JSON summary of the report downloaded by admins
-  # From @nvonpentz: We probably can remove the payout report JSON builders since we aren't using them anymore. Instead of downloading the JSON file from the admin dashboard, the antifraud system pulls the potential_payments table directly from the publishers database.
+  # TODO: This appears to be legacy code. Need to make sure we can remove
   def update_report_contents
     # Do not update json contents for legacy reports
     return if created_at <= LEGACY_PAYOUT_REPORT_TRANSITION_DATE
