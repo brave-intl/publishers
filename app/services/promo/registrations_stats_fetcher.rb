@@ -4,15 +4,15 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   BATCH_SIZE = 50
 
   def initialize(promo_registrations:, update_only: false)
-    @referral_codes = promo_registrations.map { |promo_registration| promo_registration.referral_code }
+    @promo_registrations = promo_registrations
     @update_only = update_only
   end
 
   def perform
     return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
     stats = []
-    @referral_codes.each_slice(BATCH_SIZE).to_a.each do |referral_code_batch|
-      query_string = query_string(referral_code_batch)
+    @promo_registrations.each_slice(BATCH_SIZE).to_a.each do |promo_registrations_batch|
+      query_string = query_string(promo_registrations_batch)
       response = connection.get do |request|
         request.options.params_encoder = Faraday::FlatParamsEncoder
         request.headers["Authorization"] = api_authorization_header
@@ -20,11 +20,9 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
         request.url("/api/2/promo/statsByReferralCode#{query_string}")
       end
       referral_code_events_by_date = JSON.parse(response.body)
-      referral_code_batch.each do |referral_code|
-        promo_registration = PromoRegistration.find_by_referral_code(referral_code)
-        next if promo_registration.nil?
+      promo_registrations_batch.each do |promo_registration|
         promo_registration.stats = referral_code_events_by_date.select { |referral_code_event_date|
-          referral_code_event_date["referral_code"] == referral_code
+          referral_code_event_date["referral_code"] == promo_registration.referral_code
         }.to_json
         promo_registration.aggregate_downloads = promo_registration.aggregate_stats[PromoRegistration::RETRIEVALS]
         promo_registration.aggregate_installs = promo_registration.aggregate_stats[PromoRegistration::FIRST_RUNS]
@@ -39,7 +37,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
 
   def perform_offline
     stats = []
-    @referral_codes.each do |referral_code|
+    @promo_registrations.pluck(:referral_code).each do |referral_code|
       events = []
       (1..6).reverse_each do |i|
         (1..3).each do |j|
@@ -70,7 +68,8 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
     "Bearer #{Rails.application.secrets[:api_promo_key]}"
   end
 
-  def query_string(referral_codes)
+  def query_string(promo_registrations)
+    referral_codes = promo_registrations.pluck(:referral_code)
     "?" + referral_codes.map { |referral_code| "referral_code=#{referral_code}" }.join("&")
   end
 end
