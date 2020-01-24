@@ -22,6 +22,12 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                           expected_num_payments: PayoutReport.expected_num_payments(publishers))
     end
 
+    EnqueuePublishersForPaypalPayoutJob.perform_later(
+      final: final,
+      manual: manual,
+      payout_report_id: payout_report.id
+    )
+
     publishers.find_each do |publisher|
       if manual
         # We can consider using a job here if n is sufficiently large
@@ -34,7 +40,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                                         should_send_notifications: should_send_notifications)
       end
     end
-    Rails.logger.info("Enuqueued #{publishers.count} publishers for payment.")
+    Rails.logger.info("Enqueued #{publishers.count} publishers for payment.")
 
     payout_report
   end

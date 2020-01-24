@@ -302,6 +302,17 @@ en:
       title: Notification of email change
       intro: This email confirms an update made to your email address with Brave Rewards. If you made this change, check your new email account for a link to confirm it.
       contact_support_html: If you did not intend for this to happen, please reach out to the Brave Rewards team at <a href="support+publishers@basicattentiontoken.org">support+publishers@basicattentiontoken.org</a>.
+    paypal:
+      missing_bank_account:
+        body_html:
+          Thank you for being a Brave Creator.
+          <br/><br/>
+          We have currently held your payment for the month of %{month}; as you have not verified your bank account with PayPal.
+          <br/><br/>
+          Once you verify your bank account with PayPal, please sign back in at creators.brave.com and refresh your PayPal account info.
+          Thank you.
+          <br/><br/>
+          The Brave Rewards | Creator team
     suspend_publisher:
       subject: Your Brave Rewards account has been temporarily frozen
       intro: Thank you for being a Brave publisher.

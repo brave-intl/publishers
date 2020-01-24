@@ -3,6 +3,9 @@ class PotentialPayment < ApplicationRecord
   CONTRIBUTION = "contribution".freeze
   MANUAL = "manual".freeze
 
+  # valid wallet_providers
+  enum wallet_provider: { uphold: 0, paypal: 1 }
+
   belongs_to :payout_report
   belongs_to :publisher
   belongs_to :channel
@@ -12,7 +15,7 @@ class PotentialPayment < ApplicationRecord
   validate :channel_id_not_present_for_referral_payment, if: -> { kind == REFERRAL }
   validate :publisher_id_unique_for_referral_payments
 
-  validates_inclusion_of :reauthorization_needed, :suspended, :uphold_member, :in => [true, false]
+  validates_inclusion_of :reauthorization_needed, :suspended, :uphold_member, :in => [true, false], unless: -> { wallet_provider == 'paypal' }
 
   scope :to_be_paid, -> {
     where(uphold_status: "ok", reauthorization_needed: false, uphold_member: true, suspended: false).

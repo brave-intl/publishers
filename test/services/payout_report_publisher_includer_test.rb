@@ -175,9 +175,11 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
         if potential_payment.kind == PotentialPayment::REFERRAL
           assert_equal "20000000000000000000", potential_payment.amount
           assert_equal "0", potential_payment.fees
+          assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
         elsif potential_payment.kind == PotentialPayment::CONTRIBUTION
           assert_equal "19000000000000000000", potential_payment.amount
           assert_equal  "1000000000000000000", potential_payment.fees
+          assert_equal 'uphold', potential_payment.wallet_provider # uphold enum
         end
       end
     end
