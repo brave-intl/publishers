@@ -9,11 +9,17 @@ default: &default
 
 development:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
+  primary:
+    url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
+  secondary:
+    url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
 
 test:
   <<: *default
-  url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
+  primary:
+    url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
+  secondary:
+    url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -25,8 +31,14 @@ test:
 # production deployment.
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  primary:
+    url: <%= ENV['DATABASE_URL'] %>
+  secondary:
+    url: <%= ENV['FOLLOWER_DATABASE_URL'] %>
 
 staging:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  primary:
+    url: <%= ENV['DATABASE_URL'] %>
+  secondary:
+    url: <%= ENV['DATABASE_URL'] %>

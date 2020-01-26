@@ -11,7 +11,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
   def perform
     return perform_offline if Rails.application.secrets[:api_promo_base_uri].blank?
     stats = []
-    @promo_registrations.each_slice(BATCH_SIZE).to_a.each do |promo_registrations_batch|
+    @promo_registrations.in_batches(of: BATCH_SIZE) do |promo_registrations_batch|
       query_string = query_string(promo_registrations_batch)
       response = connection.get do |request|
         request.options.params_encoder = Faraday::FlatParamsEncoder
@@ -20,6 +20,7 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
         request.url("/api/2/promo/statsByReferralCode#{query_string}")
       end
       referral_code_events_by_date = JSON.parse(response.body)
+      values = []
       promo_registrations_batch.each do |promo_registration|
         promo_registration.stats = referral_code_events_by_date.select { |referral_code_event_date|
           referral_code_event_date["referral_code"] == promo_registration.referral_code
@@ -27,12 +28,34 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
         promo_registration.aggregate_downloads = promo_registration.aggregate_stats[PromoRegistration::RETRIEVALS]
         promo_registration.aggregate_installs = promo_registration.aggregate_stats[PromoRegistration::FIRST_RUNS]
         promo_registration.aggregate_confirmations = promo_registration.aggregate_stats[PromoRegistration::FINALIZED]
-        promo_registration.save!
+        values.append("(
+          #{ActiveRecord::Base.connection.quote(promo_registration.id)},
+          #{to_postgres_array(promo_registration.stats)}::json,
+          #{promo_registration.aggregate_downloads},
+          #{promo_registration.aggregate_installs},
+          #{promo_registration.aggregate_confirmations})")
+        query = "
+            UPDATE promo_registrations
+            SET stats = uv.stats,
+                aggregate_downloads = uv.aggregate_downloads,
+                aggregate_installs = uv.aggregate_installs,
+                aggregate_confirmations = uv.aggregate_confirmations
+            FROM (VALUES #{values.join(", ")}) AS uv (id, stats, aggregate_downloads, aggregate_installs, aggregate_confirmations)
+            WHERE promo_registrations.id = uv.id::uuid"
+
+        ActiveRecord::Base.connection.execute(query)
       end
       stats += referral_code_events_by_date unless @update_only
     end
 
     stats
+  end
+
+  def to_postgres_array(result)
+    result = result.to_s
+    result[0] = "'["
+    result[-1] = "]'"
+    result
   end
 
   def perform_offline
