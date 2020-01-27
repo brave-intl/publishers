@@ -12,15 +12,6 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
     Rails.application.secrets[:api_promo_base_uri] = @prev_promo_api_uri
   end
 
-  def query_string(referral_codes)
-    query_string = "?"
-    referral_codes.each do |referral_code|
-      query_string = "#{query_string}referral_code=#{referral_code}&"
-    end
-    query_string.chomp("&") # Remove the final ampersand
-  end
-
-
   test "saves the stats" do
     # ensure an external request is attempted to be stubbed by turning on promo
     Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
@@ -74,15 +65,15 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
 
     assert_equal PromoRegistration.count, 200
 
+    promo_stats_service = Promo::RegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.all)
     # stub response for first 50
-    PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(Promo::RegistrationsStatsFetcher::BATCH_SIZE).with_index do |slice, index|
-      batch_query_string = query_string(slice)
+    PromoRegistration.in_batches(of: Promo::RegistrationsStatsFetcher::BATCH_SIZE) do |slice|
+      batch_query_string = promo_stats_service.send(:query_string, slice)
       batch_response = []
-      slice.each do |referral_code|
-        # Test by setting retrivals to index
-        batch_response.push({"referral_code"=>"#{referral_code}",
+      slice.each do |promo_registration|
+        batch_response.push({"referral_code"=>"#{promo_registration.referral_code}",
                                             "ymd"=>"2018-04-29",
-                                            "retrievals"=>index,
+                                            "retrievals"=>5,
                                             "first_runs"=>0,
                                             "finalized"=>0})
       end
@@ -91,11 +82,11 @@ class Promo::RegistrationsStatsFetcherTest < ActiveJob::TestCase
     end
 
     # ensure PromoRegistration.count / BATCH_SIZE requests were made
-    Promo::RegistrationsStatsFetcher.new(promo_registrations: PromoRegistration.all).perform
+    promo_stats_service.perform
 
-    PromoRegistration.all.map { |promo_registration| promo_registration.referral_code }.each_slice(Promo::RegistrationsStatsFetcher::BATCH_SIZE).with_index do |slice, index|
-      slice.each do |referral_code|
-        assert_equal PromoRegistration.find_by_referral_code(referral_code).aggregate_stats[PromoRegistration::RETRIEVALS], index
+    PromoRegistration.in_batches(of: Promo::RegistrationsStatsFetcher::BATCH_SIZE) do |slice|
+      slice.each do |promo_registration|
+        assert_equal PromoRegistration.find_by_referral_code(promo_registration.referral_code).aggregate_stats[PromoRegistration::RETRIEVALS], 5
       end
     end
   end
