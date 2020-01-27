@@ -34,17 +34,17 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
           #{promo_registration.aggregate_downloads},
           #{promo_registration.aggregate_installs},
           #{promo_registration.aggregate_confirmations})")
-        query = "
-            UPDATE promo_registrations
-            SET stats = uv.stats,
-                aggregate_downloads = uv.aggregate_downloads,
-                aggregate_installs = uv.aggregate_installs,
-                aggregate_confirmations = uv.aggregate_confirmations
-            FROM (VALUES #{values.join(", ")}) AS uv (id, stats, aggregate_downloads, aggregate_installs, aggregate_confirmations)
-            WHERE promo_registrations.id = uv.id::uuid"
-
-        ActiveRecord::Base.connection.execute(query)
       end
+      query = "
+          UPDATE promo_registrations
+          SET stats = uv.stats,
+              aggregate_downloads = uv.aggregate_downloads,
+              aggregate_installs = uv.aggregate_installs,
+              aggregate_confirmations = uv.aggregate_confirmations
+          FROM (VALUES #{values.join(", ")}) AS uv (id, stats, aggregate_downloads, aggregate_installs, aggregate_confirmations)
+          WHERE promo_registrations.id = uv.id::uuid"
+
+      ActiveRecord::Base.connection.execute(query)
       stats += referral_code_events_by_date unless @update_only
     end
 
