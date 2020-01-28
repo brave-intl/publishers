@@ -72,7 +72,8 @@ class PromoRegistration < ApplicationRecord
   def stats_by_date
     compressed_stats = {}
     starting_date = nil
-    JSON.parse(stats).each do |stat|
+    parsed = stats.instance_of?(String) ? JSON.parse(stats) : stats
+    parsed.each do |stat|
       starting_date ||= stat['ymd'] if starting_date.nil?
       unless compressed_stats.key?(stat['ymd'])
         compressed_stats[stat['ymd']] = {}
