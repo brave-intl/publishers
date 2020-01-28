@@ -39,7 +39,7 @@ gem "devise", "~> 4.7.1"
 gem "dnsruby", "~> 1.60.0", require: false
 
 # HTTP library wrapper
-gem "faraday", "~> 0.15.4"
+gem "faraday", "~> 0.17.3"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
@@ -88,7 +88,7 @@ gem "pg", "~> 0.18"
 gem "premailer-rails", "~> 1.10.3", require: false
 
 # Implementation of PublicSuffix
-gem 'public_suffix', '~> 3.1.1'
+gem 'public_suffix', '~> 4.0.3'
 
 # Puma as app server
 gem "puma", "~> 4.3.1"
@@ -96,10 +96,10 @@ gem "puma", "~> 4.3.1"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 6.0.0"
+gem 'railties', "~> 6.0.2.1"
 
-gem "rails", "~> 6.0.0"
-gem 'rails-i18n', '~> 6.0'
+gem "rails", "~> 6.0.2.1"
+gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
@@ -144,7 +144,7 @@ gem "will_paginate"
 # YouTube API client
 gem 'yt'
 
-gem "zeitwerk", '~> 2.1.10'
+gem "zeitwerk", '~> 2.2.2'
 gem "zendesk_api"
 
 group :development do
