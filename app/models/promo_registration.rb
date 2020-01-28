@@ -59,7 +59,8 @@ class PromoRegistration < ApplicationRecord
   end
 
   def aggregate_stats_by_period(period_start, period_end)
-    parsed = JSON.parse(stats).select do |event|
+    parsed = stats.instance_of?(String) ? JSON.parse(stats) : stats
+    parsed = parsed.select do |event|
       date = event['ymd'].to_date
       date >= period_start && date <= period_end
     end
