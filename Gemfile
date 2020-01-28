@@ -107,6 +107,8 @@ gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 # Cache with Redis
 gem 'redis', '~> 4.1.2'
 
+gem 'redis-objects', "~> 1.5.0"
+
 # Generate QR codes for TOTP 2fa
 gem "rqrcode", "~> 0.10"
 

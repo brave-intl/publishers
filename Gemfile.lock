@@ -375,6 +375,8 @@ GEM
     recaptcha (3.4.0)
       json
     redis (4.1.2)
+    redis-objects (1.5.0)
+      redis (~> 4.0)
     regexp_parser (1.6.0)
     request_store (1.4.1)
       rack (>= 1.4)
@@ -583,6 +585,7 @@ DEPENDENCIES
   railties (~> 6.0.0)
   recaptcha (~> 3.3)
   redis (~> 4.1.2)
+  redis-objects (~> 1.5.0)
   rotp (~> 3.3)
   rqrcode (~> 0.10)
   rubocop-airbnb
