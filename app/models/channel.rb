@@ -96,7 +96,7 @@ class Channel < ApplicationRecord
 
     properties.merge({
       all_channels: Channel.verified.count,
-      site:  Channel.verified.site_channels.count,
+      site: Channel.verified.site_channels.count,
     })
   end
 

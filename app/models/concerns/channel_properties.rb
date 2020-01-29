@@ -14,7 +14,7 @@ module ChannelProperties
       scope :"#{name}_channels", -> { joins(:"#{name}_channel_details") }
       scope :"other_verified_#{name}_channels", -> (id:) { send("#{name}_channels").where(verified: true).where.not(id: id) }
 
-      scope :"visible_#{name.to_s}_channels", -> {
+      scope :"visible_#{name}_channels", -> {
         send("#{name}_channels").where.not("#{name}_channel_details.#{name}_channel_id": nil)
       }
 

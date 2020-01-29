@@ -1,6 +1,6 @@
 class PayoutReportPublisherIncluder < BaseService
   # 5 BAT
-  PROBI_THRESHOLD = (5 * 1E18).freeze
+  PROBI_THRESHOLD = 5 * 1E18
 
   class WalletError < StandardError; end
 

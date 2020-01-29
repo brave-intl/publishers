@@ -52,7 +52,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     )
 
     redirect_to admin_unattached_promo_registrations_path(filter: [params[:filter]]),
-      flash: { notice: "Generating the report, we'll email #{current_publisher.email} when it's done" }
+                flash: { notice: "Generating the report, we'll email #{current_publisher.email} when it's done" }
   end
 
   def update_statuses
