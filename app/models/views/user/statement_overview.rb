@@ -8,7 +8,7 @@ module Views
       GROUP_START_DATE = Date.new(2019, 10, 1)
 
       attr_accessor :earning_period, :payment_date, :destination, :total_earned, :deposited,
-        :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :total_bat_deposited
+                    :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :total_bat_deposited
 
       def initialize(attributes = {})
         super
