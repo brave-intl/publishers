@@ -2,6 +2,7 @@ class Admin::PayoutReportsController < AdminController
   MANUAL = "manual"
 
   def index
+    flash[:alert] = "To view (1) expected vs actual potential payments, (2) payouts to be paid and their amounts, (3) or payments missing Uphold addresses, message Albert Wang for a query on Metabase until follower database is setup"
     @payout_reports = PayoutReport.all.order(created_at: :desc).paginate(page: params[:page])
   end
 
