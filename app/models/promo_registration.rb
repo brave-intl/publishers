@@ -44,7 +44,7 @@ class PromoRegistration < ApplicationRecord
   scope :owner_only, -> { where(kind: OWNER) }
   scope :unattached_only, -> { where(kind: UNATTACHED) }
   scope :channels_only, -> { where(kind: CHANNEL) }
-  scope :has_stats, -> { where.not(stats: "[]") }
+  scope :has_stats, -> { where.not(stats: "[]").where.not("stats = '[]'") }
 
   before_destroy :delete_from_promo_server
 
