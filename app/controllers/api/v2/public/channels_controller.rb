@@ -10,6 +10,6 @@ class Api::V2::Public::ChannelsController < Api::V2::Public::BaseController
   private
 
   def dyno_expiration_key
-    "browser_v3_channels_expiration:#{ENV['DYNO']}"
+    "browser_v2_channels_expiration:#{ENV['DYNO']}"
   end
 end

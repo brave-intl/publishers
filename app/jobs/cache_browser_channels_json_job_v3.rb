@@ -3,8 +3,12 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
 
   MAX_RETRY = 10
   TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'
+  LAST_WRITTEN_AT_KEY = "CacheBrowserChannelsJsonJobV3_last_written_at".freeze
 
   def perform
+    last_written_at = Rails.cache.fetch(LAST_WRITTEN_AT_KEY)
+    return if last_written_at.present? && last_written_at > 2.hours.ago
+
     @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
     retry_count = 0
     result = nil
@@ -18,6 +22,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
     end
 
     if result
+      Rails.cache.write(LAST_WRITTEN_AT_KEY, Time.now)
       Rails.logger.info("CacheBrowserChannelsJsonJob V3 updated the cached browser channels json.")
     else
       SlackMessenger.new(message: "🚨 CacheBrowserChannelsJsonJob V3 could not update the channels JSON. @publishers-team  🚨", channel: SlackMessenger::ALERTS)
