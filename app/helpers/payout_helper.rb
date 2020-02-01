@@ -59,7 +59,7 @@ module PayoutHelper
       I18n.t(".publishers.payout_status.information.reauthorize_uphold")
     elsif found_payout.uphold_member.blank?
       I18n.t(".publishers.payout_status.information.kyc_required")
-    elsif found_payout.status.locked?
+    elsif found_payout.status == PublisherStatusUpdate::LOCKED
       I18n.t(".publishers.payout_status.information.locked")
     end
   end
