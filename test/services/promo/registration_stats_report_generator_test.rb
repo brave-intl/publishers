@@ -172,8 +172,7 @@ class Promo::RegistrationStatsReportGeneratorTest < ActiveJob::TestCase
     PromoRegistration.create!(referral_code: "ABC123", kind: "unattached", promo_id: "free-bats-2018q1")
     PromoRegistration.create!(referral_code: "DEF456", kind: "unattached", promo_id: "free-bats-2018q1")
 
-    stub_request(:get, "#{Rails.application.secrets[:api_promo_base_uri]}/api/2/promo/statsByReferralCode?referral_code=ABC123&referral_code=DEF456").
-      to_return(body: STATS.to_json)
+    stub_request(:get, /http:\/\/127.0.0.1:8194\/api\/2\/promo\/statsByReferralCode\?referral_code=.*/).to_return(body: STATS.to_json)
 
     csv = Promo::RegistrationStatsReportGenerator.new(referral_codes: ["ABC123","DEF456"],
                                                          start_date: "2018-11-01".to_date,
