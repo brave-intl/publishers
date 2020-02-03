@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_010955) do
+ActiveRecord::Schema.define(version: 2020_02_03_200204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -305,6 +305,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_010955) do
     t.boolean "hidden", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "payer_id"
     t.index ["user_id"], name: "index_paypal_connections_on_user_id"
   end
 
