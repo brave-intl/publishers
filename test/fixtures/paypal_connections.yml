@@ -3,3 +3,4 @@ default_paypal_connection: &default_paypal_connection
   user: paypal_connected
   country: "JP"
   paypal_account_id: "https://www.paypal.com/webapps/auth/identity/user/PaHIovlCofH3ADkc3qn9VXK-RoqZsX9k4EoiXWLEpSw"
+  payer_id: "ABCDEFGHJ"
