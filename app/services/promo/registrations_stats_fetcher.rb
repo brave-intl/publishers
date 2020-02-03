@@ -45,6 +45,8 @@ class Promo::RegistrationsStatsFetcher < BaseApiClient
           WHERE promo_registrations.id = uv.id::uuid"
 
       ActiveRecord::Base.connection.execute(query)
+      # Manually update updated_at
+      promo_registrations_batch.update_all(updated_at: Time.now)
       stats += referral_code_events_by_date unless @update_only
     end
 
