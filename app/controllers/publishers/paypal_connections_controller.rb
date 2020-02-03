@@ -42,7 +42,8 @@ module Publishers
         refresh_token: refresh_token,
         country: user_info.dig('address', 'country'),
         verified_account: user_info.dig('verified_account') == 'true',
-        paypal_account_id: user_info.dig('payer_id'),
+        paypal_account_id: user_info.dig('user_id'),
+        payer_id: user_info.dig('payer_id'),
         hidden: false
       )
 
