@@ -53,6 +53,18 @@ module Uphold
         transactions.flatten
       end
 
+      # Gets a specified transaction given an id
+      #
+      # id: The id for the uphold transaction
+      #
+      # Returns an Uphold Transaction
+      def find(id:)
+        path = Addressable::Template.new("/v0/me/transactions/{id}")
+        response = get(path.expand(id: id), {}, authorization(@uphold_connection))
+
+        Uphold::Models::Transaction.new(parse_response(response))
+      end
+
       def authorization(uphold_connection)
         token = JSON.parse(uphold_connection.uphold_access_parameters || "{}").try(:[], "access_token")
         "Authorization: Bearer #{token}"

@@ -134,6 +134,8 @@ Rails.application.routes.draw do
       resources :publishers, defaults: { format: :json } do
         post "publisher_status_updates"
       end
+      resources :transactions, only: [:show]
+
       # /api/v1/stats/
       namespace :stats, defaults: { format: :json } do
         namespace :channels, defaults: { format: :json } do
