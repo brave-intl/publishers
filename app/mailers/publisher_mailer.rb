@@ -11,6 +11,7 @@ class PublisherMailer < ApplicationMailer
     @private_reauth_url = publisher_private_reauth_url(publisher: @publisher)
     mail(
       to: @publisher.email,
+      asm: transaction_asm_group_id,
       subject: default_i18n_subject
     )
   end
@@ -23,6 +24,7 @@ class PublisherMailer < ApplicationMailer
     # but not verified their account
     mail(
       to: @partner.email || @partner.pending_email,
+      asm: transaction_asm_group_id,
       subject: default_i18n_subject
     )
   end
@@ -117,6 +119,7 @@ class PublisherMailer < ApplicationMailer
     @publisher = publisher
     mail(
       to: @publisher.email,
+      asm: transaction_asm_group_id,
       subject: default_i18n_subject
     )
   end
@@ -354,6 +357,12 @@ class PublisherMailer < ApplicationMailer
   end
 
   private
+
+  # (Albert Wang): These are critical emails pertaining to login.
+  # You can view the IDs here: https://mc.sendgrid.com/unsubscribe-groups
+  def transaction_asm_group_id
+    SendGrid::ASM.new(group_id: Rails.application.secrets[:sendgrid_transactional_asm_group_id])
+  end
 
   def ensure_fresh_token
     # Check if we are missing the token and capture to sentry if we are. This should not happen.
