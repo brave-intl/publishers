@@ -110,7 +110,10 @@ class Rack::Attack
   # In PublishersController we'll check the annotated request object
   # to apply additional Recaptcha.
   throttle("registrations/ip", limit: 60, period: 1.hour) do |req|
-    if (req.path == "/publishers" || req.path == "/publishers/registrations") && (req.post? || req.patch?)
+    # In JS we specify that the format is application/json by writing /publishers/registrations.json
+    path = req.path.sub('.json', '')
+    if (path == "/publishers" || path == "/publishers/registrations") && (req.post? || req.patch?)
+      puts '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨'
       req.ip
     end
   end
