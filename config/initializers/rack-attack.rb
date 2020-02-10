@@ -113,7 +113,6 @@ class Rack::Attack
     # In JS we specify that the format is application/json by writing /publishers/registrations.json
     path = req.path.sub('.json', '')
     if (path == "/publishers" || path == "/publishers/registrations") && (req.post? || req.patch?)
-      puts '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨'
       req.ip
     end
   end
