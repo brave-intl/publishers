@@ -1,4 +1,5 @@
 export default {
+  bat: "BAT ポイント",
   common: {
     unexpectedError: "問題が発生しました。サポートにお問い合わせください。"
   },
@@ -12,6 +13,7 @@ export default {
       title: "紹介プロモーションの統計"
     }
   },
+  makeMonthly: "Make this monthly",
   settings: {
     contact: {
       edit: "編集",
@@ -28,18 +30,21 @@ export default {
   },
   siteBanner: {
     addChannel: "+ Add User Name or Handle",
+    apply: "Apply",
     batLocalized: "BATポイント",
+    cancel: "Cancel",
     closeBanner: "Done",
     defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
     header: "Tipping Banner",
     links: "Links",
     previewButton: "Preview",
+    resizeLogoLabel: "Resize and position your logo",
     saveChanges: "Save Changes",
     tipOptionsHeader: "Set tip amount options",
-    tipOption1: "1 BATポイント &nbsp; | &nbsp; 5 BATポイント &nbsp; | &nbsp; 10 BATポイント",
-    tipOption2: "5 BATポイント &nbsp; | &nbsp; 10 BATポイント &nbsp; | &nbsp; 20 BATポイント",
-    tipOption3: "10 BATポイント &nbsp; | &nbsp; 20 BATポイント &nbsp; | &nbsp; 50 BATポイント",
-    tipOption4: "20 BATポイント &nbsp; | &nbsp; 50 BATポイント &nbsp; | &nbsp; 100 BATポイント",
+    tipOption1: "1 BATポイント | 5 BATポイント | 10 BATポイント",
+    tipOption2: "5 BATポイント | 10 BATポイント | 20 BATポイント",
+    tipOption3: "10 BATポイント | 20 BATポイント | 50 BATポイント",
+    tipOption4: "20 BATポイント | 50 BATポイント | 100 BATポイント",
     toggleSharedBannerContent: "Same banner content for all channels"
   },
 }

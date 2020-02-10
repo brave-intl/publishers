@@ -398,7 +398,9 @@ export default class BannerEditor extends React.Component {
           <div>
             <Opacity />
             <Dialogue logo>
-              <Text dialogueHeader>Resize and position your logo</Text>
+              <Text dialogueHeader>
+                <FormattedMessage id="siteBanner.resizeLogoLabel" />
+              </Text>
               <AvatarEditor
                 ref={this.setEditorRef}
                 image={this.state.tempLogo}
@@ -431,14 +433,14 @@ export default class BannerEditor extends React.Component {
                 style={{ margin: "10px", width: "120px" }}
                 outline
               >
-                Cancel
+                <FormattedMessage id="siteBanner.cancel" />
               </Button>
               <Button
                 onClick={() => this.apply()}
                 style={{ margin: "10px", width: "120px" }}
                 primary
               >
-                Apply
+                <FormattedMessage id="siteBanner.apply" />
               </Button>
             </Dialogue>
           </div>
@@ -1072,7 +1074,7 @@ export default class BannerEditor extends React.Component {
                 <Button donation>
                   <BatColorIcon
                     style={{
-                      display: "inline",
+                      display: locale === "ja" ? "none" : "inline",
                       height: "25px",
                       width: "25px",
                       marginRight: "10px"
@@ -1094,14 +1096,16 @@ export default class BannerEditor extends React.Component {
                 <Button donation>
                   <BatColorIcon
                     style={{
-                      display: "inline",
+                      display: locale === "ja" ? "none" : "inline",
                       height: "25px",
                       width: "25px",
                       marginRight: "10px"
                     }}
                   />
                   <Text donationAmount>{this.state.donationAmounts[1]}</Text>
-                  <Text BAT>BAT</Text>
+                  <Text BAT>
+                    <FormattedMessage id="siteBanner.batLocalized" />
+                  </Text>
                 </Button>
                 <Text convertedAmount>
                   {(
@@ -1114,14 +1118,16 @@ export default class BannerEditor extends React.Component {
                 <Button donation>
                   <BatColorIcon
                     style={{
-                      display: "inline",
+                      display: locale === "ja" ? "none" : "inline",
                       height: "25px",
                       width: "25px",
                       marginRight: "10px"
                     }}
                   />
                   <Text donationAmount>{this.state.donationAmounts[2]}</Text>
-                  <Text BAT>BAT</Text>
+                  <Text BAT>
+                    <FormattedMessage id="siteBanner.batLocalized" />
+                  </Text>
                 </Button>
                 <Text convertedAmount>
                   {(
