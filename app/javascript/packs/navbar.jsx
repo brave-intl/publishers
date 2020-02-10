@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { FormattedMessage, IntlProvider, useIntl } from "react-intl";
 import styled from 'styled-components'
 import { Container, BrandBar, ControlBar, BrandImage, BrandText, ToggleText, ToggleWrapper, Button, Channels, Text} from '../packs/style.jsx'
 
@@ -8,6 +8,8 @@ import Toggle from 'brave-ui/components/formControls/toggle'
 import { YoutubeColorIcon, TwitterColorIcon, TwitchColorIcon, CaratLeftIcon, CaratRightIcon, VerifiedIcon} from 'brave-ui/components/icons'
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
+import en, { flattenMessages } from "../locale/en"
+import ja from "../locale/ja"
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -19,14 +21,23 @@ export default class Navbar extends React.Component {
 
   render(){
     initLocale(locale);
-
+    const docLocale = document.body.dataset.locale;
+    let localePackage = en;
+    if (docLocale === "ja") {
+      localePackage = ja;
+    }
     return(
+      <IntlProvider locale={docLocale} messages={flattenMessages(localePackage)}>
       <Container>
 
         <BrandBar>
           <BrandImage src={DonationJar}/>
-          <BrandText>Tipping Banner</BrandText>
-          <ToggleText>Same banner content for all channels</ToggleText>
+          <BrandText>
+            <FormattedMessage id="siteBanner.header" />
+          </BrandText>
+          <ToggleText>
+            <FormattedMessage id="siteBanner.toggleSharedBannerContent" />
+          </ToggleText>
           <ToggleWrapper>
           {
             this.props.channelBanners.length > 0 ?
@@ -64,12 +75,19 @@ export default class Navbar extends React.Component {
             }
           </Channels>
 
-          <Button onClick={this.props.preview} style={{marginLeft:'auto', marginRight:'20px'}} outline>Preview</Button>
-          <Button onClick={this.props.save} style={{marginRight:'20px'}} primary>Save Changes</Button>
-          <Button onClick={this.props.close} subtle>Done</Button>
+          <Button onClick={this.props.preview} style={{marginLeft:'auto', marginRight:'20px'}} outline>
+            <FormattedMessage id="siteBanner.previewButton" />
+          </Button>
+          <Button onClick={this.props.save} style={{marginRight:'20px'}} primary>
+            <FormattedMessage id="siteBanner.saveChanges" />
+          </Button>
+          <Button onClick={this.props.close} subtle>
+            <FormattedMessage id="siteBanner.closeBanner" />
+          </Button>
         </ControlBar>
 
       </Container>
+      </IntlProvider>
     )
   }
 }

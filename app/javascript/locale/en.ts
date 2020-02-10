@@ -164,6 +164,22 @@ export default {
     cancel: "Cancel",
     save: "Save"
   },
+  siteBanner: {
+    addChannel: "+ Add User Name or Handle",
+    batLocalized: "BAT",
+    closeBanner: "Done",
+    defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
+    header: "Tipping Banner",
+    links: "Links",
+    previewButton: "Preview",
+    saveChanges: "Save Changes",
+    tipOptionsHeader: "Set tip amount options",
+    tipOption1: "1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT",
+    tipOption2: "5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT",
+    tipOption3: "10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT",
+    tipOption4: "20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT",
+    toggleSharedBannerContent: "Same banner content for all channels"
+  },
   statements: {
     overview: {
       amountDeposited: "Amount Deposited",

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { FormattedMessage, IntlProvider, useIntl } from "react-intl";
 import AvatarEditor from "react-avatar-editor";
 
 import "babel-polyfill";
@@ -41,6 +42,8 @@ import Spinner from "../utils/spinner";
 
 import { initLocale } from "brave-ui";
 import locale from "locale/en";
+import en, { flattenMessages } from "../locale/en";
+import ja from "../locale/ja";
 
 import {
   BatColorIcon,
@@ -69,7 +72,7 @@ export default class BannerEditor extends React.Component {
     this.state = {
       loading: true,
       title: this.props.values.title || DEFAULT_TITLE,
-      description: this.props.values.description || DEFAULT_DESCRIPTION,
+      description: this.props.values.description || locale.siteBanner.defaultDescription,
       logo: this.props.values.logo || { url: null, data: null },
       cover: this.props.values.cover || { url: null, data: null },
       channelIndex: this.props.values.channelIndex || 0,
@@ -947,8 +950,13 @@ export default class BannerEditor extends React.Component {
 
   render() {
     initLocale(locale);
-
+    const locale = document.body.dataset.locale;
+    let localePackage = en;
+    if (locale === "ja") {
+      localePackage = ja;
+    }
     return (
+      <IntlProvider locale={locale} messages={flattenMessages(localePackage)}>
       <Editor onClick={e => this.handleLinkSelection(e)}>
         {this.renderLoadingScreen()}
         {this.renderDialogue()}
@@ -983,7 +991,9 @@ export default class BannerEditor extends React.Component {
 
           <Content>
             <Links>
-              <Text links>Links</Text>
+              <Text links>
+                <FormattedMessage id="siteBanner.links" />
+              </Text>
 
               {this.renderLinks()}
 
@@ -1005,7 +1015,7 @@ export default class BannerEditor extends React.Component {
                   />
                   {this.renderDropdown()}
                   <Text add onClick={() => this.addLink()}>
-                    + Add User Name or Handle
+                    <FormattedMessage id="siteBanner.addChannel" />
                   </Text>
                 </LinkInputWrapper>
               )}
@@ -1029,7 +1039,9 @@ export default class BannerEditor extends React.Component {
             </ExplanatoryText>
 
             <Donations>
-              <Text donations>Set tip amount options</Text>
+              <Text donations>
+                <FormattedMessage id="siteBanner.tipOptionsHeader" />
+              </Text>
               <div
                 style={{ width: "75%", margin: "auto", paddingBottom: "20px" }}
               >
@@ -1043,16 +1055,16 @@ export default class BannerEditor extends React.Component {
                   onChange={(key, child) => this.handleTipSelection(key, child)}
                 >
                   <div data-value="0">
-                    1 BAT &nbsp; | &nbsp; 5 BAT &nbsp; | &nbsp; 10 BAT
+                    <FormattedMessage id="siteBanner.tipOption1" />
                   </div>
                   <div data-value="1">
-                    5 BAT &nbsp; | &nbsp; 10 BAT &nbsp; | &nbsp; 20 BAT
+                    <FormattedMessage id="siteBanner.tipOption2" />
                   </div>
                   <div data-value="2">
-                    10 BAT &nbsp; | &nbsp; 20 BAT &nbsp; | &nbsp; 50 BAT
+                    <FormattedMessage id="siteBanner.tipOption3" />
                   </div>
                   <div data-value="3">
-                    20 BAT &nbsp; | &nbsp; 50 BAT &nbsp; | &nbsp; 100 BAT
+                    <FormattedMessage id="siteBanner.tipOption4" />
                   </div>
                 </Select>
               </div>
@@ -1067,7 +1079,9 @@ export default class BannerEditor extends React.Component {
                     }}
                   />
                   <Text donationAmount>{this.state.donationAmounts[0]}</Text>
-                  <Text BAT>BAT</Text>
+                  <Text BAT>
+                    <FormattedMessage id="siteBanner.batLocalized" />
+                  </Text>
                 </Button>
                 <Text convertedAmount>
                   {(
@@ -1119,7 +1133,8 @@ export default class BannerEditor extends React.Component {
             </Donations>
           </Content>
         </Template>
-      </Editor>
+          </Editor>
+            </IntlProvider>
     );
   }
 }
