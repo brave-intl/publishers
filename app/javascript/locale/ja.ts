@@ -3,6 +3,7 @@ export default {
   common: {
     unexpectedError: "問題が発生しました。サポートにお問い合わせください。"
   },
+  donationAmount: "Donation amount",
   homepage: {
     referral: {
       confirmed: "確認済み",
@@ -41,10 +42,10 @@ export default {
     resizeLogoLabel: "Resize and position your logo",
     saveChanges: "Save Changes",
     tipOptionsHeader: "Set tip amount options",
-    tipOption1: "1 BATポイント | 5 BATポイント | 10 BATポイント",
-    tipOption2: "5 BATポイント | 10 BATポイント | 20 BATポイント",
-    tipOption3: "10 BATポイント | 20 BATポイント | 50 BATポイント",
-    tipOption4: "20 BATポイント | 50 BATポイント | 100 BATポイント",
+    tipOption1: "1 | 5 | 10 BATポイント",
+    tipOption2: "5 | 10 | 20 BATポイント",
+    tipOption3: "10 | 20 | 50 BATポイント",
+    tipOption4: "20 | 50 | 100 BATポイント",
     toggleSharedBannerContent: "Same banner content for all channels"
   },
 }
