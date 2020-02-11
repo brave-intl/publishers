@@ -12,7 +12,7 @@ class Api::V1::TransactionsController < Api::BaseController
     render json: { errors: "Could not find the specified transaction under the publishers account" }, status: 400
   end
 
-  def get_merchant!(channel)
+  def get_channel!(channel)
     raise GetTransactionError.new("Missing channel query parameter.") if channel.blank?
 
     channel = Channel.find_by_channel_identifier(channel)
