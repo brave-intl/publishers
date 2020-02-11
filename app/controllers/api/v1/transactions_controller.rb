@@ -2,7 +2,7 @@ class Api::V1::TransactionsController < Api::BaseController
   class GetTransactionError < StandardError; end
 
   def show
-    channel = get_merchant!(params[:channel])
+    channel = get_channel!(params[:channel])
     uphold_client = Uphold::Client.new(uphold_connection: channel.publisher.uphold_connection)
 
     render json: uphold_client.transaction.find(id: params[:id])
