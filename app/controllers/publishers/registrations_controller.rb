@@ -89,11 +89,21 @@ module Publishers
         MailerServices::PublisherLoginLinkEmailer.new(publisher: @publisher).perform
       end
 
+      @publisher_email = filter_email(@publisher_email)
+
       flash.now[:notice] = t(".done")
       render(:emailed_authentication_token)
     end
 
     private
+
+    def filter_email(email)
+      # Only keep first and last characters
+      range = 1...-1
+      identifier, provider = email.split('@')
+      identifier.tap { |x| x[range] = ("*" * x[range].length) }
+      "#{identifier}@#{provider}"
+    end
 
     def email_existing_publisher(publisher)
       @publisher = publisher
