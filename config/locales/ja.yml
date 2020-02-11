@@ -819,6 +819,8 @@ ja:
       https_error_encountered: "次のエラーが発生しました。"
     new:
       heading: ドメイン情報を入力
+      ads_enable_question: "このサイト内でBraveの広告を配信することを許可する"
+      learn_more: 詳しくはこちら
     progress:
       info: ドメイン情報
       verify: 認証方法
@@ -829,6 +831,10 @@ ja:
       alert: サイトが認証されました。
     setup_current_channel:
       alert: このページはこのチャンネルタイプでは無効です
+    site_channel_ads_learn_more_modal: |
+      <p> Braveはサイト内でプライバシー保護した新しい広告を配信し、この収益の70％をクリエイターと共有します。この機能は現在開発中であり、一部のパートナーでテスト中です。 Braveのパブリッシャー広告は、オプトインされた場合のみ配信され、いつでもオフにできます。オプトインは任意です。</p>
+      <p>この機能について詳しくは <a href="https://basicattentiontoken.org/brave-previews-opt-in-ads-in-desktop-browser-developer-channel/">コチラ</a>.</p>
+      <p>本機能はは近日中により広く利用可能になります。今後のアップデートは上記のページからご確認ください。</p>
     verification_background:
       heading: ドメインを確認しています...
       help_html: "<p>この画面を終了できます。24時間以内に<strong>手順を記載したメールをお送りします。</strong> </p>"
