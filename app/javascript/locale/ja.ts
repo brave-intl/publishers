@@ -14,7 +14,7 @@ export default {
       title: "紹介プロモーションの統計"
     }
   },
-  makeMonthly: "Make this monthly",
+  makeMonthly: "毎月定額払いにする",
   settings: {
     contact: {
       edit: "編集",
