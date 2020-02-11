@@ -3,7 +3,7 @@ export default {
   common: {
     unexpectedError: "問題が発生しました。サポートにお問い合わせください。"
   },
-  donationAmount: "Donation amount",
+  donationAmount: "支援金額",
   homepage: {
     referral: {
       confirmed: "確認済み",
