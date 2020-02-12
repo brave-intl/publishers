@@ -176,11 +176,11 @@ export default {
     previewButton: "Preview",
     resizeLogoLabel: "Resize and position your logo",
     saveChanges: "Save Changes",
-    tipOptionsHeader: "Set tip amount options",
     tipOption1: "1 BAT | 5 BAT | 10 BAT",
     tipOption2: "5 BAT | 10 BAT | 20 BAT",
     tipOption3: "10 BAT | 20 BAT | 50 BAT",
     tipOption4: "20 BAT | 50 BAT | 100 BAT",
+    tipOptionsHeader: "Set tip amount options",
     toggleSharedBannerContent: "Same banner content for all channels"
   },
   statements: {
