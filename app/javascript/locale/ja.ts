@@ -38,7 +38,10 @@ export default {
     defaultDescription: "ご興味をお持ちいただきありがとうございます。Braveが掲げる、よりプライバシーが守られ、クリエイターが直接支援を受けられる健全なインターネットの実現というビジョンに共感しています。\n\nもしチップを頂けると創作の励みになります！何卒よろしくお願い致します。",
     header: "チップ用のヘッダー画像",
     links: "リンク",
+    oneBannerHeader: "Use one banner for all channels?",
+    oneBannerSubText: "Your customized banner will be displayed on all of your channels.",
     previewButton: "プレビュー",
+    resizeBackgroundImage: "Resize and position your cover image",
     resizeLogoLabel: "ロゴの画像サイズと表示ポジションの調整",
     saveChanges: "変更を保存",
     tipOption1: "1 | 5 | 10 BATポイント",
@@ -46,6 +49,7 @@ export default {
     tipOption3: "10 | 20 | 50 BATポイント",
     tipOption4: "20 | 50 | 100 BATポイント",
     tipOptionsHeader: "チップ金額の選択肢",
-    toggleSharedBannerContent: "同じバナーを全てのチャネルで利用する"
+    toggleSharedBannerContent: "同じバナーを全てのチャネルで利用する",
+    update24Hours: "Your banner will be updated within 24 hours"
   },
 }

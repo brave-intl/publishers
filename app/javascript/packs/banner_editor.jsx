@@ -451,7 +451,9 @@ export default class BannerEditor extends React.Component {
           <div>
             <Opacity />
             <Dialogue cover>
-              <Text dialogueHeader>Resize and position your cover image</Text>
+              <Text dialogueHeader>
+                <FormattedMessage id="siteBanner.resizeBackgroundImage" />
+              </Text>
               <AvatarEditor
                 ref={this.setEditorRef}
                 image={this.state.tempCover}
@@ -483,14 +485,14 @@ export default class BannerEditor extends React.Component {
                 style={{ margin: "10px", width: "120px" }}
                 outline
               >
-                Cancel
+                <FormattedMessage id="siteBanner.cancel" />
               </Button>
               <Button
                 onClick={() => this.apply()}
                 style={{ margin: "10px", width: "120px" }}
                 primary
               >
-                Apply
+                <FormattedMessage id="siteBanner.apply" />
               </Button>
             </Dialogue>
           </div>
@@ -504,7 +506,7 @@ export default class BannerEditor extends React.Component {
               {this.state.saving === false && (
                 <div>
                   <Text dialogueHeader>
-                    Your banner will be updated within 24 hours
+                    <FormattedMessage id="siteBanner.update24Hours" />
                   </Text>
                   <Button dialoguePrimary onClick={this.setEditMode}>
                     OK
@@ -529,10 +531,11 @@ export default class BannerEditor extends React.Component {
           <div>
             <Opacity />
             <Dialogue save>
-              <Text dialogueHeader>Use one banner for all channels?</Text>
+              <Text dialogueHeader>
+                <FormattedMessage id="siteBanner.oneBannerHeader" />
+              </Text>
               <Text dialogueSubtext>
-                Your customized banner will be displayed on all of your
-                channels.
+                <FormattedMessage id="siteBanner.oneBannerSubtext" />
               </Text>
               <div style={{ marginTop: "40px", textAlign: "center" }}>
                 <Button
@@ -540,7 +543,7 @@ export default class BannerEditor extends React.Component {
                   style={{ margin: "10px", width: "120px" }}
                   outline
                 >
-                  Cancel
+                  <FormattedMessage id="siteBanner.cancel" />
                 </Button>
                 <Button
                   onClick={async () => {
@@ -560,7 +563,7 @@ export default class BannerEditor extends React.Component {
                   style={{ margin: "10px", width: "120px" }}
                   primary
                 >
-                  Continue
+                  <FormattedMessage id="siteBanner.apply" />
                 </Button>
               </div>
             </Dialogue>
