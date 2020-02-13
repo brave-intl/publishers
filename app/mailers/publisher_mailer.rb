@@ -303,19 +303,19 @@ class PublisherMailer < ApplicationMailer
     @total_amount = total_amount
 
     connection = @publisher.uphold_connection
-    # if connection&.uphold_verified? && connection&.address.present?
-    #   begin
-    #     raise "#{@publisher.id}'s wallet is connected."
-    #   rescue => e
-    #     require 'sentry-raven'
-    #     Raven.capture_exception(e)
-    #   end
-    # else
+    if connection&.uphold_verified? && connection&.address.present?
+      begin
+        raise "#{@publisher.id}'s wallet is connected."
+      rescue => e
+        require 'sentry-raven'
+        Raven.capture_exception(e)
+      end
+    else
       mail(
         to: @publisher.email,
         subject: default_i18n_subject(total_amount: total_amount)
       )
-    # end
+    end
   end
 
   def email_user_on_hold(publisher)
