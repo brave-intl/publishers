@@ -185,7 +185,10 @@ export default {
     tipOption4: "20 BAT | 50 BAT | 100 BAT",
     tipOptionsHeader: "Set tip amount options",
     toggleSharedBannerContent: "Same banner content for all channels",
-    update24Hours: "Your banner will be updated within 24 hours"
+    twitchHint: "Twitch handle",
+    twitterHint: "Twitter handle",
+    update24Hours: "Your banner will be updated within 24 hours",
+    youtubeHint: "Youtube channel"
   },
   statements: {
     overview: {

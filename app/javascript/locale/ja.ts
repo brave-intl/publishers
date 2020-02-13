@@ -50,6 +50,9 @@ export default {
     tipOption4: "20 | 50 | 100 BATポイント",
     tipOptionsHeader: "チップ金額の選択肢",
     toggleSharedBannerContent: "同じバナーを全てのチャネルで利用する",
-    update24Hours: "Your banner will be updated within 24 hours"
+    twitchHint: "Twitch handle",
+    twitterHint: "Twitter handle",
+    update24Hours: "Your banner will be updated within 24 hours",
+    youtubeHint: "Youtube channel"
   },
 }

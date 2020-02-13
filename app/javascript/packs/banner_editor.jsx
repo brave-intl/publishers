@@ -69,10 +69,15 @@ export default class BannerEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    const locale = document.body.dataset.locale;
+    let localePackage = en;
+    if (locale === "ja") {
+      localePackage = ja;
+    }
     this.state = {
       loading: true,
       title: this.props.values.title || DEFAULT_TITLE,
-      description: this.props.values.description || locale.siteBanner.defaultDescription,
+      description: this.props.values.description || localePackage.siteBanner.defaultDescription,
       logo: this.props.values.logo || { url: null, data: null },
       cover: this.props.values.cover || { url: null, data: null },
       channelIndex: this.props.values.channelIndex || 0,
@@ -322,13 +327,18 @@ export default class BannerEditor extends React.Component {
   }
 
   currentPlaceholder() {
+    const locale = document.body.dataset.locale;
+    let localePackage = en;
+    if (locale === "ja") {
+      localePackage = ja;
+    }
     switch (this.state.linkOption) {
       case "Youtube":
-        return "Youtube user name";
+        return localePackage.siteBanner.youtubeHint;
       case "Twitter":
-        return "Twitter handle";
+        return localePackage.siteBanner.twitterHint;
       case "Twitch":
-        return "Twitch handle";
+        return localePackage.siteBanner.twitchHint;
     }
     return "";
   }
