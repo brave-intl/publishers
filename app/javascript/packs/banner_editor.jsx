@@ -545,7 +545,7 @@ export default class BannerEditor extends React.Component {
                 <FormattedMessage id="siteBanner.oneBannerHeader" />
               </Text>
               <Text dialogueSubtext>
-                <FormattedMessage id="siteBanner.oneBannerSubtext" />
+                <FormattedMessage id="siteBanner.oneBannerSubText" />
               </Text>
               <div style={{ marginTop: "40px", textAlign: "center" }}>
                 <Button
