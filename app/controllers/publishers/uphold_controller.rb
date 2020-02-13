@@ -85,6 +85,13 @@ module Publishers
       redirect_to(home_publishers_path, alert: t(".uphold_error", message: e.message))
     end
 
+    def update
+      send_emails = params[:uphold_connection_send_emails]
+      # If the value is blank then user has opted out of emails.
+      send_emails = DateTime.now if send_emails.present?
+      UpholdConnection.find(params[:id]).update(send_emails: send_emails)
+    end
+
     # publishers/disconnect_uphold
     def destroy
       publisher = current_publisher

@@ -19,7 +19,12 @@
 
     = form_for(@publisher, url: publishers_path, html: { id: "update_publisher_marketing_email_form", class: 'mt-4 ml-4'}) do |f|
       = f.check_box(:subscribed_to_marketing_emails, class: "form-check-input")
-      = f.label(:marketing_emails, class: "form-check-label", for: "marketing_emails")
+      = f.label(:marketing_emails, class: "form-check-label", for: "publisher_subscribed_to_marketing_emails")
+
+    = form_with(model: @publisher.uphold_connection, html: { id: "update_send_email_form", class: 'mt-4 ml-4' }) do |f|
+      = check_box_tag(:uphold_connection_send_emails, nil, @publisher.uphold_connection.send_emails.present?, class: "form-check-input")
+      = f.label(:send_emails, class: "form-check-label", for: "uphold_connection_send_emails")
+
 
 .single-panel--wrapper.single-panel--wrapper--large.single-panel--wrapper--short
   .single-panel--padded-content--short-padding

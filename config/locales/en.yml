@@ -60,6 +60,8 @@ en:
     shared:
       errors: "There were errors saving your request:"
     attributes:
+      uphold_connection:
+        send_emails: Receive emails notifying me if I can't receive payments.
       publisher:
         marketing_emails: By checking here, I consent to be informed of new features and promotions via email.
         name: Your Name
@@ -351,11 +353,13 @@ en:
         <p>To improve the security of Brave Rewards and protect against fraud, we require that creators verify their identity with Uphold.</p>
         <p>Your earnings will be paid out in the next payment cycle after you verify your identity with Uphold. In the meantime, your earnings will be safely held in your account.</p> <p>Thank you for being a Brave Creator and helping us improve the integrity of the payout system.</p>
       button: Verify wallet
+      unsubscribe: You will receive these emails on a yearly basis. To learn more or unsubscribe from these emails please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.
     uphold_member_restricted:
       subject: Uphold account unable to receive funds
       body_html: |
         <p>Your Uphold account is not currently able to receive funds. Please check your account status to ensure that there are no active problems and that you are within transaction limit guidelines.</p>
         <p>Your earnings will be held safely in your Brave Rewards account until your Uphold account is ready to receive funds again. If you have any questions, please reply to this email.</p>
+        <p>You will receive these emails on a yearly basis. To learn more or unsubscribe from these emails please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.</p>
     verification_done:
       subject: "%{publication_title} is now verified on Brave Rewards"
       title: Verification complete
@@ -367,6 +371,7 @@ en:
       body_html: |
         <p><span style="font-size: 18px">You've earned <strong>%{total_amount} BAT</strong> from Brave Rewards!</span></p>
         <p>Your earnings from Brave Rewards are ready to be deposited. All you need to do is connect a wallet to your Brave Rewards account.</p> <p>Log in to Brave Rewards and connect your wallet from the dashboard to receive your funds.</p>
+      unsubscribe: You will receive these emails on a yearly basis. To learn more or unsubscribe from these emails please read the <a href="https://support.brave.com/hc/en-us/articles/360039211232-Managing-your-Creators-Account">Manage your Creators Account guide</a>.
       button: Log in to Brave Rewards
     verify_email:
       subject: Verify your Brave Rewards email address

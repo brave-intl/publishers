@@ -203,4 +203,13 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     false
   );
+
+  const sendEmailCheckBox = document.getElementById("uphold_connection_send_emails");
+  sendEmailCheckBox.addEventListener(
+    "click",
+    event => {
+      submitForm("update_send_email_form", "PATCH", true);
+    },
+    false
+  );
 });
