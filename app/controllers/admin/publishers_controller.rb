@@ -11,11 +11,8 @@ class Admin::PublishersController < AdminController
                   end
 
     if params[:q].present?
-      # Returns an ActiveRecord::Relation of publishers for pagination
-      search_query = remove_prefix_if_necessary(params[:q])
-      search_query = "%#{search_query}%" unless is_a_uuid?(search_query)
 
-      @publishers = @publishers.where(search_sql, search_query: search_query)
+      @publishers = publishers_search(@publishers, params[:q])
     end
 
     if params[:status].present? && PublisherStatusUpdate::ALL_STATUSES.include?(params[:status])
@@ -146,11 +143,5 @@ class Admin::PublishersController < AdminController
 
   def sortable_columns
     [:last_sign_in_at, :created_at, Publisher::VERIFIED_CHANNEL_COUNT]
-  end
-
-  def is_a_uuid?(uuid)
-    # https://stackoverflow.com/questions/47508829/validate-uuid-string-in-ruby-rails
-    uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
-    uuid_regex.match?(uuid.to_s.downcase)
   end
 end

@@ -27,8 +27,7 @@ class Api::BaseController < ActionController::API
   end
 
   def authenticate_ip
-    # (Albert Wang) Just a test
-    # return true if API_IP_WHITELIST.blank? && (Rails.env.development? || Rails.env.test?)
+    return true if API_IP_WHITELIST.blank? && (Rails.env.development? || Rails.env.test?)
     ip_auth_result = request.remote_ip.split(",")[0].in?(API_IP_WHITELIST)
     ip_auth_result
   end

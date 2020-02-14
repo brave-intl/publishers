@@ -8,7 +8,7 @@ import {
   PaymentDueIcon,
   SettingsIcon,
   VerifiedIcon,
-  WalletActivityIcon,
+  WalletInfoIcon,
   WalletManageIcon
 } from "brave-ui/components/icons";
 import {
