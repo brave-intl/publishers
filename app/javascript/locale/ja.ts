@@ -1,7 +1,9 @@
 export default {
+  bat: "BAT ポイント",
   common: {
     unexpectedError: "問題が発生しました。サポートにお問い合わせください。"
   },
+  donationAmount: "支援金額",
   homepage: {
     referral: {
       confirmed: "確認済み",
@@ -12,6 +14,7 @@ export default {
       title: "紹介プロモーションの統計"
     }
   },
+  makeMonthly: "毎月定額払いにする",
   settings: {
     contact: {
       edit: "編集",
@@ -25,5 +28,31 @@ export default {
   shared: {
     cancel: "キャンセル",
     save: "保存",
+  },
+  siteBanner: {
+    addChannel: "+ ユーザ名またはハンドルを追加する",
+    apply: "適用",
+    batLocalized: "BATポイント",
+    cancel: "キャンセル",
+    closeBanner: "完了",
+    defaultDescription: "ご興味をお持ちいただきありがとうございます。Braveが掲げる、よりプライバシーが守られ、クリエイターが直接支援を受けられる健全なインターネットの実現というビジョンに共感しています。\n\nもしチップを頂けると創作の励みになります！何卒よろしくお願い致します。",
+    header: "チップ用のヘッダー画像",
+    links: "リンク",
+    oneBannerHeader: "同じバナーを全てのチャネルで利用しますか?",
+    oneBannerSubText: "設定したカスタムバナーが全てのチャネルで表示されます。",
+    previewButton: "プレビュー",
+    resizeBackgroundImage: "カバー画像のサイズと表示ポジションを調整",
+    resizeLogoLabel: "ロゴの画像サイズと表示ポジションの調整",
+    saveChanges: "変更を保存",
+    tipOption1: "1 | 5 | 10 BATポイント",
+    tipOption2: "5 | 10 | 20 BATポイント",
+    tipOption3: "10 | 20 | 50 BATポイント",
+    tipOption4: "20 | 50 | 100 BATポイント",
+    tipOptionsHeader: "チップ金額の選択肢",
+    toggleSharedBannerContent: "同じバナーを全てのチャネルで利用する",
+    twitchHint: "Twitchチャンネル",
+    twitterHint: "Twitterハンドル",
+    update24Hours: "24時間以内のバナー変更が反映されます",
+    youtubeHint: "Youtubeチャンネル"
   },
 }

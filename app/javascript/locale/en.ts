@@ -164,6 +164,32 @@ export default {
     cancel: "Cancel",
     save: "Save"
   },
+  siteBanner: {
+    addChannel: "+ Add User Name or Handle",
+    apply: "Apply",
+    batLocalized: "BAT",
+    cancel: "Cancel",
+    closeBanner: "Done",
+    defaultDescription: "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content",
+    header: "Tipping Banner",
+    links: "Links",
+    oneBannerHeader: "Use one banner for all channels?",
+    oneBannerSubText: "Your customized banner will be displayed on all of your channels.",
+    previewButton: "Preview",
+    resizeBackgroundImage: "Resize and position your cover image",
+    resizeLogoLabel: "Resize and position your logo",
+    saveChanges: "Save Changes",
+    tipOption1: "1 BAT | 5 BAT | 10 BAT",
+    tipOption2: "5 BAT | 10 BAT | 20 BAT",
+    tipOption3: "10 BAT | 20 BAT | 50 BAT",
+    tipOption4: "20 BAT | 50 BAT | 100 BAT",
+    tipOptionsHeader: "Set tip amount options",
+    toggleSharedBannerContent: "Same banner content for all channels",
+    twitchHint: "Twitch handle",
+    twitterHint: "Twitter handle",
+    update24Hours: "Your banner will be updated within 24 hours",
+    youtubeHint: "Youtube channel"
+  },
   statements: {
     overview: {
       amountDeposited: "Amount Deposited",

@@ -1,11 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { FormattedMessage, IntlProvider, useIntl } from "react-intl";
 
 import { renderBannerEditor } from '../packs/banner_editor'
 
 import SiteBanner from 'brave-ui/features/rewards/siteBanner'
 import { initLocale } from 'brave-ui'
 import locale from 'locale/en'
+import en, { flattenMessages } from "../locale/en";
+import ja from "../locale/ja";
 
 export default class BannerPreview extends React.Component {
 
@@ -70,8 +73,14 @@ export default class BannerPreview extends React.Component {
 
   render() {
     initLocale(locale);
+    const docLocale = document.body.dataset.locale;
+    let localePackage = en;
+    if (docLocale === "ja") {
+      localePackage = ja;
+    }
 
     return (
+      <IntlProvider locale={docLocale} messages={flattenMessages(localePackage)}>
       <div style={{height:'100%', width:'97%', margin:'auto'}}>
       <SiteBanner
         domain={""}
@@ -94,6 +103,7 @@ export default class BannerPreview extends React.Component {
         <p>{this.props.description}</p>
       </SiteBanner>
       </div>
+      </IntlProvider>
     )
     }
 }
