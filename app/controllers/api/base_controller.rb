@@ -6,7 +6,7 @@ class Api::BaseController < ActionController::API
   API_AUTH_TOKEN = Rails.application.secrets[:api_auth_token].freeze
 
   if Rails.application.secrets[:api_ip_whitelist]
-    API_IP_WHITELIST = Rails.application.secrets[:api_ip_whitelist].split(",").map { |ip_cidr| IPAddr.new(ip_cidr) }.freeze
+    API_IP_WHITELIST = Rails.application.secrets[:api_ip_whitelist].split(",").freeze
   else
     API_IP_WHITELIST = [].freeze
   end
@@ -28,7 +28,7 @@ class Api::BaseController < ActionController::API
 
   def authenticate_ip
     return true if API_IP_WHITELIST.blank? && (Rails.env.development? || Rails.env.test?)
-    ip_auth_result = API_IP_WHITELIST.any? { |ip_addr| ip_addr.include?(request.remote_ip.split(",")[0]) }
+    ip_auth_result = request.remote_ip.split(",")[0].in?(API_IP_WHITELIST)
     ip_auth_result
   end
 
