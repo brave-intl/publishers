@@ -151,7 +151,12 @@ class PayoutReportPublisherIncluder < BaseService
   end
 
   def should_send_emails?(total_probi:, uphold_connection:)
-    total_probi > PROBI_THRESHOLD && @should_send_notifications && (uphold_connection.send_emails.present? && uphold_connection.send_emails < DateTime.now)
+    total_probi > PROBI_THRESHOLD && @should_send_notifications &&
+      (
+        uphold_connection.send_emails.present? &&
+        uphold_connection.send_emails < DateTime.now &&
+        uphold_connection.send_emails != UpholdConnection::FOREVER_DATE
+      )
   end
 
   # Converts Probi to BAT, original implementation Eyeshade::BaseBalance
