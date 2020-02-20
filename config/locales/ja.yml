@@ -24,7 +24,7 @@ ja:
   shared:
     add_channel: チャネルを追加
     app_title: Brave Rewards | クリエイター
-    app_description: Webサイトや、YoutubeやTwitchにチャネルをお持ちですか？認証を行うことで閲覧者からの支援を受け収益化することができますか
+    app_description: Webサイトや、YoutubeやTwitchにチャネルをお持ちですか？ 認証を行うと閲覧者からの支援を受け収益化することができます。
     cancel: キャンセル
     channel_created: チャネルを作成しました。24-48時間以内に認証ステータスが表示されます。
     channel_contested: チャネルは %{time_until_transfer}以内に現在の所有者から移管されます
@@ -62,7 +62,7 @@ ja:
     attributes:
       publisher:
         visible: はい。Braveのマーケティングチャネルにサイトを掲載して、認知を広めます
-        name: 指名
+        name: 氏名
       site_channel_details:
         brave_publisher_id: Webサイトドメイン
         brave_publisher_id_unnormalized: Webサイトドメイン
@@ -105,7 +105,7 @@ ja:
       verification_in_progress: 認証中
       verification_awaiting_admin_approval: レビュー中
       verification_failure_what_happened: 問題がありました
-      verification_failure: あなたのサイトを認証することができませんでした
+      verification_failure: サイトを認証することができませんでした
       verification_failure_explanation:
         domain_not_found: "ドメインが見つかりませんでした."
         connection_failed: |
@@ -484,25 +484,25 @@ ja:
       intro: まずは普段コンテンツを追加するチャネルを選択してください。
       website:
         heading: ウェブサイト
-        description: 自分のウェブサイトを持っていて、ドメインディレクトリにアクセスできます。
+        description: ウェブサイトを所有かつドメインディレクトリにアクセス可能
       youtube:
         heading: Youtubeチャネル
-        description: 自分のYoutubeチャネル(またはその管理権限)を持っています。
+        description: Youtubeチャネルまたはその管理権限を所有
       twitch:
         heading: Twitchチャネル
-        description: 自分のTwitchチャネルを持っています。
+        description: Twitchチャネルを所有
       twitter:
         heading: Twitter
-        description: 自分のTwitterアカウント(またはその管理権限)を持っています。
+        description: Twitterアカウントまたはその管理権限を所有
       vimeo:
         heading: Vimeoチャネル
-        description: 自分のVimeoチャネル(またはその管理権限)を持っています。
+        description: Vimeoチャネルまたはその管理権限を所有
       reddit:
         heading: Reddit
-        description: 自分のRedditアカウント(またはその管理権限)を持っています。
+        description: Redditアカウントまたはその管理権限を所有
       github:
         heading: Github
-        description: 自分のGithubアカウントを持っています。
+        description: Githubアカウントを所有
     contact_info:
       heading: 連絡先
     registrations:
@@ -607,7 +607,7 @@ ja:
       try_again: 再試行する
       verification_status: 確認ステータスは、24〜48時間以内にBraveブラウザに表示されます
       verification_status_title: 認証情報
-      channel_balance_period: この期間
+      channel_balance_period: 現在の期間
       uphold: Uphold
       reject_transfer: 移管を拒否する
     omniauth_callbacks:
@@ -727,7 +727,7 @@ ja:
     over:
       title: "申し訳ございません"
       promo_ended: "このプロモーションは終了しました"
-      description: "このプログラムにご参加いただけず申し訳ありません。ファンにBraveを使用してもらうことで、あなたの活動をサポートしてもらうことは引き続き可能です"
+      description: "残念ながらこのプログラムにご参加いただくことはできません。引き続きファンにBraveの利用を促進いただくと支援を受けることができます。"
       brave_download_link: "brave.com/download"
       footer: "今後のキャンペーンについてはメールに注目してください。"
     dashboard:
@@ -819,6 +819,8 @@ ja:
       https_error_encountered: "次のエラーが発生しました。"
     new:
       heading: ドメイン情報を入力
+      ads_enable_question: "ページ内でBraveの広告を配信することを許可する"
+      learn_more: 詳しくはこちら
     progress:
       info: ドメイン情報
       verify: 認証方法
@@ -829,8 +831,12 @@ ja:
       alert: サイトが認証されました。
     setup_current_channel:
       alert: このページはこのチャンネルタイプでは無効です
+    site_channel_ads_learn_more_modal: |
+      <p> Braveはサイト内でプライバシー保護した新しい広告を配信し、この収益の70％をクリエイターと共有します。この機能は現在開発中であり、一部のパートナーでテスト中です。 Braveのパブリッシャー広告は、オプトインされた場合のみ配信され、いつでもオフにできます。オプトインは任意です。</p>
+      <p>この機能について詳しくは <a href="https://basicattentiontoken.org/brave-previews-opt-in-ads-in-desktop-browser-developer-channel/">コチラ</a>.</p>
+      <p>本機能は近日中に利用可能になる予定です。今後のアップデートは上記のページからご確認ください。</p>
     verification_background:
-      heading: ドメインを確認しています...
+      heading: ドメインを検証中です...
       help_html: "<p>この画面を終了できます。24時間以内に<strong>手順を記載したメールをお送りします。</strong> </p>"
     verification_choose_method:
       heading: 認証方法を選択してください
