@@ -19,5 +19,14 @@ en:
           heading: Contact
           edit: Edit Contact
           update: Update
+
+        email:
+          heading: Email Settings
+          snooze: Snooze payment related email notifications
+          snoozed_until: "Snoozed until %{date}"
+          options:
+            until_next_year: Until next year
+            forever: Forever
+
       update:
         alert: Account settings updated

@@ -572,7 +572,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_213507) do
     t.string "default_currency"
     t.datetime "default_currency_confirmed_at"
     t.datetime "member_at"
-    t.datetime "send_emails"
+    t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 

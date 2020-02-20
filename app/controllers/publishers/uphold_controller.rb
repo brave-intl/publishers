@@ -86,10 +86,18 @@ module Publishers
     end
 
     def update
-      send_emails = params[:uphold_connection_send_emails]
-      # If the value is blank then user has opted out of emails.
-      send_emails = DateTime.now if send_emails.present?
-      UpholdConnection.find(params[:id]).update(send_emails: send_emails)
+      uphold_connection = UpholdConnection.find(params[:id])
+
+      send_emails = DateTime.now
+
+      case params[:send_emails]
+      when 'forever'
+        send_emails = UpholdConnection::FOREVER_DATE
+      when 'next_year'
+        send_emails = 1.year.from_now
+      end
+
+      uphold_connection.update(send_emails: send_emails)
     end
 
     # publishers/disconnect_uphold
