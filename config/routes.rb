@@ -17,6 +17,9 @@ Rails.application.routes.draw do
         end
         resources :case_notes
 
+        resources :uphold_connection, controller: "uphold", only: :update
+
+        # Legacy route which should be migrated to UpholdConnectionsController
         scope controller: "uphold" do
           get :uphold_status
           get :uphold_verified, action: :create

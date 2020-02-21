@@ -6,6 +6,9 @@ class UpholdConnection < ActiveRecord::Base
   UPHOLD_CODE_TIMEOUT = 5.minutes
   UPHOLD_ACCESS_PARAMS_TIMEOUT = 2.hours
 
+  # Snooze for the next ~ 80 years, this is what I consider forever from now :)
+  FOREVER_DATE = DateTime.new(2100, 1, 1)
+
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
 
