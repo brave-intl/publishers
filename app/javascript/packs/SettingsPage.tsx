@@ -203,4 +203,17 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     false
   );
+
+  const sendEmailCheckBox = document.getElementById("send_emails");
+  sendEmailCheckBox.addEventListener(
+    "change",
+    event => {
+      submitForm("update_send_email_form", "PATCH", true);
+      const snoozeDetails = document.getElementById("snoozeDetails");
+      if (snoozeDetails) {
+        snoozeDetails.remove();
+      }
+    },
+    false
+  );
 });

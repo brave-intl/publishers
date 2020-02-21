@@ -85,6 +85,21 @@ module Publishers
       redirect_to(home_publishers_path, alert: t(".uphold_error", message: e.message))
     end
 
+    def update
+      uphold_connection = UpholdConnection.find(params[:id])
+
+      send_emails = DateTime.now
+
+      case params[:send_emails]
+      when 'forever'
+        send_emails = UpholdConnection::FOREVER_DATE
+      when 'next_year'
+        send_emails = 1.year.from_now
+      end
+
+      uphold_connection.update(send_emails: send_emails)
+    end
+
     # publishers/disconnect_uphold
     def destroy
       publisher = current_publisher
