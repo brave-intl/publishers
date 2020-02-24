@@ -2,45 +2,33 @@
 class EnqueuePublishersForPayoutJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(should_send_notifications: false, final: true, manual: false, payout_report_id: "", publisher_ids: [])
-    Rails.logger.info("Enqueuing publishers for payment.")
+  SEND_NOTIFICATIONS = "send_notifications".freeze
 
-    if publisher_ids.present?
-      publishers = Publisher.joins(:uphold_connection).where(id: publisher_ids)
-    elsif manual
-      publishers = Publisher.joins(:uphold_connection).partner
-    else
-      publishers = Publisher.joins(:uphold_connection).with_verified_channel
-    end
+  def perform(should_send_notifications: false, final: true, manual: false, payout_report_id: "", publisher_ids: [], args: [])
+    Rails.logger.info("Enqueuing publishers for payment.")
 
     if payout_report_id.present?
       payout_report = PayoutReport.find(payout_report_id)
     else
       payout_report = PayoutReport.create(final: final,
                                           manual: manual,
-                                          fee_rate: fee_rate,
-                                          expected_num_payments: PayoutReport.expected_num_payments(publishers))
+                                          fee_rate: fee_rate)
     end
 
-    EnqueuePublishersForPaypalPayoutJob.perform_later(
-      final: final,
+    should_send_notifications = SEND_NOTIFICATIONS.in? args
+    Payout::UpholdJob.perform_later(
       manual: manual,
+      should_send_notifications: should_send_notifications,
+      payout_report_id: payout_report.id,
+      publisher_ids: publisher_ids
+    )
+    Payout::PaypalJob.perform_later(
+      should_send_notifications: should_send_notifications,
       payout_report_id: payout_report.id
     )
-
-    publishers.find_each do |publisher|
-      if manual
-        # We can consider using a job here if n is sufficiently large
-        ManualPayoutReportPublisherIncluder.new(publisher: publisher,
-                                                payout_report: payout_report,
-                                                should_send_notifications: should_send_notifications).perform
-      else
-        IncludePublisherInPayoutReportJob.perform_async(payout_report_id: payout_report.id,
-                                                        publisher_id: publisher.id,
-                                                        should_send_notifications: should_send_notifications)
-      end
-    end
-    Rails.logger.info("Enqueued #{publishers.count} publishers for payment.")
+    Payout::WireJob.perform_later(
+      payout_report_id: payout_report.id
+    )
 
     payout_report
   end

@@ -1,4 +1,4 @@
-class PayoutReportPublisherIncluder < BaseService
+class Payout::PotentialPayment::UpholdService < BaseService
   # 5 BAT
   PROBI_THRESHOLD = 5 * 1E18
 
@@ -112,6 +112,11 @@ class PayoutReportPublisherIncluder < BaseService
 
     if @publisher.paypal_connection.present?
       payout_message.update(message: "Publisher currently has a Paypal Connection Present and therefore cannot be paid through Uphold.") unless should_only_notify?
+      return true
+    end
+
+    if @publisher.wire_only?
+      payout_message.update(message: "Publisher is only meant to receive wire transfers.") unless should_only_notify?
       return true
     end
 

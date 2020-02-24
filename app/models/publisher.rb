@@ -15,6 +15,10 @@ class Publisher < ApplicationRecord
 
   OWNER_PREFIX = "publishers#uuid:".freeze
 
+  # **************************************************
+  # Feature flags:
+  WIRE_ONLY = "wire_only".freeze
+
   devise :timeoutable, :trackable, :omniauthable
 
   has_many :u2f_registrations, -> { order("created_at DESC") }
@@ -75,6 +79,7 @@ class Publisher < ApplicationRecord
   scope :not_admin, -> { where.not(role: ADMIN) }
   scope :partner, -> { where(role: PARTNER) }
   scope :not_partner, -> { where.not(role: PARTNER) }
+  scope :wire_only, -> { where(feature_flags: { WIRE_ONLY => true}) }
 
   scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
   scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
@@ -318,6 +323,10 @@ class Publisher < ApplicationRecord
 
   def paypal_locale?(locale)
     locale == 'ja'
+  end
+
+  def wire_only?
+    feature_flags[WIRE_ONLY].present?
   end
 
   private

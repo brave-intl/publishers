@@ -1,15 +1,13 @@
-class EnqueuePublishersForPaypalPayoutJob < ApplicationJob
+class Payout::WireJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(should_send_notifications: false, final: true, manual: false, payout_report_id:)
+  def perform(should_send_notifications: false, payout_report_id:)
     payout_report = PayoutReport.find(payout_report_id)
-    publishers = Publisher.joins(:paypal_connection).with_verified_channel.where(paypal_connections: {country: "JP" })
+    publishers = Publisher.wire_only.with_verified_channel
     publishers.find_each do |publisher|
       IncludePublisherInPayoutReportJob.perform_async(
         payout_report_id: payout_report.id,
-        publisher_id: publisher.id,
-        should_send_notifications: should_send_notifications,
-        for_paypal: true
+        publisher_id: publisher.id
       )
     end
 

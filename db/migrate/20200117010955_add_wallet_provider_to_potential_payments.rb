@@ -7,7 +7,7 @@ class AddWalletProviderToPotentialPayments < ActiveRecord::Migration[6.0]
 
   def down
     remove_column :potential_payments, :wallet_provider
-    remove_column :potential_payments, :wallet_provider_id
+#    remove_column :potential_payments, :wallet_provider_id
     remove_column :potential_payments, :paypal_bank_account_attached
   end
 end
