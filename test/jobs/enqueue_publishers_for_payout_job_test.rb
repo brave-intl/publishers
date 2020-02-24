@@ -37,6 +37,7 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
       publisher_ids: publishers.pluck(:id)
     )
     perform_enqueued_jobs
+    perform_enqueued_jobs
     assert_equal publishers.count, IncludePublisherInPayoutReportJob.jobs.size
   end
 end

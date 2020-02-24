@@ -46,7 +46,7 @@ class Admin::PayoutReportsController < AdminController
   end
 
   def notify
-    EnqueuePublishersForPayoutJob.perform_later(args: [SEND_NOTIFICATIONS])
+    EnqueuePublishersForPayoutJob.perform_later(args: [EnqueuePublishersForPayoutJob::SEND_NOTIFICATIONS])
     redirect_to admin_payout_reports_path, flash: { notice: "Sending notifications to publishers with disconnected wallets." }
   end
 

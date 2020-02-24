@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class Paypal::PayoutReportPublisherIncluderTest < ActiveJob::TestCase
+class Payout::PotentialPayment::PaypalServiceTest < ActiveJob::TestCase
   include EyeshadeHelper
 
   before do
@@ -47,7 +47,7 @@ class Paypal::PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
       let(:subject) do
         perform_enqueued_jobs do
-          Paypal::PayoutReportPublisherIncluder.new(
+          Payout::PotentialPayment::PaypalService.new(
             payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
             publisher: publisher,
             should_send_notifications: should_send_notifications).perform
