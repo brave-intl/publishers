@@ -1,8 +1,7 @@
 class Payout::UpholdJob < ApplicationJob
   queue_as :scheduler
 
-  def perform(should_send_notifications: false, manual: false, payout_report_id:, publisher_ids: [])
-    payout_report = PayoutReport.find(payout_report_id)
+  def perform(should_send_notifications: false, manual: false, payout_report_id: nil, publisher_ids: [])
 
     if publisher_ids.present?
       publishers = Publisher.joins(:uphold_connection).where(id: publisher_ids)
@@ -12,21 +11,24 @@ class Payout::UpholdJob < ApplicationJob
       publishers = Publisher.joins(:uphold_connection).with_verified_channel
     end
 
-    number_of_payments = PayoutReport.expected_num_payments(publishers)
-    payout_report.with_lock do
-      payout_report.reload
-      payout_report.expected_num_payments = number_of_payments + payout_report.expected_num_payments
-      payout_report.save!
+    if payout_report_id.present?
+      payout_report = PayoutReport.find(payout_report_id)
+      number_of_payments = PayoutReport.expected_num_payments(publishers)
+      payout_report.with_lock do
+        payout_report.reload
+        payout_report.expected_num_payments = number_of_payments + payout_report.expected_num_payments
+        payout_report.save!
+      end
     end
 
     publishers.find_each do |publisher|
-      if manual
+      if manual && payout_report.present?
         # We can consider using a job here if n is sufficiently large
         ManualPayoutReportPublisherIncluder.new(publisher: publisher,
                                                 payout_report: payout_report,
                                                 should_send_notifications: should_send_notifications).perform
       else
-        IncludePublisherInPayoutReportJob.perform_async(payout_report_id: payout_report.id,
+        IncludePublisherInPayoutReportJob.perform_async(payout_report_id: payout_report_id,
                                                         publisher_id: publisher.id,
                                                         should_send_notifications: should_send_notifications)
       end
