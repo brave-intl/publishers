@@ -783,8 +783,8 @@ export default class BannerEditor extends React.Component {
   tipToOption() {
     switch (this.state.donationAmounts.join(",")) {
       case "1,5,10":
+      case "1,10,100":
         return 0;
-        break;
       case "5,10,20":
         return 1;
         break;
