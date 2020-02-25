@@ -12,7 +12,8 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
     else
       payout_report = PayoutReport.create(final: final,
                                           manual: manual,
-                                          fee_rate: fee_rate)
+                                          fee_rate: fee_rate,
+                                          expected_num_payments: 0)
     end
 
     should_send_notifications = SEND_NOTIFICATIONS.in? args
