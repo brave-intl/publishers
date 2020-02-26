@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :uphold do
+    get :login
+    get :confirm
+  end
   resources :publishers, only: %i(create update new show destroy) do
     collection do
       # Registrations, eventually we should consider refactoring these routes into something a little more restful

@@ -7,7 +7,9 @@ class Publisher < ApplicationRecord
   ADMIN = "admin".freeze
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
-  ROLES = [ADMIN, PARTNER, PUBLISHER].freeze
+  BROWSER_USER = "browser_user".freeze
+
+  ROLES = [ADMIN, PARTNER, PUBLISHER, BROWSER_USER].freeze
   MAX_PROMO_REGISTRATIONS = 500
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count

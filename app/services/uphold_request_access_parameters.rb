@@ -3,10 +3,8 @@ require "faraday"
 class UpholdRequestAccessParameters < BaseService
   class InvalidGrantError < StandardError; end
 
-  attr_reader :publisher
-
-  def initialize(publisher:)
-    @publisher = publisher
+  def initialize(uphold_code:)
+    @uphold_code = uphold_code
   end
 
   def connection
@@ -30,7 +28,7 @@ class UpholdRequestAccessParameters < BaseService
   def perform
     response = connection.post do |request|
       request.url("#{Rails.application.secrets[:uphold_api_uri]}/oauth2/token")
-      request.body = "code=#{@publisher.uphold_connection.uphold_code}&grant_type=authorization_code"
+      request.body = "code=#{@uphold_code}&grant_type=authorization_code"
     end
 
     response.body

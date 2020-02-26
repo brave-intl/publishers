@@ -67,14 +67,16 @@ module Publishers
     # This creates the uphold connection
     # The route for this is by default publisher/uphold_verified
     def create
-      connection = current_publisher.uphold_connection
+      p caller
+      p "what"
+      uphold_connection = current_publisher.uphold_connection
 
       validate_uphold!(connection)
       validate_state!(connection)
 
-      connection.receive_uphold_code(params[:code])
+      uphold_connection.receive_uphold_code(params[:code])
 
-      ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: current_publisher.id)
+      ExchangeUpholdCodeForAccessTokenJob.perform_now(uphold_connection_id: uphold_connection.id)
 
       connection.reload
       create_uphold_report!(connection)
