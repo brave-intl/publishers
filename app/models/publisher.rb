@@ -8,7 +8,9 @@ class Publisher < ApplicationRecord
   ADMIN = "admin".freeze
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
-  ROLES = [ADMIN, PARTNER, PUBLISHER].freeze
+  BROWSER_USER = "browser_user".freeze
+
+  ROLES = [ADMIN, PARTNER, PUBLISHER, BROWSER_USER].freeze
   MAX_PROMO_REGISTRATIONS = 500
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
@@ -47,11 +49,11 @@ class Publisher < ApplicationRecord
   attr_encrypted :authentication_token, key: :encryption_key
 
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
-  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
-  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !deleted? }
+  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
-  validate :pending_email_must_be_a_change, unless: -> { deleted? }
-  validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
+  validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
+  validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
   validates :name, presence: true, allow_blank: true
 
@@ -273,6 +275,10 @@ class Publisher < ApplicationRecord
 
   def publisher?
     role == PUBLISHER
+  end
+
+  def browser_user?
+    role == BROWSER_USER
   end
 
   def default_site_banner

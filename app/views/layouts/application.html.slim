@@ -54,7 +54,7 @@ html
 
 
     #main
-      - if !request.original_url.include? "/partners/"
+      - if request.path.starts_with?("/publisher")
         - if content_for?(:nav)
           = yield(:nav)
         - else

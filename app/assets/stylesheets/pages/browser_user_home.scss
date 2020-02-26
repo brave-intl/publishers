@@ -1,0 +1,78 @@
+.page-header {
+  margin-left: 40px;
+  margin-top: 45px;
+  margin-bottom: 30px;
+}
+.bat-referral-balance-box {
+  margin-top: 0px;
+  padding-top: 5px;
+}
+
+.how-it-works {
+  &--panel {
+    height: 530px;
+    width: 400px;
+    margin-left: 25px;
+    background: rgb(255, 118, 84);
+    border-radius: 8px;
+
+    hr {
+      width: 353px;
+      border: 1px dashed white;
+    }
+
+  }
+  &--header {
+    h3 {
+      padding: 24px 0px 20px 28px;
+      font-size: 28px;
+      font-family: 'Poppins-Medium', sans-serif;
+      font-weight: 400;
+      color: #ffffff;
+    }
+  }
+  &--step-image {
+    margin-left: 24px;
+    margin-right: 14px;
+  }
+
+  &--step-description {
+    margin-right: 46px;
+    p {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 100;
+      font-family: 'Poppins-Regular', sans-serif;
+    }
+  }
+
+}
+
+.referral-header {
+  margin: 20px 0px 20px 0px;
+  h5 {
+    font-family: 'Poppins-SemiBold', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #ffffff;
+  }
+}
+
+.referral-link {
+  background: rgba(255, 255, 255, 0.34);
+  border-radius: 4px;
+  margin-left: 60px;
+  margin-right: 120px;
+  p {
+    margin: 5px 20px 5px 10px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 100;
+    font-family: 'Poppins-Regular', sans-serif;
+  }
+  button.share-promo-button {
+    color: #ffffff;
+    width: 55px;
+    background: rgba(255, 255, 255, 0.34);
+  }
+}
