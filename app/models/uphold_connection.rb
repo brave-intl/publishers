@@ -9,6 +9,8 @@ class UpholdConnection < ActiveRecord::Base
   # Snooze for the next ~ 80 years, this is what I consider forever from now :)
   FOREVER_DATE = DateTime.new(2100, 1, 1)
 
+  USE_BROWSER = 1
+
   attr_encrypted :uphold_code, key: :encryption_key
   attr_encrypted :uphold_access_parameters, key: :encryption_key
 

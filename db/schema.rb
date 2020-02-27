@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_10_213507) do
+ActiveRecord::Schema.define(version: 2020_02_26_003347) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -573,6 +574,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_213507) do
     t.datetime "default_currency_confirmed_at"
     t.datetime "member_at"
     t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
+    t.text "card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 
