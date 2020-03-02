@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     get :login
     get :confirm
   end
+  namespace :browser_users do
+    get :home
+  end
   resources :publishers, only: %i(create update new show destroy) do
     collection do
       # Registrations, eventually we should consider refactoring these routes into something a little more restful
