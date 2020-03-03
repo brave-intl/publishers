@@ -67,8 +67,6 @@ module Publishers
     # This creates the uphold connection
     # The route for this is by default publisher/uphold_verified
     def create
-      p caller
-      p "what"
       uphold_connection = current_publisher.uphold_connection
 
       validate_uphold!(connection)
