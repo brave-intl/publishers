@@ -179,7 +179,7 @@ export default {
     resizeBackgroundImage: "Resize and position your cover image",
     resizeLogoLabel: "Resize and position your logo",
     saveChanges: "Save Changes",
-    tipOption1: "1 BAT | 5 BAT | 10 BAT",
+    tipOption1: "1 BAT | 10 BAT | 100 BAT",
     tipOption2: "5 BAT | 10 BAT | 20 BAT",
     tipOption3: "10 BAT | 20 BAT | 50 BAT",
     tipOption4: "20 BAT | 50 BAT | 100 BAT",
