@@ -2,11 +2,10 @@
 class Promo::UnattachedRegistrar < BaseApiClient
   include PromosHelper
 
-  def initialize(number:, promo_id: active_promo_id, campaign: nil, kind:)
+  def initialize(number:, promo_id: active_promo_id, campaign: nil)
     @number = number
     @promo_id = promo_id
     @campaign = campaign
-    @kind = PromoRegistration::UNATTACHED
   end
 
   def perform
@@ -15,7 +14,7 @@ class Promo::UnattachedRegistrar < BaseApiClient
     response = connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/2/promo/referral_code/unattached?number=#{@number}")
+      request.url("/api/2/promo/referral_code/#{@kind}?number=#{@number}")
     end
 
     promo_registrations = JSON.parse(response.body)
@@ -23,7 +22,7 @@ class Promo::UnattachedRegistrar < BaseApiClient
       PromoRegistration.create!(
         referral_code: promo_registration["referral_code"],
         promo_id: active_promo_id,
-        kind: @kind,
+        kind: PromoRegistration::UNATTACHED,
         promo_campaign: @campaign
       )
     end
