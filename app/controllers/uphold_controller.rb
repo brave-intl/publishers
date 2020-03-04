@@ -24,7 +24,9 @@ class UpholdController < ApplicationController
       result = uphold_model_card.find(uphold_connection: uphold_connection, id: uphold_card_id)
 
       if result.present?
-        signup_or_signin_user(uphold_card_id)
+        uphold_user = signup_or_signin_user(uphold_card_id)
+        uphold_connection.update(publisher_id: uphold_user.id)
+        uphold_connection.sync_from_uphold!
         redirect_to browser_users_home_path
       end
     else
@@ -34,12 +36,11 @@ class UpholdController < ApplicationController
 
   private
 
-  def signup_or_signin_user(uphold_card_id)
+  def signup_user(uphold_card_id)
     # TODO: If we require email, let's just put them through the normal funnel
     # TODO: Lock here
     uphold_connection = UpholdConnection.find_by(card_id: uphold_card_id)
     user = BrowserUserSignUpService.new(uphold_card_id: uphold_card_id).perform if uphold_connection.nil?
-    user ||= uphold_connection.publisher
     sign_in(:publisher, user)
   end
 end
