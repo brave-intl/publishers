@@ -21,6 +21,11 @@ class Api::V1::Stats::PromoCampaignsControllerTest < ActionDispatch::Integration
           promo_registrations: [
             { promo_registration_id: promo_registration2.id, referral_code: "PRO012" }
           ]
+        },
+        {
+          promo_campaign_id: promo_campaigns(:peer_to_peer_campaign).id,
+          name: "peer_to_peer",
+          promo_registrations: []
         }],
         JSON.parse(response.body, symbolize_names: true)
       )
