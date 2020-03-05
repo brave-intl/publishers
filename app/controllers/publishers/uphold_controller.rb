@@ -86,7 +86,8 @@ module Publishers
     end
 
     def update
-      uphold_connection = UpholdConnection.find(params[:id])
+      uphold_connection = current_publisher.uphold_connection
+      return if uphold_connection.blank?
 
       send_emails = DateTime.now
 
