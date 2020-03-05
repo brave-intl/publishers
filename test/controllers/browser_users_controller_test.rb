@@ -10,7 +10,7 @@ class BrowserUsersControllerTest < ActionDispatch::IntegrationTest
     sign_in publisher
 
     get browser_users_home_path
-    assert_redirected_to root_path
+    assert_response :redirect
   end
 
   test "Browser user can access" do

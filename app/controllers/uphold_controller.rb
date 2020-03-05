@@ -23,9 +23,13 @@ class UpholdController < ApplicationController
       if searched_uphold_model_card.present? && searched_uphold_model_card.id == uphold_card_id
         signup_user_if_necessary_or_signin(searched_uphold_model_card)
         redirect_to browser_users_home_path
+      else
+        flash[:alert] = "Sorry, we weren't able to verify your credentials"
+        redirect_to root_path
       end
     else
-      flash[:alert] = "Sorry we weren't able to verify your credentials"
+      flash[:alert] = "You must sign in within 10 minutes."
+      redirect_to root_path
     end
   end
 
