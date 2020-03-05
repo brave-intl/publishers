@@ -69,15 +69,15 @@ module Publishers
     def create
       uphold_connection = current_publisher.uphold_connection
 
-      validate_uphold!(connection)
-      validate_state!(connection)
+      validate_uphold!(uphold_connection)
+      validate_state!(uphold_connection)
 
       uphold_connection.receive_uphold_code(params[:code])
 
       ExchangeUpholdCodeForAccessTokenJob.perform_now(uphold_connection_id: uphold_connection.id)
 
-      connection.reload
-      create_uphold_report!(connection)
+      uphold_connection.reload
+      create_uphold_report!(uphold_connection)
 
       redirect_to(home_publishers_path)
     rescue UpholdError, Faraday::Error => e

@@ -7,7 +7,8 @@ class BrowserUsersController < ApplicationController
   end
 
   def protect
-  if current_publisher.nil? || !current_publisher.browser_user?
-    redirect_to root_url and return
+    if current_publisher.nil? || !current_publisher.browser_user?
+      redirect_to root_url and return
+    end
   end
 end

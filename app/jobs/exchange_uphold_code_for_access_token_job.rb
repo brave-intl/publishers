@@ -3,7 +3,7 @@ class ExchangeUpholdCodeForAccessTokenJob < ApplicationJob
 
   def perform(uphold_connection_id:)
     uphold_connection = UpholdConnection.find(uphold_connection_id)
-    parameters = UpholdRequestAccessParameters.new(uphold_code: uphold_code).perform
+    parameters = UpholdRequestAccessParameters.new(uphold_code: uphold_connection.uphold_code).perform
 
     if parameters
       # The code acquired from https://uphold.com/authorize is only good for one request and times out in 5 minutes

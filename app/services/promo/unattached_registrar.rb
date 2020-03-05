@@ -14,7 +14,7 @@ class Promo::UnattachedRegistrar < BaseApiClient
     response = connection.put do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/2/promo/referral_code/#{@kind}?number=#{@number}")
+      request.url("/api/2/promo/referral_code/unattached?number=#{@number}")
     end
 
     promo_registrations = JSON.parse(response.body)
