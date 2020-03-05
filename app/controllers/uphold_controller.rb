@@ -14,7 +14,6 @@ class UpholdController < ApplicationController
     uphold_card_id = Rails.cache.fetch(params[:state])
     uphold_code = params[:code]
     if uphold_card_id.present?
-      # TODO: Store credentials and read from Uphold to see all the cards that the user owns and make sure they own the card
       parameters = UpholdRequestAccessParameters.new(uphold_code: uphold_code, secret_used: UpholdConnection::USE_BROWSER).perform
       # read cards and make sure there's a match
       uphold_connection = UpholdConnection.new(uphold_access_parameters: parameters)
