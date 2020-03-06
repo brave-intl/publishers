@@ -38,7 +38,7 @@ class UpholdController < ApplicationController
   def signup_user_if_necessary_or_signin(uphold_model_card)
     uphold_connection = UpholdConnection.find_by(card_id: uphold_model_card.id)
     if uphold_connection.nil?
-      user = BrowserUserSignUpService.new(uphold_card_id: uphold_card_id).perform
+      user = BrowserUserSignUpService.new.perform
       uphold_connection.update(publisher_id: user.id)
     else
       user = uphold_connection.publisher
