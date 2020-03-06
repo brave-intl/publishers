@@ -3,6 +3,7 @@
 # Just registered.
 default: &default
   email: "alice@default.org"
+  role: "<%= Publisher::PUBLISHER %>"
   name: "Alice the Pyramid"
   default_site_banner_id: "00000000-0000-0000-0000-000000000000"
   two_factor_prompted_at: "<%= 1.day.ago %>"
