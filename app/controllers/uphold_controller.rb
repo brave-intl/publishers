@@ -21,7 +21,10 @@ class UpholdController < ApplicationController
       searched_uphold_model_card = uphold_model_card.find(uphold_connection: uphold_connection, id: uphold_card_id)
 
       if searched_uphold_model_card.present? && searched_uphold_model_card.id == uphold_card_id
-        signup_user_if_necessary_or_signin(searched_uphold_model_card)
+        signup_user_if_necessary_or_signin(
+          uphold_model_card: searched_uphold_model_card,
+          uphold_connection: uphold_connection
+        )
         redirect_to browser_users_home_path
       else
         flash[:alert] = "Sorry, we weren't able to verify your credentials"
@@ -35,9 +38,8 @@ class UpholdController < ApplicationController
 
   private
 
-  def signup_user_if_necessary_or_signin(uphold_model_card)
-    uphold_connection = UpholdConnection.find_by(card_id: uphold_model_card.id)
-    if uphold_connection.nil?
+  def signup_user_if_necessary_or_signin(uphold_model_card:, uphold_connection:)
+    if create_uphold_connection?(uphold_model_card: uphold_model_card)
       user = BrowserUserSignUpService.new.perform
       uphold_connection.update(publisher_id: user.id)
     else
@@ -46,5 +48,10 @@ class UpholdController < ApplicationController
     uphold_connection.sync_from_uphold!
     sign_in(:publisher, user)
     uphold_connection
+  end
+
+  def create_uphold_connection?(uphold_model_card:)
+    uphold_connection = UpholdConnection.find_by(card_id: uphold_model_card.id)
+    uphold_connection.nil?
   end
 end
