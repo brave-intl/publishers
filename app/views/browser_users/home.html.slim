@@ -3,53 +3,63 @@
     .col-md.mb-4
       = render partial: 'promo_panel'
 
-- if @browser_user.promo_status(promo_running?) == :active
-  javascript:
-    (function() {
-      function closeReferralLinkAnimation() {
-        var channelPromoInfoContainer = this.parentNode;
-        if (channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
-          channelPromoInfoContainer.classList.remove('channel--promo-info-container-slideout');
-        }
+.d-flex.channel--promo-info-container.ml-3
+  div
+    .referral-link-url.promo-info-item
+      span= https_referral_url(@promo_registration.referral_code)
+    .referral-link-button.referral-link-button-desktop.promo-info-item
+      span= t("promo.shared.referral_link")
+    .referral-link-button.referral-link-button-mobile.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(@promo_registration.referral_code)}"
+      span= t("promo.shared.referral_link")
+    .referral-link-copy-button.promo-info-item.copy-button data-clipboard-text="#{https_referral_url(@promo_registration.referral_code)}"
+      span= t("promo.shared.copy")
+
+javascript:
+  (function() {
+    function closeReferralLinkAnimation() {
+      var channelPromoInfoContainer = this.parentNode;
+      if (channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
+        channelPromoInfoContainer.classList.remove('channel--promo-info-container-slideout');
       }
-      function openReferralLinkAnimation() {
-        var channelPromoInfoContainer = this.parentNode;
-        if (!channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
-          channelPromoInfoContainer.classList.add('channel--promo-info-container-slideout');
-        }
+    }
+    function openReferralLinkAnimation() {
+      var channelPromoInfoContainer = this.parentNode;
+      if (!channelPromoInfoContainer.classList.contains('channel--promo-info-container-slideout')) {
+        channelPromoInfoContainer.classList.add('channel--promo-info-container-slideout');
       }
-      function copyButtonAnimation() {
-        channelPromoInfoContainer = this.parentNode;
-        var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
-        var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
-        for (var i = 0; i < mobileReferralLinkButtons.length; i++) {
-          mobileReferralLinkButtons[i].children[0].innerText = 'Referral Link';
-          desktopReferralLinkButtons[i].children[0].innerText = 'Referral Link';
-        }
-        var mobileReferralLinkButton = channelPromoInfoContainer.children[4].children[0];
-        var desktopReferralLinkButton = channelPromoInfoContainer.children[3].children[0];
-        mobileReferralLinkButton.innerText = 'Copied!';
-        desktopReferralLinkButton.innerText = 'Copied!';
-        // Fade out 'copied!'
-        setTimeout(function(){
-          mobileReferralLinkButton.classList.add('fadedOut');
-          desktopReferralLinkButton.classList.add('fadedOut');
-          setTimeout(function(){
-            mobileReferralLinkButton.innerText = 'Referral Link';
-            desktopReferralLinkButton.innerText = 'Referral Link';
-            mobileReferralLinkButton.classList.remove('fadedOut');
-            desktopReferralLinkButton.classList.remove('fadedOut');
-          }, 500);
-        }, 1000);
-      }
-      var channelPromoInfoContainers = document.getElementsByClassName('channel--promo-info-container');
-      var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
-      var desktopCopyButtons = document.getElementsByClassName('referral-link-copy-button')
+    }
+    function copyButtonAnimation() {
+      channelPromoInfoContainer = this.parentNode;
       var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
-      for (var i = 0; i < channelPromoInfoContainers.length; i++) {
-        desktopReferralLinkButtons[i].addEventListener('click', openReferralLinkAnimation, false);
-        desktopCopyButtons[i].addEventListener('click', closeReferralLinkAnimation, false);
-        desktopCopyButtons[i].addEventListener('click', copyButtonAnimation, false);
-        mobileReferralLinkButtons[i].addEventListener('click', copyButtonAnimation, false);
+      var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
+      for (var i = 0; i < mobileReferralLinkButtons.length; i++) {
+        mobileReferralLinkButtons[i].children[0].innerText = 'Referral Link';
+        desktopReferralLinkButtons[i].children[0].innerText = 'Referral Link';
       }
-    })();
+      var mobileReferralLinkButton = channelPromoInfoContainer.children[4].children[0];
+      var desktopReferralLinkButton = channelPromoInfoContainer.children[3].children[0];
+      mobileReferralLinkButton.innerText = 'Copied!';
+      desktopReferralLinkButton.innerText = 'Copied!';
+      // Fade out 'copied!'
+      setTimeout(function(){
+        mobileReferralLinkButton.classList.add('fadedOut');
+        desktopReferralLinkButton.classList.add('fadedOut');
+        setTimeout(function(){
+          mobileReferralLinkButton.innerText = 'Referral Link';
+          desktopReferralLinkButton.innerText = 'Referral Link';
+          mobileReferralLinkButton.classList.remove('fadedOut');
+          desktopReferralLinkButton.classList.remove('fadedOut');
+        }, 500);
+      }, 1000);
+    }
+    var channelPromoInfoContainers = document.getElementsByClassName('channel--promo-info-container');
+    var desktopReferralLinkButtons = document.getElementsByClassName('referral-link-button-desktop');
+    var desktopCopyButtons = document.getElementsByClassName('referral-link-copy-button')
+    var mobileReferralLinkButtons = document.getElementsByClassName('referral-link-button-mobile');
+    for (var i = 0; i < channelPromoInfoContainers.length; i++) {
+      desktopReferralLinkButtons[i].addEventListener('click', openReferralLinkAnimation, false);
+      desktopCopyButtons[i].addEventListener('click', closeReferralLinkAnimation, false);
+      desktopCopyButtons[i].addEventListener('click', copyButtonAnimation, false);
+      mobileReferralLinkButtons[i].addEventListener('click', copyButtonAnimation, false);
+    }
+  })();
