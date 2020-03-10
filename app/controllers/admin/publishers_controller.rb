@@ -122,7 +122,7 @@ class Admin::PublishersController < AdminController
     if @publisher.totp_registration.present?
       render json: {
         login_url: login_url,
-        totp: ROTP::TOTP.new(@publisher.totp_registration.secret).now
+        totp: ROTP::TOTP.new(@publisher.totp_registration.secret).now,
       }
     else
       render json: {
