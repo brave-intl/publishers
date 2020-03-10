@@ -28,7 +28,7 @@ export const PrimaryButton = styled.div`
   margin: auto 0 auto 1rem;
 `;
 
-interface InputProps {
+interface IInputProps {
   testId?: string;
   icon?: React.ReactNode;
   type?: "text" | "email" | "search" | "password" | "number";
@@ -38,7 +38,7 @@ interface InputProps {
   placeholder?: string;
 }
 
-export const InputComponent = styled.div<InputProps>`
+export const InputComponent = styled.div<IInputProps>`
   background-color: #fff;
   min-height: auto;
   box-sizing: border-box;
@@ -50,7 +50,7 @@ export const InputComponent = styled.div<InputProps>`
     border-color: #a1a8f2;
   }
 `;
-export const StyledInput = styled.input<InputProps>`
+export const StyledInput = styled.input<IInputProps>`
   display: inline-block;
   vertical-align: middle;
   min-height: auto;
