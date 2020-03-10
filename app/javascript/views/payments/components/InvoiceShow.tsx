@@ -39,7 +39,7 @@ export default class InvoiceShow extends React.Component<
   IInvoiceShowProps,
   IInvoiceShowState
 > {
-  public readonly state: InvoiceShowState = {
+  public readonly state: IInvoiceShowState = {
     errorText: "",
     invoice: this.props.invoice,
     invoiceFiles: this.props.invoice.files || [],
