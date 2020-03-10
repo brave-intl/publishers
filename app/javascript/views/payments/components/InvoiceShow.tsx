@@ -94,6 +94,7 @@ export default class InvoiceShow extends React.Component<
   }
 
   public async saveInvoice(amount) {
+    // tslint:disable-next-line
     return new Promise<Boolean>((resolve, reject) => {
       const request = fetch(this.state.invoice.url, {
         body: `amount=${amount}`,
