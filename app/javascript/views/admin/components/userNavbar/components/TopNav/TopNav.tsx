@@ -29,17 +29,19 @@ interface ITopNavProps {
   navbarSelection: string;
   isOpen?: boolean;
   loginUrl?: string;
+  totp?: string;
 }
 
 interface ITopNavState {
   isOpen: boolean;
   loginUrl: string;
+  totp: string;
 }
 
 export default class Referrals extends React.Component<ITopNavProps, ITopNavState> {
   constructor(props) {
     super(props);
-    this.state = {isOpen: false, loginUrl: ""} ;
+    this.state = {isOpen: false, loginUrl: "", totp: ""} ;
   }
 
   public render() {
@@ -105,6 +107,12 @@ export default class Referrals extends React.Component<ITopNavProps, ITopNavStat
                     header="Copy below"
                     label={this.state.loginUrl}
                   />
+                  {this.state.totp !== "" &&
+                    <SimpleDialog
+                      header="Use this one-time password"
+                      label={this.state.totp}
+                    />
+                  }
               </Modal>
             </SectionGroup>
           </Section>
@@ -137,6 +145,7 @@ export default class Referrals extends React.Component<ITopNavProps, ITopNavStat
     const response = await fetch(url, options);
     const data = await response.json();
     this.setState({ loginUrl: data['login_url']});
+    this.setState({ totp: data['totp']});
     this.setState({ isOpen: !this.props.isOpen });
   };
 }

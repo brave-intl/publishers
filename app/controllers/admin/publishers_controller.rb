@@ -119,9 +119,16 @@ class Admin::PublishersController < AdminController
     authentication_token = PublisherTokenGenerator.new(publisher: @publisher).perform
 
     login_url = request.base_url + "/publishers/" + @publisher.id + "?token=" + authentication_token
-    render json: {
-      login_url: login_url,
-    }
+    if @publisher.totp_registration.present?
+      render json: {
+        login_url: login_url,
+        totp: ROTP::TOTP.new(@publisher.totp_registration.secret).now
+      }
+    else
+      render json: {
+        login_url: login_url,
+      }
+    end
   end
 
   private
