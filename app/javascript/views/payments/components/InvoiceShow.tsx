@@ -27,7 +27,7 @@ interface IInvoiceShowProps {
   invoice: IInvoice;
 }
 
-interface InvoiceShowState {
+interface IInvoiceShowState {
   invoice: IInvoice;
   invoiceFiles: IInvoiceFile[];
   isLoading: boolean;
@@ -37,7 +37,7 @@ interface InvoiceShowState {
 
 export default class InvoiceShow extends React.Component<
   IInvoiceShowProps,
-  InvoiceShowState
+  IInvoiceShowState
 > {
   public readonly state: InvoiceShowState = {
     errorText: "",
