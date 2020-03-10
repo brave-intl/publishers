@@ -1,6 +1,7 @@
 require 'digest/md5'
 
 class Publisher < ApplicationRecord
+  include UserFeatureFlags
   has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
@@ -14,10 +15,6 @@ class Publisher < ApplicationRecord
   ADVANCED_SORTABLE_COLUMNS = [VERIFIED_CHANNEL_COUNT].freeze
 
   OWNER_PREFIX = "publishers#uuid:".freeze
-
-  # **************************************************
-  # Feature flags:
-  WIRE_ONLY = "wire_only".freeze
 
   devise :timeoutable, :trackable, :omniauthable
 
@@ -323,10 +320,6 @@ class Publisher < ApplicationRecord
 
   def paypal_locale?(locale)
     locale == 'ja'
-  end
-
-  def wire_only?
-    feature_flags[WIRE_ONLY].present?
   end
 
   private
