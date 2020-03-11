@@ -2,31 +2,20 @@ require "test_helper"
 
 class Api::V1::Stats::PromoCampaignsControllerTest < ActionDispatch::IntegrationTest
   test "/api/v1/stats/promo_campaigns/ returns json representation of all campaigns" do
-    promo_campaign = promo_campaigns(:test_promo_campaign)
-    promo_campaign2 = promo_campaigns(:test_promo_campaign2)
-    promo_registration = promo_registrations(:owner_promo_registration)
-    promo_registration2 = promo_registrations(:unattached_promo_registration)
     get "/api/v1/stats/promo_campaigns/", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
       assert_equal(
-        [{
-          promo_campaign_id: promo_campaign.id,
-          name: "test campaign",
-          promo_registrations: [
-            { promo_registration_id: promo_registration.id, referral_code: "PRO789" }
-          ]
+        PromoCampaign.all.map { |promo_campaign|
+          {
+            promo_campaign_id: promo_campaign.id,
+            name: promo_campaign.name,
+            promo_registrations: promo_campaign.promo_registrations.map { |promo_registration|
+              {
+                promo_registration_id: promo_registration.id,
+                referral_code: promo_registration.referral_code
+              }
+            }
+          }
         },
-        {
-          promo_campaign_id: promo_campaign2.id,
-          name: "test campaign2",
-          promo_registrations: [
-            { promo_registration_id: promo_registration2.id, referral_code: "PRO012" }
-          ]
-        },
-        {
-          promo_campaign_id: promo_campaigns(:peer_to_peer_campaign).id,
-          name: "peer_to_peer",
-          promo_registrations: []
-        }],
         JSON.parse(response.body, symbolize_names: true)
       )
   end
