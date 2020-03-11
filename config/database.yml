@@ -8,17 +8,19 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
   primary:
+    <<: *default
     url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
   secondary:
+    <<: *default
     url: <%= ENV['DATABASE_URL'] || "postgres://postgres@localhost/brave_publishers_dev" %>
 
 test:
-  <<: *default
   primary:
+    <<: *default
     url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
   secondary:
+    <<: *default
     url: <%= ENV['DATABASE_URL_TEST'] || "postgres://postgres@localhost/brave_publishers_test" %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
@@ -30,15 +32,18 @@ test:
 # for a full rundown on how to provide these environment variables in a
 # production deployment.
 production:
-  <<: *default
   primary:
+    <<: *default
     url: <%= ENV['DATABASE_URL'] %>
   secondary:
+    <<: *default
     url: <%= ENV['FOLLOWER_DATABASE_URL'] %>
+    replica: true
 
 staging:
-  <<: *default
   primary:
+    <<: *default
     url: <%= ENV['DATABASE_URL'] %>
   secondary:
+    <<: *default
     url: <%= ENV['DATABASE_URL'] %>
