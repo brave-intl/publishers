@@ -1,4 +1,4 @@
-class UpholdController < ApplicationController
+class UpholdConnectionsController < ApplicationController
   def login
     # TODO: Make sure these params are safe
     uphold_card_id = params[:uphold_card_id]

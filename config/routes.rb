@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  namespace :uphold do
+  namespace :uphold_connections do
     get :login
     get :confirm
   end
