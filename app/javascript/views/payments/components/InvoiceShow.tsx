@@ -27,7 +27,7 @@ interface IInvoiceShowProps {
   invoice: IInvoice;
 }
 
-interface InvoiceShowState {
+interface IInvoiceShowState {
   invoice: IInvoice;
   invoiceFiles: IInvoiceFile[];
   isLoading: boolean;
@@ -37,9 +37,9 @@ interface InvoiceShowState {
 
 export default class InvoiceShow extends React.Component<
   IInvoiceShowProps,
-  InvoiceShowState
+  IInvoiceShowState
 > {
-  public readonly state: InvoiceShowState = {
+  public readonly state: IInvoiceShowState = {
     errorText: "",
     invoice: this.props.invoice,
     invoiceFiles: this.props.invoice.files || [],
@@ -94,7 +94,8 @@ export default class InvoiceShow extends React.Component<
   }
 
   public async saveInvoice(amount) {
-    return new Promise((resolve, reject) => {
+    // tslint:disable-next-line
+    return new Promise<Boolean>((resolve, reject) => {
       const request = fetch(this.state.invoice.url, {
         body: `amount=${amount}`,
         headers: {
