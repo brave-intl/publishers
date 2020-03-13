@@ -41,8 +41,10 @@ class UpholdConnectionsController < ApplicationController
   def signup_user_if_necessary_or_signin(uphold_model_card:, uphold_connection:)
     if create_uphold_connection?(uphold_model_card: uphold_model_card)
       user = BrowserUserSignUpService.new.perform
-      uphold_connection.update(publisher_id: user.id)
+      uphold_connection.update(publisher_id: user.id, card_id: uphold_model_card.id)
     else
+      p "creating an uphold connection"
+      uphold_connection = UpholdConnection.find_by(card_id: uphold_model_card.id)
       user = uphold_connection.publisher
     end
     uphold_connection.sync_from_uphold!
