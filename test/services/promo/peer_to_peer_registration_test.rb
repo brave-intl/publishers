@@ -26,12 +26,10 @@ class Promo::PeerToPeerRegistrationTest < ActiveJob::TestCase
         }
       ].to_json
     )
-    owner_registration_client = Promo::Models::OwnerRegistration.new
-    owner_registration_client.create(
+    PromoClient.owner_registration.create(
       publisher: publisher,
       promo_campaign: promo_campaigns(:peer_to_peer_campaign),
-      is_peer_to_peer: true,
-      active_promo_id: "abcd123"
+      is_peer_to_peer: true
     )
 
     current_promo_registration_count = PromoRegistration.count
