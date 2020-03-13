@@ -19,6 +19,7 @@ module Promo
           PromoRegistration.create!(
             referral_code: promo_registration["referral_code"],
             publisher_id: publisher.id,
+            promo_id: Rails.application.secrets[:active_promo_id],
             promo_campaign_id: promo_campaign_id,
             kind: PromoRegistration::PEER_TO_PEER
           )
