@@ -117,6 +117,12 @@ class Rack::Attack
     end
   end
 
+  throttle("registrations/create", limit: 10, period: 1.hour) do |req|
+    if (req.path.starts_with?("/publishers/registrations") && (req.post? || req.patch?))
+      req.ip
+    end
+  end
+
   if Rails.env.production?
     # Throttle requests to public api, /api/public
     throttle("public-api-request/ip", limit: 5, period: 1.hour) do |req|
