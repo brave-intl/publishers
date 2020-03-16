@@ -20,12 +20,12 @@ class SiteBanner < ApplicationRecord
   BACKGROUND_UNIVERSAL_FILE_SIZE = 120_000 # In bytes
 
   NUMBER_OF_DONATION_AMOUNTS = 3
-  DONATION_AMOUNT_PRESETS = ['1,10,100', '5,10,20', '10,20,50', '20,50,100'].freeze
+  DONATION_AMOUNT_PRESETS = ['1,5,10', '5,10,20', '10,20,50', '20,50,100'].freeze
   MAX_DONATION_AMOUNT = 999
 
   DEFAULT_TITLE = I18n.t('banner.headline')
   DEFAULT_DESCRIPTION = I18n.t('banner.tagline')
-  DEFAULT_AMOUNTS = [1, 10, 100].freeze
+  DEFAULT_AMOUNTS = [1, 5, 10].freeze
 
   validates_presence_of :title, :description, :donation_amounts, :default_donation, :publisher
   validate :donation_amounts_in_scope

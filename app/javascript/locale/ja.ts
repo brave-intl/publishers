@@ -44,7 +44,7 @@ export default {
     resizeBackgroundImage: "カバー画像のサイズと表示ポジションを調整",
     resizeLogoLabel: "ロゴの画像サイズと表示ポジションの調整",
     saveChanges: "変更を保存",
-    tipOption1: "1 | 10 | 100 BATポイント",
+    tipOption1: "1 | 5 | 10 BATポイント",
     tipOption2: "5 | 10 | 20 BATポイント",
     tipOption3: "10 | 20 | 50 BATポイント",
     tipOption4: "20 | 50 | 100 BATポイント",
