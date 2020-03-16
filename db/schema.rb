@@ -341,29 +341,6 @@ ActiveRecord::Schema.define(version: 2020_02_24_171850) do
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
   end
 
-  create_table "potential_paypal_payments", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "payout_report_id", null: false
-    t.uuid "publisher_id", null: false
-    t.uuid "paypal_connection_id", null: false
-    t.uuid "channel_id"
-    t.string "name"
-    t.string "kind", null: false
-    t.string "amount", null: false
-    t.string "fees", null: false
-    t.string "derived_paypal_account_id", null: false
-    t.string "status"
-    t.string "url"
-    t.boolean "suspended"
-    t.jsonb "derived_channel_stats", default: {}
-    t.text "channel_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["channel_id"], name: "index_potential_paypal_payments_on_channel_id"
-    t.index ["payout_report_id"], name: "index_potential_paypal_payments_on_payout_report_id"
-    t.index ["paypal_connection_id"], name: "index_potential_paypal_payments_on_paypal_connection_id"
-    t.index ["publisher_id"], name: "index_potential_paypal_payments_on_publisher_id"
-  end
-
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
