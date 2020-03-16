@@ -63,7 +63,7 @@ import "../../assets/stylesheets/components/slider.scss";
 const DEFAULT_TITLE = "Brave Rewards";
 const DEFAULT_DESCRIPTION =
   "Thanks for stopping by. We joined Brave's vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.\n\nYour tip is much appreciated and it encourages us to continue to improve our content"
-const DEFAULT_AMOUNTS = [1, 10, 100];
+const DEFAULT_AMOUNTS = [1, 5, 10];
 
 export default class BannerEditor extends React.Component {
   constructor(props) {
@@ -783,8 +783,8 @@ export default class BannerEditor extends React.Component {
   tipToOption() {
     switch (this.state.donationAmounts.join(",")) {
       case "1,5,10":
-      case "1,10,100":
         return 0;
+        break;
       case "5,10,20":
         return 1;
         break;
@@ -800,7 +800,7 @@ export default class BannerEditor extends React.Component {
   handleTipSelection(key, child) {
     switch (key) {
       case "0":
-        this.setState({ donationAmounts: DEFAULT_AMOUNTS });
+        this.setState({ donationAmounts: [1, 5, 10] });
         break;
       case "1":
         this.setState({ donationAmounts: [5, 10, 20] });

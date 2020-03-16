@@ -3,7 +3,7 @@ default: &default
   publisher: default
   title: "Hello World"
   description: "Lorem Ipsum"
-  donation_amounts: [1, 10, 100]
+  donation_amounts: [1, 5, 10]
   default_donation: 5
 
 verified_default_banner: &verified_default_banner
@@ -11,7 +11,7 @@ verified_default_banner: &verified_default_banner
   publisher: verified
   title: "Default Banner"
   description: "Lorem Ipsum"
-  donation_amounts: [1, 10, 100]
+  donation_amounts: [1, 5, 10]
   default_donation: 5
 
 verified_channel_banner: &verified_channel_banner
@@ -19,7 +19,7 @@ verified_channel_banner: &verified_channel_banner
   publisher: verified
   title: "Channel Banner"
   description: "Lorem Ipsum"
-  donation_amounts: [1, 10, 100]
+  donation_amounts: [1, 5, 10]
   default_donation: 5
 
 second:
@@ -27,13 +27,13 @@ second:
   channel_id: "00000000-0000-0000-0000-000000000002"
   title: "Hello World"
   description: "Lorem Ipsum"
-  donation_amounts: [1, 10, 100]
+  donation_amounts: [1, 5, 10]
   default_donation: 5
 
 completed:
   publisher: completed
   title: "Hello World"
   description: "Lorem Ipsum"
-  donation_amounts: [1, 10, 100]
+  donation_amounts: [1, 5, 10]
   default_donation: 5
   social_links: {twitter: "BrendanEich"}
