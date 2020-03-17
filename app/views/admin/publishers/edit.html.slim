@@ -14,6 +14,10 @@
         label
           = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
           = " Uphold widget disabled"
+          br
+          = f.check_box :wire_only, {}, checked: @publisher.wire_only?
+          = " Wire transfers only (also disables uphold and paypal widgets)"
+
       .form-group
         = f.submit class: "btn btn-primary"
     = form_tag admin_publisher_path, method: :delete

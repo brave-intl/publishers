@@ -95,6 +95,8 @@ class Publisher < ApplicationRecord
     joins(:channels).where('channels.verified = true').distinct
   }
 
+  store_accessor :feature_flags, WIRE_ONLY
+
   def self.filter_status(status)
     joins(:status_updates).
       where('publisher_status_updates.created_at =
