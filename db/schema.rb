@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_17_211000) do
+ActiveRecord::Schema.define(version: 2020_03_19_051055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,6 +448,19 @@ ActiveRecord::Schema.define(version: 2020_03_17_211000) do
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "site_banner_lookups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "sha1_three_byte", null: false
+    t.string "sha1_four_byte", null: false
+    t.string "sha1_five_byte", null: false
+    t.string "derived_info", null: false
+    t.uuid "publisher_id", null: false
+    t.integer "wallet_status", null: false
+    t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
+    t.index ["sha1_five_byte"], name: "index_site_banner_lookups_on_sha1_five_byte"
+    t.index ["sha1_four_byte"], name: "index_site_banner_lookups_on_sha1_four_byte"
+    t.index ["sha1_three_byte"], name: "index_site_banner_lookups_on_sha1_three_byte"
   end
 
   create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
