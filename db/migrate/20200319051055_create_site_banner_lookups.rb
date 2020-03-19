@@ -5,7 +5,9 @@ class CreateSiteBannerLookups < ActiveRecord::Migration[6.0]
       t.string :sha1_four_byte, index: true, null: false
       t.string :sha1_five_byte, index: true, null: false
       t.string :derived_info, null: false
+      t.references :channel, type: :uuid, index: true, null: false
       t.references :publisher, type: :uuid, index: true, null: false
+      t.integer :wallet_address
       t.integer :wallet_status, null: false
     end
   end
