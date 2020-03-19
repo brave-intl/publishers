@@ -1,7 +1,7 @@
 require "test_helper"
 require "webmock/minitest"
 
-class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
+class UpholdServiceTest < ActiveJob::TestCase
   include EyeshadeHelper
   let(:uphold_url) { Rails.application.secrets[:uphold_api_uri] + "/v0/me" }
 
@@ -27,7 +27,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
+        Payout::PotentialPayment::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -45,7 +45,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
+        Payout::PotentialPayment::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                           publisher: publisher,
                                           should_send_notifications: true).perform
       end
@@ -64,7 +64,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let (:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: false).perform
       end
@@ -125,7 +125,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: false).perform
       end
@@ -216,7 +216,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
       let(:subject) do
         perform_enqueued_jobs do
-          PayoutReportPublisherIncluder.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
+          Payout::PotentialPayment::UpholdService.new(payout_report: PayoutReport.create(expected_num_payments: PayoutReport.expected_num_payments(Publisher.all)),
                                             publisher: publisher,
                                             should_send_notifications: should_send_notifications).perform
         end
@@ -261,7 +261,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     before do
       @payout_report = PayoutReport.create(fee_rate: 0.05, expected_num_payments: PayoutReport.expected_num_payments(Publisher.all))
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: should_send_notifications).perform
       end
@@ -276,7 +276,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
     let(:should_send_notifications) { true }
     let(:subject) do
       perform_enqueued_jobs do
-        PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+        Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
                                           publisher: publisher,
                                           should_send_notifications: should_send_notifications).perform
       end
@@ -362,7 +362,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
               it "does not create any extra payments" do
                 assert_difference -> { PotentialPayment.count }, 0 do
-                  PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+                  Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
                                                     publisher: publisher,
                                                     should_send_notifications: should_send_notifications).perform
                 end
@@ -408,7 +408,7 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
 
             it "does not create any extra payments" do
               assert_difference -> { PotentialPayment.count }, 0 do
-                PayoutReportPublisherIncluder.new(payout_report: @payout_report,
+                Payout::PotentialPayment::UpholdService.new(payout_report: @payout_report,
                                                   publisher: publisher,
                                                   should_send_notifications: should_send_notifications).perform
               end
@@ -546,55 +546,6 @@ class PayoutReportPublisherIncluderTest < ActiveJob::TestCase
             end
           end
         end
-
-
-        # describe "not a member" do
-        #   let(:wallet_response) do
-        #     { wallet: { authorized: false, status: "restricted", "isMember": false } }
-        #   end
-
-        #   before do
-        #     Rails.application.secrets[:api_eyeshade_offline] = false
-        #     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet_response, balances: balance_response)
-        #     subject
-        #   end
-
-        #   describe "should_send_notifications is true" do
-        #     let(:should_send_notifications) { true }
-
-        #     it "creates the potential payments" do
-        #       assert_equal 4, PotentialPayment.count
-        #       assert_equal 0, @payout_report.amount
-        #     end
-
-        #     it "does not include them in payout report json" do
-        #       @payout_report.update_report_contents
-
-        #       assert_equal 0, JSON.parse(@payout_report.contents).length
-        #     end
-
-        #     it "recieves an email to KYC uphold" do
-        #       email = ActionMailer::Base.deliveries.last
-        #       assert_equal email&.subject, I18n.t("publisher_mailer.uphold_kyc_incomplete.subject")
-        #     end
-        #   end
-
-        #   describe "should_send_notifications is false" do
-        #     let(:should_send_notifications) { false }
-        #     it "creates the potential payments" do
-        #       assert_equal 4, PotentialPayment.count
-        #       assert_equal 0, @payout_report.amount
-        #     end
-
-        #     it "does not include the payments in the payout json" do
-        #       @payout_report.update_report_contents
-        #       assert_equal 0, JSON.parse(@payout_report.contents).length
-        #     end
-
-        #     it "does not receive any emails " do
-        #       assert_empty ActionMailer::Base.deliveries
-        #     end
-        #   end
         end
       end
     end

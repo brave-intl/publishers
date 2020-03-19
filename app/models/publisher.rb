@@ -1,6 +1,7 @@
 require 'digest/md5'
 
 class Publisher < ApplicationRecord
+  include UserFeatureFlags
   has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
@@ -75,6 +76,7 @@ class Publisher < ApplicationRecord
   scope :not_admin, -> { where.not(role: ADMIN) }
   scope :partner, -> { where(role: PARTNER) }
   scope :not_partner, -> { where.not(role: PARTNER) }
+  scope :wire_only, -> { where(feature_flags: { WIRE_ONLY => true }) }
 
   scope :created, -> { filter_status(PublisherStatusUpdate::CREATED) }
   scope :onboarding, -> { filter_status(PublisherStatusUpdate::ONBOARDING) }
@@ -92,6 +94,8 @@ class Publisher < ApplicationRecord
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
+
+  store_accessor :feature_flags, WIRE_ONLY
 
   def self.filter_status(status)
     joins(:status_updates).
