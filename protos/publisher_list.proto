@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package publishers_pb;
+
+message PublisherList {
+  enum PublisherType {
+    ALL_PUBLISHERS = 0;
+  }
+
+  enum CompressionType {
+    NO_COMPRESSION = 0;
+    BROTLI_COMPRESSION = 1;
+  }
+
+  PublisherType publisher_type = 1;
+
+  uint32 prefix_size = 2;
+
+  CompressionType compression_type = 3;
+
+  uint32 uncompressed_size = 4;
+
+  bytes prefixes = 5;
+}
+

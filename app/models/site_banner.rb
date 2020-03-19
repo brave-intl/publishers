@@ -30,10 +30,19 @@ class SiteBanner < ApplicationRecord
   validates_presence_of :title, :description, :publisher
   validate :donation_amounts_in_scope
   before_save :clear_invalid_social_links
+  after_save :update_site_banner_lookup!
 
   def donation_amounts_in_scope
     return if errors.present?
     errors.add(:base, "Must be an approved tip preset") unless donation_amounts.nil? || DONATION_AMOUNT_PRESETS.include?(donation_amounts.join(','))
+  end
+
+  def update_site_banner_lookup!
+    if channel.present?
+      channel.update_site_banner_lookup!
+    else
+      publisher.update_site_banner_lookup!
+    end
   end
 
   # (Albert Wang) Until the front end can properly handle errors, let's not block save and only clear invalid domains

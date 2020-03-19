@@ -31,7 +31,7 @@ class JsonBuilders::ChannelsJsonBuilderV3
   end
 
   def build
-    joined_verified_channels.each do |verified_channels|
+    Channel.joined_verified_channels.each do |verified_channels|
       verified_channels = verified_channels.
         preload(:details).
         eager_load(:uphold_connection_for_channel).
@@ -50,18 +50,6 @@ class JsonBuilders::ChannelsJsonBuilderV3
   end
 
   private
-
-  def joined_verified_channels
-    [
-      Channel.verified.site_channels,
-      Channel.verified.youtube_channels,
-      Channel.verified.twitch_channels,
-      Channel.verified.twitter_channels,
-      Channel.verified.vimeo_channels,
-      Channel.verified.reddit_channels,
-      Channel.verified.github_channels,
-    ]
-  end
 
   def include_verified_channel(verified_channel)
     identifier = verified_channel.details.channel_identifier

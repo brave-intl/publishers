@@ -31,6 +31,7 @@ class Channel < ApplicationRecord
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
   has_one :site_banner
+  has_one :site_banner_lookup
 
   has_many :potential_payments
 
@@ -54,9 +55,11 @@ class Channel < ApplicationRecord
 
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
-  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_save :notify_slack, if: -> { :saved_change_to_verified? && verified? }
 
+  # *ChannelDetails get autosaved from above.
+  after_save :update_site_banner_lookup!, if: -> { :saved_change_to_verified? && verified? }
+  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
@@ -116,6 +119,19 @@ class Channel < ApplicationRecord
     end
 
     duplicates.flatten
+  end
+
+  # Use for building json channels
+  def self.joined_verified_channels
+    [
+      Channel.verified.site_channels,
+      Channel.verified.youtube_channels,
+      Channel.verified.twitch_channels,
+      Channel.verified.twitter_channels,
+      Channel.verified.vimeo_channels,
+      Channel.verified.reddit_channels,
+      Channel.verified.github_channels,
+    ]
   end
 
   def publication_title
@@ -269,6 +285,20 @@ class Channel < ApplicationRecord
 
   def register_channel_for_promo
     Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
+  end
+
+  def update_site_banner_lookup!
+    site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
+      channel_identifier: details&.channel_identifier || details.brave_publisher_id,
+    )
+    site_banner_lookup.set_sha2_base16
+    site_banner_lookup.set_wallet_status(publisher: publisher)
+    site_banner_lookup.update(
+      channel_id: id,
+      publisher_id: publisher_id,
+      derived_site_banner_info: site_banner&.non_default_properties || publisher&.default_site_banner&.non_default_properties || {},
+      wallet_address: publisher&.uphold_connection&.address
+    )
   end
 
   private

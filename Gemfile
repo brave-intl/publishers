@@ -30,6 +30,8 @@ gem "bootstrap", ">= 4.3.1"
 # browser details
 gem 'browser'
 
+gem 'brotli', "~> 0.2.3"
+
 # Authorization
 gem 'cancancan'
 
@@ -44,6 +46,8 @@ gem 'e2mmap'
 gem "faraday", "~> 0.17.3"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
+
+gem 'google-protobuf', "~> 3.11.4"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
