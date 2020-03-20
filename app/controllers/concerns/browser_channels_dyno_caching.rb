@@ -3,13 +3,29 @@ module BrowserChannelsDynoCaching
   require 'sentry-raven'
 
   def channels
+    clear_if_old_lock
+    have_lock = set_lock_to_now
+    render(status: 429) and return unless have_lock
     if dyno_cache_expired? || invalid_dyno_cache?
       update_dyno_cache
     end
     render(json: self.class.class_variable_get(klass_dyno_cache), status: 200)
+    Rails.cache.delete(self.class::REDIS_THUNDERING_HERD_KEY)
   end
 
   private
+
+  def clear_if_old_lock
+    past_time = Rails.cache.fetch(self.class::REDIS_THUNDERING_HERD_KEY)
+    # It's about 55 MB, which should only take 10 seconds to transmit from endpoint to browser.
+    if past_time.present? && 5.minutes.ago > Time.at(past_time)
+      Rails.cache.delete(self.class::REDIS_THUNDERING_HERD_KEY)
+    end
+  end
+
+  def set_lock_to_now
+    Redis.new.setnx(self.class::REDIS_THUNDERING_HERD_KEY, Time.now.to_i)
+  end
 
   def dyno_cache_expired?
     expiration_time = Rails.cache.fetch(dyno_expiration_key)
