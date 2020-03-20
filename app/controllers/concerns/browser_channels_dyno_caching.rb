@@ -16,9 +16,9 @@ module BrowserChannelsDynoCaching
   private
 
   def clear_if_old_lock
-    past_time = Time.at(Rails.cache.fetch(self.class::REDIS_THUNDERING_HERD_KEY))
+    past_time = Rails.cache.fetch(self.class::REDIS_THUNDERING_HERD_KEY)
     # It's about 55 MB, which should only take 10 seconds to transmit from endpoint to browser.
-    if 5.minutes.ago > past_time
+    if past_time.present? && 5.minutes.ago > Time.at(past_time)
       Rails.cache.delete(self.class::REDIS_THUNDERING_HERD_KEY)
     end
   end
