@@ -3,10 +3,14 @@ module BrowserChannelsDynoCaching
   require 'sentry-raven'
 
   def channels
+    value = "#{Time.now.to_i}"
+    have_lock = Redis.new.setnx(self.class::REDIS_THUNDERING_HERD_KEY, value)
+    render(status: 429) and return unless have_lock
     if dyno_cache_expired? || invalid_dyno_cache?
       update_dyno_cache
     end
     render(json: self.class.class_variable_get(klass_dyno_cache), status: 200)
+    Redis.new.del(self.class::REDIS_THUNDERING_HERD_KEY)
   end
 
   private
