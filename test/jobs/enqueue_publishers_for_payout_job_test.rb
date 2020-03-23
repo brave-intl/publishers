@@ -1,22 +1,19 @@
 require 'test_helper'
 
 class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
+  include ActiveJob::TestHelper
   before do
     IncludePublisherInPayoutReportJob.clear
   end
 
-  test "launches 1 job per publisher" do
-    assert_difference -> { PayoutReport.count } do
-      EnqueuePublishersForPayoutJob.perform_now(
-        should_send_notifications: false,
-        final: false
-      )
-      perform_enqueued_jobs
-      assert_equal(Publisher.joins(:uphold_connection).with_verified_channel.count + 
-                   Publisher.joins(:paypal_connection).with_verified_channel.where(paypal_connections: { country: "JP" }).count, 
-                   IncludePublisherInPayoutReportJob.jobs.size
-                  )
-    end
+  test "launches a job per payout type" do
+    prc = PayoutReport.count
+    EnqueuePublishersForPayoutJob.perform_now(
+      should_send_notifications: false,
+      final: false
+    )
+    assert_equal prc + 1, PayoutReport.count
+    assert_enqueued_jobs 2
   end
 
   test "can specify an existing payout report and a new one won't be created" do
@@ -31,12 +28,13 @@ class EnqueuePublishersForPayoutJobTest < ActiveJob::TestCase
   test "can supply a list of publisher ids" do
     publishers = Publisher.where.not(email: "priscilla@potentiallypaid.org").joins(:uphold_connection) + Publisher.joins(:paypal_connection).with_verified_channel.where(paypal_connections: { country: "JP" })
 
-    EnqueuePublishersForPayoutJob.perform_now(
-      should_send_notifications: false,
-      final: false,
-      publisher_ids: publishers.pluck(:id)
-    )
-    perform_enqueued_jobs
-    assert_equal publishers.count, IncludePublisherInPayoutReportJob.jobs.size
+    assert_enqueued_with(job: Payout::UpholdJob) do
+      EnqueuePublishersForPayoutJob.perform_now(
+        should_send_notifications: false,
+        final: false,
+        publisher_ids: publishers.pluck(:id)
+      )
+    end
+    assert_enqueued_jobs 2
   end
 end

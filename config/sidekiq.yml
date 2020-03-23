@@ -59,8 +59,9 @@
   TransferChannelsJob:
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
-  EnqueuePublishersForPayoutNotificationJob:
+  EnqueuePublishersForPayoutJob:
     cron: "0 0 23 * *"
+    args: ['send_notifications']
     description: "Notifies publishers their wallet is disconnected on the 23rd of every month."
     queue: scheduler
   EnqueuePublishersForPayoutJob:
