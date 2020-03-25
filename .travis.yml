@@ -34,7 +34,7 @@ before_script:
   - bundle exec rake db:setup
 script:
   - yarn install
-  - yarn audit
+  - yarn audit --groups dependencies
   - yarn lint
   - bundle exec rails test
   - yarn test
