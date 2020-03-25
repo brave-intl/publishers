@@ -2,7 +2,7 @@ module UserFeatureFlags
   include ActiveSupport::Concern
   WIRE_ONLY = :wire_only
 
-  VALID_FEATURE_FLAGS = [WIRE_ONLY]
+  VALID_FEATURE_FLAGS = [WIRE_ONLY].freeze
 
   def update_feature_flags_from_form(update_flag_params)
     update_flag_params.keys.each do |flag_param_key|
