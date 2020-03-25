@@ -22,15 +22,14 @@ Rails.application.configure do
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
-    if Rails.application.secrets[:redis_url]
-    config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = true
+  config.public_file_server.headers = {
+    "Cache-Control" => "public, max-age=172800"
+  }
+  if Rails.application.secrets[:redis_url]
     config.cache_store = :redis_cache_store, { url: Rails.application.secrets[:redis_url] }
-    config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=172800"
-    }
   else
-    config.action_controller.perform_caching = false
-    config.cache_store = :null_store
+    config.cache_store = :redis_cache_store, { url: "127.0.0.1:6379" }
   end
 
   # Raise exceptions instead of rendering exception templates.
