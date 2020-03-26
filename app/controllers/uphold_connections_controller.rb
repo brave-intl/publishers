@@ -43,7 +43,6 @@ class UpholdConnectionsController < ApplicationController
       user = BrowserUserSignUpService.new.perform
       uphold_connection.update(publisher_id: user.id, card_id: uphold_model_card.id)
     else
-      p "creating an uphold connection"
       uphold_connection = UpholdConnection.find_by(card_id: uphold_model_card.id)
       user = uphold_connection.publisher
     end
