@@ -22,8 +22,10 @@
 
   &--step-description {
     margin-right: 10px;
-    color: #ffffff;
-    font-size: 16px;
-    font-family: Poppins-Regular;
+    p {
+      color: #ffffff;
+      font-size: 16px;
+      font-family: Poppins-Regular;
+    }
   }
 }
