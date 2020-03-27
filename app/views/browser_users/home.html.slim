@@ -1,11 +1,9 @@
-.dashboard
-  .row
-    .col-md.mb-2
-      h4 Refer your friends
+.page-header
+  h4 Refer your friends
 
 .dashboard
-  .row
-    .col-md-mb-4
-      = render partial: 'how_it_works'
-    .col-md.mb-4
+  .d-flex.flex-row.justify-content-start
+    .p-2
+      = render partial: 'how_it_works', referral_code: @promo_registration
+    .p-2
       = render partial: 'promo_panel'
