@@ -1,12 +1,11 @@
 .dashboard
   .row
-    .col-md.mb-4
-      center 
-        span Help us promote Brave and earn BAT by referring your friends! Share your link at 
-        span = link_to https_referral_url(@promo_registration.referral_code)
-        p You'll see your referral stats below
+    .col-md.mb-2
+      h4 Refer your friends
 
 .dashboard
   .row
+    .col-md-mb-4
+      = render partial: 'how_it_works'
     .col-md.mb-4
       = render partial: 'promo_panel'

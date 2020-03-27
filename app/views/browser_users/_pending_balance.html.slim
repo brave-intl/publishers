@@ -1,0 +1,21 @@
+.dashboard-panel--wrapper.uphold-panel
+  .dashboard-panel--header#dashboard_uphold_header
+    h3 Referral Balance
+  .dashboard-panel--content#uphold_dashboard
+    .last-deposit-date.field
+      label= "Last deposit date"
+      .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@browser_user, :en)
+  .dashboard-panel--content#last_settlement class=last_settlement_class(@browser_user)
+    .last-deposit
+      = "LAST DEPOSIT"
+      .amounts
+        .bat
+          - last_deposit_balance = publisher_last_settlement_bat_balance(@browser_user)
+          span.bat-amount#last_deposit_bat_amount= last_deposit_balance
+          - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
+            span.bat-code= " BAT"
+        .converted#last_deposit_converted_amount
+          = publisher_converted_last_settlement_balance(@browser_user)
+      = link_to("Check Balance", uphold_dashboard_url, class: "btn btn-primary",
+              id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
+              :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")

@@ -1,0 +1,29 @@
+.how-it-works {
+  &--panel {
+    height: 596px;
+    width: 400px;
+    background: rgb(255, 118, 84);
+    border-radius: 8px;
+  }
+  &--header {
+    h3 {
+      padding: 24px 0px 15px 28px;
+      font-size: 28px;
+      font-family: Poppins-Medium;
+      font-weight: 500;
+      color: #ffffff;
+    }
+  }
+  &--step-image {
+    margin-left: 24px;
+    margin-top: 5px;
+    margin-right: 14px;
+  }
+
+  &--step-description {
+    margin-right: 10px;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: Poppins-Regular;
+  }
+}
