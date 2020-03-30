@@ -18,8 +18,8 @@
           - else
             i = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT, currency: t("bat_in_locale"))
     - else
-      .next_deposit_date.small.mt-2
-        span = "Next deposit date"
+      .next_deposit_date.small
+        span.bold = "Next deposit date: "
         span = next_deposit_date
 / We might want to enable last deposit in the future, so instead of trying to re-dig up the code
 / These lines should be uncommented
