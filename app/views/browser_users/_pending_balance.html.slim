@@ -1,10 +1,28 @@
 .dashboard-panel--wrapper.dashboard-panel--browser-user
   .dashboard-panel--header#dashboard_uphold_header
-    h3 Referral Balance
+    h3= t(".balance_pending")
   .dashboard-panel--content#uphold_dashboard
-    .last-deposit-date.field
-      label= "Last deposit date"
-      .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@browser_user, :en)
+    .balance.px-4
+      .bat-logo
+        = image_tag("bat-logo@1x.png", class: "", width: 60, height: 60)
+      .amounts
+        .bat
+          span.bat-amount--browser-user#bat_amount = publisher_referral_bat_balance(@browser_user)
+          span.bat-code= " " + I18n.t(".bat_in_locale")
+  .dashboard-panel--content
+    - if payout_in_progress?
+      .payout_in_progress
+        span
+          - if converted_balance.present? && converted_balance.to_i>= PayoutReport::MINIMUM_BALANCE_AMOUNT
+            i = t(".payout_in_progress")
+          - else
+            i = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT, currency: t("bat_in_locale"))
+    - else
+      .next_deposit_date.small.mt-2
+        span = "Next deposit date"
+        span = next_deposit_date
+/ We might want to enable last deposit in the future, so instead of trying to re-dig up the code
+/ These lines should be uncommented
   .dashboard-panel--content#last_settlement class=last_settlement_class(@browser_user)
     .last-deposit
       = "LAST DEPOSIT"
