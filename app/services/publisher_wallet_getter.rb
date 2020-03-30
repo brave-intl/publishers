@@ -12,7 +12,7 @@ class PublisherWalletGetter < BaseApiClient
   end
 
   def perform
-    if publisher.channels.verified.present?
+    if publisher.channels.verified.present? || publisher.browser_user?
       accounts = PublisherBalanceGetter.new(publisher: publisher).perform
       return if accounts == :unavailable
     else
