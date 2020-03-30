@@ -1,4 +1,4 @@
-.dashboard-panel--wrapper.uphold-panel
+.dashboard-panel--wrapper.dashboard-panel--browser-user
   .dashboard-panel--header#dashboard_uphold_header
     h3 Referral Balance
   .dashboard-panel--content#uphold_dashboard
@@ -16,6 +16,3 @@
             span.bat-code= " BAT"
         .converted#last_deposit_converted_amount
           = publisher_converted_last_settlement_balance(@browser_user)
-      = link_to("Check Balance", uphold_dashboard_url, class: "btn btn-primary",
-              id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
-              :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")

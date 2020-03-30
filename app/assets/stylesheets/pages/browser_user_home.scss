@@ -3,6 +3,12 @@
   margin-top: 45px;
   margin-bottom: 30px;
 }
+.pending-balance {
+  &--panel {
+    height: 200px;
+    width: 400px;
+  }
+}
 .how-it-works {
   &--panel {
     height: 530px;
