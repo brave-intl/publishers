@@ -777,7 +777,7 @@
     justify-content: flex-start;
     color: $braveText-2;
 
-    & img {
+    #bat-logo {
       margin: 12px;
     }
 
@@ -789,6 +789,9 @@
       .bat-amount {
         font-size: 48px;
         line-height: 42px;
+        &--browser-user {
+          font-size: 32px;
+        }
       }
 
       .bat-code {

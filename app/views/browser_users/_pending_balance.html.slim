@@ -2,11 +2,11 @@
   .dashboard-panel--header#dashboard_uphold_header
     h3= t(".balance_pending")
   .dashboard-panel--content#uphold_dashboard
-    .balance.px-4
+    .balance
       .bat-logo
-        = image_tag("bat-logo@1x.png", class: "", width: 60, height: 60)
+        = image_tag("bat-logo@2x.png", class: "", width: 45, height: 45)
       .amounts
-        .bat
+        .bat-referral-balance-box
           span.bat-amount--browser-user#bat_amount = publisher_referral_bat_balance(@browser_user)
           span.bat-code= " " + I18n.t(".bat_in_locale")
   .dashboard-panel--content
