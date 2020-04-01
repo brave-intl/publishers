@@ -4,7 +4,7 @@ class Api::V1::Stats::PromoCampaignsControllerTest < ActionDispatch::Integration
   test "/api/v1/stats/promo_campaigns/ returns json representation of all campaigns" do
     get "/api/v1/stats/promo_campaigns/", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
       assert_equal(
-        PromoCampaign.all.map { |promo_campaign|
+        PromoCampaign.all.map do |promo_campaign|
           {
             promo_campaign_id: promo_campaign.id,
             name: promo_campaign.name,
@@ -15,7 +15,7 @@ class Api::V1::Stats::PromoCampaignsControllerTest < ActionDispatch::Integration
               }
             }
           }
-        },
+        end,
         JSON.parse(response.body, symbolize_names: true)
       )
   end
