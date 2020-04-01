@@ -27,11 +27,11 @@ class UpholdConnectionsController < ApplicationController
         )
         redirect_to browser_users_home_path
       else
-        flash[:alert] = "Sorry, we weren't able to verify your credentials"
+        flash[:alert] = t(".invalid_credentials_alert")
         redirect_to root_path
       end
     else
-      flash[:alert] = "You must sign in within 10 minutes."
+      flash[:alert] = t(".out_of_time_alert")
       redirect_to root_path
     end
   end
