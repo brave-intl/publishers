@@ -13,10 +13,7 @@
     - if payout_in_progress?
       .payout_in_progress
         span
-          - if converted_balance.present? && converted_balance.to_i>= PayoutReport::MINIMUM_BALANCE_AMOUNT
-            i = t(".payout_in_progress")
-          - else
-            i = t(".payout_minimum_balance", amount: PayoutReport::MINIMUM_BALANCE_AMOUNT, currency: t("bat_in_locale"))
+          i = t(".payout_in_progress")
     - else
       .next_deposit_date.small
         span.bold = "Next deposit date: "
