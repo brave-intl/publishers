@@ -1,5 +1,4 @@
 class BrowserUsersController < ApplicationController
-  include PromosHelper
   before_action :authenticate_publisher!
   before_action :protect
 
