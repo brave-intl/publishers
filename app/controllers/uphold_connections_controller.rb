@@ -12,31 +12,33 @@ class UpholdConnectionsController < ApplicationController
 
   def confirm
     uphold_card_id = Rails.cache.fetch(params[:state])
-    uphold_code = params[:code]
-    if uphold_card_id.present?
-      parameters = UpholdRequestAccessParameters.new(uphold_code: uphold_code, secret_used: UpholdConnection::USE_BROWSER).perform
-      # read cards and make sure there's a match
-      uphold_connection = UpholdConnection.new(uphold_access_parameters: parameters)
-      uphold_model_card = Uphold::Models::Card.new
-      searched_uphold_model_card = uphold_model_card.find(uphold_connection: uphold_connection, id: uphold_card_id)
+    uphold_connection, uphold_card = get_card(
+      uphold_card_id: uphold_card_id,
+      uphold_code: params[:code]
+    )
 
-      if searched_uphold_model_card.present? && searched_uphold_model_card.id == uphold_card_id
-        signup_user_if_necessary_or_signin(
-          uphold_model_card: searched_uphold_model_card,
-          uphold_connection: uphold_connection
-        )
-        redirect_to browser_users_home_path
-      else
-        flash[:alert] = t(".invalid_credentials_alert")
-        redirect_to root_path
-      end
-    else
-      flash[:alert] = t(".out_of_time_alert")
-      redirect_to root_path
-    end
+    return redirect_to(root_path, flash: { alert: I18n.t(".out_of_time_alert") }) if uphold_card.blank?
+    return redirect_to(root_path, flash: { alert: I18n.t(".invalid_credentials_alert") }) unless uphold_card.id == uphold_card_id
+
+    signup_user_if_necessary_or_signin(
+      uphold_model_card: uphold_card,
+      uphold_connection: uphold_connection
+    )
+    redirect_to browser_users_home_path
   end
 
   private
+
+  def get_card(uphold_card_id:, uphold_code:)
+    return [nil, nil] if uphold_card_id.blank?
+
+    parameters = UpholdRequestAccessParameters.new(uphold_code: uphold_code, secret_used: UpholdConnection::USE_BROWSER).perform
+    # read cards and make sure there's a match
+    uphold_connection = UpholdConnection.new(uphold_access_parameters: parameters)
+    uphold_model_card = Uphold::Models::Card.new
+    card = uphold_model_card.find(uphold_connection: uphold_connection, id: uphold_card_id)
+    [uphold_connection, card]
+  end
 
   def signup_user_if_necessary_or_signin(uphold_model_card:, uphold_connection:)
     if create_uphold_connection?(uphold_model_card: uphold_model_card)
