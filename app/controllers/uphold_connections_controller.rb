@@ -1,5 +1,6 @@
 class UpholdConnectionsController < ApplicationController
   def login
+    return unless req.ip.in?(Rails.application.secrets[:api_ip_whitelist])
     # TODO: Make sure these params are safe
     uphold_card_id = params[:uphold_card_id]
     state = SecureRandom.hex(64).to_s
