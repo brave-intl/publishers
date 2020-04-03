@@ -1,8 +1,11 @@
 class UpholdConnectionsController < ApplicationController
+  UUID_LENGTH = 36
+
   def login
-    return unless req.ip.in?(Rails.application.secrets[:api_ip_whitelist])
-    # TODO: Make sure these params are safe
+    ip_whitelist = Rails.application.secrets[:api_ip_whitelist]
+    render(status: 401) and return unless ip_whitelist.nil? || request.ip.in?(ip_whitelist)
     uphold_card_id = params[:uphold_card_id]
+    render(status: 400, json: {}) and return unless uphold_card_id&.length == UUID_LENGTH
     state = SecureRandom.hex(64).to_s
     Rails.cache.write(state, uphold_card_id, expires_in: 10.minutes)
     redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
