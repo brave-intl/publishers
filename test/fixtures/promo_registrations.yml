@@ -22,3 +22,9 @@ unattached_promo_registration:
   referral_code: PRO012
   publisher: promo_enabled
   promo_campaign: test_promo_campaign2
+browser_user_registration:
+  kind: peer_to_peer
+  promo_id: 2
+  referral_code: BRO001
+  publisher: browser_user
+  promo_campaign: peer_to_peer_campaign

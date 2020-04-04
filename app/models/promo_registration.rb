@@ -5,7 +5,8 @@ class PromoRegistration < ApplicationRecord
   CHANNEL = "channel".freeze
   OWNER = "owner".freeze
   UNATTACHED = "unattached".freeze
-  KINDS = [CHANNEL, OWNER, UNATTACHED].freeze
+  PEER_TO_PEER = "peer_to_peer".freeze
+  KINDS = [CHANNEL, OWNER, UNATTACHED, PEER_TO_PEER].freeze
 
   # Event types
   RETRIEVALS = "retrievals".freeze # Aliased as 'Downloads'

@@ -58,6 +58,12 @@ class Rack::Attack
     end
   end
 
+  throttle("uphold/login", limit: 5, period: 10.minutes) do |req|
+    if req.path.start_with?("/uphold/login")
+      req.ip
+    end
+  end
+
   throttle("2fa_sign_in", limit: 10, period: 15.minutes) do |req|
     if req.path.start_with?("/publishers/two_factor_authentications")
       req.ip

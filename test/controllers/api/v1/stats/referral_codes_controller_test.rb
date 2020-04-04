@@ -3,7 +3,7 @@ class Api::V1::Stats::ReferralCodesControllerTest < ActionDispatch::IntegrationT
   test "/api/v1/stats/referral_codes/ returns all referral codes" do
     get "/api/v1/stats/referral_codes/", headers: { "HTTP_AUTHORIZATION" => "Token token=fake_api_auth_token" }
     data = JSON.parse(response.body, symbolize_names: true)
-    assert_equal(data, ["PRO123", "PRO456", "PRO789", "PRO012"])
+    assert_equal(data, PromoRegistration.pluck(:referral_code))
   end
 
   test "/api/v1/stats/referral_codes/:id returns channel data of a referral code" do

@@ -29,7 +29,7 @@ module Publishers
       # Check if an existing email unverified publisher record exists to prevent duplicating unverified publishers.
       # Requiring `email: nil` ensures we do not select a publisher with the same pending_email
       # as a publisher in the middle of the change email flow
-      @publisher = Publisher.find_or_create_by(pending_email: params[:email], email: nil)
+      @publisher = Publisher.find_or_create_by(pending_email: params[:email], email: nil, role: Publisher::PUBLISHER)
       @publisher_email = @publisher.pending_email
       @publisher.agreed_to_tos = Time.now if params[:terms_of_service].present?
 
