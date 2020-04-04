@@ -21,8 +21,8 @@ class UpholdConnectionsController < ApplicationController
       uphold_code: params[:code]
     )
 
-    return redirect_to(root_path, flash: { alert: I18n.t(".out_of_time_alert") }) if uphold_card.blank?
-    return redirect_to(root_path, flash: { alert: I18n.t(".invalid_credentials_alert") }) unless uphold_card.id == uphold_card_id
+    redirect_to(root_path, flash: { alert: I18n.t(".out_of_time_alert") }) and return if uphold_card.blank?
+    redirect_to(root_path, flash: { alert: I18n.t(".invalid_credentials_alert") }) and return unless uphold_card.id == uphold_card_id
 
     signup_user_if_necessary_or_signin(
       uphold_model_card: uphold_card,
