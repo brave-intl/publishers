@@ -5,17 +5,17 @@ module Admin
     end
 
     def new
-      @invoice = Invoice.new(partner_id: params[:partner_id])
+      @invoice = Invoice.new(publisher_id: params[:publisher_id])
     end
 
     def create
       date_string = "#{params[:invoice][:month]}-#{params[:invoice][:year]}"
       date = DateTime.strptime(date_string, "%m-%Y").utc
 
-      @invoice = Invoice.new(invoice_params.merge(partner_id: params[:partner_id], date: date))
+      @invoice = Invoice.new(invoice_params.merge(publisher_id: params[:publisher_id], date: date))
 
       if @invoice.save
-        redirect_to [:admin, @invoice.partner, @invoice]
+        redirect_to [:admin, @invoice.publisher, @invoice]
       else
         render "new"
       end
@@ -33,7 +33,7 @@ module Admin
       @invoice = load_invoice
       @invoice.update(status: Invoice::IN_PROGRESS, finalized_by: current_user)
 
-      redirect_to [:admin, @invoice.partner, @invoice], flash: { notice: "Invoice has been marked as 'In Progress'" }
+      redirect_to [:admin, @invoice.publisher, @invoice], flash: { notice: "Invoice has been marked as 'In Progress'" }
     end
 
     def update
@@ -56,12 +56,12 @@ module Admin
       )
 
       path = admin_publisher_invoice_path(
-        partner_id: params[:partner_id],
+        publisher_id: params[:publisher_id],
         id: @invoice.id
       )
 
       if params[:file].present? && invoice_file.save
-        PartnerMailer.invoice_file_added(invoice_file, @invoice.partner).deliver_later
+        PartnerMailer.invoice_file_added(invoice_file, @invoice.publisher).deliver_later
         redirect_to path, flash: { notice: "Your document was uploaded successfully" }
       else
         redirect_to path, flash: { alert: "Your document could not be uploaded" }

@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_17_211000) do
+ActiveRecord::Schema.define(version: 2020_04_06_230256) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -159,7 +158,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_211000) do
   end
 
   create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "partner_id"
+    t.uuid "publisher_id"
     t.date "date"
     t.string "amount", default: "0"
     t.string "finalized_amount"
@@ -171,7 +170,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_211000) do
     t.datetime "updated_at", null: false
     t.index ["finalized_by_id"], name: "index_invoices_on_finalized_by_id"
     t.index ["paid_by_id"], name: "index_invoices_on_paid_by_id"
-    t.index ["partner_id"], name: "index_invoices_on_partner_id"
+    t.index ["publisher_id"], name: "index_invoices_on_publisher_id"
   end
 
   create_table "legacy_publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -576,7 +575,6 @@ ActiveRecord::Schema.define(version: 2020_03_17_211000) do
     t.datetime "member_at"
     t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
     t.text "card_id"
-    t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 

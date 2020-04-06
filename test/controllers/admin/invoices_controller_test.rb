@@ -19,7 +19,7 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
     let(:invoice) { @invoice ||= Invoice.create(partner: partner.becomes(Partner), date: "2019-01-01") }
 
     let(:subject) do
-      post admin_publisher_invoice_upload_path(partner_id: '_', invoice_id: invoice.id),
+      post admin_publisher_invoice_upload_path(publisher_id: '_', invoice_id: invoice.id),
         params: { file: file },
         headers: { 'content-type': 'multipart/form-data' }
     end
@@ -27,7 +27,7 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
     describe 'when the file exists' do
       it 'redirects and alerts' do
         subject
-        assert_redirected_to admin_publisher_invoice_path(partner_id: '_', id: invoice.id)
+        assert_redirected_to admin_publisher_invoice_path(publisher_id: '_', id: invoice.id)
         assert_equal "Your document was uploaded successfully", flash[:notice]
       end
 
@@ -44,14 +44,14 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
     describe "when file doesn't exist" do
       let(:subject) do
-        post admin_publisher_invoice_upload_path(partner_id: '_', invoice_id: invoice.id),
+        post admin_publisher_invoice_upload_path(publisher_id: '_', invoice_id: invoice.id),
           params: { file: nil },
           headers: { 'content-type': 'multipart/form-data' }
       end
 
       it 'redirects and sends an error message ' do
         subject
-        assert_redirected_to admin_publisher_invoice_path(partner_id: '_', id: invoice.id)
+        assert_redirected_to admin_publisher_invoice_path(publisher_id: '_', id: invoice.id)
         assert_equal "Your document could not be uploaded", flash[:alert]
       end
     end

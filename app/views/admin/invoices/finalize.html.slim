@@ -1,10 +1,10 @@
-h2= "Publisher #{@invoice.partner.name.titleize}'s invoice for #{@invoice.human_date}"
+h2= "Publisher #{@invoice.publisher.name.titleize}'s invoice for #{@invoice.human_date}"
 
 p You are about to mark this invoice as "In Progress". From this point forward the invoice will be read-only.
 
 p
   span This means that
-  strong= " #{@invoice.partner} "
+  strong= " #{@invoice.publisher} "
   span will
 ul
   li not be able to edit the amount of the invoice
@@ -17,7 +17,7 @@ ul
   li will not be able to upload any supporting documents
 
 p
-  span= "#{@invoice.partner} requested #{@invoice.amount} BAT and will be manually paid out "
+  span= "#{@invoice.publisher} requested #{@invoice.amount} BAT and will be manually paid out "
   mark= "#{@invoice.finalized_amount}"
   span= " BAT."
 

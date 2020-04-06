@@ -101,7 +101,7 @@ class Admin::PartnersControllerTest < ActionDispatch::IntegrationTest
       # We assert that only one account is created
       assert_empty Publisher.where(email: unverified_email)
       # We made it a partner
-      assert Publisher.find_by(pending_email: unverified_email).partner?
+      assert Publisher.find_by(pending_email: unverified_email).invoice?
     end
 
     test "when there's a verified existing publisher" do
@@ -120,7 +120,7 @@ class Admin::PartnersControllerTest < ActionDispatch::IntegrationTest
       # We assert that only one account is created
       assert_empty Publisher.where(pending_email: unverified_email)
       # We made it a partner
-      assert Publisher.find_by(email: unverified_email).partner?
+      assert Publisher.find_by(email: unverified_email).invoice?
     end
 
     test "when there's a new partner" do

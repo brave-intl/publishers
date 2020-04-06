@@ -37,6 +37,7 @@ class Publisher < ApplicationRecord
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
   has_many :potential_payments
+  has_many :invoices
 
   belongs_to :youtube_channel
 
@@ -153,13 +154,6 @@ class Publisher < ApplicationRecord
         select("publishers.*", "count(channels.id) channels_count").
         order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
-  end
-
-  # This will convert the user to be a partner, or a publisher
-  def become_subclass
-    klass = self
-    klass = becomes(Partner) if partner?
-    klass
   end
 
   # API call to eyeshade

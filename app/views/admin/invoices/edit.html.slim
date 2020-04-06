@@ -1,5 +1,5 @@
 h2= "Edit #{@invoice.human_date} Invoice"
-h5= "Publisher: #{@invoice.partner.name}"
+h5= "Publisher: #{@invoice.publisher.name}"
 
 
 = form_with model: [:admin, :publisher, @invoice], local: true do |form|
