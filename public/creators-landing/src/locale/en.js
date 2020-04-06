@@ -62,7 +62,7 @@ export default {
   signoff: {
     btn: "Sign up now",
     btnHref: "/sign-up",
-    headlineOne: "Join ",
+    headlineOne: "Join over ",
     headlineTwo:
       " content creators and publishers earning more from Brave Rewards"
   },
