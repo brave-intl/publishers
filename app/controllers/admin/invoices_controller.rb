@@ -40,7 +40,7 @@ module Admin
       @invoice = load_invoice
 
       if @invoice.update(invoice_params)
-        redirect_to [:admin, :partner, @invoice]
+        redirect_to [:admin, :publisher, @invoice]
       else
         render "edit"
       end
@@ -55,7 +55,7 @@ module Admin
         file: params[:file]
       )
 
-      path = admin_partner_invoice_path(
+      path = admin_publisher_invoice_path(
         partner_id: params[:partner_id],
         id: @invoice.id
       )

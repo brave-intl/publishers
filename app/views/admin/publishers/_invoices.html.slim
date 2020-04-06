@@ -1,7 +1,7 @@
 .d-flex.mb-3
   h3 = "Invoices"
   .ml-3
-    = link_to "Request Invoice", new_admin_partner_invoice_path(partner_id: partner.id), class: 'btn btn-primary'
+    = link_to "Request Invoice", admin_publisher_invoices_path(publisher_id: partner.id), class: 'btn btn-primary'
 table.display.table.table-bordered.table-striped
   tr
     th Date
@@ -12,7 +12,7 @@ table.display.table.table-bordered.table-striped
   tbody
   - partner.invoices.order(date: :desc).limit(limit).each do |invoice|
     tr.gradeX
-      td = link_to invoice.human_date, admin_partner_invoice_path(partner_id: partner.id, id: invoice.id)
+      td = link_to invoice.human_date, admin_publisher_invoice_path(publisher_id: partner.id, id: invoice.id)
       td = invoice.status
       td = invoice.amount
       td = invoice.finalized_amount

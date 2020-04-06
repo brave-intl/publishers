@@ -97,7 +97,7 @@ class Publisher < ApplicationRecord
     joins(:channels).where('channels.verified = true').distinct
   }
 
-  store_accessor :feature_flags, WIRE_ONLY
+  store_accessor :feature_flags, VALID_FEATURE_FLAGS
 
   def self.filter_status(status)
     joins(:status_updates).

@@ -1,4 +1,4 @@
-h2= "Finalize #{@invoice.partner.name.titleize}'s invoice for #{@invoice.human_date}"
+h2= "Publisher #{@invoice.partner.name.titleize}'s invoice for #{@invoice.human_date}"
 
 p You are about to mark this invoice as "In Progress". From this point forward the invoice will be read-only.
 
@@ -21,5 +21,5 @@ p
   mark= "#{@invoice.finalized_amount}"
   span= " BAT."
 
-= form_tag(admin_partner_invoice_update_status_path, method: :patch)
+= form_tag(admin_publisher_invoice_update_status_path, method: :patch)
   = submit_tag 'Mark partner invoice as "In Progress"', class: 'btn btn-warning'

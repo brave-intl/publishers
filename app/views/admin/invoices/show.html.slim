@@ -3,12 +3,12 @@
   h2.mt-1= @invoice.human_date + " Invoice"
   - if @invoice.in_progress?
     .ml-3
-      = link_to "Generate Manual Payout", admin_partner_generate_manual_payout_path(id: @invoice.partner), class: 'btn btn-info'
+      = link_to "Generate Manual Payout", admin_publisher_generate_manual_payout_path(id: @invoice.partner), class: 'btn btn-info'
   - elsif @invoice.pending?
     .ml-3
-      = link_to "Edit", edit_admin_partner_invoice_path(@invoice), class: 'btn btn-primary'
+      = link_to "Edit", edit_admin_publisher_invoice_path(@invoice), class: 'btn btn-primary'
     .ml-3
-      = link_to "Finalize", admin_partner_invoice_finalize_path(invoice_id: @invoice.id), class: 'btn btn-dark'
+      = link_to "Finalize", admin_publisher_invoice_finalize_path(invoice_id: @invoice.id), class: 'btn btn-dark'
 
 .d-flex.mb-4
   h4.mr-4= link_to @invoice.partner.name,  admin_publisher_path(@invoice.partner)
@@ -46,7 +46,7 @@
   h4 Supporting Documents
 
 - if @invoice.pending?
-  = form_tag admin_partner_invoice_upload_path(partner_id: @invoice.partner.id, invoice_id: @invoice.id), multipart: true do |f|
+  = form_tag admin_publisher_invoice_upload_path(publisher_id: @invoice.partner.id, invoice_id: @invoice.id), multipart: true do |f|
     label
       = file_field_tag "file"
     = submit_tag "Upload Document", class: "btn btn-dark"

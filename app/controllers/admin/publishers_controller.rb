@@ -144,7 +144,7 @@ class Admin::PublishersController < AdminController
 
   def update_feature_flag_params
     params.require(:publisher).permit(
-      UserFeatureFlags::WIRE_ONLY.to_sym
+      UserFeatureFlags::VALID_FEATURE_FLAGS
     )
   end
 

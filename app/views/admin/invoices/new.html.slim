@@ -2,7 +2,7 @@
 h2= "Request Invoice for #{@invoice.partner}"
 
 
-= form_with model: [:admin, :partner, @invoice], local: true do |form|
+= form_with model: [:admin, :publisher, @invoice], local: true do |form|
   - if @invoice.errors.any?
     ul
       - @invoice.errors.full_messages.each do |msg|
