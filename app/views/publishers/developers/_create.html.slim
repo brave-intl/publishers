@@ -1,0 +1,17 @@
+script id="create_secret_key-#{@key.id}" type="text/html"
+    h5.text-left.m-0= t('.title')
+    .p-4.text-left
+      .form-group
+        label.font-weight-bold= t('.secret_key')
+        p= t('.secret_key_description')
+        code.d-block.bg-light.p-2.rounded.border
+          = @key.secret_key
+      .btn.btn-secondary
+        = t('.close')
+
+
+
+= link_to('', '#', data: { "js-confirm-with-modal": "create_secret_key-#{@key.id}" }, id: @key.id, class: 'd-none')
+
+javascript:
+  document.getElementById("#{@key.id}").click();

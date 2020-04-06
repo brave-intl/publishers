@@ -1,0 +1,26 @@
+
+
+// Removing the modal
+var MODAL_SHOW_CLASS = "modal-show";
+var modalElement = document.querySelector(".js-shared-modal");
+var contentElement = modalElement.querySelector(".modal-panel--content");
+var containerElement = modalElement.querySelector(".modal-container");
+var identifierClass= 'modal-container--modal-identifier--new_secret_key'
+
+contentElement.innerHTML = "";
+if (identifierClass) {
+  containerElement.classList.remove(identifierClass);
+}
+containerElement.classList.remove(MODAL_SHOW_CLASS);
+
+var dashboard = document.querySelector(".dashboard");
+dashboard.insertAdjacentHTML("beforeend", "<%= j render('create') %>");
+
+window.detectModals();
+
+var element= document.getElementById("<%= @key.id %>")
+
+if(element) {
+  element.click()
+}
+

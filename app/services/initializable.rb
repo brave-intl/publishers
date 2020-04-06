@@ -8,6 +8,10 @@ module Initializable
     params.each do |key, value|
       setter = "#{key}="
       send(setter, value) if respond_to?(setter.to_sym, false)
+
+      # Handle camel case parameters
+      setter = "#{key.underscore}="
+      send(setter, value) if respond_to?(setter.to_sym, false)
     end
   end
 end

@@ -1,0 +1,12 @@
+.text-center
+  .header-box
+    h5.text-left.text-white.m-0= t('.create_new_key')
+  .p-4.text-left
+    = form_with(url: developer_path, method: 'post')
+      .form-group
+        label.font-weight-bold= "Name"
+        = text_field_tag(:name, '', class: 'form-control', placeholder: t('.name'), autocomplete: "off")
+      .d-flex.justify-content-between
+        div
+        = submit_tag "Create", class:'btn btn-secondary'
+

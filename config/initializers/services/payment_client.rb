@@ -1,0 +1,1 @@
+PaymentClient = Payment::Client.new

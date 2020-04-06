@@ -1,0 +1,18 @@
+en:
+  publishers:
+    developers:
+      new:
+        create_new_key: Create a new secret key
+        name: Key name
+      show:
+        title: API Keys
+        create: Create Key
+        name: Name
+        created_at: Created At
+        roll: Roll Key
+        delete: Delete Key
+      create:
+        title: New secret key created
+        secret_key: Secret Key
+        secret_key_description: Save this key to a secure place, such as password manager. You won't be able to see it again.
+

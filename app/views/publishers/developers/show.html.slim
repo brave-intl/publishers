@@ -1,0 +1,44 @@
+noscript
+  div.noscript-warning = t("publishers.home.noscript")
+
+
+.dashboard
+  .row
+    .col.mb-4
+      .rounded.bg-white.p-4
+        .d-flex.align-items-center.justify-content-between.mb-3
+          h4.m-0= t('.title')
+          = link_to( \
+            t('.create'), \
+            new_developer_path, \
+            data: { "js-confirm-with-modal": "new_secret_key" }, \
+            class: 'btn btn-primary' \
+          )
+
+          script id="new_secret_key" type="text/html"
+            = render "new"
+
+        table.table
+          tr
+            th= t('.name')
+            th= t('.created_at')
+            th
+
+          - @keys&.each do |key|
+            tr
+              td= key.name
+              td= key.created_at
+
+              td
+                = link_to( \
+                  t('.roll'), \
+                  choose_new_channel_type_publishers_path, \
+                  data: { "js-confirm-with-modal": "choose-channel-type" }, \
+                  class: 'btn btn-secondary mr-2' \
+                )
+                = link_to( \
+                  t('.delete'), \
+                  choose_new_channel_type_publishers_path, \
+                  data: { "js-confirm-with-modal": "choose-channel-type" }, \
+                  class: 'btn btn-secondary' \
+                )
