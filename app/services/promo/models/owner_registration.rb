@@ -12,7 +12,7 @@ module Promo
       #
       # @param [String] id The owner identifier
       def create(publisher:, promo_campaign:, is_peer_to_peer:)
-        response = put(PATH.expand(id: publisher.owner_identifier, q: is_peer_to_peer ? PromoRegistration::PEER_TO_PEER : ""))
+        response = put(PATH.expand(id: publisher.owner_identifier, q: is_peer_to_peer ? "#{PromoRegistration::PEER_TO_PEER}=true" : ""))
 
         payload = JSON.parse(response.body)
         payload.each do |promo_registration|
