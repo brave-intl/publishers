@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 07 Apr 2020 22:29:56 GMT
+      - Tue, 07 Apr 2020 23:46:19 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,14 +49,14 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1586298597'
+      - '1586303180'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: null
-  recorded_at: Tue, 07 Apr 2020 22:29:56 GMT
+  recorded_at: Tue, 07 Apr 2020 23:46:19 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
@@ -80,7 +80,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 07 Apr 2020 22:29:57 GMT
+      - Tue, 07 Apr 2020 23:46:20 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -108,7 +108,7 @@ http_interactions:
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1586298598'
+      - '1586303182'
       Powered-By:
       - Mako
     body:
@@ -117,7 +117,7 @@ http_interactions:
 
 '
     http_version: null
-  recorded_at: Tue, 07 Apr 2020 22:29:57 GMT
+  recorded_at: Tue, 07 Apr 2020 23:46:20 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3986776/recipients/dGVzdEB0ZXN0LmNvbQ==
@@ -141,7 +141,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 07 Apr 2020 22:29:57 GMT
+      - Tue, 07 Apr 2020 23:46:32 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -169,17 +169,17 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1586298598'
+      - '1586303193'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: null
-  recorded_at: Tue, 07 Apr 2020 22:29:58 GMT
+  recorded_at: Tue, 07 Apr 2020 23:46:32 GMT
 - request:
     method: delete
-    uri: https://api.sendgrid.com/v3/contactdb/lists/recipients/dGVzdEB0ZXN0LmNvbQ==?list_id&recipient_id=dGVzdEB0ZXN0LmNvbQ==
+    uri: https://api.sendgrid.com/v3/contactdb/lists/10300648/recipients/dGVzdEB0ZXN0LmNvbQ==?list_id=10300648&recipient_id=dGVzdEB0ZXN0LmNvbQ==
     body:
       encoding: US-ASCII
       string: ''
@@ -198,15 +198,13 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 07 Apr 2020 22:29:58 GMT
+      - Tue, 07 Apr 2020 23:46:32 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '19'
+      - '0'
       Connection:
       - keep-alive
-      X-Content-Type-Options:
-      - nosniff
       Access-Control-Allow-Methods:
       - HEAD, GET, PUT, POST, DELETE, OPTIONS, PATCH
       Access-Control-Max-Age:
@@ -219,17 +217,21 @@ http_interactions:
       - AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source
       Content-Security-Policy:
       - default-src https://api.sendgrid.com; frame-src 'none'; object-src 'none'
+      X-Content-Type-Options:
+      - nosniff
       Strict-Transport-Security:
       - max-age=31536000
       X-Ratelimit-Remaining:
-      - '599'
+      - '999'
       X-Ratelimit-Limit:
-      - '600'
+      - '1000'
       X-Ratelimit-Reset:
-      - '1586298600'
+      - '1586303193'
+      Powered-By:
+      - Mako
     body:
       encoding: UTF-8
       string: ''
     http_version: null
-  recorded_at: Tue, 07 Apr 2020 22:29:58 GMT
+  recorded_at: Tue, 07 Apr 2020 23:46:32 GMT
 recorded_with: VCR 5.1.0

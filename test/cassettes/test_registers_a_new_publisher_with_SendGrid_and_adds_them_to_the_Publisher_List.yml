@@ -122,7 +122,7 @@ http_interactions:
   recorded_at: Tue, 07 Apr 2020 22:16:33 GMT
 - request:
     method: delete
-    uri: https://api.sendgrid.com/v3/contactdb/lists/recipients/YWxpY2VAY29tcGxldGVkLm9yZw==?list_id&recipient_id=YWxpY2VAY29tcGxldGVkLm9yZw==
+    uri: https://api.sendgrid.com/v3/contactdb/lists/10300648/recipients/YWxpY2VAY29tcGxldGVkLm9yZw==?list_id=10300648&recipient_id=YWxpY2VAY29tcGxldGVkLm9yZw==
     body:
       encoding: US-ASCII
       string: ''
