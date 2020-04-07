@@ -6,9 +6,10 @@ import CreatorsWide_png from '../../components/img/creator-logos-wide.png'
 import CreatorsMobile_webp from '../../components/img/creator-logos-mobile.webp'
 import CreatorsMobile_png from '../../components/img/creator-logos-mobile.png'
 import locale from '../../locale/en'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export const Signoff = () => {
+  const intl = useIntl();
   return (
     <Box align='center'>
       <Container align='center' pad='large'>
@@ -45,10 +46,10 @@ export const Signoff = () => {
           </ResponsiveContext.Consumer>
         </Box>
         <PrimaryButton
-          label={<FormattedMessage id="signoff.btn"/>}
+          label={intl.formatMessage({ id: "signoff.btn" })}
           margin='large'
           href={locale.signoff.btnHref}
-          name={<FormattedMessage id="signoff.btn"/>}
+          name={intl.formatMessage({ id: "signoff.btn" })}
         />
       </Container>
     </Box>

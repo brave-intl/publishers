@@ -8,7 +8,7 @@ import DefrancoCard_png from "../../components/img/card-defranco.png";
 import ScottyCard_webp from "../../components/img/card-scotty.webp";
 import ScottyCard_png from "../../components/img/card-scotty.png";
 import locale from "../../locale/en";
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const cardImages = {
   BakerCard: {
@@ -66,6 +66,8 @@ const Slide = props => (
 );
 
 export const Spotlight = () => {
+  const intl = useIntl();
+
   const { ScottyCard, DefrancoCard, BakerCard } = cardImages;
   return (
     <Box align="center" pad="large">
@@ -85,14 +87,14 @@ export const Spotlight = () => {
               link={locale.spotlight.scottyHref}
               text={<FormattedMessage id="spotlight.scottyCredit"/>}
               quote={<FormattedMessage id="spotlight.scottyQuote"/>}
-              alt={<FormattedMessage id="spotlight.scottyAlt"/>}
+              alt={intl.formatMessage({ id: "spotlight.scottyAlt" })}
             />
             <Slide
               card={BakerCard}
               link={locale.spotlight.bakerHref}
               text={<FormattedMessage id="spotlight.bakerCredit"/>}
               quote={<FormattedMessage id="spotlight.bakerQuote"/>}
-              alt={<FormattedMessage id="spotlight.bakerAlt"/>}
+              alt={intl.formatMessage({ id: "spotlight.bakerAlt" })}
             />
             <Slide
               card={DefrancoCard}
@@ -100,7 +102,7 @@ export const Spotlight = () => {
               text={<FormattedMessage id="spotlight.defrancoCredit"/>}
               quote={<FormattedMessage id="spotlight.defrancoQuote"/>}
               backwards="row-reverse"
-              alt={<FormattedMessage id="spotlight.defrancoAlt"/>}
+              alt={intl.formatMessage({ id: "spotlight.defrancoAlt" })}
             />
           </Carousel>
         </Box>
