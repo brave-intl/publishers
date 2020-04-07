@@ -2,7 +2,7 @@ require "test_helper"
 require "shared/mailer_test_helper"
 require "webmock/minitest"
 
-class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
+class Admin::Publishers::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   include ActionMailer::TestHelper
   include ActiveJob::TestHelper
 
@@ -14,9 +14,9 @@ class Admin::OrganizationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   describe '#upload' do
-    let(:partner) { publishers(:completed_partner) }
+    let(:publisher) { publishers(:completed) }
     let(:file) { fixture_file_upload(Rails.root.join('test','fixtures', '1x1.png')) }
-    let(:invoice) { @invoice ||= Invoice.create(partner: partner.becomes(Partner), date: "2019-01-01") }
+    let(:invoice) { @invoice ||= Invoice.create(publisher: publisher, date: "2019-01-01") }
 
     let(:subject) do
       post admin_publisher_invoice_upload_path(publisher_id: '_', invoice_id: invoice.id),
