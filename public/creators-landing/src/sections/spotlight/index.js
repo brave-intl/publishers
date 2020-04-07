@@ -1,11 +1,29 @@
 import React from "react";
 import { Box, Heading, Text, Carousel, Image } from "grommet";
 import { Container } from "../../components";
-import BakerCard from "../../components/img/card-baker.webp";
-import DefrancoCard from "../../components/img/card-defranco.webp";
-import ScottyCard from "../../components/img/card-scotty.webp";
+import BakerCard_webp from "../../components/img/card-baker.webp";
+import BakerCard_png from "../../components/img/card-baker.png";
+import DefrancoCard_webp from "../../components/img/card-defranco.webp";
+import DefrancoCard_png from "../../components/img/card-defranco.png";
+import ScottyCard_webp from "../../components/img/card-scotty.webp";
+import ScottyCard_png from "../../components/img/card-scotty.png";
 import locale from "../../locale/en";
 import { FormattedMessage } from 'react-intl';
+
+const cardImages = {
+  BakerCard: {
+    webp: BakerCard_webp,
+    default: BakerCard_png
+  },
+  DefrancoCard: {
+    webp: DefrancoCard_webp,
+    default: DefrancoCard_png
+  },
+  ScottyCard: {
+    webp: ScottyCard_webp,
+    default: ScottyCard_png
+  }
+};
 
 const Slide = props => (
   <Box
@@ -37,12 +55,18 @@ const Slide = props => (
       pad="medium"
       className="carousel-height"
     >
-      <Image src={props.card} fit="contain" alt={props.alt} />
+      <Image
+        src={props.card.webp}
+        fallback={props.card.default}
+        fit="contain"
+        alt={props.alt}
+      />
     </Box>
   </Box>
 );
 
 export const Spotlight = () => {
+  const { ScottyCard, DefrancoCard, BakerCard } = cardImages;
   return (
     <Box align="center" pad="large">
       <Container align="center">
