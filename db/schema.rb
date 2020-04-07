@@ -575,6 +575,8 @@ ActiveRecord::Schema.define(version: 2020_03_17_211000) do
     t.datetime "default_currency_confirmed_at"
     t.datetime "member_at"
     t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
+    t.text "card_id"
+    t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 

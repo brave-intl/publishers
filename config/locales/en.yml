@@ -910,6 +910,7 @@ en:
       nojekyll_html: |
         It looks like you are using <strong>GitHub</strong>.
         As a GitHub user, you'll need to add an empty file named <strong>'.nojekyll'</strong> to the root of your repo first.
+      no_https_alt: Your domain is NOT using HTTPS.
     verification_wordpress:
       verify_dns_record: Verify via a DNS record.
       heading: Hello. It looks like you are using WordPress!

@@ -1,0 +1,5 @@
+en:
+  uphold_connections:
+    confirm:
+      invalid_credentials_alert: "Sorry, we weren't able to verify your credentials"
+      out_of_time_alert: "You must sign in within 10 minutes."

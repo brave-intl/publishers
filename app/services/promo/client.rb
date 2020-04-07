@@ -12,6 +12,10 @@ module Promo
       @reporting ||= Promo::Models::Reporting.new(connection)
     end
 
+    def owner_registration
+      @owner_registration ||= Promo::Models::OwnerRegistration.new(connection)
+    end
+
     private
 
     def perform_offline?
