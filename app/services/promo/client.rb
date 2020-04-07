@@ -12,8 +12,8 @@ module Promo
       @reporting ||= Promo::Models::Reporting.new(connection)
     end
 
-    def owner_registration
-      @owner_registration ||= Promo::Models::OwnerRegistration.new(connection)
+    def peer_to_peer_registration
+      @peer_to_peer_registration ||= Promo::Models::PeerToPeerRegistration.new(connection)
     end
 
     private
