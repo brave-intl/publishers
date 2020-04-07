@@ -218,11 +218,11 @@ Rails.application.routes.draw do
       end
     end
     resources :publishers do
-      get :generate_manual_payout
-      resources :invoices do
+      resources :invoices, module: 'publishers' do
         post :upload
         get :finalize
         patch :update_status
+        post :archive_file
       end
 
       collection do
