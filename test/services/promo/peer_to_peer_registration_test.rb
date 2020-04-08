@@ -14,7 +14,7 @@ class Promo::PeerToPeerRegistrationTest < ActiveJob::TestCase
     Rails.application.secrets[:api_promo_base_uri] = "http://127.0.0.1:8194"
     prev_promo_registration_count = PromoRegistration.count
     publisher = publishers(:default)
-    stub_request(:put, /api\/2\/promo\/referral_code\/owner/).to_return(
+    stub_request(:put, /api\/2\/promo\/referral_code\/p2p/).to_return(
       status: 200,
       body: [
         {"referral_code":"NDF915",
