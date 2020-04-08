@@ -1,9 +1,14 @@
 module UserFeatureFlags
-  include ActiveSupport::Concern
+  extend ActiveSupport::Concern
   WIRE_ONLY = :wire_only
   INVOICE = :invoice
 
   VALID_FEATURE_FLAGS = [WIRE_ONLY, INVOICE].freeze
+
+  included do
+    scope :wire_only, -> { where(feature_flags: { WIRE_ONLY => true }) }
+    scope :invoice, -> { where(feature_flags: { INVOICE => true }) }
+  end
 
   def update_feature_flags_from_form(update_flag_params)
     update_flag_params.keys.each do |flag_param_key|
