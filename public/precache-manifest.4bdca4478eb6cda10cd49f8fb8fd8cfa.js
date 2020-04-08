@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0b98068453c9034418c120e8294f6be5",
+    "revision": "7b4267e030d442bbeb608a8e89c31413",
     "url": "/index.html"
   },
   {
-    "revision": "3f77f07758ec2fb97783",
-    "url": "/static/css/main.2d9abe5e.chunk.css"
+    "revision": "663f0fe4fad0f771faeb",
+    "url": "/static/css/main.e3a8af32.chunk.css"
   },
   {
-    "revision": "f7a3c1985a3d5c762cb7",
-    "url": "/static/js/2.abb27167.chunk.js"
+    "revision": "2c88bccb04cb94323053",
+    "url": "/static/js/2.c154fd01.chunk.js"
   },
   {
-    "revision": "3f77f07758ec2fb97783",
-    "url": "/static/js/main.6bec265c.chunk.js"
+    "revision": "663f0fe4fad0f771faeb",
+    "url": "/static/js/main.1fbd8b79.chunk.js"
   },
   {
     "revision": "42ac5946195a7306e2a5",
@@ -36,6 +36,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/built-with-bat.fe7c3954.svg"
   },
   {
+    "revision": "46eab8785ecbcec9a1b28318d122cc4a",
+    "url": "/static/media/card-baker.46eab878.png"
+  },
+  {
     "revision": "8cc226d99931cf25dfec78e6bbf3a38e",
     "url": "/static/media/card-baker.8cc226d9.webp"
   },
@@ -44,12 +48,28 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/card-defranco.1bad4ceb.webp"
   },
   {
+    "revision": "caa12188e4f19f27c6ab248abbbb93e8",
+    "url": "/static/media/card-defranco.caa12188.png"
+  },
+  {
     "revision": "164cb2498df85fc2221e71cb0cc4d926",
     "url": "/static/media/card-scotty.164cb249.webp"
   },
   {
+    "revision": "d932457445709e0ebe656963f00ab4c0",
+    "url": "/static/media/card-scotty.d9324574.png"
+  },
+  {
     "revision": "8b4729d7c672c85fe19cba1e285a11bc",
     "url": "/static/media/creator-logos-mobile.8b4729d7.webp"
+  },
+  {
+    "revision": "b1b07ef33aeeae0482bda87cc762305d",
+    "url": "/static/media/creator-logos-mobile.b1b07ef3.png"
+  },
+  {
+    "revision": "e8e28cdc0c6b71343bf829ab0ba7b538",
+    "url": "/static/media/creator-logos-wide.e8e28cdc.png"
   },
   {
     "revision": "f181ba5a0cb8b09e3348aa9548da8747",
