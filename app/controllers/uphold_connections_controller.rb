@@ -54,6 +54,7 @@ class UpholdConnectionsController < ApplicationController
       uphold_connection = UpholdConnection.find_by(card_id: uphold_model_card.id)
       user = uphold_connection.publisher
     end
+    # In case if promo registration fails, we retry.
     if create_promo_registration?(user: user)
       PromoClient.peer_to_peer_registration.create(
         publisher: user,

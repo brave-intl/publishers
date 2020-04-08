@@ -11,6 +11,7 @@ module Promo
       # Creates a new owner
       # @param [String] id The owner identifier
       def create(publisher:, promo_campaign:)
+        return perform_offline(publisher: publisher) if Rails.application.secrets[:api_promo_base_uri].blank?
         response = put(PATH.expand(id: publisher.owner_identifier))
         payload = JSON.parse(response.body)
         payload.each do |promo_registration|
@@ -22,6 +23,23 @@ module Promo
             kind: PromoRegistration::PEER_TO_PEER
           )
         end
+      end
+
+      def offline_promo
+        "BAT4U"
+      end
+
+      def perform_offline(publisher:)
+        # Already has a unique validation
+        promo_registration = PromoRegistration.find_by(referral_code: offline_promo)
+        return promo_registration if promo_registration.present?
+        PromoRegistration.create!(
+          referral_code: offline_promo,
+          publisher_id: publisher.id,
+          promo_id: Rails.application.secrets[:active_promo_id],
+          promo_campaign_id: PromoCampaign.find_by(name: PromoCampaign::PEER_TO_PEER).id,
+          kind: PromoRegistration::PEER_TO_PEER
+        )
       end
     end
   end
