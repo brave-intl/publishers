@@ -15,6 +15,8 @@ class UpholdConnectionsController < ApplicationController
   end
 
   def confirm
+    ip_whitelist = Rails.application.secrets[:api_ip_whitelist]
+    render(status: 401) and return unless ip_whitelist.nil? || request.ip.in?(ip_whitelist)
     uphold_card_id = Rails.cache.fetch(params[:state])
     uphold_connection, uphold_card = get_card(
       uphold_card_id: uphold_card_id,
