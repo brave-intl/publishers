@@ -32,18 +32,7 @@ module Admin
         search_case = Case.where("case_number = ?", case_id)
       elsif query.include?(":")
         # Search for each type on the db model, like assignee = ""
-        query.split(' ').each do |term|
-          type, value = term.split(':')
-          case type
-          when 'assigned'
-            @assigned = Publisher.where('email like ? AND role = ?', "%#{value}%", 'admin').first
-            search_case = search_case.joins(:assignee).where('publishers.email LIKE ?', "%#{value}%")
-          when 'status'
-            # Remove all non-alphanumeric values from the status field
-            value = value.gsub(/[^0-9a-z_]/i, '')
-            search_case = search_case.where('status LIKE ?', "%#{value}%") if value.present?
-          end
-        end
+        search_case = parse_search(search_case, query.split(' '))
       else
         search_query = "%#{query}%"
         search_case = Case.joins(:publisher).where('publishers.name LIKE ?', search_query).or(
@@ -88,7 +77,8 @@ module Admin
     def update
       @case = Case.find(params[:id])
 
-      if @case.update(status: params[:status]) && params[:status] == Case::RESOLVED
+      case_updated = @case.update(status: params[:status])
+      if case_updated && params[:status] == Case::RESOLVED
         note = PublisherNote.create(
           publisher: @case.publisher,
           created_by: current_user,
@@ -97,7 +87,43 @@ module Admin
         @case.publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE, publisher_note: note)
       end
 
-      redirect_to admin_cases_path
+      return redirect_to [:admin, @case], flash: { notice: "Case has been moved back to in progress"} if params[:status] == Case::IN_PROGRESS
+
+      next_case = Case.where(assignee: current_user, status: Case::IN_PROGRESS).take
+      if next_case
+        redirect_to [:admin, next_case], flash: { notice: "Previous case #{@case.number} has been marked #{params[:status]}"}
+      else
+        redirect_to admin_cases_path
+      end
+    end
+
+    private
+
+    def parse_search(search_case, queries)
+      statuses = queries.select { |x| x.include?("status") }.map { |x| x.split(':').last&.gsub(/[^0-9a-z_]/i, '') }
+      assigned = queries.select { |x| x.include?("assigned") }.map { |x| x.split(':').last&.gsub(/[^0-9a-z_]/i, '') }
+
+      first_status = statuses[0]
+      if first_status.present?
+        value = first_status
+        search_case = search_case.where('status LIKE ?', "%#{value}%")
+
+        statuses[1..-1].each do |value|
+          search_case = search_case.or(Case.where('status LIKE ?', "%#{value}%"))
+        end
+      end
+
+      first_assigned = assigned[0]
+      if first_assigned.present?
+        value = first_assigned
+        search_case = search_case.joins(:assignee).where('publishers.email LIKE ?', "%#{value}%")
+
+        assigned[1..-1].each do |value|
+          search_case = search_case.or(Case.joins(:assignee).where('publishers.email LIKE ?', "%#{value}%"))
+        end
+      end
+
+      search_case
     end
 
     def has_filter?

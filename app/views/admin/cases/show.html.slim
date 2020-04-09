@@ -97,8 +97,10 @@
       - if @case.in_progress?
         .text-dark.justify-content-between.mb-2.align-items-center
           strong Actions
-        = link_to "Resolve", admin_case_path(@case, status: Case::RESOLVED), method: :patch, class: 'btn btn-success mx-1 mb-2'
-        = link_to "Close", admin_case_path(@case, status: Case::CLOSED), method: :patch, class: 'btn btn-dark mx-1 mb-2'
+        = link_to "Approve", admin_case_path(@case, status: Case::RESOLVED), method: :patch, class: 'btn btn-success mx-1 mb-2'
+        = link_to "Reject", admin_case_path(@case, status: Case::CLOSED), method: :patch, class: 'btn btn-dark mx-1 mb-2'
+      - elsif @case.closed? || @case.resolved?
+        = link_to "Re-open", admin_case_path(@case, status: Case::IN_PROGRESS), method: :patch, class: 'btn btn-dark mx-1 mb-2'
 
 .c-4.shadow-sm.rounded.p-3
   .accordion
