@@ -4,17 +4,18 @@ import { Container, PrimaryButton } from '../../components'
 import CreatorsWide from '../../components/img/creator-logos-wide.webp'
 import CreatorsMobile from '../../components/img/creator-logos-mobile.webp'
 import locale from '../../locale/en'
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export const Signoff = () => {
+  const intl = useIntl();
   return (
     <Box align='center'>
       <Container align='center' pad='large'>
         <Box pad={{ horizontal: 'large' }}>
           <Heading alignSelf='center' level='4' textAlign='center'>
-            {<FormattedMessage id="signoff.headlineOne"/>}
-            <strong>500,000</strong>
-            {<FormattedMessage id="signoff.headlineTwo"/>}
+            <FormattedMessage id="signoff.headline" values={{
+              count: <strong>{intl.formatNumber(500000)}</strong>
+            }} />
           </Heading>
           <ResponsiveContext.Consumer>
             {size => {
