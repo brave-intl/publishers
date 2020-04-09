@@ -30,7 +30,7 @@ export default {
       downloaded: "DOWNLOADED",
       installed: "INSTALLED",
       statement: "Check your statement for this period's payout.",
-      title: "Referral Promo Stats",
+      title: "Referral Stats",
     }
   },
   installs: "Installs",
@@ -215,7 +215,7 @@ export default {
       earningPeriod: "Earning Period",
       noStatements: "There aren't any statements yet.",
       paymentDate: "Payment Date",
-      referrals: "Referral Promo",
+      referrals: "Referrals",
       referralsInfo: "The breakdown of regions for confirmations during this period. Some confirmations may appear on the previous statement or be rolled over to the next statement.",
       statement: "Statement",
       title: "Statements",

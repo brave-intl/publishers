@@ -59,10 +59,10 @@ class Admin::PayoutReportsController < AdminController
     json.each do |entry|
       next unless entry["type"] == MANUAL && entry["owner"] && entry["amount"]
 
-      partner_id = entry["owner"].sub(Publisher::OWNER_PREFIX, "")
+      publisher_id = entry["owner"].sub(Publisher::OWNER_PREFIX, "")
 
       invoice = Invoice.where(
-        partner_id: partner_id,
+        publisher_id: publisher_id,
         finalized_amount: entry["amount"],
         status: Invoice::IN_PROGRESS
       ).order(:created_at).first

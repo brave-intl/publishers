@@ -24,7 +24,7 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
       .with(body: "code=#{publisher.uphold_connection.uphold_code}&grant_type=authorization_code")
       .to_return(status: 400, body: '{"error":"invalid_grant"}')
 
-    ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: publisher.id)
+    ExchangeUpholdCodeForAccessTokenJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
     publisher.reload
     publisher.uphold_connection.reload
 
@@ -42,7 +42,7 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
       .with(body: "code=#{publisher.uphold_connection.uphold_code}&grant_type=authorization_code")
       .to_return(status: 400, body: '{"error":"something_else"}')
 
-    ExchangeUpholdCodeForAccessTokenJob.perform_now(publisher_id: publisher.id)
+    ExchangeUpholdCodeForAccessTokenJob.perform_now(uphold_connection_id: publisher.uphold_connection.id)
     publisher.reload
     publisher.uphold_connection.reload
 

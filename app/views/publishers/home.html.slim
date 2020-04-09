@@ -13,9 +13,6 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
     home_publishers_path, \
     class: 'title' \
   )
-  - if @publisher.partner?
-    = link_to(t("shared.referrals"), partners_referrals_path, class: 'title-partner')
-    = link_to(t("shared.payments"), partners_payments_path, class: 'title-partner' )
 
   = render partial: "choose_channel_button"
   = link_to("#{t "shared.instant_donation"}", "#", data: { "js-confirm-with-modal": "instant-donation-modal" }, class: 'btn btn-secondary btn-highlight', id: 'instant-donation-button')
@@ -36,7 +33,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
           .row
             .col
               .balance.px-4.pt-4
-                .bat-logo
+                .bat-logo#bat-logo
                   = image_tag("bat-logo@2x.png", class: "", width: 60, height: 60)
                 .amounts
                   - converted_balance = publisher_converted_overall_balance(@publisher)
