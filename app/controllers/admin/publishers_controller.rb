@@ -29,6 +29,12 @@ class Admin::PublishersController < AdminController
       @publishers = @publishers.joins(:uphold_connection).where('uphold_connections.status = ?', params[:uphold_status])
     end
 
+    if params[:feature_flag].present?
+      found_flag = UserFeatureFlags::VALID_FEATURE_FLAGS.find { |flag| flag == params[:feature_flag].to_sym }
+
+      @publishers = @publishers.send(found_flag)
+    end
+
     if params[:two_factor_authentication_removal].present?
       @publishers = @publishers.joins(:two_factor_authentication_removal).distinct
     end
@@ -144,7 +150,7 @@ class Admin::PublishersController < AdminController
 
   def update_feature_flag_params
     params.require(:publisher).permit(
-      UserFeatureFlags::WIRE_ONLY.to_sym
+      UserFeatureFlags::VALID_FEATURE_FLAGS
     )
   end
 

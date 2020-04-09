@@ -3,7 +3,7 @@
 class Invoice < ActiveRecord::Base
   class ReadOnlyError < StandardError; end
 
-  belongs_to :partner
+  belongs_to :publisher
 
   belongs_to :uploaded_by, class_name: "Publisher"
   belongs_to :paid_by, class_name: "Publisher"
@@ -19,10 +19,10 @@ class Invoice < ActiveRecord::Base
 
   STATUS_FIELDS = [PENDING, PAID, IN_PROGRESS].freeze
 
-  validates :partner_id, :date, presence: true
+  validates :publisher_id, :date, presence: true
   validates :status, inclusion: { in: STATUS_FIELDS }
 
-  validates :date, uniqueness: { scope: :partner_id }
+  validates :date, uniqueness: { scope: :publisher_id }
 
   # Ensure these two values are numbers even though field is a string
   validates :amount, numericality: true, allow_nil: true

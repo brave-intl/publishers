@@ -3,18 +3,19 @@
 div.row
   div.col-sm-12
     section.panel
-      h4 Publishers
+      h4.m-0 Publishers
       = form_tag(admin_publishers_path, method: "get", class: 'action-group')
         .input-group.align-self-end
           = text_field_tag(:q, params[:q], class:'form-control')
           .input-group-btn
             = submit_tag("Search", class: 'btn btn-default', name: nil)
-        .mt-1
+        .mt-0
           small.text-muted FILTER
           .d-flex
             = select_tag(:status, options_for_select(PublisherStatusUpdate::ALL_STATUSES, params[:status]), include_blank: "Status" , class: "form-control mr-1", onchange:"this.form.submit()")
             = select_tag(:role, options_for_select(Publisher::ROLES, params[:role]), include_blank: "Role" , class: "mx-1 form-control",  onchange: "this.form.submit()")
             = select_tag(:uphold_status, options_for_select(["ok", "blocked", "restricted", "pending"], params[:uphold_status]), include_blank: "Uphold status" , class: "ml-1 form-control",  onchange: "this.form.submit()")
+            = select_tag(:feature_flag, options_for_select(UserFeatureFlags::VALID_FEATURE_FLAGS, params[:feature_flag]), include_blank: "Feature flag" , class: "ml-1 form-control",  onchange: "this.form.submit()")
       br
       div.panel-body
         div.adv-table

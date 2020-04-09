@@ -450,6 +450,13 @@
         margin-top: 5px;
       }
     }
+    &--browser-user {
+      padding: 28px;
+      min-width: 250px;
+      height: 200px;
+      margin-left: 15px;
+      margin-bottom: 20px;
+    }
 
     &--header-with-image {
       margin-left: -10px;
@@ -608,6 +615,11 @@
             font-size: 30px;
             color: $braveBrand;
             font-weight: 500;
+            &--browser-user {
+              font-size: 30px;
+              color: $braveBrand;
+              font-weight: 500;
+            }
           }
 
           .bat-code {
@@ -767,7 +779,7 @@
     justify-content: flex-start;
     color: $braveText-2;
 
-    & img {
+    #bat-logo {
       margin: 12px;
     }
 
@@ -779,6 +791,9 @@
       .bat-amount {
         font-size: 48px;
         line-height: 42px;
+        &--browser-user {
+          font-size: 32px;
+        }
       }
 
       .bat-code {

@@ -6,7 +6,7 @@ class Payout::UpholdJob < ApplicationJob
     if publisher_ids.present?
       publishers = Publisher.joins(:uphold_connection).where(id: publisher_ids)
     elsif manual
-      publishers = Publisher.joins(:uphold_connection).partner
+      publishers = Publisher.joins(:uphold_connection).publisher
     else
       publishers = Publisher.joins(:uphold_connection).with_verified_channel
     end

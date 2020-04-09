@@ -35,10 +35,6 @@ class PublishersHelperTest < ActionView::TestCase
       @wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, uphold_connection: @uphold_connection)
     end
 
-    def become_subclass
-      self
-    end
-
     def partner?
       false
     end

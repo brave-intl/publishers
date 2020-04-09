@@ -32,11 +32,6 @@ hr
         .db-info-row
           .db-field = "Created:"
           .db-row = @publisher.created_at.strftime('%B %d, %Y')
-        - if @publisher.partner?
-          - partner = @publisher.becomes(Partner)
-          .db-info-row
-            .db-field = "Organization:"
-            .db-value = link_to partner.organization, admin_organization_path(partner.organization)
         .db-info-row
           .db-field = "Overall BAT balance:"
           .db-value = "#{publisher_overall_bat_balance(@publisher)}"
@@ -109,9 +104,9 @@ hr
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     = render partial: 'uphold'
 
-  -if @publisher.partner?
+  -if @publisher.invoice?
     .c-4.shadow-sm.bg-white.rounded.p-3.my-4
-      =render partial: "invoices", locals: { partner: @publisher.becomes(Partner), limit:  params[:view_more].present? ? nil : 3 }
+      =render partial: "invoices", locals: { publisher: @publisher, limit:  params[:view_more].present? ? nil : 3 }
 
   .c-4.shadow-sm.bg-white.rounded.p-3.my-4
     h3.text-dark Channels

@@ -12,7 +12,7 @@ class ManualPayoutReportPublisherIncluder < BaseService
 
     suspended = @publisher.suspended?
 
-    invoices = Invoice.where(partner_id: @publisher.id, status: Invoice::IN_PROGRESS)
+    invoices = Invoice.where(publisher_id: @publisher.id, status: Invoice::IN_PROGRESS)
     invoices.each do |invoice|
       amount = invoice.finalized_amount_to_probi
       next if uphold_connection.japanese_account?
