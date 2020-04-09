@@ -1,13 +1,14 @@
 script id="create_secret_key-#{@key.id}" type="text/html"
     h5.text-left.m-0= t('.title')
-    .p-4.text-left
+    .pt-3.text-left
       .form-group
-        label.font-weight-bold= t('.secret_key')
         p= t('.secret_key_description')
-        code.d-block.bg-light.p-2.rounded.border
+        code.d-block.bg-light.p-2.rounded.border#secret
           = @key.secret_key
-      .btn.btn-secondary
-        = t('.close')
+        button.btn.btn-sm.btn-default.copy-button data-clipboard-target="#secret"
+          = t ".copy_to_clipboard"
+
+      =link_to t('.close'), '#', class: 'btn btn-secondary js-deny'
 
 
 

@@ -15,4 +15,6 @@ en:
         title: New secret key created
         secret_key: Secret Key
         secret_key_description: Save this key to a secure place, such as password manager. You won't be able to see it again.
+        close: Close
+        copy_to_clipboard: Copy
 
