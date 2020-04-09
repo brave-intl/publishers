@@ -12,7 +12,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - sendgrid/6.0.0;ruby
+      - sendgrid/6.1.2;ruby
   response:
     status:
       code: 204
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 02 Dec 2019 18:37:47 GMT
+      - Tue, 07 Apr 2020 23:46:19 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -45,18 +45,18 @@ http_interactions:
       Strict-Transport-Security:
       - max-age=31536000
       X-Ratelimit-Remaining:
-      - '998'
+      - '999'
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1575311868'
+      - '1586303180'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
-  recorded_at: Mon, 02 Dec 2019 18:37:45 GMT
+    http_version: null
+  recorded_at: Tue, 07 Apr 2020 23:46:19 GMT
 - request:
     method: patch
     uri: https://api.sendgrid.com/v3/contactdb/recipients
@@ -69,7 +69,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - sendgrid/6.0.0;ruby
+      - sendgrid/6.1.2;ruby
       Content-Type:
       - application/json
   response:
@@ -80,7 +80,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 02 Dec 2019 18:37:47 GMT
+      - Tue, 07 Apr 2020 23:46:20 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -104,20 +104,20 @@ http_interactions:
       Strict-Transport-Security:
       - max-age=31536000
       X-Ratelimit-Remaining:
-      - '1'
+      - '2'
       X-Ratelimit-Limit:
       - '3'
       X-Ratelimit-Reset:
-      - '1575311868'
+      - '1586303182'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: '{"new_count":0,"updated_count":0,"error_count":0,"error_indices":[],"unmodified_indices":[0],"persisted_recipients":["dGVzdEB0ZXN0LmNvbQ=="],"errors":[]}
 
-        '
-    http_version: 
-  recorded_at: Mon, 02 Dec 2019 18:37:46 GMT
+'
+    http_version: null
+  recorded_at: Tue, 07 Apr 2020 23:46:20 GMT
 - request:
     method: post
     uri: https://api.sendgrid.com/v3/contactdb/lists/3986776/recipients/dGVzdEB0ZXN0LmNvbQ==
@@ -130,7 +130,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - sendgrid/6.0.0;ruby
+      - sendgrid/6.1.2;ruby
       Content-Type:
       - ''
   response:
@@ -141,7 +141,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 02 Dec 2019 18:37:48 GMT
+      - Tue, 07 Apr 2020 23:46:32 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -169,14 +169,14 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1575311869'
+      - '1586303193'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
-  recorded_at: Mon, 02 Dec 2019 18:37:46 GMT
+    http_version: null
+  recorded_at: Tue, 07 Apr 2020 23:46:32 GMT
 - request:
     method: delete
     uri: https://api.sendgrid.com/v3/contactdb/lists/10300648/recipients/dGVzdEB0ZXN0LmNvbQ==?list_id=10300648&recipient_id=dGVzdEB0ZXN0LmNvbQ==
@@ -189,7 +189,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - sendgrid/6.0.0;ruby
+      - sendgrid/6.1.2;ruby
   response:
     status:
       code: 204
@@ -198,7 +198,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 02 Dec 2019 18:37:48 GMT
+      - Tue, 07 Apr 2020 23:46:32 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -226,12 +226,12 @@ http_interactions:
       X-Ratelimit-Limit:
       - '1000'
       X-Ratelimit-Reset:
-      - '1575311869'
+      - '1586303193'
       Powered-By:
       - Mako
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
-  recorded_at: Mon, 02 Dec 2019 18:37:47 GMT
-recorded_with: VCR 5.0.0
+    http_version: null
+  recorded_at: Tue, 07 Apr 2020 23:46:32 GMT
+recorded_with: VCR 5.1.0
