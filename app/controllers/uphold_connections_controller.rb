@@ -48,15 +48,26 @@ class UpholdConnectionsController < ApplicationController
 
   def signup_user_if_necessary_or_signin(uphold_model_card:, uphold_connection:)
     if create_uphold_connection?(uphold_model_card: uphold_model_card)
-      user = BrowserUserSignUpService.new.perform
+      user = BrowserUser.create(role: Publisher::BROWSER_USER)
       uphold_connection.update(publisher_id: user.id, card_id: uphold_model_card.id)
     else
       uphold_connection = UpholdConnection.find_by(card_id: uphold_model_card.id)
       user = uphold_connection.publisher
     end
+    # In case if promo registration fails, we retry.
+    if create_promo_registration?(user: user)
+      PromoClient.peer_to_peer_registration.create(
+        publisher: user,
+        promo_campaign: PromoCampaign.find_by(name: PromoCampaign::PEER_TO_PEER)
+      )
+    end
     uphold_connection.sync_from_uphold!
     sign_in(:publisher, user)
     uphold_connection
+  end
+
+  def create_promo_registration?(user:)
+    user.promo_registrations.empty?
   end
 
   def create_uphold_connection?(uphold_model_card:)
