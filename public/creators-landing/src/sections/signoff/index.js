@@ -15,9 +15,9 @@ export const Signoff = () => {
       <Container align='center' pad='large'>
         <Box pad={{ horizontal: 'large' }}>
           <Heading alignSelf='center' level='4' textAlign='center'>
-            {<FormattedMessage id="signoff.headlineOne"/>}
-            <strong>280,000</strong>
-            {<FormattedMessage id="signoff.headlineTwo"/>}
+            <FormattedMessage id="signoff.headline" values={{
+              count: <strong>{intl.formatNumber(500000)}</strong>
+            }} />
           </Heading>
           <ResponsiveContext.Consumer>
             {size => {
