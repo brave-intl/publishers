@@ -21,7 +21,8 @@ module Payment
       def all(publisher_id:)
         response = get(PATH.expand(publisher_id: publisher_id))
 
-        keys = JSON.parse(response.body).map { |x| x.transform_keys(&:underscore) }
+        keys = JSON.parse(response.body)&.map { |x| x.transform_keys(&:underscore) }
+        keys ||= []
 
         keys.map do |k|
           self.class.new(k)

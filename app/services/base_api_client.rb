@@ -46,7 +46,7 @@ class BaseApiClient < BaseService
   # options - [Hash] the parameters to supply
   # returns [Response] the response
   def delete(path, options = {})
-    request(:delete, path, form: options)
+    request(:delete, path, options)
   end
 
   def api_base_uri

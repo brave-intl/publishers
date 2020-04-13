@@ -9,6 +9,7 @@ import "publishers/home";
 import "site_channels/siteChannels";
 import Rails from "@rails/ujs";
 
+console.log('I cant believe this isntl oading')
 /*
  * Override the default way Rails picks an href for a data-method link. This
  * allows you to provide both a non-JS and a JS URL to a UJS link.

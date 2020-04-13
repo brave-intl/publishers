@@ -1,5 +1,4 @@
 
-
 // Removing the modal
 var MODAL_SHOW_CLASS = "modal-show";
 var modalElement = document.querySelector(".js-shared-modal");
@@ -24,3 +23,5 @@ if(element) {
   element.click()
 }
 
+var copyButtons = document.querySelectorAll('.copy-button')
+new window.ClipboardJS(copyButtons)

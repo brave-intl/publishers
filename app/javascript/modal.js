@@ -177,7 +177,6 @@ function confirmWithModal(confirmableLink) {
 }
 
 function detectModals() {
-  console.log("Detecting modals")
   var confirmableLinks = document.querySelectorAll(
     "[data-js-confirm-with-modal]"
   );

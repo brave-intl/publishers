@@ -23,7 +23,9 @@ Rails.application.routes.draw do
           delete :delete_file
         end
         resources :case_notes
-        resource :developer
+        resources :keys do
+          patch :roll
+        end
 
         resources :uphold_connection, controller: "uphold", only: :update
 
