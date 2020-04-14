@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_17_211000) do
+ActiveRecord::Schema.define(version: 2020_04_14_170244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -452,7 +452,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_211000) do
   end
 
   create_table "site_banner_lookups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "sha1_base16", null: false
+    t.string "sha2_base16", null: false
     t.string "derived_site_banner_info", null: false
     t.string "brave_publisher_id", null: false
     t.uuid "channel_id", null: false
@@ -461,7 +461,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_211000) do
     t.integer "wallet_status", null: false
     t.index ["channel_id"], name: "index_site_banner_lookups_on_channel_id"
     t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
-    t.index ["sha1_base16"], name: "index_site_banner_lookups_on_sha1_base16"
+    t.index ["sha2_base16"], name: "index_site_banner_lookups_on_sha2_base16"
   end
 
   create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
