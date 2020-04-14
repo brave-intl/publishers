@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2020_05_10_205028) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -596,6 +597,7 @@ ActiveRecord::Schema.define(version: 2020_05_10_205028) do
     t.uuid "uphold_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "duplicate", default: false, null: false
     t.index ["created_at"], name: "index_uphold_status_reports_on_created_at"
     t.index ["publisher_id"], name: "index_uphold_status_reports_on_publisher_id"
     t.index ["uphold_id"], name: "index_uphold_status_reports_on_uphold_id"

@@ -187,6 +187,10 @@ class UpholdConnection < ActiveRecord::Base
     country == JAPAN
   end
 
+  def has_duplicate_publisher_account?
+    UpholdConnection.where(uphold_id: self.uphold_id).count > 1
+  end
+
   def encryption_key
     # Truncating the key due to legacy OpenSSL truncating values to 32 bytes.
     # New implementations should use [Rails.application.secrets[:attr_encrypted_key]].pack("H*")
