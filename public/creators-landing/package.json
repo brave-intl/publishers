@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/helper-call-delegate": "^7.8.7",
     "grommet": "^2.9.0",
     "kind-of": "^6.0.3",
+    "js-levenshtein": "^1.1.6",
     "react": "^16.13.1",
     "react-dom": "^16.8.3",
     "react-dom-confetti": "^0.1.0",
