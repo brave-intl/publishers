@@ -61,18 +61,18 @@
 .referral-link {
   background: rgba(255, 255, 255, 0.34);
   border-radius: 4px;
-  margin-left: 60px;
-  margin-right: 120px;
   p {
-    margin: 5px 20px 5px 10px;
+    margin: 6px 8px 3px 3px;
     color: #ffffff;
     font-size: 16px;
     font-weight: 100;
+    line-height: 16px;
     font-family: 'Poppins-Regular', sans-serif;
   }
-  button.share-promo-button {
-    color: #ffffff;
-    width: 55px;
-    background: rgba(255, 255, 255, 0.34);
-  }
+}
+button.share-promo-button {
+  font-family: 'Poppins-Regular', sans-serif;
+  color: #ffffff;
+  width: 55px;
+  background: rgba(255, 255, 255, 0.34);
 }
