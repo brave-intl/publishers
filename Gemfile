@@ -55,8 +55,6 @@ gem "meta-tags"
 # Image conversion library
 gem 'mini_magick'
 
-gem 'mongo', '~> 2.2', '>= 2.2.5'
-
 gem "newrelic_rpm", "~> 6.7.0.359"
 
 gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
@@ -124,9 +122,6 @@ gem "sidekiq"
 
 gem "sidekiq-scheduler", "~> 2.2.2"
 
-# Used by sendgrid-ruby. Forcing an update due to a security concern
-gem 'sinatra', '~> 2.0.2'
-
 # slim for view templates
 gem "slim-rails", "~> 3.1"
 
@@ -144,7 +139,7 @@ gem "will_paginate"
 # YouTube API client
 gem 'yt'
 
-gem "zeitwerk", '~> 2.2.2'
+gem "zeitwerk", '~> 2.3.0'
 gem "zendesk_api"
 
 group :development do
@@ -191,9 +186,9 @@ group :development, :test do
   gem 'minitest'
   gem 'minitest-rails'
   gem "mocha"
-  gem "capybara-selenium"
   gem "chromedriver-helper"
   gem 'simplecov', require: false, group: :test
+  gem 'selenium-webdriver', "~> 3.142.0"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
