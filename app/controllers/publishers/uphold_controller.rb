@@ -80,17 +80,13 @@ module Publishers
       # TODO: Should we drop this call from publishers_controller?
       uphold_connection.sync_from_uphold!
       if uphold_connection.has_duplicate_publisher_account?
-        create_uphold_report!(connection: uphold_connection, duplicate: true)
-        admin = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email])
-        PublisherNote.create(
-          publisher_id: uphold_connection.publisher_id,
-          note: "The user has a duplicate uphold address at uphold address: #{uphold_connection.address_id}",
-          created_by_id: admin.id
-        )
+        record_duplicate_address_note!(uphold_connection: uphold_connection)
+        create_wallet_provider_association!(uphold_connection: uphold_connection, duplicate: true)
         uphold_connection.disconnect_uphold
         flash[:alert] = "You already have an existing uphold account. Please email us if you believe this is a mistake"
       else
-        create_uphold_report!(connection: uphold_connection)
+        create_wallet_provider_association!(uphold_connection: uphold_connection, duplicate: true)
+        create_uphold_report!(uphold_connection: uphold_connection)
       end
 
       redirect_to(home_publishers_path)
@@ -127,16 +123,32 @@ module Publishers
 
     class UpholdError < StandardError; end
 
-    def create_uphold_report!(connection:, duplicate: false)
-      uphold_id = connection.uphold_details&.id
+    def record_duplicate_address_note!(uphold_connection:)
+      admin = Publisher.find_by(email: Rails.application.secrets[:zendesk_admin_email])
+      PublisherNote.create(
+        publisher_id: uphold_connection.publisher_id,
+        note: "The user has a duplicate uphold address at uphold address: #{uphold_connection.address_id}",
+        created_by_id: admin.id
+      )
+    end
+
+    def create_wallet_provider_association!(uphold_connection:, duplicate: false)
+      WalletProviderAssociation.create(
+        publisher_id: uphold_connection.publisher_id,
+        wallet_provider_id: "uphold#address_uuid:#{uphold_connection.address_id}",
+        duplicate: duplicate
+      )
+    end
+
+    def create_uphold_report!(uphold_connection:)
+      uphold_id = uphold_connection.uphold_details&.id
       return if uphold_id.blank?
       # Return if we've already created a report for this id
       return if UpholdStatusReport.find_by(uphold_id: uphold_id).present?
 
       UpholdStatusReport.create(
         publisher: current_publisher,
-        uphold_id: uphold_id,
-        duplicate: duplicate
+        uphold_id: uphold_id
       )
     end
 
