@@ -30,6 +30,8 @@ gem "bootstrap", ">= 4.3.1"
 # browser details
 gem 'browser'
 
+gem 'brotli', "~> 0.2.3"
+
 # Authorization
 gem 'cancancan'
 

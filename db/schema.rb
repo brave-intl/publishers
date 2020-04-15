@@ -452,14 +452,15 @@ ActiveRecord::Schema.define(version: 2020_04_14_170244) do
   end
 
   create_table "site_banner_lookups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "sha2_base16", null: false
-    t.string "derived_site_banner_info", null: false
-    t.string "brave_publisher_id", null: false
+    t.text "sha2_base16", null: false
+    t.jsonb "derived_site_banner_info", null: false
+    t.text "channel_identifier", null: false
     t.uuid "channel_id", null: false
     t.uuid "publisher_id", null: false
     t.integer "wallet_address"
     t.integer "wallet_status", null: false
     t.index ["channel_id"], name: "index_site_banner_lookups_on_channel_id"
+    t.index ["channel_identifier"], name: "index_site_banner_lookups_on_channel_identifier"
     t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
     t.index ["sha2_base16"], name: "index_site_banner_lookups_on_sha2_base16"
   end

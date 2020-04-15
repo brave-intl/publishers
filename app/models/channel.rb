@@ -54,9 +54,11 @@ class Channel < ApplicationRecord
 
   validate :verified_duplicate_channels_must_be_contested, if: -> { verified? }
 
-  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_save :notify_slack, if: -> { :saved_change_to_verified? && verified? }
 
+  # *ChannelDetails get autosaved from above.
+  after_save :update_sha2_lookup, if: -> { :saved_change_to_verified? && verified? }
+  after_commit :register_channel_for_promo, if: :should_register_channel_for_promo
   after_commit :create_channel_card, if: -> { :saved_change_to_verified? && verified? }
 
   before_save :clear_verified_at_if_necessary
@@ -321,6 +323,20 @@ class Channel < ApplicationRecord
     SlackMessenger.new(
       message: "#{emoji} *#{details.publication_title}* verified by owner #{publisher.owner_identifier}; id=#{details.channel_identifier}; url=#{details.url}"
     ).perform
+  end
+
+  def update_sha2_lookup
+    site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
+      channel_identifier: details&.channel_identifier || details.brave_publisher_id,
+    )
+    site_banner_lookup.set_sha2_base16
+    site_banner_lookup.save(
+      channel_id: self.id,
+      publisher_id: self.publisher_id,
+      derivied_site_banner_info: self&.site_banner&.read_only_react_property || self.publisher&.site_banner.read_only_react_property,
+      wallet_address: self.publisher.uphold_connection_for_channel.address,
+      wallet_status: self.publisher.uphold_connection.status
+    )
   end
 
   def site_channel_details_brave_publisher_id_unique_for_publisher
