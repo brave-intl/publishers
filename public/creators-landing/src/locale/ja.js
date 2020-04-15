@@ -62,9 +62,7 @@ export default {
   signoff: {
     btn: "新規登録",
     btnHref: "/sign-up",
-    headlineOne: "参加する ",
-    headlineTwo:
-      " Brave Rewardsを通じてコンテンツやメディアを収益化する"
+    headline: "すでに{count}以上のコンテンツクリエイターや出版社がBrave Rewardsに参加し、収益を上げ始めています"
   },
   sign: {
     sentAgain:

@@ -56,18 +56,26 @@ class Admin::PayoutReportsController < AdminController
 
     EyeshadeClient.publishers.create_settlement(body: json)
 
+    not_found = []
+
     json.each do |entry|
       next unless entry["type"] == MANUAL && entry["owner"] && entry["amount"]
 
-      publisher_id = entry["owner"].sub(Publisher::OWNER_PREFIX, "")
+      begin
+        invoice = Invoice.find(entry.dig('documentId'))
+      rescue ActiveRecord::RecordNotFound
+        publisher_id = entry["owner"].sub(Publisher::OWNER_PREFIX, "")
+        invoice = Invoice.where(
+          publisher_id: publisher_id,
+          finalized_amount: (entry["probi"].to_i / 1E18).round(2),
+          status: Invoice::IN_PROGRESS
+        ).order(:created_at).first
+      end
 
-      invoice = Invoice.where(
-        publisher_id: publisher_id,
-        finalized_amount: entry["amount"],
-        status: Invoice::IN_PROGRESS
-      ).order(:created_at).first
-
-      next unless invoice.present?
+      if invoice.blank?
+        not_found << "#{entry.dig('publisher')} - transactionId: #{entry.dig('transactionId')}\n" if invoice.blank?
+        next
+      end
 
       invoice.update(
         payment_date: Date.today,
@@ -76,7 +84,10 @@ class Admin::PayoutReportsController < AdminController
       )
     end
 
-    redirect_to admin_payout_reports_path, flash: { notice: "Successfully uploaded settlement report" }
+    notice = "Successfully uploaded settlement report"
+    notice += "Could not find #{not_found}" if not_found.present?
+
+    redirect_to admin_payout_reports_path, flash: { notice: notice }
   rescue JSON::ParserError => e
     redirect_to admin_payout_reports_path, flash: { alert: "Could not parse JSON. #{e.message}" }
   rescue Faraday::ClientError
