@@ -13,7 +13,13 @@ class Cache::BrowserChannels::PrefixList
     File.open(temp_file.path, 'wb') do |f|
       f.write(info)
     end
-    prefix_list.upload_public_prefix_list(info)
+    prefix_list.upload_public_prefix_list(
+      {
+        io: open(temp_file.path),
+        filename: "all_channels.br",
+        content_type: "br"
+      }
+    )
     prefix_list.save
   end
 end
