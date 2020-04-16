@@ -23,7 +23,7 @@ class PartnerMailer < ApplicationMailer
     @invoice_file = invoice_file
     @invoice = invoice_file.invoice
     @publisher = invoice_file.uploaded_by
-    @organization_name = @publisher.becomes(Partner).organization.name if @publisher.partner?
+    @organization_name = @publisher.becomes(Partner).organization.name if @publisher.invoice?
 
     mail(
       to: BIZDEV_EMAIL,

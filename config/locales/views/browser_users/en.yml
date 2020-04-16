@@ -1,0 +1,7 @@
+en:
+  browser_users:
+    pending_balance:
+      balance_pending: Referral Balance
+      bat_in_locale: BAT
+      next_deposit_date: "Next deposit date: "
+      payout_in_progress: Payout in Progress

@@ -8,13 +8,25 @@
     - if flash[:alert]
       .alert.alert-danger role="alert"
         = flash[:alert]
-    h2 = @publisher.name
+    h4.m-0.p-0 Settings
+    p Toggle settings on or off for this publisher.
+
     = form_for(@publisher, url: admin_publisher_path, method: :patch) do |f|
       .form-group
         label
           = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
           = " Uphold widget disabled"
+          br
       .form-group
-        = f.submit class: "btn btn-primary"
+        label
+          = f.check_box :wire_only, {}, checked: @publisher.wire_only?
+          = " Wire transfers only (also disables uphold and paypal widgets)"
+      .form-group
+        label
+          = f.check_box :invoice, {}, checked: @publisher.invoice?
+          = " Create invoices"
+
+      .form-group
+        = f.submit class: "btn btn-primary m-0"
     = form_tag admin_publisher_path, method: :delete
       = submit_tag "Delete account", class: 'btn btn-danger', data: { confirm: "Are you sure you want to delete this account?" }

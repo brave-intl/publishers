@@ -4,8 +4,6 @@ class Partner < Publisher
   has_one :membership, dependent: :destroy, foreign_key: :user_id
   has_one :organization, through: :membership
 
-  has_many :invoices
-
   after_initialize :ensure_role
 
   # Ensure that the role is always Partner
@@ -29,7 +27,7 @@ class Partner < Publisher
   private
 
   def invoice_amount
-    invoices = Invoice.where(partner_id: id, status: Invoice::IN_PROGRESS)
+    invoices = Invoice.where(publisher_id: id, status: Invoice::IN_PROGRESS)
     amounts = invoices.map { |i| i.finalized_amount || i.amount }
 
     amounts.map { |x| x.tr(",", "").to_d }.reduce(:+) || 0
