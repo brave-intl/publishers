@@ -330,12 +330,14 @@ class Channel < ApplicationRecord
       channel_identifier: details&.channel_identifier || details.brave_publisher_id,
     )
     site_banner_lookup.set_sha2_base16
-    site_banner_lookup.save(
+    uphold_connection = publisher&.uphold_connection
+    wallet_status = uphold_connection&.is_member && uphold_connection.address.present? ? 2 : 1
+    site_banner_lookup.update(
       channel_id: self.id,
       publisher_id: self.publisher_id,
-      derivied_site_banner_info: self&.site_banner&.read_only_react_property || self.publisher&.site_banner.read_only_react_property,
-      wallet_address: self.publisher.uphold_connection_for_channel.address,
-      wallet_status: self.publisher.uphold_connection.status
+      derived_site_banner_info: self&.site_banner&.read_only_react_property || self.publisher&.default_site_banner&.read_only_react_property || {},
+      wallet_address: self.publisher.uphold_connection.address,
+      wallet_status: wallet_status
     )
   end
 

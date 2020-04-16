@@ -9,7 +9,7 @@ class CreateSiteBannerLookups < ActiveRecord::Migration[6.0]
       t.text :channel_identifier, null: false, unique: true, index: true
       t.references :channel, type: :uuid, index: true, null: false
       t.references :publisher, type: :uuid, index: true, null: false
-      t.integer :wallet_address
+      t.uuid :wallet_address
       t.integer :wallet_status, null: false
     end
   end
