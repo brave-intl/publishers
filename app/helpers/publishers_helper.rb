@@ -42,11 +42,7 @@ module PublishersHelper
   def publisher_overall_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      publisher = publisher.become_subclass
-
-      if publisher.partner?
-        amount = publisher.balance
-      elsif publisher.only_user_funds?
+      if publisher.only_user_funds?
         amount = publisher.wallet&.contribution_balance&.amount_bat
       elsif publisher.no_grants?
         amount = publisher.wallet&.overall_balance&.amount_bat - publisher.wallet&.contribution_balance&.amount_bat
@@ -65,11 +61,7 @@ module PublishersHelper
 
     result = I18n.t("helpers.publisher.conversion_unavailable", code: publisher.uphold_connection.default_currency)
     sentry_catcher do
-      publisher = publisher&.become_subclass
-
-      if publisher.partner?
-        balance = publisher.balance_in_currency
-      elsif publisher.only_user_funds?
+      if publisher.only_user_funds?
         balance = publisher.wallet&.contribution_balance&.amount_default_currency
       elsif publisher.no_grants?
         balance =  publisher.wallet&.overall_balance&.amount_default_currency - publisher.wallet&.contribution_balance&.amount_default_currency
@@ -89,9 +81,7 @@ module PublishersHelper
   def publisher_referral_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      publisher = publisher.become_subclass
       amount = publisher.wallet&.referral_balance&.amount_bat
-      amount = publisher.balance if publisher.partner?
       balance = '%.2f' % amount if amount.present?
     end
 
@@ -101,9 +91,7 @@ module PublishersHelper
   def publisher_contribution_bat_balance(publisher)
     balance = I18n.t("helpers.publisher.balance_unavailable")
     sentry_catcher do
-      publisher = publisher.become_subclass
       amount = publisher.wallet&.contribution_balance&.amount_bat
-      amount = publisher.balance if publisher.partner?
       balance = '%.2f' % amount if amount.present?
     end
 

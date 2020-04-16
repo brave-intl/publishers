@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  namespace :uphold_connections do
+    get :login
+    get :confirm
+  end
+  namespace :browser_users do
+    get :home
+  end
   resources :publishers, only: %i(create update new show destroy) do
     collection do
       # Registrations, eventually we should consider refactoring these routes into something a little more restful
@@ -74,19 +81,6 @@ Rails.application.routes.draw do
     resources :site_banners, controller: "publishers/site_banners" do
       collection do
         post :set_default_site_banner_mode
-      end
-    end
-  end
-
-  namespace :partners do
-    resource :payments, only: [:show] do
-      resources :invoices do
-        resources :invoice_files, only: [:create, :update, :destroy]
-      end
-    end
-    resources :referrals do
-      collection do
-        resources :promo_registrations
       end
     end
   end
@@ -224,6 +218,13 @@ Rails.application.routes.draw do
       end
     end
     resources :publishers do
+      resources :invoices, module: 'publishers' do
+        post :upload
+        get :finalize
+        patch :update_status
+        post :archive_file
+      end
+
       collection do
         patch :approve_channel
         get :statement
@@ -244,14 +245,7 @@ Rails.application.routes.draw do
     resources :security
 
     resources :organizations, except: [:destroy]
-    resources :partners, except: [:destroy] do
-      get :generate_manual_payout
-      resources :invoices do
-        post :upload
-        get :finalize
-        patch :update_status
-      end
-    end
+
 
     namespace :stats do
       resources :contributions, only: [:index]

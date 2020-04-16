@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(version: 2020_04_14_170244) do
   end
 
   create_table "invoices", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.uuid "partner_id"
+    t.uuid "publisher_id"
     t.date "date"
     t.string "amount", default: "0"
     t.string "finalized_amount"
@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(version: 2020_04_14_170244) do
     t.datetime "updated_at", null: false
     t.index ["finalized_by_id"], name: "index_invoices_on_finalized_by_id"
     t.index ["paid_by_id"], name: "index_invoices_on_paid_by_id"
-    t.index ["partner_id"], name: "index_invoices_on_partner_id"
+    t.index ["publisher_id"], name: "index_invoices_on_publisher_id"
   end
 
   create_table "legacy_publishers", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -423,6 +423,7 @@ ActiveRecord::Schema.define(version: 2020_04_14_170244) do
     t.boolean "default_site_banner_mode", default: false, null: false
     t.boolean "thirty_day_login", default: false, null: false
     t.boolean "subscribed_to_marketing_emails", default: false, null: false
+    t.jsonb "feature_flags", default: {}
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"
@@ -588,6 +589,7 @@ ActiveRecord::Schema.define(version: 2020_04_14_170244) do
     t.datetime "default_currency_confirmed_at"
     t.datetime "member_at"
     t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
+    t.text "card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 

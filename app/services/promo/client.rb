@@ -12,6 +12,10 @@ module Promo
       @reporting ||= Promo::Models::Reporting.new(connection)
     end
 
+    def peer_to_peer_registration
+      @peer_to_peer_registration ||= Promo::Models::PeerToPeerRegistration.new(connection)
+    end
+
     private
 
     def perform_offline?

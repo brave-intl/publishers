@@ -9,6 +9,7 @@ class IncludePublisherInPayoutReportJob
     publisher_id = arguments["publisher_id"]
     should_send_notifications = arguments["should_send_notifications"]
     for_paypal = arguments["for_paypal"]
+    for_wire = arguments["for_wire"]
 
     if payout_report_id.present?
       payout_report = PayoutReport.find(payout_report_id)
@@ -17,14 +18,15 @@ class IncludePublisherInPayoutReportJob
     end
 
     publisher = Publisher.find(publisher_id)
-    if for_paypal
-      Paypal::PayoutReportPublisherIncluder.new(
+    if for_wire
+    elsif for_paypal
+      Payout::PotentialPayment::PaypalService.new(
         publisher:                 publisher,
         payout_report:             payout_report,
         should_send_notifications: should_send_notifications
       ).perform
     else
-      PayoutReportPublisherIncluder.new(
+      Payout::PotentialPayment::UpholdService.new(
         publisher:                 publisher,
         payout_report:             payout_report,
         should_send_notifications: should_send_notifications

@@ -1,13 +1,16 @@
 require 'digest/md5'
 
 class Publisher < ApplicationRecord
+  include UserFeatureFlags
   has_paper_trail only: [:name, :email, :pending_email, :last_sign_in_at, :default_currency, :role, :excluded_from_payout]
   self.per_page = 20
 
   ADMIN = "admin".freeze
   PARTNER = "partner".freeze
   PUBLISHER = "publisher".freeze
-  ROLES = [ADMIN, PARTNER, PUBLISHER].freeze
+  BROWSER_USER = "browser_user".freeze
+
+  ROLES = [ADMIN, PARTNER, PUBLISHER, BROWSER_USER].freeze
   MAX_PROMO_REGISTRATIONS = 500
 
   VERIFIED_CHANNEL_COUNT = :verified_channel_count
@@ -34,6 +37,7 @@ class Publisher < ApplicationRecord
   has_many :status_updates, -> { order(created_at: :desc) }, class_name: 'PublisherStatusUpdate'
   has_many :notes, class_name: 'PublisherNote', dependent: :destroy
   has_many :potential_payments
+  has_many :invoices
 
   belongs_to :youtube_channel
 
@@ -46,11 +50,11 @@ class Publisher < ApplicationRecord
   attr_encrypted :authentication_token, key: :encryption_key
 
   attribute :subscribed_to_marketing_emails, :boolean, default: false # (Albert Wang): We will use this as a flag for whether or not marketing emails are on for the user.
-  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? }
-  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !deleted? }
+  validates :email, email: true, presence: true, unless: -> { pending_email.present? || deleted? || browser_user? }
+  validates :pending_email, email: { strict_mode: true }, presence: true, allow_nil: true, if: -> { !(deleted? || browser_user?) }
   validates :promo_registrations, length: { maximum: MAX_PROMO_REGISTRATIONS }
-  validate :pending_email_must_be_a_change, unless: -> { deleted? }
-  validate :pending_email_can_not_be_in_use, unless: -> { deleted? }
+  validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
+  validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
   validates :name, presence: true, allow_blank: true
 
@@ -92,6 +96,8 @@ class Publisher < ApplicationRecord
   scope :with_verified_channel, -> {
     joins(:channels).where('channels.verified = true').distinct
   }
+
+  store_accessor :feature_flags, VALID_FEATURE_FLAGS
 
   def self.filter_status(status)
     joins(:status_updates).
@@ -147,13 +153,6 @@ class Publisher < ApplicationRecord
         select("publishers.*", "count(channels.id) channels_count").
         order(sanitize_sql_for_order("channels_count #{sort_direction}"))
     end
-  end
-
-  # This will convert the user to be a partner, or a publisher
-  def become_subclass
-    klass = self
-    klass = becomes(Partner) if partner?
-    klass
   end
 
   # API call to eyeshade
@@ -269,6 +268,10 @@ class Publisher < ApplicationRecord
 
   def publisher?
     role == PUBLISHER
+  end
+
+  def browser_user?
+    role == BROWSER_USER
   end
 
   def default_site_banner

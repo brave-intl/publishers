@@ -16,19 +16,6 @@ class PublisherMailer < ApplicationMailer
     )
   end
 
-  # Best practice is to use the MailerServices::PartnerLoginLinkEmailer service
-  def login_partner_email(partner)
-    @partner = partner
-    @private_reauth_url = publisher_private_reauth_url(publisher: @partner)
-    # We should send the email out to people who have previously registered
-    # but not verified their account
-    mail(
-      to: @partner.email || @partner.pending_email,
-      asm: transaction_asm_group_id,
-      subject: default_i18n_subject
-    )
-  end
-
   # Best practice is to use the MailerServices::VerificationDoneEmailer service
   def verification_done(channel)
     @channel = channel

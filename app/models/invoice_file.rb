@@ -18,7 +18,7 @@ class InvoiceFile < ActiveRecord::Base
         name: file.filename,
         url: Rails.application.routes.url_helpers.rails_blob_path(file, disposition: "attachment", only_path: true),
       },
-      canArchive: uploaded_by.partner? && invoice.pending?,
+      canArchive: uploaded_by.invoice? && invoice.pending?,
       archived: archived,
       url: Rails.application.routes.url_helpers.partners_payments_invoice_invoice_file_url(invoice_id: "_", id: id, only_path: true),
       uploadedBy: uploaded_by.name,
