@@ -20,11 +20,13 @@
 
   center.referral-header
     h5 Your unique referral link
-  .referral-link.d-flex.flex-row
-    p id="#{@promo_registration.referral_code}" = https_referral_url(@promo_registration.referral_code)
-    button.copy-button.share-promo-button data-clipboard-target="##{@promo_registration.referral_code}" = t("promo.shared.copy")
+  .d-flex.flex-row.justify-content-center
+    .p-2.referral-link
+      p id="#{@promo_registration.referral_code}" = https_referral_url(@promo_registration.referral_code)
+    .p-2.no-padding
+      button.copy-button.share-promo-button data-clipboard-target="##{@promo_registration.referral_code}" = t("promo.shared.copy")
   br
   center
-    = link_to("Terms & Conditions", "https://basicattentiontoken.org/publisher-terms-of-service/")
+    = link_to("Terms & Conditions", "https://basicattentiontoken.org/publisher-terms-of-service/", class: "tos-link")
 
 script src="dist/clipboard.min.js"
