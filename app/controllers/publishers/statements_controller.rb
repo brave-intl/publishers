@@ -18,8 +18,8 @@ module Publishers
     end
 
     def show
-      overviews = Views::User::Statements.new(publisher: publisher, details_date: params[:id]).overviews
-      @overview = overviews.detect { |x| x.earning_period == params[:id] }
+      overviews = Views::User::Statements.new(publisher: publisher).overviews
+      @overview = overviews.detect { |x| x.earning_period.strip == params[:id] }
     end
 
     def rate_card

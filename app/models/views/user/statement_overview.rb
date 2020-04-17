@@ -6,49 +6,75 @@ module Views
       # include PublishersHelper
 
       GROUP_START_DATE = Date.new(2019, 10, 1)
+      MONTH_FORMAT = "%b %Y".freeze
+      YEAR_FORMAT = "%b %e, %Y".freeze
 
-      attr_accessor :earning_period, :payment_date, :destination, :total_earned, :deposited,
-                    :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :total_bat_deposited
+      attr_accessor :earning_period, :payment_date, :destination, :totals, :deposited, :deposited_types, :total_earned,
+                    :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :bat_total_deposited
 
       def initialize(attributes = {})
         super
-        build_details
+        populate_default_values
+      end
+
+      # Public: Sets default values for the class if value does not exist.
+      #
+      # Returns nil
+      def populate_default_values
+        @name ||= ''
+        @email ||= ''
+        @total_earned ||= 0
+        @totals ||= {
+          contribution_settlement: 0,
+          fees: 0,
+          referral_settlement: 0,
+          total_brave_settled: 0,
+          uphold_contribution_settlement: 0,
+        }
+        @bat_total_deposited ||= 0
+        @deposited ||= {}
+        @deposited_types ||= {}
+        @settled_transactions ||= []
+
+        brave_settled_date = settled_transactions.detect { |x| x.eyeshade_settlement? }&.created_at
+        @payment_date ||= brave_settled_date&.strftime(YEAR_FORMAT)
+        earning_period_start_date = settled_transactions.first.earning_period
+        @earning_period ||= "#{earning_period_start_date.strftime(MONTH_FORMAT)} - " \
+                            "#{brave_settled_date&.strftime(MONTH_FORMAT)}"
       end
 
       def as_json(*)
-        {
-          earning_period: earning_period,
-          payment_date: payment_date,
-          destination: destination,
+        json = super.deep_transform_keys { |k| k.to_s.camelize(:lower) }
+
+        show_rate_cards = payment_date.present? && payment_date.to_date > GROUP_START_DATE
+        json.merge({
           deposited: deposited,
-          currency: currency,
-          details: details,
-          name: name,
-          email: email,
           isOpen: false,
-          rawTransactions: raw_transactions,
-          totalEarned: total_earned,
-          totalFees: total_fees,
-          totalBATDeposited: total_bat_deposited,
-          showRateCards: payment_date.to_date > GROUP_START_DATE,
-        }
+          showRateCards: show_rate_cards,
+        })
       end
 
+      # Public: Populates the details of the Overview. Groups transaction types together so statement is easier to read.
+      #
+      # Returns a StatementOverview
       def build_details
         details = []
         grouped_transactions = settled_transactions.group_by { |x| x.transaction_type }
+        # Fees are only associated with Contribution Settlement, so let's group the fees explicitly with contributions.
+        fees = grouped_transactions.delete("fees")
 
         grouped_transactions.each do |type, results|
           total_amount = 0
 
+          # Add previously removed fees to the contribution settlement details
+          results += fees if type == PublisherStatementGetter::Statement::CONTRIBUTION_SETTLEMENT
+
           results = results.each do |x|
+            # All settlements are negative, so we should take the absolute value
+            # and display it as a positive value
             x.amount = x.amount.abs unless x.transaction_type == "fees"
 
-            if x.amount.positive?
-              total_amount += x.amount.abs
-            else
-              total_amount -= x.amount.abs
-            end
+            total_amount += x.amount
           end
 
           details << StatementDetail.new(
@@ -61,6 +87,7 @@ module Views
         end
 
         @details = details.sort_by { |x| x.title }
+        self
       end
     end
   end
