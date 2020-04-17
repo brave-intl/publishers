@@ -34,9 +34,6 @@ module Publishers
     config.lograge.enabled = true
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
     config.active_record.belongs_to_required_by_default = false
-    config.active_record.database_selector = { delay: 2.seconds }
-    config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-    config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
     config.time_zone = "Pacific Time (US & Canada)"
     config.active_record.default_timezone = :local
