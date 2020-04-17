@@ -188,6 +188,10 @@ class PublishersController < ApplicationController
   private
 
   def authenticate_via_token
+    # For some odd reason, devise flash alerts get displayed during auth.
+    # Deeper details can be chased in:
+    # https://github.com/heartcombo/devise/blob/83a32e6d2118b0535cf54b48df4f9853d85b55fd/lib/devise/failure_app.rb
+    flash[:alert] = nil
     publisher_id = params[:id]
     token = params[:token]
     confirm_email = params[:confirm_email]
