@@ -17,8 +17,9 @@ class Cache::BrowserChannels::PrefixList
       {
         io: open(temp_file.path),
         filename: "all_channels.br",
-        content_type: "br"
-      }
+        content_type: "br",
+      },
+      key: "all_channels"
     )
     prefix_list.save
   end
