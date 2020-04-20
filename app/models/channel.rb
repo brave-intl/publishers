@@ -333,10 +333,10 @@ class Channel < ApplicationRecord
     uphold_connection = publisher&.uphold_connection
     wallet_status = uphold_connection&.is_member && uphold_connection.address.present? ? 2 : 1
     site_banner_lookup.update(
-      channel_id: self.id,
-      publisher_id: self.publisher_id,
-      derived_site_banner_info: self&.site_banner&.read_only_react_property || self.publisher&.default_site_banner&.read_only_react_property || {},
-      wallet_address: self.publisher&.uphold_connection&.address,
+      channel_id: id,
+      publisher_id: publisher_id,
+      derived_site_banner_info: site_banner&.read_only_react_property || publisher&.default_site_banner&.read_only_react_property || {},
+      wallet_address: publisher&.uphold_connection&.address,
       wallet_status: wallet_status
     )
   end

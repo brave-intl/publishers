@@ -55,7 +55,7 @@ class SiteChannelDetails < BaseChannelDetails
   end
 
   def channel_identifier
-    brave_publisher_id
+    brave_publisher_id || brave_publisher_id_unnormalized
   end
 
   # Unused for Site Channels

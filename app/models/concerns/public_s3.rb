@@ -70,9 +70,7 @@ module PublicS3
 
             blob.upload file[:io]
           end
-          if key.present?
-            blob.key = key 
-          end
+          blob.key = key if key.present?
           blob.save
 
           if self.public_send("#{name}_attachment").present?
