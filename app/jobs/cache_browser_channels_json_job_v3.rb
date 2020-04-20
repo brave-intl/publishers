@@ -9,7 +9,14 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
     last_written_at = Rails.cache.fetch(LAST_WRITTEN_AT_KEY)
     return if last_written_at.present? && last_written_at > 2.hours.ago
 
-    @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
+    if ENV["RAILS_ENV"].in?(["staging"])
+      response = Faraday.get("https://publishers-distro.basicattentiontoken.org/api/v3/public/channels") do |req|
+        req.headers['Accept-Encoding'] = 'gzip'
+      end
+      @channels_json = ActiveSupport::Gzip.decompress(response.body)
+    else
+      @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
+    end
     retry_count = 0
     result = nil
 
