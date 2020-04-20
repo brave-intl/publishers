@@ -74,7 +74,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
         "amount": "1.000000000000000000",
         "currency": "USD",
         "activeAt": "2019-10-01T00:00:00.000Z",
-        "codes": ["AF", "DZ", "AD", "AO", "AG", "BS", "BH", "BD", "BB", "BJ", "BT", "BW", "BN", "BF", "BI", "CI", "CV", "KH", "CM", "TD", "CN", "KM", "CD", "CY", "CG", "DJ", "DM", "DO", "EG", "GQ", "ER", "SZ", "ET", "FJ", "GA", "GM", "GH", "GR", "GD", "GN", "GW", "GY", "HT", "VA", "IS", "IN", "ID", "IQ", "JM", "JO", "KZ", "KE", "KI", "KW", "KG", "LA", "LB", "LS", "LR", "LI", "MG", "MW", "MY", "MV", "ML", "MH", "MR", "MU", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NR", "NP", "NE", "NG", "MK", "OM", "PK", "PW", "PS", "PG", "PH", "QA", "RO", "RW", "KN", "LC", "VC", "WS", "SM", "ST", "SA", "SN", "SC", "SL", "SI", "SB", "ZA", "LK", "SS", "SR", "TJ", "TZ", "TH", "TL", "TG", "TO", "TT", "TN", "TM", "TV", "UG", "AE", "UZ", "VU", "VE", "VN", "YE", "ZM", "ZW"],
+        "codes": ["AF", "DZ", "AD", "AO", "AG", "BS", "BH", "BD", "BB", "BJ", "BT", "BW", "BN", "BF", "BI", "CI", "CV", "KH", "CM", "TD", "CN", "KM", "CD", "CY", "CG", "DJ", "DM", "DO", "EG", "GQ", "ER", "SZ", "ET", "FJ", "GA", "GM", "GH", "GR", "GD", "GN", "GW", "GY", "HT", "VA", "IS", "IN", "ID", "IQ", "JM", "JO", "KZ", "KE", "KI", "KW", "KG", "LA", "LB", "LS", "LR", "LI", "MG", "MW", "MY", "MV", "ML", "MH", "MR", "MU", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NR", "NP", "NE", "NG", "MK", "OM", "PK", "PW", "PS", "PG", "PH", "QA", "RW", "KN", "LC", "VC", "WS", "SM", "ST", "SA", "SN", "SC", "SL", "SI", "SB", "ZA", "LK", "SS", "SR", "TJ", "TZ", "TH", "TL", "TG", "TO", "TT", "TN", "TM", "TV", "UG", "AE", "UZ", "VU", "VE", "VN", "YE", "ZM", "ZW"],
       },
     ]
   end
