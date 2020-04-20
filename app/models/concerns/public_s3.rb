@@ -70,7 +70,9 @@ module PublicS3
 
             blob.upload file[:io]
           end
-          blob.key = key if key.present?
+          if key.present?
+            blob.key = key 
+          end
           blob.save
 
           if self.public_send("#{name}_attachment").present?
@@ -104,6 +106,7 @@ module PublicS3
 
         # Not going to actually purge because we don't want to delete attachments
         def #{name}_purge_later
+          ActiveStorage::PurgeJob.perform_later(self)
         end
 
         # Deletes from the public_s3_service immediately
