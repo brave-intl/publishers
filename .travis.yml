@@ -31,7 +31,7 @@ cache:
   directories:
     - node_modules
 before_script:
-  - bundle exec rake db:setup
+  - bundle exec rake db:prepare
 script:
   - yarn install
   - yarn audit --groups dependencies
