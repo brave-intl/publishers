@@ -6,7 +6,7 @@ class Eyeshade::FetchSnapshot < Eyeshade::BaseApiClient
       begin
         response = connection.get do |request|
           request.headers["Authorization"] = api_authorization_header
-          request.url("/v1/snapshots/#{payout_report_id}?account=#{channel_identifier}")
+          request.url("/v1/snapshots/#{payout_report_id}?account=#{global_identifier}")
         end
         result = JSON.parse(response.body)
       end

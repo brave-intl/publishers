@@ -25,7 +25,7 @@ class Payout::PotentialPayment::UpholdService < BaseService
 
     # Create the referral payment for the owner
     unless should_only_notify?
-      probi = eyeshade_fetch_snapshot.perform(payout_report_id: @payout_report.id, global_identifier: @publisher.owner_identifier).to_d
+      probi = eyeshade_fetch_snapshot.perform(payout_report_id: @payout_report.id, global_identifier: @publisher.owner_identifier)["items"]["balance"].to_d
       total_probi += probi
       PotentialPayment.create(
         payout_report_id: @payout_report.id,
@@ -48,7 +48,7 @@ class Payout::PotentialPayment::UpholdService < BaseService
 
     # Create potential payments for channel contributions
     @publisher.channels.verified.each do |channel|
-      probi = eyeshade_fetch_snapshot.perform(payout_report_id: @payout_report.id, global_identifier: channel.channel_identifier).to_d
+      probi = eyeshade_fetch_snapshot.perform(payout_report_id: @payout_report.id, global_identifier: channel.channel_identifier)["items"]["balance"].to_d
       total_probi += probi
 
       unless should_only_notify?

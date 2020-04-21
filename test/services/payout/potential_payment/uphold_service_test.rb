@@ -223,10 +223,6 @@ class UpholdServiceTest < ActiveJob::TestCase
       end
 
       before do
-        Rails.application.secrets[:api_eyeshade_offline] = false
-        stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
-        stub_request(:get, uphold_url).to_return(body: { }.to_json)
-
         subject
       end
 
@@ -378,8 +374,6 @@ class UpholdServiceTest < ActiveJob::TestCase
             let(:should_send_notifications) { true }
 
             before do
-              Rails.application.secrets[:api_eyeshade_offline] = false
-              stub_all_eyeshade_wallet_responses(publisher: publisher, balances: balance_response)
               subject
             end
 
