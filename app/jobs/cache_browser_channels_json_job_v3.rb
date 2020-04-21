@@ -10,10 +10,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
     return if last_written_at.present? && last_written_at > 2.hours.ago
 
     if ENV["RAILS_ENV"].in?(["staging"])
-      response = Faraday.get("https://publishers-distro.basicattentiontoken.org/api/v3/public/channels") do |req|
-        req.headers['Accept-Encoding'] = 'gzip'
-      end
-      @channels_json = ActiveSupport::Gzip.decompress(response.body)
+      @channels_json = gather_channels(staging_info, production_info)
     else
       @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
     end
@@ -90,5 +87,27 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       retry_count += 1
       Rails.logger.info("CacheBrowserChannelsJsonJob V3 could not write to totals: #{result}. Retrying: #{retry_count}/#{MAX_RETRY}")
     end
+  end
+
+  def gather_channels(staging_channels_list, production_channels_list)
+    existing_channels = {}
+    staging_channels_list.each do |staging_channel|
+      existing_channels[staging_channel[0]] = 1
+    end
+    production_channels_list.each do |production_channel|
+      staging_channels_list.append(production_channel) unless production_channel[0].in?(existing_channels)
+    end
+    staging_channels_list
+  end
+
+  def staging_info
+    JSON.parse(JsonBuilders::ChannelsJsonBuilderV3.new.build)
+  end
+
+  def production_info
+    response = Faraday.get("https://publishers-distro.basicattentiontoken.org/api/v3/public/channels") do |req|
+      req.headers['Accept-Encoding'] = 'gzip'
+    end
+    JSON.parse(ActiveSupport::Gzip.decompress(response.body))
   end
 end

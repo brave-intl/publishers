@@ -3,7 +3,6 @@ module BrowserChannelsDynoCaching
   require 'sentry-raven'
 
   def channels
-    redirect_to("https://publishers-distro.basicattentiontoken.org/api/v3/public/channels") and return if on_staging?
     clear_if_old_lock
     have_lock = set_lock_to_now
     render(status: 429) and return unless have_lock
@@ -22,10 +21,6 @@ module BrowserChannelsDynoCaching
     if past_time.present? && 5.minutes.ago > Time.at(past_time.to_i)
       Rails.cache.delete(self.class::REDIS_THUNDERING_HERD_KEY)
     end
-  end
-
-  def on_staging?
-    ENV["RAILS_ENV"] == 'staging' && request.original_url.include?("v3")
   end
 
   def set_lock_to_now
