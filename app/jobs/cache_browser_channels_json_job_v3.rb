@@ -95,6 +95,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       existing_channels[staging_channel[0]] = 1
     end
     production_channels_list.each do |production_channel|
+      production_channel[0] = production_channel[0] + "fake"
       staging_channels_list.append(production_channel) unless production_channel[0].in?(existing_channels)
     end
     staging_channels_list
