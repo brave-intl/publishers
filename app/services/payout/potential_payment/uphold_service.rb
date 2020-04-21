@@ -15,24 +15,22 @@ class Payout::PotentialPayment::UpholdService < BaseService
 
     uphold_connection = @publisher.uphold_connection
 
-    wallet = PublisherWalletGetter.new(publisher: @publisher, include_transactions: false).perform
-
-    raise WalletError.new(message: "There was a problem fetching the wallet for #{@publisher.id}") if wallet.blank?
-
     uphold_connection.sync_from_uphold!
     if uphold_connection.missing_card?
       uphold_connection.create_uphold_cards
     end
 
-    probi = wallet.referral_balance.amount_probi # probi = balance
-    total_probi = probi
+    eyeshade_fetch_snapshot = Eyeshade::FetchSnapshot.new
+    total_probi = 0
 
     # Create the referral payment for the owner
     unless should_only_notify?
+      probi = eyeshade_fetch_snapshot.perform(payout_report_id: @payout_report.id, global_identifier: @publisher.owner_identifier).to_d
+      total_probi += probi
       PotentialPayment.create(
         payout_report_id: @payout_report.id,
         name: @publisher.name,
-        amount: "#{probi}",
+        amount: probi.to_s,
         fees: "0",
         publisher_id: @publisher.id,
         kind: PotentialPayment::REFERRAL,
@@ -50,16 +48,14 @@ class Payout::PotentialPayment::UpholdService < BaseService
 
     # Create potential payments for channel contributions
     @publisher.channels.verified.each do |channel|
-      probi = wallet.channel_balances[channel.details.channel_identifier].amount_probi # probi = balance - fee
-      fee_probi = wallet.channel_balances[channel.details.channel_identifier].fees_probi # fee = balance - probi
+      probi = eyeshade_fetch_snapshot.perform(payout_report_id: @payout_report.id, global_identifier: channel.channel_identifier).to_d
       total_probi += probi
 
       unless should_only_notify?
         PotentialPayment.create(
           payout_report_id: @payout_report.id,
           name: "#{channel.publication_title}",
-          amount: "#{probi}",
-          fees: "#{fee_probi}",
+          amount: probi.to_s,
           publisher_id: @publisher.id,
           channel_id: channel.id,
           kind: PotentialPayment::CONTRIBUTION,
