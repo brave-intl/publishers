@@ -15,6 +15,7 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
                                           manual: manual,
                                           fee_rate: fee_rate,
                                           expected_num_payments: 0)
+      Eyeshade::CreateSnapshot.new.perform(payout_report_id: payout_report.id)
     end
 
     if should_send_notifications
