@@ -9,7 +9,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
     last_written_at = Rails.cache.fetch(LAST_WRITTEN_AT_KEY)
     return if last_written_at.present? && last_written_at > 2.hours.ago
 
-    if ENV["RAILS_ENV"].in?(["staging", "development"])
+    if ENV["RAILS_ENV"].in?(["staging"])
       @channels_json = gather_channels(staging_info, production_info).to_json
     else
       @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
