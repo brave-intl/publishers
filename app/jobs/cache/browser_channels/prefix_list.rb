@@ -3,24 +3,21 @@ class Cache::BrowserChannels::PrefixList
 
   # Might need to adjust the value based on 
   PREFIX_LENGTH = 9
+  ALL_CHANNELS_KEY = "all_channels"
+  EXTENSION = ".br"
 
   def perform(details_type: nil)
     result = ActiveRecord::Base.connection.execute("SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH}) FROM site_banner_lookups").map { |r| r['substring'] }.to_json
     require 'brotli'
-    prefix_list = PrefixList.find_or_initialize_by(name: PrefixList::ALL_CHANNELS)
     temp_file = Tempfile.new(["all_channels", ".br"])
     info = Brotli.deflate(result)
     File.open(temp_file.path, 'wb') do |f|
       f.write(info)
     end
-    prefix_list.upload_public_prefix_list(
-      {
-        io: open(temp_file.path),
-        filename: "all_channels.br",
-        content_type: "br",
-      },
-      key: "all_channels"
-    )
-    prefix_list.save
+    require 'aws-sdk-s3'
+    Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_publishers_access_key_id], Rails.application.secrets[:s3_publishers_secret_access_key])
+    s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_publishers_bucket_region])
+    obj = s3.bucket(Rails.application.secrets[:s3_publishers_bucket_name]).object(ALL_CHANNELS_KEY + EXTENSION)
+    obj.upload_file(temp_file.path)
   end
 end
