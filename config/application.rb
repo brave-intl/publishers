@@ -34,8 +34,6 @@ module Publishers
     config.lograge.enabled = true
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
     config.active_record.belongs_to_required_by_default = false
-    config.active_record.writing_role = :default
-    config.active_record.reading_role = :readonly
 
     config.time_zone = "Pacific Time (US & Canada)"
     config.active_record.default_timezone = :local
