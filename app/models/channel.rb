@@ -31,6 +31,7 @@ class Channel < ApplicationRecord
   has_one :contesting_channel, class_name: "Channel", foreign_key: 'contested_by_channel_id'
 
   has_one :site_banner
+  has_one :site_banner_lookup
 
   has_many :potential_payments
 
