@@ -59,6 +59,10 @@
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
     queue: scheduler
+  Cache::BrowserChannels::PrefixList:
+    cron: "50 3 * * *"
+    description: "Caches prefix list for lookup"
+    queue: heavy
   EnqueuePublishersForPayoutJob:
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_15_185257) do
+ActiveRecord::Schema.define(version: 2020_04_14_170244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -339,12 +339,6 @@ ActiveRecord::Schema.define(version: 2020_04_15_185257) do
     t.index ["invoice_id"], name: "index_potential_payments_on_invoice_id"
     t.index ["payout_report_id"], name: "index_potential_payments_on_payout_report_id"
     t.index ["publisher_id"], name: "index_potential_payments_on_publisher_id"
-  end
-
-  create_table "prefix_lists", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.text "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "promo_campaigns", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
