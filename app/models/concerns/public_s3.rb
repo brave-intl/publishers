@@ -59,7 +59,7 @@ module PublicS3
         #
         # When building a blob we must ensure the correct S3 service is being specified so that the backing code
         # uploads to the correct bucket. Otherwise it will use the default configured in the config/storage.yml
-        def upload_public_#{name}(file, key: nil)
+        def upload_public_#{name}(file)
           blob = ActiveStorage::Blob.new.tap do |blob|
             blob.filename     = file[:filename]
             blob.content_type = file[:content_type]
@@ -70,7 +70,6 @@ module PublicS3
 
             blob.upload file[:io]
           end
-          blob.key = key if key.present?
           blob.save
 
           if self.public_send("#{name}_attachment").present?
@@ -104,7 +103,6 @@ module PublicS3
 
         # Not going to actually purge because we don't want to delete attachments
         def #{name}_purge_later
-          ActiveStorage::PurgeJob.perform_later(self)
         end
 
         # Deletes from the public_s3_service immediately
