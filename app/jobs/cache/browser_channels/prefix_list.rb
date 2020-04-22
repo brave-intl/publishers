@@ -14,9 +14,9 @@ class Cache::BrowserChannels::PrefixList
       f.write(info)
     end
     require 'aws-sdk-s3'
-    Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_publishers_access_key_id], Rails.application.secrets[:s3_publishers_secret_access_key])
-    s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_publishers_bucket_region])
-    obj = s3.bucket(Rails.application.secrets[:s3_publishers_bucket_name]).object(ALL_CHANNELS_KEY)
+    Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_rewards_access_key_id], Rails.application.secrets[:s3_rewards_secret_access_key])
+    s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards_bucket_region])
+    obj = s3.bucket(Rails.application.secrets[:s3_rewards_bucket_name]).object(ALL_CHANNELS_KEY)
     obj.upload_file(temp_file.path)
   end
 end
