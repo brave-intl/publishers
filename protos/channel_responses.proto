@@ -1,5 +1,9 @@
 syntax = "proto3";
-package publishers.proto;
+/* From https://developers.google.com/protocol-buffers/docs/style
+
+Package name should be in lowercase, and should correspond to the directory hierarchy. e.g., if a file is in my/package/, then the package name should be my.package.
+*/
+package publishers.protos;
 
 message SocialLinks {
   string youtube = 1;
