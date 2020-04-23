@@ -4,7 +4,8 @@ class Eyeshade::CreateSnapshot < Eyeshade::BaseApiClient
     begin
       response = connection.post do |request|
         request.headers["Authorization"] = api_authorization_header
-        request.url("/v1/snapshots/#{payout_report_id}")
+        request.url("/v1/snapshots")
+        request.body = { "snapshotId" => payout_report_id }.to_json
       end
       result = JSON.parse(response.body)
     rescue
