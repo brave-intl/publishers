@@ -25,7 +25,7 @@
         .p-2.referral-link
             p id="#{@promo_registration.referral_code}" = https_referral_url(@promo_registration.referral_code)
         .p-2.no-padding
-          button.copy-button.share-promo-button data-clipboard-target="##{@promo_registration.referral_code}" = t("promo.shared.copy")
+          button.copy-button.btn-white data-clipboard-target="##{@promo_registration.referral_code}" = t("promo.shared.copy")
     br
     center
       = link_to("Terms & Conditions", "https://basicattentiontoken.org/referral-terms-of-service/", class: "tos-link")
@@ -34,6 +34,6 @@
       = link_to("View Terms & Conditions", "https://basicattentiontoken.org/referral-terms-of-service/", class: "tos-link")
       br
       br
-      = link_to "Accept Terms & Conditions", browser_users_accept_tos_path, method: :put, class: "btn btn-primary"
+      = link_to "Accept Terms & Conditions", browser_users_accept_tos_path, method: :put, class: "btn btn-white"
 
 script src="dist/clipboard.min.js"

@@ -10,7 +10,7 @@
 
 .how-it-works {
   &--panel {
-    height: 530px;
+    padding-bottom: 30px;
     width: 400px;
     margin-left: 25px;
     background: rgb(255, 118, 84);
@@ -76,15 +76,17 @@
   padding-bottom: 0px!important;
 }
 
-button.share-promo-button {
+.btn-white {
   font-family: 'Poppins-Regular', sans-serif;
   color: #ffffff;
-  width: 55px;
   margin: 0px;
   height: 100%;
-  border-radius: 4px;
   background: rgba(255, 255, 255, 0.34);
   border-width: 0px;
+  .skinny {
+    border-radius: 4px;
+    width: 55px;
+  }
 }
 
 .tos-link {
