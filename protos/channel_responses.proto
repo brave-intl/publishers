@@ -1,5 +1,5 @@
 syntax = "proto3";
-package channel_responses;
+package publishers.proto;
 
 message SocialLinks {
   string youtube = 1;
