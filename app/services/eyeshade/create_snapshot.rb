@@ -7,6 +7,8 @@ class Eyeshade::CreateSnapshot < Eyeshade::BaseApiClient
         request.url("/v1/snapshots/#{payout_report_id}")
       end
       result = JSON.parse(response.body)
+    rescue
+      LogException.perform(StandardError.new("Unable to create snapshot"), params: {})
     end
     result
   end
