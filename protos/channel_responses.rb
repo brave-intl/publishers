@@ -5,30 +5,30 @@ require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("channel_responses.proto", :syntax => :proto3) do
-    add_message "publishers.protos.SocialLinks" do
+    add_message "publishers_pb.SocialLinks" do
       optional :youtube, :string, 1
       optional :twitter, :string, 2
       optional :twitch, :string, 3
     end
-    add_message "publishers.protos.SiteBannerDetails" do
+    add_message "publishers_pb.SiteBannerDetails" do
       optional :title, :string, 1
       optional :description, :string, 2
       optional :background_url, :string, 3
       optional :logo_url, :string, 4
       repeated :donation_amounts, :int32, 5
-      optional :social_links, :message, 6, "publishers.protos.SocialLinks"
+      optional :social_links, :message, 6, "publishers_pb.SocialLinks"
     end
-    add_message "publishers.protos.ChannelResponse" do
+    add_message "publishers_pb.ChannelResponse" do
       optional :channel_identifier, :string, 1
-      optional :wallet_connected_state, :enum, 2, "publishers.protos.WalletConnectedState"
+      optional :wallet_connected_state, :enum, 2, "publishers_pb.WalletConnectedState"
       optional :wallet_address, :string, 3
       optional :publisher_ads_opted_in, :bool, 4
-      optional :site_banner_details, :message, 5, "publishers.protos.SiteBannerDetails"
+      optional :site_banner_details, :message, 5, "publishers_pb.SiteBannerDetails"
     end
-    add_message "publishers.protos.ChannelResponses" do
-      repeated :channel_response, :message, 1, "publishers.protos.ChannelResponse"
+    add_message "publishers_pb.ChannelResponses" do
+      repeated :channel_response, :message, 1, "publishers_pb.ChannelResponse"
     end
-    add_enum "publishers.protos.WalletConnectedState" do
+    add_enum "publishers_pb.WalletConnectedState" do
       value :NO_VERIFICATION, 0
       value :UPHOLD_ACCOUNT_NO_KYC, 1
       value :UPHOLD_ACCOUNT_KYC, 2
@@ -38,12 +38,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Publishers
-  module Protos
-    SocialLinks = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers.protos.SocialLinks").msgclass
-    SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers.protos.SiteBannerDetails").msgclass
-    ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers.protos.ChannelResponse").msgclass
-    ChannelResponses = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers.protos.ChannelResponses").msgclass
-    WalletConnectedState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers.protos.WalletConnectedState").enummodule
-  end
+module PublishersPb
+  SocialLinks = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SocialLinks").msgclass
+  SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SiteBannerDetails").msgclass
+  ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
+  ChannelResponses = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponses").msgclass
+  WalletConnectedState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.WalletConnectedState").enummodule
 end

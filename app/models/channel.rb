@@ -331,8 +331,7 @@ class Channel < ApplicationRecord
       channel_identifier: details&.channel_identifier || details.brave_publisher_id,
     )
     site_banner_lookup.set_sha2_base16
-    uphold_connection = publisher&.uphold_connection
-    wallet_status = uphold_connection&.is_member && uphold_connection.address.present? ? 2 : 1
+    site_banner_lookup.set_wallet_status(publisher: publisher)
     site_banner_lookup.update(
       channel_id: id,
       publisher_id: publisher_id,

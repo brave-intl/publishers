@@ -1,9 +1,7 @@
 syntax = "proto3";
-/* From https://developers.google.com/protocol-buffers/docs/style
-
-Package name should be in lowercase, and should correspond to the directory hierarchy. e.g., if a file is in my/package/, then the package name should be my.package.
+/* Following chromium style (e.g. sync_pb) is the usage for the sync protobuf
 */
-package publishers.protos;
+package publishers_pb;
 
 message SocialLinks {
   string youtube = 1;

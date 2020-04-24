@@ -1,6 +1,8 @@
 class PaypalConnection < ActiveRecord::Base
   attr_encrypted :refresh_token, key: :encryption_key, marshal: true
 
+  JAPAN_COUNTRY_CODE = "JP".freeze
+
   belongs_to :user, class_name: "Publisher", foreign_key: :user_id
 
   def encryption_key

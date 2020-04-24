@@ -10,4 +10,8 @@ class SiteBannerLookupTest < ActionDispatch::IntegrationTest
   test "if a site banner gets updated, the lookup gets updated too" do
 
   end
+
+  test "make sure SBL has the right wallet status" do
+
+  end
 end
