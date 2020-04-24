@@ -106,7 +106,7 @@ module Admin
       first_status = statuses[0]
       if first_status.present?
         value = first_status
-        search_case = search_case.where('status LIKE ?', "%#{value}%")
+        search_case = search_case.where(status: value)
 
         statuses[1..-1].each do |value|
           search_case = search_case.or(Case.where('status LIKE ?', "%#{value}%"))
