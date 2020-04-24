@@ -5,6 +5,13 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def perform(prefix:)
     site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE '#{prefix}%'")
+    begin
+      # Have to throw in a begin rescue block otherwise
+      # Zeitwerk::NameError (expected file $DIR/protos/channel_responses.rb to define constant ChannelResponses, but didn't)
+      # gets thrown.
+      require './protos/channel_responses'
+    rescue
+    end
     channel_responses = PublishersPb::ChannelResponses.new
     site_banner_lookups.each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
@@ -18,7 +25,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     json = PublishersPb::ChannelResponses.encode_json(channel_responses)
     temp_file = Tempfile.new([prefix, ".br"])
     info = Brotli.deflate(json)
-    File.open(temp_file.path, 'w') do |f|
+    File.open(temp_file.path, 'wb') do |f|
       f.write(info)
     end
 
