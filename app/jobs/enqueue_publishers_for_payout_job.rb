@@ -29,7 +29,10 @@ class EnqueuePublishersForPayoutJob < ApplicationJob
         publisher_ids: publisher_ids
       )
     end
-    payout_report if payout_report.present?
+    if payout_report.present?
+      Eyeshade::CreateSnapshot.new.perform(payout_report_id: payout_report.id)
+      payout_report
+    end
   end
 
   private
