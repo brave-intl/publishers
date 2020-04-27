@@ -1,7 +1,8 @@
 class Cache::BrowserChannels::ResponsesForPrefix
   include Sidekiq::Worker
 
-  PATH = "channels/prefix/"
+  PATH = "channels/prefix/".freeze
+  PADDING_WORD = "PADDING".freeze
 
   def perform(prefix:)
     site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE '#{prefix}%'")
@@ -22,21 +23,44 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_responses.channel_response.push(channel_response)
     end
 
-    json = PublishersPb::ChannelResponses.encode_json(channel_responses)
     temp_file = Tempfile.new([prefix, ".br"])
+    json = PublishersPb::ChannelResponses.encode_json(channel_responses)
     info = Brotli.deflate(json)
     File.open(temp_file.path, 'wb') do |f|
       f.write(info)
     end
 
+    pad_file(path: temp_file.path)
+    save_to_s3(path: temp_file.path, prefix: prefix)
+  end
+
+  private
+
+  def pad_file(path:)
+    # Round up to nearest KB
+    file_size = File.size(path)
+    # Converts size from like 326 to 1000
+    new_size = (((file_size + 1000) / 1000)) * 1000
+    delta = new_size - file_size
+    repeats = (delta / PADDING_WORD.length).to_i
+    left_over = delta % PADDING_WORD.length
+    # I'm assuming padding will be fast in a for loop, this can be optimized if this is slow
+    # if moving around the file on disk is a frequent operation
+    File.open(path, 'ab') do |f|
+      (0...repeats).each do
+        f.write(PADDING_WORD)
+      end
+      f.write(PADDING_WORD[0, left_over])
+    end
+  end
+
+  def save_to_s3(path:, prefix:)
     require 'aws-sdk-s3'
     Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_rewards_access_key_id], Rails.application.secrets[:s3_rewards_secret_access_key])
     s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards_bucket_region])
     obj = s3.bucket(Rails.application.secrets[:s3_rewards_bucket_name]).object(PATH + prefix)
-    obj.upload_file(temp_file.path)
+    obj.upload_file(path)
   end
-
-  private
 
   def get_site_banner_details(site_banner_lookup)
     details = PublishersPb::SiteBannerDetails.new

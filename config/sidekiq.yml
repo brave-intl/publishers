@@ -41,6 +41,10 @@
     cron: "0 1 * * *"
     description: "Syncs zendesk tickets"
     queue: low
+  Cache::BrowserChannels::Main:
+    cron: "0 2 * * *"
+    description: "Syncs V4 channels list"
+    queue: low
   Cache::PiwikDataJob:
     cron: "45 2 * * *"
     description: "Refreshes the redis cache for piwik information everyday at 2:45 AM"
