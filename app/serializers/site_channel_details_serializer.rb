@@ -1,3 +1,0 @@
-class SiteChannelDetailsSerializer < BaseChannelDetailsSerializer
-
-end
