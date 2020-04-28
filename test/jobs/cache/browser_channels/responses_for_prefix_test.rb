@@ -1,6 +1,12 @@
 require 'test_helper'
 
-class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveJob::TestCase
+class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
+  def self.test_order
+    # Runs in order
+    # https://api.rubyonrails.org/v4.2.5/classes/ActiveSupport/TestCase.html
+    :alpha
+  end
+
   test 'creates basic responses list and can decompress back' do
     channel = channels(:verified)
     channel.send(:update_sha2_lookup)
@@ -16,28 +22,46 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveJob::TestCase
     assert_equal result.channel_response[0].channel_identifier, channel.details.channel_identifier
   end
 
-  test 'complex responses list and can decompress back' do
-    channel = channels(:verified)
-    channel.send(:update_sha2_lookup)
-    other_channel = channels(:google_verified)
-    other_channel.send(:update_sha2_lookup)
+  describe "complex channel response file generation" do
+    before do
+      @channel = channels(:verified)
+      @channel.send(:update_sha2_lookup)
+      @other_channel = channels(:google_verified)
+      @other_channel.send(:update_sha2_lookup)
 
-    prefix = channel.site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH] 
-    require 'byebug'
-    # Update SHA2
-    new_sha = prefix + other_channel.site_banner_lookup.sha2_base16[Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH, other_channel.site_banner_lookup.sha2_base16.length]
-    other_channel.site_banner_lookup.update(sha2_base16: new_sha)
+      prefix = @channel.site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH] 
+      # Update SHA2
+      new_sha = prefix + @other_channel.site_banner_lookup.sha2_base16[Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH, @other_channel.site_banner_lookup.sha2_base16.length]
+      @other_channel.site_banner_lookup.update(sha2_base16: new_sha)
+      @service = Cache::BrowserChannels::ResponsesForPrefix.new
+      @service.generate_brotli_encoded_channel_response(prefix: prefix)
+    end
 
-    service = Cache::BrowserChannels::ResponsesForPrefix.new
-    service.generate_brotli_encoded_channel_response(prefix: prefix)
-    assert service.temp_file.present?
-    result_json = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines.join(""))
-    result = PublishersPb::ChannelResponses.decode_json(result_json)
-    assert_equal result.channel_response[0].channel_identifier, channel.details.channel_identifier
-    assert_equal result.channel_response[1].channel_identifier, other_channel.details.channel_identifier
-  end
+    test "decompress back and has matching responses" do
+      result_json = Brotli.inflate(File.open(@service.temp_file.path, 'rb').readlines.join(""))
+      result = PublishersPb::ChannelResponses.decode_json(result_json)
+      assert_equal result.channel_response[0].channel_identifier, @channel.details.channel_identifier
+      assert_equal result.channel_response[1].channel_identifier, @other_channel.details.channel_identifier
+    end
 
-  test 'padding for responses list can be added and stripped' do
+    test 'padding for responses list can be added and stripped' do
+      original_file_size = File.size(@service.temp_file.path)
+      @service.send(:pad_file!)
+      assert_equal File.size(@service.temp_file.path), 1000
+      assert_equal File.size(@service.temp_file.path) % 1000, 0
+      assert_not_equal original_file_size, 1000
+      @service.send(:strip_padding!)
+      assert_equal original_file_size, File.size(@service.temp_file.path)
 
+      # Shouldn't strip any further under proper implementations
+      @service.send(:strip_padding!)
+      assert_equal original_file_size, File.size(@service.temp_file.path)
+    end
+
+    test 'temp file gets deleted' do
+      original_path = @service.temp_file.path
+      @service.send(:cleanup!)
+      assert_not File.file?(original_path)
+    end
   end
 end

@@ -8,9 +8,9 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   def perform(prefix:)
     generate_brotli_encoded_channel_response(prefix: prefix)
-    pad_file
+    pad_file!
     save_to_s3(prefix: prefix) unless Rails.env.test?
-    cleanup
+    cleanup!
   end
 
   def generate_brotli_encoded_channel_response(prefix:)
@@ -43,7 +43,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
 
   private
 
-  def cleanup
+  def cleanup!
     begin
     ensure
       @temp_file.close
@@ -51,7 +51,25 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
   end
 
-  def pad_file
+  # Unused, but should be implemented client side
+  def strip_padding!
+    path = @temp_file.path
+    lines = File.open(path, 'rb').readlines.join("").chomp
+    original_file = nil
+    original_file = lines.split(PADDING_WORD)[0] if PADDING_WORD.in?(lines)
+    length = PADDING_WORD.length - 1
+    while original_file.nil? && length > 0
+      original_file = lines.split(PADDING_WORD[0, length])[0] if lines.ends_with?(PADDING_WORD[0, length])
+      length -= 1
+    end
+    original_file = lines if original_file.nil?
+    File.open(path, 'wb') do |f|
+      f.write(original_file)
+      f.close
+    end
+  end
+
+  def pad_file!
     path = @temp_file.path
     # Round up to nearest KB
     file_size = File.size(path)
@@ -67,8 +85,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
         f.write(PADDING_WORD)
       end
       f.write(PADDING_WORD[0, left_over])
+      f.close
     end
-    f.close
   end
 
   def save_to_s3(prefix:)
