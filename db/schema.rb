@@ -458,7 +458,7 @@ ActiveRecord::Schema.define(version: 2020_04_14_170244) do
     t.text "channel_identifier", null: false
     t.uuid "channel_id", null: false
     t.uuid "publisher_id", null: false
-    t.integer "wallet_address"
+    t.uuid "wallet_address"
     t.integer "wallet_status", null: false
     t.index ["channel_id"], name: "index_site_banner_lookups_on_channel_id"
     t.index ["channel_identifier"], name: "index_site_banner_lookups_on_channel_identifier"
