@@ -336,8 +336,7 @@ class Channel < ApplicationRecord
       channel_id: id,
       publisher_id: publisher_id,
       derived_site_banner_info: site_banner&.non_default_properties || publisher&.default_site_banner&.non_default_properties || {},
-      wallet_address: publisher&.uphold_connection&.address,
-      wallet_status: wallet_status
+      wallet_address: publisher&.uphold_connection&.address
     )
   end
 
