@@ -18,7 +18,7 @@ class Promo::RegistrationGetter < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       request.headers["Content-Type"] = "application/json"
-      request.url("/api/2/promo/referral_code/channel/#{@channel.channel_id}")
+      request.url("/api/2/promo/referral_code/channel/#{@channel.channel_id}?#{cap_params}")
     end
     JSON.parse(response.body)
   end
@@ -31,6 +31,10 @@ class Promo::RegistrationGetter < BaseApiClient
   class PublisherChannelMismatchError < RuntimeError; end
 
   private
+
+  def cap_params
+    @channel.publisher.feature_flags[:capped_referrals] ? "cap=30000" : ""
+  end
 
   def api_base_uri
     Rails.application.secrets[:api_promo_base_uri]
