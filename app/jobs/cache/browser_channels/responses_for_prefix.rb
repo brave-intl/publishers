@@ -1,12 +1,13 @@
 class Cache::BrowserChannels::ResponsesForPrefix
   include Sidekiq::Worker
+  sidekiq_options queue: :low, retry: false
 
   PATH = "channels/prefix/".freeze
   PADDING_WORD = "PADDING".freeze
 
   attr_accessor :site_banner_lookups, :channel_responses, :temp_file
 
-  def perform(prefix:)
+  def perform(prefix)
     generate_brotli_encoded_channel_response(prefix: prefix)
     pad_file!
     save_to_s3(prefix: prefix) unless Rails.env.test?

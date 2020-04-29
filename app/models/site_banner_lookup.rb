@@ -17,10 +17,12 @@ class SiteBannerLookup < ActiveRecord::Base
     self.wallet_status =
       if publisher.paypal_connection.present? && publisher.paypal_connection.country == PaypalConnection::JAPAN_COUNTRY_CODE
         publisher.paypal_connection.verified_account? ? PublishersPb::WalletConnectedState::PAYPAL_ACCOUNT_KYC : PublishersPb::WalletConnectedState::PAYPAL_ACCOUNT_NO_KYC
-      elsif publisher.uphold_connection&.is_member && publisher.uphold_connection.address.present?
+      elsif publisher.uphold_connection&.is_member && publisher.uphold_connection&.address.present?
         PublishersPb::WalletConnectedState::UPHOLD_ACCOUNT_KYC
-      else
+      elsif publisher.uphold_connection&.address.present?
         PublishersPb::WalletConnectedState::UPHOLD_ACCOUNT_NO_KYC
+      else
+        PublishersPb::WalletConnectedState::NO_VERIFICATION
       end
   end
 end

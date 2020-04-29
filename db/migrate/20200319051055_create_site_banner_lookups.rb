@@ -11,6 +11,7 @@ class CreateSiteBannerLookups < ActiveRecord::Migration[6.0]
       t.references :publisher, type: :uuid, index: true, null: false
       t.uuid :wallet_address
       t.integer :wallet_status, null: false
+      t.timestamps
     end
   end
 end

@@ -460,6 +460,8 @@ ActiveRecord::Schema.define(version: 2020_04_14_170244) do
     t.uuid "publisher_id", null: false
     t.uuid "wallet_address"
     t.integer "wallet_status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["channel_id"], name: "index_site_banner_lookups_on_channel_id"
     t.index ["channel_identifier"], name: "index_site_banner_lookups_on_channel_identifier"
     t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
