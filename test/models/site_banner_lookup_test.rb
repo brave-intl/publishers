@@ -14,7 +14,11 @@ class SiteBannerLookupTest < ActionDispatch::IntegrationTest
     assert_equal new_title, channel.site_banner_lookup.derived_site_banner_info['title']
   end
 
-  test "make sure SBL has the right wallet status" do
-
+  test "make sure site_banner_lookup has the right wallet status" do
+    uphold_connection = uphold_connections(:verified_connection)
+    uphold_connection.update(is_member: false)
+    uphold_connection.address = "12345678-0000-0000-0000-abcd00000000"
+    uphold_connection.update(is_member: true)
+    assert_equal uphold_connection.address, uphold_connection.publisher.channels.first.site_banner_lookup.wallet_address
   end
 end
