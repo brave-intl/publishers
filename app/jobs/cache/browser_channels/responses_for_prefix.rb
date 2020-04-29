@@ -14,7 +14,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   end
 
   def generate_brotli_encoded_channel_response(prefix:)
-        @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE '#{prefix}%'")
+    @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
     begin
       # Have to throw in a begin rescue block otherwise
       # Zeitwerk::NameError (expected file $DIR/protos/channel_responses.rb to define constant ChannelResponses, but didn't)
@@ -44,11 +44,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
   private
 
   def cleanup!
-    begin
-    ensure
-      @temp_file.close
-      @temp_file.unlink
-    end
+    @temp_file.close
+    @temp_file.unlink
   end
 
   # Unused, but should be implemented client side
