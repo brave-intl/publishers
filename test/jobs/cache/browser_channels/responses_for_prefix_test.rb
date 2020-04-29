@@ -9,7 +9,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
 
   test 'creates basic responses list and can decompress back' do
     channel = channels(:verified)
-    channel.send(:update_sha2_lookup)
+    channel.send(:update_site_banner_lookup!)
     site_banner_lookup = SiteBannerLookup.find_by(channel_id: channel.id)
     assert site_banner_lookup.present?
 
@@ -25,9 +25,9 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
   describe "complex channel response file generation" do
     before do
       @channel = channels(:verified)
-      @channel.send(:update_sha2_lookup)
+      @channel.send(:update_site_banner_lookup!)
       @other_channel = channels(:google_verified)
-      @other_channel.send(:update_sha2_lookup)
+      @other_channel.send(:update_site_banner_lookup!)
 
       prefix = @channel.site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH] 
       # Update SHA2
