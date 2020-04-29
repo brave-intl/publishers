@@ -116,10 +116,10 @@ module Admin
       first_assigned = assigned[0]
       if first_assigned.present?
         value = first_assigned
-        search_case = search_case.joins(:assignee).where('publishers.email LIKE ?', "%#{value}%")
+        search_case = search_case.joins(:assignee).where('publishers.email LIKE ?', "#{value}%")
 
         assigned[1..-1].each do |value|
-          search_case = search_case.or(Case.joins(:assignee).where('publishers.email LIKE ?', "%#{value}%"))
+          search_case = search_case.or(Case.joins(:assignee).where('publishers.email LIKE ?', "#{value}%"))
         end
       end
 
