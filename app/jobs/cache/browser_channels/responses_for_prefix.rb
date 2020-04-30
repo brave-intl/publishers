@@ -67,6 +67,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
   end
 
+  # We want to hide which file is being downloaded by making all requests be the same size
   def pad_file!
     path = @temp_file.path
     # Round up to nearest KB
