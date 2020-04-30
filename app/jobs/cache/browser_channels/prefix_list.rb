@@ -21,7 +21,7 @@ class Cache::BrowserChannels::PrefixList
         SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH})
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}"
-        ).map { |r| r['substring'] }.to_json
+        ).map! { |r| r['substring'] }.to_json
     require 'brotli'
     temp_file = Tempfile.new(["all_channels", ".br"])
     info = Brotli.deflate(result)
