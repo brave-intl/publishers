@@ -188,7 +188,10 @@ class UpholdConnection < ActiveRecord::Base
   end
 
   def has_duplicate_publisher_account?
-    UpholdConnection.where(uphold_id: self.uphold_id).count > 1
+    UpholdConnection.joins(:publisher)
+      .where(uphold_id: self.uphold_id)
+      .where(publishers: { role: Publisher::PUBLISHER})
+      .count > 1
   end
 
   def encryption_key
