@@ -2,18 +2,31 @@ module BrowserChannelsDynoCaching
   extend ActiveSupport::Concern
   require 'sentry-raven'
 
+  PAGE_PREFIX = "_page_".freeze
+
   def channels
     clear_if_old_lock
     have_lock = set_lock_to_now
     render(status: 429) and return unless have_lock
+=begin
+  # Might be worth re-adding, but I think for now let's disable since we don't have overburdening memory
     if dyno_cache_expired? || invalid_dyno_cache?
       update_dyno_cache
     end
-    render(json: self.class.class_variable_get(klass_dyno_cache), status: 200)
+=end
+    render(json: read_from_redis(page: params[:page]&.to_i), status: 200)
     Rails.cache.delete(self.class::REDIS_THUNDERING_HERD_KEY)
   end
 
   private
+
+  def read_from_redis(page: nil)
+    if page.present?
+      Rails.cache.fetch(self.class::REDIS_KEY + PAGE_PREFIX + page.to_s, race_condition_ttl: 30)
+    else
+      Rails.cache.fetch(self.class::REDIS_KEY, race_condition_ttl: 30)
+    end
+  end
 
   def clear_if_old_lock
     past_time = Rails.cache.fetch(self.class::REDIS_THUNDERING_HERD_KEY)
