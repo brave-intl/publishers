@@ -60,7 +60,7 @@
     "@babel/preset-react": "^7.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.2",
-    "@rails/webpacker": "^5.0.1",
+    "@rails/webpacker": "^5.1.1",
     "@types/moment": "^2.13.0",
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",

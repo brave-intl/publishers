@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "2.5.7"
+ruby "2.7.1"
 
 source "https://rubygems.org"
 
@@ -37,6 +37,8 @@ gem 'cancancan'
 gem "devise", "~> 4.7.1"
 
 gem "dnsruby", "~> 1.60.0", require: false
+
+gem 'e2mmap'
 
 # HTTP library wrapper
 gem "faraday", "~> 0.17.3"
@@ -124,6 +126,8 @@ gem "sidekiq-scheduler", "~> 2.2.2"
 
 # slim for view templates
 gem "slim-rails", "~> 3.1"
+
+gem 'thwait'
 
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"
