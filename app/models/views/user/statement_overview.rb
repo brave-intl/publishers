@@ -37,10 +37,11 @@ module Views
         @settled_transactions ||= []
 
         brave_settled_date = settled_transactions.detect { |x| x.eyeshade_settlement? }&.created_at
-        @payment_date ||= brave_settled_date&.strftime(YEAR_FORMAT)
-        earning_period_start_date = settled_transactions.first.earning_period
-        @earning_period ||= "#{earning_period_start_date.strftime(MONTH_FORMAT)} - " \
-                            "#{brave_settled_date&.strftime(MONTH_FORMAT)}"
+        @payment_date ||= brave_settled_date
+        @earning_period ||= {
+          start_date: settled_transactions.first.earning_period,
+          end_date: brave_settled_date
+        }
       end
 
       def as_json(*)

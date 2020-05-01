@@ -1,8 +1,14 @@
+import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
 import ReactTooltip from "react-tooltip";
 
-import { IStatementOverview, IStatementTotal } from "../Statements";
+import {
+  DisplayEarningPeriod,
+  DisplayPaymentDate,
+  IStatementOverview,
+  IStatementTotal,
+} from "../Statements";
 
 import { TableHeader } from "../StatementsStyle";
 import {
@@ -45,7 +51,9 @@ class StatementDetails extends React.Component<IStatementProps, any> {
   public async loadGroups() {
     await fetch(
       routes.publishers.statements.rate_card.path +
-        `?earning_period=${this.props.statement.earningPeriod}`,
+        `?start_date=${this.props.statement.earningPeriod.startDate}&end_date=${
+          this.props.statement.earningPeriod.endDate
+        }`,
       {
         headers: {
           Accept: "application/json",
@@ -81,7 +89,9 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                 </span>
               </h6>
             </div>
-            <Date>{this.props.statement.earningPeriod}</Date>
+            <Date>
+              {DisplayEarningPeriod(this.props.statement.earningPeriod)}
+            </Date>
           </div>
 
           <div className="mb-4 mt-3">
@@ -161,7 +171,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                     </strong>
                   </td>
                   <td className="text-right">
-                    {this.props.statement.paymentDate}
+                    {DisplayPaymentDate(this.props.statement.paymentDate)}
                   </td>
                 </tr>
               </tbody>
@@ -197,7 +207,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
               data-piwik-value=""
               href={routes.publishers.statements.show.path.replace(
                 "{period}",
-                this.props.statement.earningPeriod
+                this.props.statement.earningPeriod.startDate
               )}
             >
               <FormattedMessage id="statements.overview.viewMore" />
@@ -224,7 +234,8 @@ const DepositBreakdown = (props) => (
         <FormattedNumber
           value={props.results[type]}
           maximumFractionDigits={2}
-        />{" BAT"}
+        />
+        {" BAT"}
         <br />
       </React.Fragment>
     ))}
@@ -311,7 +322,10 @@ const TotalSubTable = (props: IStatementTotal) => (
       </TotalCell>
       <TotalCell textRight>
         <Total isDark>
-          <FormattedNumber value={props.upholdContributionSettlement} maximumFractionDigits={2} />{" "}
+          <FormattedNumber
+            value={props.upholdContributionSettlement}
+            maximumFractionDigits={2}
+          />{" "}
           <FormattedMessage id="bat" />
         </Total>
       </TotalCell>

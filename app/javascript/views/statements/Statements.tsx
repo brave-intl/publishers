@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
 
@@ -23,10 +24,14 @@ export interface IStatementTotal {
   upholdContributionSettlement: any;
 }
 
+interface IEarningPeriod {
+  startDate: string;
+  endDate: string;
+}
 export interface IStatementOverview {
   name: string;
   email: string;
-  earningPeriod: string;
+  earningPeriod: IEarningPeriod;
   paymentDate: string;
   destination: string;
   totalEarned: number;
@@ -40,6 +45,24 @@ export interface IStatementOverview {
   rawTransactions: any;
   showRateCards: boolean;
 }
+
+export const DisplayEarningPeriod = (earningPeriod: IEarningPeriod) => {
+  const date = "MMM Y";
+  return (
+    <React.Fragment>
+      {moment(earningPeriod.startDate).format(date)}
+      {" - "}
+      {earningPeriod.endDate && moment(earningPeriod.endDate).format(date)}
+    </React.Fragment>
+  );
+};
+
+export const DisplayPaymentDate = (paymentDate: string) => {
+  if (paymentDate) {
+    return moment(paymentDate).format("MMM DD, YYYY");
+  }
+  return "--";
+};
 
 class Statements extends React.Component<any, IStatementsState> {
   public readonly state: IStatementsState = {
@@ -83,7 +106,7 @@ class Statements extends React.Component<any, IStatementsState> {
     const newStatements = [...this.state.statements];
 
     const statement = newStatements.find(
-      (item) => item.earningPeriod === period
+      (item) => item.earningPeriod.startDate === period.startDate
     );
 
     if (statement) {
@@ -133,9 +156,9 @@ class Statements extends React.Component<any, IStatementsState> {
             )}
             {this.state.statements &&
               this.state.statements.map((statement) => (
-                <tr key={statement.earningPeriod}>
-                  <td>{statement.earningPeriod}</td>
-                  <td>{statement.paymentDate || "--"}</td>
+                <tr key={statement.earningPeriod.startDate}>
+                  <td>{DisplayEarningPeriod(statement.earningPeriod)}</td>
+                  <td>{DisplayPaymentDate(statement.paymentDate)}</td>
                   <td className="text-right">
                     <FormattedNumber
                       value={statement.batTotalDeposited}
@@ -147,15 +170,14 @@ class Statements extends React.Component<any, IStatementsState> {
                     </small>
                   </td>
                   <td className="text-right">
-                    {
-                    Object.keys(statement.deposited).map((name) => (
+                    {Object.keys(statement.deposited).map((name) => (
                       <React.Fragment>
                         <FormattedNumber
-                        value={statement.deposited[name]}
-                        maximumFractionDigits={2}/>
-                        {" "}
+                          value={statement.deposited[name]}
+                          maximumFractionDigits={2}
+                        />{" "}
                         <small>{name}</small>
-                        <br/>
+                        <br />
                       </React.Fragment>
                     ))}
                   </td>
@@ -168,7 +190,7 @@ class Statements extends React.Component<any, IStatementsState> {
                         }}
                         href={routes.publishers.statements.show.path.replace(
                           "{period}",
-                          statement.earningPeriod
+                          statement.earningPeriod.startDate
                         )}
                         className="mr-4"
                       >

@@ -19,7 +19,7 @@ module Publishers
 
     def show
       overviews = Views::User::Statements.new(publisher: publisher).overviews
-      @overview = overviews.detect { |x| x.earning_period.strip == params[:id] }
+      @overview = overviews.detect { |x| x.earning_period[:start_date] == params[:id]&.to_date }
     end
 
     def rate_card
@@ -36,9 +36,10 @@ module Publishers
     private
 
     def earning_period
-      period = params[:earning_period]
+      start_date = params[:start_date]
+      end_date = params[:end_date]
 
-      period.split('-').map(&:strip).map(&:to_date)
+      [start_date.strip.to_date, end_date.strip.to_date]
     end
 
     def publisher
