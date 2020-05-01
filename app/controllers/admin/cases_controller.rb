@@ -103,15 +103,7 @@ module Admin
       statuses = queries.select { |x| x.include?("status") }.map { |x| x.split(':').last&.gsub(/[^0-9a-z_]/i, '') }
       assigned = queries.select { |x| x.include?("assigned") }.map { |x| x.split(':').last&.gsub(/[^0-9a-z_]/i, '') }
 
-      first_status = statuses[0]
-      if first_status.present?
-        value = first_status
-        search_case = search_case.where(status: value)
-
-        statuses[1..-1].each do |value|
-          search_case = search_case.or(Case.where('status LIKE ?', "%#{value}%"))
-        end
-      end
+      search_case = search_case.where(status: statuses) if statuses.present?
 
       first_assigned = assigned[0]
       if first_assigned.present?
