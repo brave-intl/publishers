@@ -59,7 +59,35 @@ module Views
       # Returns a StatementOverview
       def build_details
         details = []
+        # settled_transactions is a list of all the transactions in a particular time period
+        # Input:
+        # [
+        #   { "channel"=>"website.com", "transaction_type"=>"contribution_settlement", "amount"=>"-295.2125", "settlement_currency"=>"BAT", "settlement_amount"=>"295.2125", "settlement_destination_type"=>"uphold", "created_at"=>"2020-03-09" },
+        #   { "channel"=>"youtube#channel", "transaction_type"=>"fees", "amount"=>"-43.8125", "settlement_currency"=>nil, "settlement_amount"=>nil, "settlement_destination_type"=>nil, "created_at"=>"2020-03-09" },
+        #   { "channel"=>"youtube#channel", "transaction_type"=>"contribution_settlement", "amount"=>"-832.4375", "settlement_currency"=>"BAT", "settlement_amount"=>"832.4375", "created_at"=>"2020-03-09" },
+        #   { "channel"=>"Publisher Account", "transaction_type"=>"referral_settlement", "amount"=>"-2823.755758781595223324", "settlement_currency"=>"BAT", "settlement_amount"=>"2823.755758781595223324", "created_at"=>"2020-03-09" },
+        #   { "channel"=>"website.com", "transaction_type"=>"fees", "amount"=>"-15.5375", "settlement_currency"=>nil, "settlement_amount"=>nil, "settlement_destination_type"=>nil, "created_at"=>"2020-03-09" }
+        # ]
+        #
+        # Output:
+        # {
+        #   "contribution_settlement"=>
+        #     [
+        #       {"channel"=>"website.com", "transaction_type"=>"contribution_settlement", "amount"=>"-295.2125", "settlement_currency"=>"BAT", "settlement_amount"=>"295.2125", "settlement_destination_type"=>"uphold", "created_at"=>"2020-03-09"},
+        #       {"channel"=>"youtube#channel", "transaction_type"=>"contribution_settlement", "amount"=>"-832.4375", "settlement_currency"=>"BAT", "settlement_amount"=>"832.4375", "settlement_destination_type"=>"uphold", "created_at"=>"2020-03-09"}
+        #     ],
+        #   "fees"=>
+        #     [
+        #       {"channel"=>"youtube#channel", "transaction_type"=>"fees", "amount"=>"-43.8125", "settlement_currency"=>nil, "settlement_amount"=>nil, "settlement_destination_type"=>nil, "settlement_destination"=>nil, "created_at"=>"2020-03-09"},
+        #       {"channel"=>"website.com", "transaction_type"=>"fees", "amount"=>"-15.5375", "settlement_currency"=>nil, "settlement_amount"=>nil, "settlement_destination_type"=>nil, "settlement_destination"=>nil, "created_at"=>"2020-03-09"}
+        #     ],
+        #   "referral_settlement"=>
+        #     [
+        #       {"channel"=>"Publisher Account","transaction_type"=>"referral_settlement", "amount"=>"-2823.755758781595223324", "settlement_currency"=>"BAT", "settlement_amount"=>"2823.755758781595223324", "settlement_destination_type"=>"uphold", "created_at"=>"2020-03-09" }
+        #     ]
+        # }
         grouped_transactions = settled_transactions.group_by { |x| x.transaction_type }
+
         # Fees are only associated with Contribution Settlement, so let's group the fees explicitly with contributions.
         fees = grouped_transactions.delete("fees")
 
@@ -67,6 +95,7 @@ module Views
           total_amount = 0
 
           # Add previously removed fees to the contribution settlement details
+          # Because we group_by the transaction_type fees only get added once to the results
           results += fees if type == PublisherStatementGetter::Statement::CONTRIBUTION_SETTLEMENT
 
           results = results.each do |x|
