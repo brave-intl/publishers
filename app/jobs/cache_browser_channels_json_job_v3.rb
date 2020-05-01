@@ -4,7 +4,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
   MAX_RETRY = 10
   TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'
   LAST_WRITTEN_AT_KEY = "CacheBrowserChannelsJsonJobV3_last_written_at".freeze
-  ENTRIES = 10000
+  ENTRIES = 100000
 
   def perform
     last_written_at = Rails.cache.fetch(LAST_WRITTEN_AT_KEY)
