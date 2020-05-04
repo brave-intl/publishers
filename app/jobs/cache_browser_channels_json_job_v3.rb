@@ -4,7 +4,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
   MAX_RETRY = 10
   TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'
   LAST_WRITTEN_AT_KEY = "CacheBrowserChannelsJsonJobV3_last_written_at".freeze
-  ENTRIES = 10000
+  ENTRIES = 100000
 
   def perform
     last_written_at = Rails.cache.fetch(LAST_WRITTEN_AT_KEY)
@@ -41,7 +41,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
   def cache_paginated!
     starting_index = 0
     ending_index = ENTRIES
-    list = @channels[starting_index, ending_index]
+    list = @channels[starting_index...ending_index]
     page = 1
 
     retry_count = 0
@@ -59,7 +59,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       page += 1
       starting_index = ending_index
       ending_index += ENTRIES
-      list = @channels[starting_index, ending_index]
+      list = @channels[starting_index...ending_index]
     end
   end
 
