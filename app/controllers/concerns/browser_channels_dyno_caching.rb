@@ -14,7 +14,12 @@ module BrowserChannelsDynoCaching
       update_dyno_cache
     end
 =end
-    render(json: read_from_redis(page: params[:page]&.to_i), status: 200)
+    result = read_from_redis(page: params[:page]&.to_i)
+    if result.nil?
+      render(status: 204)
+    else
+      render(json: result, status: 200)
+    end
     Rails.cache.delete(self.class::REDIS_THUNDERING_HERD_KEY)
   end
 
