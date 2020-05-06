@@ -28,7 +28,7 @@ class BaseApiClient < BaseService
   #
   # returns [Response] the response
   def put(path, options = {})
-    request(:put, path, form: options)
+    request(:put, path, options)
   end
 
   # Make a PATCH request.
@@ -38,7 +38,7 @@ class BaseApiClient < BaseService
   #
   # returns [Response] the response
   def patch(path, options = {})
-    request(:patch, path, form: options)
+    request(:patch, path, options)
   end
 
   # Make a DELETE request.
@@ -46,7 +46,7 @@ class BaseApiClient < BaseService
   # options - [Hash] the parameters to supply
   # returns [Response] the response
   def delete(path, options = {})
-    request(:delete, path, form: options)
+    request(:delete, path, options)
   end
 
   def api_base_uri
@@ -67,7 +67,7 @@ class BaseApiClient < BaseService
       req.headers['Content-Type'] = 'application/json'
       req.headers.merge!(headers)
 
-      req.body = payload.to_json if method.to_sym.eql?(:post)
+      req.body = payload.to_json if method.to_sym.in?([:post, :patch, :put, :delete])
       req.params = payload if method.to_sym.eql?(:get)
     end
   end
