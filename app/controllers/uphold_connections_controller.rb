@@ -6,7 +6,6 @@ class UpholdConnectionsController < ApplicationController
     render(status: 400, json: {}) and return unless uphold_card_id&.length == UUID_LENGTH
     state = SecureRandom.hex(64).to_s
     Rails.cache.write(state, uphold_card_id, expires_in: 10.minutes)
-    p "*** albert logging in ***"
     redirect_to Rails.application.secrets[:uphold_authorization_endpoint].
       gsub('<UPHOLD_CLIENT_ID>', Rails.application.secrets[:uphold_login_client_id]).
       gsub('<UPHOLD_SCOPE>', Rails.application.secrets[:uphold_scope]).
@@ -33,14 +32,12 @@ class UpholdConnectionsController < ApplicationController
   private
 
   def get_card(uphold_card_id:, uphold_code:)
-    p "*** albert getting card in ***"
     return [nil, nil] if uphold_card_id.blank?
 
     parameters = UpholdRequestAccessParameters.new(uphold_code: uphold_code, secret_used: UpholdConnection::USE_BROWSER).perform
     # read cards and make sure there's a match
     uphold_connection = UpholdConnection.new(uphold_access_parameters: parameters)
     uphold_model_card = Uphold::Models::Card.new
-    p "*** albert finding card ***"
     card = uphold_model_card.find(uphold_connection: uphold_connection, id: uphold_card_id)
     [uphold_connection, card]
   end
@@ -55,13 +52,11 @@ class UpholdConnectionsController < ApplicationController
     end
     # In case if promo registration fails, we retry.
     if create_promo_registration?(user: user)
-      p "*** albert creating promo registration ***"
       PromoClient.peer_to_peer_registration.create(
         publisher: user,
         promo_campaign: PromoCampaign.find_by(name: PromoCampaign::PEER_TO_PEER)
       )
     end
-    p "*** albert syncing from uphold ***"
     uphold_connection.sync_from_uphold!
     sign_in(:publisher, user)
     uphold_connection

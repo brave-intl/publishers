@@ -4,16 +4,26 @@ require 'json'
 module Promo
   module Models
     class PeerToPeerRegistration < Client
-      # For more information about how these URI templates are structured read the explaination in the RFC
-      # https://www.rfc-editor.org/rfc/rfc6570.txt
-      PATH = Addressable::Template.new("api/2/promo/referral_code/p2p/{id}")
 
       # Creates a new owner
       # @param [String] id The owner identifier
       def create(publisher:, promo_campaign:)
         return perform_offline(publisher: publisher) if Rails.application.secrets[:api_promo_base_uri].blank?
-        p "*** albert creating promo registration ***"
-        response = put(PATH.expand(id: publisher.owner_identifier), {cap: Rails.application.secrets[:peer_to_peer_cap]})
+        connection ||= begin
+          require "faraday"
+          Faraday.new(url: Rails.application.secrets[:api_promo_base_uri] + "api/2/promo/referral_code/p2p/#{publisher.owner_identifier}" + "?cap=1000") do |faraday|
+            faraday.request :retry, max: 2, interval: 0.05, interval_randomness: 0.5, backoff_factor: 2
+            faraday.response(:logger, Rails.logger, bodies: true, headers: true)
+            faraday.use(Faraday::Response::RaiseError)
+            faraday.adapter Faraday.default_adapter
+          end
+        end
+
+        connection.send(:put) do |req|
+          req.headers["Authorization"] = "Bearer #{Rails.application.secrets[:api_promo_key]}"
+          req.headers['Content-Type'] = 'application/json'
+        end
+
         payload = JSON.parse(response.body)
         payload.each do |promo_registration|
           PromoRegistration.create!(
