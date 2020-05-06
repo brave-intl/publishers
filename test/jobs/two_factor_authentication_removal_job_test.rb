@@ -17,6 +17,24 @@ class TwoFactorAuthenticationRemovalJobTest < ActiveJob::TestCase
     assert_nil(publisher.totp_registration)
   end
 
+  test "Sets publisher's 2fa status back to what it was originally" do
+    publisher = publishers(:suspended)
+
+    publisher.status_updates.create(status: PublisherStatusUpdate::LOCKED)
+    assert_equal(publisher.last_status_update.status, PublisherStatusUpdate::LOCKED)
+
+    two_factor_authentication_removal = two_factor_authentication_removals(:suspended_2fa_removal)
+
+    original_date = two_factor_authentication_removal.created_at
+    advanced_date = original_date - 14.days
+    two_factor_authentication_removal.update(created_at: advanced_date)
+
+    TwoFactorAuthenticationRemovalJob.perform_now
+    assert_nil(publisher.totp_registration)
+    publisher.last_status_update.reload
+    assert_equal(publisher.last_status_update.status, PublisherStatusUpdate::SUSPENDED)
+  end
+
   test "Removes publisher's channels when timeout period has passed" do
     publisher = publishers(:uphold_connected)
     two_factor_authentication_removal = two_factor_authentication_removals(:one)
