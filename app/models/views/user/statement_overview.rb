@@ -40,7 +40,7 @@ module Views
         @payment_date ||= brave_settled_date
         @earning_period ||= {
           start_date: settled_transactions.first.earning_period,
-          end_date: brave_settled_date
+          end_date: brave_settled_date,
         }
       end
 

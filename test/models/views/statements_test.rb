@@ -52,7 +52,8 @@ class StatementsTest < ActiveSupport::TestCase
 
     it 'has the correct date range' do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period).must_equal('Sep 2019 - Oct 2019')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-09-01')
+        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-10-09')
       end
     end
 
@@ -525,7 +526,8 @@ class StatementsTest < ActiveSupport::TestCase
 
     it 'has the correct date range' do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period).must_equal('Sep 2019 - Oct 2019')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-09-01')
+        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-10-09')
       end
     end
 
@@ -601,7 +603,8 @@ class StatementsTest < ActiveSupport::TestCase
 
     it 'has the correct date range' do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period).must_equal('Mar 2019 - Apr 2019')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-03-01')
+        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-04-09')
       end
     end
 
