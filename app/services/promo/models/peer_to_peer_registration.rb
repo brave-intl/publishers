@@ -6,7 +6,7 @@ module Promo
     class PeerToPeerRegistration < Client
       # For more information about how these URI templates are structured read the explaination in the RFC
       # https://www.rfc-editor.org/rfc/rfc6570.txt
-      PATH = Addressable::Template.new("api/2/promo/referral_code/p2p/{id}?cap={cap}")
+      PATH = Addressable::Template.new("api/2/promo/referral_code/p2p/{id}{?cap}")
 
       # Creates a new owner
       # @param [String] id The owner identifier
