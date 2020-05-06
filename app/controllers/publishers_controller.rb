@@ -53,6 +53,7 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
     else
+      flash[:alert] = @publisher.errors.full_messages.join(', ')
       render(:email_verified)
     end
   end
