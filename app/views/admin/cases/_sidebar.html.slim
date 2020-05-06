@@ -9,6 +9,8 @@
 .d-flex.justify-content-between.mb-2
   = case_link("All", admin_cases_path(q: 'status:""'))
 .d-flex.justify-content-between.mb-2
+  = case_link("Open", admin_cases_path(q: "status:#{Case::OPEN} status:#{Case::IN_PROGRESS}"))
+.d-flex.justify-content-between.mb-2
   = case_link("Resolved", admin_cases_path(q: "status:#{Case::RESOLVED}"))
 .d-flex.justify-content-between
   = case_link("Closed", admin_cases_path(q: "status:#{Case::CLOSED}"))
