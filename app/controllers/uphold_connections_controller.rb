@@ -55,6 +55,7 @@ class UpholdConnectionsController < ApplicationController
     end
     # In case if promo registration fails, we retry.
     if create_promo_registration?(user: user)
+      p "*** albert creating promo registration ***"
       PromoClient.peer_to_peer_registration.create(
         publisher: user,
         promo_campaign: PromoCampaign.find_by(name: PromoCampaign::PEER_TO_PEER)
