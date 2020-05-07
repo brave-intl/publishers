@@ -96,9 +96,9 @@ gem "puma", "~> 4.3.3"
 # Make cracking a little bit harder
 gem "rack-attack", "~> 5.0"
 
-gem 'railties', "~> 6.0.2.2"
+gem 'railties', "~> 6.0.3"
 
-gem "rails", "~> 6.0.2.2"
+gem "rails", "~> 6.0.3"
 gem 'rails-i18n', '~> 6.0.0'
 
 # I love captchas
