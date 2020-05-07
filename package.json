@@ -112,7 +112,7 @@
     "stylelint-processor-styled-components": "^1.10.0",
     "stylelint-scss": "^3.16.0",
     "sugarss": "^2.0.0",
-    "ts-jest": "^24.0.0",
+    "ts-jest": "^25.0.0",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^8.0.1",
