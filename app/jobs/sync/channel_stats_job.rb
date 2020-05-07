@@ -6,7 +6,7 @@ class Sync::ChannelStatsJob < ApplicationJob
 
   def perform
     YoutubeChannelDetails.joins(:channel).where(channels: {verified: true}).find_each do |youtube_channel_details|
-      if should_run_for_id?(youtube_channel_details.id[0])
+      if should_run_for_id?(youtube_channel_details.created_at.to_i % 10)
         ChannelStatsServices::YoutubeChannelStatsService.new(youtube_channel_details: youtube_channel_details).perform
       end
     end
@@ -16,13 +16,7 @@ class Sync::ChannelStatsJob < ApplicationJob
     end
   end
 
-  def should_run_for_id?(first_character)
-    if Date.today.yday % 2 == 0 && FIRST_GROUP.include?(first_character)
-      true
-    elsif Date.today.yday % 2 == 1 && !FIRST_GROUP.include?(first_character) # Part of second group
-      true
-    else
-      false
-    end
+  def should_run_for_id?(number)
+    number == Date.today.yday % 10
   end
 end
