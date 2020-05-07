@@ -1,9 +1,10 @@
+import * as moment from "moment";
 import * as React from "react";
+import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
 
 import { DownloadIcon } from "brave-ui/components/icons";
 
 import Modal, { ModalSize } from "../../components/modal/Modal";
-import locale from "../../locale/en";
 import EmptyStatement from "./statements/EmptyStatement";
 import StatementDetails from "./statements/StatementDetails";
 import { Header, LoadingIcon, TableHeader } from "./StatementsStyle";
@@ -15,27 +16,58 @@ interface IStatementsState {
   statements: IStatementOverview[];
 }
 
+export interface IStatementTotal {
+  contributionSettlement: number;
+  referralSettlement: number;
+  fees: number;
+  totalBraveSettled: number;
+  upholdContributionSettlement: any;
+}
+
+interface IEarningPeriod {
+  startDate: string;
+  endDate: string;
+}
 export interface IStatementOverview {
   name: string;
   email: string;
-  earning_period: string;
-  payment_date: string;
+  earningPeriod: IEarningPeriod;
+  paymentDate: string;
   destination: string;
-  deposited: string;
+  totalEarned: number;
+  deposited: any; // { "USD" : number }
+  depositedTypes: any;
   currency: string;
   details: any;
   isOpen: boolean;
-  totalFees: string;
-  totalEarned: string;
-  totalBATDeposited: string;
+  totals: IStatementTotal;
+  batTotalDeposited: number;
   rawTransactions: any;
   showRateCards: boolean;
 }
 
-export default class Statements extends React.Component<any, IStatementsState> {
+export const DisplayEarningPeriod = (earningPeriod: IEarningPeriod) => {
+  const date = "MMM Y";
+  return (
+    <React.Fragment>
+      {moment(earningPeriod.startDate).format(date)}
+      {" - "}
+      {earningPeriod.endDate && moment(earningPeriod.endDate).format(date)}
+    </React.Fragment>
+  );
+};
+
+export const DisplayPaymentDate = (paymentDate: string) => {
+  if (paymentDate) {
+    return moment(paymentDate).format("MMM DD, YYYY");
+  }
+  return "--";
+};
+
+class Statements extends React.Component<any, IStatementsState> {
   public readonly state: IStatementsState = {
     isLoading: true,
-    statements: undefined
+    statements: undefined,
   };
 
   constructor(props) {
@@ -58,11 +90,11 @@ export default class Statements extends React.Component<any, IStatementsState> {
         "X-CSRF-Token": document.head
           .querySelector("[name=csrf-token]")
           .getAttribute("content"),
-        "X-Requested-With": "XMLHttpRequest"
+        "X-Requested-With": "XMLHttpRequest",
       },
-      method: "GET"
-    }).then(response => {
-      response.json().then(json => {
+      method: "GET",
+    }).then((response) => {
+      response.json().then((json) => {
         this.setState({ statements: json.overviews });
       });
     });
@@ -70,11 +102,11 @@ export default class Statements extends React.Component<any, IStatementsState> {
     this.setState({ isLoading: false });
   }
 
-  public modalClick = period => {
+  public modalClick = (period) => {
     const newStatements = [...this.state.statements];
 
     const statement = newStatements.find(
-      item => item.earning_period === period
+      (item) => item.earningPeriod.startDate === period.startDate
     );
 
     if (statement) {
@@ -82,29 +114,36 @@ export default class Statements extends React.Component<any, IStatementsState> {
     }
 
     this.setState({ statements: newStatements });
+    return false;
   };
 
   public render() {
     return (
       <div>
-        <Header>{locale.statements.overview.title}</Header>
-        <p>{locale.statements.overview.description}</p>
-        <table className="table ">
+        <Header>
+          <FormattedMessage id="statements.overview.title" />
+        </Header>
+        <p>
+          <FormattedMessage id="statements.overview.description" />
+        </p>
+        <table className="table statement-table">
           <thead>
             <tr>
               <TableHeader>
-                {locale.statements.overview.earningPeriod}
+                <FormattedMessage id="statements.overview.earningPeriod" />
               </TableHeader>
               <TableHeader>
-                {locale.statements.overview.paymentDate}
+                <FormattedMessage id="statements.overview.paymentDate" />
               </TableHeader>
-              <TableHeader>
-                {locale.statements.overview.confirmedEarning}
+              <TableHeader className="text-right" style={{ minWidth: "150px" }}>
+                <FormattedMessage id="statements.overview.confirmedEarning" />
               </TableHeader>
-              <TableHeader>
-                {locale.statements.overview.totalDeposited}
+              <TableHeader className="text-right" style={{ minWidth: "175px" }}>
+                <FormattedMessage id="statements.overview.amountDeposited" />
               </TableHeader>
-              <TableHeader>{locale.statements.overview.statement}</TableHeader>
+              <TableHeader className="text-right">
+                <FormattedMessage id="statements.overview.statement" />
+              </TableHeader>
             </tr>
           </thead>
           <tbody>
@@ -116,35 +155,53 @@ export default class Statements extends React.Component<any, IStatementsState> {
               </tr>
             )}
             {this.state.statements &&
-              this.state.statements.map(statement => (
-                <tr key={statement.earning_period}>
-                  <td>{statement.earning_period}</td>
-                  <td>{statement.payment_date}</td>
-                  <td>
-                    {Number.parseFloat(statement.totalBATDeposited).toFixed(4)}{" "}
-                    <small>{locale.bat}</small>
+              this.state.statements.map((statement) => (
+                <tr key={statement.earningPeriod.startDate}>
+                  <td>{DisplayEarningPeriod(statement.earningPeriod)}</td>
+                  <td>{DisplayPaymentDate(statement.paymentDate)}</td>
+                  <td className="text-right">
+                    <FormattedNumber
+                      value={statement.batTotalDeposited}
+                      maximumFractionDigits={2}
+                    />
+                    <small>
+                      {" "}
+                      <FormattedMessage id="bat" />
+                    </small>
+                  </td>
+                  <td className="text-right">
+                    {Object.keys(statement.deposited).map((name) => (
+                      <React.Fragment>
+                        <FormattedNumber
+                          value={statement.deposited[name]}
+                          maximumFractionDigits={2}
+                        />{" "}
+                        <small>{name}</small>
+                        <br />
+                      </React.Fragment>
+                    ))}
                   </td>
                   <td>
-                    {Number.parseFloat(statement.deposited).toFixed(2)}{" "}
-                    <small>{statement.currency}</small>
-                  </td>
-                  <td>
-                    <div className="d-flex">
+                    <div className="d-flex justify-content-end">
                       <a
-                        onClick={() =>
-                          this.modalClick(statement.earning_period)
-                        }
-                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          this.modalClick(statement.earningPeriod);
+                        }}
+                        href={routes.publishers.statements.show.path.replace(
+                          "{period}",
+                          statement.earningPeriod.startDate
+                        )}
                         className="mr-4"
                       >
-                        {locale.statements.overview.view}
+                        <FormattedMessage id="statements.overview.view" />
                       </a>
                       {this.state.statements && (
                         <Modal
                           show={statement.isOpen}
                           size={ModalSize.Medium}
                           handleClose={() =>
-                            this.modalClick(statement.earning_period)
+                            this.modalClick(statement.earningPeriod)
                           }
                           padding={false}
                         >
@@ -161,7 +218,7 @@ export default class Statements extends React.Component<any, IStatementsState> {
                 <td colSpan={5} align="center">
                   <EmptyStatement style={{ width: "100px", height: "71px" }} />
                   <div className="mt-1 text-muted">
-                    {locale.statements.overview.noStatements}
+                    <FormattedMessage id="statements.overview.noStatements" />
                   </div>
                 </td>
               </tr>
@@ -172,3 +229,4 @@ export default class Statements extends React.Component<any, IStatementsState> {
     );
   }
 }
+export default injectIntl(Statements);

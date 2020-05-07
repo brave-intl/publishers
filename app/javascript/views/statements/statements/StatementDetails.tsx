@@ -1,21 +1,31 @@
+import * as moment from "moment";
 import * as React from "react";
+import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
+import ReactTooltip from "react-tooltip";
 
-import { LoaderIcon } from "brave-ui/components/icons";
-
-import locale from "../../../locale/en";
-import { IStatementOverview } from "../Statements";
+import {
+  DisplayEarningPeriod,
+  DisplayPaymentDate,
+  IStatementOverview,
+  IStatementTotal,
+} from "../Statements";
 
 import { TableHeader } from "../StatementsStyle";
 import {
   Amount,
-  ChannelDescription,
   ChannelHeader,
   Date,
+  Description,
   Details,
   HideOverflow,
   Table,
-  TableCell
+  TableCell,
+  Total,
+  TotalCell,
 } from "./StatementDetailsStyle";
+
+import DetailSection from "./statementDetails/DetailSection";
+import RateCardStatements from "./statementDetails/RateCardStatements";
 
 import routes from "../../routes";
 
@@ -24,10 +34,7 @@ interface IStatementProps {
   showPage?: boolean;
 }
 
-export default class StatementDetails extends React.Component<
-  IStatementProps,
-  any
-> {
+class StatementDetails extends React.Component<IStatementProps, any> {
   constructor(props) {
     super(props);
 
@@ -44,26 +51,27 @@ export default class StatementDetails extends React.Component<
   public async loadGroups() {
     await fetch(
       routes.publishers.statements.rate_card.path +
-        `?earning_period=${this.props.statement.earning_period}`,
+        `?start_date=${this.props.statement.earningPeriod.startDate}&end_date=${
+          this.props.statement.earningPeriod.endDate
+        }`,
       {
         headers: {
           Accept: "application/json",
           "X-CSRF-Token": document.head
             .querySelector("[name=csrf-token]")
             .getAttribute("content"),
-          "X-Requested-With": "XMLHttpRequest"
+          "X-Requested-With": "XMLHttpRequest",
         },
-        method: "GET"
+        method: "GET",
       }
-    )
-      .then(response => {
-        response.json().then(json => {
-          this.setState({
-            isLoading: false,
-            rateCardStatement: json.rateCardStatement,
-          });
+    ).then((response) => {
+      response.json().then((json) => {
+        this.setState({
+          isLoading: false,
+          rateCardStatement: json.rateCardStatement,
         });
-      })
+      });
+    });
   }
 
   public render() {
@@ -73,13 +81,17 @@ export default class StatementDetails extends React.Component<
           <div className="d-flex align-items-center justify-content-between">
             <div>
               <h6 className="m-0">
-                <span>{locale.statements.overview.brand} </span>
+                <span>
+                  <FormattedMessage id="statements.overview.brand" />{" "}
+                </span>
                 <span className="text-muted font-weight-light ml-1">
-                  {locale.statements.overview.statement}
+                  <FormattedMessage id="statements.overview.statement" />
                 </span>
               </h6>
             </div>
-            <Date>{this.props.statement.earning_period}</Date>
+            <Date>
+              {DisplayEarningPeriod(this.props.statement.earningPeriod)}
+            </Date>
           </div>
 
           <div className="mb-4 mt-3">
@@ -91,57 +103,76 @@ export default class StatementDetails extends React.Component<
 
           <div className="d-flex justify-content-between mb-3">
             <div>
-              <div>{locale.statements.overview.amountDeposited}</div>
               <div>
-                <Amount>
-                  {parseFloat(this.props.statement.deposited).toFixed(2)}{" "}
-                  <small>{this.props.statement.currency}</small>
-                </Amount>
+                <FormattedMessage id="statements.overview.amountDeposited" />
+              </div>
+              <div>
+                {Object.keys(this.props.statement.deposited).map((name) => (
+                  <React.Fragment key={name}>
+                    <Amount data-tip data-for={name}>
+                      <FormattedNumber
+                        value={this.props.statement.deposited[name]}
+                        maximumFractionDigits={2}
+                      />{" "}
+                      <small>{name}</small>
+                      <br />
+                    </Amount>
+                    <DepositBreakdown
+                      name={name}
+                      results={getParameterCaseInsensitive(
+                        this.props.statement.depositedTypes,
+                        name
+                      )}
+                    />
+                  </React.Fragment>
+                ))}
               </div>
             </div>
 
-            <table className="table ml-4 border-bottom">
+            <table className="table ml-4 border-bottom statement-table">
               <tbody>
+                {/* Total Earned Section */}
                 <tr>
-                  <td>
-                    <strong>{locale.statements.overview.totalEarned}</strong>
-                  </td>
-                  <td>
-                    {Number.parseFloat(
-                      this.props.statement.totalEarned
-                    ).toFixed(2)}{" "}
-                    {locale.bat}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
+                  <td colSpan={2}>
                     <strong>
-                      {locale.statements.overview.details.totalFees}
+                      <FormattedMessage id="statements.overview.totalEarned" />
                     </strong>
                   </td>
-                  <td>
-                    {Number.parseFloat(this.props.statement.totalFees).toFixed(
-                      2
-                    )}{" "}
-                    {locale.bat}
+                  <td className="text-right">
+                    <FormattedNumber
+                      value={this.props.statement.totalEarned}
+                      maximumFractionDigits={2}
+                    />{" "}
+                    <FormattedMessage id="bat" />
+                  </td>
+                </tr>
+
+                {/* Subsection for totals */}
+                <TotalSubTable {...this.props.statement.totals} />
+
+                <tr>
+                  <td colSpan={2}>
+                    <strong>
+                      <FormattedMessage id="statements.overview.totalDeposited" />
+                    </strong>
+                  </td>
+                  <td className="text-right">
+                    <FormattedNumber
+                      value={this.props.statement.batTotalDeposited}
+                      maximumFractionDigits={2}
+                    />{" "}
+                    <FormattedMessage id="bat" />
                   </td>
                 </tr>
                 <tr>
-                  <td>
-                    <strong>{locale.statements.overview.totalDeposited}</strong>
+                  <td colSpan={2}>
+                    <strong>
+                      <FormattedMessage id="statements.overview.depositDate" />
+                    </strong>
                   </td>
-                  <td>
-                    {Number.parseFloat(
-                      this.props.statement.totalBATDeposited
-                    ).toFixed(2)}{" "}
-                    {locale.bat}
+                  <td className="text-right">
+                    {DisplayPaymentDate(this.props.statement.paymentDate)}
                   </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>{locale.statements.overview.depositDate}</strong>
-                  </td>
-                  <td>{this.props.statement.payment_date}</td>
                 </tr>
               </tbody>
             </table>
@@ -150,40 +181,23 @@ export default class StatementDetails extends React.Component<
 
         <div className="">
           <h5 className="px-5 mb-3">
-            {locale.statements.overview.totalEarned}
+            <FormattedMessage id="statements.overview.totalEarned" />
             <span className="text-muted ml-2 font-weight-light">
-              {locale.statements.overview.details.summary}
+              <FormattedMessage id="statements.overview.details.summary" />
             </span>
           </h5>
 
           {this.props.statement.details.map((detail, index) => (
-            <StatementDetail detail={detail} index={index} />
+            <DetailSection detail={detail} index={index} key={detail.title} />
           ))}
         </div>
 
-        <div className="mt-3 mx-5">
-          <h5 className="mb-3">
-            {locale.statements.overview.referrals}
-            <span className="text-muted ml-2 font-weight-light">
-              {locale.statements.overview.breakdown}
-            </span>
-          </h5>
-          <p>
-            {locale.statements.overview.referralsInfo}
-          </p>
-
-          <div className="">
-            {this.state.isLoading && (
-              <LoaderIcon style={{ width: "36px", margin: "0 auto" }} />
-            )}
-
-            {!this.state.isLoading && this.props.statement.showRateCards && (
-              <RateCardStatements
-                rateCardStatement={this.state.rateCardStatement}
-              />
-            )}
-          </div>
-        </div>
+        {this.props.statement.showRateCards && (
+          <RateCardStatements
+            rateCardStatement={this.state.rateCardStatement}
+            isLoading={this.state.isLoading}
+          />
+        )}
 
         {!this.props.showPage && (
           <div className="px-5 py-3">
@@ -193,10 +207,10 @@ export default class StatementDetails extends React.Component<
               data-piwik-value=""
               href={routes.publishers.statements.show.path.replace(
                 "{period}",
-                this.props.statement.earning_period
+                this.props.statement.earningPeriod.startDate
               )}
             >
-              {locale.statements.overview.viewMore}
+              <FormattedMessage id="statements.overview.viewMore" />
             </a>
           </div>
         )}
@@ -205,107 +219,118 @@ export default class StatementDetails extends React.Component<
   }
 }
 
-interface IRateCardStatement {
-  referral_code: string;
-  details: Array<{
-    group: {
-      id: string;
-      name: string;
-      amount: string;
-      currency: string;
-      count: number;
-    };
-    confirmations: number;
-    average_paid_per_confirmation: number;
-    total_bat: number;
-  }>;
+function getParameterCaseInsensitive(object, key) {
+  return object[
+    Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase())
+  ];
 }
 
-const RateCardStatements = props => (
-  <Table className="table">
-    <thead>
-      <tr>
-        <TableHeader>Referral Code</TableHeader>
-        <TableHeader>Region</TableHeader>
-        <TableHeader>Confirmations</TableHeader>
-        <TableHeader>Avg. / Confirmation</TableHeader>
-        <TableHeader>Total</TableHeader>
-      </tr>
-    </thead>
-    <tbody>
-      {props.rateCardStatement.map((rateCardStatement: IRateCardStatement) =>
-        rateCardStatement.details.map((detail, index) => (
-          <tr key={detail.group.id}>
-            <TableCell>
-              {index === 0 && rateCardStatement.referral_code}
-            </TableCell>
-            <TableCell>{detail.group.name}</TableCell>
-            <TableCell>{detail.confirmations}</TableCell>
-            <TableCell>
-              {detail.average_paid_per_confirmation.toFixed(2)} BAT
-            </TableCell>
-            <TableCell>{detail.total_bat.toFixed(2)} BAT</TableCell>
-          </tr>
-        ))
-      )}
-    </tbody>
-  </Table>
+const DepositBreakdown = (props) => (
+  <ReactTooltip id={props.name}>
+    {Object.keys(props.results).map((type) => (
+      <React.Fragment key={type}>
+        <FormattedMessage id={`statements.overview.types.${type}`} />
+        {": "}
+        <FormattedNumber
+          value={props.results[type]}
+          maximumFractionDigits={2}
+        />
+        {" BAT"}
+        <br />
+      </React.Fragment>
+    ))}
+  </ReactTooltip>
 );
 
-const StatementDetail = props => (
-  <div
-    style={{
-      background: props.index % 2 === 0 ? "#F3F3F6" : "",
-      borderRadius: "6px"
-    }}
-    className="px-5 py-4"
-  >
-    <div className="">
-      <ChannelHeader>{props.detail.title}</ChannelHeader>
-      <ChannelDescription>{props.detail.description}</ChannelDescription>
-    </div>
-    <Table className="table m-0">
-      <thead>
-        <tr>
-          <TableHeader>
-            <strong className="text-uppercase">
-              {locale.statements.overview.details.description}
-            </strong>
-          </TableHeader>
-          <TableHeader className="text-right">
-            <strong className="text-uppercase">
-              {locale.statements.overview.details.amount}
-            </strong>
-          </TableHeader>
-        </tr>
-      </thead>
-      <tbody>
-        {props.detail.transactions.map(transaction => (
-          <tr key={`${transaction.amount} ${Math.random()}`}>
-            <TableCell>
-              <HideOverflow>{transaction.channel}</HideOverflow>
-            </TableCell>
-            <TableCell className="text-right">
-              {transaction.amount} {locale.bat}
-            </TableCell>
-          </tr>
-        ))}
-        <tr>
-          <td>
-            <strong>
-              {props.detail.type === "fees" &&
-                locale.statements.overview.details.totalFees}
-              {props.detail.type !== "fees" &&
-                locale.statements.overview.details.total}
-            </strong>
-          </td>
-          <td className="text-right">
-            <strong>
-              {props.detail.amount} {locale.bat}
-            </strong>
-          </td>
-        </tr>
-      </tbody>
-    </Table>
-  </div>
+const TotalSubTable = (props: IStatementTotal) => (
+  <React.Fragment>
+    <tr>
+      <TotalCell />
+      <TotalCell>
+        <Total>
+          <FormattedMessage id="statements.overview.braveSettledContributions" />
+        </Total>
+      </TotalCell>
+      <TotalCell textRight>
+        <Total>
+          <FormattedNumber
+            value={props.contributionSettlement}
+            maximumFractionDigits={2}
+          />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+    <tr>
+      <TotalCell />
+      <TotalCell>
+        <Total>
+          <FormattedMessage id="statements.overview.fees" />
+        </Total>
+      </TotalCell>
+      <TotalCell textRight>
+        <Total>
+          -
+          <FormattedNumber value={props.fees} maximumFractionDigits={2} />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+
+    <tr>
+      <TotalCell />
+      <TotalCell>
+        <Total>
+          <FormattedMessage id="statements.overview.referralPromoEarnings" />
+        </Total>
+      </TotalCell>
+      <TotalCell textRight>
+        <Total>
+          <FormattedNumber
+            value={props.referralSettlement}
+            maximumFractionDigits={2}
+          />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+
+    <tr>
+      <TotalCell />
+      <TotalCell hasBorder>
+        <Total isDark>
+          <FormattedMessage id="statements.overview.totalBraveSettled" />
+        </Total>
+      </TotalCell>
+      <TotalCell hasBorder textRight>
+        <Total isDark>
+          <FormattedNumber
+            value={props.totalBraveSettled}
+            maximumFractionDigits={2}
+          />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+
+    <tr>
+      <TotalCell />
+      <TotalCell>
+        <Total isDark>
+          <FormattedMessage id="statements.overview.directUserTips" />
+        </Total>
+      </TotalCell>
+      <TotalCell textRight>
+        <Total isDark>
+          <FormattedNumber
+            value={props.upholdContributionSettlement}
+            maximumFractionDigits={2}
+          />{" "}
+          <FormattedMessage id="bat" />
+        </Total>
+      </TotalCell>
+    </tr>
+  </React.Fragment>
 );
+
+export default injectIntl(StatementDetails);
