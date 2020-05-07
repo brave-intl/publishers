@@ -7,18 +7,24 @@ class PublisherStatementGetter < BaseApiClient
 
     UPHOLD_CONTRIBUTION = "uphold_contribution".freeze
     UPHOLD_CONTRIBUTION_SETTLEMENT = "uphold_contribution_settlement".freeze
+    CONTRIBUTION_SETTLEMENT = "contribution_settlement"
+    REFERRAL_SETTLEMENT = "referral_settlement"
 
     def fee?
       transaction_type == 'fees'
     end
 
-    def eyeshade?
-      transaction_type == 'contribution_settlement' || transaction_type == 'referral_settlement' || fee?
+    def eyeshade_settlement?
+      transaction_type == CONTRIBUTION_SETTLEMENT || transaction_type == REFERRAL_SETTLEMENT
+    end
+
+    def uphold_contribution?
+      transaction_type == UPHOLD_CONTRIBUTION_SETTLEMENT || transaction_type == UPHOLD_CONTRIBUTION_SETTLEMENT
     end
 
     def earning_period
       # If the transaction_type is from Eyeshade this means the period was for the previous month
-      if eyeshade?
+      if eyeshade_settlement? || fee?
         created_at.prev_month.at_beginning_of_month
       else
         created_at.at_beginning_of_month
