@@ -51,7 +51,6 @@ class UpholdRequestAccessParameters < BaseService
     response.body
   rescue Faraday::ClientError => e
     Rails.logger.warn("UpholdRequestAccessParameters ClientError: #{e}")
-    p e.response
     if e.response && e.response[:status] == 400 && e.response[:body] == '{"error":"invalid_grant"}'
       # The Code was invalid and could not be used to retrieve access parameters. Raise an exception so this
       # can be handled externally
