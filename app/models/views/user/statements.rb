@@ -30,6 +30,7 @@ module Views
 
         earning_periods.each do |payment_month, payout_entries|
           overview = StatementOverview.new(
+            publisher_id: @publisher.id,
             name: @publisher.name,
             email: @publisher.email,
             settled_transactions: payout_entries.deep_dup,

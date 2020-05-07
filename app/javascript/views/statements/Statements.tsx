@@ -29,6 +29,7 @@ interface IEarningPeriod {
   endDate: string;
 }
 export interface IStatementOverview {
+  publisherId: string;
   name: string;
   email: string;
   earningPeriod: IEarningPeriod;
