@@ -24,7 +24,7 @@
     cron: "0 8 * * *"
     description: "Complete transfer of channels that have exceeded their timeout time without being rejected"
   Sync::ChannelPromoRegistrationsStatsJob:
-    cron: "0 * * * *"
+    cron: "0 */2 * * *"
     description: "Sync stats for channel owned referral codes with the promo server every hour."
   TwoFactorAuthenticationRemovalJob:
     cron: "0 12 * * *"
@@ -32,10 +32,6 @@
   Sync::UnattachedPromoRegistrationsStatsJob:
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
-    queue: low
-  Sync::ChannelStatsJob:
-    cron: "0 1 * * *"
-    description: "Syncs the channel stats via youtube and twitch apis"
     queue: low
   Sync::Zendesk::StartJob:
     cron: "0 1 * * *"

@@ -56,7 +56,7 @@ class Publisher < ApplicationRecord
   validate :pending_email_must_be_a_change, unless: -> { deleted? || browser_user? }
   validate :pending_email_can_not_be_in_use, unless: -> { deleted? || browser_user? }
 
-  validates :name, presence: true, allow_blank: true
+  validates :name, presence: true, allow_blank: true, length: { maximum: 64 }
 
   validates_inclusion_of :role, in: ROLES
 

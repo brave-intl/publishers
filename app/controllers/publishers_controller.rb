@@ -53,6 +53,7 @@ class PublishersController < ApplicationController
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
     else
+      flash[:alert] = @publisher.errors.full_messages.join(', ')
       render(:email_verified)
     end
   end
@@ -76,6 +77,7 @@ class PublishersController < ApplicationController
     update_params = publisher_update_params
 
     # If user enters current email address delete the pending email attribute
+    update_params[:pending_email] = update_params[:pending_email]&.downcase
     update_params[:pending_email] = nil if update_params[:pending_email] == current_publisher.email
 
     success = current_publisher.update(update_params)

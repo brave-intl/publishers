@@ -42,6 +42,7 @@ module AdminHelper
   end
 
   def nav_link(text, path, &block)
+    path = path.split('?')[0]
     be_active = request.fullpath.start_with?(path) && path != '/admin'
     options =  be_active ? { class: "active w-100" } : { class: 'w-100'}
 

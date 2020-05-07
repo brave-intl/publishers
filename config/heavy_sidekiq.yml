@@ -28,16 +28,12 @@
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
     queue: low
-  Sync::ChannelStatsJob:
-    cron: "0 1 * * *"
-    description: "Syncs the channel stats via youtube and twitch apis"
-    queue: low
   CacheBrowserChannelsJsonJob:
-    cron: "0 */2 * * *"
+    cron: "0 3 * * *"
     description: "Refreshes the redis cache for browser channel json"
     queue: heavy
   CacheBrowserChannelsJsonJobV2:
-    cron: "0 */2 * * *"
+    cron: "0 8 * * *"
     description: "Refreshes the redis cache for browser channel json V2"
     queue: heavy
   Cache::Metrics::UpholdKycByCountryJob:

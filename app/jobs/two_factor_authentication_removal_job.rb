@@ -29,9 +29,14 @@ class TwoFactorAuthenticationRemovalJob < ApplicationJob
 
       # Locked status waiting period completed - 6 weeks
       elsif two_factor_authentication_removal.locked_status_time_completed?
-        # Return publisher to ACTIVE state.
+        # Return publisher to previous state.
         ActiveRecord::Base.transaction do
-          publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE)
+          if publisher.locked?
+            # Status_updates is sorted by entry, first is "locked", second is the status the publisher was in before
+            previous_status = publisher.status_updates&.second&.status || PublisherStatusUpdate::ACTIVE
+            publisher.status_updates.create(status: previous_status)
+          end
+
           two_factor_authentication_removal.destroy
         end
       end

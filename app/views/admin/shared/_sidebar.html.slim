@@ -27,8 +27,6 @@ aside
           = nav_link "Approvals", admin_channel_approvals_path
           = nav_link "Duplicates", duplicates_admin_channels_path
 
-      = nav_link "Organizations", admin_organizations_path
-
       = nav_link "Cases", admin_cases_path
         - cases = Case.where(status: Case::OPEN).size
         - if cases.positive?
