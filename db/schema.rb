@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_230256) do
+ActiveRecord::Schema.define(version: 2020_05_08_194824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,20 @@ ActiveRecord::Schema.define(version: 2020_04_06_230256) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "cached_uphold_tips", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.bigint "uphold_connection_for_channel_id"
+    t.uuid "uphold_transaction_id"
+    t.string "amount"
+    t.string "settlement_currency"
+    t.string "settlement_amount"
+    t.datetime "uphold_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uphold_connection_for_channel_id", "uphold_created_at"], name: "cached_uphold_tips_created_at"
+    t.index ["uphold_connection_for_channel_id"], name: "index_cached_uphold_tips_on_uphold_connection_for_channel_id"
+    t.index ["uphold_transaction_id"], name: "index_cached_uphold_tips_on_uphold_transaction_id"
   end
 
   create_table "case_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -575,6 +589,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_230256) do
     t.datetime "member_at"
     t.datetime "send_emails", default: -> { "CURRENT_TIMESTAMP" }
     t.text "card_id"
+    t.index ["card_id"], name: "index_uphold_connections_on_card_id"
     t.index ["publisher_id"], name: "index_uphold_connections_on_publisher_id", unique: true
   end
 

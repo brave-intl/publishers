@@ -27,7 +27,7 @@ module Uphold
       # @param [string] id The id of the card you want to find.
       #
       # @return [Uphold::Models::Address[]] an array of th addresses
-      def all(id:)
+      def all(id:, previously_cached: [])
         Rails.logger.info("Connection #{@uphold_connection.id} is missing uphold_access_parameters") and return if @uphold_connection.uphold_access_parameters.blank?
 
         page_index = 1
@@ -40,17 +40,20 @@ module Uphold
 
           response = get(PATH.expand(id: id), {}, authorization(@uphold_connection), { "Range" => "items=#{start}-#{ending_index}" })
 
-          transactions << parse_response(response).map { |a| Uphold::Models::Transaction.new(a) }
+          transactions += parse_response(response).map { |a| Uphold::Models::Transaction.new(a) }
+          transaction_ids = transactions.map(&:id)
 
           range = response.headers["content-range"]
           total_items = range.split('/').second.to_i
 
           break if ending_index > total_items
+          # Break if all the previously_cached values have been found in our transaction array
+          break if previously_cached.all? { |e| transaction_ids.include?(e) }
 
           page_index += 1
         end
 
-        transactions.flatten
+        transactions
       end
 
       # Gets a specified transaction given an id
