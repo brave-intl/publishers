@@ -53,7 +53,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
       routes.publishers.statements.rate_card.path +
         `?start_date=${this.props.statement.earningPeriod.startDate}&end_date=${
           this.props.statement.earningPeriod.endDate
-        }`,
+        }&id=${this.props.statement.publisherId}`,
       {
         headers: {
           Accept: "application/json",
