@@ -16,7 +16,7 @@ class CacheUpholdTips < ApplicationJob
     return if transactions.blank?
 
     transactions.each do |transaction|
-      cached_tip = CachedUpholdTip.find_or_create_by(transaction_id: transaction.id)
+      cached_tip = CachedUpholdTip.find_or_initialize_by(transaction_id: transaction.id)
       cached_tip.update(
         uphold_connection_for_channel: upfc,
         amount: transaction.origin.dig("amount"),
