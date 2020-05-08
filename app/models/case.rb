@@ -3,7 +3,7 @@
 class Case < ApplicationRecord
   has_paper_trail ignore: [:solicit_question, :accident_question]
 
-  self.per_page = 15
+  self.per_page = 50
 
   NEW = "new"
   OPEN = "open"

@@ -1,5 +1,25 @@
 import styled from "styled-components";
 
+interface ITotalCell {
+  hasBorder?: boolean;
+  textRight?: boolean;
+}
+export const TotalCell = styled.td`
+  padding-top: 0.4rem  !important;
+  padding-bottom: 0.4rem  !important;
+
+  ${(props:ITotalCell) =>
+    props.hasBorder
+    ? ``
+    : `border: 0 !important;`}
+
+
+  ${(props:ITotalCell) =>
+    props.textRight
+    ? `text-align: right;`
+    : ``}
+`
+
 export const TableCell = styled.td`
   color: grey;
 `;
@@ -11,12 +31,23 @@ export const ChannelHeader = styled.div`
   color: #4b4c5c;
 `;
 
-export const ChannelDescription = styled.div`
+export const Description = styled.div`
   font-size: 14px;
-  margin-bottom: 0.5rem;
   font-weight: 400;
   color: grey;
 `;
+
+interface ITotalStyle {
+  isDark?: boolean;
+}
+export const Total = styled.span`
+  font-size: 15px;
+
+  ${(props:ITotalStyle) =>
+    props.isDark
+      ? ``
+      : `color: grey;`}
+`
 
 export const Amount = styled.h1`
   display: flex;

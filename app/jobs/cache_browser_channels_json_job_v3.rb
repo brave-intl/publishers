@@ -4,12 +4,17 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
   MAX_RETRY = 10
   TOTALS_CACHE_KEY = 'browser_channels_json_v3_totals'
   LAST_WRITTEN_AT_KEY = "CacheBrowserChannelsJsonJobV3_last_written_at".freeze
+  ENTRIES = 100000
 
   def perform
     last_written_at = Rails.cache.fetch(LAST_WRITTEN_AT_KEY)
     return if last_written_at.present? && last_written_at > 2.hours.ago
 
-    @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
+    if ENV["RAILS_ENV"].in?(["staging"])
+      @channels_json = gather_channels(staging_info, production_info).to_json
+    else
+      @channels_json = JsonBuilders::ChannelsJsonBuilderV3.new.build
+    end
     retry_count = 0
     result = nil
 
@@ -28,13 +33,37 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       SlackMessenger.new(message: "🚨 CacheBrowserChannelsJsonJob V3 could not update the channels JSON. @publishers-team  🚨", channel: SlackMessenger::ALERTS)
       Rails.logger.info("CacheBrowserChannelsJsonJob V3 could not update the channels JSON.")
     end
-
+    @channels = JSON.parse(@channels_json)
+    cache_paginated!
     cache_totals
   end
 
-  def cache_totals
-    results = JSON.parse(@channels_json)
+  def cache_paginated!
+    starting_index = 0
+    ending_index = ENTRIES
+    list = @channels[starting_index...ending_index]
+    page = 1
 
+    retry_count = 0
+    result = nil
+
+    while list.present?
+      loop do
+        result = Rails.cache.write(Api::V3::Public::ChannelsController::REDIS_KEY + BrowserChannelsDynoCaching::PAGE_PREFIX + page.to_s, list.to_json)
+        break if result || retry_count > MAX_RETRY
+
+        retry_count += 1
+        Rails.logger.info("CacheBrowserChannelsJsonJob V3 could not write to Redis result: #{result}. Retrying: #{retry_count}/#{MAX_RETRY}")
+      end
+
+      page += 1
+      starting_index = ending_index
+      ending_index += ENTRIES
+      list = @channels[starting_index...ending_index]
+    end
+  end
+
+  def cache_totals
     # This generates a list of the prefixes for channels ["youtube#channel:", "twitter#channel:", "twitch#:channel:"]
     prefixes = [
       TwitchChannelDetails,
@@ -49,7 +78,7 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
     counts = { site: {}, all_channels: {} }
     prefixes.each { |x| counts[x] = {} }
 
-    results.each do |channel|
+    @channels.each do |channel|
       status = channel.second
       next unless status.present?
 
@@ -83,5 +112,28 @@ class CacheBrowserChannelsJsonJobV3 < ApplicationJob
       retry_count += 1
       Rails.logger.info("CacheBrowserChannelsJsonJob V3 could not write to totals: #{result}. Retrying: #{retry_count}/#{MAX_RETRY}")
     end
+  end
+
+  def gather_channels(staging_channels_list, production_channels_list)
+    existing_channels = {}
+    staging_channels_list.each do |staging_channel|
+      existing_channels[staging_channel[0]] = 1
+    end
+    production_channels_list.each do |production_channel|
+      production_channel[0] = production_channel[0] + "fake"
+      staging_channels_list.append(production_channel) unless production_channel[0].in?(existing_channels)
+    end
+    staging_channels_list
+  end
+
+  def staging_info
+    JSON.parse(JsonBuilders::ChannelsJsonBuilderV3.new.build)
+  end
+
+  def production_info
+    response = Faraday.get("https://publishers-distro.basicattentiontoken.org/api/v3/public/channels") do |req|
+      req.headers['Accept-Encoding'] = 'gzip'
+    end
+    JSON.parse(ActiveSupport::Gzip.decompress(response.body))
   end
 end

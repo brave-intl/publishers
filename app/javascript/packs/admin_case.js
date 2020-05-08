@@ -33,6 +33,10 @@ const shiftClick = () => {
 
   // click listener on list
   list.addEventListener("click", function(e) {
+    if (e.target.name =='selectAllCheckbox'){
+      return;
+    }
+
     if (e.target.type === "checkbox" || e.target.nodeName === "SPAN") {
       var item = e.target.parentNode.parentNode;
       if (e.target.nodeName === "SPAN") {
@@ -151,4 +155,15 @@ document.addEventListener("DOMContentLoaded", function() {
   document
     .querySelectorAll(".filter")
     .forEach(element => element.addEventListener("click", toggleForm));
+
+
+  document.getElementById('toggleChecks').addEventListener('click', function() {
+    var checked = event.target.checked
+    if(checked === undefined) {
+      checked = false
+    }
+    document.querySelectorAll('input[name="case_check[]"]')
+      .forEach(element => element.checked = checked);
+
+  })
 });

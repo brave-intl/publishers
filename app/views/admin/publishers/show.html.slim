@@ -46,24 +46,25 @@ hr
           .db-info-row
             .db-field = "Created by:"
             .db-value = link_to @publisher.created_by, admin_publisher_path(@publisher.created_by)
-        - if @publisher.promo_enabled_2018q1
-          .db-info-row
-            .db-field = "Referral downloads:"
-            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS]
-          .db-info-row
-            .db-field = "Referral installs:"
-            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
-          .db-info-row
-            .db-field = "Referral confirmations:"
-            .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
-          .db-info-row
-            .db-field
-              = "Referral owner status"
-              span data-tooltip="If the user is 'no-ugp' this means their promos will 404"
-                = fa_icon 'question-circle', class: 'mx-1'
-              = ": "
+        - ActiveRecord::Base.connected_to(role: :reading)
+          - if @publisher.promo_enabled_2018q1
+            .db-info-row
+              .db-field = "Referral downloads:"
+              .db-value = publisher_referral_totals(@publisher)[PromoRegistration::RETRIEVALS]
+            .db-info-row
+              .db-field = "Referral installs:"
+              .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FIRST_RUNS]
+            .db-info-row
+              .db-field = "Referral confirmations:"
+              .db-value = publisher_referral_totals(@publisher)[PromoRegistration::FINALIZED]
+            .db-info-row
+              .db-field
+                = "Referral owner status"
+                span data-tooltip="If the user is 'no-ugp' this means their promos will 404"
+                  = fa_icon 'question-circle', class: 'mx-1'
+                = ": "
 
-            .db-value= @referral_owner_status
+              .db-value= @referral_owner_status
 
       #statement-section.split-row
         .payout-report-status-section

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   end
   namespace :browser_users do
     get :home
+    put :accept_tos
   end
   resources :publishers, only: %i(create update new show destroy) do
     collection do

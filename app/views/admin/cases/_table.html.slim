@@ -1,7 +1,10 @@
 table.display.table.table-hover.dynamic-table id="dynamic-table"
   thead
     tr
-      th width="1%"
+      th
+        .checkbox_1.checkbox_small#toggleChecks
+          input type="checkbox" name="selectAllCheckbox"
+          span
       th width="20%" Case ID
       th width="25%" Publisher
       -if params[:status] != Case::OPEN
@@ -18,7 +21,7 @@ table.display.table.table-hover.dynamic-table id="dynamic-table"
     - cases.each do |case_model|
       tr.gradeX height="70px"
         td.checkbox_1
-          input type="checkbox"
+          input type="checkbox" name="case_check[]"
           span
         td= link_to("Case ##{case_model.number}", admin_case_path(case_model))
         td= link_to(case_model.publisher, admin_publisher_path(case_model.publisher), target: "_blank", class: "text-break text-body")

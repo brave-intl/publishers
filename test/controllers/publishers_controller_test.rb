@@ -250,6 +250,23 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert publisher.agreed_to_tos.present?
   end
 
+  test "publisher cannot sign up for a long name" do
+    perform_enqueued_jobs do
+      post(registrations_path, params: SIGNUP_PARAMS)
+    end
+    publisher = Publisher.order(created_at: :asc).last
+    url = publisher_url(publisher, token: publisher.authentication_token)
+    get(url)
+    follow_redirect!
+
+    publisher.reload
+
+    complete_params = { publisher: { name: "Alice" * 13, visible: true } }
+
+    patch(complete_signup_publishers_path, params: complete_params)
+    assert_equal 'Your Name is too long (maximum is 64 characters)', flash[:alert]
+  end
+
   test "publisher updating contact email address will trigger 3 emails and allow publishers confirm new address" do
     perform_enqueued_jobs do
       post(registrations_path, params: SIGNUP_PARAMS)

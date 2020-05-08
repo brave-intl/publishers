@@ -11,3 +11,8 @@ two: &two
 three: &three
   publisher: admin
   removal_completed: false
+
+suspended_2fa_removal:
+  publisher: suspended
+  removal_completed: true
+  created_at: "<%= 5.weeks.ago %>"

@@ -1,7 +1,8 @@
 require "test_helper"
+require 'pry'
 
 class StatementsTest < ActiveSupport::TestCase
-  let(:subject) { Views::User::Statements.new(publisher: publishers(:default)).as_json[:overviews] }
+  let(:subject) { Views::User::Statements.new(publisher: publishers(:default)).overviews }
 
   describe "when there are no statements" do
     it "has no overviews" do
@@ -11,8 +12,8 @@ class StatementsTest < ActiveSupport::TestCase
 
   describe "when there are eyeshade contribution statements" do
     let(:total_earned) { 94986.42173631497819143 }
-    let(:total_fees) { -4749.321086815748909571 }
-    let(:total_bat_deposited) { 90237.100649499229281859 }
+    let(:total_fees) { 4749.321086815748909571 }
+    let(:bat_total_deposited) { 90237.100649499229281859 }
 
     let(:statements) do
       [
@@ -51,7 +52,8 @@ class StatementsTest < ActiveSupport::TestCase
 
     it 'has the correct date range' do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period).must_equal('Sep 2019 - Oct 2019')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-09-01')
+        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-10-09')
       end
     end
 
@@ -63,21 +65,21 @@ class StatementsTest < ActiveSupport::TestCase
 
     it "correctly calculates the total fees" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_fees).must_equal(total_fees)
+        expect(subject.first.totals[:fees]).must_equal(total_fees)
       end
     end
 
     it "correctly calculates the total BAT deposited" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_bat_deposited).must_equal(total_bat_deposited)
+        expect(subject.first.bat_total_deposited).must_equal(bat_total_deposited)
       end
     end
   end
 
   describe "when there are eyeshade and uphold contribution statements" do
     let(:total_earned) { 95196.37173631498 }
-    let(:total_fees) { -4749.321086815748909571 }
-    let(:total_bat_deposited) { 90447.05064949923 }
+    let(:total_fees) { 4749.321086815748909571 }
+    let(:bat_total_deposited) { 90447.05064949923 }
 
     let(:statements) do
       [
@@ -524,7 +526,8 @@ class StatementsTest < ActiveSupport::TestCase
 
     it 'has the correct date range' do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period).must_equal('Sep 2019 - Oct 2019')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-09-01')
+        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-10-09')
       end
     end
 
@@ -536,21 +539,21 @@ class StatementsTest < ActiveSupport::TestCase
 
     it "correctly calculates the total fees" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_fees).must_equal(total_fees)
+        expect(subject.first.totals[:fees]).must_equal(total_fees)
       end
     end
 
     it "correctly calculates the total BAT deposited" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_bat_deposited).must_equal(total_bat_deposited)
+        expect(subject.first.bat_total_deposited).must_equal(bat_total_deposited)
       end
     end
   end
 
   describe "when there are eyeshade and uphold contribution statements" do
     let(:total_earned) { 48.679371409300686 }
-    let(:total_fees) { -1.0 }
-    let(:total_bat_deposited) { 47.679371409300686 }
+    let(:total_fees) { 1.0 }
+    let(:bat_total_deposited) { 47.679371409300686 }
 
     let(:statements) do
       [
@@ -600,7 +603,8 @@ class StatementsTest < ActiveSupport::TestCase
 
     it 'has the correct date range' do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.earning_period).must_equal('Mar 2019 - Apr 2019')
+        expect(subject.first.earning_period[:start_date].to_s).must_equal('2019-03-01')
+        expect(subject.first.earning_period[:end_date].to_s).must_equal('2019-04-09')
       end
     end
 
@@ -612,13 +616,13 @@ class StatementsTest < ActiveSupport::TestCase
 
     it "correctly calculates the total fees" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_fees).must_equal(total_fees)
+        expect(subject.first.totals[:fees]).must_equal(total_fees)
       end
     end
 
     it "correctly calculates the total BAT deposited" do
       PublisherStatementGetter.stub(:new, @statement_mock) do
-        expect(subject.first.total_bat_deposited).must_equal(total_bat_deposited)
+        expect(subject.first.bat_total_deposited).must_equal(bat_total_deposited)
       end
     end
   end
