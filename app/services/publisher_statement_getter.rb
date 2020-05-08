@@ -75,19 +75,13 @@ class PublisherStatementGetter < BaseApiClient
   def get_uphold_transactions
     uphold = []
 
-    publisher.uphold_connection&.uphold_connection_for_channels&.each do |card_connection|
-      transactions = card_connection.uphold_connection.uphold_client.transaction.all(id: card_connection.card_id)
-      next if transactions.blank?
 
-      transactions.each do |transaction|
-        uphold << Statement.new(
-          channel: card_connection.channel.details.publication_title,
-          transaction_type: Statement::UPHOLD_CONTRIBUTION,
-          amount: transaction.origin.dig("amount")&.to_d,
-          settlement_currency: transaction.destination.dig("currency"),
-          settlement_amount: transaction.destination.dig("amount")&.to_d,
-          created_at: transaction.createdAt.to_date,
-        )
+    publisher.uphold_connection&.uphold_connection_for_channels&.each do |card_connection|
+      # Refresh the cache, should only request the most recent page
+      CacheUpholdTips.perform_now(uphold_connection_for_channel_id: card_connection.id)
+
+      card_connection.cached_uphold_tips.each do |cached_tip|
+        uphold << cached_tip.to_statement
       end
     end
 
