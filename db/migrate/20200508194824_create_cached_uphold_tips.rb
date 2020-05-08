@@ -6,7 +6,9 @@ class CreateCachedUpholdTips < ActiveRecord::Migration[6.0]
       t.string :amount
       t.string :settlement_currency
       t.string :settlement_amount
-      t.datetime :uphold_created_at, index: true
+      t.datetime :uphold_created_at
+
+      t.index [:uphold_connection_for_channel_id, :uphold_created_at], name: 'cached_uphold_tips_created_at'
 
       t.timestamps
     end
