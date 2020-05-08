@@ -39,16 +39,16 @@ ActiveRecord::Schema.define(version: 2020_05_08_194824) do
 
   create_table "cached_uphold_tips", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.bigint "uphold_connection_for_channel_id"
-    t.uuid "transaction_id"
+    t.uuid "uphold_transaction_id"
     t.string "amount"
     t.string "settlement_currency"
     t.string "settlement_amount"
     t.datetime "uphold_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["transaction_id"], name: "index_cached_uphold_tips_on_transaction_id"
     t.index ["uphold_connection_for_channel_id", "uphold_created_at"], name: "cached_uphold_tips_created_at"
     t.index ["uphold_connection_for_channel_id"], name: "index_cached_uphold_tips_on_uphold_connection_for_channel_id"
+    t.index ["uphold_transaction_id"], name: "index_cached_uphold_tips_on_uphold_transaction_id"
   end
 
   create_table "case_notes", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

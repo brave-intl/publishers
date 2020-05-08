@@ -5,7 +5,7 @@ class CacheUpholdTips < ApplicationJob
     upfc = UpholdConnectionForChannel.find(uphold_connection_for_channel_id)
 
     # Let's prematurely stop the pagination if we've already cached the most recent ids
-    previously_cached_ids = upfc.cached_uphold_tips.order(uphold_created_at: :desc).limit(5).pluck(:transaction_id)
+    previously_cached_ids = upfc.cached_uphold_tips.order(uphold_created_at: :desc).limit(5).pluck(:uphold_transaction_id)
 
     # This can take a few minutes based on how many tips a publisher has.
     transactions = upfc.uphold_connection.uphold_client.transaction.all(
@@ -16,7 +16,7 @@ class CacheUpholdTips < ApplicationJob
     return if transactions.blank?
 
     transactions.each do |transaction|
-      cached_tip = CachedUpholdTip.find_or_initialize_by(transaction_id: transaction.id)
+      cached_tip = CachedUpholdTip.find_or_initialize_by(uphold_transaction_id: transaction.id)
       cached_tip.update(
         uphold_connection_for_channel: upfc,
         amount: transaction.origin.dig("amount"),
