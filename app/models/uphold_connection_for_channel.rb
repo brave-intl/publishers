@@ -8,6 +8,8 @@ class UpholdConnectionForChannel < ApplicationRecord
   belongs_to :uphold_connection
   belongs_to :channel
 
+  has_many :cached_uphold_tips
+
   NETWORK = 'anonymous'
 
   validates :channel_identifier, uniqueness: { scope: [:uphold_connection_id, :channel_identifier, :currency, :uphold_id] }
