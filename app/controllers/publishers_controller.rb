@@ -47,8 +47,6 @@ class PublishersController < ApplicationController
       update_params[:agreed_to_tos] = Time.now
     end
 
-    update_sendgrid(publisher: @publisher)
-
     if @publisher.update(update_params)
       session[:publisher_created_through_youtube_auth] = nil
       redirect_to publisher_next_step_path(@publisher)
