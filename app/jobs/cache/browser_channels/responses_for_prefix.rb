@@ -3,7 +3,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   sidekiq_options queue: :low, retry: false
 
   PATH = "channels/prefix/".freeze
-  PADDING_WORD = "PADDING".freeze
+  PADDING_WORD = "P".freeze
 
   attr_accessor :site_banner_lookups, :channel_responses, :temp_file
 
@@ -37,7 +37,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
     json = PublishersPb::ChannelResponses.encode_json(@channel_responses)
     info = Brotli.deflate(json)
     File.open(@temp_file.path, 'wb') do |f|
+      # Write a 4-byte header saying the payload length
+      f.write([info.length].pack("L"))
       f.write(info)
+      f.close
     end
     @temp_file
   end
@@ -49,24 +52,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
     @temp_file.unlink
   end
 
-  # Unused, but should be implemented client side
-  def strip_padding!
-    path = @temp_file.path
-    lines = File.open(path, 'rb').readlines.join("").chomp
-    original_file = nil
-    original_file = lines.split(PADDING_WORD)[0] if PADDING_WORD.in?(lines)
-    length = PADDING_WORD.length - 1
-    while original_file.nil? && length > 0
-      original_file = lines.split(PADDING_WORD[0, length])[0] if lines.ends_with?(PADDING_WORD[0, length])
-      length -= 1
-    end
-    original_file = lines if original_file.nil?
-    File.open(path, 'wb') do |f|
-      f.write(original_file)
-      f.close
-    end
-  end
-
   # We want to hide which file is being downloaded by making all requests be the same size
   def pad_file!
     path = @temp_file.path
@@ -75,15 +60,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
     # Converts size from like 326 to 1000
     new_size = (((file_size + 1000) / 1000)) * 1000
     delta = new_size - file_size
-    repeats = (delta / PADDING_WORD.length).to_i
-    left_over = delta % PADDING_WORD.length
     # I'm assuming padding will be fast in a for loop, this can be optimized if this is slow
     # if moving around the file on disk is a frequent operation
     File.open(path, 'ab') do |f|
-      (0...repeats).each do
-        f.write(PADDING_WORD)
-      end
-      f.write(PADDING_WORD[0, left_over])
+      f.write(PADDING_WORD * delta)
       f.close
     end
   end
