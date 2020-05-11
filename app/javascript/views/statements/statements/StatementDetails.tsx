@@ -1,6 +1,11 @@
 import * as moment from "moment";
 import * as React from "react";
-import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
+import {
+  FormattedMessage,
+  FormattedNumber,
+  injectIntl,
+  useIntl,
+} from "react-intl";
 import ReactTooltip from "react-tooltip";
 
 import {
@@ -148,7 +153,12 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                 </tr>
 
                 {/* Subsection for totals */}
-                <TotalSubTable {...this.props.statement.totals} />
+                <TotalSubTable
+                  {...this.props.statement.totals}
+                  settlementDestination={
+                    this.props.statement.settlementDestination
+                  }
+                />
 
                 <tr>
                   <td colSpan={2}>
@@ -242,7 +252,7 @@ const DepositBreakdown = (props) => (
   </ReactTooltip>
 );
 
-const TotalSubTable = (props: IStatementTotal) => (
+const TotalSubTable = (props) => (
   <React.Fragment>
     <tr>
       <TotalCell />
@@ -304,11 +314,13 @@ const TotalSubTable = (props: IStatementTotal) => (
       </TotalCell>
       <TotalCell hasBorder textRight>
         <Total isDark>
-          <FormattedNumber
-            value={props.totalBraveSettled}
-            maximumFractionDigits={2}
-          />{" "}
-          <FormattedMessage id="bat" />
+          <SettlementDestinationLink settlementDestination={props.settlementDestination}>
+            <FormattedNumber
+              value={props.totalBraveSettled}
+              maximumFractionDigits={2}
+            />{" "}
+            <FormattedMessage id="bat" />
+          </SettlementDestinationLink>
         </Total>
       </TotalCell>
     </tr>
@@ -332,5 +344,24 @@ const TotalSubTable = (props: IStatementTotal) => (
     </tr>
   </React.Fragment>
 );
+
+
+export const SettlementDestinationLink = (props) => {
+  const intl = useIntl();
+  if (props.settlementDestination) {
+    return (
+      <a
+        href={intl.formatMessage(
+          { id: "statements.overview.upholdCardLink" },
+          { cardId: props.settlementDestination }
+        )}
+      >
+        {props.children}
+      </a>
+    );
+  }
+
+  return props.children;
+};
 
 export default injectIntl(StatementDetails);

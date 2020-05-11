@@ -2,6 +2,7 @@ import * as React from "react";
 import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
 
 import { TableHeader } from "../../StatementsStyle";
+import { SettlementDestinationLink } from "../StatementDetails";
 import {
   Amount,
   ChannelHeader,
@@ -55,11 +56,15 @@ const DetailSection = (props) => (
               </HideOverflow>
             </TableCell>
             <TableCell className="text-right">
-              <FormattedNumber
-                value={transaction.amount}
-                maximumFractionDigits={2}
-              />{" "}
-              <FormattedMessage id="bat" />
+              <SettlementDestinationLink
+                settlementDestination={transaction.settlementDestination}
+              >
+                <FormattedNumber
+                  value={transaction.amount}
+                  maximumFractionDigits={2}
+                />{" "}
+                <FormattedMessage id="bat" />
+              </SettlementDestinationLink>
             </TableCell>
           </tr>
         ))}

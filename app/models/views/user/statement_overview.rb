@@ -11,7 +11,7 @@ module Views
 
       attr_accessor :earning_period, :payment_date, :destination, :totals, :deposited, :deposited_types, :total_earned,
                     :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :bat_total_deposited,
-                    :publisher_id
+                    :publisher_id, :settlement_destination
 
       def initialize(attributes = {})
         super

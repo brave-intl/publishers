@@ -27,7 +27,7 @@ class PublisherStatementGetter < BaseApiClient
       if eyeshade_settlement? || fee?
         created_at.prev_month.at_beginning_of_month
       else
-        created_at.at_beginning_of_month
+        created_at.at_beginning_of_month.to_date
       end
     end
   end
@@ -75,12 +75,11 @@ class PublisherStatementGetter < BaseApiClient
   def get_uphold_transactions
     uphold = []
 
-
     publisher.uphold_connection&.uphold_connection_for_channels&.each do |card_connection|
       # Refresh the cache, should only request the most recent page
       CacheUpholdTips.perform_now(uphold_connection_for_channel_id: card_connection.id)
 
-      card_connection.cached_uphold_tips.each do |cached_tip|
+      card_connection.cached_uphold_tips.find_each do |cached_tip|
         uphold << cached_tip.to_statement
       end
     end
@@ -93,6 +92,7 @@ class PublisherStatementGetter < BaseApiClient
         channel_entries.group_by { |c| c.settlement_currency }.each do |currency, currency_entries|
           amount = currency_entries.sum { |x| x.amount }
           settlement_amount = currency_entries.sum { |x| x.settlement_amount }
+          settlement_destination = currency_entries.detect { |x| x.settlement_destination }&.settlement_destination
 
           # We're specifying a negative amount because we group by transactions already paid out.
           # This gives us the ability to aggregate and show one Uphold transaction, rather than 300 or so tips that might have been sent.
@@ -102,6 +102,7 @@ class PublisherStatementGetter < BaseApiClient
             amount: -amount,
             settlement_currency: currency,
             settlement_amount: settlement_amount,
+            settlement_destination: settlement_destination,
             created_at: date,
           )
         end

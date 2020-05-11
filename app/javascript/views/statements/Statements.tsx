@@ -45,6 +45,7 @@ export interface IStatementOverview {
   batTotalDeposited: number;
   rawTransactions: any;
   showRateCards: boolean;
+  settlementDestination: string;
 }
 
 export const DisplayEarningPeriod = (earningPeriod: IEarningPeriod) => {

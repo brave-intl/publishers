@@ -48,7 +48,7 @@ module Uphold
 
           break if ending_index > total_items
           # Break if all the previously_cached values have been found in our transaction array
-          break if previously_cached.all? { |e| transaction_ids.include?(e) }
+          break if previously_cached.present? && previously_cached.all? { |e| transaction_ids.include?(e) }
 
           page_index += 1
         end
@@ -66,6 +66,13 @@ module Uphold
         response = get(path.expand(id: id), {}, authorization(@uphold_connection))
 
         Uphold::Models::Transaction.new(parse_response(response))
+      end
+
+      # A transaction will have an anonymous origin if it came from another Uphold User
+      # And that uphold user sent the funds through their anonymous card address.
+      # This is functionality that realistically only the Browser uses to send tips.
+      def anonymous_origin?
+        origin.dig('node','type') == "anonymous"
       end
 
       def authorization(uphold_connection)
