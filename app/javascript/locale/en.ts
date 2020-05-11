@@ -196,7 +196,6 @@ export default {
       brand: "Brave Creators",
       braveSettledContributions: "Brave Settled Contributions",
       breakdown: "Breakdown",
-      confirmedEarning: "Confirmed Earning",
       depositAccount: "Deposit Account",
       depositDate: "Brave Settled Deposit Date",
       description: "Statements contain the details of deposit history.",

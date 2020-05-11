@@ -72,7 +72,7 @@ module Uphold
       # And that uphold user sent the funds through their anonymous card address.
       # This is functionality that realistically only the Browser uses to send tips.
       def anonymous_origin?
-        origin.dig('node','type') == "anonymous"
+        origin.dig('node', 'type') == "anonymous"
       end
 
       def authorization(uphold_connection)

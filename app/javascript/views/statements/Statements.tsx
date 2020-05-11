@@ -1,6 +1,7 @@
 import * as moment from "moment";
 import * as React from "react";
 import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
+import ReactTooltip from "react-tooltip";
 
 import { DownloadIcon } from "brave-ui/components/icons";
 
@@ -64,6 +65,37 @@ export const DisplayPaymentDate = (paymentDate: string) => {
     return moment(paymentDate).format("MMM DD, YYYY");
   }
   return "--";
+};
+
+export const GetParameterCaseInsensitive = (object, key) => {
+  return object[
+    Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase())
+  ];
+};
+
+export const DepositBreakdown = (props) => {
+  const id = props.name + "-" + Math.random();
+  return (
+    <React.Fragment>
+      <span data-tip data-for={id}>
+        {props.children}
+      </span>
+      <ReactTooltip id={id}>
+        {Object.keys(props.results).map((type) => (
+          <React.Fragment key={type}>
+            <FormattedMessage id={`statements.overview.types.${type}`} />
+            {": "}
+            <FormattedNumber
+              value={props.results[type]}
+              maximumFractionDigits={2}
+            />
+            {" BAT"}
+            <br />
+          </React.Fragment>
+        ))}
+      </ReactTooltip>
+    </React.Fragment>
+  );
 };
 
 class Statements extends React.Component<any, IStatementsState> {
@@ -138,7 +170,10 @@ class Statements extends React.Component<any, IStatementsState> {
                 <FormattedMessage id="statements.overview.paymentDate" />
               </TableHeader>
               <TableHeader className="text-right" style={{ minWidth: "150px" }}>
-                <FormattedMessage id="statements.overview.confirmedEarning" />
+                <FormattedMessage id="statements.overview.totalBraveSettled" />
+              </TableHeader>
+              <TableHeader className="text-right" style={{ minWidth: "150px" }}>
+                <FormattedMessage id="statements.overview.directUserTips" />
               </TableHeader>
               <TableHeader className="text-right" style={{ minWidth: "175px" }}>
                 <FormattedMessage id="statements.overview.amountDeposited" />
@@ -163,7 +198,17 @@ class Statements extends React.Component<any, IStatementsState> {
                   <td>{DisplayPaymentDate(statement.paymentDate)}</td>
                   <td className="text-right">
                     <FormattedNumber
-                      value={statement.batTotalDeposited}
+                      value={statement.totals.totalBraveSettled}
+                      maximumFractionDigits={2}
+                    />
+                    <small>
+                      {" "}
+                      <FormattedMessage id="bat" />
+                    </small>
+                  </td>
+                  <td className="text-right">
+                    <FormattedNumber
+                      value={statement.totals.upholdContributionSettlement}
                       maximumFractionDigits={2}
                     />
                     <small>
@@ -173,14 +218,23 @@ class Statements extends React.Component<any, IStatementsState> {
                   </td>
                   <td className="text-right">
                     {Object.keys(statement.deposited).map((name) => (
-                      <React.Fragment>
-                        <FormattedNumber
-                          value={statement.deposited[name]}
-                          maximumFractionDigits={2}
-                        />{" "}
-                        <small>{name}</small>
-                        <br />
-                      </React.Fragment>
+                      <DepositBreakdown
+                        name={name}
+                        key={name}
+                        results={GetParameterCaseInsensitive(
+                          statement.depositedTypes,
+                          name
+                        )}
+                      >
+                        <React.Fragment>
+                          <FormattedNumber
+                            value={statement.deposited[name]}
+                            maximumFractionDigits={2}
+                          />{" "}
+                          <small>{name}</small>
+                          <br />
+                        </React.Fragment>
+                      </DepositBreakdown>
                     ))}
                   </td>
                   <td>

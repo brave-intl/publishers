@@ -6,11 +6,12 @@ import {
   injectIntl,
   useIntl,
 } from "react-intl";
-import ReactTooltip from "react-tooltip";
 
 import {
+  DepositBreakdown,
   DisplayEarningPeriod,
   DisplayPaymentDate,
+  GetParameterCaseInsensitive,
   IStatementOverview,
   IStatementTotal,
 } from "../Statements";
@@ -124,7 +125,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                     </Amount>
                     <DepositBreakdown
                       name={name}
-                      results={getParameterCaseInsensitive(
+                      results={GetParameterCaseInsensitive(
                         this.props.statement.depositedTypes,
                         name
                       )}
@@ -229,29 +230,6 @@ class StatementDetails extends React.Component<IStatementProps, any> {
   }
 }
 
-function getParameterCaseInsensitive(object, key) {
-  return object[
-    Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase())
-  ];
-}
-
-const DepositBreakdown = (props) => (
-  <ReactTooltip id={props.name}>
-    {Object.keys(props.results).map((type) => (
-      <React.Fragment key={type}>
-        <FormattedMessage id={`statements.overview.types.${type}`} />
-        {": "}
-        <FormattedNumber
-          value={props.results[type]}
-          maximumFractionDigits={2}
-        />
-        {" BAT"}
-        <br />
-      </React.Fragment>
-    ))}
-  </ReactTooltip>
-);
-
 const TotalSubTable = (props) => (
   <React.Fragment>
     <tr>
@@ -280,7 +258,7 @@ const TotalSubTable = (props) => (
       </TotalCell>
       <TotalCell textRight>
         <Total>
-          -
+          { props.fees !== 0 && "-" }
           <FormattedNumber value={props.fees} maximumFractionDigits={2} />{" "}
           <FormattedMessage id="bat" />
         </Total>
@@ -314,7 +292,9 @@ const TotalSubTable = (props) => (
       </TotalCell>
       <TotalCell hasBorder textRight>
         <Total isDark>
-          <SettlementDestinationLink settlementDestination={props.settlementDestination}>
+          <SettlementDestinationLink
+            settlementDestination={props.settlementDestination}
+          >
             <FormattedNumber
               value={props.totalBraveSettled}
               maximumFractionDigits={2}
@@ -344,7 +324,6 @@ const TotalSubTable = (props) => (
     </tr>
   </React.Fragment>
 );
-
 
 export const SettlementDestinationLink = (props) => {
   const intl = useIntl();
