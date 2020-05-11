@@ -115,21 +115,22 @@ class StatementDetails extends React.Component<IStatementProps, any> {
               <div>
                 {Object.keys(this.props.statement.deposited).map((name) => (
                   <React.Fragment key={name}>
-                    <Amount data-tip data-for={name}>
-                      <FormattedNumber
-                        value={this.props.statement.deposited[name]}
-                        maximumFractionDigits={2}
-                      />{" "}
-                      <small>{name}</small>
-                      <br />
-                    </Amount>
                     <DepositBreakdown
                       name={name}
                       results={GetParameterCaseInsensitive(
                         this.props.statement.depositedTypes,
                         name
                       )}
-                    />
+                    >
+                      <Amount>
+                        <FormattedNumber
+                          value={this.props.statement.deposited[name]}
+                          maximumFractionDigits={2}
+                        />{" "}
+                        <small>{name}</small>
+                        <br />
+                      </Amount>
+                    </DepositBreakdown>
                   </React.Fragment>
                 ))}
               </div>
@@ -258,7 +259,7 @@ const TotalSubTable = (props) => (
       </TotalCell>
       <TotalCell textRight>
         <Total>
-          { props.fees !== 0 && "-" }
+          {props.fees !== 0 && "-"}
           <FormattedNumber value={props.fees} maximumFractionDigits={2} />{" "}
           <FormattedMessage id="bat" />
         </Total>
