@@ -12,8 +12,11 @@ module Search
 
     # Replaces the query with the Youtube Channel someone pastes in a youtube video
     query = extract_channel(query) if query.include? "youtube.com/channel/"
+=begin
+    (Albert Wang): Disable this temporarily until we up our quota
     query = extract_channel_from_user(query) if is_youtube_user?(query)
     query = channel_from_video_url(query) if is_youtube_video?(query)
+=end
 
     query.strip
   end
