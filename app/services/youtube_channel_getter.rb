@@ -10,9 +10,9 @@ class YoutubeChannelGetter < BaseApiClient
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
       if channel_id
-        request.url("/youtube/v3/channels?id=#{channel_id}&part=statistics,snippet")
+        request.url("/youtube/v3/channels?id=#{channel_id}&part=snippet")
       else
-        request.url("/youtube/v3/channels?mine=true&part=statistics,snippet")
+        request.url("/youtube/v3/channels?mine=true&part=snippet")
       end
     end
     response_hash = JSON.parse(response.body)

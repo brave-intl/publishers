@@ -31,7 +31,6 @@ module Publishers
         title: youtube_channel_data.dig('snippet', 'title'),
         description: youtube_channel_data.dig('snippet', 'description'),
         thumbnail_url: youtube_channel_data.dig('snippet', 'thumbnails', 'default', 'url'),
-        subscriber_count: youtube_channel_data.dig('statistics', 'subscriberCount'),
         auth_provider: oauth_response.provider,
         auth_user_id: oauth_response.uid,
         auth_name: oauth_response.dig('info', 'name'),
