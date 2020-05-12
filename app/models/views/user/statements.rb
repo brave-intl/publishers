@@ -65,7 +65,7 @@ module Views
             overview.total_earned += payout_entry.amount.abs
           end
 
-          overview.settlement_destination = settlement_destination
+          overview.settlement_destination = settlement_destination # Assume that settlement_destination doesn't change
 
           overview.totals[:total_brave_settled] = total_brave_settled
           overview.bat_total_deposited = overview.total_earned - overview.totals[:fees]
