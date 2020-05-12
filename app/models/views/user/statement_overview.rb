@@ -106,7 +106,6 @@ module Views
               channels.each_with_index do |settlement, index|
                 # Since the transactions are sorted we should be able to use the same index as the contribution settlement
                 # For every contribution_settlement there will always be an associated fee transaction type
-                # binding.pry if channel_fees[index].blank?
                 settlement.amount += channel_fees[index].amount
               end
             end
