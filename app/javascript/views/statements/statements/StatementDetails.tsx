@@ -1,13 +1,9 @@
 import * as moment from "moment";
 import * as React from "react";
-import {
-  FormattedMessage,
-  FormattedNumber,
-  injectIntl,
-  useIntl,
-} from "react-intl";
+import { FormattedMessage, injectIntl, useIntl } from "react-intl";
 
 import {
+  CurrencyNumber,
   DepositBreakdown,
   DisplayEarningPeriod,
   DisplayPaymentDate,
@@ -123,9 +119,8 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                       )}
                     >
                       <Amount>
-                        <FormattedNumber
+                        <CurrencyNumber
                           value={this.props.statement.deposited[name]}
-                          maximumFractionDigits={2}
                         />{" "}
                         <small>{name}</small>
                         <br />
@@ -138,22 +133,19 @@ class StatementDetails extends React.Component<IStatementProps, any> {
 
             <table className="table ml-4 border-bottom statement-table">
               <tbody>
-                {/* Total Earned Section */}
                 <tr>
                   <td colSpan={2}>
                     <strong>
-                      <FormattedMessage id="statements.overview.totalEarned" />
+                      <FormattedMessage id="statements.overview.totalDeposited" />
                     </strong>
                   </td>
                   <td className="text-right">
-                    <FormattedNumber
-                      value={this.props.statement.totalEarned}
-                      maximumFractionDigits={2}
+                    <CurrencyNumber
+                      value={this.props.statement.batTotalDeposited}
                     />{" "}
                     <FormattedMessage id="bat" />
                   </td>
                 </tr>
-
                 {/* Subsection for totals */}
                 <TotalSubTable
                   {...this.props.statement.totals}
@@ -162,20 +154,6 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                   }
                 />
 
-                <tr>
-                  <td colSpan={2}>
-                    <strong>
-                      <FormattedMessage id="statements.overview.totalDeposited" />
-                    </strong>
-                  </td>
-                  <td className="text-right">
-                    <FormattedNumber
-                      value={this.props.statement.batTotalDeposited}
-                      maximumFractionDigits={2}
-                    />{" "}
-                    <FormattedMessage id="bat" />
-                  </td>
-                </tr>
                 <tr>
                   <td colSpan={2}>
                     <strong>
@@ -242,25 +220,7 @@ const TotalSubTable = (props) => (
       </TotalCell>
       <TotalCell textRight>
         <Total>
-          <FormattedNumber
-            value={props.contributionSettlement}
-            maximumFractionDigits={2}
-          />{" "}
-          <FormattedMessage id="bat" />
-        </Total>
-      </TotalCell>
-    </tr>
-    <tr>
-      <TotalCell />
-      <TotalCell>
-        <Total>
-          <FormattedMessage id="statements.overview.fees" />
-        </Total>
-      </TotalCell>
-      <TotalCell textRight>
-        <Total>
-          {props.fees !== 0 && "-"}
-          <FormattedNumber value={props.fees} maximumFractionDigits={2} />{" "}
+          <CurrencyNumber value={props.contributionSettlement} />{" "}
           <FormattedMessage id="bat" />
         </Total>
       </TotalCell>
@@ -275,10 +235,7 @@ const TotalSubTable = (props) => (
       </TotalCell>
       <TotalCell textRight>
         <Total>
-          <FormattedNumber
-            value={props.referralSettlement}
-            maximumFractionDigits={2}
-          />{" "}
+          <CurrencyNumber value={props.referralSettlement} />{" "}
           <FormattedMessage id="bat" />
         </Total>
       </TotalCell>
@@ -296,10 +253,7 @@ const TotalSubTable = (props) => (
           <SettlementDestinationLink
             settlementDestination={props.settlementDestination}
           >
-            <FormattedNumber
-              value={props.totalBraveSettled}
-              maximumFractionDigits={2}
-            />{" "}
+            <CurrencyNumber value={props.totalBraveSettled} />{" "}
             <FormattedMessage id="bat" />
           </SettlementDestinationLink>
         </Total>
@@ -315,10 +269,7 @@ const TotalSubTable = (props) => (
       </TotalCell>
       <TotalCell textRight>
         <Total isDark>
-          <FormattedNumber
-            value={props.upholdContributionSettlement}
-            maximumFractionDigits={2}
-          />{" "}
+          <CurrencyNumber value={props.upholdContributionSettlement} />{" "}
           <FormattedMessage id="bat" />
         </Total>
       </TotalCell>

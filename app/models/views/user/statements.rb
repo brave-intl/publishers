@@ -54,7 +54,7 @@ module Views
               # It is shown in a tooltip in the Statement
               overview.deposited_types[payout_entry.settlement_currency] ||= {}
               overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] ||= 0
-              overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] += payout_entry.amount.abs
+              overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] += payout_entry.settlement_amount.abs
             end
 
             # Here we sum up (in BAT) all the different transaction types

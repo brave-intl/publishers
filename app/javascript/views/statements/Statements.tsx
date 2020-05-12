@@ -1,6 +1,10 @@
 import * as moment from "moment";
 import * as React from "react";
-import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
+import {
+  FormattedMessage,
+  FormattedNumber,
+  injectIntl,
+} from "react-intl";
 import ReactTooltip from "react-tooltip";
 
 import { DownloadIcon } from "brave-ui/components/icons";
@@ -80,23 +84,35 @@ export const DepositBreakdown = (props) => {
       <span data-tip data-for={id}>
         {props.children}
       </span>
+
       <ReactTooltip id={id}>
-        {Object.keys(props.results).map((type) => (
-          <React.Fragment key={type}>
-            <FormattedMessage id={`statements.overview.types.${type}`} />
-            {": "}
-            <FormattedNumber
-              value={props.results[type]}
-              maximumFractionDigits={2}
-            />
-            {" BAT"}
-            <br />
-          </React.Fragment>
-        ))}
+        <table className="table text-light m-0">
+          <tbody>
+            {Object.keys(props.results).map((type) => (
+              <tr key={type}>
+                <td className="border-0 text-right">
+                  <FormattedMessage id={`statements.overview.types.${type}`} />
+                  {":  "}
+                </td>
+                <td className="border-0 text-left">
+                  <CurrencyNumber value={props.results[type]} /> {props.name}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </ReactTooltip>
     </React.Fragment>
   );
 };
+
+export const CurrencyNumber = (props) => (
+  <FormattedNumber
+    value={props.value}
+    maximumFractionDigits={2}
+    minimumFractionDigits={2}
+  />
+);
 
 class Statements extends React.Component<any, IStatementsState> {
   public readonly state: IStatementsState = {
@@ -197,9 +213,8 @@ class Statements extends React.Component<any, IStatementsState> {
                   <td>{DisplayEarningPeriod(statement.earningPeriod)}</td>
                   <td>{DisplayPaymentDate(statement.paymentDate)}</td>
                   <td className="text-right">
-                    <FormattedNumber
+                    <CurrencyNumber
                       value={statement.totals.totalBraveSettled}
-                      maximumFractionDigits={2}
                     />
                     <small>
                       {" "}
@@ -207,9 +222,8 @@ class Statements extends React.Component<any, IStatementsState> {
                     </small>
                   </td>
                   <td className="text-right">
-                    <FormattedNumber
+                    <CurrencyNumber
                       value={statement.totals.upholdContributionSettlement}
-                      maximumFractionDigits={2}
                     />
                     <small>
                       {" "}
@@ -227,7 +241,7 @@ class Statements extends React.Component<any, IStatementsState> {
                         )}
                       >
                         <React.Fragment>
-                          <FormattedNumber
+                          <CurrencyNumber
                             value={statement.deposited[name]}
                             maximumFractionDigits={2}
                           />{" "}

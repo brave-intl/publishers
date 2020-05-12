@@ -223,7 +223,7 @@ export default {
       statement: "Statement",
       title: "Statements",
       totalBraveSettled: "Total Brave Settled",
-      totalDeposited: "Total Deposited",
+      totalDeposited: "Net Deposited",
       totalEarned: "Total Earned",
       types: {
         contributionSettlement: "Brave Settled Contributions",
