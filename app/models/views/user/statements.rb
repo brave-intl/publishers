@@ -37,9 +37,11 @@ module Views
           )
 
           total_brave_settled = 0
+          settlement_destination = nil
 
           payout_entries.each do |payout_entry|
             total_brave_settled += payout_entry.amount.abs if payout_entry.eyeshade_settlement?
+            settlement_destination ||= payout_entry.settlement_destination
 
             # Not all payout entries have settlement currency / amount information so on the statement
             # we should only show the entries which have been settled with the currency information
@@ -52,7 +54,7 @@ module Views
               # It is shown in a tooltip in the Statement
               overview.deposited_types[payout_entry.settlement_currency] ||= {}
               overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] ||= 0
-              overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] += payout_entry.amount.abs
+              overview.deposited_types[payout_entry.settlement_currency][payout_entry.transaction_type] += payout_entry.settlement_amount.abs
             end
 
             # Here we sum up (in BAT) all the different transaction types
@@ -62,6 +64,8 @@ module Views
 
             overview.total_earned += payout_entry.amount.abs
           end
+
+          overview.settlement_destination = settlement_destination # Assume that settlement_destination doesn't change
 
           overview.totals[:total_brave_settled] = total_brave_settled
           overview.bat_total_deposited = overview.total_earned - overview.totals[:fees]

@@ -11,7 +11,7 @@ module Views
 
       attr_accessor :earning_period, :payment_date, :destination, :totals, :deposited, :deposited_types, :total_earned,
                     :currency, :details, :settled_transactions, :raw_transactions, :name, :email, :total_fees, :bat_total_deposited,
-                    :publisher_id
+                    :publisher_id, :settlement_destination
 
       def initialize(attributes = {})
         super
@@ -96,9 +96,23 @@ module Views
         grouped_transactions.each do |type, results|
           total_amount = 0
 
-          # Add previously removed fees to the contribution settlement details
-          # Because we group_by the transaction_type fees only get added once to the results
-          results += fees if type == PublisherStatementGetter::Statement::CONTRIBUTION_SETTLEMENT
+          if type == PublisherStatementGetter::Statement::CONTRIBUTION_SETTLEMENT
+            # On contribution_settlement transactions the fees are subtracted automatically from the settlement.
+            # If we want to display the correct amount under "Total" we must add back in the fees to the main transaction
+            # We group by channel, there is a pairing of contribution_settlement and fees
+            results.group_by(&:channel).each do |name, channels|
+              # If there are multiple payouts within a month we go through each
+              channel_fees = fees.select { |x| x.channel == name }
+              channels.each_with_index do |settlement, index|
+                # Since the transactions are sorted we should be able to use the same index as the contribution settlement
+                # For every contribution_settlement there will always be an associated fee transaction type
+                settlement.amount += channel_fees[index].amount
+              end
+            end
+            # Add previously removed fees to the contribution settlement details
+            # Because we group_by the transaction_type fees only get added once to the results
+            results += fees
+          end
 
           results = results.each do |x|
             # All settlements are negative, so we should take the absolute value

@@ -16,6 +16,9 @@ class CacheUpholdTips < ApplicationJob
     return if transactions.blank?
 
     transactions.each do |transaction|
+       # Filter out transactions that weren't made by Brave Browser
+      next unless transaction.anonymous_origin?
+
       cached_tip = CachedUpholdTip.find_or_initialize_by(uphold_transaction_id: transaction.id)
       cached_tip.update(
         uphold_connection_for_channel: upfc,

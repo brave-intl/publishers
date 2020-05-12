@@ -1,11 +1,13 @@
 import * as moment from "moment";
 import * as React from "react";
-import { FormattedMessage, FormattedNumber, injectIntl } from "react-intl";
-import ReactTooltip from "react-tooltip";
+import { FormattedMessage, injectIntl, useIntl } from "react-intl";
 
 import {
+  CurrencyNumber,
+  DepositBreakdown,
   DisplayEarningPeriod,
   DisplayPaymentDate,
+  GetParameterCaseInsensitive,
   IStatementOverview,
   IStatementTotal,
 } from "../Statements";
@@ -109,21 +111,21 @@ class StatementDetails extends React.Component<IStatementProps, any> {
               <div>
                 {Object.keys(this.props.statement.deposited).map((name) => (
                   <React.Fragment key={name}>
-                    <Amount data-tip data-for={name}>
-                      <FormattedNumber
-                        value={this.props.statement.deposited[name]}
-                        maximumFractionDigits={2}
-                      />{" "}
-                      <small>{name}</small>
-                      <br />
-                    </Amount>
                     <DepositBreakdown
                       name={name}
-                      results={getParameterCaseInsensitive(
+                      results={GetParameterCaseInsensitive(
                         this.props.statement.depositedTypes,
                         name
                       )}
-                    />
+                    >
+                      <Amount>
+                        <CurrencyNumber
+                          value={this.props.statement.deposited[name]}
+                        />{" "}
+                        <small>{name}</small>
+                        <br />
+                      </Amount>
+                    </DepositBreakdown>
                   </React.Fragment>
                 ))}
               </div>
@@ -131,25 +133,6 @@ class StatementDetails extends React.Component<IStatementProps, any> {
 
             <table className="table ml-4 border-bottom statement-table">
               <tbody>
-                {/* Total Earned Section */}
-                <tr>
-                  <td colSpan={2}>
-                    <strong>
-                      <FormattedMessage id="statements.overview.totalEarned" />
-                    </strong>
-                  </td>
-                  <td className="text-right">
-                    <FormattedNumber
-                      value={this.props.statement.totalEarned}
-                      maximumFractionDigits={2}
-                    />{" "}
-                    <FormattedMessage id="bat" />
-                  </td>
-                </tr>
-
-                {/* Subsection for totals */}
-                <TotalSubTable {...this.props.statement.totals} />
-
                 <tr>
                   <td colSpan={2}>
                     <strong>
@@ -157,13 +140,20 @@ class StatementDetails extends React.Component<IStatementProps, any> {
                     </strong>
                   </td>
                   <td className="text-right">
-                    <FormattedNumber
+                    <CurrencyNumber
                       value={this.props.statement.batTotalDeposited}
-                      maximumFractionDigits={2}
                     />{" "}
                     <FormattedMessage id="bat" />
                   </td>
                 </tr>
+                {/* Subsection for totals */}
+                <TotalSubTable
+                  {...this.props.statement.totals}
+                  settlementDestination={
+                    this.props.statement.settlementDestination
+                  }
+                />
+
                 <tr>
                   <td colSpan={2}>
                     <strong>
@@ -219,30 +209,7 @@ class StatementDetails extends React.Component<IStatementProps, any> {
   }
 }
 
-function getParameterCaseInsensitive(object, key) {
-  return object[
-    Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase())
-  ];
-}
-
-const DepositBreakdown = (props) => (
-  <ReactTooltip id={props.name}>
-    {Object.keys(props.results).map((type) => (
-      <React.Fragment key={type}>
-        <FormattedMessage id={`statements.overview.types.${type}`} />
-        {": "}
-        <FormattedNumber
-          value={props.results[type]}
-          maximumFractionDigits={2}
-        />
-        {" BAT"}
-        <br />
-      </React.Fragment>
-    ))}
-  </ReactTooltip>
-);
-
-const TotalSubTable = (props: IStatementTotal) => (
+const TotalSubTable = (props) => (
   <React.Fragment>
     <tr>
       <TotalCell />
@@ -253,25 +220,7 @@ const TotalSubTable = (props: IStatementTotal) => (
       </TotalCell>
       <TotalCell textRight>
         <Total>
-          <FormattedNumber
-            value={props.contributionSettlement}
-            maximumFractionDigits={2}
-          />{" "}
-          <FormattedMessage id="bat" />
-        </Total>
-      </TotalCell>
-    </tr>
-    <tr>
-      <TotalCell />
-      <TotalCell>
-        <Total>
-          <FormattedMessage id="statements.overview.fees" />
-        </Total>
-      </TotalCell>
-      <TotalCell textRight>
-        <Total>
-          -
-          <FormattedNumber value={props.fees} maximumFractionDigits={2} />{" "}
+          <CurrencyNumber value={props.contributionSettlement} />{" "}
           <FormattedMessage id="bat" />
         </Total>
       </TotalCell>
@@ -286,10 +235,7 @@ const TotalSubTable = (props: IStatementTotal) => (
       </TotalCell>
       <TotalCell textRight>
         <Total>
-          <FormattedNumber
-            value={props.referralSettlement}
-            maximumFractionDigits={2}
-          />{" "}
+          <CurrencyNumber value={props.referralSettlement} />{" "}
           <FormattedMessage id="bat" />
         </Total>
       </TotalCell>
@@ -304,11 +250,12 @@ const TotalSubTable = (props: IStatementTotal) => (
       </TotalCell>
       <TotalCell hasBorder textRight>
         <Total isDark>
-          <FormattedNumber
-            value={props.totalBraveSettled}
-            maximumFractionDigits={2}
-          />{" "}
-          <FormattedMessage id="bat" />
+          <SettlementDestinationLink
+            settlementDestination={props.settlementDestination}
+          >
+            <CurrencyNumber value={props.totalBraveSettled} />{" "}
+            <FormattedMessage id="bat" />
+          </SettlementDestinationLink>
         </Total>
       </TotalCell>
     </tr>
@@ -322,15 +269,30 @@ const TotalSubTable = (props: IStatementTotal) => (
       </TotalCell>
       <TotalCell textRight>
         <Total isDark>
-          <FormattedNumber
-            value={props.upholdContributionSettlement}
-            maximumFractionDigits={2}
-          />{" "}
+          <CurrencyNumber value={props.upholdContributionSettlement} />{" "}
           <FormattedMessage id="bat" />
         </Total>
       </TotalCell>
     </tr>
   </React.Fragment>
 );
+
+export const SettlementDestinationLink = (props) => {
+  const intl = useIntl();
+  if (props.settlementDestination) {
+    return (
+      <a
+        href={intl.formatMessage(
+          { id: "statements.overview.upholdCardLink" },
+          { cardId: props.settlementDestination }
+        )}
+      >
+        {props.children}
+      </a>
+    );
+  }
+
+  return props.children;
+};
 
 export default injectIntl(StatementDetails);
