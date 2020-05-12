@@ -10,7 +10,13 @@ module Publishers
       oauth_response = request.env['omniauth.auth']
       token = oauth_response.credentials.token
 
-      youtube_channel_data = YoutubeChannelGetter.new(token: token).perform
+      begin
+        youtube_channel_data = YoutubeChannelGetter.new(token: token).perform
+      rescue YoutubeChannelGetter::ChannelForbiddenError => e
+        if e.to_json.include?("dailyLimitExceeded")
+          redirect_to home_publishers_path, notice: t("shared.channel_quota_exceeded") and return
+        end
+      end
 
       if youtube_channel_data.nil?
         redirect_to home_publishers_path, notice: t("shared.channel_not_found")

@@ -33,6 +33,7 @@ en:
     time_until_transfer_fallback: a short time
     channel_contested_by: Channel has been verified by another publisher and will be transferred to their account in %{time_until_transfer} unless you reject.
     channel_not_found: Channel not found
+    channel_quota_exceeded: We're so popular we exceeded our daily quota of YouTube registrations. Please try again tomorrow.
     channel_removed: Channel removed.
     continue: Continue
     dashboard: Dashboard

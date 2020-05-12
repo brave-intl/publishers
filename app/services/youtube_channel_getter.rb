@@ -1,3 +1,5 @@
+require 'sentry-raven'
+
 class YoutubeChannelGetter < BaseApiClient
   attr_reader :token, :channel_id
 
@@ -23,13 +25,20 @@ class YoutubeChannelGetter < BaseApiClient
     end
   rescue Faraday::Error => e
     Rails.logger.warn("YoutubeChannelGetter #perform error: #{e}")
+    Raven.capture_exception(e)
     case e.response[:status]
       when 403
-        raise ChannelForbiddenError.new(e.response[:body])
+        new_exception = ChannelForbiddenError.new(e.response[:body])
+        Raven.capture_exception(new_exception)
+        raise new_exception
       when 404
-        raise ChannelNotFoundError.new(e.response[:body])
+        new_exception = ChannelNotFoundError.new(e.response[:body])
+        Raven.capture_exception(new_exception)
+        raise new_exception
       else
-        raise ChannelBadRequestError.new(e.response[:body])
+        new_exception = ChannelBadRequestError.new(e.response[:body])
+        Raven.capture_exception(new_exception)
+        raise new_exception
     end
   end
 
