@@ -1,5 +1,3 @@
-require 'brotli'
-
 class Cache::BrowserChannels::PrefixList
   include Sidekiq::Worker
   sidekiq_options queue: :low, retry: false
@@ -26,11 +24,12 @@ class Cache::BrowserChannels::PrefixList
         SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH})
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}"
-        ).map! { |r| r['substring'] }.to_json
+        ).map { |r| r['substring'] }.to_json
     temp_file = Tempfile.new(["all_channels", ".br"]).binmode
     temp_file.write(Brotli.deflate(result))
+    temp_file.close
     save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "all_channels.br")
-    cleanup!(temp_file: temp_file)
+    cleanup!(temp_file_path: temp_file.path)
   end
 
   def save_differential_file!
@@ -39,17 +38,18 @@ class Cache::BrowserChannels::PrefixList
         SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH})
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}
-        AND to_char(\"created_at\", 'YYYY-MM-DD') = #{date}"
-        ).map! { |r| r['substring'] }.to_json
+        AND to_char(\"created_at\", 'YYYY-MM-DD') = '#{date}'"
+        ).map { |r| r['substring'] }.to_json
     temp_file = Tempfile.new(["all_channels_#{date}", ".br"]).binmode
     temp_file.write(Brotli.deflate(result))
+    temp_file.close
     save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "all_channels_#{date}.br")
-    cleanup!(temp_file: temp_file)
+    cleanup!(temp_file_path: temp_file.path)
   end
 
-  def cleanup!(temp_file:)
-    temp_file.close
-    temp_file.unlink
+  def cleanup!(temp_file_path:)
+    # Closes and deletes the file
+    Tempfile.open(temp_file_path).close!
   end
 
   def save_to_s3!(temp_file_path:, save_to_filename:)

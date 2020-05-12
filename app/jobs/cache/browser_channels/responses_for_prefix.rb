@@ -48,7 +48,6 @@ class Cache::BrowserChannels::ResponsesForPrefix
   private
 
   def cleanup!
-    @temp_file.close
     @temp_file.unlink
   end
 
