@@ -196,7 +196,6 @@ export default {
       brand: "Brave Creators",
       braveSettledContributions: "Brave Settled Contributions",
       breakdown: "Breakdown",
-      confirmedEarning: "Confirmed Earning",
       depositAccount: "Deposit Account",
       depositDate: "Brave Settled Deposit Date",
       description: "Statements contain the details of deposit history.",
@@ -224,13 +223,14 @@ export default {
       statement: "Statement",
       title: "Statements",
       totalBraveSettled: "Total Brave Settled",
-      totalDeposited: "Total Deposited",
+      totalDeposited: "Net Deposited",
       totalEarned: "Total Earned",
       types: {
         contributionSettlement: "Brave Settled Contributions",
         referralSettlement: "Referral Promo Earnings",
         upholdContributionSettlement: "Direct User Tips",
       },
+      upholdCardLink: "https://uphold.com/dashboard/cards/{cardId}/actvity",
       view: "View",
       viewMore: "View More"
     }
