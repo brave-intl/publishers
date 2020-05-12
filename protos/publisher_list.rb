@@ -17,6 +17,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     end
     add_enum "publishers_pb.PublisherList.CompressionType" do
       value :NO_COMPRESSION, 0
+      value :BROTLI_COMPRESSION, 1
     end
   end
 end
