@@ -42,7 +42,7 @@
     description: "Syncs zendesk tickets"
     queue: low
   Cache::BrowserChannels::Main:
-    cron: "0 2 * * *"
+    cron: "0 */2 * * *"
     description: "Syncs V4 channels list"
     queue: low
   Cache::PiwikDataJob:
