@@ -51,6 +51,18 @@ class JsonBuilders::ChannelsJsonBuilderV3
 
   private
 
+  def self.joined_verified_channels
+    [
+      Channel.verified.site_channels,
+      Channel.verified.youtube_channels,
+      Channel.verified.twitch_channels,
+      Channel.verified.twitter_channels,
+      Channel.verified.vimeo_channels,
+      Channel.verified.reddit_channels,
+      Channel.verified.github_channels,
+    ]
+  end
+
   def include_verified_channel(verified_channel)
     identifier = verified_channel.details.channel_identifier
     in_exclusion_list = @excluded_channel_ids.include?(identifier)

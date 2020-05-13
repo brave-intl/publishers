@@ -121,19 +121,6 @@ class Channel < ApplicationRecord
     duplicates.flatten
   end
 
-  # Use for building json channels
-  def self.joined_verified_channels
-    [
-      Channel.verified.site_channels,
-      Channel.verified.youtube_channels,
-      Channel.verified.twitch_channels,
-      Channel.verified.twitter_channels,
-      Channel.verified.vimeo_channels,
-      Channel.verified.reddit_channels,
-      Channel.verified.github_channels,
-    ]
-  end
-
   def publication_title
     details.publication_title
   end
