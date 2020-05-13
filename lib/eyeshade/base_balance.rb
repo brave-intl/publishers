@@ -54,7 +54,7 @@ module Eyeshade
       # so we'll cast it
       if @rates[currency].is_a? String
         require 'bigdecimal'
-        amount_bat * BigDecimal.new(@rates[currency])
+        amount_bat * BigDecimal(@rates[currency])
       else
         amount_bat * @rates[currency]
       end
