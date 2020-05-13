@@ -25,7 +25,7 @@ class PublisherBalanceGetterTest < ActiveJob::TestCase
     Rails.application.secrets[:api_eyeshade_offline] = false
     publisher = publishers(:uphold_connected)
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions").
       to_return(status: 200, body: ["fake_transaction_response"].to_json, headers: {})
 
     result = PublisherTransactionsGetter.new(publisher: publisher).perform

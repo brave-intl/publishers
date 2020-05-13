@@ -15,7 +15,7 @@ class PublisherTransactionsGetter < BaseApiClient
 
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
-      request.url("v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions")
+      request.url("v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions")
     end
 
     JSON.parse(response.body)
