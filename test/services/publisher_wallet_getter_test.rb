@@ -132,7 +132,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
       wallet = PublisherWalletGetter.new(publisher: publisher).perform
 
       assert_equal wallet.overall_balance.amount_bat + wallet.overall_balance.fees_bat, 80
-      assert_equal wallet.overall_balance.amount_probi + wallet.overall_balance.fees_probi,  80 * BigDecimal.new('1.0e18')
+      assert_equal wallet.overall_balance.amount_probi + wallet.overall_balance.fees_probi,  80 * BigDecimal('1.0e18')
     end
   end
 
@@ -253,7 +253,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     owner_amounts_after_fees = 20
     overall_amount_after_fees = (channel_amount_after_fees * 3 + owner_amounts_after_fees).to_s
     assert_equal wallet.overall_balance.amount_bat.to_s, overall_amount_after_fees
-    assert_equal wallet.overall_balance.amount_probi,  (overall_amount_after_fees.to_d * BigDecimal.new('1.0e18')).to_i
+    assert_equal wallet.overall_balance.amount_probi,  (overall_amount_after_fees.to_d * BigDecimal('1.0e18')).to_i
   end
 
   test "uses the PublisherTransactionsGetter to get last settlement information" do

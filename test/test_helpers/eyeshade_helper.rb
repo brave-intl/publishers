@@ -1,6 +1,6 @@
 module EyeshadeHelper
   def stub_eyeshade_transactions_response(publisher:, transactions: [])
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.escape(publisher.owner_identifier)}/transactions").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/#{URI.encode_www_form_component(publisher.owner_identifier)}/transactions").
       to_return(status: 200, body: transactions.to_json, headers: {})
   end
 
@@ -8,10 +8,10 @@ module EyeshadeHelper
     if publisher.channels.verified.count.zero?
       channels_query_string = ""
     else
-      channels_query_string = publisher.channels.verified.map { |channel| "&account=#{URI.escape(channel.details.channel_identifier)}"}.reduce(:+)
+      channels_query_string = publisher.channels.verified.map { |channel| "&account=#{URI.encode_www_form_component(channel.details.channel_identifier)}"}.reduce(:+)
     end
 
-    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=#{URI.escape(publisher.owner_identifier)}#{channels_query_string}&pending=true").
+    stub_request(:get, "#{Rails.application.secrets[:api_eyeshade_base_uri]}/v1/accounts/balances?account=#{URI.encode_www_form_component(publisher.owner_identifier)}#{channels_query_string}&pending=true").
       to_return(status: 200, body: balances.to_json)
   end
 

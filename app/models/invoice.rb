@@ -50,7 +50,7 @@ class Invoice < ActiveRecord::Base
 
   def finalized_amount_to_probi
     if finalized_amount
-      (finalized_amount.tr(",", "").to_d * BigDecimal.new("1.0e18")).to_i
+      (finalized_amount.tr(",", "").to_d * BigDecimal("1.0e18")).to_i
     else
       0
     end
