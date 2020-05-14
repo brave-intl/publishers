@@ -47,7 +47,7 @@ gem "faraday", "~> 0.17.3"
 
 gem "font-awesome-rails", "~> 4.7.0.4"
 
-gem 'google-protobuf', "~> 3.11.4"
+gem 'google-protobuf', "~> 3.12.0"
 
 # Make logs less mad verbose
 gem "lograge", "~> 0.4"
