@@ -17,8 +17,8 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH])
     assert service.temp_file.present?
     require 'brotli'
-    result_json = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines[0])
-    result = PublishersPb::ChannelResponses.decode_json(result_json)
+    result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines[0].slice(4..-1))
+    result = PublishersPb::ChannelResponses.decode(result)
     assert_equal result.channel_response[0].channel_identifier, channel.details.channel_identifier
   end
 
@@ -38,24 +38,20 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     end
 
     test "decompress back and has matching responses" do
-      result_json = Brotli.inflate(File.open(@service.temp_file.path, 'rb').readlines.join(""))
-      result = PublishersPb::ChannelResponses.decode_json(result_json)
+      res = File.open(@service.temp_file.path, 'rb').readlines.join("")
+      encoded_file_size = res.slice(0..3).unpack("L")[0]
+      result_json = Brotli.inflate(res.slice(4..(encoded_file_size + 4)))
+      result = PublishersPb::ChannelResponses.decode(result_json)
       assert_equal result.channel_response[0].channel_identifier, @channel.details.channel_identifier
       assert_equal result.channel_response[1].channel_identifier, @other_channel.details.channel_identifier
     end
 
-    test 'padding for responses list can be added and stripped' do
+    test 'padding for responses list is set to multiples of 1000' do
       original_file_size = File.size(@service.temp_file.path)
       @service.send(:pad_file!)
       assert_equal File.size(@service.temp_file.path), 1000
       assert_equal File.size(@service.temp_file.path) % 1000, 0
       assert_not_equal original_file_size, 1000
-      @service.send(:strip_padding!)
-      assert_equal original_file_size, File.size(@service.temp_file.path)
-
-      # Shouldn't strip any further under proper implementations
-      @service.send(:strip_padding!)
-      assert_equal original_file_size, File.size(@service.temp_file.path)
     end
 
     test 'temp file gets deleted' do

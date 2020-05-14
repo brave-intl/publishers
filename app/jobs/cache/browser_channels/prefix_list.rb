@@ -52,8 +52,12 @@ class Cache::BrowserChannels::PrefixList
   end
 
   def cleanup!(temp_file_path:)
-    # Closes and deletes the file
-    Tempfile.open(temp_file_path).close!
+    begin
+      File.open(temp_file_path, 'r') do |f|
+        File.delete(f)
+      end
+    rescue Errno::ENOENT
+    end
   end
 
   def save_to_s3!(temp_file_path:, save_to_filename:)

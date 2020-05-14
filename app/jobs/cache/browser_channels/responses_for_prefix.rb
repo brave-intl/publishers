@@ -33,22 +33,25 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_responses.channel_response.push(channel_response)
     end
 
-    @temp_file = Tempfile.new([prefix, ".br"])
-    json = PublishersPb::ChannelResponses.encode_json(@channel_responses)
+    json = PublishersPb::ChannelResponses.encode(@channel_responses)
     info = Brotli.deflate(json)
-    File.open(@temp_file.path, 'wb') do |f|
-      # Write a 4-byte header saying the payload length
-      f.write([info.length].pack("L"))
-      f.write(info)
-      f.close
-    end
+    @temp_file = Tempfile.new.binmode
+    # Write a 4-byte header saying the payload length
+    @temp_file.write([info.length].pack("L"))
+    @temp_file.write(info)
+    @temp_file.close
     @temp_file
   end
 
   private
 
   def cleanup!
-    @temp_file.unlink
+    begin
+      File.open(@temp_file.path, 'r') do |f|
+        File.delete(f)
+      end
+    rescue Errno::ENOENT
+    end
   end
 
   # We want to hide which file is being downloaded by making all requests be the same size
