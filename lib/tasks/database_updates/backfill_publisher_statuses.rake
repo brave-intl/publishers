@@ -11,7 +11,7 @@ namespace :database_updates do
     publishers.find_each do |publisher|
       note = publisher.notes.create(note: "Backfilling active status", created_by_id: admin.id)
       publisher.status_updates.create(status: PublisherStatusUpdate::ACTIVE, publisher_note: note)
-      puts 'Created'
+      puts "Created #{publisher.id}"
     end
 
     puts 'Done!'
