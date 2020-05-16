@@ -8,11 +8,20 @@ class Cache::BrowserChannels::Main
     previous_run = Rails.cache.fetch(LAST_RAN_AT_KEY)
     return if previous_run.present? && previous_run.to_time >= 2.hours.ago
     Cache::BrowserChannels::PrefixList.perform_async
-    sql = "SELECT DISTINCT SUBSTRING(sha2_base16, 1, #{RESPONSES_PREFIX_LENGTH}) as prefix FROM site_banner_lookups"
-    sql += " WHERE wallet_status != 0"
-    sql += " AND updated_at >= '#{(previous_run.to_time - 3.minutes).to_s}'" if previous_run.present?
-    sql += " ORDER BY prefix desc"
-    result = ActiveRecord::Base.connection.execute(sql)
+    previous_run =
+      if previous_run.present?
+        (previous_run.to_time - 3.minutes).to_s
+      else
+        Time.at(0).to_s
+      end
+
+    result = ActiveRecord::Base.connection.execute("
+      SELECT DISTINCT SUBSTRING(sha2_base16, 1, #{RESPONSES_PREFIX_LENGTH}) as prefix
+      FROM site_banner_lookups
+      WHERE wallet_status != 0
+      AND updated_at >= '#{previous_run}'
+      ORDER BY prefix desc"
+    )
     result.each do |site_banner_lookup|
       Cache::BrowserChannels::ResponsesForPrefix.perform_async(site_banner_lookup[:prefix])
     end
