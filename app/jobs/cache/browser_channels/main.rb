@@ -3,7 +3,7 @@ class Cache::BrowserChannels::Main
   sidekiq_options queue: :scheduler, retry: false
 
   LAST_RAN_AT_KEY = "cache_browser_channels_main_last_ran_at".freeze
-  RESPONSES_PREFIX_LENGTH = 3
+  RESPONSES_PREFIX_LENGTH = 4
   def perform
     previous_run = Rails.cache.fetch(LAST_RAN_AT_KEY)
     return if previous_run.present? && previous_run.to_time >= 2.hours.ago
