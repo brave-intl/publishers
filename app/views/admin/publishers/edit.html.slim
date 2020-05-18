@@ -16,7 +16,6 @@
         label
           = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
           = " Uphold widget disabled"
-          br
       .form-group
         label
           = f.check_box :wire_only, {}, checked: @publisher.wire_only?
@@ -25,6 +24,10 @@
         label
           = f.check_box :invoice, {}, checked: @publisher.invoice?
           = " Create invoices"
+      .form-group
+        label
+          = f.check_box :merchant, {}, checked: @publisher.merchant?
+          = " Merchant Feature"
 
       .form-group
         = f.submit class: "btn btn-primary m-0"
