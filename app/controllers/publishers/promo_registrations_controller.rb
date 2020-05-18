@@ -5,6 +5,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
 
   before_action :authenticate_publisher!
   before_action :require_publisher_promo_disabled, :require_promo_running, only: %i(create)
+  # before_action :require_payable
 
   layout "promo_registrations", only: [:index, :create]
 

@@ -2,6 +2,7 @@ module UserFeatureFlags
   extend ActiveSupport::Concern
   WIRE_ONLY = :wire_only
   INVOICE = :invoice
+  REFERRAL_KYC_REQUIRED = :REFERRAL_KYC_REQUIRED
 
   VALID_FEATURE_FLAGS = [WIRE_ONLY, INVOICE].freeze
 

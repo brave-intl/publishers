@@ -27,11 +27,12 @@ module PublishersHelper
   end
 
   def new_publisher?(publisher)
-    if publisher.paypal_locale?(I18n.locale)
-      publisher.paypal_connection.blank?
-    else
-      publisher.uphold_connection&.unconnected?
-    end
+    new_publisher = if publisher.paypal_locale?(I18n.locale)
+        publisher.paypal_connection.blank?
+      else
+        publisher.uphold_connection&.unconnected?
+      end
+    new_publisher.present? && publisher.channels.size.zero?
   end
 
   def publisher_can_receive_funds?(publisher)

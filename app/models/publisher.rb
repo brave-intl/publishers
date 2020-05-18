@@ -323,6 +323,10 @@ class Publisher < ApplicationRecord
     locale == 'ja'
   end
 
+  def brave_payable?
+    paypal_connection&.verified_account || uphold_connection&.payable?
+  end
+
   private
 
   def set_created_status

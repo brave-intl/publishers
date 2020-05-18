@@ -268,6 +268,8 @@ class Channel < ApplicationRecord
   end
 
   def register_channel_for_promo
+    # referral_kyc_not_required
+    # return if publisher. && publisher.brave_payable?
     Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
   end
 
