@@ -35,7 +35,7 @@ class Cache::BrowserChannels::PrefixList
         SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH})
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}"
-        ).map { |r| r['substring'] }.to_json
+    ).map { |r| r['substring'] }.sort!.to_json
 
     to_protobuf_file(result)
   end
@@ -46,7 +46,7 @@ class Cache::BrowserChannels::PrefixList
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}
         AND to_char(\"created_at\", 'YYYY-MM-DD') = '#{date}'"
-        ).map { |r| r['substring'] }.to_json
+    ).map { |r| r['substring'] }.sort!.to_json
 
     to_protobuf_file(result)
   end
