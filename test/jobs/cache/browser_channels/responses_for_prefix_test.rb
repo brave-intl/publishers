@@ -19,7 +19,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     require 'brotli'
     result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines[0].slice(4..-1))
     result = PublishersPb::ChannelResponses.decode(result)
-    assert_equal result.channel_response[0].channel_identifier, channel.details.channel_identifier
+    assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   end
 
   describe "complex channel response file generation" do
@@ -42,8 +42,8 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
       encoded_file_size = res.slice(0..3).unpack("L")[0]
       result_json = Brotli.inflate(res.slice(4..(encoded_file_size + 4)))
       result = PublishersPb::ChannelResponses.decode(result_json)
-      assert_equal result.channel_response[0].channel_identifier, @channel.details.channel_identifier
-      assert_equal result.channel_response[1].channel_identifier, @other_channel.details.channel_identifier
+      assert_equal result.channel_responses[0].channel_identifier, @channel.details.channel_identifier
+      assert_equal result.channel_responses[1].channel_identifier, @other_channel.details.channel_identifier
     end
 
     test 'padding for responses list is set to multiples of 1000' do

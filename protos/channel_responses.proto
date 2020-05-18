@@ -36,5 +36,5 @@ message ChannelResponse {
 }
 
 message ChannelResponses {
-  repeated ChannelResponse channel_response = 1;
+  repeated ChannelResponse channel_responses = 1;
 }

@@ -26,7 +26,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :site_banner_details, :message, 5, "publishers_pb.SiteBannerDetails"
     end
     add_message "publishers_pb.ChannelResponses" do
-      repeated :channel_response, :message, 1, "publishers_pb.ChannelResponse"
+      repeated :channel_responses, :message, 1, "publishers_pb.ChannelResponse"
     end
     add_enum "publishers_pb.WalletConnectedState" do
       value :NO_VERIFICATION, 0

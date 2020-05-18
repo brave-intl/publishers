@@ -30,10 +30,10 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_response.wallet_connected_state = site_banner_lookup.wallet_status
       channel_response.wallet_address = site_banner_lookup.wallet_address if site_banner_lookup.wallet_address.present?
       channel_response.site_banner_details = get_site_banner_details(site_banner_lookup)
-      channel_responses.channel_response.push(channel_response)
+      channel_responses.channel_responses.push(channel_response)
     end
 
-    json = PublishersPb::ChannelResponses.encode(@channel_responses)
+    json = PublishersPb::ChannelResponses.encode(channel_responses)
     info = Brotli.deflate(json)
     @temp_file = Tempfile.new.binmode
     # Write a 4-byte header saying the payload length

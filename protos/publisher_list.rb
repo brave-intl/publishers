@@ -6,11 +6,10 @@ require 'google/protobuf'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("publisher_list.proto", :syntax => :proto3) do
     add_message "publishers_pb.PublisherList" do
-      optional :publisher_type, :enum, 1, "publishers_pb.PublisherList.PublisherType"
-      optional :prefix_size, :uint32, 2
-      optional :compression_type, :enum, 3, "publishers_pb.PublisherList.CompressionType"
-      optional :uncompressed_size, :uint32, 4
-      optional :prefixes, :bytes, 5
+      optional :prefix_size, :uint32, 1
+      optional :compression_type, :enum, 2, "publishers_pb.PublisherList.CompressionType"
+      optional :uncompressed_size, :uint32, 3
+      optional :prefixes, :bytes, 4
     end
     add_enum "publishers_pb.PublisherList.PublisherType" do
       value :ALL_PUBLISHERS, 0
