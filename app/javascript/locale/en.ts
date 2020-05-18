@@ -31,6 +31,20 @@ export default {
       installed: "INSTALLED",
       statement: "Check your statement for this period's payout.",
       title: "Referral Stats",
+    },
+    welcome: {
+      description: "To get started on earning through the Brave Rewards system, here is a list of things we recommend setting up first.",
+      first: {
+        description: "Follow the instructions to verify that you're the rightful owner of properties.",
+        number: "1",
+        title: "Add your websites or channels",
+      },
+      second: {
+        description: "To receive payments, your wallet accounts must be connected. Connect Uphold for your desired payment options.",
+        number: "2",
+        title: "Connect wallet services",
+      },
+      title: "Weclome to Brave Rewards",
     }
   },
   installs: "Installs",
@@ -162,6 +176,7 @@ export default {
   },
   shared: {
     cancel: "Cancel",
+    ok: "OK",
     save: "Save"
   },
   siteBanner: {

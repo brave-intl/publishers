@@ -26,6 +26,14 @@ module PublishersHelper
     }
   end
 
+  def new_publisher?(publisher)
+    if publisher.paypal_locale?(I18n.locale)
+      publisher.paypal_connection.blank?
+    else
+      publisher.uphold_connection&.unconnected?
+    end
+  end
+
   def publisher_can_receive_funds?(publisher)
     publisher.uphold_connection&.uphold_status == :verified
   end
