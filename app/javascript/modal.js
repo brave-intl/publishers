@@ -176,10 +176,7 @@ function confirmWithModal(confirmableLink) {
   );
 }
 
-/*
- * Setup the DOM event listeners on links requesting confirmation.
- */
-document.addEventListener("DOMContentLoaded", function() {
+function detectModals() {
   var confirmableLinks = document.querySelectorAll(
     "[data-js-confirm-with-modal]"
   );
@@ -205,4 +202,14 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     );
   }
-});
+}
+
+
+/*
+ * Setup the DOM event listeners on links requesting confirmation.
+ */
+document.addEventListener("DOMContentLoaded", detectModals);
+
+if (!window.detectModals) {
+  window.detectModals = detectModals
+};

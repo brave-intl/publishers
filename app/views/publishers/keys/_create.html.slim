@@ -1,0 +1,16 @@
+script id="create_secret_key-#{@key.id}" type="text/html"
+    h5.text-left.m-0= t('.title')
+    .pt-3.text-left
+      .form-group
+        p== t('.secret_key_description', name: @key.name)
+        .d-flex
+          code.d-block.bg-light.p-2.rounded.border.w-100#secret
+            = @key.secret_key
+          button.btn.btn-sm.btn-default.copy-button data-clipboard-target="#secret"
+            = t ".copy_to_clipboard"
+
+      .d-flex.justify-content-between
+        div
+        =link_to t('.close'), keys_path, class: 'btn btn-secondary'
+
+= link_to('', '#', data: { "js-confirm-with-modal": "create_secret_key-#{@key.id}" }, id: @key.id, class: 'd-none')
