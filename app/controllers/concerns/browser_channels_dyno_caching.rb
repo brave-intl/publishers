@@ -42,7 +42,9 @@ module BrowserChannelsDynoCaching
   end
 
   def set_lock_to_now
-    Redis.new.setnx(self.class::REDIS_THUNDERING_HERD_KEY, Time.now.to_i)
+    conn = Redis.new
+    conn.setnx(self.class::REDIS_THUNDERING_HERD_KEY, Time.now.to_i)
+    conn.quit
   end
 
   def dyno_cache_expired?
