@@ -26,7 +26,7 @@ class Cache::BrowserChannels::PrefixList
 
     temp_file = save_differential_file!
     date = Date.yesterday.strftime("%Y-%m-%d")
-    save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "prefixes-#{date}")
+    save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "prefixes-#{date}") # 2020-05-17
     cleanup!(temp_file_path: temp_file)
   end
 
