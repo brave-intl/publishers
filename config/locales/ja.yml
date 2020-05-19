@@ -126,9 +126,9 @@ ja:
         token_incorrect_dns: "DNSエントリのトークンが正しいことを確認してください。"
         token_not_found_dns: "このTXTエントリをDNSレコードに追加してください："
         token_not_found_public_file_html: "検証トークンが%{domain}/.well-known/brave-rewards-verification.txt. に公開されていることを確認してください。"
-        timeout: "この確認エラーが引き続き発生する場合は、％{support_email}までご連絡ください。"
+        timeout: "この確認エラーが引き続き発生する場合は、%{support_email}までご連絡ください。"
         no_https: "ドメインでHTTPSを有効にするか、別の確認方法を選択してください。"
-        generic: "この認証エラーが引き続き発生する場合は、％{support_email}までご連絡ください。"
+        generic: "この認証エラーが引き続き発生する場合は、%{support_email}までご連絡ください。"
     publisher:
       balance_unavailable: "現在利用できません"
       conversion_unavailable: "%{code} が現在利用できません"
@@ -204,7 +204,7 @@ ja:
     invoice_file_added:
       subject: "請求書に新しいドキュメントが追加されました"
       body_html: |
-        <p>％{date}の請求書には新しいドキュメントが追加されました</p>下のボタンをクリックして、Brave Rewardsアカウントにログインしてください。 このメールには、一度しか使用できないプライベートログインが含まれています。
+        <p>%{date}の請求書には新しいドキュメントが追加されました</p>下のボタンをクリックして、Brave Rewardsアカウントにログインしてください。 このメールには、一度しか使用できないプライベートログインが含まれています。
       button: Brave Rewardsにログインする
   batch_mailer:
     update_to_rates:
@@ -292,32 +292,32 @@ ja:
       updated_email: 新しいメール
       channel_name: "%{channel} リファラルリンク"
     channel_contested:
-      subject: "％{channel_name}のチャネル移管が要求されました"
+      subject: "%{channel_name}のチャネル移管が要求されました"
       title: チャンネルを移管するリクエストが行われました
       notice: |
         NOTE: このメールにはプライベートログインが含まれています。 このリンクを第三者に渡してしまうと誰でも管理画面がアクセスになります。このメールを転送または共有する際は受信者が信頼できるかご確認ください。
       intro: |
-        別のサイト運営者があなたのチャンネル％{channel_name}を認証しました。10日後に彼らのアカウントに移管されます。このアクションを承認しない場合は、下のボタンを使用して移管を却下してください。
+        別のサイト運営者があなたのチャンネル%{channel_name}を認証しました。10日後に彼らのアカウントに移管されます。このアクションを承認しない場合は、下のボタンを使用して移管を却下してください。
       button: 移管を却下する
     channel_transfer_approved_primary:
-      subject: "％{channel_name}チャンネルは正常に移管されました"
+      subject: "%{channel_name}チャンネルは正常に移管されました"
       title: チャネルの移管が承認されました
       intro_html: |
-        ％{channel_name}チャンネルは正常に移管されました。お心当りのない場合は<a href="mailto:support+publishers@basicattentiontoken.org"> support+publishers@basicattentiontoken.org </a>からBrave Rewardsチームに連絡してください。
+        %{channel_name}チャンネルは正常に移管されました。お心当りのない場合は<a href="mailto:support+publishers@basicattentiontoken.org"> support+publishers@basicattentiontoken.org </a>からBrave Rewardsチームに連絡してください。
     channel_transfer_approved_secondary:
-      subject: "％{channel_name}チャンネルを移管するリクエストが承認されました"
+      subject: "%{channel_name}チャンネルを移管するリクエストが承認されました"
       title: チャネルの移管が承認されました
       intro: |
-        チャンネル％{channel_name}をBrave Rewardsアカウントに転送するリクエストが承認されました。 今後、このチャンネルに送られた資金を回収できます。
+        チャンネル%{channel_name}をBrave Rewardsアカウントに転送するリクエストが承認されました。 今後、このチャンネルに送られた資金を回収できます。
     channel_transfer_rejected_primary:
-      subject: "％{channel_name}チャネル移管はキャンセルされました"
+      subject: "%{channel_name}チャネル移管はキャンセルされました"
       title: チャネルの移管がキャンセルされました
-      intro: "チャンネル％{channel_name}を別のサイト運営者に移管するリクエストを却下しました。"
+      intro: "チャンネル%{channel_name}を別のサイト運営者に移管するリクエストを却下しました。"
     channel_transfer_rejected_secondary:
-      subject: "％{channel_name}チャンネルを移管するリクエストは却下されました"
+      subject: "%{channel_name}チャンネルを移管するリクエストは却下されました"
       title: チャネルの移管がキャンセルされました
       intro: |
-        ％{channel_name}チャンネルを移管するリクエストは、現在の所有者によって却下されました。 さらにサポートが必要な場合は、このメールに返信してください。
+        %{channel_name}チャンネルを移管するリクエストは、現在の所有者によって却下されました。 さらにサポートが必要な場合は、このメールに返信してください。
     confirm_email_change:
       subject: Brave Rewardsのメールアドレス変更確認
       title: メールアドレス変更を確認してください
@@ -331,7 +331,7 @@ ja:
       body: >
         Braveクリエイターの皆様、
         <br/><br/>
-        現在、％{month}の月のお支払いを保留しています。停止されているわけではありません。
+        現在、%{month}の月のお支払いを保留しています。停止されているわけではありません。
         どのようにBraveをご紹介頂いていたかをお伺いさせていただくためお電話させていただければと思います。
         <br/><br/>
         弊社はサンフランシスコにあり、サポートコールは太平洋標準時（PST）に行われます。 Braveユーザーの成長をどのように推進しているかをお伺いし理解させていただくため来週に15分ほどお時間をいただければ幸いです。
@@ -391,7 +391,7 @@ ja:
       body_html: |
         <p>現在、あなたのUpholdアカウントでは資金を受け取ることができませんでした。 アカウントのステータスを確認し、問題が発生していないこと及びトランザクション制限がかかっていないことを確認してください。</p><p> Upholdアカウントが再び資金を受け取り可能になるまで、資金はBrave Rewardsアカウントに安全に保持されます。 ご質問がある場合は、このメールに返信してください。</p>
     verification_done:
-      subject: "％{publication_title}がBrave Rewardsで承認されました"
+      subject: "%{publication_title}がBrave Rewardsで承認されました"
       title: 承認が完了しました
       intro_html: |
         <p>おめでとうございます！ これで認証済みBrave Rewardsクリエイターとして登録されました。</p> <p>資金を受け取る準備はできましたか？ Brave Rewardsダッシュボードにアクセスして、支払い設定を完了してください。</p>
@@ -422,7 +422,7 @@ ja:
       sign_up: 登録
       verified: 承認済み
     show:
-      email_confirmed: 更新されたメールアドレス％{email}が確認されました。
+      email_confirmed: 更新されたメールアドレス%{email}が確認されました。
       token_invalid: 認証に失敗しました。 ログインリンクの有効期限が切れている可能性があります。 新しいサインインリンクを自分に送信してください。
     cases:
       shared:
@@ -449,7 +449,7 @@ ja:
         send_message: "メッセージを送信する"
         note_description: "メッセージをつけていただくことと、Brave Rewardsチームとのコミュニケーションがスムーズになります。"
         notice: お知らせいただきありがとうございます—異議申し立てを受け取りました。 できるだけ早く確認し、ご連絡いたします。
-        last_updated_at: "約％{time}前に最終更新"
+        last_updated_at: "約%{time}前に最終更新"
       message:
         ago: " 前"
         support: "Brave Rewards サポート"
@@ -479,7 +479,7 @@ ja:
     change_email_confirm:
       login_email_changed: メールアドレスの変更に成功
       login_email_verified_html: |
-        <strong> '％{login_email}' </strong>が承認されました。 このメールをログインとして使用して、Brave Rewardsのアカウントにアクセスしてください。
+        <strong> '%{login_email}' </strong>が承認されました。 このメールをログインとして使用して、Brave Rewardsのアカウントにアクセスしてください。
     choose_new_channel_type:
       intro: まずは普段コンテンツを追加するチャネルを選択してください。
       website:
@@ -508,7 +508,7 @@ ja:
     registrations:
       create:
         missing_email: 情報が不足しているようです。 メールアドレスを入力したことを確認してください。
-        email_already_active: 入力したメールアドレス「％{email}」はアクティブなアカウントです。 ログインリンクをメールで送信しました。
+        email_already_active: 入力したメールアドレス「%{email}」はアクティブなアカウントです。 ログインリンクをメールで送信しました。
         invalid_email: アカウントの作成中に予期しないエラーが発生しました。 正しいメールアドレスを入力したことを確認してください。
         access_throttled: 何度もサインアップしようとしたため、アクセスが制限されました。 あとでもう一度試してみてください。
       log_in:
@@ -517,7 +517,7 @@ ja:
       emailed_authentication_token:
         missing_email: 情報が不足しているようです。 メールアドレスを入力したことを確認してください。
         unfound_alert_json: そのメールアドレスでパブリッシャーが見つかりませんでした。
-        unfound_alert_html: そのメールアドレスでパブリッシャーが見つかりませんでした。 もう一度試してください、または <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">メール％{email}\でアカウントを作成</a>します
+        unfound_alert_html: そのメールアドレスでパブリッシャーが見つかりませんでした。 もう一度試してください、または <a data-method="post" data-href="%{create_publisher_path}" href="%{new_publisher_path}">メール%{email}\でアカウントを作成</a>します
         heading: ログインメールを送信しました
         body: ログイン用のメールを送信しました。ご確認ください。
         heading: ログインメール送信完了
@@ -544,7 +544,7 @@ ja:
       heading: 最後に一つだけ...
       intro: 以下を入力して、サインアップを完了します。
       name_placeholder: 氏名
-      tos_html: 「％{action}」をクリックすると、％{tos_link}に同意したことになります
+      tos_html: 「%{action}」をクリックすると、%{tos_link}に同意したことになります
     home:
       disabled_payouts: 近日中に支払いが行われます。こちらからウォレットの接続設定が可能です。
       migration: 現在、定期メンテナンスを実施しています。 この間、Upholdウォレットに問題が発生する場合があります。 まもなく復旧する予定です。
@@ -576,9 +576,9 @@ ja:
         no_currency_selected: 何も選択されていません
       statements:
         heading: ステートメント
-        statement_name: "％{created_at} ステートメント-％{period}"
+        statement_name: "%{created_at} ステートメント-%{period}"
         view_statements: ステートメントを表示
-        view_recent_statement: ％{statement_link}の準備ができました。
+        view_recent_statement: %{statement_link}の準備ができました。
         unavailable: 利用可能なステートメントはありません。
     paypal_connection_panel:
       bat_points: BATポイントポイント
@@ -618,7 +618,7 @@ ja:
       require_publisher:
         log_in_and_retry: Brave Rewardsにログインして、もう一度実行してください。
       register_twitch_channel:
-        channel_already_registered: このTwitchアカウント％{channel_title}は既に申請しています。 2番目のアカウントを請求する場合は、Twitchからサインアウトして、もう一度試してください。
+        channel_already_registered: このTwitchアカウント%{channel_title}は既に申請しています。 2番目のアカウントを請求する場合は、Twitchからサインアウトして、もう一度試してください。
       register_twitter_channel:
         channel_already_registered: このTwitterアカウントは既に登録されています。
       register_vimeo_channel:
@@ -781,7 +781,7 @@ ja:
       ad_banner_message: "以下のプロモーション広告バナーを紹介リンクと合わせて利用できます"
       download: "ダウンロード"
     new_channel_registered_2018q1:
-      subject: "％{publication_title}の紹介コードの準備ができました"
+      subject: "%{publication_title}の紹介コードの準備ができました"
   banner:
     headline: "Brave Rewards"
     tagline: "サイトに訪れてくれてありがとうございます。Braveが掲げるユーザプライバシー保護の理念に共感し、プログラムに参加しています。ウェブをクリーンで安全な場所にしていくため、ファンの皆様からのご支援を歓迎しています。皆様からいただいたチップで今後もコンテンツを作成し、改善していきたいと思います。よろしくお願いいたします。"
@@ -832,7 +832,7 @@ ja:
     setup_current_channel:
       alert: このページはこのチャンネルタイプでは無効です
     site_channel_ads_learn_more_modal: |
-      <p> Braveはサイト内でプライバシー保護した新しい広告を配信し、この収益の70％をクリエイターと共有します。この機能は現在開発中であり、一部のパートナーでテスト中です。 Braveのパブリッシャー広告は、オプトインされた場合のみ配信され、いつでもオフにできます。オプトインは任意です。</p>
+      <p> Braveはサイト内でプライバシー保護した新しい広告を配信し、この収益の70%をクリエイターと共有します。この機能は現在開発中であり、一部のパートナーでテスト中です。 Braveのパブリッシャー広告は、オプトインされた場合のみ配信され、いつでもオフにできます。オプトインは任意です。</p>
       <p>この機能について詳しくは <a href="https://basicattentiontoken.org/brave-previews-opt-in-ads-in-desktop-browser-developer-channel/">コチラ</a>.</p>
       <p>本機能は近日中に利用可能になる予定です。今後のアップデートは上記のページからご確認ください。</p>
     verification_background:
@@ -850,20 +850,20 @@ ja:
         subheading: (DNSレコードへのアクセスが必要)
         button: DNSレコードを編集する
     verification_dns_record:
-      heading: ％{brave_publisher_id}に新しいTXTレコードを追加します
-      help: サイトの所有権を確認スタメ、新しいDNSレコードを追加する必要があります
-      help_2: DNSホストのアカウントを使用します。
+      heading: %{brave_publisher_id} に新しいTXTレコードを追加します
+      help: サイトの所有権を証明するため、TXTレコードを追加いただく必要があります
+      help_2: ドメインの所有権の証明は、ご利用のドメインホスト（ドメイン名の購入先）で行います。
       instruction_1: |
-        サブドメインではなく、ルートドメインにレコードを追加してください。
-      instruction_2: 以下の情報をコピーして、ゾーンファイルに貼り付けます
-      instruction_3: DNSホストのコントロールパネルを使用します。
+        サブドメインではなく、ルートドメインに対してレコードを追加してください。
+      instruction_2: ご利用のドメインホストのコントロールパネルで
+      instruction_3: 以下の情報をコピーして、DNSレコードに追加してください。
       record:
         type: Type
         value: Value (または TXT Value /Data)
         note: |
-          Note: "これが利用可能になるまで数分から数時間かかる場合があります。\nDNSがホストされている場所によって異なります。"
+          Note: "これが利用可能になるまで数分から数時間かかる場合があります。DNSがホストされている場所によって異なります。"
       copy_to_clipboard: クリップボードにコピー
-      verify: このTXTレコードをDNSホストに追加して保存したら、下のボタンをクリックして確認します。
+      verify: TXTレコードの追加が完了したら、下のボタンをクリックして確認します。
       button: DNSレコードを確認する
       helper:
         heading: DNSアカウントにTXTレコードを追加する際にサポートが必要ですか？
@@ -873,7 +873,7 @@ ja:
       root_repository_info:
         Githubアカウントにルートリポジトリが設定されていないようです。
       root_repository_instructions_html: |
-        サイトを確認するには、まず<strong>％{domain} </strong>でアクセスできるリポジトリを用意する必要があります。 詳細については、以下をお読みください <a href='https://guides.github.com/features/pages/'> Githubガイド</a>。
+        サイトを確認するには、まず<strong>%{domain} </strong>でアクセスできるリポジトリを用意する必要があります。 詳細については、以下をお読みください <a href='https://guides.github.com/features/pages/'> Githubガイド</a>。
       nojekyll_html: "<strong> GitHub </strong>を使用しているようです。\nGitHubユーザーとして、まず<strong> '.nojekyll' </strong>という名前の空のファイルをリポジトリのルートに追加する必要があります。"
     verification_wordpress:
       verify_dns_record: DNSレコードを介して確認します。
