@@ -850,20 +850,20 @@ ja:
         subheading: (DNSレコードへのアクセスが必要)
         button: DNSレコードを編集する
     verification_dns_record:
-      heading: ％{brave_publisher_id}に新しいTXTレコードを追加します
-      help: サイトの所有権を確認スタメ、新しいDNSレコードを追加する必要があります
-      help_2: DNSホストのアカウントを使用します。
+      heading: %{brave_publisher_id} に新しいTXTレコードを追加します
+      help: サイトの所有権を証明するため、TXTレコードを追加いただく必要があります
+      help_2: ドメインの所有権の証明は、ご利用のドメインホスト（ドメイン名の購入先）で行います。
       instruction_1: |
-        サブドメインではなく、ルートドメインにレコードを追加してください。
-      instruction_2: 以下の情報をコピーして、ゾーンファイルに貼り付けます
-      instruction_3: DNSホストのコントロールパネルを使用します。
+        サブドメインではなく、ルートドメインに対してレコードを追加してください。
+      instruction_2: ご利用のドメインホストのコントロールパネルで
+      instruction_3: 以下の情報をコピーして、DNSレコードに追加してください。
       record:
         type: Type
         value: Value (または TXT Value /Data)
         note: |
-          Note: "これが利用可能になるまで数分から数時間かかる場合があります。\nDNSがホストされている場所によって異なります。"
+          Note: "これが利用可能になるまで数分から数時間かかる場合があります。DNSがホストされている場所によって異なります。"
       copy_to_clipboard: クリップボードにコピー
-      verify: このTXTレコードをDNSホストに追加して保存したら、下のボタンをクリックして確認します。
+      verify: TXTレコードの追加が完了したら、下のボタンをクリックして確認します。
       button: DNSレコードを確認する
       helper:
         heading: DNSアカウントにTXTレコードを追加する際にサポートが必要ですか？
