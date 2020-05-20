@@ -30,6 +30,10 @@ class PromoRegistration < ApplicationRecord
 
   BASE_STATS = { RETRIEVALS => 0, FIRST_RUNS => 0, FINALIZED => 0, EYESHADE_CONFIRMED => 0 }.freeze
 
+  # Restricting the following countries from entering the referral program
+  # Vietnam, Russia, Indonesia, China, Ukraine
+  RESTRICTED_COUNTRIES = ['VN', 'RU', 'ID', 'CN', 'UA']
+
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
   belongs_to :publisher

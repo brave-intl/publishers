@@ -12,26 +12,27 @@
     p Toggle settings on or off for this publisher.
 
     = form_for(@publisher, url: admin_publisher_path, method: :patch) do |f|
-      .form-group
+      .form-group.border-bottom
         label
           = f.check_box :excluded_from_payout, {}, checked: @publisher.excluded_from_payout?
           = " Uphold widget disabled"
-      .form-group
+      .form-group.border-bottom
         label
           = f.check_box :wire_only, {}, checked: @publisher.wire_only?
           = " Wire transfers only (also disables uphold and paypal widgets)"
-      .form-group
+      .form-group.border-bottom
         label
           = f.check_box :invoice, {}, checked: @publisher.invoice?
           = " Create invoices"
-      .form-group
+      .form-group.border-bottom
         label
           = f.check_box :merchant, {}, checked: @publisher.merchant?
           = " Merchant Feature"
-      .form-group
+      .form-group.border-bottom
         label
-          = f.check_box UserFeatureFlags::REFERRAL_KYC_REQUIRED {}, checked: @publisher.merchant?
-          = " Merchant Feature"
+          = f.check_box UserFeatureFlags::REFERRAL_KYC_REQUIRED, {}, checked: @publisher.referral_kyc_required?
+          = " Referral KYC Required"
+        p.text-dark Enforces KYC for users to join the referral promo program.
 
       .form-group
         = f.submit class: "btn btn-primary m-0"

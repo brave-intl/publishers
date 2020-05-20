@@ -327,6 +327,11 @@ class Publisher < ApplicationRecord
     paypal_connection&.verified_account || uphold_connection&.payable?
   end
 
+  def country
+    uphold_connection&.country || paypal_connection&.country
+    "vn"
+  end
+
   private
 
   def set_created_status

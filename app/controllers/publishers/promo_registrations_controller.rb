@@ -5,7 +5,7 @@ class Publishers::PromoRegistrationsController < ApplicationController
 
   before_action :authenticate_publisher!
   before_action :require_publisher_promo_disabled, :require_promo_running, only: %i(create)
-  # before_action :require_payable
+  before_action :validate_publisher!
 
   layout "promo_registrations", only: [:index, :create]
 
@@ -135,12 +135,21 @@ class Publishers::PromoRegistrationsController < ApplicationController
     }
   end
 
+  private
+
   def require_promo_running
     redirect_to promo_registrations_path, action: "index" unless promo_running?
   end
 
   def require_publisher_promo_disabled
     redirect_to promo_registrations_path, action: "index" if current_publisher.promo_enabled_2018q1
+  end
+
+  def validate_publisher!
+
+    if user
+    redirect_to
+
   end
 
   def user

@@ -6,7 +6,7 @@ module UserFeatureFlags
 
   # This flag will be set to "true" for all new publishers.
   # It enforces KYC to be present in order to create a new promo code
-  REFERRAL_KYC_REQUIRED = :REFERRAL_KYC_REQUIRED
+  REFERRAL_KYC_REQUIRED = :referral_kyc_required
 
   VALID_FEATURE_FLAGS = [
     WIRE_ONLY,
@@ -54,5 +54,10 @@ module UserFeatureFlags
     define_method :"#{flag}?" do
       feature_flags.symbolize_keys[flag].present?
     end
+  end
+
+  # Helper methods
+  def referral_kyc_not_required?
+    !referral_kyc_required?
   end
 end

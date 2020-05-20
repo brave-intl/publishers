@@ -5,9 +5,19 @@
         #promo-limited-time= t("promo.activate.sub_header_one")
         h3#promo-header= t("promo.activate.header")
         #promo-referring-fans= t("promo.activate.sub_header_two")
+
       .promo-panel-item.promo-panel-item-button
-        = form_for current_publisher, { method: :get, url: promo_registrations_path } do |f|
-          = f.submit(t("promo.activate.button-dashboard").upcase, class: "btn btn-primary", id: "activate-promo-dashboard-button" )
+        - if @publisher.referral_kyc_not_required? || registable?(@publisher)
+          = link_to t("promo.activate.button-dashboard").upcase, promo_registrations_path, class: 'btn btn-primary', id: "activate-promo-dashboard-button"
+        - elsif !registable?(@publisher)
+          .promo-panel-item-alert
+            #promo-panel-alert
+              = t('promo.dashboard.restricted_country')
+        - else
+          .promo-panel-item-alert
+            #promo-panel-alert
+              = t('promo.dashboard.unpayable_notice')
+
   - elsif current_publisher.only_user_funds?
     .promo-panel
       .promo-panel-item.promo-panel-item-alert
