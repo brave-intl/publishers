@@ -28,6 +28,10 @@
         label
           = f.check_box :merchant, {}, checked: @publisher.merchant?
           = " Merchant Feature"
+      .form-group
+        label
+          = f.check_box UserFeatureFlags::REFERRAL_KYC_REQUIRED {}, checked: @publisher.merchant?
+          = " Merchant Feature"
 
       .form-group
         = f.submit class: "btn btn-primary m-0"
