@@ -22,7 +22,7 @@ class Eyeshade::Referrals < Eyeshade::BaseApiClient
 
     response = connection.get do |request|
       request.headers["Authorization"] = api_authorization_header
-      request.url(PATH + "/statement/#{URI.escape(publisher.owner_identifier)}")
+      request.url(PATH + "/statement/#{URI.encode_www_form_component(publisher.owner_identifier)}")
       request.params = {
         start: start_date,
         until: end_date,

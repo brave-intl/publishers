@@ -36,7 +36,7 @@ module Eyeshade
 
     # Expects a BigDecimal returns an Integer
     def bat_to_probi(bat)
-      (bat * BigDecimal.new("1.0e18")).to_i
+      (bat * BigDecimal("1.0e18")).to_i
     end
 
     # Expects and returns values with probi unit
@@ -54,7 +54,7 @@ module Eyeshade
       # so we'll cast it
       if @rates[currency].is_a? String
         require 'bigdecimal'
-        amount_bat * BigDecimal.new(@rates[currency])
+        amount_bat * BigDecimal(@rates[currency])
       else
         amount_bat * @rates[currency]
       end

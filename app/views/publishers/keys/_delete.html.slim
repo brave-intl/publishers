@@ -1,0 +1,9 @@
+h4= t(".title")
+p
+  == t(".intro", name: key.name)
+
+.d-flex.justify-content-between
+  div
+  div
+    = link_to t("shared.cancel"), "#", class: "js-deny btn btn-secondary mr-2"
+    = link_to t(".confirm"), "#", class: "js-confirm btn btn-danger"
