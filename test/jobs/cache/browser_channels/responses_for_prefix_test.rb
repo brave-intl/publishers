@@ -18,7 +18,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     assert service.temp_file.present?
     require 'brotli'
     result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines[0].slice(4..-1))
-    result = PublishersPb::ChannelResponses.decode(result)
+    result = PublishersPb::ChannelResponseList.decode(result)
     assert_equal result.channel_responses[0].channel_identifier, channel.details.channel_identifier
   end
 
@@ -41,7 +41,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
       res = File.open(@service.temp_file.path, 'rb').readlines.join("")
       encoded_file_size = res.slice(0..3).unpack("L")[0]
       result_json = Brotli.inflate(res.slice(4..(encoded_file_size + 4)))
-      result = PublishersPb::ChannelResponses.decode(result_json)
+      result = PublishersPb::ChannelResponseList.decode(result_json)
       assert_equal result.channel_responses[0].channel_identifier, @channel.details.channel_identifier
       assert_equal result.channel_responses[1].channel_identifier, @other_channel.details.channel_identifier
     end

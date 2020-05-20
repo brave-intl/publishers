@@ -23,7 +23,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
       require './protos/channel_responses'
     rescue
     end
-    @channel_responses = PublishersPb::ChannelResponses.new
+    @channel_responses = PublishersPb::ChannelResponseList.new
     @site_banner_lookups.each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
       channel_response.channel_identifier = site_banner_lookup.channel_identifier
@@ -33,7 +33,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
       channel_responses.channel_responses.push(channel_response)
     end
 
-    json = PublishersPb::ChannelResponses.encode(channel_responses)
+    json = PublishersPb::ChannelResponseList.encode(channel_responses)
     info = Brotli.deflate(json)
     @temp_file = Tempfile.new.binmode
     # Write a 4-byte header saying the payload length

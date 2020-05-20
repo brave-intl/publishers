@@ -25,7 +25,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :publisher_ads_opted_in, :bool, 4
       optional :site_banner_details, :message, 5, "publishers_pb.SiteBannerDetails"
     end
-    add_message "publishers_pb.ChannelResponses" do
+    add_message "publishers_pb.ChannelResponseList" do
       repeated :channel_responses, :message, 1, "publishers_pb.ChannelResponse"
     end
     add_enum "publishers_pb.WalletConnectedState" do
@@ -42,6 +42,6 @@ module PublishersPb
   SocialLinks = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SocialLinks").msgclass
   SiteBannerDetails = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.SiteBannerDetails").msgclass
   ChannelResponse = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponse").msgclass
-  ChannelResponses = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponses").msgclass
+  ChannelResponseList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.ChannelResponseList").msgclass
   WalletConnectedState = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.WalletConnectedState").enummodule
 end

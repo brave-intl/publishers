@@ -35,6 +35,6 @@ message ChannelResponse {
   SiteBannerDetails site_banner_details= 5;
 }
 
-message ChannelResponses {
+message ChannelResponseList {
   repeated ChannelResponse channel_responses = 1;
 }
