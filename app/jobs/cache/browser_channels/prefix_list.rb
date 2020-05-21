@@ -16,6 +16,11 @@ class Cache::BrowserChannels::PrefixList
 
   # Might need to adjust the value based on 
   PREFIX_LENGTH = 9
+  attr_reader :compression_type
+
+  def initialize(compression_type: PublishersPb::PublisherList::CompressionType::NO_COMPRESSION)
+    @compression_type = compression_type
+  end
 
   def perform
     # We only care about first PREFIX_LENGTH number of nibbles of the prefix.
@@ -35,7 +40,7 @@ class Cache::BrowserChannels::PrefixList
         SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH})
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}"
-    ).map { |r| r['substring'] }.sort!.to_json
+    ).map { |r| r['substring'] }.sort!
 
     to_protobuf_file(result)
   end
@@ -46,7 +51,7 @@ class Cache::BrowserChannels::PrefixList
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}
         AND to_char(\"created_at\", 'YYYY-MM-DD') = '#{date}'"
-    ).map { |r| r['substring'] }.sort!.to_json
+    ).map { |r| r['substring'] }.sort!
 
     to_protobuf_file(result)
   end
@@ -72,11 +77,14 @@ class Cache::BrowserChannels::PrefixList
 
   def to_protobuf_file(result)
     publisher_list_pb = PublishersPb::PublisherList.new
-    publisher_list_pb.compression_type = PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION
-    publisher_list_pb.prefixes = Brotli.deflate(result)
+    publisher_list_pb.compression_type = @compression_type
+    if @compression_type == PublishersPb::PublisherList::CompressionType::NO_COMPRESSION
+      publisher_list_pb.prefixes = result.join("")
+    elsif @compression_type == PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION
+      publisher_list_pb.prefixes = Brotli.deflate(result.to_json)
+    end
     publisher_list_pb.prefix_size = PREFIX_LENGTH
     publisher_list_pb.uncompressed_size = result.length
-
     temp_file = Tempfile.new.binmode
     temp_file.write(PublishersPb::PublisherList.encode(publisher_list_pb))
     temp_file.close

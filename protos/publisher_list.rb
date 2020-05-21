@@ -10,19 +10,17 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :compression_type, :enum, 2, "publishers_pb.PublisherList.CompressionType"
       optional :uncompressed_size, :uint32, 3
       optional :prefixes, :bytes, 4
-    end
-    add_enum "publishers_pb.PublisherList.PublisherType" do
-      value :ALL_PUBLISHERS, 0
+      repeated :deltas, :uint32, 5
     end
     add_enum "publishers_pb.PublisherList.CompressionType" do
       value :NO_COMPRESSION, 0
-      value :BROTLI_COMPRESSION, 1
+      value :DELTA_COMPRESSION, 1
+      value :BROTLI_COMPRESSION, 2
     end
   end
 end
 
 module PublishersPb
   PublisherList = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PublisherList").msgclass
-  PublisherList::PublisherType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PublisherList.PublisherType").enummodule
   PublisherList::CompressionType = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("publishers_pb.PublisherList.CompressionType").enummodule
 end
