@@ -7,9 +7,9 @@
         #promo-referring-fans= t("promo.activate.sub_header_two")
 
       .promo-panel-item.promo-panel-item-button
-        - if @publisher.referral_kyc_not_required? || registable?(@publisher)
+        - if @publisher.referral_kyc_not_required? || @publisher.promo_registrable?
           = link_to t("promo.activate.button-dashboard").upcase, promo_registrations_path, class: 'btn btn-primary', id: "activate-promo-dashboard-button"
-        - elsif !registable?(@publisher)
+        - elsif !@publisher.promo_registrable?
           .promo-panel-item-alert
             #promo-panel-alert
               = t('promo.dashboard.restricted_country')
@@ -26,8 +26,14 @@
 
   - elsif current_publisher.has_verified_channel?
     .promo-panel.h-100
-      .promo-flex-col.h-100#react-promo-panel data-props={publisherId: current_publisher.id}.to_json
-      = javascript_pack_tag('referrals/ReferralPanel')
+      - if @publisher.referral_kyc_not_required? || @publisher.promo_registrable?
+        .promo-flex-col.h-100#react-promo-panel data-props={publisherId: @current_publisher.id}.to_json
+        = javascript_pack_tag('referrals/ReferralPanel')
+      - else
+        .promo-panel-item.promo-panel-item-alert
+          #promo-panel-alert
+            = t('promo.dashboard.ineligible')
+
 
   - else
     .promo-panel

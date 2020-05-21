@@ -22,12 +22,6 @@ module PromosHelper
     { "times" => [Time.now.to_s], "series" => { "name" => "downloads", "values" => [rand(0..1000)] }, "aggregate" => { "downloads" => 200, "finalized" => 30 } }
   end
 
-  # Validates the publisher is part of the acceptable countries to register promo codes
-  def registable?(publisher)
-    valid_country = PromoRegistration::RESTRICTED_COUNTRIES.exclude?(publisher.country.to_s.upcase)
-    publisher.referral_kyc_required? && publisher.brave_payable? && valid_country
-  end
-
   def publisher_referrals_last_update(publisher)
     promos = publisher.promo_registrations.order(updated_at: :desc)
     return if promos.blank?

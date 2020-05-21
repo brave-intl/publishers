@@ -146,10 +146,9 @@ class Publishers::PromoRegistrationsController < ApplicationController
   end
 
   def validate_publisher!
+    return if user.referral_kyc_not_required?
 
-    if user
-    redirect_to
-
+    redirect_to root_path, flash: { alert: I18n.t('promo.dashboard.ineligible') } unless user.promo_registrable?
   end
 
   def user

@@ -332,6 +332,11 @@ class Publisher < ApplicationRecord
     "vn"
   end
 
+  def promo_registrable?
+    valid_country = PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country.to_s.upcase)
+    referral_kyc_required? && brave_payable? && valid_country
+  end
+
   private
 
   def set_created_status
