@@ -850,7 +850,7 @@ ja:
         subheading: (DNSレコードへのアクセスが必要)
         button: DNSレコードを編集する
     verification_dns_record:
-      heading: %{brave_publisher_id} に新しいTXTレコードを追加します
+      heading: "%{brave_publisher_id} に新しいTXTレコードを追加します"
       help: サイトの所有権を証明するため、TXTレコードを追加いただく必要があります
       help_2: ドメインの所有権の証明は、ご利用のドメインホスト（ドメイン名の購入先）で行います。
       instruction_1: |
