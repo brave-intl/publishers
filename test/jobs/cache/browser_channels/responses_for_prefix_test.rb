@@ -14,7 +14,7 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
     assert site_banner_lookup.present?
 
     service = Cache::BrowserChannels::ResponsesForPrefix.new
-    service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH])
+    service.generate_brotli_encoded_channel_response(prefix: site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH * 2])
     assert service.temp_file.present?
     require 'brotli'
     result = Brotli.inflate(File.open(service.temp_file.path, 'rb').readlines[0].slice(4..-1))
@@ -29,9 +29,9 @@ class Cache::BrowserChannels::ResponsesForPrefixTest < ActiveSupport::TestCase
       @other_channel = channels(:google_verified)
       @other_channel.send(:update_site_banner_lookup!)
 
-      prefix = @channel.site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH] 
+      prefix = @channel.site_banner_lookup.sha2_base16[0, Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH * 2]
       # Update SHA2
-      new_sha = prefix + @other_channel.site_banner_lookup.sha2_base16[Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH, @other_channel.site_banner_lookup.sha2_base16.length]
+      new_sha = prefix + @other_channel.site_banner_lookup.sha2_base16[Cache::BrowserChannels::Main::RESPONSES_PREFIX_LENGTH * 2, @other_channel.site_banner_lookup.sha2_base16.length]
       @other_channel.site_banner_lookup.update(sha2_base16: new_sha)
       @service = Cache::BrowserChannels::ResponsesForPrefix.new
       @service.generate_brotli_encoded_channel_response(prefix: prefix)

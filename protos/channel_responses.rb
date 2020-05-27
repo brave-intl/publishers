@@ -32,8 +32,6 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       value :NO_VERIFICATION, 0
       value :UPHOLD_ACCOUNT_NO_KYC, 1
       value :UPHOLD_ACCOUNT_KYC, 2
-      value :PAYPAL_ACCOUNT_NO_KYC, 3
-      value :PAYPAL_ACCOUNT_KYC, 4
     end
   end
 end

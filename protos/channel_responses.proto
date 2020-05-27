@@ -22,9 +22,6 @@ enum WalletConnectedState {
   NO_VERIFICATION = 0;
   UPHOLD_ACCOUNT_NO_KYC = 1;
   UPHOLD_ACCOUNT_KYC = 2;
-  /* (Albert Wang) These might be used */
-  PAYPAL_ACCOUNT_NO_KYC = 3;
-  PAYPAL_ACCOUNT_KYC = 4;
 }
 
 message ChannelResponse {

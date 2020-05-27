@@ -14,8 +14,8 @@ class Cache::BrowserChannels::PrefixList
   include Sidekiq::Worker
   sidekiq_options queue: :low, retry: false
 
-  # Might need to adjust the value based on 
-  PREFIX_LENGTH = 9
+  # Might need to adjust the value based on collision rate
+  PREFIX_LENGTH = 4
   attr_reader :compression_type
 
   def initialize(compression_type: PublishersPb::PublisherList::CompressionType::NO_COMPRESSION)
@@ -37,7 +37,7 @@ class Cache::BrowserChannels::PrefixList
 
   def save_main_file!
     result = ActiveRecord::Base.connection.execute("
-        SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH})
+        SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH * 2})
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}"
     ).map { |r| r['substring'] }.sort!
@@ -47,7 +47,7 @@ class Cache::BrowserChannels::PrefixList
 
   def save_differential_file!
     result = ActiveRecord::Base.connection.execute("
-        SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH})
+        SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH * 2})
         FROM site_banner_lookups
         WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}
         AND to_char(\"created_at\", 'YYYY-MM-DD') = '#{date}'"
@@ -79,12 +79,13 @@ class Cache::BrowserChannels::PrefixList
     publisher_list_pb = PublishersPb::PublisherList.new
     publisher_list_pb.compression_type = @compression_type
     if @compression_type == PublishersPb::PublisherList::CompressionType::NO_COMPRESSION
-      publisher_list_pb.prefixes = result.join("")
+      publisher_list_pb.prefixes = result.map { |item| [item].pack('H*') }.join("")
+      publisher_list_pb.uncompressed_size = publisher_list_pb.prefixes.length
     elsif @compression_type == PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION
       publisher_list_pb.prefixes = Brotli.deflate(result.to_json)
+      publisher_list_pb.uncompressed_size = result.length
     end
     publisher_list_pb.prefix_size = PREFIX_LENGTH
-    publisher_list_pb.uncompressed_size = result.length
     temp_file = Tempfile.new.binmode
     temp_file.write(PublishersPb::PublisherList.encode(publisher_list_pb))
     temp_file.close
