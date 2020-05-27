@@ -35,20 +35,21 @@
         a#change_default_currency href="#"
           = t ".change"
         span= ")"
-    .last-deposit-date.field
-      label= t ".last_deposit_date"
-      .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher, :en)
-  .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
+    / .last-deposit-date.field
+    /   label= t ".last_deposit_date"
+    /   .value.deposit-date#last_deposit_date=publisher_last_settlement_date(@publisher, :en)
+  / .dashboard-panel--content#last_settlement class=last_settlement_class(@publisher)
+  .dashboard-panel--content
     .last-deposit
-      = t ".last_deposit"
-      .amounts
-        .bat
-          - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
-          span.bat-amount#last_deposit_bat_amount= last_deposit_balance
-          - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
-            span.bat-code= " BAT"
-        .converted#last_deposit_converted_amount
-          = publisher_converted_last_settlement_balance(@publisher)
+      / = t ".last_deposit"
+      / .amounts
+      /   .bat
+      /     - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
+      /     span.bat-amount#last_deposit_bat_amount= last_deposit_balance
+      /     - unless last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
+      /       span.bat-code= " BAT"
+      /   .converted#last_deposit_converted_amount
+      /     = publisher_converted_last_settlement_balance(@publisher)
       = link_to(t(".check_balance"), uphold_dashboard_url, class: "btn btn-primary",
               id: "uphold_check_balance", :"data-piwik-action" => "CheckUpholdBalanceClicked",
               :"data-piwik-name" => "Clicked", :"data-piwik-value" => "Dashboard")

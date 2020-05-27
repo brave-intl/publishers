@@ -169,8 +169,8 @@ function refreshBalance() {
       let overallBalance = wallet.overallBalance;
       updateOverallBalance(overallBalance);
 
-      let lastSettlementBalance = wallet.lastSettlementBalance;
-      updateLastSettlement(lastSettlementBalance);
+      // let lastSettlementBalance = wallet.lastSettlementBalance;
+      // updateLastSettlement(lastSettlementBalance);
 
       updateChannelBalances(wallet);
 
