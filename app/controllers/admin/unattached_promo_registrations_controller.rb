@@ -16,7 +16,7 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
     when ["Not assigned"]
       @promo_registrations = promo_registrations.where(promo_campaign_id: nil).paginate(page: params[:page])
     else
-      @promo_registrations = promo_registrations.where(promo_campaigns: { name: filter })
+      @promo_registrations = promo_registrations.where(promo_campaigns: { name: filter }).paginate(page: params[:page])
     end
     if params[:column].present?
       @promo_registrations = @promo_registrations.order(ActiveRecord::Base.sanitize_sql_for_order("promo_registrations.#{params[:column]} #{params[:direction]}"))
