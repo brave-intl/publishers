@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_140606) do
     t.uuid "contested_by_channel_id"
     t.string "contest_token"
     t.datetime "contest_timesout_at"
+    t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
   end
