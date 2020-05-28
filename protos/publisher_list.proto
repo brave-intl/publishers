@@ -34,6 +34,6 @@ message PublisherList {
 
   // A list of deltas between successive prefixes used when
   // |compression_type| is DELTA_COMPRESSION.
-  repeated uint32 deltas = 5;
+  repeated uint64 deltas = 5;
 }
 
