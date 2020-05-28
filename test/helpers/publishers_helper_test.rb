@@ -20,19 +20,12 @@ class PublishersHelperTest < ActionView::TestCase
     assert_dom_equal %{}, publisher_converted_overall_balance(publisher)
   end
 
-  test "publisher_converted_overall_balance should return something for set publisher currency" do
-    publisher = publishers(:uphold_connected_details)
-    publisher.save
-
-    assert_dom_equal %{~ 268.13 USD}, publisher_converted_overall_balance(publisher) # 0 balance because this publisher has no channels
-  end
-
   class FakePublisher
     attr_reader :default_currency, :wallet, :uphold_connection
 
-    def initialize(rates: {}, accounts: [], transactions: [], uphold_connection: nil)
+    def initialize(rates: {}, accounts: [], uphold_connection: nil)
       @uphold_connection = UpholdConnection.new(uphold_connection)
-      @wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, transactions: transactions, uphold_connection: @uphold_connection)
+      @wallet = Eyeshade::Wallet.new(rates: rates, accounts: accounts, uphold_connection: @uphold_connection)
     end
 
     def partner?
@@ -80,7 +73,8 @@ class PublishersHelperTest < ActionView::TestCase
           "balance" => "58.217204799751874334",
         }
       ],
-      transactions:[
+    )
+    transactions = [
         {
           "created_at" => "2018-11-07 00:00:00 -0800",
           "description" => "payout for referrals",
@@ -91,21 +85,20 @@ class PublishersHelperTest < ActionView::TestCase
           "type" => "referral_settlement"
         }
       ]
-    )
+
     assert_not_nil publisher.wallet
     assert_equal "~ 13.76 USD", publisher_converted_overall_balance(publisher)
     assert_equal "58.22", publisher_overall_bat_balance(publisher)
 
     # ensure last settlement balance does not have fee applied
-    assert_equal publisher_last_settlement_bat_balance(publisher), "94.62"
+    assert_equal publisher_last_settlement_bat_balance(last_settlement_balance: Eyeshade::LastSettlementBalance.new(rates: publisher.wallet.rates, default_currency: 'USD', transactions: transactions)), "94.62"
 
     # ensure publisher_converted_last_settlement does not have fee applied
-    assert_equal publisher_converted_last_settlement_balance(publisher), "~ 18.81 ETH"
+    assert_equal publisher_converted_last_settlement_balance(last_settlement_balance: Eyeshade::LastSettlementBalance.new(rates: publisher.wallet.rates, default_currency: 'USD', transactions: transactions)), "~ 18.81 ETH"
 
     publisher = FakePublisher.new(
       rates: {},
       accounts: [],
-      transactions: [],
       uphold_connection: { default_currency: 'USD' }
     )
 

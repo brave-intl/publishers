@@ -104,6 +104,8 @@ gem 'rails-i18n', '~> 6.0.0'
 # I love captchas
 gem "recaptcha", "~> 3.3", require: "recaptcha/rails"
 
+gem 'render_async', "~> 2.1.6"
+
 # Cache with Redis
 gem 'redis', '~> 4.1.2'
 

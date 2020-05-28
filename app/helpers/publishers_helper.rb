@@ -118,8 +118,7 @@ module PublishersHelper
     }
   end
 
-  def publisher_last_settlement_bat_balance(publisher)
-    last_settlement_balance = publisher.wallet&.last_settlement_balance
+  def publisher_last_settlement_bat_balance(last_settlement_balance:)
     if last_settlement_balance&.amount_bat.present?
       '%.2f' % last_settlement_balance.amount_bat
     else
@@ -131,9 +130,7 @@ module PublishersHelper
     I18n.t("helpers.publisher.balance_unavailable")
   end
 
-  def publisher_converted_last_settlement_balance(publisher)
-    last_settlement_balance = publisher.wallet&.last_settlement_balance
-
+  def publisher_converted_last_settlement_balance(last_settlement_balance:)
     if last_settlement_balance&.amount_settlement_currency.present?
       settlement_currency = last_settlement_balance.settlement_currency
       return if settlement_currency == "BAT"
@@ -147,8 +144,7 @@ module PublishersHelper
     I18n.t("helpers.publisher.conversion_unavailable", code: settlement_currency)
   end
 
-  def publisher_last_settlement_date(publisher, locale)
-    last_settlement_balance = publisher.wallet&.last_settlement_balance
+  def publisher_last_settlement_date(last_settlement_balance:, locale:)
     if last_settlement_balance&.timestamp.present?
       I18n.l(Time.at(last_settlement_balance.timestamp).to_date, format: :long, locale: locale)
     else
@@ -201,10 +197,7 @@ module PublishersHelper
   end
 
   def last_settlement_class(publisher)
-    if publisher.wallet.present? &&
-       publisher.wallet.last_settlement_balance &&
-       publisher.wallet.last_settlement_balance.amount_bat.present?
-
+    if Eyeshade::LastSettlementBalance.for_publisher(publisher: publisher).present?
       'settlement-made'
     else
       'no-settlement-made'

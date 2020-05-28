@@ -39,7 +39,7 @@ class Promo::AssignPromoToChannelService < BaseApiClient
       end
     rescue ActiveRecord::RecordInvalid => e
       require "sentry-raven"
-      Rails.logger.error("#{self.name} perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
+      Rails.logger.error("#{self.class.name} perform: #{referral_code} channel_id: #{channel.id} exception: #{e}")
       Raven.extra_context referral_code: referral_code
       Raven.capture_exception("Promo::PublisherChannelsRegistrar #perform error: #{e}")
     end

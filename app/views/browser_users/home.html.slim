@@ -6,5 +6,5 @@
     .p-2
       = render partial: 'how_it_works', referral_code: @promo_registration
     .p-2
-      = render partial: 'pending_balance'
+      = render_async browser_users_pending_balance_path
       = render partial: 'promo_panel'

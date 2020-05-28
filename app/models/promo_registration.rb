@@ -30,6 +30,7 @@ class PromoRegistration < ApplicationRecord
 
   BASE_STATS = { RETRIEVALS => 0, FIRST_RUNS => 0, FINALIZED => 0, EYESHADE_CONFIRMED => 0 }.freeze
 
+  before_save :set_active_promo_id, if: -> { promo_id.nil? }
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign
   belongs_to :publisher
@@ -48,6 +49,10 @@ class PromoRegistration < ApplicationRecord
   scope :has_stats, -> { where.not(stats: "[]").where.not("stats = '[]'") }
 
   before_destroy :delete_from_promo_server
+
+  def set_active_promo_id
+    self.promo_id = Rails.application.secrets[:active_promo_id]
+  end
 
   def delete_from_promo_server
     Promo::ChannelOwnerUpdater.new(referral_code: referral_code).perform

@@ -15,7 +15,7 @@ class Payout::PotentialPayment::UpholdService < BaseService
 
     uphold_connection = @publisher.uphold_connection
 
-    wallet = PublisherWalletGetter.new(publisher: @publisher, include_transactions: false).perform
+    wallet = PublisherWalletGetter.new(publisher: @publisher).perform
 
     raise WalletError.new(message: "There was a problem fetching the wallet for #{@publisher.id}") if wallet.blank?
 

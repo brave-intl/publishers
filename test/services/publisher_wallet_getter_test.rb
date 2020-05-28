@@ -272,8 +272,7 @@ class PublisherWalletGetterTest < ActiveJob::TestCase
     transactions = PublisherTransactionsGetter.new(publisher: publisher).perform_offline
     stub_all_eyeshade_wallet_responses(publisher: publisher, wallet: wallet, transactions: transactions)
 
-    wallet = PublisherWalletGetter.new(publisher: publisher).perform
-    last_settlement_balance = wallet.last_settlement_balance
+    last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates: wallet['rates'], default_currency: 'USD', transactions: transactions)
 
     assert_equal last_settlement_balance.amount_bat.to_s, "1123.510515576367299039"
     assert_equal last_settlement_balance.amount_settlement_currency.to_s, "226.86"

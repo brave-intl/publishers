@@ -6,9 +6,8 @@ class PublisherWalletGetter < BaseApiClient
 
   RATES_CACHE_KEY = "rates_cache".freeze
 
-  def initialize(publisher:, include_transactions: true)
+  def initialize(publisher:)
     @publisher = publisher
-    @include_transactions = include_transactions
   end
 
   def perform
@@ -22,7 +21,6 @@ class PublisherWalletGetter < BaseApiClient
     Eyeshade::Wallet.new(
       rates: rates,
       accounts: accounts,
-      transactions: transactions,
       uphold_connection: publisher.uphold_connection
     )
 
@@ -34,15 +32,7 @@ class PublisherWalletGetter < BaseApiClient
   private
 
   def rates
-    # Cache the ratios every minute. Rates are used for display purposes only.
-    Rails.cache.fetch(RATES_CACHE_KEY, expires_in: 1.minute) do
-      Ratio::Ratio.new.relative(currency: "BAT")
-    end
-  end
-
-  def transactions
-    return [] unless @include_transactions
-    PublisherTransactionsGetter.new(publisher: @publisher).perform
+    Ratio::Ratio.relative_cached(currency: "BAT")
   end
 
   def api_base_uri

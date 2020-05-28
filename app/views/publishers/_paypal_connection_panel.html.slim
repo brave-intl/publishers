@@ -23,7 +23,7 @@
           .last-deposit-v2--label
             = t(".last_deposit")
           .d-flex.justify-content-start.flex-column
-            - last_deposit_balance = publisher_last_settlement_bat_balance(@publisher)
+            - last_deposit_balance = last_settlement_bat_balance(last_settlement_balance: @last_settlement_balance)
             - if last_deposit_balance == I18n.t("helpers.publisher.no_deposit")
               div.last-deposit-v2--date
                 label = t(".no_deposit_made_yet")
@@ -31,7 +31,7 @@
               div.last-deposit-v2--amount
                 span = last_deposit_balance + " " + t(".bat_points")
               div.last-deposit-v2--date
-                label = t(".last_deposit_date") + publisher_last_settlement_date(@publisher, params[:locale])
+                label = t(".last_deposit_date") + last_settlement_date(last_settlement_balance: @last_settlement_balance, params[:locale])
     - else
       .dashboard-panel--content#last_settlement
         .last-deposit-v2.last-deposit-v2--no-payout-account

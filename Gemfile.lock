@@ -367,6 +367,7 @@ GEM
       json
     redis (4.1.4)
     regexp_parser (1.7.0)
+    render_async (2.1.6)
     request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.0)
@@ -574,6 +575,7 @@ DEPENDENCIES
   railties (~> 6.0.3.1)
   recaptcha (~> 3.3)
   redis (~> 4.1.2)
+  render_async
   rotp (~> 3.3)
   rqrcode (~> 0.10)
   rubocop-airbnb

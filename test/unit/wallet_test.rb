@@ -164,7 +164,7 @@ class WalletTest < ActiveSupport::TestCase
                    "settlement_currency"=>"ETH",
                    "type"=>"contribution"}]
 
-  test_wallet = Eyeshade::Wallet.new(rates: rate_info, accounts: accounts, transactions: transactions, uphold_connection: UpholdConnection.new(default_currency: 'USD'))
+  test_wallet = Eyeshade::Wallet.new(rates: rate_info, accounts: accounts, uphold_connection: UpholdConnection.new(default_currency: 'USD'))
 
   test "channel_balances have correct BAT and probi amounts" do
     assert_equal test_wallet.channel_balances.count, 2
@@ -199,7 +199,8 @@ class WalletTest < ActiveSupport::TestCase
   end
 
   test "last settlement balance has correct timestamp and amount" do
-    last_settlement_balance = test_wallet.last_settlement_balance
+    last_settlement_balance = Eyeshade::LastSettlementBalance.new(rates: rate_info, default_currency: 'USD', transactions: transactions)
+
     assert_equal last_settlement_balance.timestamp, 1544169600
     assert_equal last_settlement_balance.amount_bat.to_s, "749.007010384244866026"
     assert_equal last_settlement_balance.amount_settlement_currency.to_s, "151.24"

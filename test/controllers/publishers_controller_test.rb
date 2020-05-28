@@ -470,15 +470,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     # verify uphold :code_acquired but not :access params
     assert_equal publisher.uphold_connection.reload.uphold_status, :code_acquired
 
-    # verify message tells publisher they need to reconnect
-    assert_select("div#uphold_status.uphold-processing .status-description") do |element|
-      assert_equal I18n.t("helpers.publisher.uphold_status_description.connecting"), element.text
-    end
-
-    # verify button says 'reconnect to uphold' not 'create uphold wallet'
-    assert_select("[data-test=reconnect-button]") do |element|
-      assert_equal I18n.t("helpers.publisher.uphold_authorization_description.reconnect_to_uphold"), element.text
-    end
     Rails.application.secrets[:active_promo_id] = active_promo_id_original
   end
 

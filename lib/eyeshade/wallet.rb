@@ -14,7 +14,7 @@ module Eyeshade
                 :overall_balance,
                 :last_settlement_balance
 
-    def initialize(rates: {}, accounts: [], transactions: [], uphold_connection: nil)
+    def initialize(rates: {}, accounts: [], uphold_connection: nil)
       # Wallet information
       @rates = rates["payload"] || {}
 
@@ -28,8 +28,6 @@ module Eyeshade
       @referral_balance = Eyeshade::ReferralBalance.new(@rates, @default_currency, accounts)
       @overall_balance = Eyeshade::OverallBalance.new(@rates, @default_currency, accounts)
       @contribution_balance = Eyeshade::ContributionBalance.new(@rates, @default_currency, accounts)
-
-      @last_settlement_balance = Eyeshade::LastSettlementBalance.new(@rates, @default_currency, transactions)
     end
   end
 end

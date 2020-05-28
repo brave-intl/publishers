@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   end
   namespace :browser_users do
     get :home
+    get :pending_balance
     put :accept_tos
   end
   resources :publishers, only: %i(create update new show destroy) do
@@ -61,6 +62,9 @@ Rails.application.routes.draw do
 
       get :log_out
       get :home
+      get :home_balances
+      get :uphold_wallet_panel
+      get :paypal_wallet_panel
       get :change_email
       get :change_email_confirm
       patch :update_email
