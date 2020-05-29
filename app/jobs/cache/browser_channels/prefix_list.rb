@@ -18,7 +18,7 @@ class Cache::BrowserChannels::PrefixList
   PREFIX_LENGTH = 4
   attr_reader :compression_type
 
-  def initialize(compression_type: PublishersPb::PublisherList::CompressionType::NO_COMPRESSION)
+  def initialize(compression_type: PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION)
     @compression_type = compression_type
   end
 
@@ -82,30 +82,14 @@ class Cache::BrowserChannels::PrefixList
       publisher_list_pb.prefixes = result.map { |item| [item].pack('H*') }.join("")
       publisher_list_pb.uncompressed_size = publisher_list_pb.prefixes.length
     elsif @compression_type == PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION
-      publisher_list_pb.prefixes = Brotli.deflate(result.to_json)
-      publisher_list_pb.uncompressed_size = result.length
-    elsif @compression_type == PublishersPb::PublisherList::CompressionType::DELTA_COMPRESSION
-      publisher_list_pb.deltas += to_delta_list(result)
+      new_result = result.map { |item| [item].pack('H*') }.join("")
+      publisher_list_pb.prefixes = Brotli.deflate(new_result)
+      publisher_list_pb.uncompressed_size = new_result.length
     end
     publisher_list_pb.prefix_size = PREFIX_LENGTH
     temp_file = Tempfile.new.binmode
     temp_file.write(PublishersPb::PublisherList.encode(publisher_list_pb))
     temp_file.close
     temp_file
-  end
-
-  def to_delta_list(list)
-    last = 0
-    list.map do |item|
-      # Read prefix as big-endian uint16
-      value = item.to_i(16)
-      if value < last
-        raise 'Input list out of order'
-      end
-      # Get delta from last value
-      delta = value - last
-      last = value
-      delta
-    end
   end
 end

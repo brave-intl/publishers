@@ -12,8 +12,7 @@ package publishers_pb;
 message PublisherList {
   enum CompressionType {
     NO_COMPRESSION = 0;
-    DELTA_COMPRESSION = 1;
-    BROTLI_COMPRESSION = 2;
+    BROTLI_COMPRESSION = 1;
   }
 
   // The size, in bytes, of each hash prefix stored in the
@@ -31,9 +30,5 @@ message PublisherList {
   // A sorted list of fixed-length prefixes of SHA256 hashes
   // corresponding to each publisher.
   bytes prefixes = 4;
-
-  // A list of deltas between successive prefixes used when
-  // |compression_type| is DELTA_COMPRESSION.
-  repeated uint64 deltas = 5;
 }
 

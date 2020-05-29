@@ -10,12 +10,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
       optional :compression_type, :enum, 2, "publishers_pb.PublisherList.CompressionType"
       optional :uncompressed_size, :uint32, 3
       optional :prefixes, :bytes, 4
-      repeated :deltas, :uint64, 5
     end
     add_enum "publishers_pb.PublisherList.CompressionType" do
       value :NO_COMPRESSION, 0
-      value :DELTA_COMPRESSION, 1
-      value :BROTLI_COMPRESSION, 2
+      value :BROTLI_COMPRESSION, 1
     end
   end
 end

@@ -12,16 +12,6 @@ class Cache::BrowserChannels::PrefixListTest < ActiveSupport::TestCase
     channels(:google_verified).update_site_banner_lookup!
   end
 
-  def decompress_list(deltas)
-    last = 0
-    deltas.map do |item|
-      value = last + item
-      prefix = value.to_s(16)
-      last = value
-      prefix
-    end
-  end
-
   test 'creates basic prefix list and can decompress back for no compression' do
     service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherList::CompressionType::NO_COMPRESSION)
     temp_file = service.save_main_file!
@@ -35,20 +25,11 @@ class Cache::BrowserChannels::PrefixListTest < ActiveSupport::TestCase
     service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION)
     temp_file = service.save_main_file!
     prefixes_compressed = PublishersPb::PublisherList.decode(File.open(temp_file.path, 'rb').readlines[0])['prefixes']
-    prefixes = JSON.parse(Brotli.inflate(prefixes_compressed))
+    prefixes = Brotli.inflate(prefixes_compressed).chars.each_slice(Cache::BrowserChannels::PrefixList::PREFIX_LENGTH * 2).map(&:join)
     assert_not_equal 0, prefixes.length
     assert_equal SiteBannerLookup.where.not(wallet_status: PublishersPb::WalletConnectedState::NO_VERIFICATION).count, prefixes.length
-  end
-
-  test 'creates delta prefix list and can decompress back' do
-    service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherList::CompressionType::DELTA_COMPRESSION)
-    temp_file = service.save_main_file!
-    deltas_compressed = PublishersPb::PublisherList.decode(File.open(temp_file.path, 'rb').readlines[0])['deltas']
-    result = ActiveRecord::Base.connection.execute("
-      SELECT SUBSTRING(sha2_base16, 1, #{Cache::BrowserChannels::PrefixList::PREFIX_LENGTH * 2})
-      FROM site_banner_lookups
-      WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}"
-    ).map { |r| r['substring'] }.sort!
-    assert_equal decompress_list(deltas_compressed), result
+    prefixes.each do |prefix|
+      assert_not_equal SiteBannerLookup.where("sha2_base16 LIKE '#{prefix}%'").count, 0
+    end
   end
 end
