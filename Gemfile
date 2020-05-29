@@ -25,7 +25,7 @@ gem 'autometal-piwik', :require => 'piwik', git: "https://github.com/matomo-org/
 # Use AWS gem for s3 uploads
 gem 'aws-sdk-s3', require: false
 
-gem "bootstrap", ">= 4.3.1"
+gem "bootstrap", "~> 4.5.0"
 
 # browser details
 gem 'browser'

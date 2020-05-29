@@ -7,4 +7,5 @@
       = render partial: 'how_it_works', referral_code: @promo_registration
     .p-2
       = render_async browser_users_pending_balance_path
+        .spinner-border.center.text-primary role="status"
       = render partial: 'promo_panel'

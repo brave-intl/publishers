@@ -1,16 +1,16 @@
 // Configuration
 @import "*";
+@import "bootstrap";
 @import "colors";
 @import "fonts";
-@import "admin/bootstrap";
-@import "bootstrap-config";
+@import "bootstrap-custom";
 
 // Vendor
 @import "font-awesome";
-@import "bootstrap-custom";
 
 // Application
 @import "application-config";
+@import "bootstrap-config";
 
 // Admin pages
 @import "pages/**/*";
