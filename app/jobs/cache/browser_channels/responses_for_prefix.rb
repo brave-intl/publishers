@@ -37,7 +37,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
     info = Brotli.deflate(json)
     @temp_file = Tempfile.new.binmode
     # Write a 4-byte header saying the payload length
-    @temp_file.write([info.length].pack("L"))
+    @temp_file.write([info.length].pack("N"))
     @temp_file.write(info)
     @temp_file.close
     @temp_file

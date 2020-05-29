@@ -25,7 +25,7 @@ class Cache::BrowserChannels::PrefixListTest < ActiveSupport::TestCase
     service = Cache::BrowserChannels::PrefixList.new(compression_type: PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION)
     temp_file = service.save_main_file!
     prefixes_compressed = PublishersPb::PublisherList.decode(File.open(temp_file.path, 'rb').readlines[0])['prefixes']
-    prefixes = Brotli.inflate(prefixes_compressed).chars.each_slice(Cache::BrowserChannels::PrefixList::PREFIX_LENGTH * 2).map(&:join)
+    prefixes = Brotli.inflate(prefixes_compressed).unpack('H*')[0].scan(/.{#{Cache::BrowserChannels::PrefixList::PREFIX_LENGTH * 2}}/)
     assert_not_equal 0, prefixes.length
     assert_equal SiteBannerLookup.where.not(wallet_status: PublishersPb::WalletConnectedState::NO_VERIFICATION).count, prefixes.length
     prefixes.each do |prefix|
