@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_13_201529) do
+ActiveRecord::Schema.define(version: 2020_05_28_233021) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
@@ -111,6 +112,7 @@ ActiveRecord::Schema.define(version: 2020_05_13_201529) do
     t.uuid "contested_by_channel_id"
     t.string "contest_token"
     t.datetime "contest_timesout_at"
+    t.index ["contested_by_channel_id"], name: "index_channels_on_contested_by_channel_id"
     t.index ["details_type", "details_id"], name: "index_channels_on_details_type_and_details_id", unique: true
     t.index ["publisher_id"], name: "index_channels_on_publisher_id"
   end
@@ -377,7 +379,7 @@ ActiveRecord::Schema.define(version: 2020_05_13_201529) do
     t.integer "aggregate_installs", default: 0, null: false
     t.integer "aggregate_confirmations", default: 0, null: false
     t.index ["channel_id"], name: "index_promo_registrations_on_channel_id", unique: true
-    t.index ["created_at"], name: "index_promo_registrations_on_created_at"
+    t.index ["kind", "created_at"], name: "index_promo_registrations_on_kind_and_created_at"
     t.index ["promo_campaign_id"], name: "index_promo_registrations_on_promo_campaign_id"
     t.index ["promo_id", "referral_code"], name: "index_promo_registrations_on_promo_id_and_referral_code", unique: true
     t.index ["publisher_id"], name: "index_promo_registrations_on_publisher_id"
@@ -474,6 +476,7 @@ ActiveRecord::Schema.define(version: 2020_05_13_201529) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "channel_id"
+    t.index ["channel_id"], name: "index_site_banners_on_channel_id"
     t.index ["publisher_id"], name: "index_site_banners_on_publisher_id"
   end
 

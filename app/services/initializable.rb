@@ -10,7 +10,7 @@ module Initializable
       send(setter, value) if respond_to?(setter.to_sym, false)
 
       # Handle camel case parameters
-      setter = "#{key.underscore}="
+      setter = "#{key.to_s.underscore}="
       send(setter, value) if respond_to?(setter.to_sym, false)
     end
   end
