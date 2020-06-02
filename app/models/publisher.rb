@@ -245,13 +245,23 @@ class Publisher < ApplicationRecord
   end
 
   def promo_status(promo_running)
-    if !promo_running
+    if !promo_running || promo_expired?
       :over
     elsif promo_enabled_2018q1
       :active
     else
       :inactive
     end
+  end
+
+  def promo_expired?
+    # return true # FIXME : remove
+    return promo_expiration_time < DateTime.now if promo_expiration_time.present?
+    false
+  end
+
+  def promo_not_expired?
+    !promo_expired?
   end
 
   def has_verified_channel?
@@ -328,13 +338,25 @@ class Publisher < ApplicationRecord
   end
 
   def country
-    uphold_connection&.country || paypal_connection&.country
-    "vn"
+    provider_country = uphold_connection&.country || paypal_connection&.country
+
+    # FIXME: REMOVE BEFORE CREATING A PR
+    provider_country = "vn"
+
+    provider_country.to_s.upcase
+  end
+
+  def valid_promo_country?
+    return if country.blank?
+    PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country)
   end
 
   def promo_registrable?
-    valid_country = PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country.to_s.upcase)
-    referral_kyc_required? && brave_payable? && valid_country
+    # If the user doesn't have the referral_kyc_flag on then we can register them still.
+    return true unless referral_kyc_required?
+
+    # Otherwise they must be brave payable and from a valid country
+    (brave_payable? && valid_promo_country?) || promo_not_expired?
   end
 
   private

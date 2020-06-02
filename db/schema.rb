@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_28_233021) do
+ActiveRecord::Schema.define(version: 2020_05_29_195058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -437,6 +437,7 @@ ActiveRecord::Schema.define(version: 2020_05_28_233021) do
     t.boolean "thirty_day_login", default: false, null: false
     t.boolean "subscribed_to_marketing_emails", default: false, null: false
     t.jsonb "feature_flags", default: {}
+    t.datetime "promo_expiration_time"
     t.index "lower((email)::text)", name: "index_publishers_on_lower_email", unique: true
     t.index ["created_at"], name: "index_publishers_on_created_at"
     t.index ["created_by_id"], name: "index_publishers_on_created_by_id"

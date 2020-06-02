@@ -762,6 +762,7 @@ en:
       downloaded: "downloaded"
       installed: "installed"
       confirmed: "confirmed"
+      expiration: "Thanks for particpating in the promo program. Your referral codes will expire in %{time}."
       unpayable_notice: "Connect and verify your identity with Uphold to enroll the referral promo program."
       restricted_country: "Your region is currently unable to participate in the referral promo program."
       ineligible: "You are ineligible to take part in this program. You must verify your identity with your wallet provider and be in a supported region."

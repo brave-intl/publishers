@@ -268,14 +268,14 @@ class Channel < ApplicationRecord
   end
 
   def register_channel_for_promo
-    # referral_kyc_not_required
-    # return if publisher. && publisher.brave_payable?
     Promo::RegisterChannelForPromoJob.perform_now(channel_id: id, attempt_count: 0)
   end
 
   private
 
   def should_register_channel_for_promo
+    return false unless publisher.promo_registrable?
+
     promo_running = Rails.application.secrets[:active_promo_id].present? # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = publisher.promo_enabled_2018q1?
     promo_running && publisher_enabled_promo && saved_change_to_verified? && verified && !publisher.only_user_funds?

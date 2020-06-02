@@ -146,14 +146,14 @@ class Publishers::PromoRegistrationsController < ApplicationController
   end
 
   def validate_publisher!
-    return if user.referral_kyc_not_required?
+    return if user.referral_kyc_not_required? && user.promo_not_expired?
 
     redirect_to root_path, flash: { alert: I18n.t('promo.dashboard.ineligible') } unless user.promo_registrable?
   end
 
   def user
-    return Publisher.find(params[:publisher_id]) if current_publisher.admin?
+    return (@user ||= Publisher.find(params[:publisher_id])) if current_publisher.admin?
 
-    current_publisher
+    @user ||= current_publisher
   end
 end

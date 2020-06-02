@@ -1,5 +1,5 @@
-.col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
-  - if current_publisher.promo_status(promo_running?) == :inactive
+- if current_publisher.promo_status(promo_running?) == :inactive
+  .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
     .promo-panel
       .promo-panel-item.promo-panel-item-info
         #promo-limited-time= t("promo.activate.sub_header_one")
@@ -7,9 +7,9 @@
         #promo-referring-fans= t("promo.activate.sub_header_two")
 
       .promo-panel-item.promo-panel-item-button
-        - if @publisher.referral_kyc_not_required? || @publisher.promo_registrable?
+        - if @publisher.promo_registrable?
           = link_to t("promo.activate.button-dashboard").upcase, promo_registrations_path, class: 'btn btn-primary', id: "activate-promo-dashboard-button"
-        - elsif !@publisher.promo_registrable?
+        - elsif !@publisher.valid_promo_country?
           .promo-panel-item-alert
             #promo-panel-alert
               = t('promo.dashboard.restricted_country')
@@ -18,24 +18,28 @@
             #promo-panel-alert
               = t('promo.dashboard.unpayable_notice')
 
-  - elsif current_publisher.only_user_funds?
+- elsif current_publisher.only_user_funds?
+  .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
     .promo-panel
       .promo-panel-item.promo-panel-item-alert
         #promo-panel-alert
           == t("promo.dashboard.violation")
 
-  - elsif current_publisher.has_verified_channel?
-    .promo-panel.h-100
-      - if @publisher.referral_kyc_not_required? || @publisher.promo_registrable?
-        .promo-flex-col.h-100#react-promo-panel data-props={publisherId: @current_publisher.id}.to_json
-        = javascript_pack_tag('referrals/ReferralPanel')
-      - else
-        .promo-panel-item.promo-panel-item-alert
-          #promo-panel-alert
-            = t('promo.dashboard.ineligible')
+- elsif current_publisher.has_verified_channel?
+  - if @publisher.promo_registrable? && @publisher.promo_not_expired?
+    .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
+      .promo-panel.h-100
+        .h-100
+          .promo-flex-col#react-promo-panel data-props={publisherId: @current_publisher.id}.to_json
+          = javascript_pack_tag('referrals/ReferralPanel')
+          - if @publisher.promo_expiration_time.present?
+            .promo-panel-item.promo-panel-item-alert
+              #promo-panel-alert
+                = t('promo.dashboard.expiration', time: distance_of_time_in_words_to_now(@publisher.promo_expiration_time))
 
 
-  - else
+- else
+  .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
     .promo-panel
       .promo-panel-item.promo-panel-item-alert
         #promo-panel-alert

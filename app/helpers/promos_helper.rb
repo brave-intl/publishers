@@ -6,7 +6,7 @@ module PromosHelper
   end
 
   def promo_running?
-    Rails.application.secrets[:active_promo_id].present?
+    active_promo_id.present?
   end
 
   def perform_promo_offline?

@@ -144,7 +144,7 @@ class Admin::PublishersController < AdminController
 
   def update_params
     params.require(:publisher).permit(
-      :excluded_from_payout
+      :excluded_from_payout, :promo_expiration_time
     )
   end
 

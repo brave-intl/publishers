@@ -117,7 +117,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = t ".add_channel_cta"
 
     / Don't show if none of the promo registrations has a valid stat
-    - if !@publisher.only_user_funds? && @publisher.promo_registrations.present? && @publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
+    - if !@publisher.only_user_funds? \
+        && @publisher.promo_registrations.present? \
+        && @publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present? \
+        && @publisher.promo_registrable? \
+        && @publisher.promo_not_expired?
       = render "publishers/referral_charts", current_publisher: @publisher
 
     - @publisher.channels.visible.each do |channel|
