@@ -10,19 +10,12 @@ class Cache::BrowserChannels::ResponsesForPrefix
   def perform(prefix)
     generate_brotli_encoded_channel_response(prefix: prefix)
     pad_file!
-    save_to_s3(prefix: prefix) unless Rails.env.test?
+    save_to_s3!(prefix: prefix) unless Rails.env.test?
     cleanup!
   end
 
   def generate_brotli_encoded_channel_response(prefix:)
     @site_banner_lookups = SiteBannerLookup.where("sha2_base16 LIKE ?", prefix + "%")
-    begin
-      # Have to throw in a begin rescue block otherwise
-      # Zeitwerk::NameError (expected file $DIR/protos/channel_responses.rb to define constant ChannelResponses, but didn't)
-      # gets thrown.
-      require './protos/channel_responses'
-    rescue
-    end
     @channel_responses = PublishersPb::ChannelResponseList.new
     @site_banner_lookups.each do |site_banner_lookup|
       channel_response = PublishersPb::ChannelResponse.new
@@ -70,9 +63,8 @@ class Cache::BrowserChannels::ResponsesForPrefix
     end
   end
 
-  def save_to_s3(prefix:)
+  def save_to_s3!(prefix:)
     path = @temp_file.path
-    require 'aws-sdk-s3'
     Aws.config[:credentials] = Aws::Credentials.new(Rails.application.secrets[:s3_rewards_access_key_id], Rails.application.secrets[:s3_rewards_secret_access_key])
     s3 = Aws::S3::Resource.new(region: Rails.application.secrets[:s3_rewards_bucket_region])
     obj = s3.bucket(Rails.application.secrets[:s3_rewards_bucket_name]).object(PATH + prefix)

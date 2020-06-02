@@ -1,26 +1,6 @@
 {
   "ignored_warnings": [
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "6ac6e8630dbd47d5ab0a41dcee564b9afbca6b3a17f77b79675b36702eb8d93a",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/jobs/cache/browser_channels/main.rb",
-      "line": 22,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveRecord::Base.connection.execute(\"\\n      SELECT DISTINCT SUBSTRING(sha2_base16, 1, #{4}) as prefix\\n      FROM site_banner_lookups\\n      WHERE wallet_status != 0\\n      AND updated_at >= '#{((Rails.cache.fetch(\"cache_browser_channels_main_last_ran_at\").to_time - 3.minutes).to_s or Time.at(0).to_s)}'\\n      ORDER BY prefix desc\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Cache::BrowserChannels::Main",
-        "method": "perform"
-      },
-      "user_input": "(Rails.cache.fetch(\"cache_browser_channels_main_last_ran_at\").to_time - 3.minutes)",
-      "confidence": "Medium",
-      "note": "Not affected by user input"
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "f80a3232956f28402148bcc46b7fae2255679f00a0582bbd2c374846e97cbb03",

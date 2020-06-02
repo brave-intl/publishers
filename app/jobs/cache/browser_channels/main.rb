@@ -15,13 +15,17 @@ class Cache::BrowserChannels::Main
         Time.at(0).to_s
       end
 
-    result = ActiveRecord::Base.connection.execute("
-      SELECT DISTINCT SUBSTRING(sha2_base16, 1, #{RESPONSES_PREFIX_LENGTH * 2}) as prefix
+    result = SiteBannerLookup.find_by_sql(["
+      SELECT DISTINCT SUBSTRING(sha2_base16, 1, :nibble_length) as prefix
       FROM site_banner_lookups
       WHERE wallet_status != 0
-      AND updated_at >= '#{previous_run}'
-      ORDER BY prefix desc"
-    )
+      AND updated_at >= :previous_run
+      ORDER BY prefix desc",
+      {
+        nibble_length: RESPONSES_PREFIX_LENGTH * 2,
+        previous_run: previous_run
+      }
+    ])
     result.each do |site_banner_lookup|
       Cache::BrowserChannels::ResponsesForPrefix.perform_async(site_banner_lookup[:prefix])
     end

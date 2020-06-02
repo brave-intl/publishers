@@ -1,21 +1,10 @@
-begin
-  # Have to throw in a begin rescue block otherwise
-  # Zeitwerk::NameError (expected file $DIR/protos/channel_responses.rb to define constant ChannelResponses, but didn't)
-  # gets thrown.
-  require './protos/publisher_list'
-rescue
-end
-begin
-  require './protos/channel_responses'
-rescue
-end
-
 class Cache::BrowserChannels::PrefixList
   include Sidekiq::Worker
   sidekiq_options queue: :low, retry: false
 
   # Might need to adjust the value based on collision rate
   PREFIX_LENGTH = 4
+
   attr_reader :compression_type
 
   def initialize(compression_type: PublishersPb::PublisherList::CompressionType::BROTLI_COMPRESSION)
@@ -29,29 +18,38 @@ class Cache::BrowserChannels::PrefixList
     save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "prefixes")
     cleanup!(temp_file_path: temp_file)
 
-    temp_file = save_differential_file!
     date = Date.yesterday.strftime("%Y-%m-%d")
+    temp_file = save_differential_file!(date: date)
     save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "prefixes-#{date}") # 2020-05-17
     cleanup!(temp_file_path: temp_file)
   end
 
   def save_main_file!
-    result = ActiveRecord::Base.connection.execute("
-        SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH * 2})
+    result = SiteBannerLookup.find_by_sql(["
+        SELECT SUBSTRING(sha2_base16, 1, :nibble_length)
         FROM site_banner_lookups
-        WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}"
-    ).map { |r| r['substring'] }.sort!
+        WHERE wallet_status != :not_verified_wallet_state",
+        {
+          nibble_length: PREFIX_LENGTH * 2,
+          not_verified_wallet_state: PublishersPb::WalletConnectedState::NO_VERIFICATION
+        }
+    ]).map { |r| r['substring'] }.sort!
 
     to_protobuf_file(result)
   end
 
-  def save_differential_file!
-    result = ActiveRecord::Base.connection.execute("
-        SELECT SUBSTRING(sha2_base16, 1, #{PREFIX_LENGTH * 2})
+  def save_differential_file!(date:)
+    result = SiteBannerLookup.find_by_sql(["
+        SELECT SUBSTRING(sha2_base16, 1, :nibble_length)
         FROM site_banner_lookups
-        WHERE wallet_status != #{PublishersPb::WalletConnectedState::NO_VERIFICATION}
-        AND to_char(\"created_at\", 'YYYY-MM-DD') = '#{date}'"
-    ).map { |r| r['substring'] }.sort!
+        WHERE wallet_status != :not_verified_wallet_state
+        AND to_char(\"created_at\", 'YYYY-MM-DD') = :date",
+        {
+          nibble_length: PREFIX_LENGTH * 2,
+          not_verified_wallet_state: PublishersPb::WalletConnectedState::NO_VERIFICATION,
+          date: date
+        }
+    ]).map { |r| r['substring'] }.sort!
 
     to_protobuf_file(result)
   end

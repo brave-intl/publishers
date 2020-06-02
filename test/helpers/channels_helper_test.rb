@@ -2,13 +2,14 @@ require 'test_helper'
 
 class PublishersHelperTest < ActionView::TestCase
   test "channel_verification_status" do
-    publisher = publishers(:default)
     channel = channels(:new_site)
 
     assert_equal 'incomplete', channel_verification_status(channel)
 
     channel.verification_failed!('token_not_found_public_file')
     assert_equal 'failed', channel_verification_status(channel)
+
+    SiteChannelDomainSetter.new(channel_details: channel.details).perform
 
     channel.verification_succeeded!(false)
     assert_equal 'verified', channel_verification_status(channel)
@@ -45,6 +46,7 @@ class PublishersHelperTest < ActionView::TestCase
     channel.verification_failed!("no_https")
     assert_equal t("helpers.channels.verification_failure_explanation.no_https"), failed_verification_details(channel)
 
+    SiteChannelDomainSetter.new(channel_details: channel.details).perform
     channel.verification_succeeded!(false)
     assert_equal t("helpers.channels.verification_failure_explanation.generic"), failed_verification_details(channel)
   end

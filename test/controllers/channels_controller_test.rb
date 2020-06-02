@@ -101,6 +101,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
         '"details":"We could not find TXT records in your domain\'s DNS records. ', # This is I18n.t("helpers.channels.verification_failure_explanation.no_txt_records")
       response.body)
 
+    SiteChannelDomainSetter.new(channel_details: channel.details).perform
     channel.verification_succeeded!(false)
 
     get(verification_status_channel_path(channel), headers: { 'HTTP_ACCEPT' => "application/json" })

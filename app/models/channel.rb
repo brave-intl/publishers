@@ -276,7 +276,7 @@ class Channel < ApplicationRecord
 
   def update_site_banner_lookup!(skip_site_banner_info_lookup: false)
     site_banner_lookup = SiteBannerLookup.find_or_initialize_by(
-      channel_identifier: details&.channel_identifier || details.brave_publisher_id,
+      channel_identifier: details&.channel_identifier,
     )
     site_banner_lookup.set_sha2_base16
     site_banner_lookup.set_wallet_status(publisher: publisher)
@@ -286,7 +286,7 @@ class Channel < ApplicationRecord
       else
         site_banner&.non_default_properties || publisher&.default_site_banner&.non_default_properties || {}
       end
-    site_banner_lookup.update(
+    site_banner_lookup.update!(
       channel_id: id,
       publisher_id: publisher_id,
       wallet_address: publisher&.uphold_connection&.address
