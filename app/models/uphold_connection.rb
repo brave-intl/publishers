@@ -50,6 +50,7 @@ class UpholdConnection < ActiveRecord::Base
 
   # If the user became KYC'd let's create the uphold card for them
   after_save :create_uphold_cards, if: -> { saved_change_to_is_member? && uphold_verified? }
+  after_save :update_site_banner_lookup!, if: -> { saved_change_to_is_member? }
 
   # publishers that have access params that havent accepted by eyeshade
   # can be cleared after 2 hours
@@ -181,6 +182,10 @@ class UpholdConnection < ActiveRecord::Base
       uphold_id: uphold_information.id,
       country: uphold_information.country
     )
+  end
+
+  def update_site_banner_lookup!
+    publisher.update_site_banner_lookup!
   end
 
   def japanese_account?

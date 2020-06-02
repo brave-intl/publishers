@@ -127,6 +127,7 @@ GEM
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
     brakeman (4.8.2)
+    brotli (0.2.3)
     browser (4.1.0)
     builder (3.2.4)
     bullet (6.1.0)
@@ -189,6 +190,7 @@ GEM
       raabro (~> 1.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    google-protobuf (3.12.0)
     hashdiff (1.0.1)
     hashie (4.1.0)
     highline (2.0.3)
@@ -529,6 +531,7 @@ DEPENDENCIES
   binding_of_caller
   bootstrap (>= 4.3.1)
   brakeman
+  brotli (~> 0.2.3)
   browser
   bullet
   bundler-audit
@@ -542,6 +545,7 @@ DEPENDENCIES
   e2mmap
   faraday (~> 0.17.3)
   font-awesome-rails (~> 4.7.0.4)
+  google-protobuf (~> 3.12.0)
   i18n-tasks (~> 0.9.12)
   listen (~> 3.2)
   lograge (~> 0.4)

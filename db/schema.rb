@@ -465,6 +465,22 @@ ActiveRecord::Schema.define(version: 2020_05_28_233021) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "site_banner_lookups", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.text "sha2_base16", null: false
+    t.jsonb "derived_site_banner_info", null: false
+    t.text "channel_identifier", null: false
+    t.uuid "channel_id", null: false
+    t.uuid "publisher_id", null: false
+    t.uuid "wallet_address"
+    t.integer "wallet_status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["channel_id"], name: "index_site_banner_lookups_on_channel_id"
+    t.index ["channel_identifier"], name: "index_site_banner_lookups_on_channel_identifier"
+    t.index ["publisher_id"], name: "index_site_banner_lookups_on_publisher_id"
+    t.index ["sha2_base16"], name: "index_site_banner_lookups_on_sha2_base16"
+  end
+
   create_table "site_banners", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.bigint "legacy_id"
     t.uuid "publisher_id", null: false

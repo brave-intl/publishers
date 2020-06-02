@@ -15,8 +15,8 @@ verified_default_banner: &verified_default_banner
   default_donation: 5
 
 verified_channel_banner: &verified_channel_banner
-  id: "00000000-0000-0000-0000-000000000006"
   publisher: verified
+  channel: verified
   title: "Channel Banner"
   description: "Lorem Ipsum"
   donation_amounts: [1, 10, 100]
@@ -24,7 +24,6 @@ verified_channel_banner: &verified_channel_banner
 
 second:
   publisher: default
-  channel_id: "00000000-0000-0000-0000-000000000002"
   title: "Hello World"
   description: "Lorem Ipsum"
   donation_amounts: [1, 10, 100]
@@ -32,6 +31,7 @@ second:
 
 completed:
   publisher: completed
+  channel: completed
   title: "Hello World"
   description: "Lorem Ipsum"
   donation_amounts: [1, 10, 100]
