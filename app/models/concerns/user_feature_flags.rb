@@ -12,7 +12,7 @@ module UserFeatureFlags
     WIRE_ONLY,
     INVOICE,
     MERCHANT,
-    REFERRAL_KYC_REQUIRED
+    REFERRAL_KYC_REQUIRED,
   ].freeze
 
   included do
@@ -24,7 +24,7 @@ module UserFeatureFlags
     #
     # This scope would return all the publishers who have that flag enabled.
     VALID_FEATURE_FLAGS.each do |flag|
-      scope flag, -> { where(feature_flags: { flag => true}) }
+      scope flag, -> { where(feature_flags: { flag => true }) }
     end
   end
 

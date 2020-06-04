@@ -32,7 +32,7 @@ class PromoRegistration < ApplicationRecord
 
   # Restricting the following countries from entering the referral program
   # Vietnam, Russia, Indonesia, China, Ukraine
-  RESTRICTED_COUNTRIES = ['VN', 'RU', 'ID', 'CN', 'UA']
+  RESTRICTED_COUNTRIES = ['VN', 'RU', 'ID', 'CN', 'UA'].freeze
 
   belongs_to :channel, validate: true, autosave: true
   belongs_to :promo_campaign

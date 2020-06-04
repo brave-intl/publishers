@@ -135,8 +135,6 @@ class Publishers::PromoRegistrationsController < ApplicationController
     }
   end
 
-  private
-
   def require_promo_running
     redirect_to promo_registrations_path, action: "index" unless promo_running?
   end

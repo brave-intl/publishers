@@ -31,7 +31,7 @@ class Payout::PotentialPayment::UpholdService < BaseService
     # Create the referral payment for the owner
     if @publisher.promo_registrable?
       potential_payments << PotentialPayment.new(
-        payout_report_id: @payout_report.id,
+        payout_report_id: @payout_report&.id,
         name: @publisher.name,
         amount: "#{probi}",
         fees: "0",
@@ -56,7 +56,7 @@ class Payout::PotentialPayment::UpholdService < BaseService
       total_probi += probi
 
       potential_payments << PotentialPayment.new(
-        payout_report_id: @payout_report.id,
+        payout_report_id: @payout_report&.id,
         name: "#{channel.publication_title}",
         amount: "#{probi}",
         fees: "#{fee_probi}",
@@ -79,7 +79,7 @@ class Payout::PotentialPayment::UpholdService < BaseService
     end
 
     unless should_only_notify?
-      potential_payments.each(&:save!)
+      potential_payments.each(&:save)
     end
 
     # Notify publishers that have money waiting, but will not will not receive funds
