@@ -38,12 +38,12 @@ class Admin::UnattachedPromoRegistrationsController < AdminController
   end
 
   def report
-    referral_codes = if params[:use_campaign]
-      PromoRegistration.joins(:promo_campaign).where(promo_campaigns: { name: params[:filter] }).pluck(:referral_code)
-
-    else
-      params[:referral_codes]
-    end
+    referral_codes =
+      if params[:use_campaign]
+        PromoRegistration.joins(:promo_campaign).where(promo_campaigns: { name: params[:filter] }).pluck(:referral_code)
+      else
+        params[:referral_codes]
+      end
 
     break_down_by_country = params[:geo].present?
     start_date, end_date = parse_report_dates
