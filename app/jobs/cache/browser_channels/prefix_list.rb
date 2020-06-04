@@ -15,12 +15,12 @@ class Cache::BrowserChannels::PrefixList
     # We only care about first PREFIX_LENGTH number of nibbles of the prefix.
     # Don't waste memory reading excess
     temp_file = save_main_file!
-    save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "publishers/prefixes")
+    save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "publishers/prefix-list")
     cleanup!(temp_file_path: temp_file)
 
     date = Date.yesterday.strftime("%Y-%m-%d")
     temp_file = save_differential_file!(date: date)
-    save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "publishers/prefixes-#{date}") # 2020-05-17
+    save_to_s3!(temp_file_path: temp_file.path, save_to_filename: "publishers/prefix-list-#{date}") # 2020-05-17
     cleanup!(temp_file_path: temp_file)
   end
 

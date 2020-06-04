@@ -2,7 +2,7 @@ class Cache::BrowserChannels::ResponsesForPrefix
   include Sidekiq::Worker
   sidekiq_options queue: :low, retry: false
 
-  PATH = "channels/prefix/".freeze
+  PATH = "publishers/prefixes/".freeze
   PADDING_WORD = "P".freeze
 
   attr_accessor :site_banner_lookups, :channel_responses, :temp_file
