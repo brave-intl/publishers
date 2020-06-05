@@ -1,9 +1,9 @@
 inherit_from:
   - .rubocop_airbnb.yml
 
-AlignParameters:
+Layout/AlignParameters:
   Enabled: false
-Documentation:
+Style/Documentation:
   Enabled: false
 AllCops:
   Include:
@@ -33,7 +33,7 @@ AllCops:
     - bin/**/*
     - db/**/*
     - vendor/**/*
-LineLength:
+Metrics/LineLength:
   Max: 400
 Airbnb/SimpleModifierConditional:
   Enabled: false
