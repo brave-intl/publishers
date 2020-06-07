@@ -346,12 +346,12 @@ class Publisher < ApplicationRecord
     PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country)
   end
 
-  def promo_registrable?
+  def may_register_promo?
     # If the user doesn't have the referral_kyc_flag on then we can register them still.
     return true unless referral_kyc_required?
 
     # Otherwise they must be brave payable and from a valid country
-    (brave_payable? && valid_promo_country?) || (promo_expiration_time.present? && promo_not_expired?)
+    brave_payable? && valid_promo_country?
   end
 
   private

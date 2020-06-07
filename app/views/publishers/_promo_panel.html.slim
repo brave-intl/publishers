@@ -7,7 +7,7 @@
         #promo-referring-fans= t("promo.activate.sub_header_two")
 
       .promo-panel-item.promo-panel-item-button
-        - if @publisher.promo_registrable?
+        - if @publisher.may_register_promo?
           = link_to t("promo.activate.button-dashboard").upcase, promo_registrations_path, class: 'btn btn-primary', id: "activate-promo-dashboard-button"
         - elsif !@publisher.valid_promo_country?
           .promo-panel-item-alert
@@ -26,7 +26,7 @@
           == t("promo.dashboard.violation")
 
 - elsif current_publisher.has_verified_channel?
-  - if @publisher.promo_registrable? && @publisher.promo_not_expired?
+  - if @publisher.may_register_promo? && @publisher.promo_not_expired?
     .col class="#{current_publisher.no_grants? ? 'col-md-5 mb-4' : 'mb-4' }"
       .promo-panel.h-100
         .h-100
