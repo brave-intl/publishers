@@ -7,7 +7,7 @@
         #promo-referring-fans= t("promo.activate.sub_header_two")
 
       .promo-panel-item.promo-panel-item-button
-        - if @publisher.may_register_promo?
+        - if @publisher.may_register_promo? && @publisher.promo_not_expired?
           = link_to t("promo.activate.button-dashboard").upcase, promo_registrations_path, class: 'btn btn-primary', id: "activate-promo-dashboard-button"
         - elsif !@publisher.valid_promo_country?
           .promo-panel-item-alert

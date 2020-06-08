@@ -29,7 +29,7 @@ class Payout::PotentialPayment::UpholdService < BaseService
     total_probi = probi
 
     # Create the referral payment for the owner
-    if @publisher.may_register_promo?
+    if @publisher.may_register_promo? && @publisher.promo_not_expired?
       potential_payments << PotentialPayment.new(
         payout_report_id: @payout_report&.id,
         name: @publisher.name,

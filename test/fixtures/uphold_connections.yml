@@ -1,5 +1,20 @@
 <% salt = SecureRandom.random_bytes(12) %>
 
+base_verified_connection: &base_verified_connection
+  uphold_verified: true
+  default_currency: BAT
+  is_member: true
+  uphold_id: <%= SecureRandom.uuid %>
+  address: <%= SecureRandom.uuid %>
+  status: "ok"
+  send_emails: 2019-01-01
+  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
+    { scope: 'cards:write' }.to_json,
+    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
+    iv: salt
+  ) %>"
+  encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
+
 unconnected:
   created_at: 2019-01-01
   publisher: completed
@@ -97,19 +112,9 @@ basic_connection:
   encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 details_connection:
-  uphold_verified: true
+  <<: *base_verified_connection
   publisher: uphold_connected_details
   default_currency: "USD"
-  is_member: true
-  address: "abcdabcd-0000-0000-0000-abcd00000006"
-  status: "ok"
-  uphold_id: 7946e100-8abf-4361-b50b-240bbe5511dc
-  encrypted_uphold_access_parameters:  "<%= TotpRegistration.encrypt_secret(
-    { scope: 'cards:write' }.to_json,
-    key: Rails.application.secrets[:attr_encrypted_key].byteslice(0, 32),
-    iv: salt
-  ) %>"
-  encrypted_uphold_access_parameters_iv: "<%= Base64.encode64(salt) %>"
 
 blocked_connection:
   status: blocked
@@ -156,3 +161,12 @@ unprompted_connection:
   created_at: 2019-01-01
   publisher: unprompted
   address: "abcdabcd-0000-0000-0000-abcd00000009"
+
+promo_connection:
+  <<: *base_verified_connection
+  publisher: promo_not_registered
+  country: "VN"
+
+promo_lockout_connection:
+  <<: *base_verified_connection
+  publisher: promo_lockout

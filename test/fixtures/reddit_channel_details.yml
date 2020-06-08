@@ -1,4 +1,4 @@
-reddit_details:
+reddit_details: &reddit_details
   reddit_channel_id: "12345678"
   auth_provider: "register_reddit_channel"
   name: "Reddit New"
@@ -7,3 +7,9 @@ reddit_details:
   channel_url: "https://reddit.com/user/user12345678"
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+
+promo_reddit_details:
+  <<: *reddit_details
+
+promo_lockout_reddit_details:
+  <<: *reddit_details
