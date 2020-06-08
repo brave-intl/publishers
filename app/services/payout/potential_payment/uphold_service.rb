@@ -79,7 +79,16 @@ class Payout::PotentialPayment::UpholdService < BaseService
     end
 
     unless should_only_notify?
-      potential_payments.each(&:save)
+      potential_payments.each do |payment|
+        unless payment.save
+          # If the payment couldn't save then we created a PayoutMessage
+          PayoutMessage.create(
+            payout_report: @payout_report,
+            publisher: @publisher,
+            message: "Could not save the potential_payment: #{payment.errors&.full_messages&.join(', ')}"
+          )
+        end
+      end
     end
 
     # Notify publishers that have money waiting, but will not will not receive funds
