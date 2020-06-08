@@ -3,7 +3,7 @@ require 'webmock/minitest'
 
 class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
   test "sets uphold_access_parameters and schedules new UploadUpholdAccessParametersJob on success" do
-    uphold_connection = publishers(:verified).uphold_connection
+    uphold_connection = publishers(:default).uphold_connection
     uphold_connection.uphold_code = "foo"
     uphold_connection.uphold_access_parameters = nil
     uphold_connection.save!
@@ -15,7 +15,7 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
   end
 
   test "clears uphold_code on invalid_grant" do
-    publisher = publishers(:verified)
+    publisher = publishers(:default)
     publisher.uphold_connection.uphold_code = "foo"
     publisher.uphold_connection.uphold_access_parameters = nil
     publisher.uphold_connection.save!
@@ -33,7 +33,7 @@ class ExchangeUpholdCodeForAccessTokenJobTest < ActiveJob::TestCase
   end
 
   test "preserves uphold_code on other errors" do
-    publisher = publishers(:verified)
+    publisher = publishers(:default)
     publisher.uphold_connection.uphold_code = "foo"
     publisher.uphold_connection.uphold_access_parameters = nil
     publisher.uphold_connection.save!
