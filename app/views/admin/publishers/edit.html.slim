@@ -2,12 +2,6 @@
 
 #publisher
   #publisher-section
-    - if flash[:notice]
-      .alert.alert-success role="alert"
-        = flash[:notice]
-    - if flash[:alert]
-      .alert.alert-danger role="alert"
-        = flash[:alert]
     h4.m-0.p-0 Settings
     p Toggle settings on or off for this publisher.
 
@@ -39,7 +33,7 @@
       .form-group.border-bottom.pb-2
         label
           = "Promo Expiration Date"
-        = date_field_tag('publisher[promo_expiration_time]', @publisher.promo_expiration_time&.strftime("%Y-%m-%d"), class: 'ml-2')
+        = f.date_field(UserFeatureFlags::PROMO_EXPIRATION_TIME, value: @publisher.feature_flags[UserFeatureFlags::PROMO_EXPIRATION_TIME.to_s], class: 'ml-2')
         p.text-dark Sets the date when the publishers promo codes will no longer be active.
 
       .form-group
