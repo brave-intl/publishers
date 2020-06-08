@@ -10,6 +10,8 @@ reddit_details: &reddit_details
 
 promo_reddit_details:
   <<: *reddit_details
+  reddit_channel_id: <%= SecureRandom.rand(10 ** 10).to_s.rjust(10, '0'))
 
 promo_lockout_reddit_details:
   <<: *reddit_details
+  reddit_channel_id: <%= SecureRandom.rand(10 ** 10).to_s.rjust(10, '0'))
