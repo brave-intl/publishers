@@ -44,7 +44,7 @@ export default {
         number: "2",
         title: "Connect wallet services",
       },
-      title: "Weclome to Brave Rewards",
+      title: "Welcome to Brave Rewards",
     }
   },
   installs: "Installs",
