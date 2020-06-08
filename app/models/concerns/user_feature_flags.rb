@@ -3,7 +3,7 @@ module UserFeatureFlags
   WIRE_ONLY = :wire_only
   INVOICE = :invoice
   MERCHANT = :merchant
-  PROMO_EXPIRATION_TIME = :promo_expiration_time
+  PROMO_LOCKOUT_TIME = :promo_lockout_time
   # This flag will be set to "true" for all new publishers.
   # It enforces KYC to be present in order to create a new promo code
   REFERRAL_KYC_REQUIRED = :referral_kyc_required
@@ -13,7 +13,7 @@ module UserFeatureFlags
     INVOICE,
     MERCHANT,
     REFERRAL_KYC_REQUIRED,
-    PROMO_EXPIRATION_TIME,
+    PROMO_LOCKOUT_TIME,
   ].freeze
 
   included do
@@ -67,7 +67,7 @@ module UserFeatureFlags
     !referral_kyc_required?
   end
 
-  def promo_expiration_time
-    feature_flags.symbolize_keys[PROMO_EXPIRATION_TIME]
+  def promo_lockout_time
+    feature_flags.symbolize_keys[PROMO_LOCKOUT_TIME]
   end
 end

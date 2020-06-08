@@ -32,10 +32,10 @@
         .h-100
           .promo-flex-col#react-promo-panel data-props={publisherId: @current_publisher.id}.to_json
           = javascript_pack_tag('referrals/ReferralPanel')
-          - if @publisher.promo_expiration_time.present?
+          - if @publisher.promo_lockout_time.present?
             .promo-panel-item.promo-panel-item-alert
               #promo-panel-alert
-                = t('promo.dashboard.expiration', time: distance_of_time_in_words_to_now(@publisher.promo_expiration_time))
+                = t('promo.dashboard.expiration', time: distance_of_time_in_words_to_now(@publisher.promo_lockout_time))
 
 
 - else

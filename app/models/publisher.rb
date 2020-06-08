@@ -255,7 +255,7 @@ class Publisher < ApplicationRecord
   end
 
   def promo_expired?
-    return promo_expiration_time < DateTime.now if promo_expiration_time.present?
+    return promo_lockout_time < DateTime.now if promo_lockout_time.present?
     false
   end
 

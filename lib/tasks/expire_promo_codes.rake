@@ -7,11 +7,12 @@ task :expire_promo_codes => :environment do
 
   puts "Updating #{publishers.count}"
 
-  updated = publishers.update(promo_expiration_time: 60.days.from_now)
-  if updated
-    puts 'Successfully updated'
-  else
-    puts 'Could not update the publishers. Try again later?'
+
+  publishers.find_each do |publisher|
+    publisher.feature_flags[UserFeatureFlags::PROMO_LOCKOUT_TIME] = 60.days.from_now
+    unless publisher.save
+      puts "Could not update the publisher #{publisher.id}. Try again later?"
+    end
   end
 
   puts "Done"

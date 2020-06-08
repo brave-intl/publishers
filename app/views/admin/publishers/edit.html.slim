@@ -33,7 +33,7 @@
       .form-group.border-bottom.pb-2
         label
           = "Promo Expiration Date"
-        = f.date_field(UserFeatureFlags::PROMO_EXPIRATION_TIME, value: @publisher.feature_flags[UserFeatureFlags::PROMO_EXPIRATION_TIME.to_s], class: 'ml-2')
+        = f.date_field(UserFeatureFlags::PROMO_LOCKOUT_TIME, value: @publisher.feature_flags[UserFeatureFlags::PROMO_LOCKOUT_TIME.to_s], class: 'ml-2')
         p.text-dark Sets the date when the publishers promo codes will no longer be active.
 
       .form-group
