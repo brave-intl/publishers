@@ -28,10 +28,6 @@
     cron: "0 */12 * * *"
     description: "Syncs referral stats for unattached codes every 12 hours."
     queue: low
-  CacheBrowserChannelsJsonJob:
-    cron: "0 3 * * *"
-    description: "Refreshes the redis cache for browser channel json"
-    queue: heavy
   CacheBrowserChannelsJsonJobV2:
     cron: "0 8 * * *"
     description: "Refreshes the redis cache for browser channel json V2"
@@ -55,6 +51,10 @@
     cron: "50 2 * * *"
     description: "Refreshes the redis cache for eyeshade stats information"
     queue: scheduler
+  Cache::BrowserChannels::Main:
+    cron: "0 */2 * * *"
+    description: "Syncs V4 channels list"
+    queue: heavy
   EnqueuePublishersForPayoutJob:
     cron: "0 0 1 * *"
     description: "Generates the list of unsettled transactions on the first of every month"

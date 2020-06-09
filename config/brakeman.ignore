@@ -10,7 +10,19 @@
       "line": 28,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
       "code": "qr_code_svg(TotpRegistration.new(:secret => ROTP::Base32.random_base32).totp.provisioning_uri(current_publisher.email))",
-      "render_path": [{"type":"controller","class":"TotpRegistrationsController","method":"new","line":12,"file":"app/controllers/totp_registrations_controller.rb"}],
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "TotpRegistrationsController",
+          "method": "new",
+          "line": 12,
+          "file": "app/controllers/totp_registrations_controller.rb",
+          "rendered": {
+            "name": "totp_registrations/new",
+            "file": "app/views/totp_registrations/new.html.slim"
+          }
+        }
+      ],
       "location": {
         "type": "template",
         "template": "totp_registrations/new"
@@ -20,6 +32,6 @@
       "note": "To set an email address in the publishers database the email must be validated first, thus manipulation of provisioning_uri is mitigated."
     }
   ],
-  "updated": "2018-05-22 13:44:33 -0400",
-  "brakeman_version": "4.3.0"
+  "updated": "2020-05-27 16:32:15 -0700",
+  "brakeman_version": "4.8.2"
 }

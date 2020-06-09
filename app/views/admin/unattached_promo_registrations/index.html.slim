@@ -147,5 +147,9 @@
               label
                 . Break down by country
                 = check_box_tag "geo", nil, false, class: 'mr-2'
+            .mx-3.d-flex.align-items-center
+              label
+                . Download on campaign(s)
+                = check_box_tag "use_campaign", nil, false, class: 'mr-2'
             .ml-auto.align-self-flex-end
               = submit_tag "Download", id: "download-referral-reports", class: "btn btn-primary", data: { disable_with: false }

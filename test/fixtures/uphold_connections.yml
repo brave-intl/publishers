@@ -24,6 +24,7 @@ youtube_initial_connection:
 verified_connection:
   publisher: verified
   is_member: true
+  uphold_verified: true
   address: "abcdabcd-0000-0000-0000-abcd00000002"
 
 default_connection:
