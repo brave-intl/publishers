@@ -1,19 +1,13 @@
-FROM ruby:2.4.5
+FROM ruby:2.7.1
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
 
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs libxml2 iceweasel xvfb fonts-liberation \
- libappindicator3-1 libnspr4 libnss3 libxss1 xdg-utils gdb chromium chromium-l10n
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+RUN node --version
+RUN npm --version
 
-# Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
-
-# Symlink google-chrome to chrome so our tests can find it
-RUN ln -sf /usr/bin/google-chrome /usr/bin/chrome
-
-RUN gem install bundler foreman mailcatcher
+RUN gem install bundler
 RUN npm install -g yarn
 
 # Enabling app reloading based off of https://stackoverflow.com/questions/37699573/rails-app-in-docker-container-doesnt-reload-in-development
@@ -45,4 +39,12 @@ RUN bundle install
 COPY . .
 RUN bundle install
 
-RUN yarn
+RUN yarn install
+
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE 3000
+
+# Start the main process.
+CMD ["rails", "server", "-b", "0.0.0.0"]
