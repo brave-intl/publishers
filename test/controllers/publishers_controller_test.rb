@@ -608,7 +608,6 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
     assert login
     assert_equal login.user_agent, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
     assert_equal login.accept_language, "en-US,en;q=0.9"
-    assert login.browser.chrome?
   end
 
   test "#confirm_default_currency redirects publisher w/o cards:write to uphold if confirmed a not available currency" do

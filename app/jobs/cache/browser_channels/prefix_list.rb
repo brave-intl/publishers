@@ -27,11 +27,9 @@ class Cache::BrowserChannels::PrefixList
   def save_main_file!
     result = SiteBannerLookup.find_by_sql(["
         SELECT SUBSTRING(sha2_base16, 1, :nibble_length)
-        FROM site_banner_lookups
-        WHERE wallet_status != :not_verified_wallet_state",
+        FROM site_banner_lookups",
         {
           nibble_length: PREFIX_LENGTH * 2,
-          not_verified_wallet_state: PublishersPb::WalletConnectedState::NO_VERIFICATION
         }
     ]).map { |r| r['substring'] }.sort!
 
@@ -42,11 +40,9 @@ class Cache::BrowserChannels::PrefixList
     result = SiteBannerLookup.find_by_sql(["
         SELECT SUBSTRING(sha2_base16, 1, :nibble_length)
         FROM site_banner_lookups
-        WHERE wallet_status != :not_verified_wallet_state
-        AND to_char(\"created_at\", 'YYYY-MM-DD') = :date",
+        WHERE to_char(\"created_at\", 'YYYY-MM-DD') = :date",
         {
           nibble_length: PREFIX_LENGTH * 2,
-          not_verified_wallet_state: PublishersPb::WalletConnectedState::NO_VERIFICATION,
           date: date
         }
     ]).map { |r| r['substring'] }.sort!
