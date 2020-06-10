@@ -11,7 +11,7 @@ gem "activejob-traffic_control"
 gem "active_model_serializers", "~> 0.10.0"
 
 # ActiveRecord Session store for server side storage of session data
-gem 'activerecord-session_store'
+gem 'activerecord-session_store', '~> 1.1', '>= 1.1.3'
 
 # Allowing for URI templates, for HTTP clients
 gem 'addressable', '~> 2.6'
@@ -27,20 +27,15 @@ gem 'aws-sdk-s3', require: false
 
 gem "bootstrap", ">= 4.3.1"
 
-# browser details
-gem 'browser'
-
 gem 'brotli', "~> 0.2.3"
 
 # Authorization
-gem 'cancancan'
+gem 'cancancan',  "~> 3.1.0"
 
 # Authentication
 gem "devise", "~> 4.7.1"
 
 gem "dnsruby", "~> 1.60.0", require: false
-
-gem 'e2mmap'
 
 # HTTP library wrapper
 gem "faraday", "~> 0.17.3"
@@ -53,13 +48,13 @@ gem 'google-protobuf', "~> 3.12.0"
 gem "lograge", "~> 0.4"
 
 # Dependency for rails
-gem "nokogiri"
+gem "nokogiri", "~> 1.10.9"
 
 # Open Graph tag
-gem "meta-tags"
+gem "meta-tags", "~> 2.13.0"
 
 # Image conversion library
-gem 'mini_magick'
+gem 'mini_magick', "~> 4.10.1"
 
 gem "newrelic_rpm", "~> 6.7.0.359"
 
@@ -68,19 +63,19 @@ gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 gem "omniauth-google-oauth2", "~> 0.8.0"
 
 # Oauth client for twitch
-gem "omniauth-twitch"
+gem "omniauth-twitch", "~> 1.1.0"
 
 # Oauth client for twitter
-gem "omniauth-twitter"
+gem "omniauth-twitter", "~> 1.4.0"
 
 # OAuth client for Vimeo
-gem "omniauth-vimeo"
+gem "omniauth-vimeo", "~> 2.0.1"
 
 # OAuth client for Reddit
 gem 'omniauth-reddit', :git => 'https://github.com/dlipeles/omniauth-reddit.git', :branch => "master"
 
 # OAuth client for GitHub
-gem "omniauth-github"
+gem "omniauth-github", "~> 1.4.0"
 
 # Model record auditing
 gem "paper_trail", "~> 10.3.1"
@@ -118,20 +113,18 @@ gem "rqrcode", "~> 0.10"
 gem "sass-rails", "~> 5.0"
 
 # Sendgrid mail service
-gem "sendgrid-ruby"
+gem "sendgrid-ruby", "~> 6.2.1"
 
 # Exception logging
 gem "sentry-raven", "~> 2.11.2", require: false
 
 # Async job processing
-gem "sidekiq"
+gem "sidekiq", "~> 6.0.7"
 
-gem "sidekiq-scheduler", "~> 2.2.2"
+gem "sidekiq-scheduler", "~> 3.0.1"
 
 # slim for view templates
 gem "slim-rails", "~> 3.1"
-
-gem 'thwait'
 
 # U2F for 2-factor auth
 gem "u2f", "~> 1.0"
@@ -145,10 +138,10 @@ gem 'webpacker', '~> 4.0.7'
 gem "will_paginate"
 
 # YouTube API client
-gem 'yt'
+gem 'yt', "~> 0.33.0"
 
 gem "zeitwerk", '~> 2.3.0'
-gem "zendesk_api"
+gem "zendesk_api", "~> 1.26.0"
 
 group :development do
   gem "better_errors"
