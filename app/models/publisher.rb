@@ -62,7 +62,7 @@ class Publisher < ApplicationRecord
 
   validates :promo_token_2018q1, uniqueness: true, allow_nil: true
 
-  before_create :build_default_channel
+  before_create :build_default_channel, :set_default_features
   before_destroy :dont_destroy_publishers_with_channels
 
   scope :by_email_case_insensitive, -> (email_to_find) { where('lower(publishers.email) = :email_to_find', email_to_find: email_to_find&.downcase) }
@@ -245,13 +245,18 @@ class Publisher < ApplicationRecord
   end
 
   def promo_status(promo_running)
-    if !promo_running
+    if !promo_running || promo_lockout_time_passed?
       :over
     elsif promo_enabled_2018q1
       :active
     else
       :inactive
     end
+  end
+
+  def promo_lockout_time_passed?
+    return promo_lockout_time < DateTime.now if promo_lockout_time.present?
+    false
   end
 
   def has_verified_channel?
@@ -329,7 +334,36 @@ class Publisher < ApplicationRecord
     locale == 'ja'
   end
 
+  def brave_payable?
+    paypal_connection&.verified_account || uphold_connection&.payable?
+  end
+
+  def country
+    provider_country = uphold_connection&.country || paypal_connection&.country
+
+    provider_country.to_s.upcase
+  end
+
+  def valid_promo_country?
+    PromoRegistration::RESTRICTED_COUNTRIES.exclude?(country)
+  end
+
+  def may_register_promo?
+    # If the user doesn't have the referral_kyc_flag on then we can register them still.
+    return true unless referral_kyc_required?
+
+    # Otherwise they must be brave payable and from a valid country
+    brave_payable? && valid_promo_country?
+  end
+
   private
+
+  # Internal: Sets the default feature flags for an account
+  #
+  # Returns true
+  def set_default_features
+    feature_flags[UserFeatureFlags::REFERRAL_KYC_REQUIRED] = true
+  end
 
   def set_created_status
     created_publisher_status_update = PublisherStatusUpdate.new(publisher: self, status: "created")

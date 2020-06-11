@@ -139,6 +139,14 @@ class UpholdConnection < ActiveRecord::Base
     end
   end
 
+  def unconnected?
+    uphold_status == UpholdAccountState::UNCONNECTED
+  end
+
+  def payable?
+    uphold_status == UpholdAccountState::VERIFIED && status == OK
+  end
+
   def can_create_uphold_cards?
     uphold_verified? &&
       uphold_access_parameters.present? &&

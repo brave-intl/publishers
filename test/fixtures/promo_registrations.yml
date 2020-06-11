@@ -28,3 +28,10 @@ browser_user_registration:
   referral_code: BRO001
   publisher: browser_user
   promo_campaign: peer_to_peer_campaign
+
+promo_not_registered:
+  kind: channel
+  promo_id: 1
+  referral_code: PRO321
+  channel: reddit_promo_registered
+  publisher: promo_not_registered

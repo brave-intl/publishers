@@ -69,7 +69,7 @@ class Admin::PublishersController < AdminController
     @publisher.update(update_params)
     @publisher.update_feature_flags_from_form(update_feature_flag_params)
 
-    redirect_to admin_publisher_path(@publisher)
+    redirect_to admin_publisher_path(@publisher), flash: { notice: "Saved successfully" }
   end
 
   def destroy

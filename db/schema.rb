@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2020_05_28_233021) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
