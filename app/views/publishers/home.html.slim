@@ -23,6 +23,8 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
 
 = hidden_field_tag 'publisher_id', @publisher.id
 
+#welcomeModal data-props="#{ { isOpen: new_publisher?(@publisher) }.to_json }"
+= javascript_pack_tag "WelcomeModal"
 
 .dashboard
 
@@ -35,7 +37,7 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
         .balance-panel.align-items-center
           .row
             .col
-              .balance.px-4.pt-4
+              .balance.pt-4
                 .bat-logo#bat-logo
                   = image_tag("bat-logo@2x.png", class: "", width: 60, height: 60)
                 .amounts
@@ -115,7 +117,11 @@ script type="text/html" id="confirm_default_currency_modal_wrapper"
             = t ".add_channel_cta"
 
     / Don't show if none of the promo registrations has a valid stat
-    - if !@publisher.only_user_funds? && @publisher.promo_registrations.present? && @publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present?
+    - if !@publisher.only_user_funds? \
+        && @publisher.promo_registrations.present? \
+        && @publisher.promo_registrations.has_stats.select { |promo_registration| promo_registration.stats_by_date.present? }.present? \
+        && @publisher.may_register_promo? \
+        && !@publisher.promo_lockout_time_passed?
       = render "publishers/referral_charts", current_publisher: @publisher
 
     - @publisher.channels.visible.each do |channel|
