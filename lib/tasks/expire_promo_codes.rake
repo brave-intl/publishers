@@ -1,5 +1,3 @@
-require 'pry'
-
 task :expire_promo_codes => :environment do
   puts "Expiring promo codes for the following countries"
 
