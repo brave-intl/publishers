@@ -296,7 +296,7 @@ class Channel < ApplicationRecord
   private
 
   def should_register_channel_for_promo
-    return false unless publisher.may_register_promo? && publisher.promo_not_expired?
+    return false unless publisher.may_register_promo? && publisher.no_promo_lockout?
 
     promo_running = Rails.application.secrets[:active_promo_id].present? # Could use PromosHelper#active_promo_id
     publisher_enabled_promo = publisher.promo_enabled_2018q1?

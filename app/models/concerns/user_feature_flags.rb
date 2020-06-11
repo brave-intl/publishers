@@ -33,10 +33,6 @@ module UserFeatureFlags
         value = ActiveModel::Type::Boolean.new.cast(value)
       end
 
-      puts '🐱🐱🐱🐱🐱🐱🐱🐱🐱🐱'
-      puts flag_param_key
-      puts feature_flags[flag_param_key]
-
       if value.present?
         feature_flags[flag_param_key] = value
       else

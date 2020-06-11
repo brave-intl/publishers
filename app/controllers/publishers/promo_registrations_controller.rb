@@ -144,9 +144,9 @@ class Publishers::PromoRegistrationsController < ApplicationController
   end
 
   def validate_publisher!
-    return if user.referral_kyc_not_required? && user.promo_not_expired?
+    return if user.referral_kyc_not_required? && user.no_promo_lockout?
 
-    redirect_to root_path, flash: { alert: I18n.t('promo.dashboard.ineligible') } unless user.may_register_promo? && user.promo_not_expired?
+    redirect_to root_path, flash: { alert: I18n.t('promo.dashboard.ineligible') } unless user.may_register_promo? && user.no_promo_lockout?
   end
 
   def user
