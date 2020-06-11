@@ -2,10 +2,12 @@
 
 # :wrench: Setup
 
+For easy setup read the [running locally with docker-compose](#running-locally-with-docker-compose) section.
+
 Follow these steps to setup the App for [creators.brave.com](https://creators.brave.com). This guide presumes you are using OSX and [Homebrew](https://brew.sh/).
 
-1. Install **Ruby 2.5.5**. For a Ruby version manager try
-   [rbenv](https://github.com/rbenv/rbenv). Follow the `Installation` section instructions and ensure your version is at least 1.1.2. Once installed run `rbenv install 2.5.5`. Be sure to restart your terminal before continuing.
+1. Install **Ruby**. For a Ruby version manager try
+   [rbenv](https://github.com/rbenv/rbenv). Follow the `Installation` section instructions and ensure your version is at least 1.1.2. Once installed run `rbenv install`. Be sure to restart your terminal before continuing.
 2. Install **Node 6.12.3** or greater: `brew install node`
 3. Install **Postgresql 9.5+**: `brew install postgresql`
 
@@ -286,45 +288,19 @@ First, [install docker and docker compose](https://docs.docker.com/compose/insta
 
 Check out [publishers](https://github.com/brave-intl/publishers).
 
-In a sibling directory check out [bat-ledger](https://github.com/brave-intl/bat-ledger).
-
 You can add any environment variables that need to be set by creating a `.env`
 file at the top of the repo. Docker compose will automatically load from this
 file when launching services.
 
-e.g. you might have the following in `.env`:
-
+Build the docker images
+```sh
+make docker-dev-build
 ```
-BAT_MEDIUM_URL=https://medium.com/@attentiontoken
-BAT_REDDIT_URL=https://www.reddit.com/r/BATProject/
-BAT_ROCKETCHAT_URL=https://basicattentiontoken.rocket.chat/
-BAT_TWITTER_URL=https://twitter.com/@attentiontoken
-DEFAULT_API_PAGE_SIZE=600
 
-GOOGLE_AUTH_PROVIDER_X509_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
-GOOGLE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
-GOOGLE_CLIENT_ID=somelongkey.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=mysecret
-GOOGLE_PROJECT_ID=bravedev-184414
-GOOGLE_TOEKN_URI=https://accounts.google.com/o/oauth2/token
+and bring up the full stack
 
-RECAPTCHA_PRIVATE_KEY=my_recaptcha_key
-RECAPTCHA_PUBLIC_KEY=my_recaptcha_publickey
-RECAPTCHA_SECRET_KEY=my_recaptcha_secretkey
-RECAPTCHA_SITE_KEY=my_recaptcha_sitekey
-
-SENDGRID_API_KEY=SG.toke
-SENDGRID_PUBLISHERS_LIST_ID=3986776
-
-TWITCH_CLIENT_ID=twitch_client_id
-TWITCH_CLIENT_SECRET=my_twitch_secret
-
-UPHOLD_API_URI=https://api-sandbox.uphold.com
-UPHOLD_CLIENT_ID=my_dev_uphold_client_id
-UPHOLD_CLIENT_SECRET=my_dev_uphold_client_secret
-UPHOLD_PROVIDER=api-sandbox.uphold.com
-UPHOLD_SCOPE=cards:read,user:read,transactions:transfer:others
-
+```sh
+make docker-dev
 ```
 
 If you wish to make modifications to the compose files you can place a file named `docker-compose.override.yml` at the
@@ -352,11 +328,6 @@ to start with docker build the app and eyeshade images
 docker-compose build
 ```
 
-and bring up the full stack
-
-```sh
-docker-compose up
-```
 
 ### Create the databases
 

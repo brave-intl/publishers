@@ -28,7 +28,7 @@ RUN apk add --update --no-cache \
 
 RUN gem install bundler
 
-WORKDIR /app
+WORKDIR /var/www/
 
 # TODO: Check to see if reloading works
 
